@@ -1406,6 +1406,180 @@ namespace DocumentManagement.Tests
             Assert.Equal("5ef050534f7d102f9c68a95e", dto.id);
 
         }
+        [Fact]
+        public async Task TestViewMcuService()
+        {
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
+            Mock<IMongoCollection<ViewLog>> mockViewLogCollection = new Mock<IMongoCollection<ViewLog>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            AdminFileViewModel adminFileViewModel = new AdminFileViewModel();
+            adminFileViewModel.docId = "ddd25d1fe456057652eeb72d";
+            adminFileViewModel.id = "5eb25d1fe519051af2eeb72d";
+            adminFileViewModel.requestId = "abc15d1fe456051af2eeb768";
+            adminFileViewModel.fileId = "5ef049d896f9f41cec4b358f";
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                new BsonDocument
+                    {
+                        { "_id" , "5ef050534f7d102f9c68a95e" },
+                        { "serverName" ,  "fa8a95e8-2a94-41f0-9f91-c7cf0e0525b0.enc" },
+                        { "encryptionKey" , "FileKey" },
+                        { "encryptionAlgorithm" , "AES" },
+                        { "clientName" , "Recruitment & Selection Survey - Rainsoft Financials Pvt Ltd. (2).docx" },
+                        { "contentType" , "application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
+                    }
+            };
+
+            var viewLog = new ViewLog
+            {
+                id = "5ef050534f7d102f9c68a95e",
+                userProfileId = 1,
+                createdOn = DateTime.Now,
+                ipAddress = "127.0.0.1",
+                loanApplicationId = "5eb25d1fe519051af2eeb72d",
+                requestId = "abc15d1fe456051af2eeb768",
+                documentId = "ddd25d1fe456057652eeb72d",
+                fileId = "5ef049d896f9f41cec4b358f"
+            };
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockdb.Setup(x => x.GetCollection<ViewLog>("ViewLog", It.IsAny<MongoCollectionSettings>())).Returns(mockViewLogCollection.Object);
+            mockViewLogCollection.Setup(s => s.InsertOneAsync(It.IsAny<ViewLog>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new DocumentService(mock.Object, mockIActivityLogService.Object, null);
+            //Act
+            var dto = await service.View(adminFileViewModel, 1, "127.0.0.1", 1);
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal("5ef050534f7d102f9c68a95e", dto.id);
+
+        }
+        [Fact]
+        public async Task TestViewWorkbenchService()
+        {
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
+            Mock<IMongoCollection<ViewLog>> mockViewLogCollection = new Mock<IMongoCollection<ViewLog>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            AdminFileViewModel adminFileViewModel = new AdminFileViewModel();
+            adminFileViewModel.docId = "ddd25d1fe456057652eeb72d";
+            adminFileViewModel.id = "5eb25d1fe519051af2eeb72d";
+            adminFileViewModel.requestId = "abc15d1fe456051af2eeb768";
+            adminFileViewModel.fileId = "5ef049d896f9f41cec4b358f";
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                new BsonDocument
+                    {
+                        { "_id" , "5ef050534f7d102f9c68a95e" },
+                        { "serverName" ,  "fa8a95e8-2a94-41f0-9f91-c7cf0e0525b0.enc" },
+                        { "encryptionKey" , "FileKey" },
+                        { "encryptionAlgorithm" , "AES" },
+                        { "clientName" , "Recruitment & Selection Survey - Rainsoft Financials Pvt Ltd. (2).docx" },
+                        { "contentType" , "application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
+                    }
+            };
+
+            var viewLog = new ViewLog
+            {
+                id = "5ef050534f7d102f9c68a95e",
+                userProfileId = 1,
+                createdOn = DateTime.Now,
+                ipAddress = "127.0.0.1",
+                loanApplicationId = "5eb25d1fe519051af2eeb72d",
+                requestId = "abc15d1fe456051af2eeb768",
+                documentId = "ddd25d1fe456057652eeb72d",
+                fileId = "5ef049d896f9f41cec4b358f"
+            };
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false).ReturnsAsync(false).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockdb.Setup(x => x.GetCollection<ViewLog>("ViewLog", It.IsAny<MongoCollectionSettings>())).Returns(mockViewLogCollection.Object);
+            mockViewLogCollection.Setup(s => s.InsertOneAsync(It.IsAny<ViewLog>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new DocumentService(mock.Object, mockIActivityLogService.Object, null);
+            //Act
+            var dto = await service.View(adminFileViewModel, 1, "127.0.0.1", 1);
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal("5ef050534f7d102f9c68a95e", dto.id);
+
+        }
+        [Fact]
+        public async Task TestViewTrashService()
+        {
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<Entity.Request>> mockCollection = new Mock<IMongoCollection<Entity.Request>>();
+            Mock<IMongoCollection<ViewLog>> mockViewLogCollection = new Mock<IMongoCollection<ViewLog>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            AdminFileViewModel adminFileViewModel = new AdminFileViewModel();
+            adminFileViewModel.docId = "ddd25d1fe456057652eeb72d";
+            adminFileViewModel.id = "5eb25d1fe519051af2eeb72d";
+            adminFileViewModel.requestId = "abc15d1fe456051af2eeb768";
+            adminFileViewModel.fileId = "5ef049d896f9f41cec4b358f";
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+                new BsonDocument
+                    {
+                        { "_id" , "5ef050534f7d102f9c68a95e" },
+                        { "serverName" ,  "fa8a95e8-2a94-41f0-9f91-c7cf0e0525b0.enc" },
+                        { "encryptionKey" , "FileKey" },
+                        { "encryptionAlgorithm" , "AES" },
+                        { "clientName" , "Recruitment & Selection Survey - Rainsoft Financials Pvt Ltd. (2).docx" },
+                        { "contentType" , "application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
+                    }
+            };
+
+            var viewLog = new ViewLog
+            {
+                id = "5ef050534f7d102f9c68a95e",
+                userProfileId = 1,
+                createdOn = DateTime.Now,
+                ipAddress = "127.0.0.1",
+                loanApplicationId = "5eb25d1fe519051af2eeb72d",
+                requestId = "abc15d1fe456051af2eeb768",
+                documentId = "ddd25d1fe456057652eeb72d",
+                fileId = "5ef049d896f9f41cec4b358f"
+            };
+
+            mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false).ReturnsAsync(false).ReturnsAsync(false).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
+            mockdb.Setup(x => x.GetCollection<ViewLog>("ViewLog", It.IsAny<MongoCollectionSettings>())).Returns(mockViewLogCollection.Object);
+            mockViewLogCollection.Setup(s => s.InsertOneAsync(It.IsAny<ViewLog>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+
+            var service = new DocumentService(mock.Object, mockIActivityLogService.Object, null);
+            //Act
+            var dto = await service.View(adminFileViewModel, 1, "127.0.0.1", 1);
+            //Assert
+            Assert.NotNull(dto);
+            Assert.Equal("5ef050534f7d102f9c68a95e", dto.id);
+
+        }
         /*
         [Fact]
         public async Task TestUpdateByteProStatusControllerTrue()

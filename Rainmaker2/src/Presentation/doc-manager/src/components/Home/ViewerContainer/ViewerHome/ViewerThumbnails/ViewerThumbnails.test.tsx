@@ -37,21 +37,21 @@ describe('Doc Manager Header', () => {
                 </MemoryRouter>
             </StoreProvider>
         );
-        let trashBinText :any;
-         await waitFor(() => {
-            let thumbnailDrag:any;       
+        // let trashBinText :any;
+        //  await waitFor(() => {
+        //     let thumbnailDrag:any;       
         
-            const file =  {"indexes":[0],"isFromThumbnail":true,"isFromWorkbench":false,"isFromCategory":false}
-            thumbnailDrag  = getAllByTestId('thumbnail-drag');
+        //     const file =  {"indexes":[0],"isFromThumbnail":true,"isFromWorkbench":false,"isFromCategory":false}
+        //     thumbnailDrag  = getAllByTestId('thumbnail-drag');
         
-            expect(thumbnailDrag).toBeInTheDocument()
-            const mockdt = { setData: () =>  {file} };
-            // fireEvent.dragStart(thumbnailDrag[0], { dataTransfer: mockdt});
-            act(() => {
-                fireEvent.dragStart(thumbnailDrag, {
-                    dataTransfer: mockdt});
-            });
-        })
+        //     expect(thumbnailDrag).toBeInTheDocument()
+        //     const mockdt = { setData: () =>  {file} };
+        //     // fireEvent.dragStart(thumbnailDrag[0], { dataTransfer: mockdt});
+        //     act(() => {
+        //         fireEvent.dragStart(thumbnailDrag, {
+        //             dataTransfer: mockdt});
+        //     });
+        // })
        
             // expect(mockdt.setData).toBeCalled();
         

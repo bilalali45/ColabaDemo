@@ -1744,5 +1744,132 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.Null(result);
         }
+
+        [Fact]
+        public async Task TestSaveByBorrowerService()
+        {
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
+            Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoCollection<Entity.Request>> mockCollectionRequest = new Mock<IMongoCollection<Entity.Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorRequest = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
+            Mock<IMongoCollection<ActivityLog>> mockCollectionActivityLog = new Mock<IMongoCollection<ActivityLog>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorActivityLog = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorDraftDocument = new Mock<IAsyncCursor<BsonDocument>>();
+            Mock<IMongoCollection<Entity.EmailLog>> mockEmailLogCollection = new Mock<IMongoCollection<Entity.EmailLog>>();
+
+            List<BsonDocument> statusList = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "_id" , "5ee86503305e33a11c51ebbc"}
+                }
+            };
+
+            List<BsonDocument> listRequest = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "_id" , "5f0ede3cce9c4b62509d0dbf"},
+                    { "loanApplicationId" , 14}
+                }
+            };
+
+            List<BsonDocument> listDocumentDraft = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "_id" , "5f0ede3cce9c4b62509d0dbf"},
+                    { "docId" , "5f2147136621531660dc42c23"},
+                    { "requestId" , "5f2147116621531660dc42bf"}
+                }
+            };
+
+            List<BsonDocument> listActivityLog = new List<BsonDocument>()
+            {
+                new BsonDocument
+                {
+                    { "_id" , "5f0ffa5cba6f754a10129586"}
+                }
+            };
+
+            mockCursorStatusList.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorStatusList.SetupGet(x => x.Current).Returns(statusList);
+
+            mockCollectionStatusList.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.StatusList, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorStatusList.Object);
+
+            mockCursorRequest.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorRequest.Setup(x => x.Current).Returns(listRequest);
+
+            mockCursorDraftDocument.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorDraftDocument.Setup(x => x.Current).Returns(listDocumentDraft);
+
+            mockCollectionRequest.SetupSequence(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorRequest.Object).Returns(mockCursorDraftDocument.Object);
+
+            mockLoanApplicationCollection.Setup(s => s.InsertOneAsync(It.IsAny<Entity.LoanApplication>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
+
+            mockCursorActivityLog.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+            mockCursorActivityLog.SetupGet(x => x.Current).Returns(listActivityLog);
+
+            mockCollectionActivityLog.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<Entity.ActivityLog, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorActivityLog.Object);
+
+            mockEmailLogCollection.Setup(s => s.InsertOneAsync(It.IsAny<Entity.EmailLog>(), It.IsAny<InsertOneOptions>(), It.IsAny<System.Threading.CancellationToken>()));
+
+            mockdb.Setup(x => x.GetCollection<StatusList>("StatusList", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionStatusList.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionRequest.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.LoanApplication>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockLoanApplicationCollection.Object);
+            mockdb.Setup(x => x.GetCollection<ActivityLog>("ActivityLog", It.IsAny<MongoCollectionSettings>())).Returns(mockCollectionActivityLog.Object);
+            mockdb.Setup(x => x.GetCollection<Entity.EmailLog>("EmailLog", It.IsAny<MongoCollectionSettings>())).Returns(mockEmailLogCollection.Object);
+
+            mock.Setup(x => x.db).Returns(mockdb.Object);
+
+            //Act
+            IRequestService service = new RequestService(mock.Object, mockActivityLogService.Object, null, null, null, null, null, Mock.Of<IRainmakerService>());
+
+            Model.LoanApplication loanApplication = new Model.LoanApplication();
+            loanApplication.userId = 59;
+            loanApplication.userName = "Melissa Merritt";
+            loanApplication.loanApplicationId = 1;
+            loanApplication.tenantId = 1;
+            loanApplication.status = "5ee86503305e33a11c51ebbc";
+            loanApplication.requests = new List<Model.Request>() { };
+
+            Model.Request request = new Model.Request();
+            request.userId = 3842;
+            request.userName = "Danish Faiz";
+
+            request.documents = new List<Model.RequestDocument>() { };
+            request.email = new Model.RequestEmail();
+
+            request.email.emailTemplateId = "5fa020214c2ff92af0a1c85f";
+            request.email.fromAddress = "aliya@texastrustloans.com";
+            request.email.toAddress = "prasla@gmail.com";
+            request.email.CCAddress = "Ali@gmail.com,hasan@gmail.com";
+            request.email.subject = "You have new tasks to complete for your Texas Trust Home Loans loan application";
+            request.email.emailBody = "Hi Javed,To continue your application, we need some more information.";
+
+            Model.RequestDocument requestDocument = new Model.RequestDocument();
+            requestDocument.status = "Started";
+            requestDocument.displayName = "";
+            requestDocument.message = "document rejected";
+            requestDocument.typeId = "5eb257a3e519051af2eeb624";
+            requestDocument.docId = "5f2147136621531660dc42c2";
+            requestDocument.requestId = "5f2147116621531660dc42bf";
+            requestDocument.files = new List<Model.RequestFile>() { };
+
+            request.documents.Add(requestDocument);
+
+            loanApplication.requests.Add(request);
+
+            var result = await service.SaveByBorrower(loanApplication, false, false, new List<string>());
+
+            //Assert
+            Assert.NotNull(result);
+
+        }
     }
 }

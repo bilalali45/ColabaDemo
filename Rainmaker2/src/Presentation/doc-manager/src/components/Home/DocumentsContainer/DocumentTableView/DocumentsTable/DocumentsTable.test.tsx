@@ -94,10 +94,6 @@ describe('Doc Table Section ', () => {
                 expect(addFileHeader).toHaveTextContent("Select Document Type")
             })
 
-            await waitFor(()=>{
-                let noItemText = getByTestId("no-item-list")
-                expect(noItemText).toBeInTheDocument()
-            })
             // await waitFor(()=>{
             //     let addFileDocList = getAllByTestId("add-file-doc-list")
             //     expect(addFileDocList[0]).toHaveTextContent("")
@@ -105,23 +101,7 @@ describe('Doc Table Section ', () => {
     });
 
 
-    test('Should show Docs Name', async () => {
-        const { getAllByTestId, getByTestId, getByText } = render(
-            <StoreProvider>
-                <MemoryRouter initialEntries={[Url]}>
-                    <DocumentsTable></DocumentsTable>
-                </MemoryRouter>
-            </StoreProvider>
-        );
-        
-        await waitFor(() => {
-                // const docItems = getByTestId("document-item");
-                // expect(docItems).toBeInTheDocument();
-
-                // expect(docItems[0]).toHaveTextContent("Bank Statements - Two Months")
-            })
-    });
-
+   
 
     test('Should show Add Document Overlay', async () => {
         const { getByText, getByTestId, getAllByTestId } = render(
@@ -147,13 +127,13 @@ describe('Doc Table Section ', () => {
             })
 
 
-        let addDocumentText:any;
-        await waitFor(() => {
-                addDocumentText  = getByTestId('add-file-add-doc-btn');
-                expect(addDocumentText).toBeInTheDocument();
+        // let addDocumentText:any;
+        // await waitFor(() => {
+        //         addDocumentText  = getByTestId('add-file-add-doc-btn');
+        //         expect(addDocumentText).toBeInTheDocument();
 
                
-            })
+        //     })
             
             
 

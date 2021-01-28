@@ -162,7 +162,7 @@ export const DocumentsTable = () => {
 
     let docs: any = await fetchDocuments()
 
-    let uploadFailedFiles: DocumentFile[] = uploadFailedDocs.length ? uploadFailedDocs : failedDocs;
+    let uploadFailedFiles: DocumentFile[] = uploadFailedDocs && uploadFailedDocs.length ? uploadFailedDocs : failedDocs;
 
     let failedFiles: DocumentFile[] = []
     if (uploadFailedFiles && uploadFailedFiles.length > 0) {
@@ -233,8 +233,8 @@ export const DocumentsTable = () => {
     <div id="c-DocTable" className="dm-docTable c-DocTable" >
 
       <div className="dm-dt-thead">
-        <div className="dm-dt-thead-left">Document</div>
-        <div className="dm-dt-thead-right">Status</div>
+        <div data-testid="doc-heading" className="dm-dt-thead-left">Document</div>
+        <div data-testid="doc-status-heading" className="dm-dt-thead-right">Status</div>
       </div>
 
       <div className={`dm-dt-tbody ${catScrollFreeze ? " freeze" : ""}`} ref={refReassignDropdown}>
@@ -288,11 +288,11 @@ export const DocumentsTable = () => {
           {/*<OverlayTrigger trigger="click" placement="right-end" overlay={popover} rootClose={true}>
                                 <a>Add Files +</a>
                             </OverlayTrigger>*/}
-          <a ref={refAddFileLink} onClick={handlePopClick} className="addFile">Add Files +</a>
+          <a data-testid="add-file-btn" ref={refAddFileLink} onClick={handlePopClick} className="addFile">Add Files +</a>
           <div ref={popUpDv}>
             <Overlay placement="right-end" onHide={hideAddfilePopover} container={popUpDv.current} target={poptarget} show={popshow} rootClose={true}>
               <Popover id="addFiles-popover" className="ReassignOverlay">
-                <div >
+                <div data-testid="add-file-header">
                   <Popover.Title as="h3">Select Document Type</Popover.Title>
                   <Popover.Content>
                     {documentItems && documentItems.length > 0 ? (

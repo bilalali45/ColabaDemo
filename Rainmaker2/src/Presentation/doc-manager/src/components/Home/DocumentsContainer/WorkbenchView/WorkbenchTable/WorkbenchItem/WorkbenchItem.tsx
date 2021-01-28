@@ -189,6 +189,7 @@ const performNextActionFn= async () =>{
       <ul>
         <li key={"trash"}>
           <a
+           data-testid={"trash-icon"}
             data-title="Trash Bin"
             onClick={moveWorkBenchToTrash}>
             <TrashCan />
@@ -197,6 +198,7 @@ const performNextActionFn= async () =>{
         <li className={`reAssBtn`}>
           <a
             ref={refReassignlink}
+            data-testid={`reassign-icon-${getFileName()}`}
             data-title="Reassign"
             onClick={(e) => toggleReassignDropdown(e)}
             className={showingReassignDropdown ? "overlayOpen" : ""}>
@@ -269,30 +271,6 @@ const performNextActionFn= async () =>{
     return file?.clientName;
   };
 
-  const onDoubleClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    if (file) {
-
-      let currentFile: any = new CurrentInView(
-        file.id,
-        file.src,
-        getFileName(),
-        true,
-        file.fileId
-      );
-      dispatch({
-        type: ViewerActionsType.SetCurrentFile,
-        payload: currentFile,
-      });
-      setCurrentDocument();
-      editMode(true);
-    }
-  };
-
-  const editMode = (isEditEnabled: boolean) => {
-    setEditingModeEnabled(isEditEnabled);
-  };
 
   const dragStartHandler = (e: any) => {
 
@@ -416,9 +394,8 @@ const performNextActionFn= async () =>{
           <FileIcon />
         </div>
         <div
-          onDoubleClick={(event) => onDoubleClick(event)}
           onClick={viewFileForWorkBench}
-          draggable={!editingModeEnabled ? true : false}
+          draggable
           onDragStart={(e: any) => {
 
             dragStartHandler(e)
@@ -431,11 +408,11 @@ const performNextActionFn= async () =>{
             window.document.body.removeChild(dragView);
           }}
           className="d-name">
-              <div>
+              <div data-testid="workbench-item">
                 <p title={getFileName()}>{getFileName()}</p>
                 {file.file && file.uploadProgress <= 100 ? null :
                   <div className="modify-info">
-                    <span className="mb-lbl">{file.fileModifiedOn ? "Modified By:" : "Uploaded By:"}</span>{" "}
+                    <span data-testid="file-modified-status"className="mb-lbl">{file.fileModifiedOn ? "Modified By:" : "Uploaded By:"}</span>{" "}
                     <span className="mb-name">
                       {file.userName ? file.userName : "Borrower"}{" "}
                       {getFileDate(file)}

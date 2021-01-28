@@ -79,7 +79,7 @@ export const documentItems:any[] = [{
     "requestId":"5ff3e45d323122326cdbc7e3",
     "docId":"5ff3e45d323122326cdbc7ed",
     "docName":"Tax Returns with Schedules (Personal - Two Years)",
-    "status":"Borrower to do",
+    "status":"Started",
     "createdOn":"2021-01-05T04:00:29.274Z",
     "files":[{
         "id":"5ff3ef797c1915f70fd2060b",
@@ -100,7 +100,7 @@ export const documentItems:any[] = [{
     "requestId":"5ff2ff79323122326cdbc6dd",
     "docId":"5ff2ff7a323122326cdbc6e7",
     "docName":"W-2s - Last Two years",
-    "status":"Borrower to do",
+    "status":"Completed",
     "createdOn":"2021-01-04T11:43:53.978Z",
     "files":[],
     "typeId":"5f473879cca0a5d1c9659cc3",
@@ -110,7 +110,7 @@ export const documentItems:any[] = [{
     "requestId":"600eb82803130cd04b0964c8",
     "docId":"600eb82803130cd04b0964c9",
     "docName":"Rental Agreement",
-    "status":"Manually added",
+    "status":"Pending review",
     "createdOn":"2021-01-25T12:23:04.869Z",
     "files":[{
         "id":"600eb83103130cd04b0964cc",
@@ -180,7 +180,7 @@ export const workbenchItems = [{
     "id":"5feb1f0ec20bc413c03d39d5",
     "fileId":"60001fd232088251cb1c7066",
     "fileUploadedOn":"2021-01-14T10:41:22.657Z",
-    "mcuName":"f609e7b380524c72ee79ecc47cad7e11.jpeg",
+    "mcuName":"test-doc-1.jpeg",
     "userId":1,
     "userName":"System Administrator"
     ,"fileModifiedOn":null
@@ -188,7 +188,7 @@ export const workbenchItems = [{
     "id":"5feb1f0ec20bc413c03d39d5",
     "fileId":"5ff3ed717c1915f70fd20609",
     "fileUploadedOn":"2021-01-05T04:39:13.716Z",
-    "mcuName":"50202193912.pdf",
+    "mcuName":"test-doc-2.pdf",
     "userId":6741,
     "userName":"Ali Momin",
     "fileModifiedOn":"2021-01-05T04:39:13.716Z"
@@ -196,7 +196,7 @@ export const workbenchItems = [{
     "id":"5feb1f0ec20bc413c03d39d5",
     "fileId":"5ff3ec747c1915f70fd20606",
     "fileUploadedOn":"2021-01-05T04:35:00.994Z",
-    "mcuName":"5020219350.pdf",
+    "mcuName":"test-doc-3.pdf",
     "userId":6741,
     "userName":"Ali Momin",
     "fileModifiedOn":"2021-01-05T04:35:00.994Z"
@@ -225,7 +225,17 @@ const loanAppDetails = {
     "expirationDate":null}
 
 
-
+    export const createMockFile = (name, size, mimeType) => {
+      let range = '';
+      for (let i = 0; i < size; i++) {
+          range += 'a';
+      }
+      let blob: any = new Blob([range], { type: mimeType });
+      blob.lastModified = 1600081543628;
+      blob.lastModifiedDate = 'Mon Sep 14 2020 16:05:43 GMT+0500 (Pakistan Standard Time)';
+      blob.name = name;
+      return blob;
+  }
 export default class DocumentActions {
 
     
@@ -238,6 +248,7 @@ export default class DocumentActions {
     static performNextAction:any = true
     static docsSearchTerm: string = '';
   
+    
     static async getDocumentItems(dispatch: Function, importedFileIds:any) {
      
       try {

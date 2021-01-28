@@ -221,6 +221,7 @@ export const WorkbenchTable = () => {
 
             onDrop={handleOnDrop}
             id="c-WorkbenchTable"
+            data-testid="workbench-table"
             className="dm-workbenchTable c-WorkbenchTable">
             <div className="dm-wb-thead">
                 <div className="dm-wb-thead-left">Document</div>
@@ -249,7 +250,7 @@ export const WorkbenchTable = () => {
 
                 <section className={`dm-wb-tr dm-wb-doc-list`} >
                     <div className="dm-wb-row">
-                        <ul className={`dm-dt-docList ${isDraggingOver ? 'dragActive' : ''}`}
+                        <ul data-testid="workbench-items-list" className={`dm-dt-docList ${isDraggingOver ? 'dragActive' : ''}`}
                         >
                             {
                                 ((workbenchItems || failedFiles) && (failedFiles?.length || workbenchItems?.length)) ? [...failedFiles, ...workbenchItems]?.map((d: any, i: number) => {

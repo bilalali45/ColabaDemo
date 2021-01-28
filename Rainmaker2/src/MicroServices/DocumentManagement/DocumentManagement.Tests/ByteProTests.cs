@@ -16,6 +16,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using static DocumentManagement.Model.Template;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using Moq.Protected;
+using System.Threading;
+using System.Net.Http;
+using System.Net;
 
 namespace DocumentManagement.Tests
 {
@@ -181,6 +187,148 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task TestServiceUpdateLoanInfo()
+        {
+            //Arrange
+            Mock<IMongoService> mock = new Mock<IMongoService>();
+            Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
+            Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
+            Mock<IMongoCollection<DocumentManagement.Entity.Request>> mockCollection = new Mock<IMongoCollection<DocumentManagement.Entity.Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+
+            Mock<IMongoCollection<DocumentManagement.Entity.Request>> mockMcuCollection = new Mock<IMongoCollection<DocumentManagement.Entity.Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorMcu = new Mock<IAsyncCursor<BsonDocument>>();
+
+            Mock<IMongoCollection<DocumentManagement.Entity.Request>> mockLastDocRequestSentDateCollection = new Mock<IMongoCollection<DocumentManagement.Entity.Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorLastDocRequestSentDate = new Mock<IAsyncCursor<BsonDocument>>();
+
+
+
+            Mock<IMongoCollection<DocumentManagement.Entity.Request>> mockRemainingDocumentsCollection = new Mock<IMongoCollection<DocumentManagement.Entity.Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorRemainingDocuments = new Mock<IAsyncCursor<BsonDocument>>();
+
+            Mock<IMongoCollection<DocumentManagement.Entity.Request>> mockOutstandingDocumentsCollection = new Mock<IMongoCollection<DocumentManagement.Entity.Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorOutstandingDocuments = new Mock<IAsyncCursor<BsonDocument>>();
+
+            Mock<IMongoCollection<DocumentManagement.Entity.Request>> mockCompletedDocumentsCollection = new Mock<IMongoCollection<DocumentManagement.Entity.Request>>();
+            Mock<IAsyncCursor<BsonDocument>> mockCursorCompletedDocuments = new Mock<IAsyncCursor<BsonDocument>>();
+
+            mockConfiguration.Setup(x => x["RainMaker:Url"]).Returns("http://test.com");
+
+            List<BsonDocument> list = new List<BsonDocument>()
+            {
+
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                         
+                           { "LastDocUploadDate" ,DateTime.UtcNow}
+                 }
+                 };
+
+            mockdb.SetupSequence(x => x.GetCollection<DocumentManagement.Entity.Request>("Request", It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object).Returns(mockMcuCollection.Object).Returns(mockLastDocRequestSentDateCollection.Object).Returns(mockRemainingDocumentsCollection.Object).Returns(mockOutstandingDocumentsCollection.Object).Returns(mockCompletedDocumentsCollection.Object);
+
+            mockCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<DocumentManagement.Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object);
+            mockCursor.Setup(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true);
+            mockCursor.SetupGet(x => x.Current).Returns(list);
+
+            List<BsonDocument> mculist = new List<BsonDocument>()
+            {
+
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                         
+                           { "LastDocUploadDate" ,DateTime.UtcNow}
+                 }
+                 };
+
+            mockMcuCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<DocumentManagement.Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorMcu.Object);
+            mockCursorMcu.Setup(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true);
+            mockCursorMcu.SetupGet(x => x.Current).Returns(mculist);
+
+
+            List<BsonDocument> LastDocRequestSentDatelist = new List<BsonDocument>()
+            {
+
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                         
+                           { "LastDocRequestSentDate" ,DateTime.UtcNow}
+                 }
+                 };
+
+            mockLastDocRequestSentDateCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<DocumentManagement.Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorLastDocRequestSentDate.Object);
+            mockCursorLastDocRequestSentDate.Setup(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true);
+            mockCursorLastDocRequestSentDate.SetupGet(x => x.Current).Returns(LastDocRequestSentDatelist);
+
+
+
+            List<BsonDocument> RemainingDocumentslist = new List<BsonDocument>()
+            {
+
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                         
+                           { "isMcuVisible" ,true}
+                 }
+                 };
+
+            mockRemainingDocumentsCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<DocumentManagement.Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorRemainingDocuments.Object);
+            mockCursorRemainingDocuments.Setup(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true);
+            mockCursorRemainingDocuments.SetupGet(x => x.Current).Returns(RemainingDocumentslist);
+
+
+            List<BsonDocument> OutstandingDocumentslist = new List<BsonDocument>()
+            {
+
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                         
+                           { "isMcuVisible" ,true}
+                 }
+                 };
+
+            mockOutstandingDocumentsCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<DocumentManagement.Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorOutstandingDocuments.Object);
+            mockCursorOutstandingDocuments.Setup(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true);
+            mockCursorOutstandingDocuments.SetupGet(x => x.Current).Returns(OutstandingDocumentslist);
+
+
+            List<BsonDocument> mockCursorCompletedDocumentslist = new List<BsonDocument>()
+            {
+
+                 new BsonDocument
+                    {
+                        //Cover all empty fields except files
+                         
+                           { "isMcuVisible" ,true}
+                 }
+                 };
+
+            mockCompletedDocumentsCollection.Setup(x => x.Aggregate(It.IsAny<PipelineDefinition<DocumentManagement.Entity.Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursorCompletedDocuments.Object);
+            mockCursorCompletedDocuments.Setup(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true);
+            mockCursorCompletedDocuments.SetupGet(x => x.Current).Returns(mockCursorCompletedDocumentslist);
+
+            mock.SetupGet(x => x.db).Returns(mockdb.Object);
+            var mockMessageHandler = new Mock<HttpMessageHandler>();
+            mockMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK
+                });
+
+            var service = new RainmakerService(new HttpClient(mockMessageHandler.Object), mockConfiguration.Object, mock.Object);
+
+            //Act
+            await service.UpdateLoanInfo(1, "5fb51519e223e0428d82c41b", new List<string>());
+
         }
     }
 }

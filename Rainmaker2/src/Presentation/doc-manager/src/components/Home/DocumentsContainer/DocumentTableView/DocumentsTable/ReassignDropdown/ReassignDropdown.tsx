@@ -138,7 +138,7 @@ export const ReassignDropdown = ({
       rootClose={true}
     >
       <Popover id="popover-contained" className="ReassignOverlay">
-        <div ref={refReassignPopover}>
+        <div ref={refReassignPopover} data-testid="reassign-dropdown">
           <Popover.Title as="h3">Select Document Type</Popover.Title>
           <Popover.Content >
             {docCategories && docCategories.length > 0 ? (

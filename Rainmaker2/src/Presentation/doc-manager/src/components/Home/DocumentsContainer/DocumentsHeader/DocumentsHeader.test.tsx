@@ -6,7 +6,6 @@ import {MockEnvConfig} from '../../../../test_utilities/EnvConfigMock';
 import { MockLocalStorage } from '../../../../test_utilities/LocalStoreMock';
 import { StoreProvider } from '../../../../Store/Store';
 import { MemoryRouter } from 'react-router-dom';
-import { createMockFile } from '../../AddDocument/AddFileToDoc/AddFileToDoc.test';
 import { Home } from '../../Home';
 import { DocumentsContainer } from '../DocumentsContainer';
 
@@ -677,26 +676,4 @@ describe('Doc Manager Header', () => {
         })
     });
 
-    // test('Should drag a file from trashbin on drag start', async () => {     
-    //     const { getByText, getAllByTestId, getByTestId } = render(
-    //         <StoreProvider>
-    //             <MemoryRouter initialEntries={[Url]}>
-    //                 <Home></Home>
-    //             </MemoryRouter>
-    //         </StoreProvider>
-    //     );
-    //     let trashBinDrop :any;
-    //     await waitFor(() => {
-    //         const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60091286122436829c4ad3cc","fileName":"images (2).jpg","isFromThumbnail":true,"isFromWorkbench":false,"isFromCategory":false}
-    //         trashBinDrop = getByTestId('drop-to-trashbin');
-    //         expect(trashBinDrop).toBeInTheDocument();
-    //         const mockdt = { getData: () =>  file};
-    //         act(() => {
-    //             fireEvent.drop(trashBinDrop, {
-    //                 dataTransfer: mockdt});
-    //         });
-
-    //         // expect(mockdt.getData).toBeCalled();
-    //     })
-    // });
 })

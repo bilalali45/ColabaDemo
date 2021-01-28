@@ -95,6 +95,8 @@ namespace DocumentManagement.API.Controllers
                             userName: setting.ftpUser,
                             password: AesCryptography.Decrypt(text: setting.ftpPassword,
                                                               key: await keyStoreService.GetFtpKey()));
+            if (files == null || files.Count <= 0)
+                return BadRequest("Something went wrong. Please try again");
             foreach (var file in files)
             {
                 if (file.Length<=0)
@@ -226,6 +228,8 @@ namespace DocumentManagement.API.Controllers
                                                 [FromForm] string order,
                                                 List<IFormFile> files)
         {
+            if (files == null || files.Count <= 0)
+                return BadRequest("Something went wrong. Please try again");
             //Create borrower request 
             var responseBody = await rainmakerService.PostLoanApplication(loanApplicationId: loanApplicationId, isDraft: false, authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
 
@@ -272,6 +276,8 @@ namespace DocumentManagement.API.Controllers
                                                                   key: await keyStoreService.GetFtpKey()));
                 foreach (var file in files)
                 {
+                    if (file.Length <= 0)
+                        return BadRequest("Something went wrong. Please try again");
                     if (!setting.allowedExtensions.Contains(Path.GetExtension(file.FileName.ToLower())))
                         //throw new DocumentManagementException("This file type is not allowed for uploading");
                         return BadRequest("File type is not supported. Allowed types: PDF, JPEG, PNG");

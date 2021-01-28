@@ -108,7 +108,6 @@ export const DocumentItem = ({
   };
 
   const onDrophandler = async (e: any) => {
-    e.preventDefault();
     let filesFromPC = e?.dataTransfer?.files;
     if (filesFromPC?.length) {
       setDroppedOnDoc(document);
@@ -148,7 +147,7 @@ export const DocumentItem = ({
       );
 
       if (success) {
-        if (selectedFileData.fileId === file.id) {
+        if (selectedFileData && selectedFileData.fileId === file.id) {
           let currentDocument = documentItems.filter((doc: any) => doc.docId === document.docId)
           setCurrentDocument(currentDocument)
           await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
@@ -171,7 +170,7 @@ export const DocumentItem = ({
       );
 
       if (success) {
-        if (selectedFileData.fileId === file.id) {
+        if (selectedFileData && selectedFileData.fileId === file.id) {
           let currentDocument = documentItems.filter((doc: any) => doc.docId === document.docId)
           setCurrentDocument(currentDocument)
           await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
@@ -231,13 +230,13 @@ export const DocumentItem = ({
   };
   const renderDeleteDocSlider = (document: DocumentRequest) => {
     return (
-      <div className="list-remove-alert">
+      <div className="list-remove-alert" data-testid="delete-alert">
         <span className="list-remove-text">
           Remove this document type?
           {(document.status === 'Borrower to do' || document.status === 'Started') ? " It’ll disappear from the borrower’s Needs List?" : null}
         </span>
         <div className="list-remove-options">
-          <button
+          <button data-testid="confirm-doc-delete"
             onClick={() => {
               deleteDoc();
               setConfirmDelete(false);
@@ -317,8 +316,8 @@ export const DocumentItem = ({
 
   const renderDocumentTile = () => {
     return (
-      <div className="dm-dt-tr1">
-        <div className="dm-dt-tr1-left">
+      <div className="dm-dt-tr1" data-testid="document-item">
+        <div className="dm-dt-tr1-left" >
           <h4 data-testid="document-name" title={document.docName} className="viewed" onClick={handleSync}>
             {show ? <MinusIcon /> : <PlusIcon />} {document.docName}
           </h4>
@@ -330,7 +329,7 @@ export const DocumentItem = ({
           {/*<div>*/}
           {document.files && document.files.length === 0 ?
             (<button
-              data-testid="btn-delete"
+              data-testid="btn-doc-delete"
               onClick={() => setConfirmDelete(true)}
               className="btn btn-delete btn-sm"
             >
@@ -348,7 +347,7 @@ export const DocumentItem = ({
   };
 
   return (
-    <section
+    <section data-testid="doc-dnd"
       onMouseLeave={() => setDraggingOverItem(false)}
       className={`dm-dt-tr doc-m-cat-list`}
       onDragEnter={(e: any) => {

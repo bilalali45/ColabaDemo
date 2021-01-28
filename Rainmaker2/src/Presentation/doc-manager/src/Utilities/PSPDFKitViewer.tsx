@@ -47,6 +47,32 @@ export const PSPDFKitViewer: React.FC<PSPDFKitViewerType> = ({
 
     const getViewerInstance = async (file: Blob) => {
 
+        if(process.env.NODE_ENV === "test"){
+            let instanceConfig: any = {
+                document: await file,
+                container: viewerRef?.current || '',
+                licenseKey,
+                baseUrl,
+                theme: PSPDFKit.Theme.DARK,
+                 styleSheets: [`${baseUrl}assets/css/pspdfkit-styles.css`]
+                
+            };
+            try {
+                let instance = await PSPDFKit.load(instanceConfig);
+                _cachedInstance = instance;
+                // ViewerTools.addEmptyPage(instance);
+                retrieveViewerInstance(instance);
+                setAnnotations();
+                instance?.setViewState(state => state.set("zoom", 'FIT_TO_VIEWPORT'));
+                return instance;
+            } catch (error) {
+                console.log(error);
+    
+            }
+        }
+        else{
+
+        
         let instanceConfig: any = {
             document: await file.arrayBuffer(),
             container: viewerRef?.current || '',
@@ -69,6 +95,7 @@ export const PSPDFKitViewer: React.FC<PSPDFKitViewerType> = ({
             console.log(error);
 
         }
+    }
         return null;
     }
 
