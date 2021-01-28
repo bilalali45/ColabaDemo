@@ -1,3 +1,4 @@
+import { createMockFile } from "../../../components/Home/AddDocument/AddFileToDoc/AddFileToDoc.test";
 import { CurrentInView } from "../../../Models/CurrentInView";
 import { DocumentFile } from "../../../Models/DocumentFile";
 import { DocumentRequest } from "../../../Models/DocumentRequest";
@@ -404,72 +405,20 @@ export default class DocumentActions {
     }
 
     static async getFileToView(id: string, requestId: string, docId: string, fileId: string, isFromCategory: boolean, isFromWorkbench: boolean, isFromTrash: boolean, dispatch: Function) {
+
   
-      
-    //   DocumentActions.documentViewCancelToken = Axios.CancelToken.source();
-    //   let url = Endpoints.Document.GET.viewDocument(
-    //     id,
-    //     requestId,
-    //     docId,
-    //     fileId
-    //   );
-  
-    //   let downloadProgress = 0;
-    //   const authToken = LocalDB.getAuthToken();
-    //   dispatch({
-    //     type: ViewerActionsType.SetFileProgress,
-    //     payload: 0,
-    //   });
-    //   try {
-    //     const response = await Axios.get(Http.createUrl(Http.baseUrl, url), {
-    //       cancelToken: DocumentActions.documentViewCancelToken.token,
-    //       responseType: 'blob',
-    //       headers: {
-    //         Authorization: `Bearer ${authToken}`
-    //       },
-    //       onDownloadProgress: (e) => {
-    //         let p = Math.floor((e.loaded / e.total) * 100);
-    //         downloadProgress = p;
-    //         if (p === 100) {
-    //           dispatch({
-    //             type: ViewerActionsType.SetIsLoading,
-    //             payload: false
-    //           })
-              
-  
-    //         }
-  
-    //         dispatch({
-    //           type: ViewerActionsType.SetFileProgress,
-    //           payload: downloadProgress,
-    //         });
-    //       },
-    //     });
-  
-    //     let fileData = {
-    //       id,
-    //       requestId,
-    //       docId,
-    //       fileId,
-    //       isFromCategory,
-    //       isFromWorkbench,
-    //       isFromTrash
-    //     }
-    //     let file: any;
-    //     if (!response.data.type.includes('pdf')) {
-    //       file = await ViewerTools.convertImageToPDF(response.data, false, fileData, false);
-  
-    //     } else {
-  
-    //       file = response.data;
-    //     }
-  
-             return "";
+      let blob =await createMockFile('test.jpg', 30000, 'arrayBuffer');
+      // let file1 = new File([blob]);
+
+      console.log(blob)
+            return blob;
     //   }
     //   catch (error) {
     //     console.log(error)
     //   }
   
+    // let url = "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf"
+    // return url
     }
   
   
@@ -1036,7 +985,7 @@ export default class DocumentActions {
       // fileItemDragView.innerHTML = '<p style="color: white; font-weight: bold; font-size: 20px;">'+fileName+'</p><p style="color: white;">'+by+'</p>';
       fileItemDragView.innerHTML = '<div class="l-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="20" viewBox="0 0 15 20"><path id="Path_633" data-name="Path 633" d="M14.453-13.672A1.808,1.808,0,0,1,15-12.344V.625a1.808,1.808,0,0,1-.547,1.328,1.808,1.808,0,0,1-1.328.547H1.875A1.808,1.808,0,0,1,.547,1.953,1.808,1.808,0,0,1,0,.625v-16.25a1.808,1.808,0,0,1,.547-1.328A1.808,1.808,0,0,1,1.875-17.5H9.844a1.808,1.808,0,0,1,1.328.547ZM12.969-12.5,10-15.469V-12.5ZM1.875.625h11.25v-11.25H9.063A.9.9,0,0,1,8.4-10.9a.9.9,0,0,1-.273-.664v-4.062H1.875Z" transform="translate(0 17.5)" fill="#7e829e"></path></svg></div><div class="d-name"><div><p>' + fileName + '</p><div class="modify-info">' + by + '</div></div></div>';
       window.document.body.appendChild(fileItemDragView);
-      e.dataTransfer.setDragImage(fileItemDragView, 5, 5);
+      // e.dataTransfer.setDragImage(fileItemDragView, 5, 5);
   
   
     }

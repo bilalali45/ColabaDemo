@@ -31,10 +31,10 @@ describe('File Items ', () => {
         );
         
         await waitFor(() => {
-                const fileItems = getAllByTestId("file-item");
-                expect(fileItems).toBeInTheDocument();
+                const fileItems = getAllByTestId("file-item-div");
+                // expect(fileItems).toBeInTheDocument();
 
-                expect(fileItems[3]).toHaveTextContent("abc")
+                expect(fileItems[0]).toHaveTextContent("images 1.jpeg")
             })
     });
 })

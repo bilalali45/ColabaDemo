@@ -128,7 +128,6 @@ export const ViewerThumbnails = () => {
 
     // if(!isThumbnailGenerated){
     let TempThumbnails: any = [];
-    console.time("generateThumbnails")
     for (let i = 0; i < instance?.totalPageCount; i++) {
       TempThumbnails.push(await PDFThumbnails.generateThumbnailData(i));
       setThumbnails((prevState) => [
@@ -145,8 +144,6 @@ export const ViewerThumbnails = () => {
         ]);
       }
     }
-    // } 
-    console.timeEnd("generateThumbnails")
     dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
 
   };
@@ -381,14 +378,12 @@ export const ViewerThumbnails = () => {
 
         <a title="Rotate Left" id="rotate-button" onClick={async () => {
           ViewerTools.rotateLeft(multiThumbs);
-          // generateAllThumbnailData();
         }}>
           <RotateLeftIocn />
           </a>
 
         <a title="Rotate Right" id="rotate-button" onClick={async () => {
           ViewerTools.rotateRight(multiThumbs);
-          // generateAllThumbnailData();
         }}>
            <RotateRightIocn />
         </a>
@@ -423,22 +418,15 @@ export const ViewerThumbnails = () => {
                   <p>Drop Here</p>
                 </div>
               ) : null}
-              <div
+              <div data-testid="thumbnail-drag"
                 // className={`pagepdf ${}`}
                 className={`pagepdf ${currentPageIndex === i ? 'active' : ''} ${multiThumbs.includes(i) ? 'selected' : ''}  ${dragOverSelfIndex !== i && draggingIndex === i && thumbDragged ? 'dragOverActive' : ''}`}
 
                 draggable
                 onDragOver={(e: any) => {
-                  // if (thumbDragged) {
-                  //   e.target.style.border = '2px dashed blue'
-                  // }
-
-                  onDragOverHandler(i);
+                   onDragOverHandler(i);
                 }}
-                onDragLeave={(e: any) => {
-                  // e.target.style.border = ''
-                  // onDragOverHandler(i);
-                }}
+                
                 onDrop={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -446,12 +434,7 @@ export const ViewerThumbnails = () => {
                   let fileData = e.dataTransfer.getData("file");
                   onDroptoThumbnail(+afterIndex, i, fileData);
                 }}
-                // onDrag={(e: any) => {
-                //   if (isDragging === true || thumbDragged) {
-                //     return;
-                //   }
-                //   dispatch({ type: DocumentActionsType.SetIsDragging, payload: true });
-                // }}
+                
                 onDragStart={(e: any) => {
                   onDragStartHandler(e, i)
                 }}

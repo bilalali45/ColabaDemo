@@ -575,7 +575,7 @@ useEffect(() => {
         <div className="l-icon">
           <FileIcon />
         </div>
-        <div
+        <div data-testid="file-item-div"
           className="d-name"
           onClick={viewFileForDocCategory}
         >

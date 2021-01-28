@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor, getByTestId } from '@testing-library/react';
+import { render, fireEvent, waitFor, getByTestId, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
 import { DocumentsHeader } from './DocumentsHeader';
 import {MockEnvConfig} from '../../../../test_utilities/EnvConfigMock';
@@ -7,7 +7,6 @@ import { MockLocalStorage } from '../../../../test_utilities/LocalStoreMock';
 import { StoreProvider } from '../../../../Store/Store';
 import { MemoryRouter } from 'react-router-dom';
 import { createMockFile } from '../../AddDocument/AddFileToDoc/AddFileToDoc.test';
-import App from '../../../../App';
 import { Home } from '../../Home';
 import { DocumentsContainer } from '../DocumentsContainer';
 
@@ -15,12 +14,18 @@ import { DocumentsContainer } from '../DocumentsContainer';
 jest.mock('pspdfkit');
 jest.mock('../../../../Store/actions/DocumentActions');
 jest.mock('../../../../Store/actions/TemplateActions');
+jest.mock('../../../../Store/actions/UserActions');
 
 const Url = '/DocManager/2515'
+
+
+
+
 
 beforeEach(() => {
     MockEnvConfig();
     MockLocalStorage();
+    JSON.parse = jest.fn((data:any)=> data)
 });
 
 describe('Doc Manager Header', () => {
@@ -587,35 +592,111 @@ describe('Doc Manager Header', () => {
             </StoreProvider>
         );
         let trashBinText :any;
-        await waitFor(() => {
+         waitFor(() => {
             trashBinText = getByText('Trash Bin');
             expect(trashBinText).toBeInTheDocument();
             fireEvent.click(trashBinText)
         })
-        let trashBinDocs:any;
-        await waitFor(() => {
+        let trashBinDocs:any;       
+        
+            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60068fc832088251cb1c70f8","isFromTrash":true}
             trashBinDocs  = getAllByTestId('trashDoc');
-            const mockdt = { setData: jest.fn() };
+            const mockdt = { setData: () =>  file };
             // fireEvent.dragStart(trashBinDocs[0].children[1], { dataTransfer: mockdt});
+            act(() => {
+                fireEvent.dragStart(trashBinDocs[0].children[1], {
+                    dataTransfer: mockdt});
+            });
             // expect(mockdt.setData).toBeCalled();
-        })
+        
     });
 
-    test('Should drop file to trash bin', async () => {
+    test('Should drop file to trash bin from workbench', async () => {     
         const { getByText, getAllByTestId, getByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
-                    <DocumentsHeader></DocumentsHeader>
+                    <Home></Home>
                 </MemoryRouter>
             </StoreProvider>
         );
         let trashBinDrop :any;
         await waitFor(() => {
+            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60091286122436829c4ad3cc","fileName":"images (2).jpg","isFromThumbnail":false,"isFromWorkbench":true,"isFromCategory":false}
             trashBinDrop = getByTestId('drop-to-trashbin');
             expect(trashBinDrop).toBeInTheDocument();
-            const mockdt = { getData: jest.fn() };
-            // fireEvent.drop(trashBinDrop, { dataTransfer: mockdt});
+            const mockdt = { getData: () =>  file};
+            act(() => {
+                fireEvent.drop(trashBinDrop, {
+                    dataTransfer: mockdt});
+            });
             // expect(mockdt.getData).toBeCalled();
         })
     });
+
+    test('Should drop file to trash bin from category', async () => {     
+        const { getByText, getAllByTestId, getByTestId } = render(
+            <StoreProvider>
+                <MemoryRouter initialEntries={[Url]}>
+                    <Home></Home>
+                </MemoryRouter>
+            </StoreProvider>
+        );
+        let trashBinDrop :any;
+        await waitFor(() => {
+            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60091286122436829c4ad3cc","fileName":"images (2).jpg","isFromThumbnail":false,"isFromWorkbench":false,"isFromCategory":true}
+            trashBinDrop = getByTestId('drop-to-trashbin');
+            expect(trashBinDrop).toBeInTheDocument();
+            const mockdt = { getData: () =>  file};
+            act(() => {
+                fireEvent.drop(trashBinDrop, {
+                    dataTransfer: mockdt});
+            });
+            // expect(mockdt.getData).toBeCalled();
+        })
+    });
+
+    test('Should drop file to trash bin from thumbnail', async () => {     
+        const { getByText, getAllByTestId, getByTestId } = render(
+            <StoreProvider>
+                <MemoryRouter initialEntries={[Url]}>
+                    <Home></Home>
+                </MemoryRouter>
+            </StoreProvider>
+        );
+        let trashBinDrop :any;
+        await waitFor(() => {
+            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60091286122436829c4ad3cc","fileName":"images (2).jpg","isFromThumbnail":true,"isFromWorkbench":false,"isFromCategory":false}
+            trashBinDrop = getByTestId('drop-to-trashbin');
+            expect(trashBinDrop).toBeInTheDocument();
+            const mockdt = { getData: () =>  file};
+            act(() => {
+                fireEvent.drop(trashBinDrop, {
+                    dataTransfer: mockdt});
+            });
+            // expect(mockdt.getData).toBeCalled();
+        })
+    });
+
+    // test('Should drag a file from trashbin on drag start', async () => {     
+    //     const { getByText, getAllByTestId, getByTestId } = render(
+    //         <StoreProvider>
+    //             <MemoryRouter initialEntries={[Url]}>
+    //                 <Home></Home>
+    //             </MemoryRouter>
+    //         </StoreProvider>
+    //     );
+    //     let trashBinDrop :any;
+    //     await waitFor(() => {
+    //         const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60091286122436829c4ad3cc","fileName":"images (2).jpg","isFromThumbnail":true,"isFromWorkbench":false,"isFromCategory":false}
+    //         trashBinDrop = getByTestId('drop-to-trashbin');
+    //         expect(trashBinDrop).toBeInTheDocument();
+    //         const mockdt = { getData: () =>  file};
+    //         act(() => {
+    //             fireEvent.drop(trashBinDrop, {
+    //                 dataTransfer: mockdt});
+    //         });
+
+    //         // expect(mockdt.getData).toBeCalled();
+    //     })
+    // });
 })
