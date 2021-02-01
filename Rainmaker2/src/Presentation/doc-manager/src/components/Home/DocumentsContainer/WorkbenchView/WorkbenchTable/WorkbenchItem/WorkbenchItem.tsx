@@ -389,7 +389,7 @@ const performNextActionFn= async () =>{
 
   return (
     <>
-      <li key={file.name} className={`${isDraggingItem ? 'dragging' : ''}  ${getCurrentFileSelectedStyle()}`}>
+      <li data-testid="workbench-item-div"key={file.name} className={`${isDraggingItem ? 'dragging' : ''}  ${getCurrentFileSelectedStyle()}`}>
         <div className="l-icon">
           <FileIcon />
         </div>

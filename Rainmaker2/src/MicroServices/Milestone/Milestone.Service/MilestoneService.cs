@@ -307,7 +307,7 @@ namespace Milestone.Service
             await Uow.BeginTransactionAsync();
             try
             {
-                await Uow.DataContext.Database.ExecuteSqlCommandAsync($"delete from tenantmilestone where tenantId={model.TenantId} and milestoneId={model.Id}");
+                await Uow.DataContext.Database.ExecuteSqlRawAsync($"delete from tenantmilestone where tenantId={model.TenantId} and milestoneId={model.Id}");
                 TenantMilestone m = new TenantMilestone()
                 {
                     BorrowerName = model.BorrowerName,
@@ -345,7 +345,7 @@ namespace Milestone.Service
             await Uow.BeginTransactionAsync();
             try
             {
-                await Uow.DataContext.Database.ExecuteSqlCommandAsync($"delete from milestonemapping where milestoneId={model.Id}");
+                await Uow.DataContext.Database.ExecuteSqlRawAsync($"delete from milestonemapping where milestoneId={model.Id}");
                 foreach (var item in model.Mapping)
                 {
                     MilestoneMapping m = new MilestoneMapping()
@@ -391,8 +391,8 @@ namespace Milestone.Service
             await Uow.BeginTransactionAsync();
             try
             {
-                await Uow.DataContext.Database.ExecuteSqlCommandAsync($"delete from milestonemapping where losmilestoneId={model.Id}");
-                await Uow.DataContext.Database.ExecuteSqlCommandAsync($"delete from lostenantmilestone where Id={model.Id}");
+                await Uow.DataContext.Database.ExecuteSqlRawAsync($"delete from milestonemapping where losmilestoneId={model.Id}");
+                await Uow.DataContext.Database.ExecuteSqlRawAsync($"delete from lostenantmilestone where Id={model.Id}");
                 await Uow.CommitAsync();
             }
             catch

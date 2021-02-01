@@ -31,7 +31,7 @@ export const FilesList = ({document, refReassignDropdown, docInd, setRetryFile, 
 
 
     const deleteFiles = async (deletedFile: any) => {
-        let files = document?.files.filter((docFile: any) => docFile.id !== deletedFile.id)
+        let files = document?.files?.filter((docFile: any) => docFile.id !== deletedFile.id)
 
         let docItems = documentItems.map((doc: any) => {
             if (doc.docId === document?.docId) {
@@ -40,7 +40,7 @@ export const FilesList = ({document, refReassignDropdown, docInd, setRetryFile, 
             return doc
         })
         dispatch({ type: DocumentActionsType.SetDocumentItems, payload: docItems });
-        let updatedFailedFiles = uploadFailedDocs.filter((file: any) => file.id !== deletedFile.id)
+        let updatedFailedFiles = uploadFailedDocs && uploadFailedDocs.filter((file: any) => file.id !== deletedFile.id)
 
         dispatch({
             type: DocumentActionsType.SetFailedDocs,

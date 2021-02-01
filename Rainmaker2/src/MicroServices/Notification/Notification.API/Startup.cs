@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Notification.API.CorrelationHandlersAndMiddleware;
 using Notification.API.Helpers;
 using Notification.Service;
+using StackExchange.Redis;
 using System;
 using System.Net.Http;
 using System.Security.Authentication;
@@ -52,7 +53,8 @@ namespace Notification.API
             services.AddScoped<ITemplateService,TemplateService>();
             services.AddScoped<IRainmakerService, RainmakerService>();
             services.AddSingleton<IRedisService, RedisService>();
-            services.AddSingleton<ISettingService, SettingService>();
+            services.AddTransient<IConnectionMultiplexer>((services) => { return ConnectionMultiplexer.Connect(ConfigurationOptions.Parse(Configuration["Redis:ConnectionString"])); });
+            services.AddScoped<ISettingService, SettingService>();
             services.AddControllers().AddNewtonsoftJson();
             var keyResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
             csResponse.EnsureSuccessStatusCode();

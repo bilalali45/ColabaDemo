@@ -100,7 +100,35 @@ describe('Doc Item Section ', () => {
                 expect(deleteAlert).toHaveTextContent("Remove this document type?")
             })
     });
+
+    // test('Should hide delete doc alert', async () => {
+    //     const { getAllByTestId, getByTestId, getByText } = render(
+    //         <StoreProvider>
+    //             <MemoryRouter initialEntries={[Url]}>
+    //                 <DocumentsTable></DocumentsTable>
+    //             </MemoryRouter>
+    //         </StoreProvider>
+    //     );
+    //     let docDelBtn ;
+    //     await waitFor(() => {
+    //         docDelBtn = getByTestId("btn-doc-delete");
     
+    //             expect(docDelBtn).toBeInTheDocument()
+    //         })
+    //         fireEvent.click(docDelBtn)
+    //         let confirmDeleteBtn:any;
+    //         await waitFor(() => {
+    //             let deleteAlert = getByTestId("delete-alert")
+    //             expect(deleteAlert).toBeInTheDocument()
+    
+    //             confirmDeleteBtn= getByTestId("hide-doc-alert")
+    //             fireEvent.click(confirmDeleteBtn)
+
+    //             expect(deleteAlert).not.toBeInTheDocument()
+    //         })
+    
+    // });
+
     test('Should delete doc btn when confirmed', async () => {
         const { getAllByTestId, getByTestId, getByText } = render(
             <StoreProvider>
@@ -127,6 +155,11 @@ describe('Doc Item Section ', () => {
     
     });
 
+    
+
+    
+
+
     test('Should drop file to document Item from other category', async () => {     
         const { getByText, getAllByTestId, getByTestId } = render(
             <StoreProvider>
@@ -137,7 +170,7 @@ describe('Doc Item Section ', () => {
         );
         let docDrop :any;
         await waitFor(() => {
-            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"60068fc132088251cb1c70f6","fromDocId":"60068fc132088251cb1c70f7","fromFileId":"60068fc932088251cb1c70fa","fileName":"images 2.jpeg","isFromThumbnail":false,"isFromWorkbench":false,"isFromCategory":true}
+            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"60068fc132088251cb1c70f6","fromDocId":"60068fc132088251cb1c70f7","fromFileId":"60001b9932088251cb1c7061","fileName":"images 2.jpeg","isFromThumbnail":false,"isFromWorkbench":false,"isFromCategory":true}
             docDrop = getAllByTestId('doc-dnd');
             
             const mockdt = { getData: () =>  file};
@@ -160,7 +193,7 @@ describe('Doc Item Section ', () => {
         );
         let docDrop :any;
         await waitFor(() => {
-            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60068fc832088251cb1c70f8","isFromTrash":true}
+            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60001b9932088251cb1c7061","isFromTrash":true}
             docDrop = getAllByTestId('doc-dnd');
             
             const mockdt = { getData: () =>  file};
@@ -182,7 +215,7 @@ describe('Doc Item Section ', () => {
         );
         let docDrop :any;
         await waitFor(() => {
-            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60091286122436829c4ad3cb","fileName":"images (1).jpg","isFromThumbnail":false,"isFromWorkbench":true,"isFromCategory":false}
+            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60001b9932088251cb1c7061","fileName":"images (1).jpg","isFromThumbnail":false,"isFromWorkbench":true,"isFromCategory":false}
             docDrop = getAllByTestId('doc-dnd');
             
             const mockdt = { getData: () =>  file};

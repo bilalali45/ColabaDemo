@@ -315,7 +315,7 @@ export const DocumentsTable = () => {
                       )}
                   </Popover.Content>
                   <Popover.Title as="div" bsPrefix="popover-footer">
-                    <div className="dh-actions-lbl-wrap" onClick={openAddDocPopover}>
+                    <div data-testid="doc-add-doc-btn"className="dh-actions-lbl-wrap" onClick={openAddDocPopover}>
                       <div className="dm-h-icon"><AddDocIcon /></div>
                       <div className="dm-h-lbl">
                         <span>Add Document</span>

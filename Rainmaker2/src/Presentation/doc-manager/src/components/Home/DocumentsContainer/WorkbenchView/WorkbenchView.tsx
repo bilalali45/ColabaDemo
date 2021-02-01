@@ -50,7 +50,7 @@ export const WorkbenchView = ({
 
     return (
         <div className="c-WorkbenchView">
-            <div className={`wb-head ${!show?"wbcollaps":""}`} onClick={handleClick}>
+            <div data-testid="show-uncategorized"className={`wb-head ${!show?"wbcollaps":""}`} onClick={handleClick}>
                 <h2>{show ? <MinusIcon /> : <PlusIcon />} Uncategorized Doc</h2>
             </div>
             { show ? <WorkbenchTable/> : null }

@@ -1,16 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Configuration;
 using Milestone.Data;
 using Milestone.Entity.Models;
 using Milestone.Model;
 using Milestone.Service;
 using Moq;
+using Moq.Protected;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,19 +26,6 @@ using Xunit;
 
 namespace Milestone.Tests
 {
-    public class UnitOfWorkTest<TDbContext> : UnitOfWork<TDbContext> where TDbContext : DbContext
-    {
-
-        public UnitOfWorkTest(TDbContext context, IRepositoryProvider repositoryProvider) : base(context, repositoryProvider)
-        {
-
-        }
-
-        public override async Task BeginTransactionAsync(IsolationLevel isolationLevel = IsolationLevel.Unspecified, CancellationToken cancellationToken = default)
-        {
-        }
-
-    }
     public partial class UnitTest
     {
         [Fact]
@@ -148,6 +139,44 @@ namespace Milestone.Tests
             Assert.Equal("", result.milestone);
         }
         [Fact]
+        public async Task TestServiceGetMilestoneForMcuDashboardNull()
+        {
+            DbContextOptions<MilestoneContext> options;
+            var builder = new DbContextOptionsBuilder<MilestoneContext>();
+            builder.UseInMemoryDatabase("LosIntegration");
+            options = builder.Options;
+            using MilestoneContext dataContext = new MilestoneContext(options);
+
+            dataContext.Database.EnsureCreated();
+            Entity.Models.Milestone milestone = new Entity.Models.Milestone()
+            {
+                Id = 120,
+                McuName = "Doe"
+            };
+            dataContext.Set<Entity.Models.Milestone>().Add(milestone);
+            TenantMilestone tenantMilestone = new TenantMilestone()
+            {
+                Id = 120,
+                TenantId = 20,
+                MilestoneId = 120,
+                McuName = "Doe"
+            };
+            dataContext.Set<TenantMilestone>().Add(tenantMilestone);
+            LosTenantMilestone losTenantMilestone = new LosTenantMilestone()
+            {
+                Id = 120,
+                TenantId = 20,
+                StatusId=1
+            };
+            dataContext.Set<LosTenantMilestone>().Add(losTenantMilestone);
+            dataContext.SaveChanges();
+
+            IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            var result = await service.GetMilestoneForMcuDashboard(20, new BothLosMilestoneModel() { losMilestoneId=1}, 2);
+
+            Assert.Equal("", result.milestone);
+        }
+        [Fact]
         public async Task TestServiceGetAllMilestones()
         {
             DbContextOptions<MilestoneContext> options;
@@ -175,8 +204,7 @@ namespace Milestone.Tests
 
             IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
             var result = await service.GetAllMilestones(2);
-            Debug.WriteLine(result[0].Name);
-            Assert.Equal(3, result[0].Id);
+            Assert.NotNull(result);
         }
         [Fact]
         public async Task TestServiceGetLosMilestoneIsNull()
@@ -686,7 +714,138 @@ namespace Milestone.Tests
             Assert.Equal(1, result[0].MilestoneType);
 
         }
+        [Fact]
+        public async Task TestServiceGetMilestoneForLoanCenterIsNotSpecialOrderGreater()
+        {
+            DbContextOptions<MilestoneContext> options;
+            var builder = new DbContextOptionsBuilder<MilestoneContext>();
+            builder.UseInMemoryDatabase("LosIntegration");
+            options = builder.Options;
+            using MilestoneContext dataContext = new MilestoneContext(options);
 
+            dataContext.Database.EnsureCreated();
+            Entity.Models.Milestone milestone = new Entity.Models.Milestone()
+            {
+                Id = 77,
+                MilestoneTypeId = 1,
+                Order=1,
+                MilestoneLogs = new List<MilestoneLog>
+                {
+                    new MilestoneLog{
+                    LoanApplicationId = 2,
+                    MilestoneId = 77
+                    }
+                },
+
+                TenantMilestones = new List<TenantMilestone>
+                {
+                     new TenantMilestone {
+                         MilestoneId = 77 ,
+                         Visibility=false,
+                         TenantId=25,
+                         BorrowerName="John",
+                         Description="ABC"
+                     }
+                }
+            };
+            dataContext.Set<Entity.Models.Milestone>().Add(milestone);
+            var milestone1 = new Entity.Models.Milestone()
+            {
+                Id = 78,
+                MilestoneTypeId = 1,
+                Order=2,                
+                MilestoneLogs = new List<MilestoneLog>
+                {
+                    new MilestoneLog{
+                    LoanApplicationId = 2,
+                    MilestoneId = 78
+                    }
+                },
+
+                TenantMilestones = new List<TenantMilestone>
+                {
+                     new TenantMilestone {
+                         MilestoneId = 78 ,
+                         Visibility=true,
+                         TenantId=25,
+                         BorrowerName="John",
+                         Description="ABC"
+                     }
+                }
+            };
+            dataContext.Set<Entity.Models.Milestone>().Add(milestone1);
+            dataContext.SaveChanges();
+            IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            var result = await service.GetMilestoneForLoanCenter(2, 77, 25);
+            Assert.Equal(1, result[0].MilestoneType);
+
+        }
+        [Fact]
+        public async Task TestServiceGetMilestoneForLoanCenterIsNotSpecialOrderLess()
+        {
+            DbContextOptions<MilestoneContext> options;
+            var builder = new DbContextOptionsBuilder<MilestoneContext>();
+            builder.UseInMemoryDatabase("LosIntegration");
+            options = builder.Options;
+            using MilestoneContext dataContext = new MilestoneContext(options);
+
+            dataContext.Database.EnsureCreated();
+            Entity.Models.Milestone milestone = new Entity.Models.Milestone()
+            {
+                Id = 79,
+                MilestoneTypeId = 1,
+                Order = 2,
+                MilestoneLogs = new List<MilestoneLog>
+                {
+                    new MilestoneLog{
+                    LoanApplicationId = 2,
+                    MilestoneId = 79
+                    }
+                },
+
+                TenantMilestones = new List<TenantMilestone>
+                {
+                     new TenantMilestone {
+                         MilestoneId = 79 ,
+                         Visibility=false,
+                         TenantId=25,
+                         BorrowerName="John",
+                         Description="ABC"
+                     }
+                }
+            };
+            dataContext.Set<Entity.Models.Milestone>().Add(milestone);
+            var milestone1 = new Entity.Models.Milestone()
+            {
+                Id = 80,
+                MilestoneTypeId = 1,
+                Order = 1,
+                MilestoneLogs = new List<MilestoneLog>
+                {
+                    new MilestoneLog{
+                    LoanApplicationId = 2,
+                    MilestoneId = 80
+                    }
+                },
+
+                TenantMilestones = new List<TenantMilestone>
+                {
+                     new TenantMilestone {
+                         MilestoneId = 80 ,
+                         Visibility=true,
+                         TenantId=25,
+                         BorrowerName="John",
+                         Description="ABC"
+                     }
+                }
+            };
+            dataContext.Set<Entity.Models.Milestone>().Add(milestone1);
+            dataContext.SaveChanges();
+            IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            var result = await service.GetMilestoneForLoanCenter(2, 79, 25);
+            Assert.Equal(1, result[0].MilestoneType);
+
+        }
         //[Fact]
         //public async Task TestServiceGetLosMilestoneIsNotNull()
         //{
@@ -862,6 +1021,178 @@ namespace Milestone.Tests
             IMilestoneService service = new Milestone.Service.MilestoneService(new UnitOfWork<MilestoneContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
             //var result = await service.GetLosMilestone(5, "Processing", 1);
             await service.SetGlobalMilestoneSetting(globalMilestoneSettingModel);
+        }
+        [Fact]
+        public async Task TestGetLoanApplicationId()
+        {
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            handlerMock
+               .Protected()
+               // Setup the PROTECTED method to mock
+               .Setup<Task<HttpResponseMessage>>(
+                  "SendAsync",
+                  ItExpr.IsAny<HttpRequestMessage>(),
+                  ItExpr.IsAny<CancellationToken>()
+               )
+               // prepare the expected response of the mocked http call
+               .ReturnsAsync(new HttpResponseMessage()
+               {
+                   StatusCode = HttpStatusCode.OK,
+                   Content = new StringContent("1")
+               })
+               .Verifiable();
+
+            // use real http client with mocked handler here
+            var httpClient = new HttpClient(handlerMock.Object);
+
+            Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
+            mockConfiguration.Setup(x => x["RainMaker:Url"]).Returns("http://test.com");
+            var service = new RainmakerService(httpClient, mockConfiguration.Object);
+            var id = await service.GetLoanApplicationId("", 1, new List<string>());
+            Assert.Equal(1, id);
+        }
+        [Fact]
+        public async Task TestSendEmailToSupport()
+        {
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            handlerMock
+               .Protected()
+               // Setup the PROTECTED method to mock
+               .Setup<Task<HttpResponseMessage>>(
+                  "SendAsync",
+                  ItExpr.IsAny<HttpRequestMessage>(),
+                  ItExpr.IsAny<CancellationToken>()
+               )
+               // prepare the expected response of the mocked http call
+               .ReturnsAsync(new HttpResponseMessage()
+               {
+                   StatusCode = HttpStatusCode.OK,
+                   Content = new StringContent("1")
+               })
+               .Verifiable();
+
+            // use real http client with mocked handler here
+            var httpClient = new HttpClient(handlerMock.Object);
+
+            Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
+            mockConfiguration.Setup(x => x["RainMaker:Url"]).Returns("http://test.com");
+            var service = new RainmakerService(httpClient, mockConfiguration.Object);
+            await service.SendEmailToSupport(1,"","",1,"", new List<string>());
+        }
+        [Fact]
+        public async Task TestRainmakerSetMilestoneId()
+        {
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            handlerMock
+               .Protected()
+               // Setup the PROTECTED method to mock
+               .Setup<Task<HttpResponseMessage>>(
+                  "SendAsync",
+                  ItExpr.IsAny<HttpRequestMessage>(),
+                  ItExpr.IsAny<CancellationToken>()
+               )
+               // prepare the expected response of the mocked http call
+               .ReturnsAsync(new HttpResponseMessage()
+               {
+                   StatusCode = HttpStatusCode.OK,
+                   Content = new StringContent("1")
+               })
+               .Verifiable();
+
+            // use real http client with mocked handler here
+            var httpClient = new HttpClient(handlerMock.Object);
+
+            Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
+            mockConfiguration.Setup(x => x["RainMaker:Url"]).Returns("http://test.com");
+            var service = new RainmakerService(httpClient, mockConfiguration.Object);
+            await service.SetMilestoneId(1, 1, new List<string>());
+        }
+        [Fact]
+        public async Task TestRainmakerSetLosMilestoneId()
+        {
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            handlerMock
+               .Protected()
+               // Setup the PROTECTED method to mock
+               .Setup<Task<HttpResponseMessage>>(
+                  "SendAsync",
+                  ItExpr.IsAny<HttpRequestMessage>(),
+                  ItExpr.IsAny<CancellationToken>()
+               )
+               // prepare the expected response of the mocked http call
+               .ReturnsAsync(new HttpResponseMessage()
+               {
+                   StatusCode = HttpStatusCode.OK,
+                   Content = new StringContent("1")
+               })
+               .Verifiable();
+
+            // use real http client with mocked handler here
+            var httpClient = new HttpClient(handlerMock.Object);
+
+            Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
+            mockConfiguration.Setup(x => x["RainMaker:Url"]).Returns("http://test.com");
+            var service = new RainmakerService(httpClient, mockConfiguration.Object);
+            await service.SetBothLosAndMilestoneId(1, 1, 1, new List<string>());
+        }
+
+        [Fact]
+        public async Task TestRainmakerGetMilestoneId()
+        {
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            handlerMock
+               .Protected()
+               // Setup the PROTECTED method to mock
+               .Setup<Task<HttpResponseMessage>>(
+                  "SendAsync",
+                  ItExpr.IsAny<HttpRequestMessage>(),
+                  ItExpr.IsAny<CancellationToken>()
+               )
+               // prepare the expected response of the mocked http call
+               .ReturnsAsync(new HttpResponseMessage()
+               {
+                   StatusCode = HttpStatusCode.OK,
+                   Content = new StringContent("1")
+               })
+               .Verifiable();
+
+            // use real http client with mocked handler here
+            var httpClient = new HttpClient(handlerMock.Object);
+
+            Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
+            mockConfiguration.Setup(x => x["RainMaker:Url"]).Returns("http://test.com");
+            var service = new RainmakerService(httpClient, mockConfiguration.Object);
+            var id = await service.GetMilestoneId( 1, new List<string>());
+            Assert.Equal(1, id);
+        }
+        [Fact]
+        public async Task TestRainmakerGetBothLosMilestoneId()
+        {
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            handlerMock
+               .Protected()
+               // Setup the PROTECTED method to mock
+               .Setup<Task<HttpResponseMessage>>(
+                  "SendAsync",
+                  ItExpr.IsAny<HttpRequestMessage>(),
+                  ItExpr.IsAny<CancellationToken>()
+               )
+               // prepare the expected response of the mocked http call
+               .ReturnsAsync(new HttpResponseMessage()
+               {
+                   StatusCode = HttpStatusCode.OK,
+                   Content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(new BothLosMilestoneModel() { milestoneId=1, losMilestoneId=1}))
+               })
+               .Verifiable();
+
+            // use real http client with mocked handler here
+            var httpClient = new HttpClient(handlerMock.Object);
+
+            Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
+            mockConfiguration.Setup(x => x["RainMaker:Url"]).Returns("http://test.com");
+            var service = new RainmakerService(httpClient, mockConfiguration.Object);
+            var model = await service.GetBothLosAndMilestoneId(1, new List<string>());
+            Assert.Equal(1, model.milestoneId);
         }
     }
 }

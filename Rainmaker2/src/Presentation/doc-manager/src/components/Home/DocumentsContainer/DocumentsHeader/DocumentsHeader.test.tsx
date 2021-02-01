@@ -8,6 +8,11 @@ import { StoreProvider } from '../../../../Store/Store';
 import { MemoryRouter } from 'react-router-dom';
 import { Home } from '../../Home';
 import { DocumentsContainer } from '../DocumentsContainer';
+import { debug } from 'console';
+import { FileUpload } from '../../../../Utilities/helpers/FileUpload';
+import { DocumentRequest } from '../../../../Models/DocumentRequest';
+import { DocumentFile } from '../../../../Models/DocumentFile';
+import DocumentActions from '../../../../Store/actions/DocumentActions';
 
 
 jest.mock('pspdfkit');
@@ -20,12 +25,43 @@ const Url = '/DocManager/2515'
 
 
 
+let uploadPercent = 0;
+
+let cachedIsTypeAllowed = FileUpload.isTypeAllowed;
+let cachedIsSizeAllowed = FileUpload.isSizeAllowed;
 
 beforeEach(() => {
+
+    // @ts-ignore
+    delete window.location;
+    // @ts-ignore
+    window.location = new URL('http://localhost/');
+
+
     MockEnvConfig();
     MockLocalStorage();
+
+    FileUpload.isTypeAllowed = jest.fn(() => Promise.resolve(true));
+    FileUpload.isSizeAllowed = jest.fn(() => true);
     JSON.parse = jest.fn((data:any)=> data)
 });
+
+afterEach(() => {
+    FileUpload.isTypeAllowed = cachedIsTypeAllowed;
+    FileUpload.isSizeAllowed = cachedIsSizeAllowed;
+})
+
+export const createMockFile = (name, size, mimeType) => {
+    let range = '';
+    for (let i = 0; i < size; i++) {
+        range += 'a';
+    }
+    let blob: any = new Blob([range], { type: mimeType });
+    blob.lastModified = 1600081543628;
+    blob.lastModifiedDate = 'Mon Sep 14 2020 16:05:43 GMT+0500 (Pakistan Standard Time)';
+    blob.name = name;
+    return blob;
+}
 
 describe('Doc Manager Header', () => {
 
@@ -358,20 +394,83 @@ describe('Doc Manager Header', () => {
             await waitFor(() => {
                 const fileInput = getByTestId("file-input")
     
-                const file = new File(['hello'], 'hello.png', {type: 'image/png'})
+                const file = new File(['hello'], 'images 1.jpeg', {type: 'image/png'})
     
                 userEvent.upload(fileInput, file)
                 })
     });
 
-    test('Should not add wrong extension file with document ', async () => {
-        const { getByText, getByTestId, getAllByTestId } = render(
-            <StoreProvider>
-                <MemoryRouter initialEntries={[Url]}>
-                    <Home/>
-                </MemoryRouter>
-            </StoreProvider>
+    test('Should show size not allowed item" ', async () => {
+        const { getByTestId, getAllByTestId, getByText } = render(
+            <MemoryRouter initialEntries={['/loanportal/activity/3']}>
+                <StoreProvider>
+                    <DocumentsContainer />
+                </StoreProvider>
+            </MemoryRouter>
         );
+
+        FileUpload.isSizeAllowed = jest.fn(() => false);
+
+
+        let addDocumentText:any;
+        await waitFor(() => {
+                addDocumentText  = getByText('Add Document');
+                expect(addDocumentText).toBeInTheDocument();
+
+               
+            })
+            
+            
+
+            fireEvent.click(addDocumentText);
+            let docPopOver;
+            await waitFor(() => {
+                docPopOver = getByTestId('popup-add-doc');
+                expect(docPopOver).toBeInTheDocument();
+            });
+    
+            let docCats = getAllByTestId('doc-cat');
+    
+            fireEvent.click(docCats[2]);
+    
+            const selectedCatDocsContainer = getByTestId('selected-cat-docs-container');
+    
+            expect(selectedCatDocsContainer).toHaveTextContent('Liabilities');
+    
+            const itemsToClick = getAllByTestId('doc-item');
+    
+            expect(itemsToClick[2]).toHaveTextContent('Rental Agreement');
+    
+            fireEvent.click(itemsToClick[2]);
+            await waitFor(() => {
+            const fileInput = getByTestId("file-input")
+        const file = createMockFile('sample.pdf', 1110000, 'application/pdf');
+        fireEvent.change(fileInput, { target: { files: [file] } });
+            })
+        await waitFor(() => {
+            const sizeNotAllowedItem = getByTestId('size-not-allowed-item');
+            expect(sizeNotAllowedItem).toBeInTheDocument();
+        })
+        let retryBtn:any;
+        await waitFor(()=>{
+            retryBtn  = getByTestId("retry-file")
+            expect(retryBtn).toBeInTheDocument()
+            fireEvent.click(retryBtn)
+        })
+    });
+
+    test('Should show type not allowed item" ', async () => {
+        const { getByTestId, getAllByTestId, getByText } = render(
+            <MemoryRouter initialEntries={['/loanportal/activity/3']}>
+                <StoreProvider>
+                    <DocumentsContainer />
+                </StoreProvider>
+            </MemoryRouter>
+        );
+
+        FileUpload.isTypeAllowed = jest.fn(() => Promise.resolve(false));
+
+
         let addDocumentText:any;
         await waitFor(() => {
                 addDocumentText  = getByText('Add Document');
@@ -404,14 +503,24 @@ describe('Doc Manager Header', () => {
             fireEvent.click(itemsToClick[2]);
 
             await waitFor(() => {
-                const fileInput = getByTestId("file-input")
-    
-                const file = new File(['dummy'], 'test.cert', { type: 'cert' })
-    
-                fireEvent.change(fileInput, { target: { files: [file] } });
-                })
-    });
+            const fileInput = getByTestId("file-input")
+        const file = createMockFile('sample.pdf', 11110000, 'application/pdf');
+        fireEvent.change(fileInput, { target: { files: [file] } });
+            })
+        await waitFor(() => {
+            const sizeNotAllowedItem = getByTestId('type-not-allowed-item');
+            expect(sizeNotAllowedItem).toBeInTheDocument();
+            expect(sizeNotAllowedItem).toHaveTextContent("File type is not supported. Allowed types: PDF,JPEG,PNG")
+        })
+            
+            let cancelBtn:any;
+            await waitFor(()=>{
+                cancelBtn = getByTestId("remove-file")
+                expect(cancelBtn).toBeInTheDocument()
+                fireEvent.click(cancelBtn)
+            })
 
+    });
     test('Should add custom document via Enter key ', async () => {
         const { getByText, getByTestId, getAllByTestId } = render(
             <StoreProvider>
@@ -598,7 +707,7 @@ describe('Doc Manager Header', () => {
         })
         let trashBinDocs:any;       
         
-            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60068fc832088251cb1c70f8","isFromTrash":true}
+            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60001b9932088251cb1c7061","isFromTrash":true}
             trashBinDocs  = getAllByTestId('trashDoc');
             const mockdt = { setData: () =>  file };
             // fireEvent.dragStart(trashBinDocs[0].children[1], { dataTransfer: mockdt});
@@ -620,7 +729,7 @@ describe('Doc Manager Header', () => {
         );
         let trashBinDrop :any;
         await waitFor(() => {
-            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60091286122436829c4ad3cc","fileName":"images (2).jpg","isFromThumbnail":false,"isFromWorkbench":true,"isFromCategory":false}
+            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60001b9932088251cb1c7061","fileName":"images (2).jpg","isFromThumbnail":false,"isFromWorkbench":true,"isFromCategory":false}
             trashBinDrop = getByTestId('drop-to-trashbin');
             expect(trashBinDrop).toBeInTheDocument();
             const mockdt = { getData: () =>  file};
@@ -642,7 +751,7 @@ describe('Doc Manager Header', () => {
         );
         let trashBinDrop :any;
         await waitFor(() => {
-            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60091286122436829c4ad3cc","fileName":"images (2).jpg","isFromThumbnail":false,"isFromWorkbench":false,"isFromCategory":true}
+            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60001b9932088251cb1c7061","fileName":"images (2).jpg","isFromThumbnail":false,"isFromWorkbench":false,"isFromCategory":true}
             trashBinDrop = getByTestId('drop-to-trashbin');
             expect(trashBinDrop).toBeInTheDocument();
             const mockdt = { getData: () =>  file};
@@ -664,7 +773,7 @@ describe('Doc Manager Header', () => {
         );
         let trashBinDrop :any;
         await waitFor(() => {
-            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60091286122436829c4ad3cc","fileName":"images (2).jpg","isFromThumbnail":true,"isFromWorkbench":false,"isFromCategory":false}
+            const file =  {"id":"5fec45b9c20bc413c03d3b42","fromRequestId":"000000000000000000000000","fromDocId":"000000000000000000000000","fromFileId":"60001b9932088251cb1c7061","fileName":"images (2).jpg","isFromThumbnail":true,"isFromWorkbench":false,"isFromCategory":false}
             trashBinDrop = getByTestId('drop-to-trashbin');
             expect(trashBinDrop).toBeInTheDocument();
             const mockdt = { getData: () =>  file};

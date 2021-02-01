@@ -8,5 +8,6 @@ namespace Notification.Service
         Task Run();
         Task InsertInCache(NotificationModel model);
         Task<bool> SendNotification(NotificationModel model);
+        Task PollAndSendNotification();
     }
 }

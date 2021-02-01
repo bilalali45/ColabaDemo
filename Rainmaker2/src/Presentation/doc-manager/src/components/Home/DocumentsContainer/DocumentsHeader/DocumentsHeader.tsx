@@ -214,7 +214,7 @@ export const DocumentsHeader = () => {
 
     let docs: DocumentRequest[] = await DocumentActions.getDocumentItems(dispatch, importedFileIds)
 
-    let uploadFailedFiles: DocumentFile[] = uploadFailedDocs.length ? uploadFailedDocs : failedDocs;
+    let uploadFailedFiles: DocumentFile[] = uploadFailedDocs && uploadFailedDocs.length ? uploadFailedDocs : failedDocs;
 
     let failedFiles: DocumentFile[] = []
     if (uploadFailedFiles && uploadFailedFiles.length > 0) {

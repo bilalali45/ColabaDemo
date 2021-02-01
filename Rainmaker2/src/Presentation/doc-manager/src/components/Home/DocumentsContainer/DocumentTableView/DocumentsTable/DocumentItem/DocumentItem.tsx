@@ -88,20 +88,6 @@ export const DocumentItem = ({
 
   }, [selectedDoc])
 
-  const handleClick = () => {
-    setShow(!show);
-  };
-  const handleClickReassign = (event: any) => {
-    setShowReassign(!showReassignOverlay);
-    setTargetReassign(event.target);
-  };
-  const hideReassignOverlay = () => {
-    setShowReassign(false);
-  };
-
-  const createNewFileForThePage = (index: number) => {
-    // DocumentActions.uploadFile(index);
-  };
 
   const handleSync = () => {
     setShow(!show);
@@ -245,7 +231,7 @@ export const DocumentItem = ({
           >
             Yes
               </button>
-          <button
+          <button data-testid="hide-doc-alert"
             onClick={() => setConfirmDelete(false)}
             className="btn btn-sm btn-primary"
           >

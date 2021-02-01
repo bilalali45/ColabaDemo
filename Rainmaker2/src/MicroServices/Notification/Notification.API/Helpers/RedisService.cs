@@ -28,41 +28,46 @@ namespace Notification.Service
         {
             while (true)
             {
-                using (IServiceScope scope = serviceProvider.CreateScope())
+                await PollAndSendNotification();
+                Thread.Sleep(60000);
+            }
+        }
+        
+        public async Task PollAndSendNotification()
+        {
+            using (IServiceScope scope = serviceProvider.CreateScope())
+            {
+                try
                 {
-                    try
+                    INotificationService notificationService =
+                        scope.ServiceProvider.GetRequiredService<INotificationService>();
+                    IConfiguration configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+                    IConnectionMultiplexer connection = scope.ServiceProvider.GetRequiredService<IConnectionMultiplexer>();
+                    IDatabaseAsync database = connection.GetDatabase();
+                    long count = await database.ListLengthAsync(NotificationKey);
+                    List<NotificationModel> list = new List<NotificationModel>();
+                    for (int i = 0; i < count; i++)
                     {
-                        INotificationService notificationService =
-                            scope.ServiceProvider.GetRequiredService<INotificationService>();
-                        IConfiguration configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-                        using IConnectionMultiplexer connection = await ConnectionMultiplexer.ConnectAsync(ConfigurationOptions.Parse(configuration["Redis:ConnectionString"]));
-                        IDatabaseAsync database = connection.GetDatabase();
-                        long count = await database.ListLengthAsync(NotificationKey);
-                        List<NotificationModel> list = new List<NotificationModel>();
-                        for (int i = 0; i < count; i++)
+                        RedisValue value = await database.ListGetByIndexAsync(NotificationKey, i);
+                        if (!value.IsNullOrEmpty)
                         {
-                            RedisValue value = await database.ListGetByIndexAsync(NotificationKey, i);
-                            if (!value.IsNullOrEmpty)
-                            {
-                                NotificationModel m =
-                                    JsonConvert.DeserializeObject<NotificationModel>(value.ToString());
-                                NotificationModel c =
-                                    JsonConvert.DeserializeObject<NotificationModel>(value.ToString());
-                                if(await SendNotification(m))
-                                    list.Add(c);
-                            }
-                        }
-                        foreach (var item in list)
-                        {
-                            await database.ListRemoveAsync(NotificationKey, JsonConvert.SerializeObject(item));
+                            NotificationModel m =
+                                JsonConvert.DeserializeObject<NotificationModel>(value.ToString());
+                            NotificationModel c =
+                                JsonConvert.DeserializeObject<NotificationModel>(value.ToString());
+                            if (await SendNotification(m))
+                                list.Add(c);
                         }
                     }
-                    catch
+                    foreach (var item in list)
                     {
-                        // this exception can be ignored
+                        await database.ListRemoveAsync(NotificationKey, JsonConvert.SerializeObject(item));
                     }
                 }
-                Thread.Sleep(60000);
+                catch
+                {
+                    // this exception can be ignored
+                }
             }
         }
 
@@ -71,7 +76,7 @@ namespace Notification.Service
             using (IServiceScope scope = serviceProvider.CreateScope())
             {
                 IConfiguration configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-                using IConnectionMultiplexer connection = await ConnectionMultiplexer.ConnectAsync(ConfigurationOptions.Parse(configuration["Redis:ConnectionString"]));
+                IConnectionMultiplexer connection = scope.ServiceProvider.GetRequiredService<IConnectionMultiplexer>();
                 IDatabaseAsync database = connection.GetDatabase();
                 long count = await database.ListLengthAsync(NotificationKey);
                 List<NotificationModel> list = new List<NotificationModel>();

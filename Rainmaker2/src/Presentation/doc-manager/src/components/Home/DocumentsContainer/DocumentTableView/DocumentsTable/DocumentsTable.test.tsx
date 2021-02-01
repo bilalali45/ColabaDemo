@@ -127,13 +127,13 @@ describe('Doc Table Section ', () => {
             })
 
 
-        // let addDocumentText:any;
-        // await waitFor(() => {
-        //         addDocumentText  = getByTestId('add-file-add-doc-btn');
-        //         expect(addDocumentText).toBeInTheDocument();
-
+        let addDocumentText:any;
+        await waitFor(() => {
+                addDocumentText  = getByTestId('doc-add-doc-btn');
+                expect(addDocumentText).toBeInTheDocument();
+                expect(addDocumentText).toHaveTextContent("Add Document")
                
-        //     })
+            })
             
             
 

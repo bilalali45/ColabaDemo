@@ -322,6 +322,7 @@ useEffect(() => {
         <li className={`delBtn`}>
           <a
             data-title="Trash Bin"
+            data-testid={"file-trash-icon"}
             onClick={moveDocToTrash}>
             <TrashCan />
           </a>
@@ -329,6 +330,7 @@ useEffect(() => {
         <li className={`reAssBtn`} >
           <a ref={refReassignlink}
             data-title="Reassign"
+            data-testid={"file-reassign-icon"}
             onClick={(e) => toggleReassignDropdown(e)}
             className={showingReassignDropdown ? "overlayOpen" : ""}>
             <ReassignListIcon />
@@ -393,6 +395,7 @@ useEffect(() => {
       <li className={`syncBtn ${caclClass}`}>
         <a
           className={`${syncStarted ? 'disabled' : ''}`}
+          data-testid={"file-sync"}
           data-title={file.byteProStatus === 'Not synchronized' ? "Sync To LOS" : file.byteProStatus}
           onClick={toggleSyncAlert}>
           <SyncIcon />
@@ -404,7 +407,7 @@ useEffect(() => {
 
   const renderSizeNotAllowed = () => {
     return (
-      <li className="item-error" data-testid="type-not-allowed-item">
+      <li className="item-error" data-testid="size-not-allowed-item">
         <div className="l-icon">
           <img src={erroricon} alt="" />
         </div>
@@ -421,7 +424,7 @@ useEffect(() => {
           </div>
           <div className="action-btns">
           <ul>
-            <li
+            <li data-testid="retry-file"
               onClick={() => {
                 retry(file);
               }}
@@ -466,7 +469,7 @@ useEffect(() => {
         </div>
         <div className="action-btns">
           <ul>
-            <li
+            <li 
               onClick={() => {
                 retry(file);
               }}
@@ -477,8 +480,8 @@ useEffect(() => {
               </a>
             </li>
             <li>
-              <a
-                data-testid={``}
+              <a 
+                data-testid="remove-file"
                 onClick={() => deleteFile(file)}
                 tabIndex={-1}
                 title="Remove"

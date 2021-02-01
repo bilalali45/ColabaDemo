@@ -144,10 +144,10 @@ export const ReassignDropdown = ({
             {docCategories && docCategories.length > 0 ? (
               <div className="wrap-doc-type">
                 <ol className="dm-dt-docList" >
-                  {docCategories &&
+                  {docCategories && 
                     docCategories.length > 0 &&
                     docCategories.map((doc: any, i: number) => (
-                      <li title={doc.docName} key={i} onClick={() => ReassignCategory(doc)}>
+                      <li  data-testid="reassign-cat-doc"title={doc.docName} key={i} onClick={() => ReassignCategory(doc)}>
                         {doc.docName}
                       </li>
                     ))}
@@ -160,7 +160,7 @@ export const ReassignDropdown = ({
               )}
           </Popover.Content>
           <Popover.Title as="div" bsPrefix="popover-footer">
-                                            <div className="dh-actions-lbl-wrap" onClick={openAddDocPopover}>
+                                            <div data-testid="add-doc-btn"className="dh-actions-lbl-wrap" onClick={openAddDocPopover}>
                                                 <div className="dm-h-icon"><AddDocIcon /></div>
                                                 <div className="dm-h-lbl">
                                                     <span>Add Document</span>

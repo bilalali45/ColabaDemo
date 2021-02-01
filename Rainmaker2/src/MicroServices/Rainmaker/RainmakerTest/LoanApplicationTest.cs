@@ -24,6 +24,8 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using TrackableEntities.Common.Core;
+using Microsoft.Extensions.Logging;
+using Rainmaker.Model.Borrower;
 
 namespace RainmakerTest
 {
@@ -819,6 +821,11 @@ namespace RainmakerTest
             Mock<IActivityService> mockActivityService = new Mock<IActivityService>();
             Mock<IWorkQueueService> mockWorkQueueService = new Mock<IWorkQueueService>();
             Mock<IUserProfileService> mockUserProfileService = new Mock<IUserProfileService>();
+            UserProfile user = new UserProfile()
+            {
+                Employees = new List<Employee>() { new Employee() { EmailTag=""} }
+            };
+            mockUserProfileService.Setup(x => x.GetUserProfileEmployeeDetail(It.IsAny<int?>(), It.IsAny<UserProfileService.RelatedEntities?>())).ReturnsAsync(user);
             var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, mockActivityService.Object, mockWorkQueueService.Object, mockUserProfileService.Object, null, null);
 
             LoanApplicationModel loanApplicationModel = new LoanApplicationModel();
@@ -885,6 +892,83 @@ namespace RainmakerTest
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
         }
+        [Fact]
+        public async Task TestSendBorrowerEmailControllerException()
+        {
+            //Arrange
+            Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
+            Mock<IActivityService> mockActivityService = new Mock<IActivityService>();
+            Mock<IWorkQueueService> mockWorkQueueService = new Mock<IWorkQueueService>();
+            Mock<IUserProfileService> mockUserProfileService = new Mock<IUserProfileService>();
+            UserProfile user = new UserProfile()
+            {
+                Employees = new List<Employee>() { new Employee() { EmailTag = "" } }
+            };
+            mockUserProfileService.Setup(x => x.GetUserProfileEmployeeDetail(It.IsAny<int?>(), It.IsAny<UserProfileService.RelatedEntities?>())).ReturnsAsync(user);
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, mockActivityService.Object, mockWorkQueueService.Object, mockUserProfileService.Object, null, null);
+
+            LoanApplicationModel loanApplicationModel = new LoanApplicationModel();
+            loanApplicationModel.BusinessUnitId = 1;
+            loanApplicationModel.OpportunityId = 1;
+            loanApplicationModel.LoanRequestId = 1;
+
+            SendBorrowerEmailModel sendBorrowerEmailModel = new SendBorrowerEmailModel();
+            sendBorrowerEmailModel.loanApplicationId = 1;
+            sendBorrowerEmailModel.emailBody = "Email sent";
+            sendBorrowerEmailModel.activityForId = (int)ActivityForType.DocumentSyncFailureActivity;
+            var activityEnumType = (ActivityForType)sendBorrowerEmailModel.activityForId;
+
+            mock.Setup(x => x.GetByLoanApplicationId(It.IsAny<int>())).ReturnsAsync(loanApplicationModel);
+
+            Activity activity = new Activity();
+            activity.Id = 1;
+            activity.ActivityTypeId = 1;
+
+            mockActivityService.Setup(x => x.GetCustomerActivity(It.IsAny<int?>(), (ActivityForType)sendBorrowerEmailModel.activityForId)).ReturnsAsync((Activity)null);
+
+            var rnd = new Random();
+
+            var random = rnd.Next(100, 1000);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
+
+            loanApplicationController.ControllerContext = context;
+
+            var witem = new WorkQueue
+            {
+                CampaignId = null,
+                ActivityId = activity.Id,
+                ActivityTypeId = activity.ActivityTypeId,
+                CreatedBy = 1,//todo: employee userid
+                CreatedOnUtc = DateTime.UtcNow,
+                EntityRefId = 1,
+                EntityRefTypeId = Constants.GetEntityType(typeof(Opportunity)),
+                EntityTypeId = Constants.GetEntityType(typeof(WorkQueue)),
+                IsActive = true,
+                IsDeleted = false,
+                RandomNo = random,
+                LoanRequestId = 1,
+                Code = activity.Id.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                ScheduleDateUtc = DateTime.UtcNow,
+                IsCustom = false
+            };
+
+            witem.WorkQueueKeyValues.Add(new WorkQueueKeyValue { KeyName = "###CustomEmailHeader###", Value = "1", TrackingState = TrackingState.Added });
+            mockWorkQueueService.Setup(x => x.Insert(It.IsAny<WorkQueue>()));
+            mockWorkQueueService.Setup(x => x.SaveChangesAsync());
+
+            var data = new Dictionary<FillKey, string>();
+            data.Add(FillKey.CustomEmailHeader, "");
+            data.Add(FillKey.CustomEmailFooter, "");
+            data.Add(FillKey.EmailBody, sendBorrowerEmailModel.emailBody.Replace(Environment.NewLine, "<br/>"));
+
+            //Act
+            await Assert.ThrowsAsync<RainMakerException>(async()=> await loanApplicationController.SendBorrowerEmail(sendBorrowerEmailModel));
+            
+        }
         //[Fact]
         //public async Task TestSendBorrowerEmailControllerActivityIdNull()
         //{
@@ -919,7 +1003,7 @@ namespace RainmakerTest
         //    loanApplicationController.ControllerContext = context;
 
         //    mockActivityService.Setup(x => x.GetCustomerActivity(It.IsAny<int?>(), (ActivityForType)sendBorrowerEmailModel.activityForId)).ReturnsAsync(activity);
-         
+
         //    mockWorkQueueService.Setup(x => x.Insert(It.IsAny<WorkQueue>()));
         //    mockWorkQueueService.Setup(x => x.SaveChangesAsync());
 
@@ -1176,6 +1260,493 @@ namespace RainmakerTest
             Assert.Equal(5, res.BusinessUnitId);
             Assert.Equal(5, res.LoanRequestId);
             Assert.Equal(5, res.OpportunityId);
+        }
+
+        [Fact]
+        public async Task TestGetLoanApplication()
+        {
+            var mock = new Mock<ILoanApplicationService>();
+            mock.Setup(x => x.GetLoanApplicationWithDetails(It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<LoanApplicationService.RelatedEntities?>())).Returns(new List<LoanApplication>() { new LoanApplication() { Id=1} });
+
+            var controller = new LoanApplicationController(mock.Object, null, null, null, null, null, null, null, null);
+
+            var result = controller.GetLoanApplication("",1);
+            var res = Assert.IsType<OkObjectResult>(result);
+            var loanApplication = Assert.IsType<LoanApplication>(res.Value);
+            Assert.Equal(1,loanApplication.Id);
+        }
+        [Fact]
+        public async Task TestGetLoanApplicationForByte()
+        {
+            var mock = new Mock<ILoanApplicationService>();
+            mock.Setup(x => x.GetLoanApplicationWithDetails(It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<LoanApplicationService.RelatedEntities?>())).Returns(new List<LoanApplication>() { new LoanApplication() { Id = 1 } });
+
+            var controller = new LoanApplicationController(mock.Object, null, null, null, null, null, null, null, null);
+
+            var result = controller.GetLoanApplicationForByte("", 1,1L);
+            var res = Assert.IsType<OkObjectResult>(result);
+            var loanApplication = Assert.IsType<Rainmaker.Model.ServiceResponseModels.Rainmaker.LoanApplication>(res.Value);
+            Assert.Equal(1, loanApplication.Id);
+        }
+        [Fact]
+        public async Task TestUpdateLoanInfo()
+        {
+            var mock = new Mock<ILoanApplicationService>();
+            mock.Setup(x => x.UpdateLoanInfo(It.IsAny<UpdateLoanInfo>())).Verifiable();
+
+            var controller = new LoanApplicationController(mock.Object, null, null, null, null, null, null, null, null);
+
+            var result = await controller.UpdateLoanInfo(new UpdateLoanInfo());
+            Assert.IsType<OkResult>(result);
+        }
+
+        [Fact]
+        public async Task TestSendEmailSupportTeam()
+        {
+            //Arrange
+            Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
+            Mock<IActivityService> mockActivityService = new Mock<IActivityService>();
+            Mock<IWorkQueueService> mockWorkQueueService = new Mock<IWorkQueueService>();
+
+            var employeeList = new List<Employee>()
+            {
+                new Employee()
+                {
+                    Id=1,
+                    EmployeeBusinessUnitEmails = new List<EmployeeBusinessUnitEmail>()
+                    {
+                        new EmployeeBusinessUnitEmail()
+                        {
+                            EmailAccount= new EmailAccount()
+                            {
+                                Email="a@a.com"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var mockEmployeeService = new Mock<IEmployeeService>();
+            mockEmployeeService.Setup(x=>x.GetEmployeeEmailByRoleName(It.IsAny<string>())).ReturnsAsync(employeeList);
+            
+
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, mockActivityService.Object, mockWorkQueueService.Object, null, mockEmployeeService.Object, Mock.Of<ILogger<LoanApplication>>());
+
+            LoanApplicationModel loanApplicationModel = new LoanApplicationModel();
+            loanApplicationModel.BusinessUnitId = 1;
+            loanApplicationModel.OpportunityId = 1;
+            loanApplicationModel.LoanRequestId = 1;
+
+            SendEmailSupportTeam sendBorrowerEmailModel = new SendEmailSupportTeam()
+            {
+                loanApplicationId = 1,
+                EmailBody = "",
+                DocumentCategory="",
+                DocumentExension="",
+                DocumentName="",
+                ErrorCode="",
+                ErrorDate=DateTime.Today.ToString(),
+                TenantId=1,
+                Url=""
+            };
+
+            mock.Setup(x => x.GetByLoanApplicationId(It.IsAny<int>())).ReturnsAsync(loanApplicationModel);
+
+            Activity activity = new Activity();
+            activity.Id = 1;
+            activity.ActivityTypeId = 1;
+
+            mockActivityService.Setup(x => x.GetCustomerActivity(It.IsAny<int?>(), It.IsAny<ActivityForType>())).ReturnsAsync(activity);
+
+            var rnd = new Random();
+
+            var random = rnd.Next(100, 1000);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
+
+            loanApplicationController.ControllerContext = context;
+
+            mockWorkQueueService.Setup(x => x.Insert(It.IsAny<WorkQueue>()));
+            mockWorkQueueService.Setup(x => x.SaveChangesAsync());
+
+            //Act
+            IActionResult result = await loanApplicationController.SendEmailSupportTeam(sendBorrowerEmailModel);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
+
+        [Fact]
+        public async Task TestSendEmailSupportTeamException()
+        {
+            //Arrange
+            Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
+            Mock<IActivityService> mockActivityService = new Mock<IActivityService>();
+            Mock<IWorkQueueService> mockWorkQueueService = new Mock<IWorkQueueService>();
+
+            var employeeList = new List<Employee>()
+            {
+                new Employee()
+                {
+                    Id=1,
+                    EmployeeBusinessUnitEmails = new List<EmployeeBusinessUnitEmail>()
+                    {
+                        new EmployeeBusinessUnitEmail()
+                        {
+                            EmailAccount= new EmailAccount()
+                            {
+                                Email="a@a.com"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var mockEmployeeService = new Mock<IEmployeeService>();
+            mockEmployeeService.Setup(x => x.GetEmployeeEmailByRoleName(It.IsAny<string>())).ReturnsAsync(employeeList);
+
+
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, mockActivityService.Object, mockWorkQueueService.Object, null, mockEmployeeService.Object, Mock.Of<ILogger<LoanApplication>>());
+
+            LoanApplicationModel loanApplicationModel = new LoanApplicationModel();
+            loanApplicationModel.BusinessUnitId = 1;
+            loanApplicationModel.OpportunityId = 1;
+            loanApplicationModel.LoanRequestId = 1;
+
+            SendEmailSupportTeam sendBorrowerEmailModel = new SendEmailSupportTeam()
+            {
+                loanApplicationId = 1,
+                EmailBody = "",
+                DocumentCategory = "",
+                DocumentExension = "",
+                DocumentName = "",
+                ErrorCode = "",
+                ErrorDate = DateTime.Today.ToString(),
+                TenantId = 1,
+                Url = ""
+            };
+
+            mock.Setup(x => x.GetByLoanApplicationId(It.IsAny<int>())).ReturnsAsync(loanApplicationModel);
+
+            Activity activity = new Activity();
+            activity.Id = 1;
+            activity.ActivityTypeId = 1;
+
+            mockActivityService.Setup(x => x.GetCustomerActivity(It.IsAny<int?>(), It.IsAny<ActivityForType>())).ReturnsAsync((Activity)null);
+
+            var rnd = new Random();
+
+            var random = rnd.Next(100, 1000);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
+
+            loanApplicationController.ControllerContext = context;
+
+            mockWorkQueueService.Setup(x => x.Insert(It.IsAny<WorkQueue>()));
+            mockWorkQueueService.Setup(x => x.SaveChangesAsync());
+
+            //Act
+            await Assert.ThrowsAsync<RainMakerException>(async () => await loanApplicationController.SendEmailSupportTeam(sendBorrowerEmailModel));
+        }
+
+        [Fact]
+        public async Task TestSendEmailToSupport()
+        {
+            //Arrange
+            Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
+            Mock<IActivityService> mockActivityService = new Mock<IActivityService>();
+            Mock<IWorkQueueService> mockWorkQueueService = new Mock<IWorkQueueService>();
+
+            var employeeList = new List<Employee>()
+            {
+                new Employee()
+                {
+                    Id=1,
+                    EmployeeBusinessUnitEmails = new List<EmployeeBusinessUnitEmail>()
+                    {
+                        new EmployeeBusinessUnitEmail()
+                        {
+                            EmailAccount= new EmailAccount()
+                            {
+                                Email="a@a.com"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var mockEmployeeService = new Mock<IEmployeeService>();
+            mockEmployeeService.Setup(x => x.GetEmployeeEmailByRoleName(It.IsAny<string>())).ReturnsAsync(employeeList);
+
+
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, mockActivityService.Object, mockWorkQueueService.Object, null, mockEmployeeService.Object, Mock.Of<ILogger<LoanApplication>>());
+
+            LoanApplicationModel loanApplicationModel = new LoanApplicationModel();
+            loanApplicationModel.BusinessUnitId = 1;
+            loanApplicationModel.OpportunityId = 1;
+            loanApplicationModel.LoanRequestId = 1;
+
+            SupportEmailModel sendBorrowerEmailModel = new SupportEmailModel()
+            {
+                loanId = "",
+                losId = 1,
+                milestone="",
+                tenantId=1,
+                url="test.com"
+            };
+
+            mock.Setup(x => x.GetByLoanApplicationId(It.IsAny<int>())).ReturnsAsync(loanApplicationModel);
+            mock.Setup(x => x.GetLoanApplicationId(It.IsAny<string>(), It.IsAny<short>())).ReturnsAsync(1);
+
+            Activity activity = new Activity();
+            activity.Id = 1;
+            activity.ActivityTypeId = 1;
+
+            mockActivityService.Setup(x => x.GetCustomerActivity(It.IsAny<int?>(), It.IsAny<ActivityForType>())).ReturnsAsync(activity);
+
+            var rnd = new Random();
+
+            var random = rnd.Next(100, 1000);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
+
+            loanApplicationController.ControllerContext = context;
+
+            mockWorkQueueService.Setup(x => x.Insert(It.IsAny<WorkQueue>()));
+            mockWorkQueueService.Setup(x => x.SaveChangesAsync());
+
+            //Act
+            IActionResult result = await loanApplicationController.SendEmailToSupport(sendBorrowerEmailModel);
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
+        }
+
+        [Fact]
+        public async Task TestSendEmailToSupportException()
+        {
+            //Arrange
+            Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
+            Mock<IActivityService> mockActivityService = new Mock<IActivityService>();
+            Mock<IWorkQueueService> mockWorkQueueService = new Mock<IWorkQueueService>();
+
+            var employeeList = new List<Employee>()
+            {
+                new Employee()
+                {
+                    Id=1,
+                    EmployeeBusinessUnitEmails = new List<EmployeeBusinessUnitEmail>()
+                    {
+                        new EmployeeBusinessUnitEmail()
+                        {
+                            EmailAccount= new EmailAccount()
+                            {
+                                Email="a@a.com"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var mockEmployeeService = new Mock<IEmployeeService>();
+            mockEmployeeService.Setup(x => x.GetEmployeeEmailByRoleName(It.IsAny<string>())).ReturnsAsync(employeeList);
+
+
+            var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, mockActivityService.Object, mockWorkQueueService.Object, null, mockEmployeeService.Object, Mock.Of<ILogger<LoanApplication>>());
+
+            LoanApplicationModel loanApplicationModel = new LoanApplicationModel();
+            loanApplicationModel.BusinessUnitId = 1;
+            loanApplicationModel.OpportunityId = 1;
+            loanApplicationModel.LoanRequestId = 1;
+
+            SupportEmailModel sendBorrowerEmailModel = new SupportEmailModel()
+            {
+                loanId = "",
+                losId = 1,
+                milestone = "",
+                tenantId = 1,
+                url = "test.com"
+            };
+
+            mock.Setup(x => x.GetByLoanApplicationId(It.IsAny<int>())).ReturnsAsync(loanApplicationModel);
+            mock.Setup(x => x.GetLoanApplicationId(It.IsAny<string>(), It.IsAny<short>())).ReturnsAsync(1);
+
+            Activity activity = new Activity();
+            activity.Id = 1;
+            activity.ActivityTypeId = 1;
+
+            mockActivityService.Setup(x => x.GetCustomerActivity(It.IsAny<int?>(), It.IsAny<ActivityForType>())).ReturnsAsync((Activity)null);
+
+            var rnd = new Random();
+
+            var random = rnd.Next(100, 1000);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+
+            var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
+
+            loanApplicationController.ControllerContext = context;
+
+            mockWorkQueueService.Setup(x => x.Insert(It.IsAny<WorkQueue>()));
+            mockWorkQueueService.Setup(x => x.SaveChangesAsync());
+
+            //Act
+            await Assert.ThrowsAsync<RainMakerException>(async()=> await loanApplicationController.SendEmailToSupport(sendBorrowerEmailModel));
+            
+        }
+        [Fact]
+        public async Task TestUpdateLoanApplication()
+        {
+            var mock = new Mock<ILoanApplicationService>();
+            mock.Setup(x => x.UpdateLoanApplication(It.IsAny<LoanApplication>())).Verifiable();
+
+            var controller = new LoanApplicationController(mock.Object, null, null, null, null, null, null, null, null);
+
+            var result = await controller.UpdateLoanApplication(new LoanApplication());
+            Assert.IsType<OkResult>(result);
+        }
+
+        [Fact]
+        public async Task TestGetBanner()
+        {
+            var mock = new Mock<ILoanApplicationService>();
+            mock.Setup(x => x.GetBanner(It.IsAny<int>())).ReturnsAsync("");
+            var mockCommonService = new Mock<ICommonService>();
+            mockCommonService.Setup(x => x.GetSettingValueByKeyAsync<string>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<string>())).ReturnsAsync("");
+            var mockFtp = new Mock<IFtpHelper>();
+            mockFtp.Setup(x=>x.DownloadStream(It.IsAny<string>())).ReturnsAsync(new MemoryStream());
+            var controller = new LoanApplicationController(mock.Object, mockCommonService.Object, mockFtp.Object, null, null, null, null, null, null);
+
+            var result = await controller.GetBanner(1);
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task TestGetFavIcon()
+        {
+            var mock = new Mock<ILoanApplicationService>();
+            mock.Setup(x => x.GetFavIcon(It.IsAny<int>())).ReturnsAsync("");
+            var mockCommonService = new Mock<ICommonService>();
+            mockCommonService.Setup(x => x.GetSettingValueByKeyAsync<string>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<string>())).ReturnsAsync("");
+            var mockFtp = new Mock<IFtpHelper>();
+            mockFtp.Setup(x => x.DownloadStream(It.IsAny<string>())).ReturnsAsync(new MemoryStream());
+            var controller = new LoanApplicationController(mock.Object, mockCommonService.Object, mockFtp.Object, null, null, null, null, null, null);
+
+            var result = await controller.GetFavIcon(1);
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task TestBorrowerAddOrUpdate()
+        {
+            RainmakerBorrower model = new RainmakerBorrower()
+            {
+                OldFirstName="John",
+                OldEmailAddress="test@test.com",
+                IsAddOrUpdate=true,
+                GenderIds = new List<int>() { },
+                EthnicityInfo = new List<EthnicInfoItem>() { },
+                RaceInfo = new List<RaceInfoItem>() { }
+            };
+            var loanApplication = new LoanApplication()
+            {
+                Id = 1
+            };
+            var borrower = new Borrower()
+            {
+                Id=1,
+                LoanApplicationId=1
+            };
+            var mockLaonApplicationService = new Mock<ILoanApplicationService>();
+            mockLaonApplicationService.Setup(x => x.GetLoanApplicationWithDetails(It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<LoanApplicationService.RelatedEntities?>())).Returns(new List<LoanApplication>() { loanApplication });
+            mockLaonApplicationService.Setup(x => x.Update(It.IsAny<LoanApplication>())).Verifiable();
+            mockLaonApplicationService.Setup(x => x.SaveChangesAsync()).Verifiable();
+
+            var mockBorrowerService = new Mock<IBorrowerService>();
+            mockBorrowerService.Setup(x=>x.GetBorrowerWithDetails(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<BorrowerService.RelatedEntities?>())).Returns(new List<Borrower>() { });
+
+            var controller = new BorrowerController(mockBorrowerService.Object,mockLaonApplicationService.Object);
+            var result = await controller.AddOrUpdate(model, true);
+
+            Assert.IsType<OkResult>(result);
+        }
+
+        [Fact]
+        public async Task TestBorrowerAddOrUpdateFalse()
+        {
+            RainmakerBorrower model = new RainmakerBorrower()
+            {
+                OldFirstName = "John",
+                OldEmailAddress = "test@test.com",
+                IsAddOrUpdate = true,
+                GenderIds = new List<int>() { },
+                EthnicityInfo = new List<EthnicInfoItem>() { },
+                RaceInfo = new List<RaceInfoItem>() { }
+            };
+            var loanApplication = new LoanApplication()
+            {
+                Id = 1
+            };
+            var borrower = new Borrower()
+            {
+                Id = 1,
+                LoanApplicationId = 1
+            };
+            var mockLaonApplicationService = new Mock<ILoanApplicationService>();
+            mockLaonApplicationService.Setup(x => x.GetLoanApplicationWithDetails(It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<LoanApplicationService.RelatedEntities?>())).Returns(new List<LoanApplication>() { });
+
+            var mockBorrowerService = new Mock<IBorrowerService>();
+            mockBorrowerService.Setup(x => x.GetBorrowerWithDetails(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<BorrowerService.RelatedEntities?>())).Returns(new List<Borrower>() { });
+
+            var controller = new BorrowerController(mockBorrowerService.Object, mockLaonApplicationService.Object);
+            var result = await controller.AddOrUpdate(model, true);
+
+            Assert.IsType<BadRequestResult>(result);
+        }
+        [Fact]
+        public async Task TestBorrowerAdd()
+        {
+            RainmakerBorrower model = new RainmakerBorrower()
+            {
+                OldFirstName = "John",
+                OldEmailAddress = "test@test.com",
+                IsAddOrUpdate = true,
+                GenderIds = new List<int>() { },
+                EthnicityInfo = new List<EthnicInfoItem>() { },
+                RaceInfo = new List<RaceInfoItem>() { }
+            };
+            var loanApplication = new LoanApplication()
+            {
+                Id = 1
+            };
+            var borrower = new Borrower()
+            {
+                Id = 1,
+                LoanApplicationId = 1,
+                LoanContact = new LoanContact()
+            };
+            var mockLaonApplicationService = new Mock<ILoanApplicationService>();
+            mockLaonApplicationService.Setup(x => x.GetLoanApplicationWithDetails(It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<LoanApplicationService.RelatedEntities?>())).Returns(new List<LoanApplication>() { });
+
+            var mockBorrowerService = new Mock<IBorrowerService>();
+            mockBorrowerService.Setup(x => x.GetBorrowerWithDetails(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<BorrowerService.RelatedEntities?>())).Returns(new List<Borrower>() { borrower });
+            mockBorrowerService.Setup(x => x.Update(It.IsAny<Borrower>())).Verifiable();
+            mockBorrowerService.Setup(x => x.SaveChangesAsync()).Verifiable();
+
+            var controller = new BorrowerController(mockBorrowerService.Object, mockLaonApplicationService.Object);
+            var result = await controller.AddOrUpdate(model, true);
+
+            Assert.IsType<OkResult>(result);
         }
     }
 }
