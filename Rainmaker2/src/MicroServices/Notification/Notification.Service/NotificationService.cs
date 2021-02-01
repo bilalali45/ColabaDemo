@@ -105,19 +105,6 @@ namespace Notification.Service
                 .FirstAsync();
         }
 
-        private async Task<bool> IsUserSubscribedToMedium(int userId, int tenantId, int mediumId, int notificationType)
-        {
-            var result = await Uow.Repository<TenantSetting>().Query(x => x.UserId == userId && x.TenantId == tenantId && x.NotificationMediumId == mediumId && x.NotificationTypeId==notificationType && x.DeliveryModeId != (short)DeliveryMode.Off).FirstOrDefaultAsync();
-            if (result == null)
-            {
-                 result = await Uow.Repository<TenantSetting>().Query(x => x.TenantId == tenantId && x.NotificationMediumId == mediumId && x.NotificationTypeId == notificationType && x.DeliveryModeId != (short)DeliveryMode.Off).FirstOrDefaultAsync();
-                 if (result != null)
-                     return true;
-                 return false;
-            }
-            return true;
-        }
-
         public async Task<List<NotificationMediumModel>> GetPaged(int pageSize, long lastId, int mediumId, int userId)
         {
             return await Uow.Repository<NotificationRecepientMedium>().Query(x => x.Id < lastId

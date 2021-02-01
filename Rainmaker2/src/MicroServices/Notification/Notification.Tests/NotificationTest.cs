@@ -3,14 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using Moq;
 using Notification.API;
 using Notification.API.Controllers;
+using Notification.Common;
 using Notification.Data;
 using Notification.Entity.Models;
 using Notification.Model;
 using Notification.Service;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -901,11 +905,11 @@ namespace Notification.Tests
             };
             dataContext.Set<NotificationObject>().Add(notificationObject);
 
-            NotificationType notificationType = new NotificationType()
+            Entity.Models.NotificationType notificationType = new Entity.Models.NotificationType()
             {
                 Id = 3
             };
-            dataContext.Set<NotificationType>().Add(notificationType);
+            dataContext.Set<Entity.Models.NotificationType>().Add(notificationType);
 
             dataContext.SaveChanges();
 
@@ -936,6 +940,111 @@ namespace Notification.Tests
             // Assert
             Assert.NotNull(res);
         }
+        [Fact]
+        public async Task TestPollAndSendNotification()
+        {
+            var hubContext = new Mock<IHubContext<ServerHub, IClientHub>>();
+            var clients = new Mock<IHubClients<IClientHub>>();
+            var client = new Mock<IClientHub>();
+            client.Setup(x => x.SendNotification(It.IsAny<string>())).Verifiable();
+            clients.Setup(x => x.Clients(It.IsAny<IReadOnlyList<string>>())).Returns(client.Object);
+            hubContext.SetupGet(x => x.Clients).Returns(clients.Object);
+            var serviceProvider = new Mock<IServiceProvider>();
+            var notificationService = new Mock<INotificationService>();
+            serviceProvider
+                .Setup(x => x.GetService(typeof(INotificationService)))
+                .Returns(notificationService.Object);
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IHubContext<ServerHub, IClientHub>)))
+                .Returns(hubContext.Object);
+            var configurationService = new Mock<IConfiguration>();
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IConfiguration)))
+                .Returns(configurationService.Object);
+            var settingService = new Mock<ISettingService>();
+            serviceProvider
+                .Setup(x => x.GetService(typeof(ISettingService)))
+                .Returns(settingService.Object);
+            var redisService = new Mock<IConnectionMultiplexer>();
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IConnectionMultiplexer)))
+                .Returns(redisService.Object);
+            var dbProvider = new Mock<IDatabase>();
+            redisService.Setup(x => x.GetDatabase(It.IsAny<int>(), It.IsAny<object>())).Returns(dbProvider.Object);
+            var serviceScope = new Mock<IServiceScope>();
+            serviceScope.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
 
+            var serviceScopeFactory = new Mock<IServiceScopeFactory>();
+            serviceScopeFactory
+                .Setup(x => x.CreateScope())
+                .Returns(serviceScope.Object);
+
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IServiceScopeFactory)))
+                .Returns(serviceScopeFactory.Object);
+            var service = new RedisService(serviceProvider.Object);
+
+            NotificationModel model = new NotificationModel();
+            model.UsersToSendList = new List<int>() { 1, 2, 3, 4 };
+            model.DateTime = DateTime.UtcNow.AddHours(-1);
+            model.NotificationType = (int)Common.NotificationType.DocumentSubmission;
+            model.tenantId = 1;
+            notificationService.Setup(x => x.AddUserNotificationMedium(It.IsAny<int>(), It.IsAny<long>(), It.IsAny<short>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(1);
+            notificationService.Setup(x => x.GetRecepient(It.IsAny<long>())).ReturnsAsync(new NotificationRecepient() 
+            {
+                NotificationRecepientMediums = new List<NotificationRecepientMedium>() { new NotificationRecepientMedium() { } },
+                StatusListEnum = new StatusListEnum { },
+                RecipientId=1
+            });
+            dbProvider.Setup(x => x.ListLengthAsync(It.IsAny<RedisKey>(), It.IsAny<CommandFlags>())).ReturnsAsync(1);
+            dbProvider.Setup(x => x.ListGetByIndexAsync(It.IsAny<RedisKey>(), It.IsAny<long>(), It.IsAny<CommandFlags>())).ReturnsAsync(Newtonsoft.Json.JsonConvert.SerializeObject(model));
+            dbProvider.Setup(x => x.ListRemoveAsync(It.IsAny<RedisKey>(), It.IsAny<RedisValue>(), It.IsAny<long>(), It.IsAny<CommandFlags>())).Verifiable();
+            settingService.SetupSequence(x => x.GetSettings(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(new List<SettingModel>() { })
+                .ReturnsAsync(new List<SettingModel>() { new SettingModel() { DeliveryModeId = (short)DeliveryMode.Off, NotificationTypeId = (int)Common.NotificationType.DocumentSubmission } })
+                .ReturnsAsync(new List<SettingModel>() { new SettingModel() { DeliveryModeId = (short)DeliveryMode.Express, NotificationTypeId = (int)Common.NotificationType.DocumentSubmission } })
+                .ReturnsAsync(new List<SettingModel>() { { new SettingModel() { DeliveryModeId = (short)DeliveryMode.Queued, DelayedInterval=0, NotificationTypeId = (int)Common.NotificationType.DocumentSubmission } } });
+            await service.PollAndSendNotification();
+        }
+
+        [Fact]
+        public async Task TestInsertInCache()
+        {
+            var serviceProvider = new Mock<IServiceProvider>();
+            var configurationService = new Mock<IConfiguration>();
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IConfiguration)))
+                .Returns(configurationService.Object);
+            var redisService = new Mock<IConnectionMultiplexer>();
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IConnectionMultiplexer)))
+                .Returns(redisService.Object);
+            var dbProvider = new Mock<IDatabase>();
+            redisService.Setup(x => x.GetDatabase(It.IsAny<int>(), It.IsAny<object>())).Returns(dbProvider.Object);
+            var serviceScope = new Mock<IServiceScope>();
+            serviceScope.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
+
+            var serviceScopeFactory = new Mock<IServiceScopeFactory>();
+            serviceScopeFactory
+                .Setup(x => x.CreateScope())
+                .Returns(serviceScope.Object);
+
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IServiceScopeFactory)))
+                .Returns(serviceScopeFactory.Object);
+
+            NotificationModel model = new NotificationModel();
+            model.UsersToSendList = new List<int>() { 1, 2, 3, 4 };
+            model.DateTime = DateTime.UtcNow.AddHours(-1);
+            model.NotificationType = (int)Common.NotificationType.DocumentSubmission;
+            model.tenantId = 1;
+
+            dbProvider.Setup(x => x.ListLengthAsync(It.IsAny<RedisKey>(), It.IsAny<CommandFlags>())).ReturnsAsync(1);
+            dbProvider.Setup(x => x.ListGetByIndexAsync(It.IsAny<RedisKey>(), It.IsAny<long>(), It.IsAny<CommandFlags>())).ReturnsAsync(Newtonsoft.Json.JsonConvert.SerializeObject(model));
+            dbProvider.Setup(x => x.ListRemoveAsync(It.IsAny<RedisKey>(), It.IsAny<RedisValue>(), It.IsAny<long>(), It.IsAny<CommandFlags>())).Verifiable();
+            dbProvider.Setup(x => x.ListRightPushAsync(It.IsAny<RedisKey>(), It.IsAny<RedisValue>(), It.IsAny<When>(), It.IsAny<CommandFlags>())).Verifiable();
+
+            var service = new RedisService(serviceProvider.Object);
+            await service.InsertInCache(model);
+        }
     }
 }
