@@ -1748,5 +1748,448 @@ namespace RainmakerTest
 
             Assert.IsType<OkResult>(result);
         }
+
+        [Fact]
+        public async Task TestGetLoanApplicationId()
+        {
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+            LosLoanApplicationBinder binder = new LosLoanApplicationBinder()
+            {
+                Id = 123,
+                LosLoanApplicationId = "1",
+                LosId = 1,
+                LoanApplicationId = 1,
+                LosLoanAplicationNumber="1"
+            };
+            dataContext.Set<LosLoanApplicationBinder>().Add(binder);
+            await dataContext.SaveChangesAsync();
+
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
+
+            //Act
+            var res = await loanService.GetLoanApplicationId("1",1);
+
+            Assert.Equal(1,res);
+        }
+
+        [Fact]
+        public async Task TestGetLoanApplicationIdNull()
+        {
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+            LosLoanApplicationBinder binder = new LosLoanApplicationBinder()
+            {
+                Id = 124,
+                LosLoanApplicationId = "2",
+                LosId = 1,
+                LoanApplicationId = 1,
+                LosLoanAplicationNumber = "2"
+            };
+            dataContext.Set<LosLoanApplicationBinder>().Add(binder);
+            await dataContext.SaveChangesAsync();
+
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
+
+            //Act
+            var res = await loanService.GetLoanApplicationId("1", 1);
+
+            Assert.Equal(-1, res);
+        }
+        [Fact]
+        public async Task TestGetMilestoneId()
+        {
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            LoanApplication loanApplication = new LoanApplication()
+            {
+                Id = 1234,
+                MilestoneId = 1
+            };
+            dataContext.Set<LoanApplication>().Add(loanApplication);
+            await dataContext.SaveChangesAsync();
+
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
+
+            //Act
+            var res = await loanService.GetMilestoneId(1234);
+
+            Assert.Equal(1, res);
+        }
+
+        [Fact]
+        public async Task TestSetBothLosAndMilestoneId()
+        {
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            LoanApplication loanApplication = new LoanApplication()
+            {
+                Id = 1235,
+                MilestoneId = 1,
+                LosMilestoneId=1
+            };
+            dataContext.Set<LoanApplication>().Add(loanApplication);
+            await dataContext.SaveChangesAsync();
+
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
+
+            //Act
+            await loanService.SetBothLosAndMilestoneId(1235,2,2);
+
+            var res = (await dataContext.Set<LoanApplication>().FirstAsync(x => x.Id == 1235)).MilestoneId;
+            Assert.Equal(2, res);
+        }
+
+        [Fact]
+        public async Task TestGetBothLosAndMilestoneId()
+        {
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            LoanApplication loanApplication = new LoanApplication()
+            {
+                Id = 1236,
+                MilestoneId = 1,
+                LosMilestoneId = 1
+            };
+            dataContext.Set<LoanApplication>().Add(loanApplication);
+            await dataContext.SaveChangesAsync();
+
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
+
+            //Act
+            var res = await loanService.GetBothLosAndMilestoneId(1236);
+
+            Assert.Equal(1, res.milestoneId);
+        }
+
+        [Fact]
+        public async Task TestSetMilestoneId()
+        {
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            LoanApplication loanApplication = new LoanApplication()
+            {
+                Id = 1237,
+                MilestoneId = 1,
+                LosMilestoneId = 1
+            };
+            dataContext.Set<LoanApplication>().Add(loanApplication);
+            await dataContext.SaveChangesAsync();
+
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
+
+            //Act
+            await loanService.SetMilestoneId(1237, 2);
+
+            var res = (await dataContext.Set<LoanApplication>().FirstAsync(x => x.Id == 1237)).MilestoneId;
+            Assert.Equal(2, res);
+        }
+        [Fact]
+        public async Task TestServiceUpdateLoanInfo()
+        {
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
+
+            //Act
+            await loanService.UpdateLoanInfo(new UpdateLoanInfo() { loanApplicationId=1});
+
+            var res = (await dataContext.Set<LoanDocumentPipeLine>().FirstAsync(x => x.LoanApplicationId == 1)).LoanApplicationId;
+            Assert.Equal(1, res);
+        }
+
+        [Fact]
+        public async Task TestServiceUpdateLoanInfoUpdate()
+        {
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            LoanDocumentPipeLine loanDocumentPipeLine = new LoanDocumentPipeLine()
+            {
+                DocumentCompleted=1,
+                LoanApplicationId=2
+            };
+            dataContext.Set<LoanDocumentPipeLine>().Add(loanDocumentPipeLine);
+            await dataContext.SaveChangesAsync();
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
+
+            //Act
+            await loanService.UpdateLoanInfo(new UpdateLoanInfo() { loanApplicationId = 2,completedDocuments=2 });
+
+            var res = (await dataContext.Set<LoanDocumentPipeLine>().FirstAsync(x => x.LoanApplicationId == 2)).DocumentCompleted;
+            Assert.Equal(2, res);
+        }
+        [Fact]
+        public async Task TestServiceGetBanner()
+        {
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            LoanApplication loanApplication = new LoanApplication()
+            {
+                Id=1345,
+                BusinessUnitId=1345
+            };
+            dataContext.Set<LoanApplication>().Add(loanApplication);
+
+            BusinessUnit businessUnit = new BusinessUnit()
+            {
+                Id = 1345,
+                Banner="Test"
+            };
+            dataContext.Set<BusinessUnit>().Add(businessUnit);
+
+            await dataContext.SaveChangesAsync();
+
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
+
+            //Act
+            var res = await loanService.GetBanner(1345);
+
+            Assert.Equal("Test", res);
+        }
+
+        [Fact]
+        public async Task TestServiceGetFavIcon()
+        {
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            LoanApplication loanApplication = new LoanApplication()
+            {
+                Id = 1346,
+                BusinessUnitId = 1346
+            };
+            dataContext.Set<LoanApplication>().Add(loanApplication);
+
+            BusinessUnit businessUnit = new BusinessUnit()
+            {
+                Id = 1346,
+                FavIcon = "Test"
+            };
+            dataContext.Set<BusinessUnit>().Add(businessUnit);
+
+            await dataContext.SaveChangesAsync();
+
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
+
+            //Act
+            var res = await loanService.GetFavIcon(1346);
+
+            Assert.Equal("Test", res);
+        }
+
+        [Fact]
+        public async Task TestUpdateLoanApplicationService()
+        {
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            LoanApplication loanApplication = new LoanApplication()
+            {
+                Id = 1348,
+                OpportunityId = 1348
+            };
+            dataContext.Set<LoanApplication>().Add(loanApplication);
+
+            Opportunity opportunity = new Opportunity()
+            {
+                Id = 1348
+            };
+            dataContext.Set<Opportunity>().Add(opportunity);
+
+            await dataContext.SaveChangesAsync();
+
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
+
+            //Act
+            await loanService.UpdateLoanApplication(new LoanApplication() { Id=1348,ByteFileName="Test"});
+
+            var res = (await dataContext.Set<LoanApplication>().FirstAsync(x => x.Id == 1348)).ByteFileName;
+            Assert.Equal("Test", res);
+        }
+        [Fact]
+        public async Task TestServiceGetLoanApplicationWithDetails()
+        {
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            LoanApplication loanApplication = new LoanApplication()
+            {
+                Id = 1448,
+                OpportunityId = 1448,
+                EncompassNumber=""
+            };
+            dataContext.Set<LoanApplication>().Add(loanApplication);
+
+            Opportunity opportunity = new Opportunity()
+            {
+                Id = 1448
+            };
+            dataContext.Set<Opportunity>().Add(opportunity);
+
+            await dataContext.SaveChangesAsync();
+
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
+
+            //Act
+            var res = loanService.GetLoanApplicationWithDetails(1448,"",LoanApplicationService.RelatedEntities.Opportunity);
+
+            Assert.Equal(1448, res[0].Id);
+        }
+
+        [Fact]
+        public async Task TestServiceGetLoanApplicationWithDetailsCoverage()
+        {
+            DbContextOptions<RainMakerContext> options;
+            var builder = new DbContextOptionsBuilder<RainMakerContext>();
+            builder.UseInMemoryDatabase("RainMaker");
+            options = builder.Options;
+            using RainMakerContext dataContext = new RainMakerContext(options);
+
+            dataContext.Database.EnsureCreated();
+
+            LoanApplication loanApplication = new LoanApplication()
+            {
+                Id = 1447,
+                OpportunityId = 1447,
+                EncompassNumber = ""
+            };
+            dataContext.Set<LoanApplication>().Add(loanApplication);
+
+            Opportunity opportunity = new Opportunity()
+            {
+                Id = 1447
+            };
+            dataContext.Set<Opportunity>().Add(opportunity);
+
+            await dataContext.SaveChangesAsync();
+
+            ILoanApplicationService loanService = new LoanApplicationService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null, null);
+
+            //Act
+            var res = loanService.GetLoanApplicationWithDetails(1447, "", 
+                LoanApplicationService.RelatedEntities.Borrower |
+                LoanApplicationService.RelatedEntities.PropertyInfo |
+                LoanApplicationService.RelatedEntities.Borrower_LoanContact |
+                LoanApplicationService.RelatedEntities.Borrower_EmploymentInfoes |
+                LoanApplicationService.RelatedEntities.Borrower_EmploymentInfoes_OtherEmploymentIncomes |
+                LoanApplicationService.RelatedEntities.Borrower_OtherIncomes_IncomeType |
+                LoanApplicationService.RelatedEntities.Borrower_BorrowerResidences |
+                LoanApplicationService.RelatedEntities.LoanGoal |
+                LoanApplicationService.RelatedEntities.Borrower_BorrowerResidences_OwnershipType |
+                LoanApplicationService.RelatedEntities.Borrower_BorrowerResidences_LoanAddress |
+                LoanApplicationService.RelatedEntities.Borrower_FamilyRelationType |
+                LoanApplicationService.RelatedEntities.PropertyInfo_PropertyType |
+                LoanApplicationService.RelatedEntities.PropertyInfo_PropertyUsage |
+                LoanApplicationService.RelatedEntities.Borrower_PropertyInfo |
+                LoanApplicationService.RelatedEntities.Borrower_PropertyInfo_AddressInfo |
+                LoanApplicationService.RelatedEntities.Borrower_BorrowerAccount |
+                LoanApplicationService.RelatedEntities.Borrower_BorrowerAccount_AccountType |
+                LoanApplicationService.RelatedEntities.Borrower_EmploymentInfoes_OtherEmploymentIncomes_IncomeType |
+                LoanApplicationService.RelatedEntities.Borrower_EmploymentInfoes_AddressInfo |
+                LoanApplicationService.RelatedEntities.Borrower_BorrowerQuestionResponses |
+                LoanApplicationService.RelatedEntities.Borrower_BorrowerQuestionResponses_Question |
+                LoanApplicationService.RelatedEntities.Borrower_BorrowerQuestionResponses_QuestionResponse |
+                LoanApplicationService.RelatedEntities.Borrower_LoanContact_Gender |
+                LoanApplicationService.RelatedEntities.PropertyInfo_PropertyTaxEscrows |
+                LoanApplicationService.RelatedEntities.Borrower_LoanContact_Ethnicity |
+                LoanApplicationService.RelatedEntities.Borrower_LoanContact_Race |
+                LoanApplicationService.RelatedEntities.Borrower_Bankruptcies |
+                LoanApplicationService.RelatedEntities.Borrower_LoanContact_ResidencyType |
+                LoanApplicationService.RelatedEntities.Borrower_LoanContact_ResidencyState |
+                LoanApplicationService.RelatedEntities.Borrower_BorrowerAssets |
+                LoanApplicationService.RelatedEntities.Borrower_EmploymentInfoes_JobType |
+                LoanApplicationService.RelatedEntities.PropertyInfo_AddressInfo |
+                LoanApplicationService.RelatedEntities.PropertyInfo_MortgageOnProperties |
+                LoanApplicationService.RelatedEntities.Borrower_OwnType |
+                LoanApplicationService.RelatedEntities.LoanPurpose |
+                LoanApplicationService.RelatedEntities.Borrower_Consent_ConsentLog |
+                LoanApplicationService.RelatedEntities.Borrower_Liability |
+                LoanApplicationService.RelatedEntities.Borrower_SupportPayments |
+                LoanApplicationService.RelatedEntities.Borrower_OwnerShipInterests |
+                LoanApplicationService.RelatedEntities.Borrower_VaDetails |
+                LoanApplicationService.RelatedEntities.BusinessUnit |
+                LoanApplicationService.RelatedEntities.Opportunity |
+                LoanApplicationService.RelatedEntities.Opportunity_UserProfile |
+                LoanApplicationService.RelatedEntities.Opportunity_LoanRequest |
+                LoanApplicationService.RelatedEntities.LosSyncLog |
+                LoanApplicationService.RelatedEntities.Opportunity_Employee_UserProfile |
+                LoanApplicationService.RelatedEntities.Opportunity_Employee_Contact |
+                LoanApplicationService.RelatedEntities.Opportunity_Employee_CompanyPhoneInfo |
+                LoanApplicationService.RelatedEntities.Opportunity_Employee_EmailAccount |
+                LoanApplicationService.RelatedEntities.BusinessUnit_LeadSource |
+                LoanApplicationService.RelatedEntities.LoanApplication_Status |
+                LoanApplicationService.RelatedEntities.Opportunity_Branch |
+                LoanApplicationService.RelatedEntities.Opportunity_Employee_Contact_ContactPhoneInfoes
+                );
+
+            Assert.Empty(res);
+        }
     }
 }
