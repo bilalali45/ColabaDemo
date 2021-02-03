@@ -23,67 +23,67 @@ namespace RainMaker.Service
             this.services = services;
         }
         
-        public async Task<Dictionary<string, KeyValuePair<int, string>>> GetAllResourceValueAsync(int languageId = 1,
-            int? businessUnit = null)
-        {
-            ICacheManager cacheManage = new MemoryCacheManager();
-            string key = string.Format(LocalStringResourceKey, languageId, businessUnit ?? 0);
-            var resource = cacheManage.Get(key, async () =>
-            {
-                using var scope = services.CreateScope();
-                var stringResourceService = scope.ServiceProvider.GetRequiredService<IStringResourceService>();
-                var resourceList = await stringResourceService.GetByLanguageAsync(languageId, businessUnit);
-                var resourceDictionary = new Dictionary<string, KeyValuePair<int, string>>();
-                foreach (var resourceItem in resourceList)
-                {
-                    if (!resourceDictionary.ContainsKey(resourceItem.ResourceName.Trim().ToLower()))
-                    {
-                        resourceDictionary.Add(resourceItem.ResourceName.Trim().ToLower(),
-                            new KeyValuePair<int, string>(resourceItem.Id, resourceItem.ResourceValue));
-                    }
-                }
-                return resourceDictionary;
-            });
-            return await resource;
-        }
+        //public async Task<Dictionary<string, KeyValuePair<int, string>>> GetAllResourceValueAsync(int languageId = 1,
+        //    int? businessUnit = null)
+        //{
+        //    ICacheManager cacheManage = new MemoryCacheManager();
+        //    string key = string.Format(LocalStringResourceKey, languageId, businessUnit ?? 0);
+        //    var resource = cacheManage.Get(key, async () =>
+        //    {
+        //        using var scope = services.CreateScope();
+        //        var stringResourceService = scope.ServiceProvider.GetRequiredService<IStringResourceService>();
+        //        var resourceList = await stringResourceService.GetByLanguageAsync(languageId, businessUnit);
+        //        var resourceDictionary = new Dictionary<string, KeyValuePair<int, string>>();
+        //        foreach (var resourceItem in resourceList)
+        //        {
+        //            if (!resourceDictionary.ContainsKey(resourceItem.ResourceName.Trim().ToLower()))
+        //            {
+        //                resourceDictionary.Add(resourceItem.ResourceName.Trim().ToLower(),
+        //                    new KeyValuePair<int, string>(resourceItem.Id, resourceItem.ResourceValue));
+        //            }
+        //        }
+        //        return resourceDictionary;
+        //    });
+        //    return await resource;
+        //}
 
-        public void Copy<T>(T from, T to)
-        {
-            if (from != null)
-            {
-                var props = typeof(T).GetProperties();
+        //public void Copy<T>(T from, T to)
+        //{
+        //    if (from != null)
+        //    {
+        //        var props = typeof(T).GetProperties();
 
-                if (props.Length == 0)
-                {
-                    return;
-                }
+        //        if (props.Length == 0)
+        //        {
+        //            return;
+        //        }
 
-                for (int i = 0; i < props.Length; i++)
-                {
-                    var prop = props[i];
+        //        for (int i = 0; i < props.Length; i++)
+        //        {
+        //            var prop = props[i];
 
-                    object v = prop.GetValue(from);
+        //            object v = prop.GetValue(from);
 
-                    if (!prop.PropertyType.IsValueType && (prop.PropertyType != typeof(string) || prop.PropertyType != typeof(String)))
-                        continue;
+        //            if (!prop.PropertyType.IsValueType && (prop.PropertyType != typeof(string) || prop.PropertyType != typeof(String)))
+        //                continue;
 
-                    if ((prop.PropertyType == typeof(string) || prop.PropertyType == typeof(String)) && !String.IsNullOrEmpty((string)v))
-                        prop.SetValue(to, v);
+        //            if ((prop.PropertyType == typeof(string) || prop.PropertyType == typeof(String)) && !String.IsNullOrEmpty((string)v))
+        //                prop.SetValue(to, v);
 
-                    else if (prop.PropertyType == typeof(int) && (int)v != 0)
-                        prop.SetValue(to, v);
+        //            else if (prop.PropertyType == typeof(int) && (int)v != 0)
+        //                prop.SetValue(to, v);
 
-                    else if (prop.PropertyType == typeof(DateTime) && (DateTime)v != DateTime.MinValue)
-                        prop.SetValue(to, v);
+        //            else if (prop.PropertyType == typeof(DateTime) && (DateTime)v != DateTime.MinValue)
+        //                prop.SetValue(to, v);
 
-                    else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) && v != null)
-                        prop.SetValue(to, v);
+        //            else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) && v != null)
+        //                prop.SetValue(to, v);
 
 
-                }
-            }
+        //        }
+        //    }
 
-        }
+        //}
 
         public async Task<Dictionary<string, KeyValuePair<int, string>>> GetAllSettingValueAsync(int? businessUnit = null)
         {
@@ -108,32 +108,32 @@ namespace RainMaker.Service
             return await setting;
         }
 
-        public async Task<string> GetResourceByNameAsync(string key, params string[] parmas)
-        {
-            return await GetResourceByNameAsync(key, 1, null, parmas);
+        //public async Task<string> GetResourceByNameAsync(string key, params string[] parmas)
+        //{
+        //    return await GetResourceByNameAsync(key, 1, null, parmas);
 
-        }
+        //}
 
-        public async Task<string> GetResourceByNameAsync(string key, int languageId = 1, int? businessUnit = null, params string[] parmas)
-        {
-            var resource = await GetAllResourceValueAsync(languageId, businessUnit);
-            if (resource.ContainsKey(key.Trim().ToLower()))
-            {
-                if (parmas != null && parmas.Length > 0)
-                    try
-                    {
-                        return string.Format(resource[key.Trim().ToLower()].Value, parmas);
-                    }
-                    catch
-                    {
-                        return resource[key.Trim().ToLower()].Value;
-                    }
-                else
-                    return resource[key.Trim().ToLower()].Value;
+        //public async Task<string> GetResourceByNameAsync(string key, int languageId = 1, int? businessUnit = null, params string[] parmas)
+        //{
+        //    var resource = await GetAllResourceValueAsync(languageId, businessUnit);
+        //    if (resource.ContainsKey(key.Trim().ToLower()))
+        //    {
+        //        if (parmas != null && parmas.Length > 0)
+        //            try
+        //            {
+        //                return string.Format(resource[key.Trim().ToLower()].Value, parmas);
+        //            }
+        //            catch
+        //            {
+        //                return resource[key.Trim().ToLower()].Value;
+        //            }
+        //        else
+        //            return resource[key.Trim().ToLower()].Value;
 
-            }
-            return key;
-        }
+        //    }
+        //    return key;
+        //}
 
 
         public async Task<T> GetSettingValueByKeyAsync<T>(string settingKey, int? businessUnit = null, T defaultValue = default)
@@ -147,24 +147,24 @@ namespace RainMaker.Service
             return defaultValue;
         }
 
-        public async Task<T> GetSettingValueByKeyExcludeExceptionsAsync<T>(string settingKey, int? businessUnit = null,
-            T defaultValue = default)
-        {
-            var settings = await GetAllSettingValueAsync(businessUnit);
-            //var value = settingKey;
-            if (settings.ContainsKey(settingKey.Trim().ToLower()))
-            {
-                try
-                {
-                    return CommonHelper.To<T>(settings[settingKey.Trim().ToLower()].Value);
-                }
-                catch
-                {
-                    return defaultValue;
-                }
-            }
-            return defaultValue;
-        }
+        //public async Task<T> GetSettingValueByKeyExcludeExceptionsAsync<T>(string settingKey, int? businessUnit = null,
+        //    T defaultValue = default)
+        //{
+        //    var settings = await GetAllSettingValueAsync(businessUnit);
+        //    //var value = settingKey;
+        //    if (settings.ContainsKey(settingKey.Trim().ToLower()))
+        //    {
+        //        try
+        //        {
+        //            return CommonHelper.To<T>(settings[settingKey.Trim().ToLower()].Value);
+        //        }
+        //        catch
+        //        {
+        //            return defaultValue;
+        //        }
+        //    }
+        //    return defaultValue;
+        //}
         /*
         public async Task<string> GetEmpNameByUserIdAsync(int? userId)
         {
