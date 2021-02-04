@@ -11,12 +11,12 @@ export const DateFormatWithMoment = (
   return res;
 };
 
-export const datetimeFormatRenameFile = (date: string) => {
-  const eventDate = moment(date).format("MMM, DD, YYYY")
-  const eventTime = moment(date).format("hh:mm A")
+// export const datetimeFormatRenameFile = (date: string) => {
+//   const eventDate = moment(date).format("MMM, DD, YYYY")
+//   const eventTime = moment(date).format("hh:mm A")
 
-  return `${eventDate} at ${eventTime}`
-}
+//   return `${eventDate} at ${eventTime}`
+// }
 
 export const getDateString = (uploadedOn: string) => {
   var current = moment(Date.now());

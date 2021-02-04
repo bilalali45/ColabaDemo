@@ -381,8 +381,10 @@ export default class DocumentActions {
       if (docs.length === 1 && docs[0]?.files.length === 0) {
         dispatch({ type: ViewerActionsType.SetIsLoading, payload: false });
       }
+      await dispatch({type: DocumentActionsType.SetLoanApplication, payload: loanAppDetails})
       await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
       await dispatch({ type: ViewerActionsType.SetIsFileChanged, payload: true })
+      
       return documentItems;;
     } catch (error) {
       console.log(error);
@@ -505,18 +507,6 @@ export default class DocumentActions {
     console.log("file item")
   }
 
-
-
-
-  static async SaveCategoryDocument(document: any, file: File, dispatchProgress: Function, currentDoc: any) {
-  }
-
-  static async SaveTrashDocument(document: any, file: File, dispatchProgress: Function, currentDoc: any) {
-  }
-
-  static async SaveWorkbenchDocument(fileObj: any, file: File, dispatchProgress: Function, currentDoc: any) {
-  }
-
   static async getFileToView(id: string, requestId: string, docId: string, fileId: string, isFromCategory: boolean, isFromWorkbench: boolean, isFromTrash: boolean, dispatch: Function) {
 
 
@@ -629,7 +619,8 @@ export default class DocumentActions {
         });
       }
       dispatch({ type: DocumentActionsType.SetWorkbenchItems, payload: docItems });
-
+      currentFile.isWorkBenchFile = true
+      await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: currentFile });
       return workbenchItems;
     } catch (error) {
       console.log(error);
@@ -774,266 +765,57 @@ export default class DocumentActions {
     }
   }
 
-  // static async SaveCategoryDocument(document: any, file: File, dispatchProgress: Function, currentDoc: any) {
-  //   let selectedFile = new DocumentFile(
-  //     document.fileId,
-  //     FileUpload.removeSpecialChars(file.name),
-  //     FileUpload.todayDate(),
-  //     0,
-  //     0,
-  //     FileUpload.getDocLogo(file, "slash"),
-  //     file,
-  //     "pending",
+  static async SaveCategoryDocument(document: any, file: File, dispatchProgress: Function, currentDoc: any) {
+    
+    
+            dispatchProgress({
+              type: DocumentActionsType.UpdateDocFile,
+              payload: documentItems[0]
+            });
 
-  //   );
+            dispatchProgress({
+              type: ViewerActionsType.SetFileProgress,
+              payload: 100,
+            });
+         
 
-  //   try {
-  //     let { id, requestId, docId, fileId } = document
-  //     // const file = new Blob([buffer], { type: "application/pdf" });
-  //     const formData = new FormData();
-  //     formData.append('id', id)
-  //     formData.append('requestId', requestId);
-  //     formData.append('docId', docId);
-  //     formData.append('fileId', fileId);
-  //     formData.append('file', file);
+      return documentItems[0].files[0];
+    
+  }
 
-  //     if (fileId === DocumentActions.nonExistentFileId) {
-  //       let files = [selectedFile, ...currentDoc.files]
-  //       currentDoc.files = files
-  //     }
-  //     let res = await Http.fetch(
-  //       {
-  //         method: Http.methods.POST,
-  //         url: Http.createUrl(
-  //           Http.baseUrl,
-  //           Endpoints.Document.POST.saveCategoryDocument()
-  //         ),
-  //         // cancelToken: file.uploadReqCancelToken.token,
-  //         data: formData,
-  //         onUploadProgress: (e) => {
-  //           let p = Math.floor((e.loaded / e.total) * 100);
-  //           selectedFile.uploadProgress = p;
-  //           if (p === 100) {
-  //             selectedFile.uploadStatus = "done";
-  //             dispatchProgress({
-  //               type: ViewerActionsType.SetIsSaving,
-  //               payload: false,
-  //             });
+  static async SaveTrashDocument(document: any, file: File, dispatchProgress: Function, currentDoc: any) {
+    
+      dispatchProgress({
+        type: DocumentActionsType.AddFileToTrash,
+        payload: trashedDocuments[0]
+      });
 
-  //           }
+      
+      return trashedDocuments[0];
+   
+  }
 
-  //           const docFiles = currentDoc?.files?.map((docFile: any) => {
-  //             if (docFile.id === document?.fileId) {
-  //               docFile = selectedFile
-  //             }
-  //             return docFile;
-  //           })
-  //           currentDoc.files = docFiles;
-  //           dispatchProgress({
-  //             type: DocumentActionsType.UpdateDocFile,
-  //             payload: currentDoc
-  //           });
-
-  //           dispatchProgress({
-  //             type: ViewerActionsType.SetFileProgress,
-  //             payload: p,
-  //           });
-  //         },
-  //       },
-  //       {
-  //         Authorization: `Bearer ${LocalDB.getAuthToken()}`,
-  //       }
-  //     );
-
-  //     return res.data;
-  //   } catch (error) {
-  //     console.log('error', error.response);
-  //     let err = error.response.data;
-  //     selectedFile.uploadStatus = 'failed';
-  //     selectedFile.notAllowedReason = 'Failed';
-  //     selectedFile.failedReason = err.Message ? err.Message : err;
-  //     console.log("-------------->Upload errors------------>", error);
-  //   }
-  // }
-
-  // static async SaveTrashDocument(document: any, file: File, dispatchProgress: Function, currentDoc: any) {
-  //   let selectedFile = new DocumentFile(
-  //     "",
-  //     FileUpload.removeSpecialChars(file.name),
-  //     FileUpload.todayDate(),
-  //     0,
-  //     0,
-  //     FileUpload.getDocLogo(file, "slash"),
-  //     file,
-  //     "pending",
-
-  //   );
-  //   try {
-
-  //     // const file = new Blob([buffer], { type: "application/pdf" });
-  //     const formData = new FormData();
-  //     formData.append('id', document.id)
-  //     formData.append('fileId', "000000000000000000000000");
-  //     formData.append('file', file);
+  static async SaveWorkbenchDocument(fileObj: any, file: File, dispatchProgress: Function, currentDoc: any) {
+    
+            dispatchProgress({
+              type: DocumentActionsType.AddFileToWorkbench,
+              payload: workbenchItems[0]
+            });
+            dispatchProgress({
+              type: ViewerActionsType.SetFileProgress,
+              payload: 100,
+            });
+          
+      return workbenchItems[0];
+    
+  }
 
 
-  //     let files = [selectedFile, ...currentDoc]
-  //     dispatchProgress({
-  //       type: DocumentActionsType.AddFileToTrash,
-  //       payload: files
-  //     });
+  static async fetchFile(path: any) {
 
-  //     let res = await Http.fetch(
-  //       {
-  //         method: Http.methods.POST,
-  //         url: Http.createUrl(
-  //           Http.baseUrl,
-  //           Endpoints.Document.POST.saveTrashDocument()
-  //         ),
-  //         // cancelToken: file.uploadReqCancelToken.token,
-  //         data: formData,
-  //         onUploadProgress: (e) => {
-  //           let p = Math.floor((e.loaded / e.total) * 100);
-  //           selectedFile.uploadProgress = p;
-  //           if (p === 100) {
-  //             selectedFile.uploadStatus = "done";
-  //             dispatchProgress({
-  //               type: ViewerActionsType.SetIsSaving,
-  //               payload: false,
-  //             });
-
-  //           }
-  //           const docFiles = files?.map((docFile: any) => {
-  //             if (docFile.fileId === DocumentActions.nonExistentFileId) {
-  //               docFile = selectedFile
-  //             }
-  //             return docFile;
-  //           })
-
-  //           dispatchProgress({
-  //             type: DocumentActionsType.AddFileToTrash,
-  //             payload: docFiles
-  //           });
-
-  //           dispatchProgress({
-  //             type: ViewerActionsType.SetFileProgress,
-  //             payload: p,
-  //           });
-  //         },
-  //       },
-  //       {
-  //         Authorization: `Bearer ${LocalDB.getAuthToken()}`,
-  //       }
-  //     );
-
-  //     return res.data;
-  //   } catch (error) {
-  //     console.log('error', error.response);
-
-  //     selectedFile.uploadStatus = 'failed';
-  //     selectedFile.notAllowedReason = 'Failed';
-  //     selectedFile.failedReason = error.Message ? error.Message : error;
-  //     dispatchProgress({
-  //       type: DocumentActionsType.AddFileToTrash,
-  //       payload: selectedFile
-  //     });
-  //     console.log("-------------->Upload errors------------>", error);
-  //   }
-  // }
-
-  // static async SaveWorkbenchDocument(fileObj: any, file: File, dispatchProgress: Function, currentDoc: any) {
-  //   let selectedFile = new DocumentFile(
-  //     "",
-  //     FileUpload.removeSpecialChars(file.name),
-  //     FileUpload.todayDate(),
-  //     0,
-  //     0,
-  //     FileUpload.getDocLogo(file, "slash"),
-  //     file,
-  //     "pending",
-
-  //   );
-  //   selectedFile = await Rename.rename(currentDoc, selectedFile);
-  //   try {
-  //     let { id, fileId } = fileObj
-  //     const formData = new FormData();
-  //     formData.append('id', id)
-  //     formData.append('fileId', fileId);
-
-
-  //     if (selectedFile.file) {
-  //       formData.append("file", selectedFile.file, `${selectedFile.clientName}`);
-  //     }
-
-  //     let files: any = currentDoc;
-  //     if (fileId === DocumentActions.nonExistentFileId) {
-  //       files = [selectedFile, ...currentDoc]
-
-  //     }
-  //     let res = await Http.fetch(
-  //       {
-  //         method: Http.methods.POST,
-  //         url: Http.createUrl(
-  //           Http.baseUrl,
-  //           Endpoints.Document.POST.saveWorkbenchDocument()
-  //         ),
-
-  //         // cancelToken: file.uploadReqCancelToken.token,
-  //         data: formData,
-  //         onUploadProgress: (e) => {
-  //           let p = Math.floor((e.loaded / e.total) * 100);
-  //           selectedFile.uploadProgress = p;
-  //           if (p === 100) {
-  //             selectedFile.uploadStatus = "done";
-  //             dispatchProgress({
-  //               type: ViewerActionsType.SetIsSaving,
-  //               payload: false,
-  //             });
-
-  //           }
-
-  //           const docFiles = files?.map((docFile: any) => {
-  //             if (docFile.fileId === fileId) {
-  //               docFile = selectedFile
-  //             }
-  //             return docFile;
-  //           })
-  //           dispatchProgress({
-  //             type: DocumentActionsType.AddFileToWorkbench,
-  //             payload: docFiles
-  //           });
-  //           dispatchProgress({
-  //             type: ViewerActionsType.SetFileProgress,
-  //             payload: p,
-  //           });
-  //         }
-
-  //       },
-  //       {
-  //         Authorization: `Bearer ${LocalDB.getAuthToken()}`,
-  //       }
-  //     );
-
-  //     return res.data;
-  //   } catch (error) {
-  //     console.log('error', error.response);
-  //     selectedFile.uploadStatus = 'failed';
-  //     selectedFile.notAllowedReason = 'Failed';
-  //     selectedFile.failedReason = error.Message ? error.Message : error;
-  //     dispatchProgress({
-  //       type: DocumentActionsType.AddFileToWorkbench,
-  //       payload: selectedFile
-  //     });
-  //     console.log("-------------->Upload errors------------>", error);
-  //   }
-  // }
-
-
-  // static async fetchFile(path: any) {
-
-  //   let f = await fetch(path).then(r => r.blob());
-  //   return f;
-  // }
+    let f = await fetch(path).then(r => r.blob());
+    return f;
+  }
 
   static async getLoanApplicationDetail(loanApplicationId: string) {
     return loanAppDetails;

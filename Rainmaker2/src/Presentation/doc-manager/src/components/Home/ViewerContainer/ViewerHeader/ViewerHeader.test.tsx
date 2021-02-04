@@ -5,7 +5,6 @@ import {MockEnvConfig} from '../../../../test_utilities/EnvConfigMock';
 import { MockLocalStorage } from '../../../../test_utilities/LocalStoreMock';
 import { StoreProvider } from '../../../../Store/Store';
 import { MemoryRouter } from 'react-router-dom';
-import { createMockFile } from '../../AddDocument/AddFileToDoc/AddFileToDoc.test';
 import App from '../../../../App';
 import { Home } from '../../Home';
 import { ViewerHeader } from './ViewerHeader';
@@ -103,12 +102,12 @@ describe('Viewer Header', () => {
 
             fireEvent.blur(currentFileNameInput)
 
-            await waitFor(() => {
+            // await waitFor(() => {
                 const currentFileName = getByTestId('current-file-name');
                 expect(currentFileName).toBeInTheDocument();
 
                 expect(currentFileName).toHaveTextContent("abcd.jpeg")
-            })
+            // })
     });
 
     test('Should change current file name on enter', async () => {

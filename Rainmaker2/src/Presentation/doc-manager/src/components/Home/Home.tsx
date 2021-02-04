@@ -69,10 +69,10 @@ export const Home = () => {
     }
   }, [isFileChanged, !isFileChanged])
 
-  const setStateProps = () => {
-    dispatch({ type: DocumentActionsType.SetFailedDocs, payload: [] })
-    dispatch({ type: DocumentActionsType.SetDocumentItems, payload: [] })
-    dispatch({type: ViewerActionsType.SetAnnotationsFirstTime, payload: true});
+  const setStateProps = async () => {
+    await dispatch({ type: DocumentActionsType.SetFailedDocs, payload: [] })
+    await dispatch({ type: DocumentActionsType.SetDocumentItems, payload: [] })
+    await dispatch({type: ViewerActionsType.SetAnnotationsFirstTime, payload: true});
   }
   return (
     <section className="c-Home loader-parent-Wrap"

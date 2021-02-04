@@ -59,9 +59,7 @@ export const LOSSyncAlert = () => {
 
             } catch (error) {
                 await updateFilesBeingSynched(filesToSync, file, 'failed');
-
             }
-
 
         }
 
@@ -102,6 +100,7 @@ export const LOSSyncAlert = () => {
                     <div className="btn-wrap">
                         {!synching ?
                             <button
+                                data-testid="sync-button"
                                 disabled={false}
                                 className="btn btn-primary btn-sm"
                                 onClick={() => startSyncProcess(filesToSync)}
@@ -177,7 +176,7 @@ export const LOSSyncAlert = () => {
     }
 
     return (
-        <div>
+        <div data-testid="los-sync-alert">
             {(getFilesFailed()?.length && syncSuccessful === false) ? <LOSSyncFailed
                 fileToSync={getFilesFailed()}
                 retrySync={retrySync}

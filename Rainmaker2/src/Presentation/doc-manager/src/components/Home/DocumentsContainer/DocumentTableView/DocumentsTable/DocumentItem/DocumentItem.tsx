@@ -133,8 +133,9 @@ export const DocumentItem = ({
       );
 
       if (success) {
-        if (selectedFileData && selectedFileData.fileId === file.id) {
-          let currentDocument = documentItems.filter((doc: any) => doc.docId === document.docId)
+        console.log(selectedFileData, file)
+        if (selectedFileData && selectedFileData.fileId === file.fromFileId) {
+          let currentDocument = documentItems.filter((doc: any) => doc.docId === document.docId)[0]
           setCurrentDocument(currentDocument)
           await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
           let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.name, false, currentFile.fileId);
@@ -156,8 +157,9 @@ export const DocumentItem = ({
       );
 
       if (success) {
-        if (selectedFileData && selectedFileData.fileId === file.id) {
-          let currentDocument = documentItems.filter((doc: any) => doc.docId === document.docId)
+        
+        if (selectedFileData && selectedFileData.fileId === file.fromFileId) {
+          let currentDocument = documentItems.filter((doc: any) => doc.docId === document.docId)[0]
           setCurrentDocument(currentDocument)
           await dispatch({ type: ViewerActionsType.SetCurrentFile, payload: null });
           let currFile = new CurrentInView(currentFile.id, currentFile.src, currentFile.name, false, currentFile.fileId);

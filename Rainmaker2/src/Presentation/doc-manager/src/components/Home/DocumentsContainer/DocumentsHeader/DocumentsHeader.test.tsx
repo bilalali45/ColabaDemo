@@ -102,7 +102,7 @@ describe('Doc Manager Header', () => {
         const { getByText, getByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
-                    <DocumentsHeader></DocumentsHeader>
+                    <Home/>
                 </MemoryRouter>
             </StoreProvider>
         );
@@ -116,7 +116,13 @@ describe('Doc Manager Header', () => {
                     let searchBar = getByTestId("search-bar")
                 expect(searchBar).toBeInTheDocument();
                 fireEvent.change(searchBar, { target: { value: "abcd" } });
-                // expect(getByText(" No Results Found for ")).toBeInTheDocument();
+                
+            })
+
+            await waitFor(()=>{
+                let msg = getByTestId("no-result-found-msg")
+                expect(msg).toBeInTheDocument()
+                // expect(getByText(No Results Found for ")).toBeInTheDocument();
             })
     });
 
@@ -309,11 +315,54 @@ describe('Doc Manager Header', () => {
     
             expect(itemsToClick[2]).toHaveTextContent('Rental Agreement');
     
-            fireEvent.click(itemsToClick[2]);
+           
+                await fireEvent.click(itemsToClick[2]);
+            
+            
     
             fireEvent.click(document.body);
 
     });
+
+    test('Should select document from commonly used', async () => {
+        const { getByText, getByTestId, getAllByTestId } = render(
+            <StoreProvider>
+                <MemoryRouter initialEntries={[Url]}>
+                    <DocumentsHeader></DocumentsHeader>
+                </MemoryRouter> 
+            </StoreProvider>
+        );
+        let addDocumentText:any;
+        await waitFor(() => {
+                addDocumentText  = getByText('Add Document');
+                expect(addDocumentText).toBeInTheDocument();
+
+               
+            })
+             fireEvent.click(addDocumentText);
+            let docPopOver;
+            await waitFor(() => {
+                docPopOver = getByTestId('popup-add-doc');
+                expect(docPopOver).toBeInTheDocument();
+            });
+    
+            let docCats = getByTestId('all-docs');
+    
+            fireEvent.click(docCats);
+    
+            const itemsToClick = getAllByTestId('doc-item-other');
+    
+            expect(itemsToClick[2]).toHaveTextContent('Purchase Contract Deposit Check');
+    
+           
+                await fireEvent.click(itemsToClick[2]);
+            
+            
+    
+            fireEvent.click(document.body);
+    
+    });
+
 
     test('Should show add custom document header', async () => {
         const { getByText, getByTestId, getAllByTestId } = render(
@@ -350,7 +399,6 @@ describe('Doc Manager Header', () => {
             expect(customeDocHeader).toHaveTextContent('Add Custom Document');
     
     });
-
 
     test('Should add file with document ', async () => {
         const { getByText, getByTestId, getAllByTestId } = render(
@@ -553,11 +601,58 @@ describe('Doc Manager Header', () => {
     
             const customeDocHeader = getByTestId('custom-doc-name');
     
-            fireEvent.change(customeDocHeader, { target: { value: "my template" } });
+            await fireEvent.change(customeDocHeader, { target: { value: "my template" } });
+            
+            await waitFor(()=>{
+                fireEvent.keyDown(customeDocHeader, { key: 'Enter', code: 'Enter', keyCode:'13', charCode:'13' })
+            })
 
-            fireEvent.keyDown(customeDocHeader, { key: 'Enter', code: 13 })
+            
 
     });
+
+    test('Should add custom document via Enter key ', async () => {
+        const { getByText, getByTestId, getAllByTestId } = render(
+            <StoreProvider>
+                <MemoryRouter initialEntries={[Url]}>
+                    <DocumentsHeader></DocumentsHeader>
+                </MemoryRouter>
+            </StoreProvider>
+        );
+        let addDocumentText:any;
+        await waitFor(() => {
+                addDocumentText  = getByText('Add Document');
+                expect(addDocumentText).toBeInTheDocument();
+
+               
+            })
+             fireEvent.click(addDocumentText);
+            let docPopOver;
+            await waitFor(() => {
+                docPopOver = getByTestId('popup-add-doc');
+                expect(docPopOver).toBeInTheDocument();
+            });
+    
+            let docCats = getAllByTestId('doc-cat');
+    
+            fireEvent.click(docCats[5]);
+    
+            const selectedCatDocsContainer = getByTestId('selected-cat-docs-container');
+    
+            expect(selectedCatDocsContainer).toHaveTextContent('Other');
+    
+            const customeDocHeader = getByTestId('custom-doc-name');
+    
+            await fireEvent.change(customeDocHeader, { target: { value: "my template" } });
+            
+            await waitFor(()=>{
+                fireEvent.keyDown(customeDocHeader, { key: 'Enter', code: 'Enter', keyCode:'13', charCode:'13' })
+            })
+
+            
+
+    });
+
 
 
     

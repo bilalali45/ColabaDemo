@@ -102,7 +102,7 @@ export const SelectedDocumentTypeList = ({
             filterUsedDocs(usedDocs)?.filter((d: any) => d.isCommonlyUsed)?.map((dl) => {
               return (
                 <li
-                  data-testid="doc-item"
+                  data-testid="doc-item-other"
                   title={dl?.docType}
                   key={dl.docTypeId}
                   onClick={async () => {

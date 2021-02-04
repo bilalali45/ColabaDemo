@@ -43,7 +43,7 @@ export const LOSSyncFailed = ({ retrySync, hideFailedAlert }: any) => {
             show={true}
         >
             <Modal.Header closeButton onClick={hideFailedAlert}>
-                <div className="h-wrap" data-testid="sync-alert-Header">
+                <div className="h-wrap" data-testid="sync-failed-header">
                     <div className="e-icon">
                         {/*<img src={errorIcon} alt="ErrorIcon" />*/}
                         <ErrorIcon />

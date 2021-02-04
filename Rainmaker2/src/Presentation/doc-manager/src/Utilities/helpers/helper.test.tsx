@@ -1,6 +1,6 @@
 import React from 'react';
 import {createMemoryHistory} from 'history';
-import {DateFormatWithMoment} from './DateFormat';
+import {DateFormatWithMoment, getDateString} from './DateFormat';
 import { Rename } from "./Rename";
 import { FileUpload } from "./FileUpload";
 import { } from '@testing-library/react';
@@ -31,12 +31,20 @@ const mockAllFiles = [
 ] 
 
 const mockSelectedFile = {
-    clientName: 'payslip-copy-1.jpg',
+    clientName: 'payslip-copy-1.jpeg',
        file: {
            type: 'image/jpeg',
            name: 'payslip-copy-1.jpeg'
        }
      }
+
+const mockSelectedFile2 = {
+    clientName: 'payslip_item.jpeg',
+        file: {
+            type: 'image/jpeg',
+            name: 'payslip_item.jpeg'
+        }
+    }
 
 const mockInitialSelectedFile = {
     lastModified: 1596542224192,
@@ -87,11 +95,37 @@ test('Should convert Utc date into Local date', async () => {
   
   });
 
+test('should return original file name if file name not exist', async () => { 
+    const renamedName =  Rename.rename(mockAllFiles,mockSelectedFile2);
+    expect(renamedName.clientName).toBe('payslip_item.jpeg');
+
+});
+
 test('should rename same name file which are already exist', async () => { 
          const renamedName =  Rename.rename(mockAllFiles,mockSelectedFile);
          expect(renamedName.clientName).toBe('payslip-copy-2.jpeg');
 
    });
+
+test('should rename same name file which are already exist', async () => { 
+    const renamedName =  Rename.rename(mockAllFiles,mockAllFiles[0]);
+    expect(renamedName.clientName).toBe('Payslip-copy-4.jpeg');
+
+});
+
+test('should return original file name if file name not exist', async () => { 
+    const renamedName =  Rename.checkFileNameExist(mockSelectedFile2.clientName,mockAllFiles);
+    expect(renamedName).toBeFalsy();
+
+});
+
+test('should return original file name if file name not exist', async () => { 
+    const renamedName =  Rename.checkFileNameExist(mockAllFiles[0].clientName,mockAllFiles);
+    expect(renamedName).toBeTruthy();
+
+});
+
+
 
 test('should file type allowed for upload', async () => {
     const file =  createMockFile('sample.pdf', 30000, 'application/pdf');
@@ -151,3 +185,8 @@ test('should return Mimetype of file', ()=> {
   });
 
 });
+
+test('should return dateString',()=>{
+    let dateString = getDateString("2021-02-03T05:16:55.001Z")
+    expect(dateString).toBeTruthy()
+})

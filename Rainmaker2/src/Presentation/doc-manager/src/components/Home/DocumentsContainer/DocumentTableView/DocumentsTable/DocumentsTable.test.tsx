@@ -94,10 +94,11 @@ describe('Doc Table Section ', () => {
                 expect(addFileHeader).toHaveTextContent("Select Document Type")
             })
 
-            // await waitFor(()=>{
-            //     let addFileDocList = getAllByTestId("add-file-doc-list")
-            //     expect(addFileDocList[0]).toHaveTextContent("")
-            // })
+            await waitFor(()=>{
+                let docsNames = getAllByTestId("doc-item-names")
+                expect(docsNames[0]).toBeInTheDocument()
+                fireEvent.mouseDown(docsNames[0])
+            })
     });
 
 

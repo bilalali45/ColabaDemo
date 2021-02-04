@@ -49,7 +49,7 @@ export class Rename {
 
     static checkFileNameExist(fileName:string, files:any){
         if(files && files.length){
-            let f = files.filter((f:any) => DocumentActions.getFileName(f).toLowerCase() === fileName)
+            let f = files.filter((f:any) => DocumentActions.getFileName(f).toLowerCase() === fileName.toLowerCase())
             if(f && f.length) return true
             return false
         }

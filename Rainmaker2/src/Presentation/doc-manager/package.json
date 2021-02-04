@@ -42,8 +42,11 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx}",
+      "!src/Utilities/*.{ts, tsx}",
       "!src/index.tsx",
       "!src/serviceWorker.ts",
+      "!src/reportWebVitals.ts",
+      "!src/components/Authorized/Authorized.tsx",
       "!src/Store/endpoints/*.{ts,tsx}",
       "!src/Components/DevLogin/DevLogin.tsx",
       "!src/Entities/Models/*.{ts,tsx}",
@@ -51,7 +54,16 @@
       "!src/Store/actions/*.{ts,tsx}",
       "!src/test_utilities/*.{ts,tsx}",
       "!src/Utils/helpers/Delay.ts",
-      "!src/Models/*.ts"
+      "!src/components/Home/DocumentsContainer/DocumentTableView/DocumentsTable/DocumentDropBox/DocumentDropBox.tsx",
+      "!src/components/Home/ViewerContainer/ViewerHome/ViewerThumbnails/ViewerThumbnails.tsx",
+      "!src/Models/*.ts",
+      "!src/components/Home/ConfirmationAlert/ConfirmationAlert.tsx",
+      "!src/App.tsx",
+      "!src/Utilities/Loader.tsx",
+      "!src/Store/reducers/*.ts",
+       "!src/Utilities/PSPDFKitViewer.tsx",
+       "!src/Utilities/helpers/ParamService.ts",
+       "!src/components/Home/ViewerContainer/ViewerHome/PDFViewer/PDFViewer.tsx"
     ]
   },
   "eslintConfig": {

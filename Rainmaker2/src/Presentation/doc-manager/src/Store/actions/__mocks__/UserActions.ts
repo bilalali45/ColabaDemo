@@ -28,5 +28,6 @@ export class UserActions {
   }
 
   static async aquireLock() {
+    return true;
   }
 }

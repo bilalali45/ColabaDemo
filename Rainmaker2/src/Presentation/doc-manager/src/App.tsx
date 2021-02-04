@@ -38,7 +38,7 @@ const App = () => {
   const authenticate = async () => {
     console.log('Before Authorize');
     //if (process.env.NODE_ENV === 'development') {
-      await window.Authorization.authorize();
+      await window?.Authorization?.authorize();
     //}
     if (LocalDB.getAuthToken()) {
       console.log('After Authorize');

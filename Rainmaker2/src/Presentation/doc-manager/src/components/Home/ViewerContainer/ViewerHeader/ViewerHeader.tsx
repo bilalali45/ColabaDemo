@@ -5,7 +5,6 @@ import { Endpoints } from "../../../../Store/endpoints/Endpoints";
 import { ViewerActionsType } from "../../../../Store/reducers/ViewerReducer";
 import { Store } from "../../../../Store/Store";
 import { AnnotationActions } from "../../../../Utilities/AnnotationActions";
-import { datetimeFormatRenameFile } from "../../../../Utilities/helpers/DateFormat";
 
 export const ViewerHeader = () => {
   const [fileName, setFileName] = useState("");

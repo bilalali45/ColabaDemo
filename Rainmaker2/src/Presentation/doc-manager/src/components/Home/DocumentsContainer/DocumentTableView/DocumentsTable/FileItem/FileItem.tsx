@@ -395,7 +395,7 @@ useEffect(() => {
       <li className={`syncBtn ${caclClass}`}>
         <a
           className={`${syncStarted ? 'disabled' : ''}`}
-          data-testid={"file-sync"}
+          data-testid={"file-sync-icon"}
           data-title={file.byteProStatus === 'Not synchronized' ? "Sync To LOS" : file.byteProStatus}
           onClick={toggleSyncAlert}>
           <SyncIcon />

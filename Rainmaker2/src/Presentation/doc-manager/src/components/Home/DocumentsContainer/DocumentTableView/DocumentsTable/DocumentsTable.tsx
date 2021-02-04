@@ -225,7 +225,7 @@ export const DocumentsTable = () => {
     setAddFileDialog(true)
   }
   const noDocFound = () => {
-    if (docSearchTerm) { return (<div> No Results Found for “{docSearchTerm}”</div>) }
+    if (docSearchTerm) { return (<div data-testid="no-result-found-msg"> No Results Found for “{docSearchTerm}”</div>) }
     else { return (<div>  </div>) }
   }
 
@@ -301,7 +301,7 @@ export const DocumentsTable = () => {
                           {documentItems &&
                             documentItems.length > 0 &&
                             documentItems.map((doc: any, i: number) => (
-                              <li title={doc.docName} key={i} onMouseDown={() => selectDocTypeClick(doc)}>
+                              <li data-testid="doc-item-names" title={doc.docName} key={i} onMouseDown={() => selectDocTypeClick(doc)}>
                                 {doc.docName}
                               </li>
                             ))}
