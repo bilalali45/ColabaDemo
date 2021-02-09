@@ -11,8 +11,9 @@ const ContextAwareToggle = ({ idNum, children, eventKey, callback }: any) => {
         type="button"
         onClick={decoratedOnClick} 
         className={`settings__accordion-signable-header`} 
+        data-testid="settings__accordion-signable-header"
         >
-        <span className="settings__accordion-signable-toggle-btn"></span> {children} 
+        <span data-testid="settings__accordion-signable-toggle-btn" className="settings__accordion-signable-toggle-btn"></span> {children} 
         </button>
     );
 }

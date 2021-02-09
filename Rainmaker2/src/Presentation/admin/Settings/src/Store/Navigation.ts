@@ -44,6 +44,12 @@ export const navigation = [
         icon: 'RequestEmailTemplates',
         role: Role.ADMIN_ROLE,
         link: '/RequestEmailTemplates'
+      },
+      {
+        text: 'Needs List Reminder Emails',
+        icon: 'NeedsListReminderEmails',
+        role: Role.ADMIN_ROLE,
+        link: '/NeedsListReminder'
       }
     ]
   },
@@ -58,6 +64,12 @@ export const navigation = [
         icon: 'LoanOriginationSystem',
         role: Role.ADMIN_ROLE,
         link: '/LoanOriginationSystem'
+      },
+      {
+        text: 'Loan Status Update',
+        icon: 'LoanStatusUpdate',
+        role: Role.ADMIN_ROLE,
+        link: '/LoanStatusUpdate'
       }
     ]
   },

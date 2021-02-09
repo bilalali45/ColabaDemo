@@ -139,7 +139,7 @@ namespace RainMaker.Service
             return (await Uow.Repository<Setting>().Query(x => x.Name == keyName && (x.BusinessUnitId == null || x.BusinessUnitId == businessUnitId) && x.IsActive != false && x.IsDeleted != true).ToListAsync()).FirstOrDefault();
         }
 
-        public async Task<EmailTemplate> RenderEmailTokens(int id, int loanApplicationId, int userProfileId, string fromAddess, string ccAddess, string subject, string emailBody, List<TokenModel> lsTokenModels)
+        public async Task<EmailTemplate> RenderEmailTokens(string id, int loanApplicationId, int userProfileId, string fromAddess, string ccAddess, string subject, string emailBody, List<TokenModel> lsTokenModels)
         {
             EmailTemplate emailTemplate = new EmailTemplate();
 
@@ -169,12 +169,12 @@ namespace RainMaker.Service
                     fromAddess = fromAddess.Replace(token.symbol,
                                                     token.value);
                 }
-                if (ccAddess.Contains(token.symbol))
+                if (ccAddess!=null && ccAddess.Contains(token.symbol))
                 {
                     ccAddess = ccAddess.Replace(token.symbol,
                                                     token.value);
                 }
-                if (subject.Contains(token.symbol))
+                if (subject != null && subject.Contains(token.symbol))
                 {
                     subject = subject.Replace(token.symbol,
                                                     token.value);
@@ -186,7 +186,7 @@ namespace RainMaker.Service
                 }
             }
 
-            emailTemplate.id = id;
+           // emailTemplate.id = id.ToInt();
             emailTemplate.fromAddress = fromAddess;
             emailTemplate.CCAddress = ccAddess;
             emailTemplate.subject = subject;

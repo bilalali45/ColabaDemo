@@ -58,6 +58,7 @@
 
     &--title{
         @include font(500,1.2,'nr','heading');
+        padding:15px 20px 9px;
     }
 
     &-wrap{
@@ -70,10 +71,30 @@
     }
 
     &--header{
-        padding: 15px 20px;
         border-bottom: 1px solid color('border');
         flex: 0 0 100%;
         width: 100%;
+        @extend .flex;
+        justify-content: space-between;
+    }
+
+    &--search{
+        @extend .flex;
+        justify-content: space-between;
+        align-items: center;
+        border-left: 1px solid color('border');
+
+        &-input{
+            height: 40px;
+            padding: 10px 20px;
+            border:none;
+        }
+        &-btn{
+            height: 40px;
+            padding: 14px 20px 11px 10px;
+            background-color: transparent;
+            border:none;
+        }
     }
 
     &--body{

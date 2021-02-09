@@ -15,5 +15,6 @@ namespace Setting.Service
         Task<Model.EmailTemplate> GetEmailTemplateById(int id);
         Task UpdateEmailTemplate(int id, string templateName, string templateDescription, string fromAddress, string toAddress, string CCAddress, string subject, string emailBody, int userProfileId);
         Task<Model.EmailTemplate> GetRenderEmailTemplateById(int id, int loanApplicationId, IEnumerable<string> authHeader);
+        Task<Model.EmailTemplate> GetEmailReplacedToken(EmailReminder template,string authHeader);
     }
 }

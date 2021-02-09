@@ -1,6 +1,7 @@
-import React, {Children, FunctionComponent, useState, useEffect, useRef} from 'react';
+import React, {FunctionComponent, useState, useEffect, useRef} from 'react';
 import { SVGInfo } from './SVG';
 import { ToolTipData } from './ToolTipData';
+
 import { render, cleanup, fireEvent, waitFor, findByTestId, act, waitForElementToBeRemoved, wait, getByText, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
@@ -11,7 +12,6 @@ import { RequestEmailTemplateActions } from '../../Store/actions/RequestEmailTem
 import { LocalDB } from '../../Utils/LocalDB';
 import { UserActions } from '../../Store/actions/UserActions';
 
-UserActions
 jest.mock('axios');
 jest.mock('../../Store/actions/UserActions');
 jest.mock('../../Store/actions/NotificationActions');
@@ -24,11 +24,9 @@ jest.mock('../../Utils/LocalDB');
 beforeEach(() => {
     EnvConfigMock();
     LocalStorageMock();
-    const history = createMemoryHistory();
-    history.push('/Setting/RequestEmailTemplates');
 });
 
-describe('Info Display Tes', () => {
+describe('Info Display Test', () => {
     test('Test', async () => {
         const { getByTestId, getAllByTestId } = render(
             <MemoryRouter initialEntries={['/Setting/RequestEmailTemplates']} >

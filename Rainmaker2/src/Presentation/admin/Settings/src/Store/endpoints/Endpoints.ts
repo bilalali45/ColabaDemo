@@ -7,6 +7,8 @@ import { AssignedRoleEndpoints } from "./AssignedRoleEndpoints";
 import { RequestEmailTemplateEndpoints } from "./RequestEmailTemplateEndpoints";
 import { OrganizationEndpoints } from "./OrganizationEndPoint";
 import { LoanOfficersEndpoints } from "./LoanOfficersEndpoints";
+import { ReminderEmailListEndpoints } from "./ReminderEmailListEndPoints";
+import { LoanStatusUpdateEndPoints } from "./LoanStatusUpdateEndpoints";
 
 
 export class Endpoints {
@@ -19,4 +21,6 @@ export class Endpoints {
   static RequestEmailTemplateManager = RequestEmailTemplateEndpoints;
   static LoanOfficersManager = LoanOfficersEndpoints
   static OrganizationManager = OrganizationEndpoints;
+  static ReminderEmailListManager= ReminderEmailListEndpoints;
+  static LoanStatusUpdateManager = LoanStatusUpdateEndPoints;
 }

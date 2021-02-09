@@ -32,29 +32,34 @@ namespace Milestone.Entity.Models
         // Reverse navigation
 
         /// <summary>
-        /// Child MilestoneLogs where [MilestoneLog].[MilestoneId] point to this entity (FK_MilestoneLog_Milestone_Id)
+        /// Child MilestoneLogs where [MilestoneLog].[MilestoneId] point to this entity (FK_MilestoneLog_Milestone)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<MilestoneLog> MilestoneLogs { get; set; } // MilestoneLog.FK_MilestoneLog_Milestone_Id
+        public virtual System.Collections.Generic.ICollection<MilestoneLog> MilestoneLogs { get; set; } // MilestoneLog.FK_MilestoneLog_Milestone
         /// <summary>
-        /// Child MilestoneMappings where [MilestoneMapping].[MilestoneId] point to this entity (FK_MilestoneMapping_Milestone_Id)
+        /// Child MilestoneMappings where [MilestoneMapping].[MilestoneId] point to this entity (FK_MilestoneMapping_Milestone)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<MilestoneMapping> MilestoneMappings { get; set; } // MilestoneMapping.FK_MilestoneMapping_Milestone_Id
+        public virtual System.Collections.Generic.ICollection<MilestoneMapping> MilestoneMappings { get; set; } // MilestoneMapping.FK_MilestoneMapping_Milestone
         /// <summary>
-        /// Child TenantMilestones where [TenantMilestone].[MilestoneId] point to this entity (FK_TenantMilestone_Milestone_Id)
+        /// Child MilestoneStatusConfigurations where [MilestoneStatusConfiguration].[FromStatus] point to this entity (FK_MilestoneStatusUpdate_MilestoneStatusUpdate)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<TenantMilestone> TenantMilestones { get; set; } // TenantMilestone.FK_TenantMilestone_Milestone_Id
+        public virtual System.Collections.Generic.ICollection<MilestoneStatusConfiguration> MilestoneStatusConfigurations { get; set; } // MilestoneStatusConfiguration.FK_MilestoneStatusUpdate_MilestoneStatusUpdate
+        /// <summary>
+        /// Child TenantMilestones where [TenantMilestone].[MilestoneId] point to this entity (FK_TenantMilestone_Milestone)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<TenantMilestone> TenantMilestones { get; set; } // TenantMilestone.FK_TenantMilestone_Milestone
 
         // Foreign keys
 
         /// <summary>
-        /// Parent MilestoneType pointed by [Milestone].([MilestoneTypeId]) (FK_Milestone_MilestoneType_Id)
+        /// Parent MilestoneType pointed by [Milestone].([MilestoneTypeId]) (FK_Milestone_MilestoneType)
         /// </summary>
-        public virtual MilestoneType MilestoneType { get; set; } // FK_Milestone_MilestoneType_Id
+        public virtual MilestoneType MilestoneType { get; set; } // FK_Milestone_MilestoneType
 
         public Milestone()
         {
             MilestoneLogs = new System.Collections.Generic.HashSet<MilestoneLog>();
             MilestoneMappings = new System.Collections.Generic.HashSet<MilestoneMapping>();
+            MilestoneStatusConfigurations = new System.Collections.Generic.HashSet<MilestoneStatusConfiguration>();
             TenantMilestones = new System.Collections.Generic.HashSet<TenantMilestone>();
             InitializePartial();
         }

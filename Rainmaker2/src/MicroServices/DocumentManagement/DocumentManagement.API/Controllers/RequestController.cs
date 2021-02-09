@@ -17,15 +17,17 @@ namespace DocumentManagement.API.Controllers
 
         private readonly IRequestService requestService;
         private readonly IRainmakerService rainmakerService;
+        private readonly ISettingService settingService;
 
         #endregion
 
         #region Constructors
 
-        public RequestController(IRequestService requestService, IRainmakerService rainmakerService)
+        public RequestController(IRequestService requestService, IRainmakerService rainmakerService, ISettingService settingService)
         {
             this.requestService = requestService;
             this.rainmakerService = rainmakerService;
+            this.settingService = settingService;
         }
 
         #endregion
@@ -75,6 +77,11 @@ namespace DocumentManagement.API.Controllers
                 await requestService.Save(loanApplication,isDraft,false, Request.Headers["Authorization"].Select(x => x.ToString()));
                 if(!isDraft)
                 {
+                    EmailReminderLogModel emailReminderLogModel = new EmailReminderLogModel();
+                    emailReminderLogModel.loanApplicationId = loanApplication.loanApplicationId;
+                    emailReminderLogModel.tenantId = tenantId;
+                    emailReminderLogModel.jobTypeId = JobType.EmailReminder;
+                    await settingService.InsertEmailReminderLog(emailReminderLogModel,Request.Headers["Authorization"].Select(x => x.ToString()));
                     await rainmakerService.SendBorrowerEmail(loanApplication.loanApplicationId, loanApplication.requests[0].email.toAddress, loanApplication.requests[0].email.CCAddress, loanApplication.requests[0].email.fromAddress, loanApplication.requests[0].email.subject, loanApplication.requests[0].email.emailBody, (int)ActivityForType.LoanApplicationDocumentRequestActivity, userProfileId, userName, Request.Headers["Authorization"].Select(x => x.ToString()));
                 }
                 return Ok();

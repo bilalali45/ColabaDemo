@@ -2,7 +2,7 @@ import React from 'react';
 
 const AddDocsPopup = () => {
     return (
-        <section className="settings__add-docs-popup" data-component="AddDocsPopup">
+        <section data-testid="addDocsPopup" className="settings__add-docs-popup" data-component="AddDocsPopup">
             <div className="settings__add-docs-popup-wrap">
 
                 <aside className="settings__add-docs-popup--sidebar">

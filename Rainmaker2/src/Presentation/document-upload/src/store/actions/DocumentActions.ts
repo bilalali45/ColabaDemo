@@ -176,9 +176,7 @@ export class DocumentActions {
 
   static async getSubmittedDocuments(loanApplicationId: string) {
     try {
-      let res: AxiosResponse<UploadedDocuments[]> = await Http.get<
-        UploadedDocuments[]
-      >(Endpoints.documents.GET.submittedDocuments(loanApplicationId));
+      let res: AxiosResponse<UploadedDocuments[]> = await Http.get<UploadedDocuments[]>(Endpoints.documents.GET.submittedDocuments(loanApplicationId));
       return res.data.map((r) => r);
     } catch (error) {
       console.log(error);

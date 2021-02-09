@@ -3,7 +3,6 @@ import React, { useContext, useState } from 'react'
 import { LoanOriginationSystemBody } from './_LoanOriginationSystem/LoanOriginationSystemBody'
 import { LoanOriginationSystemHeader } from './_LoanOriginationSystem/LoanOriginationSystemHeader'
 import {LoadOriginationMenu} from '../../Utils/helpers/Enums';
-import ProfileHeader from "../Profile/_Profile/ProfileHeader";
 
 type Props = {
     backHandler?: Function

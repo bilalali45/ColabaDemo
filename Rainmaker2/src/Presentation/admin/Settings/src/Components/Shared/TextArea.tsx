@@ -43,6 +43,7 @@ export const TextArea = ({
   return (
     <Fragment>
       <textarea
+        data-testid="textArea"
         onKeyDown={(e) => onKeyDown(e)}
         // style={
         //   textAreaValue?.trim() === ''

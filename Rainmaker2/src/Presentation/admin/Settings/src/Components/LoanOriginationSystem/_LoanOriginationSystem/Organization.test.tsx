@@ -1,19 +1,16 @@
 import React from 'react';
-import { render, cleanup, waitForDomChange, fireEvent, waitFor, waitForElement, findByTestId, act, waitForElementToBeRemoved, wait, getByText, screen } from '@testing-library/react'
+import { render, fireEvent, waitFor, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-import { EnvConfigMock } from '../../../test_utilities/EnvConfigMock';
-import { LocalStorageMock } from '../../../test_utilities/LocalStorageMock';
-import { UserActions } from '../../../Store/actions/UserActions';
 import App from '../../../App';
 import { StoreProvider } from '../../../Store/Store';
-import Organization from '../../../Entities/Models/Organization';
 import { LOSOrganization } from './Organization';
+
 jest.mock('axios');
 jest.mock('../../../Store/actions/UserActions');
 jest.mock('../../../Store/actions/OrganizationActions');
 jest.mock('../../../Store/actions/AssignedRoleActions');
 jest.mock('../../../Utils/LocalDB');
+
 
 describe('Loan origination System Organization Tab', () => {
     test('should render Only organization tab', async () => {

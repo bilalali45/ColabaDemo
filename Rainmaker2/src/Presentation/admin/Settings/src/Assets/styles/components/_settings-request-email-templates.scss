@@ -48,6 +48,9 @@
                         right: 0;
                         @include transform(translateY(-50%));
                     }
+                    .settings-btn-disabled{
+                        background-color: transparent !important;
+                    }
                 }
             }
         }

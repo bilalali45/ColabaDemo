@@ -1,17 +1,10 @@
 import React from 'react';
-import { render, cleanup, waitForDomChange, fireEvent, waitFor, waitForElement, findByTestId, act, waitForElementToBeRemoved, wait, getByText, screen } from '@testing-library/react'
+import { render, cleanup, fireEvent, waitFor, findByTestId, act, waitForElementToBeRemoved, getByText, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-import { EnvConfigMock } from '../../../test_utilities/EnvConfigMock';
-import { LocalStorageMock } from '../../../test_utilities/LocalStorageMock';
-import { UserActions } from '../../../Store/actions/UserActions';
 import App from '../../../App';
 import { StoreProvider } from '../../../Store/Store';
 import { LoanOriginationSystemBody } from './LoanOriginationSystemBody';
 
-
-import {} from '../../../Utils/LocalDB';
-import { useSpring } from 'react-spring';
 
 
 
@@ -20,6 +13,7 @@ jest.mock('../../../Store/actions/UserActions');
 jest.mock('../../../Store/actions/LoanOfficersActions');
 jest.mock('../../../Store/actions/AssignedRoleActions');
 jest.mock('../../../Utils/LocalDB');
+
 
 describe('Loan origination System',()=>{
     test('should render Only loan Officers Body', async () => {
@@ -66,6 +60,7 @@ describe('Loan origination System',()=>{
               <LoanOriginationSystemBody navigation={1} changeNav={funcHandler}/>
           </StoreProvider>
       );
+
       await waitFor(()=>{
         const losUser = getByTestId('los-menu-user');
         fireEvent.click(losUser.children[0]);
@@ -101,4 +96,42 @@ describe('Loan origination System',()=>{
     const losOrg = getByTestId('los-menu-org');
      fireEvent.click(losOrg.children[0]);
 });
+
+test('Click on tab Los', async () => {
+  
+  const { getByTestId, getAllByTestId,container } = render(
+    <MemoryRouter initialEntries={['/Setting/RequestEmailTemplates']} >
+         <StoreProvider>
+         <App/>
+         </StoreProvider>
+       
+    </MemoryRouter>
+    );
+    //Test setting text and sideBar menu is rendered
+    const mainHead = getByTestId('main-header');
+    expect(mainHead).toHaveTextContent('Settings');
+    expect(getByTestId('sideBar')).toBeInTheDocument();
+        
+    const navs = getAllByTestId('sidebar-navDiv');
+    expect(navs[2]).toHaveTextContent('Integrations');
+        
+    fireEvent.click(navs[2]);
+    let navsLink: any;
+
+    await waitFor(() => {
+      navsLink = getAllByTestId('sidebar-nav');
+      expect(navsLink[4]).toHaveTextContent('Loan Origination System');      
+      });         
+      
+      fireEvent.click(navsLink[4]);
+      await waitFor(() => {
+        let header = getByTestId('contentHeader');
+        expect(header).toHaveTextContent('Byte Software Integration Setting');
+      });
+
+      const losOrg = getByTestId('los-menu-org');
+      expect(losOrg).toHaveTextContent('Organization');
+      fireEvent.click(losOrg.children[0]);
+});
+
 })

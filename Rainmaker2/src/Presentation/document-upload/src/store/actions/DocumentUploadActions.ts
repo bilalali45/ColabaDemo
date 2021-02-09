@@ -64,7 +64,7 @@ export class DocumentUploadActions {
             if(f?.clientName === file?.clientName) {
               f.uploadStatus = 'failed';
               f.notAllowedReason = 'Failed';
-              f.failedReason =  err.Message? err.Message : err.title;
+              f.failedReason =  err.Message? err.Message : err;
             }
             return f;
           }),

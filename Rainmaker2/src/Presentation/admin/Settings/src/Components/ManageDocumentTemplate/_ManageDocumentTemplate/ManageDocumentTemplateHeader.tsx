@@ -48,10 +48,10 @@ interface Props {
    },[])
    
    const clearAll = () => {
-    dispatch({ type: TemplateActionsType.SetTemplates, payload: []});
+    dispatch({ type: TemplateActionsType.SetTemplates, payload: undefined});
     dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: {}});
     dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: null});
-    //dispatch({ type: TemplateActionsType.SetCategoryDocuments, payload: []});
+    //dispatch({ type: TemplateActionsType.SetCategoryDocuments, payload: {}});
     dispatch({ type: TemplateActionsType.SetCurrentCategoryDocuments, payload: {}});
     dispatch({ type: TemplateActionsType.SetSelectedTemplateDocuments, payload: []});
    }
@@ -67,7 +67,6 @@ interface Props {
             }
             item.confirmDelete = false;
         });
-
         dispatch({
             type: TemplateActionsType.SetTemplates,
             payload: newTemplates
@@ -151,9 +150,7 @@ interface Props {
             onClick={(e: any) => addNewTemplateHandler()}
             className="settings-btn dropdown-toggle"
             data-testid="addNewTemplate-btn">
-            Add New Template
-                     <i className="zmdi zmdi-plus"></i>
-
+            Add New Template <i className="zmdi zmdi-plus"></i>
           </button>
           {showDropDown &&
             renderDropDown()

@@ -27,14 +27,14 @@ namespace Milestone.Entity.Models
         // Foreign keys
 
         /// <summary>
-        /// Parent LosTenantMilestone pointed by [MilestoneMapping].([LosMilestoneId]) (FK_MilestoneMapping_LosTenantMilestone_Id)
+        /// Parent LosTenantMilestone pointed by [MilestoneMapping].([LosMilestoneId]) (FK_MilestoneMapping_LosTenantMilestone)
         /// </summary>
-        public virtual LosTenantMilestone LosTenantMilestone { get; set; } // FK_MilestoneMapping_LosTenantMilestone_Id
+        public virtual LosTenantMilestone LosTenantMilestone { get; set; } // FK_MilestoneMapping_LosTenantMilestone
 
         /// <summary>
-        /// Parent Milestone pointed by [MilestoneMapping].([MilestoneId]) (FK_MilestoneMapping_Milestone_Id)
+        /// Parent Milestone pointed by [MilestoneMapping].([MilestoneId]) (FK_MilestoneMapping_Milestone)
         /// </summary>
-        public virtual Milestone Milestone { get; set; } // FK_MilestoneMapping_Milestone_Id
+        public virtual Milestone Milestone { get; set; } // FK_MilestoneMapping_Milestone
 
         public MilestoneMapping()
         {

@@ -5,7 +5,7 @@ $color:(
     secondry            :       #7E829E,
     secondry-text       :       #ffffff,
     border              :       #E7E7E7,
-    base                :       #4E4E4E, 
+    base                :       #4E4E4E,
     heading             :       #000000,
     bg                  :       #F8F8F8,//#F2F3F5,
     default             :       #F2F3F5,
@@ -16,8 +16,8 @@ $color:(
     placeholder         :       #CCCCCC,
     dropdownBg          :       #ffffff,
     dropdownText        :       #000000,
-    disabledBg          :       #efefef,
-    disableText         :       #CCCCCC,
+    disabledBg          :       #E5E5E5,//#efefef,
+    disableText         :       #A7A7A7,//#CCCCCC,
     inputText           :       #4E4E4E,
     footerText          :       #A8A6A6,
     label               :       #000000,
@@ -48,6 +48,17 @@ $color:(
     accordionSignableText           :   #4E4E4E,
 
     requestEmailTemplateCol1        :   #000000,
+
+    reminderControlBg               :   #F8F8F8,
+    reminderText                    :   #A7A7A7,
+    reminderHighlightedText         :   #000000,
+    reminderTextBg                  :   #ffffff,
+    reminderArrowBg                 :   #F6F6F6,
+
+
+    //Toggler
+    togglerBg                       :   #CCCCCC,
+    //togglerBgHeadDefault            :   #CCCCCC,
 );
 
 
@@ -63,7 +74,8 @@ $font-size:(
     md: 15px,
     lg: 16px,
     xlg: 18px, // not used yet
-    searchIcon: 22px
+    searchIcon: 22px,
+    iconText: 22px
 );
 
 $shadow                :        0 0 3px rgba(0, 0, 0, 0.16);

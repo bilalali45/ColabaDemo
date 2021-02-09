@@ -10,7 +10,11 @@ import ManageDocumentTemplate from './ManageDocumentTemplate/ManageDocumentTempl
 import ManageUsers from './ManageUsers/ManageUsers';
 import RequestEmailTemplates from './RequestEmailTemplates/RequestEmailTemplates';
 import LoanOriginationSystem from './LoanOriginationSystem/LoanOriginationSystem';
+import NeedsListReminder from './NeedListReminder/NeedListReminder';
+import LoanStatusUpdate from './LoanStatusUpdate/LoanStatusUpdate';
 import { LocalDB } from '../Utils/LocalDB';
+
+
 
 export class Home extends Component<any> {
     lastNavigation = LocalDB.getCurrentUrl();
@@ -25,7 +29,11 @@ export class Home extends Component<any> {
                     <PrivateRoute path="/ManageDocumentTemplate" component={ManageDocumentTemplate} />
                     <PrivateRoute path="/ManageUsers" component={ManageUsers} />
                     <PrivateRoute path="/RequestEmailTemplates" component={RequestEmailTemplates} />
+                    <PrivateRoute path="/NeedsListReminder" component={NeedsListReminder} />
                     <PrivateRoute path="/LoanOriginationSystem" component={LoanOriginationSystem} />
+                    <PrivateRoute path="/LoanStatusUpdate" component={LoanStatusUpdate} />
+
+
                     <Route path="/PageNotFound" component={PageNotFound}/>
                 </Switch>
             </section>

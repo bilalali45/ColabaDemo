@@ -16,13 +16,15 @@ namespace Milestone.API.Controllers
         private readonly IMilestoneService _milestoneService;
         private readonly IRainmakerService _rainmakerService;
         private readonly IConfiguration _configuration;
+        private readonly ISettingService _settingService;
 
         public MilestoneController(IMilestoneService milestoneService,
-            IRainmakerService rainmakerService, IConfiguration configuration)
+            IRainmakerService rainmakerService, IConfiguration configuration,ISettingService settingService)
         {
             _milestoneService = milestoneService;
             _rainmakerService = rainmakerService;
             _configuration = configuration;
+            _settingService = settingService;
         }
         [Authorize(Roles = "MCU")]
         [HttpGet("[action]")]
@@ -42,7 +44,9 @@ namespace Milestone.API.Controllers
         public async Task<IActionResult> SetMilestoneId(MilestoneIdModel model)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             await _rainmakerService.SetMilestoneId(model.loanApplicationId, model.milestoneId, Request.Headers["Authorization"].Select(x => x.ToString()));
+            await _settingService.SendEmailReminderLog(model.loanApplicationId, model.milestoneId, tenantId, Request.Headers["Authorization"].Select(x => x.ToString()));
             await _milestoneService.UpdateMilestoneLog(model.loanApplicationId, model.milestoneId,userProfileId);
             return Ok();
         }
@@ -91,6 +95,7 @@ namespace Milestone.API.Controllers
         public async Task<IActionResult> SetLosMilestone(LosMilestoneModel model)
         {
             int userProfileId = int.Parse(User.FindFirst("UserProfileId").Value.ToString());
+            var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
             int id = await _milestoneService.GetLosMilestone(model.tenantId, model.milestone, model.losId);
             if(id<=0)
             {
@@ -105,8 +110,10 @@ namespace Milestone.API.Controllers
                     return BadRequest("Unable to find loan application");
                 }
                 await _rainmakerService.SetBothLosAndMilestoneId(loanApplicationId, id,model.milestone, Request.Headers["Authorization"].Select(x => x.ToString()));
+                await _settingService.SendEmailReminderLog(loanApplicationId, id, tenantId, Request.Headers["Authorization"].Select(x => x.ToString()));
                 await _milestoneService.UpdateMilestoneLog(loanApplicationId, id,userProfileId);
             }
+           
             return Ok();
         }
         [Authorize(Roles = "MCU")]

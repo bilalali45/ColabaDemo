@@ -262,8 +262,8 @@ namespace DocManager.Service
 
             while (await asyncCursor.MoveNextAsync())
             {
-
-                foreach (var current in asyncCursor.Current)
+                BsonDocument current = asyncCursor.Current?.FirstOrDefault();
+                if (current != null)
                 {
                     RequestFile query = BsonSerializer.Deserialize<RequestFile>((BsonDocument)current.GetValue("files"));
                     return query.annotations;

@@ -46,6 +46,7 @@ export const RequestEmailTemplatesHeader = ({ addEmailTemplateClick, showEmailLi
   }, [selectedField, tokens]);
 
   const setSelectedTokenList = (selectedField: string, tokens: Tokens[]) => {
+    
     switch(selectedField){
       case "fromAddress":
         return tokens.filter(item => item.fromAddess === true);    
@@ -59,6 +60,7 @@ export const RequestEmailTemplatesHeader = ({ addEmailTemplateClick, showEmailLi
   }
 
   const activeTokenPopup = () => {
+    
     setInsertTokenPopup(!insertTokenPopup)
     dispatch({type: RequestEmailTemplateActionsType.SetSelectedToken, payload: null});
   }

@@ -20,6 +20,9 @@ using System.Threading.Tasks;
 using URF.Core.Abstractions;
 using URF.Core.EF;
 using URF.Core.EF.Factories;
+using Hangfire;
+using Hangfire.SqlServer;
+using Microsoft.Extensions.Logging;
 
 namespace Setting.API
 {
@@ -51,6 +54,12 @@ namespace Setting.API
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IRainmakerService, RainmakerService>();
             services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+            services.AddScoped<IEmailReminderService, EmailReminderService>();
+            services.AddScoped<IBackgroundService, HangfireBackgroundService>(x=>new HangfireBackgroundService(x.GetRequiredService<HttpClient>(),
+                                                                                                                    x.GetRequiredService<IEmailReminderService>(),
+                                                                                                                    x.GetRequiredService<IConfiguration>(),
+                                                                                                                    x.GetRequiredService<IEmailTemplateService>(),
+                                                                                                                    x.GetRequiredService<IRainmakerService>(),x.GetRequiredService<ILogger<HangfireBackgroundService>>()));
             services.AddControllers().AddNewtonsoftJson();
             var keyResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
             csResponse.EnsureSuccessStatusCode();
@@ -90,6 +99,26 @@ namespace Setting.API
                         };
                     });
 
+            // Add Hangfire services.
+            var csHangfireResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=HangfireCS"));
+            csHangfireResponse.EnsureSuccessStatusCode();
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(AsyncHelper.RunSync(() => csHangfireResponse.Content.ReadAsStringAsync()), new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    DisableGlobalLocks = true
+                }));
+
+            // Add the processing server as IHostedService
+            services.AddHangfireServer();
+
+            
             #region HttpClient Dependency with correlation
 
             services.AddTransient<RequestHandler>();
@@ -108,8 +137,12 @@ namespace Setting.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services, IBackgroundJobClient backgroundJobs)
         {
+            // Register Background jobs
+            var hangFireService = services.GetRequiredService<IBackgroundService>();
+            hangFireService.RegisterJob();
+
             app.UseMiddleware<LogHeaderMiddleware>();
             if (env.IsDevelopment())
             {
@@ -127,6 +160,7 @@ namespace Setting.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHangfireDashboard();
             });
         }
     }

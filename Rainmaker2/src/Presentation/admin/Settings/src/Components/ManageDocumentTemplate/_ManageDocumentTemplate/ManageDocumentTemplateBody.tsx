@@ -102,6 +102,7 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
 
     const updateTemplateList = (list: any) => {
         let newlyCreatedOld = list.find((ele: { NewlyCreated: boolean; })  => ele.NewlyCreated === false)
+
         list.forEach((item: Template, index: any) => {
             if(item.NewlyCreated === true && !newlyCreatedOld){
                 item.open = true;
@@ -215,9 +216,8 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
         }
     });
 
-  
-
     useEffect(() => {
+        
         if (templates) {
             updateTemplateList(templates);
         }
@@ -1055,15 +1055,10 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
             </div>
         );
     };
-
+    console.log('--------------------> dataState',dataState)
     if (!dataState) {
         return <div className="element-center"><Loader size="md" containerHeight="100%" customStyle={{ width: '100%', height: 'calc(100% - 70px)' }} /></div>
     }
-
-    const togglePopup = () => {
-        setAddDocs(false);
-    }
-
 
     return (
         <ContentBody className="manage-doc-temp-body">

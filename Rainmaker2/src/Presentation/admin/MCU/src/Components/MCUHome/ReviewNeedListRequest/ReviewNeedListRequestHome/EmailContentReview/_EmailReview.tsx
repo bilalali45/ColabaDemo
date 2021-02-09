@@ -54,7 +54,7 @@ export const EmailReview = ({
   const [isSendBtnDisable, setSendBtnDisable] = useState<boolean>(false);
   const {register, errors, handleSubmit, getValues, setValue, reset, trigger,setError, clearErrors} = useForm({
     mode: 'onSubmit',
-    reValidateMode: 'onChange',
+    reValidateMode: 'onBlur',
     criteriaMode: "firstError",
     shouldFocusError: true,
     shouldUnregister: true,
@@ -350,6 +350,7 @@ export const EmailReview = ({
   const setSubjectWithValidation=(text: string) =>{
     var str = removeSpecialChars(text)
     setvalidSubject(str);
+    clearInputError('subjectLine'); 
   }
   const onChangeSubjectHandler = (event:any) =>{
       let val = event.target.value;

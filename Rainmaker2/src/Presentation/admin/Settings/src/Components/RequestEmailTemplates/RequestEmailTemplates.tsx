@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { RequestEmailTemplateActionsType } from '../../Store/reducers/RequestEmailTemplateReducer';
 import { Store } from '../../Store/Store';
 import { RequestEmailTemplatesBody } from './_RequestEmailTemplates/RequestEmailTemplatesBody'
@@ -10,6 +10,15 @@ import { RequestEmailTemplatesHeader } from './_RequestEmailTemplates/RequestEma
     const [showEmailList, setShowEmailList] = useState<boolean>(true);
     const [showinsertToken, setshowInsertToken] = useState<boolean>(false);
     const [selectedField, setSelectedField] = useState<string>('');
+
+    // useEffect(() => {
+       
+    //     return () => {
+    //         debugger
+    //         console.log('Request Email Template unmounting......')
+    //         dispatch({type: RequestEmailTemplateActionsType.SetRequestEmailTemplateData, payload:undefined});
+    //     }
+    // }, [])
 
     const addEmailTemplateClickHandler = (isCall: boolean) => {
         if(isCall){

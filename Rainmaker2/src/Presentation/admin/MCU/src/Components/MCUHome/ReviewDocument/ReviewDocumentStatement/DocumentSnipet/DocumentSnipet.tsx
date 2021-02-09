@@ -216,7 +216,7 @@ export const DocumentSnipet = ({
 
     !filenameUnique && setFilenameUnique(true);
 
-    const regex = /[^a-zA-Z0-9- ]/g; // This regex will allow only alphanumeric values with - and spaces.
+    const regex = /[^a-zA-Z0-9-. ]/g; // This regex will allow only alphanumeric values with - and spaces.
 
     if (regex.test(value)) {
       setValidFilename(false);

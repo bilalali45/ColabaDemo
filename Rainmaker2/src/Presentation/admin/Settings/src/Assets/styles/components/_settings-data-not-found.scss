@@ -1,13 +1,11 @@
-.settings__data-not-found{
+.settings__data-not-found,
+.settings__email-not-found{
     text-align: center;
     @include font(normal,1.4,'sm','base');
     @include headings{
         margin-bottom: 10px;
     }
-    .h4,h4{
-        @include font(500,1.4,'nr','heading');
-        margin-bottom: 5px;
-    }    
+        
     p{
         margin: auto;
         margin-top: 5px;
@@ -19,5 +17,19 @@
     .settings-btn{
         text-transform: capitalize;
         font-weight: normal;
+    }
+}
+
+.settings__data-not-found{
+    .h4,h4{
+        @include font(500,1.4,'nr','heading');
+        margin-bottom: 5px;
+    }
+}
+
+.settings__email-not-found{
+    .h4,h4{
+        @include font(400,1.4,'nr','heading');
+        margin-bottom: 5px;
     }
 }

@@ -138,6 +138,8 @@ const App = () => {
     let applicationId = Auth.getLoanAppliationId();
     let logoSrc = await LaonActions.getCompanyLogoSrc(applicationId);
     let logo = `data:image/png;base64,${logoSrc}`
+    
+    isMobile == true  ? setcompanyLogoSrc(logo) : setcompanyLogoSrc(logo);
     setcompanyLogoSrc(logo);
   };
 

@@ -8,7 +8,7 @@ type props = {
   tokens: Tokens[];
   handlerClick: Function;
   exisitngEmailValues?: string[] | null;
-  className?:any;
+  className?:string;
   dataTestId: string;
   id?:any;
   setInputError: Function
@@ -21,17 +21,19 @@ export const EmailInputBox = (props: props) => {
   const [isEmailValid, setisEmailValid] = useState<boolean>();
   const existingEmailValues = props.exisitngEmailValues;
 
-  //const [inputText, setInputText] = useState<string>('');
-  
   useEffect(() => {
 
       const emailCoontainer  = document?.getElementsByClassName(`${props.dataTestId} react-multi-email`); 
       const inputElement =  emailCoontainer[0]?.children[0];
 
       const updateInputSize = () => {
-        let l =  inputElement.getAttribute('value')?.length;
-        inputElement?.setAttribute('size',String(l));
+        let l:any =  inputElement.getAttribute('value')?.length;
+        let size = (l >= 2) ? l : 2;
+        inputElement?.setAttribute('size',String(size));
+        inputElement?.setAttribute('data-testid','EmailInputBox_Input');
       }
+
+      updateInputSize();
 
       const keyDownListner = (event: any) => {
         props.clearInputError(props.id);
@@ -69,7 +71,7 @@ export const EmailInputBox = (props: props) => {
   },[]);
 
   useEffect(() => {
-    if (existingEmailValues && existingEmailValues?.length > 0){
+    if (existingEmailValues){
       setEmailArray(existingEmailValues);
     }
   }, [existingEmailValues]);
@@ -130,7 +132,7 @@ export const EmailInputBox = (props: props) => {
     setTimeout(()=>{
       input.value = pillsTxt.substring(0,(pillsTxt.length-1))      
     },20)
-    console.log('doubleClick on pill', emailsArray[i]);
+    console.log('doubleClick on pill', emailsArray[i], parentDiv.childNodes);
     //...emailsArray,emailsArray[i]
     //setEmailArray([...emailsArray,emailsArray[i]=input.value]);
   }
@@ -142,6 +144,7 @@ export const EmailInputBox = (props: props) => {
     return (
       <>
       <div data-testid={props.dataTestId} onBlur={emailBlur}  onFocus={ClickHandler} onClick={ClickHandler} className={`settings__multi-pills-control ${props.className?props.className:''}`}>
+        <div data-testid="EmailInputBox">
         <ReactMultiEmail
           className = {props.dataTestId}
           emails={emailsArray}
@@ -157,10 +160,12 @@ export const EmailInputBox = (props: props) => {
           ) => {
             return (
               <div 
-              //onDoubleClick={(e:any)=> doubleClickHandler(e ,index)} 
+              // onDoubleClick={(e:any)=> doubleClickHandler(e ,index)} 
               data-tag key={index}>
                 {email}
-                <span data-tag-handle onClick={
+                <span 
+                data-testid="EmailInputBox_TagCross"
+                data-tag-handle onClick={
                 () => {
                   removeEmail(index)
                   removeEmailHandler()
@@ -172,7 +177,7 @@ export const EmailInputBox = (props: props) => {
             );
           }}
         />
-        </div>
+        </div></div>
       </>
     );
   }

@@ -5,7 +5,8 @@
         './bootstrap/variables',
         './bootstrap/grid',
         './bootstrap/utilities',
-        './bootstrap/tables';
+        './bootstrap/tables',
+        './bootstrap/alert';
 
 
 //@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap');
@@ -36,6 +37,7 @@
         'mixins/headings',
         'mixins/font',
         'mixins/placeholder',
+        'mixins/animation',
         
         // MEDIA QUERIES
         'mixins/mediaquery-custom',
@@ -62,7 +64,12 @@
         './components/settings-form-controls',
         './components/settings-tokenpopup',
         './components/settings-footer',
-        './components/settings-alert-box';
+        './components/settings-alert-box',
+        './components/settings-reminder-control',
+        './components/settings-have-no-data';
+
+// Animations
+@import './animations/anim-blink-border';
 
 // Pages
 @import './components/settings-request-email-templates',
@@ -71,4 +78,6 @@
         './components/settings-profile',
         './components/settings-manage-users',
         './components/settings-loan-origination-system',
-        './components/settings-create-email-templates';
+        './components/settings-create-email-templates',
+        './components/settings-need-list-reminder',
+        './components/settings-loan-status-update';

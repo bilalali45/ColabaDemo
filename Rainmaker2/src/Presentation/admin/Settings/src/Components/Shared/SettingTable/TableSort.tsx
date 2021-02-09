@@ -5,7 +5,7 @@ import { SimpleSort } from '../../../Utils/helpers/Enums';
 
 type TableSortProps = {
     order?: any,
-    className?:any,
+    className?:string,
     callBackFunction: Function
 }
 
@@ -13,8 +13,7 @@ type TableSortProps = {
 const TableSort: React.FC<TableSortProps> = ({ order, className, callBackFunction,children }) => {
     let ovalue = order ? order : null;
     const [sortOrder, setSortOrder] = useState<any>(ovalue);
-    useEffect(() => {
-        debugger;
+    useEffect(() => {        
         // action on update of sortOrder
         callBackFunction(sortOrder);
     }, [sortOrder]);
@@ -39,7 +38,9 @@ const TableSort: React.FC<TableSortProps> = ({ order, className, callBackFunctio
         <span onClick={() => {
             makeSort();
         }
-        } className={`clickable ${className?className:''}`}>
+        } className={`clickable ${className?className:''}`}
+        data-testid="TableSort"
+        >
         {children}
         {sortOrder != null &&
             <div className="settings__table-sorter">

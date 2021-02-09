@@ -1,4 +1,4 @@
-import React, {Children, FunctionComponent, useState, useEffect, useRef} from 'react'
+import React, {FunctionComponent, useState, useEffect, useRef} from 'react'
 import { SVGInfo } from './SVG'
 import { ToolTipData } from './ToolTipData'
 

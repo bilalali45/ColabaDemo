@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface TableProps{
-    tableClass?:any
+    tableClass?:string
 }
 
 const Table:React.FC<TableProps> = ({tableClass,children}) => {

@@ -30,7 +30,7 @@ namespace Milestone.Data.Mapping
             builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType("int").IsRequired().ValueGeneratedOnAdd();
             builder.Property(x => x.RmDocTypeName).HasColumnName(@"RmDocTypeName").HasColumnType("varchar").IsRequired().IsUnicode(false).HasMaxLength(50);
             builder.Property(x => x.ByteDoctypeName).HasColumnName(@"ByteDoctypeName").HasColumnType("varchar").IsRequired().IsUnicode(false).HasMaxLength(50);
-            builder.Property(x => x.ByteDocCategoryId).HasColumnName(@"ByteDocCategoryId").HasColumnType("int").IsRequired(false);
+            builder.Property(x => x.ByteDocCategoryId).HasColumnName(@"ByteDocCategoryId").HasColumnType("int").IsRequired();
 
             // Foreign keys
             builder.HasOne(a => a.ByteDocCategoryMapping).WithMany(b => b.ByteDocTypeMappings).HasForeignKey(c => c.ByteDocCategoryId).OnDelete(DeleteBehavior.SetNull); // FK_ByteDocTypeMapping_ByteDocCategoryMapping

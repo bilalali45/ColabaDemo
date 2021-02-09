@@ -1,9 +1,9 @@
 import React from 'react'
 
 interface TableTHProps {
-    valign?:any,
-    align?:any,
-    className?:any
+    valign?:string,
+    align?:string,
+    className?:string
 }
 
 const TableTH:React.FC<TableTHProps> = ({valign,align,className,children}) => {
@@ -53,7 +53,7 @@ const TableTH:React.FC<TableTHProps> = ({valign,align,className,children}) => {
     }
 
     return (
-        <div className={`settings__table--th ${className != undefined ? className : ''}`} style={Style}>
+        <div data-testid="TableTH" className={`settings__table--th ${className != undefined ? className : ''}`} style={Style}>
             {children}
         </div>
     )

@@ -36,7 +36,7 @@ namespace Milestone.Data.Mapping
             builder.Property(x => x.MilestoneId).HasColumnName(@"MilestoneId").HasColumnType("int").IsRequired();
 
             // Foreign keys
-            builder.HasOne(a => a.Milestone).WithMany(b => b.TenantMilestones).HasForeignKey(c => c.MilestoneId).OnDelete(DeleteBehavior.SetNull); // FK_TenantMilestone_Milestone_Id
+            builder.HasOne(a => a.Milestone).WithMany(b => b.TenantMilestones).HasForeignKey(c => c.MilestoneId).OnDelete(DeleteBehavior.SetNull); // FK_TenantMilestone_Milestone
             InitializePartial();
         }
         partial void InitializePartial();

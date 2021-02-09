@@ -381,7 +381,7 @@ namespace Rainmaker.Test
             ISettingService settingService = new SettingService(mockOpportunityService.Object, mockUserProfileService.Object, mockLoanApplicationService.Object,null,null,new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
             //Act
-            EmailTemplate res = await settingService.RenderEmailTokens(1, 4188, 199, "###RequestorUserEmail###", "###RequestorUserEmail###", "You have new tasks to complete for your ###BusinessUnitName### loan application", "<p>Please submit following documents</p>\n<p>###RequestDocumentList###</p>\n<p>Thank you.</p>\n<p><strong>###BusinessUnitName###</strong></p>\n", lstTokenModels);
+            EmailTemplate res = await settingService.RenderEmailTokens(1.ToString(), 4188, 199, "###RequestorUserEmail###", "###RequestorUserEmail###", "You have new tasks to complete for your ###BusinessUnitName### loan application", "<p>Please submit following documents</p>\n<p>###RequestDocumentList###</p>\n<p>Thank you.</p>\n<p><strong>###BusinessUnitName###</strong></p>\n", lstTokenModels);
 
             // Assert
             Assert.NotNull(res);
@@ -623,7 +623,7 @@ namespace Rainmaker.Test
             ISettingService settingService = new SettingService(mockOpportunityService.Object, mockUserProfileService.Object, mockLoanApplicationService.Object, null, null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
             //Act
-            EmailTemplate res = await settingService.RenderEmailTokens(1, 4192, 209, "###RequestorUserEmail###", "###RequestorUserEmail###", "You have new tasks to complete for your ###BusinessUnitName### loan application", "<p>Please submit following documents</p>\n<p>###RequestDocumentList###</p>\n<p>Thank you.</p>\n<p><strong>###BusinessUnitName###</strong></p>\n", lstTokenModels);
+            EmailTemplate res = await settingService.RenderEmailTokens("", 4192, 209, "###RequestorUserEmail###", "###RequestorUserEmail###", "You have new tasks to complete for your ###BusinessUnitName### loan application", "<p>Please submit following documents</p>\n<p>###RequestDocumentList###</p>\n<p>Thank you.</p>\n<p><strong>###BusinessUnitName###</strong></p>\n", lstTokenModels);
 
             // Assert
             Assert.NotNull(res);
@@ -922,7 +922,7 @@ namespace Rainmaker.Test
             ISettingService settingService = new SettingService(mockOpportunityService.Object, mockUserProfileService.Object, mockLoanApplicationService.Object,null,null,new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
             //Act
-            EmailTemplate res = await settingService.RenderEmailTokens(1, 4189, 205, "###RequestorUserEmail###", "###RequestorUserEmail###", "You have new tasks to complete for your ###BusinessUnitName### loan application", "<p>Please submit following documents</p>\n<p>###RequestDocumentList###</p>\n<p>Thank you.</p>\n<p><strong>###BusinessUnitName###</strong></p>\n", lstTokenModels);
+            EmailTemplate res = await settingService.RenderEmailTokens("", 4189, 205, "###RequestorUserEmail###", "###RequestorUserEmail###", "You have new tasks to complete for your ###BusinessUnitName### loan application", "<p>Please submit following documents</p>\n<p>###RequestDocumentList###</p>\n<p>Thank you.</p>\n<p><strong>###BusinessUnitName###</strong></p>\n", lstTokenModels);
 
             // Assert
             Assert.NotNull(res);
@@ -1066,7 +1066,7 @@ namespace Rainmaker.Test
             ISettingService settingService = new SettingService(mockOpportunityService.Object, mockUserProfileService.Object, mockLoanApplicationService.Object, null, null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
             //Act
-            EmailTemplate res = await settingService.RenderEmailTokens(1, 4190, 207, "###RequestorUserEmail###", "###RequestorUserEmail###", "You have new tasks to complete for your ###BusinessUnitName### loan application", "<p>Please submit following documents</p>\n<p>###RequestDocumentList###</p>\n<p>Thank you.</p>\n<p><strong>###BusinessUnitName###</strong></p>\n", lstTokenModels);
+            EmailTemplate res = await settingService.RenderEmailTokens("", 4190, 207, "###RequestorUserEmail###", "###RequestorUserEmail###", "You have new tasks to complete for your ###BusinessUnitName### loan application", "<p>Please submit following documents</p>\n<p>###RequestDocumentList###</p>\n<p>Thank you.</p>\n<p><strong>###BusinessUnitName###</strong></p>\n", lstTokenModels);
 
             // Assert
             Assert.NotNull(res);

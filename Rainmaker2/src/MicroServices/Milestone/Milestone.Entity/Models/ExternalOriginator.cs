@@ -27,9 +27,9 @@ namespace Milestone.Entity.Models
         // Reverse navigation
 
         /// <summary>
-        /// Child LosTenantMilestones where [LosTenantMilestone].[ExternalOriginatorId] point to this entity (FK_LosTenantMilestone_ExternalOriginator_Id)
+        /// Child LosTenantMilestones where [LosTenantMilestone].[ExternalOriginatorId] point to this entity (FK_LosTenantMilestone_ExternalOriginator)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<LosTenantMilestone> LosTenantMilestones { get; set; } // LosTenantMilestone.FK_LosTenantMilestone_ExternalOriginator_Id
+        public virtual System.Collections.Generic.ICollection<LosTenantMilestone> LosTenantMilestones { get; set; } // LosTenantMilestone.FK_LosTenantMilestone_ExternalOriginator
         /// <summary>
         /// Child Mappings where [Mapping].[ExtOriginatorId] point to this entity (FK_Mapping_ExternalOriginator)
         /// </summary>

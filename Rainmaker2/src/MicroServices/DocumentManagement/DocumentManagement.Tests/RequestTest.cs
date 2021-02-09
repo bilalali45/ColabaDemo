@@ -55,7 +55,7 @@ namespace DocumentManagement.Tests
 
             httpContext.SetupGet(x => x.Request).Returns(request.Object);
 
-            var controller = new RequestController(mock.Object, mockRainMock.Object);
+            var controller = new RequestController(mock.Object, mockRainMock.Object,null);
 
             controller.ControllerContext = context;
 
@@ -144,7 +144,7 @@ namespace DocumentManagement.Tests
 
             httpContext.SetupGet(x => x.Request).Returns(request.Object);
 
-            var controller = new RequestController(mock.Object, mockRainMock.Object);
+            var controller = new RequestController(mock.Object, mockRainMock.Object, null);
 
             controller.ControllerContext = context;
 
@@ -225,7 +225,7 @@ namespace DocumentManagement.Tests
 
             httpContext.SetupGet(x => x.Request).Returns(request.Object);
 
-            var controller = new RequestController(mock.Object, mockRainMock.Object);
+            var controller = new RequestController(mock.Object, mockRainMock.Object, null);
 
             controller.ControllerContext = context;
 
@@ -314,7 +314,7 @@ namespace DocumentManagement.Tests
 
             httpContext.SetupGet(x => x.Request).Returns(request.Object);
 
-            var controller = new RequestController(mock.Object, mockRainMock.Object);
+            var controller = new RequestController(mock.Object, mockRainMock.Object, null);
 
             controller.ControllerContext = context;
 
@@ -1088,7 +1088,7 @@ namespace DocumentManagement.Tests
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
-            var controller = new RequestController(mock.Object, null);
+            var controller = new RequestController(mock.Object, null, null);
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
@@ -1288,7 +1288,7 @@ namespace DocumentManagement.Tests
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
 
-            var controller = new RequestController(mock.Object, null);
+            var controller = new RequestController(mock.Object, null, null);
 
             var context = new ControllerContext(new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(), new ControllerActionDescriptor()));
 
@@ -1395,7 +1395,7 @@ namespace DocumentManagement.Tests
 
             httpContext.SetupGet(x => x.Request).Returns(request.Object);
 
-            var controller = new RequestController(mock.Object, mockRainMock.Object);
+            var controller = new RequestController(mock.Object, mockRainMock.Object, null);
 
             controller.ControllerContext = context;
 
@@ -1439,7 +1439,7 @@ namespace DocumentManagement.Tests
 
             httpContext.SetupGet(x => x.Request).Returns(request.Object);
 
-            var controller = new RequestController(mock.Object, mockRainMock.Object);
+            var controller = new RequestController(mock.Object, mockRainMock.Object, null);
 
             controller.ControllerContext = context;
 
@@ -1482,7 +1482,7 @@ namespace DocumentManagement.Tests
 
             httpContext.SetupGet(x => x.Request).Returns(request.Object);
 
-            var controller = new RequestController(mock.Object, mockRainMock.Object);
+            var controller = new RequestController(mock.Object, mockRainMock.Object, null);
 
             controller.ControllerContext = context;
 

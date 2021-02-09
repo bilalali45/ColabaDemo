@@ -11,7 +11,7 @@ import { LocalDB } from '../../../Utils/LocalDB';
 import { Role } from '../../../Store/Navigation';
 import { sortList } from '../../../Utils/helpers/Sort';
 import { SimpleSort } from '../../../Utils/helpers/Enums';
-
+import Loader, {WidgetLoader} from '../../Shared/Loader';
 
 type Props = {
   backHandler?: Function
@@ -35,6 +35,7 @@ export const LOSOrganization = ({ backHandler }: Props) => {
         let result = await OrganizationsActions.updateOrganizationSettings(organizations)
     }
     const handlerUpdate =() => {
+        console.log('--------------------->handlerUpdate')
         updateOrganizations();
         dispatch({ type: OrganizationActionsType.SetOrganizationData, payload: organizations })
         setFooter(false);
@@ -92,49 +93,43 @@ export const LOSOrganization = ({ backHandler }: Props) => {
             )
         })
     }
-  return (
-    <>
-      <ContentBody className="loan-origination-system los-organization-list">
-          <table className="table table-striped request-email-templates-records">
-              <colgroup>
-                  <col span={1} style={{ width: '2%' }} />
-                  <col span={2} style={{ width: '30%' }} />
-                  <col span={2} style={{ width: '15%' }} />
-                  <col span={3} />
-              </colgroup>
-              <thead>
-              <tr>
-                  <th scope="col"></th>
-                  <th data-testid="th-templateName" scope="col"><TableSort callBackFunction = {arrowSortHandler}>Name</TableSort></th>
-                  <th data-testid="th-byteOrgCode"  scope="col">Byte Organization Code</th>
-                  <th scope="col"></th>
-              </tr>
-              </thead>
-              <tbody>
-              {renderRows()}
-              {/* <tr>
-                  <td className="dp"><figure><img src="https://via.placeholder.com/100"/></figure></td>
-                  <td>Texas Trust Home Loans</td>
-                  <td>302039</td>
-                  <td></td>
-              </tr>
-              <tr>
-                  <td className="dp"><figure><img src="https://via.placeholder.com/100"/></figure></td>
-                  <td>AHC Lending</td>
-                  <td>100390</td>
-                  <td></td>
-              </tr> */}
-              </tbody>
-          </table>
-      </ContentBody>
-       {
-        footer &&
-        <ContentFooter>
-        <button data-testid= "save-btn" type="submit" className="settings-btn settings-btn-primary" onClick={() =>handlerUpdate()}>Save</button>
-        <button data-testid= "cancel-btn" className="settings-btn settings-btn-secondry"  onClick={() =>handlerCancel()}>Cancel</button>
-        </ContentFooter>
-        }
-    </>
-    
-  )
+    if(!organizations){
+        return (<WidgetLoader reduceHeight="110px"/>);
+    }else{
+        return (
+            <>
+              <ContentBody className="loan-origination-system los-organization-list">
+                  <table className="table table-striped request-email-templates-records">
+                      <colgroup>
+                          <col span={1} style={{ width: '2%' }} />
+                          <col span={2} style={{ width: '30%' }} />
+                          <col span={2} style={{ width: '15%' }} />
+                          <col span={3} />
+                      </colgroup>
+                      <thead>
+                      <tr>
+                          <th scope="col"></th>
+                          <th data-testid="th-templateName" scope="col"><TableSort callBackFunction = {arrowSortHandler}>Name</TableSort></th>
+                          <th data-testid="th-byteOrgCode"  scope="col">Byte Organization Code</th>
+                          <th scope="col"></th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {renderRows()}                 
+                      </tbody>
+                  </table>
+              </ContentBody>
+               {
+                footer &&
+                <ContentFooter>
+                <button data-testid= "save-btn" type="submit" className="settings-btn settings-btn-primary" onClick={() =>handlerUpdate()}>Save</button>
+                <button data-testid= "cancel-btn" className="settings-btn settings-btn-secondry"  onClick={() =>handlerCancel()}>Cancel</button>
+                </ContentFooter>
+                }
+            </>
+            
+          )
+    }
+
+  
 }

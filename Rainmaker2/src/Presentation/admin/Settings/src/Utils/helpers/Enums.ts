@@ -7,7 +7,9 @@ export enum ToolTipEnum {
     SortOrder = 6,
     TokenList = 7,
     ByteSoftInteg = 8,
-    RequestEmailTemplates = 9
+    RequestEmailTemplates = 9,
+    LoanStatusUpdate = 10,
+    SendEmailAfter = 11
 }
 
 export enum ProfileMenu {

@@ -108,4 +108,13 @@ namespace Milestone.Model
         public string milestone { get; set; }
         public string losMilestone { get; set; }
     }
+    public class EmailStatusConfiguration
+    {
+        public int id { get; set; }
+        public int? tenantId { get; set; }
+        public int? fromStatus { get; set; }
+        public int? toStatus { get; set; }
+        public short? noOfDays { get; set; }
+        public DateTime? recurringTime { get; set; }
+    }
 }

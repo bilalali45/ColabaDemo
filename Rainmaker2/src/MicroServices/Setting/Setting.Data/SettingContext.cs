@@ -22,9 +22,8 @@ namespace Setting.Data
     
     public partial class SettingContext : DbContext
     {
-        //public virtual DbSet<EmailTemplate> EmailTemplates { get; set; } // EmailTemplate
-        //public virtual DbSet<TemplateType> TemplateTypes { get; set; } // TemplateType
-        //public virtual DbSet<TokenParam> TokenParams { get; set; } // TokenParam
+        //public virtual DbSet<EmailReminderLog> EmailReminderLogs { get; set; } // EmailReminderLogs
+        //public virtual DbSet<JobType> JobTypes { get; set; } // JobType
 
 		public SettingContext(DbContextOptions<SettingContext> options)
             : base(options)
@@ -36,9 +35,8 @@ namespace Setting.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new EmailTemplateMap());
-            modelBuilder.ApplyConfiguration(new TemplateTypeMap());
-            modelBuilder.ApplyConfiguration(new TokenParamMap());
+            modelBuilder.ApplyConfiguration(new EmailReminderLogMap());
+            modelBuilder.ApplyConfiguration(new JobTypeMap());
 
             OnModelCreatingPartial(modelBuilder);
         }

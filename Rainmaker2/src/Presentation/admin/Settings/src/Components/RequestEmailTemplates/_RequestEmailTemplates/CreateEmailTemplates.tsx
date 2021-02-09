@@ -47,7 +47,7 @@ export const CreateEmailTemplates = ({
   const [validSubject, setvalidSubject] = useState<string>("");
   const {register, errors, handleSubmit, setValue, getValues, formState, trigger,setError, clearErrors} = useForm({
     mode: 'onSubmit',
-    reValidateMode: 'onChange',
+    reValidateMode: 'onBlur',
     criteriaMode: "firstError",
     shouldFocusError: true,
     shouldUnregister: true,
@@ -131,11 +131,15 @@ export const CreateEmailTemplates = ({
   const setInputError = (inputName: string, message?: string) => {
     if(inputName === "fromEmail"){
      if(fromEmail != undefined && fromEmail != ""){
-      setError(inputName, {
-        type: "custom",
-        message: message ?? "Only one email is allowed in from address.",
-      });
-      setIsError(inputName);
+        if(fromEmail.split(',').length > 1){
+          setError(inputName, {
+            type: "custom",
+            message: message ?? "Only one email is allowed in from address.",
+          });
+          setIsError(inputName);
+        }else{
+          setIsError('');
+        }
       }else{
         setError(inputName, {
           type: "custom",
@@ -321,6 +325,7 @@ export const CreateEmailTemplates = ({
       setFromEmailArray((oldArray) => [...oldArray, token]);
       setFromEmail(fromArray.toString());
       setValue('fromEmail', fromArray.toString(), {shouldValidate: true});
+      setIsError('');
     }
   };
 
@@ -341,6 +346,7 @@ export const CreateEmailTemplates = ({
   const setSubjectWithValidation=(text?: string) =>{
     var str = removeSpecialChars(text)
     setvalidSubject(str ? str : '');
+    clearInputError('subjectLine');
   }
   const removeSpecialChars= (text?: string) => {
       return text?.replace(/[^ -~]/gi, "");
@@ -382,7 +388,7 @@ export const CreateEmailTemplates = ({
     });
     disableBrowserPrompt();
   }
-  
+
   return (
     <>
       <ContentSubHeader

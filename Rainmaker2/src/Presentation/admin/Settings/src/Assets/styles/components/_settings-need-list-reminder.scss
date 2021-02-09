@@ -1,0 +1,219 @@
+.settings__need-list-reminder{
+
+    &-header{
+
+
+
+    }//header
+
+    &-body{
+        padding: 0;
+
+        &--left,
+        &--right{
+            float: left;
+
+            .nlre-settings-body{
+                height: calc(100vh - 242px) !important;
+               &.footerEnabled{
+                height: calc(100vh - 303px) !important;
+               }
+            }
+        }
+
+        &--left{
+            border-right: 1px solid color('border');
+
+            .nlre-settings-body.settings__content-area--body{
+                padding: 0;
+
+                h5,.h5{
+                    @include font(500,1.4,'sm','heading');
+                    padding: 20px 10px 10px;
+                    border-bottom: 1px solid color('border');
+                    margin-bottom: 2px;
+                    color: color('base');
+                }
+
+                .set-reminder-emails.no-reminder-found{
+                    height: calc(100vh - 352px);
+                    width: 100%;
+                    @extend .flex;
+                    justify-content: center;
+                    align-items: center;
+                    .settings__no-data-reminder{
+
+                    }
+                }
+
+                
+            }
+
+        }
+
+        &--right{
+            .nlre-settings-body.settings__content-area--body{
+                padding-top: 20px;
+                position: relative;
+                
+
+                .row *{
+                    z-index: 0;
+                }
+
+                &.makeFreez{
+                    pointer-events: none;
+                    cursor: not-allowed;
+                    -webkit-touch-callout: none; /* iOS Safari */
+                    -webkit-user-select: none; /* Safari */
+                    -khtml-user-select: none; /* Konqueror HTML */
+                    -moz-user-select: none; /* Old versions of Firefox */
+                        -ms-user-select: none; /* Internet Explorer/Edge */
+                            user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+
+                    &::before{
+                        background-color: color('widgetBg');
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        bottom: 0;
+                        left: 0;
+                        z-index: 9999;
+                        display: block;
+                        opacity: 0.5;
+                        pointer-events: none;
+                        cursor: not-allowed;
+                        width: 100%;
+                        height: 100%;
+                        -webkit-touch-callout: none; /* iOS Safari */
+                        -webkit-user-select: none; /* Safari */
+                        -khtml-user-select: none; /* Konqueror HTML */
+                        -moz-user-select: none; /* Old versions of Firefox */
+                            -ms-user-select: none; /* Internet Explorer/Edge */
+                                user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+                    }
+                }
+
+                .freez{
+                    background-color: color('widgetBg');
+                    //filter: blur(20%);
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                    z-index: 9999;
+                    display: block;
+                    opacity: 0.5;
+                    pointer-events: none;
+                    cursor: not-allowed;
+                    border: 2px solid;
+                    width: 100%;
+                    height: 100%;
+
+                    -webkit-touch-callout: none; /* iOS Safari */
+                    -webkit-user-select: none; /* Safari */
+                    -khtml-user-select: none; /* Konqueror HTML */
+                    -moz-user-select: none; /* Old versions of Firefox */
+                        -ms-user-select: none; /* Internet Explorer/Edge */
+                            user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+                }
+            }
+
+            &.data-not-found{
+                height: calc(100vh - 191px);
+                @extend .flex;
+                @extend .flex-center;
+
+                .settings__data-not-found{
+                    margin: auto;
+                    @include font(normal,1.4,'nr','base');
+                    p{
+                        max-width: fit-content;
+                    }
+                }
+            }
+
+            
+        }
+
+        .set-reminder-emails{
+            ul{
+                @extend .list-style-none;
+                >li{
+                    display: block;
+
+                    &:nth-child(2n+0){
+                        .settings__reminder-control{
+                            background-color: color('widgetBg');
+                        }
+                    }
+
+                    &.active{
+                        .settings__reminder-control{
+                            background-color: lighten(color('primary'),35%);
+                        }
+                    }
+
+                    & + li{
+                        //border-top: 1px solid color('border');
+                    }
+                }
+            }
+        }
+        
+    }//body
+
+}
+
+.nlre-settings{
+    &-header{
+        &.settings__content-area--subheader{
+
+            .settings__content-area--header-title, .settings__content-area--subheader-title{
+                line-height: 1.4;
+                .h2{
+                    text-transform: capitalize;
+                }
+            }
+            .dropdown{
+                margin: 0 20px;
+                .settings__tokenpopup.arrow-right{
+                    right: 10px;
+                }
+            }
+
+        }
+    }//header
+
+    &-body{
+        @include scrollbar();
+        overflow-y: auto;
+        
+        &.settings__content-area--body{
+            padding: 30px;
+        }        
+    }//body
+
+    &-footer{
+        min-height: 61px;
+
+        &.settings__content-area--footer{
+            &.nlre-settings-footer-btn{
+                cursor: pointer;
+                text-align: center;
+                padding: 0;
+
+                .settings-btn{
+                    width: 100%;
+                    padding: 19px;
+                    @include font(400,1.4,'nr','base');
+
+                    em,i,.zmdi{
+                        font-weight: 500 !important;
+                    }
+                }
+            }
+        }
+    }//footer
+}//.need-list-reminder

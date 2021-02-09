@@ -30,16 +30,16 @@ namespace Milestone.Entity.Models
         // Reverse navigation
 
         /// <summary>
-        /// Child MilestoneMappings where [MilestoneMapping].[LosMilestoneId] point to this entity (FK_MilestoneMapping_LosTenantMilestone_Id)
+        /// Child MilestoneMappings where [MilestoneMapping].[LosMilestoneId] point to this entity (FK_MilestoneMapping_LosTenantMilestone)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<MilestoneMapping> MilestoneMappings { get; set; } // MilestoneMapping.FK_MilestoneMapping_LosTenantMilestone_Id
+        public virtual System.Collections.Generic.ICollection<MilestoneMapping> MilestoneMappings { get; set; } // MilestoneMapping.FK_MilestoneMapping_LosTenantMilestone
 
         // Foreign keys
 
         /// <summary>
-        /// Parent ExternalOriginator pointed by [LosTenantMilestone].([ExternalOriginatorId]) (FK_LosTenantMilestone_ExternalOriginator_Id)
+        /// Parent ExternalOriginator pointed by [LosTenantMilestone].([ExternalOriginatorId]) (FK_LosTenantMilestone_ExternalOriginator)
         /// </summary>
-        public virtual ExternalOriginator ExternalOriginator { get; set; } // FK_LosTenantMilestone_ExternalOriginator_Id
+        public virtual ExternalOriginator ExternalOriginator { get; set; } // FK_LosTenantMilestone_ExternalOriginator
 
         public LosTenantMilestone()
         {

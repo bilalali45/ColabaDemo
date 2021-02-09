@@ -2,7 +2,7 @@ import React, {ChangeEvent, useState} from 'react';
 import { CategoryDocument } from '../../Entities/Models/CategoryDocument';
 import { Document } from '../../Entities/Models/Document';
 import { TemplateDocument } from '../../Entities/Models/TemplateDocument';
-import { SCGSearch } from '../Shared/SVG';
+import { SVGSearch } from '../Shared/SVG';
 import { SelectedDocumentTypeList } from './SelectedDocumentTypeList';
 
 type SelectedTypeType = {
@@ -55,7 +55,7 @@ export const CommonDocuments = ({
         />
         <button className="settings__add-docs-popup--search-submit">
           {/* <i className="zmdi zmdi-search"></i> */}
-          <SCGSearch/>
+          <SVGSearch/>
         </button>
       </div>
 

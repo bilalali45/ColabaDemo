@@ -32,9 +32,9 @@ namespace Milestone.Entity.Models
         // Foreign keys
 
         /// <summary>
-        /// Parent Milestone pointed by [TenantMilestone].([MilestoneId]) (FK_TenantMilestone_Milestone_Id)
+        /// Parent Milestone pointed by [TenantMilestone].([MilestoneId]) (FK_TenantMilestone_Milestone)
         /// </summary>
-        public virtual Milestone Milestone { get; set; } // FK_TenantMilestone_Milestone_Id
+        public virtual Milestone Milestone { get; set; } // FK_TenantMilestone_Milestone
 
         public TenantMilestone()
         {

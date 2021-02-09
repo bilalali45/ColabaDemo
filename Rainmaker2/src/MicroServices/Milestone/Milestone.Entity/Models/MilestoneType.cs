@@ -27,9 +27,9 @@ namespace Milestone.Entity.Models
         // Reverse navigation
 
         /// <summary>
-        /// Child Milestones where [Milestone].[MilestoneTypeId] point to this entity (FK_Milestone_MilestoneType_Id)
+        /// Child Milestones where [Milestone].[MilestoneTypeId] point to this entity (FK_Milestone_MilestoneType)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<Milestone> Milestones { get; set; } // Milestone.FK_Milestone_MilestoneType_Id
+        public virtual System.Collections.Generic.ICollection<Milestone> Milestones { get; set; } // Milestone.FK_Milestone_MilestoneType
 
         public MilestoneType()
         {

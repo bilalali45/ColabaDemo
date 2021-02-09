@@ -1,4 +1,4 @@
-// @include scrollbar(11,11);
+// @include scrollbar();
 @mixin scrollbar($w: 8, $h: 8) {
   scrollbar-color: color('scroll');
   &::-webkit-scrollbar-track {

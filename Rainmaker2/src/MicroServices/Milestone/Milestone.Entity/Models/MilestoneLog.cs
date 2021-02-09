@@ -25,14 +25,14 @@ namespace Milestone.Entity.Models
         public int LoanApplicationId { get; set; } // LoanApplicationId
         public int MilestoneId { get; set; } // MilestoneId
         public System.DateTime CreatedDateUtc { get; set; } // CreatedDateUtc
-        public int? UserId { get; set; }
+        public int? UserId { get; set; } // UserId
 
         // Foreign keys
 
         /// <summary>
-        /// Parent Milestone pointed by [MilestoneLog].([MilestoneId]) (FK_MilestoneLog_Milestone_Id)
+        /// Parent Milestone pointed by [MilestoneLog].([MilestoneId]) (FK_MilestoneLog_Milestone)
         /// </summary>
-        public virtual Milestone Milestone { get; set; } // FK_MilestoneLog_Milestone_Id
+        public virtual Milestone Milestone { get; set; } // FK_MilestoneLog_Milestone
 
         public MilestoneLog()
         {

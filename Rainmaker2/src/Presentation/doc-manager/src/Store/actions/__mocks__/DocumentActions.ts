@@ -504,7 +504,6 @@ export default class DocumentActions {
     file: File,
     dispatchProgress: Function,
   ) {
-    console.log("file item")
   }
 
   static async getFileToView(id: string, requestId: string, docId: string, fileId: string, isFromCategory: boolean, isFromWorkbench: boolean, isFromTrash: boolean, dispatch: Function) {
@@ -512,8 +511,6 @@ export default class DocumentActions {
 
     let blob = await createMockFile('test.jpg', 30000, 'arrayBuffer');
     // let file1 = new File([blob]);
-
-    console.log(blob)
     return blob;
     //   }
     //   catch (error) {
@@ -526,31 +523,14 @@ export default class DocumentActions {
 
 
   static async addDocCategory(locationId: string, requestData: any) {
-
-    try {
-
-      return true;
-    } catch (error) {
-      console.log(error);
-    }
-
-
+    return true;
+    
   }
 
   static async deleteDocCategory(id: string,
     requestId: string,
     docId: string) {
-
-
-
-    try {
-
       return true;
-    } catch (error) {
-      console.log(error);
-    }
-
-
   }
 
 
@@ -560,15 +540,7 @@ export default class DocumentActions {
     docId: string,
     fileId: string,
     newName: string) {
-
-    try {
-
       return true;
-    } catch (error) {
-      console.log(error);
-    }
-
-
   }
 
   static async reassignDoc(
@@ -578,17 +550,7 @@ export default class DocumentActions {
     fromFileId: string,
     toRequestId: string,
     toDocId: string,) {
-
-
-
-    try {
-
       return true;
-    } catch (error) {
-      console.log(error);
-    }
-
-
   }
 
 
@@ -670,99 +632,40 @@ export default class DocumentActions {
   }
 
   static async moveFileToWorkbenchLocal(url: any, body: any) {
-    try {
-
-      return true;
-    } catch (error) {
-      console.log(error);
-    }
-
+    return true;
   }
 
   static async moveFromWorkBenchToCategory(id: string, toRequestId: string, toDocId: string, fromFileId: string) {
-
-    try {
-
-      return true;
-    } catch (error) {
-      console.log(error);
-    }
+    return true;
+    
   }
 
 
   static async moveFromTrashToCategory(id: string, toRequestId: string, toDocId: string, fromFileId: string) {
-
-    try {
-
-      return true;
-    } catch (error) {
-      console.log(error);
-    }
+    return true;
   }
 
   static async moveCatFileToTrash(id: string, requestId: string, docId: string, fileId: string, cancelCurrentFileViewRequest: boolean) {
-
-
-    try {
-
-      return true;
-    } catch (error) {
-      console.log(error);
-    }
-    return false;
+    return true;
   }
 
   static async moveWorkBenchFileToTrash(id: string, fileId: string, cancelCurrentFileViewRequest: boolean) {
-
-    try {
-
-      return true;
-    } catch (error) {
-      console.log(error);
-    }
-    return false;
+    return true;
   }
 
   static async moveTrashFileToWorkBench(id: string, fileId: string) {
-
-
-    try {
-
-      return true;
-    } catch (error) {
-      console.log(error);
-    }
+    return true;
   }
 
   static async DeleteCategoryFile(fileData: any) {
-
-    try {
-
-      return true;
-    } catch (error) {
-      console.log(error);
-    }
+    return true;
   }
   static async DeleteTrashFile(id: string, fileId: string) {
-
-
-    try {
-
-      return true;
-    } catch (error) {
-      console.log(error);
-    }
+    return true;
   }
 
   static async DeleteWorkbenchFile(id: string, fileId: string) {
-
-
-    try {
-
-      return true;
-    } catch (error) {
-      console.log(error);
-    }
+    return true;
   }
 
   static async SaveCategoryDocument(document: any, file: File, dispatchProgress: Function, currentDoc: any) {
@@ -827,14 +730,7 @@ export default class DocumentActions {
 
 
   static async syncFileToLos(fileData: any) {
-
-    try {
-
-      return true;
-    } catch (error) {
-      console.log('error', '-------------------------------------', error);
-      return Promise.reject(error);
-    }
+    return true;
   }
 
   static getFileName(file: any) {

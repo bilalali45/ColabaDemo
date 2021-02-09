@@ -54,7 +54,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose --silent",
     "test-dev": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose",
-    "test-coverage": "react-scripts test --verbose --silent --coverage . --coverageDirectory='coverage'",
+    "test-coverage": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose --silent --coverage . --coverageDirectory='coverage'",
     "eject": "react-scripts eject"
   },
   "browserslist": {
@@ -73,5 +73,6 @@
     "@types/draft-convert": "^2.1.1",
     "@types/lodash": "^4.14.157",
     "jest-environment-jsdom-sixteen": "^1.0.3"
+
   }
 }

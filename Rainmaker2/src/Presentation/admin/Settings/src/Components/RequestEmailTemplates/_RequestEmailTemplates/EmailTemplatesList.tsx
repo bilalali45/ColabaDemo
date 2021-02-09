@@ -69,7 +69,7 @@ export const EmailTemplatesList = ({addEmailTemplateClick, insertTokenClick}: pr
       }); 
       insertTokenClick(false); 
       return () => {
-        dispatch({type: RequestEmailTemplateActionsType.SetRequestEmailTemplateData, payload: []});
+        dispatch({type: RequestEmailTemplateActionsType.SetRequestEmailTemplateData, payload: undefined});
       }  
    },[])
 
@@ -183,30 +183,35 @@ const renderRemoveButton = (item: RequestEmailTemplate) => {
 }
 
 const renderTableRows = () => {
-  return emailTemplates.map((item: RequestEmailTemplate, index: number) => {
-    return (
-      <>      <tr key={index}>   
-                     
-              <td data-testid="td-template-name" onDoubleClick={() => setSelectedEmailTemplateInStore(item)} >{truncate(item.templateName, 56)}</td>
-              <td data-testid="td-description" onDoubleClick={() => setSelectedEmailTemplateInStore(item)}>{truncate(item.templateDescription, 56)}</td>
-              <td data-testid="td-subject" onDoubleClick={() => setSelectedEmailTemplateInStore(item)}>{truncate(item.subject, 56)}</td>
-              <td data-testid="td-sort-order">
-                <button onClick={() => swapElementInList(true, item, index)} className={`settings-btn settings-btn-sort ${index === 0 ? 'settings-btn-disabled': ''}`}><i className="zmdi zmdi-chevron-up"></i></button>
-                <button onClick={() => swapElementInList(false, item, index)} className={`settings-btn settings-btn-sort ${index === emailTemplates.length -1 ? 'settings-btn-disabled': '' }`}><i className="zmdi zmdi-chevron-down"></i></button>
-              </td>
-              <td data-testid="td-delete">
-                { item.showDelete 
-                ? 
-                renderRemoveButton(item)
-                : 
-                renderCrossButton(item)
-                }                
-              </td>
-              </tr>     
-            
-      </>
-    ) 
-  });  
+    if (emailTemplates.length>0){
+      return emailTemplates.map((item: RequestEmailTemplate, index: number) => {
+        return (
+          <>      <tr key={index}>   
+                         
+                  <td data-testid="td-template-name" onDoubleClick={() => setSelectedEmailTemplateInStore(item)} >{truncate(item.templateName, 56)}</td>
+                  <td data-testid="td-description" onDoubleClick={() => setSelectedEmailTemplateInStore(item)}>{truncate(item.templateDescription, 56)}</td>
+                  <td data-testid="td-subject" onDoubleClick={() => setSelectedEmailTemplateInStore(item)}>{truncate(item.subject, 56)}</td>
+                  <td data-testid="td-sort-order">
+                    <button onClick={() => swapElementInList(true, item, index)} className={`settings-btn settings-btn-sort ${index === 0 ? 'settings-btn-disabled': ''}`}><i className="zmdi zmdi-chevron-up"></i></button>
+                    <button onClick={() => swapElementInList(false, item, index)} className={`settings-btn settings-btn-sort ${index === emailTemplates.length -1 ? 'settings-btn-disabled': '' }`}><i className="zmdi zmdi-chevron-down"></i></button>
+                  </td>
+                  <td data-testid="td-delete">
+                    { item.showDelete 
+                    ? 
+                    renderRemoveButton(item)
+                    : 
+                    renderCrossButton(item)
+                    }                
+                  </td>
+                  </tr>     
+                
+          </>
+        ) 
+      });  
+    }else{
+      return(<tr><td className="text-center" colSpan={5}>no record found</td></tr>);
+    }
+  
 }
 
 

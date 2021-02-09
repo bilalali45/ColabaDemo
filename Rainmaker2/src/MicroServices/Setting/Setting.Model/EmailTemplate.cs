@@ -69,7 +69,16 @@ namespace Setting.Model
         public string key { get; set; }
         public bool isEmail { get; set; }
     }
-
+    public class TokenModelEmailReminder
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+        public string symbol { get; set; }
+        public string description { get; set; }
+        public string key { get; set; }
+        public string value { get; set; }
+        public string defaultValue { get; set; }
+    }
     public class TemplateIdModel
     {
         [Required(ErrorMessage = ValidationMessages.ValidationFieldEmpty)]
@@ -96,5 +105,20 @@ namespace Setting.Model
         public string subject { get; set; }
         public string emailBody { get; set; }
         public List<TokenModel> lstTokens { get; set; }
+    }
+
+    public class EmailReminderTemplateModel
+    {
+        public string id { get; set; }
+        public int loanApplicationId { get; set; }
+        public int tenantId { get; set; }
+        public string templateName { get; set; }
+        public string templateDescription { get; set; }
+        public string fromAddress { get; set; }
+        public string CCAddress { get; set; }
+        public string toAddress { get; set; }
+        public string subject { get; set; }
+        public string emailBody { get; set; }
+        public List<TokenModelEmailReminder> lstTokens { get; set; }
     }
 }

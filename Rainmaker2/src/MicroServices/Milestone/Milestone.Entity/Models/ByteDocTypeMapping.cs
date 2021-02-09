@@ -24,7 +24,7 @@ namespace Milestone.Entity.Models
         public int Id { get; set; } // Id (Primary key)
         public string RmDocTypeName { get; set; } // RmDocTypeName (length: 50)
         public string ByteDoctypeName { get; set; } // ByteDoctypeName (length: 50)
-        public int? ByteDocCategoryId { get; set; } // ByteDocCategoryId
+        public int ByteDocCategoryId { get; set; } // ByteDocCategoryId
 
         // Foreign keys
 

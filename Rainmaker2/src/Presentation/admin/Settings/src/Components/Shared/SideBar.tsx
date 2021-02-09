@@ -4,7 +4,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 import { LocalDB } from '../../Utils/LocalDB';
 import { navigation, Role } from '../../Store/Navigation';
-import { SVGUser, SVGTodoList, SVGUsers, SVGManageUsers, SVGTeamRoles, SVGNeedList, SVGDocumentTemplates, SVGRequestEmailTemplates, SVGIntegrations, SVGLoanOriginationSystem } from './SVG';
+import { SVGUser, SVGTodoList, SVGUsers, SVGManageUsers, SVGTeamRoles, SVGNeedList, SVGDocumentTemplates, SVGRequestEmailTemplates, SVGIntegrations, SVGLoanOriginationSystem, SVGNeedListReminderEmails, SVGLoanStatusUpdate } from './SVG';
 import { AlertBox } from './AlertBox';
 import { Store } from '../../Store/Store';
 import { RequestEmailTemplateActionsType } from '../../Store/reducers/RequestEmailTemplateReducer';
@@ -66,6 +66,10 @@ export const SideBar: FunctionComponent<SideNav> = ({ props }: any) => {
         return (<SVGLoanOriginationSystem />);
       case 'Integrations':
         return (<SVGIntegrations />);
+      case 'NeedsListReminderEmails':
+        return (<SVGNeedListReminderEmails/>);
+      case 'LoanStatusUpdate':
+        return (<SVGLoanStatusUpdate/>);
       default:
         return (<SVGUser />);
     }

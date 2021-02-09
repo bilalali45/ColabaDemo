@@ -5,7 +5,6 @@ import { ApplicationEnv } from './helpers/AppEnv';
 const cookies = new Cookies();
 
 export class LocalDB {
-  //#region Local DB get methods
   static getAuthToken() {
     return this.decodeString(localStorage.getItem('Rainmaker2Token'));
   }

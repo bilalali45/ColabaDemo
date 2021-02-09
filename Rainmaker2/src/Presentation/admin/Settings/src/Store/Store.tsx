@@ -8,6 +8,8 @@ import { AssignedRoleType } from './reducers/AssignedRoleReducer';
 import { RequestEmailTemplateType } from './reducers/RequestEmailTemplateReducer';
 import { LoanOfficerType } from './reducers/LoanOfficerReducer';
 import { OrganizationType } from './reducers/OrganizationReducer';
+import { ReminderEmailType } from './reducers/ReminderEmailReducer';
+import { LoanStatusUpdateType } from './reducers/LoanStatusUpdateReducer';
 const baseUrl: any = window?.envConfig?.API_BASE_URL;
 const httpClient = new Http(baseUrl, 'Rainmaker2Token');
 
@@ -24,6 +26,8 @@ export type InitialStateType = {
   requestEmailTemplateManager: RequestEmailTemplateType | {};
   loanOfficerManager:LoanOfficerType | {};
   organizationManager:OrganizationType | {};
+  emailReminderManager:ReminderEmailType | {};
+  loanStatusManager: LoanStatusUpdateType | {};
 };
 
 export const InitialState = {
@@ -35,7 +39,9 @@ export const InitialState = {
   assignedRolesManager: {},
   requestEmailTemplateManager: {},
   loanOfficerManager:{},
-  organizationManager:{}
+  organizationManager:{},
+  emailReminderManager:{},
+  loanStatusManager: {}
 };
 
 const Store = createContext<{

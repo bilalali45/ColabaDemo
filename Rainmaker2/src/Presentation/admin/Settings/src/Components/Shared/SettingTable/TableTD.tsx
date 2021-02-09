@@ -1,9 +1,9 @@
 import React from 'react'
 
 interface TableTDProps{
-    valign?:any,
-    align?:any,
-    className?:any
+    valign?:string,
+    align?:string,
+    className?:string
 }
 
 const TableTD:React.FC<TableTDProps> = ({valign,align,className,children}) => {
@@ -53,7 +53,7 @@ const TableTD:React.FC<TableTDProps> = ({valign,align,className,children}) => {
     }
 
     return (
-        <div className={`settings__table--td ${className != undefined ? className : ''}`} style={Style}>
+        <div data-testid="TableTD" className={`settings__table--td ${className != undefined ? className : ''}`} style={Style}>
             {children}
         </div>
     )

@@ -20,7 +20,7 @@ const InputCheckedBox:React.FC<InputCheckedBoxProps> = ({id, className, name, ch
     } 
 
     return (
-        <label className="settings__input-checkbox">
+        <label data-testid="InputCheckedBox" className="settings__input-checkbox">
             <input  ref={refInput} type="checkbox" data-testid={testId} onClick={() =>  onchange()} id={id} className={className} name={name} checked={checked} value={value}/>
             <span className={`settings__input-checkbox-type`}></span>
             <label className={`settings__input-checkbox-label`} onClick={makeClick}>{children}</label>

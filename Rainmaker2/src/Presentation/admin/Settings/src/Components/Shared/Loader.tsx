@@ -14,25 +14,18 @@ const Loader = ({ size,hasBG,containerHeight, customStyle }: Loaderprops) => {
     switch (size){
       case 'xlg':
         return sizes.xlg;
-        break;
       case 'lg':
         return sizes.lg;
-        break;
       case 'md':
         return sizes.md;
-        break;
       case 'nr':
         return sizes.nr;
-        break;
       case 'sm':
         return sizes.sm;
-        break;
       case 'xs':
         return sizes.xs;
-        break;
       default:
         return sizes.nr;
-        break;
     }
   }
 

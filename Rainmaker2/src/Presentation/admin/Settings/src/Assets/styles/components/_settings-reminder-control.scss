@@ -1,0 +1,158 @@
+.settings__reminder-control{
+    padding: 10px;
+    background-color: color('reminderControlBg');
+    position: relative;
+
+    &-wrap{
+        display: flex;
+        display: -webkit-flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &-count{
+        display: inline-block;
+        padding: 2px 6px;
+        background-color: color('primary');
+        color: color('primary-text');
+        @include font(500,26px,'md','base');
+        text-align: center;
+        min-width: 30px;
+        cursor: pointer;
+        height: 30px;
+    }
+
+    &-dropdown{
+        width: calc(100% - 64px);
+        cursor: pointer;
+        display: flex;
+        display: -webkit-flex;
+        justify-content: space-between;
+        align-self: center;
+        
+        &--text{
+            color: color('reminderText');
+            display: block;
+            background-color: color('reminderTextBg');
+            border: 1px solid color('border');
+            padding: 5px 10px;
+            @include font(normal,22px,'nr','base');
+            width: 100%;
+            height: 32px;
+            @extend .text-ellipsis;
+            span{
+                color: color('reminderHighlightedText');
+            }
+        }//--text
+
+        &--btn{
+            font-size: 25px;
+            color: color('secondry');
+            background-color: color('reminderArrowBg');
+            border: 1px solid color('border');
+            display: inline-block;
+            padding: 2px 10px;
+            line-height: 1;
+            border-left: 0;
+
+            &:focus{
+                color: color('primary');
+            }
+
+        }//--btn
+
+    }//-dropdown
+
+    &-dropdown-menu{
+        background-color: color('widgetBg');
+        position: absolute;
+        top: 100%;
+        left: 46px;        
+        border: 1px solid color('border');
+        z-index: 5;
+        box-shadow: 0 1px 5px 0px rgba(0,0,0,0.1);
+
+        &-wrap{
+            padding: 10px;
+            white-space: nowrap;
+            position: relative;
+
+            &::before,
+            &::after{
+                content: "";
+                position: absolute;
+            }
+
+            &::before{                
+                top: -10px;
+                left: 15px;
+                @include arrow(top, color('border'), 10px);
+            }
+
+            &::after{
+                top: -8px;
+                left: 16px;
+                @include arrow(top, color('widgetBg'), 9px);
+            }
+        }
+
+        label{
+            display: inline-block;
+            vertical-align: middle;
+            padding: 0 15px 0 0;
+        }
+
+        .settings__dropdown + label{
+            padding-left: 15px;
+        }
+
+        .settings__switch{
+            margin-left: 10px;
+        }
+    }
+
+    &-btn{
+        border: none;
+        background-color: transparent;
+        display: inline-block;
+        vertical-align: middle;
+        font-size: fontSize('iconText');
+        color: color('secondry');
+        cursor: pointer;
+
+        &:focus{
+            color: color('primary');
+        }
+
+        &-wrap{
+            padding: 4px 10px;
+            display: block;
+        }
+
+        .settings__dropdownlist-menu{
+            width: 165px;
+            @include font(normal,1.4,'nr','base');
+            .settings__dropdownlist-wrap{
+                >ul{
+                    li{
+                        border-top: 1px solid color('border');
+                        button{
+                            @include font(normal,1.4,'nr','base');
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.disabled{
+        .settings__reminder-control{
+            &-count,
+            &-dropdown{
+                opacity: 0.3;
+                pointer-events: none;
+            }
+        }   
+    }
+
+}

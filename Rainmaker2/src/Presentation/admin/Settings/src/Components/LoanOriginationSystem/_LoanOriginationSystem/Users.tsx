@@ -17,7 +17,7 @@ import { sortList } from "../../../Utils/helpers/Sort";
 import { SimpleSort } from "../../../Utils/helpers/Enums";
 
 type Props = {
-  //backHandler?: Function
+    
 }
 
 export const LOSUsers = ({  }: Props) => {
@@ -98,38 +98,43 @@ export const LOSUsers = ({  }: Props) => {
         setLoanOfficer(users);
     }
 
-  return (
-      <>
-          <ContentBody className="loan-origination-system los-user-list">
-          <table className="table table-striped request-email-templates-records">
-                    <colgroup>
-                      <col span={1} style={{ width: '1%' }} />
-                      <col span={2} style={{ width: '10%' }} />
-                      <col span={2} style={{ width: '15%' }} />
-                      <col span={3} />
-                  </colgroup>
-                  <thead>
-                        <tr>
-                            <th scope="col"></th>
-                            <th data-testid="th-templateName" scope="col"><TableSort callBackFunction = {arrowSortHandler}>Name</TableSort></th>
-                            <th data-testid="th-byteusername"scope="col">Byte User Name</th>
-                            <th scope="col"></th>
-                        </tr>
-                  </thead>
-                  <tbody>
-                  {renderRows()}
-                  </tbody>
-            
-            </table>
-          </ContentBody>
-          {
-              footer &&
-              <ContentFooter>
-              <button data-testid= "save-btn" type="submit" className="settings-btn settings-btn-primary" onClick={() =>handlerUpdate()}>Save</button>
-              <button data-testid= "cancel-btn" className="settings-btn settings-btn-secondry"  onClick={() =>handlerCancel()}>Cancel</button>
-              </ContentFooter>
-          }
-         
-      </>
-  )
+    if(!loanOfficers){
+        return(<WidgetLoader reduceHeight="110px"/>)
+    }else{
+        return (
+            <>
+                <ContentBody className="loan-origination-system los-user-list">
+                <table className="table table-striped request-email-templates-records">
+                          <colgroup>
+                            <col span={1} style={{ width: '1%' }} />
+                            <col span={2} style={{ width: '10%' }} />
+                            <col span={2} style={{ width: '15%' }} />
+                            <col span={3} />
+                        </colgroup>
+                        <thead>
+                              <tr>
+                                  <th scope="col"></th>
+                                  <th data-testid="th-templateName" scope="col"><TableSort callBackFunction = {arrowSortHandler}>Name</TableSort></th>
+                                  <th data-testid="th-byteusername"scope="col">Byte User Name</th>
+                                  <th scope="col"></th>
+                              </tr>
+                        </thead>
+                        <tbody>
+                        {renderRows()}
+                        </tbody>
+                  
+                  </table>
+                </ContentBody>
+                {
+                    footer &&
+                    <ContentFooter>
+                    <button data-testid= "save-btn" type="submit" className="settings-btn settings-btn-primary" onClick={() =>handlerUpdate()}>Save</button>
+                    <button data-testid= "cancel-btn" className="settings-btn settings-btn-secondry"  onClick={() =>handlerCancel()}>Cancel</button>
+                    </ContentFooter>
+                }
+               
+            </>
+        )
+    }
+  
 }

@@ -1,0 +1,682 @@
+{
+	"info": {
+		"_postman_id": "d568d9ac-221c-4599-b95a-388bc4bc5f9c",
+		"name": "NeedListImprovement2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AddEmailReminder",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"noOfDays\":5,\r\n      \"recurringTime\":\"2021-01-18\",\r\n      \"email\":[{\r\n            \"fromAddress\":\"test@test.com\", \r\n            \"ccAddress\":\"Ali@gmail.com,hasan@gmail.com\", \r\n            \"subject\":\"You have new tasks to complete for your Texas Trust Home Loans loan application\", \r\n            \"emailBody\":\"<p>Hello </p><p>Please submit following documents</p><p>###DoucmentList###</p><p>Thank you.</p><p><strong>Texas Trust Home Loans</strong></p>\"\r\n      }]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/emailreminder/AddEmailReminder",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"emailreminder",
+						"AddEmailReminder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateEmailReminder",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"id\":\"6006eb4713394a3e188324e6\",\r\n      \"noOfDays\":0,\r\n      \"recurringTime\":\"2021-01-30 14:00:00.000Z\",\r\n      \"email\":[{\r\n            \"fromAddress\":\"test@test.com\", \r\n            \"ccAddress\":\"talha@gmail.com\", \r\n            \"subject\":\"You have new tasks to complete for your Texas Trust Home Loans loan application\", \r\n            \"emailBody\":\"<p>Hello </p><p>Please submit following documents</p><p>###DoucmentList###</p><p>Thank you.</p><p><strong>Texas Trust Home Loans</strong></p>\"\r\n      }]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/emailreminder/UpdateEmailReminder",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"emailreminder",
+						"UpdateEmailReminder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateLoanStatuses",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"isActive\": true,\r\n    \"loanStatuses\": [\r\n        {\r\n            \"id\": 2,\r\n            \"mcuName\": \"Application Submitted\",\r\n            \"statusId\": 0,\r\n            \"tenantId\": 0,\r\n            \"fromStatusId\": 0,\r\n            \"fromStatus\": null,\r\n            \"toStatusId\": 0,\r\n            \"toStatus\": null,\r\n            \"noofDays\": 0,\r\n            \"recurringTime\": \"0001-01-01T00:00:00\",\r\n            \"isActive\": false,\r\n            \"emailId\": 0,\r\n            \"fromAddress\": null,\r\n            \"ccAddress\": null,\r\n            \"subject\": null,\r\n            \"body\": null\r\n        },\r\n        {\r\n            \"id\": 3,\r\n            \"mcuName\": \"Processing\",\r\n            \"statusId\": 0,\r\n            \"tenantId\": 1,\r\n            \"fromStatusId\": 3,\r\n            \"fromStatus\": \"Processing\",\r\n            \"toStatusId\": 7,\r\n            \"toStatus\": \"Completed\",\r\n            \"noofDays\": 2,\r\n            \"recurringTime\": \"2021-01-25T01:26:45.707\",\r\n            \"isActive\": true,\r\n            \"emailId\": 0,\r\n            \"fromAddress\": \"###RequestorUserEmail###\",\r\n            \"ccAddress\": \"###Co-BorrowerEmailAddress###\",\r\n            \"subject\": \"###BusinessUnitName###\",\r\n            \"body\": \"<p>vvvv</p>\\\\n\"\r\n        },\r\n        {\r\n            \"id\": 4,\r\n            \"mcuName\": \"Underwriting\",\r\n            \"statusId\": 0,\r\n            \"tenantId\": 0,\r\n            \"fromStatusId\": 0,\r\n            \"fromStatus\": null,\r\n            \"toStatusId\": 0,\r\n            \"toStatus\": null,\r\n            \"noofDays\": 0,\r\n            \"recurringTime\": \"0001-01-01T00:00:00\",\r\n            \"isActive\": true,\r\n            \"emailId\": 0,\r\n             \"fromAddress\": null,\r\n            \"ccAddress\": null,\r\n            \"subject\": null,\r\n            \"body\": null\r\n        },\r\n        {\r\n            \"id\": 5,\r\n            \"mcuName\": \"Approved with Conditions\",\r\n            \"statusId\": 0,\r\n            \"tenantId\": 1,\r\n            \"fromStatusId\": 5,\r\n            \"fromStatus\": \"Approved with Conditions\",\r\n            \"toStatusId\": 6,\r\n            \"toStatus\": \"Closing\",\r\n            \"noofDays\": 2,\r\n            \"recurringTime\": \"2021-01-25T01:26:45.707\",\r\n            \"isActive\": true,\r\n            \"emailId\": 0,\r\n            \"fromAddress\": \"###RequestorUserEmail###\",\r\n            \"ccAddress\": \"###Co-BorrowerEmailAddress###\",\r\n            \"subject\": \"###BusinessUnitName###\",\r\n            \"body\": \"<p>bbbbb</p>\\\\n\"\r\n        },\r\n        {\r\n            \"id\": 6,\r\n            \"mcuName\": \"Closing\",\r\n            \"statusId\": 0,\r\n            \"tenantId\": 0,\r\n            \"fromStatusId\": 0,\r\n            \"fromStatus\": null,\r\n            \"toStatusId\": 0,\r\n            \"toStatus\": null,\r\n            \"noofDays\": 0,\r\n            \"recurringTime\": \"0001-01-01T00:00:00\",\r\n            \"isActive\": false,\r\n            \"emailId\": 0,\r\n            \"fromAddress\": null,\r\n            \"ccAddress\": null,\r\n            \"subject\": null,\r\n            \"body\": null\r\n        },\r\n        {\r\n            \"id\": 7,\r\n            \"mcuName\": \"Completed\",\r\n            \"statusId\": 0,\r\n            \"tenantId\": 0,\r\n            \"fromStatusId\": 0,\r\n            \"fromStatus\": null,\r\n            \"toStatusId\": 0,\r\n            \"toStatus\": null,\r\n            \"noofDays\": 0,\r\n            \"recurringTime\": \"0001-01-01T00:00:00\",\r\n            \"isActive\": false,\r\n            \"emailId\": 0,\r\n            \"fromAddress\": null,\r\n            \"ccAddress\": null,\r\n            \"subject\": null,\r\n            \"body\": null\r\n        },\r\n        {\r\n            \"id\": 8,\r\n            \"mcuName\": \"Application Denied\",\r\n            \"statusId\": 0,\r\n            \"tenantId\": 0,\r\n            \"fromStatusId\": 8,\r\n            \"fromStatus\": null,\r\n            \"toStatusId\": 10,\r\n            \"toStatus\": null,\r\n            \"noofDays\": 1,\r\n            \"recurringTime\": \"2021-01-25T01:26:45.707\",\r\n            \"isActive\": true,\r\n            \"emailId\": 0,\r\n            \"fromAddress\": \"###RequestorUserEmail###\",\r\n            \"ccAddress\": \"###Co-BorrowerEmailAddress###\",\r\n            \"subject\": \"###BusinessUnitName###\",\r\n            \"body\": \"<p>bbbbb</p>\\\\n\"\r\n        },\r\n        {\r\n            \"id\": 9,\r\n            \"mcuName\": \"Application Withdrawn\",\r\n            \"statusId\": 0,\r\n            \"tenantId\": 0,\r\n            \"fromStatusId\": 0,\r\n            \"fromStatus\": null,\r\n            \"toStatusId\": 0,\r\n            \"toStatus\": null,\r\n            \"noofDays\": 0,\r\n            \"recurringTime\": \"0001-01-01T00:00:00\",\r\n            \"isActive\": false,\r\n            \"emailId\": 0,\r\n            \"fromAddress\": null,\r\n            \"ccAddress\": null,\r\n            \"subject\": null,\r\n            \"body\": null\r\n        },\r\n        {\r\n            \"id\": 10,\r\n            \"mcuName\": \"Closing on Hold\",\r\n            \"statusId\": 0,\r\n            \"tenantId\": 0,\r\n            \"fromStatusId\": 0,\r\n            \"fromStatus\": null,\r\n            \"toStatusId\": 0,\r\n            \"toStatus\": null,\r\n            \"noofDays\": 0,\r\n            \"recurringTime\": \"0001-01-01T00:00:00\",\r\n            \"isActive\": false,\r\n            \"emailId\": 0,\r\n            \"fromAddress\": null,\r\n            \"ccAddress\": null,\r\n            \"subject\": null,\r\n            \"body\": null\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Milestone/Setting/UpdateLoanStatuses",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Milestone",
+						"Setting",
+						"UpdateLoanStatuses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteEmailReminder",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"id\":\"5ff8621e44a44795c6ea4e10\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/emailreminder/DeleteEmailReminder",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"emailreminder",
+						"DeleteEmailReminder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteEmailReminderById",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"id\":\"5ffc614c77ac9218e8a3e430\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Setting/emailreminder/DeleteEmailReminder",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Setting",
+						"emailreminder",
+						"DeleteEmailReminder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EnableDisableEmailReminder",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"id\":5ffc614c77ac9218e8a3e430\",\r\n      \"isActive\":true\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/emailreminder/EnableDisableEmailReminder",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"emailreminder",
+						"EnableDisableEmailReminder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EnableDisableEmailRemindersByStatusUpdateId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"id\":61,\r\n      \"isActive\":false\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Milestone/Setting/EnableDisableEmailReminder",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Milestone",
+						"Setting",
+						"EnableDisableEmailReminder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "InsertEmailReminderLog",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tenantId\":1,\r\n    \"loanApplicationId\":12,\r\n    \"jobTypeId\":1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Setting/emailreminder/InsertEmailReminderLog",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Setting",
+						"emailreminder",
+						"InsertEmailReminderLog"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EnableDisableAllEmailReminders",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"isActive\":true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/emailreminder/EnableDisableAllEmailReminders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"emailreminder",
+						"EnableDisableAllEmailReminders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EnableDisableAllEmailReminders(Loan Status)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"isActive\":true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Milestone/Setting/EnableDisableAllEmailReminders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Milestone",
+						"Setting",
+						"EnableDisableAllEmailReminders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEmailReminders",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/emailreminder/GetEmailReminders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"emailreminder",
+						"GetEmailReminders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetLoanStatuses",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Milestone/setting/GetLoanStatuses",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Milestone",
+						"setting",
+						"GetLoanStatuses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEmailReminderById",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/emailreminder/GetEmailReminderById?id=60014aa965686132fcd6a3b3",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"emailreminder",
+						"GetEmailReminderById"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "60014aa965686132fcd6a3b3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEmailReminderByIds",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"id\":[\"600539e9c545201440ec261d\"\r\n      ,\"5ffd5635c6b26145b4bf85e7\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/emailreminder/GetEmailReminderByIds",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"emailreminder",
+						"GetEmailReminderByIds"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEmailConfigurationsByIds",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"id\":[1,2]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Milestone/Setting/GetEmailConfigurationsByIds",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Milestone",
+						"Setting",
+						"GetEmailConfigurationsByIds"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EnableDisableEmailReminders",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"id\":[\"5ff8621e44a44795c6ea4e10\"\r\n      ,\"5ffd5635c6b26145b4bf85e7\"],\r\n      \"isActive\":false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/emailreminder/EnableDisableEmailReminders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"emailreminder",
+						"EnableDisableEmailReminders"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDocumentStatusByLoanIds",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"remainingDocuments\":[{\r\n            \"loanApplicationId\":9\r\n      },\r\n      {\r\n            \"loanApplicationId\":4190\r\n      }]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Documentmanagement/emailreminder/GetRemainingDocumentsByLoanId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Documentmanagement",
+						"emailreminder",
+						"GetRemainingDocumentsByLoanId"
+					],
+					"query": [
+						{
+							"key": "lstLoanApplicationIds",
+							"value": "1,2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

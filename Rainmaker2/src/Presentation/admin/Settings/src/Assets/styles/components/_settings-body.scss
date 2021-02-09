@@ -7,8 +7,10 @@
     min-height: calc(100vh - 135px);
 
     > *{
-        height: calc(100vh - 136px);
         box-sizing: border-box;
+        @media screen and (min-width:1025px) {
+            height: calc(100vh - 136px);
+        }
     }
 
     .settings__sidebar{

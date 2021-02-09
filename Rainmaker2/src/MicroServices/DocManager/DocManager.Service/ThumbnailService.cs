@@ -4,6 +4,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -129,7 +130,8 @@ namespace DocManager.Service
 
             while (await asyncCursor.MoveNextAsync())
             {
-                foreach (var current in asyncCursor.Current)
+                BsonDocument current = asyncCursor.Current?.FirstOrDefault();
+                if (current != null)
                 {
                     RequestFile query = BsonSerializer.Deserialize<RequestFile>((BsonDocument)current.GetValue("files"));
                     return query.serverName;
@@ -249,11 +251,13 @@ namespace DocManager.Service
 
             while (await asyncCursor.MoveNextAsync())
             {
-                foreach (var current in asyncCursor.Current)
+                BsonDocument current = asyncCursor.Current?.FirstOrDefault();
+                if (current != null)
                 {
                     RequestFile query = BsonSerializer.Deserialize<RequestFile>((BsonDocument)current.GetValue("files"));
                     return query.serverName;
                 }
+                
             }
             return null;
         }
@@ -343,10 +347,12 @@ namespace DocManager.Service
                 ));
             while (await asyncCursor.MoveNextAsync())
             {
-                foreach (var current in asyncCursor.Current)
+                BsonDocument current = asyncCursor.Current?.FirstOrDefault();
+                if (current != null)
                 {
                     return true;
                 }
+                
             }
             return false;
         }
@@ -467,7 +473,8 @@ namespace DocManager.Service
                 ));
             while (await asyncCursor.MoveNextAsync())
             {
-                foreach (var current in asyncCursor.Current)
+                BsonDocument current = asyncCursor.Current?.FirstOrDefault();
+                if (current != null)
                 {
                     RequestFile query = BsonSerializer.Deserialize<RequestFile>((BsonDocument)current.GetValue("files"));
                     return query.serverName;

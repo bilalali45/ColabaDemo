@@ -19,13 +19,12 @@ export const RainsoftRcHeader = ({ logoSrc, displayName,options }: HeaderPropsTy
                         <nav className="navbar navbar-default">
                             <div className="navbar-header h-logo">
                                 <a className="logo-link" href="/">
-
-                                    <img alt="" src={logoSrc} className="d-none d-sm-block" />
+                                {logoSrc}
+                                    {/* <img alt="" src={logoSrc} className="d-none d-sm-block" /> */}
                                 </a>
                             </div>
 
                             <div className="s-account pull-right" data-private >
-
                                 {/* <a className="d-name d-none d-sm-block" onClick={(e) => displayNameOnClick(e)} >
                                     Hello,
                                     {displayName}
@@ -39,7 +38,6 @@ export const RainsoftRcHeader = ({ logoSrc, displayName,options }: HeaderPropsTy
                     </div>
                 </div>
             </div>
-
         </header>
     )
 }

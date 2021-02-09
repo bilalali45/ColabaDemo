@@ -10,7 +10,7 @@ import { SelectedType } from './SelectedType';
 type AddDocumentType = {
   addDocumentToList: Function;
   needList?: TemplateDocument[];
-  styling?:any
+  styling?:{[key: string]:any}
 };
 
 const AddDocument = ({

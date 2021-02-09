@@ -27,5 +27,6 @@ namespace Milestone.Service
         Task InsertMilestoneLog(int loanApplicationId, int milestoneId, int userId);
 
         Task<bool> IsMilestoneMappAgainstStatusId(int MilestoneId);
+        Task<EmailStatusConfiguration> GetEmailStatusConfiguration(int fromStatus, int toStatus);
     }
 }

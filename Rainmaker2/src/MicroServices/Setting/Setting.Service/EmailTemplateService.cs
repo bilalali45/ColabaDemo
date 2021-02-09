@@ -189,7 +189,46 @@ namespace Setting.Service
 
             return result;
         }
+        public async Task<Model.EmailTemplate> GetEmailReplacedToken(EmailReminder template,string authHeader)
+        {
+            var requestTokens = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(_configuration[key: "DocumentManagement:Url"] + "/api/Documentmanagement/EmailTemplate/GetTokens"),
+                Method = HttpMethod.Get,
+                Content = new StringContent(content: "",
+                                                        encoding: Encoding.UTF8,
+                                                        mediaType: "application/json")
+            };
+            requestTokens.Headers.Add("Authorization","Bearer " + authHeader);
+            var responseTokens = await _httpClient.SendAsync(requestTokens);
 
+            responseTokens.EnsureSuccessStatusCode();
+            var tokens = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Model.TokenModelEmailReminder>>(await responseTokens.Content.ReadAsStringAsync());
+            EmailReminderTemplateModel emailTemplateModel = new EmailReminderTemplateModel();
+            //emailTemplateModel.id = id;
+            emailTemplateModel.loanApplicationId = template.LoanApplicationId;
+            emailTemplateModel.fromAddress = template.email.fromAddress;
+            emailTemplateModel.subject = template.email.subject;
+            emailTemplateModel.emailBody = template.email.emailBody;
+            emailTemplateModel.lstTokens = tokens;
+
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(_configuration[key: "RainMaker:Url"] + "/api/RainMaker/Setting/RenderEmailTokens"),
+                Method = HttpMethod.Get,
+                Content = new StringContent(content: emailTemplateModel.ToJson(),
+                                                          encoding: Encoding.UTF8,
+                                                          mediaType: "application/json")
+            };
+            request.Headers.Add("Authorization", "Bearer " + authHeader);
+            var response = await _httpClient.SendAsync(request);
+
+            response.EnsureSuccessStatusCode();
+
+            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Model.EmailTemplate>(await response.Content.ReadAsStringAsync());
+
+            return result;
+        }
         public async Task UpdateEmailTemplate(int id,
                                               string templateName,
                                               string templateDescription,

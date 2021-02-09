@@ -62,7 +62,7 @@ namespace DocumentManagement.API
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IByteProService, ByteProService>();
             services.AddScoped<IEmailTemplateService, EmailTemplateService>();
-
+            services.AddScoped<IEmailReminderService, EmailReminderService>();
             #region HttpClientDependencies
 
             services.AddTransient<RequestHandler>();

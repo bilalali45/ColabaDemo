@@ -54,5 +54,30 @@ namespace Setting.Service
             else
                 return false;
         }
+
+        public async Task SendBorrowerEmail(int loanApplicationId, string toAddess, string ccAddress, string fromAddress, string subject, string emailBody, int activityForId, int userId, string userName, string authHeader)
+        {
+            var content = new
+            {
+                loanApplicationId,
+                emailBody,
+                activityForId,
+                toAddess,
+                ccAddress,
+                fromAddress,
+                subject
+            };
+
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(_configuration[key: "RainMaker:Url"] + "/api/rainmaker/LoanApplication/SendBorrowerEmail"),
+                Method = HttpMethod.Post,
+                Content = new StringContent(content: content.ToJson(),
+                    encoding: Encoding.UTF8,
+                    mediaType: "application/json")
+            };
+            request.Headers.Add("Authorization","Bearer " + authHeader);
+            await _httpClient.SendAsync(request);
+        }
     }
 }

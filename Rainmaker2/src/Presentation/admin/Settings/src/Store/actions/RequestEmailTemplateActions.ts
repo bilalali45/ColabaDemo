@@ -461,7 +461,6 @@ export class RequestEmailTemplateActions {
         try {
             let res = await Http.get(url);
             return res.data;
-            //return Promise.resolve(tokensMock);
         } catch (error) {
             console.log('error',error) 
         }
