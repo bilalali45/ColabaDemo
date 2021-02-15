@@ -130,7 +130,7 @@ export const ColabaStatusEmailTemplateContent = ({
     let result = await LoanStatusUpdateActions.addLoanStatusEmail(loanStatusData);
     if (result === 200) {
       setShowSuccessMsg(true);
-      fetchLoanStatusUpdate();
+      fetchLoanStatusUpdate(loanStatusData.id);
       setTimeout(() => {
         setShowSuccessMsg(false);
       }, 1000)
@@ -138,9 +138,11 @@ export const ColabaStatusEmailTemplateContent = ({
     }
   };
 
-  const fetchLoanStatusUpdate = async () => {
+  const fetchLoanStatusUpdate = async (id?: number) => {
     let loanStatusData: LoanStatusUpdateModel | undefined = await LoanStatusUpdateActions.fetchLoanStatusUpdate();
     dispatch({type: LoanStatusUpdateActionsType.SetLoanStatusData, payload: loanStatusData}); 
+    let newData = loanStatusData?.loanStatus?.find((item : LoanStatus) => item.id === id);
+    dispatch({type: LoanStatusUpdateActionsType.SetSelectedLoanStatus, payload: newData}); 
   }
 
 

@@ -27,7 +27,7 @@ type Props = {
 
     const  fetchReminderEmailSettings = async () => {
       let data: any  = await ReminderEmailListActions.fetchReminderEmails();
-      console.log('----------------->',data)
+
       dispatch({type:ReminderEmailActionsType.SetAllReminderEmailEnable, payload: data?.isActive}); 
       dispatch({type:ReminderEmailActionsType.SetReminderEmailData, payload: data?.emailReminders });
       showReminderEmailScreenHandler(data?.isActive);

@@ -22,7 +22,7 @@ export const NeedListReminderBody = ({
     <ContentBody className="settings__need-list-reminder-body">
       <div className="col-md-4 no-padding settings__need-list-reminder-body--left">
         <ReminderSettings
-          setShowFooter={()=>setShowFooter(!showFooter)}
+          setShowFooter={setShowFooter}
           cancelClick={cancelClick}
           setCancelClick={setCancelClick}
           enableDisableClick={enableDisableClick}

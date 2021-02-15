@@ -142,7 +142,7 @@ namespace Milestone.Service
         }
         public async Task<EmailStatusConfiguration> GetEmailStatusConfiguration(int fromStatus, int toStatus, int tenantId)
         {
-            return await Uow.Repository<MilestoneStatusConfiguration>().Query(x => x.FromStatus == fromStatus && x.ToStatus == toStatus && x.TenantId == tenantId)
+            return await Uow.Repository<MilestoneStatusConfiguration>().Query(x => x.FromStatus == fromStatus && x.ToStatus == toStatus && x.TenantId == tenantId && x.IsActive == true && x.IsDeleted == false)
                  .Select(x => new EmailStatusConfiguration()
                  {
                      id = x.Id,

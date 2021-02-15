@@ -15,12 +15,10 @@ export const ReminderEmails = ({showFooter, setShowFooter, setCancelClick}:Remin
   const [selectedField, setSelectedField] = useState<string>('');
 
     const insertTokenClickHandler = (value: boolean) => {
-      console.log('----------------------> insertTokenClickHandler', value)
         setshowInsertToken(value);
     }
 
     const selectFieldHandler = (selectedField: string) => {
-      console.log('----------------------> selectFieldHandler', selectedField)
       setSelectedField(selectedField);
     }
     

@@ -34,7 +34,9 @@ export const ReminderSettingContent = ({setShowFooter, cancelClick, setCancelCli
     const [toBeActiveItem, setToBeActiveItem] = useState<ReminderSettingTemplate>();
     const [lastClick, setLastClick] = useState<string>();
     const [yesClick, setYesClick] = useState<boolean>(false);
-
+    const [addNewControl, setAddNewControl] = useState(false);
+    
+    
     useEffect(() => {
         fetchReminderEmailSettings(0);
     },[])
@@ -78,7 +80,7 @@ export const ReminderSettingContent = ({setShowFooter, cancelClick, setCancelCli
         setShowFooter(true);
     }
 
-    const newDay = (ele:string[]) => { //zedit
+    const newDay = (ele:string[]) => { 
         const updatedReminderEmail = reminderEmailData.map((item:ReminderSettingTemplate, index:number) => {           
             return {
                 ...reminderEmailData,
@@ -87,7 +89,7 @@ export const ReminderSettingContent = ({setShowFooter, cancelClick, setCancelCli
         });
         selectedreminderEmail.isEditMode = true;
         dispatch({ type: ReminderEmailActionsType.SetReminderEmailData, payload: updatedReminderEmail });
-        setShowFooter(true);      
+       setShowFooter(true);      
     }
 
     const setTime = (ele:any, getNumber:string, meridiam:any) => {
@@ -154,18 +156,21 @@ export const ReminderSettingContent = ({setShowFooter, cancelClick, setCancelCli
     const addEmailReminderClick = (data?: ReminderSettingTemplate[]) => {  
         let lastElem;
         let days;
-        let newTime:Date;    
+        let newTime:Date;
         let reminderEmailsettings = cloneDeep( data ?  data : reminderEmailData);
         let arrayLength = reminderEmailsettings?.length;
         if(arrayLength > 0){
             lastElem = reminderEmailsettings[arrayLength-1];           
             let noofDays = parseInt(lastElem?.noOfDays) + 2; 
             days = noofDays <= 9 ? `0${noofDays}` : noofDays.toString()          
-            newTime = new Date(moment().utc().set({h: new Date().getUTCHours(), m: 0}).format());         
+            newTime = new Date(moment().utc().set({h: new Date().getUTCHours(), m: 0}).format());  
+            //alert('Yes')       
+            setAddNewControl(true);
         }
         else{
             days = "02";
-            newTime = new Date(moment().utc().set({h: new Date().getUTCHours(), m: 0}).format());          
+            newTime = new Date(moment().utc().set({h: new Date().getUTCHours(), m: 0}).format());  
+                
         }
     
         let newItem : ReminderSettingTemplate =  new ReminderSettingTemplate('',days,newTime, true);  
@@ -173,7 +178,7 @@ export const ReminderSettingContent = ({setShowFooter, cancelClick, setCancelCli
         let item = [...reminderEmailsettings, newItem]    
         dispatch({ type: ReminderEmailActionsType.SetReminderEmailData, payload: item }) ; 
         CurrentActive(item.length - 1 ,newItem); 
-        setShowFooter(true);
+        setShowFooter(false);
         
     }
     
@@ -239,12 +244,16 @@ export const ReminderSettingContent = ({setShowFooter, cancelClick, setCancelCli
                                         CurrentActive(index,item)
                                     }                                 
                                 }}>
+
+                                    
                                     <ReminderControl 
                                         number={itemIndex}                                    
                                         days={item?.noOfDays?.toString().length  === 1 ? ""+item.noOfDays : item.noOfDays} 
                                         time={time} 
                                         timeType={meridiem} 
                                         makeEnabled={item.isActive} 
+                                        addNewReminder={addNewControl}
+                                        handlerAddNewReminder={(val:boolean)=>{setAddNewControl(val)}}
                                         handlerDays={(ele:any)=>setDay(ele,itemIndex)}
                                         handlerTime={(ele:any)=>setTime(ele,itemIndex,meridiem)}                                       
                                         handlerTimeType={()=>{setMeridiem(itemIndex)}}

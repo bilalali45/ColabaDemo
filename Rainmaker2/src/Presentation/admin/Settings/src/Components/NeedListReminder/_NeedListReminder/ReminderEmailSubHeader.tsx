@@ -37,7 +37,6 @@ export const ReminderEmailSubHeader = ({ showinsertToken, selectedField }: props
     
     useEffect(() => {
         if(tokens && selectedField){
-          console.log('----------------------> tokens && selectedField ', tokens, selectedField)
           let list: Tokens[] = setSelectedTokenList(selectedField, tokens);
           setTokenList(list)
         }
@@ -45,9 +44,11 @@ export const ReminderEmailSubHeader = ({ showinsertToken, selectedField }: props
     }, [selectedField, tokens]);
     
     const checkReminderEmailNumber = () => {
+      debugger
       let num = selectedreminderEmail?.index?.substring(1,4);
       if(String(num).length == 1 || String(num).length == 0){
-        return '0'+num;
+        if(num) return '0'+num;
+        else return "01";
       }else{
         return num;
       }
@@ -74,7 +75,6 @@ export const ReminderEmailSubHeader = ({ showinsertToken, selectedField }: props
         setInsertTokenPopup(!insertTokenPopup)
         dispatch({type: RequestEmailTemplateActionsType.SetSelectedToken, payload: null});
     }
-
 
     return (
         

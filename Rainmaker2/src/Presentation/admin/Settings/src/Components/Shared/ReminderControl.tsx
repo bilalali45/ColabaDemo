@@ -10,6 +10,8 @@ interface ReminderControlProps {
     time?: string;
     timeType?: string;
     makeEnabled?: boolean;
+    addNewReminder: boolean;
+    handlerAddNewReminder: Function;
     handlerDays: Function;
     handlerTime: Function;
     handlerTimeType: Function;
@@ -19,13 +21,14 @@ interface ReminderControlProps {
 }
 
 
-const ReminderControl: React.FC<ReminderControlProps> = ({ number, days, time, timeType, makeEnabled, handlerDays, handlerTime, handlerTimeType, handlerEnabled, handlerDelete, handlerInput
+const ReminderControl: React.FC<ReminderControlProps> = ({ number, days, time, timeType, makeEnabled, addNewReminder, handlerAddNewReminder, handlerDays, handlerTime, handlerTimeType, handlerEnabled, handlerDelete, handlerInput
 }) => {
 
     const [showReminderDropdown, setShowReminderDropdown] = useState(false);
     const dropdown = useRef<HTMLDivElement>(null);
     const dropdownText = useRef<HTMLDivElement>(null);
     const refShowOption = useRef<any>(null);
+    
 
     const [data, setstate] = useState({
         days: days ? days : '00',
@@ -36,6 +39,8 @@ const ReminderControl: React.FC<ReminderControlProps> = ({ number, days, time, t
     //set position mega dropdown
     const [getPositionDropDown, setPositionDropDown] = useState({ x: 0, y: 0 });
     const styling: any = { position: 'fixed', left: getPositionDropDown.x, top: getPositionDropDown.y };
+
+    
 
     //Set position menu dropdown
     const [getPositionMenuDown, setPositionMenuDown] = useState({ x: 0, y: 0 });
@@ -144,10 +149,19 @@ const ReminderControl: React.FC<ReminderControlProps> = ({ number, days, time, t
 
     // Click Outside
     useEffect(() => { 
+        if(addNewReminder)
+        {
+            setPositionDropDown({
+                x: Number(dropdownText.current?.getBoundingClientRect().x),
+                y: Number(dropdownText.current?.getBoundingClientRect().y) + 44
+            }); 
+            setShowReminderDropdown(!showReminderDropdown);
+        }
+
         const clickOutside = (e: any) => {
             if (!dropdown.current?.contains(e.target)) {
                 setShowReminderDropdown(false);
-
+                //handlerAddNewReminder(false); //!showReminderDropdown
             }
         }
         document.addEventListener('click', clickOutside);
@@ -172,6 +186,7 @@ const ReminderControl: React.FC<ReminderControlProps> = ({ number, days, time, t
         }
     }, [data]);
 
+
     const filterDay = () =>{
         
         if(String(days).length == 1 && days=='0')
@@ -190,9 +205,9 @@ const ReminderControl: React.FC<ReminderControlProps> = ({ number, days, time, t
     return (
         <div data-testid="reminderControl" className={`settings__reminder-control ${makeEnabled ? '' : 'disabled' }`} ref={dropdown}>
             <div className="settings__reminder-control-wrap">
-                <span className="settings__reminder-control-count" onClick={toggleDropDown}>{number}</span>
+                <span className="settings__reminder-control-count" onClick={()=>{toggleDropDown(); handlerAddNewReminder(!showReminderDropdown);}}>{number}</span>
 
-                <div data-testid="toggle-drpdwn-btn" className="settings__reminder-control-dropdown" onClick={toggleDropDown} ref={dropdownText}>
+                <div data-testid="toggle-drpdwn-btn" className="settings__reminder-control-dropdown" onClick={()=>{toggleDropDown(); handlerAddNewReminder(!showReminderDropdown);}} ref={dropdownText}>
                     <span className="settings__reminder-control-dropdown--text" title={`Send email ${days} Days after request at ${time} ${timeType}`} >Send email <span>{filterDay()}</span> Days after request at <span>{time} {timeType}</span></span>
                     <span className="settings__reminder-control-dropdown--btn"><i className="zmdi zmdi-chevron-down"></i></span>
                 </div>
@@ -224,7 +239,7 @@ const ReminderControl: React.FC<ReminderControlProps> = ({ number, days, time, t
                 </button>
             </div>
 
-            {showReminderDropdown &&
+            {(showReminderDropdown) && //addNewReminder
                 <div data-testid="item-control" className="settings__reminder-control-dropdown-menu" style={styling}>
                     <div className="settings__reminder-control-dropdown-menu-wrap">
 

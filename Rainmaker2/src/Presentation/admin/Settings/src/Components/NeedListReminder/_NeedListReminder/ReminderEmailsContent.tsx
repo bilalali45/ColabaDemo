@@ -402,7 +402,7 @@ export const ReminderEmailsContent = ({
 
   return (
     <>
-      <ContentBody className={`nlre-settings-body ${selectedreminderEmail?.isActive ? '':'makeFreez'} ${(showFooter && selectedreminderEmail?.isActive) ? 'footerEnabled' : 'footerDisabled'}`}>       
+      <ContentBody className={`nlre-settings-body ${selectedreminderEmail?.isActive ? '':'makeFreez'} ${(showFooter && selectedreminderEmail?.isActive) ? 'footerEnabled' : 'footerEnabled'}`}>       
         <div className="row">
           <div data-testid="dv-fromAddress" className="col-md-12 form-group">
             <label className="settings__label">From Address</label>
@@ -513,10 +513,10 @@ export const ReminderEmailsContent = ({
           value={emailBody}
         />
       </ContentBody>
-      {showFooter && selectedreminderEmail?.isActive &&
+      {/* {showFooter && selectedreminderEmail?.isActive &&} */}
         <ContentFooter>
           <button
-            disabled={!selectedreminderEmail?.isActive}
+            disabled={!showFooter}
             type="button"
             data-testid="save-btn"
             onClick={handleSubmit(onSubmit)}
@@ -525,7 +525,7 @@ export const ReminderEmailsContent = ({
               </button>
           <button
             type="button"
-            disabled={!selectedreminderEmail?.isActive}
+            disabled={!showFooter}
             data-testid="cancel-btn"
             onClick={() => {
               cancelHandler();
@@ -535,7 +535,7 @@ export const ReminderEmailsContent = ({
             Cancel
               </button>
         </ContentFooter>
-      }
+      
 
     </>
   )

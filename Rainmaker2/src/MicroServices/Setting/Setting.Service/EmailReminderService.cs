@@ -52,7 +52,7 @@ namespace Setting.Service
                 if (lstEmailReminders.emailReminders.Count > 0)
                 {
                     DateTime requestDate = DateTime.UtcNow;
-                    foreach (var item in lstEmailReminders.emailReminders)
+                    foreach (var item in lstEmailReminders.emailReminders.Where( rec => rec.isActive == true))
                     {
                         DateTime recurringDate = GetRecurringDate(requestDate, item.noOfDays, item.recurringTime);
 
