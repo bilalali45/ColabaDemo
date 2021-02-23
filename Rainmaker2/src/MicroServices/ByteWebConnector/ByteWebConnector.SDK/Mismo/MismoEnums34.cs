@@ -643,7 +643,7 @@ namespace ByteWebConnector.SDK.Mismo
     {
 
         /// <remarks/>
-        Investment = 2,
+        Investment = 4,
 
         /// <remarks/>
         PrimaryResidence = 1,
@@ -689,7 +689,7 @@ namespace ByteWebConnector.SDK.Mismo
         ContractBasis = 103,
 
         /// <remarks/>
-        DefinedContributionPlan = 104,
+        DefinedContributionPlan = 14,
 
         /// <remarks/>
         Disability = 6,
@@ -761,7 +761,7 @@ namespace ByteWebConnector.SDK.Mismo
         NotesReceivableInstallment = 10,
 
         /// <remarks/>
-        Other = 5,
+        Other = 129,
 
         /// <remarks/>
         Overtime = 128,
@@ -871,7 +871,7 @@ namespace ByteWebConnector.SDK.Mismo
         Investment = 2,
 
         /// <remarks/>
-        Other,
+        Other = 100,
 
         /// <remarks/>
         PrimaryResidence = 1,
@@ -1594,6 +1594,114 @@ namespace ByteWebConnector.SDK.Mismo
 
         /// <remarks/>
         Unknown,
+    }
+
+    public enum ExpenseBase
+    {
+
+        /// <remarks/>
+        Alimony = 27,
+
+        /// <remarks/>
+        CarMaintenance = 101,
+
+        /// <remarks/>
+        CharitableContributions = 102,
+
+        /// <remarks/>
+        ChildCare = 14,
+
+        /// <remarks/>
+        ChildSupport = 15,
+
+        /// <remarks/>
+        Clothing = 103,
+
+        /// <remarks/>
+        DryCleaning = 104,
+
+        /// <remarks/>
+        Entertainment = 105,
+
+        /// <remarks/>
+        GroceryToiletry = 106,
+
+        /// <remarks/>
+        HealthInsurance = 107,
+
+        /// <remarks/>
+        JobRelatedExpenses = 11,
+
+        /// <remarks/>
+        Medical = 108,
+
+        /// <remarks/>
+        MiscellaneousLivingExpenses = 109,
+
+        /// <remarks/>
+        NetRentalExpense = 110,
+
+        /// <remarks/>
+        Other = 111,
+
+        /// <remarks/>
+        PayrollInsuranceDeduction = 112,
+
+        /// <remarks/>
+        PayrollMiscellaneousDeductions = 113,
+
+        /// <remarks/>
+        PayrollProfitSharingDeduction = 114,
+
+        /// <remarks/>
+        PayrollRetirementDeduction = 115,
+
+        /// <remarks/>
+        PayrollTaxDeduction = 116,
+
+        /// <remarks/>
+        SeparateMaintenanceExpense = 24,
+
+        /// <remarks/>
+        UnionDues = 117,
+    }
+
+    public enum ApplicationTakenMethodBase
+    {
+
+        /// <remarks/>
+        Email,
+
+        /// <remarks/>
+        FaceToFace,
+
+        /// <remarks/>
+        Fax,
+
+        /// <remarks/>
+        Internet,
+
+        /// <remarks/>
+        Mail,
+
+        /// <remarks/>
+        Telephone,
+    }
+
+    public enum PropertyEstateBase
+    {
+
+        /// <remarks/>
+        FeeSimple,
+
+        /// <remarks/>
+        Fractional,
+
+        /// <remarks/>
+        Leasehold,
+
+        /// <remarks/>
+        Other,
     }
 
 }

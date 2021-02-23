@@ -77,49 +77,127 @@ namespace ByteWebConnector.SDK.Mismo
 
     public class MismoConverter34 : IMismoConverter
     {
+        private const string ASSET_ARC_VALUE = "urn:fdc:mismo.org:2009:residential/ASSET_IsAssociatedWith_ROLE";
         //Dictionary<string, string> relationships = new Dictionary<string, string>();
         List<MismoRelationShipModel> relationships = new List<MismoRelationShipModel>();
         private List<int?> _liabilitiesToSkip { get; set; }
+
+        private MISMO34FORMAT _mismo = null;
+
+        private MISMO34FORMAT mismo
+        {
+            get
+            {
+                if (_mismo == null)
+                {
+                    _mismo = new MISMO34FORMAT()
+                    {
+                        ABOUT_VERSIONS = new ABOUT_VERSIONS()
+                        {
+                            ABOUT_VERSION = new List<ABOUT_VERSION>()
+                              {
+                                  new ABOUT_VERSION()
+                                  {
+                                      SequenceNumber = 1
+                                  }
+                              }
+                        },
+                        DEAL_SETS = new DEAL_SETS()
+                        {
+                            DEAL_SET = new DEAL_SET()
+                            {
+                                DEALS = new DEALS()
+                                {
+                                    DEAL = new List<DEAL>()
+                                      {
+                                          new DEAL()
+                                          {
+                                              COLLATERALS = new COLLATERALS()
+                                                {
+                                                    COLLATERAL = new List<COLLATERAL>()
+                                                },
+                                              LOANS = new LOANS()
+                                          }
+                                      }
+                                }
+                            }
+                        }
+                    };
+                }
+                return _mismo;
+            }
+        }
+
+        private ABOUT_VERSION _aboutVersion = null;
+
+        private ABOUT_VERSION aboutVersion
+        {
+            get
+            {
+                if (_aboutVersion == null)
+                {
+                    _aboutVersion = this.mismo.ABOUT_VERSIONS.ABOUT_VERSION
+                                        .Single();
+                }
+                return _aboutVersion;
+            }
+        }
+
+        private DEAL _dealToAdd;
+
+        private DEAL dealToAdd
+        {
+            get
+            {
+                if (_dealToAdd == null)
+                {
+                    _dealToAdd = this.mismo.DEAL_SETS.DEAL_SET.DEALS.DEAL.FirstOrDefault();
+                }
+                return this._dealToAdd;
+            }
+        }
 
         public string ConvertToMismo(LoanApplication loanApplication)
         {
             string xml = null;
             try
             {
-                MISMO34FORMAT mismo = new MISMO34FORMAT();
-                mismo.ABOUT_VERSIONS = new ABOUT_VERSIONS();
-                mismo.ABOUT_VERSIONS.ABOUT_VERSION = new List<ABOUT_VERSION>();
-                mismo.ABOUT_VERSIONS.ABOUT_VERSION.Add(new ABOUT_VERSION()
-                {
-                    SequenceNumber = 1,
-                    CreatedDatetime = loanApplication.CreatedOnUtc.HasValue ? loanApplication.CreatedOnUtc.Value : DateTime.UtcNow
-                });
-                mismo.DEAL_SETS = new DEAL_SETS();
-                mismo.DEAL_SETS.DEAL_SET = new DEAL_SET();
-                mismo.DEAL_SETS.DEAL_SET.DEALS = new DEALS();
-                mismo.DEAL_SETS.DEAL_SET.DEALS.DEAL = new List<DEAL>();
+                //mismo.ABOUT_VERSIONS = new ABOUT_VERSIONS();
+                //mismo.ABOUT_VERSIONS.ABOUT_VERSION = new List<ABOUT_VERSION>();
+                //mismo.ABOUT_VERSIONS.ABOUT_VERSION.Add(new ABOUT_VERSION()
+                //{
+                //    SequenceNumber = 1,
+                //    CreatedDatetime = loanApplication.CreatedOnUtc.HasValue ? loanApplication.CreatedOnUtc.Value : DateTime.UtcNow
+                //});
+                this.aboutVersion.CreatedDatetime = loanApplication.CreatedOnUtc.HasValue ? loanApplication.CreatedOnUtc.Value : DateTime.UtcNow;
+                //mismo.DEAL_SETS = new DEAL_SETS();
+                //mismo.DEAL_SETS.DEAL_SET = new DEAL_SET();
+                //mismo.DEAL_SETS.DEAL_SET.DEALS = new DEALS();
+                //mismo.DEAL_SETS.DEAL_SET.DEALS.DEAL = new List<DEAL>();
 
-                DEAL dealToAdd = new DEAL();
-                dealToAdd.SequenceNumber = 1;
-                dealToAdd.ASSETS = this.SetAssets(loanApplication);
+                //DEAL dealToAdd = new DEAL();
+                //dealToAdd.SequenceNumber = 1;
+                dealToAdd.ASSETS = this.GetAssets(loanApplication);
 
-                dealToAdd.COLLATERALS = new COLLATERALS();
-                dealToAdd.COLLATERALS.COLLATERAL = new List<COLLATERAL>();
+                //dealToAdd.COLLATERALS = new COLLATERALS();
+                //dealToAdd.COLLATERALS.COLLATERAL = new List<COLLATERAL>();
                 COLLATERAL collateralToAdd = new COLLATERAL()
                 {
                     SequenceNumber = 1,
-                    SUBJECT_PROPERTY = this.SetSubjectProperty(loanApplication)
+                    SUBJECT_PROPERTY = this.GetSubjectProperty(loanApplication)
                 };
-                dealToAdd.COLLATERALS.COLLATERAL.Add(collateralToAdd);
 
-                dealToAdd.LIABILITIES = this.SetLiabilities(loanApplication);
-                dealToAdd.LOANS = new LOANS()
-                {
-                    LOAN = this.SetLoanInfo(loanApplication)
-                };
+                dealToAdd.COLLATERALS.COLLATERAL.Add(collateralToAdd);
+                dealToAdd.EXPENSES = this.GetExpenseLiabilities((loanApplication));
+                dealToAdd.LIABILITIES = this.GetLiabilities(loanApplication);
+                //dealToAdd.LOANS = new LOANS()
+                //{
+                //    LOAN = this.GetLoanInfo(loanApplication)
+                //};
+                dealToAdd.LOANS.LOAN = this.GetLoanInfo(loanApplication);
 
                 dealToAdd.PARTIES = new PARTIES();
-                dealToAdd.PARTIES.PARTY = this.SetBorrowers(loanApplication);
+                dealToAdd.PARTIES.PARTY = this.GetBorrowers(loanApplication);
 
                 int relationshipIndex = 1;
                 dealToAdd.RELATIONSHIPS = new RELATIONSHIPS();
@@ -133,13 +211,18 @@ namespace ByteWebConnector.SDK.Mismo
                         From = item.From,
                         To = item.To
                     };
+                    if (relationship.From.ToUpper().StartsWith("ASSET_"))
+                    {
+                        if (relationship.To.ToUpper().StartsWith("BORROWER_"))
+                        {
+                            relationship.Arcrole = ASSET_ARC_VALUE;
+                        }
+                    }
                     dealToAdd.RELATIONSHIPS.RELATIONSHIP.Add(relationship);
                 }
 
 
-                mismo.DEAL_SETS.DEAL_SET.DEALS.DEAL.Add(dealToAdd);
-
-
+                //mismo.DEAL_SETS.DEAL_SET.DEALS.DEAL.Add(dealToAdd);
 
                 using (var sww = new StringWriter())
                 {
@@ -216,7 +299,6 @@ namespace ByteWebConnector.SDK.Mismo
             return xml;
         }
 
-
         public void SetLiabilitiesToSkip(List<int?> liabilitiesToSkip)
         {
             this._liabilitiesToSkip = liabilitiesToSkip;
@@ -240,16 +322,16 @@ namespace ByteWebConnector.SDK.Mismo
             return rmBorrowers;
         }
 
-
         private string firstMortgageAssetLabel = string.Empty;
         private bool subjectPropertyAdded = false;
 
-        private ASSETS SetAssets(LoanApplication loanApplication)
+        public ASSETS GetAssets(LoanApplication loanApplication)
         {
             List<ASSET> assets = new List<ASSET>();
             var rmBorrowers = this.SortRainMakerBorrowers(loanApplication);
             List<int> assetAdded = new List<int>();
             int assetIndex = 1;
+            Dictionary<int, string> jointAccounts = new Dictionary<int, string>();
             foreach (Borrower rmBorrower in rmBorrowers)
             {
                 int borrowerIndex = rmBorrowers.IndexOf(rmBorrower) + 1;
@@ -262,6 +344,15 @@ namespace ByteWebConnector.SDK.Mismo
                         {
                             if (assetAdded.Contains((binder.BorrowerAccount.Id)))
                             {
+                                if (jointAccounts.ContainsKey(binder.BorrowerAccount.Id))
+                                {
+                                    relationships.Add(new MismoRelationShipModel()
+                                    {
+                                        From = jointAccounts[binder.BorrowerAccount.Id],
+                                        To = borrowerLabel
+                                    });
+                                }
+
                                 continue;
                             }
                             assetAdded.Add(binder.BorrowerAccount.Id);
@@ -295,14 +386,22 @@ namespace ByteWebConnector.SDK.Mismo
 
                                 case 25: // 25: Gift Not Deposited
                                     assetDetail.AssetType = null;
-                                    //assetDetail.AssetTypeOtherDescription = Convert.ToString(AssetBase.GiftOfCash);
+                                    assetDetail.AssetType = Convert.ToString(AssetBase.GiftOfCash);
                                     assetDetail.AssetTypeOtherDescription = "Gift Not Deposited";
+                                    assetDetail.EXTENSION = new EXTENSION();
+                                    assetDetail.EXTENSION.OTHER = new OTHER();
+                                    assetDetail.EXTENSION.OTHER.ASSET_DETAIL_EXTENSION = new ASSET_DETAIL_EXTENSION();
+                                    assetDetail.EXTENSION.OTHER.ASSET_DETAIL_EXTENSION.IncludedInAssetAccountIndicator = false;
                                     break;
 
                                 case 26: // 26: Gift Of Equity
                                     assetDetail.AssetType = null;
-                                    //assetDetail.AssetTypeOtherDescription = Convert.ToString(AssetBase.GiftOfPropertyEquity);
+                                    assetDetail.AssetType = Convert.ToString(AssetBase.GiftOfCash);
                                     assetDetail.AssetTypeOtherDescription = "Gift Of Equity";
+                                    assetDetail.EXTENSION = new EXTENSION();
+                                    assetDetail.EXTENSION.OTHER = new OTHER();
+                                    assetDetail.EXTENSION.OTHER.ASSET_DETAIL_EXTENSION = new ASSET_DETAIL_EXTENSION();
+                                    assetDetail.EXTENSION.OTHER.ASSET_DETAIL_EXTENSION.IncludedInAssetAccountIndicator = true;
                                     break;
 
                                 case 28: // 26: Secured Borrowed Funds Not Deposited
@@ -351,12 +450,16 @@ namespace ByteWebConnector.SDK.Mismo
                                 From = assetLabel,
                                 To = borrowerLabel
                             });
+                            if (!jointAccounts.ContainsKey(binder.BorrowerAccount.Id))
+                            {
+                                jointAccounts.Add(binder.BorrowerAccount.Id, assetLabel);
+                            }
                         }
                     }
                 }
 
                 ASSET propertyAsset = null;
-                if ((!subjectPropertyAdded) && Enum.IsDefined(typeof(LoanPurposeBase), (LoanPurposeBase)loanApplication.LoanPurposeId) || (loanApplication.LoanPurposeId == 3))
+                if ((!subjectPropertyAdded) && (Enum.IsDefined(typeof(LoanPurposeBase), (LoanPurposeBase)loanApplication.LoanPurposeId) || (loanApplication.LoanPurposeId == 3)))
                 {
                     if (((LoanPurposeBase)loanApplication.LoanPurposeId) == LoanPurposeBase.Refinance || (loanApplication.LoanPurposeId == 3)) // If refinance or cash out
                     {
@@ -375,25 +478,30 @@ namespace ByteWebConnector.SDK.Mismo
                         propertyAsset.OWNED_PROPERTY = new OWNED_PROPERTY();
                         propertyAsset.OWNED_PROPERTY.OWNED_PROPERTY_DETAIL = new OWNED_PROPERTY_DETAIL();
                         propertyAsset.OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertyDispositionStatusType = Convert.ToString(OwnedPropertyDispositionStatusBase.Retain);
-                        propertyAsset.OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertyLienUPBAmount = loanApplication.PropertyInfo.FirstMortgageBalance;
+                        propertyAsset.OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertyLienUPBAmount = loanApplication.PropertyInfo.FirstMortgageBalance + loanApplication.PropertyInfo.SecondLienBalance;
                         propertyAsset.OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertyRentalIncomeGrossAmount = 0;
                         propertyAsset.OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertyRentalIncomeNetAmount = 0;
-                        propertyAsset.OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertySubjectIndicator = false;
+                        propertyAsset.OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertySubjectIndicator = true;
+                        propertyAsset.OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertyMaintenanceExpenseAmount = loanApplication.PropertyInfo.MonthlyDue;
 
                         propertyAsset.OWNED_PROPERTY.PROPERTY = new PROPERTY();
                         propertyAsset.OWNED_PROPERTY.PROPERTY.ADDRESS = new List<ADDRESS>();
-                        ADDRESS propertyAddress = new ADDRESS()
-                        {
-                            //SequenceNumber = 1,
-                            CityName = loanApplication.PropertyInfo.AddressInfo?.CityName,
-                            PostalCode = loanApplication.PropertyInfo.AddressInfo?.ZipCode,
-                            StateCode = loanApplication.PropertyInfo.AddressInfo?.State?.Abbreviation,
-                            CountyName = loanApplication.PropertyInfo.AddressInfo?.CountyName,
-                            //CountryCode = rmProperty.PropertyInfo.AddressInfo?.Country?.TwoLetterIsoCode,
-                            CountryCode = "US", // TODO
-                            AddressLineText = $"{loanApplication.PropertyInfo.AddressInfo?.StreetAddress} {loanApplication.PropertyInfo.AddressInfo?.UnitNo}".Trim()
-                        };
+                        ADDRESS propertyAddress = this.GetMismoAddress(loanApplication.PropertyInfo.AddressInfo);
                         propertyAsset.OWNED_PROPERTY.PROPERTY.ADDRESS.Add(propertyAddress);
+
+                        propertyAsset.OWNED_PROPERTY.PROPERTY.PROPERTY_DETAIL = new PROPERTY_DETAIL()
+                        {
+                            PropertyEstimatedValueAmount = loanApplication.PropertyInfo.PropertyValue,
+                        };
+                        if (Enum.IsDefined(typeof(PropertyUsageBase),
+                                           (PropertyUsageBase)loanApplication.PropertyInfo?.PropertyUsageId))
+                        {
+                            propertyAsset.OWNED_PROPERTY.PROPERTY.PROPERTY_DETAIL.PropertyUsageType = Convert.ToString((PropertyUsageBase)loanApplication.PropertyInfo?.PropertyUsageId);
+                        }
+                        else
+                        {
+                            propertyAsset.OWNED_PROPERTY.PROPERTY.PROPERTY_DETAIL.PropertyUsageType = Convert.ToString(PropertyUsageBase.Other);
+                        }
                         subjectPropertyAdded = true;
                     }
                 }
@@ -406,7 +514,7 @@ namespace ByteWebConnector.SDK.Mismo
                     {
                         //assetIndex = assets.Count() + 1;
                         var isCurrentResidence = false;
-                        isCurrentResidence = rmBorrower.BorrowerResidences.Any(br => br.LoanAddressId == rmProperty.PropertyInfo.AddressInfo?.Id);
+                        isCurrentResidence = rmBorrower.BorrowerResidences.Any(br => rmProperty.PropertyInfo != null && br.LoanAddressId == rmProperty.PropertyInfo.AddressInfo?.Id);
                         if (rmProperty.PropertyInfo != null && rmProperty.PropertyInfo.AddressInfo != null)
                         {
                             //relationships.Add($"ASSET_{assetIndex}", $"BORROWER_{borrowerIndex}");
@@ -497,17 +605,7 @@ namespace ByteWebConnector.SDK.Mismo
                                 {
                                     reo.OWNED_PROPERTY.PROPERTY = new PROPERTY();
                                     reo.OWNED_PROPERTY.PROPERTY.ADDRESS = new List<ADDRESS>();
-                                    ADDRESS propertyAddress = new ADDRESS()
-                                    {
-                                        //SequenceNumber = 1,
-                                        CityName = rmProperty.PropertyInfo.AddressInfo?.CityName,
-                                        PostalCode = rmProperty.PropertyInfo.AddressInfo?.ZipCode,
-                                        StateCode = rmProperty.PropertyInfo.AddressInfo?.State?.Abbreviation,
-                                        CountyName = rmProperty.PropertyInfo.AddressInfo?.CountyName,
-                                        //CountryCode = rmProperty.PropertyInfo.AddressInfo?.Country?.TwoLetterIsoCode,
-                                        CountryCode = "US", // TODO
-                                        AddressLineText = $"{rmProperty.PropertyInfo.AddressInfo?.StreetAddress} {rmProperty.PropertyInfo.AddressInfo?.UnitNo}".Trim()
-                                    };
+                                    ADDRESS propertyAddress = this.GetMismoAddress(rmProperty.PropertyInfo.AddressInfo);
                                     reo.OWNED_PROPERTY.PROPERTY.ADDRESS.Add(propertyAddress);
                                 }
 
@@ -521,6 +619,7 @@ namespace ByteWebConnector.SDK.Mismo
                                     if (Enum.IsDefined(typeof(PropertyCurrentUsageBase),
                                                        (PropertyCurrentUsageBase)rmProperty.PropertyInfo.PropertyUsageId))
                                     {
+                                        reo.OWNED_PROPERTY.PROPERTY.PROPERTY_DETAIL.PropertyUsageType = Convert.ToString((PropertyCurrentUsageBase)rmProperty.PropertyInfo.PropertyUsageId);
                                         reo.OWNED_PROPERTY.PROPERTY.PROPERTY_DETAIL.PropertyCurrentUsageType = Convert.ToString((PropertyCurrentUsageBase)rmProperty.PropertyInfo.PropertyUsageId);
                                     }
                                 }
@@ -536,11 +635,11 @@ namespace ByteWebConnector.SDK.Mismo
             return new ASSETS() { ASSET = assets };
         }
 
-        private SUBJECT_PROPERTY SetSubjectProperty(LoanApplication loanApplication)
+        public SUBJECT_PROPERTY GetSubjectProperty(LoanApplication loanApplication)
         {
             SUBJECT_PROPERTY property = new SUBJECT_PROPERTY();
             property.ADDRESS = new ADDRESS();
-            property.ADDRESS.AddressLineText = $"{loanApplication.PropertyInfo?.AddressInfo?.StreetAddress} {loanApplication.PropertyInfo?.AddressInfo?.UnitNo}";
+            property.ADDRESS.AddressLineText = $"{loanApplication.PropertyInfo?.AddressInfo?.StreetAddress} {this.GetAddressUnit(loanApplication.PropertyInfo?.AddressInfo?.UnitNo)}";
             property.ADDRESS.CityName = loanApplication.PropertyInfo?.AddressInfo?.CityName;
             property.ADDRESS.CountyName = loanApplication.PropertyInfo?.AddressInfo?.CountyName;
             property.ADDRESS.PostalCode = loanApplication.PropertyInfo?.AddressInfo?.ZipCode;
@@ -576,6 +675,8 @@ namespace ByteWebConnector.SDK.Mismo
                 }
             }
 
+            property.PROPERTY_DETAIL.PropertyEstateType = Convert.ToString(PropertyEstateBase.FeeSimple);
+
             property.PROPERTY_DETAIL.PropertyEstimatedValueAmount = loanApplication.PropertyInfo?.PropertyValue;
             //property.PROPERTY_DETAIL.PropertyExistingCleanEnergyLienIndicator = null; // TODO
             //property.PROPERTY_DETAIL.PropertyInProjectIndicator = null; // TODO
@@ -584,10 +685,12 @@ namespace ByteWebConnector.SDK.Mismo
                                (PropertyUsageBase)loanApplication.PropertyInfo?.PropertyUsageId))
             {
                 property.PROPERTY_DETAIL.PropertyUsageType = Convert.ToString((PropertyUsageBase)loanApplication.PropertyInfo?.PropertyUsageId);
+                property.PROPERTY_DETAIL.PropertyCurrentUsageType = Convert.ToString((PropertyUsageBase)loanApplication.PropertyInfo?.PropertyUsageId);
             }
             else
             {
                 property.PROPERTY_DETAIL.PropertyUsageType = Convert.ToString(PropertyUsageBase.Other);
+                property.PROPERTY_DETAIL.PropertyCurrentUsageType = Convert.ToString(PropertyUsageBase.Other);
             }
             //property.PROPERTY_DETAIL.PUDIndicator = null; // TODO
 
@@ -628,10 +731,83 @@ namespace ByteWebConnector.SDK.Mismo
                     break;
             }
 
+            property.SALES_CONTRACTS = new SALES_CONTRACTS();
+            property.SALES_CONTRACTS.SALES_CONTRACT = new SALES_CONTRACT();
+            property.SALES_CONTRACTS.SALES_CONTRACT.SALES_CONTRACT_DETAIL = new SALES_CONTRACT_DETAIL();
+            property.SALES_CONTRACTS.SALES_CONTRACT.SALES_CONTRACT_DETAIL.SalesContractAmount = loanApplication.LoanAmount;
+
             return property;
         }
 
-        private LIABILITIES SetLiabilities(LoanApplication loanApplication)
+        public EXPENSES GetExpenseLiabilities(LoanApplication loanApplication)
+        {
+            EXPENSES expensesObj = new EXPENSES();
+            List<EXPENSE> expenses = new List<EXPENSE>();
+            expensesObj.EXPENSE = expenses;
+
+            if (loanApplication.Borrowers != null && this._liabilitiesToSkip != null)
+            {
+                var rmBorrowers = this.SortRainMakerBorrowers(loanApplication);
+                int expenseIndex = 1;
+                int borrowerIndex = 0;
+
+                foreach (var rmBorrower in rmBorrowers)
+                {
+                    borrowerIndex = rmBorrowers.IndexOf(rmBorrower) + 1;
+                    string borrowerLabel = $"BORROWER_{borrowerIndex}";
+                    if (rmBorrower.BorrowerLiabilities != null)
+                    {
+                        var expenseLiabilities = rmBorrower.BorrowerLiabilities
+                                                           .Where(liab => this._liabilitiesToSkip.Contains(liab.LiabilityTypeId))
+                                                           .ToList();
+                        if (expenseLiabilities != null && expenseLiabilities.Count > 0)
+                        {
+                            foreach (var expenseLiability in expenseLiabilities)
+                            {
+                                EXPENSE expenseToAdd = new EXPENSE();
+                                expenses.Add(expenseToAdd);
+
+                                expenseToAdd.SequenceNumber = expenseIndex;
+                                expenseToAdd.Label = $"EXPENSE_{expenseIndex++}";
+                                expenseToAdd.ExpenseMonthlyPaymentAmount = expenseLiability.MonthlyPayment;
+                                expenseToAdd.ExpenseRemainingTermMonthsCount = expenseLiability.RemainingMonth;
+
+                                if (Enum.IsDefined(typeof(ExpenseBase),
+                                                   (ExpenseBase)expenseLiability.LiabilityTypeId))
+                                {
+                                    if (((ExpenseBase)expenseLiability.LiabilityTypeId) == ExpenseBase.ChildCare)
+                                    {
+                                        expenseToAdd.ExpenseType = Convert.ToString(ExpenseBase.Other);
+                                        expenseToAdd.ExpenseTypeOtherDescription = "Child Care";
+                                    }
+                                    else
+                                    {
+                                        expenseToAdd.ExpenseType = Convert.ToString((ExpenseBase)expenseLiability.LiabilityTypeId);
+                                    }
+                                }
+                                else
+                                {
+                                    expenseToAdd.ExpenseType = Convert.ToString(ExpenseBase.Other);
+                                }
+
+
+                                relationships.Add(new MismoRelationShipModel()
+                                {
+                                    To = borrowerLabel,
+                                    From = expenseToAdd.Label
+                                });
+                            }
+                        }
+
+                        expenseIndex = expenses.Count() + 1;
+                    }
+                }
+            }
+
+            return expensesObj;
+        }
+
+        public LIABILITIES GetLiabilities(LoanApplication loanApplication)
         {
             LIABILITIES liabilityObj = new LIABILITIES();
             List<LIABILITY> liabilities = new List<LIABILITY>();
@@ -711,11 +887,18 @@ namespace ByteWebConnector.SDK.Mismo
                     secondMortgageLiability.SequenceNumber = liabilityIndex;
                     secondMortgageLiability.Label = $"LIABILITY_{liabilityIndex}";
 
+                    relationships.Add(new MismoRelationShipModel()
+                    {
+                        From = firstMortgageAssetLabel,
+                        To = secondMortgageLiability.Label
+                    });
+
                     LIABILITY_DETAIL firstLiabilityDetail = new LIABILITY_DETAIL();
                     firstLiabilityDetail.LiabilityExclusionIndicator = false; // TODO
+                    firstLiabilityDetail.LiabilityPaymentIncludesTaxesInsuranceIndicator = false;
                     firstLiabilityDetail.LiabilityMonthlyPaymentAmount = secondMortgage.MonthlyPayment;
                     firstLiabilityDetail.LiabilityPayoffStatusIndicator = false; // TODO
-                    firstLiabilityDetail.LiabilityType = Convert.ToString(LiabilityBase.Installment);
+                    firstLiabilityDetail.LiabilityType = Convert.ToString(LiabilityBase.MortgageLoan);
                     firstLiabilityDetail.LiabilityUnpaidBalanceAmount = secondMortgage.MortgageBalance;
 
                     LIABILITY_HOLDER liabilityHolder = new LIABILITY_HOLDER()
@@ -742,7 +925,7 @@ namespace ByteWebConnector.SDK.Mismo
                 foreach (var rmBorrower in rmBorrowers)
                 {
                     borrowerIndex = rmBorrowers.IndexOf(rmBorrower) + 1;
-                    string borrowerLabel = $"BORROWER_{borrowerIndex}";                    
+                    string borrowerLabel = $"BORROWER_{borrowerIndex}";
 
                     if (rmBorrower.BorrowerLiabilities != null)
                     {
@@ -805,7 +988,7 @@ namespace ByteWebConnector.SDK.Mismo
             return liabilityObj;
         }
 
-        private List<LOAN> SetLoanInfo(LoanApplication loanApplication)
+        public List<LOAN> GetLoanInfo(LoanApplication loanApplication)
         {
             List<LOAN> loanList = new List<LOAN>();
             int loanSubjectIndex = 1;
@@ -816,10 +999,10 @@ namespace ByteWebConnector.SDK.Mismo
                 Label = $"SUBJECT_LOAN_{loanSubjectIndex}",
                 CONSTRUCTION = new CONSTRUCTION()
             };
-            loanToAdd.CONSTRUCTION = new CONSTRUCTION()
-            {
-                LandOriginalCostAmount = loanApplication.PropertyInfo?.OriginalPurchasePrice
-            };
+            //loanToAdd.CONSTRUCTION = new CONSTRUCTION()
+            //{
+            //    LandOriginalCostAmount = loanApplication.PropertyInfo?.OriginalPurchasePrice
+            //};
 
             #region Add Amortization
             AMORTIZATION amortization = new AMORTIZATION();
@@ -1038,7 +1221,7 @@ namespace ByteWebConnector.SDK.Mismo
             return loanList;
         }
 
-        private List<PARTY> SetBorrowers(LoanApplication loanApplication)
+        public List<PARTY> GetBorrowers(LoanApplication loanApplication)
         {
             List<PARTY> borrowers = new List<PARTY>();
 
@@ -1194,24 +1377,25 @@ namespace ByteWebConnector.SDK.Mismo
                 var currentEmploymentInfos = rmBorrower.EmploymentInfoes?.Where(ei => ei.EndDate == null).OrderByDescending(ei => ei.StartDate).ThenBy(emp => emp.JobTypeId).ToList();
                 var previousEmploymentInfos = rmBorrower.EmploymentInfoes?.Where(ei => ei.EndDate != null).ToList();
 
-                if (rmBorrower.OtherIncomes != null)
-                {
-                    foreach (var oi in rmBorrower.OtherIncomes)
-                    {
-                        IncomeBase? incomeType = null;
+                //if (rmBorrower.OtherIncomes != null)
+                //{
+                //    foreach (var oi in rmBorrower.OtherIncomes)
+                //    {
+                //        IncomeBase? incomeType = null;
 
-                        CURRENT_INCOME_ITEM otherIncomeItem = new CURRENT_INCOME_ITEM()
-                        {
-                            SequenceNumber = borrowerCurrentIncomeItems.Count() + 1,
-                            Label = $"CURRENT_INCOME_ITEM_{++totalCurrentIncomesCount}",
-                        };
-                        if (Enum.IsDefined(typeof(IncomeBase),
-                                           (IncomeBase)oi.IncomeTypeId))
-                        {
+                //        CURRENT_INCOME_ITEM otherIncomeItem = new CURRENT_INCOME_ITEM()
+                //        {
+                //            SequenceNumber = borrowerCurrentIncomeItems.Count() + 1,
+                //            Label = $"CURRENT_INCOME_ITEM_{++totalCurrentIncomesCount}",
+                //        };
+                //        if (Enum.IsDefined(typeof(IncomeBase),
+                //                           (IncomeBase)oi.IncomeTypeId))
+                //        {
 
-                        }
-                    }
-                }
+                //        }
+                //    }
+                //}
+
                 if (currentEmploymentInfos != null)
                 {
 
@@ -1223,7 +1407,8 @@ namespace ByteWebConnector.SDK.Mismo
                         EmploymentClassificationBase? employerType = null;
 
                         int arrayIndex = currentEmploymentInfos.IndexOf(employmentInfo);
-                        if (arrayIndex == (currentEmploymentInfos.Count - 1))
+                        //if (arrayIndex == (currentEmploymentInfos.Count - 1))
+                        if (arrayIndex == 0)
                         {
                             employerType = EmploymentClassificationBase.Primary;
                         }
@@ -1379,17 +1564,7 @@ namespace ByteWebConnector.SDK.Mismo
                         };
 
                         #region Employer Address
-
-                        employerToAdd.ADDRESS = new ADDRESS()
-                        {
-                            //SequenceNumber = 1, TODO
-                            CityName = employmentInfo.AddressInfo?.CityName,
-                            PostalCode = employmentInfo.AddressInfo?.ZipCode,
-                            StateCode = employmentInfo.AddressInfo?.State?.Abbreviation,
-                            AddressLineText = $"{employmentInfo.AddressInfo?.StreetAddress} {employmentInfo.AddressInfo?.UnitNo}".Trim(),
-                            CountryCode = employmentInfo.AddressInfo?.Country?.TwoLetterIsoCode,
-                            CountyName = employmentInfo.AddressInfo?.CountyName
-                        };
+                        employerToAdd.ADDRESS = this.GetMismoAddress(employmentInfo.AddressInfo);
 
                         #endregion
 
@@ -1430,12 +1605,13 @@ namespace ByteWebConnector.SDK.Mismo
 
                         employerToAdd.EMPLOYMENT.EmploymentStatusType = Convert.ToString(EmploymentStatusBase.Current);
 
-                        var toDate = employmentInfo.EndDate ?? rmBorrower.LoanApplication?.CreatedOnUtc ?? DateTime.UtcNow;
+                        //var toDate = employmentInfo.EndDate ?? rmBorrower.LoanApplication?.CreatedOnUtc ?? DateTime.UtcNow;
+                        var toDate = loanApplication.CreatedOnUtc ?? DateTime.UtcNow;
 
                         employerToAdd.EMPLOYMENT.EmploymentTimeInLineOfWorkYearsCount = (decimal?)Math.Round(Math.Abs((employmentInfo.StartDate.Value - toDate).TotalDays / 365), 2);
                         employerToAdd.EMPLOYMENT.EmploymentTimeInLineOfWorkMonthsCount = (decimal?)Math.Round(Math.Abs((employmentInfo.StartDate.Value - toDate).TotalDays / 365), 2);
                         employerToAdd.EMPLOYMENT.EmploymentTimeInLineOfWorkMonthsCount = ((toDate.Year - employmentInfo.StartDate.Value.Year) * 12) + (toDate.Month - employmentInfo.StartDate.Value.Month);
-                        if (employmentInfo.OwnershipPercentage != null)
+                        if ((employmentInfo.IsSelfEmployed == true) && employmentInfo.OwnershipPercentage != null)
                         {
                             if (employmentInfo.OwnershipPercentage >= 25)
                             {
@@ -1499,18 +1675,7 @@ namespace ByteWebConnector.SDK.Mismo
                         };
 
                         #region Employer Address
-
-                        employerToAdd.ADDRESS = new ADDRESS()
-                        {
-                            // SequenceNumber = 1, TODO
-                            CityName = employmentInfo.AddressInfo?.CityName,
-                            PostalCode = employmentInfo.AddressInfo?.ZipCode,
-                            StateCode = employmentInfo.AddressInfo?.State?.Abbreviation,
-                            AddressLineText = $"{employmentInfo.AddressInfo?.StreetAddress} {employmentInfo.AddressInfo?.UnitNo}".Trim(),
-                            CountryCode = employmentInfo.AddressInfo?.Country?.TwoLetterIsoCode,
-                            CountyName = employmentInfo.AddressInfo?.CountyName
-                        };
-
+                        employerToAdd.ADDRESS = this.GetMismoAddress(employmentInfo.AddressInfo);
                         #endregion
 
                         employerToAdd.EMPLOYMENT = new EMPLOYMENT();
@@ -1692,7 +1857,7 @@ namespace ByteWebConnector.SDK.Mismo
                             dependentList.Add(new DEPENDENT()
                             {
                                 SequenceNumber = dependentIndex++,
-                                DependentAgeYearsCount = age
+                                DependentAgeYearsCount = age.Trim()
                             });
                         }
                     }
@@ -1752,12 +1917,13 @@ namespace ByteWebConnector.SDK.Mismo
             return borrowers;
         }
 
-        private BORROWER_DETAIL GetBorrowerDetail(Borrower rmBorrower)
+        public BORROWER_DETAIL GetBorrowerDetail(Borrower rmBorrower)
         {
             BORROWER_DETAIL borrowerDetailData = new BORROWER_DETAIL();
             if (rmBorrower != null)
             {
                 borrowerDetailData.CommunityPropertyStateResidentIndicator = false; // TODO
+                borrowerDetailData.SelfDeclaredMilitaryServiceIndicator = false;
                 borrowerDetailData.DependentCount = rmBorrower.NoOfDependent;
                 if (rmBorrower.LoanContact.MaritalStatusId.HasValue)
                 {
@@ -1771,7 +1937,7 @@ namespace ByteWebConnector.SDK.Mismo
             return borrowerDetailData;
         }
 
-        private GOVERNMENT_MONITORING GetGovernmentMonitoring(Borrower rmBorrower)
+        public GOVERNMENT_MONITORING GetGovernmentMonitoring(Borrower rmBorrower)
         {
             GOVERNMENT_MONITORING monitoring = new GOVERNMENT_MONITORING();
             monitoring.GOVERNMENT_MONITORING_DETAIL = new GOVERNMENT_MONITORING_DETAIL();
@@ -1790,14 +1956,9 @@ namespace ByteWebConnector.SDK.Mismo
                 monitoring.GOVERNMENT_MONITORING_DETAIL.EXTENSION = new EXTENSION();
                 monitoring.GOVERNMENT_MONITORING_DETAIL.EXTENSION.OTHER = new OTHER();
                 monitoring.GOVERNMENT_MONITORING_DETAIL.EXTENSION.OTHER.GOVERNMENT_MONITORING_DETAIL_EXTENSION = new GOVERNMENT_MONITORING_DETAIL_EXTENSION();
+                monitoring.GOVERNMENT_MONITORING_DETAIL.EXTENSION.OTHER.GOVERNMENT_MONITORING_DETAIL_EXTENSION.ApplicationTakenMethodType = Convert.ToString(ApplicationTakenMethodBase.Internet);
                 monitoring.GOVERNMENT_MONITORING_DETAIL.EXTENSION.OTHER.GOVERNMENT_MONITORING_DETAIL_EXTENSION.HMDAGenderType = Convert.ToString((GenderBase)rmBorrower.LoanContact.GenderId);
             }
-
-            if (rmBorrower.LoanContact != null && rmBorrower.LoanContact.LoanContactEthnicityBinders != null)
-            {
-
-            }
-
 
             monitoring.HMDA_ETHNICITY_ORIGINS = new HMDA_ETHNICITY_ORIGINS();
             monitoring.HMDA_ETHNICITY_ORIGINS.HMDA_ETHNICITY_ORIGIN = new List<HMDA_ETHNICITY_ORIGIN>();
@@ -1912,7 +2073,7 @@ namespace ByteWebConnector.SDK.Mismo
             return monitoring;
         }
 
-        private List<RESIDENCE> GetBorrowerResidences(Borrower rmBorrower)
+        public List<RESIDENCE> GetBorrowerResidences(Borrower rmBorrower)
         {
             List<RESIDENCE> residences = new List<RESIDENCE>();
             if (rmBorrower != null)
@@ -1926,18 +2087,9 @@ namespace ByteWebConnector.SDK.Mismo
                         var index = rmBorrowerResidences.IndexOf(rmBorrowerResidence);
                         RESIDENCE residenceToAdd = new RESIDENCE();
                         residences.Add(residenceToAdd);
-                        if (rmBorrowerResidence.LoanAddress != null)
+                        //if (rmBorrowerResidence.LoanAddress != null)
                         {
-                            residenceToAdd.ADDRESS = new ADDRESS()
-                            {
-                                // SequenceNumber = 1, TODO
-                                PostalCode = rmBorrowerResidence.LoanAddress.ZipCode,
-                                CityName = rmBorrowerResidence.LoanAddress.CityName,
-                                StateCode = rmBorrowerResidence.LoanAddress.State?.Abbreviation,
-                                CountryCode = rmBorrowerResidence.LoanAddress.Country?.TwoLetterIsoCode,
-                                CountyName = rmBorrowerResidence.LoanAddress.CountyName,
-                                AddressLineText = $"{rmBorrowerResidence.LoanAddress.StreetAddress} {rmBorrowerResidence.LoanAddress.UnitNo}".Trim()
-                            };
+                            residenceToAdd.ADDRESS = this.GetMismoAddress(rmBorrowerResidence.LoanAddress);
                             if (rmBorrowerResidence.OwnershipTypeId.HasValue)
                             {
                                 if (Enum.IsDefined(typeof(BorrowerResidencyBasisBase),
@@ -1954,22 +2106,17 @@ namespace ByteWebConnector.SDK.Mismo
                                     residenceToAdd.RESIDENCE_DETAIL = new RESIDENCE_DETAIL();
                                     residenceToAdd.RESIDENCE_DETAIL.BorrowerResidencyBasisType = Convert.ToString((BorrowerResidencyBasisBase)rmBorrowerResidence.OwnershipTypeId);
                                 }
+                                else
+                                {
+                                    residenceToAdd.RESIDENCE_DETAIL = new RESIDENCE_DETAIL();
+                                    residenceToAdd.RESIDENCE_DETAIL.BorrowerResidencyBasisType = Convert.ToString(BorrowerResidencyBasisBase.LivingRentFree);
+                                }
                             }
 
                             if (residenceToAdd.RESIDENCE_DETAIL == null)
                             {
                                 residenceToAdd.RESIDENCE_DETAIL = new RESIDENCE_DETAIL();
                             }
-
-                            //var isCurrentResidence = false; //rmBorrower.BorrowerResidences.Any(br => br.LoanAddressId == rmProperty.PropertyInfo.AddressInfo?.Id);
-                            //if (rmBorrower.BorrowerProperties != null)
-                            //{
-                            //    var propertyToFind = rmBorrower.BorrowerProperties
-                            //                                   .Where(bp => bp.PropertyInfo != null && bp.PropertyInfo.AddressInfo != null
-                            //                                                                        && bp.PropertyInfo.AddressInfo?.Id == rmBorrowerResidence.LoanAddressId)
-                            //                                   .FirstOrDefault();
-                            //    isCurrentResidence = propertyToFind != null;
-                            //}
 
                             if (isCurrentResidence)
                             {
@@ -1992,6 +2139,43 @@ namespace ByteWebConnector.SDK.Mismo
                 }
             }
             return residences;
+        }
+
+
+        public ADDRESS GetMismoAddress(AddressInfo rmAddressInfo)
+        {
+            ADDRESS mismoAddress = null;
+            if (rmAddressInfo != null)
+            {
+                mismoAddress = new ADDRESS()
+                {
+                    CityName = rmAddressInfo.CityName,
+                    PostalCode = rmAddressInfo.ZipCode,
+                    StateCode = rmAddressInfo?.State?.Abbreviation,
+                    CountyName = rmAddressInfo.CountyName,
+                    //CountryCode = (loanApplication.PropertyInfo.AddressInfo?.Country == null ? "US" : loanApplication.PropertyInfo.AddressInfo?.Country.TwoLetterIsoCode),
+                    //CountryName = (loanApplication.PropertyInfo.AddressInfo?.Country == null ? "United States" : loanApplication.PropertyInfo.AddressInfo?.Country.Name),
+                    AddressLineText = $"{rmAddressInfo.StreetAddress} {this.GetAddressUnit(rmAddressInfo.UnitNo)}".Trim()
+                };
+                mismoAddress.CountryName = "United States";
+                mismoAddress.CountryCode = "US";
+                if (rmAddressInfo.Country != null)
+                {
+                    mismoAddress.CountryName = rmAddressInfo.Country.Name;
+                    mismoAddress.CountryCode = rmAddressInfo.Country.TwoLetterIsoCode;
+                }
+            }
+            return mismoAddress;
+        }
+
+        private string GetAddressUnit(string unit)
+        {
+            if (!string.IsNullOrEmpty(unit))
+            {
+                unit = $"#{unit}";
+            }
+
+            return unit;
         }
     }
 }

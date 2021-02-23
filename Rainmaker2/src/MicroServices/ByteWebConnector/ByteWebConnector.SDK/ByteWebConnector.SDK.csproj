@@ -33,35 +33,35 @@
 
   <ItemGroup>
     <Reference Include="ByteBase">
-      <HintPath>..\..\..\Library\ByteProSDK\20.2\ByteBase.dll</HintPath>
+      <HintPath>..\..\..\Library\ByteProSDK\21.1\ByteBase.dll</HintPath>
     </Reference>
     <Reference Include="FilerInternet">
-      <HintPath>..\..\..\Library\ByteProSDK\20.2\FilerInternet.dll</HintPath>
+      <HintPath>..\..\..\Library\ByteProSDK\21.1\FilerInternet.dll</HintPath>
     </Reference>
     <Reference Include="LOSAutomation">
-      <HintPath>..\..\..\Library\ByteProSDK\20.2\LOSAutomation.dll</HintPath>
+      <HintPath>..\..\..\Library\ByteProSDK\21.1\LOSAutomation.dll</HintPath>
     </Reference>
     <Reference Include="Services">
       <HintPath>..\..\..\Library\ByteProSDK\20.2\Services.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="Xceed.Editors">
-      <HintPath>..\..\..\Library\ByteProSDK\20.2\Xceed.Editors.dll</HintPath>
+      <HintPath>..\..\..\Library\ByteProSDK\21.1\Xceed.Editors.dll</HintPath>
     </Reference>
     <Reference Include="Xceed.Grid">
-      <HintPath>..\..\..\Library\ByteProSDK\20.2\Xceed.Grid.dll</HintPath>
+      <HintPath>..\..\..\Library\ByteProSDK\21.1\Xceed.Grid.dll</HintPath>
     </Reference>
     <Reference Include="Xceed.Grid.Reporting">
-      <HintPath>..\..\..\Library\ByteProSDK\20.2\Xceed.Grid.Reporting.dll</HintPath>
+      <HintPath>..\..\..\Library\ByteProSDK\21.1\Xceed.Grid.Reporting.dll</HintPath>
     </Reference>
     <Reference Include="Xceed.Pdf">
-      <HintPath>..\..\..\Library\ByteProSDK\20.2\Xceed.Pdf.dll</HintPath>
+      <HintPath>..\..\..\Library\ByteProSDK\21.1\Xceed.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="Xceed.UI">
-      <HintPath>..\..\..\Library\ByteProSDK\20.2\Xceed.UI.dll</HintPath>
+      <HintPath>..\..\..\Library\ByteProSDK\21.1\Xceed.UI.dll</HintPath>
     </Reference>
     <Reference Include="Xceed.Validation">
-      <HintPath>..\..\..\Library\ByteProSDK\20.2\Xceed.Validation.dll</HintPath>
+      <HintPath>..\..\..\Library\ByteProSDK\21.1\Xceed.Validation.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -131,7 +131,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocManager.Service", "..\Mi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocManager.API", "..\MicroServices\DocManager\DocManager.API\DocManager.API.csproj", "{6485E384-3332-40DB-8B9B-53A3E23EC154}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocManager.Tests", "..\MicroServices\DocManager\DocManager.Tests\DocManager.Tests.csproj", "{17DFBAC5-9703-4A6A-A14C-B48D54555D74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocManager.Tests", "..\MicroServices\DocManager\DocManager.Tests\DocManager.Tests.csproj", "{17DFBAC5-9703-4A6A-A14C-B48D54555D74}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setting", "Setting", "{C7466FB3-D660-4B91-A74B-C3B94755547C}"
 EndProject
@@ -146,6 +146,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Setting.Service", "..\MicroServices\Setting\Setting.Service\Setting.Service.csproj", "{FB8E05CF-C155-4FAB-A227-D1874D296D7B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Setting.Tests", "..\MicroServices\Setting\Setting.Tests\Setting.Tests.csproj", "{A79A7447-A282-4A4B-9032-58C7CBC5AB02}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ByteWebConnectorTest", "ByteWebConnectorTest\ByteWebConnectorTest.csproj", "{4CA353CB-8EFD-4162-AECA-E3098C77BC81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ByteWebConnector.SDK.Tests", "ByteWebConnector.SDK.Tests\ByteWebConnector.SDK.Tests.csproj", "{591FCB25-86B0-40B7-9188-158C4F4FEA3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -389,6 +393,14 @@ Global
 		{A79A7447-A282-4A4B-9032-58C7CBC5AB02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A79A7447-A282-4A4B-9032-58C7CBC5AB02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A79A7447-A282-4A4B-9032-58C7CBC5AB02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CA353CB-8EFD-4162-AECA-E3098C77BC81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CA353CB-8EFD-4162-AECA-E3098C77BC81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CA353CB-8EFD-4162-AECA-E3098C77BC81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CA353CB-8EFD-4162-AECA-E3098C77BC81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{591FCB25-86B0-40B7-9188-158C4F4FEA3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{591FCB25-86B0-40B7-9188-158C4F4FEA3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{591FCB25-86B0-40B7-9188-158C4F4FEA3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{591FCB25-86B0-40B7-9188-158C4F4FEA3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -463,6 +475,8 @@ Global
 		{97F7E539-9B6F-4C32-A20D-C04E5FE882F9} = {C7466FB3-D660-4B91-A74B-C3B94755547C}
 		{FB8E05CF-C155-4FAB-A227-D1874D296D7B} = {C7466FB3-D660-4B91-A74B-C3B94755547C}
 		{A79A7447-A282-4A4B-9032-58C7CBC5AB02} = {C7466FB3-D660-4B91-A74B-C3B94755547C}
+		{4CA353CB-8EFD-4162-AECA-E3098C77BC81} = {EB4C197E-E8F0-446A-BE23-9E4F4C763938}
+		{591FCB25-86B0-40B7-9188-158C4F4FEA3E} = {EB4C197E-E8F0-446A-BE23-9E4F4C763938}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7E56FE89-36B5-422C-B211-A1E23C5F0D3E}
