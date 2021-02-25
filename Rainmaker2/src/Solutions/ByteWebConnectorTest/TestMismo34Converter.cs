@@ -243,6 +243,7 @@ namespace ByteWebConnectorTest
             Assert.Equal(expectedJson, actualJson);
 
         }
+
         [Fact]
         public void TestAssetsWhenOtherNonLiquidAssetsExists()
         {
@@ -933,7 +934,6 @@ namespace ByteWebConnectorTest
             Assert.Equal(expectedJson, actualJson);
         }
 
-
         [Fact]
         public void TestWhenAssetsGiftOfEquityExists()
         {
@@ -1167,7 +1167,6 @@ namespace ByteWebConnectorTest
             Assert.Equal(expectedJson, actualJson);
         }
 
-
         [Fact]
         public void TestAssetsWhenSecuredBorrowedFundsNotDepositedExists()
         {
@@ -1393,6 +1392,7 @@ namespace ByteWebConnectorTest
             //  expectedJson = JsonConvert.SerializeObject(expected.ASSET[2]);
             //Assert.Equal(expectedJson, actualJson);
         }
+
         [Fact]
         public void TestAssetsWhenCashDepositOnSalesContractExists()
         {
@@ -2472,7 +2472,7 @@ namespace ByteWebConnectorTest
                                      new ADDRESS
                                     {
 
-                                        AddressLineText= "sadadsad 12",
+                                        AddressLineText= "sadadsad #12",
                                         CountryCode="334",
                                         CountryName= "b",
                                         CityName= "asdad",
@@ -2517,7 +2517,7 @@ namespace ByteWebConnectorTest
                     {
                          new ADDRESS
                         {
-                             AddressLineText= "sadadsad 12" ,
+                             AddressLineText= "sadadsad #12" ,
                             CountryCode= "334",
                             CountryName= "b",
                             CityName= "asdad",
@@ -2564,6 +2564,7 @@ namespace ByteWebConnectorTest
             expectedJson = JsonConvert.SerializeObject(expected.ASSET[2]);
             Assert.Equal(expectedJson, actualJson);
         }
+
         [Fact]
         public void TestAssetsAddressIsNull()
         {
@@ -2751,13 +2752,13 @@ namespace ByteWebConnectorTest
                     {
                          new ADDRESS
                         {
-                             AddressLineText= "sadadsad 12" ,
+                             AddressLineText= "sadadsad #12" ,
                             CountryCode= "334",
                             CountryName= "b",
                             CityName= "asdad",
                             PostalCode= "12",
                             StateCode=null,
-                            CountyName= null
+                            CountyName= null,
                         }
                     },
                     PROPERTY_DETAIL=new PROPERTY_DETAIL {
@@ -2800,6 +2801,7 @@ namespace ByteWebConnectorTest
             expectedJson = JsonConvert.SerializeObject(expected.ASSET[2]);
             Assert.Equal(expectedJson, actualJson);
         }
+
         [Fact]
         public void TestAssetsWhenPropertyUsageIdIsNotExist()// mostly place use is not exist means not match 
         {
@@ -2976,7 +2978,7 @@ namespace ByteWebConnectorTest
                                 {
                                    new ADDRESS
                                    {
-                                        AddressLineText= "sadadsad 12",
+                                        AddressLineText= "sadadsad #12",
                                         CountryCode="334",
                                         CountryName= "b",
                                         CityName= "asdad",
@@ -3022,7 +3024,7 @@ namespace ByteWebConnectorTest
                     {
                          new ADDRESS
                         {
-                             AddressLineText= "sadadsad 12" ,
+                             AddressLineText= "sadadsad #12" ,
                             CountryCode= "334",
                             CountryName= "b",
                             CityName= "asdad",
@@ -3072,6 +3074,7 @@ namespace ByteWebConnectorTest
             expectedJson = JsonConvert.SerializeObject(expected.ASSET[2]);
             Assert.Equal(expectedJson, actualJson);
         }
+
         [Fact]
         public void TestAssetsWhenPropertyStatusIsNotRental()
         {
@@ -3247,7 +3250,7 @@ namespace ByteWebConnectorTest
                                 ADDRESS=   new List<ADDRESS>
                                 {
                                      new ADDRESS{
-                                    AddressLineText= "sadadsad 12",
+                                    AddressLineText= "sadadsad #12",
                                     CountryCode= "334",
                                     CountryName= "b",
                                     CityName= "asdad",
@@ -3292,7 +3295,7 @@ namespace ByteWebConnectorTest
                     {
                          new ADDRESS
                         {
-                             AddressLineText= "sadadsad 12" ,
+                             AddressLineText= "sadadsad #12" ,
                             CountryCode= "334",
                             CountryName= "b",
                             CityName= "asdad",
@@ -3341,6 +3344,7 @@ namespace ByteWebConnectorTest
             expectedJson = JsonConvert.SerializeObject(expected.ASSET[2]);
             Assert.Equal(expectedJson, actualJson);
         }
+
         [Fact]
         public void TestAssetsWhenPropertyInfoAndAddressInfoIsNull()
         {
@@ -3499,6 +3503,7 @@ namespace ByteWebConnectorTest
             expectedJson = JsonConvert.SerializeObject(expected);
             Assert.Equal(expectedJson, actualJson);
         }
+
         [Fact]
         public void TestAssetsWhenPropertyStatusIsEmpty()
         {
@@ -4023,7 +4028,7 @@ namespace ByteWebConnectorTest
 
                 ADDRESS = new ADDRESS
                 {
-                    AddressLineText = "asdad 571",
+                    AddressLineText = "asdad #571",
                     CountryCode = null,
                     CountryName = null,
                     CityName = "abc",
@@ -4206,7 +4211,7 @@ namespace ByteWebConnectorTest
 
                 ADDRESS = new ADDRESS
                 {
-                    AddressLineText = "asdad 572",
+                    AddressLineText = "asdad #572",
                     CountryCode = null,
                     CountryName = null,
                     CityName = "abc",
@@ -4387,7 +4392,7 @@ namespace ByteWebConnectorTest
 
                 ADDRESS = new ADDRESS
                 {
-                    AddressLineText = "asdad 573",
+                    AddressLineText = "asdad #573",
                     CountryCode = null,
                     CountryName = null,
                     CityName = "abc",
@@ -4574,7 +4579,7 @@ namespace ByteWebConnectorTest
 
                 ADDRESS = new ADDRESS
                 {
-                    AddressLineText = "asdad 574",
+                    AddressLineText = "asdad #574",
                     CountryCode = null,
                     CountryName = null,
                     CityName = "abc",
@@ -4760,7 +4765,7 @@ namespace ByteWebConnectorTest
 
                 ADDRESS = new ADDRESS
                 {
-                    AddressLineText = "asdad 575",
+                    AddressLineText = "asdad #575",
                     CountryCode = null,
                     CountryName = null,
                     CityName = "abc",
@@ -4944,7 +4949,7 @@ namespace ByteWebConnectorTest
 
                 ADDRESS = new ADDRESS
                 {
-                    AddressLineText = "asdad 576",
+                    AddressLineText = "asdad #576",
                     CountryCode = null,
                     CountryName = null,
                     CityName = "abc",
@@ -5017,6 +5022,7 @@ namespace ByteWebConnectorTest
             Assert.Equal(expectedJson, actualJson);
 
         }
+
         [Fact]
         public void TestSubjectPropertyWhenCondominiumExists()
         {
@@ -5135,7 +5141,7 @@ namespace ByteWebConnectorTest
 
                 ADDRESS = new ADDRESS
                 {
-                    AddressLineText = "asdad 577",
+                    AddressLineText = "asdad #577",
                     CountryCode = null,
                     CountryName = null,
                     CityName = "abc",
@@ -5206,6 +5212,7 @@ namespace ByteWebConnectorTest
             expectedJson = JsonConvert.SerializeObject(expected.PROPERTY_DETAIL);
             Assert.Equal(expectedJson, actualJson);
         }
+
         [Fact]
         public void TestSubjectPropertyWhenPropertyUsageIdIsNotExistExists()
         {
@@ -5323,7 +5330,7 @@ namespace ByteWebConnectorTest
 
                 ADDRESS = new ADDRESS
                 {
-                    AddressLineText = "asdad 577",
+                    AddressLineText = "asdad #577",
                     CountryCode = null,
                     CountryName = null,
                     CityName = "abc",
@@ -5392,6 +5399,7 @@ namespace ByteWebConnectorTest
             Assert.Equal(expectedJson, actualJson);
 
         }
+
         //---
         [Fact]
         public void TestLoanInfo()
@@ -6481,6 +6489,7 @@ namespace ByteWebConnectorTest
             expectedJson = JsonConvert.SerializeObject(expected);
             Assert.Equal(expectedJson, actualJson);
         }
+
         [Fact]
         public void TestLoanInfoWhenPropertyInfoIsNull()
         {
@@ -7540,6 +7549,7 @@ namespace ByteWebConnectorTest
             #endregion
 
         }
+
         [Fact]
         public void TestLoanInfoWhenPropertyTaxEscrowsIsNull()
         {
@@ -8088,6 +8098,7 @@ namespace ByteWebConnectorTest
 
             #endregion
         }
+
         [Fact]
         public void TestLoanInfoWhenMortgageOnPropertiesIsNull()
         {
@@ -8763,6 +8774,7 @@ namespace ByteWebConnectorTest
 
             #endregion
         }
+
         [Fact]
         public void TestLoanInfoWhenPropertyInterestRateReductionIsExists()
         {
@@ -9299,6 +9311,7 @@ namespace ByteWebConnectorTest
 
             #endregion
         }
+
         [Fact]
         public void TestLiabilities()
         {
@@ -10273,6 +10286,7 @@ namespace ByteWebConnectorTest
             Assert.Equal(expectedJson, actualJson);
             #endregion 
         }
+
         [Fact]
         public void TestLiabilitiesWhenIsFirstMortgageIsFalse()
         {
@@ -10755,6 +10769,7 @@ namespace ByteWebConnectorTest
             Assert.Equal(expectedJson, actualJson);
             #endregion 
         }
+
         [Fact]
         public void TestLiabilitiesWhenPropertyInfoIsNull()
         {
@@ -11173,6 +11188,7 @@ namespace ByteWebConnectorTest
             Assert.Equal(expectedJson, actualJson);
             #endregion 
         }
+
         [Fact]
         public void TestExpenseLiabilities()
         {
@@ -12050,6 +12066,7 @@ namespace ByteWebConnectorTest
             Assert.Equal(expectedJson, actualJson);
 
         }
+
         [Fact]
         public void TestExpenseLiabilitiesWhenLiabilityTypeIdChildCareIsExists()
         {
@@ -12482,6 +12499,7 @@ namespace ByteWebConnectorTest
             Assert.Equal(expectedJson, actualJson);
 
         }
+
         [Fact]
         public void TestExpenseLiabilitieWhenBorrowersAndliabilitiesToSkipIsNull()
         {
@@ -12572,6 +12590,7 @@ namespace ByteWebConnectorTest
             var expectedJson = JsonConvert.SerializeObject(expected);
             Assert.Equal(expectedJson, actualJson);
         }
+
         [Fact]
         public void TestExpenseLiabilitiesWhenExpenseLiabilitiesIsNull()
         {
@@ -12993,6 +13012,7 @@ namespace ByteWebConnectorTest
             Assert.Equal(expectedJson, actualJson);
 
         }
+
         [Fact]
         public void TestSubjectPropertyWhenTwoUnitBuildingExists()
         {
@@ -13111,7 +13131,7 @@ namespace ByteWebConnectorTest
             {
                 ADDRESS = new ADDRESS
                 {
-                    AddressLineText = "asdad 571",
+                    AddressLineText = "asdad #571",
                     CountryCode = null,
                     CountryName = null,
                     CityName = "abc",

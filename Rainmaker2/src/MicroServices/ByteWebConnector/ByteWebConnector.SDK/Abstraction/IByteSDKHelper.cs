@@ -244,6 +244,8 @@ namespace ByteWebConnector.SDK.Abstraction
             this.SetCountryNameInAddresses(byteFile, loanApplication);
             this.FixBorrwerQuestions(byteFile, loanApplication);
 
+            //byteFile.GetChildObject("DOT", false).SetFieldValue("BorrowerClosingCostsOV", null);
+
             byteFile.Save(false);
         }
 
