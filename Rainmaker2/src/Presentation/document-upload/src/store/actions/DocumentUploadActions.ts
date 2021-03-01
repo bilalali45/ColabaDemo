@@ -1,4 +1,5 @@
 import { Http } from "rainsoft-js";
+
 import { DocumentRequest } from "../../entities/Models/DocumentRequest";
 import { Document } from "../../entities/Models/Document";
 import { DocumentsActionType } from "../reducers/documentReducer";
@@ -17,19 +18,37 @@ export class DocumentUploadActions {
     type?: string
   ) {
     try {
+      let fileData = await DocumentUploadActions.prepareFormData(currentSelected, file, loanApplicationId, type);
+      let fileError = fileData.get('fileError');
+      
+      if(fileError) {
+        dispatchProgress({
+          type: DocumentsActionType.AddFileToCategoryDocs,
+          payload: currentSelected?.files?.map(item => {         
+            if(item?.clientName === file?.clientName) {
+              item.uploadStatus = 'failed';
+              item.notAllowedReason = 'Failed';
+              item.failedReason =  String(fileError);
+            }
+            return item;
+          }),
+        });
+        return;
+      }
+
      let res = await Http.fetch(
         {
           method: Http.methods.POST,
           url: Http.createUrl(Http.baseUrl, type === "WithoutReq" ? Endpoints.documents.POST.submitByBorrower() : Endpoints.documents.POST.submitDocuments()),
           cancelToken: file.uploadReqCancelToken.token,
-          data: DocumentUploadActions.prepareFormData(currentSelected, file, loanApplicationId, type),
-          onUploadProgress: (e) => {
-            let p = Math.floor((e.loaded / e.total) * 100);
+          data: fileData,
+          onUploadProgress: (event) => {
+            let percentage = Math.floor((event.loaded / event.total) * 100);
             let files: any = currentSelected.files;
             let updatedFiles = files.map((f: Document) => {
               if (f.clientName === file.clientName) {
-                f.uploadProgress = p;
-                if (p === 100) {
+                f.uploadProgress = percentage;
+                if (percentage === 100) {
                   f.uploadStatus = "done";
                 }
                 return f;
@@ -82,13 +101,12 @@ export class DocumentUploadActions {
             return f;
           }),
         });
-      }
-      
-      console.log("-------------->Upload errors------------>", error);
+      }      
     }
   }
 
-  static prepareFormData(currentSelected: DocumentRequest, file: Document, loanApplicationId: string, type?: string) {
+  static async prepareFormData(currentSelected: DocumentRequest, file: Document, loanApplicationId: string, type?: string) {
+    
     const data = new FormData();
     let fields ;
     if(type === "WithoutReq"){
@@ -96,9 +114,16 @@ export class DocumentUploadActions {
     }else{
        fields = ["id", "requestId", "docId"];
     }
-   
+    
     if (file.file) {
-      data.append("files", file.file, `${file.clientName}`);
+      try {
+        let fileArrayBuffer = await file.file.arrayBuffer()
+        let blob = new Blob([new Uint8Array(fileArrayBuffer)], { type: file.file.type });
+        data.append("files", blob, `${file.clientName}`);
+      } catch (error) {
+        console.log("File could not be converted into blob", error);
+        data.append('fileError', error);        
+      }
     }
 
     if(type === "WithoutReq"){
@@ -126,11 +151,16 @@ export class DocumentUploadActions {
     let allSelectedFiles: Document[] = [...prevFiles];
     let counter = 0;
     for (let f of [...files]) {
+
+      if(!f.size){
+        console.log("Uploaded file size is not valid.", f, f?.name, f?.size);
+      }
+      
       if (allSelectedFiles.length >= ApplicationEnv.MaxDocumentCount) {
         setFileLimitError({ value: true });
         break;
       }
-
+      
       let selectedFile = new Document(
         "",
         FileUpload.removeSpecialChars(f.name),
@@ -142,8 +172,6 @@ export class DocumentUploadActions {
         f
       );
       selectedFile = Rename.rename(allSelectedFiles, selectedFile);
-
-      console.log('file type', f);
 
       if(!f.type) {
         selectedFile.notAllowedReason = "Invalid";

@@ -45,7 +45,6 @@ export class UserActions {
       console.log("Third party Error", error)
       const errorMessage = "Network Error: Third party Error " + error.message;
       LogRocket.captureException(new Error(errorMessage));
-      throw "Network Error: Third party Error " + error.message
       return false;
     }
     // Azure Maingateway
@@ -56,7 +55,6 @@ export class UserActions {
       console.log("Azure Maingateway Error", error)
       const errorMessage = "Network Error: Azure Maingateway Error " + error.message
       LogRocket.captureException(new Error(errorMessage));
-      throw errorMessage
       return false;
     }
     // Rainmaker API Maingateway
@@ -67,7 +65,6 @@ export class UserActions {
       console.log("Rainmaker API Maingateway Error", error)
       const errorMessage = "Network Error: Rainmaker API Maingateway Error " + error.message
       LogRocket.captureException(new Error(errorMessage));
-      throw errorMessage
       return false;
     }
     
