@@ -36,6 +36,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IRequestService> mock = new Mock<IRequestService>();
             Mock<IRainmakerService> mockRainMock = new Mock<IRainmakerService>();
+            Mock<ISettingService> mockSettingService = new Mock<ISettingService>();
             mock.Setup(x => x.Save(It.IsAny<Model.LoanApplication>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<List<string>>())).ReturnsAsync(true);
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -55,7 +56,7 @@ namespace DocumentManagement.Tests
 
             httpContext.SetupGet(x => x.Request).Returns(request.Object);
 
-            var controller = new RequestController(mock.Object, mockRainMock.Object,null);
+            var controller = new RequestController(mock.Object, mockRainMock.Object, mockSettingService.Object);
 
             controller.ControllerContext = context;
 

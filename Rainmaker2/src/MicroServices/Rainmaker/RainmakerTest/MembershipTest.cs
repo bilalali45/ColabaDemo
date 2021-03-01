@@ -29,7 +29,7 @@ namespace Rainmaker.Test
             dataContext.Database.EnsureCreated();
             UserProfile userProfile = new UserProfile
             {
-                Id = 665,
+                Id = 6650,
                 UserName = "abc",
                 IsActive = true,
                 IsDeleted = false,
@@ -39,9 +39,9 @@ namespace Rainmaker.Test
 
             Customer customer = new Customer
             {
-                Id = 665,
+                Id = 6650,
                 IsActive = true,
-                UserId = 665
+                UserId = 6650
             };
             dataContext.Set<Customer>().Add(customer);
 
@@ -56,9 +56,9 @@ namespace Rainmaker.Test
             {
                 new Borrower ()
                 {
-                     Id=665,
+                     Id=6650,
                      OwnTypeId=1,
-                     LoanApplicationId=665
+                     LoanApplicationId=6650
 
                 }
             };

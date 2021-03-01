@@ -378,14 +378,14 @@ namespace Rainmaker.Test
 
             mockUserProfileService.Setup(x => x.GetUserProfileEmployeeDetail(It.IsAny<int?>(), It.IsAny<UserProfileService.RelatedEntities>())).ReturnsAsync(profile);
             mockLoanApplicationService.Setup(x => x.GetLoanApplicationWithDetails(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<LoanApplicationService.RelatedEntities>())).Returns(lstLoanApplication);
-            ISettingService settingService = new SettingService(mockOpportunityService.Object, mockUserProfileService.Object, mockLoanApplicationService.Object,null,null,new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            ISettingService settingService = new SettingService(mockOpportunityService.Object, mockUserProfileService.Object, mockLoanApplicationService.Object, null, null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
             //Act
             EmailTemplate res = await settingService.RenderEmailTokens(1.ToString(), 4188, 199, "###RequestorUserEmail###", "###RequestorUserEmail###", "You have new tasks to complete for your ###BusinessUnitName### loan application", "<p>Please submit following documents</p>\n<p>###RequestDocumentList###</p>\n<p>Thank you.</p>\n<p><strong>###BusinessUnitName###</strong></p>\n", lstTokenModels);
 
             // Assert
             Assert.NotNull(res);
-            Assert.Equal(1, res.id);
+            Assert.Equal(0, res.id);
             Assert.Equal("talha@gmail.com", res.fromAddress);
             Assert.Equal("talha@gmail.com", res.CCAddress);
             Assert.Equal("You have new tasks to complete for your  loan application", res.subject);
@@ -627,7 +627,7 @@ namespace Rainmaker.Test
 
             // Assert
             Assert.NotNull(res);
-            Assert.Equal(1, res.id);
+            Assert.Equal(0, res.id);
             Assert.Equal("talha@gmail.com", res.fromAddress);
             Assert.Equal("talha@gmail.com", res.CCAddress);
             Assert.Equal("You have new tasks to complete for your AHCLending loan application", res.subject);
@@ -919,14 +919,14 @@ namespace Rainmaker.Test
 
             mockUserProfileService.Setup(x => x.GetUserProfileEmployeeDetail(It.IsAny<int?>(), It.IsAny<UserProfileService.RelatedEntities>())).ReturnsAsync(profile);
             mockLoanApplicationService.Setup(x => x.GetLoanApplicationWithDetails(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<LoanApplicationService.RelatedEntities>())).Returns(lstLoanApplication);
-            ISettingService settingService = new SettingService(mockOpportunityService.Object, mockUserProfileService.Object, mockLoanApplicationService.Object,null,null,new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            ISettingService settingService = new SettingService(mockOpportunityService.Object, mockUserProfileService.Object, mockLoanApplicationService.Object, null, null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
             //Act
             EmailTemplate res = await settingService.RenderEmailTokens("", 4189, 205, "###RequestorUserEmail###", "###RequestorUserEmail###", "You have new tasks to complete for your ###BusinessUnitName### loan application", "<p>Please submit following documents</p>\n<p>###RequestDocumentList###</p>\n<p>Thank you.</p>\n<p><strong>###BusinessUnitName###</strong></p>\n", lstTokenModels);
 
             // Assert
             Assert.NotNull(res);
-            Assert.Equal(1, res.id);
+            Assert.Equal(0, res.id);
             Assert.Equal("talha@gmail.com", res.fromAddress);
             Assert.Equal("talha@gmail.com", res.CCAddress);
             Assert.Equal("tunner.holland@gmail.com", res.toAddress);
@@ -1070,7 +1070,7 @@ namespace Rainmaker.Test
 
             // Assert
             Assert.NotNull(res);
-            Assert.Equal(1, res.id);
+            Assert.Equal(0, res.id);
             Assert.Equal("You have new tasks to complete for your  loan application", res.subject);
         }
         [Fact]
@@ -1242,13 +1242,13 @@ namespace Rainmaker.Test
             dataContext.Database.EnsureCreated();
 
             BusinessUnit businessUnit = new BusinessUnit()
-                                        {
-                                            Id = 12,
-                                            Name = "AHCLending",
-                                            ByteOrganizationCode = "302039",
-                                            IsDeleted = false,
-                                            IsActive = true
-                                        };
+            {
+                Id = 12,
+                Name = "AHCLending",
+                ByteOrganizationCode = "302039",
+                IsDeleted = false,
+                IsActive = true
+            };
             dataContext.Set<BusinessUnit>().Add(businessUnit);
 
             dataContext.SaveChanges();
@@ -1299,7 +1299,7 @@ namespace Rainmaker.Test
 
             dataContext.SaveChanges();
 
-            ISettingService settingService = new SettingService(null, null,null, null, null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
+            ISettingService settingService = new SettingService(null, null, null, null, null, new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), null);
 
             //Act
             List<Model.ByteUserNameModel> lstModel = new List<Model.ByteUserNameModel>();
