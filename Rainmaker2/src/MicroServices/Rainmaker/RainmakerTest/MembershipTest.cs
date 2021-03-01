@@ -30,7 +30,7 @@ namespace Rainmaker.Test
             UserProfile userProfile = new UserProfile
             {
                 Id = 6650,
-                UserName = "abc",
+                UserName = "abcd",
                 IsActive = true,
                 IsDeleted = false,
                 Password = "XYZ"
@@ -68,7 +68,7 @@ namespace Rainmaker.Test
 
             var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object);
             //Act
-            UserProfile result = service.ValidateUser("ABC", "XYZ", false);
+            UserProfile result = service.ValidateUser("ABCD", "XYZ", false);
             //Assert
             Assert.NotNull(result);
             Assert.Equal("XYZ", result.Password);
