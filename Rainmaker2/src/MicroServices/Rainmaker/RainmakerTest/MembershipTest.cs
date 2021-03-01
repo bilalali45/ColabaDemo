@@ -72,7 +72,7 @@ namespace Rainmaker.Test
             //Assert
             Assert.NotNull(result);
             Assert.Equal("XYZ", result.Password);
-         
+
         }
 
         [Fact]
@@ -152,7 +152,7 @@ namespace Rainmaker.Test
             //Assert
             Assert.NotNull(result);
             Assert.Equal("XYZ", result.Password);
-  
+
         }
 
         [Fact]
@@ -166,10 +166,11 @@ namespace Rainmaker.Test
             using RainMakerContext dataContext = new RainMakerContext(options);
 
             dataContext.Database.EnsureCreated();
+            // user 1
             UserProfile userProfile = new UserProfile
             {
                 Id = 866,
-                UserName = "abc",
+                UserName = "abcde",
                 IsActive = true,
                 IsDeleted = false,
                 Password = "XYZ1"
@@ -205,6 +206,49 @@ namespace Rainmaker.Test
                 Id = 866,
                 EmployeeId = 866
             };
+            dataContext.Set<EmployeePhoneBinder>().Add(employeePhoneBinders);
+
+            // user2
+            userProfile = new UserProfile
+            {
+                Id = 8661,
+                UserName = "abcde",
+                IsActive = true,
+                IsDeleted = false,
+                Password = "XYZ1"
+            };
+            dataContext.Set<UserProfile>().Add(userProfile);
+
+            customer = new Customer
+            {
+                Id = 8661,
+                IsActive = true,
+                UserId = 8661
+            };
+            dataContext.Set<Customer>().Add(customer);
+            employee = new Employee
+            {
+                Id = 8661,
+                ContactId = 8661
+               ,
+                IsActive = true
+            };
+            dataContext.Set<Employee>().Add(employee);
+            contact = new Contact
+            {
+                Id = 8661,
+                FirstName = "abc",
+                LastName = "xyz"
+
+            };
+            dataContext.Set<Contact>().Add(contact);
+
+            employeePhoneBinders = new EmployeePhoneBinder
+            {
+                Id = 8661,
+                EmployeeId = 8661
+            };
+            dataContext.Set<EmployeePhoneBinder>().Add(employeePhoneBinders);
             dataContext.SaveChanges();
 
             Mock<IMembershipService> mockMembershipService = new Mock<IMembershipService>();
@@ -228,7 +272,7 @@ namespace Rainmaker.Test
 
             var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object);
             //Assert
-            Assert.Throws<RainMakerException>(() => service.ValidateUser("ABC", "XYZ", true));
+            Assert.Throws<RainMakerException>(() => service.ValidateUser("ABCDE", "XYZ1", true));
 
         }
         //[Fact]
@@ -355,7 +399,7 @@ namespace Rainmaker.Test
             //Assert
 
             Assert.Throws<ArgumentException>(() => service.ValidateUser(null, "sada", false));
- 
+
         }
 
         [Fact]
@@ -391,7 +435,7 @@ namespace Rainmaker.Test
 
             Assert.Throws<ArgumentException>(() => service.ValidateUser("sada", null, false));
 
-   
+
         }
 
 
@@ -469,10 +513,10 @@ namespace Rainmaker.Test
 
             var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object);
             //Act
-            UserProfile result = service.ValidateUser("ABC", "XYZ1", false);
+            UserProfile result = service.ValidateUser("ABCXYZ", "XYZ1", false);
             //Assert
             Assert.Null(result);
-          
+
 
         }
     }
