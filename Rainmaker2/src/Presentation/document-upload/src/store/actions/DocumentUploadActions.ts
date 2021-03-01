@@ -143,6 +143,13 @@ export class DocumentUploadActions {
       );
       selectedFile = Rename.rename(allSelectedFiles, selectedFile);
 
+      console.log('file type', f);
+
+      if(!f.type) {
+        selectedFile.notAllowedReason = "Invalid";
+        selectedFile.notAllowed = true;
+      }
+        
       if (!FileUpload.isSizeAllowed(f)) {
         selectedFile.notAllowedReason = "FileSize";
         selectedFile.notAllowed = true;

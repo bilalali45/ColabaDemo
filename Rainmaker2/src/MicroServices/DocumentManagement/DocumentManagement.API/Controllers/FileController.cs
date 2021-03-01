@@ -235,7 +235,12 @@ namespace DocumentManagement.API.Controllers
 
             if (!String.IsNullOrEmpty(responseBody))
             {
+                User user = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(responseBody);
                 var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
+                if(user.userId!=userProfileId)
+                {
+                    return BadRequest("Only primary borrower can upload the document");
+                }
                 var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
                 string userName = User.FindFirst("FirstName").Value.ToString() + ' ' + User.FindFirst("LastName").Value.ToString();
                 var algo = config[key: "File:Algo"];
@@ -245,8 +250,6 @@ namespace DocumentManagement.API.Controllers
                 RequestResponseModel requestResponseModel = new RequestResponseModel();
 
                 Model.LoanApplication loanApplication = new Model.LoanApplication();
-
-                User user = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(responseBody);
 
                 loanApplication.userId = user.userId;
                 loanApplication.userName = user.userName;

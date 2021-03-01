@@ -505,6 +505,55 @@ export const DocumentItem = ({
       </li>
     );
   };
+
+  const renderInvalidFile = () => {
+    return (
+      <li data-testid="size-not-allowed-item" className="doc-li item-error">
+        <div className="noneditable doc-liWrap">
+          <div className="doc-icon">
+            <img src={erroricon} alt="" />
+          </div>
+          <div className="doc-list-content">
+            <div className="title">
+              <p>{file.clientName}</p>
+            </div>
+            <div className="dl-info">
+              <span className="dl-text">
+                {" "}
+                Invalid File
+                {/* File size over {FileUpload.allowedSize}mb limit{" "} */}
+              </span>
+            </div>
+          </div>
+          <div className="doc-list-actions">
+            <ul className="editable-actions">
+              <li
+                onClick={() => {
+                  retry(file);
+                }}
+              >
+                <a title="Retry" className="icon-retry" tabIndex={-1}>
+                  <span className="retry-txt">Retry</span>{" "}
+                  <img src={refreshIcon} alt="" />
+                </a>
+              </li>
+              <li>
+                <a
+                  onClick={() => {
+                    deleteDoc(file.clientName);
+                  }}
+                  tabIndex={-1}
+                  title="Remove"
+                >
+                  <i className="zmdi zmdi-close"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </li>
+    );
+  };
   
   const renderFileUploadFailed = () => {
     return (
@@ -560,6 +609,8 @@ export const DocumentItem = ({
       return renderTypeIsNotAllowed();
     } else if (file.notAllowedReason === "Failed") {
       return renderFileUploadFailed();
+    }else if (file.notAllowedReason === "Invalid") {
+      return renderInvalidFile();
     }
     return null;
   };
