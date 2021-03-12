@@ -734,7 +734,7 @@ namespace ByteWebConnector.SDK.Mismo
             property.SALES_CONTRACTS = new SALES_CONTRACTS();
             property.SALES_CONTRACTS.SALES_CONTRACT = new SALES_CONTRACT();
             property.SALES_CONTRACTS.SALES_CONTRACT.SALES_CONTRACT_DETAIL = new SALES_CONTRACT_DETAIL();
-            property.SALES_CONTRACTS.SALES_CONTRACT.SALES_CONTRACT_DETAIL.SalesContractAmount = loanApplication.LoanAmount;
+            property.SALES_CONTRACTS.SALES_CONTRACT.SALES_CONTRACT_DETAIL.SalesContractAmount = loanApplication.PropertyInfo.PropertyValue;
 
             return property;
         }
