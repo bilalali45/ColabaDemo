@@ -22,5 +22,8 @@ namespace ByteWebConnector.SDK.Mismo
         GOVERNMENT_MONITORING GetGovernmentMonitoring(Borrower rmBorrower);
         List<RESIDENCE> GetBorrowerResidences(Borrower rmBorrower);
         BORROWER_DETAIL GetBorrowerDetail(Borrower rmBorrower);
+
+        ADDRESS GetMismoAddress(AddressInfo rmAddressInfo);
+        bool IsSameAddress(AddressInfo address1, AddressInfo address2);
     }
 }

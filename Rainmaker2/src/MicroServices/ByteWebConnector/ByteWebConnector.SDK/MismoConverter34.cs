@@ -157,30 +157,16 @@ namespace ByteWebConnector.SDK.Mismo
             }
         }
 
+        private decimal? subPropExpenses = 0;
+        ASSET propertyAsset = null;
+
         public string ConvertToMismo(LoanApplication loanApplication)
         {
             string xml = null;
             try
             {
-                //mismo.ABOUT_VERSIONS = new ABOUT_VERSIONS();
-                //mismo.ABOUT_VERSIONS.ABOUT_VERSION = new List<ABOUT_VERSION>();
-                //mismo.ABOUT_VERSIONS.ABOUT_VERSION.Add(new ABOUT_VERSION()
-                //{
-                //    SequenceNumber = 1,
-                //    CreatedDatetime = loanApplication.CreatedOnUtc.HasValue ? loanApplication.CreatedOnUtc.Value : DateTime.UtcNow
-                //});
                 this.aboutVersion.CreatedDatetime = loanApplication.CreatedOnUtc.HasValue ? loanApplication.CreatedOnUtc.Value : DateTime.UtcNow;
-                //mismo.DEAL_SETS = new DEAL_SETS();
-                //mismo.DEAL_SETS.DEAL_SET = new DEAL_SET();
-                //mismo.DEAL_SETS.DEAL_SET.DEALS = new DEALS();
-                //mismo.DEAL_SETS.DEAL_SET.DEALS.DEAL = new List<DEAL>();
-
-                //DEAL dealToAdd = new DEAL();
-                //dealToAdd.SequenceNumber = 1;
                 dealToAdd.ASSETS = this.GetAssets(loanApplication);
-
-                //dealToAdd.COLLATERALS = new COLLATERALS();
-                //dealToAdd.COLLATERALS.COLLATERAL = new List<COLLATERAL>();
                 COLLATERAL collateralToAdd = new COLLATERAL()
                 {
                     SequenceNumber = 1,
@@ -190,11 +176,12 @@ namespace ByteWebConnector.SDK.Mismo
                 dealToAdd.COLLATERALS.COLLATERAL.Add(collateralToAdd);
                 dealToAdd.EXPENSES = this.GetExpenseLiabilities((loanApplication));
                 dealToAdd.LIABILITIES = this.GetLiabilities(loanApplication);
-                //dealToAdd.LOANS = new LOANS()
-                //{
-                //    LOAN = this.GetLoanInfo(loanApplication)
-                //};
                 dealToAdd.LOANS.LOAN = this.GetLoanInfo(loanApplication);
+
+                if (propertyAsset != null && subPropExpenses > 0)
+                {
+                    propertyAsset.OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertyMaintenanceExpenseAmount = subPropExpenses;
+                }
 
                 dealToAdd.PARTIES = new PARTIES();
                 dealToAdd.PARTIES.PARTY = this.GetBorrowers(loanApplication);
@@ -220,9 +207,6 @@ namespace ByteWebConnector.SDK.Mismo
                     }
                     dealToAdd.RELATIONSHIPS.RELATIONSHIP.Add(relationship);
                 }
-
-
-                //mismo.DEAL_SETS.DEAL_SET.DEALS.DEAL.Add(dealToAdd);
 
                 using (var sww = new StringWriter())
                 {
@@ -257,8 +241,6 @@ namespace ByteWebConnector.SDK.Mismo
 
                 MemoryStream ms = new MemoryStream();
                 XmlWriter writer = XmlWriter.Create(ms, settings);
-                //writer.WriteAttributeString("xmlns", "xsi", null, "http://www.w3.org/2001/XMLSchema-instance");
-                //writer.WriteAttributeString("xmlns", "ULAD", null, "http://www.datamodelextension.org/Schema/ULAD");
 
                 XmlSerializerNamespaces names = new XmlSerializerNamespaces();
                 names.Add("xlink", "http://www.w3.org/1999/xlink");
@@ -276,11 +258,9 @@ namespace ByteWebConnector.SDK.Mismo
 
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(xml);
-                //<MESSAGE xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ULAD="http://www.datamodelextension.org/Schema/ULAD" xmlns:DU="http://www.datamodelextension.org/Schema/DU" xsi:schemaLocation="http://www.mismo.org/residential/2009/schemas DU_Wrapper_3.4.0_B324.xsd" MISMOReferenceModelIdentifier="3.4.032420160128">
                 doc.DocumentElement.Attributes.Append(doc.CreateAttribute("xmlns:xsi")).Value = "http://www.w3.org/2001/XMLSchema-instance";
                 doc.DocumentElement.Attributes.Append(doc.CreateAttribute("xmlns:ULAD")).Value = "http://www.datamodelextension.org/Schema/ULAD";
                 doc.DocumentElement.Attributes.Append(doc.CreateAttribute("xmlns:DU")).Value = "http://www.datamodelextension.org/Schema/DU";
-                //doc.DocumentElement.Attributes.Append(doc.CreateAttribute("xsi:schemaLocation")).Value = "http://www.mismo.org/residential/2009/schemas DU_Wrapper_3.4.0_B324.xsd";
 
                 using (var stringWriter = new StringWriter())
                 using (var xmlTextWriter = XmlWriter.Create(stringWriter, settings))
@@ -458,7 +438,7 @@ namespace ByteWebConnector.SDK.Mismo
                     }
                 }
 
-                ASSET propertyAsset = null;
+
                 if ((!subjectPropertyAdded) && (Enum.IsDefined(typeof(LoanPurposeBase), (LoanPurposeBase)loanApplication.LoanPurposeId) || (loanApplication.LoanPurposeId == 3)))
                 {
                     if (((LoanPurposeBase)loanApplication.LoanPurposeId) == LoanPurposeBase.Refinance || (loanApplication.LoanPurposeId == 3)) // If refinance or cash out
@@ -515,7 +495,7 @@ namespace ByteWebConnector.SDK.Mismo
                         //assetIndex = assets.Count() + 1;
                         var isCurrentResidence = false;
                         isCurrentResidence = rmBorrower.BorrowerResidences.Any(br => rmProperty.PropertyInfo != null && br.LoanAddressId == rmProperty.PropertyInfo.AddressInfo?.Id);
-                        if (rmProperty.PropertyInfo != null && rmProperty.PropertyInfo.AddressInfo != null)
+                        if (rmProperty.PropertyInfo != null && rmProperty.PropertyInfo.AddressInfo != null && (!this.IsSameAddress(loanApplication.PropertyInfo.AddressInfo, rmProperty.PropertyInfo.AddressInfo)))
                         {
                             //relationships.Add($"ASSET_{assetIndex}", $"BORROWER_{borrowerIndex}");
                             ASSET reo = new ASSET()
@@ -1078,6 +1058,7 @@ namespace ByteWebConnector.SDK.Mismo
                 housingExpense1.HousingExpenseTimingType = HousingExpenseTimingBase.Proposed.ToString();
                 housingExpense1.HousingExpenseType = HousingExpenseBase.HomeownersInsurance.ToString();
                 loanToAdd.HOUSING_EXPENSES.HOUSING_EXPENSE.Add(housingExpense1);
+                subPropExpenses = subPropExpenses + housingExpense1.HousingExpensePaymentAmount;
             }
 
             var propertyTaxes = loanApplication.PropertyInfo?.PropertyTaxEscrows?.FirstOrDefault(x => x.EscrowEntityTypeId == (int)EscrowEntityTypeEnum.PropertyTaxes);
@@ -1089,7 +1070,10 @@ namespace ByteWebConnector.SDK.Mismo
                 housingExpense2.HousingExpenseTimingType = HousingExpenseTimingBase.Proposed.ToString();
                 housingExpense2.HousingExpenseType = HousingExpenseBase.RealEstateTax.ToString();
                 loanToAdd.HOUSING_EXPENSES.HOUSING_EXPENSE.Add(housingExpense2);
+                subPropExpenses = subPropExpenses + housingExpense2.HousingExpensePaymentAmount;
             }
+
+            subPropExpenses = subPropExpenses + ((loanApplication.PropertyInfo?.HoaDues / 12) ?? 0);// + (loanApplication.PropertyInfo?.MonthlyDue ?? 0);
 
             if (loanApplication?.PropertyInfo?.MortgageOnProperties != null)
             {
@@ -2139,6 +2123,21 @@ namespace ByteWebConnector.SDK.Mismo
                 }
             }
             return residences;
+        }
+
+        public bool IsSameAddress(AddressInfo address1, AddressInfo address2)
+        {
+            bool match = false;
+            if (address1 != null && address2 != null)
+            {
+                bool stateMatch = address1.StateId == address2.StateId;
+                bool cityMatch = address1.CityName == address2.CityName && address1.CityId == address2.CityId;
+                bool streetMatch = address1.StreetAddress == address2.StreetAddress;
+                bool zipCodeMatch = address1.ZipCode == address2.ZipCode;
+                bool unitMatch = address1.UnitNo == address2.UnitNo;
+                match = stateMatch && cityMatch && streetMatch && zipCodeMatch && unitMatch;
+            }
+            return match;
         }
 
 

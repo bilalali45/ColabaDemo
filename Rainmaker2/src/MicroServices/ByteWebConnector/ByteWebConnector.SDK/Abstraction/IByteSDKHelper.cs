@@ -312,7 +312,7 @@ namespace ByteWebConnector.SDK.Abstraction
                         {
                             foreach (var reo in rmBorrower.BorrowerProperties)
                             {
-                                if (reo.PropertyInfo != null)
+                                if (reo.PropertyInfo != null && (!this._mismoConverter.IsSameAddress(loanApplication.PropertyInfo.AddressInfo, reo.PropertyInfo.AddressInfo)))
                                 {
                                     var reoObj = byteFile.GetCollectionObject("REO", reoIndex++);
                                     var reoType = thirdPartyCodeList.GetByteProValue("REOType", reo.PropertyInfo.PropertyTypeId);
