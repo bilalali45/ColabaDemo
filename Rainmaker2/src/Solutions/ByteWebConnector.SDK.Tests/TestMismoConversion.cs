@@ -32,7 +32,7 @@ namespace ByteWebConnector.SDK.Tests
                 Borrowers = new List<Borrower>
                 {
                     new Borrower
-                {
+                    {
                         Id=1,
                         BorrowerAccountBinders= new List<BorrowerAccountBinder>
                         {
@@ -60,7 +60,8 @@ namespace ByteWebConnector.SDK.Tests
                                     AddressInfo= new AddressInfo
                                     {
                                         Id=1,
-                                        CityId=1
+                                        CityId=1,
+                                        ZipCode = "123"
                                     }
                                     ,PropertyUsageId=1
                                 }
@@ -205,7 +206,7 @@ namespace ByteWebConnector.SDK.Tests
                                         CountryCode= "US",
                                         CountryName= "United States",
                                         CityName= null,
-                                        PostalCode= null,
+                                        PostalCode= "123",
                                         StateCode= null,
                                         CountyName= null
                                     }
@@ -226,8 +227,8 @@ namespace ByteWebConnector.SDK.Tests
                                 }
                             }
                         }
-                           }
-            }
+                    }
+                }
             };
 
 
@@ -290,7 +291,8 @@ namespace ByteWebConnector.SDK.Tests
                                     AddressInfo= new AddressInfo
                                     {
                                         Id=555,
-                                        CityId=555
+                                        CityId=555,
+                                        ZipCode = "123"
                                     }
                                     ,PropertyUsageId=1
                                 }
@@ -439,7 +441,7 @@ namespace ByteWebConnector.SDK.Tests
                             CountryCode="US",
                             CountryName="United States",
                             CityName=null,
-                            PostalCode=null,
+                            PostalCode="123",
                             StateCode=null,
                             CountyName=null
                         }
@@ -522,7 +524,8 @@ namespace ByteWebConnector.SDK.Tests
                                     AddressInfo= new AddressInfo
                                     {
                                         Id=556,
-                                        CityId=556
+                                        CityId=556,
+                                        ZipCode = "123"
                                     }
                                     ,PropertyUsageId=1
                                 }
@@ -663,7 +666,7 @@ namespace ByteWebConnector.SDK.Tests
                             CountryCode= "US",
                             CountryName= "United States",
                             CityName= null,
-                            PostalCode= null,
+                            PostalCode= "123",
                             StateCode= null,
                             CountyName= null
                         }
@@ -748,7 +751,8 @@ namespace ByteWebConnector.SDK.Tests
                                     AddressInfo= new AddressInfo
                                     {
                                         Id=557,
-                                        CityId=557
+                                        CityId=557,
+                                        ZipCode = "123"
                                     }
                                     ,PropertyUsageId=1
                                 }
@@ -898,7 +902,7 @@ namespace ByteWebConnector.SDK.Tests
                             CountryCode="US",
                             CountryName="United States",
                             CityName=null,
-                            PostalCode=null,
+                            PostalCode="123",
                             StateCode=null,
                             CountyName=null
                         }
@@ -981,7 +985,8 @@ namespace ByteWebConnector.SDK.Tests
                                     AddressInfo= new AddressInfo
                                     {
                                         Id=558,
-                                        CityId=558
+                                        CityId=558,
+                                        ZipCode = "123"
                                     }
                                     ,PropertyUsageId=1
                                 }
@@ -1131,7 +1136,7 @@ namespace ByteWebConnector.SDK.Tests
                             CountryCode= "US",
                             CountryName= "United States",
                             CityName= null,
-                            PostalCode= null,
+                            PostalCode= "123",
                             StateCode= null,
                             CountyName= null
                         }
@@ -1215,7 +1220,8 @@ namespace ByteWebConnector.SDK.Tests
                                     AddressInfo= new AddressInfo
                                     {
                                         Id=559,
-                                        CityId=559
+                                        CityId=559,
+                                        ZipCode = "123"
                                     }
                                     ,PropertyUsageId=1
                                 }
@@ -1353,7 +1359,7 @@ namespace ByteWebConnector.SDK.Tests
                             CountryCode= "US",
                             CountryName= "United States",
                             CityName= null,
-                            PostalCode= null,
+                            PostalCode= "123",
                             StateCode= null,
                             CountyName= null
                         }
@@ -1441,7 +1447,8 @@ namespace ByteWebConnector.SDK.Tests
                                     AddressInfo= new AddressInfo
                                     {
                                         Id=560,
-                                        CityId=560
+                                        CityId=560,
+                                        ZipCode = "123"
                                     }
                                     ,PropertyUsageId=1
                                 }
@@ -1581,7 +1588,7 @@ namespace ByteWebConnector.SDK.Tests
                             CountryCode="US",
                             CountryName="United States",
                             CityName=null,
-                            PostalCode=null,
+                            PostalCode="123",
                             StateCode=null,
                             CountyName=null
                         }
@@ -1666,7 +1673,8 @@ namespace ByteWebConnector.SDK.Tests
                                     AddressInfo= new AddressInfo
                                     {
                                         Id=561,
-                                        CityId=561
+                                        CityId=561,
+                                        ZipCode = "123"
                                     }
                                     ,PropertyUsageId=1
                                 }
@@ -1806,7 +1814,7 @@ namespace ByteWebConnector.SDK.Tests
                             CountryCode="US",
                             CountryName="United States",
                             CityName=null,
-                            PostalCode=null,
+                            PostalCode= "123",
                             StateCode=null,
                             CountyName=null
                         }
@@ -1891,7 +1899,8 @@ namespace ByteWebConnector.SDK.Tests
                                     AddressInfo= new AddressInfo
                                     {
                                         Id=562,
-                                        CityId=562
+                                        CityId=562,
+                                        ZipCode = "123"
                                     }
                                     ,PropertyUsageId=1
                                 }
@@ -2032,7 +2041,7 @@ namespace ByteWebConnector.SDK.Tests
                             CountryCode= "US",
                             CountryName= "United States",
                             CityName= null,
-                            PostalCode= null,
+                            PostalCode= "123",
                             StateCode= null,
                             CountyName= null
                         }
@@ -2116,7 +2125,8 @@ namespace ByteWebConnector.SDK.Tests
                                     AddressInfo= new AddressInfo
                                     {
                                         Id=563,
-                                        CityId=563
+                                        CityId=563,
+                                        ZipCode = "123"
                                     }
                                     ,PropertyUsageId=1
                                 }
@@ -2257,7 +2267,7 @@ namespace ByteWebConnector.SDK.Tests
                             CountryCode= "US",
                             CountryName= "United States",
                             CityName= null,
-                            PostalCode= null,
+                            PostalCode= "123",
                             StateCode= null,
                             CountyName= null
                         }
@@ -2392,7 +2402,7 @@ namespace ByteWebConnector.SDK.Tests
                     {
                         Id = 564,
                         CityId = 564,
-                        ZipCode = "12",
+                        ZipCode = "123",
                         CityName = "asdad",
                         CountryName = "sadasd",
 
@@ -2476,7 +2486,7 @@ namespace ByteWebConnector.SDK.Tests
                                         CountryCode="334",
                                         CountryName= "b",
                                         CityName= "asdad",
-                                        PostalCode= "12",
+                                        PostalCode= "123",
                                         StateCode= "Pak",
                                         CountyName= null
                                     }
@@ -2851,7 +2861,7 @@ namespace ByteWebConnector.SDK.Tests
                                    {
                                Id=566,
                               CityId=566,
-                              ZipCode="12"
+                              ZipCode="123"
                              , CityName="asdad"
                              ,State= new State
                              {
@@ -2899,7 +2909,7 @@ namespace ByteWebConnector.SDK.Tests
                     {
                         Id = 566,
                         CityId = 566,
-                        ZipCode = "12"
+                        ZipCode = "1234"
                              ,
                         CityName = "asdad"
                              ,
@@ -2982,7 +2992,7 @@ namespace ByteWebConnector.SDK.Tests
                                         CountryCode="334",
                                         CountryName= "b",
                                         CityName= "asdad",
-                                        PostalCode= "12",
+                                        PostalCode= "1234",
                                         StateCode= null,
                                         CountyName= null
 
@@ -3028,7 +3038,7 @@ namespace ByteWebConnector.SDK.Tests
                             CountryCode= "334",
                             CountryName= "b",
                             CityName= "asdad",
-                            PostalCode= "12",
+                            PostalCode= "123",
                             StateCode=null,
                             CountyName= null
                         }
@@ -3143,7 +3153,7 @@ namespace ByteWebConnector.SDK.Tests
 
                            }
                                     ,PropertyUsageId=1
-                                    ,PropertyStatus="aental"
+                                    ,PropertyStatus="Rental"
                                     ,IntentToSellPriorToPurchase= true
                                     ,DateAcquired=DateTime.UtcNow
                                 }
@@ -3172,7 +3182,7 @@ namespace ByteWebConnector.SDK.Tests
                     {
                         Id = 567,
                         CityId = 567,
-                        ZipCode = "12"
+                        ZipCode = "1234"
                              ,
                         CityName = "asdad"
                              ,
@@ -3254,7 +3264,7 @@ namespace ByteWebConnector.SDK.Tests
                                     CountryCode= "334",
                                     CountryName= "b",
                                     CityName= "asdad",
-                                    PostalCode= "12",
+                                    PostalCode= "1234",
                                     StateCode=null,
                                     CountyName= null
                                      }
@@ -3284,7 +3294,7 @@ namespace ByteWebConnector.SDK.Tests
             OWNED_PROPERTY= new OWNED_PROPERTY {
                 OWNED_PROPERTY_DETAIL= new OWNED_PROPERTY_DETAIL {
                     OwnedPropertyLienUPBAmount= null,
-                    OwnedPropertyDispositionStatusType= "aental",
+                    OwnedPropertyDispositionStatusType= "Retain",
                     OwnedPropertyMaintenanceExpenseAmount= null,
                     OwnedPropertySubjectIndicator= false,
                     OwnedPropertyRentalIncomeGrossAmount= null,
@@ -3331,7 +3341,7 @@ namespace ByteWebConnector.SDK.Tests
             Assert.NotNull(result.ASSET[2].OWNED_PROPERTY.OWNED_PROPERTY_DETAIL);
             Assert.NotNull(result.ASSET[2].OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertyDispositionStatusType);
 
-            Assert.Equal("aental", result.ASSET[2].OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertyDispositionStatusType);
+            Assert.Equal("Retain", result.ASSET[2].OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertyDispositionStatusType);
             Assert.False(result.ASSET[2].OWNED_PROPERTY.OWNED_PROPERTY_DETAIL.OwnedPropertySubjectIndicator);
             var actualJson = JsonConvert.SerializeObject(result.ASSET[0]);
             var expectedJson = JsonConvert.SerializeObject(expected.ASSET[0]);
@@ -13095,7 +13105,7 @@ namespace ByteWebConnector.SDK.Tests
                             Abbreviation = "Pak"
                         },
                         CityName = "abc",
-                        ZipCode = "abc",
+                        ZipCode = "abcd",
 
                         CountyName = "abc",
                         Country = new Country
@@ -13130,7 +13140,7 @@ namespace ByteWebConnector.SDK.Tests
                     CountryCode = null,
                     CountryName = null,
                     CityName = "abc",
-                    PostalCode = "abc",
+                    PostalCode = "abcd",
                     StateCode = "Pak",
                     CountyName = "abc"
                 },
@@ -13161,7 +13171,7 @@ namespace ByteWebConnector.SDK.Tests
                     {
                         SALES_CONTRACT_DETAIL = new SALES_CONTRACT_DETAIL
                         {
-                            SalesContractAmount = null
+                            SalesContractAmount = 1000
                         },
                         SequenceNumber = null
                     }
@@ -15487,7 +15497,7 @@ namespace ByteWebConnector.SDK.Tests
             Assert.NotNull(results[1].RESIDENCE_DETAIL);
             Assert.Equal(Convert.ToString(BorrowerResidencyBasisBase.Rent), results[1].RESIDENCE_DETAIL.BorrowerResidencyBasisType);
             Assert.Equal(Convert.ToString(BorrowerResidencyBase.Prior), results[1].RESIDENCE_DETAIL.BorrowerResidencyType);
-        } 
+        }
         #endregion
 
         private EMPLOYER GetMismoEmployer(EmploymentInfo rmEmployer, EmploymentClassificationBase? classification, EmploymentStatusBase empStatus, int sequenceIndex, int employerIndex)
