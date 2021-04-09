@@ -1,9 +1,11 @@
 import React from 'react'
 
-export  const AccountDetail = () => {
+const AccountDetail = () => {
     return (
-        <div>
+        <div data-testid="AccountDetail">
             Account Detail
         </div>
     )
 }
+
+export default AccountDetail;

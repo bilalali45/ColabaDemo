@@ -71,7 +71,7 @@ namespace Rainmaker.API
                                                       );
             
             var keyResponse= AsyncHelper.RunSync(()=> httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
-            csResponse.EnsureSuccessStatusCode();
+            keyResponse.EnsureSuccessStatusCode();
             var securityKey = AsyncHelper.RunSync(()=>keyResponse.Content.ReadAsStringAsync());
             var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 

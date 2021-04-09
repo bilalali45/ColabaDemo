@@ -46,15 +46,23 @@ namespace DocumentManagement.API.Controllers
 
             if (!String.IsNullOrEmpty(responseBody))
             {
-                User user = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(responseBody);
+                User user = null;
+                try
+                {
+                    user = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(responseBody);
+                }
+                catch
+                {
+                    return BadRequest(new ErrorModel { Code = 400, Message = "Unable to find primary borrower" });
+                }
                 int custUserId = user.userId;
                 string custUserName = user.userName;
                 var fileId = await requestService.UploadFile(userProfileId,userName,tenantId,custUserId,custUserName,model, Request.Headers["Authorization"].Select(x => x.ToString()));
                 if(!string.IsNullOrEmpty(fileId))
                     return Ok(new { fileId });
-                return BadRequest();
+                return BadRequest(new ErrorModel { Code = 404, Message = "unable to upload file" });
             }
-            return NotFound();
+            return NotFound(new ErrorModel { Code = 404, Message = "unable to find loan application" });
         }
         [HttpPost("[action]")]
         public async Task<IActionResult> Save(Model.LoanApplication loanApplication, bool isDraft)
@@ -68,7 +76,15 @@ namespace DocumentManagement.API.Controllers
 
             if (!String.IsNullOrEmpty(responseBody))
             {
-                User user = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(responseBody);
+                User user = null;
+                try
+                {
+                    user = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(responseBody);
+                }
+                catch
+                {
+                    return BadRequest(new ErrorModel { Code = 400, Message = "Unable to find primary borrower" });
+                }
                 loanApplication.userId = user.userId;
                 loanApplication.userName = user.userName;
                 loanApplication.requests[0].userId = userProfileId;
@@ -87,7 +103,7 @@ namespace DocumentManagement.API.Controllers
                 return Ok();
             }
             else
-                return NotFound();
+                return NotFound(new ErrorModel { Code = 404, Message = "unable to find loan application" });
         }
 
         [HttpPost("[action]")]
@@ -102,7 +118,15 @@ namespace DocumentManagement.API.Controllers
 
             if (!String.IsNullOrEmpty(responseBody))
             {
-                User user = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(responseBody);
+                User user = null;
+                try
+                {
+                    user = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(responseBody);
+                }
+                catch
+                {
+                    return BadRequest(new ErrorModel { Code = 400, Message = "Unable to find primary borrower" });
+                }
                 loanApplication.userId = user.userId;
                 loanApplication.userName = user.userName;
                 loanApplication.requests[0].userId = userProfileId;
@@ -116,7 +140,7 @@ namespace DocumentManagement.API.Controllers
                 return Ok(value: requestResponseModel);
             }
             else
-                return NotFound();
+                return NotFound(new ErrorModel { Code = 404, Message = "unable to find loan application" });
         }
 
         #endregion

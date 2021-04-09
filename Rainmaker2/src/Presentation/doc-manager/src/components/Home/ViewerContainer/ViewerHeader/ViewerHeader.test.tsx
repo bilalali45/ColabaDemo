@@ -1,13 +1,11 @@
 import React from 'react';
-import { render, fireEvent, waitFor, getByTestId } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
 import {MockEnvConfig} from '../../../../test_utilities/EnvConfigMock';
 import { MockLocalStorage } from '../../../../test_utilities/LocalStoreMock';
 import { StoreProvider } from '../../../../Store/Store';
 import { MemoryRouter } from 'react-router-dom';
-import App from '../../../../App';
 import { Home } from '../../Home';
-import { ViewerHeader } from './ViewerHeader';
 
 
 jest.mock('pspdfkit');

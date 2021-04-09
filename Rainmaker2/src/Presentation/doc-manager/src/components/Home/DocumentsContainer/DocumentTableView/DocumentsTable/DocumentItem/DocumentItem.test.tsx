@@ -1,12 +1,10 @@
 import React from 'react';
-import { render, fireEvent, waitFor, getByTestId, getAllByTestId, act } from '@testing-library/react';
-import userEvent from '@testing-library/user-event'
+import { render, fireEvent, waitFor, act } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { StoreProvider } from '../../../../../../Store/Store';
 import { MockEnvConfig } from '../../../../../../test_utilities/EnvConfigMock';
 import { MockLocalStorage } from '../../../../../../test_utilities/LocalStoreMock';
 import { DocumentsTable } from '../DocumentsTable';
-import { Home } from '../../../../Home';
 
 
 jest.mock('pspdfkit');
@@ -24,7 +22,7 @@ beforeEach(() => {
 describe('Doc Item Section ', () => {
 
     test('Should show Docs Name', async () => {
-        const { getAllByTestId, getByTestId, getByText } = render(
+        const { getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable></DocumentsTable>
@@ -40,7 +38,7 @@ describe('Doc Item Section ', () => {
     });
     
     test('Should hide files', async () => {
-        const { getAllByTestId, getByTestId, getByText } = render(
+        const { getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable></DocumentsTable>
@@ -58,7 +56,7 @@ describe('Doc Item Section ', () => {
     
     
     test('Should show Docs Status', async () => {
-        const { getAllByTestId, getByTestId, getByText } = render(
+        const { getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable></DocumentsTable>
@@ -79,7 +77,7 @@ describe('Doc Item Section ', () => {
     });
     
     test('Should show delete doc btn when no file in doc', async () => {
-        const { getAllByTestId, getByTestId, getByText } = render(
+        const { getByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable></DocumentsTable>
@@ -130,7 +128,7 @@ describe('Doc Item Section ', () => {
     // });
 
     test('Should delete doc btn when confirmed', async () => {
-        const { getAllByTestId, getByTestId, getByText } = render(
+        const { getByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable></DocumentsTable>
@@ -161,7 +159,7 @@ describe('Doc Item Section ', () => {
 
 
     test('Should drop file to document Item from other category', async () => {     
-        const { getByText, getAllByTestId, getByTestId } = render(
+        const { getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable></DocumentsTable>
@@ -184,7 +182,7 @@ describe('Doc Item Section ', () => {
 
 
     test('Should drop file to document Item from trash', async () => {     
-        const { getByText, getAllByTestId, getByTestId } = render(
+        const { getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable></DocumentsTable>
@@ -206,7 +204,7 @@ describe('Doc Item Section ', () => {
     });
 
     test('Should drop file to document Item from workbench', async () => {     
-        const { getByText, getAllByTestId, getByTestId } = render(
+        const { getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable></DocumentsTable>
@@ -228,7 +226,7 @@ describe('Doc Item Section ', () => {
     });
 
     test('Should drop file to document Item from thumbnail', async () => {     
-        const { getByText, getAllByTestId, getByTestId } = render(
+        const { getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable></DocumentsTable>
@@ -253,7 +251,7 @@ describe('Doc Item Section ', () => {
 
 
     test('Should drop file to document Item from PC', async () => {     
-        const { getByText, getAllByTestId, getByTestId } = render(
+        const { getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable></DocumentsTable>

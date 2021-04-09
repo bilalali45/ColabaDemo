@@ -7,6 +7,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DocManager.Model
 {
+    public class ErrorModel
+    {
+        public int Code { get; set; }
+        public string Message { get; set; }
+    }
     public class MoveFromOneCategoryToAnotherCategory
     {
         public string id { get; set; }
@@ -145,6 +150,7 @@ namespace DocManager.Model
         public string annotations { get; set; }
         public bool? isMcuVisible { get; set; }
         public DateTime? fileModifiedOn { get; set; }
+        public string salt { get; set; }
     }
     public class LoanApplicationIdQuery
     {

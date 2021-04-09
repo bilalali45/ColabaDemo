@@ -17,7 +17,7 @@ namespace MainGateway
         public static void Main(string[] args)
         {
             ServicePointManager.DefaultConnectionLimit = int.MaxValue;
-            //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
 
             //configure logging first
             ConfigureLogging(args);
@@ -41,7 +41,7 @@ namespace MainGateway
                            webBuilder.ConfigureKestrel(options: options =>
                            {
                                options.AddServerHeader = false;
-                               //options.ConfigureHttpsDefaults(configureOptions: httpsOptions => { httpsOptions.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13; });
+                               options.ConfigureHttpsDefaults(configureOptions: httpsOptions => { httpsOptions.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13; });
                            }).UseStartup<Startup>();
                        }).UseSerilog();
         }
@@ -97,7 +97,7 @@ namespace MainGateway
             return new ElasticsearchSinkOptions(node: new Uri(uriString: configuration[key: "ElasticConfiguration:Uri"]))
                    {
                        AutoRegisterTemplate = true,
-                       IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(oldValue: ".", newValue: "-")}-{environment?.ToLower().Replace(oldValue: ".", newValue: "-")}-{DateTime.UtcNow:yyyy-MM}"
+                       IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(oldValue: ".", newValue: "-")}-{environment?.ToLower().Replace(oldValue: ".", newValue: "-")}-{{0:yyyy-MM}}"
                    };
         }
 

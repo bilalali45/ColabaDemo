@@ -29,16 +29,19 @@ namespace ByteWebConnector.API.CorrelationHandlersAndMiddleware
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context)
+        private async Task HandleExceptionAsync(HttpContext context)
         {
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            if (!context.Response.HasStarted)
+            {
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-            return context.Response.WriteAsync(new ApiResponse<dynamic>
-                                               {
-                                                   Code = context.Response.StatusCode.ToString(),
-                                                   Message = "Internal Server Error"
-                                               }.ToString());
+                await context.Response.WriteAsync(new ApiResponse<dynamic>
+                {
+                    Code = context.Response.StatusCode.ToString(),
+                    Message = "Internal Server Error"
+                }.ToString());
+            }
         }
     }
 }

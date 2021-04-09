@@ -107,7 +107,7 @@ namespace Milestone.API.Controllers
                 int loanApplicationId = await _rainmakerService.GetLoanApplicationId(model.loanId, model.rainmakerLosId, Request.Headers["Authorization"].Select(x => x.ToString()));
                 if(loanApplicationId<=0)
                 {
-                    return BadRequest("Unable to find loan application");
+                    return BadRequest(new ErrorModel { Message = "Unable to find loan application" });
                 }
                 await _rainmakerService.SetBothLosAndMilestoneId(loanApplicationId, id,model.milestone, Request.Headers["Authorization"].Select(x => x.ToString()));
                 await _settingService.SendEmailReminderLog(loanApplicationId, id, tenantId, Request.Headers["Authorization"].Select(x => x.ToString()));

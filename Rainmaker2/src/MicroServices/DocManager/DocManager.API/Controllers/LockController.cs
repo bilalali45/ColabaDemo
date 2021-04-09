@@ -42,7 +42,7 @@ namespace DocManager.API.Controllers
             var UserName = User.FindFirst("FirstName").Value.ToString() + ' ' + User.FindFirst("LastName").Value.ToString();
             var l = await lockService.RetainLock(lockModel, UserId, UserName);
             if (l == null)
-                return BadRequest();
+                return BadRequest(new ErrorModel { Code=400, Message="Lock not found"});
             else
                 return Ok(l);
         }

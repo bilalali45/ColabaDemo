@@ -104,5 +104,14 @@ export class LoanStatusUpdateActions {
      console.log('error',error)
     }
  }
-
+ 
+ static async fetchTokens() {
+    let url = Endpoints.RequestEmailTemplateManager.GET.tokens();
+    try {
+        let res: any = await Http.get(url);
+        return res.data;
+    } catch (error) {
+        console.log('error',error) 
+    }
+}
 }

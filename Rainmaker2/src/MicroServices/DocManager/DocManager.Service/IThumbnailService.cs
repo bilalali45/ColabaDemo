@@ -9,10 +9,10 @@ namespace DocManager.Service
     public interface IThumbnailService
     {
         Task<SaveWorkbenchDocument> SaveWorkbenchDocument(string id, string fileId, int tenantId, string serverName, string mcuName, int size, string contentType,
-                            int userProfileId, string userName, string encryptionAlgo, string encryptionKey);
+                            int userProfileId, string userName, string encryptionAlgo, string encryptionKey, string salt);
         Task<SaveWorkbenchDocument> SaveTrashDocument(string id, string fileId, int tenantId, string serverName, string mcuName, int size, string contentType,
-                           int userProfileId, string userName, string encryptionAlgo, string encryptionKey);
+                           int userProfileId, string userName, string encryptionAlgo, string encryptionKey, string salt);
         Task<SaveWorkbenchDocument> SaveCategoryDocument(string id, string requestId, string docId, string fileId, int tenantId, string serverName, string mcuName, int size, string contentType,
-                     int userProfileId, string userName, string encryptionAlgo, string encryptionKey);
+                     int userProfileId, string userName, string encryptionAlgo, string encryptionKey, string salt);
     }
 }

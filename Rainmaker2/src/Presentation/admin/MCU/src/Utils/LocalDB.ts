@@ -84,7 +84,7 @@ export class LocalDB {
     if (rainmaker2Token) {
       const decodeCacheToken: any = jwt_decode(rainmaker2Token);
       const decodeAuth: any = jwt_decode(auth);
-      if (decodeAuth?.UserName != decodeCacheToken?.UserName) {
+      if (decodeAuth?.UserName !== decodeCacheToken?.UserName) {
         return false;
       }
       if (decodeCacheToken.exp > decodeAuth.exp) {

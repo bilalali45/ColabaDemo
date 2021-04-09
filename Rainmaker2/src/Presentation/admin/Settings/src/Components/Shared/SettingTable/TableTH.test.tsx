@@ -13,7 +13,99 @@ beforeEach(() => {
     LocalStorageMock();
 });
 
-it('TableTH', async()=>{
-    render(<TableTH/>);
-    expect(screen.getByTestId('TableTH')).toBeTruthy();
+describe('TableTH', ()=>{
+    test('TableTH : Render',async()=>{
+        render(<TableTH/>);
+        expect(screen.getByTestId('TableTH')).toBeTruthy();
+    });
+
+    test('TableTH : Valign - Top && Align - Left',async()=>{
+        const props = {
+            valign:'top',
+            align:'left',
+            className:''
+        }
+        const {getByTestId} = render(<TableTH {...props}/>);
+        expect(getByTestId('TableTH')).toBeTruthy();
+    });
+
+    test('TableTH : Valign - Top && Align - Center',async()=>{
+        const props = {
+            valign:'top',
+            align:'center',
+            className:''
+        }
+        const {getByTestId} = render(<TableTH {...props}/>);
+        expect(getByTestId('TableTH')).toBeTruthy();
+    });
+
+    test('TableTH : Valign - Top && Align - Right',async()=>{
+        const props = {
+            valign:'top',
+            align:'right',
+            className:''
+        }
+        const {getByTestId} = render(<TableTH {...props}/>);
+        expect(getByTestId('TableTH')).toBeTruthy();
+    });
+
+    test('TableTH : Valign - Middle && Align - Left',async()=>{
+        const props = {
+            valign:'middle',
+            align:'left',
+            className:''
+        }
+        const {getByTestId} = render(<TableTH {...props}/>);
+        expect(getByTestId('TableTH')).toBeTruthy();
+    });
+
+    test('TableTH : Valign - Middle && Align - Center',async()=>{
+        const props = {
+            valign:'middle',
+            align:'center',
+            className:''
+        }
+        const {getByTestId} = render(<TableTH {...props}/>);
+        expect(getByTestId('TableTH')).toBeTruthy();
+    });
+
+    test('TableTH : Valign - Middle && Align - Right',async()=>{
+        const props = {
+            valign:'middle',
+            align:'right',
+            className:''
+        }
+        const {getByTestId} = render(<TableTH {...props}/>);
+        expect(getByTestId('TableTH')).toBeTruthy();
+    });
+
+    test('TableTH : Valign - Bottom && Align - Left',async()=>{
+        const props = {
+            valign:'bottom',
+            align:'left',
+            className:''
+        }
+        const {getByTestId} = render(<TableTH {...props}/>);
+        expect(getByTestId('TableTH')).toBeTruthy();
+    });
+
+    test('TableTH : Valign - Bottom && Align - Center',async()=>{
+        const props = {
+            valign:'bottom',
+            align:'center',
+            className:''
+        }
+        const {getByTestId} = render(<TableTH {...props}/>);
+        expect(getByTestId('TableTH')).toBeTruthy();
+    });
+
+    test('TableTH : Valign - Bottom && Align - Right',async()=>{
+        const props = {
+            valign:'bottom',
+            align:'right',
+            className:''
+        }
+        const {getByTestId} = render(<TableTH {...props}/>);
+        expect(getByTestId('TableTH')).toBeTruthy();
+    });
 });

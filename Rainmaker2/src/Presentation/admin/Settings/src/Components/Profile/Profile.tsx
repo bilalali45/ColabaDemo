@@ -23,7 +23,7 @@ export const Profile = ({backHandler}: Props) => {
     }
 
     return (
-        <div className="settings__profile">
+        <div data-testid="settings__profile" className="settings__profile">
             <ProfileHeader
              navigation = {Nav}
              changeNav = {changeNavHandler}

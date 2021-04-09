@@ -15,6 +15,11 @@
                 padding-right: 0;
             }
         }
+
+        .settings__body .settings__content-area &.settings__content-area--body {
+            max-height: 100%;
+            height: calc(100vh - 190px);
+        }
     }
 
     &-heading{

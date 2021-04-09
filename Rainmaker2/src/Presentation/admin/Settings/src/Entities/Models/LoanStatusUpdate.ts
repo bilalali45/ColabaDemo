@@ -14,31 +14,8 @@ export class LoanStatus {
     public ccAddress?: string;
     public subject?: string;
     public body?: string;
-    public EditMode?: boolean = false;
+    public EditMode?: boolean;
    
-
-    // constructor(
-    //     id?: number,mcuName?: string,statusId?: number, 
-    //     fromStatusId?: number,fromStatus?: string,toStatusId?: number, 
-    //     toStatus?: string,noofDays?: number,recurringTime?: Date,isActive?: boolean,
-    //     emailId? : number,fromAddress?: string,ccAddress?: string,subject?: string,body?: string
-    //     ){
-    //    this.id = id,
-    //    this.mcuName = mcuName;
-    //    this.statusId = statusId;
-    //    this.fromStatusId = fromStatusId;
-    //    this.fromStatus = fromStatus;
-    //    this.toStatusId = toStatusId;
-    //    this.toStatus = toStatus;
-    //    this.noofDays = noofDays;
-    //    this.recurringTime = recurringTime;
-    //    this.isActive = isActive;
-    //    this.emailId = emailId;
-    //    this.fromAddress = fromAddress;
-    //    this.ccAddress = ccAddress;
-    //    this.subject = subject;
-    //    this.body = body;
-    // }
 }
 
 

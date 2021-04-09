@@ -8,6 +8,7 @@ import ContentHeader, { ContentSubHeader } from './ContentHeader';
 import { debug } from 'console';
 import { StoreProvider } from '../../Store/Store';
 
+// jest.mock('./ContentHeader');
 
 beforeEach(() => {
     EnvConfigMock();
@@ -16,34 +17,35 @@ beforeEach(() => {
 
 describe('ContentHeader and ContentSubHeader', ()=>{
 
-    test('ContentHeader', async()=>{
-        const props = {
-            title:'',
-            tooltipType:'',
-            className:'',
-            backLinkText: '',
-            backLink: ()=>{}
-        }
-        const {getByTestId,debug} = render(<StoreProvider><ContentHeader {...props}/></StoreProvider>);
+    test('ContentHeader without back button', async()=>{
+        const {getByTestId,debug} = render(<ContentHeader/>);
+        expect(getByTestId('contentHeader')).toBeTruthy();
+    });
+
+    test('ContentHeader with back button', async()=>{
+        const {getByTestId,debug} = render(<ContentHeader title="Manage Users" backLinkText="Back" className="settings__manage-users--header"></ContentHeader>);
         expect(getByTestId('contentHeader')).toBeTruthy();
 
-
-
-        // const resolvedEl = getByTestId('contentHeader').find('contentHeader-backBtn');
-        // expect(resolvedEl).toBe('Back');
-
+        await waitFor(()=>{
+            expect(getByTestId('contentHeader-backBtn')).toBeTruthy();
+            fireEvent.click(getByTestId('contentHeader-backBtn'));
+        })
+        // debug();
     });
     
-    test('ContentSubHeader', async()=>{
-        const props = {
-            title:'',
-            tooltipType:'',
-            className:'',
-            backLinkText: '',
-            backLink: ()=>{}
-        }
-        const {getByTestId,debug} = render(<StoreProvider><ContentSubHeader {...props}/></StoreProvider>);
+    test('ContentSubHeader without back button', async()=>{
+        const {getByTestId,debug} = render(<ContentSubHeader></ContentSubHeader>);
         expect(getByTestId('contentSubHeader')).toBeTruthy();
+    });
+
+    test('ContentSubHeader with back button', async()=>{
+        const {getByTestId,debug} = render(<ContentSubHeader title="Manage Users" backLinkText="Back" className="settings__content-area--subheader"></ContentSubHeader>);
+        expect(getByTestId('contentSubHeader')).toBeTruthy();
+
+        await waitFor(()=>{
+            expect(getByTestId('subHeader-backBtn')).toBeTruthy();
+            fireEvent.click(getByTestId('subHeader-backBtn'));
+        });
     });
 
 })

@@ -21,7 +21,7 @@
     "moment": "^2.27.0",
     "node-sass": "^4.14.1",
     "print-js": "^1.0.63",
-    "rainsoft-js": "^1.0.50",
+    "rainsoft-js": "1.0.49",
     "rainsoft-rc": "^1.0.23",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
@@ -54,7 +54,7 @@
       "!src/store/endpoints/*.{ts,tsx}",
       "!src/test_utilities/*.{ts, tsx}",
       "!src/index.tsx",
-      "!src/serviceWorker.ts", 
+      "!src/serviceWorker.ts",
       "!src/shared/Components/DocumentView/DocumentView.tsx"
     ]
   },

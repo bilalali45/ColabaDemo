@@ -96,19 +96,19 @@ namespace DocumentManagement.API.Controllers
                             password: AesCryptography.Decrypt(text: setting.ftpPassword,
                                                               key: await keyStoreService.GetFtpKey()));
             if (files == null || files.Count <= 0)
-                return BadRequest("Something went wrong. Please try again");
+                return BadRequest(new ErrorModel { Code = 400, Message = "Something went wrong. Please try again" });
             foreach (var file in files)
             {
                 if (file.Length<=0)
-                    return BadRequest("Something went wrong. Please try again");
+                    return BadRequest(new ErrorModel { Code = 400, Message = "Something went wrong. Please try again" });
                 if (!setting.allowedExtensions.Contains(Path.GetExtension(file.FileName.ToLower())))
                     //throw new DocumentManagementException("This file type is not allowed for uploading");
-                    return BadRequest("File type is not supported. Allowed types: PDF, JPEG, PNG");
+                    return BadRequest(new ErrorModel { Code = 400, Message = "File type is not supported. Allowed types: PDF, JPEG, PNG" });
                 if (file.Length > setting.maxFileSize)
                     //throw new DocumentManagementException("File size exceeded limit");
-                    return BadRequest($"File size must be under {((decimal)setting.maxFileSize)/(1024*1024)} mb");
+                    return BadRequest(new ErrorModel { Code = 400, Message = $"File size must be under {((decimal)setting.maxFileSize) / (1024 * 1024)} mb" });
                 if (file.FileName.Length > setting.maxFileNameSize)
-                    return BadRequest("File Name size exceeded limit");
+                    return BadRequest(new ErrorModel { Code = 400, Message = "File Name size exceeded limit" });
                 //throw new DocumentManagementException("File Name size exceeded limit");
             }
             // save
@@ -117,12 +117,16 @@ namespace DocumentManagement.API.Controllers
                 if (formFile.Length > 0)
                 {
                     logger.LogInformation($"DocSync uploading file {formFile.FileName}");
-                    var filePath = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: formFile.OpenReadStream(),
+                    var filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".enc");
+                    var (memoryStream,salt) = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: formFile.OpenReadStream(),
                                                                                               password: await keyStoreService.GetFileKey());
                     logger.LogInformation($"DocSync filePath {filePath}");
                     // upload to ftp
-                    await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
-                                                localFile: filePath);
+                    using (memoryStream)
+                    {
+                        await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
+                                                    memoryStream);
+                    }
                     logger.LogInformation($"DocSync After UploadAsync");
                     // insert into mongo
                     var docQuery = await fileService.Submit(contentType: formFile.ContentType,
@@ -136,13 +140,13 @@ namespace DocumentManagement.API.Controllers
                                                             encryptionAlgorithm: algo,
                                                             tenantId: tenantId,
                                                             userProfileId: userProfileId,
-                                                            authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
+                                                            authHeader: Request.Headers["Authorization"].Select(x => x.ToString()),salt);
                     logger.LogInformation($"DocSync After Submit into Mongo");
-                    System.IO.File.Delete(path: filePath);
+                    //System.IO.File.Delete(path: filePath);
                     logger.LogInformation($"DocSync After Delete");
                     if (String.IsNullOrEmpty(docQuery))
                         //throw new DocumentManagementException("unable to update file in mongo");
-                        return BadRequest("unable to upload file");
+                        return BadRequest(new ErrorModel { Code = 400, Message = "unable to upload file" });
                     fileId.Add(docQuery);
                     logger.LogInformation($"DocSync docQuery is not empty");
                 }
@@ -229,23 +233,45 @@ namespace DocumentManagement.API.Controllers
                                                 List<IFormFile> files)
         {
             if (files == null || files.Count <= 0)
-                return BadRequest("Something went wrong. Please try again");
+                return BadRequest(new ErrorModel { Code = 400, Message = "Something went wrong. Please try again" });
+            var setting = await settingService.GetSetting();
+            foreach (var file in files)
+            {
+                if (file.Length <= 0)
+                    return BadRequest(new ErrorModel { Code = 400, Message = "Something went wrong. Please try again" });
+                if (!setting.allowedExtensions.Contains(Path.GetExtension(file.FileName.ToLower())))
+                    //throw new DocumentManagementException("This file type is not allowed for uploading");
+                    return BadRequest(new ErrorModel { Code = 400, Message = "File type is not supported. Allowed types: PDF, JPEG, PNG" });
+                if (file.Length > setting.maxFileSize)
+                    //throw new DocumentManagementException("File size exceeded limit");
+                    return BadRequest(new ErrorModel { Code = 400, Message = $"File size must be under {((decimal)setting.maxFileSize) / (1024 * 1024)} mb" });
+                if (file.FileName.Length > setting.maxFileNameSize)
+                    return BadRequest(new ErrorModel { Code = 400, Message = "File Name size exceeded limit" });
+                //throw new DocumentManagementException("File Name size exceeded limit");
+            }
             //Create borrower request 
             var responseBody = await rainmakerService.PostLoanApplication(loanApplicationId: loanApplicationId, isDraft: false, authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
 
             if (!String.IsNullOrEmpty(responseBody))
             {
-                User user = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(responseBody);
+                User user = null;
+                try
+                {
+                    user = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(responseBody);
+                }
+                catch
+                {
+                    return BadRequest(new ErrorModel { Code = 400, Message = "Unable to find primary borrower" });
+                }
                 var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
                 if(user.userId!=userProfileId)
                 {
-                    return BadRequest("Only primary borrower can upload the document");
+                    return BadRequest(new ErrorModel { Code = 400, Message = "Only primary borrower can upload the document" });
                 }
                 var tenantId = int.Parse(s: User.FindFirst(type: "TenantId").Value);
                 string userName = User.FindFirst("FirstName").Value.ToString() + ' ' + User.FindFirst("LastName").Value.ToString();
                 var algo = config[key: "File:Algo"];
                 var key = config[key: "File:Key"];
-                var setting = await settingService.GetSetting();
 
                 RequestResponseModel requestResponseModel = new RequestResponseModel();
 
@@ -277,34 +303,23 @@ namespace DocumentManagement.API.Controllers
                                 userName: setting.ftpUser,
                                 password: AesCryptography.Decrypt(text: setting.ftpPassword,
                                                                   key: await keyStoreService.GetFtpKey()));
-                foreach (var file in files)
-                {
-                    if (file.Length <= 0)
-                        return BadRequest("Something went wrong. Please try again");
-                    if (!setting.allowedExtensions.Contains(Path.GetExtension(file.FileName.ToLower())))
-                        //throw new DocumentManagementException("This file type is not allowed for uploading");
-                        return BadRequest("File type is not supported. Allowed types: PDF, JPEG, PNG");
-                    if (file.Length > setting.maxFileSize)
-                        //throw new DocumentManagementException("File size exceeded limit");
-                        return BadRequest($"File size must be under {((decimal)setting.maxFileSize) / (1024 * 1024)} mb");
-                    if (file.FileName.Length > setting.maxFileNameSize)
-                        return BadRequest("File Name size exceeded limit");
-                    //throw new DocumentManagementException("File Name size exceeded limit");
-                }
-
                 // save
                 List<string> fileId = new List<string>();
                 foreach (var formFile in files)
                     if (formFile.Length > 0)
                     {
                         logger.LogInformation($"DocSync uploading file {formFile.FileName}");
-                        var filePath = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: formFile.OpenReadStream(),
+                        var filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".enc");
+                        var (memoryStream,salt) = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: formFile.OpenReadStream(),
                                                                                                   password: await keyStoreService.GetFileKey());
                         logger.LogInformation($"DocSync filePath {filePath}");
-                    // upload to ftp
-                    await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
-                                                localFile: filePath);
-                    logger.LogInformation($"DocSync After UploadAsync");
+                        using (memoryStream)
+                        {
+                            // upload to ftp
+                            await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
+                                                        memoryStream);
+                        }
+                        logger.LogInformation($"DocSync After UploadAsync");
 
                         // insert into mongo
                         var docQuery = await fileService.SubmitByBorrower(contentType: formFile.ContentType,
@@ -318,13 +333,13 @@ namespace DocumentManagement.API.Controllers
                                                                 encryptionAlgorithm: algo,
                                                                 tenantId: tenantId,
                                                                 userProfileId: userProfileId,
-                                                                authHeader: Request.Headers["Authorization"].Select(x => x.ToString()));
+                                                                authHeader: Request.Headers["Authorization"].Select(x => x.ToString()),salt);
                         logger.LogInformation($"DocSync After Submit into Mongo");
-                        System.IO.File.Delete(path: filePath);
+                        //System.IO.File.Delete(path: filePath);
                         logger.LogInformation($"DocSync After Delete");
                         if (String.IsNullOrEmpty(docQuery))
                             //throw new DocumentManagementException("unable to update file in mongo");
-                            return BadRequest("unable to upload file");
+                            return BadRequest(new ErrorModel { Code = 400, Message = "unable to upload file" });
                         fileId.Add(docQuery);
                         logger.LogInformation($"DocSync docQuery is not empty");
                     }
@@ -347,7 +362,7 @@ namespace DocumentManagement.API.Controllers
                     catch
                     {
                     // this exception can be ignored
-                }
+                    }
                     logger.LogInformation($"DocSync Before SendFilesToBytePro ");
                     try
                     {
@@ -394,7 +409,7 @@ namespace DocumentManagement.API.Controllers
                                         userProfileId: userProfileId, tenantId);
                 return Ok(new FileViewModel { docId = requestResponseModel.docId, id = requestResponseModel.id, requestId = requestResponseModel.requestId, fileId = fileId.FirstOrDefault() }) ;
             }
-            return NotFound();
+            return NotFound(new ErrorModel { Code = 404, Message = "unable to find loan application" });
         }
         #endregion
 
@@ -427,7 +442,7 @@ namespace DocumentManagement.API.Controllers
                 return Ok();
             }
 
-            return NotFound();
+            return NotFound(new ErrorModel { Code = 404, Message = "unable to send file for review" });
         }
 
 
@@ -444,7 +459,7 @@ namespace DocumentManagement.API.Controllers
                                                     userProfileId: userProfileId, tenantId);
             if (docQuery)
                 return Ok();
-            return NotFound();
+            return NotFound(new ErrorModel { Code = 404, Message = "unable to rename file" });
         }
 
 
@@ -484,13 +499,14 @@ namespace DocumentManagement.API.Controllers
                             userName: setting.ftpUser,
                             password: AesCryptography.Decrypt(text: setting.ftpPassword,
                                                               key: await keyStoreService.GetFtpKey()));
-            var filepath = Path.GetTempFileName();
+            //var filepath = Path.GetTempFileName();
+            using var memoryStream = new MemoryStream();
             await ftpClient.DownloadAsync(remoteFile: fileviewdto.serverName,
-                                          localFile: filepath);
-            Stream ms = fileEncryptionFactory.GetEncryptor(name: fileviewdto.encryptionAlgorithm).DecrypeFile(inputFile: filepath,
+                                          memoryStream);
+            Stream ms = fileEncryptionFactory.GetEncryptor(name: fileviewdto.encryptionAlgorithm).DecrypeFile(memoryStream,
                                                                                                                           password: await keyStoreService.GetFileKey(),
-                                                                                                                          originalFileName: fileviewdto.clientName);
-            System.IO.File.Delete(filepath);
+                                                                                                                          originalFileName: fileviewdto.clientName,fileviewdto.salt);
+            //System.IO.File.Delete(filepath);
             return File(ms,
                         contentType: fileviewdto.contentType,
                         fileDownloadName: fileviewdto.clientName);

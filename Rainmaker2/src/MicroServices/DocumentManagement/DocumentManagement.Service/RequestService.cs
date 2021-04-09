@@ -63,12 +63,16 @@ namespace DocumentManagement.Service
                             userName: setting.ftpUser,
                             password: AesCryptography.Decrypt(text: setting.ftpPassword,
                                                               key: await keyStoreService.GetFtpKey()));
-            var filePath = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: memoryStream,
+            var filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".enc");
+            var (memoryStream1,salt) = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: memoryStream,
                                                                                               password: await keyStoreService.GetFileKey());
-            // upload to ftp
-            await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
-                                        localFile: filePath);
-            System.IO.File.Delete(filePath);
+            using (memoryStream1)
+            {
+                // upload to ftp
+                await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
+                                            memoryStream1);
+            }
+            //System.IO.File.Delete(filePath);
             // get document upload status
             string status = string.Empty;
             IMongoCollection<Entity.StatusList> collection =
@@ -156,7 +160,8 @@ namespace DocumentManagement.Service
                 { "contentType", contentType },
                 { "status", FileStatus.SubmittedToMcu },
                 { "byteProStatus", ByteProStatus.Synchronized },
-                { "isRead", true }
+                { "isRead", true },
+                { "salt", salt},
             };
             
             filesArray.Add(fileDocument);

@@ -1,6 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor, getByTestId } from '@testing-library/react';
-import userEvent from '@testing-library/user-event'
+import { render, waitFor } from '@testing-library/react';
 
 import { MemoryRouter } from 'react-router-dom';
 import { MockEnvConfig } from '../../test_utilities/EnvConfigMock';

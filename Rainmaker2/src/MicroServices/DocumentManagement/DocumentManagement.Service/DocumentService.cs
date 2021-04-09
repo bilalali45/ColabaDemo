@@ -587,7 +587,8 @@ namespace DocumentManagement.Service
                                 ""encryptionAlgorithm"": ""$requests.documents.files.encryptionAlgorithm"",
                                 ""clientName"": ""$requests.documents.files.clientName"",
                                 ""mcuName"": ""$requests.documents.files.mcuName"",
-                                ""contentType"": ""$requests.documents.files.contentType""
+                                ""contentType"": ""$requests.documents.files.contentType"",
+                                ""salt"": ""$requests.documents.files.salt""
                             }
                              } "
 
@@ -666,8 +667,9 @@ namespace DocumentManagement.Service
                                 ""encryptionKey"": ""$workbench.encryptionKey"",
                                 ""encryptionAlgorithm"": ""$workbench.encryptionAlgorithm"",
                                 ""clientName"": ""$workbench.clientName"",
-                                ""mcuName"": ""$workbench.mcuName"",
-                                ""contentType"": ""$workbench.contentType""
+                                ""contentType"": ""$workbench.contentType"",
+                                ""salt"": ""$workbench.salt"",
+                                ""mcuName"": ""$workbench.mcuName""
                             }
                              } "
 
@@ -710,7 +712,8 @@ namespace DocumentManagement.Service
                                 ""encryptionAlgorithm"": ""$trash.encryptionAlgorithm"",
                                 ""clientName"": ""$trash.clientName"",
                                 ""mcuName"": ""$trash.mcuName"",
-                                ""contentType"": ""$trash.contentType""
+                                ""contentType"": ""$trash.contentType"",
+                                ""salt"": ""$trash.salt""
                             }
                              } "
 
@@ -771,7 +774,8 @@ namespace DocumentManagement.Service
                                 ""encryptionAlgorithm"": ""$requests.documents.mcuFiles.encryptionAlgorithm"",
                                 ""clientName"": ""$requests.documents.mcuFiles.clientName"",
                                 ""mcuName"": ""$requests.documents.mcuFiles.mcuName"",
-                                ""contentType"": ""$requests.documents.mcuFiles.contentType""
+                                ""contentType"": ""$requests.documents.mcuFiles.contentType"",
+                                ""salt"": ""$requests.documents.mcuFiles.salt""
                             }
                              } "
 

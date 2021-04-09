@@ -13,6 +13,7 @@ using RainMaker.Service;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using RainMaker.Common;
 using URF.Core.EF;
 using URF.Core.EF.Factories;
 using Xunit;

@@ -355,7 +355,7 @@ namespace DocumentManagement.Tests
 
             //Assert
             Assert.NotNull(result);
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundObjectResult>(result);
         }
         [Fact]
         public async Task TestUpdateSortOrderController()
@@ -445,7 +445,7 @@ namespace DocumentManagement.Tests
 
             //Assert
             Assert.NotNull(result);
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundObjectResult>(result);
         }
         [Fact]
         public async Task TestGetEmailTemplatesService()

@@ -23,9 +23,11 @@ export class NewNeedListActions {
           id: ids
         }
       );
-      return res.data;
+      return res;
     } catch (error) {
       console.log(error);
+      return error;
+
     }
   }
 
@@ -33,9 +35,11 @@ export class NewNeedListActions {
     let url = Endpoints.NewNeedList.GET.getDraft(loanApplicationId);
     try {
       let res = await Http.get(url);
-      return res.data;
+      return res;
     } catch (error) {
       console.log(error);
+      return error;
+
     }
   }
 
@@ -69,9 +73,11 @@ export class NewNeedListActions {
     };
     try {
       let res = await Http.post(url, requestData);
-      return res.status;
+      return res;
     } catch (error) {
       console.log(error);
+      return error;
+
     }
   }
 
@@ -94,7 +100,10 @@ export class NewNeedListActions {
 
     try {
       let res = await Http.post(url, templateData);
-      return res?.data;
-    } catch (error) {}
+      return res;
+    } catch (error) {
+      return error;
+
+    }
   }
 }

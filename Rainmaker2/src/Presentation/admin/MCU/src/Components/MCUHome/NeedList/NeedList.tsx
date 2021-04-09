@@ -11,6 +11,7 @@ import { NeedListLockIcon } from "../../../Shared/SVG";
 import Modal from "react-bootstrap/Modal";
 import errorIcon from "../../../Assets/images/error-icon.svg";
 import Button from "react-bootstrap/Button";
+import { Error } from '../../../Entities/Models/Error'
 
 let timer: any;
 
@@ -45,14 +46,22 @@ export const NeedList = () => {
             dispatch({ type: NeedListActionsType.SetIsNeedListLocked, payload: res.data });
         }else {
             setAquireLockFailed(true);
+            Error.setError(dispatch, res)
         }
 
 
     }
 
     const retainLock = async () => {
-        let lockRetained = await NeedListActions.retainLock();
-        dispatch({ type: NeedListActionsType.SetIsNeedListLocked, payload: lockRetained })
+        let res = await NeedListActions.retainLock();
+        if(res){
+            if( Error.successStatus.includes(res.status)){
+                dispatch({ type: NeedListActionsType.SetIsNeedListLocked, payload: res.data })
+            }
+            else{
+                Error.setError(dispatch, res)
+            }
+        }
     }
 
     if(acquireLockFailed) {

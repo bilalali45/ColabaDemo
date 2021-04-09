@@ -13,6 +13,7 @@ import { RequestEmailTemplate } from '../../../../../Entities/Models/RequestEmai
 import { SVGDocRequest } from '../../../../../Shared/SVG';
 import ReactHtmlParser from 'react-html-parser';
 import { truncate } from '../../../../../Utils/helpers/TruncateString';
+import { Error } from '../../../../../Entities/Models/Error';
 
 type emailContentReviewProps = {
   documentsName: string | undefined;
@@ -125,10 +126,15 @@ export const EmailContentReview = ({
 
 
   const getEmailTemplates = async () => {
-    let result: RequestEmailTemplate[] | undefined = await RequestEmailTemplateActions.fetchEmailTemplates();
+    let result= await RequestEmailTemplateActions.fetchEmailTemplates();
     if (result) {
-     let sortedList = sortList(result, true)
-      dispatch({ type: RequestEmailTemplateActionsType.SetRequestEmailTemplateData, payload: sortedList });
+      if(Error.successStatus.includes(result.status)){
+        let sortedList = sortList(result.data, true)
+        dispatch({ type: RequestEmailTemplateActionsType.SetRequestEmailTemplateData, payload: sortedList });
+      }
+     else{
+       Error.setError(dispatch, result)
+     }
     }
   }
 
@@ -164,11 +170,19 @@ export const EmailContentReview = ({
   const getSelectedEmailTemplate = async (id?: string) => {
     let loanApplicationId = LocalDB.getLoanAppliationId()
     let result = await RequestEmailTemplateActions.fetchDraftEmailTemplate(id, loanApplicationId);
-    dispatch({ type: RequestEmailTemplateActionsType.SetSelectedEmailTemplate, payload: result })
-    setSelectedEmailTemplate(id);
-    if(draftEmail){
-      addProppertyToDraft();
-    }    
+    if(result){
+      if(Error.successStatus.includes(result.status)){
+        dispatch({ type: RequestEmailTemplateActionsType.SetSelectedEmailTemplate, payload: result.data })
+        setSelectedEmailTemplate(id);
+        if(draftEmail){
+          addProppertyToDraft();
+        }  
+      }
+      else{
+        Error.setError(dispatch, result)
+      }
+    }
+      
   }
   
   const addProppertyToDraft = () => {

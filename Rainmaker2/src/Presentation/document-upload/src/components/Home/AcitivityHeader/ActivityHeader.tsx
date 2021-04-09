@@ -148,7 +148,6 @@ const ActivityHeader = (props) => {
   
 
   const showAlertPopup = (e) => {
-    console.log('------------> showAlert', showAlert)
     if (e.target.tagName === "A") {
       setshowAlert(true);
     }else if(isMobile?.value){
@@ -175,7 +174,7 @@ const ActivityHeader = (props) => {
   };
 
   const fetchPendingDocs = async () => {
-    
+    if (!pendingDocs) {
       let docs = await DocumentActions.getPendingDocuments(
         Auth.getLoanAppliationId()
       );
@@ -183,7 +182,7 @@ const ActivityHeader = (props) => {
         dispatch({ type: DocumentsActionType.FetchPendingDocs, payload: docs });
         
       }
-    
+    }
   };
   const renderLeftNav = () => {
     if (leftNav === "Dashboard") {

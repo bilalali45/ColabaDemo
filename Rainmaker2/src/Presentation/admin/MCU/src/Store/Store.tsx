@@ -5,6 +5,7 @@ import {Http} from 'rainsoft-js';
 import {LocalDB} from '../Utils/LocalDB';
 import {NeedListType} from './reducers/NeedListReducer';
 import { RequestEmailTemplateType } from './reducers/RequestEmailTemplateReducer';
+import { ErrorType } from './reducers/ErrorReducer';
 
 const baseUrl: any = window?.envConfig?.API_BASE_URL;
 const httpClient = new Http(baseUrl, 'Rainmaker2Token');
@@ -16,6 +17,7 @@ export type InitialStateType = {
   needListManager: NeedListType | {};
   templateManager: TemplateType | {};
   requestEmailTemplateManager: RequestEmailTemplateType | {};
+  error: ErrorType |{}
 };
 
 export const InitialState = {
@@ -24,7 +26,8 @@ export const InitialState = {
   },
   needListManager: {},
   templateManager: {},
-  requestEmailTemplateManager: {}
+  requestEmailTemplateManager: {},
+  error:{}
 };
 
 const Store = createContext<{

@@ -27,7 +27,6 @@ export const CommonDocuments = ({
   const [term, setTerm] = useState<string>();
 
   const handleSearch = ({target: {value}}: ChangeEvent<HTMLInputElement>) => {
-    debugger
     setTerm(value);
     setSelectedCachedDoc((pre: CategoryDocument) => {
       let results = selectedCatDocs?.documents?.filter((cd: Document) => {

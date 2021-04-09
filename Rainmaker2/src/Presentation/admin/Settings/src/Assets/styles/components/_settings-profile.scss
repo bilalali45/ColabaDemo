@@ -1,13 +1,18 @@
 .settings__profile{
     height: 100%;
-    .settings__content-area--body{
-        height: calc(100%);
-        max-height: 100%;
 
-        .h4{
-            margin-bottom: 10px;
+    .settings__body .settings__content-area & &-body{
+        .settings__content-area--body{
+            height: calc(100vh - 247px);
+            max-height: 100%;
+    
+            .h4{
+                margin-bottom: 10px;
+            }
         }
     }
+
+    
     .profile-subheader{
         .settings__nav-pills{
             margin-left: 10px;

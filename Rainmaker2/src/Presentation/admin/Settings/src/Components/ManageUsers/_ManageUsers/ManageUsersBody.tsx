@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Profile } from '../../Profile/Profile'
-import ContentBody from '../../Shared/ContentBody'
 import { UserProfileList } from '../../UserProfileList/UserProfileList';
 
 export const ManageUsersBody = () => {

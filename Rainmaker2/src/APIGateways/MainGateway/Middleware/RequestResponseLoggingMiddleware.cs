@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace MainGateway.Middleware
 {
@@ -45,7 +46,7 @@ namespace MainGateway.Middleware
 
             //Format the response from the server
             builder = new StringBuilder();
-            var response = await FormatResponse(context.Response,configuration);
+            var response = await FormatResponse(context.Response,configuration,context.Request);
             builder.Append("Response: ").AppendLine(response);
             builder.AppendLine("Response headers: ");
             foreach (var header in context.Response.Headers)
@@ -72,7 +73,20 @@ namespace MainGateway.Middleware
             var body = await reader.ReadToEndAsync();
             body = Left(body, int.Parse(configuration["LoggingMiddleware:RequestSize"]) * 1024);
             // Do some processing with body…
-            if (request.Path.ToString().ToLower().Contains("api/identity/token/authorize"))
+            string[] pathsNotToDump = {
+                "/api/identity/token/authorize",
+                "/api/DocManager/Request/submit",
+                "/api/docmanager/thumbnail/SaveWorkbenchDocument",
+                "/api/docmanager/thumbnail/SaveTrashDocument",
+                "/api/docmanager/thumbnail/SaveCategoryDocument",
+                "/api/DocumentManagement/File/Submit",
+                "/api/DocumentManagement/File/SubmitByBorrower",
+                "/api/identity/CustomerAccount/Register",
+                "/api/identity/CustomerAccount/Signin",
+                "/api/identity/CustomerAccount/ChangePassword",
+                "/api/identity/CustomerAccount/ForgotPasswordResponse"
+            };
+            if (pathsNotToDump.Contains(request.Path.ToString(), StringComparer.OrdinalIgnoreCase))
                 body = "";
             var formattedRequest = $"{request.Method} {request.Scheme}://{request.Host}{request.Path}{request.QueryString} {body}";
 
@@ -82,7 +96,7 @@ namespace MainGateway.Middleware
             return formattedRequest;
         }
 
-        private async Task<string> FormatResponse(HttpResponse response, IConfiguration configuration)
+        private async Task<string> FormatResponse(HttpResponse response, IConfiguration configuration,HttpRequest request)
         {
             //We need to read the response stream from the beginning...
             response.Body.Seek(0, SeekOrigin.Begin);
@@ -94,6 +108,13 @@ namespace MainGateway.Middleware
             response.Body.Seek(0, SeekOrigin.Begin);
             text = Left(text, int.Parse(configuration["LoggingMiddleware:ResponseSize"]) * 1024);
             //Return the string for the response, including the status code (e.g. 200, 404, 401, etc.)
+            string[] pathsNotToDump = {
+                "/api/DocumentManagement/BytePro/View",
+                "/api/DocumentManagement/Document/View",
+                "/api/DocumentManagement/File/View"
+            };
+            if (pathsNotToDump.Contains(request.Path.ToString(), StringComparer.OrdinalIgnoreCase))
+                text = "";
             return $"HTTP Status Code {response.StatusCode}: {text}";
         }
 

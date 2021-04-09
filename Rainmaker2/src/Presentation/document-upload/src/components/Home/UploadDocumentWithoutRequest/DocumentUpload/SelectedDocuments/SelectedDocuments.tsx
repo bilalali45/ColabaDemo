@@ -14,7 +14,7 @@ import { ApplicationEnv } from "../../../../../utils/helpers/AppEnv";
 import { useLocation, useHistory } from "react-router-dom";
 import cameraIcon from "../../../../../assets/images/camera-icon.svg";
 import folderIcon from "../../../../../assets/images/folder-icon.svg";
-import { PSPDFKitWebViewer } from "../../../../../shared/Components/PSPDFKit/PSPDFKitWebViewer";
+//import { PSPDFKitWebViewer } from "../../../../../shared/Components/PSPDFKit/PSPDFKitWebViewer";
 import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
 import { render } from "@testing-library/react";
 import {SVGUploadCameraIcon, SVGUploadFolderIcon} from "../../../../../shared/Components/SVGs";

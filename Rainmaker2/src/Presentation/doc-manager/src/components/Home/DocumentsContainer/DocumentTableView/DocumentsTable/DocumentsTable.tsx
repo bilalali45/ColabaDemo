@@ -24,8 +24,8 @@ export const DocumentsTable = () => {
 
   const documents: any = state.documents;
   const catScrollFreeze: any = documents?.catScrollFreeze;
-  const { currentDoc, documentItems, uploadFailedDocs, fileUploadInProgress, importedFileIds, searchdocumentItems, docSearchTerm }: any = state.documents;
-  const { isLoading, SaveCurrentFile, DiscardCurrentFile, currentFile }: any = state.viewer;
+  const { currentDoc, documentItems, uploadFailedDocs, fileUploadInProgress, importedFileIds, docSearchTerm }: any = state.documents;
+  const { SaveCurrentFile, DiscardCurrentFile, currentFile }: any = state.viewer;
   const [fileClicked, setFileClicked] = useState<boolean>(false);
   const [retryFile, setRetryFile] = useState<any>();
   const [failedDocs, setFailedDocs] = useState<DocumentFile[]>([]);
@@ -40,7 +40,6 @@ export const DocumentsTable = () => {
   const docTypePopUp = useRef(null);
   const popUpDv = useRef<any>(null);
   const refAddFileLink = useRef<any>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const nonExistentDocId = '000000000000000000000000';
 

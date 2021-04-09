@@ -5,8 +5,6 @@ import React, {
   useContext,
   useEffect,
 } from "react";
-import { Http } from "rainsoft-js";
-import { FileItem as FileItemModel } from "../../../../../../Models/FileItem";
 import {
   FileIcon,
   ReassignListIcon,
@@ -21,23 +19,13 @@ import { ViewerActionsType } from "../../../../../../Store/reducers/ViewerReduce
 import { Store } from "../../../../../../Store/Store";
 import { ReassignDropdown } from "../ReassignDropdown/ReassignDropdown";
 import DocumentActions from "../../../../../../Store/actions/DocumentActions";
-import { CurrentInView } from "../../../../../../Models/CurrentInView";
-import moment from "moment";
 import erroricon from "../../../../../../Assets/images/warning-icon.svg";
 import refreshIcon from "../../../../../../Assets/images/refresh.svg";
-import { RenameFile } from "../../../../../../shared/Components/Assets/RenameFile";
 import { getDateString, getFileDate } from "../../../../../../Utilities/helpers/DateFormat";
 import { LocalDB } from "../../../../../../Utilities/LocalDB";
-import { ConsoleLogger } from "../../../../../../Assets/js/rs-authorization";
-import { AnnotationActions } from "../../../../../../Utilities/AnnotationActions";
-import { readSync } from "fs";
-import { fireEvent } from "@testing-library/react";
-import { Viewer } from "../../../../../../Utilities/Viewer";
 import { ViewerActions } from "../../../../../../Store/actions/ViewerActions";
 import { FileUpload } from "../../../../../../Utilities/helpers/FileUpload";
 
-import { ConfirmationAlert } from '../../../../././ConfirmationAlert/ConfirmationAlert'
-import { setTimeout } from "timers";
 export const FileItem = ({
   file,
   setDraggingSelf,

@@ -57,7 +57,7 @@ namespace Notification.API
             services.AddScoped<ISettingService, SettingService>();
             services.AddControllers().AddNewtonsoftJson();
             var keyResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
-            csResponse.EnsureSuccessStatusCode();
+            keyResponse.EnsureSuccessStatusCode();
             var securityKey = AsyncHelper.RunSync(() => keyResponse.Content.ReadAsStringAsync());
             var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 
@@ -131,7 +131,7 @@ namespace Notification.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ServerHub>("/serverhub");
+                endpoints.MapHub<ServerHub>("/serverhub",options=> { options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets; });
             });
             IRedisService redisService = services.GetRequiredService<IRedisService>();
             Task.Run(async ()=>

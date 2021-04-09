@@ -1,4 +1,6 @@
-import ReminderSettingTemplate from "../../../Entities/Models/ReminderEmailListTemplate";
+import { Token } from "typescript";
+import ReminderSettingTemplate, { ReminderEmailTemplate } from "../../../Entities/Models/ReminderEmailListTemplate";
+import { Tokens } from "../../../Entities/Models/Token";
 
 let mockData = {
     "isActive": true,
@@ -641,7 +643,10 @@ export class ReminderEmailListActions {
         try {
                               
                 let mappedData = mockData.emailReminders.map((ReminderEmail: ReminderSettingTemplate) => {
-                    return new ReminderSettingTemplate(ReminderEmail.id,ReminderEmail.noOfDays, ReminderEmail.recurringTime, ReminderEmail.isActive,ReminderEmail.email);
+                    return new ReminderSettingTemplate(ReminderEmail.id,ReminderEmail.noOfDays, ReminderEmail.recurringTime, ReminderEmail.isActive,
+                       new ReminderEmailTemplate(ReminderEmail.email?.id, ReminderEmail.email?.fromAddress,ReminderEmail.email?.ccAddress,ReminderEmail.email?.subject, ReminderEmail.email?.emailBody)
+                       // ReminderEmail.email
+                        );
                 });
                 let finalResult = {"isActive": mockData.isActive, "emailReminders": mappedData};
               return Promise.resolve(finalResult);
@@ -654,12 +659,14 @@ export class ReminderEmailListActions {
 
 
     static async updateEnableDisableAllEmails(isActive: boolean){
-        console.log('--------------> updateEnableDisableAllEmails')
     return Promise.resolve(200);
     }
 
     static async fetchTokens() {
-        console.log('---------------------> fetchTokens Mock')
-        return Promise.resolve(tokensMock);
+        let mappedData = tokensMock.map((tokenMock: any) => {
+            return new Tokens(tokenMock.id, tokenMock.name, tokenMock.symbol, tokenMock.description, tokenMock.key, tokenMock.fromAddess, tokenMock.ccAddess, tokenMock.emailBody, tokenMock.emailSubject);
+        });
+        
+       return Promise.resolve(mappedData);
     }
 }

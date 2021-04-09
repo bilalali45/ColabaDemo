@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React, {useState, useEffect, useRef, useCallback, useContext} from 'react';
 import {Http} from 'rainsoft-js';
 import _ from 'lodash';
 import ReactHtmlParser from 'react-html-parser'; 
@@ -11,6 +11,8 @@ import {
 import {ActivityLogFormat} from '../../../../Utils/helpers/DateFormat';
 import {NeedListEndpoints} from '../../../../Store/endpoints/NeedListEndpoints';
 import { ReviewDocumentActions } from '../../../../Store/actions/ReviewDocumentActions';
+import { Store } from '../../../../Store/Store';
+import { Error } from '../../../../Entities/Models/Error';
 
 export const ReviewDocumentActivityLog = ({
   id,
@@ -22,6 +24,7 @@ export const ReviewDocumentActivityLog = ({
   requestId?: string | null;
   docId?: string | null;
 }) => {
+  const { state, dispatch } = useContext(Store);
   const [tab, setTab] = useState(1);
   const sectionRef = useRef<HTMLElement>(null);
   const allSections: any = sectionRef?.current?.children[0]?.children.length;
@@ -61,8 +64,15 @@ export const ReviewDocumentActivityLog = ({
   const getActivityLogs = useCallback(async (idb, docIdb, requestIdb) => {
     try {
       ///const {data} = await Http.get<ActivityLogType[]>(NeedListEndpoints.GET.documents.activityLogs(id, docId, requestId));
-      const data = await ReviewDocumentActions.getActivityLogs(idb, docIdb, requestIdb);
-      setActivityLogs(data);
+      const res = await ReviewDocumentActions.getActivityLogs(idb, docIdb, requestIdb);
+      if(res){
+        if(Error.successStatus.includes(res.status)){
+          setActivityLogs(res.data);
+        }
+      }
+      else{
+        Error.setError(dispatch, res)
+      }
     } catch (error) {
       console.log(error);
 

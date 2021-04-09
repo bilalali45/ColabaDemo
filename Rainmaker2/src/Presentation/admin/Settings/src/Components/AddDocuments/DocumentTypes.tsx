@@ -29,8 +29,8 @@ export const DocumentTypes = ({documentTypeList,changeCurrentDocType,currentCate
   }, [documentTypeList]);
 
   return ( 
-      <ul>
-        <li data-testid="doc-cat" key={'all'} className={currentCategoryDocuments?.catId === 'all' ? 'active' : ''}  onClick={() => changeCurrentDocType('all')}>
+      <ul data-testid="DocumentTypes">
+        <li data-testid="all-docs" key={'all'} className={currentCategoryDocuments?.catId === 'all' ? 'active' : ''}  onClick={() => changeCurrentDocType('all')}>
           <a href="javascript:;">All</a>
         </li>
         {documentTypeItems?.map((p: CategoryDocument) => {

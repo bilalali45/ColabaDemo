@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rainmaker.Model;
 using Rainmaker.Model.Borrower;
 using Rainmaker.Service;
 using RainMaker.Entity.Models;
@@ -103,7 +104,7 @@ namespace Rainmaker.API.Controllers
                     }
                     else
                     {
-                        return BadRequest();
+                        return BadRequest(new ErrorModel { Message="unable to find loan application" });
                     }
                 }
             }

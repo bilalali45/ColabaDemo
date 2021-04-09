@@ -18,7 +18,7 @@ namespace DocManager.Service
             this.mongoService = mongoService;
         }
         public async Task<SaveWorkbenchDocument> SaveWorkbenchDocument(string id, string fileId, int tenantId, string serverName, string mcuName, int size, string contentType,
-                            int userProfileId, string userName, string encryptionAlgo, string encryptionKey)
+                            int userProfileId, string userName, string encryptionAlgo, string encryptionKey, string salt)
         {
             string oldFile = await IsExistWorkbenchFile(id, fileId, tenantId);
             if (!string.IsNullOrEmpty(oldFile))
@@ -34,6 +34,7 @@ namespace DocManager.Service
                     { "$set", new BsonDocument()
                         {
                           { "workbench.$[workbenchs].serverName",serverName },
+                          { "workbench.$[workbenchs].salt",salt },
                           { "workbench.$[workbenchs].mcuName",mcuName },
                         { "workbench.$[workbenchs].size",size },
                         { "workbench.$[workbenchs].encryptionKey", encryptionKey},
@@ -79,7 +80,8 @@ namespace DocManager.Service
                     size = size,
                     status = FileStatus.SubmittedToMcu,
                     userId = userProfileId,
-                    userName = userName
+                    userName = userName,
+                    salt=salt
                 };
                 IMongoCollection<Request> collectionInsert = mongoService.db.GetCollection<Request>("Request");
                 UpdateResult resultInsert = await collectionInsert.UpdateOneAsync(new BsonDocument()
@@ -140,7 +142,7 @@ namespace DocManager.Service
             return null;
         }
         public async Task<SaveWorkbenchDocument> SaveTrashDocument(string id, string fileId, int tenantId, string serverName, string mcuName, int size, string contentType,
-                          int userProfileId, string userName, string encryptionAlgo, string encryptionKey)
+                          int userProfileId, string userName, string encryptionAlgo, string encryptionKey, string salt)
         {
             string oldFile = await IsExistTrashFile(id, fileId, tenantId);
             if (!string.IsNullOrEmpty(oldFile))
@@ -156,6 +158,7 @@ namespace DocManager.Service
                     { "$set", new BsonDocument()
                         {
                             { "trash.$[trashs].serverName",serverName },
+                            { "trash.$[trashs].salt",salt },
                             { "trash.$[trashs].mcuName",mcuName },
                         { "trash.$[trashs].size",size },
                         { "trash.$[trashs].encryptionKey", encryptionKey},
@@ -201,7 +204,8 @@ namespace DocManager.Service
                     size = size,
                     status = FileStatus.SubmittedToMcu,
                     userId = userProfileId,
-                    userName = userName
+                    userName = userName,
+                    salt=salt
                 };
                 IMongoCollection<Request> collectionInsert = mongoService.db.GetCollection<Request>("Request");
                 UpdateResult resultInsert = await collectionInsert.UpdateOneAsync(new BsonDocument()
@@ -265,13 +269,13 @@ namespace DocManager.Service
 
 
         public async Task<SaveWorkbenchDocument> SaveCategoryDocument(string id, string requestId, string docId, string fileId, int tenantId, string serverName, string mcuName, int size, string contentType,
-                         int userProfileId, string userName, string encryptionAlgo, string encryptionKey)
+                         int userProfileId, string userName, string encryptionAlgo, string encryptionKey, string salt)
         {
 
             if (await IsExistfile(id, requestId, docId, fileId, tenantId))
             {
                 var file = await PushFile(id, requestId, docId, fileId, tenantId, mcuName, contentType
-                                , encryptionAlgo, encryptionKey, serverName, size, userProfileId, userName);
+                                , encryptionAlgo, encryptionKey, serverName, size, userProfileId, userName,salt);
                 if (!string.IsNullOrEmpty(file))
                 {
                     return new SaveWorkbenchDocument() { fileId = file };
@@ -283,7 +287,7 @@ namespace DocManager.Service
                 if (!string.IsNullOrEmpty(oldFile))
                 {
                     var updatemcuFile = await UpdatemcuFile(id, requestId, docId, fileId, tenantId, mcuName, contentType
-                    , encryptionAlgo, encryptionKey, serverName, size, userProfileId, userName);
+                    , encryptionAlgo, encryptionKey, serverName, size, userProfileId, userName,salt);
                     if (updatemcuFile)
                     {
                         return new SaveWorkbenchDocument() { oldFile = oldFile, fileId = fileId };
@@ -292,7 +296,7 @@ namespace DocManager.Service
                 else 
                 {
                     var updatemcuFile = await PushmcuFile(id, requestId, docId, fileId, tenantId, mcuName, contentType
-                    , encryptionAlgo, encryptionKey, serverName, size, userProfileId, userName);
+                    , encryptionAlgo, encryptionKey, serverName, size, userProfileId, userName,salt);
                     if (!string.IsNullOrEmpty(updatemcuFile))
                     {
                         return new SaveWorkbenchDocument() { fileId = updatemcuFile };
@@ -357,7 +361,7 @@ namespace DocManager.Service
             return false;
         }
         private async Task<string> PushFile(string id, string requestId, string docId, string fileId, int tenantId, string fileName, string contentType
-            , string encryptionAlgo, string encryptionKey, string serverName, int size, int userProfileId, string userName)
+            , string encryptionAlgo, string encryptionKey, string serverName, int size, int userProfileId, string userName, string salt)
         {
 
             IMongoCollection<Request> collectionUpdate = mongoService.db.GetCollection<Request>("Request");
@@ -404,7 +408,8 @@ namespace DocManager.Service
                     size = size,
                     status = FileStatus.SubmittedToMcu,
                     userId = userProfileId,
-                    userName = userName
+                    userName = userName,
+                    salt=salt
                 };
                 IMongoCollection<Request> collectionInsert = mongoService.db.GetCollection<Request>("Request");
                 UpdateResult resultInsert = await collectionInsert.UpdateOneAsync(new BsonDocument()
@@ -483,7 +488,7 @@ namespace DocManager.Service
             return null;
         }
         private async Task<bool> UpdatemcuFile(string id, string requestId, string docId, string fileId, int tenantId, string fileName, string contentType
-              , string encryptionAlgo, string encryptionKey, string serverName, int size, int userProfileId, string userName)
+              , string encryptionAlgo, string encryptionKey, string serverName, int size, int userProfileId, string userName, string salt)
         {
 
             IMongoCollection<Request> collectionUpdate = mongoService.db.GetCollection<Request>("Request");
@@ -497,6 +502,7 @@ namespace DocManager.Service
                             { "$set", new BsonDocument(){
 
                                     { "requests.$[request].documents.$[document].mcuFiles.$[mcuFile].serverName",serverName },
+                                    { "requests.$[request].documents.$[document].mcuFiles.$[mcuFile].salt",salt },
                                     { "requests.$[request].documents.$[document].mcuFiles.$[mcuFile].mcuName",fileName },
                                     { "requests.$[request].documents.$[document].mcuFiles.$[mcuFile].size",size },
                                     { "requests.$[request].documents.$[document].mcuFiles.$[mcuFile].encryptionKey", encryptionKey},
@@ -526,7 +532,7 @@ namespace DocManager.Service
         }
 
         private async Task<string> PushmcuFile(string id, string requestId, string docId, string fileId, int tenantId, string fileName, string contentType
-        , string encryptionAlgo, string encryptionKey, string serverName, int size, int userProfileId, string userName)
+        , string encryptionAlgo, string encryptionKey, string serverName, int size, int userProfileId, string userName, string salt)
         {
             RequestFile requestFile = new RequestFile()
             {
@@ -547,7 +553,8 @@ namespace DocManager.Service
                 size = size,
                 status = FileStatus.SubmittedToMcu,
                 userId = userProfileId,
-                userName = userName
+                userName = userName,
+                salt=salt
             };
             IMongoCollection<Request> collectionInsert = mongoService.db.GetCollection<Request>("Request");
             UpdateResult resultInsert = await collectionInsert.UpdateOneAsync(new BsonDocument()

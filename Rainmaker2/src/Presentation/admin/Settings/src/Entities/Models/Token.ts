@@ -1,5 +1,5 @@
 export class Tokens {
-    public id?: number;
+    public id?: string;
     public name?: string;
     public symbol?: string;
     public description?: string;
@@ -9,7 +9,7 @@ export class Tokens {
     public emailBody? : boolean;
     public emailSubject? : boolean;
 
-    constructor(id?: number, name?: string, symbol?: string, description?: string, key?: Date, fromAddess? : boolean, ccAddess? : boolean, emailBody? : boolean, emailSubject? : boolean){
+    constructor(id?: string, name?: string, symbol?: string, description?: string, key?: Date, fromAddess? : boolean, ccAddess? : boolean, emailBody? : boolean, emailSubject? : boolean){
       this.id = id;
       this.name = name;
       this.symbol = symbol;

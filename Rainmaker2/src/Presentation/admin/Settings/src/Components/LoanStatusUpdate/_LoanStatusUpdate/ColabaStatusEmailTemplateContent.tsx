@@ -117,7 +117,7 @@ export const ColabaStatusEmailTemplateContent = ({
   };
 
   const getTokens = async () => {
-    let tokens = await RequestEmailTemplateActions.fetchTokens();
+    let tokens = await LoanStatusUpdateActions.fetchTokens();
     if (tokens) {
       dispatch({
         type: RequestEmailTemplateActionsType.SetTokens,
@@ -319,6 +319,7 @@ export const ColabaStatusEmailTemplateContent = ({
       setToStatusError('error');
       return;
     }
+
     setDisableSaveBtn(true);
     selectedLoanStatus.fromAddress = data.fromEmail;
     selectedLoanStatus.ccAddress = data.cCEmail;
@@ -328,7 +329,7 @@ export const ColabaStatusEmailTemplateContent = ({
     selectedLoanStatus.isActive = true;
 
     createEmailTemplate(selectedLoanStatus);
-    //dispatch({type: LoanStatusUpdateActionsType.SetSelectedLoanStatus, payload: null});
+
     disableBrowserPrompt();
     dispatch({
       type: RequestEmailTemplateActionsType.SetEditedFields,

@@ -69,7 +69,7 @@ namespace LosIntegration.API
                 {
                     AutoRegisterTemplate = true,
                     IndexFormat =
-                        $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(oldValue: ".", newValue: "-")}-{environment?.ToLower().Replace(oldValue: ".", newValue: "-")}-{DateTime.UtcNow:yyyy-MM}"
+                        $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(oldValue: ".", newValue: "-")}-{environment?.ToLower().Replace(oldValue: ".", newValue: "-")}-{{0:yyyy-MM}}"
                 };
         }
 

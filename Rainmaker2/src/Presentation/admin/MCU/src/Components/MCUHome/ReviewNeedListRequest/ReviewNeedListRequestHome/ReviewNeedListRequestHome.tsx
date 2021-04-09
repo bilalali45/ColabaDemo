@@ -6,6 +6,7 @@ import { Store } from '../../../../Store/Store'
 import { LocalDB } from '../../../../Utils/LocalDB'
 import { TemplateActions } from '../../../../Store/actions/TemplateActions'
 import { useHistory } from 'react-router-dom'
+import { Error } from '../../../../Entities/Models/Error'
 
 
 
@@ -21,7 +22,7 @@ type ReviewNeedListRequestHomeType = {
 export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft, showSendButton, documentHash, setHash, defaultEmail }: ReviewNeedListRequestHomeType) => {
     const [documentsName, setDocumentName] = useState<string>();
     const [emailTemplate, setEmailTemplate] = useState();
-
+    const { state, dispatch } = useContext(Store);
     const history = useHistory();
  
     useEffect(() => {
@@ -44,7 +45,15 @@ export const ReviewNeedListRequestHome = ({ documentList, saveAsDraft, showSendB
    
     const getEmailTemplate = async () => {
         let res: any = await TemplateActions.fetchEmailTemplate();
-        setEmailTemplate(res);
+        if(res){
+            if(Error.successStatus.includes(res.status)){
+                setEmailTemplate(res.data);
+            }
+            else{
+                Error.setError(dispatch, res)
+            }
+        }
+        
     }
 
     useEffect(() => {

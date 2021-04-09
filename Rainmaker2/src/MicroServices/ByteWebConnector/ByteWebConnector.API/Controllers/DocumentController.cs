@@ -72,32 +72,32 @@ namespace ByteWebConnector.API.Controllers
 
         #region Private Methods
 
-        private EmbeddedDoc GetEmbeddedDocData(string byteProSession,
-                                               int documentId,
-                                               int fileDataId)  //todo talha move thid method to service
-        {
-            var request =
-                (HttpWebRequest)WebRequest.Create(requestUriString: ByteProSettings.ByteApiUrl + "Document/" +
-                                                                     fileDataId + "/" + documentId);
-            request.Method = "GET";
-            request.ContentType = "application/json";
-            request.Headers.Add(name: "Session",
-                                value: byteProSession);
-            request.Accept = "application/json";
+        //private EmbeddedDoc GetEmbeddedDocData(string byteProSession,
+        //                                       int documentId,
+        //                                       int fileDataId)  //todo talha move thid method to service
+        //{
+        //    var request =
+        //        (HttpWebRequest)WebRequest.Create(requestUriString: ByteProSettings.ByteApiUrl + "Document/" +
+        //                                                             fileDataId + "/" + documentId);
+        //    request.Method = "GET";
+        //    request.ContentType = "application/json";
+        //    request.Headers.Add(name: "Session",
+        //                        value: byteProSession);
+        //    request.Accept = "application/json";
 
-            using (var response = (HttpWebResponse)request.GetResponse())
-            {
-                var dataStream = response.GetResponseStream();
-                var reader = new StreamReader(stream: dataStream);
-                var responseString = reader.ReadToEnd();
+        //    using (var response = (HttpWebResponse)request.GetResponse())
+        //    {
+        //        var dataStream = response.GetResponseStream();
+        //        var reader = new StreamReader(stream: dataStream);
+        //        var responseString = reader.ReadToEnd();
 
-                var embeddedDoc =
-                    JsonConvert.DeserializeObject<EmbeddedDoc>(value: responseString);
-                reader.Close();
-                dataStream.Close();
-                return embeddedDoc;
-            }
-        }
+        //        var embeddedDoc =
+        //            JsonConvert.DeserializeObject<EmbeddedDoc>(value: responseString);
+        //        reader.Close();
+        //        dataStream.Close();
+        //        return embeddedDoc;
+        //    }
+        //}
 
         #endregion
 
@@ -202,7 +202,7 @@ namespace ByteWebConnector.API.Controllers
             Thread.Sleep(millisecondsTimeout: 5000);
             var byteProSession = _byteProService.GetByteProSession();
 
-            var embeddedDocs = _byteProService.GetAllByteDocuments(session: byteProSession,
+            var embeddedDocs = _byteProService.GetAllByteDocuments(session: byteProSession.Result,
                                                                    fileDataId: request.FileDataId);
 
             _logger.LogInformation(message: $"T====== Total embeddedDocs = {embeddedDocs.Count}");
@@ -230,22 +230,22 @@ namespace ByteWebConnector.API.Controllers
         }
 
 
-        [Route(template: "[action]")]
-        [HttpPost]
-        public EmbeddedDoc GetDocumentDataFromByte(DocumentDataRequest request)
-        {
-            #region Byte API Call
+        //[Route(template: "[action]")]
+        //[HttpPost]
+        //public EmbeddedDoc GetDocumentDataFromByte(DocumentDataRequest request)
+        //{
+        //    #region Byte API Call
 
-            var byteProSession = _byteProService.GetByteProSession();
+        //    var byteProSession = _byteProService.GetByteProSession();
 
-            var embeddedDocWithData = GetEmbeddedDocData(byteProSession: byteProSession,
-                                                         documentId: request.DocumentId,
-                                                         fileDataId: request.FileDataId);
+        //    var embeddedDocWithData = GetEmbeddedDocData(byteProSession: byteProSession.Result,
+        //                                                 documentId: request.DocumentId,
+        //                                                 fileDataId: request.FileDataId);
 
-            return embeddedDocWithData;
+        //    return embeddedDocWithData;
 
-            #endregion
-        }
+        //    #endregion
+        //}
 
         #endregion
     }

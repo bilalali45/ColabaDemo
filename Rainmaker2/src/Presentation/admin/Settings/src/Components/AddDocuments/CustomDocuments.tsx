@@ -67,7 +67,7 @@ export const CustomDocuments = ({
   return (
     <div className="add-custom-doc">
       <div className="others-doc-input-wrap">
-        <div className="title-wrap">
+        <div className="title-wrap" data-testid="custom-doc-header">
           <h3>Add Custom Document</h3>
         </div>
         <div className="input-wrap">

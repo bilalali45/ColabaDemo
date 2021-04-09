@@ -18,9 +18,9 @@ export const DocumentsStatus = () => {
   const loan: any = state.loan;
     const {isMobile} = loan; 
   useEffect(() => {
-    if (!pendingDocs?.length) {
-      fetchPendingDocs();
-    } 
+    // if (!pendingDocs?.length) {
+    //   fetchPendingDocs();
+    // } 
 
     if (!submittedDocs?.length) {
       fetchSubmittedDocs();
@@ -33,6 +33,7 @@ export const DocumentsStatus = () => {
   };
 
   const fetchPendingDocs = async () => {
+    if (!pendingDocs) {
     let docsPending = await DocumentActions.getPendingDocuments(
       Auth.getLoanAppliationId()
     );
@@ -47,6 +48,7 @@ export const DocumentsStatus = () => {
       });
       // setPendingDocs(docsPending);
     }
+  }
   };
 
   const fetchSubmittedDocs = async () => {

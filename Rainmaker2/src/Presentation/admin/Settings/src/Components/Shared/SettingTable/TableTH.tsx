@@ -9,37 +9,39 @@ interface TableTHProps {
 const TableTH:React.FC<TableTHProps> = ({valign,align,className,children}) => {
     
     const checkAlign = () =>{        
-        switch (align){
-            case 'left':
-                return 'left';
-                break;
-            case 'right':
-                return 'right';
-                break;
-            case 'center':
-                return 'center';
-                break;
-            case 'default':
-                return 'start';
-                break;
-        }
+        // switch (align){
+        //     case 'left':
+        //         return 'left';
+        //         break;
+        //     case 'right':
+        //         return 'right';
+        //         break;
+        //     case 'center':
+        //         return 'center';
+        //         break;
+        //     case 'default':
+        //         return 'start';
+        //         break;
+        // }
+        return (align?align:'start')
     }
 
     const checkValign = () => {
-        switch (valign){
-            case 'top':
-                return 'top';
-                break;
-            case 'middle':
-                return 'middle';
-                break;
-            case 'bottom':
-                return 'bottom';
-                break;
-            case 'default':
-                return 'initial';
-                break;
-        }
+        // switch (valign){
+        //     case 'top':
+        //         return 'top';
+        //         break;
+        //     case 'middle':
+        //         return 'middle';
+        //         break;
+        //     case 'bottom':
+        //         return 'bottom';
+        //         break;
+        //     case 'default':
+        //         return 'initial';
+        //         break;
+        // }
+        return (valign ? valign : 'initial')
     }
 
     const Style:any = {}

@@ -21,7 +21,7 @@ describe('AlertBox', ()=>{
         const props = {
             hideAlert: ()=>{},
             setshowAlert: ()=>{},
-            navigateUrl: ''
+            navigateUrl: '/RequestEmailTemplates'
         }
         const { getByTestId, debug } = render(<AlertBox {...props} />);
         expect(getByTestId('alert-box')).toBeTruthy();

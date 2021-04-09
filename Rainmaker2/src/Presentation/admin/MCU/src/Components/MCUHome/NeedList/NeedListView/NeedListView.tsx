@@ -9,6 +9,7 @@ import {Store} from '../../../../Store/Store';
 import {NeedListActionsType} from '../../../../Store/reducers/NeedListReducer';
 import {sortList} from '../../../../Utils/helpers/Sort';
 import {Template} from '../../../../Entities/Models/Template';
+import {Error} from '../../../../Entities/Models/Error';
 import {TemplateActions} from '../../../../Store/actions/TemplateActions';
 import {TemplateActionsType} from '../../../../Store/reducers/TemplatesReducer';
 import {NeedListAlertBox} from '../NeedListView/NeedListAlertBox/NeedListAlertBox';
@@ -94,12 +95,13 @@ export const NeedListView = () => {
   const fetchNeedList = async (status: boolean, fetchNew: boolean) => {
     if (LocalDB.getLoanAppliationId()) {
       if (fetchNew) {
-        let res: NeedList[] | undefined = await NeedListActions.getNeedList(
+        let res= await NeedListActions.getNeedList(
           LocalDB.getLoanAppliationId(),
           status
         );
-        if (res) {
-          let data = await updateNeedListArray(res);
+        if (res ){
+        if(Error.successStatus.includes(res.status)) {
+          let data = await updateNeedListArray(res.data);
           dispatch({
             type: NeedListActionsType.SetNeedListTableDATA,
             payload: data.map((d, i) => {
@@ -117,6 +119,11 @@ export const NeedListView = () => {
           });
           return data;
         }
+
+        else{
+          Error.setError(dispatch,res )
+        }
+      }
       }
     }
   };
@@ -293,7 +300,7 @@ export const NeedListView = () => {
             doc.docId,
             file.id
           );
-          if (sync === 200) {
+          if (Error.successStatus.includes(sync.status)) {
             file.byteProStatusText = SyncTxt;
             file.byteProStatus = Sync;
             file.byteProStatusClassName = SyncClass;
@@ -302,6 +309,7 @@ export const NeedListView = () => {
             file.byteProStatus = 'sync failed';
             file.byteProStatusClassName = SyncErrorClass;
             isError = true;
+            Error.setError(dispatch, sync)
           }
           dispatch({
             type: NeedListActionsType.SetNeedListTableDATA,
@@ -353,8 +361,15 @@ export const NeedListView = () => {
 
   const checkIsByteProAuto = async () => {
     let res: any = await NeedListActions.checkIsByteProAuto();
-    let isAuto = res?.syncToBytePro != 2 ? true : false;
-    dispatch({type: NeedListActionsType.SetIsByteProAuto, payload: isAuto});
+    if(res){
+      if(Error.successStatus.includes(res.status)){
+        let isAuto = res?.data?.syncToBytePro != 2 ? true : false;
+        dispatch({type: NeedListActionsType.SetIsByteProAuto, payload: isAuto});
+      }
+    } else{
+      Error.setError(dispatch, res)
+    }
+    
   };
   //new comment
   const deleteNeedListDoc = async (
@@ -368,31 +383,37 @@ export const NeedListView = () => {
         requestId,
         docId
       );
-      if (res === 200) {
-        fetchNeedList(filtertoggler, true).then((data) => {
-          let sortedList;
-          if (docSort) {
-            sortedList = sortList(
-              data,
-              'docName',
-              sortArrow === 'asc' ? true : false
-            );
-          } else if (statusSort) {
-            sortedList = sortList(
-              data,
-              'status',
-              sortStatusArrow === 'asc' ? true : false
-            );
-          } else {
-            sortedList = data;
-          }
-          dispatch({
-            type: NeedListActionsType.SetNeedListTableDATA,
-            payload: sortedList
+      if(res){
+        if (Error.successStatus.includes(res.status)) {
+          fetchNeedList(filtertoggler, true).then((data) => {
+            let sortedList;
+            if (docSort) {
+              sortedList = sortList(
+                data,
+                'docName',
+                sortArrow === 'asc' ? true : false
+              );
+            } else if (statusSort) {
+              sortedList = sortList(
+                data,
+                'status',
+                sortStatusArrow === 'asc' ? true : false
+              );
+            } else {
+              sortedList = data;
+            }
+            dispatch({
+              type: NeedListActionsType.SetNeedListTableDATA,
+              payload: sortedList
+            });
+            setDeleteRequestSent(false);
           });
-          setDeleteRequestSent(false);
-        });
+        }
+        else{
+          Error.setError(dispatch, res)
+        }
       }
+      
     }
   };
 
@@ -501,10 +522,13 @@ export const NeedListView = () => {
   };
 
   const fetchDashBoardSettings = async () => {
-    let res:| DashboardSetting | undefined = await NeedListActions.getDashBoardSettings();
+    let res= await NeedListActions.getDashBoardSettings();
     if (res) {
-      LocalDB.storeItem(NeedListActionsType.SetNeedListFilter, res.pending.toString())
-      
+      if(Error.successStatus.includes(res.status)){
+      LocalDB.storeItem(NeedListActionsType.SetNeedListFilter, res.data.pending.toString())
+      } else{
+        Error.setError(dispatch,res )
+      }
     }
     return res?.pending;
   };

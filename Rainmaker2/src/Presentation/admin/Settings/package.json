@@ -73,6 +73,16 @@
     "@types/draft-convert": "^2.1.1",
     "@types/lodash": "^4.14.157",
     "jest-environment-jsdom-sixteen": "^1.0.3"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/index.tsx",
+      "!src/Store/actions/*.{ts,tsx}",
+      "!src/Store/endpoints/*.{ts,tsx}",
+      "!src/Utils/LocalDB.ts",
+      "!src/serviceWorker.ts",
+      "!src/Components/AddDocuments/CustomDocuments.tsx"
+    ]}
 
-  }
 }

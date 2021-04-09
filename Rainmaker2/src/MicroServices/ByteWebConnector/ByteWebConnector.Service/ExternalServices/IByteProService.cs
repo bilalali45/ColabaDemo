@@ -11,7 +11,7 @@ namespace ByteWebConnector.Service.ExternalServices
 {
     public interface IByteProService
     {
-        string GetByteProSession();
+        Task<string> GetByteProSession();
 
 
         ApiResponse<DocumentUploadResponse> SendDocumentToByte(DocumentUploadRequest documentUploadRequest,
@@ -31,11 +31,11 @@ namespace ByteWebConnector.Service.ExternalServices
                                        int fileDataId);
 
 
-        bool ValidateByteSession(string byteSession);
+        Task<bool> ValidateByteSessionAsync(string byteSession);
 
 
-        FileDataResponse GetFileData(string byteSession,
-                                     string fileDataId);
+        Task<FileDataResponse> GetFileDataAsync(string byteSession,
+                                string fileDataId);
 
 
         ByteFile GetByteLoanFile(string loanApplicationByteLoanNumber);

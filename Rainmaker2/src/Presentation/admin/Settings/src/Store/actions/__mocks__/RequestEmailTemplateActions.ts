@@ -93,7 +93,10 @@ const tokensMock = [
 export class RequestEmailTemplateActions {
 
     static async fetchEmailTemplates() {
-       return Promise.resolve(emailMock);
+        let mappedData = emailMock.map((data: any) => {
+            return new RequestEmailTemplate(data.id, data.templateTypeId,data.tenantId, data.templateName, data.templateDescription, data.fromAddress, data.toAddress, data.ccAddress, data.subject, data.emailBody, data.sortOrder);
+        });
+       return Promise.resolve(mappedData);
     }
 
     static async deleteEmailTemplate(id?: number){

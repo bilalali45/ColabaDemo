@@ -104,6 +104,7 @@ export const TextEditor = ({handlerOnFocus, handlerOnChange, selectedToken, defa
           toolbarClassName="editor-toolbar"                          
           onEditorStateChange={onEditorStateChange}
           onBlur={handlerOnBlur} 
+          handlePastedText={() => false}
           toolbar={{
             options: ['inline', 'list', 'link','history'],
             inline: {

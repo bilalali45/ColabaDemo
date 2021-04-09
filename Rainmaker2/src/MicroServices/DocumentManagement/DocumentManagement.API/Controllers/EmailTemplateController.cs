@@ -101,7 +101,7 @@ namespace DocumentManagement.API.Controllers
                                                                         userProfileId: userProfileId);
             if (docQuery)
                 return Ok();
-            return NotFound();
+            return NotFound(new ErrorModel { Code = 404, Message = "unable to update email template" });
         }
 
         [HttpPost(template: "[action]")]
@@ -123,7 +123,7 @@ namespace DocumentManagement.API.Controllers
 
             if (docQuery)
                 return Ok();
-            return NotFound();
+            return NotFound(new ErrorModel { Code = 404, Message = "unable to delete email template" });
         }
 
         #endregion

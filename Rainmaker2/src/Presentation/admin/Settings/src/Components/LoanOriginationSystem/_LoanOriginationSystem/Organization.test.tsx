@@ -113,7 +113,12 @@ describe('Loan origination System Organization Tab', () => {
             expect(saveBtn).toBeNull();
             let cancelBtn = screen.queryByTestId('cancel-btn');
             expect(cancelBtn).toBeNull();
-        })
+            let sortArrow = getByTestId('TableSort');
+            expect(sortArrow).toBeInTheDocument();
+            fireEvent.click(sortArrow);
+        });
+
+        
         
 
 

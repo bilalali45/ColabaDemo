@@ -1000,7 +1000,7 @@ namespace DocumentManagement.Tests
             IActionResult result = await documentController.McuRename(mcuRenameModel);
             //Assert
             Assert.NotNull(result);
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundObjectResult>(result);
         }
         [Fact]
         public async Task TestmcuRenameFileNameSizeExceptionController()
@@ -1143,7 +1143,7 @@ namespace DocumentManagement.Tests
             IActionResult result = await controller.AcceptDocument(acceptDocumentModel);
             //Assert
             Assert.NotNull(result);
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundObjectResult>(result);
         }
 
         [Fact]
@@ -1215,7 +1215,7 @@ namespace DocumentManagement.Tests
             IActionResult result = await documentController.RejectDocument(rejectDocumentModel);
             //Assert
             Assert.NotNull(result);
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundObjectResult>(result);
         }
 
         [Fact]
@@ -1320,11 +1320,11 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.View(It.IsAny<AdminFileViewModel>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(fileViewDTO);
             mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
-            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, new MemoryStream())).Verifiable();
 
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
-            mockFileEcryptor.Setup(x => x.DecrypeFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new MemoryStream());
+            mockFileEcryptor.Setup(x => x.DecrypeFile(It.IsAny<MemoryStream>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new MemoryStream());
 
             mockFileEncryptorFacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockFileEcryptor.Object);
             var httpContext = new Mock<HttpContext>();
@@ -1688,7 +1688,7 @@ namespace DocumentManagement.Tests
 
             //Assert
             Assert.NotNull(result);
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundObjectResult>(result);
         }
 
         [Fact]

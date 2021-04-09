@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState, useRef } from 'react';
+import React, { useEffect, useCallback, useState, useRef, useContext } from 'react';
 import { Http } from 'rainsoft-js';
 import Spinner from 'react-bootstrap/Spinner';
 import { DocumentSnipet } from './DocumentSnipet/DocumentSnipet';
@@ -9,6 +9,8 @@ import { DocumentStatus } from '../../../../Entities/Types/Types';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { ReviewDocumentActivityLog } from '../ReviewDocumentActivityLog/ReviewDocumentActivityLog';
 import { ReviewDocumentActions } from '../../../../Store/actions/ReviewDocumentActions';
+import { Error } from '../../../../Entities/Models/Error';
+import { Store } from '../../../../Store/Store';
 
 const Footer = ({
   acceptDocumentOnly,
@@ -239,6 +241,7 @@ export const ReviewDocumentStatement = ({
   const [currentDocId, setCurrentDocId] = useState<string>('');
   const [currentFileName, setCurrentFileName] = useState('');
   const [acceptDocumentAlert, setAcceptDocumentAlert] = useState<boolean>(false);
+  const { state: AppState, dispatch } = useContext(Store);
 
   const acceptDocForStarted = () => {
     setAcceptDocumentAlert(!acceptDocumentAlert);
@@ -271,21 +274,30 @@ export const ReviewDocumentStatement = ({
   const requestDocumentFiles = async (currentDocument: NeedList) => {
     const { id, requestId, docId } = currentDocument;
 
-    const data = await ReviewDocumentActions.requestDocumentFiles(id, requestId, docId);
-    const { files, userName } = data[0];
-    setDocumentFiles(files);
-    setUsername(userName);
-    setMcuNamesUpdated(
-      files.map((file: any) => {
-        return {
-          fileId: file.fileId,
-          mcuName:
-            file.mcuName === ''
-              ? getFileNameWithoutExtension(file.clientName)
-              : getFileNameWithoutExtension(file.mcuName)
-        };
-      })
-    );
+    const res = await ReviewDocumentActions.requestDocumentFiles(id, requestId, docId);
+    if(res){
+      if(Error.successStatus.includes(res.status)){
+        let data = res.data
+        const { files, userName } = data[0];
+        setDocumentFiles(files);
+        setUsername(userName);
+        setMcuNamesUpdated(
+          files.map((file: any) => {
+            return {
+              fileId: file.fileId,
+              mcuName:
+                file.mcuName === ''
+                  ? getFileNameWithoutExtension(file.clientName)
+                  : getFileNameWithoutExtension(file.mcuName)
+            };
+          })
+        );
+      }
+      else{
+        Error.setError(dispatch, res)
+      }
+    }
+    
   };
 
   const getMcuNameUpdated = (fileId: string): string => {

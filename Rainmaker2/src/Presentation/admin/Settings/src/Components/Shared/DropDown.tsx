@@ -66,6 +66,7 @@ export const DropDown: React.FC<DropDownProps> = ({ listData, editable, selected
                     <>
                         {enableInput &&
                             <input
+                                data-testid="settings__dropdown-input"
                                 min="1"
                                 max={30}
                                 maxLength={maxLength}
@@ -95,16 +96,16 @@ export const DropDown: React.FC<DropDownProps> = ({ listData, editable, selected
                             />
                         }
                         {!enableInput &&
-                            <span className="settings__dropdown-text" onClick={(e) => { setTimeout(() => { setEnableInput(!enableInput) }, 20) }}>{ filterDay() }</span>
+                            <span data-testid="settings__dropdown-text" className="settings__dropdown-text" onClick={(e) => { setTimeout(() => { setEnableInput(!enableInput) }, 20) }}>{ filterDay() }</span>
                         }
                     </>
                 }
 
                 {!editable &&
-                    <span className="settings__dropdown-text">{filterDay()}</span>
+                    <span data-testid="settings__dropdown-text" className="settings__dropdown-text">{filterDay()}</span>
                 }
 
-                <span className="settings__dropdown-arrow"><i className="zmdi zmdi-chevron-down"></i></span>
+                <span data-testid="settings__dropdown-arrow" className="settings__dropdown-arrow"><i className="zmdi zmdi-chevron-down"></i></span>
             </div>
 
 
@@ -113,7 +114,7 @@ export const DropDown: React.FC<DropDownProps> = ({ listData, editable, selected
                     <ul>
                         {listData.map((item: any) => {
                             return (
-                                <li key={item.value} onClick={() => setTimeout(() => { setShowDropdown(false) }, 20)}>
+                                <li data-testid="dropDownMenuLiItem" key={item.value} onClick={() => setTimeout(() => { setShowDropdown(false) }, 20)}>
                                     <span data-testid="dropDownMenuItem" onClick={() => { 
                                             handlerSelect([{ text: item.text, value: item.value }]); 
                                             setInputVal([{ text: item.text, value: item.value }]);

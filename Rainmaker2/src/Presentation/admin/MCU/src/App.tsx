@@ -30,11 +30,11 @@ const App = (props: any) => {
 
   useEffect(() => {
     console.log('MCU App Version', '0.0.1');
-    if(props.authToken && props.refreshToken){
+    if (props.authToken && props.refreshToken) {
       setCookieAccess('Rainmaker2Token', props.authToken, { path: '/', secure: true, sameSite: 'none', domain: window.location.host });
       setCookieRefresh('Rainmaker2RefreshToken', props.refreshToken, { path: '/', secure: true, sameSite: 'none', domain: window.location.host });
     }
-    
+
     authenticate();
     // component unmount
     return () => {
@@ -45,7 +45,7 @@ const App = (props: any) => {
   const authenticate = async () => {
     console.log('Before Authorize');
     //if (process.env.NODE_ENV === 'development') {
-      await window.Authorization.authorize();
+    await window.Authorization.authorize();
     //}
     if (LocalDB.getAuthToken()) {
       setAuthenticated(Boolean(true));
@@ -91,11 +91,11 @@ const App = (props: any) => {
                 {process.env.NODE_ENV === 'test' ? (
                   <Authorized path="/" component={MCUHome} />
                 ) : (
-                    <Authorized
-                      path="/:activity/:loanApplicationId/"
-                      component={MCUHome}
-                    />
-                  )}
+                  <Authorized
+                    path="/:activity/:loanApplicationId/"
+                    component={MCUHome}
+                  />
+                )}
 
                 <Authorized
                   exact

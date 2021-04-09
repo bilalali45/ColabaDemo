@@ -55,29 +55,33 @@ namespace DocManager.API.Controllers
                                                                 key: await keyStoreService.GetFtpKey()));
 
             if (!setting.allowedExtensions.Contains(Path.GetExtension(file.FileName.ToLower())))
-                return BadRequest("File type is not supported. Allowed types: PDF, JPEG, PNG");
+                return BadRequest(new ErrorModel() { Code = 400, Message = "File type is not supported. Allowed types: PDF, JPEG, PNG" });
             if (file.Length > setting.maxMcuFileSize)
-                return BadRequest($"File size must be under {((decimal)setting.maxMcuFileSize) / (1024 * 1024)} mb");
+                return BadRequest(new ErrorModel() { Code = 400, Message = $"File size must be under {((decimal)setting.maxMcuFileSize) / (1024 * 1024)} mb" });
             if (file.FileName.Length > setting.maxFileNameSize)
-                return BadRequest("File Name size exceeded limit");
+                return BadRequest(new ErrorModel() { Code = 400, Message = "File Name size exceeded limit" });
             if (file.Length <= 0)
-                return BadRequest("Something went wrong. Please try again");
+                return BadRequest(new ErrorModel() { Code = 400, Message = "Something went wrong. Please try again" });
 
             if (file.Length > 0)
             {
-                var filePath = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: file.OpenReadStream(),
+                var filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".enc");
+                var (memoryStream,salt) = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: file.OpenReadStream(),
                                                                                             password: await keyStoreService.GetFileKey());
                 // upload to ftp
-                await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
-                                            localFile: filePath);
-                System.IO.File.Delete(path: filePath);
+                using (memoryStream)
+                {
+                    await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
+                                                memoryStream);
+                }
+                //System.IO.File.Delete(path: filePath);
 
                 // update file
                 var docQuery = await thumbnailService.SaveWorkbenchDocument(id, fileId, tenantId, Path.GetFileName(path: filePath), file.FileName, (int)file.Length, file.ContentType,
-                            userProfileId, userName, algo, key);
+                            userProfileId, userName, algo, key,salt);
                 return Ok(docQuery.fileId);
             }
-            return BadRequest();
+            return BadRequest(new ErrorModel() { Code = 400, Message = "unable to upload file" });
         }
 
         [HttpPost("[action]")]
@@ -98,27 +102,31 @@ namespace DocManager.API.Controllers
                                                                 key: await keyStoreService.GetFtpKey()));
 
             if (!setting.allowedExtensions.Contains(Path.GetExtension(file.FileName.ToLower())))
-                return BadRequest("File type is not supported. Allowed types: PDF, JPEG, PNG");
+                return BadRequest(new ErrorModel() { Code = 400, Message = "File type is not supported. Allowed types: PDF, JPEG, PNG" });
             if (file.FileName.Length > setting.maxFileNameSize)
-                return BadRequest("File Name size exceeded limit");
+                return BadRequest(new ErrorModel() { Code = 400, Message = "File Name size exceeded limit" });
             if (file.Length <= 0)
-                return BadRequest("Something went wrong. Please try again");
+                return BadRequest(new ErrorModel() { Code = 400, Message = "Something went wrong. Please try again" });
 
             if (file.Length > 0)
             {
-                var filePath = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: file.OpenReadStream(),
+                var filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".enc");
+                var (memoryStream,salt) = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: file.OpenReadStream(),
                                                                                             password: await keyStoreService.GetFileKey());
-                // upload to ftp
-                await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
-                                            localFile: filePath);
-                System.IO.File.Delete(path: filePath);
+                using (memoryStream)
+                {
+                    // upload to ftp
+                    await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
+                                                memoryStream);
+                }
+                //System.IO.File.Delete(path: filePath);
 
                 // update file
                 var docQuery = await thumbnailService.SaveTrashDocument(id, fileId, tenantId, Path.GetFileName(path: filePath), file.FileName, (int)file.Length, file.ContentType,
-                            userProfileId, userName, algo, key);
+                            userProfileId, userName, algo, key,salt);
                 return Ok(docQuery.fileId);
             }
-            return BadRequest();
+            return BadRequest(new ErrorModel() { Code = 400, Message = "unable to upload file" });
         }
 
         [HttpPost("[action]")]
@@ -139,28 +147,31 @@ namespace DocManager.API.Controllers
                                                                 key: await keyStoreService.GetFtpKey()));
 
             if (!setting.allowedExtensions.Contains(Path.GetExtension(file.FileName.ToLower())))
-                return BadRequest("File type is not supported. Allowed types: PDF, JPEG, PNG");
+                return BadRequest(new ErrorModel() { Code = 400, Message = "File type is not supported. Allowed types: PDF, JPEG, PNG" });
             if (file.FileName.Length > setting.maxFileNameSize)
-                return BadRequest("File Name size exceeded limit");
+                return BadRequest(new ErrorModel() { Code = 400, Message = "File Name size exceeded limit" });
             if (file.Length <= 0)
-                return BadRequest("Something went wrong. Please try again");
+                return BadRequest(new ErrorModel() { Code = 400, Message = "Something went wrong. Please try again" });
 
             if (file.Length > 0)
             {
-                var filePath = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: file.OpenReadStream(),
+                var filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".enc");
+                var (memoryStream,salt) = fileEncryptionFactory.GetEncryptor(name: algo).EncryptFile(inputFile: file.OpenReadStream(),
                                                                                             password: await keyStoreService.GetFileKey());
-                // upload to ftp
-                await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
-                                            localFile: filePath);
-                System.IO.File.Delete(path: filePath);
+                using (memoryStream)
+                {
+                    // upload to ftp
+                    await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
+                                                memoryStream);
+                }
+                //System.IO.File.Delete(path: filePath);
 
                 // update file
                 var docQuery = await thumbnailService.SaveCategoryDocument(id, requestId, docId, fileId, tenantId, Path.GetFileName(path: filePath), file.FileName, (int)file.Length, file.ContentType,
-                            userProfileId, userName, algo, key);
-
+                            userProfileId, userName, algo, key,salt);
                 return Ok(docQuery.fileId);
             }
-            return BadRequest();
+            return BadRequest(new ErrorModel() { Code = 400, Message = "unable to upload file" });
         }
     }
 }

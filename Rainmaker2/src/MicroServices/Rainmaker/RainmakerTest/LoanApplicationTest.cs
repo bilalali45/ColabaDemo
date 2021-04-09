@@ -306,7 +306,7 @@ namespace RainmakerTest
             Assert.Null(content);
             // Assert.Null(content.FirstName);
         }
-        [Fact]
+       [Fact]
         public async Task GetLOInfo()
         {
             //Arrange
@@ -1735,7 +1735,7 @@ namespace RainmakerTest
             var controller = new BorrowerController(mockBorrowerService.Object, mockLaonApplicationService.Object);
             var result = await controller.AddOrUpdate(model, true);
 
-            Assert.IsType<BadRequestResult>(result);
+            Assert.IsType<BadRequestObjectResult>(result);
         }
         [Fact]
         public async Task TestBorrowerAdd()

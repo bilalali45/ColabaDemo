@@ -47,7 +47,7 @@ namespace DocumentManagement.API.Controllers
             var docQuery = await adminDashboardService.Delete(model: model,tenantId, Request.Headers["Authorization"].Select(x => x.ToString()));
             if (docQuery)
                 return Ok();
-            return NotFound();
+            return NotFound(new ErrorModel { Code=404, Message="Unable to find document to delete"});
         }
 
         [HttpGet("IsDocumentDraft")]

@@ -2,7 +2,7 @@ import React from 'react'
 import ContentBody from "../../Shared/ContentBody";
 import { LOSOrganization } from './Organization'
 import { LOSUsers } from './Users'
-import {AccountDetail} from "../../AccountDetail/AccountDetail";
+import AccountDetail from "../../AccountDetail/AccountDetail";
 import {LoadOriginationMenu} from "../../../Utils/helpers/Enums";
 import { ContentSubHeader } from '../../Shared/ContentHeader';
 

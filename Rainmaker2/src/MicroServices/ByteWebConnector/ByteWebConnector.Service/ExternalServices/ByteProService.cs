@@ -53,50 +53,36 @@ namespace ByteWebConnector.Service.ExternalServices
         {
             get
             {
-                if (string.IsNullOrEmpty(value: _byteProSession)) _byteProSession = GetByteProSession();
+                if (string.IsNullOrEmpty(value: _byteProSession)) _byteProSession = GetByteProSession().Result;
                 return _byteProSession;
             }
         }
 
 
-        public string GetByteProSession()
+        public async Task<string> GetByteProSession()
         {
-            try
+            var request = new HttpRequestMessage
             {
-                ServicePointManager.ServerCertificateValidationCallback += (sender,
-                                                                            certificate,
-                                                                            chain,
-                                                                            sslPolicyErrors) => true;
+                RequestUri = new Uri(uriString: _baseApiUrl + "auth/ "),
+                Method = HttpMethod.Get,
+                //Content = new StringContent(content: "")
+            };
+            request.Headers.Add(name: "authorizationKey",
+                                value: _byteProSettings.ByteApiAuthKey);
+            request.Headers.Add(name: "username",
+                                value: _byteProSettings.ByteApiUserName);
+            request.Headers.Add(name: "password",
+                                value: _byteProSettings.ByteApiPassword);
+            request.Headers.Accept.Add(item: new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
+            request.Content = new StringContent(content: "");
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue(mediaType: "application/json");
 
-                var request = (HttpWebRequest) WebRequest.Create(requestUriString: _baseApiUrl + "auth/ ");
-                request.Method = "GET";
-                request.ContentType = "application/json";
-                request.Headers.Add(name: "authorizationKey",
-                                    value: _byteProSettings.ByteApiAuthKey);
-                request.Headers.Add(name: "username",
-                                    value: _byteProSettings.ByteApiUserName);
-                request.Headers.Add(name: "password",
-                                    value: _byteProSettings.ByteApiPassword);
-                request.Accept = "application/json";
-                string key;
-                using (var response = (HttpWebResponse) request.GetResponse())
-                {
-                    var dataStream = response.GetResponseStream();
-                    var reader = new StreamReader(stream: dataStream ?? throw new InvalidOperationException());
-                    key = reader.ReadToEnd();
-                    reader.Close();
-                    dataStream.Close();
-                }
-
-                return key.Replace(oldValue: "\"",
-                                   newValue: "");
-            }
-            catch (Exception ex)
-            {
-                throw new ArgumentException(message: ex.InnerException != null
-                                                ? ex.InnerException.Message
-                                                : "Error in BytePro Connection, Please try again later.");
-            }
+            var response = await _httpClient.SendAsync(request: request).ConfigureAwait(continueOnCapturedContext: false);
+            response.EnsureSuccessStatusCode();
+            _logger.LogInformation(message: "ByteFile EnsureSuccessStatusCode");
+            var resp = await response.Content.ReadAsStringAsync();
+            return resp.Replace(oldValue: "\"",
+                                newValue: "");
         }
 
 
@@ -143,14 +129,14 @@ namespace ByteWebConnector.Service.ExternalServices
         public List<EmbeddedDoc> GetAllByteDocuments(string session,
                                                      int fileDataId)
         {
-            var request = (HttpWebRequest) WebRequest.Create(requestUriString: _baseApiUrl + "Document/" + fileDataId);
+            var request = (HttpWebRequest)WebRequest.Create(requestUriString: _baseApiUrl + "Document/" + fileDataId);
             request.Method = "GET";
             request.ContentType = "application/json";
             request.Headers.Add(name: "Session",
                                 value: session);
             request.Accept = "application/json";
 
-            using (var response = (HttpWebResponse) request.GetResponse())
+            using (var response = (HttpWebResponse)request.GetResponse())
             {
                 var dataStream = response.GetResponseStream();
                 var reader = new StreamReader(stream: dataStream ?? throw new InvalidOperationException());
@@ -166,38 +152,27 @@ namespace ByteWebConnector.Service.ExternalServices
 
 
         public async Task<string> Send(string output,
-                                       string session)
+                                     string session)
         {
-            var clientHandler = new HttpClientHandler();
-            clientHandler.ServerCertificateCustomValidationCallback = (sender,
-                                                                       cert,
-                                                                       chain,
-                                                                       sslPolicyErrors) =>
-            {
-                return true;
-            };
 
-            using (var client = new HttpClient(handler: clientHandler))
+            var request = new HttpRequestMessage
             {
-                var request = new HttpRequestMessage
-                              {
-                                  RequestUri = new Uri(uriString: _baseApiUrl + "Document/"),
-                                  Method = HttpMethod.Post,
-                                  Content = new StringContent(content: output,
-                                                              encoding: Encoding.UTF8,
-                                                              mediaType: "application/json")
-                              };
-                request.Content.Headers.ContentType = new MediaTypeHeaderValue(mediaType: "application/json");
-                request.Headers.Add(name: "Session",
-                                    value: session);
-                request.Headers.Accept.Clear();
-                request.Headers.Accept.Add(item: new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
-                var response = await client.SendAsync(request: request)
-                                           .ConfigureAwait(continueOnCapturedContext: false);
-                response.EnsureSuccessStatusCode();
-                var resp = await response.Content.ReadAsStringAsync();
-                return resp;
-            }
+                RequestUri = new Uri(uriString: _baseApiUrl + "Document/"),
+                Method = HttpMethod.Post,
+                Content = new StringContent(content: output,
+                                                          encoding: Encoding.UTF8,
+                                                          mediaType: "application/json")
+            };
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue(mediaType: "application/json");
+            request.Headers.Add(name: "Session",
+                                value: session);
+            request.Headers.Accept.Clear();
+            request.Headers.Accept.Add(item: new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
+            var response = await _httpClient.SendAsync(request: request)
+                                       .ConfigureAwait(continueOnCapturedContext: false);
+            response.EnsureSuccessStatusCode();
+            var resp = await response.Content.ReadAsStringAsync();
+            return resp;
         }
 
 
@@ -206,14 +181,14 @@ namespace ByteWebConnector.Service.ExternalServices
                                               int fileDataId)
         {
             var request =
-                (HttpWebRequest) WebRequest.Create(requestUriString: $"{_baseApiUrl}Document/{fileDataId}/{documentId}");
+                (HttpWebRequest)WebRequest.Create(requestUriString: $"{_baseApiUrl}Document/{fileDataId}/{documentId}");
             request.Method = "GET";
             request.ContentType = "application/json";
             request.Headers.Add(name: "Session",
                                 value: byteProSession);
             request.Accept = "application/json";
 
-            using (var response = (HttpWebResponse) request.GetResponse())
+            using (var response = (HttpWebResponse)request.GetResponse())
             {
                 var dataStream = response.GetResponseStream();
                 var reader = new StreamReader(stream: dataStream ?? throw new InvalidOperationException());
@@ -228,78 +203,52 @@ namespace ByteWebConnector.Service.ExternalServices
         }
 
 
-        public bool ValidateByteSession(string byteSession)
+        public async Task<bool> ValidateByteSessionAsync(string byteSession)
         {
             _logger.LogInformation(message: $"DocSync byteSession = {byteSession}");
-
-            var request =
-                (HttpWebRequest) WebRequest.Create(requestUriString: _settingService.GetByteProSettings().ByteApiUrl + "organization/");
-            request.Method = "GET";
-            request.ContentType = "application/json";
+            var request = new HttpRequestMessage
+            {
+                RequestUri = new Uri(uriString: _baseApiUrl + "organization/ "),
+                Method = HttpMethod.Get,
+                //Content = new StringContent(content: "")
+            };
             request.Headers.Add(name: "Session",
-                                value: byteSession);
-            request.Accept = "application/json";
+                          value: byteSession);
+            request.Headers.Accept.Add(item: new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
+            request.Content = new StringContent(content: "");
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue(mediaType: "application/json");
 
-            try
+            var response = await _httpClient.SendAsync(request: request).ConfigureAwait(continueOnCapturedContext: false);
+            if (!response.IsSuccessStatusCode)
             {
-                using (var response = (HttpWebResponse) request.GetResponse())
-                {
-                    var dataStream = response.GetResponseStream();
-                    var reader = new StreamReader(stream: dataStream!);
-                    reader.ReadToEnd();
-                    reader.Close();
-                    dataStream.Close();
-                    if (response.StatusCode != HttpStatusCode.OK)
-                    {
-                        _logger.LogInformation(message: $"DocSync Byte request failed :{response.StatusCode} ");
-                        return false;
-                    }
-                }
-            }
-            catch
-            {
-                _logger.LogInformation(message: "DocSync Byte request failed");
                 return false;
             }
-
             return true;
         }
 
 
-        public FileDataResponse GetFileData(string byteSession,
-                                            string fileDataId)
+        public async Task<FileDataResponse> GetFileDataAsync(string byteSession,
+                                           string fileDataId)
         {
-            try
+            _logger.LogInformation(message: "GetFileData Start");
+            var request = new HttpRequestMessage
             {
-                _logger.LogInformation(message: "GetFileData Start");
-                var request =
-                    (HttpWebRequest) WebRequest.Create(requestUriString: _settingService.GetByteProSettings().ByteApiUrl + "FileData/" +
-                                                                         fileDataId);
-                request.Method = "GET";
-                request.ContentType = "application/json";
-                request.Headers.Add(name: "Session",
-                                    value: byteSession);
-                request.Accept = "application/json";
+                RequestUri = new Uri(uriString: _baseApiUrl + "FileData/" + fileDataId),
+                Method = HttpMethod.Get,
+            };
+            request.Headers.Add(name: "Session",
+                          value: byteSession);
+            request.Headers.Accept.Add(item: new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
+            request.Content = new StringContent(content: "");
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue(mediaType: "application/json");
 
-                using (var response = (HttpWebResponse) request.GetResponse())
-                {
-                    var dataStream = response.GetResponseStream();
-                    var reader = new StreamReader(stream: dataStream!);
-                    var responseString = reader.ReadToEnd();
-                    var fileData =
-                        JsonConvert.DeserializeObject<FileDataResponse>(value: responseString);
-                    reader.Close();
-                    dataStream.Close();
-                    return fileData;
-                }
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(message: e.InnerException?.Message);
-            }
+            var response = await _httpClient.SendAsync(request: request).ConfigureAwait(continueOnCapturedContext: false);
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
+            var fileData = JsonConvert.DeserializeObject<FileDataResponse>(value: responseString);
+            _logger.LogInformation(message: "GetFileData End");
+            return fileData;
 
-            _logger.LogInformation(message: "GetFileData return null");
-            return null;
         }
 
 
@@ -543,7 +492,7 @@ namespace ByteWebConnector.Service.ExternalServices
         public async Task<short> GetLoanStatusAsync(int fileDataId)
         {
             short loanStatus = 0;
-            var loanStatusResponse = this.ExecuteByteProGetRequest<StatusResponse>($"Status/{fileDataId}");
+            var loanStatusResponse = await this.ExecuteByteProGetRequest<StatusResponse>($"Status/{fileDataId}");
             if (loanStatusResponse != null)
             {
                 loanStatus = loanStatusResponse.LoanStatus;
@@ -551,7 +500,7 @@ namespace ByteWebConnector.Service.ExternalServices
             return loanStatus;
         }
 
-        private TResponse ExecuteByteProGetRequest<TResponse>(string postFixUrl)
+        private async Task<TResponse> ExecuteByteProGetRequest<TResponse>(string postFixUrl)
         {
             if (string.IsNullOrEmpty(postFixUrl))
             {
@@ -559,25 +508,23 @@ namespace ByteWebConnector.Service.ExternalServices
             }
             else
             {
-                var request =
-                    (HttpWebRequest)WebRequest.Create(requestUriString: $"{_baseApiUrl}{postFixUrl}");
-                request.Method = "GET";
-                request.ContentType = "application/json";
-                request.Headers.Add(name: "Session",
-                                    value: this.ByteProSession);
-                request.Accept = "application/json";
-                using (var response = (HttpWebResponse)request.GetResponse())
+                var request = new HttpRequestMessage
                 {
-                    var dataStream = response.GetResponseStream();
-                    var reader = new StreamReader(stream: dataStream ?? throw new InvalidOperationException());
-                    var responseString = reader.ReadToEnd();
-
-                    var embeddedDoc =
-                        JsonConvert.DeserializeObject<TResponse>(value: responseString);
-                    reader.Close();
-                    dataStream.Close();
-                    return embeddedDoc;
-                }
+                    RequestUri = new Uri(uriString: $"{_baseApiUrl}{postFixUrl}"),
+                    Method = HttpMethod.Get,
+                };
+                request.Content = new StringContent(content: "");
+                request.Content.Headers.ContentType = new MediaTypeHeaderValue(mediaType: "application/json");
+                request.Headers.Add(name: "Session",
+                                    value: ByteProSession);
+                request.Headers.Accept.Clear();
+                request.Headers.Accept.Add(item: new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
+                var response = await _httpClient.SendAsync(request: request).ConfigureAwait(continueOnCapturedContext: false);
+                response.EnsureSuccessStatusCode();
+                var responseString = response.Content.ReadAsStringAsync();
+                var embeddedDoc =
+                    JsonConvert.DeserializeObject<TResponse>(value: responseString.Result);
+                return embeddedDoc;
             }
         }
 
@@ -585,7 +532,7 @@ namespace ByteWebConnector.Service.ExternalServices
         {
             _logger.LogInformation(message: "ByteFile GetLoanApplicationFileFromByte Start");
 
-            var fileData = GetFile(fileDataId: fileDataId);
+            var fileData = GetFile(fileDataId: fileDataId).Result;
             var settings = new JsonSerializerSettings
                            {
                                NullValueHandling = NullValueHandling.Ignore,
@@ -598,182 +545,183 @@ namespace ByteWebConnector.Service.ExternalServices
         }
 
 
-        private string GetFile(int fileDataId)
+        private async Task<string> GetFile(int fileDataId)
         {
             _logger.LogInformation(message: "ByteFile GetFileAsync Start");
 
-            var request = (HttpWebRequest)WebRequest.Create(requestUriString: _baseApiUrl + "loanfile/" + fileDataId);
-            request.Method = "GET";
-            request.ContentType = "application/json";
+            var request = new HttpRequestMessage
+            {
+                RequestUri = new Uri(uriString: _baseApiUrl + "loanfile/" + fileDataId),
+                Method = HttpMethod.Get,
+                //Content = new StringContent(content: "")
+            };
             request.Headers.Add(name: "Session",
                                 value: ByteProSession);
-            request.Accept = "application/json";
-            string key;
-            using (var response = (HttpWebResponse)request.GetResponse())
-            {
-                var dataStream = response.GetResponseStream();
-                var reader = new StreamReader(stream: dataStream!);
-                key = reader.ReadToEnd();
-                reader.Close();
-                dataStream.Close();
-            }
+            request.Headers.Accept.Add(item: new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
+            request.Content = new StringContent(content: "");
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue(mediaType: "application/json");
 
-            _logger.LogInformation(message: "ByteFile GetFileAsync End");
-            return key;
+            var response = await _httpClient.SendAsync(request: request).ConfigureAwait(continueOnCapturedContext: false);
+            response.EnsureSuccessStatusCode();
+            _logger.LogInformation(message: "ByteFile EnsureSuccessStatusCode");
+            var resp = await response.Content.ReadAsStringAsync();
+
+            //_logger.LogInformation(message: "ByteFile GetFileAsync End");
+            return resp;
         }
 
         #region private Methods
 
-        private void SetByteApplicationInfo(LoanApplication loanApplication,
-                                            ref ByteFile byteFile,
-                                            decimal? lifeInsuranceEstimatedMonthlyAmount,
-                                            ThirdPartyCodeList thirdPartyCodeList)
-        {
-            loanApplication.Borrowers.ForEach(action: b => { b.LoanApplication = loanApplication; });
+        //private void SetByteApplicationInfo(LoanApplication loanApplication,
+        //                                    ref ByteFile byteFile,
+        //                                    decimal? lifeInsuranceEstimatedMonthlyAmount,
+        //                                    ThirdPartyCodeList thirdPartyCodeList)
+        //{
+        //    loanApplication.Borrowers.ForEach(action: b => { b.LoanApplication = loanApplication; });
 
-            var isFirst = true;
-            var borrowerChunks = loanApplication.Borrowers.ToList().ChunkBy(chunkSize: 2);
-            foreach (var borrowers in borrowerChunks)
-            {
-                var rmBorrower = borrowers[index: 0];
-                var rmCoBorrower = borrowers.Count > 1 ? borrowers[index: 1] : null;
+        //    var isFirst = true;
+        //    var borrowerChunks = loanApplication.Borrowers.ToList().ChunkBy(chunkSize: 2);
+        //    foreach (var borrowers in borrowerChunks)
+        //    {
+        //        var rmBorrower = borrowers[index: 0];
+        //        var rmCoBorrower = borrowers.Count > 1 ? borrowers[index: 1] : null;
 
-                if (isFirst)
-                {
-                    /****************************************************************************************************/
+        //        if (isFirst)
+        //        {
+        //            /****************************************************************************************************/
 
-                    ByteBorrower.Update(byteBorrower: byteFile.Applications.First().Borrower,
-                                        rmBorrower: rmBorrower,
-                                        thirdPartyCodeList: thirdPartyCodeList);
-                    var byteBorrower = byteFile.Applications.First().Borrower;
-                    FillBorrower(byteBorrower: ref byteBorrower,
-                                 rmBorrower: rmBorrower,
-                                 fileDataId: byteFile.FileDataID,
-                                 thirdPartyCodeList: thirdPartyCodeList,
-                                 byteApplication: byteFile.Applications.First());
+        //            ByteBorrower.Update(byteBorrower: byteFile.Applications.First().Borrower,
+        //                                rmBorrower: rmBorrower,
+        //                                thirdPartyCodeList: thirdPartyCodeList);
+        //            var byteBorrower = byteFile.Applications.First().Borrower;
+        //            FillBorrower(byteBorrower: ref byteBorrower,
+        //                         rmBorrower: rmBorrower,
+        //                         fileDataId: byteFile.FileDataID,
+        //                         thirdPartyCodeList: thirdPartyCodeList,
+        //                         byteApplication: byteFile.Applications.First());
 
-                    // Preserve rain maker employeer Id for employer and income
-                    var employerWithRMId = byteFile.Applications[index: 0].Borrower.Employers.ToList();
-                    var incomesWithRMId = byteFile.Applications[index: 0].Borrower.Incomes.ToList();
+        //            // Preserve rain maker employeer Id for employer and income
+        //            var employerWithRMId = byteFile.Applications[index: 0].Borrower.Employers.ToList();
+        //            var incomesWithRMId = byteFile.Applications[index: 0].Borrower.Incomes.ToList();
 
-                    UpdateLoanFileToByte(byteFile: ref byteFile); // Call to byte pro to fetch inserted incomes
+        //            UpdateLoanFileToByte(byteFile: ref byteFile); // Call to byte pro to fetch inserted incomes
 
-                    #region Income Employee Mapping
+        //            #region Income Employee Mapping
 
-                    var config = new MapperConfiguration(configure: cfg =>
-                    {
-                        cfg.CreateMap<Employer, Employer>()
-                           .ForMember(destinationMember: dest => dest.RmEmploymentInfoid,
-                                      memberOptions: options => options.Ignore()); // Do not overwrite RMEmploymentInfoId as we need to preserve.
-                        cfg.CreateMap<Income, Income>()
-                           .ForMember(destinationMember: dest => dest.RMEmploymentInfoId,
-                                      memberOptions: options => options.Ignore()); // Do not overwrite RMEmploymentInfoId as we need to preserve.
-                    });
+        //            var config = new MapperConfiguration(configure: cfg =>
+        //            {
+        //                cfg.CreateMap<Employer, Employer>()
+        //                   .ForMember(destinationMember: dest => dest.RmEmploymentInfoid,
+        //                              memberOptions: options => options.Ignore()); // Do not overwrite RMEmploymentInfoId as we need to preserve.
+        //                cfg.CreateMap<Income, Income>()
+        //                   .ForMember(destinationMember: dest => dest.RMEmploymentInfoId,
+        //                              memberOptions: options => options.Ignore()); // Do not overwrite RMEmploymentInfoId as we need to preserve.
+        //            });
 
-                    var mapper = config.CreateMapper();
-                    //mapper.Map<List<Income>, List<Income>>(byteFile.Applications[0].Borrower.Incomes, incomesWithRMId);
-                    var employerCount = employerWithRMId.Count();
-                    for (var i = 0; i < employerCount; i++)
-                        mapper.Map(source: byteFile.Applications[index: 0].Borrower.Employers[index: i],
-                                   destination: employerWithRMId[index: i]);
-                    var incomeCount = incomesWithRMId.Count();
-                    for (var i = 0; i < incomeCount; i++)
-                        mapper.Map(source: byteFile.Applications[index: 0].Borrower.Incomes[index: i],
-                                   destination: incomesWithRMId[index: i]);
+        //            var mapper = config.CreateMapper();
+        //            //mapper.Map<List<Income>, List<Income>>(byteFile.Applications[0].Borrower.Incomes, incomesWithRMId);
+        //            var employerCount = employerWithRMId.Count();
+        //            for (var i = 0; i < employerCount; i++)
+        //                mapper.Map(source: byteFile.Applications[index: 0].Borrower.Employers[index: i],
+        //                           destination: employerWithRMId[index: i]);
+        //            var incomeCount = incomesWithRMId.Count();
+        //            for (var i = 0; i < incomeCount; i++)
+        //                mapper.Map(source: byteFile.Applications[index: 0].Borrower.Incomes[index: i],
+        //                           destination: incomesWithRMId[index: i]);
 
-                    byteFile.Applications[index: 0].Borrower.Employers = employerWithRMId;
-                    byteFile.Applications[index: 0].Borrower.Incomes = incomesWithRMId;
+        //            byteFile.Applications[index: 0].Borrower.Employers = employerWithRMId;
+        //            byteFile.Applications[index: 0].Borrower.Incomes = incomesWithRMId;
 
-                    foreach (var emp in byteFile.Applications[index: 0].Borrower.Employers)
-                    {
-                        var employerIncomes = byteFile.Applications[index: 0].Borrower.Incomes
-                                                      .Where(predicate: inc => inc.RMEmploymentInfoId == emp.RmEmploymentInfoid)
-                                                      .ToList();
-                        foreach (var inc in employerIncomes) inc.EmployerId = emp.EmployerId;
-                    }
+        //            foreach (var emp in byteFile.Applications[index: 0].Borrower.Employers)
+        //            {
+        //                var employerIncomes = byteFile.Applications[index: 0].Borrower.Incomes
+        //                                              .Where(predicate: inc => inc.RMEmploymentInfoId == emp.RmEmploymentInfoid)
+        //                                              .ToList();
+        //                foreach (var inc in employerIncomes) inc.EmployerId = emp.EmployerId;
+        //            }
 
-                    #endregion
+        //            #endregion
 
-                    /****************************************************************************************************/
+        //            /****************************************************************************************************/
 
-                    if (rmCoBorrower.HasValue())
-                    {
-                        byteFile.Applications.First().CoBorrower = ByteBorrower.Create(rmBorrower: rmCoBorrower,
-                                                                                       thirdPartyCodeList: thirdPartyCodeList,
-                                                                                       byteFileDataId: byteFile.FileDataID
-                                                                                      );
-                        UpdateLoanFileToByte(byteFile: ref byteFile);
+        //            if (rmCoBorrower.HasValue())
+        //            {
+        //                byteFile.Applications.First().CoBorrower = ByteBorrower.Create(rmBorrower: rmCoBorrower,
+        //                                                                               thirdPartyCodeList: thirdPartyCodeList,
+        //                                                                               byteFileDataId: byteFile.FileDataID
+        //                                                                              );
+        //                UpdateLoanFileToByte(byteFile: ref byteFile);
 
-                        byteFile = GetLoanApplicationFileFromByte(fileDataId: byteFile.FileDataID);
+        //                byteFile = GetLoanApplicationFileFromByte(fileDataId: byteFile.FileDataID);
 
-                        // var coBorrower create Borrower
+        //                // var coBorrower create Borrower
 
-                        var coBorrower = byteFile.Applications.First().CoBorrower;
-                        FillBorrower(byteBorrower: ref coBorrower,
-                                     rmBorrower: rmCoBorrower,
-                                     fileDataId: byteFile.FileDataID,
-                                     thirdPartyCodeList: thirdPartyCodeList,
-                                     byteApplication: byteFile.Applications.First());
+        //                var coBorrower = byteFile.Applications.First().CoBorrower;
+        //                FillBorrower(byteBorrower: ref coBorrower,
+        //                             rmBorrower: rmCoBorrower,
+        //                             fileDataId: byteFile.FileDataID,
+        //                             thirdPartyCodeList: thirdPartyCodeList,
+        //                             byteApplication: byteFile.Applications.First());
 
-                        UpdateLoanFileToByte(byteFile: ref byteFile);
-                    }
+        //                UpdateLoanFileToByte(byteFile: ref byteFile);
+        //            }
 
-                    /****************************************************************************************************/
-                }
-                else
-                {
-                    var application = new Application
-                                      {
-                                          FileDataId = byteFile.FileDataID
-                                      };
-                    byteFile.Applications.Add(item: application);
+        //            /****************************************************************************************************/
+        //        }
+        //        else
+        //        {
+        //            var application = new Application
+        //                              {
+        //                                  FileDataId = byteFile.FileDataID
+        //                              };
+        //            byteFile.Applications.Add(item: application);
 
-                    /****************************************************************************************************/
+        //            /****************************************************************************************************/
 
-                    application.Borrower = ByteBorrower.Create(rmBorrower: rmBorrower,
-                                                               thirdPartyCodeList: thirdPartyCodeList,
-                                                               byteFileDataId: byteFile.FileDataID);
+        //            application.Borrower = ByteBorrower.Create(rmBorrower: rmBorrower,
+        //                                                       thirdPartyCodeList: thirdPartyCodeList,
+        //                                                       byteFileDataId: byteFile.FileDataID);
 
-                    UpdateLoanFileToByte(byteFile: ref byteFile);
-                    byteFile = GetLoanApplicationFileFromByte(fileDataId: byteFile.FileDataID);
+        //            UpdateLoanFileToByte(byteFile: ref byteFile);
+        //            byteFile = GetLoanApplicationFileFromByte(fileDataId: byteFile.FileDataID);
 
-                    var byteBorrower = byteFile.Applications.LastOrDefault().Borrower;
-                    FillBorrower(byteBorrower: ref byteBorrower,
-                                 rmBorrower: rmBorrower,
-                                 fileDataId: byteFile.FileDataID,
-                                 thirdPartyCodeList: thirdPartyCodeList,
-                                 byteApplication: application);
+        //            var byteBorrower = byteFile.Applications.LastOrDefault().Borrower;
+        //            FillBorrower(byteBorrower: ref byteBorrower,
+        //                         rmBorrower: rmBorrower,
+        //                         fileDataId: byteFile.FileDataID,
+        //                         thirdPartyCodeList: thirdPartyCodeList,
+        //                         byteApplication: application);
 
-                    UpdateLoanFileToByte(byteFile: ref byteFile);
+        //            UpdateLoanFileToByte(byteFile: ref byteFile);
 
-                    /****************************************************************************************************/
+        //            /****************************************************************************************************/
 
-                    if (rmCoBorrower.HasValue())
-                    {
-                        application.CoBorrower = ByteBorrower.Create(rmBorrower: rmCoBorrower,
-                                                                     thirdPartyCodeList: thirdPartyCodeList,
-                                                                     byteFileDataId: byteFile.FileDataID
-                                                                    );
-                        UpdateLoanFileToByte(byteFile: ref byteFile);
-                        byteFile = GetLoanApplicationFileFromByte(fileDataId: byteFile.FileDataID);
+        //            if (rmCoBorrower.HasValue())
+        //            {
+        //                application.CoBorrower = ByteBorrower.Create(rmBorrower: rmCoBorrower,
+        //                                                             thirdPartyCodeList: thirdPartyCodeList,
+        //                                                             byteFileDataId: byteFile.FileDataID
+        //                                                            );
+        //                UpdateLoanFileToByte(byteFile: ref byteFile);
+        //                byteFile = GetLoanApplicationFileFromByte(fileDataId: byteFile.FileDataID);
 
-                        var coBorrower = application.CoBorrower;
-                        FillBorrower(byteBorrower: ref coBorrower,
-                                     rmBorrower: rmCoBorrower,
-                                     //fileDataId: application.FileDataId,
-                                     fileDataId: 0, // Should be ZERO for Co-Borrower
-                                     thirdPartyCodeList: thirdPartyCodeList,
-                                     byteApplication: application);
+        //                var coBorrower = application.CoBorrower;
+        //                FillBorrower(byteBorrower: ref coBorrower,
+        //                             rmBorrower: rmCoBorrower,
+        //                             //fileDataId: application.FileDataId,
+        //                             fileDataId: 0, // Should be ZERO for Co-Borrower
+        //                             thirdPartyCodeList: thirdPartyCodeList,
+        //                             byteApplication: application);
 
-                        UpdateLoanFileToByte(byteFile: ref byteFile);
-                    }
+        //                UpdateLoanFileToByte(byteFile: ref byteFile);
+        //            }
 
-                    /****************************************************************************************************/
-                }
+        //            /****************************************************************************************************/
+        //        }
 
-                isFirst = false;
-            }
-        }
+        //        isFirst = false;
+        //    }
+        //}
 
 
         private void SetAllBorrowers(LoanApplication loanApplication,

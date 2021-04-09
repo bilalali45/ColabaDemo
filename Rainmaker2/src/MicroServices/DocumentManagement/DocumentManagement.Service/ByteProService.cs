@@ -67,8 +67,9 @@ namespace DocumentManagement.Service
                                 ""encryptionKey"": ""$requests.documents.files.encryptionKey"",
                                 ""encryptionAlgorithm"": ""$requests.documents.files.encryptionAlgorithm"",
                                 ""clientName"": ""$requests.documents.files.clientName"",
-                                ""mcuName"": ""$requests.documents.files.mcuName"",
-                                ""contentType"": ""$requests.documents.files.contentType""
+                                ""contentType"": ""$requests.documents.files.contentType"",
+                                ""salt"": ""$requests.documents.files.salt"",
+                                ""mcuName"": ""$requests.documents.files.mcuName""
                             }
                              } "
 
@@ -129,8 +130,9 @@ namespace DocumentManagement.Service
                                 ""encryptionKey"": ""$requests.documents.mcuFiles.encryptionKey"",
                                 ""encryptionAlgorithm"": ""$requests.documents.mcuFiles.encryptionAlgorithm"",
                                 ""clientName"": ""$requests.documents.mcuFiles.clientName"",
-                                ""mcuName"": ""$requests.documents.mcuFiles.mcuName"",
-                                ""contentType"": ""$requests.documents.mcuFiles.contentType""
+                                ""contentType"": ""$requests.documents.mcuFiles.contentType"",
+                                ""salt"": ""$requests.documents.mcuFiles.salt"",
+                                ""mcuName"": ""$requests.documents.mcuFiles.mcuName""
                             }
                              } "
 

@@ -6,6 +6,7 @@ import { Template } from "../../../../../Entities/Models/Template";
 import { TemplateItem } from "../SelectedTempate/TemplateItem/TemplateItem";
 import { Loader } from "../../../../../Shared/components/loader";
 import { LocalDB } from "../../../../../Utils/LocalDB";
+import { Error } from "../../../../../Entities/Models/Error";
 export const MyTemplate = "MCU Template";
 export const TenantTemplate = "Tenant Template";
 export const SystemTemplate = "System Template";
@@ -59,34 +60,52 @@ export const TemplateListContainer = ({
 
   const fetchTemplatesList = async (currTempInd: number = 0) => {
     setLoaderVisible(true);
-    let newTemplates: any = await TemplateActions.fetchTemplates();
-    if (newTemplates) {
-      dispatch({
-        type: TemplateActionsType.SetTemplates,
-        payload: newTemplates,
-      });
-      dispatch({
-        type: TemplateActionsType.SetCurrentTemplate,
-        payload: newTemplates[currTempInd],
-      });
+    let res: any = await TemplateActions.fetchTemplates();
+    if(res){
+      if(Error.successStatus.includes(res.status)){
+        let newTemplates = res.data;
+        if (newTemplates) {
+          dispatch({
+            type: TemplateActionsType.SetTemplates,
+            payload: newTemplates,
+          });
+          dispatch({
+            type: TemplateActionsType.SetCurrentTemplate,
+            payload: newTemplates[currTempInd],
+          });
+        }
+        setLoaderVisible(false);
+        if (listContainerElRef?.current && listContainerElRef?.current?.scrollTo) {
+          listContainerElRef?.current?.scrollTo(0, 0);
+        }
+      }
+      else{
+        Error.setError(dispatch, res)
+      }
     }
-    setLoaderVisible(false);
-    if (listContainerElRef?.current && listContainerElRef?.current?.scrollTo) {
-      listContainerElRef?.current?.scrollTo(0, 0);
-    }
+    
   };
 
   const removeTemplate = async (templateId: string) => {
     setLoaderVisible(true);
-    let isDeleted = await TemplateActions.deleteTemplate(templateId);
-    if (isDeleted) {
-      let currentTemplateInd = templates.findIndex(t => t.id === templateId);
-      if(currentTemplateInd === templates.filter(t => t.type === MyTemplate).length - 1) {
-        currentTemplateInd = 0;
+    let res = await TemplateActions.deleteTemplate(templateId);
+    if(res){
+      if(Error.successStatus.includes(res.status)){
+        let isDeleted = true
+        if (isDeleted) {
+          let currentTemplateInd = templates.findIndex(t => t.id === templateId);
+          if(currentTemplateInd === templates.filter(t => t.type === MyTemplate).length - 1) {
+            currentTemplateInd = 0;
+          }
+          fetchTemplatesList(currentTemplateInd);
+        }
+        setLoaderVisible(false);
       }
-      fetchTemplatesList(currentTemplateInd);
-    }
-    setLoaderVisible(false);
+      else{
+          Error.setError(dispatch, res)
+      }
+  }
+    
   };
 
   const TenantListItem = (t: Template) => {
