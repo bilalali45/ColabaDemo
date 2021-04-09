@@ -7,17 +7,20 @@ using RainMaker.Entity.Models;
 using RainMaker.Service;
 using System;
 using System.Collections.Generic;
+using Castle.Core.Logging;
 using URF.Core.Abstractions;
 using URF.Core.EF;
 using URF.Core.EF.Factories;
 using Xunit;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace Rainmaker.Test
 {
     public class MembershipTest
     {
         [Fact]
-        public void TestGetLoanSummaryFalse()
+        public async Task TestGetLoanSummaryFalse()
         {
             //Arrange
             DbContextOptions<RainMakerContext> options;
@@ -44,7 +47,13 @@ namespace Rainmaker.Test
                 UserId = 6650
             };
             dataContext.Set<Customer>().Add(customer);
-
+            PasswordPolicy passwordPolicy = new PasswordPolicy
+            {
+                Id = 665,
+                TenantId = 2,
+                IncorrectPasswordCount = 1
+            };
+            dataContext.Set<PasswordPolicy>().Add(passwordPolicy);
             dataContext.SaveChanges();
 
             Mock<IMembershipService> mockMembershipService = new Mock<IMembershipService>();
@@ -66,9 +75,9 @@ namespace Rainmaker.Test
             mockMembershipService.Setup(x => x.GetUser(It.IsAny<string>())).Returns(userProfile);
 
 
-            var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object);
+            var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object, Mock.Of<ILogger<MembershipService>>());
             //Act
-            UserProfile result = service.ValidateUser("ABCD", "XYZ", false);
+            UserProfile result = await service.ValidateUser(2, "ABCD", "XYZ", false);
             //Assert
             Assert.NotNull(result);
             Assert.Equal("XYZ", result.Password);
@@ -76,7 +85,7 @@ namespace Rainmaker.Test
         }
 
         [Fact]
-        public void TestGetLoanSummary()
+        public async Task TestGetLoanSummary()
         {
             //Arrange
             DbContextOptions<RainMakerContext> options;
@@ -124,7 +133,15 @@ namespace Rainmaker.Test
             {
                 Id = 666,
                 EmployeeId = 666
+
             };
+            PasswordPolicy passwordPolicy = new PasswordPolicy
+            {
+                Id = 666,
+                TenantId = 1,
+                IncorrectPasswordCount = 1
+            };
+            dataContext.Set<PasswordPolicy>().Add(passwordPolicy);
             dataContext.SaveChanges();
 
             Mock<IMembershipService> mockMembershipService = new Mock<IMembershipService>();
@@ -146,9 +163,9 @@ namespace Rainmaker.Test
             mockMembershipService.Setup(x => x.GetEmployeeUser(It.IsAny<string>())).Returns(userProfile);
 
 
-            var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object);
+            var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object, Mock.Of<ILogger<MembershipService>>());
             //Act
-            UserProfile result = service.ValidateUser("Shery", "XYZ", true);
+            UserProfile result = await service.ValidateUser(1, "Shery", "XYZ", true);
             //Assert
             Assert.NotNull(result);
             Assert.Equal("XYZ", result.Password);
@@ -156,7 +173,7 @@ namespace Rainmaker.Test
         }
 
         [Fact]
-        public void TestGetLoanSummaryMultipleUserFoundException()
+        public async Task TestGetLoanSummaryMultipleUserFoundException()
         {
             //Arrange
             DbContextOptions<RainMakerContext> options;
@@ -206,6 +223,13 @@ namespace Rainmaker.Test
                 Id = 866,
                 EmployeeId = 866
             };
+
+            PasswordPolicy passwordPolicy = new PasswordPolicy
+            {
+                TenantId = 1,
+                IncorrectPasswordCount=1
+            };
+            dataContext.Set<PasswordPolicy>().Add(passwordPolicy);
             dataContext.Set<EmployeePhoneBinder>().Add(employeePhoneBinders);
 
             // user2
@@ -267,12 +291,13 @@ namespace Rainmaker.Test
                 }
             };
 
+
             mockMembershipService.Setup(x => x.GetEmployeeUser(It.IsAny<string>())).Returns(userProfile);
 
 
-            var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object);
+            var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object, Mock.Of<ILogger<MembershipService>>());
             //Assert
-            Assert.Throws<RainMakerException>(() => service.ValidateUser("ABCDE", "XYZ1", true));
+            await Assert.ThrowsAsync<RainMakerException>(() => service.ValidateUser(1,"ABCDE", "XYZ1", true));
 
         }
         //[Fact]
@@ -395,10 +420,10 @@ namespace Rainmaker.Test
 
                 }
             };
-            var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object);
+            var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object, Mock.Of<ILogger<MembershipService>>());
             //Assert
 
-            Assert.Throws<ArgumentException>(() => service.ValidateUser(null, "sada", false));
+            Assert.ThrowsAsync<ArgumentException>(() => service.ValidateUser(1, null, "sada", false));
 
         }
 
@@ -428,12 +453,12 @@ namespace Rainmaker.Test
 
                 }
             };
-            var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object);
+            var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object, Mock.Of<ILogger<MembershipService>>());
 
 
             //Assert
 
-            Assert.Throws<ArgumentException>(() => service.ValidateUser("sada", null, false));
+            Assert.ThrowsAsync<ArgumentException>(() => service.ValidateUser(1, "sada", null, false));
 
 
         }
@@ -441,7 +466,7 @@ namespace Rainmaker.Test
 
 
         [Fact]
-        public void TestGetLoanSummaryRequiredUserNull()
+        public async Task TestGetLoanSummaryRequiredUserNull()
         {
             //Arrange
             DbContextOptions<RainMakerContext> options;
@@ -511,9 +536,9 @@ namespace Rainmaker.Test
             mockMembershipService.Setup(x => x.GetEmployeeUser(It.IsAny<string>())).Returns(userProfile);
 
 
-            var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object);
+            var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object, Mock.Of<ILogger<MembershipService>>());
             //Act
-            UserProfile result = service.ValidateUser("ABCXYZ", "XYZ1", false);
+            UserProfile result = await service.ValidateUser(1, "ABCXYZ", "XYZ1", false);
             //Assert
             Assert.Null(result);
 

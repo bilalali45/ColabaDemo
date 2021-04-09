@@ -79,7 +79,7 @@
 
     .loan-origination-system{
         padding:0; padding-top:25px;
-        .settings__body .settings__content-area &{height: calc(100% - 172px);}
+        .settings__body .settings__content-area &{height: calc(100vh - 247px);}
         table td{
             vertical-align: middle;padding: 5px 0.75rem;
             //font-size: 13px;
@@ -91,6 +91,8 @@
                 }
             }
         }
+
+
     }
 
 

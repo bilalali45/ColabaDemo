@@ -1,6 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor, getByTestId, getAllByTestId, act } from '@testing-library/react';
-import userEvent from '@testing-library/user-event'
+import { render, fireEvent, waitFor,act } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { StoreProvider } from '../../../../../../Store/Store';
 import { MockEnvConfig } from '../../../../../../test_utilities/EnvConfigMock';
@@ -22,7 +21,7 @@ beforeEach(() => {
 describe('File Items ', () => {
 
     test('Should show File Name', async () => {
-        const { getAllByTestId, getByTestId, getByText } = render(
+        const { getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable></DocumentsTable>
@@ -40,7 +39,7 @@ describe('File Items ', () => {
 
 
     test('Should show trashbin icon', async () => {
-        const { getAllByTestId, getByTestId, getByText } = render(
+        const { getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable></DocumentsTable>
@@ -59,7 +58,7 @@ describe('File Items ', () => {
     });
 
     test('Should show reassign icon', async () => {
-        const { getAllByTestId, getByTestId, getByText } = render(
+        const { getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable></DocumentsTable>
@@ -78,7 +77,7 @@ describe('File Items ', () => {
     });
 
     test('Should show reassign dropdown heading if reassign icon clicked', async () => {
-        const { getByText, getByTestId, getAllByTestId } = render(
+        const { getByTestId, getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable />
@@ -107,7 +106,7 @@ describe('File Items ', () => {
     });
 
     test('Should show reassign dropdown categories if reassign icon clicked', async () => {
-        const { getByText, getByTestId, getAllByTestId } = render(
+        const { getByTestId, getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable />
@@ -137,7 +136,7 @@ describe('File Items ', () => {
     });
 
     test('Should show hide reassign pop up if clicked on any category', async () => {
-        const { getByText, getByTestId, getAllByTestId } = render(
+        const { getByTestId, getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable />
@@ -171,28 +170,8 @@ describe('File Items ', () => {
     });
 
 
-    test('Should show sync icon', async () => {
-        const { getAllByTestId, getByTestId, getByText } = render(
-            <StoreProvider>
-                <MemoryRouter initialEntries={[Url]}>
-                    <DocumentsTable></DocumentsTable>
-                </MemoryRouter>
-            </StoreProvider>
-        );
-        let fileSync:any;
-        await waitFor(() => {
-            // fileSync = getAllByTestId("file-sync");
-            //     // expect(fileItems).toBeInTheDocument();
-
-            //     expect(fileSync[0]).toBeInTheDocument()
-                
-            // })
-            // fireEvent.click(fileSync[0])
-    });
-});
-
     test('Should drag file from trash bin', async () => {
-        const { getByText, getAllByTestId, getByTestId } = render(
+        const { getByText, getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable></DocumentsTable>
@@ -220,7 +199,7 @@ describe('File Items ', () => {
     });
 
     test('Should show file ', async () => {
-        const { getByText, getAllByTestId, getByTestId } = render(
+        const { getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable></DocumentsTable>

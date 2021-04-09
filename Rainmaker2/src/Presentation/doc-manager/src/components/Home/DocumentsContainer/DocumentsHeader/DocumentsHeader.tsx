@@ -39,10 +39,9 @@ export const DocumentsHeader = () => {
   const [targetTrash, setTargetTrash] = useState(null);
   const refTrashOverlay = useRef(null);
   const { state, dispatch } = useContext(Store);
-  const { currentDoc, uploadFailedDocs, importedFileIds,searchdocumentItems,documentItems, trashedDoc, isDragging }: any = state.documents;
-  const selectedfiles: Document[] = currentDoc?.files || null;
+  const { currentDoc, uploadFailedDocs, importedFileIds,searchdocumentItems,trashedDoc, isDragging }: any = state.documents;
 
-  const { currentFile, selectedFileData, SaveCurrentFile, DiscardCurrentFile, isFileChanged }: any = state.viewer;
+  const { currentFile, selectedFileData, isFileChanged }: any = state.viewer;
 
   const templateManager: any = state.templateManager;
   const [isDraggingItem, setIsDraggingItem] = useState(false);

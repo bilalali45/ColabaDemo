@@ -7,6 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ApplicationTest.cs" />
+    <Compile Remove="BorrowerAssetTest.cs" />
+    <Compile Remove="BorrowerEmployerTest.cs" />
+    <Compile Remove="BorrowerIncomeTest.cs" />
+    <Compile Remove="BorrowerLiabilitiesTest.cs" />
+    <Compile Remove="BorrowerReoTest.cs" />
+    <Compile Remove="BorrowerResidenceTest.cs" />
+    <Compile Remove="BorrowerTest.cs" />
+    <Compile Remove="CustomDataTest.cs" />
+    <Compile Remove="FileDataTest.cs" />
+    <Compile Remove="LoanInfoTest.cs" />
+    <Compile Remove="PartiesTest.cs" />
+    <Compile Remove="PrepaidItemTest.cs" />
+    <Compile Remove="StatusTest.cs" />
+    <Compile Remove="SubPropertyTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="Moq" Version="4.14.5" />
     <PackageReference Include="xunit" Version="2.4.0" />

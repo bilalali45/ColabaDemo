@@ -13,6 +13,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\ApplicationController.cs" />
+    <Compile Remove="Controllers\BorrowerAssetController.cs" />
+    <Compile Remove="Controllers\BorrowerController.cs" />
+    <Compile Remove="Controllers\BorrowerEmployerController.cs" />
+    <Compile Remove="Controllers\BorrowerIncomeController.cs" />
+    <Compile Remove="Controllers\BorrowerLiabilitiesController.cs" />
+    <Compile Remove="Controllers\BorrowerREOController.cs" />
+    <Compile Remove="Controllers\BorrowerResidenceController.cs" />
+    <Compile Remove="Controllers\CustomDataController.cs" />
+    <Compile Remove="Controllers\FileDataController.cs" />
+    <Compile Remove="Controllers\LoanInfoController.cs" />
+    <Compile Remove="Controllers\PartiesController.cs" />
+    <Compile Remove="Controllers\PrepaidItemController.cs" />
+    <Compile Remove="Controllers\StatusController.cs" />
+    <Compile Remove="Controllers\SubPropertyController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ElmahCore" Version="1.2.5" />
     <PackageReference Include="ElmahCore.Sql" Version="1.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.10" />

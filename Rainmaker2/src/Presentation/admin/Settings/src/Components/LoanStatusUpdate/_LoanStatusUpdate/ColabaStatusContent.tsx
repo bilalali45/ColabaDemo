@@ -23,11 +23,13 @@ export const ColabaStatusContent = ({activeColabaStatus, setActiveColabaStatus, 
    const [toBeActiveItem, setToBeActiveItem] = useState<LoanStatus>();
 
     const onClickFromStatusHandler = (SelectedItem: LoanStatus) => { 
+        
         if(selectedLoanStatus?.EditMode === true){
             setshowAlert(true);
             setToBeActiveItem(SelectedItem);
             return;
         } 
+        console.log('-------------------> onClickFromStatusHandler',SelectedItem)
            SelectedItem.fromStatusId = SelectedItem.id;
            SelectedItem.fromStatus = SelectedItem.mcuName;
            SelectedItem.EditMode = false;
@@ -42,6 +44,7 @@ export const ColabaStatusContent = ({activeColabaStatus, setActiveColabaStatus, 
        }
    
     const onClickToStatusHandler = (SelectedItem: LoanStatus) => {
+        console.log('-------------------> onClickToStatusHandler',SelectedItem)
        let cloneObj = {...selectedLoanStatus};
        cloneObj.toStatusId = SelectedItem.id;
        cloneObj.toStatus = SelectedItem.mcuName;
@@ -56,14 +59,14 @@ export const ColabaStatusContent = ({activeColabaStatus, setActiveColabaStatus, 
     const renderFromStatusList = () => {
         let statuses: LoanStatus[] | undefined = loanStatus.loanStatus;
         return statuses?.map((statusObj: LoanStatus) => {
-           return <li className= {`${selectedLoanStatus?.id === statusObj?.id ? 'active': ''} ${statusObj.isActive ? '' : 'disabled'} `} onClick = {() => onClickFromStatusHandler(statusObj)}><a>{statusObj.mcuName}</a></li> 
+           return <li data-testid="loan-statuses-from" className= {`${selectedLoanStatus?.id === statusObj?.id ? 'active': ''} ${statusObj.isActive ? '' : 'disabled'} `} onClick = {() => onClickFromStatusHandler(statusObj)}><a>{statusObj.mcuName}</a></li> 
         });
     }
 
     const renderToStatusList = () => {
         let statuses: LoanStatus[] | undefined = loanStatus.loanStatus?.filter((item:LoanStatus) => item.id != selectedLoanStatus?.id);
         return statuses?.map((statusObj: LoanStatus) => {
-          return <li className= {
+          return <li data-testid="loan-statuses-to" className= {
               selectedLoanStatus?.toStatusId === 0 
             ? selectedLoanStatus?.id === statusObj?.id ? 'active': '' 
             : selectedLoanStatus?.toStatusId === statusObj?.id ? 'active' : ''
@@ -73,6 +76,7 @@ export const ColabaStatusContent = ({activeColabaStatus, setActiveColabaStatus, 
     }
 
     const alertYesHandler = async (value: boolean) => {  
+        console.log('-------------------> alertYesHandler',toBeActiveItem)
         if(toBeActiveItem){
             setshowAlert(value);
             toBeActiveItem.fromStatusId = toBeActiveItem.id;
@@ -91,7 +95,7 @@ export const ColabaStatusContent = ({activeColabaStatus, setActiveColabaStatus, 
         <>
         <ContentBody className="colaba-status-body">
             <h5 className="h5" data-testid="ColabaStatusContent">Select status from list</h5>
-            <nav className="nav-list">              
+            <nav data-testid="loan-statuses" className="nav-list">              
                 <ul data-testid="colabaStatusList">
                     { activeColabaStatus === 0 ? 
                       renderFromStatusList()  

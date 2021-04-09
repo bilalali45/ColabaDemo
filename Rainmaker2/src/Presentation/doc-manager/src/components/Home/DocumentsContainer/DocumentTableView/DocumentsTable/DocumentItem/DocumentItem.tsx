@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect, MutableRefObject } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import {
   MinusIcon,
   PlusIcon,
@@ -9,11 +9,7 @@ import { Document } from "../../../../../../Models/Document";
 import { DocumentActionsType } from "../../../../../../Store/reducers/documentsReducer";
 import { Store } from "../../../../../../Store/Store";
 import { FilesList } from "../FilesList/FilesList";
-import { ViewerActions } from "../../../../../../Store/actions/ViewerActions";
 import { LocalDB } from "../../../../../../Utilities/LocalDB";
-import { DocumentFile } from "../../../../../../Models/DocumentFile";
-import { CategoryDocument } from "../../../../../../Models/CategoryDocument";
-import { fail } from "assert";
 import { ViewerActionsType } from "../../../../../../Store/reducers/ViewerReducer";
 import { PDFActions } from "../../../../../../Utilities/PDFActions";
 import { ViewerTools } from "../../../../../../Utilities/ViewerTools";
@@ -54,15 +50,11 @@ export const DocumentItem = ({
 
   const [show, setShow] = useState(true);
 
-  const [showReassignOverlay, setShowReassign] = useState<boolean>(false);
+
   const [draggingOverItem, setDraggingOverItem] = useState<boolean>(false);
 
-  const [targetReassign, setTargetReassign] = useState(null);
-  const refReassignOverlay = useRef(null);
   const { state, dispatch } = useContext(Store);
-  const { currentDoc, documentItems, uploadFailedDocs, isDragging, isDraggingSelf, importedFileIds }: any = state.documents;
-  const selectedfiles: Document[] = currentDoc?.files || null;
-  let loanApplicationId = LocalDB.getLoanAppliationId();
+  const { currentDoc, documentItems, isDragging, isDraggingSelf, importedFileIds }: any = state.documents;
   const { currentFile, isFileChanged, selectedFileData }: any = state.viewer;
 
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);

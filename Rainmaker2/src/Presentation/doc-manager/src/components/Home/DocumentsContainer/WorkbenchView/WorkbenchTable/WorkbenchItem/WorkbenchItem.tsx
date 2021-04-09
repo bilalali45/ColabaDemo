@@ -1,21 +1,15 @@
 import React, { useState, useRef, useContext, useEffect } from 'react'
-import { FileIcon, TrashCan, SyncIcon, ReassignListIcon } from '../../../../../../shared/Components/Assets/SVG'
-import Overlay from 'react-bootstrap/Overlay'
-import Popover from 'react-bootstrap/Popover'
+import { FileIcon, TrashCan, ReassignListIcon } from '../../../../../../shared/Components/Assets/SVG'
 import { Store } from '../../../../../../Store/Store'
 import { DocumentActionsType } from '../../../../../../Store/reducers/documentsReducer'
 import { ReassignDropdown } from '../../../DocumentTableView/DocumentsTable/ReassignDropdown/ReassignDropdown'
 import { CurrentInView } from '../../../../../../Models/CurrentInView'
-import { RenameFile } from '../../../../../../shared/Components/Assets/RenameFile'
 import DocumentActions from '../../../../../../Store/actions/DocumentActions'
 import { ViewerActionsType } from '../../../../../../Store/reducers/ViewerReducer'
-import { getDateString, getFileDate } from '../../../../../../Utilities/helpers/DateFormat'
-import { LocalDB } from '../../../../../../Utilities/LocalDB'
+import { getFileDate } from '../../../../../../Utilities/helpers/DateFormat'
 import { DocumentRequest } from '../../../../../../Models/DocumentRequest'
-import { AnnotationActions } from '../../../../../../Utilities/AnnotationActions'
 import { SelectedFile } from '../../../../../../Models/SelectedFile'
 import { ViewerActions } from '../../../../../../Store/actions/ViewerActions'
-import { ConfirmationAlert } from '../../../../././ConfirmationAlert/ConfirmationAlert'
 import { ViewerTools } from '../../../../../../Utilities/ViewerTools'
 import erroricon from "../../../../../../Assets/images/warning-icon.svg";
 import { FileUpload } from '../../../../../../Utilities/helpers/FileUpload'
@@ -34,20 +28,16 @@ export const WorkbenchItem = ({ file, setDraggingSelf, setDraggingItem, refReass
     setReassignDropdownTarget,
   ] = useState<HTMLDivElement>();
   //const refReassignDropdown = useRef<HTMLDivElement>(null);
-  const [editingModeEnabled, setEditingModeEnabled] = useState(false);
   const [isDraggingItem, setIsDraggingItem] = useState(false);
 
   const refReassignPopover = useRef<any>(null);
   const refReassignlink = useRef<any>(null);
 
   const { state, dispatch } = useContext(Store);
+  const { importedFileIds }: any = state.documents;
+  const { currentFile, selectedFileData, isFileChanged, performNextAction, fileToChangeWhenUnSaved }: any = state.viewer;
 
-  const viewer: any = state.viewer;
-  const { currentDoc, importedFileIds }: any = state.documents;
-  const instance: any = viewer?.instance;
-  const { currentFile, selectedFileData, isLoading, isFileChanged, performNextAction, fileToChangeWhenUnSaved }: any = state.viewer;
 
-  const loanApplicationId = LocalDB.getLoanAppliationId();
 
 
   useEffect(()=>{

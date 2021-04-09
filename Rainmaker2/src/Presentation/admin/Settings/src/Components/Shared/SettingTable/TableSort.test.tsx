@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useState, useEffect, useRef} from 'react';
-import { render, cleanup, fireEvent, waitFor, findByTestId, act, waitForElementToBeRemoved, wait, getByText, screen } from '@testing-library/react'
+import { render, cleanup, fireEvent, waitFor, findByTestId, act, waitForElementToBeRemoved, wait, getByText, screen, getByTestId } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { EnvConfigMock } from '../../../test_utilities/EnvConfigMock';
@@ -13,10 +13,42 @@ beforeEach(() => {
     LocalStorageMock();
 });
 
-it('TableSort', async()=>{
-    const props = {order: "",
-    className:"",
-    callBackFunction: ()=>{}};
-    render(<TableSort {...props}/>);
-    expect(screen.getByTestId('TableSort')).toBeTruthy();
-});
+describe('TableSort', ()=>{
+
+    it('TableSort : Render', async()=>{
+        const props = {order: null,
+        className:"",
+        callBackFunction: ()=>{}};
+        render(<TableSort {...props}/>);
+        expect(screen.getByTestId('TableSort')).toBeTruthy();
+        fireEvent.click(screen.getByTestId('TableSort'));
+    
+    });
+
+    it('TableSort : Up', async()=>{
+        const props = {order: 1,
+        className:"",
+        callBackFunction: ()=>{}};
+        render(<TableSort {...props}/>);
+        expect(screen.getByTestId('TableSort')).toBeTruthy();
+        fireEvent.click(screen.getByTestId('TableSort'));
+        
+        await waitFor(()=>{
+            expect(screen.getByTestId('sortDes')).toBeTruthy();
+        })
+    });
+
+    it('TableSort : Down', async()=>{
+        const props = {order: 2,
+        className:"",
+        callBackFunction: ()=>{}};
+        render(<TableSort {...props}/>);
+        expect(screen.getByTestId('TableSort')).toBeTruthy();
+        fireEvent.click(screen.getByTestId('TableSort'));
+        await waitFor(()=>{
+            expect(screen.getByTestId('sortAsc')).toBeTruthy();
+        });        
+    });
+
+
+})

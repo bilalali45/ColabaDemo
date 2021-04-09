@@ -20,9 +20,10 @@ export class NeedListActions {
 
       result.data.status = mileStoneresult.data.milestone?.toString()
       result.data.losMilestone = mileStoneresult.data.losMilestone?.toString()
-      return new LoanApplication().fromJson(result.data);
+      return {status: result.status, data:new LoanApplication().fromJson(result.data)};
     } catch (error) {
       console.log(error);
+      return error;
     }
   }
 
@@ -33,10 +34,10 @@ export class NeedListActions {
     );
     try {
       let res: AxiosResponse<NeedList[]> = await Http.get<NeedList[]>(url);
-
-      return res.data;
-    } catch (error) {
-      console.log(error);
+      return res;
+    } catch (error) {    
+      console.log(error?.response)
+      return error;
     }
   }
 
@@ -46,9 +47,10 @@ export class NeedListActions {
     try {
       let res: AxiosResponse<DashboardSetting> = await Http.get<DashboardSetting>(url);
       console.log('----------------> getDashBoardSettings Response', res.data);
-      return res.data;
+      return res;
     } catch (error) {
       console.log(error);
+      return error;
     }
   }
 
@@ -64,9 +66,10 @@ export class NeedListActions {
         requestId,
         docId
       });
-      return res.status;
+      return res;
     } catch (error) {
       console.log(error);
+      return error;
     }
   }
 
@@ -74,9 +77,10 @@ export class NeedListActions {
     let url = Endpoints.NeedListManager.GET.documents.checkIsByteProAuto();
     try {
       let res: any = await Http.get(url);
-      return res.data;
-    } catch (error) {
+      return res;
+    } catch (error) { 
       console.log(error);
+      return error;
     }
   }
 
@@ -96,9 +100,10 @@ export class NeedListActions {
         DocumentId,
         FileId
       });
-      return res.status;
+      return res;
     } catch (error) {
       console.log(error);
+      return error;
     }
   }
 
@@ -108,10 +113,11 @@ export class NeedListActions {
 
     try {
       let res = await Http.post(url, { loanApplicationId: parseInt(id) });
-      return res.data;
+      return res;
 
     } catch (error) {
       console.log(error);
+      return error;
     }
   }
 
@@ -123,7 +129,8 @@ export class NeedListActions {
       return res;
 
     } catch (error) {
-      return error?.response;
+      console.log(error)
+      return error;
 
     }
   }

@@ -39,14 +39,14 @@ export const ColabaStatus = ({setDisableSaveBtn, setShowEmailContentScreen, erro
             <ContentHeader title="Colaba Status" className="colaba-status-header"></ContentHeader>
             <div className="colaba-status-headers flex">
                 
-                <div className={`col-md-6 no-padding csh--left`} onClick={()=>statusSelectionHandler(0)}>
+                <div data-testid="from-header" className={`col-md-6 no-padding csh--left`} onClick={()=>statusSelectionHandler(0)}>
                     <ContentSubHeader className={`colaba-status-subheader ${activeColabaStatus == 0 ?'active':''}`}>
                         <label>From</label>
-                        <h5 className="h5">{fromStatus}</h5>
+                        <h5 data-testid="from-status-text" className="h5">{fromStatus}</h5>
                     </ContentSubHeader>
                 </div>
 
-                <div className={`col-md-6 no-padding csh--right`} onClick={()=>statusSelectionHandler(1)} title={error?'Select any item from list':''}>
+                <div data-testid="to-header" className={`col-md-6 no-padding csh--right`} onClick={()=>statusSelectionHandler(1)} title={error?'Select any item from list':''}>
                     <ContentSubHeader className={`colaba-status-subheader ${!selectedLoanStatus ? 'disabled': ''} ${error ?  "error" : ''} ${activeColabaStatus == 1 ?'active':''}`}>
                         <label>To</label>
                         <h5 className="h5">{toStatus}</h5>

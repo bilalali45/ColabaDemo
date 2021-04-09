@@ -1,3 +1,4 @@
+using Identity.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -7,6 +8,10 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using URF.Core.Abstractions;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Identity.Services
 {
@@ -20,7 +25,7 @@ namespace Identity.Services
             _configuration = configuration;
             _keyStoreService = keyStoreService;
         }
-        public async Task<JwtSecurityToken> GenerateAccessToken(IEnumerable<Claim> claims)
+        public  async Task<JwtSecurityToken> GenerateAccessToken(IEnumerable<Claim> claims)
         {
            
 
@@ -46,7 +51,7 @@ namespace Identity.Services
             return token;
         }
 
-        public string GenerateRefreshToken()
+        public  string GenerateRefreshToken()
         {
             var randomNumber = new byte[32];
             using (var rng = RandomNumberGenerator.Create())
@@ -55,7 +60,7 @@ namespace Identity.Services
                 return Convert.ToBase64String(randomNumber);
             }
         }
-        public async Task<ClaimsPrincipal> GetPrincipalFromExpiredToken(string token)
+        public  async Task<ClaimsPrincipal> GetPrincipalFromExpiredToken(string token)
         {
 
             //security key
@@ -78,23 +83,22 @@ namespace Identity.Services
             SecurityToken securityToken;
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
             var jwtSecurityToken = securityToken as JwtSecurityToken;
-            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            if ( !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
                 throw new SecurityTokenException("Invalid token");
 
             return principal;
         }
 
-
-        public static readonly Dictionary<string, List<TokenPair>> RefreshTokens = new Dictionary<string, List<TokenPair>>();
-        public static readonly object lockObject = new object();
+        //public static readonly Dictionary<string, List<TokenPair>> RefreshTokens = new Dictionary<string, List<TokenPair>>();
+        //public static readonly object lockObject = new object();
         private readonly IKeyStoreService _keyStoreService;
     }
 
-    public class TokenPair
-    {
-        public string JwtToken { get; set; }
-        public string RefreshToken { get; set; }
-        public DateTime RefreshIssueDate { get; set; }
-    }
+    //public class TokenPair
+    //{
+    //    public string JwtToken { get; set; }
+    //    public string RefreshToken { get; set; }
+    //    public DateTime RefreshIssueDate { get; set; }
+    //}
 
 }

@@ -4,7 +4,7 @@ namespace DocManager.Service
 {
     public interface IFileEncryptor
     {
-        string EncryptFile(Stream inputFile, string password);
-        Stream DecrypeFile(string inputFile, string password, string originalFileName);
+        (MemoryStream,string) EncryptFile(Stream inputFile, string password);
+        Stream DecrypeFile(MemoryStream fsCrypt, string password, string originalFileName, string salt);
     }
 }

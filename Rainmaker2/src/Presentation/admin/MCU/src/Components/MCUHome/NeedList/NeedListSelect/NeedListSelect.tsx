@@ -21,6 +21,7 @@ import {LocalDB} from '../../../../Utils/LocalDB';
 import {NeedListActionsType} from '../../../../Store/reducers/NeedListReducer';
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
+import { Error } from '../../../../Entities/Models/Error';
 
 type NeedListSelectType = {
   templateList: Template[];
@@ -98,10 +99,19 @@ export const NeedListSelect = ({
   }, [templates?.length]);
 
   const fetchTemplatesList = async () => {
-    let newTemplates: any = await TemplateActions.fetchTemplates();
-    if (newTemplates) {
-      dispatch({type: TemplateActionsType.SetTemplates, payload: newTemplates});
-    }
+    let res = await TemplateActions.fetchTemplates();
+    if(res){
+      if(Error.successStatus.includes(res.status)){
+        let newTemplates: any = res.data
+        if (newTemplates) {
+          dispatch({type: TemplateActionsType.SetTemplates, payload: newTemplates});
+        }
+      }
+      else{
+          Error.setError(dispatch, res)
+      }
+  }
+   
   };
 
   const updateIdsList = (

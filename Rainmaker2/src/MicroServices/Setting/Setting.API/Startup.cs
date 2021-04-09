@@ -62,7 +62,7 @@ namespace Setting.API
                                                                                                                     x.GetRequiredService<IRainmakerService>(),x.GetRequiredService<ILogger<HangfireBackgroundService>>()));
             services.AddControllers().AddNewtonsoftJson();
             var keyResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
-            csResponse.EnsureSuccessStatusCode();
+            keyResponse.EnsureSuccessStatusCode();
             var securityKey = AsyncHelper.RunSync(() => keyResponse.Content.ReadAsStringAsync());
             var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
 
@@ -79,23 +79,6 @@ namespace Setting.API
                             ValidIssuer = "rainsoftfn",
                             ValidAudience = "readers",
                             IssuerSigningKey = symmetricSecurityKey
-                        };
-                        options.Events = new JwtBearerEvents
-                        {
-                            OnMessageReceived = context =>
-                            {
-                                var accessToken = context.Request.Query["access_token"];
-
-                                // If the request is for our hub...
-                                var path = context.HttpContext.Request.Path;
-                                if (!string.IsNullOrEmpty(accessToken) &&
-                                    (path.StartsWithSegments("/serverhub")))
-                                {
-                                    // Read the token out of the query string
-                                    context.Token = accessToken;
-                                }
-                                return Task.CompletedTask;
-                            }
                         };
                     });
 

@@ -26,5 +26,6 @@ namespace DocumentManagement.Model
         public string annotations { get; set; }
         public bool? isMcuVisible { get; set; }
         public DateTime? fileModifiedOn { get; set; }
+        public string salt { get; set; }
     }
 }

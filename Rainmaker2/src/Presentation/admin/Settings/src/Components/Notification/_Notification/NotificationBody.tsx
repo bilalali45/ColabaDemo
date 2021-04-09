@@ -12,6 +12,7 @@ import TableTD from '../../Shared/SettingTable/TableTD';
 import TableTH from '../../Shared/SettingTable/TableTH';
 
 
+
 const TimeIntervalEnum = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
 
 export const NotificationBody = () => {
@@ -77,7 +78,7 @@ export const NotificationBody = () => {
             let name = d === 1 ? "Immediate" : d === 2 ? "Delayed" : "Off";
             return (
                 <label className="label">
-                    <input value={name} data-testid={`${n.name}-${d}-input-check`} onChange={(e) => handleSelect(e, n, d)} type="radio" checked={n?.currentState === d} name={n.name + '-' + d} id="" /> {name}
+                    <input value={name} data-testid={`input-check-${d}`} onChange={(e) => handleSelect(e, n, d)} type="radio" checked={n?.currentState === d} name={n.name + '-' + d} id="" /> {name}
                 </label>
             )
         })
@@ -92,7 +93,7 @@ export const NotificationBody = () => {
                         {rednerOptions(d)}
                         <span>
                             {d.showTime &&
-                                <select data-testid={`${d.name}-input-select`} id={ String(d.notificationTypeId)} onChange={handleChange} >
+                                <select data-testid={`input-select`} id={ String(d.notificationTypeId)} onChange={handleChange} >
                                     {renderDropdown(d)}
                                 </select>
                             }
@@ -112,6 +113,7 @@ export const NotificationBody = () => {
   }
 
     return (
+        <div data-testid="NotificationBody">
         <ContentBody className="notification-body">
             <Table tableClass="notification-table">
                 <TableROW >
@@ -121,5 +123,6 @@ export const NotificationBody = () => {
                 {renderRows()}
             </Table>
         </ContentBody>
+        </div>
     )
 }

@@ -109,6 +109,7 @@ const insertText = (text: string , editorState: any) => {
           onEditorStateChange={onEditorStateChange}
           onFocus = {onFocus}
           onBlur = {handlerOnBlur} 
+          handlePastedText={() => false}
           toolbar={{
             options: ['inline', 'list', 'link','history'],
             inline: {

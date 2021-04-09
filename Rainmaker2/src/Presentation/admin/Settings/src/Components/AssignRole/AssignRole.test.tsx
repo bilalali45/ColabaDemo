@@ -1,15 +1,11 @@
 import React from 'react';
-import { render, cleanup, waitForDomChange, fireEvent, waitFor, waitForElement, findByTestId, act, waitForElementToBeRemoved, wait, getByText, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom';
+import { render, fireEvent, waitFor, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history';
 import { EnvConfigMock } from '../../test_utilities/EnvConfigMock';
 import { LocalStorageMock } from '../../test_utilities/LocalStorageMock';
-import { UserActions } from '../../Store/actions/UserActions';
-import App from '../../App';
 import { StoreProvider } from '../../Store/Store';
-import { AssignedRoleActions } from '../../Store/actions/AssignedRoleActions';
 import AssignRole from './AssignRole';
-import { LocalDB } from '../../Utils/LocalDB';
+
 
 
 
@@ -37,8 +33,6 @@ describe('Assigned Role Settings', () => {
    </StoreProvider>
     );
 
-  await waitForDomChange();
-
    const assignedRoleHead = getByTestId('assigned-roleDv');
    const assignedRoleList = getAllByTestId('assigned-role-li');
    const chkBox = screen.queryAllByTestId('assignedRole-input')
@@ -55,8 +49,6 @@ describe('Assigned Role Settings', () => {
    </StoreProvider>
     );
 
-  await waitForDomChange();
-
    const assignedRoleList = getAllByTestId('assigned-role-li');
    
    expect(assignedRoleList[0]).toHaveClass('assigned');
@@ -70,8 +62,6 @@ describe('Assigned Role Settings', () => {
        <AssignRole/>
    </StoreProvider>
     );
-
-  await waitForDomChange();
 
    const assignedRoleHead = getByTestId('assigned-roleDv');
    const assignedRoleList = getAllByTestId('assigned-role-li');
@@ -89,8 +79,6 @@ describe('Assigned Role Settings', () => {
        <AssignRole/>
    </StoreProvider>
     );
-
-  await waitForDomChange();
  
    const chkBox = getAllByTestId('assignedRole-input')
    expect(chkBox[0]).toBeChecked();
@@ -104,8 +92,6 @@ describe('Assigned Role Settings', () => {
        <AssignRole/>
    </StoreProvider>
     );
-
-  await waitForDomChange();
  
    const chkBox = getAllByTestId('assignedRole-input')
    expect(chkBox[2]).not.toBeChecked();

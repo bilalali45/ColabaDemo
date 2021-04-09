@@ -10,6 +10,7 @@ export class ReviewDocumentActions {
    static async getDocumentForView(id: string, requestId: string, docId: string,fileId: string){
     const url = NeedListEndpoints.GET.documents.view(id,requestId,docId,fileId);
     const authToken = LocalDB.getAuthToken();
+    try{
     const response = await Axios.get(Http.createUrl(Http.baseUrl, url), {
         responseType: 'arraybuffer',
         headers: {
@@ -18,36 +19,61 @@ export class ReviewDocumentActions {
       });
        
       return response;
+    } catch (error) {
+      console.log('error',error) 
+      return error
+     }
    }
 
    static async acceptDocument(id: string, requestId: string, docId: string){
-        await Http.post(NeedListEndpoints.POST.documents.accept(), {
+     try{
+        let res = await Http.post(NeedListEndpoints.POST.documents.accept(), {
         id,
         requestId,
         docId
       });
-       
+      return res
+    } catch (error) {
+      console.log('error',error) 
+      return error
+     }
    }
 
    static async rejectDocument(loanApplicationId: number, id: string, requestId: string, docId: string){
-    await Http.post(NeedListEndpoints.POST.documents.reject(), {
+     try{
+    let res = await Http.post(NeedListEndpoints.POST.documents.reject(), {
         loanApplicationId,
         id,
         requestId,
         docId
-  });
+      });
+      return res
+    } catch (error) {
+      console.log('error',error) 
+      return error
+    }
 }
 
   static async requestDocumentFiles(id: string, requestId: string, docId: string){
-    const { data } = await Http.get<DocumentFileType[]>(
+    try{
+    const res = await Http.get<DocumentFileType[]>(
         NeedListEndpoints.GET.documents.files(id, requestId, docId)
       );
-      return data; 
+      return res; 
+    } catch (error) {
+      console.log('error',error) 
+      return error
+     }
   }
 
   static async getActivityLogs(id: string, docId: string, requestId: string){
-    const { data } =  await Http.get<ActivityLogType[]>(NeedListEndpoints.GET.documents.activityLogs(id, docId, requestId));
-    return data;
+    try{
+    const res =  await Http.get<ActivityLogType[]>(NeedListEndpoints.GET.documents.activityLogs(id, docId, requestId));
+    return res;
+  } catch (error) {
+    console.log('error',error) 
+    return error
+   }
 }
    
 

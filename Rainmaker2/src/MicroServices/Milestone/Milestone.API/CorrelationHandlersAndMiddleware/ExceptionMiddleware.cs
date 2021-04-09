@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Milestone.Model;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -28,16 +29,19 @@ namespace Milestone.API.CorrelationHandlersAndMiddleware
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context)
+        private async Task HandleExceptionAsync(HttpContext context)
         {
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-            return context.Response.WriteAsync(new
+            if (!context.Response.HasStarted)
             {
-                Code = context.Response.StatusCode.ToString(),
-                Message = "Internal Server Error"
-            }.ToString());
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+                await context.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(new ErrorModel
+                {
+                    Code = context.Response.StatusCode,
+                    Message = "Internal Server Error"
+                }));
+            }
         }
     }
 }

@@ -21,6 +21,7 @@ const ContextAwareToggle = ({ className, children, eventKey, callback }: any) =>
 
   return (
     <button
+      data-testid="settings__accordion-header"
       type="button"
       onClick={decoratedOnClick}
       className={`settings__accordion-header ${className ? className : ''}`}

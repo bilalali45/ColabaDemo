@@ -1,3 +1,7 @@
+import { Template } from "../../../Entities/Models/Template";
+import { TemplateDocument } from "../../../Entities/Models/TemplateDocument";
+import { CategoryDocument } from "../../../Entities/Models/CategoryDocument";
+import { Document } from "../../../Entities/Models/Document";
 
 let templateMock = [
     {
@@ -510,23 +514,33 @@ export class TemplateActions {
     
     static async fetchTemplates() {      
         try {
-         return Promise.resolve(templateMock);
+            let mappedData = templateMock.map((data: any) => {
+              return new Template(data.id, data.type, data.name, data.docs)
+            });
+         return Promise.resolve(mappedData);
         } catch (error) {
           console.log(error);
         }
       }
 
-      static async fetchCategoryDocuments() { 
-        try {         
-            return Promise.resolve(categoryDocMock);
-        } catch (error) {
-          console.log(error);
-        }
+      static async fetchCategoryDocuments() {     
+            let mappedData = categoryDocMock.map((item: CategoryDocument) => {
+                 return new CategoryDocument(item.catId, item.catName, 
+                  item.documents.map((i: Document) => {
+                      return new Document(i.docTypeId, i.docType, i.docMessage)
+                  })  )
+            });
+                                
+            return Promise.resolve(mappedData);
+        
       }
     
       static async fetchTemplateDocuments(id: string) {           
         try {
-            return Promise.resolve(docs);
+             let mappedData = docs.map((data: any) => {
+               return new TemplateDocument(data.docId, data.docName,data.typeId);
+             });
+            return Promise.resolve(mappedData);
         } catch (error) {
           console.log(error);
         }

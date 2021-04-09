@@ -5,6 +5,11 @@ using System.Text;
 
 namespace Milestone.Model
 {
+    public class ErrorModel
+    {
+        public int Code { get; set; }
+        public string Message { get; set; }
+    }
     public enum MilestoneType
     {
         Timeline=1,

@@ -407,11 +407,11 @@ namespace DocManager.Tests
 
             mockThumbnailService.Setup(x => x.SaveCategoryDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>()
-                , It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+                , It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
-            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, new MemoryStream())).Verifiable();
 
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
@@ -458,12 +458,12 @@ namespace DocManager.Tests
             string fileId = "5fc0fb11ad4581295f8ddd58";
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(),""));
             SaveWorkbenchDocument saveWorkbenchDocument = new SaveWorkbenchDocument();
             saveWorkbenchDocument.fileId = "5f0ede3cce9c4b62509d0dbf";
             mockThumbnailService.Setup(x => x.SaveCategoryDocument(It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
+                It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
 
             IActionResult result = await controller.SaveCategoryDocument(id, requestId, docId,
                fileId, files[0]);
@@ -512,11 +512,11 @@ namespace DocManager.Tests
 
             mockThumbnailService.Setup(x => x.SaveCategoryDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>()
-                , It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+                , It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),It.IsAny<string>()));
 
             mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
-            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName,new MemoryStream())).Verifiable();
 
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
@@ -563,12 +563,12 @@ namespace DocManager.Tests
             string fileId = "5fc0fb11ad4581295f8ddd58";
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(),""));
             SaveWorkbenchDocument saveWorkbenchDocument = new SaveWorkbenchDocument();
             saveWorkbenchDocument.fileId = "5f0ede3cce9c4b62509d0dbf";
             mockThumbnailService.Setup(x => x.SaveCategoryDocument(It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
+                It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
 
             IActionResult result = await controller.SaveCategoryDocument(id, requestId, docId,
                fileId, files[0]);
@@ -616,11 +616,11 @@ namespace DocManager.Tests
 
             mockThumbnailService.Setup(x => x.SaveCategoryDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>()
-                , It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+                , It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
-            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName,new MemoryStream())).Verifiable();
 
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
@@ -667,12 +667,12 @@ namespace DocManager.Tests
             string fileId = "5fc0fb11ad4581295f8ddd58";
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(),""));
             SaveWorkbenchDocument saveWorkbenchDocument = new SaveWorkbenchDocument();
             saveWorkbenchDocument.fileId = "5f0ede3cce9c4b62509d0dbf";
             mockThumbnailService.Setup(x => x.SaveCategoryDocument(It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
+                It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
 
             IActionResult result = await controller.SaveCategoryDocument(id, requestId, docId,
                fileId, files[0]);
@@ -719,11 +719,11 @@ namespace DocManager.Tests
 
             mockThumbnailService.Setup(x => x.SaveCategoryDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>()
-                , It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+                , It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
-            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName,new MemoryStream())).Verifiable();
 
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
@@ -772,12 +772,12 @@ namespace DocManager.Tests
             mockformFile.SetupGet(x => x.Length).Returns(0);
             mockformFile.SetupGet(x => x.FileName).Returns("abc.temp");
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(),""));
             SaveWorkbenchDocument saveWorkbenchDocument = new SaveWorkbenchDocument();
             saveWorkbenchDocument.fileId = "5f0ede3cce9c4b62509d0dbf";
             mockThumbnailService.Setup(x => x.SaveCategoryDocument(It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
+                It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
 
             IActionResult result = await controller.SaveCategoryDocument(id, requestId, docId,
                fileId, mockformFile.Object);
@@ -918,7 +918,7 @@ namespace DocManager.Tests
 
             //Assert
             Assert.NotNull(result);
-            Assert.IsType<BadRequestResult>(result);
+            Assert.IsType<BadRequestObjectResult>(result);
 
         }
         [Fact]
@@ -1059,13 +1059,14 @@ namespace DocManager.Tests
             fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
             Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
-
+            SaveWorkbenchDocument saveWorkbenchDocument = new SaveWorkbenchDocument();
+            saveWorkbenchDocument.fileId = "5f0ede3cce9c4b62509d0dbf";
             mockThumbnailService.Setup(x => x.SaveWorkbenchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>() , It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
 
             mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
-            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, new MemoryStream())).Verifiable();
 
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
@@ -1112,12 +1113,11 @@ namespace DocManager.Tests
             string fileId = "5fc0fb11ad4581295f8ddd58";
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
-            SaveWorkbenchDocument saveWorkbenchDocument = new SaveWorkbenchDocument();
-            saveWorkbenchDocument.fileId = "5f0ede3cce9c4b62509d0dbf";
-            mockThumbnailService.Setup(x => x.SaveWorkbenchDocument(It.IsAny<string>(), It.IsAny<string>(),
-                It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(),""));
+
+            mockThumbnailService.Setup(x => x.SaveCategoryDocument(It.IsAny<string>(), It.IsAny<string>(),
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
+                It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
 
             IActionResult result = await controller.SaveWorkbenchDocument(id,
                fileId, files[0]);
@@ -1165,11 +1165,11 @@ namespace DocManager.Tests
             Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
 
             mockThumbnailService.Setup(x => x.SaveWorkbenchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
-            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, new MemoryStream())).Verifiable();
 
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
@@ -1218,12 +1218,12 @@ namespace DocManager.Tests
             mockformFile.SetupGet(x => x.Length).Returns(0);
             mockformFile.SetupGet(x => x.FileName).Returns("abc.temp");
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(),""));
             SaveWorkbenchDocument saveWorkbenchDocument = new SaveWorkbenchDocument();
             saveWorkbenchDocument.fileId = "5f0ede3cce9c4b62509d0dbf";
             mockThumbnailService.Setup(x => x.SaveWorkbenchDocument(It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
 
             IActionResult result = await controller.SaveWorkbenchDocument(id,
                fileId, mockformFile.Object);
@@ -1269,11 +1269,11 @@ namespace DocManager.Tests
             Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
 
             mockThumbnailService.Setup(x => x.SaveWorkbenchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
-            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, new MemoryStream())).Verifiable();
 
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
@@ -1322,12 +1322,12 @@ namespace DocManager.Tests
             mockformFile.SetupGet(x => x.Length).Returns(10);
             mockformFile.SetupGet(x => x.FileName).Returns("abc.tmp");
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(),""));
             SaveWorkbenchDocument saveWorkbenchDocument = new SaveWorkbenchDocument();
             saveWorkbenchDocument.fileId = "5f0ede3cce9c4b62509d0dbf";
             mockThumbnailService.Setup(x => x.SaveWorkbenchDocument(It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
 
             IActionResult result = await controller.SaveWorkbenchDocument(id,
                fileId, mockformFile.Object);
@@ -1373,11 +1373,11 @@ namespace DocManager.Tests
             Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
 
             mockThumbnailService.Setup(x => x.SaveWorkbenchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
-            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, new MemoryStream())).Verifiable();
 
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
@@ -1424,12 +1424,12 @@ namespace DocManager.Tests
             string fileId = "5fc0fb11ad4581295f8ddd58";
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(),""));
             SaveWorkbenchDocument saveWorkbenchDocument = new SaveWorkbenchDocument();
             saveWorkbenchDocument.fileId = "5f0ede3cce9c4b62509d0dbf";
             mockThumbnailService.Setup(x => x.SaveWorkbenchDocument(It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
 
             IActionResult result = await controller.SaveWorkbenchDocument(id,
                fileId, files[0]);
@@ -1477,11 +1477,11 @@ namespace DocManager.Tests
             Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
 
             mockThumbnailService.Setup(x => x.SaveWorkbenchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
-            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, new MemoryStream())).Verifiable();
 
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
@@ -1531,12 +1531,12 @@ namespace DocManager.Tests
             mockformFile.Setup(_ => _.Length).Returns(0);
 
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(),""));
             SaveWorkbenchDocument saveWorkbenchDocument = new SaveWorkbenchDocument();
             saveWorkbenchDocument.fileId = "5f0ede3cce9c4b62509d0dbf";
             mockThumbnailService.Setup(x => x.SaveWorkbenchDocument(It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
 
             IActionResult result = await controller.SaveWorkbenchDocument(id,
                fileId, mockformFile.Object);
@@ -1585,11 +1585,11 @@ namespace DocManager.Tests
             Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
 
             mockThumbnailService.Setup(x => x.SaveTrashDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
-            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, new MemoryStream())).Verifiable();
 
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
@@ -1636,13 +1636,13 @@ namespace DocManager.Tests
             string fileId = "5fc0fb11ad4581295f8ddd58";
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(), ""));
             SaveWorkbenchDocument saveWorkbenchDocument = new SaveWorkbenchDocument();
             saveWorkbenchDocument.fileId = "5f0ede3cce9c4b62509d0dbf";
 
             mockThumbnailService.Setup(x => x.SaveTrashDocument(It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
 
             IActionResult result = await controller.SaveTrashDocument(id, fileId, files[0]);
 
@@ -1686,11 +1686,11 @@ namespace DocManager.Tests
             Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
 
             mockThumbnailService.Setup(x => x.SaveTrashDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
-            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, new MemoryStream())).Verifiable();
 
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
@@ -1737,13 +1737,13 @@ namespace DocManager.Tests
             string fileId = "5fc0fb11ad4581295f8ddd58";
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(), ""));
             SaveWorkbenchDocument saveWorkbenchDocument = new SaveWorkbenchDocument();
             saveWorkbenchDocument.fileId = "5f0ede3cce9c4b62509d0dbf";
 
             mockThumbnailService.Setup(x => x.SaveTrashDocument(It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
 
             IActionResult result = await controller.SaveTrashDocument(id, fileId, files[0]);
 
@@ -1787,11 +1787,11 @@ namespace DocManager.Tests
             Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
 
             mockThumbnailService.Setup(x => x.SaveTrashDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
-            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, new MemoryStream())).Verifiable();
 
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
@@ -1840,13 +1840,13 @@ namespace DocManager.Tests
             mockformFile.SetupGet(x => x.Length).Returns(0);
             mockformFile.SetupGet(x => x.FileName).Returns("abc.tmp");
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(), ""));
             SaveWorkbenchDocument saveWorkbenchDocument = new SaveWorkbenchDocument();
             saveWorkbenchDocument.fileId = "5f0ede3cce9c4b62509d0dbf";
 
             mockThumbnailService.Setup(x => x.SaveTrashDocument(It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
 
             IActionResult result = await controller.SaveTrashDocument(id, fileId, mockformFile.Object);
 
@@ -1891,11 +1891,11 @@ namespace DocManager.Tests
             Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
 
             mockThumbnailService.Setup(x => x.SaveTrashDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+                It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword));
-            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, Path.GetTempFileName())).Verifiable();
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, new MemoryStream())).Verifiable();
 
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
@@ -1945,13 +1945,16 @@ namespace DocManager.Tests
             mockformFile.SetupGet(x => x.FileName).Returns("abc.tmp");
            // mockformFile.SetupGet(x => x.FileName.Length).Returns(256);
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(),""));
             SaveWorkbenchDocument saveWorkbenchDocument = new SaveWorkbenchDocument();
             saveWorkbenchDocument.fileId = "5f0ede3cce9c4b62509d0dbf";
+            mockThumbnailService.Setup(x => x.SaveCategoryDocument(It.IsAny<string>(), It.IsAny<string>(),
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
+                It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
 
             mockThumbnailService.Setup(x => x.SaveTrashDocument(It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(saveWorkbenchDocument);
 
             IActionResult result = await controller.SaveTrashDocument(id, fileId, mockformFile.Object);
 
@@ -2263,7 +2266,7 @@ namespace DocManager.Tests
 
             //Assert
             Assert.NotNull(result);
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundObjectResult>(result);
 
         }
 
@@ -2305,11 +2308,11 @@ namespace DocManager.Tests
             mocksettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
 
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
-            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), filePath)).Verifiable();
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(), ""));
+            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), It.IsAny<MemoryStream>())).Verifiable();
             mockrequestService.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                  It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
-                 It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(" ");
+                 It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IEnumerable<string>>(), It.IsAny<string>())).ReturnsAsync(" ");
 
             List<FileViewDto> fileViewDtos = new List<FileViewDto>
             {
@@ -2324,7 +2327,7 @@ namespace DocManager.Tests
             mockrequestService.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(),
-                It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync("5f0ede3cce9c4b62509d0dbf");
+                It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IEnumerable<string>>(), It.IsAny<string>())).ReturnsAsync("5f0ede3cce9c4b62509d0dbf");
             Tenant tenant = new Tenant();
             tenant.syncToBytePro = (int)SyncToBytePro.Auto;
             tenant.autoSyncToBytePro = (int)AutoSyncToBytePro.OnSubmit;
@@ -2426,8 +2429,8 @@ namespace DocManager.Tests
             mocksettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
 
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
-            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), filePath)).Verifiable();
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(), ""));
+            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), It.IsAny<MemoryStream>())).Verifiable();
             //  mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(string.Empty);
 
             List<FileViewDto> fileViewDTOs = new List<FileViewDto>();
@@ -2547,8 +2550,8 @@ namespace DocManager.Tests
             mocksettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
 
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
-            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), filePath)).Verifiable();
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(), ""));
+            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), It.IsAny<MemoryStream>())).Verifiable();
             //  mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(string.Empty);
 
             List<FileViewDto> fileViewDTOs = new List<FileViewDto>();
@@ -2667,8 +2670,8 @@ namespace DocManager.Tests
             mocksettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
 
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
-            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), filePath)).Verifiable();
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(), ""));
+            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), It.IsAny<MemoryStream>())).Verifiable();
             //  mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(string.Empty);
 
             List<FileViewDto> fileViewDTOs = new List<FileViewDto>();
@@ -2789,8 +2792,8 @@ namespace DocManager.Tests
             mocksettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
 
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
-            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), filePath)).Verifiable();
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(), ""));
+            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), It.IsAny<MemoryStream>())).Verifiable();
             //  mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(string.Empty);
 
             List<FileViewDto> fileViewDTOs = new List<FileViewDto>();
@@ -2913,11 +2916,11 @@ namespace DocManager.Tests
             mocksettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
 
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
-            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), filePath)).Verifiable();
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(), ""));
+            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), It.IsAny<MemoryStream>())).Verifiable();
             mockrequestService.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                  It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
-                 It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(" ");
+                 It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IEnumerable<string>>(), It.IsAny<string>())).ReturnsAsync(" ");
 
             List<FileViewDto> fileViewDtos = new List<FileViewDto>
             {
@@ -2932,7 +2935,7 @@ namespace DocManager.Tests
             mockrequestService.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(),
-                It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(string.Empty);
+                It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IEnumerable<string>>(), It.IsAny<string>())).ReturnsAsync(string.Empty);
             Tenant tenant = new Tenant();
             tenant.syncToBytePro = (int)SyncToBytePro.Auto;
             tenant.autoSyncToBytePro = (int)AutoSyncToBytePro.OnSubmit;

@@ -1,11 +1,12 @@
 ﻿using RainMaker.Entity.Models;
 using RainMaker.Service;
+using System.Threading.Tasks;
 
 namespace Rainmaker.Service
 {
     public interface IMembershipService : IServiceBase<UserProfile>
     {
-        UserProfile ValidateUser(string userName,
+        Task<UserProfile> ValidateUser(int tenantId,string userName,
                                  string password,
                                  bool employee = false);
 

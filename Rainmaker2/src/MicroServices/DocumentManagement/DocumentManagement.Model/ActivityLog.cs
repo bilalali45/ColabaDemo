@@ -5,6 +5,11 @@ using System.Collections.Generic;
 
 namespace DocumentManagement.Model
 {
+    public class ErrorModel
+    {
+        public int Code { get; set; }
+        public string Message { get; set; }
+    }
     public class DocumentStatusQuery
     {
         public string status { get; set; }

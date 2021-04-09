@@ -17,6 +17,7 @@ import { Loader } from "../../../../../Shared/components/loader";
 import { trim } from 'lodash'
 import { LocalDB } from '../../../../../Utils/LocalDB'
 import { Document } from '../../../../../Entities/Models/Document'
+import { Error } from '../../../../../Entities/Models/Error'
 
 type SelectedTemplateType = {
     loaderVisible: boolean;
@@ -90,21 +91,46 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
     }, [newNameText]);
 
     const fetchCurrentCatDocs = async () => {
-        let currentCatDocs: any = await TemplateActions.fetchCategoryDocuments();
-        if (currentCatDocs) {
-            dispatch({ type: TemplateActionsType.SetCategoryDocuments, payload: currentCatDocs });
-
-            // setCurrentDocType(currentCatDocs[0]);
+        let res = await TemplateActions.fetchCategoryDocuments();
+        if(res){
+            if(Error.successStatus.includes(res.status)){
+                let currentCatDocs: any = res.data
+                if (currentCatDocs) {
+                    dispatch({ type: TemplateActionsType.SetCategoryDocuments, payload: currentCatDocs });
+        
+                    // setCurrentDocType(currentCatDocs[0]);
+                }
+            }
+            else{
+                Error.setError(dispatch, res)
+            }
         }
     }
 
     const addDocumentToList = async (doc: Document, type: string) => {
         try {
-            let success = await TemplateActions.addDocument(currentTemplate?.id, doc?.docTypeId || doc?.docType, type);
-            if (success) {
-                let docs = await TemplateActions.fetchTemplateDocuments(currentTemplate?.id);
-                dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: docs });
+            let res = await TemplateActions.addDocument(currentTemplate?.id, doc?.docTypeId || doc?.docType, type);
+            if(res){
+                if(Error.successStatus.includes(res.status)){
+                    let success = true
+                    if (success) {
+                        let res = await TemplateActions.fetchTemplateDocuments(currentTemplate?.id);
+                        if(res){
+                            if(res.status === 200){
+                                let docs = res.data
+                                dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: docs });
+                            }
+                            else{
+                                Error.setError(dispatch, res)
+                            }
+                        }
+                    }
+                }
+                else{
+                    Error.setError(dispatch, res)
+                }
             }
+            
         } catch (error) {
 
         }
@@ -114,29 +140,56 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
     const setCurrentTemplateDocs = async (template: any) => {
         if (!currentTemplate) return '';
         setLoaderVisible(!loaderVisible);
-        const templateDocs = await TemplateActions.fetchTemplateDocuments(template?.id);
-        if (templateDocs) {
-            dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: templateDocs });
+        let res= await TemplateActions.fetchTemplateDocuments(template?.id);
+        if(res){
+            if(Error.successStatus.includes(res.status)){
+                const templateDocs = res.data
+                if (templateDocs) {
+                    dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: templateDocs });
+                }
+                setLoaderVisible(false);
+            }
+            else{
+                Error.setError(dispatch, res)
+            }
         }
-        setLoaderVisible(false);
+        
     }
 
     const addNewTemplate = async (name: string) => {
         dispatch({ type: TemplateActionsType.SetTemplateDocuments, payload: null });
-        let insertedTemplate = await TemplateActions.insertTemplate(name);
-        if (insertedTemplate) {
+        let res = await TemplateActions.insertTemplate(name);
+        if(res){
+            if(Error.successStatus.includes(res.status)){
+                let insertedTemplate = res.data      
+                if (insertedTemplate) {
 
-            let updatedTemplates: any = await TemplateActions.fetchTemplates();
-            dispatch({ type: TemplateActionsType.SetTemplates, payload: updatedTemplates });
-
-            let currentTemplate = updatedTemplates.find((t: Template) => t.name === name);
-            dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: currentTemplate });
-            if (listContainerElRef?.current) {
-                if (typeof listContainerElRef?.current?.scrollTo === 'function') {
-                    listContainerElRef?.current?.scrollTo(0, listContainerElRef?.current?.children[0]?.clientHeight + 40);
+                    let res: any = await TemplateActions.fetchTemplates();
+                    if(res){
+                        if(Error.successStatus.includes(res.status)){
+                            let updatedTemplates = res.data;
+                            dispatch({ type: TemplateActionsType.SetTemplates, payload: updatedTemplates });
+        
+                            let currentTemplate = updatedTemplates.find((t: Template) => t.name === name);
+                            dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: currentTemplate });
+                            if (listContainerElRef?.current) {
+                                if (typeof listContainerElRef?.current?.scrollTo === 'function') {
+                                    listContainerElRef?.current?.scrollTo(0, listContainerElRef?.current?.children[0]?.clientHeight + 40);
+                                }
+                            }
+                        }
+                        else{
+                            Error.setError(dispatch, res)
+                        }
+                    }
+                    
                 }
+                  }
+            else{
+                Error.setError(dispatch, res)
             }
         }
+        
     }
 
     const renameTemplate = async (value: string) => {
@@ -175,12 +228,22 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
 
         const renamed = await TemplateActions.renameTemplate(currentTemplate?.id, value?.trim());
         if (renamed) {
-            let updatedTemplates: any = await TemplateActions.fetchTemplates();
-            if (updatedTemplates) {
-                dispatch({ type: TemplateActionsType.SetTemplates, payload: updatedTemplates });
-                dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: updatedTemplates.find((ut: Template) => ut.id === currentTemplate.id) });
-
+             let res = await TemplateActions.fetchTemplates();
+            if(res){
+                if(Error.successStatus.includes(res.status)){
+                    let updatedTemplates: any = true
+                    if (updatedTemplates) {
+                        dispatch({ type: TemplateActionsType.SetTemplates, payload: updatedTemplates });
+                        dispatch({ type: TemplateActionsType.SetCurrentTemplate, payload: updatedTemplates.find((ut: Template) => ut.id === currentTemplate.id) });
+        
+                    }
+                }
+                else{
+                    Error.setError(dispatch, res)
+                }
             }
+
+            
         }
         toggleRename();
         setLoaderVisible(false);
@@ -195,9 +258,12 @@ export const SelectedTemplate = ({ loaderVisible, setLoaderVisible, listContaine
         setAddRequestSent(true);
         setLoaderVisible(true);
         setRemoveDocName(documentId);
-        let isDeleted = await TemplateActions.deleteTemplateDocument(templateId, documentId);
-        if (isDeleted === 200) {
+        let res = await TemplateActions.deleteTemplateDocument(templateId, documentId);
+        if (Error.successStatus.includes(res.status)) {
             await setCurrentTemplateDocs(currentTemplate);
+        }
+        else{
+            Error.setError(dispatch, res)
         }
         setLoaderVisible(false);
         setAddRequestSent(false);

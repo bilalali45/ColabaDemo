@@ -8,7 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CacheHandler\**" />
+    <Content Remove="CacheHandler\**" />
+    <EmbeddedResource Remove="CacheHandler\**" />
+    <None Remove="CacheHandler\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\TokenData.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
     <PackageReference Include="Ocelot" Version="16.0.1" />
     <PackageReference Include="Ocelot.Cache.CacheManager" Version="16.0.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
@@ -20,6 +32,16 @@
     <PackageReference Include="Serilog.Sinks.Debug" Version="1.0.1" />
     <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.1.0" />
     <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
+    <PackageReference Include="StackExchange.Redis.Extensions.AspNetCore" Version="5.5.0" />
+    <PackageReference Include="StackExchange.Redis.Extensions.Newtonsoft" Version="5.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Library\TokenCacheHelper\TokenCacheHelper.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

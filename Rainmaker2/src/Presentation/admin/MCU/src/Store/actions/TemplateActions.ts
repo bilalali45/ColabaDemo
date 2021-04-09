@@ -4,7 +4,6 @@ import {LocalDB} from '../../Utils/LocalDB';
 import {Http} from 'rainsoft-js';
 import {Template} from '../../Entities/Models/Template';
 import {CategoryDocument} from '../../Entities/Models/CategoryDocument';
-import {debug} from 'console';
 
 let fetchTemplateDocumentCancelToken = axios.CancelToken.source();
 
@@ -13,9 +12,10 @@ export class TemplateActions {
     let url = Endpoints.TemplateManager.GET.templates();
     try {
       let res: AxiosResponse<Template[]> = await Http.get<Template[]>(url);
-      return res.data;
+      return res;
     } catch (error) {
       console.log(error);
+      return error
     }
   }
 
@@ -26,9 +26,10 @@ export class TemplateActions {
       let res: AxiosResponse<CategoryDocument[]> = await Http.get<
         CategoryDocument[]
       >(url);
-      return res.data;
+      return res;
     } catch (error) {
       console.log(error);
+      return error
     }
   }
 
@@ -47,9 +48,10 @@ export class TemplateActions {
           Authorization: `Bearer ${LocalDB.getAuthToken()}`
         }
       );
-      return res.data;
+      return res;
     } catch (error) {
       console.log(error);
+      return error
     }
   }
 
@@ -57,9 +59,10 @@ export class TemplateActions {
     let url = Endpoints.TemplateManager.GET.getEmailTemplate();
     try {
       let res = await Http.get(url);
-      return res.data;
+      return res;
     } catch (error) {
       console.log(error);
+      return error;
     }
   }
 
@@ -71,9 +74,10 @@ export class TemplateActions {
     };
     try {
       let res = await Http.post(url, template);
-      return res.data;
+      return res;
     } catch (error) {
       console.log(error);
+      return error;
     }
   }
 
@@ -84,9 +88,10 @@ export class TemplateActions {
         id: templateId,
         name
       });
-      return true;
+      return res;
     } catch (error) {
       console.log(error);
+      return error;
     }
   }
 
@@ -106,9 +111,10 @@ export class TemplateActions {
           Authorization: `Bearer ${LocalDB.getAuthToken()}`
         }
       );
-      return true;
+      return res;
     } catch (error) {
       console.log(error);
+      return error;
     }
   }
 
@@ -124,9 +130,10 @@ export class TemplateActions {
     };
     try {
       let res = await Http.post(url, document);
-      return true;
+      return res;
     } catch (error) {
       console.log(error);
+      return error;
     }
   }
 
@@ -147,9 +154,10 @@ export class TemplateActions {
           Authorization: `Bearer ${LocalDB.getAuthToken()}`
         }
       );
-      return res?.status;
+      return res;
     } catch (error) {
       console.log(error);
+      return error;
     }
   }
 
@@ -164,6 +172,7 @@ export class TemplateActions {
       };
     } catch (error) {
       console.log(error);
+      return error;
     }
   }
 }

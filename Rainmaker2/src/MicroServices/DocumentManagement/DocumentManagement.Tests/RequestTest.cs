@@ -199,7 +199,7 @@ namespace DocumentManagement.Tests
 
             //Assert
             Assert.NotNull(result);
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundObjectResult>(result);
         }
         [Fact]
         public async Task TestSaveByBorrowerControllerTrue()
@@ -369,7 +369,7 @@ namespace DocumentManagement.Tests
 
             //Assert
             Assert.NotNull(result);
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundObjectResult>(result);
         }
 
         [Fact]
@@ -1454,7 +1454,7 @@ namespace DocumentManagement.Tests
 
             //Assert
             Assert.NotNull(result);
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundObjectResult>(result);
 
         }
 
@@ -1497,7 +1497,7 @@ namespace DocumentManagement.Tests
 
             //Assert
             Assert.NotNull(result);
-            Assert.IsType<BadRequestResult>(result);
+            Assert.IsType<BadRequestObjectResult>(result);
         }
 
         [Fact]
@@ -1540,8 +1540,8 @@ namespace DocumentManagement.Tests
             mockftpclient.Setup(x => x.Setup(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
 
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
-            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), filePath)).Verifiable();
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(),""));
+            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), new MemoryStream())).Verifiable();
             mockfileservice.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(), It.IsAny<List<string>>())).Verifiable();
 
             UploadFileModel uploadFileModel = new UploadFileModel();
@@ -1663,8 +1663,8 @@ namespace DocumentManagement.Tests
             mockftpclient.Setup(x => x.Setup(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
 
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
-            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns(filePath);
-            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), filePath)).Verifiable();
+            mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(),""));
+            mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), new MemoryStream())).Verifiable();
             mockfileservice.Setup(x => x.UploadFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<Model.UploadFileModel>(), It.IsAny<List<string>>())).Verifiable();
 
             UploadFileModel uploadFileModel = new UploadFileModel();

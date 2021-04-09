@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import {SVGopenLock} from '../../../../Shared/SVG';
 import {LoanApplication} from '../../../../Entities/Models/LoanApplication';
 import {NeedListActions} from '../../../../Store/actions/NeedListActions';
+import {Error} from '../../../../Entities/Models/Error';
 import Spinner from 'react-bootstrap/Spinner';
 import {LocalDB} from '../../../../Utils/LocalDB';
 import {Store} from '../../../../Store/Store';
@@ -31,13 +32,16 @@ export const LoanSnapshot = () => {
   const fetchLoanApplicationDetail = async () => {
     let applicationId = LocalDB.getLoanAppliationId();
     if (applicationId) {
-      let res:
-        | LoanApplication
-        | undefined = await NeedListActions.getLoanApplicationDetail(
+      let res = await NeedListActions.getLoanApplicationDetail(
         applicationId
       );
       if (res) {
-        dispatch({type: NeedListActionsType.SetLoanInfo, payload: res});
+        if(Error.successStatus.includes(res.status)){
+          dispatch({type: NeedListActionsType.SetLoanInfo, payload: res.data});
+        }
+        else{
+          Error.setError(dispatch, res)
+         }
         // setLoanInfo(res)
       }
     }

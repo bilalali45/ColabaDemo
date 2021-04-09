@@ -1,5 +1,6 @@
 import { Http } from "rainsoft-js";
 import ReminderSettingTemplate from "../../Entities/Models/ReminderEmailListTemplate";
+import { Tokens } from "../../Entities/Models/Token";
 import { Endpoints } from "../endpoints/Endpoints";
 export class ReminderEmailListActions {
 
@@ -70,7 +71,7 @@ export class ReminderEmailListActions {
     static async fetchTokens() {
         let url = Endpoints.RequestEmailTemplateManager.GET.tokens();
         try {
-            let res = await Http.get(url);
+            let res: any = await Http.get(url);
             return res.data;
         } catch (error) {
             console.log('error',error) 

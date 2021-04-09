@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor, getByTestId, act } from '@testing-library/react';
+import { render, fireEvent, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
 import { DocumentsHeader } from './DocumentsHeader';
 import {MockEnvConfig} from '../../../../test_utilities/EnvConfigMock';
@@ -10,9 +10,6 @@ import { Home } from '../../Home';
 import { DocumentsContainer } from '../DocumentsContainer';
 import { debug } from 'console';
 import { FileUpload } from '../../../../Utilities/helpers/FileUpload';
-import { DocumentRequest } from '../../../../Models/DocumentRequest';
-import { DocumentFile } from '../../../../Models/DocumentFile';
-import DocumentActions from '../../../../Store/actions/DocumentActions';
 
 
 jest.mock('pspdfkit');
@@ -201,7 +198,7 @@ describe('Doc Manager Header', () => {
     });
 
     test('Should show Documents in Trash Bin Overlay', async () => {
-        const { getByText, getAllByTestId, getByTestId } = render(
+        const { getByText, getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsHeader></DocumentsHeader>
@@ -229,7 +226,7 @@ describe('Doc Manager Header', () => {
 
     
     test('Should click restore btn', async () => {
-        const { getByText, getAllByTestId, getByTestId } = render(
+        const { getByText, getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsHeader></DocumentsHeader>
@@ -745,7 +742,7 @@ describe('Doc Manager Header', () => {
 
 
     test('Should search a document from search textbox', async () => {
-        const { getByAltText, getByTestId, getAllByTestId, getByText } = render(
+        const { getByTestId, getAllByTestId, getByText } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsHeader></DocumentsHeader>
@@ -787,7 +784,7 @@ describe('Doc Manager Header', () => {
         });
 
     test('Should drag file from trash bin', async () => {
-        const { getByText, getAllByTestId, getByTestId } = render(
+        const { getByText, getAllByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsHeader></DocumentsHeader>
@@ -815,7 +812,7 @@ describe('Doc Manager Header', () => {
     });
 
     test('Should drop file to trash bin from workbench', async () => {     
-        const { getByText, getAllByTestId, getByTestId } = render(
+        const {getByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <Home></Home>
@@ -837,7 +834,7 @@ describe('Doc Manager Header', () => {
     });
 
     test('Should drop file to trash bin from category', async () => {     
-        const { getByText, getAllByTestId, getByTestId } = render(
+        const { getByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <Home></Home>
@@ -859,7 +856,7 @@ describe('Doc Manager Header', () => {
     });
 
     test('Should drop file to trash bin from thumbnail', async () => {     
-        const { getByText, getAllByTestId, getByTestId } = render(
+        const { getByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <Home></Home>

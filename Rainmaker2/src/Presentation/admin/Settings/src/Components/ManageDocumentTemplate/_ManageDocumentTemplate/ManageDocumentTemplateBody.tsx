@@ -24,8 +24,6 @@ import { Role } from '../../../Store/Navigation';
 import { Template } from '../../../Entities/Models/Template';
 import Loader from '../../Shared/Loader';
 import { MyTemplate, SystemTemplate, TenantTemplate } from '../ManageDocumentTemplate';
-import useComponentVisible from '../../../Services/useComponentVisible';
-import { clickOutSide } from '../../../Utils/hooks/ClickOutSide';
 
 
 interface ManageDocumentTemplateBodyProps {
@@ -518,13 +516,13 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
             <>
                 <Nothing heading="Nothing" text="Your template is empty">
                     {userRole === Role.ADMIN_ROLE && template.type != SystemTemplate &&
-                        <button ref={aRef} className="settings-btn" onClick={(e) =>{                         
+                        <button data-testid="AddDocNothing" ref={aRef} className="settings-btn" onClick={(e) =>{                         
                             addDocsHandler(e); }}>
                            Add Document <i className="zmdi zmdi-plus"></i>
                         </button>
                     }
                     {userRole === Role.MCU_ROLE && template.type == MyTemplate &&
-                        <button ref={aRef} className="settings-btn" onClick={(e) =>{                          
+                        <button data-testid="AddDocNothing" ref={aRef} className="settings-btn" onClick={(e) =>{                          
                             addDocsHandler(e);}}>
                             Add Document <i className="zmdi zmdi-plus"></i>
                         </button>
@@ -693,6 +691,7 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
                                         isShow ?
                                             (
                                                 <span
+                                                    data-testid="settings__delete-element"
                                                     className="settings__delete-element"
                                                     onClick={(e:any) => {
                                                         deleteTemplateConfirmation(e, item);
@@ -705,6 +704,7 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
                                                 userRole === Role.ADMIN_ROLE && item.type != SystemTemplate &&
                                                 (
                                                     <span
+                                                        data-testid="addDocument"
                                                         className="settings__delete-element"
                                                         onClick={(e:any) => {
                                                             deleteTemplateConfirmation(e, item);
@@ -817,7 +817,7 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
                                             <span className={`a`}>
                                                 <span className="settings__document-name" title={ele.docName}>{ele.docName}</span>
                                                 {userRole === Role.ADMIN_ROLE && template.type != SystemTemplate && (
-                                                    <span className="settings__delete-element" onClick={(e) => removeDoc(currentTemplate?.id, ele?.docId, currentTemplate?.type)}>
+                                                    <span data-testid="settings__delete-element" className="settings__delete-element" onClick={(e) => removeDoc(currentTemplate?.id, ele?.docId, currentTemplate?.type)}>
                                                         <i className="zmdi zmdi-close"></i>
                                                     </span>
                                                 )
@@ -831,7 +831,7 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
                             {(userRole === Role.ADMIN_ROLE && template.type != SystemTemplate) && (templateDocuments && templateDocuments.length > 0) &&
                                 (
                                     <li>
-                                        <button className="settings-btn" onClick={(e) =>{ checkAddDocPopupFor('addDocForSystemTemplates'); addDocsHandler(e); }} ref={aRef}>
+                                        <button data-testid="addDocForSystemTemplates" className="settings-btn" onClick={(e) =>{ checkAddDocPopupFor('addDocForSystemTemplates'); addDocsHandler(e); }} ref={aRef}>
                                             Add Document{' '}
                                             <i className="zmdi zmdi-plus"></i>
                                         </button>
@@ -866,10 +866,10 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
                                 );
                             } else {
                                 return (
-                                    <div
-                                        className={`settings__accordion-signable-panel ${item.open ? 'open' : 'close'}`}
-                                        key={item.id}
-                                        id={`myTemplate_${index + 1}`}
+                                    <div data-testid = "myTemplate-list"
+                                         className={`settings__accordion-signable-panel ${item.open ? 'open' : 'close'}`}
+                                         key={item.id}
+                                         id={`myTemplate_${index + 1}`}
                                     >
                                         {item.confirmDelete == true
                                             ? renderRemoveButton(item)
@@ -904,6 +904,7 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
                                                                                         <Loader size="xs" />
                                                                                     </div> :
                                                                                     <span
+                                                                                        data-testid="settings__delete-element"
                                                                                         className="settings__delete-element"
                                                                                         onClick={(e) =>
                                                                                             removeDoc(
@@ -923,7 +924,7 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
 
                                                             {templateDocuments && templateDocuments.length > 0 && (
                                                                 <li>
-                                                                    <button className="settings-btn" onClick={(e) =>{ addDocsHandler(e); checkAddDocPopupFor('addDocForMyTemplates') }} ref={aRef}>
+                                                                    <button data-testid="addDocsHandler-accordionMyTemplates" className="settings-btn" onClick={(e) =>{ addDocsHandler(e); checkAddDocPopupFor('addDocForMyTemplates') }} ref={aRef}>
                                                                         Add Document{' '}
                                                                         <i className="zmdi zmdi-plus"></i>
                                                                     </button>
@@ -1024,7 +1025,7 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
                                     );
                                 } else {
                                     return (
-                                        <div className={`settings__accordion-signable-panel ${item.open == true ? 'open' : 'close'}`} key={item.id}>
+                                        <div data-testid = "tenantTemplate-list" className={`settings__accordion-signable-panel ${item.open == true ? 'open' : 'close'}`} key={item.id}>
                                             {item.confirmDelete == true ? renderRemoveButton(item) : renderTemplateItem(item, false, index)}
                                             {item.open && renderDocumentListForAdmin(item, index)}
                                         </div>
@@ -1041,7 +1042,7 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
                                     );
                                 } else {
                                     return (
-                                        <div className={`settings__accordion-signable-panel ${item.open == true ? 'open' : 'close'}`} key={item.id}>
+                                        <div data-testid = "tenantTemplate-list" className={`settings__accordion-signable-panel ${item.open == true ? 'open' : 'close'}`} key={item.id}>
                                             {item.confirmDelete == true ? renderRemoveButton(item) : renderTemplateItem(item, false, index)}
                                             {item.open && renderDocumentListForAdmin(item, index)}
                                         </div>
@@ -1055,15 +1056,15 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
             </div>
         );
     };
-    console.log('--------------------> dataState',dataState)
     if (!dataState) {
         return <div className="element-center"><Loader size="md" containerHeight="100%" customStyle={{ width: '100%', height: 'calc(100% - 70px)' }} /></div>
     }
 
     return (
+        <div data-testid="ManageDocumentTemplateBody">
         <ContentBody className="manage-doc-temp-body">
             {getAddDocs &&
-                <div ref={domNode}>
+                <div ref={domNode} data-testid="addDocument">
                     <AddDocument
                         addDocumentToList={addDocumentToList}                      
                         styling={{left:getPopupPosition.x, top: getPopupPosition.y}}
@@ -1079,6 +1080,7 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
                 </div>
             </div>
         </ContentBody>
+        </div>
     );
 };
 

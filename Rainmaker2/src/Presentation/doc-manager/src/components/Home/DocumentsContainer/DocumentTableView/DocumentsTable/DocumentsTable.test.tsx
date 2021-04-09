@@ -1,9 +1,7 @@
 import React from 'react';
-import { render, fireEvent, waitFor, getByTestId, getAllByTestId } from '@testing-library/react';
-import userEvent from '@testing-library/user-event'
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { StoreProvider } from '../../../../../Store/Store';
-import { DocumentsHeader } from '../../DocumentsHeader/DocumentsHeader';
 import { MockEnvConfig } from '../../../../../test_utilities/EnvConfigMock';
 import { MockLocalStorage } from '../../../../../test_utilities/LocalStoreMock';
 import { DocumentsTable } from './DocumentsTable';
@@ -105,7 +103,7 @@ describe('Doc Table Section ', () => {
    
 
     test('Should show Add Document Overlay', async () => {
-        const { getByText, getByTestId, getAllByTestId } = render(
+        const { getByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <DocumentsTable></DocumentsTable>

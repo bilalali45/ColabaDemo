@@ -1,5 +1,6 @@
 import { LoanApplication } from "../../Entities/Models/LoanApplication"
 import { NeedList } from "../../Entities/Models/NeedList"
+import { Error } from "../../Entities/Models/Error"
 import { ActionMap, Actions } from "./reducers";
 
 export type NeedListLock = {
@@ -26,7 +27,8 @@ export type NeedListType = {
     templateIds: string[],
     isDraft: boolean,
     needListFilter: boolean,
-    isNeedListLocked: NeedListLock
+    isNeedListLocked: NeedListLock,
+    
 }
 
 export type NeedListActionPayload = {
@@ -36,7 +38,7 @@ export type NeedListActionPayload = {
     [NeedListActionsType.SetIsDraft]: string,
     [NeedListActionsType.SetIsByteProAuto]: string,
     [NeedListActionsType.SetNeedListFilter]: string,
-    [NeedListActionsType.SetIsNeedListLocked]: NeedListLock,
+    [NeedListActionsType.SetIsNeedListLocked]: NeedListLock
 }
 
 export type NeedListActions = ActionMap<NeedListActionPayload>[keyof ActionMap<NeedListActionPayload>];

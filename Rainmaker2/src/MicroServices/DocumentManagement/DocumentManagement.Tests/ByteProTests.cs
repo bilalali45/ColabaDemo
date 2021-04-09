@@ -55,11 +55,11 @@ namespace DocumentManagement.Tests
             mock.Setup(x => x.View(It.IsAny<AdminFileViewModel>(), It.IsAny<int>())).ReturnsAsync(fileViewDTO);
             mockSettingService.Setup(x => x.GetSetting()).ReturnsAsync(setting);
             mockFtpClient.Setup(x => x.Setup(setting.ftpServer, setting.ftpUser, setting.ftpPassword)).Verifiable();
-            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, It.IsAny<string>())).Verifiable();
+            mockFtpClient.Setup(x => x.DownloadAsync(fileViewDTO.serverName, It.IsAny<MemoryStream>())).Verifiable();
 
             mockKeyStoreService.Setup(x => x.GetFileKey()).ReturnsAsync("this is a very long password");
             mockKeyStoreService.Setup(x => x.GetFtpKey()).ReturnsAsync("this is the long and strong key.");
-            mockFileEcryptor.Setup(x => x.DecrypeFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new MemoryStream());
+            mockFileEcryptor.Setup(x => x.DecrypeFile(It.IsAny<MemoryStream>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new MemoryStream());
 
             mockFileEncryptorFacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockFileEcryptor.Object);
             var httpContext = new Mock<HttpContext>();
@@ -186,7 +186,7 @@ namespace DocumentManagement.Tests
             IActionResult result = await admindashboardController.UpdateByteProStatus(new UpdateByteProStatus());
             //Assert
             Assert.NotNull(result);
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundObjectResult>(result);
         }
 
         [Fact]

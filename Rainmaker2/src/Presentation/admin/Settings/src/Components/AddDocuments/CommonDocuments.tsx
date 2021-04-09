@@ -46,6 +46,7 @@ export const CommonDocuments = ({
     <>
       <div className="settings__add-docs-popup--search">
         <input
+        data-testid="search-doc-name"
           className="settings__add-docs-popup--search-input"
           maxLength={255}
           autoFocus={true}

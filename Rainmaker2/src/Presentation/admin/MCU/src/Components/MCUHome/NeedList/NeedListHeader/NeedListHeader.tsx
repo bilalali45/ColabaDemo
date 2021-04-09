@@ -6,10 +6,6 @@ import {DocManagerIcon} from "../../../../Shared/SVG";
 export const NeedListHeader = () => {
   const history = useHistory();
 
-  const redirectToTemplate = () => {
-    history.push(`/templateManager/${LocalDB.getLoanAppliationId()}`);
-  };
-
   const redirectTodDocManager = () => {
     window.location.href = `/DocManager/${LocalDB.getLoanAppliationId()}`;
   };

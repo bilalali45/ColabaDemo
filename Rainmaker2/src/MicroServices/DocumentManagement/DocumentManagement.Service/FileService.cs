@@ -117,7 +117,7 @@ namespace DocumentManagement.Service
             }
         }
 
-        public async Task<string> Submit(string contentType, string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId, int userProfileId, IEnumerable<string> authHeader)
+        public async Task<string> Submit(string contentType, string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId, int userProfileId, IEnumerable<string> authHeader,string salt)
         {
             bool isStarted = false;
 
@@ -211,7 +211,7 @@ namespace DocumentManagement.Service
             {
                 { "$push", new BsonDocument()
                     {   
-                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", fileId }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType }, { "status", FileStatus.SubmittedToMcu },{ "byteProStatus", ByteProStatus.NotSynchronized}, { "isRead", false },{ "userId",BsonNull.Value}, { "userName", BsonNull.Value } }   }
+                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", fileId }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType }, { "status", FileStatus.SubmittedToMcu },{ "byteProStatus", ByteProStatus.NotSynchronized}, { "isRead", false },{ "userId",BsonNull.Value}, { "userName", BsonNull.Value } , { "salt",salt} }   }
                     }
                 },
                 { "$set", new BsonDocument()
@@ -250,7 +250,7 @@ namespace DocumentManagement.Service
                
             return null;
         }
-        public async Task<string> SubmitByBorrower(string contentType, string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId, int userProfileId, IEnumerable<string> authHeader)
+        public async Task<string> SubmitByBorrower(string contentType, string id, string requestId, string docId, string clientName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId, int userProfileId, IEnumerable<string> authHeader, string salt)
         {
             bool isStarted = false;
 
@@ -344,7 +344,7 @@ namespace DocumentManagement.Service
             {
                 { "$push", new BsonDocument()
                     {
-                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", fileId }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType }, { "status", FileStatus.SubmittedToMcu },{ "byteProStatus", ByteProStatus.NotSynchronized}, { "isRead", false },{ "userId",BsonNull.Value}, { "userName", BsonNull.Value } }   }
+                        { "requests.$[request].documents.$[document].files", new BsonDocument() { { "id", fileId }, { "clientName", clientName } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", BsonString.Empty }, { "contentType", contentType }, { "status", FileStatus.SubmittedToMcu },{ "byteProStatus", ByteProStatus.NotSynchronized}, { "isRead", false },{ "userId",BsonNull.Value}, { "userName", BsonNull.Value }, {"salt",salt } } }
                     }
                 }
             }, new UpdateOptions()
@@ -423,7 +423,8 @@ namespace DocumentManagement.Service
                                 ""encryptionKey"": ""$requests.documents.files.encryptionKey"",
                                 ""encryptionAlgorithm"": ""$requests.documents.files.encryptionAlgorithm"",
                                 ""clientName"": ""$requests.documents.files.clientName"",
-                                ""contentType"": ""$requests.documents.files.contentType""
+                                ""contentType"": ""$requests.documents.files.contentType"",
+                                ""salt"": ""$requests.documents.files.salt""
                             }
                              } "
 

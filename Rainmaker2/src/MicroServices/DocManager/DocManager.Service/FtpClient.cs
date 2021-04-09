@@ -21,7 +21,7 @@ namespace DocManager.Service
 
 
         /* Download File */
-        public async Task DownloadAsync(string remoteFile, string localFile)
+        public async Task DownloadAsync(string remoteFile, MemoryStream localFileStream)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace DocManager.Service
                 /* Get the FTP Server's Response Stream */
                 _ftpStream = _ftpResponse.GetResponseStream();
                 /* Open a File Stream to Write the Downloaded File */
-                using var localFileStream = new FileStream(localFile, FileMode.Create);
+                //using var localFileStream = new FileStream(localFile, FileMode.Create);
                 /* Buffer for the Downloaded Data */
                 var byteBuffer = new byte[BufferSize];
                 if (_ftpStream != null)
@@ -59,6 +59,7 @@ namespace DocManager.Service
                     {
                         _ftpStream.Close();
                     }
+                    localFileStream.Position = 0;
                 }
                 else
                     throw new DocManagerException("Ftp Stream is null");
@@ -73,7 +74,7 @@ namespace DocManager.Service
         }
 
         /* Upload File */
-        public async Task UploadAsync(string remoteFile, string localFile)
+        public async Task UploadAsync(string remoteFile, MemoryStream localFileStream)
         {
             try
             {
@@ -90,7 +91,7 @@ namespace DocManager.Service
                 /* Establish Return Communication with the FTP Server */
                 _ftpStream = _ftpRequest.GetRequestStream();
                 /* Open a File Stream to Read the File for Upload */
-                using var localFileStream = new FileStream(localFile, FileMode.Open);
+                //using var localFileStream = new FileStream(localFile, FileMode.Open);
                 /* Buffer for the Downloaded Data */
                 var byteBuffer = new byte[BufferSize];
                 int bytesSent = await localFileStream.ReadAsync(byteBuffer, 0, BufferSize);
@@ -100,6 +101,7 @@ namespace DocManager.Service
                     await _ftpStream.WriteAsync(byteBuffer, 0, bytesSent);
                     bytesSent = await localFileStream.ReadAsync(byteBuffer, 0, BufferSize);
                 }
+                localFileStream.Position = 0;
             }
             finally
             { 

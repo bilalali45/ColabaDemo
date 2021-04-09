@@ -13,23 +13,23 @@ type HeaderProps = {
 
 const ProfileHeader = ({navigation, changeNav, backHandler}: HeaderProps) => {
   
-    const [title, setTitle] = useState('');
-    const [linkText, setLinkText] = useState('');
+    // const [title, setTitle] = useState('');
+    // const [linkText, setLinkText] = useState('');
 
     useEffect(() => {
        let role = LocalDB.getUserRole();
        if(role === Role.MCU_ROLE){
-        setTitle("Your Profile");
-        setLinkText("");
+        // setTitle("Your Profile");
+        // setLinkText("");
        }else if(role === Role.ADMIN_ROLE){
-        setTitle("");
-        setLinkText("Back");
+        // setTitle("");
+        // setLinkText("Back");
        }
     },[LocalDB.getUserRole()])
 
     
     return (
-        <>
+        <div data-testid="ProfileHeader">
         <ContentHeader title={'Manage Users'} className="profile-header"></ContentHeader>
         <ContentSubHeader 
             //title={'Manage Users'} 
@@ -42,15 +42,15 @@ const ProfileHeader = ({navigation, changeNav, backHandler}: HeaderProps) => {
     <a className={`settings-btn`} href="javascript:;" onClick={e=>changeNav(ProfileMenu.AccountDetail)}> {LocalDB.getUserRole()=== Role.MCU_ROLE ? 'Account Detail' : 'Profile'}</a>
                 </li> */}
                 <li data-testid="profile-menu" className={`${navigation == ProfileMenu.AssignedRole ? 'active' : ''}`}>
-                    <a className={`settings-btn`} href="javascript:;" onClick={e=>changeNav(ProfileMenu.AssignedRole)}>Assigned Role</a>
+                    <a data-testid="profile-menu-link1" className={`settings-btn`} href="javascript:;" onClick={e=>changeNav(ProfileMenu.AssignedRole)}>Assigned Role</a>
                 </li>
                 <li data-testid="profile-menu" className={`${navigation == ProfileMenu.Notification ? 'active' : ''}`}>
-                    <a className={`settings-btn`} href="javascript:;" onClick={e=>changeNav(ProfileMenu.Notification)}>Notification</a>
+                    <a data-testid="profile-menu-link2" className={`settings-btn`} href="javascript:;" onClick={e=>changeNav(ProfileMenu.Notification)}>Notification</a>
                 </li>
             </ul>
 
         </ContentSubHeader>
-        </>
+        </div>
     )
 }
 

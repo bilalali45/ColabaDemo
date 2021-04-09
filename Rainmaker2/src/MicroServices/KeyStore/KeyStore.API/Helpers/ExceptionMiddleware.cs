@@ -28,16 +28,19 @@ namespace KeyStore.API.Helpers
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context)
+        private async Task HandleExceptionAsync(HttpContext context)
         {
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-            return context.Response.WriteAsync(new
+            if (!context.Response.HasStarted)
             {
-                Code = context.Response.StatusCode.ToString(),
-                Message = "Internal Server Error"
-            }.ToJson());
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+                await context.Response.WriteAsync(new
+                {
+                    Code = context.Response.StatusCode.ToString(),
+                    Message = "Internal Server Error"
+                }.ToJson());
+            }
         }
     }
 }

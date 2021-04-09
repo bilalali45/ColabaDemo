@@ -1,12 +1,10 @@
 import React from 'react';
-import { render, fireEvent, waitFor, getByTestId } from '@testing-library/react';
-import userEvent from '@testing-library/user-event'
+import { render, waitFor } from '@testing-library/react';
 
 import { MemoryRouter } from 'react-router-dom';
 import { MockEnvConfig } from '../../test_utilities/EnvConfigMock';
 import { MockLocalStorage } from '../../test_utilities/LocalStoreMock';
 import { StoreProvider } from '../../Store/Store';
-import { DocumentsHeader } from '../Home/DocumentsContainer/DocumentsHeader/DocumentsHeader';
 import { Footer } from './Footer';
 
 

@@ -43,9 +43,9 @@ const TableSort: React.FC<TableSortProps> = ({ order, className, callBackFunctio
         >
         {children}
         {sortOrder != null &&
-            <div className="settings__table-sorter">
-                {sortOrder == 1 && <i className="zmdi zmdi-long-arrow-up"></i>}
-                {sortOrder == 2 && <i className="zmdi zmdi-long-arrow-down"></i>}
+            <div data-testid="settings__table-sorter" className="settings__table-sorter">
+                {sortOrder == 1 && <i data-testid="sortAsc" className="zmdi zmdi-long-arrow-up"></i>}
+                {sortOrder == 2 && <i data-testid="sortDes" className="zmdi zmdi-long-arrow-down"></i>}
             </div>
         }        
         </span>

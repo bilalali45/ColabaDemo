@@ -58,6 +58,7 @@ interface Props {
 
    const fetchTemplatesList = async () => {
     let newTemplates: any = await TemplateActions.fetchTemplates();
+    console.log(newTemplates)
     if (newTemplates) {
       newTemplates.forEach((item: Template, index: any) => {
             if (index === 0) {
@@ -109,10 +110,10 @@ interface Props {
   const renderDropDown = () => {
     return (
       <>
-        <div ref={DropDownNode} className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <div data-testid="addNewTemplate-dropdown" ref={DropDownNode} className="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <ul>
-            <li><a onClick={e => addNewTemplate(Role.MCU_ROLE)} href='javascript:;'>As Personal Template</a></li>
-            <li><a onClick={e => addNewTemplate(Role.ADMIN_ROLE)} href='javascript:;'>As System Template</a></li>
+            <li><a data-testid="AddPersonalTemplateClick" onClick={e => addNewTemplate(Role.MCU_ROLE)} href='javascript:;'>As Personal Template</a></li>
+            <li><a data-testid="AddSystemTemplateClick" onClick={e => addNewTemplate(Role.ADMIN_ROLE)} href='javascript:;'>As System Template</a></li>
           </ul>
         </div>
       </>
@@ -131,7 +132,9 @@ interface Props {
   }, [currentTemplate])
 
   const closeAllOpenTemplate = () => {
+    if(templates){
     let list = templates;
+    console.log('list ',templates);
     list.forEach((item: Template, index: any) => {
       item.open = false;
      });
@@ -140,10 +143,11 @@ interface Props {
       type: TemplateActionsType.SetTemplates,
       payload: list
   });
+}
   }
 
   return (
-    <>
+    <div data-testid="ManageDocumentTemplateHeader">
       <ContentHeader title="Document Templates" tooltipType={5} className="manage-doc-temp-header">
         <div className="dropdown arrow-right float-right">
           <button disabled={disbaleAddButton}
@@ -157,7 +161,7 @@ interface Props {
           }
         </div>
       </ContentHeader>
-    </>
+    </div>
   )
 }
 

@@ -1253,7 +1253,7 @@ namespace DocManager.Tests
             var service = new ThumbnailService(mock.Object);
             //Act
             var result = await service.SaveWorkbenchDocument("5fb51519e223e0428d82c41b", "5fc0a3795e7b907ff896c1f1",
-                1, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey");
+                1, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey","");
             //Assert
             Assert.NotNull(result);
             //    Assert.Equal("5fc4ff933323758e51aa640a", result.fileId);
@@ -1308,7 +1308,7 @@ namespace DocManager.Tests
             var service = new ThumbnailService(mock.Object);
             //Act
             var result = await service.SaveWorkbenchDocument("5fb51519e223e0428d82c41b", "5fc0a3795e7b907ff896c1f1",
-                1, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey");
+                1, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey","");
             //Assert
             Assert.NotNull(result);
             //    Assert.Equal("5fc4ff933323758e51aa640a", result.fileId);
@@ -1359,7 +1359,7 @@ namespace DocManager.Tests
             var service = new ThumbnailService(mock.Object);
             //Act
             var result = await service.SaveWorkbenchDocument("5fb51519e223e0428d82c41b", "5fc0a3795e7b907ff896c1f1",
-                1, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey");
+                1, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey","");
             //Assert
             Assert.NotNull(result);
             //    Assert.Equal("5fc4ff933323758e51aa640a", result.fileId);
@@ -1413,7 +1413,7 @@ namespace DocManager.Tests
             var service = new ThumbnailService(mock.Object);
             //Act
             var result = await service.SaveTrashDocument("5fb51519e223e0428d82c41b", "5fc0a3795e7b907ff896c1f1",
-                1, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey");
+                1, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey", "");
             //Assert
             Assert.NotNull(result);
             // Assert.Equal("5fc4ff933323758e51aa640c", result.fileId);
@@ -1467,7 +1467,7 @@ namespace DocManager.Tests
             var service = new ThumbnailService(mock.Object);
             //Act
             var result = await service.SaveTrashDocument("5fb51519e223e0428d82c41b", "5fc0a3795e7b907ff896c1f1",
-                1, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey");
+                1, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey", "");
             //Assert
             Assert.NotNull(result);
             // Assert.Equal("5fc4ff933323758e51aa640c", result.fileId);
@@ -1519,7 +1519,7 @@ namespace DocManager.Tests
             var service = new ThumbnailService(mock.Object);
             //Act
             var result = await service.SaveTrashDocument("5fb51519e223e0428d82c41b", "5fc0a3795e7b907ff896c1f1",
-                1, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey");
+                1, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey", "");
             //Assert
             Assert.NotNull(result);
             // Assert.Equal("5fc4ff933323758e51aa640c", result.fileId);
@@ -1575,7 +1575,7 @@ namespace DocManager.Tests
 
             var service = new ThumbnailService(mock.Object);
             //Act
-            var result = await service.SaveCategoryDocument("5fb51519e223e0428d82c41b", "5fb5152ee223e0428d82c41c", "5fb51533e223e0428d82c41d", "5fbc8ac67501aedc18992591", 1, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey");
+            var result = await service.SaveCategoryDocument("5fb51519e223e0428d82c41b", "5fb5152ee223e0428d82c41c", "5fb51533e223e0428d82c41d", "5fbc8ac67501aedc18992591", 1, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey", "");
             //Assert
             Assert.NotNull(result);
             //Assert.Equal("5fb51533e223e0428d82c41d", result.oldFile);
@@ -1624,7 +1624,7 @@ namespace DocManager.Tests
 
             var service = new ThumbnailService(mock.Object);
             //Act
-            var result = await service.SaveCategoryDocument("5fb51519e223e0428d82c41b", "5fb5152ee223e0428d82c41c", "5fb51533e223e0428d82c41d", "5fbc8ac67501aedc18992591", 2, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey");
+            var result = await service.SaveCategoryDocument("5fb51519e223e0428d82c41b", "5fb5152ee223e0428d82c41c", "5fb51533e223e0428d82c41d", "5fbc8ac67501aedc18992591", 2, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey", "");
             //Assert
             Assert.NotNull(result);
             //Assert.Equal("5fb51533e223e0428d82c41d", result.oldFile);
@@ -1671,7 +1671,7 @@ namespace DocManager.Tests
 
             var service = new ThumbnailService(mock.Object);
             //Act
-            var result = await service.SaveCategoryDocument("5fb51519e223e0428d82c41b", "5fb5152ee223e0428d82c41c", "5fb51533e223e0428d82c41d", "5fbc8ac67501aedc18992591", 2, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey");
+            var result = await service.SaveCategoryDocument("5fb51519e223e0428d82c41b", "5fb5152ee223e0428d82c41c", "5fb51533e223e0428d82c41d", "5fbc8ac67501aedc18992591", 2, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey", "");
             //Assert
             Assert.NotNull(result);
             //Assert.Equal("5fb51533e223e0428d82c41d", result.oldFile);
@@ -1719,7 +1719,7 @@ namespace DocManager.Tests
 
             var service = new ThumbnailService(mock.Object);
             //Act
-            var result = await service.SaveCategoryDocument("5fb51519e223e0428d82c41b", "5fb5152ee223e0428d82c41c", "5fb51533e223e0428d82c41d", "5fbc8ac67501aedc18992591", 2, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey");
+            var result = await service.SaveCategoryDocument("5fb51519e223e0428d82c41b", "5fb5152ee223e0428d82c41c", "5fb51533e223e0428d82c41d", "5fbc8ac67501aedc18992591", 2, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey", "");
             //Assert
             Assert.NotNull(result);
             //Assert.Equal("5fb51533e223e0428d82c41d", result.oldFile);
@@ -1767,7 +1767,7 @@ namespace DocManager.Tests
 
             var service = new ThumbnailService(mock.Object);
             //Act
-            var result = await service.SaveCategoryDocument("5fb51519e223e0428d82c41b", "5fb5152ee223e0428d82c41c", "5fb51533e223e0428d82c41d", "5fbc8ac67501aedc18992591", 2, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey");
+            var result = await service.SaveCategoryDocument("5fb51519e223e0428d82c41b", "5fb5152ee223e0428d82c41c", "5fb51533e223e0428d82c41d", "5fbc8ac67501aedc18992591", 2, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey", "");
             //Assert
             Assert.NotNull(result);
             //Assert.Equal("5fb51533e223e0428d82c41d", result.oldFile);
@@ -1815,7 +1815,7 @@ namespace DocManager.Tests
 
             var service = new ThumbnailService(mock.Object);
             //Act
-            var result = await service.SaveCategoryDocument("5fb51519e223e0428d82c41b", "5fb5152ee223e0428d82c41c", "5fb51533e223e0428d82c41d", "5fbc8ac67501aedc18992591", 2, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey");
+            var result = await service.SaveCategoryDocument("5fb51519e223e0428d82c41b", "5fb5152ee223e0428d82c41c", "5fb51533e223e0428d82c41d", "5fbc8ac67501aedc18992591", 2, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey", "");
             //Assert
             Assert.Null(result.fileId);
             //Assert.Equal("5fb51533e223e0428d82c41d", result.oldFile);
@@ -1864,7 +1864,7 @@ namespace DocManager.Tests
 
             var service = new ThumbnailService(mock.Object);
             //Act
-            var result = await service.SaveCategoryDocument("5fb51519e223e0428d82c41b", "5fb5152ee223e0428d82c41c", "5fb51533e223e0428d82c41d", "5fbc8ac67501aedc18992591", 2, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey");
+            var result = await service.SaveCategoryDocument("5fb51519e223e0428d82c41b", "5fb5152ee223e0428d82c41c", "5fb51533e223e0428d82c41d", "5fbc8ac67501aedc18992591", 2, "abc", "mcuName", 2500, "application/pdf", 1, "salman", "AES", "FileKey", "");
             //Assert
             Assert.NotNull(result);
             //Assert.Equal("5fb51533e223e0428d82c41d", result.oldFile);
@@ -2754,7 +2754,7 @@ namespace DocManager.Tests
 
             //Act
             var result = await service.Submit(string.Empty, "5fb51519e223e0428d82c41b", "5fb5152ee223e0428d82c41c", "5fb51533e223e0428d82c41d", string.Empty,
-          string.Empty, It.IsAny<int>(), string.Empty, string.Empty, It.IsAny<int>(), It.IsAny<int>(), string.Empty, new List<string>());
+          string.Empty, It.IsAny<int>(), string.Empty, string.Empty, It.IsAny<int>(), It.IsAny<int>(), string.Empty, new List<string>(), "");
             //Assert
             Assert.NotNull(result);
 
@@ -2793,7 +2793,7 @@ namespace DocManager.Tests
 
             //Act
             var result = await service.Submit(string.Empty, "5fb51519e223e0428d82c41b", "5fb5152ee223e0428d82c41c", "5fb51533e223e0428d82c41d", string.Empty,
-          string.Empty, It.IsAny<int>(), string.Empty, string.Empty, It.IsAny<int>(), It.IsAny<int>(), string.Empty, new List<string>());
+          string.Empty, It.IsAny<int>(), string.Empty, string.Empty, It.IsAny<int>(), It.IsAny<int>(), string.Empty, new List<string>(), "");
             //Assert
             Assert.Null(result);
 

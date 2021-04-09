@@ -1,18 +1,11 @@
 import React from 'react';
-import { render, fireEvent, waitFor, getByTestId, getAllByTestId, act } from '@testing-library/react';
-import userEvent from '@testing-library/user-event'
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { MockEnvConfig } from '../../../test_utilities/EnvConfigMock';
 import { MockLocalStorage } from '../../../test_utilities/LocalStoreMock';
 import { StoreProvider } from '../../../Store/Store';
 import { Home } from '../Home';
 import DocumentActions from '../../../Store/actions/DocumentActions';
-import { TemplateActions } from '../../../Store/actions/TemplateActions';
-import { DocumentsTable } from '../DocumentsContainer/DocumentTableView/DocumentsTable/DocumentsTable';
-import App from '../../../App';
-import { Table } from 'react-bootstrap';
-import { DocumentsContainer } from '../DocumentsContainer/DocumentsContainer';
-import { AnnotationActions } from '../../../Utilities/AnnotationActions';
 // import DocumentActions from '../../../Store/actions/__mocks__/DocumentActions';
 
 
@@ -32,7 +25,7 @@ beforeEach(() => {
 describe('LOSSyncAlert', () => {
 
     test('Should show render sync alert popup', async () => {
-        const { getAllByTestId, getByTestId, getByText } = render(
+        const { getAllByTestId, getByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <Home />
@@ -57,7 +50,7 @@ describe('LOSSyncAlert', () => {
     });
 
     test('Should show start sync process', async () => {
-        const { getAllByTestId, getByTestId, getByText } = render(
+        const { getAllByTestId, getByTestId } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <Home />
@@ -91,7 +84,7 @@ describe('LOSSyncAlert', () => {
 
         DocumentActions.syncFileToLos = jest.fn(() => Promise.reject(false));
 
-        const { getAllByTestId, getByTestId, getByText } = render(
+        const { getAllByTestId, getByTestId   } = render(
             <StoreProvider>
                 <MemoryRouter initialEntries={[Url]}>
                     <Home />

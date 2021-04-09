@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using Rainmaker.Model;
 using Rainmaker.Service;
-
+using System.Threading.Tasks;
 
 namespace Rainmaker.API.Controllers
 {
@@ -19,18 +20,17 @@ namespace Rainmaker.API.Controllers
 
 
         [HttpPost(template: "[action]")]
-        public IActionResult ValidateUser(ValidateUserRequest request)
+        public async Task<IActionResult> ValidateUser(ValidateUserRequest request)
         {
 
-            Request.Headers.TryGetValue("CorrelationId",
-                                        out StringValues value);
-            var userProfile = _membershipService.ValidateUser(userName: request.UserName,
+            var tenantId = 1; // to be read from DB once we have tenant entity defined in rainmaker
+            var userProfile = await _membershipService.ValidateUser(tenantId: tenantId,userName: request.UserName,
                                                               password: request.Password,
                                                               employee: request.Employee);
 
             if (userProfile != null)
                 return Ok(value: userProfile);
-            return NotFound();
+            return NotFound(new ErrorModel { Message = "unable to find user" });
         }
 
 
@@ -47,7 +47,7 @@ namespace Rainmaker.API.Controllers
 
             if (userProfile != null)
                 return Ok(value: userProfile);
-            return NotFound();
+            return NotFound(new ErrorModel { Message = "unable to find user" });
         }
     }
 }

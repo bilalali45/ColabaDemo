@@ -8,6 +8,10 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
 using ByteWebConnector.SDK.Abstraction;
 using ByteWebConnector.SDK.Mismo;
+using ByteWebConnector.SDK.CorrelationHandlersAndMiddleware;
+using Serilog.Context;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace ByteWebConnector.SDK
 {
@@ -35,16 +39,34 @@ namespace ByteWebConnector.SDK
             services.AddScoped<IMismoConverter, MismoConverter34>();
             services.AddScoped<ITextFileWriter, TextFileWriter>();
             services.AddScoped<IByteSDKHelper, ByteSDKHelper>();
-
+            services.AddHttpContextAccessor();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.Use(async (httpContext, next) =>
+            {
+                var correlationId = httpContext.Request.Headers["CorrelationId"];
+                if (correlationId.Count > 0)
+                {
+                    var logger = httpContext.RequestServices.GetRequiredService<ILogger<Startup>>();
+                    using (logger.BeginScope(new Dictionary<string, object> { ["CorrelationId"] = correlationId[0] }))
+                    {
+                        await next();
+                    }
+                }
+                else
+                    await next();
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseMiddleware<ExceptionMiddleware>();
             }
             app.UseElmah();
             app.UseMvc();

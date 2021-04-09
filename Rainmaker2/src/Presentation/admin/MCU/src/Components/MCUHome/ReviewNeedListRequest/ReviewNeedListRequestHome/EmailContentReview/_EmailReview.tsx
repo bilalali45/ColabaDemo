@@ -9,6 +9,7 @@ import {Store} from '../../../../../Store/Store';
 import {RequestEmailTemplate} from '../../../../../Entities/Models/RequestEmailTemplate';
 import {Tokens} from '../../../../../Entities/Models/Token';
 import { LocalDB } from '../../../../../Utils/LocalDB';
+import { Error } from '../../../../../Entities/Models/Error';
 
 
 type props = {
@@ -177,7 +178,15 @@ export const EmailReview = ({
   const getSelectedEmailTemplate = async (id?: string) => {
     let loanApplicationId = LocalDB.getLoanAppliationId();
     let result = await RequestEmailTemplateActions.fetchDraftEmailTemplate(id, loanApplicationId)
-    dispatch({type:RequestEmailTemplateActionsType.SetSelectedEmailTemplate, payload: result})
+    if(result){
+      if(Error.successStatus.includes(result.status)){
+        dispatch({type:RequestEmailTemplateActionsType.SetSelectedEmailTemplate, payload: result.data})
+      }
+      else{
+        Error.setError(dispatch, result)
+      }
+    }
+    
   }
 
   const setDefaultValue = (template: any) => {

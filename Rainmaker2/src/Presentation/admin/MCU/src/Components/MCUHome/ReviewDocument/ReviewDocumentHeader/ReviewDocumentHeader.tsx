@@ -33,7 +33,7 @@ export const ReviewDocumentHeader = ({
   haveDocuments?: boolean;
   currentDocument:NeedList
 }) => {
-  console.log(currentDocument)
+  
   return (
     <div data-testid = "review-headerts"
       id="ReviewDocumentHeader"

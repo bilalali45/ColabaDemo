@@ -73,7 +73,7 @@ namespace LosIntegration.Service.InternalServices.Rainmaker
                               DocumentName,
                               DocumentCategory,
                               DocumentExension,
-                              Url = _configuration[key: "Urls"] + "/ api/LosIntegration/Document/SendFileToExternalOriginator"
+                              Url = _configuration[key: "Urls"] + "/api/LosIntegration/Document/SendFileToExternalOriginator"
                           };
 
             var request = new HttpRequestMessage

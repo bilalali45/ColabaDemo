@@ -75,7 +75,7 @@ namespace DocumentManagement.API.Controllers
                                                                 userProfileId: userProfileId);
             if (docQuery)
                 return Ok();
-            return NotFound();
+            return NotFound(new ErrorModel { Code = 404, Message = "unable to rename template" });
         }
 
         [Authorize(Roles = "MCU")]
@@ -88,7 +88,7 @@ namespace DocumentManagement.API.Controllers
                                                                 newname: renameTemplateModel.name);
             if (docQuery)
                 return Ok();
-            return NotFound();
+            return NotFound(new ErrorModel { Code = 404, Message = "unable to rename template" });
         }
 
         [Authorize(Roles = "MCU")]
@@ -129,7 +129,7 @@ namespace DocumentManagement.API.Controllers
 
             if (docQuery)
                 return Ok();
-            return NotFound();
+            return NotFound(new ErrorModel { Code = 404, Message = "unable to add template document" });
         }
 
         [Authorize(Roles = "MCU")]
@@ -144,7 +144,7 @@ namespace DocumentManagement.API.Controllers
 
             if (docQuery)
                 return Ok();
-            return NotFound();
+            return NotFound(new ErrorModel { Code = 404, Message = "unable to add template document" });
         }
 
         [Authorize(Roles = "MCU")]
@@ -173,7 +173,7 @@ namespace DocumentManagement.API.Controllers
                                                                 userProfileId: userProfileId);
             if (docQuery)
                 return Ok();
-            return NotFound();
+            return NotFound(new ErrorModel { Code = 404, Message = "unable to delete document" });
         }
 
         [Authorize(Roles = "MCU")]
@@ -186,7 +186,7 @@ namespace DocumentManagement.API.Controllers
                                                                 documentid: deleteDocumentModel.documentId);
             if (docQuery)
                 return Ok();
-            return NotFound();
+            return NotFound(new ErrorModel { Code = 404, Message = "unable to delete document" });
         }
 
         [Authorize(Roles = "MCU")]
@@ -200,7 +200,7 @@ namespace DocumentManagement.API.Controllers
                                                                 userProfileId: userProfileId);
             if (docQuery)
                 return Ok();
-            return NotFound();
+            return NotFound(new ErrorModel { Code = 404, Message = "unable to delete template" });
         }
 
         [Authorize(Roles = "MCU")]
@@ -212,7 +212,7 @@ namespace DocumentManagement.API.Controllers
                                                                 tenantId: tenantId);
             if (docQuery)
                 return Ok();
-            return NotFound();
+            return NotFound(new ErrorModel { Code = 404, Message = "unable to delete template" });
         }
 
         #endregion

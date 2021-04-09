@@ -4,6 +4,11 @@ using System.Collections.Generic;
 
 namespace Notification.Model
 {
+    public class ErrorModel
+    {
+        public int Code { get; set; }
+        public string Message { get; set; }
+    }
     public class TenantSettingModel
     {
         public short deliveryModeId { get; set; }

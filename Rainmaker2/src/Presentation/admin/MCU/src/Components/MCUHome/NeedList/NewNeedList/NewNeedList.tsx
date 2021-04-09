@@ -34,6 +34,7 @@ import {
 } from '../../../../Utils/helpers/Common';
 import { RequestEmailTemplateActionsType } from '../../../../Store/reducers/RequestEmailTemplateReducer';
 import { RequestEmailTemplate } from '../../../../Entities/Models/RequestEmailTemplate';
+import { Error } from '../../../../Entities/Models/Error';
 
 export const NewNeedList = () => {
 
@@ -164,13 +165,16 @@ export const NewNeedList = () => {
   const fetchLoanApplicationDetail = async () => {
     let applicationId = LocalDB.getLoanAppliationId();
     if (applicationId) {
-      let res:
-        | LoanApplication
-        | undefined = await NeedListActions.getLoanApplicationDetail(
+      let res = await NeedListActions.getLoanApplicationDetail(
         applicationId
       );
       if (res) {
-        dispatch({type: NeedListActionsType.SetLoanInfo, payload: res});
+        if(Error.successStatus.includes(res.status)){
+          dispatch({type: NeedListActionsType.SetLoanInfo, payload: res});
+        }
+       else{
+        Error.setError(dispatch, res)
+       }
         // setLoanInfo(res)
       }
     }
@@ -194,9 +198,18 @@ export const NewNeedList = () => {
 
     let documentsWithTemplate: DocumentsWithTemplateDetails[] | undefined;
     if (ids?.length) {
-      documentsWithTemplate = await NewNeedListActions.getDocumentsFromSelectedTemplates(
+      let res = await NewNeedListActions.getDocumentsFromSelectedTemplates(
         ids
       );
+
+      if(res){
+        if(Error.successStatus.includes(res.status)){
+          documentsWithTemplate = res.data
+        }
+        else{
+          Error.setError(dispatch, res)
+        }
+      }
     } else {
       documentsWithTemplate = [];
     }
@@ -238,24 +251,33 @@ export const NewNeedList = () => {
 
   const fetchDraftDocuments = async () => {
     setRequestSent(true);
-    let documents: any = await NewNeedListActions.getDraft(
+    let res: any = await NewNeedListActions.getDraft(
       LocalDB.getLoanAppliationId()
     );
-    const data = documents?.draftDocuments?.map((obj: any) => ({
-      ...obj,
-      isRejected: false,
-      localId: v4()
-    }));
-    setDraftDocuments(data);
-    dispatch({
-      type: TemplateActionsType.SetSelectedTemplateDocuments,
-      payload: data
-    });
-    dispatch({
-      type: RequestEmailTemplateActionsType.SetDraftEmail,
-      payload: documents.draftEmail
-    });
-    setRequestSent(false);
+    if(res){
+      if(Error.successStatus.includes(res.status)){
+        let documents = res.data
+        const data = documents?.draftDocuments?.map((obj: any) => ({
+          ...obj,
+          isRejected: false,
+          localId: v4()
+        }));
+        setDraftDocuments(data);
+        dispatch({
+          type: TemplateActionsType.SetSelectedTemplateDocuments,
+          payload: data
+        });
+        dispatch({
+          type: RequestEmailTemplateActionsType.SetDraftEmail,
+          payload: documents.draftEmail
+        });
+        setRequestSent(false);
+      }
+      else{
+        Error.setError(dispatch, res)
+      }
+    }
+    
   };
 
   const updateDocumentMessage = (
@@ -277,13 +299,22 @@ export const NewNeedList = () => {
   };
 
   const fetchCurrentCatDocs = async () => {
-    let currentCatDocs: any = await TemplateActions.fetchCategoryDocuments();
-    if (currentCatDocs) {
-      dispatch({
-        type: TemplateActionsType.SetCategoryDocuments,
-        payload: currentCatDocs
-      });
-    }
+    let res= await TemplateActions.fetchCategoryDocuments();
+    if(res){
+      if(Error.successStatus.includes(res.status)){
+        let currentCatDocs: any = res.data
+        if (currentCatDocs) {
+          dispatch({
+            type: TemplateActionsType.SetCategoryDocuments,
+            payload: currentCatDocs
+          });
+        }
+      }
+      else{
+          Error.setError(dispatch, res)
+      }
+  }
+    
   };
 
   const addDocumentToList = (doc: any, type: string) => {
@@ -334,16 +365,24 @@ export const NewNeedList = () => {
       let body = emailContent?.emailBody;
       emailData.emailBody = body?.replace(regExOpenTag,'<li style="padding-bottom: 10px;">');
     }
-    await NewNeedListActions.saveNeedList(LocalDB.getLoanAppliationId(), toDraft, emailData, allDocuments);
-    if (toDraft) {
-      history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
-    } else {
-      setShowSendButton(false);
-      setTimeout(() => {
-        history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
-      }, 1000);
+    let res = await NewNeedListActions.saveNeedList(LocalDB.getLoanAppliationId(), toDraft, emailData, allDocuments);
+    if(res){
+      if(Error.successStatus.includes(res.status)){
+        if (toDraft) {
+          history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
+        } else {
+          setShowSendButton(false);
+          setTimeout(() => {
+            history.push(`/needList/${LocalDB.getLoanAppliationId()}`);
+          }, 1000);
+        }
+        disableBrowserPrompt();
+      }
+      else{
+        Error.setError(dispatch, res)
+      }
     }
-    disableBrowserPrompt();
+    
   };
 
 
@@ -385,14 +424,23 @@ export const NewNeedList = () => {
   const saveAsTemplate = async () => {
     setCustomDocuments([]);
     setDraftDocuments([]);
-    let id = await NewNeedListActions.saveAsTemplate(
+    let res = await NewNeedListActions.saveAsTemplate(
       templateName,
       allDocuments
     );
-    dispatch({type: TemplateActionsType.SetTemplates, payload: null});
-    dispatch({type: NeedListActionsType.SetTemplateIds, payload: [id]});
-    setTemplateName('');
-    enableBrowserPrompt();
+    if(res){
+      if(Error.successStatus.includes(res.status)){
+        let id = res.data
+        dispatch({type: TemplateActionsType.SetTemplates, payload: null});
+        dispatch({type: NeedListActionsType.SetTemplateIds, payload: [id]});
+        setTemplateName('');
+        enableBrowserPrompt();
+      }
+      else{
+        Error.setError(dispatch, res)
+      }
+    }
+    
   };
 
   const removeDocumentFromList = async (doc: TemplateDocument) => {
@@ -433,7 +481,15 @@ export const NewNeedList = () => {
 
   const getEmailTemplate = async () => {
     let res: any = await TemplateActions.fetchEmailTemplate();
-    setEmailTemplate(res);
+    if(res){
+      if(Error.successStatus.includes(res.status)){
+        setEmailTemplate(res.data);
+      }
+      else{
+          Error.setError(dispatch, res)
+      }
+  }
+    
   };
 
 

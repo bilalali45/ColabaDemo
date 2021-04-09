@@ -171,7 +171,7 @@ namespace DocManager.Service
             await rainmakerService.UpdateLoanInfo(loanApplication.loanApplicationId,"", authHeader);
             return true;
         }
-        public async Task<string> Submit(string contentType, string id, string requestId, string docId,string mcuName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId,int userId, string userName, IEnumerable<string> authHeader)
+        public async Task<string> Submit(string contentType, string id, string requestId, string docId,string mcuName, string serverName, int size, string encryptionKey, string encryptionAlgorithm, int tenantId,int userId, string userName, IEnumerable<string> authHeader, string salt)
         {
             IMongoCollection<Request> collection = mongoService.db.GetCollection<Request>("Request");
             var fileId = ObjectId.GenerateNewId();
@@ -224,7 +224,7 @@ namespace DocManager.Service
             {
                 { "$push", new BsonDocument()
                     {
-                        { "requests.$[request].documents.$[document].mcuFiles", new BsonDocument() { { "id", fileId }, { "clientName", BsonString.Empty } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", mcuName }, { "contentType", contentType }, { "status", FileStatus.SubmittedToMcu },{ "byteProStatus", ByteProStatus.NotSynchronized}, { "isRead", false }, { "userId", userId }, { "userName", userName } }   }
+                        { "requests.$[request].documents.$[document].mcuFiles", new BsonDocument() { { "id", fileId }, { "clientName", BsonString.Empty } , { "serverName", serverName }, { "fileUploadedOn", BsonDateTime.Create(DateTime.UtcNow) }, { "size", size }, { "encryptionKey", encryptionKey }, { "encryptionAlgorithm", encryptionAlgorithm }, { "order" , 0 }, { "mcuName", mcuName }, { "contentType", contentType }, { "status", FileStatus.SubmittedToMcu },{ "byteProStatus", ByteProStatus.NotSynchronized}, { "isRead", false }, { "userId", userId }, { "userName", userName },{"salt",salt } }   }
                     }
                 }
             }, new UpdateOptions()

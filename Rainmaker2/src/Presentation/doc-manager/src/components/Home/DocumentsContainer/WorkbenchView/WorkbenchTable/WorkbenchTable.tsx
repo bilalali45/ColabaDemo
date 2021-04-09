@@ -1,20 +1,16 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { WorkbenchItem } from './WorkbenchItem/WorkbenchItem'
-import { BorrowerDocIcon, MCUDocIcon } from '../../../../../shared/Components/Assets/SVG'
 import DocumentActions from '../../../../../Store/actions/DocumentActions';
 import { Store } from '../../../../../Store/Store';
 import { DocumentActionsType } from '../../../../../Store/reducers/documentsReducer'
-import { FileItem } from '../../DocumentTableView/DocumentsTable/FileItem/FileItem';
 import { LocalDB } from '../../../../../Utilities/LocalDB';
 import { DocumentRequest } from '../../../../../Models/DocumentRequest';
 import { PDFThumbnails } from '../../../../../Utilities/PDFThumbnails';
-import { AnnotationActions } from '../../../../../Utilities/AnnotationActions';
 import { ViewerTools } from '../../../../../Utilities/ViewerTools';
 import { ViewerActionsType } from '../../../../../Store/reducers/ViewerReducer';
 import { PDFActions } from '../../../../../Utilities/PDFActions';
 import { CurrentInView } from '../../../../../Models/CurrentInView';
 import { FileUpload } from '../../../../../Utilities/helpers/FileUpload';
-import { SelectedFile } from '../../../../../Models/SelectedFile';
 
 const nonExistentFileId = '000000000000000000000000';
 
@@ -29,13 +25,12 @@ export const WorkbenchTable = () => {
 
     const { state, dispatch } = useContext(Store);
     const { currentFile, isFileChanged }: any = state.viewer;
-    const { currentDoc, importedFileIds }: any = state.documents;
-    const selectedfiles: Document[] = currentDoc?.files || null;
+    const { importedFileIds }: any = state.documents;
     const documents: any = state.documents;
     let loanId = documents?.loanApplicationId;
     const workbenchItems: any = documents?.workbenchItems;
     const isDragging: any = documents?.isDragging;
-    let loanApplicationId = LocalDB.getLoanAppliationId();
+    
 
 
     useEffect(() => {

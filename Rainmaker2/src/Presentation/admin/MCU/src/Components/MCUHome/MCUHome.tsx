@@ -16,9 +16,12 @@ import { Authorized } from '../Authorized/Authorized';
 import { NewNeedList } from './NeedList/NewNeedList/NewNeedList';
 import { ReviewNeedListRequest } from './ReviewNeedListRequest/ReviewNeedListRequest';
 import { ParamsService } from '../../Utils/helpers/ParamService';
+import { ErrorView } from '../../Shared/components/ErrorView';
 
 export const MCUHome = () => {
   const { state, dispatch } = useContext(Store);
+  const error:any = state.error;
+  const errorObj = error.error;
   const { loanApplicationId } : any = useParams();
   const location = useLocation();
   ParamsService.storeParams(loanApplicationId);
@@ -38,6 +41,7 @@ export const MCUHome = () => {
 
   return (
     <section data-testid="mcu-home" className="home-layout">
+      {errorObj && errorObj.message && <ErrorView/>}
       <Switch>
         <Redirect
           exact

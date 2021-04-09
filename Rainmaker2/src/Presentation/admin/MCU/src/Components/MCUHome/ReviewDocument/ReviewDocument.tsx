@@ -15,6 +15,7 @@ import {
   NeedListActionsType
 } from '../../../Store/reducers/NeedListReducer';
 import { NeedList } from '../../../Entities/Models/NeedList';
+import { Error } from '../../../Entities/Models/Error';
 import { DocumentStatus } from '../../../Entities/Types/Types';
 import { timeout } from '../../../Utils/helpers/Delay';
 import { ReviewDocumentActions } from '../../../Store/actions/ReviewDocumentActions';
@@ -63,9 +64,17 @@ export const ReviewDocument = () => {
         setLoading(true);
         let response = await ReviewDocumentActions.getDocumentForView(id, requestId, docId, fileId)
 
-        setBlobData(response);
-        setFileViewd(true);
-        setLoading(false);
+        if(response){
+          if(Error.successStatus.includes(response.status) ){
+            setBlobData(response.data);
+            setFileViewd(true);
+            setLoading(false);
+          }
+          else{
+            Error.setError(dispatch, response)
+          }
+        }
+        
       } catch (error) {
         alert('Something went wrong while fetching document/file from server.');
 
@@ -232,7 +241,32 @@ export const ReviewDocument = () => {
           setAcceptRejectLoading(true);
 
           const { id, requestId, docId } = currentDocument;
-          await ReviewDocumentActions.acceptDocument(id, requestId, docId);
+          let res = await ReviewDocumentActions.acceptDocument(id, requestId, docId);
+          if(res){
+            if(Error.successStatus.includes(res.status)){
+              setAcceptRejectLoading(false);
+
+              const clonedNeedList = _.cloneDeep(needList);
+    
+              const clonedCurrentDocument = clonedNeedList[navigationIndex];
+              clonedCurrentDocument.status = DocumentStatus.COMPLETED;
+    
+              dispatch({
+                type: NeedListActionsType.SetNeedListTableDATA,
+                payload: clonedNeedList
+              });
+    
+              setCurrentDocument(clonedCurrentDocument);
+    
+              await timeout(1000);
+    
+              navigateDocument(clonedNeedList, 'next');
+            }
+            else{
+              Error.setError(dispatch, res)
+              setAcceptRejectLoading(false);
+            }
+          }
           // const http = new Http();
 
           // await http.post(NeedListEndpoints.POST.documents.accept(), {
@@ -241,23 +275,7 @@ export const ReviewDocument = () => {
           //   docId
           // });
 
-          setAcceptRejectLoading(false);
-
-          const clonedNeedList = _.cloneDeep(needList);
-
-          const clonedCurrentDocument = clonedNeedList[navigationIndex];
-          clonedCurrentDocument.status = DocumentStatus.COMPLETED;
-
-          dispatch({
-            type: NeedListActionsType.SetNeedListTableDATA,
-            payload: clonedNeedList
-          });
-
-          setCurrentDocument(clonedCurrentDocument);
-
-          await timeout(1000);
-
-          navigateDocument(clonedNeedList, 'next');
+          
         } catch (error) {
           alert('Something went wrong. Please try again later.');
 
@@ -278,8 +296,8 @@ export const ReviewDocument = () => {
 
           const loanApplicationId = Number(LocalDB.getLoanAppliationId());
           //  await ReviewDocumentActions.rejectDocument(loanApplicationId,id, requestId, docId);
-
-          await Http.post(NeedListEndpoints.POST.documents.reject(), {
+          try{
+          let res = await Http.post(NeedListEndpoints.POST.documents.reject(), {
             loanApplicationId,
             id,
             requestId,
@@ -287,23 +305,36 @@ export const ReviewDocument = () => {
             message: rejectDocumentMessage.trim()
           });
 
-          setAcceptRejectLoading(false);
+          if(res){
+            if(Error.successStatus.includes(res.status)){
+              setAcceptRejectLoading(false);
 
-          const clonedNeedList = _.cloneDeep(needList);
-
-          const clonedCurrentDocument = clonedNeedList[navigationIndex];
-          clonedCurrentDocument.status = DocumentStatus.IN_DRAFT;
-
-          dispatch({
-            type: NeedListActionsType.SetNeedListTableDATA,
-            payload: clonedNeedList
-          });
-
-          setCurrentDocument(clonedCurrentDocument);
-
-          await timeout(1000);
-
-          navigateDocument(needList, 'next');
+              const clonedNeedList = _.cloneDeep(needList);
+    
+              const clonedCurrentDocument = clonedNeedList[navigationIndex];
+              clonedCurrentDocument.status = DocumentStatus.IN_DRAFT;
+    
+              dispatch({
+                type: NeedListActionsType.SetNeedListTableDATA,
+                payload: clonedNeedList
+              });
+    
+              setCurrentDocument(clonedCurrentDocument);
+    
+              await timeout(1000);
+    
+              navigateDocument(needList, 'next');
+            }
+            else{
+              Error.setError(dispatch, res)
+            }
+          }
+        }catch(error){
+            Error.setError(dispatch, error)
+            setAcceptRejectLoading(false);
+          }
+  
+          
         } catch (error) {
           alert('Something went wrong. Please try again later.');
 

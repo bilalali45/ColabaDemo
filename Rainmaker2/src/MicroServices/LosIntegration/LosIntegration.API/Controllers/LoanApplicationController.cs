@@ -67,7 +67,11 @@ namespace LosIntegration.API.Controllers
                     var statusNameResponse = await this._byteWebConnectorService.GetByteLoanStatusNameViaSDK(loanApplicationDetail.ByteFileName);
                     if (statusNameResponse == null)
                     {
-                        throw new Exception("Cannot retrieve loan status response.");
+                        return NotFound(new
+                        {
+                            Message = "Cannot retrieve loan status response."
+                        }) ;
+                        //throw new Exception("Cannot retrieve loan status response.");
                     }
                     else
                     {
