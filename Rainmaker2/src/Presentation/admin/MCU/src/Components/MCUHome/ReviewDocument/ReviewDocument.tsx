@@ -49,8 +49,8 @@ export const ReviewDocument = () => {
   const location = useLocation();
   const { state } = location;
 
-  const {PSPDF_LICENSE_BASE_URL, PSPDF_LICENSE_KEY} = window?.envConfig;
-  
+  const { PSPDF_LICENSE_BASE_URL, PSPDF_LICENSE_KEY } = window?.envConfig;
+
   const goBack = () => {
     history.push(`/needlist/${LocalDB.getLoanAppliationId()}`);
   };
@@ -64,17 +64,17 @@ export const ReviewDocument = () => {
         setLoading(true);
         let response = await ReviewDocumentActions.getDocumentForView(id, requestId, docId, fileId)
 
-        if(response){
-          if(Error.successStatus.includes(response.status) ){
+        if (response) {
+          if (Error.successStatus.includes(response.status)) {
             setBlobData(response.data);
             setFileViewd(true);
             setLoading(false);
           }
-          else{
+          else {
             Error.setError(dispatch, response)
           }
         }
-        
+
       } catch (error) {
         alert('Something went wrong while fetching document/file from server.');
 
@@ -84,13 +84,13 @@ export const ReviewDocument = () => {
     []
   );
 
-  useEffect(()=>{
-    if(currentDocument){
+  useEffect(() => {
+    if (currentDocument) {
       const { id, requestId, docId, files } = currentDocument;
       getDocumentForView(id, requestId, docId, files[currentFileIndex].id);
     }
-    
-  },[MCUName])
+
+  }, [MCUName])
 
 
   const moveNextFile = useCallback(
@@ -242,27 +242,27 @@ export const ReviewDocument = () => {
 
           const { id, requestId, docId } = currentDocument;
           let res = await ReviewDocumentActions.acceptDocument(id, requestId, docId);
-          if(res){
-            if(Error.successStatus.includes(res.status)){
+          if (res) {
+            if (Error.successStatus.includes(res.status)) {
               setAcceptRejectLoading(false);
 
               const clonedNeedList = _.cloneDeep(needList);
-    
+
               const clonedCurrentDocument = clonedNeedList[navigationIndex];
               clonedCurrentDocument.status = DocumentStatus.COMPLETED;
-    
+
               dispatch({
                 type: NeedListActionsType.SetNeedListTableDATA,
                 payload: clonedNeedList
               });
-    
+
               setCurrentDocument(clonedCurrentDocument);
-    
+
               await timeout(1000);
-    
+
               navigateDocument(clonedNeedList, 'next');
             }
-            else{
+            else {
               Error.setError(dispatch, res)
               setAcceptRejectLoading(false);
             }
@@ -275,7 +275,7 @@ export const ReviewDocument = () => {
           //   docId
           // });
 
-          
+
         } catch (error) {
           alert('Something went wrong. Please try again later.');
 
@@ -296,45 +296,45 @@ export const ReviewDocument = () => {
 
           const loanApplicationId = Number(LocalDB.getLoanAppliationId());
           //  await ReviewDocumentActions.rejectDocument(loanApplicationId,id, requestId, docId);
-          try{
-          let res = await Http.post(NeedListEndpoints.POST.documents.reject(), {
-            loanApplicationId,
-            id,
-            requestId,
-            docId,
-            message: rejectDocumentMessage.trim()
-          });
+          try {
+            let res = await Http.post(NeedListEndpoints.POST.documents.reject(), {
+              loanApplicationId,
+              id,
+              requestId,
+              docId,
+              message: rejectDocumentMessage.trim()
+            });
 
-          if(res){
-            if(Error.successStatus.includes(res.status)){
-              setAcceptRejectLoading(false);
+            if (res) {
+              if (Error.successStatus.includes(res.status)) {
+                setAcceptRejectLoading(false);
 
-              const clonedNeedList = _.cloneDeep(needList);
-    
-              const clonedCurrentDocument = clonedNeedList[navigationIndex];
-              clonedCurrentDocument.status = DocumentStatus.IN_DRAFT;
-    
-              dispatch({
-                type: NeedListActionsType.SetNeedListTableDATA,
-                payload: clonedNeedList
-              });
-    
-              setCurrentDocument(clonedCurrentDocument);
-    
-              await timeout(1000);
-    
-              navigateDocument(needList, 'next');
+                const clonedNeedList = _.cloneDeep(needList);
+
+                const clonedCurrentDocument = clonedNeedList[navigationIndex];
+                clonedCurrentDocument.status = DocumentStatus.IN_DRAFT;
+
+                dispatch({
+                  type: NeedListActionsType.SetNeedListTableDATA,
+                  payload: clonedNeedList
+                });
+
+                setCurrentDocument(clonedCurrentDocument);
+
+                await timeout(1000);
+
+                navigateDocument(needList, 'next');
+              }
+              else {
+                Error.setError(dispatch, res)
+              }
             }
-            else{
-              Error.setError(dispatch, res)
-            }
-          }
-        }catch(error){
+          } catch (error) {
             Error.setError(dispatch, error)
             setAcceptRejectLoading(false);
           }
-  
-          
+
+
         } catch (error) {
           alert('Something went wrong. Please try again later.');
 
@@ -529,32 +529,32 @@ export const ReviewDocument = () => {
           {!!currentDocument &&
             currentDocument.files &&
             currentDocument.files.length ? (
-              <div className="review-document-body--content col-md-8" style={loading ? {display:'flex', justifyContent:'center'}: {}}>
-                <div className="doc-view-mcu" data-testid="document-preview">
-                  {loading && (
-                   <Loader />
-                  )}                  
-                    {!loading && blobData && 
-                    <PSPDFKitWebViewer
-                      documentURL={blobData?.data}
-                      appBaseURL={PSPDF_LICENSE_BASE_URL}
-                      licenseKey={PSPDF_LICENSE_KEY}
-                      clientName={MCUName || clientName}
-                    />
-                  }
-                </div>
+            <div className="review-document-body--content col-md-8" style={loading ? { display: 'flex', justifyContent: 'center' } : {}}>
+              <div className="doc-view-mcu" data-testid="document-preview">
+                {loading && (
+                  <Loader />
+                )}
+                {!loading && blobData &&
+                  <PSPDFKitWebViewer
+                    documentURL={blobData}
+                    appBaseURL={PSPDF_LICENSE_BASE_URL}
+                    licenseKey={PSPDF_LICENSE_KEY}
+                    clientName={MCUName || clientName}
+                  />
+                }
               </div>
-            ) : (
-              <div className="no-preview">
-                <div className="no-preview--wrap">
-                  <div className="clearfix">
-                    <img src={emptyIcon} alt="No preview available" />
-                  </div>
-                  <h2>Nothing In {currentDocument?.docName}</h2>
-                  <p>No files yet</p>
+            </div>
+          ) : (
+            <div className="no-preview">
+              <div className="no-preview--wrap">
+                <div className="clearfix">
+                  <img src={emptyIcon} alt="No preview available" />
                 </div>
+                <h2>Nothing In {currentDocument?.docName}</h2>
+                <p>No files yet</p>
               </div>
-            )}
+            </div>
+          )}
           {/* review-document-body--content */}
           {!!currentDocument &&
             currentDocument.files &&
