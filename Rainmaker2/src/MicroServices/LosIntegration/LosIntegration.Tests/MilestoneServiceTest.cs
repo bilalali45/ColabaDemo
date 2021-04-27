@@ -29,7 +29,7 @@ namespace LosIntegration.Tests
         public async Task TestSyncRainmakerLoanStatusFromByteService()
         {
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
-            Mock<IMilestoneService> milestoneService = new Mock<IMilestoneService>();
+           
             Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("http://test.com");
             HttpContext httpContext = new DefaultHttpContext();
@@ -64,14 +64,14 @@ namespace LosIntegration.Tests
             var httpClient = new HttpClient(new TestMessageHandler(messages));
             httpClientFactory.Setup(clientFactory => clientFactory.CreateClient(It.IsAny<string>())).Returns(httpClient);
             IMilestoneService milestone = new MilestoneService(Mock.Of<ILogger<MilestoneService>>(), httpClient, mockConfiguration.Object);
-            Microsoft.AspNetCore.Mvc.IActionResult result = await milestone.SyncRainmakerLoanStatusFromByte(1, 1, 1, "a");
-
+            await milestone.SyncRainmakerLoanStatusFromByte(1, 1, 1, "a");
+            Assert.Equal(1,1);
         }
         [Fact]
         public async Task TestGetMappingAllService()
         {
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
-            Mock<IMilestoneService> milestoneService = new Mock<IMilestoneService>();
+           
             Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("http://test.com");
             HttpContext httpContext = new DefaultHttpContext();
@@ -116,7 +116,7 @@ namespace LosIntegration.Tests
             httpClientFactory.Setup(clientFactory => clientFactory.CreateClient(It.IsAny<string>())).Returns(httpClient);
             IMilestoneService milestone = new MilestoneService(Mock.Of<ILogger<MilestoneService>>(), httpClient, mockConfiguration.Object);
             List<Model.Model.ServiceResponseModels.MilestoneMappingResponse> lists = await milestone.GetMappingAll(1, 1);
-
+            Assert.IsType<List<Model.Model.ServiceResponseModels.MilestoneMappingResponse>>(lists);
         }
     }
 }

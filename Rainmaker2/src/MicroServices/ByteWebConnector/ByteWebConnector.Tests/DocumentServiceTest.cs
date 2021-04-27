@@ -36,7 +36,7 @@ namespace ByteWebConnector.Tests
     public class DocumentServiceTest
     {
         [Fact]
-        public async Task TestSendDocumentToByteService()
+        public void TestSendDocumentToByteService()
         {
             Mock<ISettingService> settingService = new Mock<ISettingService>();
             Mock<IMapper> mappingService = new Mock<IMapper>();
@@ -147,7 +147,7 @@ namespace ByteWebConnector.Tests
             Assert.NotNull(respone.Data);
         }
         [Fact]
-        public async Task TestGetFileDataService()
+        public void TestGetFileDataService()
         {
             Mock<ISettingService> settingService = new Mock<ISettingService>();
             Mock<IMapper> mappingService = new Mock<IMapper>();

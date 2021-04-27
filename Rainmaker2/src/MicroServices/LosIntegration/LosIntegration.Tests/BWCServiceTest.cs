@@ -34,7 +34,7 @@ namespace LosIntegration.Tests
         public async Task TestSendDocumentService()
         {
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
-            Mock<IMilestoneService> milestoneService = new Mock<IMilestoneService>();
+          
             Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("http://test.com");
             HttpContext httpContext = new DefaultHttpContext();
@@ -71,13 +71,13 @@ namespace LosIntegration.Tests
             IByteWebConnectorService byteWebConnectorService = new ByteWebConnectorService(Mock.Of<ILogger<ByteWebConnectorService>>(), httpClient, mockConfiguration.Object);
             SendDocumentRequest sendDocumentRequest = new SendDocumentRequest();
             ServiceCallHelper.CallResponse<Model.Model.ServiceResponseModels.ByteWebConnector.SendSdkDocumentResponse> callResponse = await byteWebConnectorService.SendDocument(sendDocumentRequest);
-
+            Assert.IsType<ServiceCallHelper.CallResponse<Model.Model.ServiceResponseModels.ByteWebConnector.SendSdkDocumentResponse>>(callResponse);
         }
         [Fact]
         public async Task TestGetDocumentDataFromByteService()
         {
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
-            Mock<IMilestoneService> milestoneService = new Mock<IMilestoneService>();
+            
             Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("http://test.com");
             HttpContext httpContext = new DefaultHttpContext();
@@ -114,13 +114,13 @@ namespace LosIntegration.Tests
             IByteWebConnectorService byteWebConnectorService = new ByteWebConnectorService(Mock.Of<ILogger<ByteWebConnectorService>>(), httpClient, mockConfiguration.Object);
             GetDocumentDataRequest getDocumentDataRequest = new GetDocumentDataRequest();
             EmbeddedDoc embeddedDoc = await byteWebConnectorService.GetDocumentDataFromByte(getDocumentDataRequest);
-
+            Assert.IsType<EmbeddedDoc>(embeddedDoc);
         }
         [Fact]
         public async Task TestUploadFileService()
         {
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
-            Mock<IMilestoneService> milestoneService = new Mock<IMilestoneService>();
+            
             Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("http://test.com");
             HttpContext httpContext = new DefaultHttpContext();
@@ -155,15 +155,15 @@ namespace LosIntegration.Tests
             var httpClient = new HttpClient(new TestMessageHandler(messages));
             httpClientFactory.Setup(clientFactory => clientFactory.CreateClient(It.IsAny<string>())).Returns(httpClient);
             IByteWebConnectorService byteWebConnectorService = new ByteWebConnectorService(Mock.Of<ILogger<ByteWebConnectorService>>(), httpClient, mockConfiguration.Object);
-            GetDocumentDataRequest getDocumentDataRequest = new GetDocumentDataRequest();
+           
             UploadFileResponse uploadFileResponse = await byteWebConnectorService.UploadFile("");
-
+            Assert.IsType<UploadFileResponse>(uploadFileResponse);
         }
         [Fact]
         public async Task TestSendLoanApplicationService()
         {
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
-            Mock<IMilestoneService> milestoneService = new Mock<IMilestoneService>();
+           
             Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("http://test.com");
             HttpContext httpContext = new DefaultHttpContext();
@@ -202,7 +202,7 @@ namespace LosIntegration.Tests
             LoanRequest loanRequest = new LoanRequest();
             List<ThirdPartyCode> byteProCodeList = new List<ThirdPartyCode>();
             ServiceCallHelper.CallResponse<ApiResponse<LoanFileInfo>> callResponse = await byteWebConnectorService.SendLoanApplication(loanApplication,loanRequest,byteProCodeList);
-
+            Assert.IsType<ServiceCallHelper.CallResponse<ApiResponse<LoanFileInfo>>>(callResponse);
         }
         [Fact]
         public async Task TestSendLoanApplicationViaSDKService()
@@ -244,16 +244,16 @@ namespace LosIntegration.Tests
             httpClientFactory.Setup(clientFactory => clientFactory.CreateClient(It.IsAny<string>())).Returns(httpClient);
             IByteWebConnectorService byteWebConnectorService = new ByteWebConnectorService(Mock.Of<ILogger<ByteWebConnectorService>>(), httpClient, mockConfiguration.Object);
             LoanApplication loanApplication = new LoanApplication();
-            LoanRequest loanRequest = new LoanRequest();
+          
             List<ThirdPartyCode> byteProCodeList = new List<ThirdPartyCode>();
             ServiceCallHelper.CallResponse<ApiResponse<LoanFileInfo>> callResponse = await byteWebConnectorService.SendLoanApplicationViaSDK(loanApplication, byteProCodeList);
-
+            Assert.IsType<ServiceCallHelper.CallResponse<ApiResponse<LoanFileInfo>>>(callResponse);
         }
         [Fact]
         public async Task TestGetByteLoanStatusNameViaSDKService()
         {
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
-            Mock<IMilestoneService> milestoneService = new Mock<IMilestoneService>();
+          
             Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("http://test.com");
             HttpContext httpContext = new DefaultHttpContext();
@@ -288,7 +288,7 @@ namespace LosIntegration.Tests
             httpClientFactory.Setup(clientFactory => clientFactory.CreateClient(It.IsAny<string>())).Returns(httpClient);
             IByteWebConnectorService byteWebConnectorService = new ByteWebConnectorService(Mock.Of<ILogger<ByteWebConnectorService>>(), httpClient, mockConfiguration.Object);
             ServiceCallHelper.CallResponse<ApiResponse<string>> callResponse = await byteWebConnectorService.GetByteLoanStatusNameViaSDK("byte");
-
+            Assert.IsType<ServiceCallHelper.CallResponse<ApiResponse<string>>>(callResponse);
         }
     }
 }

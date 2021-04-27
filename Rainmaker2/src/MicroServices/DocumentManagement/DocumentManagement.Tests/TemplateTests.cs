@@ -221,7 +221,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.Template>> mockCollection = new Mock<IMongoCollection<Entity.Template>>();
-            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+           
 
             mockdb.Setup(x => x.GetCollection<Entity.Template>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
             mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Template>>(), It.IsAny<UpdateDefinition<Entity.Template>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
@@ -242,7 +242,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.Template>> mockCollection = new Mock<IMongoCollection<Entity.Template>>();
-            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+            
 
             mockdb.Setup(x => x.GetCollection<Entity.Template>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
             mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Entity.Template>>(), It.IsAny<UpdateDefinition<Entity.Template>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(1, 1, BsonInt32.Create(1)));
@@ -294,7 +294,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<Entity.Template>> mockCollection = new Mock<IMongoCollection<Entity.Template>>();
-            Mock<IMongoCollection<Entity.Template>> mockCollectionTenant = new Mock<IMongoCollection<Entity.Template>>();
+           
             Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
 
             List<BsonDocument> list = new List<BsonDocument>()
@@ -1299,7 +1299,7 @@ namespace DocumentManagement.Tests
             addTemplateModel.name = "Insert Tenant Template";
             addTemplateModel.documentTypes = new List<DocumentManagement.Model.Template.TemplateDocument>();
 
-           // templateDocument.id = "5f0701b8c4577f7180cd9dc3";
+           
             templateDocument.docName = "abcbbc";
             addTemplateModel.documentTypes.Add(templateDocument);
             string result = await templateService.SaveTemplate(addTemplateModel, 3872,1);
@@ -1327,7 +1327,7 @@ namespace DocumentManagement.Tests
             addTemplateModel.name = "Insert Tenant Template";
             addTemplateModel.documentTypes = new List<DocumentManagement.Model.Template.TemplateDocument>();
             DocumentManagement.Model.Template.TemplateDocument templateDocument = new DocumentManagement.Model.Template.TemplateDocument();
-           // templateDocument.id = "5f0701b8c4577f7180cd9dc3";
+          
             templateDocument.typeId = "5ebc18cba5d847268075ad22";
             addTemplateModel.documentTypes.Add(templateDocument);
             string result = await templateService.SaveTemplate(addTemplateModel, 3872, 1);

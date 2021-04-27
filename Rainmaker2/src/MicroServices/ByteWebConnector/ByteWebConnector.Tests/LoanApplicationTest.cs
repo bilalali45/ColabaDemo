@@ -42,7 +42,7 @@ namespace ByteWebConnector.Tests
         }
 
         [Fact]
-        public async void GetLoanStatusController()
+        public void GetLoanStatusController()
         {
             Mock<IByteProService> byteProService = new Mock<IByteProService>();
             Mock<IByteWebConnectorSdkService> bwcsdkService = new Mock<IByteWebConnectorSdkService>();
@@ -55,7 +55,7 @@ namespace ByteWebConnector.Tests
         }
 
         [Fact]
-        public async void GetLoanStatusControllerBadRequest()
+        public void GetLoanStatusControllerBadRequest()
         {
             Mock<IByteProService> byteProService = new Mock<IByteProService>();
             Mock<IByteWebConnectorSdkService> bwcsdkService = new Mock<IByteWebConnectorSdkService>();
@@ -67,7 +67,7 @@ namespace ByteWebConnector.Tests
 
         }
         [Fact]
-        public async void GetLoanStatusControllerBadRequestParse()
+        public void GetLoanStatusControllerBadRequestParse()
         {
             Mock<IByteProService> byteProService = new Mock<IByteProService>();
             Mock<IByteWebConnectorSdkService> bwcsdkService = new Mock<IByteWebConnectorSdkService>();

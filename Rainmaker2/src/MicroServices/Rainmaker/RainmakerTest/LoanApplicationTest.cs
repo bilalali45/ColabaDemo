@@ -273,7 +273,7 @@ namespace RainmakerTest
             Assert.IsType<OkObjectResult>(result);
             var content = (result as OkObjectResult).Value as LoanOfficer;
             Assert.Null(content);
-            // Assert.Null(content.FirstName);
+           
         }
         [Fact]
         public async Task TestGetLOInfoIsnullObjController()
@@ -304,7 +304,7 @@ namespace RainmakerTest
             Assert.IsType<OkObjectResult>(result);
             var content = (result as OkObjectResult).Value as LoanOfficer;
             Assert.Null(content);
-            // Assert.Null(content.FirstName);
+            
         }
        [Fact]
         public async Task GetLOInfo()
@@ -515,7 +515,7 @@ namespace RainmakerTest
             int? businessUnitId = 1;
 
             mockcommonservice.Setup(x => x.GetSettingFreshValueByKeyAsync<string>(SystemSettingKeys.FtpEmployeePhotoFolder, businessUnitId, default)).ReturnsAsync(string.Empty);
-            //  mockftpservice.Setup(x => x.DownloadStream(It.IsAny<string>())).ReturnsAsync(new MemoryStream());
+           
             mockftpservice.Setup(x => x.DownloadStream(It.IsAny<string>())).Throws(new Exception(""));
 
             LoanApplicationModel loanApplicationModel = new LoanApplicationModel();
@@ -861,7 +861,7 @@ namespace RainmakerTest
             sendBorrowerEmailModel.loanApplicationId = 1;
             sendBorrowerEmailModel.emailBody = "Email sent";
             sendBorrowerEmailModel.activityForId = (int)ActivityForType.DocumentSyncFailureActivity;
-            var activityEnumType = (ActivityForType)sendBorrowerEmailModel.activityForId;
+           
 
             mock.Setup(x => x.GetByLoanApplicationId(It.IsAny<int>())).ReturnsAsync(loanApplicationModel);
 
@@ -887,7 +887,7 @@ namespace RainmakerTest
                 CampaignId = null,
                 ActivityId = activity.Id,
                 ActivityTypeId = activity.ActivityTypeId,
-                CreatedBy = 1,//todo: employee userid
+                CreatedBy = 1,
                 CreatedOnUtc = DateTime.UtcNow,
                 EntityRefId = 1,
                 EntityRefTypeId = Constants.GetEntityType(typeof(Opportunity)),
@@ -940,7 +940,7 @@ namespace RainmakerTest
             sendBorrowerEmailModel.loanApplicationId = 1;
             sendBorrowerEmailModel.emailBody = "Email sent";
             sendBorrowerEmailModel.activityForId = (int)ActivityForType.DocumentSyncFailureActivity;
-            var activityEnumType = (ActivityForType)sendBorrowerEmailModel.activityForId;
+           
 
             mock.Setup(x => x.GetByLoanApplicationId(It.IsAny<int>())).ReturnsAsync(loanApplicationModel);
 
@@ -966,7 +966,7 @@ namespace RainmakerTest
                 CampaignId = null,
                 ActivityId = activity.Id,
                 ActivityTypeId = activity.ActivityTypeId,
-                CreatedBy = 1,//todo: employee userid
+                CreatedBy = 1,
                 CreatedOnUtc = DateTime.UtcNow,
                 EntityRefId = 1,
                 EntityRefTypeId = Constants.GetEntityType(typeof(Opportunity)),
@@ -993,51 +993,9 @@ namespace RainmakerTest
             await Assert.ThrowsAsync<RainMakerException>(async () => await loanApplicationController.SendBorrowerEmail(sendBorrowerEmailModel));
 
         }
-        //[Fact]
-        //public async Task TestSendBorrowerEmailControllerActivityIdNull()
-        //{
-        //    //Arrange
-        //    Mock<ILoanApplicationService> mock = new Mock<ILoanApplicationService>();
-        //    Mock<IActivityService> mockActivityService = new Mock<IActivityService>();
-        //    Mock<IWorkQueueService> mockWorkQueueService = new Mock<IWorkQueueService>();
-        //    Mock<IUserProfileService> mockUserProfileService = new Mock<IUserProfileService>();
-        //    var loanApplicationController = new LoanApplicationController(mock.Object, null, null, null, mockActivityService.Object, mockWorkQueueService.Object, mockUserProfileService.Object);
-
-        //    LoanApplicationModel loanApplicationModel = new LoanApplicationModel();
-        //    loanApplicationModel.BusinessUnitId = 1;
-        //    loanApplicationModel.OpportunityId = 1;
-        //    loanApplicationModel.LoanRequestId = 1;
-
-        //    SendBorrowerEmailModel sendBorrowerEmailModel = new SendBorrowerEmailModel();
-        //    sendBorrowerEmailModel.loanApplicationId = 1;
-        //    sendBorrowerEmailModel.emailBody = "Email sent";
-        //    sendBorrowerEmailModel.activityForId = (int)ActivityForType.LoanApplicationDocumentRejectActivity;
-        //    var activityEnumType = (ActivityForType)sendBorrowerEmailModel.activityForId;
-
-        //    mock.Setup(x => x.GetByLoanApplicationId(It.IsAny<int>())).ReturnsAsync(loanApplicationModel);
-
-        //    Activity activity = new Activity();
-        //    activity = null;
-
-        //    var httpContext = new Mock<HttpContext>();
-        //    httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
-
-        //    var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
-
-        //    loanApplicationController.ControllerContext = context;
-
-        //    mockActivityService.Setup(x => x.GetCustomerActivity(It.IsAny<int?>(), (ActivityForType)sendBorrowerEmailModel.activityForId)).ReturnsAsync(activity);
-
-        //    mockWorkQueueService.Setup(x => x.Insert(It.IsAny<WorkQueue>()));
-        //    mockWorkQueueService.Setup(x => x.SaveChangesAsync());
-
-        //    var data = new Dictionary<FillKey, string>();
-        //    data.Add(FillKey.CustomEmailHeader, "");
-        //    data.Add(FillKey.CustomEmailFooter, "");
-        //    data.Add(FillKey.EmailBody, sendBorrowerEmailModel.emailBody.Replace(Environment.NewLine, "<br/>"));
-
-        //    await Assert.ThrowsAsync<Exception>(async () => { await loanApplicationController.SendBorrowerEmail(sendBorrowerEmailModel); });
-        //}
+        
+        
+        
         [Fact]
         public async Task TestGetAdminLoanSummaryService()
         {
@@ -1287,7 +1245,7 @@ namespace RainmakerTest
         }
 
         [Fact]
-        public async Task TestGetLoanApplication()
+        public void TestGetLoanApplication()
         {
             var mock = new Mock<ILoanApplicationService>();
             mock.Setup(x => x.GetLoanApplicationWithDetails(It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<LoanApplicationService.RelatedEntities?>())).Returns(new List<LoanApplication>() { new LoanApplication() { Id = 1 } });
@@ -1384,7 +1342,7 @@ namespace RainmakerTest
 
             var rnd = new Random();
 
-            var random = rnd.Next(100, 1000);
+           
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -1463,7 +1421,7 @@ namespace RainmakerTest
 
             var rnd = new Random();
 
-            var random = rnd.Next(100, 1000);
+           
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -1536,7 +1494,7 @@ namespace RainmakerTest
 
             var rnd = new Random();
 
-            var random = rnd.Next(100, 1000);
+           
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -1612,7 +1570,7 @@ namespace RainmakerTest
 
             var rnd = new Random();
 
-            var random = rnd.Next(100, 1000);
+           
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -1686,11 +1644,7 @@ namespace RainmakerTest
             {
                 Id = 1
             };
-            var borrower = new Borrower()
-            {
-                Id = 1,
-                LoanApplicationId = 1
-            };
+            
             var mockLaonApplicationService = new Mock<ILoanApplicationService>();
             mockLaonApplicationService.Setup(x => x.GetLoanApplicationWithDetails(It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<LoanApplicationService.RelatedEntities?>())).Returns(new List<LoanApplication>() { loanApplication });
             mockLaonApplicationService.Setup(x => x.Update(It.IsAny<LoanApplication>())).Verifiable();
@@ -1717,15 +1671,7 @@ namespace RainmakerTest
                 EthnicityInfo = new List<EthnicInfoItem>() { },
                 RaceInfo = new List<RaceInfoItem>() { }
             };
-            var loanApplication = new LoanApplication()
-            {
-                Id = 1
-            };
-            var borrower = new Borrower()
-            {
-                Id = 1,
-                LoanApplicationId = 1
-            };
+            
             var mockLaonApplicationService = new Mock<ILoanApplicationService>();
             mockLaonApplicationService.Setup(x => x.GetLoanApplicationWithDetails(It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<LoanApplicationService.RelatedEntities?>())).Returns(new List<LoanApplication>() { });
 
@@ -1749,10 +1695,7 @@ namespace RainmakerTest
                 EthnicityInfo = new List<EthnicInfoItem>() { },
                 RaceInfo = new List<RaceInfoItem>() { }
             };
-            var loanApplication = new LoanApplication()
-            {
-                Id = 1
-            };
+            
             var borrower = new Borrower()
             {
                 Id = 1,

@@ -2,7 +2,7 @@ using System;
 
 namespace Identity.Models.OwnModels.Token
 {
-    public class xToken
+    public class XToken
     {
         public long Id { get; set; } // Id (Primary key)
         public int? UserId { get; set; } // UserId

@@ -28,7 +28,7 @@ namespace DocManager.Tests
         public async Task TestGetTrashDocuments()
         {
             Mock<ITrashService> mockTrashService = new Mock<ITrashService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+           
             List<WorkbenchFile> workbenchFiles = new List<WorkbenchFile>()
             {
                 new WorkbenchFile()
@@ -55,7 +55,7 @@ namespace DocManager.Tests
         public async Task TestMoveFromTrashToWorkBench()
         {
             Mock<ITrashService> mockTrashService = new Mock<ITrashService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+           
             MoveFromTrashToWorkBench moveFromTrashToWorkBench = new MoveFromTrashToWorkBench();
             moveFromTrashToWorkBench.fromFileId = "5fc0f7f5dd5c73a764eafa38";
             moveFromTrashToWorkBench.id = "5fc0f5eddd5c73a764eafa2c";
@@ -81,7 +81,7 @@ namespace DocManager.Tests
         public async Task TestGetWorkbenchDocuments()
         {
             Mock<IWorkbenchService> workbenchService = new Mock<IWorkbenchService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
             List<WorkbenchFile> workbenchFiles = new List<WorkbenchFile>()
             {
                 new WorkbenchFile ()
@@ -110,7 +110,7 @@ namespace DocManager.Tests
         public async Task TestMoveFromWorkBenchToTrash()
         {
             Mock<IWorkbenchService> workbenchService = new Mock<IWorkbenchService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
             MoveFromWorkBenchToTrash moveFromWorkBenchToTrash = new MoveFromWorkBenchToTrash();
             moveFromWorkBenchToTrash.fromFileId = "5fc0f7f5dd5c73a764eafa38";
             workbenchService.Setup(x => x.MoveFromWorkBenchToTrash(moveFromWorkBenchToTrash, It.IsAny<int>())).ReturnsAsync(true);
@@ -135,7 +135,7 @@ namespace DocManager.Tests
         public async Task TestMoveFromWorkBenchToCategory()
         {
             Mock<IWorkbenchService> workbenchService = new Mock<IWorkbenchService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
             MoveFromWorkBenchToCategory moveFromWorkBenchToCategory = new MoveFromWorkBenchToCategory();
             moveFromWorkBenchToCategory.fromFileId = "5fc0f7f5dd5c73a764eafa38";
             moveFromWorkBenchToCategory.id = "5fc0f5eddd5c73a764eafa2c";
@@ -164,7 +164,7 @@ namespace DocManager.Tests
         public async Task TestMoveFromCategoryToTrash()
         {
             Mock<IDocumentService> documentService = new Mock<IDocumentService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
             MoveFromCategoryToTrash moveFromCategoryToTrash = new MoveFromCategoryToTrash();
 
             moveFromCategoryToTrash.id = "5fc0f5eddd5c73a764eafa2c";
@@ -194,7 +194,7 @@ namespace DocManager.Tests
         public async Task TestMoveFromCategoryToWorkBench()
         {
             Mock<IDocumentService> documentService = new Mock<IDocumentService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+          
             MoveFromCategoryToWorkBench moveFromCategoryToworkbench = new MoveFromCategoryToWorkBench();
             moveFromCategoryToworkbench.fromFileId = "5fc0f7f5dd5c73a764eafa37";
             moveFromCategoryToworkbench.id = "5fc0f5eddd5c73a764eafa2c";
@@ -224,7 +224,7 @@ namespace DocManager.Tests
         public async Task TestMoveFromoneCategoryToAnotherCategory()
         {
             Mock<IDocumentService> documentService = new Mock<IDocumentService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+           
             MoveFromOneCategoryToAnotherCategory moveFromoneCategoryToAnotherCategory = new MoveFromOneCategoryToAnotherCategory();
             moveFromoneCategoryToAnotherCategory.fromFileId = "5fc0f7f5dd5c73a764eafa38";
             moveFromoneCategoryToAnotherCategory.id = "5fc0f5eddd5c73a764eafa2c";
@@ -251,7 +251,7 @@ namespace DocManager.Tests
         public async Task TestGetTrashDocumentsService()
         {
             Mock<ITrashService> mockTrashService = new Mock<ITrashService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+         
             List<WorkbenchFile> workbenchFiles = new List<WorkbenchFile>()
             {
                 new WorkbenchFile()
@@ -277,42 +277,7 @@ namespace DocManager.Tests
             Assert.Equal("5fb51519e223e0428d82c41b", (res.Value as List<WorkbenchFile>)[0].id);
 
         }
-        /*
-        [Fact]
-        public async Task TestDelete()
-        {
-            Mock<IDocumentService> mockDocumentService = new Mock<IDocumentService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
-            DeleteModel deleteModel = new DeleteModel();
-            deleteModel.id = "5fc0f7f5dd5c73a764eafa38";
-            deleteModel.requestId = "5fc0f5eddd5c73a764eafa2c";
-            deleteModel.docId = "5fc0f5eedd5c73a764eafa2e";
-
-
-            mockDocumentService.Setup(x => x.Delete(deleteModel, It.IsAny<int>()));
-            var controller = new DocumentController(mockDocumentService.Object, Mock.Of<IRainmakerService>());
-            var request = new Mock<HttpRequest>();
-
-            request.SetupGet(x => x.Headers["Authorization"]).Returns(
-                new StringValues("Test")
-                );
-            var httpContext = new Mock<HttpContext>();
-            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
-           
-  
- 
-            httpContext.SetupGet(x => x.Request).Returns(request.Object);
-            var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
-
-            controller.ControllerContext = context;
-            IActionResult result = await controller.Delete(deleteModel);
-
-            //Assert
-            Assert.NotNull(result);
-            Assert.IsType<OkObjectResult>(result);
-
-        }
-        */
+       
         [Fact]
         public async Task TestSaveCategoryAnnotations()
         {
@@ -345,7 +310,7 @@ namespace DocManager.Tests
         public async Task TestViewCategoryAnnotations()
         {
             Mock<IDocumentService> mockDocumentService = new Mock<IDocumentService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+           
             ViewCategoryAnnotations viewCategoryAnnotations = new ViewCategoryAnnotations();
             viewCategoryAnnotations.id = "5fc0f7f5dd5c73a764eafa38";
             viewCategoryAnnotations.fromRequestId = "5fc0f5eddd5c73a764eafa2c";
@@ -382,8 +347,8 @@ namespace DocManager.Tests
             Mock<ILogger<ThumbnailController>> mockLogger = new Mock<ILogger<ThumbnailController>>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>();
             Mock<IFormFile> mockformFile = new Mock<IFormFile>();
-            string filePath = Path.GetTempFileName();
-            MemoryStream ms = new MemoryStream();
+         
+            
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
@@ -403,7 +368,7 @@ namespace DocManager.Tests
             fileViewDTO.clientName = "NET Unit Testing.docx";
             fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
 
             mockThumbnailService.Setup(x => x.SaveCategoryDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>()
@@ -487,8 +452,8 @@ namespace DocManager.Tests
             Mock<ILogger<ThumbnailController>> mockLogger = new Mock<ILogger<ThumbnailController>>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>();
             Mock<IFormFile> mockformFile = new Mock<IFormFile>();
-            string filePath = Path.GetTempFileName();
-            MemoryStream ms = new MemoryStream();
+           
+           
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
@@ -508,7 +473,7 @@ namespace DocManager.Tests
             fileViewDTO.clientName = "NET Unit Testing.docx";
             fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+           
 
             mockThumbnailService.Setup(x => x.SaveCategoryDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>()
@@ -591,8 +556,8 @@ namespace DocManager.Tests
             Mock<ILogger<ThumbnailController>> mockLogger = new Mock<ILogger<ThumbnailController>>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>();
             Mock<IFormFile> mockformFile = new Mock<IFormFile>();
-            string filePath = Path.GetTempFileName();
-            MemoryStream ms = new MemoryStream();
+          
+           
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
@@ -612,7 +577,7 @@ namespace DocManager.Tests
             fileViewDTO.clientName = "NET Unit Testing.docx";
             fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
 
             mockThumbnailService.Setup(x => x.SaveCategoryDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>()
@@ -694,8 +659,7 @@ namespace DocManager.Tests
             Mock<ILogger<ThumbnailController>> mockLogger = new Mock<ILogger<ThumbnailController>>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>();
             Mock<IFormFile> mockformFile = new Mock<IFormFile>();
-            string filePath = Path.GetTempFileName();
-            MemoryStream ms = new MemoryStream();
+           
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
@@ -715,7 +679,7 @@ namespace DocManager.Tests
             fileViewDTO.clientName = "NET Unit Testing.docx";
             fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
 
             mockThumbnailService.Setup(x => x.SaveCategoryDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>()
@@ -749,7 +713,7 @@ namespace DocManager.Tests
                 AddText(fs, "\r\nand this is on a new line");
                 AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");
             }
-            //List<IFormFile> files = new List<IFormFile>();
+            
             //Open the stream and read it back.
 
             //using (FileStream fs = File.OpenRead(path))
@@ -791,7 +755,7 @@ namespace DocManager.Tests
         public async Task TestAcquireLock()
         {
             Mock<ILockService> mockLockService = new Mock<ILockService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+           
 
 
             LockModel lockModel = new LockModel();
@@ -825,7 +789,7 @@ namespace DocManager.Tests
         public async Task TestAcquireLockException()
         {
             Mock<ILockService> mockLockService = new Mock<ILockService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
 
 
             LockModel lockModel = new LockModel();
@@ -848,7 +812,7 @@ namespace DocManager.Tests
             var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
 
             controller.ControllerContext = context;
-           // IActionResult result = await controller.AcquireLock(lockModel);
+         
            
              //Assert
             //    Assert.IsType<BadRequestObjectResult>(result);
@@ -860,8 +824,7 @@ namespace DocManager.Tests
         public async Task TestAcquireLockBadRequest()
         {
             Mock<ILockService> mockLockService = new Mock<ILockService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
-
+           
 
             LockModel lockModel = new LockModel();
 
@@ -894,7 +857,7 @@ namespace DocManager.Tests
         public async Task TestRetainLockBadRequestResult()
         {
             Mock<ILockService> mockLockService = new Mock<ILockService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+           
             LockModel lockModel = new LockModel();
             lockModel.loanApplicationId = 1002;
 
@@ -925,7 +888,7 @@ namespace DocManager.Tests
         public async Task TestRetainLock()
         {
             Mock<ILockService> mockLockService = new Mock<ILockService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+          
             LockModel lockModel = new LockModel();
             lockModel.loanApplicationId = 1002;
 
@@ -959,7 +922,7 @@ namespace DocManager.Tests
         public async Task TestDeleteCategoryFile()
         {
             Mock<IDocumentService> mockDocumentService = new Mock<IDocumentService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
             DeleteCategoryFile deleteModel = new DeleteCategoryFile();
             deleteModel.id = "5fc0f7f5dd5c73a764eafa38";
             deleteModel.requestId = "5fc0f5eddd5c73a764eafa2c";
@@ -993,7 +956,7 @@ namespace DocManager.Tests
         public async Task TestDeleteCategoryFileIsNotNull()
         {
             Mock<IDocumentService> mockDocumentService = new Mock<IDocumentService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
             DeleteCategoryFile deleteModel = new DeleteCategoryFile();
             deleteModel.id = "5fc0f7f5dd5c73a764eafa38";
             deleteModel.requestId = "5fc0f5eddd5c73a764eafa2c";
@@ -1036,8 +999,7 @@ namespace DocManager.Tests
             Mock<ILogger<ThumbnailController>> mockLogger = new Mock<ILogger<ThumbnailController>>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>();
             Mock<IFormFile> mockformFile = new Mock<IFormFile>();
-            string filePath = Path.GetTempFileName();
-            MemoryStream ms = new MemoryStream();
+            
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
@@ -1058,7 +1020,7 @@ namespace DocManager.Tests
             fileViewDTO.clientName = "NET Unit Testing.docx";
             fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+           
             SaveWorkbenchDocument saveWorkbenchDocument = new SaveWorkbenchDocument();
             saveWorkbenchDocument.fileId = "5f0ede3cce9c4b62509d0dbf";
             mockThumbnailService.Setup(x => x.SaveWorkbenchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
@@ -1108,8 +1070,8 @@ namespace DocManager.Tests
             }
 
             string id = "5eb25d1fe519051af2eeb72d";
-            string requestId = "abc15d1fe456051af2eeb768";
-            string docId = "ddd25d1fe456057652eeb72d";
+            
+           
             string fileId = "5fc0fb11ad4581295f8ddd58";
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
@@ -1141,8 +1103,7 @@ namespace DocManager.Tests
             Mock<ILogger<ThumbnailController>> mockLogger = new Mock<ILogger<ThumbnailController>>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>();
             Mock<IFormFile> mockformFile = new Mock<IFormFile>();
-            string filePath = Path.GetTempFileName();
-            MemoryStream ms = new MemoryStream();
+           
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
@@ -1162,7 +1123,7 @@ namespace DocManager.Tests
             fileViewDTO.clientName = "NET Unit Testing.docx";
             fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
 
             mockThumbnailService.Setup(x => x.SaveWorkbenchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
@@ -1195,7 +1156,7 @@ namespace DocManager.Tests
                 AddText(fs, "\r\nand this is on a new line");
                 AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");
             }
-            //List<IFormFile> files = new List<IFormFile>();
+            
             ////Open the stream and read it back.
 
             //using (FileStream fs = File.OpenRead(path))
@@ -1211,8 +1172,7 @@ namespace DocManager.Tests
             //}
 
             string id = "5eb25d1fe519051af2eeb72d";
-            string requestId = "abc15d1fe456051af2eeb768";
-            string docId = "ddd25d1fe456057652eeb72d";
+            
             string fileId = "5fc0fb11ad4581295f8ddd58";
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockformFile.SetupGet(x => x.Length).Returns(0);
@@ -1245,8 +1205,7 @@ namespace DocManager.Tests
             Mock<ILogger<ThumbnailController>> mockLogger = new Mock<ILogger<ThumbnailController>>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>();
             Mock<IFormFile> mockformFile = new Mock<IFormFile>();
-            string filePath = Path.GetTempFileName();
-            MemoryStream ms = new MemoryStream();
+            
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
@@ -1266,7 +1225,7 @@ namespace DocManager.Tests
             fileViewDTO.clientName = "NET Unit Testing.docx";
             fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+           
 
             mockThumbnailService.Setup(x => x.SaveWorkbenchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
@@ -1299,7 +1258,7 @@ namespace DocManager.Tests
                 AddText(fs, "\r\nand this is on a new line");
                 AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");
             }
-            //List<IFormFile> files = new List<IFormFile>();
+           
             ////Open the stream and read it back.
 
             //using (FileStream fs = File.OpenRead(path))
@@ -1315,8 +1274,7 @@ namespace DocManager.Tests
             //}
 
             string id = "5eb25d1fe519051af2eeb72d";
-            string requestId = "abc15d1fe456051af2eeb768";
-            string docId = "ddd25d1fe456057652eeb72d";
+           
             string fileId = "5fc0fb11ad4581295f8ddd58";
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockformFile.SetupGet(x => x.Length).Returns(10);
@@ -1349,8 +1307,7 @@ namespace DocManager.Tests
             Mock<ILogger<ThumbnailController>> mockLogger = new Mock<ILogger<ThumbnailController>>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>();
             Mock<IFormFile> mockformFile = new Mock<IFormFile>();
-            string filePath = Path.GetTempFileName();
-            MemoryStream ms = new MemoryStream();
+            
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
@@ -1370,7 +1327,7 @@ namespace DocManager.Tests
             fileViewDTO.clientName = "NET Unit Testing.docx";
             fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
 
             mockThumbnailService.Setup(x => x.SaveWorkbenchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
@@ -1419,8 +1376,7 @@ namespace DocManager.Tests
             }
 
             string id = "5eb25d1fe519051af2eeb72d";
-            string requestId = "abc15d1fe456051af2eeb768";
-            string docId = "ddd25d1fe456057652eeb72d";
+            
             string fileId = "5fc0fb11ad4581295f8ddd58";
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
@@ -1452,8 +1408,7 @@ namespace DocManager.Tests
             Mock<ILogger<ThumbnailController>> mockLogger = new Mock<ILogger<ThumbnailController>>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>();
             Mock<IFormFile> mockformFile = new Mock<IFormFile>();
-            string filePath = Path.GetTempFileName();
-            MemoryStream ms = new MemoryStream();
+            
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
@@ -1474,7 +1429,7 @@ namespace DocManager.Tests
             fileViewDTO.clientName = "NET Unit Testing.docx";
             fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
 
             mockThumbnailService.Setup(x => x.SaveWorkbenchDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
@@ -1507,7 +1462,7 @@ namespace DocManager.Tests
                 AddText(fs, "\r\nand this is on a new line");
                 AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");
             }
-            //List<IFormFile> files = new List<IFormFile>();
+           
             ////Open the stream and read it back.
 
             //using (FileStream fs = File.OpenRead(path))
@@ -1523,8 +1478,7 @@ namespace DocManager.Tests
             //}
 
             string id = "5eb25d1fe519051af2eeb72d";
-            string requestId = "abc15d1fe456051af2eeb768";
-            string docId = "ddd25d1fe456057652eeb72d";
+            
             string fileId = "5fc0fb11ad4581295f8ddd58";
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockformFile.Setup(_ => _.FileName).Returns("abc.tmp");
@@ -1562,8 +1516,7 @@ namespace DocManager.Tests
             Mock<ILogger<ThumbnailController>> mockLogger = new Mock<ILogger<ThumbnailController>>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>();
             Mock<IFormFile> mockformFile = new Mock<IFormFile>();
-            string filePath = Path.GetTempFileName();
-            MemoryStream ms = new MemoryStream();
+            
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
@@ -1582,7 +1535,7 @@ namespace DocManager.Tests
             fileViewDTO.clientName = "NET Unit Testing.docx";
             fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
 
             mockThumbnailService.Setup(x => x.SaveTrashDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
@@ -1631,8 +1584,7 @@ namespace DocManager.Tests
             }
 
             string id = "5eb25d1fe519051af2eeb72d";
-            string requestId = "abc15d1fe456051af2eeb768";
-            string docId = "ddd25d1fe456057652eeb72d";
+            
             string fileId = "5fc0fb11ad4581295f8ddd58";
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
@@ -1663,8 +1615,7 @@ namespace DocManager.Tests
             Mock<ILogger<ThumbnailController>> mockLogger = new Mock<ILogger<ThumbnailController>>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>();
             Mock<IFormFile> mockformFile = new Mock<IFormFile>();
-            string filePath = Path.GetTempFileName();
-            MemoryStream ms = new MemoryStream();
+            
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
@@ -1683,7 +1634,7 @@ namespace DocManager.Tests
             fileViewDTO.clientName = "NET Unit Testing.docx";
             fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+           
 
             mockThumbnailService.Setup(x => x.SaveTrashDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
@@ -1732,8 +1683,7 @@ namespace DocManager.Tests
             }
 
             string id = "5eb25d1fe519051af2eeb72d";
-            string requestId = "abc15d1fe456051af2eeb768";
-            string docId = "ddd25d1fe456057652eeb72d";
+           
             string fileId = "5fc0fb11ad4581295f8ddd58";
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
@@ -1764,8 +1714,7 @@ namespace DocManager.Tests
             Mock<ILogger<ThumbnailController>> mockLogger = new Mock<ILogger<ThumbnailController>>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>();
             Mock<IFormFile> mockformFile = new Mock<IFormFile>();
-            string filePath = Path.GetTempFileName();
-            MemoryStream ms = new MemoryStream();
+            
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
@@ -1784,7 +1733,7 @@ namespace DocManager.Tests
             fileViewDTO.clientName = "NET Unit Testing.docx";
             fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+          
 
             mockThumbnailService.Setup(x => x.SaveTrashDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
@@ -1817,7 +1766,7 @@ namespace DocManager.Tests
                 AddText(fs, "\r\nand this is on a new line");
                 AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");
             }
-            //List<IFormFile> files = new List<IFormFile>();
+            
             ////Open the stream and read it back.
 
             //using (FileStream fs = File.OpenRead(path))
@@ -1833,8 +1782,7 @@ namespace DocManager.Tests
             //}
         
             string id = "5eb25d1fe519051af2eeb72d";
-            string requestId = "abc15d1fe456051af2eeb768";
-            string docId = "ddd25d1fe456057652eeb72d";
+            
             string fileId = "5fc0fb11ad4581295f8ddd58";
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockformFile.SetupGet(x => x.Length).Returns(0);
@@ -1868,8 +1816,7 @@ namespace DocManager.Tests
             Mock<ILogger<ThumbnailController>> mockLogger = new Mock<ILogger<ThumbnailController>>();
             Mock<IFileEncryptionFactory> mockfileencryptorfacotry = new Mock<IFileEncryptionFactory>();
             Mock<IFormFile> mockformFile = new Mock<IFormFile>();
-            string filePath = Path.GetTempFileName();
-            MemoryStream ms = new MemoryStream();
+           
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
@@ -1888,7 +1835,7 @@ namespace DocManager.Tests
             fileViewDTO.clientName = "NET Unit Testing.docx";
             fileViewDTO.contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
 
             mockThumbnailService.Setup(x => x.SaveTrashDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
@@ -1921,7 +1868,7 @@ namespace DocManager.Tests
                 AddText(fs, "\r\nand this is on a new line");
                 AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");
             }
-            //List<IFormFile> files = new List<IFormFile>();
+           
             ////Open the stream and read it back.
 
             //using (FileStream fs = File.OpenRead(path))
@@ -1937,13 +1884,12 @@ namespace DocManager.Tests
             //}
 
             string id = "5eb25d1fe519051af2eeb72d";
-            string requestId = "abc15d1fe456051af2eeb768";
-            string docId = "ddd25d1fe456057652eeb72d";
+           
             string fileId = "5fc0fb11ad4581295f8ddd58";
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
             mockformFile.SetupGet(x => x.Length).Returns(0);
             mockformFile.SetupGet(x => x.FileName).Returns("abc.tmp");
-           // mockformFile.SetupGet(x => x.FileName.Length).Returns(256);
+           
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
             mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(),""));
             SaveWorkbenchDocument saveWorkbenchDocument = new SaveWorkbenchDocument();
@@ -1974,7 +1920,7 @@ namespace DocManager.Tests
         public async Task TestMoveFromTrashToCategory()
         {
             Mock<ITrashService> trashService = new Mock<ITrashService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+           
             MoveFromTrashToCategory moveFromTrashToCategory = new MoveFromTrashToCategory();
             moveFromTrashToCategory.id = "5fc0f7f5dd5c73a764eafa38";
             moveFromTrashToCategory.toRequestId = "5fc0f7f5dd5c73a764eafa38";
@@ -2001,7 +1947,7 @@ namespace DocManager.Tests
         public async Task TestSaveTrashAnnotations()
         {
             Mock<ITrashService> mockTrashServiceService = new Mock<ITrashService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
             SaveTrashAnnotations saveTrashAnnotations = new SaveTrashAnnotations();
             saveTrashAnnotations.id = "5fc0f7f5dd5c73a764eafa38";
             saveTrashAnnotations.fileId = "5fc0f5eedd5c73a764eafa2e";
@@ -2026,7 +1972,7 @@ namespace DocManager.Tests
         public async Task TestSaveWorkbenchAnnotations()
         {
             Mock<IWorkbenchService> mockTrashServiceService = new Mock<IWorkbenchService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+           
             SaveWorkbenchAnnotations saveWorkbenchAnnotations = new SaveWorkbenchAnnotations();
             saveWorkbenchAnnotations.id = "5fc0f7f5dd5c73a764eafa38";
             saveWorkbenchAnnotations.fileId = "5fc0f5eedd5c73a764eafa2e";
@@ -2053,7 +1999,7 @@ namespace DocManager.Tests
         {
 
             Mock<ITrashService> mockTrashService = new Mock<ITrashService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
             ViewTrashAnnotations viewTrashAnnotations = new ViewTrashAnnotations();
             viewTrashAnnotations.id = "5fc0f7f5dd5c73a764eafa38";
             viewTrashAnnotations.fromFileId = "5fc0f5eedd5c73a764eafa2e";
@@ -2080,7 +2026,7 @@ namespace DocManager.Tests
         {
 
             Mock<IWorkbenchService> mockWorkbenchService = new Mock<IWorkbenchService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
             ViewWorkbenchAnnotations viewWorkbenchAnnotations = new ViewWorkbenchAnnotations();
             viewWorkbenchAnnotations.id = "5fc0f7f5dd5c73a764eafa38";
             viewWorkbenchAnnotations.fromFileId = "5fc0f5eedd5c73a764eafa2e";
@@ -2107,7 +2053,7 @@ namespace DocManager.Tests
         public async Task TestDeleteTrashFile()
         {
             Mock<ITrashService> mockTrashService = new Mock<ITrashService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+           
             DeleteTrashFile deleteTrashFile = new DeleteTrashFile();
             deleteTrashFile.id = "5fc0f7f5dd5c73a764eafa38";
             deleteTrashFile.fileId = "5fc0f5eedd5c73a764eafa2e";
@@ -2141,7 +2087,7 @@ namespace DocManager.Tests
         public async Task TestDeleteWorkbenchFile()
         {
             Mock<IWorkbenchService> mockWorkbenchService = new Mock<IWorkbenchService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
             DeleteTrashFile deleteTrashFile = new DeleteTrashFile();
             deleteTrashFile.id = "5fc0f7f5dd5c73a764eafa38";
             deleteTrashFile.fileId = "5fc0f5eedd5c73a764eafa2e";
@@ -2227,7 +2173,7 @@ namespace DocManager.Tests
         public async Task TestSaveNotFoundResult()
         {
             Mock<IRequestService> mockrequestService = new Mock<IRequestService>();
-            // Mock<IRainmakerService> mockrainmakerService = new Mock<IRainmakerService>();
+            
             Mock<IConfiguration> mockconfig = new Mock<IConfiguration>();
             Mock<ISettingService> mocksettingService = new Mock<ISettingService>();
             Mock<IKeyStoreService> mockkeyStoreService = new Mock<IKeyStoreService>();
@@ -2236,7 +2182,7 @@ namespace DocManager.Tests
             Mock<IFileEncryptionFactory> mockfileEncryptionFactory = new Mock<IFileEncryptionFactory>();
             Mock<IByteProService> mockbyteProService = new Mock<IByteProService>();
             Mock<ILosIntegrationService> mocklosIntegration = new Mock<ILosIntegrationService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
             SaveModel saveModel = new SaveModel();
             saveModel.id = "5fc0f7f5dd5c73a764eafa38";
             saveModel.status = "5fc0f7f5dd5c73a764eafa38";
@@ -2355,7 +2301,7 @@ namespace DocManager.Tests
             string id = "5eb25d1fe519051af2eeb72d";
             string requestId = "abc15d1fe456051af2eeb768";
             string docId = "ddd25d1fe456057652eeb72d";
-            string order = "0";
+           
 
             string path = Path.GetTempFileName();
 
@@ -2385,7 +2331,7 @@ namespace DocManager.Tests
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
 
             mockformFile.Setup(_ => _.CopyToAsync(It.IsAny<Stream>(), It.IsAny<CancellationToken>())).Returns((Stream stream, CancellationToken token) => ms.CopyToAsync(stream)).Verifiable();
-            // mockrequestService.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+           
 
 
             IActionResult result = await controller.Submit(id, requestId, docId, files);
@@ -2431,27 +2377,19 @@ namespace DocManager.Tests
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
             mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(), ""));
             mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), It.IsAny<MemoryStream>())).Verifiable();
-            //  mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(string.Empty);
 
             List<FileViewDto> fileViewDTOs = new List<FileViewDto>();
             FileViewDto fileViewDTO = new FileViewDto();
             fileViewDTO.loanApplicationId = 1;
             fileViewDTO.id = "5f0ede3cce9c4b62509d0dbf";
             fileViewDTOs.Add(fileViewDTO);
-            //mockfileservice.Setup(x => x.GetFileByDocId(It.IsAny<FileViewModel>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(fileViewDTOs);
-            //  mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync("5f0ede3cce9c4b62509d0dbf");
+            
             Tenant tenant = new Tenant();
             tenant.syncToBytePro = (int)SyncToBytePro.Auto;
             tenant.autoSyncToBytePro = (int)AutoSyncToBytePro.OnSubmit;
             mockByteProService.Setup(x => x.GetTenantSetting(It.IsAny<int>())).ReturnsAsync(tenant);
 
-            //FileOrderModel model = new FileOrderModel
-            //{
-            //    id = "1",
-            //    docId = "1",
-            //    requestId = "1",
-            //    files = new List<FileNameModel>()
-            //};
+            
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -2474,7 +2412,7 @@ namespace DocManager.Tests
             string id = "5eb25d1fe519051af2eeb72d";
             string requestId = "abc15d1fe456051af2eeb768";
             string docId = "ddd25d1fe456057652eeb72d";
-            string order = "0";
+           
 
             string path = Path.GetTempFileName();
 
@@ -2504,7 +2442,7 @@ namespace DocManager.Tests
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
 
             mockformFile.Setup(_ => _.CopyToAsync(It.IsAny<Stream>(), It.IsAny<CancellationToken>())).Returns((Stream stream, CancellationToken token) => ms.CopyToAsync(stream)).Verifiable();
-            // mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+           
 
 
             IActionResult result = await controller.Submit(id, requestId, docId, files);
@@ -2552,27 +2490,19 @@ namespace DocManager.Tests
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
             mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(), ""));
             mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), It.IsAny<MemoryStream>())).Verifiable();
-            //  mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(string.Empty);
 
             List<FileViewDto> fileViewDTOs = new List<FileViewDto>();
             FileViewDto fileViewDTO = new FileViewDto();
             fileViewDTO.loanApplicationId = 1;
             fileViewDTO.id = "5f0ede3cce9c4b62509d0dbf";
             fileViewDTOs.Add(fileViewDTO);
-            //mockfileservice.Setup(x => x.GetFileByDocId(It.IsAny<FileViewModel>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(fileViewDTOs);
-            //  mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync("5f0ede3cce9c4b62509d0dbf");
+            
             Tenant tenant = new Tenant();
             tenant.syncToBytePro = (int)SyncToBytePro.Auto;
             tenant.autoSyncToBytePro = (int)AutoSyncToBytePro.OnSubmit;
             mockByteProService.Setup(x => x.GetTenantSetting(It.IsAny<int>())).ReturnsAsync(tenant);
 
-            //FileOrderModel model = new FileOrderModel
-            //{
-            //    id = "1",
-            //    docId = "1",
-            //    requestId = "1",
-            //    files = new List<FileNameModel>()
-            //};
+            
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -2595,7 +2525,7 @@ namespace DocManager.Tests
             string id = "5eb25d1fe519051af2eeb72d";
             string requestId = "abc15d1fe456051af2eeb768";
             string docId = "ddd25d1fe456057652eeb72d";
-            string order = "0";
+            
 
             string path = Path.GetTempFileName();
 
@@ -2625,7 +2555,7 @@ namespace DocManager.Tests
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
 
             mockformFile.Setup(_ => _.CopyToAsync(It.IsAny<Stream>(), It.IsAny<CancellationToken>())).Returns((Stream stream, CancellationToken token) => ms.CopyToAsync(stream)).Verifiable();
-            // mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+            
 
 
             IActionResult result = await controller.Submit(id, requestId, docId, files);
@@ -2672,27 +2602,19 @@ namespace DocManager.Tests
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
             mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(), ""));
             mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), It.IsAny<MemoryStream>())).Verifiable();
-            //  mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(string.Empty);
 
             List<FileViewDto> fileViewDTOs = new List<FileViewDto>();
             FileViewDto fileViewDTO = new FileViewDto();
             fileViewDTO.loanApplicationId = 1;
             fileViewDTO.id = "5f0ede3cce9c4b62509d0dbf";
             fileViewDTOs.Add(fileViewDTO);
-            //mockfileservice.Setup(x => x.GetFileByDocId(It.IsAny<FileViewModel>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(fileViewDTOs);
-            //  mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync("5f0ede3cce9c4b62509d0dbf");
+           
             Tenant tenant = new Tenant();
             tenant.syncToBytePro = (int)SyncToBytePro.Auto;
             tenant.autoSyncToBytePro = (int)AutoSyncToBytePro.OnSubmit;
             mockByteProService.Setup(x => x.GetTenantSetting(It.IsAny<int>())).ReturnsAsync(tenant);
 
-            //FileOrderModel model = new FileOrderModel
-            //{
-            //    id = "1",
-            //    docId = "1",
-            //    requestId = "1",
-            //    files = new List<FileNameModel>()
-            //};
+            
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -2715,7 +2637,7 @@ namespace DocManager.Tests
             string id = "5eb25d1fe519051af2eeb72d";
             string requestId = "abc15d1fe456051af2eeb768";
             string docId = "ddd25d1fe456057652eeb72d";
-            string order = "0";
+           
 
             string path = Path.GetTempFileName();
 
@@ -2747,7 +2669,6 @@ namespace DocManager.Tests
             mockformFile.SetupGet(x => x.FileName).Returns("abc.temp");
             mockformFile.SetupGet(x => x.Length).Returns(255);
             mockformFile.Setup(_ => _.CopyToAsync(It.IsAny<Stream>(), It.IsAny<CancellationToken>())).Returns((Stream stream, CancellationToken token) => ms.CopyToAsync(stream)).Verifiable();
-            // mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
 
 
             IActionResult result = await controller.Submit(id, requestId, docId, new List<IFormFile> { mockformFile.Object });
@@ -2794,27 +2715,19 @@ namespace DocManager.Tests
             mockfileencryptorfacotry.Setup(x => x.GetEncryptor(It.IsAny<string>())).Returns(mockfileencryptor.Object);
             mockfileencryptor.Setup(x => x.EncryptFile(It.IsAny<Stream>(), It.IsAny<string>())).Returns((new MemoryStream(), ""));
             mockftpclient.Setup(x => x.UploadAsync(Path.GetFileName(filePath), It.IsAny<MemoryStream>())).Verifiable();
-            //  mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(string.Empty);
 
             List<FileViewDto> fileViewDTOs = new List<FileViewDto>();
             FileViewDto fileViewDTO = new FileViewDto();
             fileViewDTO.loanApplicationId = 1;
             fileViewDTO.id = "5f0ede3cce9c4b62509d0dbf";
             fileViewDTOs.Add(fileViewDTO);
-            //mockfileservice.Setup(x => x.GetFileByDocId(It.IsAny<FileViewModel>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(fileViewDTOs);
-            //  mockfileservice.Setup(x => x.Submit(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync("5f0ede3cce9c4b62509d0dbf");
+            
             Tenant tenant = new Tenant();
             tenant.syncToBytePro = (int)SyncToBytePro.Auto;
             tenant.autoSyncToBytePro = (int)AutoSyncToBytePro.OnSubmit;
             mockByteProService.Setup(x => x.GetTenantSetting(It.IsAny<int>())).ReturnsAsync(tenant);
 
-            //FileOrderModel model = new FileOrderModel
-            //{
-            //    id = "1",
-            //    docId = "1",
-            //    requestId = "1",
-            //    files = new List<FileNameModel>()
-            //};
+            
 
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
@@ -2837,7 +2750,7 @@ namespace DocManager.Tests
             string id = "5eb25d1fe519051af2eeb72d";
             string requestId = "abc15d1fe456051af2eeb768";
             string docId = "ddd25d1fe456057652eeb72d";
-            string order = "0";
+           
 
             string path = Path.GetTempFileName();
 
@@ -2869,7 +2782,6 @@ namespace DocManager.Tests
             mockformFile.SetupGet(x => x.Length).Returns(0);
 
             mockformFile.Setup(_ => _.CopyToAsync(It.IsAny<Stream>(), It.IsAny<CancellationToken>())).Returns((Stream stream, CancellationToken token) => ms.CopyToAsync(stream)).Verifiable();
-            // mockfileservice.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
 
 
             IActionResult result = await controller.Submit(id, requestId, docId, new List<IFormFile> { mockformFile.Object });
@@ -2963,7 +2875,7 @@ namespace DocManager.Tests
             string id = "5eb25d1fe519051af2eeb72d";
             string requestId = "abc15d1fe456051af2eeb768";
             string docId = "ddd25d1fe456057652eeb72d";
-            string order = "0";
+           
 
             string path = Path.GetTempFileName();
 
@@ -2993,7 +2905,6 @@ namespace DocManager.Tests
             mockformFile.Setup(_ => _.OpenReadStream()).Returns(new MemoryStream());
 
             mockformFile.Setup(_ => _.CopyToAsync(It.IsAny<Stream>(), It.IsAny<CancellationToken>())).Returns((Stream stream, CancellationToken token) => ms.CopyToAsync(stream)).Verifiable();
-            // mockrequestService.Setup(x => x.Order(It.IsAny<FileOrderModel>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
 
 
             IActionResult result = await controller.Submit(id, requestId, docId, files);

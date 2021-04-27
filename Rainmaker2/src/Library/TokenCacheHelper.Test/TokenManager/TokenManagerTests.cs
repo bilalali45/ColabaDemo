@@ -10,9 +10,6 @@ using TokenCacheHelper.Models;
 using TokenCacheHelper.TokenManager;
 using Xunit;
 
-namespace TokenCacheHelper.TokenManager.Tests
-{
-}
 
 namespace TokenCacheHelper.Test.TokenManager
 {
@@ -126,7 +123,6 @@ namespace TokenCacheHelper.Test.TokenManager
         {
             var mockcacheHandler = new Mock<IRedisCacheClient>();
             var mockLoggerHandler = new Mock<ILogger<TokenCacheHelper.TokenManager.TokenManager>>();
-            var mockTokenManager = new Mock<ITokenManager>();
 
             var validToken = new TokenData
                              {
@@ -134,11 +130,6 @@ namespace TokenCacheHelper.Test.TokenManager
                                  ValidFrom = DateTime.Parse(s: "2021-01-27"),
                                  Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2MTE3MDU2MDAsImV4cCI6MTY0MzMyODAwMCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIlVzZXJQcm9maWxlSWQiOiIxIiwiVGVuYW50SWQiOiIxIn0.WbBiv5AU1V5ivTXH_4hF_wcSVM-AYlp783YXP0NBJFM"
                              };
-            var tokenList = new List<TokenData>
-                            {
-                                validToken
-                            };
-            //mockTokenManager.Setup(x => x.FindUserTokenAsync(validToken.Token)).ReturnsAsync(validToken);
 
             mockcacheHandler.Setup(expression: x => x.Db0.HashGetAllAsync<TokenData>("USER_8408_1",
                                                                                      CommandFlags.None)).ReturnsAsync(value: new Dictionary<string, TokenData>());
@@ -156,7 +147,6 @@ namespace TokenCacheHelper.Test.TokenManager
         {
             var mockcacheHandler = new Mock<IRedisCacheClient>();
             var mockLoggerHandler = new Mock<ILogger<TokenCacheHelper.TokenManager.TokenManager>>();
-            var mockTokenManager = new Mock<ITokenManager>();
 
             var dictionary = new Dictionary<string, TokenData>();
             var expiredToken = new TokenData
@@ -173,7 +163,6 @@ namespace TokenCacheHelper.Test.TokenManager
             mockcacheHandler.Setup(expression: x => x.Db0.HashGetAllAsync<TokenData>("USER_1_1",
                                                                                      CommandFlags.None)).ReturnsAsync(value: dictionary);
 
-            //mockTokenManager.Setup(x => x.FindUserTokenAsync(expiredToken.Token)).ReturnsAsync(expiredToken);
 
             var service = new TokenCacheHelper.TokenManager.TokenManager(logger: mockLoggerHandler.Object,
                                                                          cacheHandler: mockcacheHandler.Object);
@@ -262,14 +251,6 @@ namespace TokenCacheHelper.Test.TokenManager
                                       RefreshToken = "refreshToken"
                                   });
 
-            //dictionary.Add(key: "refreshToken2",
-            //               value: new TokenData
-            //               {
-            //                   ValidTo = DateTime.Parse(s: "2022-01-29"),
-            //                   ValidFrom = DateTime.Parse(s: "2021-01-28"),
-            //                   Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2MTE3MDU2MDAsImV4cCI6MTY0MzMyODAwMCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIlVzZXJQcm9maWxlSWQiOiIxIiwiVGVuYW50SWQiOiIxIn0.WbBiv5AU1V5ivTXH_4hF_wcSVM-AYlp783YXP0NBJFN",
-            //                   RefreshToken = "refreshToken"
-            //               });
 
             mockCacheHandler.Setup(expression: x => x.Db0.HashGetAllAsync<TokenData>("USER_1_1",
                                                                                      CommandFlags.None)).ReturnsAsync(value: new Dictionary<string, TokenData>());

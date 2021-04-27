@@ -89,16 +89,10 @@ namespace Identity.Services
             return principal;
         }
 
-        //public static readonly Dictionary<string, List<TokenPair>> RefreshTokens = new Dictionary<string, List<TokenPair>>();
-        //public static readonly object lockObject = new object();
+       
         private readonly IKeyStoreService _keyStoreService;
     }
 
-    //public class TokenPair
-    //{
-    //    public string JwtToken { get; set; }
-    //    public string RefreshToken { get; set; }
-    //    public DateTime RefreshIssueDate { get; set; }
-    //}
+    
 
 }

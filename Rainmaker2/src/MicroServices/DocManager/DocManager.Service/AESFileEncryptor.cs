@@ -50,7 +50,7 @@ namespace DocManager.Service
             byte[] salt = GenerateRandomSalt();
 
             //create output file name
-            //var filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".enc");
+            
             MemoryStream fsCrypt = new MemoryStream();
 
             //convert password string to byte arrray
@@ -72,7 +72,7 @@ namespace DocManager.Service
             AES.Mode = CipherMode.ECB;
 
             //write salt to the begining of the output file, so in this case can be random every time
-            //fsCrypt.Write(salt, 0, salt.Length);
+           
             string saltString = Convert.ToBase64String(salt);
 
             using CryptoStream cs = new CryptoStream(fsCrypt, AES.CreateEncryptor(), CryptoStreamMode.Write,true);

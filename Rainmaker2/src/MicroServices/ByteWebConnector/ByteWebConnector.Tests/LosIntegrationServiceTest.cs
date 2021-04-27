@@ -55,6 +55,7 @@ namespace ByteWebConnector.Tests
             httpClientFactory.Setup(clientFactory => clientFactory.CreateClient(It.IsAny<string>())).Returns(httpClient);
             ILosIntegrationService byteWebConnectorSdkService = new LosIntegrationService(contextAccessorMock.Object,httpClient, mockConfiguration.Object);
             bool result = await byteWebConnectorSdkService.DocumentDelete("byte");
+            Assert.IsType<bool>(result);
         }
         [Fact]
         public async Task DocumentAddDocumentService()
@@ -95,6 +96,7 @@ namespace ByteWebConnector.Tests
             ILosIntegrationService byteWebConnectorSdkService = new LosIntegrationService(contextAccessorMock.Object, httpClient, mockConfiguration.Object);
             List<EmbeddedDoc> embeddedDocs = new List<EmbeddedDoc>();
             bool result = await byteWebConnectorSdkService.DocumentAddDocument(1, embeddedDocs);
+            Assert.IsType<bool>(result);
         }
     }
 }

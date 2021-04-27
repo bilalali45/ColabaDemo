@@ -6,11 +6,6 @@ using StackExchange.Redis.Extensions.Core.Configuration;
 
 namespace Identity.Models
 {
-    //public class RedisHost
-    //{
-    //    public string Host { get; set; }
-    //    public int Port { get; set; }
-    //}
     public class RedisParameters
     {
         public string Password { get; set; }

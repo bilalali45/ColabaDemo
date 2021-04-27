@@ -53,7 +53,7 @@ namespace Identity
 
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IKeyStoreService, KeyStoreService>();
-            //services.AddTransient<ICacheHandler, RedisCacheHandler>();
+         
             services.AddTransient<ITokenManager, TokenManager>();
 
             services.AddControllers().AddNewtonsoftJson();
@@ -77,24 +77,24 @@ namespace Identity
 
             #endregion
 
-            //var redisCS = AsyncHelper.RunSync(func: () => httpClient.GetAsync(requestUri: $"{Configuration[key: "KeyStore:Url"]}/api/keystore/keystore?key=RedisCS"));
-            //var redisInstance = AsyncHelper.RunSync(func: () => httpClient.GetAsync(requestUri: $"{Configuration[key: "KeyStore:Url"]}/api/keystore/keystore?key=RedisInstance"));
+            
 
-            //var redistCSStr = AsyncHelper.RunSync(() => redisCS.Content.ReadAsStringAsync());
-            //var redisInstanceStr = AsyncHelper.RunSync(() => redisInstance.Content.ReadAsStringAsync());
-
-
-            //var redisConfiguration = Configuration.GetSection("Redis").Get<RedisConfiguration>();
-
+            
+            
+            
+            
+            
+            
+            
             var redisParams = AsyncHelper.RunSync(func: () => httpClient.GetAsync(requestUri: $"{Configuration[key: "KeyStore:Url"]}/api/keystore/keystore?key=RedisIdentityConfig"));
             var redisConfig = AsyncHelper.RunSync(() => redisParams.Content.ReadAsStringAsync());
             var redisIdentityConfig = JsonConvert.DeserializeObject<RedisConfiguration>(redisConfig);
-            //string xyz = AsyncHelper.RunSync(() =>
-            //    redisParams.Content.ReadAsStringAsync());
-            //var abc = JsonConvert.DeserializeObject<RedisConfiguration>(AsyncHelper.RunSync(() =>
-            //    redisParams.Content.ReadAsStringAsync()));
+           
 
-
+            
+            
+            
+            
             services.AddStackExchangeRedisExtensions<NewtonsoftSerializer>(redisIdentityConfig);
 
             #region Authentication Setup

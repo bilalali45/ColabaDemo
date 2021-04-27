@@ -40,7 +40,7 @@ namespace DocManager.Service
                 /* Get the FTP Server's Response Stream */
                 _ftpStream = _ftpResponse.GetResponseStream();
                 /* Open a File Stream to Write the Downloaded File */
-                //using var localFileStream = new FileStream(localFile, FileMode.Create);
+                
                 /* Buffer for the Downloaded Data */
                 var byteBuffer = new byte[BufferSize];
                 if (_ftpStream != null)
@@ -91,7 +91,7 @@ namespace DocManager.Service
                 /* Establish Return Communication with the FTP Server */
                 _ftpStream = _ftpRequest.GetRequestStream();
                 /* Open a File Stream to Read the File for Upload */
-                //using var localFileStream = new FileStream(localFile, FileMode.Open);
+               
                 /* Buffer for the Downloaded Data */
                 var byteBuffer = new byte[BufferSize];
                 int bytesSent = await localFileStream.ReadAsync(byteBuffer, 0, BufferSize);

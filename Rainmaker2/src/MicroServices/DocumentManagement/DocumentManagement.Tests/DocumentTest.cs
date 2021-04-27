@@ -1031,12 +1031,12 @@ namespace DocumentManagement.Tests
             mcuRenameModel.requestId = "1";
             mcuRenameModel.docId = "1";
             mcuRenameModel.fileId = "1";
-            mcuRenameModel.newName = new string('a', 256); ;
+            mcuRenameModel.newName = new string('a', 256);
             var result = documentController.McuRename(mcuRenameModel).Result;
             //Assert
  
              Assert.IsType<BadRequestObjectResult>(result);
-           // await Assert.ThrowsAsync<DocumentManagementException>(async () => { await documentController.McuRename(mcuRenameModel); });
+          
 
         }
         [Fact]
@@ -1190,7 +1190,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            Mock<IRainmakerService> mockRainMakerService = new Mock<IRainmakerService>();
+            
             mock.Setup(x => x.RejectDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(),It.IsAny<string>(),It.IsAny<List<string>>())).ReturnsAsync(false);
             var request = new Mock<HttpRequest>();
             request.SetupGet(x => x.Headers["Authorization"]).Returns(
@@ -1290,10 +1290,10 @@ namespace DocumentManagement.Tests
             
             Mock<IDocumentService> mock = new Mock<IDocumentService>();
             Mock<ISettingService> mockSettingService = new Mock<ISettingService>();
-           // Mock<IFileService> mockFileService = new Mock<IFileService>();
+          
             Mock<IFtpClient> mockFtpClient = new Mock<IFtpClient>();
-            Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
-            Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
+           
+            
             Mock<IKeyStoreService> mockKeyStoreService = new Mock<IKeyStoreService>();
 
             var mockFileEcryptor = new Mock<IFileEncryptor>();
@@ -1376,17 +1376,17 @@ namespace DocumentManagement.Tests
                     }
             };
 
-            var viewLog = new ViewLog
-            {
-                id = "5ef050534f7d102f9c68a95e",
-                userProfileId = 1,
-                createdOn = DateTime.Now,
-                ipAddress = "127.0.0.1",
-                loanApplicationId = "5eb25d1fe519051af2eeb72d",
-                requestId = "abc15d1fe456051af2eeb768",
-                documentId = "ddd25d1fe456057652eeb72d",
-                fileId = "5ef049d896f9f41cec4b358f"
-            };
+           
+
+
+
+
+
+
+
+
+
+
 
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
             mockCursor.SetupGet(x => x.Current).Returns(list);
@@ -1434,18 +1434,18 @@ namespace DocumentManagement.Tests
                     }
             };
 
-            var viewLog = new ViewLog
-            {
-                id = "5ef050534f7d102f9c68a95e",
-                userProfileId = 1,
-                createdOn = DateTime.Now,
-                ipAddress = "127.0.0.1",
-                loanApplicationId = "5eb25d1fe519051af2eeb72d",
-                requestId = "abc15d1fe456051af2eeb768",
-                documentId = "ddd25d1fe456057652eeb72d",
-                fileId = "5ef049d896f9f41cec4b358f"
-            };
+            
 
+
+
+
+
+
+            
+            
+            
+            
+            
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false).ReturnsAsync(true).ReturnsAsync(false);
             mockCursor.SetupGet(x => x.Current).Returns(list);
 
@@ -1492,18 +1492,18 @@ namespace DocumentManagement.Tests
                     }
             };
 
-            var viewLog = new ViewLog
-            {
-                id = "5ef050534f7d102f9c68a95e",
-                userProfileId = 1,
-                createdOn = DateTime.Now,
-                ipAddress = "127.0.0.1",
-                loanApplicationId = "5eb25d1fe519051af2eeb72d",
-                requestId = "abc15d1fe456051af2eeb768",
-                documentId = "ddd25d1fe456057652eeb72d",
-                fileId = "5ef049d896f9f41cec4b358f"
-            };
 
+
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false).ReturnsAsync(false).ReturnsAsync(true).ReturnsAsync(false);
             mockCursor.SetupGet(x => x.Current).Returns(list);
 
@@ -1550,18 +1550,18 @@ namespace DocumentManagement.Tests
                     }
             };
 
-            var viewLog = new ViewLog
-            {
-                id = "5ef050534f7d102f9c68a95e",
-                userProfileId = 1,
-                createdOn = DateTime.Now,
-                ipAddress = "127.0.0.1",
-                loanApplicationId = "5eb25d1fe519051af2eeb72d",
-                requestId = "abc15d1fe456051af2eeb768",
-                documentId = "ddd25d1fe456057652eeb72d",
-                fileId = "5ef049d896f9f41cec4b358f"
-            };
+            
 
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(false).ReturnsAsync(false).ReturnsAsync(false).ReturnsAsync(true).ReturnsAsync(false);
             mockCursor.SetupGet(x => x.Current).Returns(list);
 
@@ -1580,51 +1580,51 @@ namespace DocumentManagement.Tests
             Assert.Equal("5ef050534f7d102f9c68a95e", dto.id);
 
         }
-        /*
-        [Fact]
-        public async Task TestUpdateByteProStatusControllerTrue()
-        {
-            //Arrange
-            Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            mock.Setup(x => x.UpdateByteProStatus(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),It.IsAny<bool>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(true);
-          
-            var controller = new DocumentController(mock.Object, null, null, null, null, null, null);
-
-            //Act
-            UpdateByteProStatus updateByteProStatus = new UpdateByteProStatus();
-            updateByteProStatus.id = "5f0ede3cce9c4b62509d0dbf";
-            updateByteProStatus.requestId = "5f113d85bb1a085098235081";
-            updateByteProStatus.docId = "5f113d85bb1a085098235085";
-            updateByteProStatus.fileId = "5f2266d58913c3476c45b7c4";
-            IActionResult result = await controller.UpdateByteProStatus(updateByteProStatus);
-
-            //Assert
-            Assert.NotNull(result);
-            Assert.IsType<OkResult>(result);
-        }
-
-        [Fact]
-        public async Task TestUpdateByteProStatusControllerFalse()
-        {
-            //Arrange
-            Mock<IDocumentService> mock = new Mock<IDocumentService>();
-            mock.Setup(x => x.UpdateByteProStatus(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
-
-            var controller = new DocumentController(mock.Object, null, null, null, null, null, null);
-
-            //Act
-            UpdateByteProStatus updateByteProStatus = new UpdateByteProStatus();
-            updateByteProStatus.id = "5f0ede3cce9c4b62509d0dbf";
-            updateByteProStatus.requestId = "5f113d85bb1a085098235081";
-            updateByteProStatus.docId = "5f113d85bb1a085098235085";
-            updateByteProStatus.fileId = "5f2266d58913c3476c45b7c4";
-            IActionResult result = await controller.UpdateByteProStatus(updateByteProStatus);
-
-            //Assert
-            Assert.NotNull(result);
-            Assert.IsType<NotFoundResult>(result);
-        }
-        */
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         [Fact]
         public async Task TestUpdateByteProStatusService()
         {
@@ -1642,7 +1642,7 @@ namespace DocumentManagement.Tests
             mock.SetupGet(x => x.db).Returns(mockdb.Object);
             
             //Act
-            IDocumentService service = new DocumentService(mock.Object, null, null); ;
+            IDocumentService service = new DocumentService(mock.Object, null, null);
             bool result = await service.UpdateByteProStatus("5f0ede3cce9c4b62509d0dbf", "5f113d85bb1a085098235081", "5f113d85bb1a085098235085", "5f2266d58913c3476c45b7c4",true,1,1);
 
             //Assert

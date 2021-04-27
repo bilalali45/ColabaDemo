@@ -144,10 +144,10 @@ namespace DocManager.API.Controllers
                                                              authHeader: Request.Headers["Authorization"].Select(x => x.ToString()),
                                                              salt);
                     logger.LogInformation($"DocSync After Submit into Mongo");
-                    //System.IO.File.Delete(path: filePath);
+                   
                     logger.LogInformation($"DocSync After Delete");
                     if (String.IsNullOrEmpty(docQuery))
-                        //throw new DocumentManagementException("unable to update file in mongo");
+                       
                         return BadRequest(new ErrorModel() { Code = 400, Message = "unable to upload file" });
                     fileId.Add(docQuery);
                     logger.LogInformation($"DocSync docQuery is not empty");

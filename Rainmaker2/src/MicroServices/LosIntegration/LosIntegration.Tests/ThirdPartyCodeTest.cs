@@ -20,12 +20,12 @@ namespace LosIntegration.Tests
     public class ThirdPartyCodeTest
     {
         [Fact]
-        public async Task TestGetRefIdByThirdPartyIdService()
+        public void TestGetRefIdByThirdPartyIdService()
         {
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
             Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("http://test.com");
-            IEnumerable<string> authHeader = new string[] { "Authorization" };
+           
             List<ThirdPartyCode> thirdPartyCodes = new List<ThirdPartyCode>()
             {
                 new ThirdPartyCode()
@@ -64,6 +64,7 @@ namespace LosIntegration.Tests
             httpClientFactory.Setup(clientFactory => clientFactory.CreateClient(It.IsAny<string>())).Returns(httpClient);
             IThirdPartyCodeService thirdPartyCodeService = new ThirdPartyCodeService(httpClient,mockConfiguration.Object);
             List<ThirdPartyCode> lists = thirdPartyCodeService.GetRefIdByThirdPartyId(1);
+            Assert.IsType<List<ThirdPartyCode>>(lists);
         }
     }
 }

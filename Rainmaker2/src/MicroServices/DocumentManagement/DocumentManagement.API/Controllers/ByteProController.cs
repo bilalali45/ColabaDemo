@@ -79,14 +79,14 @@ namespace DocumentManagement.API.Controllers
                             userName: setting.ftpUser,
                             password: AesCryptography.Decrypt(text: setting.ftpPassword,
                                                               key: await keyStoreService.GetFtpKey()));
-            //var filepath = Path.GetTempFileName();
+           
             using var memoryStream = new MemoryStream();
             await ftpClient.DownloadAsync(remoteFile: fileviewdto.serverName,
                                           memoryStream);
             Stream ms = fileEncryptionFactory.GetEncryptor(name: fileviewdto.encryptionAlgorithm).DecrypeFile(memoryStream,
                                                                                                               password: await keyStoreService.GetFileKey(),
                                                                                                               originalFileName: fileviewdto.clientName,fileviewdto.salt);
-            //System.IO.File.Delete(filepath);
+           
             return File(ms,
                         fileviewdto.contentType,
                         fileviewdto.clientName);
