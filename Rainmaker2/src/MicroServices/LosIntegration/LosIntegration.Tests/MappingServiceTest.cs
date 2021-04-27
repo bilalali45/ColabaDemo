@@ -16,7 +16,7 @@ namespace LosIntegration.Tests
     public class MappingServiceTest
     {
         [Fact]
-        public async Task TestGetMappingWithDetailsService()
+        public void TestGetMappingWithDetailsService()
         {
             //Arrange
             DbContextOptions<LosIntegrationContext> options;
@@ -42,10 +42,10 @@ namespace LosIntegration.Tests
 
             // Assert
             Assert.NotNull(res);
-            //Assert.Equal(1, res[0].Id);
+           
         }
         [Fact]
-        public async Task TestGetMappingService()
+        public void TestGetMappingService()
         {
             //Arrange
             DbContextOptions<LosIntegrationContext> options;
@@ -76,7 +76,7 @@ namespace LosIntegration.Tests
 
             // Assert
             Assert.NotNull(res);
-            //Assert.Equal(2, res[0].Id);
+           
         }
     }
 }

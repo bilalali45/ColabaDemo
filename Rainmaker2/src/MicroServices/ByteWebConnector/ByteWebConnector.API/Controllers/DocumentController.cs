@@ -72,32 +72,7 @@ namespace ByteWebConnector.API.Controllers
 
         #region Private Methods
 
-        //private EmbeddedDoc GetEmbeddedDocData(string byteProSession,
-        //                                       int documentId,
-        //                                       int fileDataId)  //todo talha move thid method to service
-        //{
-        //    var request =
-        //        (HttpWebRequest)WebRequest.Create(requestUriString: ByteProSettings.ByteApiUrl + "Document/" +
-        //                                                             fileDataId + "/" + documentId);
-        //    request.Method = "GET";
-        //    request.ContentType = "application/json";
-        //    request.Headers.Add(name: "Session",
-        //                        value: byteProSession);
-        //    request.Accept = "application/json";
-
-        //    using (var response = (HttpWebResponse)request.GetResponse())
-        //    {
-        //        var dataStream = response.GetResponseStream();
-        //        var reader = new StreamReader(stream: dataStream);
-        //        var responseString = reader.ReadToEnd();
-
-        //        var embeddedDoc =
-        //            JsonConvert.DeserializeObject<EmbeddedDoc>(value: responseString);
-        //        reader.Close();
-        //        dataStream.Close();
-        //        return embeddedDoc;
-        //    }
-        //}
+        
 
         #endregion
 
@@ -151,21 +126,12 @@ namespace ByteWebConnector.API.Controllers
 
                 #region BytePro API Call
 
-                //ByteSession = ByteSession.HasValue() ? ByteSession : _byteProService.GetByteProSession();
-                //if (!_byteProService.ValidateByteSession(byteSession: ByteSession)) ByteSession = _byteProService.GetByteProSession();
-
-                //var fileData = _byteProService.GetFileData(byteSession: ByteSession,
-                //                                           fileDataId: loanApplication.ByteLoanNumber);
-                //documentUploadModel.FileName = fileData.FileName;
+                
                 documentUploadModel.FileName = loanApplication.ByteFileName;
 
                 var sdkDocumentResponse = _byteWebConnectorSdkService.SendDocumentToByte(documentUploadRequest: documentUploadModel).ResponseObject;
 
-                //var apiResponse = new ApiResponse<SendSdkDocumentResponse>
-                //{
-                //    Status = ApiResponseStatus.Success,
-                //    Data = sdkDocumentResponse
-                //};
+                
 
                 return sdkDocumentResponse;
 
@@ -206,19 +172,7 @@ namespace ByteWebConnector.API.Controllers
                                                                    fileDataId: request.FileDataId);
 
             _logger.LogInformation(message: $"T====== Total embeddedDocs = {embeddedDocs.Count}");
-            //var content = new AddDocumentRequest(fileDataId: request.FileDataId,
-            //                                     embeddedDocs: embeddedDocs).ToJson();
-            //var token = Request.Headers[key: "Authorization"].ToString().Replace(oldValue: "Bearer ",
-            //                                                                     newValue: "");
-            //_httpClient.DefaultRequestHeaders.Authorization
-            //    = new AuthenticationHeaderValue(scheme: "Bearer",
-            //                                    parameter: token);
-            //var callResponse =
-            //    await _httpClient.PostAsync(requestUri:
-            //                                $"{_configuration[key: "ServiceAddress:LosIntegration:Url"]}/api/LosIntegration/Document/AddDocument",
-            //                                content: new StringContent(content: content,
-            //                                                           encoding: Encoding.UTF8,
-            //                                                           mediaType: "application/json"));
+            
             var callResponse = _losIntegrationService.DocumentAddDocument(fileDataId: request.FileDataId,
                                                                           embeddedDocs: embeddedDocs);
 
@@ -230,23 +184,7 @@ namespace ByteWebConnector.API.Controllers
         }
 
 
-        //[Route(template: "[action]")]
-        //[HttpPost]
-        //public EmbeddedDoc GetDocumentDataFromByte(DocumentDataRequest request)
-        //{
-        //    #region Byte API Call
-
-        //    var byteProSession = _byteProService.GetByteProSession();
-
-        //    var embeddedDocWithData = GetEmbeddedDocData(byteProSession: byteProSession.Result,
-        //                                                 documentId: request.DocumentId,
-        //                                                 fileDataId: request.FileDataId);
-
-        //    return embeddedDocWithData;
-
-        //    #endregion
-        //}
-
+        
         #endregion
     }
 }

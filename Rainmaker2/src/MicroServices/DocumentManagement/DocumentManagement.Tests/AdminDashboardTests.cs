@@ -61,7 +61,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IAdminDashboardService> mock = new Mock<IAdminDashboardService>();
-            AdminDeleteModel model = new AdminDeleteModel() { id = "1", docId = "1", requestId = "1" };
+           
 
             mock.Setup(x => x.Delete(It.IsAny<AdminDeleteModel>(), It.IsAny<int>(), It.IsAny<IEnumerable<string>>())).ReturnsAsync(true);
             var request = new Mock<HttpRequest>();
@@ -93,7 +93,7 @@ namespace DocumentManagement.Tests
         {
             //Arrange
             Mock<IAdminDashboardService> mock = new Mock<IAdminDashboardService>();
-            AdminDeleteModel model = new AdminDeleteModel() { id = "1", docId = "1", requestId = "1" };
+           
 
             mock.Setup(x => x.Delete(It.IsAny<AdminDeleteModel>(), It.IsAny<int>(), It.IsAny<List<string>>())).ReturnsAsync(false);
             var request = new Mock<HttpRequest>();
@@ -402,7 +402,7 @@ namespace DocumentManagement.Tests
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
 
             mockCursor.SetupGet(x => x.Current).Returns(list);
-            //  mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
+          
             mockCollection.SetupSequence(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object).Returns(mockCursor.Object);
 
             mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);
@@ -441,7 +441,7 @@ namespace DocumentManagement.Tests
             mockCursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<System.Threading.CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
 
             mockCursor.SetupGet(x => x.Current).Returns(list);
-            //  mockCollection.Setup(x => x.UpdateOneAsync(It.IsAny<FilterDefinition<Request>>(), It.IsAny<UpdateDefinition<Request>>(), It.IsAny<UpdateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(new UpdateResult.Acknowledged(0, 0, BsonInt32.Create(1)));
+           
             mockCollection.SetupSequence(x => x.Aggregate(It.IsAny<PipelineDefinition<Request, BsonDocument>>(), It.IsAny<AggregateOptions>(), It.IsAny<CancellationToken>())).Returns(mockCursor.Object).Returns(mockCursor.Object);
 
             mockdb.Setup(x => x.GetCollection<Request>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>())).Returns(mockCollection.Object);

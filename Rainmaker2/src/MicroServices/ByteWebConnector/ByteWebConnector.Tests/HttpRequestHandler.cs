@@ -29,7 +29,7 @@ namespace ByteWebConnector.Tests
     }
     public class TestWebReponse : HttpWebResponse
     {
-        Stream responseStream;
+        readonly Stream responseStream;
 
         /// <summary>Initializes a new instance of <see cref="TestWebReponse"/>
         /// with the response stream to return.</summary>
@@ -48,7 +48,7 @@ namespace ByteWebConnector.Tests
 
     public class HttpWebRequestWrapper : IHttpWebRequestWrapper
     {
-        private HttpWebRequest httpWebRequest;
+        private readonly HttpWebRequest httpWebRequest;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpWebRequestWrapper"/> class.
@@ -100,7 +100,7 @@ namespace ByteWebConnector.Tests
 
     public class HttpWebResponseWrapper : IHttpWebResponseWrapper
     {
-        private WebResponse webResponse;
+        private readonly WebResponse webResponse;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpWebResponseWrapper"/> class.

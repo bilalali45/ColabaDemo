@@ -72,7 +72,7 @@ namespace DocumentManagement.Service
                 await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
                                             memoryStream1);
             }
-            //System.IO.File.Delete(filePath);
+            
             // get document upload status
             string status = string.Empty;
             IMongoCollection<Entity.StatusList> collection =

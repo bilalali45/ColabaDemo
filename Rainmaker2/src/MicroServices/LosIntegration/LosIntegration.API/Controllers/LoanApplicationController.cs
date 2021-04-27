@@ -71,7 +71,7 @@ namespace LosIntegration.API.Controllers
                         {
                             Message = "Cannot retrieve loan status response."
                         }) ;
-                        //throw new Exception("Cannot retrieve loan status response.");
+                       
                     }
                     else
                     {

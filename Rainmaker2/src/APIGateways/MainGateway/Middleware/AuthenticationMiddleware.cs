@@ -20,15 +20,13 @@ namespace MainGateway.Middleware
     public class AuthenticationMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<AuthenticationMiddleware> _logger;
         private readonly ITokenManager _tokenManager;
 
 
-        public AuthenticationMiddleware(RequestDelegate next, IHttpContextAccessor httpContextAccessor, ILogger<AuthenticationMiddleware> logger, ITokenManager tokenManager)
+        public AuthenticationMiddleware(RequestDelegate next, ILogger<AuthenticationMiddleware> logger, ITokenManager tokenManager)
         {
             this._next = next;
-            this._httpContextAccessor = httpContextAccessor;
             this._logger = logger;
             this._tokenManager = tokenManager;
         }
@@ -42,7 +40,6 @@ namespace MainGateway.Middleware
                 var tokenInfo = await this._tokenManager.FindUserTokenAsync(token);
                 if (tokenInfo == null) // If token not found
                 {
-                    //context.Request.Headers["Authorization"] = ""; // Remove authorization token
                     this._logger.LogWarning("Access token does not exist in token store.");
                     context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                     await context.Response.WriteAsync(text: "Unauthorized",

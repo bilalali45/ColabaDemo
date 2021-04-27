@@ -16,7 +16,7 @@ namespace ByteWebConnector.Tests
     public class SettingServiceTest
     {
         [Fact]
-        public async Task TestGetSettingWithDetailsService()
+        public void TestGetSettingWithDetailsService()
         {
             //Arrange
             DbContextOptions<BwcContext> options;

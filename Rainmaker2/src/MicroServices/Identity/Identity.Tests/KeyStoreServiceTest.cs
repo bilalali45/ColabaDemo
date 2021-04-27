@@ -35,7 +35,7 @@ namespace Identity.Tests
                                   StatusCode = HttpStatusCode.OK,
                                   Content = new StringContent("fakesecuritykey", Encoding.UTF8, "text/html"),
                               });
-            ;
+            
             var httpClient = new HttpClient(handlerMock.Object)
                              {
                                  BaseAddress = new Uri("http://test.com/"),
@@ -67,7 +67,7 @@ namespace Identity.Tests
                                   StatusCode = HttpStatusCode.OK,
                                   Content = new StringContent("fakesecuritykey", Encoding.UTF8, "text/html"),
                               });
-            ;
+            
             var httpClient = new HttpClient(handlerMock.Object)
                              {
                                  BaseAddress = new Uri("http://test.com/"),

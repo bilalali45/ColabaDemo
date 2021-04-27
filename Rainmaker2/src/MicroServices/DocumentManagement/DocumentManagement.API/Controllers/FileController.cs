@@ -142,10 +142,10 @@ namespace DocumentManagement.API.Controllers
                                                             userProfileId: userProfileId,
                                                             authHeader: Request.Headers["Authorization"].Select(x => x.ToString()),salt);
                     logger.LogInformation($"DocSync After Submit into Mongo");
-                    //System.IO.File.Delete(path: filePath);
+                  
                     logger.LogInformation($"DocSync After Delete");
                     if (String.IsNullOrEmpty(docQuery))
-                        //throw new DocumentManagementException("unable to update file in mongo");
+                       
                         return BadRequest(new ErrorModel { Code = 400, Message = "unable to upload file" });
                     fileId.Add(docQuery);
                     logger.LogInformation($"DocSync docQuery is not empty");
@@ -335,7 +335,7 @@ namespace DocumentManagement.API.Controllers
                                                                 userProfileId: userProfileId,
                                                                 authHeader: Request.Headers["Authorization"].Select(x => x.ToString()),salt);
                         logger.LogInformation($"DocSync After Submit into Mongo");
-                        //System.IO.File.Delete(path: filePath);
+                      
                         logger.LogInformation($"DocSync After Delete");
                         if (String.IsNullOrEmpty(docQuery))
                             //throw new DocumentManagementException("unable to update file in mongo");
@@ -499,14 +499,14 @@ namespace DocumentManagement.API.Controllers
                             userName: setting.ftpUser,
                             password: AesCryptography.Decrypt(text: setting.ftpPassword,
                                                               key: await keyStoreService.GetFtpKey()));
-            //var filepath = Path.GetTempFileName();
+          
             using var memoryStream = new MemoryStream();
             await ftpClient.DownloadAsync(remoteFile: fileviewdto.serverName,
                                           memoryStream);
             Stream ms = fileEncryptionFactory.GetEncryptor(name: fileviewdto.encryptionAlgorithm).DecrypeFile(memoryStream,
                                                                                                                           password: await keyStoreService.GetFileKey(),
                                                                                                                           originalFileName: fileviewdto.clientName,fileviewdto.salt);
-            //System.IO.File.Delete(filepath);
+           
             return File(ms,
                         contentType: fileviewdto.contentType,
                         fileDownloadName: fileviewdto.clientName);

@@ -377,7 +377,7 @@ namespace DocumentManagement.Tests
         {
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
-            Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
+           
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();
@@ -487,7 +487,7 @@ namespace DocumentManagement.Tests
         {
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
-            Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
+           
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();
@@ -595,7 +595,7 @@ namespace DocumentManagement.Tests
         {
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
-            Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
+            
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();
@@ -722,7 +722,7 @@ namespace DocumentManagement.Tests
         {
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
-            Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
+           
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();
@@ -827,7 +827,7 @@ namespace DocumentManagement.Tests
             requestDocument.status = "Started";
             requestDocument.displayName = "";
             requestDocument.message = "document rejected";
-            //requestDocument.typeId = "5eb257a3e519051af2eeb624";
+          
             requestDocument.docId = "5f2147136621531660dc42c2";
             requestDocument.requestId = "5f2147116621531660dc42bf";
             requestDocument.files = new List<Model.RequestFile>() { };
@@ -848,7 +848,7 @@ namespace DocumentManagement.Tests
         {
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
-            Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
+          
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();
@@ -948,7 +948,7 @@ namespace DocumentManagement.Tests
         {
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
-            Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
+           
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();
@@ -1300,7 +1300,7 @@ namespace DocumentManagement.Tests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
-            var content = (result as OkObjectResult).Value as string;
+
         }
 
         [Fact]
@@ -1506,7 +1506,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+          
             Mock<IFtpClient> mockftpclient = new Mock<IFtpClient>();
             Mock<IConfiguration> mockconfiguration = new Mock<IConfiguration>();
             Mock<IKeyStoreService> mockKeyStoreService = new Mock<IKeyStoreService>();
@@ -1522,7 +1522,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
 
             string filePath = Path.GetTempFileName();
-            MemoryStream ms = new MemoryStream();
+          
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
@@ -1629,7 +1629,7 @@ namespace DocumentManagement.Tests
             //Arrange
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
-            Mock<IAsyncCursor<BsonDocument>> mockCursor = new Mock<IAsyncCursor<BsonDocument>>();
+           
             Mock<IFtpClient> mockftpclient = new Mock<IFtpClient>();
             Mock<IConfiguration> mockconfiguration = new Mock<IConfiguration>();
             Mock<IKeyStoreService> mockKeyStoreService = new Mock<IKeyStoreService>();
@@ -1645,7 +1645,7 @@ namespace DocumentManagement.Tests
             Mock<IMongoCollection<Entity.LoanApplication>> mockLoanApplicationCollection = new Mock<IMongoCollection<Entity.LoanApplication>>();
 
             string filePath = Path.GetTempFileName();
-            MemoryStream ms = new MemoryStream();
+           
             Setting setting = new Setting();
             setting.ftpServer = "ftp://rsserver1/Product2.0/BorrowerDocument";
             setting.ftpUser = "ftpuser";
@@ -1751,7 +1751,7 @@ namespace DocumentManagement.Tests
         {
             Mock<IMongoService> mock = new Mock<IMongoService>();
             Mock<IActivityLogService> mockActivityLogService = new Mock<IActivityLogService>();
-            Mock<IActivityLogService> mockIActivityLogService = new Mock<IActivityLogService>();
+           
             Mock<IMongoDatabase> mockdb = new Mock<IMongoDatabase>();
             Mock<IMongoCollection<StatusList>> mockCollectionStatusList = new Mock<IMongoCollection<StatusList>>();
             Mock<IAsyncCursor<BsonDocument>> mockCursorStatusList = new Mock<IAsyncCursor<BsonDocument>>();

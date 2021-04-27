@@ -26,10 +26,6 @@ namespace Identity.Tests
             contextAccessorMock.Setup(_ => _.HttpContext).Returns(httpContext);
             contextAccessorMock.Setup(_ => _.HttpContext.Items).Returns(contextItems);
 
-            //var httpContext = new Mock<HttpContext>();
-            //httpContext.Setup(x => x.Items.)
-
-
 
             var service = new CorrelationIdAccessor(mockLoggerHandler.Object,
                                                     contextAccessorMock.Object);

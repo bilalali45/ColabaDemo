@@ -34,7 +34,7 @@ namespace DocumentManagement.Tests
             Mock<IByteProService> mock = new Mock<IByteProService>();
             Mock<ISettingService> mockSettingService = new Mock<ISettingService>();
             Mock<IFtpClient> mockFtpClient = new Mock<IFtpClient>();
-            Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
+           
             Mock<IKeyStoreService> mockKeyStoreService = new Mock<IKeyStoreService>();
 
             var mockFileEcryptor = new Mock<IFileEncryptor>();
@@ -328,7 +328,7 @@ namespace DocumentManagement.Tests
 
             //Act
             await service.UpdateLoanInfo(1, "5fb51519e223e0428d82c41b", new List<string>());
-
+            Assert.Equal(1, 1);
         }
     }
 }

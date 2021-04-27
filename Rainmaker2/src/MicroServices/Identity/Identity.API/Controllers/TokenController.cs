@@ -20,37 +20,37 @@ namespace Identity.Controllers
     [ApiController]
     public class TokenController : Controller
     {
-        /*
-        static TokenController()
-        {
-            Task.Factory.StartNew(async ()=> 
-            { 
-                while(true)
-                {
-                    await Task.Delay(5 * 60 * 1000);
-                    try
-                    {
-                        lock (TokenService.lockObject)
-                        {
-                            foreach (var pair in TokenService.RefreshTokens)
-                            {
-                                for (int i=0;i<pair.Value.Count;i++)
-                                {
-                                    if ((DateTime.UtcNow-pair.Value[i].RefreshIssueDate).TotalMinutes>5*24*60)
-                                    {
-                                        pair.Value.RemoveAt(i);
-                                        i--;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    catch
-                    { }
-                }
-            },TaskCreationOptions.LongRunning);
-        }*/
+       
 
+       
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         #region Constructors
 
         public TokenController(IHttpClientFactory clientFactory,
@@ -93,13 +93,13 @@ namespace Identity.Controllers
             var refreshToken = request.RefreshToken;
             var principal = await _tokenService.GetPrincipalFromExpiredToken(token: token);
             var username = principal.Identity.Name; //this is mapped to the Name claim by default
-            var userId = int.Parse(s: principal.Claims.Where(predicate: x => x.Type == "UserProfileId").First().Value);
-            //TokenPair tokenPair = null;
-            //lock (TokenService.lockObject)
-            //{
-            //    if (TokenService.RefreshTokens.ContainsKey(key: username)) tokenPair = TokenService.RefreshTokens[key: username]?.FirstOrDefault(predicate: pair => pair.JwtToken == token && pair.RefreshToken == refreshToken);
-            //}
+            
+            
 
+            
+            
+            
+            
             var tokenPairValid = await _tokenManager.CheckPair(token: token,
                                                                refreshToken: refreshToken);
 
@@ -165,39 +165,39 @@ namespace Identity.Controllers
         }
 
 
-        //[Route(template: "[action]")]
-        //[HttpPost]
-        //[Authorize]
-        //public async Task<IActionResult> Revoke()
-        //{
-        //    var response = new ApiResponse();
-        //    var username = User.Identity.Name;
-
-        //    var user = await GetUser(userName: username);
-        //    if (user == null)
-        //    {
-
-        //        response.Status = ApiResponse.ApiResponseStatus.Fail;
-        //        response.Message = "Bad request";
-        //        return Ok(value: response);
-        //    }
-
-        //    lock (TokenService.lockObject)
-        //    {
-        //        TokenService.RefreshTokens.Remove(key: username);
-        //    }
-
-        //    response.Status = ApiResponse.ApiResponseStatus.Success;
-        //    response.Message = "Token revoked";
-        //    return Ok(value: response);
-        //}
+        
 
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         [Route(template: "[action]")]
         [HttpGet]
         public async Task<IActionResult> SingleSignOn(string key)
         {
-            //var token = await _tokenService.GetForSignOn(key);
+            
             var token = await _tokenManager.GetForSignOn(refreshToken: key);
 
             if (token != null) return Ok(value: token.Token);
@@ -256,19 +256,19 @@ namespace Identity.Controllers
             var jwtToken = await _tokenService.GenerateAccessToken(claims: usersClaims);
             var refreshToken = _tokenService.GenerateRefreshToken();
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token: jwtToken);
-            //lock (TokenService.lockObject)
-            //{
-            //    if (!TokenService.RefreshTokens.ContainsKey(key: userProfile.UserName)) TokenService.RefreshTokens[key: userProfile.UserName] = new List<TokenPair>();
+            
 
-            //    TokenService.RefreshTokens[key: userProfile.UserName].Add(item: new TokenPair
-            //    {
-            //        JwtToken = tokenString,
-            //        RefreshToken = refreshToken,
-            //        RefreshIssueDate = DateTime.UtcNow
-            //    });
-            //}
-            //await _tokenService.InsertToken(tokenString,refreshToken, DateTime.UtcNow.AddMinutes(double.Parse(_configuration["Token:RefreshTokenExpiryInMinutes"])),(int)userProfile.Id);
-
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             var tokenData = new TokenData
                             {
                                 ValidTo = jwtToken.ValidTo,
@@ -280,16 +280,16 @@ namespace Identity.Controllers
                                 Token = tokenString
                             };
 
-            //response.Data = new
-            //                {
-            //                    Token = tokenString,
-            //                    refreshToken,
-            //                    UserProfileId = userProfile.Id,
-            //                    userProfile.UserName,
-            //                    //CompanyPhones = userProfile.Employees.Single().EmployeePhoneBinders.Select(binder => binder.CompanyPhoneInfo.Phone),
-            //                    jwtToken.ValidFrom,
-            //                    jwtToken.ValidTo
-            //                };
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             response.Data = tokenData;
 
             await _tokenManager.AddAuthTokenToWhiteListAsync(tokenData: tokenData);

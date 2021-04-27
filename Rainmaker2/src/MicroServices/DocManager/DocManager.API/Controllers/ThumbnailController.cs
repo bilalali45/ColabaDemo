@@ -74,7 +74,7 @@ namespace DocManager.API.Controllers
                     await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
                                                 memoryStream);
                 }
-                //System.IO.File.Delete(path: filePath);
+               
 
                 // update file
                 var docQuery = await thumbnailService.SaveWorkbenchDocument(id, fileId, tenantId, Path.GetFileName(path: filePath), file.FileName, (int)file.Length, file.ContentType,
@@ -119,7 +119,7 @@ namespace DocManager.API.Controllers
                     await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
                                                 memoryStream);
                 }
-                //System.IO.File.Delete(path: filePath);
+               
 
                 // update file
                 var docQuery = await thumbnailService.SaveTrashDocument(id, fileId, tenantId, Path.GetFileName(path: filePath), file.FileName, (int)file.Length, file.ContentType,
@@ -164,7 +164,7 @@ namespace DocManager.API.Controllers
                     await ftpClient.UploadAsync(remoteFile: Path.GetFileName(path: filePath),
                                                 memoryStream);
                 }
-                //System.IO.File.Delete(path: filePath);
+              
 
                 // update file
                 var docQuery = await thumbnailService.SaveCategoryDocument(id, requestId, docId, fileId, tenantId, Path.GetFileName(path: filePath), file.FileName, (int)file.Length, file.ContentType,

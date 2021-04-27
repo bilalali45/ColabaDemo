@@ -89,7 +89,7 @@ namespace TokenCacheHelper.TokenManager
         public async Task<TokenData> FindUserTokenAsync(string token)
         {
             var redisKey = GetCacheKeyFromAuthToken(token: token);
-            //var userTokens = await this._cacheHandler.GetCacheItemAsync<List<TokenData>>(redisKey);
+           
             var userTokens = await _cacheHandler.Db0.HashGetAllAsync<TokenData>(hashKey: redisKey);
             KeyValuePair<string, TokenData> tokenFound;
             if (userTokens != null)
@@ -103,7 +103,7 @@ namespace TokenCacheHelper.TokenManager
         public async Task<bool> RemoveUserTokenAsync(string token)
         {
             var redisKey = GetCacheKeyFromAuthToken(token: token);
-            //var userTokens = await this._cacheHandler.GetCacheItemAsync<List<TokenData>>(redisKey);
+            
             var userTokens = await _cacheHandler.Db0.HashGetAllAsync<TokenData>(hashKey: redisKey);
 
             var tokenFound = userTokens?.FirstOrDefault(predicate: t => t.Value.Token == token).Value;

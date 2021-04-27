@@ -19,7 +19,7 @@ namespace LosIntegration.Tests
     public class LoanRequestTest
     {
         [Fact]
-        public async Task GetLoanRequestWithDetailsService()
+        public void GetLoanRequestWithDetailsService()
         {
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
             Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
@@ -57,6 +57,7 @@ namespace LosIntegration.Tests
 
             ILoanRequestService loanApplicationService = new LoanRequestService(httpClient, mockConfiguration.Object);
             loanApplicationService.GetLoanRequestWithDetails(1);
+            Assert.Equal(1,1);
         }
     }
 }

@@ -57,20 +57,8 @@ namespace Rainmaker.Test
             dataContext.SaveChanges();
 
             Mock<IMembershipService> mockMembershipService = new Mock<IMembershipService>();
-            Mock<IUnitOfWork<RainMakerContext>> mockUnitOfWork = new Mock<IUnitOfWork<RainMakerContext>>();
+           
             Mock<IServiceProvider> mockServiceProvider = new Mock<IServiceProvider>();
-
-
-            List<Borrower> borrowers = new List<Borrower>()
-            {
-                new Borrower ()
-                {
-                     Id=6650,
-                     OwnTypeId=1,
-                     LoanApplicationId=6650
-
-                }
-            };
 
             mockMembershipService.Setup(x => x.GetUser(It.IsAny<string>())).Returns(userProfile);
 
@@ -129,12 +117,7 @@ namespace Rainmaker.Test
             };
             dataContext.Set<Contact>().Add(contact);
 
-            EmployeePhoneBinder employeePhoneBinders = new EmployeePhoneBinder
-            {
-                Id = 666,
-                EmployeeId = 666
-
-            };
+            
             PasswordPolicy passwordPolicy = new PasswordPolicy
             {
                 Id = 666,
@@ -145,20 +128,9 @@ namespace Rainmaker.Test
             dataContext.SaveChanges();
 
             Mock<IMembershipService> mockMembershipService = new Mock<IMembershipService>();
-            Mock<IUnitOfWork<RainMakerContext>> mockUnitOfWork = new Mock<IUnitOfWork<RainMakerContext>>();
+           
             Mock<IServiceProvider> mockServiceProvider = new Mock<IServiceProvider>();
 
-
-            List<Borrower> borrowers = new List<Borrower>()
-            {
-                new Borrower ()
-                {
-                     Id=666,
-                     OwnTypeId=1,
-                     LoanApplicationId=666
-
-                }
-            };
 
             mockMembershipService.Setup(x => x.GetEmployeeUser(It.IsAny<string>())).Returns(userProfile);
 
@@ -276,20 +248,8 @@ namespace Rainmaker.Test
             dataContext.SaveChanges();
 
             Mock<IMembershipService> mockMembershipService = new Mock<IMembershipService>();
-            Mock<IUnitOfWork<RainMakerContext>> mockUnitOfWork = new Mock<IUnitOfWork<RainMakerContext>>();
+           
             Mock<IServiceProvider> mockServiceProvider = new Mock<IServiceProvider>();
-
-
-            List<Borrower> borrowers = new List<Borrower>()
-            {
-                new Borrower ()
-                {
-                     Id=866,
-                     OwnTypeId=1,
-                     LoanApplicationId=866
-
-                }
-            };
 
 
             mockMembershipService.Setup(x => x.GetEmployeeUser(It.IsAny<string>())).Returns(userProfile);
@@ -300,100 +260,8 @@ namespace Rainmaker.Test
             await Assert.ThrowsAsync<RainMakerException>(() => service.ValidateUser(1,"ABCDE", "XYZ1", true));
 
         }
-        //[Fact]
-        //public void TestGetLoanSummaryException()
-        //{
-        //    //Arrange
-        //    DbContextOptions<RainMakerContext> options;
-        //    var builder = new DbContextOptionsBuilder<RainMakerContext>();
-        //    builder.UseInMemoryDatabase("RainMaker");
-        //    options = builder.Options;
-        //    using RainMakerContext dataContext = new RainMakerContext(options);
-
-        //    dataContext.Database.EnsureCreated();
-        //    UserProfile userProfile = new UserProfile
-        //    {
-        //        Id = 666,
-        //        UserName = "abc",
-        //        IsActive = true,
-        //        IsDeleted = false,
-        //        Password = "XYZ"
-        //    };
-        //    dataContext.Set<UserProfile>().Add(userProfile);
-
-        //    Customer customer = new Customer
-        //    {
-        //        Id = 666,
-        //        IsActive = true,
-        //        UserId = 666
-        //    };
-        //    dataContext.Set<Customer>().Add(customer);
-        //    Customer customer1 = new Customer
-        //    {
-        //        Id = 667,
-        //        IsActive = true,
-        //        UserId = 666
-        //    };
-        //    dataContext.Set<Customer>().Add(customer1);
-        //    Employee employee = new Employee
-        //    {
-        //        Id = 666,
-        //        ContactId = 666
-        //       ,
-        //        IsActive = true
-        //    };
-        //    dataContext.Set<Employee>().Add(employee);
-        //    Contact contact = new Contact
-        //    {
-        //        Id = 666,
-        //        FirstName = "abc",
-        //        LastName = "xyz"
-
-        //    };
-        //    dataContext.Set<Contact>().Add(contact);
-
-        //    EmployeePhoneBinder employeePhoneBinders = new EmployeePhoneBinder
-        //    {
-        //        Id = 666,
-        //        EmployeeId = 666
-        //    };
-        //    dataContext.SaveChanges();
-
-        //    Mock<IMembershipService> mockMembershipService = new Mock<IMembershipService>();
-        //    Mock<IUnitOfWork<RainMakerContext>> mockUnitOfWork = new Mock<IUnitOfWork<RainMakerContext>>();
-        //    Mock<IServiceProvider> mockServiceProvider = new Mock<IServiceProvider>();
-
-
-        //    List<Borrower> borrowers = new List<Borrower>()
-        //    {
-        //        new Borrower ()
-        //        {
-        //             Id=666,
-        //             OwnTypeId=1,
-        //             LoanApplicationId=666
-
-        //        },
-        //         new Borrower ()
-        //        {
-        //             Id=667,
-        //             OwnTypeId=1,
-        //             LoanApplicationId=666
-
-        //        }
-        //    };
-
-        //    mockMembershipService.Setup(x => x.GetEmployeeUser(It.IsAny<string>())).Returns(userProfile);
-
-
-        //    var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object);
-        //    //Act
-        //    UserProfile result = service.ValidateUser("ABC1", "XYZ1", true);
-        //    //Assert
-        //    Assert.NotNull(result);
-        //    Assert.Equal("XYZ", result.Password);
-        //    //Assert.Equal(1, result[0].OwnTypeId);
-        //    //Assert.Equal(899, result[0].LoanApplicationId);
-        //}
+       
+        
         [Fact]
         public void TestGetLoanSummaryUserNameNullExcepton()
         {
@@ -405,21 +273,9 @@ namespace Rainmaker.Test
             using RainMakerContext dataContext = new RainMakerContext(options);
             dataContext.Database.EnsureCreated();
 
-            Mock<IMembershipService> mockMembershipService = new Mock<IMembershipService>();
-            Mock<IUnitOfWork<RainMakerContext>> mockUnitOfWork = new Mock<IUnitOfWork<RainMakerContext>>();
             Mock<IServiceProvider> mockServiceProvider = new Mock<IServiceProvider>();
 
 
-            List<Borrower> borrowers = new List<Borrower>()
-            {
-                new Borrower ()
-                {
-                     Id=665,
-                     OwnTypeId=1,
-                     LoanApplicationId=665
-
-                }
-            };
             var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object, Mock.Of<ILogger<MembershipService>>());
             //Assert
 
@@ -436,23 +292,15 @@ namespace Rainmaker.Test
             var builder = new DbContextOptionsBuilder<RainMakerContext>();
             builder.UseInMemoryDatabase("RainMaker");
             options = builder.Options;
-            Mock<IMembershipService> mockMembershipService = new Mock<IMembershipService>();
-            Mock<IUnitOfWork<RainMakerContext>> mockUnitOfWork = new Mock<IUnitOfWork<RainMakerContext>>();
+            
+           
             Mock<IServiceProvider> mockServiceProvider = new Mock<IServiceProvider>();
 
             using RainMakerContext dataContext = new RainMakerContext(options);
 
             dataContext.Database.EnsureCreated();
-            List<Borrower> borrowers = new List<Borrower>()
-            {
-                new Borrower ()
-                {
-                     Id=665,
-                     OwnTypeId=1,
-                     LoanApplicationId=665
-
-                }
-            };
+            
+            
             var service = new MembershipService(new UnitOfWork<RainMakerContext>(dataContext, new RepositoryProvider(new RepositoryFactories())), mockServiceProvider.Object, Mock.Of<ILogger<MembershipService>>());
 
 
@@ -462,7 +310,6 @@ namespace Rainmaker.Test
 
 
         }
-
 
 
         [Fact]
@@ -510,28 +357,13 @@ namespace Rainmaker.Test
             };
             dataContext.Set<Contact>().Add(contact);
 
-            EmployeePhoneBinder employeePhoneBinders = new EmployeePhoneBinder
-            {
-                Id = 516,
-                EmployeeId = 516
-            };
+            
             dataContext.SaveChanges();
 
             Mock<IMembershipService> mockMembershipService = new Mock<IMembershipService>();
-            Mock<IUnitOfWork<RainMakerContext>> mockUnitOfWork = new Mock<IUnitOfWork<RainMakerContext>>();
+          
             Mock<IServiceProvider> mockServiceProvider = new Mock<IServiceProvider>();
 
-
-            List<Borrower> borrowers = new List<Borrower>()
-            {
-                new Borrower ()
-                {
-                     Id=516,
-                     OwnTypeId=1,
-                     LoanApplicationId=516
-
-                }
-            };
 
             mockMembershipService.Setup(x => x.GetEmployeeUser(It.IsAny<string>())).Returns(userProfile);
 

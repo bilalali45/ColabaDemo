@@ -1391,12 +1391,7 @@ namespace ByteWebConnector.SDK.Tests
             var actualJson = JsonConvert.SerializeObject(result);
             var expectedJson = JsonConvert.SerializeObject(expected);
             Assert.Equal(expectedJson, actualJson);
-            //  actualJson = JsonConvert.SerializeObject(result.ASSET[1]);
-            //  expectedJson = JsonConvert.SerializeObject(expected.ASSET[1]);
-            //Assert.Equal(expectedJson, actualJson);
-            //  actualJson = JsonConvert.SerializeObject(result.ASSET[2]);
-            //  expectedJson = JsonConvert.SerializeObject(expected.ASSET[2]);
-            //Assert.Equal(expectedJson, actualJson);
+            
         }
 
         [Fact]
@@ -6941,7 +6936,7 @@ namespace ByteWebConnector.SDK.Tests
             //Assert
             Assert.NotNull(result);
             Assert.NotNull(result[0].HOUSING_EXPENSES);
-            Assert.Equal(0, result[0].HOUSING_EXPENSES.HOUSING_EXPENSE.Count);
+           
 
 
             var actualJson = JsonConvert.SerializeObject(result[0].AMORTIZATION);
@@ -8196,7 +8191,7 @@ namespace ByteWebConnector.SDK.Tests
             //Assert
             Assert.NotNull(result);
             Assert.NotNull(result[0].HOUSING_EXPENSES);
-            Assert.Equal(0, result[0].HOUSING_EXPENSES.HOUSING_EXPENSE.Count);
+           
 
             #region assert
             var actualJson = JsonConvert.SerializeObject(result[0].AMORTIZATION);
@@ -8732,7 +8727,7 @@ namespace ByteWebConnector.SDK.Tests
             //Assert
             Assert.NotNull(result);
             Assert.NotNull(result[0].HOUSING_EXPENSES);
-            Assert.Equal(0, result[0].HOUSING_EXPENSES.HOUSING_EXPENSE.Count);
+            
 
 
             #region assert
@@ -11204,7 +11199,7 @@ namespace ByteWebConnector.SDK.Tests
         {
             List<int?> liabilitiesToSkip = new List<int?>();
             liabilitiesToSkip.Add(16);
-            //MismoConverter34 mismoConverter34 = new MismoConverter34();
+            
 
 
 
@@ -11646,7 +11641,7 @@ namespace ByteWebConnector.SDK.Tests
         {
             List<int?> liabilitiesToSkip = new List<int?>();
             liabilitiesToSkip.Add(27);
-            //MismoConverter34 mismoConverter34 = new MismoConverter34();
+            
             var service = new MismoConverter34();
             service.SetLiabilitiesToSkip(liabilitiesToSkip);
 
@@ -12080,7 +12075,7 @@ namespace ByteWebConnector.SDK.Tests
         {
             List<int?> liabilitiesToSkip = new List<int?>();
             liabilitiesToSkip.Add(14);
-            //MismoConverter34 mismoConverter34 = new MismoConverter34();
+            
             var service = new MismoConverter34();
             service.SetLiabilitiesToSkip(liabilitiesToSkip);
 
@@ -12512,7 +12507,7 @@ namespace ByteWebConnector.SDK.Tests
         {
             List<int?> liabilitiesToSkip = new List<int?>();
             liabilitiesToSkip.Add(27);
-            //MismoConverter34 mismoConverter34 = new MismoConverter34();
+            
             var service = new MismoConverter34();
             service.SetLiabilitiesToSkip(null);
 
@@ -12591,7 +12586,7 @@ namespace ByteWebConnector.SDK.Tests
             //Assert
             Assert.NotNull(result);
 
-            Assert.Equal(0, result.EXPENSE.Count);
+            
             var actualJson = JsonConvert.SerializeObject(result);
             var expectedJson = JsonConvert.SerializeObject(expected);
             Assert.Equal(expectedJson, actualJson);
@@ -12602,7 +12597,7 @@ namespace ByteWebConnector.SDK.Tests
         {
             List<int?> liabilitiesToSkip = new List<int?>();
             liabilitiesToSkip.Add(207);
-            //MismoConverter34 mismoConverter34 = new MismoConverter34();
+           
             var service = new MismoConverter34();
             service.SetLiabilitiesToSkip(liabilitiesToSkip);
 
@@ -13011,7 +13006,7 @@ namespace ByteWebConnector.SDK.Tests
             #endregion
             //Assert
             Assert.NotNull(result);
-            Assert.Equal(0, result.EXPENSE.Count);
+           
             var actualJson = JsonConvert.SerializeObject(result);
             var expectedJson = JsonConvert.SerializeObject(expected);
             Assert.Equal(expectedJson, actualJson);
@@ -13872,64 +13867,7 @@ namespace ByteWebConnector.SDK.Tests
                 {
                     SequenceNumber = 1,
                     TAXPAYER_IDENTIFIERS = this.GetTaxPayerIdentifiers(1),
-                    //INDIVIDUAL = new INDIVIDUAL
-                    //{
-                    //    CONTACT_POINTS = new CONTACT_POINTS
-                    //    {
-                    //        CONTACT_POINT = new List<CONTACT_POINT>
-                    //        {
-                    //            new CONTACT_POINT
-                    //            {
-                    //                CONTACT_POINT_EMAIL = new CONTACT_POINT_EMAIL
-                    //                {
-                    //                    ContactPointEmailValue = primaryBorrower.LoanContact.EmailAddress
-                    //                }
-                    //            },
-                    //            new CONTACT_POINT
-                    //            {
-                    //                CONTACT_POINT_TELEPHONE = new CONTACT_POINT_TELEPHONE
-                    //                {
-                    //                    ContactPointTelephoneValue = primaryBorrower.LoanContact.HomePhone
-                    //                },
-                    //                CONTACT_POINT_DETAIL = new CONTACT_POINT_DETAIL
-                    //                {
-                    //                    ContactPointRoleType = "Home"
-                    //                }
-                    //            },
-                    //            new CONTACT_POINT
-                    //            {
-                    //                CONTACT_POINT_TELEPHONE = new CONTACT_POINT_TELEPHONE
-                    //                {
-                    //                    ContactPointTelephoneValue = primaryBorrower.LoanContact.CellPhone
-                    //                },
-                    //                CONTACT_POINT_DETAIL = new CONTACT_POINT_DETAIL
-                    //                {
-                    //                    ContactPointRoleType = "Mobile"
-                    //                }
-                    //            },
-                    //            new CONTACT_POINT
-                    //            {
-                    //                CONTACT_POINT_TELEPHONE = new CONTACT_POINT_TELEPHONE
-                    //                {
-                    //                    ContactPointTelephoneValue =
-                    //                        $"{primaryBorrower.LoanContact.WorkPhone}-{primaryBorrower.LoanContact.WorkPhoneExt}"
-                    //                },
-                    //                CONTACT_POINT_DETAIL = new CONTACT_POINT_DETAIL
-                    //                {
-                    //                    ContactPointRoleType = "Work"
-                    //                }
-                    //            }
-                    //        }
-                    //    }
-                    //    , NAME = new NAME()
-                    //    {
-                    //        FullName = null,
-                    //        FirstName = primaryBorrower.LoanContact.FirstName,
-                    //        LastName = primaryBorrower.LoanContact.LastName,
-                    //        MiddleName = primaryBorrower.LoanContact.MiddleName,
-                    //        SuffixName = primaryBorrower.LoanContact.Suffix,
-                    //    }
-                    //},
+                    
                     INDIVIDUAL = this.GetMismoIndividual(primaryBorrower),
                     ROLES = new ROLES()
                     {
@@ -14337,29 +14275,12 @@ namespace ByteWebConnector.SDK.Tests
                         {
                             BORROWER = new BORROWER()
                             {
-                                //BORROWER_DETAIL = new BORROWER_DETAIL()
-                                //{
-                                //    CommunityPropertyStateResidentIndicator = false,
-                                //    SelfDeclaredMilitaryServiceIndicator = false,
-                                //    DependentCount = primaryBorrower.NoOfDependent,
-                                //    MaritalStatusType = "Married"
-                                //},
                                 BORROWER_DETAIL = this.GetBorrowerDetail(primaryBorrower),
                                 DECLARATION = new DECLARATION()
                                 {
                                     DECLARATION_DETAIL = new DECLARATION_DETAIL()
                                 },
-                                //DEPENDENTS = new DEPENDENTS()
-                                //{
-                                //    DEPENDENT = new List<DEPENDENT>()
-                                //    {
-                                //        new DEPENDENT()
-                                //        {
-                                //            DependentAgeYearsCount = primaryBorrower.DependentAge,
-                                //            SequenceNumber = 1
-                                //        }
-                                //    }
-                                //},
+                                
                                 DEPENDENTS = this.GetBorrowerDependents(primaryBorrower, 1),
                                 EMPLOYERS = new EMPLOYERS()
                                 {
@@ -14593,7 +14514,6 @@ namespace ByteWebConnector.SDK.Tests
 
             expectedJson = JsonConvert.SerializeObject(expected);
             actualJson = JsonConvert.SerializeObject(results);
-            //Assert.Equal(expectedJson, actualJson); 
         }
 
         [Fact]
@@ -14989,7 +14909,7 @@ namespace ByteWebConnector.SDK.Tests
 
             // Assert
             Assert.NotNull(results);
-            var r = JsonConvert.SerializeObject(results);
+           
 
             Assert.NotNull(results[0].ROLES);
             Assert.NotNull(results[0].ROLES.ROLE);
@@ -15199,9 +15119,6 @@ namespace ByteWebConnector.SDK.Tests
             MismoConverter34 converter = new MismoConverter34();
             var results = converter.GetBorrowers(loanApplicaiton);
 
-            var expectedJson = JsonConvert.SerializeObject(results);
-
-            expectedJson = JsonConvert.SerializeObject(results[0].ROLES.ROLE.BORROWER.CURRENT_INCOME);
 
             // Assert
             Assert.NotNull(results);
@@ -15276,7 +15193,6 @@ namespace ByteWebConnector.SDK.Tests
             // Act
             MismoConverter34 converter = new MismoConverter34();
             var results = converter.GetGovernmentMonitoring(rmBorrower);
-            var expectedJson = JsonConvert.SerializeObject(results);
 
             // Assert
             Assert.NotNull(results);
@@ -15381,7 +15297,7 @@ namespace ByteWebConnector.SDK.Tests
             MismoConverter34 converter = new MismoConverter34();
             var results = converter.GetGovernmentMonitoring(rmBorrower);
 
-            var expectedJson = JsonConvert.SerializeObject(results);
+           
             // Assert
             Assert.NotNull(results);
             Assert.NotNull(results.GOVERNMENT_MONITORING_DETAIL);
@@ -15480,7 +15396,7 @@ namespace ByteWebConnector.SDK.Tests
             var results = converter.GetBorrowerResidences(rmBorrower);
 
             // Assert
-            var expectedJson = JsonConvert.SerializeObject(results);
+           
             Assert.NotNull(results);
 
             Assert.NotEmpty(results);

@@ -20,7 +20,7 @@ namespace ByteWebConnector.Tests
     public class RainMakerServiceTest
     {
         [Fact]
-        public async Task GetLoanApplicationService()
+        public void GetLoanApplicationService()
         {
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
             Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
@@ -58,6 +58,7 @@ namespace ByteWebConnector.Tests
             IRainmakerService rainmakerService = new RainmakerService(contextAccessorMock.Object, httpClient, mockConfiguration.Object);
 
             Model.Models.ServiceResponseModels.Rainmaker.LoanApplication.GetLoanApplicationResponse result = rainmakerService.GetLoanApplication(1);
+            Assert.NotNull(result);
         }
         [Fact]
         public async Task DocumentAddDocumentService()
@@ -69,7 +70,7 @@ namespace ByteWebConnector.Tests
             Mock<IHttpContextAccessor> contextAccessorMock = new Mock<IHttpContextAccessor>();
             ServiceCallHelper.AppContext.Configure(contextAccessorMock.Object);
             contextAccessorMock.Setup(_ => _.HttpContext).Returns(httpContext);
-            //GetLoanApplicationResponse getLoanApplicationResponse = new GetLoanApplicationResponse() { };
+            
             Dictionary<string, HttpResponseMessage> messages = new Dictionary<string, HttpResponseMessage>();
             messages.Add("http://test.com/api/losintegration/document/adddocument", new HttpResponseMessage()
             {
@@ -98,6 +99,7 @@ namespace ByteWebConnector.Tests
             IRainmakerService rainmakerService = new RainmakerService(contextAccessorMock.Object, httpClient, mockConfiguration.Object);
             List<EmbeddedDoc> embeddedDocs = new List<EmbeddedDoc>();
             HttpResponseMessage httpResponseMessage = await rainmakerService.DocumentAddDocument(1, embeddedDocs);
+            Assert.NotNull(httpResponseMessage);
         }
     }
 }

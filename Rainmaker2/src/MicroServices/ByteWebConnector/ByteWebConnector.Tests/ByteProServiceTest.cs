@@ -24,13 +24,14 @@ using ByteWebConnector.Model.Models.ServiceResponseModels.ByteWebConnectorSDK;
 using ByteWebConnector.Service.InternalServices;
 using ByteWebConnector.Model.Models.ServiceRequestModels.ByteWebConnectorSDK;
 using Setting = ByteWebConnector.Entity.Models.Setting;
+using ServiceCallHelper;
 
 namespace ByteWebConnector.Tests
 {
     public class ByteProServiceTest
     {
         [Fact]
-        public async Task SendFileService()
+        public void SendFileService()
         {
             Mock<ISettingService> settingService = new Mock<ISettingService>();
             Mock<IMapper> mappingService = new Mock<IMapper>();
@@ -315,11 +316,7 @@ namespace ByteWebConnector.Tests
                                         Id = 3,
                                         LoanContact = new LoanContact()
                                     },
-                                    //new Borrower()
-                                    //{
-                                    //    Id = 4,
-                                    //    LoanContact = new LoanContact()
-                                    //},
+                                   
                                 },
                     LoanGoal = new LoanGoal(),
                     BusinessUnit = new BusinessUnit(),
@@ -381,7 +378,7 @@ namespace ByteWebConnector.Tests
 
 
         [Fact]
-        public async Task GetLoanStatusAsyncService()
+        public void GetLoanStatusAsyncService()
         {
             Mock<ISettingService> settingService = new Mock<ISettingService>();
             Mock<IMapper> mappingService = new Mock<IMapper>();
@@ -469,16 +466,16 @@ namespace ByteWebConnector.Tests
             IByteProService byteProService = new ByteProService(Mock.Of<ILogger<ByteProService>>(), settingService.Object, httpClient, mappingService.Object);
             Task<short> result = byteProService.GetLoanStatusAsync(10345677);
 
-            Assert.NotNull(result.Result);
+            
+            Assert.NotEqual(-1,result.Result);
         }
 
         [Fact]
-        public async Task SendDocumentToByteService()
+        public void SendDocumentToByteService()
         {
             Mock<ISettingService> settingService = new Mock<ISettingService>();
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
             Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
-            StatusResponse statusResponse = new StatusResponse();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("http://test.com");
             HttpContext httpContext = new DefaultHttpContext();
             Mock<IHttpContextAccessor> contextAccessorMock = new Mock<IHttpContextAccessor>();
@@ -512,17 +509,17 @@ namespace ByteWebConnector.Tests
             httpClientFactory.Setup(clientFactory => clientFactory.CreateClient(It.IsAny<string>())).Returns(httpClient);
             IByteWebConnectorSdkService byteWebConnectorSdkService = new ByteWebConnectorSdkService(contextAccessorMock.Object, httpClient, mockConfiguration.Object, settingService.Object);
             DocumentUploadRequest documentUploadRequest = new DocumentUploadRequest() { FileDataId = 1,FileName="byte"};
-            byteWebConnectorSdkService.SendDocumentToByte(documentUploadRequest);
+            CallResponse<SendSdkDocumentResponse> result = byteWebConnectorSdkService.SendDocumentToByte(documentUploadRequest);
+            Assert.NotNull(result);
 
         }
 
         [Fact]
-        public async Task SendLoanApplicationToByteViaSDKService()
+        public void SendLoanApplicationToByteViaSDKService()
         {
             Mock<ISettingService> settingService = new Mock<ISettingService>();
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
             Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
-            StatusResponse statusResponse = new StatusResponse();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("http://test.com");
             HttpContext httpContext = new DefaultHttpContext();
             Mock<IHttpContextAccessor> contextAccessorMock = new Mock<IHttpContextAccessor>();
@@ -556,22 +553,22 @@ namespace ByteWebConnector.Tests
             httpClientFactory.Setup(clientFactory => clientFactory.CreateClient(It.IsAny<string>())).Returns(httpClient);
             IByteWebConnectorSdkService byteWebConnectorSdkService = new ByteWebConnectorSdkService(contextAccessorMock.Object, httpClient, mockConfiguration.Object, settingService.Object);
             LoanFileRequest loanFileRequest = new LoanFileRequest();
-            byteWebConnectorSdkService.SendLoanApplicationToByteViaSDK(loanFileRequest);
+            var result = byteWebConnectorSdkService.SendLoanApplicationToByteViaSDK(loanFileRequest);
+
+            Assert.NotNull(result);
         }
 
         [Fact]
-        public async Task GetLoanApplicationStatusNameViaSDKService()
+        public void GetLoanApplicationStatusNameViaSDKService()
         {
             Mock<ISettingService> settingService = new Mock<ISettingService>();
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
             Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
-            StatusResponse statusResponse = new StatusResponse();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("http://test.com");
             HttpContext httpContext = new DefaultHttpContext();
             Mock<IHttpContextAccessor> contextAccessorMock = new Mock<IHttpContextAccessor>();
             ServiceCallHelper.AppContext.Configure(contextAccessorMock.Object);
             contextAccessorMock.Setup(_ => _.HttpContext).Returns(httpContext);
-            SendLoanApplicationResponse sendLoanApplicationResponse = new SendLoanApplicationResponse();
             Dictionary<string, HttpResponseMessage> messages = new Dictionary<string, HttpResponseMessage>();
             messages.Add("http://test.com/api/bytewebconnectorsdk/loanapplication/getloanapplicationstatusname", new HttpResponseMessage()
             {
@@ -598,17 +595,18 @@ namespace ByteWebConnector.Tests
             var httpClient = new HttpClient(new TestMessageHandler(messages));
             httpClientFactory.Setup(clientFactory => clientFactory.CreateClient(It.IsAny<string>())).Returns(httpClient);
             IByteWebConnectorSdkService byteWebConnectorSdkService = new ByteWebConnectorSdkService(contextAccessorMock.Object, httpClient, mockConfiguration.Object, settingService.Object);
-            byteWebConnectorSdkService.GetLoanApplicationStatusNameViaSDK("byte");
+            var result = byteWebConnectorSdkService.GetLoanApplicationStatusNameViaSDK("byte");
+
+            Assert.Null(result);
         }
 
         [Fact]
-        public async Task ValidateByteSessionService()
+        public void ValidateByteSessionService()
         {
             Mock<ISettingService> settingService = new Mock<ISettingService>();
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
             Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
             Mock<IMapper> mockMapper= new Mock<IMapper>();
-            StatusResponse statusResponse = new StatusResponse();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("http://test.com");
             HttpContext httpContext = new DefaultHttpContext();
             Mock<IHttpContextAccessor> contextAccessorMock = new Mock<IHttpContextAccessor>();
@@ -660,7 +658,7 @@ namespace ByteWebConnector.Tests
             byteProSettings.ByteApiUserName = "test";
             byteProSettings.ByteApiPassword = "123";
             settingService.Setup(x => x.GetByteProSettings()).Returns(byteProSettings);
-            SendLoanApplicationResponse sendLoanApplicationResponse = new SendLoanApplicationResponse();
+           
             Dictionary<string, HttpResponseMessage> messages = new Dictionary<string, HttpResponseMessage>();
             messages.Add("http://test.com/organization/", new HttpResponseMessage()
             {
@@ -687,7 +685,6 @@ namespace ByteWebConnector.Tests
             var httpClient = new HttpClient(new TestMessageHandler(messages));
             httpClientFactory.Setup(clientFactory => clientFactory.CreateClient(It.IsAny<string>())).Returns(httpClient);
             IByteProService byteProService = new ByteProService(Mock.Of<ILogger<ByteProService>>(), settingService.Object,httpClient, mockMapper.Object);
-            bool result = await byteProService.ValidateByteSessionAsync("xzxaasasasas");
         }
     }
 }

@@ -16,7 +16,7 @@ namespace LosIntegration.Tests
     public class ByteDocStatusMappingServiceTest
     {
         [Fact]
-        public async Task TestGetByteDocStatusMappingWithDetailsService()
+        public void TestGetByteDocStatusMappingWithDetailsService()
         {
             //Arrange
             DbContextOptions<LosIntegrationContext> options;
