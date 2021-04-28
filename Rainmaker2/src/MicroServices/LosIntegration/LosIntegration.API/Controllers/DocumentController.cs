@@ -251,7 +251,7 @@ namespace LosIntegration.API.Controllers
 
                 #endregion
 
-                // throw;
+               
                 return StatusCode(500, "Internal Server Error. Somthing went Wrong!");
             }
 

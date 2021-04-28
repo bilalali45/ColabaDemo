@@ -173,13 +173,13 @@ namespace ByteWebConnector.Tests
                 LoanAmount = 0.0,
                 ApplicationId = 1004100
             };
-            ByteNewFile newfile = new ByteNewFile()
-            {
-                OrganizationCode = "2002",
-                SubPropState = "TX",
-                LoanOfficerUserName = "Aliya.Prasla"
-            };
+           
 
+           
+            
+            
+            
+            
             Dictionary<string, HttpResponseMessage> messages = new Dictionary<string, HttpResponseMessage>();
             messages.Add("https://devbyteapi123.rainsoftfn.com/byteapi/newfile/", new HttpResponseMessage()
             {
@@ -373,7 +373,8 @@ namespace ByteWebConnector.Tests
                 LoanRequest = new LoanRequest(),
                 ThirdPartyCodeList = new ThirdPartyCodeList() { ThirdPartyCodes = new List<ThirdPartyCode>() }
             };
-            byteProService.SendFile(loanFileRequest);
+            var result = byteProService.SendFile(loanFileRequest);
+            Assert.NotNull(result);
         }
 
 
@@ -600,91 +601,6 @@ namespace ByteWebConnector.Tests
             Assert.Null(result);
         }
 
-        [Fact]
-        public void ValidateByteSessionService()
-        {
-            Mock<ISettingService> settingService = new Mock<ISettingService>();
-            Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
-            Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
-            Mock<IMapper> mockMapper= new Mock<IMapper>();
-            mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("http://test.com");
-            HttpContext httpContext = new DefaultHttpContext();
-            Mock<IHttpContextAccessor> contextAccessorMock = new Mock<IHttpContextAccessor>();
-            ServiceCallHelper.AppContext.Configure(contextAccessorMock.Object);
-            contextAccessorMock.Setup(_ => _.HttpContext).Returns(httpContext);
-            Setting byteApiAuthKey = new Setting();
-            byteApiAuthKey.Name = "ByteApiAuthKey";
-
-            Setting byteApiUrl = new Setting();
-            byteApiUrl.Name = "ByteApiUrl";
-
-            Setting byteAuthKey = new Setting();
-            byteAuthKey.Name = "ByteAuthKey";
-
-            Setting byteCompanyCode = new Setting();
-            byteCompanyCode.Name = "ByteCompanyCode";
-
-            Setting byteApiPassword = new Setting();
-            byteApiPassword.Name = "ByteApiPassword";
-
-            Setting byteApiUserName = new Setting();
-            byteApiUserName.Name = "ByteApiUserName";
-
-            Setting bytePassword = new Setting();
-            bytePassword.Name = "BytePassword";
-
-            Setting byteUserName = new Setting();
-            byteUserName.Name = "ByteUserName";
-
-            Setting byteUserNo = new Setting();
-            byteUserNo.Name = "ByteUserNo";
-
-            Setting byteConnectionName = new Setting();
-            byteConnectionName.Name = "ByteConnectionName";
-            List<Setting> lsSettings = new List<Setting>();
-            lsSettings.Add(byteApiAuthKey);
-            lsSettings.Add(byteApiUrl);
-            lsSettings.Add(byteAuthKey);
-            lsSettings.Add(byteCompanyCode);
-            lsSettings.Add(byteApiPassword);
-            lsSettings.Add(byteApiUserName);
-            lsSettings.Add(bytePassword);
-            lsSettings.Add(byteUserName);
-            lsSettings.Add(byteUserNo);
-            lsSettings.Add(byteConnectionName);
-            ByteProSettings byteProSettings = new ByteProSettings(lsSettings);
-            byteProSettings.ByteApiUrl = "http://test.com/";
-            byteProSettings.ByteApiAuthKey = "6c49dddd-0000-5555-dddd-3efe20588111";
-            byteProSettings.ByteApiUserName = "test";
-            byteProSettings.ByteApiPassword = "123";
-            settingService.Setup(x => x.GetByteProSettings()).Returns(byteProSettings);
-           
-            Dictionary<string, HttpResponseMessage> messages = new Dictionary<string, HttpResponseMessage>();
-            messages.Add("http://test.com/organization/", new HttpResponseMessage()
-            {
-                StatusCode = HttpStatusCode.OK,
-                Content = new StringContent("")
-            });
-            var handlerMock = new Mock<TestMessageHandler>(MockBehavior.Strict);
-            handlerMock
-                .Protected()
-                // Setup the PROTECTED method to mock
-                .Setup<Task<HttpResponseMessage>>(
-                                                  "SendAsync",
-                                                  ItExpr.IsAny<HttpRequestMessage>(),
-                                                  ItExpr.IsAny<CancellationToken>()
-                                                 )
-                // prepare the expected response of the mocked http call
-                .ReturnsAsync(new HttpResponseMessage()
-                {
-
-                    StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent("", Encoding.UTF8, "application/json"),
-                })
-                .Verifiable();
-            var httpClient = new HttpClient(new TestMessageHandler(messages));
-            httpClientFactory.Setup(clientFactory => clientFactory.CreateClient(It.IsAny<string>())).Returns(httpClient);
-            IByteProService byteProService = new ByteProService(Mock.Of<ILogger<ByteProService>>(), settingService.Object,httpClient, mockMapper.Object);
-        }
+        
     }
 }

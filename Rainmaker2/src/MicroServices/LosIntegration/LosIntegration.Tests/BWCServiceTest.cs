@@ -208,7 +208,7 @@ namespace LosIntegration.Tests
         public async Task TestSendLoanApplicationViaSDKService()
         {
             Mock<IHttpClientFactory> httpClientFactory = new Mock<IHttpClientFactory>();
-            Mock<IMilestoneService> milestoneService = new Mock<IMilestoneService>();
+           
             Mock<IConfiguration> mockConfiguration = new Mock<IConfiguration>();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("http://test.com");
             HttpContext httpContext = new DefaultHttpContext();

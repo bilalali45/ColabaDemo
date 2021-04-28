@@ -118,7 +118,7 @@ namespace LosIntegration.Tests
             var controller = new LoanApplicationController(Mock.Of<ILogger<LoanApplicationController>>(), loanApplicationService.Object, byteWebConnectorService.Object, milestoneService.Object, loanRequestService.Object, thirdPartyService.Object);
 
             IActionResult actionResult = await controller.UpdateLoanStatusFromByte(1033);
-            Assert.Equal(1,1);
+            Assert.NotNull(actionResult);
         }
 
         [Fact]
