@@ -282,7 +282,7 @@ namespace DocManager.Tests
         public async Task TestSaveCategoryAnnotations()
         {
             Mock<IDocumentService> mockDocumentService = new Mock<IDocumentService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+            
             SaveCategoryAnnotations saveCategoryAnnotations = new SaveCategoryAnnotations();
             saveCategoryAnnotations.id = "5fc0f7f5dd5c73a764eafa38";
             saveCategoryAnnotations.requestId = "5fc0f5eddd5c73a764eafa2c";
@@ -714,20 +714,20 @@ namespace DocManager.Tests
                 AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");
             }
             
-            //Open the stream and read it back.
+           
 
-            //using (FileStream fs = File.OpenRead(path))
-            //{
-            //    var stream = File.OpenRead(path);
-            //    FormFile _formFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
-            //    {
-            //        Headers = new HeaderDictionary(),
-            //        ContentType = "application/docx"
-            //    };
-
-            //    files.Add(_formFile);
-            //}
-
+           
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             string id = "5eb25d1fe519051af2eeb72d";
             string requestId = "abc15d1fe456051af2eeb768";
             string docId = "ddd25d1fe456057652eeb72d";
@@ -815,7 +815,7 @@ namespace DocManager.Tests
          
            
              //Assert
-            //    Assert.IsType<BadRequestObjectResult>(result);
+           
             await Assert.ThrowsAsync<DocManagerException>(async () => { await controller.AcquireLock(lockModel); });
 
 
@@ -1157,20 +1157,20 @@ namespace DocManager.Tests
                 AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");
             }
             
-            ////Open the stream and read it back.
+            
 
-            //using (FileStream fs = File.OpenRead(path))
-            //{
-            //    var stream = File.OpenRead(path);
-            //    FormFile _formFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
-            //    {
-            //        Headers = new HeaderDictionary(),
-            //        ContentType = "application/docx"
-            //    };
-
-            //    files.Add(_formFile);
-            //}
-
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             string id = "5eb25d1fe519051af2eeb72d";
             
             string fileId = "5fc0fb11ad4581295f8ddd58";
@@ -1259,20 +1259,20 @@ namespace DocManager.Tests
                 AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");
             }
            
-            ////Open the stream and read it back.
+           
 
-            //using (FileStream fs = File.OpenRead(path))
-            //{
-            //    var stream = File.OpenRead(path);
-            //    FormFile _formFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
-            //    {
-            //        Headers = new HeaderDictionary(),
-            //        ContentType = "application/docx"
-            //    };
-
-            //    files.Add(_formFile);
-            //}
-
+           
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             string id = "5eb25d1fe519051af2eeb72d";
            
             string fileId = "5fc0fb11ad4581295f8ddd58";
@@ -1463,20 +1463,20 @@ namespace DocManager.Tests
                 AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");
             }
            
-            ////Open the stream and read it back.
+            
 
-            //using (FileStream fs = File.OpenRead(path))
-            //{
-            //    var stream = File.OpenRead(path);
-            //    FormFile _formFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
-            //    {
-            //        Headers = new HeaderDictionary(),
-            //        ContentType = "application/docx"
-            //    };
-
-            //    files.Add(_formFile);
-            //}
-
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             string id = "5eb25d1fe519051af2eeb72d";
             
             string fileId = "5fc0fb11ad4581295f8ddd58";
@@ -1767,20 +1767,20 @@ namespace DocManager.Tests
                 AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");
             }
             
-            ////Open the stream and read it back.
-
-            //using (FileStream fs = File.OpenRead(path))
-            //{
-            //    var stream = File.OpenRead(path);
-            //    FormFile _formFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
-            //    {
-            //        Headers = new HeaderDictionary(),
-            //        ContentType = "application/docx"
-            //    };
-
-            //    files.Add(_formFile);
-            //}
+            
         
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             string id = "5eb25d1fe519051af2eeb72d";
             
             string fileId = "5fc0fb11ad4581295f8ddd58";
@@ -1869,20 +1869,20 @@ namespace DocManager.Tests
                 AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");
             }
            
-            ////Open the stream and read it back.
+            
 
-            //using (FileStream fs = File.OpenRead(path))
-            //{
-            //    var stream = File.OpenRead(path);
-            //    FormFile _formFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
-            //    {
-            //        Headers = new HeaderDictionary(),
-            //        ContentType = "application/docx"
-            //    };
-
-            //    files.Add(_formFile);
-            //}
-
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             string id = "5eb25d1fe519051af2eeb72d";
            
             string fileId = "5fc0fb11ad4581295f8ddd58";
@@ -2128,7 +2128,7 @@ namespace DocManager.Tests
             Mock<IFileEncryptionFactory> mockfileEncryptionFactory = new Mock<IFileEncryptionFactory>();
             Mock<IByteProService> mockbyteProService = new Mock<IByteProService>();
             Mock<ILosIntegrationService> mocklosIntegration = new Mock<ILosIntegrationService>();
-            Mock<IMongoService> mockMongoService = new Mock<IMongoService>();
+           
             SaveModel saveModel = new SaveModel();
             saveModel.id = "5fc0f7f5dd5c73a764eafa38";
             saveModel.status = "5fc0f7f5dd5c73a764eafa38";

@@ -1340,7 +1340,7 @@ namespace RainmakerTest
 
             mockActivityService.Setup(x => x.GetCustomerActivity(It.IsAny<int?>(), It.IsAny<ActivityForType>())).ReturnsAsync(activity);
 
-            var rnd = new Random();
+           
 
            
 
@@ -1419,7 +1419,7 @@ namespace RainmakerTest
 
             mockActivityService.Setup(x => x.GetCustomerActivity(It.IsAny<int?>(), It.IsAny<ActivityForType>())).ReturnsAsync((Activity)null);
 
-            var rnd = new Random();
+           
 
            
 
@@ -1492,7 +1492,7 @@ namespace RainmakerTest
 
             mockActivityService.Setup(x => x.GetCustomerActivity(It.IsAny<int?>(), It.IsAny<ActivityForType>())).ReturnsAsync(activity);
 
-            var rnd = new Random();
+           
 
            
 
@@ -1568,7 +1568,7 @@ namespace RainmakerTest
 
             mockActivityService.Setup(x => x.GetCustomerActivity(It.IsAny<int?>(), It.IsAny<ActivityForType>())).ReturnsAsync((Activity)null);
 
-            var rnd = new Random();
+            
 
            
 

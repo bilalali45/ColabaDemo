@@ -13866,7 +13866,7 @@ namespace ByteWebConnector.SDK.Tests
                 new PARTY
                 {
                     SequenceNumber = 1,
-                    TAXPAYER_IDENTIFIERS = this.GetTaxPayerIdentifiers(1),
+                    TAXPAYER_IDENTIFIERS = this.GetTaxPayerIdentifiers(),
                     
                     INDIVIDUAL = this.GetMismoIndividual(primaryBorrower),
                     ROLES = new ROLES()
@@ -14196,7 +14196,7 @@ namespace ByteWebConnector.SDK.Tests
                                                                   primaryBorrower
                                                               }
             };
-            var toDate = loanApplication.CreatedOnUtc ?? DateTime.UtcNow;
+            
             int totalCurrentIncomesCount = 1;
             var expected = new List<PARTY>
             {
@@ -14281,7 +14281,7 @@ namespace ByteWebConnector.SDK.Tests
                                     DECLARATION_DETAIL = new DECLARATION_DETAIL()
                                 },
                                 
-                                DEPENDENTS = this.GetBorrowerDependents(primaryBorrower, 1),
+                                DEPENDENTS = this.GetBorrowerDependents(primaryBorrower),
                                 EMPLOYERS = new EMPLOYERS()
                                 {
                                     EMPLOYER = new List<EMPLOYER>()
@@ -14633,7 +14633,7 @@ namespace ByteWebConnector.SDK.Tests
             {
                 new PARTY()
                 {
-                    TAXPAYER_IDENTIFIERS = this.GetTaxPayerIdentifiers(1),
+                    TAXPAYER_IDENTIFIERS = this.GetTaxPayerIdentifiers(),
                     INDIVIDUAL = this.GetMismoIndividual(primaryBorrower),
                     ROLES = new ROLES()
                     {
@@ -14646,7 +14646,7 @@ namespace ByteWebConnector.SDK.Tests
                                 {
                                     DECLARATION_DETAIL = new DECLARATION_DETAIL()
                                 },
-                                DEPENDENTS = this.GetBorrowerDependents(primaryBorrower, 1),
+                                DEPENDENTS = this.GetBorrowerDependents(primaryBorrower),
                                 EMPLOYERS = new EMPLOYERS()
                                 {
                                     EMPLOYER = new EditableList<EMPLOYER>()
@@ -15506,7 +15506,7 @@ namespace ByteWebConnector.SDK.Tests
             return null;
         }
 
-        private TAXPAYER_IDENTIFIERS GetTaxPayerIdentifiers(int sequenceIndex)
+        private TAXPAYER_IDENTIFIERS GetTaxPayerIdentifiers()
         {
             return new TAXPAYER_IDENTIFIERS()
             {
@@ -15621,7 +15621,7 @@ namespace ByteWebConnector.SDK.Tests
             return mismoBorrowerDetail;
         }
 
-        private DEPENDENTS GetBorrowerDependents(Borrower rmBorrower, int sequenceIndex)
+        private DEPENDENTS GetBorrowerDependents(Borrower rmBorrower)
         {
             DEPENDENTS dependents = null;
             if (rmBorrower != null)
