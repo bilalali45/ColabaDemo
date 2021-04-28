@@ -30,7 +30,6 @@ namespace ByteWebConnector.Service.ExternalServices
         private readonly HttpClient _httpClient;
         private readonly ILogger<ByteProService> _logger;
         private readonly IMapper _mapper;
-        private readonly ISettingService _settingService;
 
         private string _byteProSession;
 
@@ -41,9 +40,8 @@ namespace ByteWebConnector.Service.ExternalServices
                               IMapper mapper)
         {
             _logger = logger;
-            _settingService = settingService;
             _httpClient = httpClient;
-            _byteProSettings = _settingService.GetByteProSettings();
+            _byteProSettings = settingService.GetByteProSettings();
             _baseApiUrl = _byteProSettings.ByteApiUrl;
             _mapper = mapper;
         }

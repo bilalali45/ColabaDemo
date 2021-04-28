@@ -247,37 +247,7 @@ namespace DocManager.Tests
             var res = Assert.IsType<OkObjectResult>(result);
             Assert.Equal(true, res.Value);
         }
-        [Fact]
-        public async Task TestGetTrashDocumentsService()
-        {
-            Mock<ITrashService> mockTrashService = new Mock<ITrashService>();
-         
-            List<WorkbenchFile> workbenchFiles = new List<WorkbenchFile>()
-            {
-                new WorkbenchFile()
-                { id="5fb51519e223e0428d82c41b"
-                }
-            };
-            mockTrashService.Setup(x => x.GetTrashFiles(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(workbenchFiles);
-            var controller = new TrashController(mockTrashService.Object);
-
-            var httpContext = new Mock<HttpContext>();
-            httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
-
-            var context = new ControllerContext(new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor()));
-
-            controller.ControllerContext = context;
-            IActionResult result = await controller.GetTrashDocuments(1);
-
-
-
-            //Assert
-            Assert.NotNull(result);
-            var res = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal("5fb51519e223e0428d82c41b", (res.Value as List<WorkbenchFile>)[0].id);
-
-        }
-       
+               
         [Fact]
         public async Task TestSaveCategoryAnnotations()
         {

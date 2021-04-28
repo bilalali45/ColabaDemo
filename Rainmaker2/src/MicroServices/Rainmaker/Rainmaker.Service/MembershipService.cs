@@ -58,14 +58,14 @@ namespace Rainmaker.Service
                         userProfile.FailedPasswordAttemptCount = userProfile.FailedPasswordAttemptCount == null
                             ?
                             1
-                            : userProfile.FailedPasswordAttemptCount.Value == incorrectPasswordCount
+                            : (userProfile.FailedPasswordAttemptCount.Value == incorrectPasswordCount
                                 ? incorrectPasswordCount
-                                : userProfile.FailedPasswordAttemptCount.Value + 1;
+                                : userProfile.FailedPasswordAttemptCount.Value + 1);
 
                         userProfile.ModifiedOnUtc = DateTime.UtcNow;
                         logger.LogInformation($"Failed attempt count {userProfile.FailedPasswordAttemptCount}");
                         if (userProfile.FailedPasswordAttemptCount == incorrectPasswordCount &&
-                            (userProfile.IsLockedOut == null || userProfile.IsLockedOut.Value == false))
+                            (userProfile.IsLockedOut == null || !userProfile.IsLockedOut.Value))
                         {
                             // lock the account
                             logger.LogInformation($"locking the account since threshold reached");
