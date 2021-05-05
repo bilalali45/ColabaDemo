@@ -16,7 +16,7 @@
     "moment": "^2.29.1",
     "node-sass": "^4.14.1",
     "pspdfkit": "^2020.6.3",
-    "rainsoft-js": "^1.0.47",
+    "rainsoft-js": "1.0.47",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-cookie": "^4.0.3",

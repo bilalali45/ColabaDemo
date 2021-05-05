@@ -16,7 +16,7 @@
     "lodash": "^4.17.20",
     "parcel": "^1.12.4",
     "parcel-bundler": "^1.12.4",
-    "rainsoft-js": "^1.0.47",
+    "rainsoft-js": "1.0.47",
     "react": "^16.13.1",
     "universal-cookie": "^4.0.4"
   },
