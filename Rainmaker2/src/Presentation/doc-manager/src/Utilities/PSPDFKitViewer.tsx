@@ -67,7 +67,6 @@ export const PSPDFKitViewer: React.FC<PSPDFKitViewerType> = ({
                 return instance;
             } catch (error) {
                 console.log(error);
-    c
             }
         }
         else{
