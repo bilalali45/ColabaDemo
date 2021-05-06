@@ -55,7 +55,7 @@ namespace ByteWebConnector.API.Controllers
         [Route(template: "[action]")]
         [HttpPost]
         [DisableRequestSizeLimit]
-        [Authorize(Roles = "MCU")]
+        [Authorize(Roles = "MCU,Customer")]
         public IActionResult SendLoanFileViaSDK(LoanFileRequest loanFileRequest)
         {
             var response = this._sdkService.SendLoanApplicationToByteViaSDK(loanFileRequest);
