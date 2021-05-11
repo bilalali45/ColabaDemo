@@ -25,7 +25,8 @@ namespace Identity.Services
             _configuration = configuration;
             _keyStoreService = keyStoreService;
         }
-        public  async Task<JwtSecurityToken> GenerateAccessToken(IEnumerable<Claim> claims)
+        public  async Task<JwtSecurityToken> GenerateAccessToken(IEnumerable<Claim> claims,
+                                                                 DateTime? expiryDate=null)
         {
            
 
@@ -43,7 +44,7 @@ namespace Identity.Services
             var token = new JwtSecurityToken(
                                              issuer: "rainsoftfn",
                                              audience: "readers",
-                                             expires: DateTime.Now.AddMinutes(value: Convert.ToDouble(_configuration["Token:TimeoutInMinutes"]) ),
+                                             expires: expiryDate?? DateTime.Now.AddMinutes(value: Convert.ToDouble(_configuration["Token:TimeoutInMinutes"]) ),
                                              signingCredentials: signingCredentials,
                                              claims: claims
                                             );

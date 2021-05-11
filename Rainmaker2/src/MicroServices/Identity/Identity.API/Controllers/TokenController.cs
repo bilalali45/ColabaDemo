@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using TokenCacheHelper.Models;
 using TokenCacheHelper.TokenManager;
+using Extensions.ExtensionClasses;
 
 namespace Identity.Controllers
 {
@@ -20,37 +21,6 @@ namespace Identity.Controllers
     [ApiController]
     public class TokenController : Controller
     {
-       
-
-       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         #region Constructors
 
         public TokenController(IHttpClientFactory clientFactory,
@@ -93,31 +63,24 @@ namespace Identity.Controllers
             var refreshToken = request.RefreshToken;
             var principal = await _tokenService.GetPrincipalFromExpiredToken(token: token);
             var username = principal.Identity.Name; //this is mapped to the Name claim by default
-            
-            
 
-            
-            
-            
-            
             var tokenPairValid = await _tokenManager.CheckPair(token: token,
                                                                refreshToken: refreshToken);
 
             if (!tokenPairValid)
             {
-   				response.Status = ApiResponse.ApiResponseStatus.Fail;
+                response.Status = ApiResponse.ApiResponseStatus.Fail;
                 response.Message = "Unable to find token";
-                return BadRequest(response);
-
+                return BadRequest(error: response);
             }
 
             var user = await GetUser(userName: username);
 
             if (user == null)
             {
-               response.Status = ApiResponse.ApiResponseStatus.Fail;
+                response.Status = ApiResponse.ApiResponseStatus.Fail;
                 response.Message = "Unable to find user";
-                return BadRequest(response);
+                return BadRequest(error: response);
             }
 
             var newJwtToken = await _tokenService.GenerateAccessToken(claims: principal.Claims);
@@ -165,43 +128,17 @@ namespace Identity.Controllers
         }
 
 
-        
-
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         [Route(template: "[action]")]
         [HttpGet]
         public async Task<IActionResult> SingleSignOn(string key)
         {
-            
             var token = await _tokenManager.GetForSignOn(refreshToken: key);
 
             if (token != null) return Ok(value: token.Token);
-            return BadRequest(new ApiResponse { Message="unable to find token"});
+            return BadRequest(error: new ApiResponse
+                                     {
+                                         Message = "unable to find token"
+                                     });
         }
 
 
@@ -220,7 +157,7 @@ namespace Identity.Controllers
                 response.Status = ApiResponse.ApiResponseStatus.Fail;
                 response.Message = "User not found.";
 
-                return BadRequest(response);
+                return BadRequest(error: response);
             }
 
             #region Claims
@@ -256,19 +193,7 @@ namespace Identity.Controllers
             var jwtToken = await _tokenService.GenerateAccessToken(claims: usersClaims);
             var refreshToken = _tokenService.GenerateRefreshToken();
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token: jwtToken);
-            
 
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
             var tokenData = new TokenData
                             {
                                 ValidTo = jwtToken.ValidTo,
@@ -280,16 +205,87 @@ namespace Identity.Controllers
                                 Token = tokenString
                             };
 
+            response.Data = tokenData;
+
+            await _tokenManager.AddAuthTokenToWhiteListAsync(tokenData: tokenData);
+            await _tokenManager.AddRefreshTokenTokenAsync(tokenData: tokenData);
+            await _tokenManager.CleanUpAuthTokenWhiteListAsync(tokenData: tokenData);
+            response.Status = ApiResponse.ApiResponseStatus.Success;
+
+            return Ok(value: response);
+        }
+
+        [Route(template: "[action]")]
+        [HttpPost]
+        public async Task<IActionResult> AuthorizePermanent(AuthorizePermanentRequest request)
+        {
+            var response = new ApiResponse();
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
+            if (!HttpContext.Request.IsLocal())
+            {
+                response.Status = ApiResponse.ApiResponseStatus.Fail;
+                response.Message = "Not Allowed";
+
+                return Unauthorized(response);
+            }
+
+            var userProfile = await ValidateUser(userName: request.UserName,
+                                                 password: request.Password,
+                                                 employee: request.Employee);
+
+            if (userProfile == null)
+            {
+                response.Status = ApiResponse.ApiResponseStatus.Fail;
+                response.Message = "User not found.";
+
+                return BadRequest(error: response);
+            }
+
+            #region Claims
+
+            //add claims
+
+            var contact = userProfile.Customers.Any() ? userProfile.Customers.First().Contact : userProfile.Employees.First().Contact;
+
+            var usersClaims = new List<Claim>
+                              {
+                                  new Claim(type: ClaimTypes.Role,
+                                            value: userProfile.Employees.Any() ? "MCU" : "Customer"),
+                                  new Claim(type: "UserProfileId",
+                                            value: userProfile.Id.ToString()),
+                                  new Claim(type: "UserName",
+                                            value: userProfile.UserName.ToLower()),
+                                  new Claim(type: ClaimTypes.Name,
+                                            value: userProfile.UserName.ToLower()),
+                                  new Claim(type: "FirstName",
+                                            value: contact.FirstName),
+                                  new Claim(type: "LastName",
+                                            value: contact.LastName),
+                                  new Claim(type: "TenantId",
+                                            value: "1")
+                              };
+
+            if (userProfile.Employees.FirstOrDefault() != null)
+                usersClaims.Add(item: new Claim(type: "EmployeeId",
+                                                value: userProfile.Employees.Single().Id.ToString()));
+
+            #endregion
+
+            var jwtToken = await _tokenService.GenerateAccessToken(claims: usersClaims,expiryDate:request.ExpiryDate);
+            var refreshToken = _tokenService.GenerateRefreshToken();
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token: jwtToken);
+
+            var tokenData = new TokenData
+            {
+                ValidTo = jwtToken.ValidTo,
+                ValidFrom = jwtToken.ValidFrom,
+                RefreshToken = refreshToken,
+                RefreshTokenValidTo = DateTime.UtcNow.AddMinutes(value: double.Parse(s: _configuration[key: "Token:RefreshTokenExpiryInMinutes"])),
+                UserProfileId = userProfile.Id,
+                UserName = userProfile.UserName,
+                Token = tokenString
+            };
+
             response.Data = tokenData;
 
             await _tokenManager.AddAuthTokenToWhiteListAsync(tokenData: tokenData);

@@ -107,7 +107,7 @@ namespace Identity.Controllers.Tests
             httpClientFactory.Setup(expression: x => x.CreateClient(It.IsAny<string>())).Returns(value: httpClient);
 
             mockTokenService.Setup(expression: x => x.GetPrincipalFromExpiredToken(It.IsAny<string>())).ReturnsAsync(value: claimsPrincipal);
-            mockTokenService.Setup(expression: x => x.GenerateAccessToken(It.IsAny<IEnumerable<Claim>>())).ReturnsAsync(value: jwtSecurityToken);
+            mockTokenService.Setup(expression: x => x.GenerateAccessToken(It.IsAny<IEnumerable<Claim>>(),null)).ReturnsAsync(value: jwtSecurityToken);
 
             var httpContext = new Mock<HttpContext>();
 
@@ -203,7 +203,7 @@ namespace Identity.Controllers.Tests
             httpClientFactory.Setup(expression: x => x.CreateClient(It.IsAny<string>())).Returns(value: httpClient);
 
             mockTokenService.Setup(expression: x => x.GetPrincipalFromExpiredToken(It.IsAny<string>())).ReturnsAsync(value: claimsPrincipal);
-            mockTokenService.Setup(expression: x => x.GenerateAccessToken(It.IsAny<IEnumerable<Claim>>())).ReturnsAsync(value: jwtSecurityToken);
+            mockTokenService.Setup(expression: x => x.GenerateAccessToken(It.IsAny<IEnumerable<Claim>>(),null)).ReturnsAsync(value: jwtSecurityToken);
 
             var httpContext = new Mock<HttpContext>();
 
@@ -301,7 +301,7 @@ namespace Identity.Controllers.Tests
             httpClientFactory.Setup(expression: x => x.CreateClient(It.IsAny<string>())).Returns(value: httpClient);
 
             mockTokenService.Setup(expression: x => x.GetPrincipalFromExpiredToken(It.IsAny<string>())).ReturnsAsync(value: claimsPrincipal);
-            mockTokenService.Setup(expression: x => x.GenerateAccessToken(It.IsAny<IEnumerable<Claim>>())).ReturnsAsync(value: jwtSecurityToken);
+            mockTokenService.Setup(expression: x => x.GenerateAccessToken(It.IsAny<IEnumerable<Claim>>(), null)).ReturnsAsync(value: jwtSecurityToken);
 
             var httpContext = new Mock<HttpContext>();
 
@@ -679,7 +679,7 @@ namespace Identity.Controllers.Tests
                                                         signingCredentials: It.IsAny<SigningCredentials>(),
                                                         claims: It.IsAny<IEnumerable<Claim>>());
 
-            mockTokenService.Setup(expression: x => x.GenerateAccessToken(It.IsAny<IEnumerable<Claim>>())).ReturnsAsync(value: jwtSecurityToken);
+            mockTokenService.Setup(expression: x => x.GenerateAccessToken(It.IsAny<IEnumerable<Claim>>(), null)).ReturnsAsync(value: jwtSecurityToken);
             mockTokenService.Setup(expression: x => x.GenerateRefreshToken()).Returns(value: "Jb0emTyjwDAawFrkZSNTV+JbQ4N/Nx986/z+ww4RD50=");
 
             mockTokenManager.Setup(expression: x => x.CheckPair(It.Is<string>(s => s != null),
@@ -777,7 +777,7 @@ namespace Identity.Controllers.Tests
                                                         signingCredentials: It.IsAny<SigningCredentials>(),
                                                         claims: It.IsAny<IEnumerable<Claim>>());
 
-            mockTokenService.Setup(expression: x => x.GenerateAccessToken(It.IsAny<IEnumerable<Claim>>())).ReturnsAsync(value: jwtSecurityToken);
+            mockTokenService.Setup(expression: x => x.GenerateAccessToken(It.IsAny<IEnumerable<Claim>>(), null)).ReturnsAsync(value: jwtSecurityToken);
             mockTokenService.Setup(expression: x => x.GenerateRefreshToken()).Returns(value: "Jb0emTyjwDAawFrkZSNTV+JbQ4N/Nx986/z+ww4RD50=");
             mockTokenManager.Setup(expression: x => x.CheckPair(It.Is<string>(s => s != null),
                                                                 It.Is<string>(s => s != null))).ReturnsAsync(value: false);
@@ -874,7 +874,7 @@ namespace Identity.Controllers.Tests
                                                         signingCredentials: It.IsAny<SigningCredentials>(),
                                                         claims: It.IsAny<IEnumerable<Claim>>());
 
-            mockTokenService.Setup(expression: x => x.GenerateAccessToken(It.IsAny<IEnumerable<Claim>>())).ReturnsAsync(value: jwtSecurityToken);
+            mockTokenService.Setup(expression: x => x.GenerateAccessToken(It.IsAny<IEnumerable<Claim>>(), null)).ReturnsAsync(value: jwtSecurityToken);
             mockTokenService.Setup(expression: x => x.GenerateRefreshToken()).Returns(value: "Jb0emTyjwDAawFrkZSNTV+JbQ4N/Nx986/z+ww4RD50=");
             mockTokenManager.Setup(expression: x => x.CheckPair(It.Is<string>(s => s != null),
                                                                 It.Is<string>(s => s != null))).ReturnsAsync(value: true);
