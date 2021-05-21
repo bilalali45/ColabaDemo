@@ -5,6 +5,7 @@ import Cookies from "universal-cookie";
 import jwt_decode from "jwt-decode";
 import { get } from "lodash";
 import { Console } from "console";
+import axios from "axios";
 
 const cookies = new Cookies();
 
@@ -72,13 +73,27 @@ export default class Authorization {
       if (!LocalDB.checkAuth()) {
         return;
       }
-      const refreshTokenResponse : any = await Http.post(
-        UserEndpoints.POST.refreshToken(),
-        {
+      const baseUrl: any = window.envConfig.API_BASE_URL;
+      let url = `${baseUrl}${UserEndpoints.POST.refreshToken()}`
+      const refreshTokenResponse: any = await axios({
+        method: 'post',
+        url: url,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: {
           token: LocalDB.getAuthToken(),
           refreshToken: LocalDB.getRefreshToken(),
         }
-      );
+      });
+      
+      // await Http.post(
+      //   UserEndpoints.POST.refreshToken(),
+      //   {
+      //     token: LocalDB.getAuthToken(),
+      //     refreshToken: LocalDB.getRefreshToken(),
+      //   }
+      // );
       
       if(refreshTokenResponse?.data?.data){
         const { token, refreshToken } = get(refreshTokenResponse, "data.data");
@@ -106,10 +121,8 @@ export default class Authorization {
       
     } catch (error) {
       console.log("Refresh Token Error", error)
-      setTimeout(() => {
-        this.refreshToken();
-      }, 10 * 1000);
-
+      LocalDB.removeAuth();
+      window.top.location.href = "/Account/LogOff";
       return false;
     }
   }

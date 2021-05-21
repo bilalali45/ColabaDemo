@@ -10,7 +10,8 @@ namespace Identity.Services
 {
     public interface ITokenService
     {
-         Task<JwtSecurityToken> GenerateAccessToken(IEnumerable<Claim> claims);         
+         Task<JwtSecurityToken> GenerateAccessToken(IEnumerable<Claim> claims,
+                                                    DateTime? expiryDate=null);         
          string GenerateRefreshToken();    
          Task<ClaimsPrincipal> GetPrincipalFromExpiredToken(string token);
     }

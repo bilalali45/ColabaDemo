@@ -1,0 +1,204 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "npm",
+            "script": "build",
+            "path": "Presentation/admin/MCU/",
+            "group": "build",
+            "problemMatcher": [],
+            "label": "npm: build - Presentation/admin/MCU",
+            "detail": "node scripts/verify-install.js && node scripts/copy-pspdfkit-files.js && react-scripts build"
+        },
+        {
+            "label": "cleanweb",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "clean",
+                "${workspaceFolder}/serviceflow.web/serviceflow.web.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "buildweb",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/serviceflow.web/serviceflow.web.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            "dependsOn": [
+                "cleanweb"
+            ]
+        },
+        {
+            "label": "cleanapi",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "clean",
+                "${workspaceFolder}/MicroServices/KeyStore/KeyStore.API/KeyStore.API.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        //"label": "buildMainGateway",
+        {
+            "label": "buildMainGateway",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/APIGateways/MainGateway/MainGateway.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            //"dependsOn":["cleanapi"]
+        },
+        //"label": "buildKeyStore",
+        {
+            "label": "buildKeyStore",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/MicroServices/KeyStore/KeyStore.API/KeyStore.API.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            //"dependsOn":["cleanapi"]
+        },
+        //"label": "buildIdentity",
+        {
+            "label": "buildIdentity",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/MicroServices/Identity/Identity.API/Identity.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            //"dependsOn":["cleanapi"]
+        },
+        //"label": "buildByteWebConnector",    
+        {
+            "label": "buildByteWebConnector",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/MicroServices/ByteWebConnector/ByteWebConnector.API/ByteWebConnector.API.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            //"dependsOn":["cleanapi"]
+        },
+        //"label": "buildDocManager",
+        {
+            "label": "buildDocManager",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/MicroServices/DocManager/DocManager.API/DocManager.API.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            //"dependsOn":["cleanapi"]
+        },
+        //"label": "buildDocumentManagement",
+        {
+            "label": "buildDocumentManagement",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/MicroServices/DocumentManagement/DocumentManagement.API/DocumentManagement.API.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            //"dependsOn":["cleanapi"]
+        },
+        //"label": "buildLoanApplication",
+        {
+            "label": "buildLoanApplication",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/MicroServices/LoanApplication/LoanApplication.API/LoanApplication.API.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            //"dependsOn":["cleanapi"]
+        },
+        //"label": "buildLosIntegration",
+        {
+            "label": "buildLosIntegration",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/MicroServices/LosIntegration/LosIntegration.API/LosIntegration.API.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            //"dependsOn":["cleanapi"]
+        },
+        //"label": "buildMilestone",
+        {
+            "label": "buildMilestone",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/MicroServices/Milestone/Milestone.API/Milestone.API.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            //"dependsOn":["cleanapi"]
+        },
+        //"label": "buildNotification",
+        {
+            "label": "buildNotification",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/MicroServices/Notification/Notification.API/Notification.API.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            //"dependsOn":["cleanapi"]
+        },
+        //"label": "buildRainmaker",
+        {
+            "label": "buildRainmaker",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/MicroServices/Rainmaker/Rainmaker.API/Rainmaker.API.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            //"dependsOn":["cleanapi"]
+        },
+        //"label": "buildSetting",
+        {
+            "label": "buildSetting",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/MicroServices/Setting/Setting.API/Setting.API.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            //"dependsOn":["cleanapi"]
+        },
+        //"label": "buildTenantConfig",
+        {
+            "label": "buildTenantConfig",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/MicroServices/TenantConfig/TenantConfig.API/TenantConfig.API.csproj"                
+                
+            ],
+            "problemMatcher": "$msCompile",
+            //"dependsOn":["cleanapi"]
+        },
+    ]
+}

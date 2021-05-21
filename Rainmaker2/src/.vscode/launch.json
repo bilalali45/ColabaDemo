@@ -1,0 +1,842 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        /**********************Build*************************/
+        //"name": "MainGateway"
+        {
+            "name": "MainGateway",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildMainGateway",
+            "program": "${workspaceFolder}/APIGateways/MainGateway/bin/Debug/netcoreapp3.1/MainGateway.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/APIGateways/MainGateway",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "KeyStore"
+        {
+            "name": "KeyStore",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildKeyStore",
+            "program": "${workspaceFolder}/MicroServices/KeyStore/KeyStore.API/bin/Debug/netcoreapp3.1/KeyStore.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/KeyStore/KeyStore.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "DocManager"
+        {
+            "name": "DocManager",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildDocManager",
+            "program": "${workspaceFolder}/MicroServices/DocManager/DocManager.API/bin/Debug/netcoreapp3.1/DocManager.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/DocManager/DocManager.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "DocumentManagement"
+        {
+            "name": "DocumentManagement",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildDocumentManagement",
+            "program": "${workspaceFolder}/MicroServices/DocumentManagement/DocumentManagement.API/bin/Debug/netcoreapp3.1/DocumentManagement.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/DocumentManagement/DocumentManagement.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "Identity"
+        {
+            "name": "Identity",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildIdentity",
+            "program": "${workspaceFolder}/MicroServices/Identity/Identity.API/bin/Debug/netcoreapp3.1/Identity.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/Identity/Identity.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "LoanApplication"
+        {
+            "name": "LoanApplication",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildLoanApplication",
+            "program": "${workspaceFolder}/MicroServices/LoanApplication/LoanApplication.API/bin/Debug/netcoreapp3.1/LoanApplication.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/LoanApplication/LoanApplication.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "TenantConfig"
+        {
+            "name": "TenantConfig",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildTenantConfig",
+            "program": "${workspaceFolder}/MicroServices/TenantConfig/TenantConfig.API/bin/Debug/netcoreapp3.1/TenantConfig.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/TenantConfig/TenantConfig.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "LosIntegration"
+        {
+            "name": "LosIntegration",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildLosIntegration",
+            "program": "${workspaceFolder}/MicroServices/LosIntegration/LosIntegration.API/bin/Debug/netcoreapp3.1/LosIntegration.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/LosIntegration/LosIntegration.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "Milestone"
+        {
+            "name": "Milestone",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildMilestone",
+            "program": "${workspaceFolder}/MicroServices/Milestone/Milestone.API/bin/Debug/netcoreapp3.1/Milestone.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/Milestone/Milestone.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "Notification"
+        {
+            "name": "Notification",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildNotification",
+            "program": "${workspaceFolder}/MicroServices/Notification/Notification.API/bin/Debug/netcoreapp3.1/Notification.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/Notification/Notification.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "Rainmaker"
+        {
+            "name": "Rainmaker",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildRainmaker",
+            "program": "${workspaceFolder}/MicroServices/Rainmaker/Rainmaker.API/bin/Debug/netcoreapp3.1/Rainmaker.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/Rainmaker/Rainmaker.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "Setting"
+        {
+            "name": "Setting",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildSetting",
+            "program": "${workspaceFolder}/MicroServices/Setting/Setting.API/bin/Debug/netcoreapp3.1/Setting.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/Setting/Setting.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+       
+        /**********************Run*************************/
+        //"name": "MainGateway_RUN"
+        {
+            "name": "MainGateway_RUN",
+            "type": "coreclr",
+            "request": "launch",
+            //"preLaunchTask": "buildMainGateway",
+            "program": "${workspaceFolder}/APIGateways/MainGateway/bin/Debug/netcoreapp3.1/MainGateway.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/APIGateways/MainGateway",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "KeyStore_RUN"
+        {
+            "name": "KeyStore_RUN",
+            "type": "coreclr",
+            "request": "launch",
+            //"preLaunchTask": "buildKeyStore",
+            "program": "${workspaceFolder}/MicroServices/KeyStore/KeyStore.API/bin/Debug/netcoreapp3.1/KeyStore.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/KeyStore/KeyStore.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "DocManager_RUN"
+        {
+            "name": "DocManager_RUN",
+            "type": "coreclr",
+            "request": "launch",
+            //"preLaunchTask": "buildDocManager",
+            "program": "${workspaceFolder}/MicroServices/DocManager/DocManager.API/bin/Debug/netcoreapp3.1/DocManager.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/DocManager/DocManager.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "DocumentManagement_RUN"
+        {
+            "name": "DocumentManagement_RUN",
+            "type": "coreclr",
+            "request": "launch",
+            //"preLaunchTask": "buildDocumentManagement",
+            "program": "${workspaceFolder}/MicroServices/DocumentManagement/DocumentManagement.API/bin/Debug/netcoreapp3.1/DocumentManagement.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/DocumentManagement/DocumentManagement.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "Identity_RUN"
+        {
+            "name": "Identity_RUN",
+            "type": "coreclr",
+            "request": "launch",
+            //"preLaunchTask": "buildIdentity",
+            "program": "${workspaceFolder}/MicroServices/Identity/Identity.API/bin/Debug/netcoreapp3.1/Identity.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/Identity/Identity.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "LoanApplication_RUN"
+        {
+            "name": "LoanApplication_RUN",
+            "type": "coreclr",
+            "request": "launch",
+            //"preLaunchTask": "buildLoanApplication",
+            "program": "${workspaceFolder}/MicroServices/LoanApplication/LoanApplication.API/bin/Debug/netcoreapp3.1/LoanApplication.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/LoanApplication/LoanApplication.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "TenantConfig_RUN"
+        {
+            "name": "TenantConfig_RUN",
+            "type": "coreclr",
+            "request": "launch",
+            //"preLaunchTask": "buildTenantConfig",
+            "program": "${workspaceFolder}/MicroServices/TenantConfig/TenantConfig.API/bin/Debug/netcoreapp3.1/TenantConfig.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/TenantConfig/TenantConfig.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "LosIntegration_RUN"
+        {
+            "name": "LosIntegration_RUN",
+            "type": "coreclr",
+            "request": "launch",
+            //"preLaunchTask": "buildLosIntegration",
+            "program": "${workspaceFolder}/MicroServices/LosIntegration/LosIntegration.API/bin/Debug/netcoreapp3.1/LosIntegration.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/LosIntegration/LosIntegration.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "Milestone_RUN"
+        {
+            "name": "Milestone_RUN",
+            "type": "coreclr",
+            "request": "launch",
+            //"preLaunchTask": "buildMilestone",
+            "program": "${workspaceFolder}/MicroServices/Milestone/Milestone.API/bin/Debug/netcoreapp3.1/Milestone.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/Milestone/Milestone.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "Notification_RUN"
+        {
+            "name": "Notification_RUN",
+            "type": "coreclr",
+            "request": "launch",
+            //"preLaunchTask": "buildNotification",
+            "program": "${workspaceFolder}/MicroServices/Notification/Notification.API/bin/Debug/netcoreapp3.1/Notification.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/Notification/Notification.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "Rainmaker_RUN"
+        {
+            "name": "Rainmaker_RUN",
+            "type": "coreclr",
+            "request": "launch",
+            //"preLaunchTask": "buildRainmaker",
+            "program": "${workspaceFolder}/MicroServices/Rainmaker/Rainmaker.API/bin/Debug/netcoreapp3.1/Rainmaker.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/Rainmaker/Rainmaker.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+        //"name": "Setting_RUN"
+        {
+            "name": "Setting_RUN",
+            "type": "coreclr",
+            "request": "launch",
+            //"preLaunchTask": "buildSetting",
+            "program": "${workspaceFolder}/MicroServices/Setting/Setting.API/bin/Debug/netcoreapp3.1/Setting.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MicroServices/Setting/Setting.API",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                //"ASPNETCORE_URLS": "https://localhost:5001"
+            },
+            "sourceFileMap": {
+                //"/Views": "${workspaceFolder}/Views"
+            }
+        },
+       
+    ],
+    "compounds": [
+        //"name": "****Rainmaker2"
+        {
+            "name": "****Rainmaker2All",
+            "configurations": [
+                 "KeyStore",
+                 "MainGateway",
+                // "DocManager",
+                // "DocumentManagement",
+                 "Identity",
+                // "LoanApplication",
+                // "TenantConfig",
+                // "LosIntegration",
+                // "Milestone",
+                // "Notification",
+                // "Rainmaker",
+                // "Setting",
+            ]
+        },
+        //"name": "****Rainmaker2_RUN"
+        {
+            "name": "****Rainmaker2All_RUN",
+            "configurations": [
+                 "KeyStore_RUN",
+                 "MainGateway_RUN",
+                // "DocManager_RUN",
+                // "DocumentManagement_RUN",
+                "Identity_RUN",
+                // "LoanApplication_RUN",
+                // "TenantConfig_RUN",
+                // "LosIntegration_RUN",
+                // "Milestone_RUN",
+                // "Notification_RUN",
+                 "Rainmaker_RUN",
+                // "Setting_RUN",
+            ]
+        }
+    ]
+}

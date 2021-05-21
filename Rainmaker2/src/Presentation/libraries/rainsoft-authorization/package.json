@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
     "jwt-decode": "^3.0.0-beta.2",
     "lodash": "^4.17.20",
     "parcel": "^1.12.4",

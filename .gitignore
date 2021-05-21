@@ -10,7 +10,6 @@ obj
 packages
 .vs
 package-lock.json
-.vscode
 TestResults
 node_modules
 TestResults
