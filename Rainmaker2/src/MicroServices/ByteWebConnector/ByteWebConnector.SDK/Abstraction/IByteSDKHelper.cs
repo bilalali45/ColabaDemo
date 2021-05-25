@@ -208,6 +208,7 @@ namespace ByteWebConnector.SDK.Abstraction
             }
 
             propertyInfo.SetFieldValue("RYearLotAcq", loanApplication.PropertyInfo?.DateAcquired?.Year.ToString());
+            propertyInfo.SetFieldValue("LotAcquiredDate", loanApplication.PropertyInfo?.DateAcquired.ToString());
             propertyInfo.SetFieldValue("ROrigCost", loanApplication.PropertyInfo.OriginalPurchasePrice.ToString());
             propertyInfo.SetFieldValue("CPresValLot", loanApplication.PropertyInfo.PropertyValue != null ? Convert.ToString(loanApplication.PropertyInfo.PropertyValue) : ""); //
 
@@ -239,7 +240,7 @@ namespace ByteWebConnector.SDK.Abstraction
             }
             //this.SyncSkippedLiabilities(byteFile, loanApplication);
             this.SyncReoType(byteFile, loanApplication, thirdPartyCodeList);
-            this.SyncYearOnJob(byteFile, loanApplication);
+            //this.SyncYearOnJob(byteFile, loanApplication);
             this.SetNotApplicableFlag(byteFile, loanApplication);
             this.SetCountryNameInAddresses(byteFile, loanApplication);
             this.FixBorrwerQuestions(byteFile, loanApplication);
