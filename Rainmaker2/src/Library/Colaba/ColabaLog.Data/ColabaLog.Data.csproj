@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ColabaLog.Entity\ColabaLog.Entity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ColabaLogDbContext.tt">
+      <LastGenOutput>ColabaLogDbContext.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Mapping\ColabaConfigMap.tt">
+      <LastGenOutput>ColabaConfigMap.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ColabaLogDbContext.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ColabaLogDbContext.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Mapping\ColabaConfigMap.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ColabaConfigMap.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

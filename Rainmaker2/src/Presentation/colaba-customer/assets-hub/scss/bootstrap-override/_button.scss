@@ -1,0 +1,33 @@
+.btn-primary {
+    background-color: colorMaster("primary");
+    border-color    : colorMaster("primary");
+
+    &:hover {
+        background-color: colorMaster("primary");
+        border-color    : colorMaster("primary");
+    }
+
+    &:focus,
+    &.focus,
+    &:not(:disabled):not(.disabled):active:focus, 
+    &:not(:disabled):not(.disabled).active:focus, .show > .btn-primary.dropdown-toggle:focus{
+        background-color: colorMaster("primary");
+        border-color    : colorMaster("primary");
+        box-shadow: 0 0 0 rem(3.2px) colorMaster('primary-light-10');
+    }
+
+    &.disabled,
+    &:disabled {}
+
+    &:not(:disabled):not(.disabled):active,
+    &:not(:disabled):not(.disabled).active,
+    .show>&.dropdown-toggle {
+        background-color: colorMaster("primary");
+        border-color    : colorMaster("primary");
+        &:focus {
+            background-color: colorMaster("primary");
+            border-color    : colorMaster("primary");
+        }
+    }
+}
+

@@ -36,7 +36,9 @@ namespace Notification.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSignalR();
+            services.AddSignalR().AddStackExchangeRedis(Configuration["Redis:ConnectionString"],option=> {
+                option.Configuration.ChannelPrefix = "Notification";
+            });
             var elmahResponse = AsyncHelper.RunSync(func: () => httpClient.GetAsync(requestUri: $"{Configuration[key: "KeyStore:Url"]}/api/keystore/keystore?key=ElmahCS"));
             elmahResponse.EnsureSuccessStatusCode();
             var elmahKey = AsyncHelper.RunSync(func: () => elmahResponse.Content.ReadAsStringAsync());
@@ -133,11 +135,11 @@ namespace Notification.API
                 endpoints.MapControllers();
                 endpoints.MapHub<ServerHub>("/serverhub",options=> { options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets; });
             });
-            IRedisService redisService = services.GetRequiredService<IRedisService>();
-            Task.Run(async ()=>
-            {
-                await redisService.Run();
-            });
+            //IRedisService redisService = services.GetRequiredService<IRedisService>();
+            //Task.Run(async ()=>
+            //{
+            //    await redisService.Run();
+            //});
         }
     }
 }

@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>3f4365e1-46ad-4e56-983c-322d36279637</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ElmahCore" Version="2.0.6" />
+    <PackageReference Include="ElmahCore.Sql" Version="2.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.12" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="3.1.12" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.8.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Serilog.AspNetCore" Version="4.0.0" />
+    <PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />
+    <PackageReference Include="Serilog.Exceptions" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.4.0" />
+    <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\Colaba\TenantConfig.Common\TenantConfig.Common.csproj" />
+    <ProjectReference Include="..\..\..\Library\Colaba\TenantConfig.Data\TenantConfig.Data.csproj" />
+    <ProjectReference Include="..\..\..\Library\Colaba\TenantConfig.Entity\TenantConfig.Entity.csproj" />
+    <ProjectReference Include="..\LoanApplication.Data\LoanApplicationDb.Data.csproj" />
+    <ProjectReference Include="..\LoanApplication.Entity\LoanApplicationDb.Entity.csproj" />
+    <ProjectReference Include="..\LoanApplication.Model\LoanApplication.Model.csproj" />
+    <ProjectReference Include="..\LoanApplication.Service\LoanApplication.Service.csproj" />
+  </ItemGroup>
+
+
+</Project>

@@ -1,0 +1,45 @@
+// Grid containers
+//
+// Define the maximum width of `.container` for different screen sizes.
+// @import url('rainsoft-rc/dist/sharedassets/css/material-design-iconic-font.css');
+//$primary: #f00;
+
+// $container-max-widths: (
+//   sm: 540px,
+//   md: 720px,
+//   lg: 960px,
+//   xl: 1330px
+// ) !default;
+
+// $grid-gutter-width  :     20px !default;
+// @import 'rainsoft-rc/dist/sharedassets/scss/common-includes';
+// @import 'rainsoft-rc/dist/sharedassets/scss/bootstrap/bootstrap';
+@import './../../../../assets-hub/scss/common-includes.scss';
+
+@import './colaba-config';
+
+@import './functions/color',
+        './functions/fontFamily',
+        './functions/fontSizes',
+        './functions/rem',
+        './functions/reduceSize';
+
+@import './components/colaba-general',
+        './components/colaba-header',
+        './components/colaba-header-auth',
+        //'./components/colaba-forms',
+        './components/colaba-dashboard',
+        './components/colaba-footer',
+        './components/colaba-modals',
+        './components/colaba-timer',
+        './components/password-help',
+        './components/colaba-svg';
+
+// Pages
+@import './pages/signIn',
+        './pages/signup',
+        './pages/auth-user';
+
+@import 'bootstrap-override';
+
+

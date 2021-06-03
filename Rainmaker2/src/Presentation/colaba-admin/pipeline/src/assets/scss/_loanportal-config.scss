@@ -1,0 +1,66 @@
+$color:(
+    primary             :       $color-primary,
+    primary-text        :       $color-light,
+    secondry            :       $color-success,
+    secondry-text       :       $color-light,
+    border              :       $color-gray-3000, 
+    base                :       $color-gray-7000, 
+    heading             :       $color-gray-7000,   
+    colordarkblue       :       $color-blue-8000,
+    colorBlack          :       $color-dark,
+    colorWhite          :       $color-light,
+    statusCompleted     :       $color-success,
+    statusCurrent       :       $color-primary,
+    statusUpcomming     :       $color-gray-5000,
+    colorgray           :       $color-gray-2000,
+    light-purple        :       $color-secondry,
+    colorlightGray      :       $color-gray-4000,
+    listhover           :       $color-gray-1000,
+    scroll              :       $color-gray-3500,
+    gray2               :       $color-gray-6000,
+    border2             :       $color-gray-3000,
+    fileReaderHeaderBg  :       $color-gray-8000,
+    disabled            :       $color-gray-3000,
+    disabled-text       :       $color-gray-5000,
+    colorred            :       $color-danger,
+    default             :       $color-gray-default,
+    //Modal
+    modalfooter         :       $color-gray-1000,
+    widgetBg            :       $color-light,
+    placeholder         :       $color-gray-4000 ,    
+    primaryDarken       :       darken($color-primary,10%),
+);
+
+$font:(
+    base                :      'Rubik'#{', sans-serif'},
+    heading             :      'Rubik'#{', sans-serif'}
+);
+
+$font-size:(
+    xs: 10px,
+    sm: 12px,
+    nr: 14px,
+    md: 14px,
+    xmd:16px,
+    lg: 24px,
+    xlg: 34px,
+    
+
+    h1:34px,
+    h2:24px,
+    h3:16px,
+    h4:14px,
+    h5:12px,
+    h6:10
+);
+$shadow                :        0 0 3px rgba(0, 0, 0, 0.16);
+$headershadow          :        0 3px 3px rgba(141, 141, 141, 0.10);
+$float-button-size     :        35px;
+
+
+// Bootstrap Variables
+$grid-gutter-width:           30px !default;
+$primary:       $color-primary !default;
+$secondary:     $color-secondry !default;
+$danger   :     $color-danger !default; //#D7373F 
+

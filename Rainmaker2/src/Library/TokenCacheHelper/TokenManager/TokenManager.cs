@@ -59,7 +59,7 @@ namespace TokenCacheHelper.TokenManager
                                              value: tokenData);
 
             await _cacheHandler.Db1.UpdateExpiryAsync(key: tokenData.RefreshToken,
-                                                      expiresAt: tokenData.RefreshTokenValidTo);
+                                                      expiresAt: tokenData.RefreshTokenValidTo.Value);
 
             return true;
         }
@@ -162,8 +162,11 @@ namespace TokenCacheHelper.TokenManager
             var jwtToken = tokenHandler.ReadJwtToken(token: token);
 
             var profileId = jwtToken.Claims.FirstOrDefault(predicate: claim => claim.Type == "UserProfileId");
+            if(profileId==null)
+                profileId = jwtToken.Claims.FirstOrDefault(predicate: claim => claim.Type == "UserId");
             var tenantId = jwtToken.Claims.FirstOrDefault(predicate: claim => claim.Type == "TenantId");
-
+            if(tenantId==null)
+                tenantId = jwtToken.Claims.FirstOrDefault(predicate: claim => claim.Type == "TenantCode");
             var redisKey = $"USER_{profileId?.Value}_{tenantId?.Value}";
             return redisKey;
         }

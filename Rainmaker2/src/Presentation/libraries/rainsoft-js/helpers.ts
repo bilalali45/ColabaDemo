@@ -41,6 +41,7 @@ export const UnMaskPhone = (formattedNumber: string) => {
         if (!isNaN(parseInt(n)) && n !== ' ') {
             return n
         }
+        return null
     }).join('');
 }
 
@@ -51,10 +52,10 @@ export const FormatAmountByCountry = (amount: number) =>                        
         return;
     }
 
-    let seperatorAdded = addAmountSeperator(amountSplitByPoint[0].toString(), 'US');
+    let seperatorAdded = addAmountSeperator(String(amountSplitByPoint ? amountSplitByPoint[0]?.toString() : ""), 'US');
 
     return (() => {
-            if (amountSplitByPoint[1]) {
+            if (amountSplitByPoint && amountSplitByPoint[1]) {
                 return `${seperatorAdded}.${amountSplitByPoint[1]}`
             }
             return `${seperatorAdded}`

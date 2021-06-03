@@ -1,0 +1,324 @@
+.review-panel {
+    .review-item {
+        display: flex;
+        align-items: flex-start;
+        border-bottom: rem(1px) solid color("primary-light-30");
+        padding-top: rem(25px);
+        padding-bottom: rem(25px);
+
+        &:first-child {
+            padding-top: 0;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        .r-icon {
+            width: rem(40px);
+
+            svg {
+                color: color("primary");
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .r-content {
+            flex-grow: 1;
+            padding-left: rem(20px);
+            padding-right: rem(20px);
+
+            .title {
+                h4 {
+                    font-size: fontSize("xmd");
+                    color: color("heading");
+                    font-weight: 500;
+                    margin: 0;
+                }
+            }
+
+            .c-type {
+                font-size: rem(13px);
+                color: color("secondry");
+                padding-bottom: rem(15px);
+            }
+
+            .email,
+            .phone,
+            .m-staus,
+            .otherinfo {
+                font-size: fontSize(md);
+                color: color("secondry");
+
+                a {
+                    font-size: 100%;
+                    color: currentColor;
+                    text-decoration: none !important;
+                    margin-bottom: rem(10px);
+                }
+            }
+        }
+
+        .r-actions {
+            display: flex;
+            align-items: center;
+
+            .btn {
+                &:focus {
+                    box-shadow: none !important;
+                }
+
+                -webkit-transition: all 0.4s ease;
+                transition: all 0.4s ease;
+
+                &.btn-edit {
+                    width: rem(102px);
+                    height: rem(40px);
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: rem(1px) solid color("border");
+                    color: color("base");
+                    padding: 0 !important;
+                    @include font(normal, 1.4, "md", "base");
+                    text-transform: capitalize;
+                    letter-spacing: 0;
+
+                    &:hover {
+                        border: rem(1px) solid color("primary");
+                    }
+
+                    svg {
+                        color: color("base");
+                        height: rem(16px);
+                        width: rem(16px);
+                    }
+
+                    .icon {
+                        margin-right: rem(10px);
+                        margin-top: rem(-4px);
+                    }
+
+                    .lbl {
+                        //padding-top: 5px;
+                    }
+                }
+
+                &.btn-delete {
+                    color: color("secondry");
+                    padding: 0 !important;
+                    margin-left: rem(30px);
+
+                    &:hover {
+                        color: color("base");
+                    }
+
+                    svg {
+                        height: rem(20px);
+                        width: rem(16.25px);
+                    }
+                }
+
+                &.btn-lock {
+                    color: color("secondry");
+                    padding: 0 !important;
+                    margin-left: rem(30px);
+                    cursor: not-allowed;
+
+                    &:hover {
+                        color: color("base");
+                    }
+                }
+            }
+        }
+    }
+
+    &.review-panel-e-history {
+        .r-e-history-list {
+            border-bottom: rem(1px) solid color("primary-light-30");
+            padding-top: rem(25px);
+            padding-bottom: rem(25px);
+            &:first-child {
+                padding-top: 0;
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+            .review-item {
+                border-bottom: none;
+                padding-bottom: 0;
+                .r-content {
+                    .c-type {
+                        padding-bottom: 0;
+                    }
+                }
+            }
+
+            .review-item-e-history {
+                display: flex;
+                align-items: flex-start;
+                padding-top: rem(20px);
+
+                padding-left: rem(40px);
+
+                .r-icon {
+                    width: rem(40px);
+
+                    svg {
+                        color: color("primary");
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+
+                .r-content {
+                    flex-grow: 1;
+                    padding-left: rem(20px);
+                    padding-right: rem(20px);
+
+                    .eh-title {
+                        h4 {
+                            font-size: rem(16px);
+                            color: color("heading");
+                            font-weight: 500;
+                            margin: 0;
+                        }
+                        padding-bottom: rem(15px);
+                    }
+
+                    .otherinfo {
+                        font-size: fontSize(md);
+                        color: color("secondry");
+
+                        a {
+                            font-size: 100%;
+                            color: currentColor;
+                            text-decoration: none !important;
+                            margin-bottom: rem(10px);
+                        }
+                        ul {
+                            margin: 0 0 rem(35px) 0;
+                            li {
+                                font-weight: 300;
+                                margin-bottom: rem(5px);
+                                span {
+                                    font-weight: normal;
+                                }
+                                &:last-child {
+                                    margin-bottom: 0;
+                                }
+                            }
+                        }
+
+                        &.p-reviewinfo {
+                            display: flex;
+                            align-items: flex-start;
+                            margin-bottom: rem(40);
+                            &:last-child {
+                                margin-bottom: 0;
+                            }
+                            .p-review-wrap {
+                                flex-grow: 1;
+
+                                h5 {
+                                    font-size: fontSize(xmd);
+                                    color: color("secondry");
+                                    margin-bottom: rem(8px);
+                                }
+                                p {
+                                    font-size: fontSize(xmd);
+                                    color: color("secondry");
+                                    font-weight: 300;
+                                    margin-bottom: 0;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .r-actions {
+                    display: flex;
+                    align-items: center;
+
+                    .btn {
+                        &:focus {
+                            box-shadow: none !important;
+                        }
+
+                        -webkit-transition: all 0.4s ease;
+                        transition: all 0.4s ease;
+
+                        &.btn-edit {
+                            width: rem(102px);
+                            height: rem(40px);
+                            display: inline-flex;
+                            align-items: center;
+                            justify-content: center;
+                            border: rem(1px) solid color("border");
+                            color: color("base");
+                            padding: 0 !important;
+                            @include font(normal, 1.4, "md", "base");
+                            text-transform: capitalize;
+                            letter-spacing: 0;
+
+                            &:hover {
+                                border: rem(1px) solid color("primary");
+                            }
+
+                            svg {
+                                color: color("base");
+                                height: rem(16px);
+                                width: rem(16px);
+                            }
+
+                            .icon {
+                                margin-right: rem(10px);
+                                margin-top: rem(-4px);
+                            }
+
+                            .lbl {
+                                //padding-top: 5px;
+                            }
+                        }
+
+                        &.btn-delete {
+                            color: color("secondry");
+                            padding: 0 !important;
+                            margin-left: rem(30px);
+
+                            &:hover {
+                                color: color("base");
+                            }
+
+                            svg {
+                                height: rem(20px);
+                                width: rem(16.25px);
+                            }
+                        }
+
+                        &.btn-lock {
+                            color: color("secondry");
+                            padding: 0 !important;
+                            margin-left: rem(30px);
+                            cursor: not-allowed;
+
+                            &:hover {
+                                color: color("base");
+                            }
+                        }
+                    }
+                }
+
+                &.p-r-list {
+                    padding-top: rem(20px);
+                    padding-bottom: rem(20);
+                    &:last-child {
+                        padding-bottom: rem(0);
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,120 @@
+html{
+    font-size: 16px;
+    @media(min-width: 1px) and (max-width:767px){
+        font-size:12px;
+    }
+    @media(min-width: 768px) and (max-width:1024px){
+        font-size: 11.5px;
+    }
+    @media(min-width: 1025px) and (max-width:1279px){
+        font-size: 9.15px;
+    }
+    @media(min-width: 1280px) and (max-width:1535px){
+        font-size: 10.69px;
+    }
+
+    @media(min-width: 1536px) and (max-width:1744px){
+        font-size: 12.8px;
+    }
+    @media(min-width: 1745px) and (max-width:1889px){
+        font-size: 14.55px;
+    }
+    @media(min-width: 1890px) and (max-width:2100px){
+        font-size: 16px;
+    }
+    @media(min-width: 2101px) and (max-width:2399px){
+        font-size: 17.8px;
+    }
+    @media(min-width: 2400px) and (max-width:2559px){
+        font-size: 20px;
+    }
+    @media(min-width: 2560px) and (max-width:2879px){
+        font-size: 21.35px;
+    }
+    @media(min-width: 2880px) and (max-width:3279px){
+        font-size: 24.1px;
+    }
+    @media(min-width: 3280px) and (max-width:3840px){
+        font-size: 32px;
+    }
+    @media(min-width: 3841px) and (max-width:5760px){
+        font-size: 48px;
+    }
+    @media(min-width: 5761px) and (max-width:10060px){
+        font-size: 64px;
+    }
+}
+body{
+    padding: 0;
+    margin: 0;
+    color: color('base');
+    @include font(normal,1.4,'nr','base');
+}
+
+a{
+    color: color('primary');
+}
+
+ul ,ol {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    li {
+        list-style: none;
+    }
+}
+
+h1,h2,h3,h4,h5,h6 {
+    color:color("heading");
+}
+
+
+.artwork{
+    max-width: 100%;
+    height: 100%;
+
+    svg{
+        max-width: 100%;
+    }
+
+    @media screen and (max-width:767px) {
+        margin-top: rem(48px);
+        margin-bottom: rem(48px);
+    }
+}
+
+.alert-msg{
+    display: block;
+    background-color: color('alert-box-bg');
+    color: color('alert-box-text');
+    border-radius: rem(5px);
+    padding: rem(18px) rem(30px);
+    @include font(normal,1.4,'xmd','base');
+}
+
+/*=======================
+        HELPERS
+=======================*/ 
+.text-dark{
+    color: color('text-highlighted') !important;
+}
+.text-disabled{
+    color: color('disabled-text') !important;
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+}
+
+.primary-fill,.fillprimary {
+    fill:color("primary") !important;
+}
+.primary-stroke,.fillprimary-s {
+    stroke:color("primary") !important;
+}
+.clearfix{
+    &::before,
+    &::after{
+        content: "";
+        display: table;
+        clear: both;
+    }
+}

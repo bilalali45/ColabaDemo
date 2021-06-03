@@ -1,0 +1,46 @@
+@import 'rainsoft-rc/dist/sharedassets/scss/common-includes';
+@import 'rainsoft-rc/dist/sharedassets/scss/bootstrap/bootstrap';
+
+@import './mcu-config';
+//@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap');
+// @import './bootstrap/bootstrap.scss';
+
+//Function
+@import './functions/color',
+        './functions/dColor',
+        './functions/fontFamily',
+        './functions/fontSizes';
+
+
+// @import './components/Animations';
+
+// Mixins
+// @import 'mixins/placeholder';
+
+// Components
+@import './components/General',
+        './components/RainMakerHeader',
+        './components/RainMakerFooter',
+        './components/MCUDashboard',
+        './components/LoanSnapshot',
+        './components/NeedListHeader',
+        './components/Navigation',
+        './components/NeedListTable',
+        './components/NeedListViewHeader',
+        './components/ManageTemplates',
+        './components/DocumentStatus',
+        './components/sidebarnavigation',
+        './components/ReviewDocument',
+        './components/DocumentView',
+        './components/ReviewDocumentStatement',
+        './components/ActivityLogs',
+        './components/DocumentSnipet',
+        './components/NeedListView',
+        './components/AddNeedListDocument',
+        './components/VerticalTabs',
+        './components/HorizontalTabs',
+        './components/CustomScrollbar',
+        './components/RequestDocument',
+        './components/MCUPanels',
+        './components/GridForm';

@@ -1,0 +1,13 @@
+.dm-f-wrap {
+    min-height: 43px;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    p {
+        font: 400 #{fontSize("nr") + "/1px"} fontFamily("base");
+        margin-bottom: 0;
+        color:color('footerColor');
+        width: 100%;
+    }
+}

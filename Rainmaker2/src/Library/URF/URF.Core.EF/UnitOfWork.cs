@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
@@ -19,18 +20,38 @@ namespace URF.Core.EF
     {
         private bool _disposed;
         private IDbContextTransaction _transaction;
+        private IHttpContextAccessor _httpContextAccessor;
 
-        public UnitOfWork(TDbContext context, IRepositoryProvider repositoryProvider)
+        public UnitOfWork(TDbContext context, IRepositoryProvider repositoryProvider, IHttpContextAccessor httpContextAccessor=null)
         {
             DataContext = context;
             RepositoryProvider = repositoryProvider;
             RepositoryProvider.DataContext = context;
             RepositoryProvider.UnitOfWork = this;
+            _httpContextAccessor = httpContextAccessor;
         }
         public bool IsCurrentUserSystemAdmin { get; set; }
         public int CurrentUserId { get; set; }
         public virtual async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess = true, CancellationToken cancellationToken = default)
         {
+            if(_httpContextAccessor?.HttpContext!=null)
+            {
+                await DataContext.Database.OpenConnectionAsync();
+                if(_httpContextAccessor.HttpContext.Items["TenantId"]!=null)
+                {
+                    await DataContext.Database.ExecuteSqlRawAsync($"EXEC sys.sp_set_session_context @key = N'tenantId', @value = N'{_httpContextAccessor.HttpContext.Items["TenantId"]}'");
+                }
+                if (_httpContextAccessor.HttpContext.Items["CorrelationId"] != null)
+                {
+                    await DataContext.Database.ExecuteSqlRawAsync($"EXEC sys.sp_set_session_context @key = N'correlationId', @value = N'{_httpContextAccessor.HttpContext.Items["CorrelationId"]}'");
+                }
+                await DataContext.Database.ExecuteSqlRawAsync($"EXEC sys.sp_set_session_context @key = N'transactionId', @value = N'{Guid.NewGuid()}'");
+                if (_httpContextAccessor?.HttpContext.User!=null && _httpContextAccessor?.HttpContext.User.Identity.IsAuthenticated==true)
+                {
+                    int userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst("UserId").Value);
+                    await DataContext.Database.ExecuteSqlRawAsync($"EXEC sys.sp_set_session_context @key = N'loggedUser', @value = N'{userId}'");
+                }
+            }
             IEnumerable<ITrackable> entities = DataContext.ChangeTracker.Entries().Select(x=>x.Entity).OfType<ITrackable>().Where(x=>x.TrackingState!=TrackingState.Unchanged).ToList();
             DataContext.ApplyChanges(entities);
             int ret = await DataContext.SaveChangesAsync(acceptAllChangesOnSuccess,cancellationToken);

@@ -1,0 +1,4 @@
+// Get Colors From Object
+@function color($value){
+    @return map-get($color,$value);
+}

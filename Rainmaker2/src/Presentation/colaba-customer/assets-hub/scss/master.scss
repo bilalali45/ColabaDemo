@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css'); // https://animate.style/#usage
+@import 'font-awesome-5.13.0';
+@import 'material-design-iconic-font';
+
+
+$container-max-widths: (
+  sm: 33.75rem,//rem(540px),
+  md: 45rem,//rem(720px),
+  lg: 57.813rem,//rem(925px),//960px,
+  xl: 81.25rem,//rem(1300px)
+) !default;
+
+$grid-gutter-width  :   1.875rem; // rem(36px); //
+
+
+@import './master-config';
+@import './root-variables';
+
+@import './functions/color',
+        './functions/fontSizes',
+        './functions/fontFamily',
+        './functions/rem';
+
+@import './mixins';
+
+
+@import './bootstrap/_bootstrap.scss';
+@import './bootstrap-override';
+
+
+@import './components/general',
+        './components/colaba-forms',
+        './components/colaba-datepicker';
+
+
+
+
+

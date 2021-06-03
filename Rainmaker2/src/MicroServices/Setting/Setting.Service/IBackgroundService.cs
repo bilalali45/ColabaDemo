@@ -11,5 +11,6 @@ namespace Setting.Service
         Task EmailReminderJob();
         Task LoanStatusJob();
         void RegisterJob();
+        Task DispatchEmailJob();
     }
 }

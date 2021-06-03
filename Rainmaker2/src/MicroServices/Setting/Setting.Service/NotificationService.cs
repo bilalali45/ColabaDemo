@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Extensions.ExtensionClasses;
 using Microsoft.Extensions.Configuration;
+using Notification.Model;
 using Setting.Model;
+using SettingModel = Setting.Model.SettingModel;
 
 namespace Setting.Service
 {
@@ -18,6 +20,22 @@ namespace Setting.Service
         {
             this._httpClient = _httpClient;
             this._configuration = _configuration;
+        }
+
+        public async Task<bool> SendNotification(NotificationModel model)
+        {
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(_configuration[key: "Notification:Url"] + "/api/Notification/Notification/SendNotification"),
+                Method = HttpMethod.Post,
+                Content = new StringContent(content: model.ToJson(),
+                    encoding: Encoding.UTF8,
+                    mediaType: "application/json")
+            };
+            var response = await _httpClient.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+                return true;
+            return false;
         }
         public async Task<List<SettingModel>> GetSettings(IEnumerable<string> authHeader)
         {

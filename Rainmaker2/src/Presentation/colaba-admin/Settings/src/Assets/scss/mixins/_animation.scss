@@ -1,0 +1,10 @@
+/*
+@include animation(blinkRedBorder 5s 1s infinite);
+*/
+@mixin animation($name:null, $duration:null, $timing-function:null, $delay:null, $iteration-count:null, $direction:null, $fill-mode:null) {
+    $pattern: $name $duration $timing-function $delay $iteration-count $direction $fill-mode;
+    -moz-animation: $pattern;
+    -webkit-animation: $pattern;
+         -o-animation: $pattern;
+            animation: $pattern;
+}

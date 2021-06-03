@@ -208,7 +208,6 @@ const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
 
   // For Delete List Document
   const removeDoc = async (templateId: string, documentId: string) => {
-    debugger;
     setAddRequestSent(true);
     setLoaderVisible(true);
     setRemoveDocName(documentId);

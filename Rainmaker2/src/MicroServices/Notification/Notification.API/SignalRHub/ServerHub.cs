@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using Notification.Model;
+using StackExchange.Redis;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,21 +31,21 @@ namespace Notification.API
 
         #region EventHandlers
 
-        public override Task OnConnectedAsync()
+        public override async Task OnConnectedAsync()
         {
             var identity = Context.User;
             var connectionId = Context.ConnectionId;
-            _clientConnections.Add(int.Parse(identity.FindFirst(type: "UserProfileId").Value),connectionId);
-            return base.OnConnectedAsync();
+            await _clientConnections.Add(int.Parse(identity.FindFirst(type: "UserProfileId").Value),connectionId,(IConnectionMultiplexer)Context.GetHttpContext().RequestServices.GetService(typeof(IConnectionMultiplexer)));
+            await base.OnConnectedAsync();
         }
 
 
-        public override Task OnDisconnectedAsync(Exception exception)
+        public override async Task OnDisconnectedAsync(Exception exception)
         {
             var identity = Context.User;
             var connectionId = Context.ConnectionId;
-            _clientConnections.Remove(int.Parse(identity.FindFirst(type: "UserProfileId").Value), connectionId);
-            return base.OnDisconnectedAsync(exception);
+            await _clientConnections.Remove(int.Parse(identity.FindFirst(type: "UserProfileId").Value), connectionId, (IConnectionMultiplexer)Context.GetHttpContext().RequestServices.GetService(typeof(IConnectionMultiplexer)));
+            await base.OnDisconnectedAsync(exception);
         }
 
         #endregion
@@ -55,29 +57,29 @@ namespace Notification.API
             await hubContext.Clients.All.TestSignalR("Hello");
         }
 
-        public static async Task SendNotification(IHubContext<ServerHub, IClientHub> hubContext, int userId, NotificationMediumModel model)
+        public static async Task SendNotification(IHubContext<ServerHub, IClientHub> hubContext, int userId, NotificationMediumModel model, IConnectionMultiplexer connectionMultiplexer)
         {
-            var connections = _clientConnections.GetConnections(userId).ToList();
+            var connections = (await _clientConnections.GetConnections(userId, connectionMultiplexer)).ToList();
             await hubContext.Clients.Clients(connections).SendNotification(JsonConvert.SerializeObject(model));
         }
-        public static async Task NotificationSeen(IHubContext<ServerHub, IClientHub> hubContext, int userId, long[] ids)
+        public static async Task NotificationSeen(IHubContext<ServerHub, IClientHub> hubContext, int userId, long[] ids, IConnectionMultiplexer connectionMultiplexer)
         {
-            var connections = _clientConnections.GetConnections(userId).ToList();
+            var connections = (await _clientConnections.GetConnections(userId, connectionMultiplexer)).ToList();
             await hubContext.Clients.Clients(connections).NotificationSeen(ids);
         }
-        public static async Task NotificationRead(IHubContext<ServerHub, IClientHub> hubContext, int userId, long[] ids)
+        public static async Task NotificationRead(IHubContext<ServerHub, IClientHub> hubContext, int userId, long[] ids, IConnectionMultiplexer connectionMultiplexer)
         {
-            var connections = _clientConnections.GetConnections(userId).ToList();
+            var connections = (await _clientConnections.GetConnections(userId, connectionMultiplexer)).ToList();
             await hubContext.Clients.Clients(connections).NotificationRead(ids);
         }
-        public static async Task NotificationDelete(IHubContext<ServerHub, IClientHub> hubContext, int userId, long id)
+        public static async Task NotificationDelete(IHubContext<ServerHub, IClientHub> hubContext, int userId, long id, IConnectionMultiplexer connectionMultiplexer)
         {
-            var connections = _clientConnections.GetConnections(userId).ToList();
+            var connections = (await _clientConnections.GetConnections(userId, connectionMultiplexer)).ToList();
             await hubContext.Clients.Clients(connections).NotificationDelete(id);
         }
-        public static async Task NotificationDeleteAll(IHubContext<ServerHub, IClientHub> hubContext, int userId)
+        public static async Task NotificationDeleteAll(IHubContext<ServerHub, IClientHub> hubContext, int userId, IConnectionMultiplexer connectionMultiplexer)
         {
-            var connections = _clientConnections.GetConnections(userId).ToList();
+            var connections = (await _clientConnections.GetConnections(userId, connectionMultiplexer)).ToList();
             await hubContext.Clients.Clients(connections).NotificationDeleteAll();
         }
         #endregion

@@ -1,0 +1,34 @@
+.manage-doc-temp{
+
+    &-body{
+        .settings__list-alert{
+            max-width: 400px;
+        }
+        .settings__data-not-found{
+            max-width: 400px;
+            width: auto;
+            float: left;
+            padding: 25px 6px;
+
+            .settings-btn{
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+    }
+
+    &-heading{
+        &.h5{
+            @include font(500,1,'sm','base');
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+    }
+    
+    .rename-spinner{
+        display: inline-block;
+        margin-left: 5px;
+    }
+
+}
+

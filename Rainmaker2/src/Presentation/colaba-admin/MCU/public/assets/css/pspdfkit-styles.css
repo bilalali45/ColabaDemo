@@ -1,0 +1,64 @@
+/* .PSPDFKit-Toolbar {
+    background-color: #f00;
+  } */
+
+  :root {
+    --PSPDFKit-ToolbarButton-isActive-background:#1464f1;
+    --PSPDFKit-ThumbnailsSidebar-gridView-label-isSelected-background:#1464f1;
+  }
+* {
+  scrollbar-color:#DBDBDB;
+
+}
+*::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 0px #DBDBDB;
+   -webkit-box-shadow: inset 0 0 0px #DBDBDB;
+    background-color:#fff;
+    
+}
+*::-webkit-scrollbar {
+    width: 10px;
+    background-color: #fff;
+}
+*::-webkit-scrollbar-thumb {
+    background-color: #DBDBDB;
+}
+.pspdkit-toolbar-item-left-titleText,.pspdkit-toolbar-item-right-spacer  {
+  background: none !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  flex: 45 1 0%;
+  display: block;
+  text-align: left;
+  
+}
+  .PSPDFKit-Root{
+    /* background-color: black; */
+  }
+.pspdkit-toolbar-item-left-close, .pspdkit-toolbar-item-right-spacer {
+  opacity: 0;
+  pointer-events: none;
+}
+.pspdkit-toolbar-item-right-close {
+  text-align: center;
+}
+.pspdkit-toolbar-item-right-close span {
+  text-align: center;
+  display: block;
+  width: 14px;
+  height: 19px;
+}
+  .PSPDFKit-Container{
+    /* background-color: hsla(0, 0%, 0%, 0.541); */
+    /* opacity: 0.6; */
+  }
+  
+  .PSPDFKit-Viewport{
+    /* opacity: 0.6; */
+  }
+
+  .PSPDFKit-Page{
+    /* opacity: 1; */
+  }

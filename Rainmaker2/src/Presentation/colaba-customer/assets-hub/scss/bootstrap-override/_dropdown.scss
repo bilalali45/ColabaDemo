@@ -1,0 +1,24 @@
+.dropdown{
+
+    &-menu{
+        @include font(normal,1.2,'nr','base');
+        border-radius: 0px;
+        border: none;//1px solid colorMaster('border');
+        min-width: rem(190px);
+        box-shadow: rem(0px) rem(0px) rem(10px) rem(2px) rgba(0,0,0,0.05);
+    }
+
+    &-item{
+        @include font(normal,1.2,'nr','base');
+        color: color('base');
+
+
+        &.active,
+        &:active,
+        &:hover{
+            background-color: colorMaster('primary-light-50');
+            color: colorMaster('primary-text');
+        }
+    }
+
+}

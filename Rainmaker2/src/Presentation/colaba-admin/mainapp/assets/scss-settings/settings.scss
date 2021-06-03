@@ -1,0 +1,37 @@
+@import '../scss-master/common-includes';
+
+@import 'settings-config';
+
+// Components
+@import './components/settings-general',
+        './components/settings-header',
+        './components/settings-body',
+        './components/settings-sidebar',
+        './components/settings-content-area',
+        './components/settings-side-navigation',
+        './components/settings-accordion',
+        './components/settings-info-display',
+        './components/settings-table',
+        './components/settings-notifications',
+        './components/settings-accordion-signable',        
+        './components/settings-add-docs-popup',
+        './components/settings-list-alert',
+        './components/settings-data-not-found',
+        './components/settings-nav-pills',
+        './components/settings-form-controls',
+        './components/settings-tokenpopup',
+        './components/settings-footer',
+        './components/settings-alert-box',
+        './components/settings-reminder-control',
+        './components/settings-have-no-data';
+
+// Pages
+@import './components/settings-request-email-templates',
+        './components/settings-manage-doc-temp',
+        './components/settings-assigned-role',
+        './components/settings-profile',
+        './components/settings-manage-users',
+        './components/settings-loan-origination-system',
+        './components/settings-create-email-templates',
+        './components/settings-need-list-reminder',
+        './components/settings-loan-status-update';

@@ -1,0 +1,51 @@
+$themes: (
+    blue : #4484f4,
+    red : #f00000,
+    green : #4caf50,
+    goldern : #ffc107
+);
+ 
+
+
+@import 'rainsoft-rc/dist/sharedassets/scss/common-includes';
+@import 'rainsoft-rc/dist/sharedassets/scss/bootstrap/bootstrap';
+
+// @import '../../../public/assets/css/material-design-iconic-font.css';
+
+// @import url('rainsoft-rc/dist/sharedassets/css/material-design-iconic-font.css');
+
+
+//$color-primary : #f00;
+
+@import './loanportal-config';
+@import './functions';
+
+
+@import './theams';
+
+
+// Components
+@import './components/General',
+        './components/Header',
+        './components/Footer',
+        './components/Activity',
+        './components/ActivityHeader',
+        './components/ContactUs',
+        './components/DocumentItem',
+        './components/DocumentStatus',
+        './components/DocumentsRequest',
+        './components/DocumentsRequired',
+        './components/DocumentUpload',
+        './components/LoanProgress',
+        './components/LoanStatus',
+        './components/SelectedDocuments',
+        './components/UploadedDocuments',
+        './components/UploadedDocumentsTable',
+
+        './components/MyLoanWidget',
+        './components/ProgressStatus',
+        './components/DocumentView',
+        './components/AlertBox',
+        './components/PopupDocUpload',
+        './components/MobileUI',
+        './components/Browsers';

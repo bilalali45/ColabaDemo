@@ -1,0 +1,51 @@
+.info-display{
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 10px;
+    line-height: 10px;
+
+    &--icon{
+        cursor: pointer;
+    }
+
+    &--dropdown{
+        position: absolute;
+        top: 100%;
+        right: 10px;
+        z-index: 9999;
+        width: 240px;
+        padding: 15px;
+        background-color: color('widgetBg');
+        border: 1px solid color('border');
+        box-shadow: $box-shadow;
+        @include font(normal,1.4,'sm','base');  
+        text-transform: initial; 
+        color: color('base');
+        opacity: 0;
+        text-align: start;
+        
+        @include headings{
+            color: color('primary');
+            text-transform: initial;
+            margin-bottom: 0;
+        }
+        
+        h5,.h5{
+            @include font(500,1,'sm','base');       
+            margin-bottom:5px;     
+        }
+
+        p{
+            margin-top: 3px;
+            margin-bottom: 15px;
+            &:last-of-type{
+                margin-bottom: 0;
+            }
+            strong{
+                font-weight: 500;
+            }
+        }
+    }
+
+}

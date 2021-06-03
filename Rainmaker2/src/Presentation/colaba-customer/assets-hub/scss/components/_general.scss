@@ -1,0 +1,224 @@
+html {
+    font-size: 16px;
+}
+
+.primary-fill {
+    fill: colorMaster('primary');
+}
+
+::-webkit-input-placeholder {
+    /* Edge */
+    color: colorMaster('placeholder');
+    @include font(300, 1.4, 'md', 'base');
+}
+
+:-ms-input-placeholder {
+    /* Internet Explorer */
+    color: colorMaster('placeholder');
+    @include font(300, 1.4, 'md', 'base');
+}
+
+::placeholder {
+    color: colorMaster('placeholder');
+    @include font(300, 1.4, 'md', 'base');
+}
+
+:focus {
+    outline: none;
+}
+
+.float-none {
+    float: none !important;
+}
+
+.btn {
+    &-min {
+        min-width: rem(180px);
+        text-align: center;
+    }
+}
+
+.MuiAutocomplete-inputRoot[class*="MuiInput-root"] .MuiAutocomplete-input {
+    height: rem(27px);
+}
+
+.MuiAutocomplete-popper {
+    //box-shadow: 0rem 0rem 0.625rem 0.125rem rgba(0, 0, 0, .5);
+    *{
+        @include font(normal,1.2,'nr','base');
+    }
+
+    >div{
+        box-shadow: rem(0px) rem(0px) rem(10px) rem(2px) rgba(0,0,0,0.05);
+    }
+
+    ul{
+        >li{
+            &:hover{
+                background-color: colorMaster('primary-light-50');
+                color: colorMaster('primary-text');
+            }
+        }
+    }
+}
+
+.MuiAutocomplete-root {
+    .MuiInputBase-input {
+        @include font(500, 1.2, 'md', 'base');
+    }
+
+    .MuiAutocomplete-inputRoot[class*="MuiInput-root"] .MuiAutocomplete-input {
+        height: rem(22px);
+    }
+
+    .MuiInput-underline {
+        &::before {
+            border-bottom: rem(2px) solid colorMaster('border') !important;
+        }
+
+        &::after {
+            border: none !important;
+        }
+
+        &.Mui-focused {
+            &::before {
+                border-bottom: rem(2px) solid colorMaster('primary') !important;
+            }
+        }
+    }
+
+    .MuiAutocomplete-inputRoot[class*="MuiInput-root"] .MuiAutocomplete-input:first-child {
+        padding: rem(8px) 0;
+    }
+
+    &.error {
+        .MuiInput-underline {
+            &::before {
+                border-bottom: rem(2px) solid colorMaster('failed') !important;
+            }
+
+            &::after {
+                border: none !important;
+            }
+
+            &.Mui-focused {
+                &::before {
+                    border-bottom: rem(2px) solid colorMaster('failed') !important;
+                }
+            }
+        }
+    }
+
+    .MuiAutocomplete-endAdornment {
+        // Arrow css
+        // width: rem(20px);
+        // height: rem(20px);
+        cursor: pointer;
+        right: rem(10px);
+        font: normal normal normal rem(22px)#{'/1'} 'material-design-iconic-font' !important;
+        @include transition(all 0.2s ease-out);
+
+        &::after {
+            //content: '\f2f9';
+            // font-family: normal 14px/1 'material-design-iconic-font';
+            // font-size: fontSize('nr');
+        }
+    }
+
+    .MuiAutocomplete-endAdornment {
+        padding-right: rem(30px);
+
+        &::after {
+            @include transition(all 0.2s ease-out);
+            position: absolute;
+            top: 0;
+            right: rem(10px);
+            transform: none;
+        }
+    }
+
+
+    .MuiInputAdornment-positionEnd {
+        .btn {
+            //transform: rotate(180deg);
+            @include transition(all 0.2s ease-out);
+            font-size: rem(22px);
+            padding: rem(5px) rem(10px) !important;
+        }
+    }
+
+    &.Mui-focused {
+        &[aria-expanded="true"] {
+            .MuiInputAdornment-positionEnd {
+                .btn {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+    }
+
+    .MuiAutocomplete-popupIndicator {
+        display: none;
+    }
+
+}
+
+.pac-logo:after {
+    display: none;
+}
+
+.list-bullets {
+
+    &,
+    &>li {
+        list-style: disc;
+    }
+}
+
+.mt-10 {
+    margin-top: rem(10px) !important;
+}
+
+.mt-20 {
+    margin-top: rem(20px) !important;
+}
+
+.mt-30 {
+    margin-top: rem(30px) !important;
+}
+
+.mb-10 {
+    margin-bottom: rem(10px) !important;
+}
+
+.mb-20 {
+    margin-bottom: rem(20px) !important;
+}
+
+.mb-30 {
+    margin-bottom: rem(30px) !important;
+}
+.no-margin{
+    margin: rem(0px) !important;
+}
+.no-padding{
+    padding: rem(0px) !important;
+} 
+.text-ellipsis{
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+strong {
+    font-weight: 500;
+}
+
+.primary-title {
+    color: colorMaster('primary')
+}
+
+.text-dark {
+    color: masterColor('text-highlighted')
+}

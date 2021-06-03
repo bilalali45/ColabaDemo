@@ -1,0 +1,80 @@
+.modal{
+    
+    &-terms-and-conditions{
+        .modal-body{
+            h2{
+                @include font(bold,1.4,'md','heading');
+                margin: rem(10px) 0 rem(20px);
+            }
+
+            ol{
+                padding-left: rem(25px);
+                margin-bottom: rem(35px);
+
+                >li{
+                    list-style: lower-alpha;
+
+                    ol{
+                        margin: rem(30px) 0;
+                        >li{
+                            list-style: lower-roman;
+                        }
+                    }
+
+                    & + li{
+                        margin-top: rem(30px);
+
+                        
+                    }
+                }
+            }
+        }        
+    }
+
+    &-read-agreement{
+        .modal-body .list-bullets > li::before {
+            content: "";
+            display: inline-block;
+            width: rem(8px);
+            height: rem(8px);
+            background: #888;
+            border-radius: 50%;
+            vertical-align: top;
+            position: absolute;
+            top: rem(5px);
+            left: rem(-15px);
+        }
+        .modal-body{
+            ul{
+                list-style: disc;
+                padding-left: 20px;
+            }
+        }
+    }
+
+    &-sign-up-read-agreement{
+        .modal-body{
+
+            ul,ol {
+                padding: rem(20px);
+                li{
+                    padding: rem(5px);
+                }
+            }
+
+            ul{
+                li {
+                    list-style: disc;
+                }
+            }
+
+            ol {
+                li {
+                    list-style: upper-alpha;
+                    margin: 0;
+                }
+            }
+        }
+    }
+
+}

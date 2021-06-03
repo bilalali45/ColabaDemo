@@ -1,5 +1,10 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { OutgoingHttpHeaders } from "http";
+import Cookies from "universal-cookie";
+ 
+const cookies = new Cookies();
+
+
 
 type HTTPMethod = AxiosRequestConfig["method"];
 
@@ -15,12 +20,16 @@ type ReqConfig<T> = {
   url: string;
   data?: T;
   headers: any;
+  withCredentials?: boolean;
 };
 
 export class Http {
   private static instance: Http | null = null;
   public static baseUrl: string = "";
   public static authKey: string = "";
+  public static colabaWebUrl: string = "";
+  
+  public static isBearer: boolean = false;
 
   static methods: CommonHTTPMethods<HTTPMethod> = {
     GET: "GET",
@@ -29,42 +38,49 @@ export class Http {
     DELETE: "DELETE",
   };
 
-  constructor(baseUrl: string = "", authKey: string = "") {
+  constructor(baseUrl: string = "", authKey: string = "", colabaWebUrl: string= "") {
     if (!Http.instance) {
       Http.baseUrl = baseUrl;
       Http.authKey = authKey;
+      Http.colabaWebUrl = colabaWebUrl;
       Http.instance = this;
     } else {
       return Http.instance;
     }
   }
 
-  static async get<T>(url: string, customHeader?: OutgoingHttpHeaders) {
-    return this.createRequest<T>(this.methods.GET, url, customHeader);
+  static async get<T>(url: string, customHeader?: OutgoingHttpHeaders, bearerNotRequired?: boolean, defaultCookie?: boolean) {
+    return this.createRequest<T>(this.methods.GET, url, '',customHeader, bearerNotRequired, defaultCookie);
   }
 
   static async post<T, R>(
     url: string,
     data: R,
-    customHeader?: OutgoingHttpHeaders
+    customHeader?: OutgoingHttpHeaders,
+    bearerNotRequired?: boolean,
+    defaultCookie?: boolean
   ) {
-    return this.createRequest<T>(this.methods.POST, url, data, customHeader);
+    return this.createRequest<T>(this.methods.POST, url, data, customHeader, bearerNotRequired, defaultCookie);
   }
 
   static async put<T, R>(
     url: string,
     data: R,
-    customHeader?: OutgoingHttpHeaders
+    customHeader?: OutgoingHttpHeaders,
+    bearerNotRequired?: boolean,
+    defaultCookie?: boolean
   ) {
-    return this.createRequest<T>(this.methods.PUT, url, data, customHeader);
+    return this.createRequest<T>(this.methods.PUT, url, data, customHeader, bearerNotRequired, defaultCookie);
   }
 
   static async delete<T, R>(
     url: string,
     data?: R,
-    customHeader?: OutgoingHttpHeaders
+    customHeader?: OutgoingHttpHeaders,
+    bearerNotRequired?: boolean,
+    defaultCookie?: boolean
   ) {
-    return this.createRequest<T>(this.methods.DELETE, url, data, customHeader);
+    return this.createRequest<T>(this.methods.DELETE, url, data, customHeader, bearerNotRequired, defaultCookie);
   }
 
   static async fetch(
@@ -80,9 +96,9 @@ export class Http {
   static createUrl(baseUrl: string, url: string) {
     let timeStamp = Math.floor(Date.now() / 1000);
     let newUrl = ''
-    if(url.includes('?')){
+    if (url.includes('?')) {
       newUrl = `${baseUrl}${url}${'&timeStamp='}${timeStamp}`;
-    }else{
+    } else {
       newUrl = `${baseUrl}${url}${'?timeStamp='}${timeStamp}`;
     }
     return newUrl;
@@ -92,11 +108,13 @@ export class Http {
     reqType: HTTPMethod,
     url: string,
     data?: R,
-    customHeader?: OutgoingHttpHeaders
+    customHeader?: OutgoingHttpHeaders,
+    bearerNotRequired?: boolean,
+    defaultCookie?: boolean
   ): Promise<AxiosResponse<T>> {
     try {
       let res = await axios.request<T>(
-        this.getConfig<R>(reqType, url, data, customHeader)
+        this.getConfig<R>(reqType, url, data, customHeader, bearerNotRequired, defaultCookie)
       );
       return res;
     } catch (error) {
@@ -107,9 +125,9 @@ export class Http {
         error?.response?.status === 401
       ) {
         console.log("Request intercept token issue.");
-        window.top.location.href = "/Account/LogOff";
-      }    
-      console.log("API request error",error,"request url",url);    
+        window.location.href = this.decodeString(window.sessionStorage.getItem("CookiePath")) || "/" + "app/signin";
+      }
+      console.log("API request error", error, "request url", url);
       return new Promise((_, reject) => {
         reject(error);
       });
@@ -120,22 +138,31 @@ export class Http {
     method: HTTPMethod,
     url: string,
     data?: T,
-    customHeader: OutgoingHttpHeaders = {}
+    customHeader: OutgoingHttpHeaders = {},
+    bearerNotRequired: boolean = false,
+    defaultCookie: boolean = false
   ): ReqConfig<T> {
     let completeUrl = this.createUrl(Http.baseUrl, url);
 
     let headers: OutgoingHttpHeaders = customHeader;
-    //let auth = Auth.getAuth();
-    if (!url.includes("login") || !url.includes("authorize")) {
-      headers["Authorization"] = `Bearer ${this.decodeString(
-        localStorage.getItem(this.authKey)
-      )}`;
+
+    if(!bearerNotRequired){
+      //if (!url.includes("login") || !url.includes("authorize")) {
+        headers["Authorization"] = `Bearer ${this.decodeString(
+          cookies.get(this.authKey)
+        )}`;
+      //}
     }
 
+    if(this.colabaWebUrl){
+      headers["ColabaWebUrl"] = this.colabaWebUrl;
+    }
+    
     let config: ReqConfig<T> = {
       method,
       url: completeUrl,
       headers,
+      withCredentials: defaultCookie ? true : false
     };
 
     if (data) {

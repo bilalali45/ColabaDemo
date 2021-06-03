@@ -1,0 +1,218 @@
+.header-main {
+    font-size : fontSize('lg');
+    border-top: none;
+    box-shadow: $headershadow;
+    min-height: 60px;
+    padding   : 0;
+    background: color('colorWhite');
+    position  : relative;
+
+    .navbar {
+        margin : 0;
+        padding: 13px 0;
+    }
+
+    a.logo-link {
+        display       : inline-block;
+        vertical-align: middle;
+        width         : 100%;
+    }
+
+    .h-logo {
+        height     : 32px;
+        max-width  : 130px;
+        margin-left: 5px;
+
+        a {
+            display: block;
+            height : 32px;
+        }
+
+        svg {
+            height        : 32px;
+            vertical-align: top;
+        }
+
+        img {
+            // max-width: 100%;
+            max-height: 30px;
+            width     : auto;
+            display   : block !important;
+
+            @include mobile {
+                max-height: 25px;
+            }
+
+            @include smallMobile {
+                max-height: 30px;
+            }
+
+
+        }
+    }
+
+    .s-account {
+        color       : #4e4e4e;
+        text-align  : right;
+        padding-top : 5px;
+        margin-right: 5px;
+
+        .userdropdown {
+            float : right;
+            margin: -8px 0 0 0;
+
+            @include mobile {
+                top: 2px;
+            }
+
+            .hd-shorname {
+                cursor        : pointer;
+                height        : 14px;
+                width         : 14px;
+                background    : color('primary');
+                display       : inline-block;
+                vertical-align: middle;
+
+                @include mobile {
+                    height     : 22px;
+                    width      : 22px;
+                    margin-top : 0px;
+                    line-height: 24px;
+                }
+
+                @include borderRadius(100%, false);
+                text-align : center;
+                line-height: 14px;
+
+                &:after {
+                    color        : color('primary-text');
+                    display      : inline-block;
+                    width        : 0;
+                    height       : 0;
+                    content      : "";
+                    border-top   : 4px solid;
+                    border-right : 4px solid transparent;
+                    border-left  : 4px solid transparent;
+                    border-bottom: 0;
+
+                    @include mobile {
+                        width                  : 2px;
+                        height                 : 14px;
+                        content                : '\f19b';
+                        border-top             : none;
+                        border-right           : none;
+                        border-left            : none;
+                        font                   : normal normal normal 14px/1 'material-design-iconic-font';
+                        font-size              : inherit;
+                        text-rendering         : auto;
+                        -webkit-font-smoothing : antialiased;
+                        -moz-osx-font-smoothing: grayscale;
+                        font-size              : fontSize('nr') !important;
+                    }
+                }
+
+            }
+
+            &.show {
+                .hd-shorname {
+                    &:after {
+
+                        border-top   : 0px solid;
+                        border-right : 4px solid transparent;
+                        border-left  : 4px solid transparent;
+                        border-bottom: 4px solid;
+                        position     : relative;
+                        top          : -1px;
+
+                        @include mobile {
+                            border-top   : none;
+                            border-right : none;
+                            border-left  : none;
+                            border-bottom: none;
+                            position     : relative;
+                            top          : auto;
+                        }
+                    }
+                }
+
+            }
+
+            .dropdown-menu {
+
+                border-radius : 0;
+                padding-bottom: 0;
+                padding-top   : 0;
+                border        : none;
+                box-shadow    : $shadow;
+
+                .dropdown-item {
+                    border-bottom : 1px solid color('border');
+                    font          : 400 #{fontSize("md")+"/1.3"} fontFamily("base");
+                    color         : color('base');
+                    padding-top   : 10px;
+                    padding-bottom: 10px;
+
+                    &:hover,
+                    &:active,
+                    &.active {
+                        background-color: color('listhover');
+                        color           : color('base');
+                    }
+
+                    &:first-child {
+                        padding-top: 10px;
+                    }
+
+                    &:last-child {
+                        border-bottom: 0px solid color('border');
+                    }
+
+                }
+            }
+        }
+    }
+
+    .d-name {
+        color              : color('light-purple');
+        font               : 400 #{fontSize("nr")+"/1"} fontFamily("heading");
+        padding-right      : 10px;
+        position           : relative;
+        cursor             : pointer;
+        display            : inline-block !important;
+        vertical-align     : middle;
+        -webkit-user-select: none;
+        -moz-user-select   : none;
+        -ms-user-select    : none;
+        -o-user-select     : none;
+        user-select        : none;
+        user-select        : none;
+        white-space        : nowrap;
+        overflow           : hidden;
+        text-overflow      : ellipsis;
+
+        @include mobile {
+            margin-top: 1px;
+            max-width : 300px;
+        }
+
+        @include smallMobile {
+            font     : 400 #{fontSize("nr")+"/1"} fontFamily("heading");
+            max-width: 170px;
+        }
+
+        @media (max-width:360px) {
+
+            max-width: 125px;
+            font     : 400 #{fontSize("nr")+"/1"} fontFamily("heading");
+        }
+
+        &:hover {
+            text-decoration: none;
+        }
+
+        &::after {
+            display: none;
+        }
+    }
+
+}

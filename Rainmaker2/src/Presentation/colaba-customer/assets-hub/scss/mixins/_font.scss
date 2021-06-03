@@ -1,0 +1,8 @@
+@mixin font($weight,$lineHeight,$FontSize,$FontFamily) {
+    font:$weight #{fontSize($FontSize)+'/'+$lineHeight} fontFamily($FontFamily);
+}
+
+// font:normal #{fontSize('nr')+'/1'} fontFamily('base');
+/*
+@include font(normal,1,'nr','base');
+*/

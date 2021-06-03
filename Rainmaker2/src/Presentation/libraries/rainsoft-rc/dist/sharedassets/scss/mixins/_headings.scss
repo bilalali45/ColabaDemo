@@ -1,0 +1,23 @@
+@mixin headings{
+    h1,.h1,
+    h2,.h2,
+    h3,.h3,
+    h4,.h4,
+    h5,.h5,
+    h6,.h6{ @content; }
+}
+
+/* Example to use
+body{
+  background: color(primary);
+  @include headings{
+    background:#fff;
+  }
+}
+*/
+
+@mixin headingStyle {
+    font-weight: 500;
+    font-family: fontFamily("heading");
+    color: color("heading");
+}

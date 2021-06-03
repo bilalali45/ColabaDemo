@@ -1,0 +1,32 @@
+.settings__side-navigation{
+    
+    ul{
+        @extend .list-style-none;
+        
+        >li{
+            display: block;
+            
+            a{
+                display: block;
+                padding: 11px 25px;
+                text-decoration: none;
+                color: color('base');
+                font-family: fontFamily('base');
+                font-weight: 400;
+                font-size: fontSize('nr');
+                svg{
+                    display: inline-block;
+                    vertical-align: bottom;
+                    margin-right: 10px;
+                }
+            }
+
+            &.active{
+                a{
+                    background-color: color('listHoverBg');
+                    color: color('primary');
+                }
+            }
+        }
+    }
+}

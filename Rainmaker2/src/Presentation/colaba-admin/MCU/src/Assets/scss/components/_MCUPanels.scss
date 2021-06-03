@@ -1,0 +1,184 @@
+.mcu-panel {
+
+    &-header {
+        background-color: color('widgetBg');
+        color           : color('widgetText');
+        padding         : 15px 30px;
+        border-bottom   : 1px solid color('border');
+        min-height      : 66px;
+        @extend .clearfix;
+
+        h3 {
+            font: 500 #{fontSize("xmd")+"/1.2"} fontFamily("base");
+        }
+
+        @include headings {
+            margin     : 0;
+            line-height: 2.4;
+            @extend .text-ellipsis;
+        }
+
+        &.flex-center{
+            justify-content: space-between;
+        }
+
+        &--left {
+            margin-right: auto;
+        }
+
+        &--right {
+            text-align: end;
+
+            .btn-close {
+                font-size  : fontSize('lg');
+                padding    : 10px 20px;
+                line-height: 1;
+                height     : 44px;
+            }
+            .mcu-dropdown{
+                width: 300px;
+                &-label{
+                    margin-top: -11px;
+                }
+            }            
+        }
+
+        .btn {
+            font: 500 #{fontSize("sm")+"/1.2"} fontFamily("base");
+        }
+
+    }
+
+    &-body {
+        background-color: color('widgetBg');
+        border-bottom   : 1px solid color('border');
+        @extend .clearfix;
+
+        p {
+            font: 400 #{fontSize("nr")+"/1.2"} fontFamily("base");
+        }
+
+        .t-wrap {
+            textarea {
+                resize   : none;
+                height   : 350px;
+                border   : 1px solid color('border');
+                font-size: fontSize("nr");
+
+                &:focus {
+                    outline   : none;
+                    border    : 1px solid color('border');
+                    box-shadow: none;
+                }
+
+
+            }
+        }
+
+        .defaultlisting {
+            ul {
+                list-style  : disc;
+                padding-left: 20px;
+                color       : color('primary');
+
+                li {
+                    list-style   : disc;
+                    margin-bottom: 10px;
+
+                    a {
+                        color: color('base');
+                        font : 400 #{fontSize("nr")+"/1.2"} fontFamily("base");
+                    }
+                }
+            }
+        }
+
+        &.padding {
+            padding   : 25px 30px;
+            min-height: calc(100% - 135px);
+        }
+
+        >.row {
+            margin: 0;
+        }
+
+        &--col {
+            &+.mcu-panel-body--col {
+                border-left: 1px solid color('border');
+            }
+
+            .mcu-panel-body{
+                height: calc(100vh - 289px);
+                overflow-y: auto; 
+                @include scrollbar();
+            }
+        }
+
+        &--content {
+            padding: 0;
+
+            .mcu-panel-header{
+                display: flex;
+                display: -webkit-flex;
+                justify-content: space-between;
+            }
+
+            .document-view--header---options {
+                ul {
+                    li:last-child {
+                        display: none;
+                    }
+                }
+            }
+
+            .mcu-panel-body.padding {
+                min-height: 70vh;
+                height    : calc(100vh - 250px);
+                overflow-y: auto;
+                @include scrollbar();
+            }
+
+            &-heading {
+                margin-bottom: 20px;
+            }
+
+            .mcu-dropdown-popup{
+                .mcu-dropdown-popup-arrow{
+                    left: auto;
+                    position: fixed;
+                    right: 320px;
+                }
+            }
+        }
+
+        &--aside {
+            background-color: color('ReviewDocumentSidebarBg');
+            color           : color('ReviewDocumentSidebarText');
+            padding         : 0;
+            height          : 100%;
+
+            .mcu-panel-body {
+                max-height: calc(100vh - 360px);
+                overflow-y: auto;
+            }
+
+        }
+    }
+
+    &-footer {
+        padding        : 15px 30px;
+        min-height     : 66px;
+        margin-bottom  : 0;
+        @extend .clearfix;
+
+        &.alert {
+            padding: 23px 30px;
+        }
+    }
+
+    .no-preview {
+        min-height      : calc(100vh - 180px);
+        background-color: color('widgetBg');
+    }
+
+}

@@ -1,0 +1,4 @@
+@function reduceSize($fs,$val){
+    $fs : map-get($font-size,$fs);
+   @return $fs - ($val);
+}

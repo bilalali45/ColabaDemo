@@ -1,13 +1,10 @@
 import { Http } from "rainsoft-js";
 import { UserEndpoints } from "./endPoints/UserEndPoints";
 import { LocalDB } from "./localStorage";
-import Cookies from "universal-cookie";
 import jwt_decode from "jwt-decode";
 import { get } from "lodash";
-import { Console } from "console";
-import axios from "axios";
 
-const cookies = new Cookies();
+
 
 export default class Authorization {
 
@@ -47,16 +44,18 @@ export default class Authorization {
   } | null> {
     try {
       const credentials = {
-        userName: LocalDB.getLoginDevUserName(),
+        email: LocalDB.getLoginDevUserName(),
         password: LocalDB.getLoginDevPassword(),
-        employee: false,
+        IsDevMode: true,
       };
-      credentials.userName.includes("@")
-        ? (credentials.employee = false)
-        : (credentials.employee = true);
+      // credentials.email.includes("@")
+      //   ? (credentials.employee = false)
+      //   : (credentials.employee = true);
       const authorizeResponse = await Http.post(
-        UserEndpoints.POST.authorize(),
-        credentials
+        UserEndpoints.POST.customerauthorize(),
+        credentials,  {
+          'RecaptchaCode': "rainsoft"
+        }, true
       );
 
       const { token, refreshToken } = get(authorizeResponse, "data.data");
@@ -70,30 +69,16 @@ export default class Authorization {
 
   static async refreshToken(): Promise<boolean | undefined> {
     try {
-      if (!LocalDB.checkAuth()) {
+      if (!LocalDB.getAuthToken()) {
         return;
       }
-      const baseUrl: any = window.envConfig.API_BASE_URL;
-      let url = `${baseUrl}${UserEndpoints.POST.refreshToken()}`
-      const refreshTokenResponse: any = await axios({
-        method: 'post',
-        url: url,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        data: {
+      const refreshTokenResponse : any = await Http.post(
+        UserEndpoints.POST.refreshToken(),
+        {
           token: LocalDB.getAuthToken(),
           refreshToken: LocalDB.getRefreshToken(),
         }
-      });
-      
-      // await Http.post(
-      //   UserEndpoints.POST.refreshToken(),
-      //   {
-      //     token: LocalDB.getAuthToken(),
-      //     refreshToken: LocalDB.getRefreshToken(),
-      //   }
-      // );
+      );
       
       if(refreshTokenResponse?.data?.data){
         const { token, refreshToken } = get(refreshTokenResponse, "data.data");
@@ -113,72 +98,64 @@ export default class Authorization {
       }
       
       console.log("Refresh token request fail.");
-      LocalDB.removeAuth();
-      window.top.location.href = "/Account/LogOff";
+      LocalDB.removeAuthFromCookie();
+      window.location.href = `${LocalDB.getCookiePath}app/signin}`;
 
       return false;
       
       
     } catch (error) {
       console.log("Refresh Token Error", error)
-      LocalDB.removeAuth();
-      window.top.location.href = "/Account/LogOff";
+      // setTimeout(() => {
+      //   this.refreshToken();
+      // }, 10 * 1000);
+
       return false;
     }
   }
 
   static async authorize(): Promise<boolean> {
-    let rainmakerToken = cookies.get("Rainmaker2Token");
-    let rainmakerRefreshToken = cookies.get("Rainmaker2RefreshToken");
-    const auth = LocalDB.getAuthToken();
+    let authToken = LocalDB.getAuthToken();
+    let authRefreshToken = LocalDB.getRefreshToken();
     
-    const isAuth = LocalDB.checkAuth();
-    if (isAuth === "token expired") {
-      console.log("Refresh token called from authorize");
-      const res: any = await this.refreshToken();
-      if (res) {
-        this.addExpiryListener();
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    console.log("process.env.NODE_ENV", process.env.NODE_ENV, "isAuth", isAuth);
-    if (!isAuth) {
-      if (rainmakerToken) {
-        if (auth) {
-          const decodeCacheToken: any = jwt_decode(rainmakerToken);
-          const decodeAuth: any = jwt_decode(auth);
-          if (decodeAuth.exp > decodeCacheToken.exp) {
-            rainmakerToken = auth;
-            rainmakerRefreshToken = LocalDB.getRefreshToken();
-          }
-        }
-      } else {
+    if (!this.checkAuth()) {
+      if (window.location.origin.includes("localhost")) {
+        console.log("Check Auth false and developer token in process");
         const tokens: any = await this.authenticate();
         if (tokens?.token) {
-          rainmakerToken = tokens.token;
-          rainmakerRefreshToken = tokens.refreshToken;
+          authToken = tokens.token;
+          authRefreshToken = tokens.refreshToken;
+          if (authToken && authRefreshToken) {
+            LocalDB.storeAuthTokens(authToken, authRefreshToken);  
+          }
         }
       }
 
-      console.log(
-        "Cache token values in authorize Rainmaker2Token",
-        rainmakerToken,
-        "rainmakerRefreshToken",
-        rainmakerRefreshToken
-      );
-      if (rainmakerToken && rainmakerRefreshToken) {
+      if (!this.checkAuth()) {
+        console.log("Refresh token called from authorize");
+        const res: any = await this.refreshToken();
+        if (res) {
+          this.addExpiryListener();
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      if(!authToken){
+        console.log("Cache token values does not exist");
+      }
+      
+      if (authToken && authRefreshToken) {
         console.log("Token values exist");
-        LocalDB.storeAuthTokens(rainmakerToken, rainmakerRefreshToken);
-        LocalDB.storeTokenPayload(this.decodeJwt(rainmakerToken));
-        const isAuth = LocalDB.checkAuth();
+        LocalDB.storeAuthTokens(authToken, authRefreshToken);
+        LocalDB.storeTokenPayload(this.decodeJwt(authToken));
+        const isAuth = this.checkAuth();
         console.log("Token check Auth", isAuth);
-        if (isAuth === "token expired" || !isAuth) {
+        if (!isAuth) {
           console.log("Cache token is not valid");
           console.log(
-            "Refresh token called from authorize in case of MVC expire token"
+            "Refresh token called from authorize in case of expire token"
           );
           await this.refreshToken();
         }
@@ -226,11 +203,44 @@ export default class Authorization {
   static decodeJwt(token: string): string | undefined {
     try {
       if (token) {
-        const decoded = jwt_decode(token);
+        const decoded: string = jwt_decode(token);
         return decoded;
       }
+      return undefined;
     } catch (error) {
       console.log(error);
+      return undefined;
     }
   }
+
+  public static checkAuth(): boolean | string {
+    const rainmaker2Token = LocalDB.getAuthToken();
+    if (!rainmaker2Token) {
+      return false;
+    }
+    // if (rainmaker2Token) {
+    //   const decodeCacheToken: any = jwt_decode(rainmaker2Token);
+    //   const decodeAuth: any = jwt_decode(auth);
+    //   if (decodeAuth?.UserName != decodeCacheToken?.UserName) {
+    //     return false;
+    //   }
+    //   if (decodeCacheToken.exp > decodeAuth.exp) {
+    //     console.log("Cache token is going to validate");
+    //     return false;
+    //   }
+    // }
+
+    const payload = LocalDB.getUserPayload();
+    if (payload) {
+      const expiry = new Date(payload.exp * 1000);
+      const currentDate = new Date(Date.now());
+      if (currentDate < expiry) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
+
 }

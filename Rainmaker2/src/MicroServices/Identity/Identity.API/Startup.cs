@@ -1,31 +1,39 @@
 ﻿using ElmahCore.Mvc;
 using ElmahCore.Sql;
 using Identity.CorrelationHandlersAndMiddleware;
+using Identity.Data;
 using Identity.Helpers;
-using Identity.Services;
+using Identity.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using RestSharp;
+using StackExchange.Redis.Extensions.Core.Configuration;
+using StackExchange.Redis.Extensions.Newtonsoft;
+using System;
 using System.Net.Http;
 using System.Security.Authentication;
-using System.Threading.Tasks;
+using System.Text;
+using Identity.Service.Helpers;
+using Identity.Service.Helpers.Interfaces;
+using TenantConfig.Common;
+using Identity.Service.Mobile;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using TenantConfig.Data;
+using TokenCacheHelper.TokenManager;
 using URF.Core.Abstractions;
 using URF.Core.EF;
 using URF.Core.EF.Factories;
-using System.Text;
-using Newtonsoft.Json;
-using StackExchange.Redis.Extensions.Core.Configuration;
-using StackExchange.Redis.Extensions.Newtonsoft;
-using TokenCacheHelper.CacheHandler;
-using TokenCacheHelper.TokenManager;
 
-namespace Identity 
+namespace Identity
 {
     public class Startup
     {
@@ -49,11 +57,53 @@ namespace Identity
             {
                 options.ConnectionString = elmahKey;
             });
+
+            var csResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=TenantConfigCS"));
+            csResponse.EnsureSuccessStatusCode();
+            services.AddDbContext<TenantConfigContext>(options => options.UseSqlServer(AsyncHelper.RunSync(() => csResponse.Content.ReadAsStringAsync())));
+            services.AddScoped<IUnitOfWork<TenantConfigContext>>(factory => new UnitOfWork<TenantConfigContext>(factory.GetRequiredService<TenantConfigContext>(), new RepositoryProvider(new RepositoryFactories()),factory.GetRequiredService<IHttpContextAccessor>()));
+
+            var csResponse1 = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=IdentityCS"));
+            csResponse1.EnsureSuccessStatusCode();
+            services.AddDbContext<IdentityContext>(options => options.UseSqlServer(AsyncHelper.RunSync(() => csResponse1.Content.ReadAsStringAsync())));
+            services.AddScoped<IUnitOfWork<IdentityContext>>(factory => new UnitOfWork<IdentityContext>(factory.GetRequiredService<IdentityContext>(), new RepositoryProvider(new RepositoryFactories()), factory.GetRequiredService<IHttpContextAccessor>()));
+
+            var keyResponse = AsyncHelper.RunSync(func: () => httpClient.GetAsync(requestUri: $"{Configuration[key: "KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
+            keyResponse.EnsureSuccessStatusCode();
+            var securityKey = AsyncHelper.RunSync(func: () => keyResponse.Content.ReadAsStringAsync());
+            var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
+
+            services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(configureOptions: options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            //what to validate
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidateIssuerSigningKey = true,
+                            //setup validate data
+                            ValidIssuer = "rainsoftfn",
+                            ValidAudience = "readers",
+                            IssuerSigningKey = symmetricSecurityKey
+                        };
+                    });
+
             #region Denpendency Injection
 
             services.AddTransient<ITokenService, TokenService>();
-            services.AddTransient<IKeyStoreService, KeyStoreService>();
-         
+            services.AddTransient<Service.IKeyStoreService, Service.KeyStoreService>();
+            services.AddScoped<ICustomerAccountService, CustomerAccountService>();
+            services.AddScoped<ITenantConfigService, TenantConfigService>();
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ValidateRecaptchaAttribute>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddScoped<IOtpTracingService, OtpTracingService>();
+            services.AddScoped<ITwoFaHelper, TwoFaHelper>();
+            services.AddScoped<IMcuAccountService, McuAccountService>();
+            services.AddScoped<ITwoFaHelperV2, TwoFaHelperV2>();
+            
+
             services.AddTransient<ITokenManager, TokenManager>();
 
             services.AddControllers().AddNewtonsoftJson();
@@ -72,54 +122,17 @@ namespace Identity
             services.AddSingleton(implementationFactory: s => s.GetRequiredService<IHttpClientFactory>().CreateClient(name: "clientWithCorrelationId"));
             services.AddHttpContextAccessor(); //For http request context accessing
             services.AddTransient<ICorrelationIdAccessor, CorrelationIdAccessor>();
+            services.AddTransient<ITwoFactorAuth, TwilioTwoFactorAuthService>();
+            services.AddTransient<IRestClient, RestClient>();
 
             #endregion
 
             #endregion
 
-            
-
-            
-            
-            
-            
-            
-            
-            
             var redisParams = AsyncHelper.RunSync(func: () => httpClient.GetAsync(requestUri: $"{Configuration[key: "KeyStore:Url"]}/api/keystore/keystore?key=RedisIdentityConfig"));
             var redisConfig = AsyncHelper.RunSync(() => redisParams.Content.ReadAsStringAsync());
             var redisIdentityConfig = JsonConvert.DeserializeObject<RedisConfiguration>(redisConfig);
-           
-
-            
-            
-            
-            
             services.AddStackExchangeRedisExtensions<NewtonsoftSerializer>(redisIdentityConfig);
-
-            #region Authentication Setup
-
-            var keyResponse = AsyncHelper.RunSync(func: () => httpClient.GetAsync(requestUri: $"{Configuration[key: "KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
-            keyResponse.EnsureSuccessStatusCode();
-            var securityKey = AsyncHelper.RunSync(func: () => keyResponse.Content.ReadAsStringAsync());
-            var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: securityKey));
-            services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(configureOptions: options =>
-                    {
-                        options.TokenValidationParameters = new TokenValidationParameters
-                                                            {
-                                                                //what to validate
-                                                                ValidateIssuer = true,
-                                                                ValidateAudience = true,
-                                                                ValidateIssuerSigningKey = true,
-                                                                //setup validate data
-                                                                ValidIssuer = "rainsoftfn",
-                                                                ValidAudience = "readers",
-                                                                IssuerSigningKey = symmetricSecurityKey
-                                                            };
-                    });
-
-            #endregion
         }
 
 

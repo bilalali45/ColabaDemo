@@ -1,0 +1,101 @@
+// /*===============================
+//         COLORS PALLETS
+// ===============================*/
+// $color-primary      : #4484f4;
+// $color-secondry     : #7e829e;
+
+// // Status Colors
+// $color-danger       : #ff5652;
+// $color-success      : #00ad46;
+// $color-warning      : #ffc640;
+ 
+// // Gray Scale
+// $color-gray-8000    : #2D2D2D;
+// $color-gray-7000    : #4e4e4e;
+// $color-gray-6000    : #919191;
+// $color-gray-5000    : #a7a7a7;
+// $color-gray-4000    : #cccccc;
+// $color-gray-3500    : #DBDBDB;
+// $color-gray-3000    : #e5e5e5;
+// $color-gray-2000    : #f8f8f8;
+// $color-gray-1000    : #f6f6f6;
+// $color-gray-default : #f3f3f3;
+ 
+// // Blue Scale
+// $color-blue-8000    : #04202e;
+
+// // Universal Colors
+// $color-dark         : #000000;
+// $color-light        : #ffffff;
+
+$color:(
+    primary             :       var(--color-primary-bg),
+    primary-light-10    :       var(--color-primary-l-10),
+    primary-light-30    :       var(--color-primary-l-30),
+    primary-text        :       var(--color-primary-fg),
+
+    secondry            :       $color-secondry,
+    secondry-text       :       $color-light, // #ffffff
+
+    border              :       $color-gray-3000, 
+    base                :       $color-gray-6000, 
+    heading             :       $color-gray-7000,
+    label               :       $color-secondry, 
+    scroll              :       $color-gray-3500,
+    disabled            :       $color-gray-3000,
+    disabled-text       :       $color-gray-5000,
+    default             :       $color-gray-default,
+    text-highlighted    :       $color-gray-7000,
+    button-skip         :       $color-gray-7000,
+    alert-box-bg        :       $color-gray-7000,
+    alert-box-text      :       $color-light,
+    //Modal
+    modal-text          :       $color-gray-7000,
+    modal-footer         :       $color-gray-1000,
+    widgetBg            :       $color-light,
+    placeholder         :       $color-gray-4000,
+    input-text          :       $color-gray-7000,
+    error               :       $color-danger,
+    checkedbox-label    :       $color-gray-7000,
+    bullet-color        :       $color-gray-5000,
+    // Status
+    success             :       $color-success,
+    failed              :       $color-danger,
+    timer               :       $color-gray-5000,
+    footer-text         :       $color-gray-5000,
+);
+
+$font:(
+    base                :      $font-base, //'Rubik'#{', sans-serif'},
+    heading             :      $font-heading, //'Rubik'#{', sans-serif'}
+);
+
+/*===========================
+        SIZES
+=============================
+$size-xs: 10px;
+$size-sm: 12px;
+$size-nr: 14px;
+$size-md: 16px;
+$size-xmd: 18px;
+$size-lg: 26px;
+$size-xlg: 40px;
+*/
+$font-size:(
+    xs: $size-xs,
+    sm: $size-sm,
+    nr: $size-nr,
+    md: $size-md,
+    xmd: $size-xmd,
+    lg: $size-lg,
+    xlg: $size-xlg
+);
+$shadow                :        0 0 3px rgba(0, 0, 0, 0.16);
+$headershadow          :        0 3px 3px rgba(141, 141, 141, 0.10);
+$float-button-size     :        35px;
+
+// Bootstrap Variables
+$grid-gutter-width  :     rem(36px) !default;
+$primary            :     var(--primary-color-hsl) !default;
+$secondary          :     $color-secondry !default;
+$danger             :     $color-danger !default; //#D7373F 

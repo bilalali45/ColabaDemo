@@ -1,0 +1,17 @@
+a{
+    color: colorMaster("primary");
+    
+    &:hover{
+        color: colorMaster("primary");
+    }
+}
+.container{
+    @media (max-width:rem(1280px)){
+        padding-left: rem(60px);
+        padding-right: rem(60px);
+    }
+}
+
+[class^='col-'],[class*='col-']{
+    position: static;
+}

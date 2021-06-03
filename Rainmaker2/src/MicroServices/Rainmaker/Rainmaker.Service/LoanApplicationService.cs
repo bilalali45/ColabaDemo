@@ -19,7 +19,7 @@ namespace Rainmaker.Service
         [Flags]
         public enum RelatedEntities : long
         {
-            Borrower = (long)1 << 0,
+            Borrower = (long)1,
             PropertyInfo = (long)1 << 1,
             Borrower_LoanContact = (long)1 << 2,
             Borrower_EmploymentInfoes = (long)1 << 3,

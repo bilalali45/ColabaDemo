@@ -1,0 +1,12 @@
+@mixin desktop-fix{
+    @media  (min-width: 1029px) and (max-width: 1340px){ @content; }
+}
+
+/* Example to use
+body{
+  background: color(primary);
+  @include desktop-fix{
+    background:#fff;
+  }
+}
+*/

@@ -1,0 +1,62 @@
+body.safari {
+
+    &.mobile {
+
+        .page-content.mainPage-documentsRequest {
+            padding-bottom: 80px;
+        }
+
+        .page-content.mainPage-uploadedDocuments {
+            padding-bottom: 150px;
+
+            .UploadedDocumentsTable {
+                padding-bottom: 0px;
+            }
+        }
+
+        &.overflow-hidden {
+            .page-content.mainPage-uploadedDocuments {
+                .dr-list-wrap {
+                    padding-bottom: 60px;
+                }
+
+                .popup-doc-upload--content-area {
+                    margin-bottom: 150px;
+                }
+            }
+
+            &.footer-btn-enabled {
+                .mui-body {
+                    .mui-container:first-of-type {
+                        padding-bottom: 50px;
+                    }
+                }
+            }
+        }
+
+    }
+
+    //mobile
+
+}
+
+// safari
+
+
+@media not all and (min-resolution:.001dpcm) {
+    @supports (-webkit-appearance:none) {
+
+        .page-content {}
+
+        .safari {
+            .overflow-hidden {
+                .page-content.mainPage-uploadedDocuments {}
+            }
+
+
+        }
+
+    }
+}
+
+// only safari

@@ -1,0 +1,70 @@
+.modal{
+    @include font(normal,1.4,'md','base');
+    &.show{
+        display: block;
+    }
+
+    &-header{
+        background-color: color('primary-light-10');
+        padding: rem(16px) rem(48px);
+        align-items: center;
+        color: color('heading');
+
+        .close{
+            line-height: rem(18px);
+            padding: rem(17px) rem(30px);
+            margin: rem(-16px) rem(-32px) rem(-16px) auto;
+            outline: none;
+
+            &:focus,
+            &:active{
+                outline: none;
+            }
+        }
+    }
+
+    &-title{
+        color: color('heading');
+        @include font(bold,1,'xmd','heading');
+        text-transform: uppercase;
+        margin: 6px 0 4px 0;
+    }
+
+    &-body{
+        color: color('modal-text');
+        padding: 2rem 3rem;
+        max-height: calc(80vh);
+        overflow-y: auto;
+        @include scrollbar();
+
+        .list-bullets {
+            padding-left: 0;
+            
+            >li{
+                & + li{
+                    margin-top: 1.5rem;
+                }
+            }
+        }
+    }
+
+    &-content {
+        box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        overflow: hidden;
+    }
+
+    &-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1040;
+        width: 100vw;
+        height: 100vh;
+        background-color: #000;
+
+        &.show {
+            opacity: .2;
+        }
+    }
+
+}

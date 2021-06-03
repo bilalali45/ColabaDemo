@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SignalR;
 using Notification.Entity.Models;
 using Notification.Model;
 using Notification.Service;
+using StackExchange.Redis;
 using System;
 using System.Threading.Tasks;
 
@@ -61,31 +62,31 @@ namespace Notification.API.Controllers
 
         [HttpPut("[action]")]
         [Authorize(Roles = "MCU")]
-        public async Task<IActionResult> Read(NotificationRead model)
+        public async Task<IActionResult> Read([FromBody] NotificationRead model, [FromServices] IConnectionMultiplexer connectionMultiplexer)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             var list = await _notificationService.Read(model.ids,userProfileId);
-            await ServerHub.NotificationRead(_context, userProfileId, list.ToArray());
+            await ServerHub.NotificationRead(_context, userProfileId, list.ToArray(), connectionMultiplexer);
             return Ok(list);
         }
 
         [HttpPut("[action]")]
         [Authorize(Roles = "MCU")]
-        public async Task<IActionResult> Seen(NotificationSeen model)
+        public async Task<IActionResult> Seen([FromBody] NotificationSeen model, [FromServices] IConnectionMultiplexer connectionMultiplexer)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             await _notificationService.Seen(model.ids);
-            await ServerHub.NotificationSeen(_context,userProfileId,model.ids.ToArray());
+            await ServerHub.NotificationSeen(_context,userProfileId,model.ids.ToArray(), connectionMultiplexer);
             return Ok();
         }
 
         [HttpPut("[action]")]
         [Authorize(Roles = "MCU")]
-        public async Task<IActionResult> Delete(NotificationDelete model)
+        public async Task<IActionResult> Delete([FromBody] NotificationDelete model, [FromServices] IConnectionMultiplexer connectionMultiplexer)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             await _notificationService.Delete(model.id);
-            await ServerHub.NotificationDelete(_context, userProfileId, model.id);
+            await ServerHub.NotificationDelete(_context, userProfileId, model.id, connectionMultiplexer);
             return Ok();
         }
         [HttpPut("[action]")]
@@ -96,11 +97,11 @@ namespace Notification.API.Controllers
         }
         [HttpPut("[action]")]
         [Authorize(Roles = "MCU")]
-        public async Task<IActionResult> DeleteAll()
+        public async Task<IActionResult> DeleteAll([FromServices] IConnectionMultiplexer connectionMultiplexer)
         {
             var userProfileId = int.Parse(s: User.FindFirst(type: "UserProfileId").Value);
             await _notificationService.DeleteAll();
-            await ServerHub.NotificationDeleteAll(_context, userProfileId);
+            await ServerHub.NotificationDeleteAll(_context, userProfileId, connectionMultiplexer);
             return Ok();
         }
         [HttpGet("[action]")]
@@ -125,11 +126,14 @@ namespace Notification.API.Controllers
             await ServerHub.TestSignalR(_context);
             return Ok();
         }
-        [HttpGet("[action]")]
+
+        [HttpPost]
         [AllowAnonymous]
-        public IActionResult DumpSignalR()
+        public async Task<IActionResult> SendNotification(NotificationModel model)
         {
-            return Ok(ClientConnection<int>._connections);
+            if(await _redisService.SendNotification(model))
+                return Ok();
+            return BadRequest();
         }
     }
 }

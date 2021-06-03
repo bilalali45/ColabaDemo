@@ -1,0 +1,22 @@
+.settings__list-alert{
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: color('listHoverBg');
+    padding: 5px 10px 5px 30px;
+
+    &--text{
+        color: color('heading');
+        @include font(500,1.2,'md','heading');
+        padding-right: 15px;
+        white-space: nowrap;
+    }
+
+    &--options{
+        white-space: nowrap;
+    }
+
+
+
+}

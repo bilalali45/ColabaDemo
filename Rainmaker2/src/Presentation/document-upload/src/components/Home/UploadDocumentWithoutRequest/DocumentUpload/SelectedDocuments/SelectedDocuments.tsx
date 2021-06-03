@@ -16,8 +16,7 @@ import cameraIcon from "../../../../../assets/images/camera-icon.svg";
 import folderIcon from "../../../../../assets/images/folder-icon.svg";
 //import { PSPDFKitWebViewer } from "../../../../../shared/Components/PSPDFKit/PSPDFKitWebViewer";
 import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
-import { render } from "@testing-library/react";
-import {SVGUploadCameraIcon, SVGUploadFolderIcon} from "../../../../../shared/Components/SVGs";
+import { SVGUploadCameraIcon, SVGUploadFolderIcon } from "../../../../../shared/Components/SVGs";
 
 
 interface SelectedDocumentsType {
@@ -76,7 +75,7 @@ export const SelectedDocuments = ({
   const location = useLocation();
   const history = useHistory();
 
-  
+
   useEffect(() => {
     setFileInput(inputRef.current);
 
@@ -163,7 +162,7 @@ export const SelectedDocuments = ({
     setBlobData(null);
   };
 
- 
+
 
   const fileAlreadyExists = (file, newName) => {
     var alreadyExist = selectedFiles.find(
@@ -224,7 +223,7 @@ export const SelectedDocuments = ({
   };
 
   const deleteDoc = (fileName: string) => {
-    DocumentUploadActions.removeActualFile(fileName, selectedFiles, dispatch,'WithoutReq');
+    DocumentUploadActions.removeActualFile(fileName, selectedFiles, dispatch, 'WithoutReq');
     let updatedFiles = selectedFiles.filter((f: Document) => {
       if (f?.clientName !== fileName) {
         return f;
@@ -234,7 +233,7 @@ export const SelectedDocuments = ({
     dispatch({ type: DocumentsActionType.AddFileToCategoryDocs, payload: updatedFiles });
   };
 
-  
+
 
   const checkFocus = (file: Document, index: number) => {
     let foundIndx = selectedFiles.filter(
@@ -261,7 +260,7 @@ export const SelectedDocuments = ({
     }
     addMore(fileToRemove);
   }
- 
+
   const renderUploadButton = () => {
 
     if (isMobile?.value) {
@@ -270,11 +269,11 @@ export const SelectedDocuments = ({
           <label
             htmlFor="inputFile1"
             data-testid="add-more-btn"
-           // className="addmoreDoc camera-wrap"
-            className={submitBtnPressed ? "addmoreDoc camera-wrap disabled" : "addmoreDoc camera-wrap"}          
+            // className="addmoreDoc camera-wrap"
+            className={submitBtnPressed ? "addmoreDoc camera-wrap disabled" : "addmoreDoc camera-wrap"}
           >
             {/*<span className="iconic-btn-img"><img src={cameraIcon} className="img-responsive" /></span>*/}
-            <span className="iconic-btn-img"><SVGUploadCameraIcon/></span>
+            <span className="iconic-btn-img"><SVGUploadCameraIcon /></span>
             <span className="iconic-btn-lbl">   Camera </span>
             <input
               onChange={(e) => {
@@ -295,10 +294,10 @@ export const SelectedDocuments = ({
             htmlFor="inputFile2"
             data-testid="add-more-btn"
             //className="addmoreDoc folder-wrap"
-            className={submitBtnPressed ? "addmoreDoc folder-wrap disabled" : "addmoreDoc folder-wrap"}           
+            className={submitBtnPressed ? "addmoreDoc folder-wrap disabled" : "addmoreDoc folder-wrap"}
           >
             {/*<span className="iconic-btn-img"><img src={folderIcon} className="img-responsive" /></span>*/}
-            <span className="iconic-btn-img"><SVGUploadFolderIcon/></span>
+            <span className="iconic-btn-img"><SVGUploadFolderIcon /></span>
             <span className="iconic-btn-lbl">   Folder </span>
             <input
               onChange={(e) => {
@@ -460,8 +459,8 @@ export const SelectedDocuments = ({
             </div>
           )}
       </div> */}
-     
-     
+
+
       {
         currentDoc && location.pathname.includes("view") && (
           <DocumentView

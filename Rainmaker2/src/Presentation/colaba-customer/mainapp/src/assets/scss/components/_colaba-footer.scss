@@ -1,0 +1,57 @@
+.colaba-main-footer{
+    @extend .clearfix;
+    padding: rem(146px) 0 rem(25px) 0;
+    text-align: center;
+
+    .disclaimer {
+        display: block;
+        max-width: rem(800px);
+        margin: auto auto rem(32px);        
+    }
+
+    .google-policy{
+        display: block;
+        margin: auto auto rem(32px); 
+    }
+
+    .poweredby{
+        display: block;
+        color: color('heading');
+        @include font(normal,1.4,'sm','base');
+        svg{
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: rem(10px);
+        }
+    }
+
+    &.compact{
+        border-top: 2px solid color('primary-light-10');
+        padding: rem(16px) 0 rem(25px) 0;
+        margin-top: rem(100px);
+
+
+        .cmf-row{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            color: color('footer-text');
+            @include font(normal,1.4,'md','base');
+
+            .serial-num,
+            .powered-by{
+                display: inline-block;
+                padding: rem(10px) rem(50px);
+            }
+
+            .serial-num{
+
+            }
+
+            .powered-by{
+
+            }
+        }
+    }
+}

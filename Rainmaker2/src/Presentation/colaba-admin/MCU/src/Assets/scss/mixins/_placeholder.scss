@@ -1,0 +1,39 @@
+// @mixin placeholder {
+//     ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+//         @content;
+//         //opacity: 1; /* Firefox */
+//     }
+      
+//     :-ms-input-placeholder { /* Internet Explorer 10-11 */
+//         @content;
+//     }
+      
+//     ::-ms-input-placeholder { /* Microsoft Edge */
+//         @content;
+//     }
+// }
+
+
+@mixin placeholder($color: color('input')) {
+    &::-webkit-input-placeholder {
+        color: $color
+    }
+
+    &::-moz-placeholder {
+        color: $color;
+    }
+
+    &:-ms-input-placeholder {
+        color: $color;
+    }
+
+    &:-moz-placeholder {
+        color: $color;
+    }
+
+}
+/*===============
+@include placeholder(){
+
+}
+=================*/

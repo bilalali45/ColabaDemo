@@ -38,6 +38,7 @@ exports.UnMaskPhone = function (formattedNumber) {
         if (!isNaN(parseInt(n)) && n !== ' ') {
             return n;
         }
+        return null;
     }).join('');
 };
 exports.FormatAmountByCountry = function (amount) {
@@ -46,9 +47,9 @@ exports.FormatAmountByCountry = function (amount) {
     if (amountSplitByPoint.length > 2) {
         return;
     }
-    var seperatorAdded = addAmountSeperator(amountSplitByPoint[0].toString(), 'US');
+    var seperatorAdded = addAmountSeperator(String((amountSplitByPoint === null || amountSplitByPoint === void 0 ? void 0 : amountSplitByPoint.length) > 0 ? amountSplitByPoint[0].toString() : ""), 'US');
     return (function () {
-        if (amountSplitByPoint[1]) {
+        if (amountSplitByPoint && amountSplitByPoint[1]) {
             return seperatorAdded + "." + amountSplitByPoint[1];
         }
         return "" + seperatorAdded;

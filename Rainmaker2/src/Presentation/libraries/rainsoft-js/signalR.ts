@@ -1,5 +1,4 @@
 import {
-  HubConnection,
   HubConnectionBuilder,
   LogLevel,
   HttpTransportType

@@ -1,0 +1,6 @@
+// @include box;
+@mixin box {
+      border-radius: 5px;
+      border: 1px solid color("primary-light-30");  
+      box-shadow: 5px 5px 0 color("primary-light-10");
+}

@@ -56,7 +56,7 @@ namespace DocumentManagement.Tests
 
             httpContext.SetupGet(x => x.Request).Returns(request.Object);
 
-            var controller = new RequestController(mock.Object, mockRainMock.Object, mockSettingService.Object);
+            var controller = new RequestController(mock.Object, mockRainMock.Object,Mock.Of<ISettingService>());
 
             controller.ControllerContext = context;
 

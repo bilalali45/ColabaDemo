@@ -1,6 +1,6 @@
 if(!window.envConfig) { window.envConfig = {}}
 if (process.env.NODE_ENV === 'development') {
-  window.envConfig.API_BASE_URL = "https://qamaingateway.rainsoftfn.com";
+  window.envConfig.API_BASE_URL = "https://172.16.100.11/";
 }
 
 let scriptElement = document.getElementById("rs-authorization-lib");

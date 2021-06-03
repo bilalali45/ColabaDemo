@@ -1,0 +1,14 @@
+@import 'rainsoft-rc/dist/sharedassets/scss/common-includes';
+@import 'rainsoft-rc/dist/sharedassets/scss/bootstrap/bootstrap';
+
+@import './notifications-config';
+
+//Function
+@import './functions/color',
+        './functions/fontFamily',
+        './functions/fontSizes';
+
+
+// Components
+@import './assets/scss/components/notification',
+        './assets/scss/components/notifications';

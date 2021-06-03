@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using StackExchange.Redis;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace Notification.API
 {
@@ -9,81 +13,40 @@ namespace Notification.API
         {
         }
 
-        public static Dictionary<T, HashSet<string>> _connections =
-            new Dictionary<T, HashSet<string>>();
-        
-        public int Count
+        public async Task Add(T key, string connectionId, IConnectionMultiplexer connectionMultiplexer)
         {
-            get
-            {
-                return _connections.Count;
-            }
+            var database = connectionMultiplexer.GetDatabase();
+            await database.ListLeftPushAsync($"ServerHub#{key}",connectionId);
         }
 
-        public void Add(T key, string connectionId)
+        public async Task<HashSet<string>> GetConnections(T key, IConnectionMultiplexer connectionMultiplexer)
         {
-            lock (_connections)
+            HashSet<string> connections = new HashSet<string>();
+            var database = connectionMultiplexer.GetDatabase();
+            if (database != null)
             {
-                HashSet<string> connections;
-                if (!_connections.TryGetValue(key, out connections))
+                var redisKeys = await database.ListRangeAsync($"ServerHub#{key}");
+                if (redisKeys != null)
                 {
-                    connections = new HashSet<string>();
-                    _connections.Add(key, connections);
-                    connections.Add(connectionId);
-                }
-                else
-                {
-                    lock (connections)
-                    {
-                        connections.Add(connectionId);
-                    }
-                }
-                
-            }
-        }
-
-        public HashSet<string> GetConnections(T key)
-        {
-            HashSet<string> connections;
-            if (_connections.TryGetValue(key, out connections))
-            {
-                return connections;
-            }
-            return new HashSet<string>();
-        }
-
-        public void Remove(T key, string connectionId)
-        {
-            lock (_connections)
-            {
-                HashSet<string> connections;
-                if (!_connections.TryGetValue(key, out connections))
-                {
-                    return;
-                }
-
-                lock (connections)
-                {
-                    connections.Remove(connectionId);
-
-                    if (connections.Count == 0)
-                    {
-                        _connections.Remove(key);
-                    }
+                    redisKeys.Select(x => x.ToString()).ToList().ForEach(x => { connections.Add(x); });
                 }
             }
+            return connections;
         }
 
-        private static volatile ClientConnection<T> _currentServiceUser;
+        public async Task Remove(T key, string connectionId, IConnectionMultiplexer connectionMultiplexer)
+        {
+            var database = connectionMultiplexer.GetDatabase();
+            await database.ListRemoveAsync($"ServerHub#{key}", connectionId);
+        }
+
+        private static ClientConnection<T> _currentServiceUser=new ClientConnection<T>();
 
         public static ClientConnection<T> Current
         {
             get
             {
-                lock (_connections)
-                {
-                    return _currentServiceUser ?? (_currentServiceUser = new ClientConnection<T>());
-                }
+                return _currentServiceUser;
             }
         }
     }

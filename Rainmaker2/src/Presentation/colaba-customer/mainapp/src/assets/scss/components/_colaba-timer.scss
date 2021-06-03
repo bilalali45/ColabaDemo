@@ -1,0 +1,24 @@
+.colaba-c-timer{
+    margin: rem(15px) 0;
+    &-msg{
+        color: color('heading');
+        @include font(normal,1.4,'xmd','base');
+        margin-bottom: rem(10px);
+        display: block;
+    }
+
+    &-counter{
+        color: color('timer');
+        @include font(normal,1.4,'xmd','base');
+
+        .minutes,
+        .seconds{
+            color: color('heading');
+            //@include font(500,1.4,'28px','base');
+            font-size: fontSize('xmd') + 0.625rem;
+            font-weight: 500;
+            line-height: 1.4;
+            font-family: fontFamily('base');
+        }
+    }
+}

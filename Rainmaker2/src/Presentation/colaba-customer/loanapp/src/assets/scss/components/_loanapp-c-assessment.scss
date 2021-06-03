@@ -1,0 +1,166 @@
+.loanapp-c-assessment{
+    position: fixed;
+    z-index: 99;
+    bottom: rem(45px);
+    right: rem(25px);
+    width: rem(330px);
+    @include transition(all 0.3s ease-out);
+
+    h4{
+        @include font(500,1.4,'md','heading');
+        color: color('heading');
+    }
+
+    .lca-figure{
+        width: rem(110px);
+        height: rem(110px);
+        //padding: rem(10px);
+        border-radius: 50%;
+        display: block;
+        overflow: hidden;
+        margin: auto;
+        box-shadow: 0 0 rem(6px) rgba(0,0,0,0.16), 0 rem(3px) rem(10px) rgba(0,0,0,0.16);
+        border: rem(6px) solid color('colorWhite');
+        position: relative;
+        object-fit: cover;
+        background: color('colorWhite');
+        cursor: pointer;
+
+        svg{
+            width: rem(110px);
+            height: rem(110px);
+            max-width: 100%;
+            max-height: 100%;
+        }
+    }
+
+    img{
+        max-width: 100%;
+        cursor: pointer;
+        object-fit: cover;
+        width: rem(110px);
+        height: rem(110px);
+    }
+
+    .l-c-ap-close{
+        position: absolute;
+        top: rem(5px);
+        right: rem(5px);
+        padding: 0 rem(5px);
+        border: none;
+        font-size: fontSize('xmd');
+        background-color: transparent;
+
+        &:focus,
+        &:active{
+            outline: none;
+        }
+    }
+
+    &--popup{
+        border-radius: rem(6px);
+        padding: rem(15px) rem(20px);
+        width: 100%;
+        float: left;
+        box-sizing: border-box;
+        border: rem(1px) solid color('primary-light-30');
+        margin-bottom: rem(15px);
+        position: relative;
+        @include font(normal,1.6,'md','base');
+        background-color: color('widgetBg');
+        color: color('assessment');
+        @include transition(all 0.3s ease-out);
+        box-shadow: 0 0 rem(10px) rgba(0,0,0,0.10);
+
+        &.auto{
+            width: auto !important;
+            margin-left: auto;
+            margin-right: auto;
+            display: table;    
+        }
+
+        p:last-of-type{
+            margin-bottom: 0;
+        }
+
+        &.ques{
+            @include font(normal,1.4,'xmd','base');
+            padding: rem(10px) rem(20px);
+        }
+
+        &.details{
+            padding: rem(20px) rem(35px);
+        }
+
+        &.arrow::before{
+            content: "";
+            display: block;
+            width: rem(12px);
+            height: rem(12px);
+            border-right: rem(1px) solid color('primary-light-30');
+            border-bottom: rem(1px) solid color('primary-light-30');
+            background-color: color('widgetBg');
+            border-radius: rem(3px);
+            position: absolute;
+            bottom: rem(-6px);
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            @include transition(all 0.3s ease-out);
+        }
+
+        &.msg{
+            padding: rem(25px) rem(20px) rem(20px);
+        }
+
+        ul{
+            margin: 0;
+            padding: 0;
+
+            >li{
+                & + li{
+                    margin-top: rem(5px);
+                }
+            }
+        }
+
+        .l-c-ap-icon{
+            min-width: rem(30px);
+            display: inline-block;
+
+            .colaba-icon{
+                &-tel{
+                    width: rem(15.966px);
+                    height: rem(16px);
+                }
+                &-email{
+                    width: rem(17.455px);
+                    height: rem(12px);
+                }
+                &-web{
+                    width: rem(15.999px);
+                    height: rem(16px);
+                }
+            }
+        }
+
+        .card{
+            border: none !important;
+            &-header{
+                background-color: transparent !important;
+                .btn{
+                    padding: 0px !important;
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-items: center;
+                    &:focus,&:active{
+                        outline: none;
+                    }
+                }
+            }
+        }
+
+    }
+
+}
+
+

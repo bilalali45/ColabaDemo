@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "/DocManager",
-  "dependencies": {
+  "dependencies": {   
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^11.0.4",
     "@testing-library/user-event": "^12.6.0",
@@ -30,9 +30,9 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "verify-installation": "node scripts/verify-install.js && node scripts/copy-pspdfkit-files.js",
-    "start": "set PORT=3002 && node scripts/verify-install.js && node scripts/copy-pspdfkit-files.js && react-scripts start",
-    "build": "node scripts/verify-install.js && node scripts/copy-pspdfkit-files.js && react-scripts build",
+    "verify-installation": "node ps_scripts/verify-install.js && node ps_scripts/copy-pspdfkit-files.js",
+    "start": "set PORT=3002 && node ps_scripts/verify-install.js && node ps_scripts/copy-pspdfkit-files.js && react-scripts start",
+    "build": "node ps_scripts/verify-install.js && node ps_scripts/copy-pspdfkit-files.js && react-scripts build",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose --silent",
     "test-dev": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose",
     "test-coverage": "react-scripts test --env=jest-environment-jsdom-sixteen --verbose --silent --coverage . --coverageDirectory='coverage'",

@@ -23,6 +23,11 @@ using URF.Core.EF.Factories;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.Extensions.Logging;
+using TenantConfig.Data;
+using TenantConfig.Common;
+using StackExchange.Redis.Extensions.Newtonsoft;
+using StackExchange.Redis.Extensions.Core.Configuration;
+using StackExchange.Redis;
 
 namespace Setting.API
 {
@@ -49,17 +54,22 @@ namespace Setting.API
             var csResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=SettingCS"));
             csResponse.EnsureSuccessStatusCode();
             services.AddDbContext<SettingContext>(options => options.UseSqlServer(AsyncHelper.RunSync(() => csResponse.Content.ReadAsStringAsync())));
-            services.AddScoped<IRepositoryProvider, RepositoryProvider>(x => new RepositoryProvider(new RepositoryFactories()));
-            services.AddScoped<IUnitOfWork<SettingContext>, UnitOfWork<SettingContext>>();
+            services.AddScoped<IUnitOfWork<SettingContext>>(factory => new UnitOfWork<SettingContext>(factory.GetRequiredService<SettingContext>(), new RepositoryProvider(new RepositoryFactories())));
+
+            var csResponse1 = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=TenantConfigCS"));
+            csResponse1.EnsureSuccessStatusCode();
+            services.AddDbContext<TenantConfigContext>(options => options.UseSqlServer(AsyncHelper.RunSync(() => csResponse1.Content.ReadAsStringAsync())));
+            services.AddScoped<IUnitOfWork<TenantConfigContext>>(factory => new UnitOfWork<TenantConfigContext>(factory.GetRequiredService<TenantConfigContext>(), new RepositoryProvider(new RepositoryFactories())));
+
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IRainmakerService, RainmakerService>();
             services.AddScoped<IEmailTemplateService, EmailTemplateService>();
             services.AddScoped<IEmailReminderService, EmailReminderService>();
-            services.AddScoped<IBackgroundService, HangfireBackgroundService>(x=>new HangfireBackgroundService(x.GetRequiredService<HttpClient>(),
-                                                                                                                    x.GetRequiredService<IEmailReminderService>(),
-                                                                                                                    x.GetRequiredService<IConfiguration>(),
-                                                                                                                    x.GetRequiredService<IEmailTemplateService>(),
-                                                                                                                    x.GetRequiredService<IRainmakerService>(),x.GetRequiredService<ILogger<HangfireBackgroundService>>()));
+            services.AddScoped<ISettingService, SettingService>();
+            services.AddScoped<IKeyStoreService, KeyStoreService>();
+            services.AddScoped<ISmtpService, SmtpService>();
+            services.AddTransient<IConnectionMultiplexer>((services) => { return ConnectionMultiplexer.Connect(ConfigurationOptions.Parse(Configuration["Redis:ConnectionString"])); });
+            services.AddScoped<IBackgroundService, HangfireBackgroundService>(x=>new HangfireBackgroundService(x));
             services.AddControllers().AddNewtonsoftJson();
             var keyResponse = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=JWT"));
             keyResponse.EnsureSuccessStatusCode();
@@ -100,8 +110,13 @@ namespace Setting.API
 
             // Add the processing server as IHostedService
             services.AddHangfireServer();
+            services.AddStackExchangeRedisExtensions<NewtonsoftSerializer>((options) =>
+            {
+                var csResponse2 = AsyncHelper.RunSync(() => httpClient.GetAsync($"{Configuration["KeyStore:Url"]}/api/keystore/keystore?key=RedisIdentityConfig"));
+                csResponse2.EnsureSuccessStatusCode();
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<RedisConfiguration>(AsyncHelper.RunSync(()=>csResponse2.Content.ReadAsStringAsync()));
+            });
 
-            
             #region HttpClient Dependency with correlation
 
             services.AddTransient<RequestHandler>();

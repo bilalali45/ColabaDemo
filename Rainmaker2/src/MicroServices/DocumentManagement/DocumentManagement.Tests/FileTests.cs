@@ -1208,7 +1208,7 @@ namespace DocumentManagement.Tests
             
             
             var httpContext = new Mock<HttpContext>();
-            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "1"));
+            httpContext.Setup(m => m.User.FindFirst("UserProfileId")).Returns(new Claim("UserProfileId", "59"));
             httpContext.Setup(m => m.User.FindFirst("TenantId")).Returns(new Claim("TenantId", "1"));
             httpContext.Setup(m => m.User.FindFirst("FirstName")).Returns(new Claim("FirstName", "tunner"));
             httpContext.Setup(m => m.User.FindFirst("LastName")).Returns(new Claim("LastName", "holland"));

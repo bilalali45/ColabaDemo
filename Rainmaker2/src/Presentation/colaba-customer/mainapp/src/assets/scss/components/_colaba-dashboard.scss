@@ -1,0 +1,213 @@
+.page-main-sect {
+    min-height: calc(100vh - 15rem);
+    padding-top: rem(50px);
+
+    @include media-breakpoint-down(lg) {
+        padding-top: rem(60px);
+    }
+
+    .m-heading {
+        h1 {
+            @include font(500, 1.4, "lg", "heading");
+            color: color("heading");
+            margin-bottom: rem(20px);
+        }
+    }
+    .loan-boxes-row {
+
+        .comp-form-panel{
+            min-height: rem(560px);
+        }
+        
+        .loan-box {        
+            padding-top: rem(275px);
+            position: relative;
+            margin-bottom: rem(30px);
+            //@include transition(all 0.2s ease-out);
+            cursor: pointer;
+
+            *{
+                cursor: pointer;
+            }
+
+            &.add-n-app{
+                .loan-box{
+                    padding-top: rem(10px);
+                }
+            }
+
+            &:hover{
+                .loan-box-wrap{
+                    // transform: scale(1.01);
+                    top: rem(-5px);
+                    left: rem(-5px);
+                    bottom: rem(-5px);
+                    right: rem(-5px);
+                    width: calc(100% + 0.625rem); //10px
+                    height: calc(100% + 0.625rem);
+                }
+            }
+          
+            .loan-box-wrap {
+                border: rem(1px) solid color("primary-light-30");
+                border-radius: rem(5px);
+                padding-left: rem(10px);
+                padding-right: rem(10px);
+                padding-bottom: rem(5px);
+                padding-top: rem(25px);
+                height: 100%;
+                width: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;                
+                // min-height: 275px; //380px;
+                @include transition(all 0.3s ease-out);
+
+                a{
+                    text-decoration: none;
+                }
+
+                
+
+                ul {
+                    li {
+                        display: flex;
+                        border-bottom: rem(1px) solid color("border");
+                        padding: rem(8px) 0;
+                        align-items: center;
+                        &:last-child {
+                            border: none;
+                        }
+
+                        .icon-wrap {
+                            width: rem(40px);
+                            align-self: center;
+                            text-align: center;
+                        }
+                        .content-wrap {
+                            padding-left: rem(25px);
+                            width: calc(100% - 2.5rem);//40px
+                            h4 {
+                                color: color("secondry");
+                                margin: 0px;
+                                @include font(500, 1.4, "sm", "heading");
+                            }
+
+                            .add-wrap {
+                                P {
+                                    white-space: nowrap;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    vertical-align: middle;
+                                    color: color("heading");
+                                    @include font(normal, 1.2, "nr", "heading");
+                                    margin-bottom: 0;
+                                }
+
+                                .la-text {
+                                    color: color("heading");                                    
+                                    @include font(normal, 1.2, "lg", "base");
+                                    font-size: reduceSize("lg",0.125rem);
+                                    sup {
+                                        @include font(500, 1.4, "nr", "base"); 
+                                        position: relative;
+                                        top: rem(-12px); 
+                                        margin-right: rem(5px);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .lb-go-wrap {
+                    text-align: right;
+                    position: absolute;
+                    bottom: rem(10px);
+                    right: rem(10px);
+                    @include transition(all 0.2s ease-out);
+                }
+
+                .notif-p-task {
+                    .notif-p-task-block {
+                        background: color("primary");
+                        color: color("primary-text");
+                        width: rem(112px);
+                        height: rem(43px);
+                        border-bottom-left-radius: rem(4px);
+                        border-bottom-right-radius: rem(4px);
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        position: absolute;
+                        right: rem(20px);
+                        top: 0;
+                        @include media-breakpoint-down(lg) {
+                            width: rem(95px);
+                            height: rem(37px);
+                        }
+                        .count {
+                            @include font(500, 1.2, "lg", "heading");
+                            width: 40%;
+                            text-align: center;
+
+                            @include media-breakpoint-down(lg) {
+                                font-size: fontSize("md");
+                              
+                            }
+                        
+                        }
+                        .npt-text {
+                            @include font(500, 1.2, "nr", "heading");
+                            @include media-breakpoint-down(lg) {
+                                font-size: fontSize("sm");
+                            }
+                            width: 60%;
+                        }
+                    }
+                }
+
+
+            }
+        }
+
+        .add-n-app {
+            .loan-box {
+                align-items: center;
+                justify-content: center;
+                display: flex;
+
+                .add-n-app-box {
+                    width: rem(140px);
+                    cursor: pointer;
+                    text-align: center;
+                    @include font(normal, 1.4, "md", "heading");
+                    color: color("heading");
+                    // -webkit-transition: all .3s linear;
+                    // -moz-transition: all .3s linear;
+                    // -o-transition: all .3s linear;
+                    // transition: all .3s linear;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%,-50%);
+                   
+                }
+                &:hover {
+                    .add-n-app-box {
+                   // transform: scale(1.2);
+                    }
+                }
+            }
+        }
+    }
+}
+
+.colaba-main-footer-auth-user {
+    text-align: center;
+    font-size: fontSize("sm");
+    min-height: rem(120px);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}

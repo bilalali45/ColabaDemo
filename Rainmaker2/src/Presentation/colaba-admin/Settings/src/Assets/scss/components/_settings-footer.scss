@@ -1,0 +1,6 @@
+.settings__footer{
+    padding: 28px;
+    text-align: center;
+    color: color('footerText');
+    @include font(normal, 1.4, 'nr', 'base');
+}

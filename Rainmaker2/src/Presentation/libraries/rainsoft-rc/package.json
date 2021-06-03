@@ -1,6 +1,6 @@
 {
   "name": "rainsoft-rc",
-  "version": "1.0.23",
+  "version": "1.0.32",
   "description": "React reuseable components",
   "author": "",
   "license": "Rainsoft",
@@ -12,7 +12,8 @@
     "node": ">=10"
   },
   "scripts": {
-    "build": "microbundle-crl --no-compress --format modern,cjs",
+    "copy:assets": "cp -r ./src/sharedassets dist",
+    "build": "microbundle-crl --no-compress --format modern,cjs && npm run copy:assets",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
     "prepublish": "run-s build",
     "test": "run-s test:unit test:lint test:build",

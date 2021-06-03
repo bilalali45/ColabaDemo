@@ -1,0 +1,62 @@
+.residency-alert-popup {
+  .modal-header {
+    padding: rem(13px) rem(19px);
+  }
+
+  .modal-body {
+    padding: rem(30px) rem(35px);
+
+    .emp-alert-data {
+      padding: 0;
+
+      ul {
+        padding: 0 rem(30px);
+        li {
+          list-style: disc;
+        }
+      }
+    }
+  }
+
+  .modal-footer {
+    justify-content: center;
+  }
+}
+
+.finishing-up-tabs {
+  .ehl-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    #IconPurchaseProperty {
+      width: rem(34.575px);
+      height: rem(30.448px);
+    }
+  }
+
+  .finishing-up-actions {
+    .action-icons {
+      display: inline-block;
+
+      &.edit-icon {
+        margin-right: rem(25px);
+        #EditIcon {
+          width: rem(24px);
+          height: rem(24px);
+          color: color("secondry");
+        }
+      }
+
+      &.delete-icon {
+        margin-left: rem(25px);
+
+        #DeleteIcon {
+          width: rem(19.5px);
+          height: rem(24px);
+          color: color("secondry");
+        }
+      }
+    }
+  }
+}

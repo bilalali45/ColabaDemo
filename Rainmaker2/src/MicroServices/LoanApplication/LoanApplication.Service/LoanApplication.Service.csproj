@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\Colaba\TenantConfig.Common\TenantConfig.Common.csproj" />
+    <ProjectReference Include="..\..\..\Library\Colaba\TenantConfig.Data\TenantConfig.Data.csproj" />
+    <ProjectReference Include="..\..\..\Library\Colaba\TenantConfig.Entity\TenantConfig.Entity.csproj" />
+    <ProjectReference Include="..\..\..\Library\Extensions\Extensions.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.Common.Core\TrackableEntities.Common.Core.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\TrackableEntities.EF.Core\TrackableEntities.EF.Core.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\URF.Core.Abstractions\URF.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Library\URF\URF.Core.EF\URF.Core.EF.csproj" />
+    <ProjectReference Include="..\LoanApplication.Data\LoanApplicationDb.Data.csproj" />
+    <ProjectReference Include="..\LoanApplication.Entity\LoanApplicationDb.Entity.csproj" />
+    <ProjectReference Include="..\LoanApplication.Model\LoanApplication.Model.csproj" />
+  </ItemGroup>
+
+</Project>

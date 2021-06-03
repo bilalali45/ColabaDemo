@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\URF\TrackableEntities.Common.Core\TrackableEntities.Common.Core.csproj" />
+    <ProjectReference Include="..\..\URF\TrackableEntities.EF.Core\TrackableEntities.EF.Core.csproj" />
+    <ProjectReference Include="..\..\URF\URF.Core.Abstractions\URF.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\..\URF\URF.Core.EF\URF.Core.EF.csproj" />
+    <ProjectReference Include="..\TenantConfig.Entity\TenantConfig.Entity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Mapping\TenantConfigMap.tt">
+      <LastGenOutput>TenantConfigMap.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="TenantConfigDbContext.tt">
+      <LastGenOutput>TenantConfigDbContext.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Mapping\TenantConfigMap.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TenantConfigMap.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TenantConfigDbContext.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TenantConfigDbContext.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

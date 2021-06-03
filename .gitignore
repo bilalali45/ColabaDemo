@@ -14,13 +14,13 @@ TestResults
 node_modules
 TestResults
 build
-dist
 coverage
 yarn.lock
 *.log
 /Rainmaker2/src/Solutions/AllProjects.sln
 pspdfkit-lib
 build.zip
+.cache
 
 Rainmaker2/.idea/
 /Rainmaker2/src/MicroServices/KeyStore/KeyStore.API/Keys.zip
@@ -39,3 +39,4 @@ Rainmaker2/src/.idea/.idea.Rainmaker2/.idea/encodings.xml
 Rainmaker2/src/.idea/.idea.Rainmaker2/.idea/indexLayout.xml
 Rainmaker2/src/.idea/.idea.Rainmaker2/.idea/riderModule.iml
 Rainmaker2/src/.idea/.idea.Rainmaker2/.idea/vcs.xml
+/Rainmaker2/src/Presentation/notifications/dist

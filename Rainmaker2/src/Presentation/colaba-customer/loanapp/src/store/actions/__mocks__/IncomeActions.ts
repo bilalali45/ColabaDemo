@@ -1,0 +1,87 @@
+import { APIResponse } from "../../../Entities/Models/APIResponse";
+import { Endpoints } from "../../endpoints/Endpoint";
+//import { Http } from "rainsoft-js/index";
+import { OtherIncomeType } from "../../reducers/OtherIncomeReducer";
+
+const incomeSourceMock = [
+    {
+        "id": 1,
+        "name": "Employment",
+        "displayName": "Employment"
+    },
+    {
+        "id": 2,
+        "name": "Self Employment / Independent Contractor",
+        "displayName": "Self Employment / Independent Contractor"
+    },
+    {
+        "id": 3,
+        "name": "Business",
+        "displayName": "Business"
+    },
+    {
+        "id": 4,
+        "name": "Military Pay",
+        "displayName": "Military Pay"
+    },
+    {
+        "id": 5,
+        "name": "Retirement",
+        "displayName": "Retirement"
+    },
+    {
+        "id": 6,
+        "name": "Rental",
+        "displayName": "Rental"
+    },
+    {
+        "id": 7,
+        "name": "Other",
+        "displayName": "Other"
+    }
+]
+
+const mockIncomeSourceHomeData = {
+    "totalMonthlyQualifyingIncome": 185.17,
+    "borrowers": [{
+        "borrowerId": 1294,
+        "borrowerName": "Qumber Kazmi",
+        "ownTypeId": 1,
+        "ownTypeName": "Primary Contact",
+        "ownTypeDisplayName": "Primary Contact",
+        "incomes": [{
+            "incomeName": "asd",
+            "incomeValue": 185.17,
+            "incomeId": 2125,
+            "incomeTypeId": 4,
+            "incomeTypeDisplayName": "Cooperation",
+            "employmentCategory": { "categoryId": 3, "categoryName": "Business", "categoryDisplayName": "Business" }
+        }],
+        "monthlyIncome": 185.17
+    }]
+};
+
+const allIncomeGroupsWithOtherIncomeTypes = [{ "incomeGroupId": 1, "incomeGroupName": "Family", "imageUrl": null, "incomeGroupDescription": null, "incomeGroupDisplayOrder": 0, "incomeTypes": [{ "id": 11, "name": "Alimony", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }, { "id": 12, "name": "Child Support", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }, { "id": 13, "name": "Separate Maintenance", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }, { "id": 14, "name": "Foster Care ", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }], "incomeGroupDisplayName": "Family" }, { "incomeGroupId": 2, "incomeGroupName": "Investments", "imageUrl": null, "incomeGroupDescription": null, "incomeGroupDisplayOrder": 0, "incomeTypes": [{ "id": 15, "name": "Annuity", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":true\r\n\t\t}\r\n\t]\r\n}" }, { "id": 16, "name": "Capital Gains", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":false\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":true\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }, { "id": 17, "name": "Interest / Dividends", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":false\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":true\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }, { "id": 18, "name": "Notes Receivable", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }, { "id": 19, "name": "Trust", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }], "incomeGroupDisplayName": "Investments" }, { "incomeGroupId": 3, "incomeGroupName": "Housing", "imageUrl": null, "incomeGroupDescription": null, "incomeGroupDisplayOrder": 0, "incomeTypes": [{ "id": 20, "name": "Housing Or Parsonage", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }, { "id": 21, "name": "Mortgage Credit Certificate", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }, { "id": 22, "name": "Mortgage Diąerential Payments", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }], "incomeGroupDisplayName": "Housing" }, { "incomeGroupId": 4, "incomeGroupName": "Government", "imageUrl": null, "incomeGroupDescription": null, "incomeGroupDisplayOrder": 0, "incomeTypes": [{ "id": 23, "name": "Public Assistance", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }, { "id": 24, "name": "Unemployment Benefits", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }, { "id": 25, "name": "VA Compensation", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }], "incomeGroupDisplayName": "Government" }, { "incomeGroupId": 5, "incomeGroupName": "Miscellaneous", "imageUrl": null, "incomeGroupDescription": null, "incomeGroupDisplayOrder": 0, "incomeTypes": [{ "id": 26, "name": "Automobile Allowance", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }, { "id": 27, "name": "Boarder Income", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }, { "id": 28, "name": "Royalty Payments", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }, { "id": 29, "name": "Disability", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":false\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":false\r\n\t\t}\r\n\t]\r\n}" }], "incomeGroupDisplayName": "Miscellaneous" }, { "incomeGroupId": 6, "incomeGroupName": "Other", "imageUrl": null, "incomeGroupDescription": null, "incomeGroupDisplayOrder": 0, "incomeTypes": [{ "id": 30, "name": "Other Income Source", "fieldsInfo": "{\r\n\t\"fieldsInfo\": [\r\n  \t{\r\n\t\t\t\"name\": \"monthlyBaseIncome\",\r\n\t\t\t\"caption\": \"Monthly Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 0,\r\n      \"Enabled\":false\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"name\": \"annualBaseIncome\",\r\n\t\t\t\"caption\": \"Annual Income\",\r\n\t\t\t\"datatype\": \"decimal\",\r\n\t\t\t\"displayOrder\": 1,\r\n      \"Enabled\":true\r\n\t\t},\r\n  \t{\r\n\t\t\t\"name\": \"description\",\r\n\t\t\t\"caption\": \"Description\",\r\n\t\t\t\"datatype\": \"string\",\r\n\t\t\t\"maxLendth\": 150,\r\n\t\t\t\"displayOrder\": 2,\r\n      \"Enabled\":true\r\n\t\t}\r\n\t]\r\n}" }], "incomeGroupDisplayName": "Other" }]
+export default class IncomeActions {
+    static async GetSourceOfIncomeList() {
+        return new APIResponse(200, incomeSourceMock);
+    }
+
+    static async GetMyMoneyHomeScreen(loanApplicationId: number) {
+        return new APIResponse(200, mockIncomeSourceHomeData);
+    }
+
+    static async GetAllIncomeGroupsWithOtherIncomeTypes() {
+        return new APIResponse(200, allIncomeGroupsWithOtherIncomeTypes);
+    }
+
+    static async GetOtherIncomeInfo(incomeInfoId: number) {
+        return new APIResponse(200, {});
+    }
+
+    static async AddOrUpdateOtherIncome(otherMonthlyIncome: OtherIncomeType) {
+        return new APIResponse(200, true);
+    }
+}
+
+

@@ -1,0 +1,18 @@
+:root {
+    // HSL FOR Primary Color
+    --color-primary-h: 218;
+    --color-primary-s: 89%;
+    --color-primary-l: 61%;
+
+    --hsl-primary: var(--color-primary-h), var(--color-primary-s), var(--color-primary-l);
+    
+    // Background & Four
+    --color-primary-bg      :       hsl(var(--hsl-primary));
+    --color-primary-fg      :     #ffffff;
+
+    // Light Variation of Primary Colors
+    --color-primary-l-10: hsla(var(--hsl-primary), 0.1);
+    --color-primary-l-30: hsla(var(--hsl-primary), 0.3);
+    --color-primary-l-50: hsla(var(--hsl-primary), 0.5);
+}
+

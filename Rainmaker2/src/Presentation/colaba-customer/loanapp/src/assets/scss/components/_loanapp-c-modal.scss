@@ -1,0 +1,72 @@
+.loanapp-c-modal{
+    @include font(400,1.4,'md','base');
+
+    .close{
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    &.no-header{
+
+        .close{
+            position: absolute;
+            top: rem(10px);
+            right: rem(15px);
+            font-size: medium;
+        }
+
+    }
+
+    .modal-header{
+        .modal-title{
+            @include font(500,1.4,'xmd','heading');
+            text-transform: capitalize;
+        }
+    }
+
+    .delete-borrower-popup{
+        .modal-title{
+            margin: 0;
+        }
+        .modal-body{
+            @include font(400,1.6,'md','base');
+            text-align: center;
+            p{
+                margin-bottom: 0;
+            }
+        }
+        .modal-footer{
+            text-align: center;
+            justify-content: center;
+        }
+    }
+
+}
+
+.employment-alert-popup{
+    ul,ul li{
+        list-style: disc;
+    }
+    .modal-footer{
+        text-align: center;
+        justify-content: center;
+    }
+    @media (min-width: 576px) {
+        max-width: 600px;
+    }
+}
+
+.compo-myMoney-income{
+    .income-panel{
+        .income-card-wrap{
+            min-height: rem(375px);   
+        }
+        .p-footer{
+            display: flex;
+            align-items: center;
+            .btn-primary{
+                margin-left: auto;
+            }
+        }
+    }
+}

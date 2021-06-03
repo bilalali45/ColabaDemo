@@ -1,0 +1,246 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <h3>Select Tenant</h3>
+    <br />
+    <form id="tenantForm" asp-action="TenantChanged" asp-area="" asp-controller="Home" method="post">
+        <label>Tenant</label>
+        <select name="tenantId" onchange="$('#tenantForm').submit();">
+            @for (int i = 0; i < ViewBag.Tenants.Count; i++)
+            {
+                <option value="@ViewBag.Tenants[i].Id" selected="@(ViewBag.SelectedTenant==@ViewBag.Tenants[i].Id ? "selected" : null)">@ViewBag.Tenants[i].Name</option>
+            }
+        </select>
+    </form>
+    <br />
+    <br />
+    <h3>Update 2FA Setting</h3>
+    <br />
+    <form id="twofaForm" asp-action="TwoFaChanged" asp-area="" asp-controller="Home" method="post">
+        <input type="hidden" name="tenantId" value="@ViewBag.SelectedTenant" />
+        <label>2FA Config</label>
+        <select name="twofaSetting" onchange="$('#twofaForm').submit();">
+            @for (int i = 0; i < ViewBag.TwoFaSettings.Count; i++)
+            {
+                <option value="@ViewBag.TwoFaSettings[i].Id" selected="@(ViewBag.Selected2fa==@ViewBag.TwoFaSettings[i].Id ? "selected" : null)">@ViewBag.TwoFaSettings[i].Name</option>
+            }
+        </select>
+    </form>
+    <br />
+    <br />
+    <h3>Change Primary Color</h3>
+    <br />
+    @for (int i = 0; i < ViewBag.Branches.Count; i++)
+    {
+        <form id="@ViewBag.Branches[i].Code" asp-action="ColorChanged" asp-area="" asp-controller="Home" method="post">
+            <input type="hidden" name="tenantId" value="@ViewBag.SelectedTenant" />
+            <input type="hidden" name="branchId" value="@ViewBag.Branches[i].Id" />
+            <label>@ViewBag.Branches[i].Name Primary Color</label>
+            <input type="color" name="primaryColor" value="@ViewBag.Branches[i].PrimaryColor" onchange="$('#@ViewBag.Branches[i].Code').submit();" />
+        </form>
+        <br />
+    }
+    <br />
+    <br />
+    <h3>Delete User</h3>
+    <br />
+    <form id="deleteUser" asp-action="DeleteUser" asp-area="" asp-controller="Home" method="post">
+        <input type="hidden" name="tenantId" value="@ViewBag.SelectedTenant" />
+        <input type="email" name="email" value="" />
+        <input type="button" value="Delete User" onclick="$('#deleteUser').submit();" />
+    </form>
+    <br />
+    <br />
+    <h3>Update terms and conditions</h3>
+    <br />
+    @for (int i = 0; i < ViewBag.Terms.Count; i++)
+    {
+        <form id="@("termsForm"+ViewBag.Terms[i].Id)" asp-action="TermsChanged" asp-area="" asp-controller="Home" method="post">
+            <input type="hidden" name="id" value="@ViewBag.Terms[i].Id" />
+            <input type="hidden" name="tenantId" value="@ViewBag.SelectedTenant" />
+            <label>@(ViewBag.Terms[i].TermTypeId==1 ? "Signup Terms and Conditions for " : "Phone Number Consent for ")@ViewBag.Terms[i].Branch.Name</label>
+            <textarea name="terms@(ViewBag.Terms[i].Id)" rows="10" style="width:500px;">@ViewBag.Terms[i].TermsContent</textarea>
+            <input type="button" value="Save" onclick="$('#@("termsForm"+ViewBag.Terms[i].Id)').submit();" />
+            <script>
+                CKEDITOR.replace('terms@(ViewBag.Terms[i].Id)');
+            </script>
+        </form>
+        <br />
+    }
+    <br />
+    <h3>Update loan application configuration</h3>
+    <br />
+    <form id="settingForm" asp-action="SettingChanged" asp-area="" asp-controller="Home" method="post">
+        <input type="hidden" name="tenantId" value="@ViewBag.SelectedTenant" />
+        @for (int i = 0; i < ViewBag.Configs.Count; i++)
+        {
+            <label>@ViewBag.Configs[i].Name</label>
+            <select id="@ViewBag.Configs[i].Name" name="@ViewBag.Configs[i].Name" onchange="checkDobSsn('@ViewBag.Configs[i].Name');">
+                <option value="1" selected="@(ViewBag.Configs[i].Value==1?"selected":null)">Required</option>
+                <option value="2" selected="@(ViewBag.Configs[i].Value==2?"selected":null)">Hidden</option>
+                @if (ViewBag.Configs[i].Name == "PrimaryBorrower_HomeNumber" || ViewBag.Configs[i].Name == "PrimaryBorrower_CellNumber" || ViewBag.Configs[i].Name == "PrimaryBorrower_WorkNumber" || ViewBag.Configs[i].Name == "CoBorrower_EmailAddress" || ViewBag.Configs[i].Name == "CoBorrower_HomeNumber" || ViewBag.Configs[i].Name == "CoBorrower_CellNumber" || ViewBag.Configs[i].Name == "CoBorrower_WorkNumber" || ViewBag.Configs[i].Name == "EmploymentHistorySection" || ViewBag.Configs[i].Name == "MyProperties_FirstMortgagePayment" || ViewBag.Configs[i].Name == "MyProperties_SecondMortgagePayment" || ViewBag.Configs[i].Name == "MyProperties_Property_Tax" || ViewBag.Configs[i].Name == "MyProperties_Flood_Insurance" || ViewBag.Configs[i].Name == "MyProperties_HomeOwner_Insurance" || ViewBag.Configs[i].Name == "MyProperties_HOADues" || ViewBag.Configs[i].Name == "ResidencyHistory")
+                {
+                    <option value="3" selected="@(ViewBag.Configs[i].Value == 3 ? "selected" : null)">Optional</option>
+                }
+            </select>
+            <br />
+        }
+        <script type="text/javascript">
+            function checkDobSsn(name) {
+                if (name == "PrimaryBorrower_DOB") {
+                    if ($("#" + name).val() == "2") {
+                        $("#PrimaryBorrower_SSN").prop("selectedIndex", 1).change();
+                        $("#PrimaryBorrower_SSN").addClass("readonly-select");
+                        $("#PrimaryBorrower_SSN").attr("tabIndex", "-1");
+                    }
+                    else {
+                        $("#PrimaryBorrower_SSN").removeClass("readonly-select");
+                        $("#PrimaryBorrower_SSN").removeAttr("tabIndex");
+                    }
+                } else if (name == "CoBorrower_DOB") {
+                    if ($("#" + name).val() == "2") {
+                        $("#CoBorrower_SSN").prop("selectedIndex", 1).change();
+                        $("#CoBorrower_SSN").addClass("readonly-select");
+                        $("#CoBorrower_SSN").attr("tabIndex", "-1");
+                    }
+                    else {
+                        $("#CoBorrower_SSN").removeClass("readonly-select");
+                        $("#CoBorrower_SSN").removeAttr("tabIndex");
+                    }
+                }
+            }
+            $(document).ready(function () {
+                checkDobSsn("PrimaryBorrower_DOB");
+                checkDobSsn("CoBorrower_DOB");
+            });
+        </script>
+        <input type="button" value="Save" onclick="$('#settingForm').submit();" />
+    </form>
+    @*<br />
+        <br />
+        <h3>Custom Text</h3>
+        <br />
+        <form id="customForm" asp-action="SaveTenantName" asp-area="" asp-controller="Home" method="post">
+            <input id="customFormTenantId" type="hidden" name="tenantId" value="@ViewBag.SelectedTenant" />
+            <label>Table Name</label>
+            <select id="tableName" name="tableName" onchange="populateTableItems();">
+                @foreach (var item in ViewBag.SetupTables)
+                {
+                    <option value="@item.Key">@item.Key</option>
+                }
+            </select>
+            <script type="text/javascript">
+                $('#tableName').prop("selectedIndex", -1).change();
+                function populateTableItems() {
+                    var index = $('#tableName').prop("selectedIndex");
+                    if (index != -1) {
+                        $.post("/Home/PopulateTableItems", { tenantId: $('#customFormTenantId').val(), tableName: $('#tableName').val() }, function (result) {
+                            var html = "";
+                            for (var item of result) {
+                                html += `<label>${item.name}</label>&nbsp;&nbsp;&nbsp;`;
+                                html += `<input type="text" name="item${item.id}" value="${item.tenantAlternateName}" /><br />`;
+                            }
+                            $('#customFormItems').html(html);
+                        });
+                    }
+                }
+            </script>
+            <br />
+            <div id="customFormItems"></div>
+            <input type="button" value="Save" onclick="$('#customForm').submit();" />
+        </form>*@
+
+    <br />
+
+    <h3>Consent Type</h3>
+    <br />
+
+
+    <br />
+    <form id="consentsform" name="consentsform" asp-action="SaveConsentType" asp-area="" asp-controller="Home" method="post">
+        <br />
+        <input type="hidden" name="tenantId" value="@ViewBag.SelectedTenant" />
+        @for (int i = 0; i < ViewBag.Consents.Count; i++)
+        {
+
+            <label> <b>Consent sub type :</b></label>
+
+            <label><b>@ViewBag.Consents[i].Name</b> </label>
+            <br />
+            <label> <b>Borrower Type :</b></label>
+
+            <label><b> @(ViewBag.Consents[i].OwnTypeId==1?"Primary":"Secondary")</b></label>
+
+            <input type="hidden" name="OwnTypeId" value="@ViewBag.Consents[i].OwnTypeId" />
+            <input type="hidden" name="consentname" value="@ViewBag.Consents[i].Name" />
+
+
+
+            <br />
+            <textarea name="ConsentText@(i)" rows="10" style="width:500px;">@ViewBag.Consents[i].Description</textarea>
+
+            <script>
+                CKEDITOR.replace('ConsentText@(i)');
+            </script>
+
+            <br />
+        }
+        <input type="button" value="Save" onclick="$('#consentsform').submit();" />
+    </form>
+    <br />
+    <br />
+    <h3>Custom Tenant Setup</h3>
+    <br />
+    <form id="customForm" asp-action="SaveTenantSetup" asp-area="" asp-controller="Home" method="post">
+        <input id="customFormTenantId" type="hidden" name="tenantId" value="@ViewBag.SelectedTenant" />
+        <label>Table Name</label>
+        <select id="tableName" name="tableName" onchange="populateTableItems();">
+            @foreach (var item in ViewBag.SetupTables)
+            {
+                <option value="@item.Key">@item.Key</option>
+            }
+        </select>
+        <script type="text/javascript">
+            $('#tableName').prop("selectedIndex", -1).change();
+            function populateTableItems() {
+                var index = $('#tableName').prop("selectedIndex");
+                if (index != -1) {
+                    $.post("/Home/PopulateTableItems", { tenantId: $('#customFormTenantId').val(), tableName: $('#tableName').val() }, function (result) {
+                        var html = "";
+                        for (var item of result) {
+                            html += `<input type="checkbox" name="item${item.id}" value="${item.id}" ${item.checked ? 'checked' : ''} /><label>${item.name}</label><br />`;
+                        }
+                        $('#customFormItems').html(html);
+                    });
+                }
+            }
+        </script>
+        <br />
+        <div id="customFormItems"></div>
+        <input type="button" value="Save" onclick="$('#customForm').submit();" />
+    </form>
+    <br />
+    <br />
+    <h3>Questions</h3>
+    <br />
+    <form id="questionForm" asp-action="QuestionChanged" asp-area="" asp-controller="Home" method="post">
+        <input type="hidden" name="tenantId" value="@ViewBag.SelectedTenant" />
+        @for (int i = 0; i < ViewBag.Questions.Count; i++)
+        {
+            <label>@ViewBag.Questions[i].PrimaryBorrowerText</label>
+            <select name="option@(ViewBag.Questions[i].Id)">
+                <option value="1" selected="@(ViewBag.Questions[i].BorrowerDisplayOptionId==1?"selected":null)">Primary</option>
+                <option value="2" selected="@(ViewBag.Questions[i].BorrowerDisplayOptionId==2?"selected":null)">CoBorrower</option>
+                <option value="3" selected="@(ViewBag.Questions[i].BorrowerDisplayOptionId==3?"selected":null)">Both</option>
+            </select>
+            <input type="checkbox" value="@(ViewBag.Questions[i].Id)" name="check@(ViewBag.Questions[i].Id)" checked="@(ViewBag.Questions[i].IsActive?"checked":null)" />
+            <label>Active</label>
+            <br />
+            <br />
+        }
+        <input type="button" value="Save" onclick="$('#questionForm').submit();" />
+    </form>
+</div>

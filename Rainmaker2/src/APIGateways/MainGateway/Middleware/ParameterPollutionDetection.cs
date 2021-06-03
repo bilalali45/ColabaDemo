@@ -7,40 +7,10 @@ using System.Threading.Tasks;
 
 namespace MainGateway.Middleware
 {
-    public class ParameterPollutionDetection
+    public class ParameterPollutionDetection : RainsoftGateway.Core.Middleware.ParameterPollutionDetection
     {
-        private readonly RequestDelegate _next;
-
-
-        public ParameterPollutionDetection(RequestDelegate next)
+        public ParameterPollutionDetection(RequestDelegate next) : base(next)
         {
-            _next = next;
-        }
-
-
-        public async Task Invoke(HttpContext context)
-        {
-            var pollutionDetected = false;
-            var queryStringString = context.Request.QueryString.ToString();
-
-            var query = QueryHelpers.ParseQuery(queryString: queryStringString);
-
-            var duplicateKeysExists = query.Any(predicate: keyValuePair => keyValuePair.Value.Count > 1);
-
-            if (duplicateKeysExists) pollutionDetected = true;
-
-            if (queryStringString.Contains(value: "%26") || queryStringString.Contains(value: "%3"))
-                pollutionDetected = true;
-
-            if (pollutionDetected)
-            {
-                context.Response.StatusCode = (int) HttpStatusCode.Forbidden;
-                await context.Response.WriteAsync(text: "Potentially unsafe request detected",
-                                                  encoding: Encoding.UTF8);
-                return;
-            }
-
-            await _next.Invoke(context: context);
         }
     }
 }

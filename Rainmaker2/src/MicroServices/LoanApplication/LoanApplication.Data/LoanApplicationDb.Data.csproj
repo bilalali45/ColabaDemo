@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Mapping\EmploymentInfoMap.cs" />
+    <Compile Remove="Mapping\OtherIncomeMap.cs" />
+    <Compile Remove="Mapping\OtherIncomeToBeRemovedMap.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LoanApplication.Entity\LoanApplicationDb.Entity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="LoanApplicationDbContext.tt">
+      <LastGenOutput>LoanApplicationDbContext.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Mapping\LoanApplicationDBMap.tt">
+      <LastGenOutput>LoanApplicationDBMap.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="LoanApplicationDbContext.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LoanApplicationDbContext.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Mapping\LoanApplicationDBMap.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LoanApplicationDBMap.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

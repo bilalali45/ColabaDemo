@@ -23,9 +23,17 @@ start KeyStore.API.exe
 
 TIMEOUT 10
 
+cd %workingDir%\src\Presentation\Colaba\Colaba.Web\bin\Debug\netcoreapp3.1\
+start Colaba.Web.exe
+
 cd %workingDir%\src\APIGateways\MainGateway\bin\Debug\netcoreapp3.1\
 start MainGateway.exe
 
+cd %workingDir%\src\APIGateways\McuGateway\bin\Debug\netcoreapp3.1\
+start McuGateway.exe
+
+cd %workingDir%\src\APIGateways\MobileGateway\bin\Debug\netcoreapp3.1\
+start MobileGateway.exe
 
 cd %workingDir%\src\MicroServices\ByteWebConnector\ByteWebConnector.API\bin\Debug\netcoreapp3.1\
 start ByteWebConnector.API.exe
@@ -61,6 +69,12 @@ start DocManager.api.exe
 
 cd %workingDir%\src\MicroServices\Setting\Setting.api\bin\Debug\netcoreapp3.1\
 start Setting.api.exe
+
+cd %workingDir%\src\MicroServices\TenantConfig\TenantConfig.api\bin\Debug\netcoreapp3.1\
+start TenantConfig.api.exe
+
+cd %workingDir%\src\MicroServices\loanapplication\loanapplication.api\bin\Debug\netcoreapp3.1\
+start loanapplication.api.exe
 
 cd %workingDir%
 

@@ -1,0 +1,120 @@
+.dr-upload{
+.dr-head {
+    background: color("colorWhite");
+    padding:20px;
+    border-bottom: 1px solid color('border');
+    @include mobile {
+        text-align: center;
+        padding:0;
+        padding-bottom: 0px;
+        margin-left: -15px;
+        margin-right: -15px;
+        margin-bottom: 27px;
+    }
+
+   h2 {
+        font:500 #{fontSize("md")+"/1.2"} fontFamily("heading");
+        text-transform: uppercase;
+        color:color('heading');
+        margin-top: 0;
+        @include mobile {
+            background: color("primary");
+            color:color('primary-text');
+            text-align: center;
+            font:500 #{fontSize("xmd")+"/1"} fontFamily("heading");
+            padding: 12px 0;
+            margin-bottom: 0;
+            
+        }
+        .dr-head-back-arrow {
+            position: absolute;
+            left: 15px;
+            cursor: pointer;
+            font:500 #{fontSize("sm")+"/1"} fontFamily("base");
+            i {
+                padding-right: 5px;
+                font-size: fontSize("xmd") + 2;
+                vertical-align: middle;
+                line-height: 19px;
+            }
+            span {
+                vertical-align: middle;
+            }
+        }
+    }
+    p {
+        font:400 #{fontSize("nr")+"/17px"} fontFamily("base");
+        margin-bottom: 0;
+        @include mobile {
+            margin-top: 7px;
+            margin-bottom: 5px;
+        }
+        .DocumentStatus--count {
+            font:bolder  #{fontSize("nr")+"/17px"} fontFamily("base");
+        }
+      }
+}
+
+.dr-c-wrap {
+    background: color("colorWhite"); 
+    padding:0 20px;
+    @include mobile {
+        background: color("colorgray"); 
+        // overflow-y: auto;
+        // height: calc(100vh - 245px);
+        // height: calc((var(--vh, 1vh) * 100) - 245px);
+        // apex
+        &.PageDocListView {
+            margin-right: -15px;
+            .dr-asideWrap{
+                margin-right: -5px;
+            }
+        }
+        &.PageDocUploadView {
+            // height: calc(100vh - 240px);
+            // height: calc((var(--vh, 1vh) * 100) - 240px);
+            margin-left: -5px;
+            margin-right: -15px;
+        }
+    }
+
+    @media (max-height:420px) and  (orientation: landscape) {
+        // height: calc(100vh - 220px) !important;
+        &.PageDoneTask {
+            // height: calc(100vh - 190px) !important;
+        }
+        .file-drop-box.havefooter {
+            margin-bottom: 0;
+        }
+        .doc-upload-footer {
+            position: relative;
+            bottom: 0;
+  
+        }
+    }
+
+}
+.dr-asideWrap {
+    border-right: 1px solid color('border');
+    height: 100%;
+    padding-top: 28px;
+    padding-bottom: 18px;
+    margin-right: -15px;
+
+    @include mobile {
+        padding-top: 0;
+        border-right:none;
+        padding-bottom: 0px;
+        margin-right: -20px;
+        .dr-list-wrap {
+            nav {
+                ul {
+                    li {
+                        background: color("colorWhite");     
+                    }
+                }
+            }
+        }
+    }
+}
+}

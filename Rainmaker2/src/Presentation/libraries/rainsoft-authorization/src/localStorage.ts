@@ -6,7 +6,7 @@ import { ApplicationEnv } from "./applicationEnv";
 
 const cookies = new Cookies();
 const baseUrl: any = window.envConfig.API_BASE_URL;
-const httpClient = new Http(baseUrl, "Rainmaker2Token");
+new Http(baseUrl, "Rainmaker2Token", "https://apply.lendova.com:5003");
 
 export class LocalDB {
   static getCredentials(): {
@@ -23,13 +23,29 @@ export class LocalDB {
     return credentials;
   }
 
+  static getCookie (name: string): string {
+    return cookies.get(name)
+  }
+  
+  static setCookie (name: string, value: string, path : string = "/"): void {
+    cookies.set(name, value, { path: path })
+    //document.cookie = name + "=" + value +";path=" + path;
+  }
+
   //#region Local DB get methods
   static getAuthToken(): string | null {
-    return this.decodeString(localStorage.getItem("Rainmaker2Token"));
+    return this.decodeString(this.getCookie("Rainmaker2Token"));
   }
 
   static getRefreshToken(): string | null {
-    return this.decodeString(localStorage.getItem("Rainmaker2RefreshToken"));
+    return this.decodeString(this.getCookie("Rainmaker2RefreshToken"));
+  }
+
+  static getCookiePath(): string | null {
+    return (
+      this.decodeString(window.sessionStorage.getItem("CookiePath")) ||
+      "/"
+    );
   }
 
   static getLoginDevUserName(): string | null {
@@ -41,7 +57,7 @@ export class LocalDB {
   }
 
   static getUserPayload(): any {
-    const payload = this.decodeString(localStorage.getItem("TokenPayload"));
+    const payload = this.decodeString(this.getCookie("TokenPayload"));
 
     if (payload) {
       return JSON.parse(payload);
@@ -56,18 +72,21 @@ export class LocalDB {
   static storeTokenPayload(payload: any | string | undefined): void {
     if (!payload) return;
 
-    localStorage.setItem(
+    this.setCookie(
       "TokenPayload",
-      this.encodeString(JSON.stringify(payload))
+      this.encodeString(JSON.stringify(payload)),
+      this.getCookiePath() || "/"
     );
   }
 
   static storeAuthTokens(token: string, refreshToken: string): void {
-    localStorage.setItem("Rainmaker2Token", this.encodeString(token));
-    localStorage.setItem(
+    this.setCookie("Rainmaker2Token", this.encodeString(token), this.getCookiePath() || "/");
+    this.setCookie(
       "Rainmaker2RefreshToken",
-      this.encodeString(refreshToken)
+      this.encodeString(refreshToken),
+      this.getCookiePath() || "/"
     );
+    this.storeTokenPayload(this.decodeJwt(token));
   }
 
   static getPortalReferralUrl(): string | null {
@@ -78,53 +97,32 @@ export class LocalDB {
     localStorage.setItem("PortalReferralUrl", portalReferralUrl);
   }
 
-  public static checkAuth(): boolean | string {
-    const rainmaker2Token = cookies.get("Rainmaker2Token");
-    const auth = this.getAuthToken();
-    if (!auth) {
-      return false;
-    }
-    if (rainmaker2Token) {
-      const decodeCacheToken: any = jwt_decode(rainmaker2Token);
-      const decodeAuth: any = jwt_decode(auth);
-      if (decodeAuth?.UserName != decodeCacheToken?.UserName) {
-        return false;
-      }
-      if (decodeCacheToken.exp > decodeAuth.exp) {
-        console.log("Cache token is going to validate");
-        return false;
-      }
-    }
-
-    const payload = this.getUserPayload();
-    if (payload) {
-      const expiry = new Date(payload.exp * 1000);
-      const currentDate = new Date(Date.now());
-      if (currentDate < expiry) {
-        return true;
-      } else {
-        return "token expired";
-        // return false;
-        // Auth.removeAuth();
-      }
-    }
-    return true;
-  }
-
-  public static storeItem(name: string, data: string): void {
+  public static setlocalStorage(name: string, data: string): void {
     localStorage.setItem(name, this.encodeString(data));
   }
   //#endregion
 
   //#region Remove Auth
-  static removeAuth(): void {
+  static removeAuthFromCookie(): void {
     const items = ["Rainmaker2Token", "TokenPayload", "Rainmaker2RefreshToken"];
     for (const item of items) {
-      localStorage.removeItem(item);
+      cookies.remove(item);
     }
   }
   //#endregion
 
+  static decodeJwt(token: string): string | undefined {
+    try {
+      if (token) {
+        const decoded: string = jwt_decode(token);
+        return decoded;
+      }
+    } catch (error) {
+      console.log(error);
+      return undefined;
+    }
+  }
+  
   //#region Encode Decode
   public static encodeString(value: string): string {
     // Encode the String
@@ -136,11 +134,11 @@ export class LocalDB {
   public static decodeString(value?: string | null): string | null {
     // Decode the String
     if (!value) {
-      return "";
+      return null;
     }
     try {
       const decodedString = atob(value);
-      return decodedString.split("|")[0];
+      return String(decodedString.split("|")[0]);
     } catch {
       return null;
     }

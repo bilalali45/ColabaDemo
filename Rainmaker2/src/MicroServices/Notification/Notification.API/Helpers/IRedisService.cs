@@ -5,9 +5,9 @@ namespace Notification.Service
 {
     public interface IRedisService
     {
-        Task Run();
+        //Task Run();
         Task InsertInCache(NotificationModel model);
         Task<bool> SendNotification(NotificationModel model);
-        Task PollAndSendNotification();
+        //Task PollAndSendNotification();
     }
 }

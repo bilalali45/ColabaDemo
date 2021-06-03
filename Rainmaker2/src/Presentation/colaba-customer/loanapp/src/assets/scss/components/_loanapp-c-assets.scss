@@ -1,0 +1,47 @@
+.assets-panel{
+
+    .assets-titleBox{
+        h3{
+            font-size: rem(20px);
+            font-weight: 500;
+            line-height: 1.4;
+            font-family: fontFamily('heading');
+            margin-bottom: rem(30px);
+        }
+    }
+
+    .assets-card-wrap{
+        min-height: rem(390px);
+    }
+
+    .p-body {
+        //min-height: rem(450px) !important;
+        width: 100%;
+    }
+
+    .p-footer{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .income-popup-body{
+        // min-height: 18.75rem;
+        // height: rem(500px);
+        // overflow-y: auto;
+        // overflow-x: hidden;
+        // width: 102%;
+        // padding-right: rem(15px);
+        // padding-left: rem(15px);
+        // float: left;
+        // @include scrollbar();
+        h2{
+            @include font(normal,1.4,'xmd','heading');
+        }
+    }
+
+}
+
+.page-main-sect .loan-boxes-row .assets-panel.comp-form-panel{
+    min-height: auto;
+}

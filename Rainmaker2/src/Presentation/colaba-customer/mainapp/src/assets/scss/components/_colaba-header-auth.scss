@@ -1,0 +1,22 @@
+.colaba__header-auth{
+    // padding: 60px 0;
+    padding: rem(140px) 0 rem(72px);
+    //display: grid;
+
+    .container{
+        // display: grid;
+        // grid-template-columns: 0 auto auto;
+    }
+
+    .main-logo{
+        //margin-bottom: 50px;
+        // height: 46px;
+        margin: auto;
+        img{
+            height: rem(46px);
+            object-fit: cover;
+        }
+    }
+
+    
+}

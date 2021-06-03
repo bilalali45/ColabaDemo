@@ -1,0 +1,23 @@
+// Mixins Components
+@import './components-mixins/mixins-_ActivityHeader';
+
+@each $ele, $color in $themes {
+    #{'.'+$ele} {
+        $color-primary : $color;
+        
+        .primary-fill{
+            fill: $color-primary !important;
+        }
+        
+        .primary-stocke{
+            stroke: $color-primary !important;
+        }      
+        
+        a{
+            color: $color;
+        }
+
+        @include activityHeader($color);
+        
+    }
+}

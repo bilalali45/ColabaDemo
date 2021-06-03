@@ -13,16 +13,21 @@
     <EmbeddedResource Remove="CacheHandler\**" />
     <None Remove="CacheHandler\**" />
   </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Logs\**" />
+		<Content Remove="Logs\**" />
+		<EmbeddedResource Remove="Logs\**" />
+		<None Remove="Logs\**" />
+	</ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\TokenData.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
+	  <PackageReference Include="ElmahCore" Version="2.0.6" />
+	  <PackageReference Include="ElmahCore.Sql" Version="2.0.6" />
+	  <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.12" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.12" />
+	  <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="3.1.12" />
     <PackageReference Include="Ocelot" Version="16.0.1" />
-    <PackageReference Include="Ocelot.Cache.CacheManager" Version="16.0.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
     <PackageReference Include="Serilog.Enrichers.ClientInfo" Version="1.1.0" />
     <PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
@@ -32,16 +37,20 @@
     <PackageReference Include="Serilog.Sinks.Debug" Version="1.0.1" />
     <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.1.0" />
     <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
-    <PackageReference Include="StackExchange.Redis.Extensions.AspNetCore" Version="5.5.0" />
-    <PackageReference Include="StackExchange.Redis.Extensions.Newtonsoft" Version="5.5.0" />
+    <PackageReference Include="StackExchange.Redis.Extensions.AspNetCore" Version="6.4.5" />
+    <PackageReference Include="StackExchange.Redis.Extensions.Newtonsoft" Version="6.4.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Library\TokenCacheHelper\TokenCacheHelper.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
+	  <ProjectReference Include="..\..\Library\TokenCacheHelper\TokenCacheHelper.csproj" />
+    <ProjectReference Include="..\..\Library\Colaba\TenantConfig.Common\TenantConfig.Common.csproj" />
+    <ProjectReference Include="..\..\Library\Colaba\TenantConfig.Data\TenantConfig.Data.csproj" />
+    <ProjectReference Include="..\..\Library\Colaba\TenantConfig.Entity\TenantConfig.Entity.csproj" />
+    <ProjectReference Include="..\..\Library\URF\TrackableEntities.Common.Core\TrackableEntities.Common.Core.csproj" />
+    <ProjectReference Include="..\..\Library\URF\TrackableEntities.EF.Core\TrackableEntities.EF.Core.csproj" />
+    <ProjectReference Include="..\..\Library\URF\URF.Core.Abstractions\URF.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Library\URF\URF.Core.EF\URF.Core.EF.csproj" />
+    <ProjectReference Include="..\RainsoftGateway.Core\RainsoftGateway.Core.csproj" />
   </ItemGroup>
 
 </Project>

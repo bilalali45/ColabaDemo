@@ -1,0 +1,17 @@
+{
+  "Routes": [
+    //Identity api config
+    {
+      "DownstreamPathTemplate": "/api/mobile/identity/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7074
+        }
+      ],
+      "UpstreamPathTemplate": "/api/mobile/identity/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+    }
+  ] 
+}

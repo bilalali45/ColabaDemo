@@ -1,0 +1,87 @@
+$color: (
+  primary: #4484f4,
+  primary-text: #ffffff,
+  secondry: #7e829e,
+  secondry-text: #ffffff,
+  border: #e7e7e7,
+  base: #4e4e4e,
+  heading: #000000,
+  bg: #f8f8f8,
+  default: #f2f3f5,
+  sucsess: #00ad46,
+  scroll: #a1a1a1,
+  input: #a1a1a1,
+  widgetBg: #ffffff,
+  placeholder: #cccccc,
+  dropdownBg: #ffffff,
+  dropdownText: #000000,
+  disabledBg: #e5e5e5,
+  disableText: #a7a7a7,
+  inputText: #4e4e4e,
+  footerText: #a8a6a6,
+  label: #000000,
+
+  //Table Strip Color
+  tableStripBg: #f8f8f8,
+  listHoverBg: #f6f6f6,
+  tableDisableText: #a7a7a7,
+  tableHeadText: #4e4e4e,
+
+  //Modal
+  modalfooter: #f6f6f6,
+
+  //List
+  focusedListBg: #f6f6f6,
+
+  // Nav Pill Tabs
+  navPills: #000000,
+  navPillsDisabled: #a7a7a7,
+
+  // Side Navigation
+  sideNavText: #4e4e4e,
+  sideNavActive: #000000,
+  sideNavActiveBg: #f6f6f6,
+
+  //accordion signable
+  accordionSignableHeadingText: #000000,
+  accordionSignableText: #4e4e4e,
+  requestEmailTemplateCol1: #000000,
+  reminderControlBg: #f8f8f8,
+  reminderText: #a7a7a7,
+  reminderHighlightedText: #000000,
+  reminderTextBg: #ffffff,
+  reminderArrowBg: #f6f6f6,
+
+  //Toggler
+  togglerHeadBg: #a7a7a7,
+  togglerHeadBgDisabled: #cccccc,
+);
+
+$font: (
+  base: 'Rubik' #{', sans-serif'},
+  heading: 'Rubik' #{', sans-serif'}
+);
+
+$font-size: (
+  xs: 10px,
+  sm: 12px,
+  nr: 14px,
+  md: 15px,
+  lg: 16px,
+  xlg: 18px,
+  // not used yet
+  searchIcon: 22px,
+  iconText: 22px
+);
+
+$shadow: 0 0 3px rgba(0, 0, 0, 0.16);
+$headershadow: 0 3px 3px rgba(141, 141, 141, 0.1);
+
+// Bootstrap Variables
+$grid-gutter-width: 30px !default;
+$primary: #4484f4 !default;
+$secondary: #5d617e !default;
+$danger: #ff5652 !default;
+
+// Private
+$widget-space: $grid-gutter-width !default;

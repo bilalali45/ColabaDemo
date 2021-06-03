@@ -1,0 +1,97 @@
+.progress-list{
+    padding: 30px 0;
+
+    ol,ul{
+        @extend .list-style-none;
+        position: relative;
+        padding-left: 70px;
+        
+        &::before{
+            content: "";
+            display: block;
+            width: 3px;
+            height: 100%;
+            background-color: lighten($color: color('statusUpcomming'), $amount: 40%);
+            position: absolute;
+            top: 0;
+            left: 25px;
+        }
+
+        > li{
+            position: relative;
+
+            &::before{
+                content: "";
+            }
+
+            &:last-child{
+                &::after{
+                    content: "";
+                    display: block;
+                    width: 3px;
+                    height: 100%;
+                    position: absolute;
+                    left: -45px;
+                    top: calc(100% - 46px);
+                    background-color: color('colorWhite');
+                }
+            }
+        }
+    }
+
+    &--icon{
+        position: absolute;
+        top: 0;
+        left: -70px;
+        width: 50px;
+        height: 50px;
+        border: 3px solid lighten($color: color('statusUpcomming'), $amount: 40%); 
+        text-align: center;
+        line-height: 45px;
+        background-color: color('colorWhite');
+    }
+
+    &--status{
+        display: inline-block;
+        padding: 8px 20px;
+        background: lighten($color: color('statusUpcomming'), $amount: 40%);
+        font: 500 #{fontSize('xs')+'/'+fontSize('xs')} fontFamily('base');
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+
+    [class^="heading-"],[class*="heading-"]{
+        margin-bottom: 6px;
+    }
+
+}
+
+[data-status="upcomming"]{
+    .progress-list--status{
+        background: lighten($color: color('statusUpcomming'), $amount: 40%);
+        color: color('statusUpcomming');
+    }
+}
+
+[data-status="completed"]{
+    .progress-list--status{
+        background: lighten($color: color('statusCompleted'), $amount: 40%);
+        color: color('statusCompleted');
+    }
+    .progress-list--icon{
+        border-color: color('statusCompleted');
+        color: color('statusCompleted');
+    }
+}
+
+[data-status="current"]{
+    .progress-list--status{
+        background: lighten($color: color('statusCurrent'), $amount: 30%);
+        color: color('statusCurrent');
+    }
+    .progress-list--icon{
+        border-color: color('statusCurrent');
+        background-color: color('statusCurrent');
+        color: color('colorWhite');
+    }
+}

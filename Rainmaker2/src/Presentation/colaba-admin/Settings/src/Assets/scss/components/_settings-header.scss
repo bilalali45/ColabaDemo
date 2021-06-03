@@ -1,0 +1,26 @@
+.settings__header{
+    padding: 15px 25px;
+    background-color: color('widgetBg');
+    border-bottom: 1px solid color('border');
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 60px;
+
+    @include headings{
+        margin: 0;
+    }
+    h2,.h2{
+        @include headingStyle;
+        font-size: fontSize('lg');
+    }
+
+    .settings-btn-goback{
+        font-size: fontSize('lg')*1.4;
+        color: color('base');
+        
+        &.pull-right{
+            padding-right: 10px;
+        }
+    }
+}

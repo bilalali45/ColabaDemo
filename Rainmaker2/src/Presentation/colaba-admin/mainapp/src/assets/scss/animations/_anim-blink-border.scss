@@ -1,0 +1,70 @@
+@keyframes blinkRedBorder {
+    0%{
+        border-color: color('border');
+    }
+    10%{
+        border-color: $danger;
+    }
+    20%{
+        border-color: color('border');
+    }
+    30%{
+        border-color: $danger;
+    }
+    40%{
+        border-color: color('border');
+    }
+    50%{
+        border-color: $danger;
+    }
+    60%{
+        border-color: color('border');
+    }
+    70%{
+        border-color: $danger;
+    }
+    80%{
+        border-color: color('border');
+    }
+    90%{
+        border-color: $danger;
+    }
+    100%{
+        border-color: $danger;
+    }
+}
+@-webkit-keyframes blinkRedBorder {
+    0%{
+        border-color: color('border');
+    }
+    10%{
+        border-color: $danger;
+    }
+    20%{
+        border-color: color('border');
+    }
+    30%{
+        border-color: $danger;
+    }
+    40%{
+        border-color: color('border');
+    }
+    50%{
+        border-color: $danger;
+    }
+    60%{
+        border-color: color('border');
+    }
+    70%{
+        border-color: $danger;
+    }
+    80%{
+        border-color: color('border');
+    }
+    90%{
+        border-color: $danger;
+    }
+    100%{
+        border-color: $danger;
+    }
+}

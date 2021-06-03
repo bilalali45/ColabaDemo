@@ -1,0 +1,808 @@
+import React, {
+  FunctionComponent,
+  useState,
+  useRef,
+  useEffect,
+  useContext,
+  ChangeEvent
+} from 'react';
+import {TemplateActions} from '../../../Store/actions/TemplateActions';
+import {TemplateActionsType} from '../../../Store/reducers/TemplatesReducer';
+import {Store} from '../../../Store/Store';
+import {isTypeNode, updateDecorator} from 'typescript';
+import Accordion from 'react-bootstrap/Accordion';
+import ContextAwareToggle from '../../Shared/ContextAwareToggle';
+import ContentBody from '../../Shared/ContentBody';
+import AddDocsPopup from '../../Shared/AddDocsPopup';
+import {useAccordionToggle} from 'react-bootstrap/AccordionToggle';
+import AddDocument from '../../AddDocuments/AddDocuments';
+import {Document} from '../../../Entities/Models/Document';
+import Nothing from '../../Shared/Nothing';
+import {LocalDB} from '../../../Utils/LocalDB';
+import {Role} from '../../../Store/Navigation';
+import {Template} from '../../../Entities/Models/Template';
+import {MyTemplate} from '../../DocumentTemplates/_DocumentTemplates/_TemplateListContainer';
+
+interface ManageDocumentTemplateBodyProps {
+  setLoaderVisible: Function;
+  listContainerElRef: any;
+  loaderVisible: boolean;
+}
+
+const ManageDocumentTemplateBody: React.FC<ManageDocumentTemplateBodyProps> = ({
+  children,
+  setLoaderVisible,
+  listContainerElRef,
+  loaderVisible
+}) => {
+  const {state, dispatch} = useContext(Store);
+  const [editTitleview, seteditTitleview] = useState<boolean>(false);
+  const [newNameText, setNewNameText] = useState<string>('');
+  const [nameError, setNameError] = useState<string>();
+  const [addRequestSent, setAddRequestSent] = useState<boolean>(false);
+  const [removeDocName, setRemoveDocName] = useState<string>();
+
+  const templateManager: any = state.templateManager;
+  const currentTemplate = templateManager?.currentTemplate;
+  const templates = templateManager?.templates;
+  const templateDocuments = templateManager?.templateDocuments;
+  const categoryDocuments = templateManager?.categoryDocuments;
+
+
+  console.log(templates);
+
+  // Set State
+  const [dataState, setDataState] = useState(templates);
+  const [getAddDocs, setAddDocs] = useState(false);
+  const [userRole, setUserRole] = useState();
+
+  const updateTemplateList = (list: any) => {
+    list?.forEach((item: any) => {
+      item.confirmDelete = false;
+    });
+    setDataState(list);
+  };
+
+  useEffect(() => {
+    getAndSetUserRole();
+  }, []);
+
+  useEffect(() => {
+    if (!templates) {
+      fetchTemplatesList();
+    }
+    return () => {
+      fetchTemplatesList();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!categoryDocuments) {
+      fetchCurrentCatDocs();
+    }
+
+    if (currentTemplate) {
+      seteditTitleview(false);
+    }
+
+    if (!currentTemplate) {
+      seteditTitleview(false);
+    }
+    setCurrentTemplateDocs(currentTemplate);
+  }, [templateDocuments?.length, currentTemplate?.id]);
+
+  // useEffect(() => {
+  //     setNewNameText(currentTemplate?.name)
+  // }, [newNameText]);
+
+  
+  useEffect(() => {
+    setDataState(templates);
+    updateTemplateList(templates);
+  }, [templates?.length])
+
+
+  const getAndSetUserRole = () => {
+    let role: any = LocalDB.getUserRole();
+    setUserRole(role);
+  };
+
+  const clearOld = () => {
+    dispatch({type: TemplateActionsType.SetCurrentTemplate, payload: null});
+    dispatch({type: TemplateActionsType.SetTemplateDocuments, payload: null});
+  };
+
+  const setCurrentTemplateDocs = async (template: any) => {
+    if (!currentTemplate) return '';
+    setLoaderVisible(!loaderVisible);
+    const templateDocs = await TemplateActions.fetchTemplateDocuments(
+      template?.id
+    );
+    if (templateDocs) {
+      dispatch({
+        type: TemplateActionsType.SetTemplateDocuments,
+        payload: templateDocs
+      });
+    }
+    setLoaderVisible(false);
+  };
+
+  const fetchTemplatesList = async (currTempInd: number = 0) => {
+    setLoaderVisible(true);
+    let newTemplates: any = await TemplateActions.fetchTemplates();
+    if (newTemplates) {
+      dispatch({
+        type: TemplateActionsType.SetTemplates,
+        payload: newTemplates
+      });
+      dispatch({
+        type: TemplateActionsType.SetCurrentTemplate,
+        payload: newTemplates[currTempInd]
+      });
+      updateTemplateList(newTemplates);
+    }
+    setLoaderVisible(false);
+    if (listContainerElRef?.current && listContainerElRef?.current?.scrollTo) {
+      listContainerElRef?.current?.scrollTo(0, 0);
+    }
+  };
+
+  const changeCurrentTemplate = async (template: Template) => {
+    dispatch({
+      type: TemplateActionsType.ToggleAddDocumentBox,
+      payload: {value: false}
+    });
+
+    if (currentTemplate?.id === template.id) {
+      return;
+    }
+    clearOld();
+    dispatch({
+      type: TemplateActionsType.SetCurrentTemplate,
+      payload: template
+    });
+  };
+
+  const fetchCurrentCatDocs = async () => {
+    let currentCatDocs: any = await TemplateActions.fetchCategoryDocuments();
+    if (currentCatDocs) {
+      dispatch({
+        type: TemplateActionsType.SetCategoryDocuments,
+        payload: currentCatDocs
+      });
+    }
+  };
+  const addDocumentToList = async (doc: Document, type: string) => {
+    try {
+      let success = await TemplateActions.addDocument(
+        currentTemplate?.id,
+        doc?.docTypeId || doc?.docType,
+        type
+      );
+      if (success) {
+        let docs = await TemplateActions.fetchTemplateDocuments(
+          currentTemplate?.id
+        );
+        dispatch({
+          type: TemplateActionsType.SetTemplateDocuments,
+          payload: docs
+        });
+      }
+    } catch (error) {}
+  };
+  // Function For Toggle Templates Data
+  const accordionHandler = (e: any, template: Template) => {
+    setAddDocs(false);
+    changeCurrentTemplate(template);
+    setDataState((pre: any) => {
+      return pre.map((item: any, i: any) => {
+        if (item.name !== template.name) {
+          item.open = false;
+        } else {
+          item.open = !item.open;
+        }
+        return item;
+      });
+    });
+  };
+
+  // For Delete List Document
+  const removeDoc = async (templateId: string, documentId: string) => {
+    setAddRequestSent(true);
+    setLoaderVisible(true);
+    setRemoveDocName(documentId);
+    let isDeleted = await TemplateActions.deleteTemplateDocument(
+      templateId,
+      documentId
+    );
+    if (isDeleted === 200) {
+      await setCurrentTemplateDocs(currentTemplate);
+    }
+    setLoaderVisible(false);
+    setAddRequestSent(false);
+  };
+  // For Delete Template Confirmation
+  const deleteTemplateConfirmation = (e: any, tempName: any) => {
+    setDataState((pre: any) => {
+      return pre.map((item: any, i: any) => {
+        if (item.name !== tempName) {
+          item.confirmDelete = false;
+        } else {
+          item.confirmDelete = !item.confirmDelete;
+        }
+        return item;
+      });
+    });
+  };
+
+  // For Add Documents Popup Show
+  const addDocs = () => {
+    setAddDocs(!getAddDocs);
+  };
+
+  // For Edit Template Name
+  const editNameTemplate = (e: any, tempName: any, templates: string) => {
+    if (userRole === Role.MCU_ROLE && templates === 'TenantTemplates') return;
+    setNewNameText(tempName);
+    setDataState((pre: any) => {
+      return pre.map((item: any, i: any) => {
+        if (item.name !== tempName) {
+          item.edit = false;
+        } else {
+          item.edit = !item.edit;
+        }
+        return item;
+      });
+    });
+  };
+
+  const setUnEditable = (value: string, docName: string) => {
+    setDataState((pre: any) => {
+      return pre.map((item: any) => {
+        item.edit = false;
+        if (item.name == docName) {
+          item.name = value;
+        }
+        return item;
+      });
+    });
+  };
+
+  const renameTemplate = async (
+    event: any,
+    docName: string,
+    shouldUpdated: boolean
+  ) => {
+    let value = event.target.value;
+
+    if (value === currentTemplate?.name) {
+      setUnEditable(value, docName);
+      return;
+    }
+
+    if (addRequestSent) {
+      return;
+    }
+
+    if (!value?.trim()?.length) {
+      setNameError('Template name cannot be empty');
+      alert('Template name cannot be empty');
+      return;
+    }
+
+    if (
+      templates.find(
+        (t: Template) =>
+          t.name.toLowerCase().trim() === value.toLowerCase().trim() &&
+          t.id !== currentTemplate?.id
+      )
+    ) {
+      setNameError(`Template name must be unique`);
+      alert(`Template name must be unique`);
+      return;
+    }
+
+    setAddRequestSent(true);
+    setLoaderVisible(true);
+
+    // if (!currentTemplate) {
+    //     await addNewTemplate(value.trim());
+    //     toggleRename();
+    //     setLoaderVisible(false);
+    //     setAddRequestSent(false);
+    //     return;
+    // }
+
+    setUnEditable(value, docName);
+
+    const renamed = await TemplateActions.renameTemplate(
+      currentTemplate?.id,
+      value?.trim()
+    );
+    if (renamed) {
+      let updatedTemplates: any = await TemplateActions.fetchTemplates();
+      if (updatedTemplates) {
+        dispatch({
+          type: TemplateActionsType.SetTemplates,
+          payload: updatedTemplates
+        });
+        dispatch({
+          type: TemplateActionsType.SetCurrentTemplate,
+          payload: updatedTemplates.find(
+            (ut: Template) => ut.id === currentTemplate.id
+          )
+        });
+      }
+    }
+    setLoaderVisible(false);
+    setAddRequestSent(false);
+  };
+
+  //Delete Render
+  const renderDeleteButton = (data: any) => {
+    return (
+      <>
+        {/* Delete Option Snipet */}
+        <div className="settings__list-alert">
+          <span className="settings__list-alert--text">
+            Remove this template?
+          </span>
+          <div className="settings__list-alert--options">
+            <button
+              className="settings-btn settings-btn-sm settings-btn-secondry"
+              onClick={() => {
+                setDataState((pre: any) => {
+                  return pre.map((item: any, i: any) => {
+                    if (item.name == item.name) {
+                      item.confirmDelete = false;
+                    }
+                    return item;
+                  });
+                });
+              }}
+            >
+              No
+            </button>
+            <button
+              className="settings-btn settings-btn-sm settings-btn-primary"
+              onClick={() => {
+                setDataState((pre: any) => {
+                  return pre.map((item: any, i: any) => {
+                    if (item.name == item.name) {
+                      item.confirmDelete = false;
+                    }
+                    return item;
+                  });
+                });
+              }}
+            >
+              Yes
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const renderEmptyBox = () => {
+    return (
+      <>
+        <Nothing heading="Nothing" text="Your template is empty">
+          <button className="settings-btn" onClick={addDocs}>
+            Add Document <i className="zmdi zmdi-plus"></i>
+          </button>
+        </Nothing>
+      </>
+    );
+  };
+
+  //Remove Template
+  const removeTemplate = async (templateId: string) => {
+    setLoaderVisible(true);
+    let isDeleted = await TemplateActions.deleteTemplate(templateId);
+    if (isDeleted) {
+      let currentTemplateInd = templates.findIndex(
+        (t: {id: string}) => t.id === templateId
+      );
+      if (
+        currentTemplateInd ===
+        templates.filter((t: {type: string}) => t.type === MyTemplate).length -
+          1
+      ) {
+        currentTemplateInd = 0;
+      }
+      fetchTemplatesList(currentTemplateInd);
+    }
+    setLoaderVisible(false);
+  };
+
+  //Render Remove
+  const renderRemoveButton = (item: Template) => {
+    return (
+      <>
+        {/* Delete Option Snipet */}
+        <div className="settings__list-alert">
+          <span className="settings__list-alert--text">
+            Remove this template?
+          </span>
+          <div className="settings__list-alert--options">
+            <button
+              className="settings-btn settings-btn-sm settings-btn-secondry"
+              onClick={() => {
+                setDataState((pre: any) => {
+                  return pre.map((n: Template, i: any) => {
+                    if (n.name == item.name) {
+                      n.confirmDelete = false;
+                    }
+                    return n;
+                  });
+                });
+              }}
+            >
+              No
+            </button>
+            <button
+              className="settings-btn settings-btn-sm settings-btn-primary"
+              onClick={() => {
+                setDataState((pre: any) => {
+                  return pre.map((n: Template, i: any) => {
+                    if (n.name == item.name) {
+                      n.confirmDelete = false;
+                    }
+                    return n;
+                  });
+                });
+                removeTemplate(item.id);
+              }}
+            >
+              Yes
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const renderTemplateItem = (item: Template, isShow: boolean) => {
+     
+    return (
+      <>
+        <span className="settings__accordion-signable-header">
+          <span
+            className="settings__accordion-signable-toggle-btn"
+            onClick={(e) => accordionHandler(e, item)}
+          >
+            <span className="settings__accordion-signable-toggle-sign"></span>
+          </span>
+          <span className="settings__accordion-signable-header-title">
+            {item.edit == true ? (
+              <input
+                type="text"
+                value={newNameText}
+                maxLength={50}
+                autoFocus={true}
+                placeholder="New Template"
+                onFocus={(e: any) => {
+                  let target = e.target;
+                  setTimeout(() => {
+                    target?.select();
+                  }, 0);
+                }}
+                onBlur={(e: any) => {
+                  renameTemplate(e, item.name, true);
+                }}
+                onKeyDown={(e: any) => {
+                  if (e.keyCode === 13) {
+                    setNewNameText(e.target.value);
+                    renameTemplate(e, item.name, true);
+                  }
+                }}
+                onChange={({
+                  target: {value}
+                }: ChangeEvent<HTMLInputElement>) => {
+                  setNewNameText(value);
+                  if (!value?.length || value?.length > 49) {
+                    return;
+                  }
+                  setAddRequestSent(false);
+                  setLoaderVisible(false);
+                  setNameError('');
+                }}
+              />
+            ) : (
+              <>
+                <span
+                  className="settings__accordion-signable-header-title--text"
+                  onDoubleClick={(e) =>
+                    editNameTemplate(
+                      e,
+                      item.name,
+                      isShow ? 'MCUTemplates' : 'TenantTemplates'
+                    )
+                  }
+                  onClick={(e) => accordionHandler(e, item)}
+                >
+                  {item.name}
+                </span>
+                {isShow ? (
+                  <span
+                    className="settings__delete-element"
+                    onClick={(e) => deleteTemplateConfirmation(e, item.name)}
+                  >
+                    <i className="zmdi zmdi-close"></i>
+                  </span>
+                ) : (
+                  userRole === Role.ADMIN_ROLE && (
+                    <span
+                      className="settings__delete-element"
+                      onClick={(e) => deleteTemplateConfirmation(e, item.name)}
+                    >
+                      <i className="zmdi zmdi-close"></i>
+                    </span>
+                  )
+                )}
+              </>
+            )}
+          </span>
+        </span>
+      </>
+    );
+  };
+
+  // Render new template with empty document screen
+  const renderNewTemplate = () => {
+    return (
+      //Add New Template Chunk
+      <>
+        <div className={`settings__accordion-signable-panel open`}>
+          <span className="settings__accordion-signable-header">
+            {/* <span className="settings__accordion-signable-toggle-btn" onClick={(e) => accordionHandler(e, 'New Template')}> */}
+            <span className="settings__accordion-signable-toggle-btn">
+              <span className="settings__accordion-signable-toggle-sign"></span>
+            </span>
+            <span className="settings__accordion-signable-header-title">
+              {/* <input type="text" value={"New Template"} autoFocus={true} onBlur={cancleEditNameTemplate} onKeyPress={e => { updateNameTempleOnEnter(e) }} onChange={e => updateNameTemplate(e, 'New Template')} /> */}
+            </span>
+          </span>
+          <div
+            id={String(45 + 1)}
+            className="settings__accordion-signable-collapse"
+          >
+            <div className="settings__accordion-signable-body">
+              <Nothing heading="Nothing" text="Your template is empty">
+                <button className="settings-btn" onClick={addDocs}>
+                  Add Document <i className="zmdi zmdi-plus"></i>
+                </button>
+              </Nothing>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  // Accordion for My Templates
+  const accordionMyTemplates = () => {
+    return (
+      <>
+        <h5 className="h5 manage-doc-temp-heading">My Templates</h5>
+        <Accordion
+          defaultActiveKey="0"
+          className="settings__accordion-signable"
+          id="accordionMyTemplates"
+        >
+          {dataState?.map((item: Template, index: any) => {
+            if (item?.type == 'MCU Template') {
+              return (
+                <div 
+                  className={`settings__accordion-signable-panel ${
+                    item.open ? 'open' : 'close'
+                  }`}
+                  key={item.id}
+                  id={`myTemplate_${index + 1}`}
+                >
+                  {item.confirmDelete == true
+                    ? renderRemoveButton(item)
+                    : renderTemplateItem(item, true)}
+
+                  {item.open && (
+                    <div
+                      id={String(index + 1)}
+                      className="settings__accordion-signable-collapse"
+                    >
+                      <div className="settings__accordion-signable-body">
+                        <ul>
+                          {templateDocuments === null && (
+                            <span>Loading...</span>
+                          )}
+                          {templateDocuments &&
+                            templateDocuments.length === 0 &&
+                            renderEmptyBox()}
+
+                          {templateDocuments != null
+                            ? templateDocuments.map((ele: any) => {
+                                return (
+                                  <li key={ele.typeId}>
+                                    <a href="javascript:;">
+                                      {ele.docName}
+                                      <span
+                                        className="settings__delete-element"
+                                        onClick={(e) =>
+                                          removeDoc(
+                                            currentTemplate?.id,
+                                            ele?.docId
+                                          )
+                                        }
+                                      >
+                                        <i className="zmdi zmdi-close"></i>
+                                      </span>
+                                    </a>
+                                  </li>
+                                );
+                              })
+                            : renderNewTemplate()}
+
+                          {templateDocuments && templateDocuments.length > 0 && (
+                            <li>
+                              <button
+                                className="settings-btn"
+                                onClick={addDocs}
+                              >
+                                Add Document <i className="zmdi zmdi-plus"></i>
+                              </button>
+                            </li>
+                          )}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            }
+          })}
+        </Accordion>
+      </>
+    );
+  };
+
+  //Accordion for System Template
+  const accordionSystemTemplate = () => {
+    return (
+      <>
+        <h5 className="h5 manage-doc-temp-heading">System Templates</h5>
+        <Accordion
+          defaultActiveKey="1"
+          className="settings__accordion-signable"
+          id="accordionSystemTemplate"
+        >
+          {dataState?.map((item: Template, index: any) => {
+            if (item.type == 'Tenant Template') {
+              return (
+                <div
+                  className={`settings__accordion-signable-panel ${
+                    item.open == true ? 'open' : 'close'
+                  }`}
+                  key={item.id}
+                >
+                  {
+                    item.confirmDelete == true
+                      ? renderRemoveButton(item)
+                      : renderTemplateItem(item, false)
+                    // <>
+                    //     <span className="settings__accordion-signable-header">
+                    //         <span className="settings__accordion-signable-toggle-btn" onClick={(e) => accordionHandler(e, item)}>
+                    //             <span className="settings__accordion-signable-toggle-sign"></span>
+                    //         </span>
+                    //         <span className="settings__accordion-signable-header-title">
+                    //             {item.edit == true ?
+                    //                 <input type="text" value={item.name} autoFocus={true} onBlur={cancleEditNameTemplate} onKeyPress={e => { updateNameTempleOnEnter(e) }} onChange={e => updateNameTemplate(e, item.name)} /> :
+                    //                 <>
+                    //                     <span className="settings__accordion-signable-header-title--text" onDoubleClick={e => editNameTemplate(e, item.name, 'TenantTemplate')} onClick={(e) => accordionHandler(e, item)}>
+                    //                         {item.name}
+                    //                     </span>
+                    //                     { userRole === Role.ADMIN_ROLE &&
+                    //                         <span className="settings__delete-element" onClick={e => deleteTemplateConfirmation(e, item.name)}><i className="zmdi zmdi-close"></i></span>
+                    //                     }
+
+                    //                 </>
+                    //             }
+                    //         </span>
+                    //     </span>
+                    // </>
+                  }
+
+                  {item.open && (
+                    <div
+                      id={String(index + 1)}
+                      className="settings__accordion-signable-collapse"
+                    >
+                      <div className="settings__accordion-signable-body">
+                        <ul>
+                          {templateDocuments === null && (
+                            <span>Loading...</span>
+                          )}
+                          {templateDocuments &&
+                            templateDocuments.length === 0 &&
+                            renderEmptyBox()}
+                          {templateDocuments != null &&
+                            templateDocuments.map((ele: any) => {
+                              return (
+                                <li key={ele.typeId}>
+                                  <a href="javascript:;">
+                                    {ele.docName}
+                                    {userRole === Role.ADMIN_ROLE && (
+                                      <span
+                                        className="settings__delete-element"
+                                        onClick={(e) =>
+                                          removeDoc(
+                                            currentTemplate?.id,
+                                            ele?.docId
+                                          )
+                                        }
+                                      >
+                                        <i className="zmdi zmdi-close"></i>
+                                      </span>
+                                    )}
+                                  </a>
+                                </li>
+                              );
+                            })}
+
+                          {userRole === Role.ADMIN_ROLE &&
+                            templateDocuments &&
+                            templateDocuments.length > 0 && (
+                              <li>
+                                <button
+                                  className="settings-btn"
+                                  onClick={addDocs}
+                                >
+                                  Add Document{' '}
+                                  <i className="zmdi zmdi-plus"></i>
+                                </button>
+                              </li>
+                            )}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            }
+          })}
+        </Accordion>
+      </>
+    );
+  };
+
+  return (
+    <ContentBody className="manage-doc-temp-body">
+      {
+        getAddDocs && (
+          <AddDocument
+            addDocumentToList={addDocumentToList}
+            setLoaderVisible={setLoaderVisible}
+            popoverplacement="bottom-start"
+          />
+        )
+        //  <AddDocsPopup />
+      }
+
+      <div className="row">
+        <div className="col-md-7">{accordionMyTemplates()}</div>
+        <div className="col-md-5">{accordionSystemTemplate()}</div>
+      </div>
+      <button
+        onClick={() => {
+            let newTemp = new Template();
+            newTemp.type = MyTemplate;
+            newTemp.name = 'New Template' 
+            setDataState([newTemp, ...dataState]);
+        }}
+      >
+        Add Me!!!!
+      </button>
+    </ContentBody>
+  );
+};
+
+export default ManageDocumentTemplateBody;

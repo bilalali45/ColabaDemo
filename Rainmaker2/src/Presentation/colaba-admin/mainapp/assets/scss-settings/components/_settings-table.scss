@@ -1,0 +1,82 @@
+.settings__table{
+    display: table;
+    @include font(normal,1,'sm','base');
+    color: color('base');
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 16px;
+
+    &-sorter{
+        color: color('primary');
+        display: inline-block;
+        vertical-align: middle;
+        padding: 0 10px;
+    }
+
+    &--row{
+        display: table-row;
+        margin-bottom: 15px;
+        
+    }
+
+    &--th,
+    &--td{
+        display: table-cell;
+        position: relative;
+
+        .label{
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 0.8;
+            padding:5px 15px;
+            color: color('label');
+            @include font(normal,1.4,'sm','base');
+            input{
+                margin: 0 5px;
+                vertical-align: middle;
+            }
+
+            &:first-of-type{
+                padding-left: 0;
+            }
+        }
+        select{
+            vertical-align: middle;
+            border: 1px solid color('border');
+            color: color('base');
+            padding: 2px;
+            @include font(normal,1.4,'sm','base');
+        }
+    }
+
+    &--th{
+        @include font(500,1,'sm','base');
+        border-spacing: 0 10px;
+        padding: 10px 15px;
+    }
+
+    &--td{
+        background-color: color('tableStripBg');
+        padding: 15px;
+    }
+
+    &--seprate-right{
+        display: block;
+        @include font(500,1.4,'nr','base');
+        &::after{
+            content: "";
+            height: calc(100% - 16px);
+            width: 2px;
+            background-color: color('border');
+            display: block;
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+        &.notOff{
+            color: color('primary');
+        }
+    }
+
+}

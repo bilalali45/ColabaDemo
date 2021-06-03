@@ -1,0 +1,4 @@
+// Get Colors From Object
+@function dColor($value){
+    @return map-get($dashboard,$value);
+}

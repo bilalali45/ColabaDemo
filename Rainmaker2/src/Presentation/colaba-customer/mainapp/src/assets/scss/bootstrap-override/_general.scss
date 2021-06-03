@@ -1,0 +1,11 @@
+.container {
+    // padding-left : 30px;
+    // padding-right: 30px;
+
+    @media screen and (max-width:rem(767px)) {}
+}
+
+.btn-lg, 
+.btn-group-lg > .btn {
+    padding: rem(16px) rem(45px) !important;
+}

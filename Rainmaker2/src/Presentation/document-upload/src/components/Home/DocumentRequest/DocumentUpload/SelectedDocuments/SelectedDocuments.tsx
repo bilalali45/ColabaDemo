@@ -16,8 +16,7 @@ import cameraIcon from "../../../../../assets/images/camera-icon.svg";
 import folderIcon from "../../../../../assets/images/folder-icon.svg";
 //import { PSPDFKitWebViewer } from "../../../../../shared/Components/PSPDFKit/PSPDFKitWebViewer";
 import { DocumentView } from "../../../../../shared/Components/DocumentView/DocumentView";
-import { render } from "@testing-library/react";
-import {SVGUploadCameraIcon, SVGUploadFolderIcon} from "../../../../../shared/Components/SVGs";
+import { SVGUploadCameraIcon, SVGUploadFolderIcon } from "../../../../../shared/Components/SVGs";
 
 interface SelectedDocumentsType {
   addMore: Function;
@@ -73,7 +72,7 @@ export const SelectedDocuments = ({
   const location = useLocation();
   const history = useHistory();
 
- 
+
   useEffect(() => {
     setFileInput(inputRef.current);
 
@@ -99,7 +98,7 @@ export const SelectedDocuments = ({
 
       return f;
     });
-   
+
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
   };
 
@@ -209,7 +208,7 @@ export const SelectedDocuments = ({
       }
       return f;
     });
-    
+
     dispatch({ type: DocumentsActionType.AddFileToDoc, payload: updatedFiles });
   };
 
@@ -324,7 +323,7 @@ export const SelectedDocuments = ({
       return true;
     }
   }
-  
+
   const checkFreezBody = async () => {
 
     if (document.body.style.overflow == "hidden") {
@@ -359,7 +358,7 @@ export const SelectedDocuments = ({
           <label
             htmlFor="inputFile1"
             data-testid="add-more-btn"
-           // className="addmoreDoc camera-wrap"
+            // className="addmoreDoc camera-wrap"
             className={subBtnPressed ? "addmoreDoc camera-wrap disabled" : "addmoreDoc camera-wrap"}
             onClick={(e) => {
               //setFileInput(inputRef2.current);
@@ -368,7 +367,7 @@ export const SelectedDocuments = ({
             }}
           >
             {/*<span className="iconic-btn-img"><img src={cameraIcon} className="img-responsive" /></span>*/}
-            <span className="iconic-btn-img"><SVGUploadCameraIcon/></span>
+            <span className="iconic-btn-img"><SVGUploadCameraIcon /></span>
             <span className="iconic-btn-lbl">   Camera </span>
             <input
               onChange={(e) => {
@@ -396,7 +395,7 @@ export const SelectedDocuments = ({
             }}
           >
             {/*<span className="iconic-btn-img"><img src={folderIcon} className="img-responsive" /></span>*/}
-            <span className="iconic-btn-img"><SVGUploadFolderIcon/></span>
+            <span className="iconic-btn-img"><SVGUploadFolderIcon /></span>
             <span className="iconic-btn-lbl">   Folder </span>
             <input
               onChange={(e) => {
@@ -429,7 +428,7 @@ export const SelectedDocuments = ({
           {" "}
     Add more files
           <input
-            onChange={(e) => {            
+            onChange={(e) => {
               setFiles(e.target.files, fileToRemove);
             }}
             data-testid="file-input"

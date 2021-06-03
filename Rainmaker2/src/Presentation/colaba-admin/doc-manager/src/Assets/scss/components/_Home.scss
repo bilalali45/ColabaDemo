@@ -1,0 +1,24 @@
+.c-Home {
+    display: block;
+    &-wrap {
+        display: flex;
+        width: 100%;
+        background: color("colorWhite");
+        min-height: 100%;
+        min-height: calc(100vh - 100px);
+        justify-content: space-between;
+    }
+
+    &-left {
+        width: 45%;
+        border-right: 1px solid color("border");
+        position: relative;
+    }
+
+    &-right {
+        width: 55%;
+    }
+}
+
+
+

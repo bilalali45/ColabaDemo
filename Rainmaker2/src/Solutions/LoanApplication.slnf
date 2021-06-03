@@ -1,0 +1,20 @@
+{
+  "solution": {
+    "path": "Rainmaker2.sln",
+    "projects": [
+      "..\\Library\\Colaba\\TenantConfig.Common\\TenantConfig.Common.csproj",
+      "..\\Library\\Colaba\\TenantConfig.Data\\TenantConfig.Data.csproj",
+      "..\\Library\\Colaba\\TenantConfig.Entity\\TenantConfig.Entity.csproj",
+      "..\\Library\\Extensions\\Extensions.csproj",
+      "..\\Library\\URF\\TrackableEntities.Common.Core\\TrackableEntities.Common.Core.csproj",
+      "..\\Library\\URF\\TrackableEntities.EF.Core\\TrackableEntities.EF.Core.csproj",
+      "..\\Library\\URF\\URF.Core.Abstractions\\URF.Core.Abstractions.csproj",
+      "..\\Library\\URF\\URF.Core.EF\\URF.Core.EF.csproj",
+      "..\\MicroServices\\LoanApplication\\LoanApplication.API\\LoanApplication.API.csproj",
+      "..\\MicroServices\\LoanApplication\\LoanApplication.Data\\LoanApplicationDb.Data.csproj",
+      "..\\MicroServices\\LoanApplication\\LoanApplication.Entity\\LoanApplicationDb.Entity.csproj",
+      "..\\MicroServices\\LoanApplication\\LoanApplication.Model\\LoanApplication.Model.csproj",
+      "..\\MicroServices\\LoanApplication\\LoanApplication.Service\\LoanApplication.Service.csproj"
+    ]
+  }
+}

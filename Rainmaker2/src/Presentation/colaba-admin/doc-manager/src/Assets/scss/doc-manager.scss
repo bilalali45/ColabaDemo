@@ -1,0 +1,23 @@
+@import 'rainsoft-rc/dist/sharedassets/scss/common-includes';
+@import 'rainsoft-rc/dist/sharedassets/scss/bootstrap/bootstrap';
+
+@import './doc-manager-config';
+
+//Function
+@import './functions/color',
+        './functions/dColor',
+        './functions/fontFamily',
+        './functions/fontSizes';
+
+
+// Components
+@import './components/General',
+        './components/Animations',
+        './components/Header',
+        './components/Footer',
+        './components/Home',
+        './components/Documents',
+        './components/DocumentsHeader',
+        './components/Workbench',
+        './components/Viewer',
+        './components/ViewerThumbnails';

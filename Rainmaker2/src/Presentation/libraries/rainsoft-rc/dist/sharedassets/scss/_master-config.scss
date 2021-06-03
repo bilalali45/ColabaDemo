@@ -1,0 +1,45 @@
+/*===============================
+        COLORS PALLETS
+===============================*/
+$color-primary      : #4484f4;
+$color-secondry     : #7e829e;
+
+// Status Colors
+$color-danger       : #ff5652;
+$color-success      : #00ad46;
+$color-warning      : #ffc640;
+ 
+// Gray Scale
+$color-gray-8000    : #2D2D2D;
+$color-gray-7000    : #4e4e4e;
+$color-gray-6000    : #919191;
+$color-gray-5000    : #a7a7a7;
+$color-gray-4000    : #cccccc;
+$color-gray-3500    : #DBDBDB;
+$color-gray-3000    : #e5e5e5;
+$color-gray-2000    : #f8f8f8;
+$color-gray-1000    : #f6f6f6;
+$color-gray-default : #f3f3f3;
+ 
+// Blue Scale
+$color-blue-8000    : #04202e;
+
+// Universal Colors
+$color-dark         : #000000;
+$color-light        : #ffffff;
+
+
+/*===============================
+     Overwrite Bootstrap
+===============================*/
+$grid-gutter-width: 30px !default;
+$primary: $color-primary !default;
+$secondary: $color-secondry !default;
+$danger: $color-danger !default;
+
+
+/*===============================
+        Fonts Configrations
+===============================*/
+$font-base      : 'Rubik' #{', sans-serif'};
+$font-heading   : 'Rubik' #{', sans-serif'};

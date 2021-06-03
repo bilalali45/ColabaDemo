@@ -1,8 +1,9 @@
-﻿using Setting.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Notification.Model;
+using SettingModel = Setting.Model.SettingModel;
 
 namespace Setting.Service
 {
@@ -15,5 +16,7 @@ namespace Setting.Service
                                   short deliveryModeId,
                                   short? delayedInterval,
                                   IEnumerable<string> authHeader);
+
+        Task<bool> SendNotification(NotificationModel model);
     }
 }

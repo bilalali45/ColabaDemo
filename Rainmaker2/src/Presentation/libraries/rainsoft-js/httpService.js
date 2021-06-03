@@ -49,44 +49,48 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.Http = void 0;
 var axios_1 = require("axios");
+var universal_cookie_1 = require("universal-cookie");
+var cookies = new universal_cookie_1["default"]();
 var Http = /** @class */ (function () {
-    function Http(baseUrl, authKey) {
+    function Http(baseUrl, authKey, colabaWebUrl) {
         if (baseUrl === void 0) { baseUrl = ""; }
         if (authKey === void 0) { authKey = ""; }
+        if (colabaWebUrl === void 0) { colabaWebUrl = ""; }
         if (!Http.instance) {
             Http.baseUrl = baseUrl;
             Http.authKey = authKey;
+            Http.colabaWebUrl = colabaWebUrl;
             Http.instance = this;
         }
         else {
             return Http.instance;
         }
     }
-    Http.get = function (url, customHeader) {
+    Http.get = function (url, customHeader, bearerNotRequired, defaultCookie) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.createRequest(this.methods.GET, url, customHeader)];
+                return [2 /*return*/, this.createRequest(this.methods.GET, url, '', customHeader, bearerNotRequired, defaultCookie)];
             });
         });
     };
-    Http.post = function (url, data, customHeader) {
+    Http.post = function (url, data, customHeader, bearerNotRequired, defaultCookie) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.createRequest(this.methods.POST, url, data, customHeader)];
+                return [2 /*return*/, this.createRequest(this.methods.POST, url, data, customHeader, bearerNotRequired, defaultCookie)];
             });
         });
     };
-    Http.put = function (url, data, customHeader) {
+    Http.put = function (url, data, customHeader, bearerNotRequired, defaultCookie) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.createRequest(this.methods.PUT, url, data, customHeader)];
+                return [2 /*return*/, this.createRequest(this.methods.PUT, url, data, customHeader, bearerNotRequired, defaultCookie)];
             });
         });
     };
-    Http["delete"] = function (url, data, customHeader) {
+    Http["delete"] = function (url, data, customHeader, bearerNotRequired, defaultCookie) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.createRequest(this.methods.DELETE, url, data, customHeader)];
+                return [2 /*return*/, this.createRequest(this.methods.DELETE, url, data, customHeader, bearerNotRequired, defaultCookie)];
             });
         });
     };
@@ -108,7 +112,7 @@ var Http = /** @class */ (function () {
         }
         return newUrl;
     };
-    Http.createRequest = function (reqType, url, data, customHeader) {
+    Http.createRequest = function (reqType, url, data, customHeader, bearerNotRequired, defaultCookie) {
         var _a, _b, _c, _d, _e, _f;
         return __awaiter(this, void 0, void 0, function () {
             var res, error_1;
@@ -116,7 +120,7 @@ var Http = /** @class */ (function () {
                 switch (_g.label) {
                     case 0:
                         _g.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1["default"].request(this.getConfig(reqType, url, data, customHeader))];
+                        return [4 /*yield*/, axios_1["default"].request(this.getConfig(reqType, url, data, customHeader, bearerNotRequired, defaultCookie))];
                     case 1:
                         res = _g.sent();
                         return [2 /*return*/, res];
@@ -127,7 +131,7 @@ var Http = /** @class */ (function () {
                             ((_e = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _e === void 0 ? void 0 : _e.data) === "Could not login" ||
                             ((_f = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _f === void 0 ? void 0 : _f.status) === 401) {
                             console.log("Request intercept token issue.");
-                            window.top.location.href = "/Account/LogOff";
+                            window.location.href = this.decodeString(window.sessionStorage.getItem("CookiePath")) || "/" + "app/signin";
                         }
                         console.log("API request error", error_1, "request url", url);
                         return [2 /*return*/, new Promise(function (_, reject) {
@@ -138,18 +142,25 @@ var Http = /** @class */ (function () {
             });
         });
     };
-    Http.getConfig = function (method, url, data, customHeader) {
+    Http.getConfig = function (method, url, data, customHeader, bearerNotRequired, defaultCookie) {
         if (customHeader === void 0) { customHeader = {}; }
+        if (bearerNotRequired === void 0) { bearerNotRequired = false; }
+        if (defaultCookie === void 0) { defaultCookie = false; }
         var completeUrl = this.createUrl(Http.baseUrl, url);
         var headers = customHeader;
-        //let auth = Auth.getAuth();
-        if (!url.includes("login") || !url.includes("authorize")) {
-            headers["Authorization"] = "Bearer " + this.decodeString(localStorage.getItem(this.authKey));
+        if (!bearerNotRequired) {
+            //if (!url.includes("login") || !url.includes("authorize")) {
+            headers["Authorization"] = "Bearer " + this.decodeString(cookies.get(this.authKey));
+            //}
+        }
+        if (this.colabaWebUrl) {
+            headers["ColabaWebUrl"] = this.colabaWebUrl;
         }
         var config = {
             method: method,
             url: completeUrl,
-            headers: headers
+            headers: headers,
+            withCredentials: defaultCookie ? true : false
         };
         if (data) {
             config.data = data;
@@ -172,6 +183,8 @@ var Http = /** @class */ (function () {
     Http.instance = null;
     Http.baseUrl = "";
     Http.authKey = "";
+    Http.colabaWebUrl = "";
+    Http.isBearer = false;
     Http.methods = {
         GET: "GET",
         POST: "POST",

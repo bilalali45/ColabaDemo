@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
+using TenantConfig.Common.DistributedCache;
 
 namespace Identity.CorrelationHandlersAndMiddleware
 {
@@ -31,6 +32,22 @@ namespace Identity.CorrelationHandlersAndMiddleware
             catch (Exception exception)
             {
                 _logger.LogWarning(exception, "Unable to get correlation id in header");
+            }
+
+            return string.Empty;
+        }
+        public string GetTenantModel()
+        {
+            try
+            {
+                var context = _httpContextAccessor.HttpContext;
+                var result = context?.Items[Constants.COLABA_TENANT] as TenantModel;
+
+                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogWarning(exception, "Unable to get tenant in header");
             }
 
             return string.Empty;

@@ -1,0 +1,211 @@
+.ContactUs {
+    color: color("font");
+    padding:15px 20px;
+
+    &--header {
+        display: block;
+        margin-bottom: 5px;
+        p {
+            margin: 0px;
+        }
+    }
+
+    &--body {
+        padding: 0;
+    }
+
+    &--user {
+        position: relative;
+        padding-left: 85px;
+        min-height: 100%;
+        padding-bottom: 20px;
+        border-right: 1px solid color("border");
+        padding-right: 15px;
+        @include media-breakpoint-down(md) {
+            padding-right: 0;
+            border-right: 0px solid color("border");
+            border-bottom: 1px solid color("border");
+            padding-bottom: 30px;
+          }
+        a {
+            color: color("heading");
+            overflow-wrap: break-word;
+        }
+
+        &---img {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        &---detail {
+            h2 {
+                font: 500 #{fontSize("nr") + "/" + 1.3} fontFamily("heading");
+                color: color("heading");
+                padding-right: 5px;
+                padding-top: 20px;
+                @include mobile {
+                    font: 500 #{fontSize("nr") + "/" + 1.3} fontFamily("heading");
+                }
+            }
+        }
+    }
+
+    &--user-id {
+        font: 900 #{fontSize("sm") + "/" + fontSize("sm")} fontFamily("heading");
+        color: color("colorBlack");
+        padding: 0;
+        opacity: 0.2;
+        display: block;
+        margin-top: 5px;
+        @include mobile {
+            font: 400 #{fontSize("nr") + "/" + 1} fontFamily("heading");
+        }
+    }
+
+    &--list {
+        @extend .list-style-none;
+        font: 400 #{fontSize("md") + "/" + fontSize("md")} fontFamily("base");
+        @include media-breakpoint-down(md) {
+            padding-top: 20px; 
+      }
+        > li {
+            padding: 0px 0;
+            display: block;
+            margin-bottom: 10px;
+            line-height: 1.2;
+
+            a {
+                color: color("light-purple");
+                font-size: fontSize('xmd');
+                display: block;
+                position: relative;
+                padding-left: 9px;
+                min-height: 20px;
+                a {
+                    padding:0;
+                }
+                &:hover {
+                    text-decoration: none;
+                }
+                @include media-breakpoint-down(md) {
+                     padding-left: 25px; 
+                     font-size: fontSize('xmd')-2;
+               }
+                i {
+                    font-size: fontSize('xmd');
+                    color: color('primary');
+                    position: absolute;
+                    left: -15px;
+                    top: 4px;
+
+                    @include media-breakpoint-down(md) {
+                        left: 0;
+                    }
+                }
+                span{
+                    span{
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: block;
+                    }   
+                }
+            }
+        }
+    }
+
+    &--user-image {
+        width: 70px;
+        height: 70px;
+        border: 5px solid #fff;
+        border-radius: 50%;
+        overflow: hidden;
+        position: relative;
+        margin: 0 auto;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+        float: left;
+        img {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 100%;
+            min-height: 100%;
+            @include transform(translateX(-50%));
+        }
+    }
+
+    &--left {
+        position: relative; 
+        padding-right: 30px;
+    }
+    &--right {
+        margin-left: -15px;
+        @include media-breakpoint-down(md) {
+            margin-left: 0;
+          }
+    }
+
+    .tt-svg {
+        svg {
+            width: map-get($font-size, "sm");
+            height: map-get($font-size, "sm");
+        }
+    }
+
+    &.ContactUs-mobile {
+        padding-bottom: 0;
+        margin-bottom: 5px;
+        .ContactUs--user {
+            border-bottom: 0px;
+            min-height: 90px;
+        }
+        .ContactUs--right {
+            clear: both;
+            border-top:1px solid color('border');
+            margin-left: -20px;
+            margin-right: -20px;
+            .ContactUs--list-mobile {
+             display: flex;   
+             align-items:center;
+             justify-content:space-between ;
+             vertical-align: middle;
+             padding-top: 5px;
+             padding-bottom: 5px;
+             li {
+                 margin-bottom: 0;
+                 border-right:1px solid color('border');
+                 width: 33.3%;
+                 padding: 5px 10px;
+                 &:last-child {
+                     border-right: 0px;
+                 }
+                 a {
+                     color: color('primary');
+                     font: 400 #{fontSize('sm') +'/1'} fontFamily('base');
+                     display: flex;
+                     align-items: center;
+                     min-height: 16px;
+                     padding-left: 0;
+                     padding-top: 0;
+                     margin-bottom: 0;
+                     @include mobile {
+                        font: 400 #{fontSize('nr') +'/1'} fontFamily('base');
+                    }
+                     > span {
+                        display: inline-block;
+                        display: inline-block;
+                        margin: 0 auto;
+                        position: relative;
+                        padding-left: 20px;
+
+                     }
+                     i {
+                         top:-2px;
+                         font-size: fontSize('xmd')+1;
+                     }
+                 }
+             }
+            }
+        }  
+    }
+}

@@ -1,0 +1,51 @@
+// :root {
+//     // HSL FOR Primary Color
+//     --color-primary-h: 218;
+//     --color-primary-s: 89%;
+//     --color-primary-l: 61%;
+
+//     --hsl-primary   :  var(--color-primary-h), var(--color-primary-s), var(--color-primary-l);
+
+//     --color-primary :  hsl(var(--hsl-primary));
+//     --color-primary :  hsl(var(--hsl-primary));
+//     --color-primary-fg  : #ffffff;
+
+//     --color-primary-l-10 :  hsla(var(--hsl-primary),0.1);
+//     --color-primary-l-30 :  hsla(var(--hsl-primary),0.3);   
+// }
+
+// @import 'rainsoft-rc/dist/sharedassets/scss/common-includes';
+// @import 'rainsoft-rc/dist/sharedassets/scss/bootstrap/bootstrap';
+@import '../../../../assets-hub/scss/common-includes.scss';
+
+@import './loanapp-config';
+@import './functions';
+
+
+
+// Mixins
+@import './mixins/box',
+        './mixins/ellipsis',
+        './mixins/scrollbar';
+
+// Components
+@import './components/loanapp-c-general',
+        './components/loanapp-c-loanofficer',
+        './components/loanapp-c-sidenav',
+        './components/loanapp-c-ssn',
+        './components/loanapp-c-form-panel',
+        './components/loanapp-c-assessment',
+        './components/loanapp-c-modal',
+        './components/loanapp-c-review-panel',
+        './components/loanapp-c-loader',
+        './components/loanapp-c-icons',
+        './components/loanapp-c-assets',
+        './components/loanapp-c-finishing-up',
+        './components/government-questions';
+
+
+// Pages
+@import './pages/loanapp-p-home',
+        './pages/loanapp-p-getting-to-know';
+
+@import 'bootstrap-override';

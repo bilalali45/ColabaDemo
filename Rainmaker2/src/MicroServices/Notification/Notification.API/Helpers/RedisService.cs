@@ -24,52 +24,52 @@ namespace Notification.Service
         {
             this.serviceProvider = serviceProvider;
         }
-        public async Task Run()
-        {
-            while (true)
-            {
-                await PollAndSendNotification();
-                Thread.Sleep(60000);
-            }
-        }
+        //public async Task Run()
+        //{
+        //    while (true)
+        //    {
+        //        await PollAndSendNotification();
+        //        Thread.Sleep(60000);
+        //    }
+        //}
         
-        public async Task PollAndSendNotification()
-        {
-            using (IServiceScope scope = serviceProvider.CreateScope())
-            {
-                try
-                {
-                    INotificationService notificationService =
-                        scope.ServiceProvider.GetRequiredService<INotificationService>();
-                    IConfiguration configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-                    IConnectionMultiplexer connection = scope.ServiceProvider.GetRequiredService<IConnectionMultiplexer>();
-                    IDatabaseAsync database = connection.GetDatabase();
-                    long count = await database.ListLengthAsync(NotificationKey);
-                    List<NotificationModel> list = new List<NotificationModel>();
-                    for (int i = 0; i < count; i++)
-                    {
-                        RedisValue value = await database.ListGetByIndexAsync(NotificationKey, i);
-                        if (!value.IsNullOrEmpty)
-                        {
-                            NotificationModel m =
-                                JsonConvert.DeserializeObject<NotificationModel>(value.ToString());
-                            NotificationModel c =
-                                JsonConvert.DeserializeObject<NotificationModel>(value.ToString());
-                            if (await SendNotification(m))
-                                list.Add(c);
-                        }
-                    }
-                    foreach (var item in list)
-                    {
-                        await database.ListRemoveAsync(NotificationKey, JsonConvert.SerializeObject(item));
-                    }
-                }
-                catch
-                {
-                    // this exception can be ignored
-                }
-            }
-        }
+        //public async Task PollAndSendNotification()
+        //{
+        //    using (IServiceScope scope = serviceProvider.CreateScope())
+        //    {
+        //        try
+        //        {
+        //            INotificationService notificationService =
+        //                scope.ServiceProvider.GetRequiredService<INotificationService>();
+        //            IConfiguration configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+        //            IConnectionMultiplexer connection = scope.ServiceProvider.GetRequiredService<IConnectionMultiplexer>();
+        //            IDatabaseAsync database = connection.GetDatabase();
+        //            long count = await database.ListLengthAsync(NotificationKey);
+        //            List<NotificationModel> list = new List<NotificationModel>();
+        //            for (int i = 0; i < count; i++)
+        //            {
+        //                RedisValue value = await database.ListGetByIndexAsync(NotificationKey, i);
+        //                if (!value.IsNullOrEmpty)
+        //                {
+        //                    NotificationModel m =
+        //                        JsonConvert.DeserializeObject<NotificationModel>(value.ToString());
+        //                    NotificationModel c =
+        //                        JsonConvert.DeserializeObject<NotificationModel>(value.ToString());
+        //                    if (await SendNotification(m))
+        //                        list.Add(c);
+        //                }
+        //            }
+        //            foreach (var item in list)
+        //            {
+        //                await database.ListRemoveAsync(NotificationKey, JsonConvert.SerializeObject(item));
+        //            }
+        //        }
+        //        catch
+        //        {
+        //            // this exception can be ignored
+        //        }
+        //    }
+        //}
 
         public async Task InsertInCache(NotificationModel model)
         {
@@ -106,6 +106,7 @@ namespace Notification.Service
                 INotificationService notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
                 ISettingService settingService = scope.ServiceProvider.GetRequiredService<ISettingService>();
                 IHubContext<ServerHub, IClientHub> context = scope.ServiceProvider.GetRequiredService<IHubContext<ServerHub, IClientHub>>();
+                IConnectionMultiplexer connection = scope.ServiceProvider.GetRequiredService<IConnectionMultiplexer>();
                 List<int> doneUsers = new List<int>();
                 foreach (var user in model.UsersToSendList)
                 {
@@ -129,7 +130,7 @@ namespace Notification.Service
                             payload = string.IsNullOrEmpty(recepient.NotificationRecepientMediums.First().SentTextJson) ? new JObject() : JObject.Parse(recepient.NotificationRecepientMediums.First().SentTextJson),
                             status = recepient.StatusListEnum.Name
                         };
-                        await ServerHub.SendNotification(context, recepient.RecipientId.Value, m);
+                        await ServerHub.SendNotification(context, recepient.RecipientId.Value, m, connection);
                         doneUsers.Add(user);
                     }
                     else if (setting.DeliveryModeId == (short) DeliveryMode.Queued && (DateTime.UtcNow - model.DateTime.Value).TotalMinutes >= setting.DelayedInterval.Value)
@@ -146,7 +147,7 @@ namespace Notification.Service
                                                         payload = string.IsNullOrEmpty(recepient.NotificationRecepientMediums.First().SentTextJson)? new JObject(): JObject.Parse(recepient.NotificationRecepientMediums.First().SentTextJson),
                                                         status = recepient.StatusListEnum.Name
                                                     };
-                        await ServerHub.SendNotification(context, recepient.RecipientId.Value, m);
+                        await ServerHub.SendNotification(context, recepient.RecipientId.Value, m, connection);
                         doneUsers.Add(user);
                     }
                 }

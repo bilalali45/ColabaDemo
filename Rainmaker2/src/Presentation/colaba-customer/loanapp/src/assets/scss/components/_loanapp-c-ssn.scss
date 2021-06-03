@@ -1,0 +1,107 @@
+.dp-c {
+    .react-datepicker-wrapper {
+        width: 100%;
+    }
+
+}
+
+.fill-p30 {
+    fill: color("primary-light-30") !important;
+}
+
+.ssn-panel {
+    .nav-tabs {
+        border-bottom: 0;
+        justify-content: center;
+        margin-bottom: rem(60px);
+        flex-wrap: nowrap;
+
+        .nav-item {
+            border: none;
+            border-radius: 0;
+            border-bottom: rem(2px) solid color("border");
+            color: color('disabled-text');
+            font-size: fontSize(xmd);
+            margin-right: rem(20px);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            &.active {
+                border-bottom: rem(4px) solid color("primary");
+                color: color('base');
+                font-weight: 500;
+            }
+        }
+    }
+
+    .agree-cWrap {
+        .item-wrap {
+            max-height: rem(360px);
+            padding-top: rem(5px);
+            overflow-y: auto;
+            @include scrollbar();
+
+            .item {
+                margin-bottom: rem(30px);
+                padding-left: rem(30px);
+
+                h4 {
+                    display: flex;
+                    align-items: flex-start;
+                    margin: 0;
+                    margin-bottom: rem(10px);
+                    font-size: fontSize(xmd);
+                    color: color("heading");
+                    font-weight: 500;
+                    position: relative;
+
+                    .h-icon {
+
+                        position: absolute;
+                        left: rem(-30px);
+                        top: rem(-2px);
+
+                    }
+                }
+
+                p {
+                    margin: 0;
+                    font-size: fontSize("nr");
+                    color: color("base");
+                }
+            }
+        }
+
+        .chk-agree {
+            display: flex;
+            justify-content: center;
+            padding-top: rem(20px);
+        }
+
+        .chk-error {
+            text-align: center;
+        }
+
+        .error {
+            color: color('error');
+            @include font(normal, 1.4, 'nr', 'base');
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: center;
+            padding-top: rem(10px);
+        }
+    }
+
+}
+.form-footer {
+    .btn.float-right{
+        margin-left: rem(10px);
+    }
+}
