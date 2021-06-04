@@ -979,10 +979,10 @@ namespace ByteWebConnector.SDK.Mismo
                 Label = $"SUBJECT_LOAN_{loanSubjectIndex}",
                 CONSTRUCTION = new CONSTRUCTION()
             };
-            //loanToAdd.CONSTRUCTION = new CONSTRUCTION()
-            //{
-            //    LandOriginalCostAmount = loanApplication.PropertyInfo?.OriginalPurchasePrice
-            //};
+            loanToAdd.CONSTRUCTION = new CONSTRUCTION()
+            {
+                LandOriginalCostAmount = loanApplication.PropertyInfo?.OriginalPurchasePrice
+            };
 
             #region Add Amortization
             AMORTIZATION amortization = new AMORTIZATION();
@@ -1592,9 +1592,8 @@ namespace ByteWebConnector.SDK.Mismo
                         //var toDate = employmentInfo.EndDate ?? rmBorrower.LoanApplication?.CreatedOnUtc ?? DateTime.UtcNow;
                         var toDate = loanApplication.CreatedOnUtc ?? DateTime.UtcNow;
 
-                        employerToAdd.EMPLOYMENT.EmploymentTimeInLineOfWorkYearsCount = (decimal?)Math.Round(Math.Abs((employmentInfo.StartDate.Value - toDate).TotalDays / 365), 2);
-                        employerToAdd.EMPLOYMENT.EmploymentTimeInLineOfWorkMonthsCount = (decimal?)Math.Round(Math.Abs((employmentInfo.StartDate.Value - toDate).TotalDays / 365), 2);
-                        employerToAdd.EMPLOYMENT.EmploymentTimeInLineOfWorkMonthsCount = ((toDate.Year - employmentInfo.StartDate.Value.Year) * 12) + (toDate.Month - employmentInfo.StartDate.Value.Month);
+                        //employerToAdd.EMPLOYMENT.EmploymentTimeInLineOfWorkYearsCount = (decimal?)Math.Round(Math.Abs((employmentInfo.StartDate.Value - toDate).TotalDays / 365), 2);
+                        //employerToAdd.EMPLOYMENT.EmploymentTimeInLineOfWorkMonthsCount = ((toDate.Year - employmentInfo.StartDate.Value.Year) * 12) + (toDate.Month - employmentInfo.StartDate.Value.Month);
                         if ((employmentInfo.IsSelfEmployed == true) && employmentInfo.OwnershipPercentage != null)
                         {
                             if (employmentInfo.OwnershipPercentage >= 25)
@@ -1682,8 +1681,8 @@ namespace ByteWebConnector.SDK.Mismo
 
                         var toDate = employmentInfo.EndDate ?? rmBorrower.LoanApplication?.CreatedOnUtc ?? DateTime.UtcNow;
 
-                        employerToAdd.EMPLOYMENT.EmploymentTimeInLineOfWorkYearsCount = (decimal?)Math.Abs((employmentInfo.StartDate.Value - toDate).TotalDays / 365);
-                        employerToAdd.EMPLOYMENT.EmploymentTimeInLineOfWorkMonthsCount = 0;
+                        //employerToAdd.EMPLOYMENT.EmploymentTimeInLineOfWorkYearsCount = (decimal?)Math.Abs((employmentInfo.StartDate.Value - toDate).TotalDays / 365);
+                        //employerToAdd.EMPLOYMENT.EmploymentTimeInLineOfWorkMonthsCount = 0;
                         if (employmentInfo.OwnershipPercentage != null)
                         {
                             if (employmentInfo.OwnershipPercentage >= 25)
