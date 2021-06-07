@@ -1,0 +1,26 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'Colaba' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for Colaba
+pod 'IQKeyboardManagerSwift', '6.5.6'
+pod 'SVGKit', '3.0.0'
+pod 'Loaf', '0.7.0'
+pod 'SwiftyJSON', '5.0.0'
+pod 'Alamofire', '5.4.1'
+pod 'NVActivityIndicatorView', '4.8.0'
+pod 'RealmSwift'
+
+  target 'ColabaTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'ColabaUITests' do
+    # Pods for testing
+  end
+
+end

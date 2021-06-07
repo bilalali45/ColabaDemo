@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Rubik-Medium.ttf">
+            <string>Rubik-Medium</string>
+        </array>
+        <array key="Rubik-Regular.ttf">
+            <string>Rubik-Regular</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Dashboard View Controller-->
+        <scene sceneID="SZi-7l-RN0">
+            <objects>
+                <viewController storyboardIdentifier="DashboardViewController" id="uCL-iG-R1y" customClass="DashboardViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="54H-St-u6i">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dashboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XEL-cW-8ca">
+                                <rect key="frame" x="128" y="64" width="158" height="36"/>
+                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="30"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Cf-Qc-lZt">
+                                <rect key="frame" x="338" y="64" width="66" height="36"/>
+                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="20"/>
+                                <state key="normal" title="Logout">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnLogoutTapped:" destination="uCL-iG-R1y" eventType="touchUpInside" id="idI-M8-TJC"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="H4K-Ob-IWQ"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="H4K-Ob-IWQ" firstAttribute="trailing" secondItem="6Cf-Qc-lZt" secondAttribute="trailing" constant="10" id="8Hi-aw-S3v"/>
+                            <constraint firstItem="XEL-cW-8ca" firstAttribute="top" secondItem="H4K-Ob-IWQ" secondAttribute="top" constant="20" id="Ae9-Wq-7ay"/>
+                            <constraint firstItem="6Cf-Qc-lZt" firstAttribute="centerY" secondItem="XEL-cW-8ca" secondAttribute="centerY" id="YWK-2c-OJg"/>
+                            <constraint firstItem="XEL-cW-8ca" firstAttribute="centerX" secondItem="54H-St-u6i" secondAttribute="centerX" id="wIQ-yz-ab3"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="VVO-br-Wre"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hrN-uO-aoI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="787" y="-125"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="5R2-9E-zgr">
+            <objects>
+                <navigationController storyboardIdentifier="DashboardNavigation" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="BNd-Be-zCg" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lfK-Ch-qyB">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="uCL-iG-R1y" kind="relationship" relationship="rootViewController" id="Qpd-zk-CuI"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9Us-uE-cEu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="124.6376811594203" y="-125.22321428571428"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
