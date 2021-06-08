@@ -57,7 +57,7 @@ class APIRouter: NSObject {
             headers = ["Accept":"application/json",
                        exHeaderKey: exHeaderValue]
         }
-        else if (type != .getMCUConfiguration && type != .login && type != .forgotPassword && type != .skip2FA && type != .send2FA && type != .send2FAToPhoneNo && type != .verify2FA && type != .get2FASettings){
+        else if (type != .getMCUConfiguration && type != .login && type != .forgotPassword && type != .skip2FA && type != .send2FA && type != .send2FAToPhoneNo && type != .verify2FA && type != .get2FASettings && type != .refreshAccessToken){
             
             if let user = UserModel.getCurrentUser(){
                 headers = ["Accept":"application/json",
@@ -106,17 +106,17 @@ class APIRouter: NSObject {
                 let json = JSON(value)
                 
                 if (response.response?.statusCode == 200){
-                    completion?(.success,JSON(value),json["message"].stringValue)
+                    completion?(.success,json,json["message"].stringValue)
                 }
                 else if (response.response?.statusCode == 400){
-                    completion?(.failure,JSON(value),json["message"].stringValue)
+                    completion?(.failure,json,json["message"].stringValue)
                 }
-                else if (response.response?.statusCode == 503){
-                    completion?(.failure,JSON(value),"Server Error")
+                else if (response.response?.statusCode == 500 || response.response?.statusCode == 501 || response.response?.statusCode == 502 || response.response?.statusCode == 503){
+                    completion?(.failure,json,json["Message"].stringValue)
                 }
                 else{
                     let errorMessage = json["message"].stringValue
-                    completion?(.failure,JSON(value), errorMessage == "" ? "Something went wrong" : errorMessage)
+                    completion?(.failure,json, errorMessage == "" ? "Something went wrong" : errorMessage)
                 }
                 
                 return

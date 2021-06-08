@@ -12,8 +12,7 @@ class DashboardViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        //refreshAccessTokenWithRequest()
     }
     
     //MARK:- Methods and Actions
@@ -33,6 +32,37 @@ class DashboardViewController: BaseViewController {
     }
     
     //MARK:- API's
+    
+    func refreshAccessTokenWithRequest(){
+        
+        let params = ["Token": Utility.getUserAccessToken(),
+                      "RefreshToken": Utility.getUserRefreshToken()]
+
+        APIRouter.sharedInstance.executeAPI(type: .refreshAccessToken, method: .post, params: params) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    
+                    let realm = try! Realm()
+                    realm.beginWrite()
+                    realm.deleteAll()
+                    let model = UserModel()
+                    model.updateModelWithJSON(json: result["data"])
+                    realm.add(model)
+                    try! realm.commitWrite()
+                    //Dashboard API.
+                    
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { reason in
+                        
+                    }
+                }
+            }
+            
+        }
+        
+    }
     
     func logoutWithRequest(){
         

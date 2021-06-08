@@ -78,4 +78,17 @@ struct Utility {
         }
     }
     
+    static func getUserAccessToken() -> String{
+        if let user = UserModel.getCurrentUser(){
+            return user.token
+        }
+        return ""
+    }
+    
+    static func getUserRefreshToken() -> String{
+        if let user = UserModel.getCurrentUser(){
+            return user.refreshToken
+        }
+        return ""
+    }
 }
