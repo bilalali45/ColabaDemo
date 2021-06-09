@@ -50,6 +50,39 @@ class PhoneNumberViewController: UIViewController {
         btnSkipThisStep.isHidden = !shouldShowSkipButton
     }
     
+    func completeLoginWithBiometric(){
+        
+//        var isAlreadyRegisteredWithBiometric = ""
+//        if let isBiometricRegistered = UserDefaults.standard.value(forKey: kIsUserRegisteredWithBiometric){
+//            isAlreadyRegisteredWithBiometric = isBiometricRegistered as! String
+//        }
+//        if (isAlreadyRegisteredWithBiometric == kYes){
+//            //User has already set Biometric but now he is trying to login with passcode
+//            self.goToDashboard()
+//        }
+//        else{
+            if (isBiometricAllow){
+                if (Utility.checkDeviceAuthType() == kTouchID){
+                    let vc = Utility.getFingerPrintVC()
+                    self.pushToVC(vc: vc)
+                }
+                else if (Utility.checkDeviceAuthType() == kFaceID){
+                    let vc = Utility.getFaceRecognitionVC()
+                    self.pushToVC(vc: vc)
+                }
+                else{
+                    //Go To Dashboard Device is not registered with touch id or face id
+                    self.goToDashboard()
+                }
+            }
+            else{
+                // Go To Dashboard
+                self.goToDashboard()
+            }
+
+       // }
+    }
+    
     @IBAction func btnBackPressed(_ sender: UIButton){
         self.goBack()
     }
@@ -133,26 +166,8 @@ class PhoneNumberViewController: UIViewController {
                     model.updateModelWithJSON(json: result["data"])
                     realm.add(model)
                     try! realm.commitWrite()
-                    self.goToDashboard()
-//                    let isBioMetricAllow = UserDefaults.standard.bool(forKey: kIsBioMetricAllow)
-//                    if (isBioMetricAllow){
-//                        if (Utility.checkDeviceAuthType() == kTouchID){
-//                            let vc = Utility.getFingerPrintVC()
-//                            self.pushToVC(vc: vc)
-//                        }
-//                        else if (Utility.checkDeviceAuthType() == kFaceID){
-//                            let vc = Utility.getFaceRecognitionVC()
-//                            self.pushToVC(vc: vc)
-//                        }
-//                        else{
-//                            //Go To Dashboard
-//                            self.goToDashboard()
-//                        }
-//                    }
-//                    else{
-//                        // Go To Dashboard
-//                        self.goToDashboard()
-//                    }
+
+                    self.completeLoginWithBiometric()
                     
                 }
                 else{

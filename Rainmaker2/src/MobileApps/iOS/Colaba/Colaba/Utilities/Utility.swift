@@ -59,7 +59,7 @@ struct Utility {
          let authType = LocalAuthManager.shared.biometricType
             switch authType {
             case .none:
-                return "Device not registered with TouchID/FaceID"
+                return kDeviceNotRegistered
             case .touchID:
                 return kTouchID
             case .faceID:

@@ -32,7 +32,7 @@ class FaceRecognitionViewController: UIViewController {
         
     }
 
-    //MARK:- Actions and Methods
+    //MARK:- Methods and Actions
     
     @objc func faceImageTapped(){
         biometricIDAuth.canEvaluate { (canEvaluate, _, canEvaluateError) in
@@ -46,19 +46,44 @@ class FaceRecognitionViewController: UIViewController {
                     // Face ID/Touch ID may not be configured
                     return
                 }
-                self!.showPopup(message: "Your face recognized successfully.", popupState: .success, popupDuration: .custom(2)) { (reason) in
-                }
-                // You are successfully verified
+                UserDefaults.standard.set(kYes, forKey: kIsUserRegisteredWithBiometric)
+                self?.goToDashboard()
+//                self!.showPopup(message: "Your face recognized successfully.", popupState: .success, popupDuration: .custom(2)) { (reason) in
+//
+//                }
+                
             }
         }
     }
     
+    func showResetPopup(){
+        
+        let alert = UIAlertController(title: "Alert", message: kFaceIdResetPopup, preferredStyle: .alert)
+        let yesAction = UIAlertAction(title: "Yes", style: .default) { action in
+            DispatchQueue.main.async {
+                //Reset User defaults setting
+                UserDefaults.standard.set(kNo, forKey: kIsUserRegisteredWithBiometric)
+                let vc = Utility.getLoginVC()
+                self.pushToVC(vc: vc)
+            }
+        }
+        let noAction = UIAlertAction(title: "No", style: .destructive, handler: nil)
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+        self.presentVC(vc: alert)
+        
+    }
+    
     @IBAction func btnLoginWithPasswordTapped(_ sender: UIButton) {
-        self.goToRoot()
+        UserDefaults.standard.set(kNo, forKey: kIsUserRegisteredWithBiometric)
+        let vc = Utility.getLoginVC()
+        self.pushToVC(vc: vc)
     }
     
     @IBAction func btnAnotherAccountTapped(_ sender: UIButton) {
-        self.goToRoot()
+        UserDefaults.standard.set(kNo, forKey: kIsUserRegisteredWithBiometric)
+        let vc = Utility.getLoginVC()
+        self.pushToVC(vc: vc)
     }
     
 }

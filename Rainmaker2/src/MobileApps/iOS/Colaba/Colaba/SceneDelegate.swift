@@ -18,12 +18,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         //guard let _ = (scene as? UIWindowScene) else { return }
         
-//        if let windowScene = scene as? UIWindowScene {
-//            
-//            self.window = UIWindow(windowScene: windowScene)
-//            self.showInitialViewController()
-//            //Register Push Notification Here...
-//        }
+        if let windowScene = scene as? UIWindowScene {
+            
+            self.window = UIWindow(windowScene: windowScene)
+            self.showInitialViewController()
+            //Register Push Notification Here...
+        }
         
     }
 
@@ -57,7 +57,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func showInitialViewController(){
         
-      //  self.window?.makeKeyAndVisible()
+        var isAlreadyRegisteredWithBiometric = ""
+        if let isBiometricRegistered = UserDefaults.standard.value(forKey: kIsUserRegisteredWithBiometric){
+            isAlreadyRegisteredWithBiometric = isBiometricRegistered as! String
+        }
+        
+        if (isAlreadyRegisteredWithBiometric == kYes && UserModel.getCurrentUser() != nil){
+            if (Utility.checkDeviceAuthType() == kTouchID){
+                loadFingerPrintViewController()
+            }
+            else if (Utility.checkDeviceAuthType() == kFaceID){
+                loadFaceLockViewController()
+            }
+            else{
+                loadLoginViewController()
+            }
+        }
+        else{
+            loadLoginViewController()
+        }
+        self.window?.makeKeyAndVisible()
     }
 
     func loadDashboardViewController(){
@@ -70,14 +89,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window?.rootViewController = vc
     }
     
-    func showFingerPrintViewController(){
+    func loadFingerPrintViewController(){
         let vc = Utility.getFingerPrintVC()
-        self.window?.rootViewController = vc
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.navigationBar.isHidden = true
+        self.window?.rootViewController = navVC
     }
     
-    func showFaceLockViewController(){
+    func loadFaceLockViewController(){
         let vc = Utility.getFaceRecognitionVC()
-        self.window?.rootViewController = vc
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.navigationBar.isHidden = true
+        self.window?.rootViewController = navVC
     }
 }
 
