@@ -17,6 +17,8 @@ class UserModel: Object{
     @objc dynamic var tokenType: Int = 0
     @objc dynamic var tokenTypeName: String = ""
     @objc dynamic var userName: String = ""
+    @objc dynamic var firstName: String = ""
+    @objc dynamic var lastName: String = ""
     @objc dynamic var userProfileId: Int = 0
     @objc dynamic var validFrom: String = ""
     @objc dynamic var validTo: String = ""
@@ -28,6 +30,8 @@ class UserModel: Object{
         tokenType = json["tokenType"].intValue
         tokenTypeName = json["tokenTypeName"].stringValue
         userName = json["userName"].stringValue
+        firstName = json["firstName"].stringValue
+        lastName = json["lastName"].stringValue
         userProfileId = json["userProfileId"].intValue
         validFrom = json["validFrom"].stringValue
         validTo = json["validTo"].stringValue

@@ -27,7 +27,7 @@ class FaceRecognitionViewController: UIViewController {
         faceImage.isUserInteractionEnabled = true
         faceImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(faceImageTapped)))
         if let user = UserModel.getCurrentUser(){
-            lblUsername.text = user.userName
+            lblUsername.text = "\(user.firstName) \(user.lastName)"
         }
         
     }
@@ -75,12 +75,14 @@ class FaceRecognitionViewController: UIViewController {
     }
     
     @IBAction func btnLoginWithPasswordTapped(_ sender: UIButton) {
+        isBiometricAllow = false
         UserDefaults.standard.set(kNo, forKey: kIsUserRegisteredWithBiometric)
         let vc = Utility.getLoginVC()
         self.pushToVC(vc: vc)
     }
     
     @IBAction func btnAnotherAccountTapped(_ sender: UIButton) {
+        isBiometricAllow = false
         UserDefaults.standard.set(kNo, forKey: kIsUserRegisteredWithBiometric)
         let vc = Utility.getLoginVC()
         self.pushToVC(vc: vc)

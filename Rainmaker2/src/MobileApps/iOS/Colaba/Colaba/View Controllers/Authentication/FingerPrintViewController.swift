@@ -27,7 +27,7 @@ class FingerPrintViewController: UIViewController {
         fingerImage.isUserInteractionEnabled = true
         fingerImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(fingerPrintImageTapped)))
         if let user = UserModel.getCurrentUser(){
-            lblUsername.text = user.userName
+            lblUsername.text = "\(user.firstName) \(user.lastName)"
         }
     }
 
@@ -74,12 +74,14 @@ class FingerPrintViewController: UIViewController {
     }
     
     @IBAction func btnLoginWithPasswordTapped(_ sender: UIButton) {
+        isBiometricAllow = false
         UserDefaults.standard.set(kNo, forKey: kIsUserRegisteredWithBiometric)
         let vc = Utility.getLoginVC()
         self.pushToVC(vc: vc)
     }
     
     @IBAction func btnAnotherAccountTapped(_ sender: UIButton) {
+        isBiometricAllow = false
         UserDefaults.standard.set(kNo, forKey: kIsUserRegisteredWithBiometric)
         let vc = Utility.getLoginVC()
         self.pushToVC(vc: vc)
