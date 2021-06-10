@@ -792,7 +792,7 @@
 				CURRENT_PROJECT_VERSION = 1.1;
 				DEVELOPMENT_TEAM = 2HX8AP6426;
 				INFOPLIST_FILE = Colaba/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -816,7 +816,7 @@
 				CURRENT_PROJECT_VERSION = 1.1;
 				DEVELOPMENT_TEAM = 2HX8AP6426;
 				INFOPLIST_FILE = Colaba/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
