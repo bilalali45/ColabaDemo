@@ -19,10 +19,14 @@ constructor(
         user = null
     }
 
+    private var isbiometricEnabled = false
+
     suspend fun validateLoginCredentials(
         userEmail: String,
-        password: String
+        password: String,
+        enableBiometric:Boolean
     ): Result<LoginResponse> {
+        isbiometricEnabled = enableBiometric
         val genericResult = dataSource.login(userEmail, password)
         if (genericResult is Result.Success)
             storeLoggedInUserInfo(genericResult.data)
@@ -43,11 +47,31 @@ constructor(
         return genericResult
     }
 
+    suspend fun otpSettingFromService(intermediateToken:String): Result<OtpSettingResponse>{
+        sharedPref.putInt(ColabaConstant.maxOtpSendAllowed, 5).apply() // Setting default value.........
+        val result = dataSource.getOtpSetting(intermediateToken)
+        if (result is Result.Success)
+            storeOtpSetting(result.data)
+        return result
+    }
+
+    private fun storeOtpSetting(otpSettingResponse: OtpSettingResponse){
+        otpSettingResponse.otpSettingData?.let { settingData ->
+            settingData.maxTwoFaSendAllowed?.let {
+                sharedPref.putInt(ColabaConstant.maxOtpSendAllowed, it).apply()
+            }
+        }
+    }
+
+
     private fun storeLoggedInUserInfo(loginResponse: LoginResponse) {
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
         this.user = loginResponse
-        sharedPref.putBoolean(ColabaConstant.IS_LOGGED_IN, true).apply()
+
+
+        if(isbiometricEnabled)
+            sharedPref.putBoolean(ColabaConstant.isbiometricEnabled, true).apply()
 
         if (loginResponse.data != null) {
                 sharedPref.putString(ColabaConstant.token, loginResponse.data.token).apply()
@@ -66,7 +90,11 @@ constructor(
                 ColabaConstant.refreshTokenValidTo,
                 loginResponse.data.refreshTokenValidTo
             ).apply()
+
+            if(loginResponse.data.tokenTypeName == "AccessToken")
+                sharedPref.putBoolean(ColabaConstant.IS_LOGGED_IN, true).apply() // mark user as logged in completely...
         }
+
 
 
 
@@ -87,13 +115,5 @@ constructor(
 
     }
 
-    suspend fun logout() {
-        user = null
-        sharedPref.clear()
-        sharedPref.putBoolean(ColabaConstant.IS_LOGGED_IN, false).apply()
-        sharedPref.putString(ColabaConstant.token, "").apply()
-        //ProductsDatabase.getDatabase(applicationContext) .clearAllTables()
-        //dataSource.logout()
-    }
 
 }

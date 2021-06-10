@@ -15,5 +15,4 @@ data class TwoFaData(
     val hasCompleted: Boolean?,
     val remainingTimeoutInSeconds: Int?,
     val lastSendAt: String?
-
 )

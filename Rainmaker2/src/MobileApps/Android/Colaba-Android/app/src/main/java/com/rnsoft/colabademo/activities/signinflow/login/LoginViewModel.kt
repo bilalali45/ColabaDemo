@@ -2,21 +2,18 @@ package com.rnsoft.colabademo
 
 import android.util.Log
 import android.util.Patterns
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
 
-enum class TOKEN_TYPES(type: String) {
-    ACCESS_TOKEN ("AccessToken"),
-    IntermediateToken("IntermediateToken");
+enum class TOKEN_TYPES() {
+    ACCESS_TOKEN ,
+    IntermediateToken
 }
 
 @HiltViewModel
@@ -29,7 +26,7 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
     //private val _loginResult = MutableFl<LoginResponseResult>()
     //val loginResponseResult: Flow<LoginResponseResult> = Flow()
 
-    fun login(userEmail: String, password: String) {
+    fun login(userEmail: String, password: String , isBiometricActive:Boolean) {
         val emailError = isValidEmail(userEmail)
         val passwordLengthError = checkPasswordLength(password)
         if (emailError != null)
@@ -40,23 +37,19 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
         else {
             viewModelScope.launch {
                 val genericResult =
-                    loginRepo.validateLoginCredentials(userEmail, password)
+                    loginRepo.validateLoginCredentials(userEmail, password, isBiometricActive)
                 Log.e("login-result - ", genericResult.toString())
 
                 if (genericResult is Result.Success) {
                     val loginResponse = genericResult.data
 
                     if (loginResponse.data?.tokenTypeName == "AccessToken") {
-                        EventBus.getDefault().post(
-                            LoginEvent(
-                                LoginResponseResult(
-                                    success = loginResponse,
-                                    screenNumber = 1
-                                )
-                            )
-                        )
+                        EventBus.getDefault().post(LoginEvent(LoginResponseResult(success = loginResponse, screenNumber = 1)))
                         return@launch
                     } else if (loginResponse.data?.tokenTypeName == "IntermediateToken") {
+                        runOtpSettingService(loginResponse.data.token)
+                        //loginRepo.getOtpSettingFromService(loginResponse.data.token)
+
                         val resultConfiguration =
                             loginRepo.fetchTenantConfiguration(loginResponse.data.token)
                         if (resultConfiguration is Result.Success) {
@@ -69,37 +62,11 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
                                 if (phoneInfoResult is Result.Success) {
                                     val phoneDetail = phoneInfoResult.data
                                     when (phoneDetail.code) {
-                                        "404" ->
-                                            EventBus.getDefault().post(
-                                                LoginEvent(
-                                                    LoginResponseResult(
-                                                        success = loginResponse,
-                                                        screenNumber = 2
-                                                    )
-                                                )
-                                            )
-                                        //_loginResult.value = LoginResponseResult(success = loginResponse, screenNumber = 2)
-                                        "200" ->
-                                            EventBus.getDefault().post(
-                                                LoginEvent(
-                                                    LoginResponseResult(
-                                                        success = loginResponse,
-                                                        screenNumber = 3
-                                                    )
-                                                )
-                                            )
-                                        //_loginResult.value = LoginResponseResult(success = loginResponse, screenNumber = 3)
-                                        "400" ->
-                                            EventBus.getDefault().post(
-                                                LoginEvent(
-                                                    LoginResponseResult(
-                                                        success = loginResponse,
-                                                        screenNumber = 3
-                                                    )
-                                                )
-                                            )
-                                        //_loginResult.value = LoginResponseResult(success = loginResponse, screenNumber = 3)
-                                        else -> Log.e("Else", "WebService-error-go")
+                                        "404" -> EventBus.getDefault().post(LoginEvent(LoginResponseResult(success = loginResponse, screenNumber = 2)))
+                                        "200" -> EventBus.getDefault().post(LoginEvent(LoginResponseResult(success = loginResponse, screenNumber = 3)))
+                                        "400" -> EventBus.getDefault().post(LoginEvent(LoginResponseResult(success = loginResponse, screenNumber = 3)))
+                                        else ->
+                                            Log.e("Else", "WebService-error-go")
                                     }
 
                                 }
@@ -113,7 +80,10 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
 
             }
         }
+    }
 
+    private suspend fun runOtpSettingService(intermediateToken:String){
+        loginRepo.otpSettingFromService(intermediateToken)
     }
 
     private fun isValidEmail(userEmail: String): Int? {

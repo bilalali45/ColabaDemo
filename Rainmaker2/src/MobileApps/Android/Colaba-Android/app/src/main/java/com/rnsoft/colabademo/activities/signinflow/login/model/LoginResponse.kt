@@ -1,10 +1,10 @@
 package com.rnsoft.colabademo
 
 data class LoginResponse(
-    val code: String?,
-    val data: Data?,
-    val message: Any?,
-    val status: String?
+    val code: String?=null,
+    val data: Data?=null,
+    val message: String?=null,
+    val status: String?=null
 )
 
 data class Data(

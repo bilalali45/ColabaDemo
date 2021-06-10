@@ -84,8 +84,8 @@
 
     <fragment
         android:id="@+id/otp_verification_id"
-        android:name="com.rnsoft.colabademo.OtpVerificationFragment"
-        tools:layout="@layout/phone_number_verify">
+        android:name="com.rnsoft.colabademo.OtpFragment"
+        tools:layout="@layout/otp_screen_layout">
 
         <argument
             android:name="flowStepNumber"

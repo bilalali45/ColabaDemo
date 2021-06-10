@@ -1,26 +1,20 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
+import java.io.IOException
 import javax.inject.Inject
 
 class SignUpFlowDataSource @Inject constructor(private val serverApi: ServerApi){
 
-    /*
-    suspend fun login(username: String, password: String): Result<LoginResponse> {
+    suspend fun sendOtpService(intermediateToken: String , phoneNumber:String): Result<OtpSentResponse> {
         return try {
-            val loggedInUser = testAPI.login(LoginRequest(username, password))
-            Result.Success(loggedInUser)
+            val otpResponse = serverApi.sendTwoFaToNumber(IntermediateToken = intermediateToken, PhoneNumber = phoneNumber)
+            Log.e("otp-", otpResponse.toString())
+            Result.Success(otpResponse)
         } catch (e: Throwable) {
             Result.Error(IOException("Error logging in", e))
         }
     }
 
-    suspend fun fetchUserList(): Result<UserListResult> {
-        return try {
-             Result.Success(testAPI.fetchUserList())
-        } catch (e: Throwable) {
-            Result.Error(IOException("Error logging in", e))
-        }
-    }
 
-     */
 }

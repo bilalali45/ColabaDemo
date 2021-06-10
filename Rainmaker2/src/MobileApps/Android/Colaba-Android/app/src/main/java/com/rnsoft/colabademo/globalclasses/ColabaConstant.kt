@@ -28,6 +28,16 @@ object ColabaConstant {
         const val tenantTwoFaSetting:String = "tenantTwoFaSetting"
         //const val userTwoFaSetting:String = "userTwoFaSetting"
 
+        const val otpDataJson:String =  "otpDataJson"
+        const val phoneNumber:String = "phoneNumber"
+
+        const val secondsCount:String = "secondsCount"
+
+        const val maxOtpSendAllowed:String = "maxOtpSendAllowed"
+
+        const val otp_message:String =   "otp_message"
+
+        const val isbiometricEnabled:String =   "isbiometricEnabled"
 
 
         const val  INTERNET_ERR_MSG:String = "Please check your internet connectivity..."

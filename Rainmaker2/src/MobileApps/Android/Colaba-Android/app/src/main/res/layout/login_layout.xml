@@ -154,7 +154,7 @@
                 android:text=""
                 android:textColor="@color/colaba_text_color"
                 android:textSize="13sp"
-                app:layout_constraintEnd_toStartOf="@+id/imageView3"
+                app:layout_constraintEnd_toStartOf="@+id/passwordImageShow"
                 app:layout_constraintStart_toStartOf="@+id/passwordIcon"
                 app:layout_constraintTop_toBottomOf="@+id/passwordIcon" />
 
@@ -170,7 +170,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/passwordIcon" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/passwordImageShow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -192,7 +192,7 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/face_id"
+                android:text="@string/biometric_login"
                 android:textColor="@color/colaba_text_color_two"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView4"

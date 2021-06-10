@@ -40,7 +40,7 @@
         app:srcCompat="@drawable/png_logo" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/nearToResetTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="149dp"
@@ -54,16 +54,16 @@
 
     <TextView
         android:id="@+id/textView5"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginTop="25dp"
+        android:gravity="center"
         android:text="@string/we_have_send_you_email"
         android:textColor="@color/colaba_text_color"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView4"
-        app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintEnd_toEndOf="@+id/backToLoginBtn"
+        app:layout_constraintStart_toStartOf="@+id/backToLoginBtn"
+        app:layout_constraintTop_toBottomOf="@+id/nearToResetTextView" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/backToLoginBtn"

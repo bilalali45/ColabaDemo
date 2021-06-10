@@ -5,19 +5,21 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.signinflow.phone.events.OtpSentEvent
+import com.rnsoft.colabademo.activities.signinflow.phone.events.SkipEvent
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,9 +31,12 @@ class PhoneNumberFragment : Fragment() {
     lateinit var sharedPreferences: SharedPreferences
 
     private val phoneNumberViewModel: PhoneNumberViewModel by activityViewModels()
+    private val signUpFlowViewModel: SignUpFlowViewModel by activityViewModels() // Shared Repo.....
     private lateinit var continueButton:Button
     private lateinit var phoneNumber:EditText
+    private lateinit var phoneNumberError:TextView
     private var len = 0
+    private lateinit var loading:ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,8 +48,8 @@ class PhoneNumberFragment : Fragment() {
 
         continueButton = root.findViewById<Button>(R.id.continueBtn)
         val skipLink = root.findViewById<AppCompatTextView>(R.id.skipTextLink)
-        val loading = root.findViewById<ProgressBar>(R.id.loader_phone_screen)
-
+        loading = root.findViewById<ProgressBar>(R.id.loader_phone_screen)
+        phoneNumberError = root.findViewById<TextView>(R.id.phoneErrorTextView)
         phoneNumber = root.findViewById<EditText>(R.id.editTextPhoneNumber)
         phoneNumber.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
@@ -55,8 +60,6 @@ class PhoneNumberFragment : Fragment() {
             override fun afterTextChanged(s: Editable) {
                 val str: String = phoneNumber.text.toString()
                 if (str.length == 3 && len < str.length) {
-                    //phoneNumber.text.insert(0, "(");
-                    //phoneNumber.append(")")
                     phoneNumber.setText("("+phoneNumber.text.toString() + ") ");
                     phoneNumber.setSelection(phoneNumber.text.length);
                 }
@@ -67,43 +70,65 @@ class PhoneNumberFragment : Fragment() {
             }
         })
 
-
-        if (sharedPreferences.getInt(ColabaConstant.tenantTwoFaSetting, 0) == 2 &&
+        if (sharedPreferences.getInt(ColabaConstant.tenantTwoFaSetting, 0) == 3 &&
             ColabaConstant.userTwoFaSetting == null
         )
             skipLink.visibility = View.VISIBLE
 
-
-        phoneNumberViewModel.skipTwoFactorResponse.observe(requireActivity(), Observer {
-            val skipTwoFactorResponse = it ?: return@Observer
-            when (skipTwoFactorResponse.code) {
-                "200" -> navigateToDashboardScreen()
-                else -> {
-                    skipTwoFactorResponse.message?.let { it1 -> showToast(it1) }
-                }
-            }
-        })
-
-
         skipLink.setOnClickListener {
+            phoneNumberError.text =""
+            loading.visibility = View.VISIBLE
             phoneNumberViewModel.skipTwoFactor()
         }
 
         continueButton.setOnClickListener {
-            //phoneNumberViewModel.sendOtpToPhone(phoneNumber = phoneNumber.text.toString() )
-            findNavController().navigate(R.id.otp_verification_id, null)
+            phoneNumberError.text =""
+            sharedPreferences.getString(ColabaConstant.token, "")?.let {
+                loading.visibility = View.VISIBLE
+                signUpFlowViewModel.sendOtpToPhone(intermediateToken = it, phoneNumber = phoneNumber.text.toString())
+            }
+            //findNavController().navigate(R.id.otp_verification_id, null)
         }
 
         return root
     }
 
-    private fun showToast(toastMessage: String) {
-        Toast.makeText(requireActivity().applicationContext, toastMessage, Toast.LENGTH_LONG).show()
-    }
+    private fun showToast(toastMessage: String) = Toast.makeText(requireActivity().applicationContext, toastMessage, Toast.LENGTH_LONG).show()
+
 
     private fun navigateToDashboardScreen() {
         val intent = Intent(requireActivity(), DashBoardActivity::class.java)
         startActivity(intent)
         requireActivity().finish()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onOtpReceivedEvent(event: OtpSentEvent) {
+        loading.visibility = View.INVISIBLE
+        val otpSentRespose =event.otpSentResponse
+        Log.e("otp-sent", otpSentRespose.toString())
+        findNavController().navigate(R.id.otp_verification_id, null)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSkipEvent(event: SkipEvent) {
+        loading.visibility = View.INVISIBLE
+        val skipTwoFactorResponse =event.skipTwoFactorResponse
+        when (skipTwoFactorResponse.code) {
+            "200" -> navigateToDashboardScreen()
+            else -> {
+                skipTwoFactorResponse.message?.let { it1 -> showToast(it1) }
+            }
+        }
     }
 }

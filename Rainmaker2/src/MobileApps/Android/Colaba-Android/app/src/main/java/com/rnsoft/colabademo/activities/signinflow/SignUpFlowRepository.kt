@@ -2,44 +2,41 @@ package com.rnsoft.colabademo
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 
 class SignUpFlowRepository @Inject
 constructor(
-    private val dataSource: SignUpFlowDataSource, private val spEditor: SharedPreferences.Editor,
+    private val signUpFlowDataSource: SignUpFlowDataSource, private val spEditor: SharedPreferences.Editor,
     @ApplicationContext val applicationContext: Context
 )
 {
 
+    suspend fun sendOtpToPhone(intermediateToken: String, phoneNumber:String): Result<OtpSentResponse> {
+        spEditor.putString(ColabaConstant.phoneNumber, phoneNumber).apply()
+        val otpResponseResult = signUpFlowDataSource.sendOtpService(intermediateToken,phoneNumber)
+        if(otpResponseResult is Result.Success)
+            setUpOtpInfo(otpResponseResult.data)
+        return otpResponseResult
+
+    }
+
+    private fun setUpOtpInfo(otpSentResponse: OtpSentResponse){
+        otpSentResponse.message?.let {
+            spEditor.putString(ColabaConstant.otp_message, otpSentResponse.message)
+                .apply()
+        }
+        otpSentResponse.otpData?.let {
+            val gson = Gson()
+            val otpData = gson.toJson(otpSentResponse.otpData)
+            spEditor.putString(ColabaConstant.otpDataJson, otpData).apply()
+            spEditor.putInt(ColabaConstant.secondsCount, 0).apply()
+        }
+    }
+
     /*
-    private var user: LoginResponse? = null
-    val isLoggedIn: Boolean
-        get() = user != null
-
-
-    init {
-        //MyApp.appComponent.inject(this)
-        user = null
-    }
-
-    suspend fun fetchUserList(): Result<UserListResult> {
-        return dataSource.fetchUserList()
-    }
-
-    suspend fun login(username: String, password: String): Result<LoginResponse> {
-        val result = dataSource.login(username, password)
-        if (result is Result.Success)
-            setLoggedInUser(result.data)
-        return result
-    }
-
-    private fun setLoggedInUser(loginResponse: LoginResponse) {
-        this.user = loginResponse
-        spEditor.putBoolean(MyAppConfigConstant.IS_LOGGED_IN, true).apply()
-        spEditor.putString(MyAppConfigConstant.TOKEN, loginResponse.token).apply()
-    }
 
     suspend fun logout() {
         user = null

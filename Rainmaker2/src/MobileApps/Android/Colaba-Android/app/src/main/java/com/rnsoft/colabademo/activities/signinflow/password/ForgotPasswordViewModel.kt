@@ -33,7 +33,7 @@ class ForgotPasswordViewModel @Inject constructor(private val forgotPasswordRepo
 
                 }
                 else
-                    EventBus.getDefault().post(ForgotPasswordEvent(ForgotPasswordResponse("600", null, "Web service error...", null)))
+                    EventBus.getDefault().post(ForgotPasswordEvent(ForgotPasswordResponse("600", null, "User does not exist", null)))
                     //_forgotPasswordResponse.value =ForgotPasswordResponse("300", null, "User does not exist...", null)
             }
         }

@@ -13,26 +13,31 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
     private val activityScope = CoroutineScope(Dispatchers.Main)
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    //init {
-        //MyApp.appComponent.inject(this)
-    //}
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_layout)
         Log.e("Splash", "loaded")
         activityScope.launch {
-            /*if (sharedPreferences.getBoolean(MyAppConfigConstant.IS_LOGGED_IN, false)) {
-                delay(700)
-                startActivity(Intent(this@SplashActivity, ProductActivity::class.java))
-                finish()
+            if (sharedPreferences.getBoolean(ColabaConstant.IS_LOGGED_IN, false)
+                && sharedPreferences.getBoolean(ColabaConstant.isbiometricEnabled, false)) {
+                delay(500)
+                startActivity(Intent(this@SplashActivity, WelcomeActivity::class.java))
+            }
+            else if(sharedPreferences.getBoolean(ColabaConstant.IS_LOGGED_IN, false)){
+                delay(500)
+                startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
+            }
+            else
 
-            } else { */
+            {
                 delay(300)
                 startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
-                finish()
-            //}
+            }
+            finish()
         }
     }
 }

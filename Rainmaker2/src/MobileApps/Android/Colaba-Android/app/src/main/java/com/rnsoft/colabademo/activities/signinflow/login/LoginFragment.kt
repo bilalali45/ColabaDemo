@@ -2,23 +2,20 @@ package com.rnsoft.colabademo
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import android.widget.CompoundButton
 import androidx.annotation.StringRes
-import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import co.infinum.goldfinger.Goldfinger
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -36,6 +33,11 @@ class LoginFragment : Fragment() {
     private lateinit var userEmailField: AppCompatEditText
     private lateinit var passwordField: AppCompatEditText
     private lateinit var loading: ProgressBar
+    private lateinit var biometricSwitch:SwitchCompat
+    private var passwordBoolean:Boolean = true
+
+
+    private lateinit var passwordImageView:AppCompatImageView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +54,9 @@ class LoginFragment : Fragment() {
         passwordField = root.findViewById<AppCompatEditText>(R.id.editTextPassword)
         emailError = root.findViewById<AppCompatTextView>(R.id.emailErrorTextView)
         passwordError = root.findViewById<AppCompatTextView>(R.id.passwordErrorTextView)
+        passwordImageView = root.findViewById<AppCompatImageView>(R.id.passwordImageShow)
+        biometricSwitch = root.findViewById<SwitchCompat>(R.id.switch1)
+
         val forgotPasswordLink = root.findViewById<AppCompatTextView>(R.id.forgotPasswordLink)
         val loginButton = root.findViewById<AppCompatButton>(R.id.loginBtn)
         loading = root.findViewById<ProgressBar>(R.id.loader_login_screen)
@@ -59,13 +64,46 @@ class LoginFragment : Fragment() {
         loginButton.setOnClickListener {
             loading.visibility = View.VISIBLE
             resetToInitialPosition()
-            loginViewModel.login(userEmailField.text.toString(), passwordField.text.toString())
+            loginViewModel.login(userEmailField.text.toString(), passwordField.text.toString(), biometricSwitch.isChecked)
         }
 
         forgotPasswordLink.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.forgot_password_id, null)
         }
+
+        passwordImageView.setOnClickListener{
+            if(passwordBoolean) {
+                passwordField.transformationMethod = null
+                passwordField.setSelection(passwordField.length());
+            }
+            else{
+                passwordField.transformationMethod = PasswordTransformationMethod()
+                passwordField.setSelection(passwordField.length());
+            }
+            passwordBoolean = !passwordBoolean
+        }
+
+        goldfinger = Goldfinger.Builder(requireActivity())
+            .logEnabled(true)
+            .build()
+
+        biometricSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                if (goldfinger.canAuthenticate()) {
+
+                }
+                else
+                {
+                    biometricSwitch.isChecked = false
+                    showToast(R.string.biometric_check)
+                }
+            }
+        }
+
+
     }
+
+    private lateinit var goldfinger: Goldfinger
 
     private fun resetToInitialPosition() {
         emailError.text = ""
@@ -127,6 +165,7 @@ class LoginFragment : Fragment() {
             }
         }
     }
+
 
 
 }

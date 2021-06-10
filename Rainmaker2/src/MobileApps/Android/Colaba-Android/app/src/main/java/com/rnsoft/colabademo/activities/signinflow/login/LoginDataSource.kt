@@ -18,14 +18,12 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
             else
             {
                 Log.e("what-code ", serverResponse.toString())
-
                 Log.e("what-code ", serverResponse.code().toString())
                 Log.e("what-code ", serverResponse.errorBody().toString())
+                Log.e("what-code ", serverResponse.errorBody()?.charStream().toString())
+                Log.e("source- ",  serverResponse.errorBody()?.source().toString())
                 val testError = serverResponse.errorBody()
-                
                 Result.Success(serverResponse.body()!!)
-
-
             }
 
         } catch (e: Throwable) {
@@ -54,6 +52,15 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
         } catch (e: Throwable) {
             Result.Success(SendTwoFaResponse("404", null,"Verified mobile number not found.","OK"))
             //Result.Error(IOException("Error logging in", e))
+        }
+    }
+
+    suspend fun getOtpSetting(IntermediateToken:String): Result<OtpSettingResponse> {
+        return try {
+            val response = serverApi.getOtpSetting(IntermediateToken)
+            Result.Success(response)
+        } catch (e: Throwable) {
+            Result.Success(OtpSettingResponse("600", null,"Otp Setting Service error...","OK"))
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import java.io.IOException
 import javax.inject.Inject
 
@@ -13,13 +14,6 @@ class PhoneNumberDataSource @Inject constructor(private val serverApi: ServerApi
         }
     }
 
-    suspend fun sendOtpService(intermediateToken: String , phoneNumber:String): Result<OtpToNumberResponse> {
-        return try {
-            val otpResponse = serverApi.sendTwoFaToNumber(IntermediateToken = intermediateToken, PhoneNumber = phoneNumber)
-            Result.Success(otpResponse)
-        } catch (e: Throwable) {
-            Result.Error(IOException("Error logging in", e))
-        }
-    }
+
 
 }

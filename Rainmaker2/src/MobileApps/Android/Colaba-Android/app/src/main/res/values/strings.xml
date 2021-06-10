@@ -8,7 +8,9 @@
     <string name="mobile_number">Mobile Number</string>
     <string name="password">Password</string>
     <string name="face_id">Face ID Login</string>
+    <string name="biometric_login">Biometric Login</string>
     <string name="login">LOGIN</string>
+    <string name="logout">Logout</string>
     <string name="verify">VERIFY</string>
     <string name="reset_password">RESET PASSWORD</string>
     <string name="continue_to">Continue</string>
@@ -33,10 +35,21 @@
     <string name="user_name"> Jonny Leo </string>
     <string name="dummy_phone_num">(458) 458-8789</string>
     <string name="dummy_email">jsmith@example.com</string>
+    <string name="dummy_minute">08</string>
+    <string name="dummy_seconds">:  30</string>
+
+    <string name="min">min</string>
+    <string name="sec">sec</string>
     <string name="forgot_password">Forgot your password?  </string>
     <string name="login_to_lender_portal">Login To Lender\’s Portal </string>
     <string name="did_not_receive_code">Didn\'t receive the code? </string>
     <string name="resend_code">Resend code </string>
+    <string name="dummy_otp_message">You need to complete the timeout.</string>
+
+    <string name="biometric_check">Device is not registered with Biometric login. Please setup it from settings.</string>
+
+    <string name="authenticate_with_biometric">Authenticate with Biometric</string>
+    <string name="user_your_biometric">Use your biometric to login to Colaba Mobile</string>
 
     <string name="do_not_ask_again"> Don\'t ask again on this computer. </string>
     <string name="password_assistance">Password Assistance </string>

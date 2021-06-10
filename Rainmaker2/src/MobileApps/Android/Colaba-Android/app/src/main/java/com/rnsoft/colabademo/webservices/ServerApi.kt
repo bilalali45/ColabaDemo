@@ -5,40 +5,60 @@ import retrofit2.http.*
 
 interface ServerApi{
 
-
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // LOGIN SCREEEN API...........
     @Headers(
-        "Accept-Encoding: gzip,deflate,br",
-        "Content-Type: application/json",
-        "Connection:keep-alive",
-        "Cache-Control: no-cache",
-        "Accept: */*",
-        "User-Agent: Retrofit 2.9.0"
-     )
-    @POST("api/mobile/identity/mcuaccount/signin")
+        "Content-Type: application/json;charset=utf-8",
+        "Accept: application/json;charset=utf-8",
+        "Cache-Control: max-age=640000"
+    )
+    @POST("api/mcu/mobile/identity/mcuaccount/signin")
     suspend fun login(@Body loginRequest: LoginRequest): Response<LoginResponse>
 
-    @POST("api/mobile/identity/mcuaccount/ForgotPasswordRequest")
-    suspend fun forgotPasswordRequest(@Body forgotPasswordEmail: ForgotRequest): ForgotPasswordResponse
-
-
-    @GET("api/mobile/identity/mcuaccount/GetMcuTenantTwoFaValues")
+    @GET("api/mcu/mobile/identity/mcuaccount/GetMcuTenantTwoFaValues")
     suspend fun getMcuTenantTwoFaValuesService( @Header("IntermediateToken")  IntermediateToken:String): TenantConfigurationResponse
 
     @POST("api/mobile/identity/mcuaccount/SendTwoFa")
     suspend fun sendTwoFa( @Header("IntermediateToken")  IntermediateToken:String): SendTwoFaResponse
 
+    @POST("api/mcu/mobile/identity/mcuaccount/GetTwoFaSettings")
+    suspend fun getOtpSetting(@Header("IntermediateToken")  IntermediateToken:String) :OtpSettingResponse
 
-    ///////////////////////////////////////////////////////////////////////////////////
-    // Phone Number screen API..
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // FORGOT SCREEN API....
+    @POST("api/mcu/mobile/identity/mcuaccount/ForgotPasswordRequest")
+    suspend fun forgotPasswordRequest(@Body forgotPasswordEmail: ForgotRequest): ForgotPasswordResponse
 
-    @POST("api/mobile/identity/mcuaccount/SkipTwoFa")
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // PHONE NUMBER SCREEN API................
+    @POST("api/mcu/mobile/identity/mcuaccount/SkipTwoFa")
     suspend fun skipTwoFactorApi(@Header("IntermediateToken")  IntermediateToken:String): SkipTwoFactorResponse
 
-    @FormUrlEncoded
-    @POST("api/mobile/identity/mcuaccount/SendTwoFaToNumber")
+    @POST("api/mcu/mobile/identity/mcuaccount/SendTwoFaToNumber") // Also used in OTP Screen and Phone Screen....
     suspend fun sendTwoFaToNumber(@Header("IntermediateToken")  IntermediateToken:String,
         @Query("PhoneNumber")  PhoneNumber: String
-    ) : OtpToNumberResponse
+    ) : OtpSentResponse
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // OTP SCREEN API....
+
+    @POST("api/mcu/mobile/identity/mcuaccount/VerifyTwoFa")
+    suspend fun verifyOtpCode(@Header("IntermediateToken")  IntermediateToken:String,
+                              @Body otpRequest: OtpRequest
+    ) :OtpVerificationResponse
+
+    @POST("api/mcu/mobile/identity/mcuaccount/DontAskTwoFa")
+    suspend fun notAskForOtpAgain(@Header("Token")  Token:String) :NotAskForOtpResponse
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // OTP DASHBOARD API....
+    @POST("api/mcu/mobile/identity/mcuaccount/Logout")
+    suspend fun logoutUser(@Header("Token")  Token:String) :LogoutResponse
+
+
 
 
     // @POST("item-list")

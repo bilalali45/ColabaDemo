@@ -11,11 +11,12 @@
         android:id="@+id/central_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="118dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/png_logo" />
+        app:layout_constraintVertical_bias="0.1"
+        app:srcCompat="@drawable/png_logo"/>
 
     <TextView
         android:id="@+id/textView9"
@@ -31,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@+id/central_logo" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/usernameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -43,30 +44,33 @@
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/loginWithTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="85dp"
+
         android:textSize="13sp"
         android:textColor="@color/colaba_text_color_three"
         android:text="@string/login_with_another_account"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.94"
+        app:srcCompat="@drawable/png_logo"
+        />
 
     <ImageView
-        android:id="@+id/imageView12"
+        android:id="@+id/fingerPrintImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="47dp"
-
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13"
-        app:srcCompat="@drawable/ic_thumb_recognize_svg" />
+        app:layout_constraintTop_toBottomOf="@+id/usernameTextView"
+        app:srcCompat="@drawable/finger_print_image" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/withPasswordTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -75,6 +79,6 @@
         android:text="@string/sign_in_with_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView12" />
+        app:layout_constraintTop_toBottomOf="@+id/fingerPrintImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
