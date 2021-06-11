@@ -20,6 +20,9 @@
 		7148C6B126554ADE00E1C216 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7148C6B026554ADE00E1C216 /* Validation.swift */; };
 		7148C6B92655500B00E1C216 /* ExtensionOfString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7148C6B82655500B00E1C216 /* ExtensionOfString.swift */; };
 		7148C6FF2655667800E1C216 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7148C6B026554ADE00E1C216 /* Validation.swift */; };
+		7160CA83267338F90061ACD5 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7160CA82267338F90061ACD5 /* NotificationViewController.swift */; };
+		7160CA88267339060061ACD5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7160CA87267339060061ACD5 /* ProfileViewController.swift */; };
+		7160CA8D26733B8C0061ACD5 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7160CA8C26733B8C0061ACD5 /* MainTabBarViewController.swift */; };
 		7186ACB02653B25A00E740D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7186ACAF2653B25A00E740D3 /* AppDelegate.swift */; };
 		7186ACB72653B25A00E740D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7186ACB52653B25A00E740D3 /* Main.storyboard */; };
 		7186ACB92653B25B00E740D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7186ACB82653B25B00E740D3 /* Assets.xcassets */; };
@@ -76,6 +79,9 @@
 		7126B7082657F1910053903B /* BiometricIDAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricIDAuth.swift; sourceTree = "<group>"; };
 		7148C6B026554ADE00E1C216 /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		7148C6B82655500B00E1C216 /* ExtensionOfString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionOfString.swift; sourceTree = "<group>"; };
+		7160CA82267338F90061ACD5 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		7160CA87267339060061ACD5 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		7160CA8C26733B8C0061ACD5 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		7186ACAC2653B25A00E740D3 /* Colaba.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Colaba.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7186ACAF2653B25A00E740D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7186ACB62653B25A00E740D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -147,6 +153,9 @@
 			children = (
 				2368D6542667DA5900D5C1C5 /* BaseViewController.swift */,
 				2368D6562667DA6700D5C1C5 /* DashboardViewController.swift */,
+				7160CA82267338F90061ACD5 /* NotificationViewController.swift */,
+				7160CA87267339060061ACD5 /* ProfileViewController.swift */,
+				7160CA8C26733B8C0061ACD5 /* MainTabBarViewController.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -585,10 +594,12 @@
 			files = (
 				7186ACB02653B25A00E740D3 /* AppDelegate.swift in Sources */,
 				7186ACFC2653C68200E740D3 /* FingerPrintViewController.swift in Sources */,
+				7160CA83267338F90061ACD5 /* NotificationViewController.swift in Sources */,
 				2368D6552667DA5900D5C1C5 /* BaseViewController.swift in Sources */,
 				7186AD512653CD3500E740D3 /* ExtensionOfViewController.swift in Sources */,
 				7126B7092657F1910053903B /* BiometricIDAuth.swift in Sources */,
 				7186AD5B2653CD6800E740D3 /* Utility.swift in Sources */,
+				7160CA8D26733B8C0061ACD5 /* MainTabBarViewController.swift in Sources */,
 				2368D6572667DA6700D5C1C5 /* DashboardViewController.swift in Sources */,
 				7186AD742653FBB500E740D3 /* ResetPasswordSuccessfullViewController.swift in Sources */,
 				71B19458265CF9C80017955B /* APIRouter.swift in Sources */,
@@ -604,6 +615,7 @@
 				7186ACF42653C66100E740D3 /* FaceRecognitionViewController.swift in Sources */,
 				7148C6B126554ADE00E1C216 /* Validation.swift in Sources */,
 				71B1944F265CF9780017955B /* OTPTimerManager.swift in Sources */,
+				7160CA88267339060061ACD5 /* ProfileViewController.swift in Sources */,
 				7186AD562653CD5C00E740D3 /* Theme.swift in Sources */,
 				7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */,
 			);

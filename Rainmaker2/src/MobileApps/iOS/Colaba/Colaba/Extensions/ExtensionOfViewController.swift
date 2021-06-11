@@ -31,14 +31,20 @@ extension UIViewController{
         self.dismiss(animated: true, completion: nil)
     }
     
-    func goToDashboard(){
-        let vc = Utility.getDashboardVC()
+    func goToLogin(){
+        let vc = Utility.getLoginNavigationVC()
         UIApplication.shared.windows.first?.rootViewController = vc
         UIApplication.shared.windows.first?.makeKeyAndVisible()
     }
     
-    func goToLogin(){
-        let vc = Utility.getLoginNavigationVC()
+    func goToMainTabBar(){
+        let vc = Utility.getMainTabBarVC()
+        UIApplication.shared.windows.first?.rootViewController = vc
+        UIApplication.shared.windows.first?.makeKeyAndVisible()
+    }
+    
+    func goToDashboard(){
+        let vc = Utility.getDashboardVC()
         UIApplication.shared.windows.first?.rootViewController = vc
         UIApplication.shared.windows.first?.makeKeyAndVisible()
     }

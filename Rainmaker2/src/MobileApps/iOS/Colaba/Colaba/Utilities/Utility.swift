@@ -46,6 +46,10 @@ struct Utility {
         return authStoryboard.instantiateViewController(withIdentifier: "CodeViewController") as! CodeViewController
     }
     
+    static func getMainTabBarVC() -> MainTabBarViewController{
+        return mainStoryboard.instantiateViewController(withIdentifier: "MainTabBarViewController") as! MainTabBarViewController
+    }
+    
     static func getDashboardVC() -> DashboardViewController{
         return mainStoryboard.instantiateViewController(withIdentifier: "DashboardViewController") as! DashboardViewController
     }
