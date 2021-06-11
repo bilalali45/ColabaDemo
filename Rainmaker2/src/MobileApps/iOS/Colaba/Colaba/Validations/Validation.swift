@@ -10,7 +10,8 @@ import Foundation
 struct Validation {
     
     func validateEmail(_ email: String?) throws -> String{
-        guard let email = email else { throw ValidationError.invalidValue }
+        guard let email = email else { throw ValidationError.noEmail }
+        guard email.count > 0 else { throw ValidationError.noEmail }
         guard email.isValidEmail() else { throw ValidationError.invalidEmail }
         return email
     }
@@ -23,7 +24,7 @@ struct Validation {
     }
     
     func validatePassword(_ password: String?) throws -> String {
-        guard let password = password else { throw ValidationError.invalidValue }
+        guard let password = password else { throw ValidationError.invalidPassword }
         guard password.count > 0 else { throw ValidationError.invalidPassword }
         //guard password.count >= 6 else { throw ValidationError.passwordTooShort }
         //guard password.count <= 20 else { throw ValidationError.passwordTooLong }
@@ -44,6 +45,7 @@ enum ValidationError: LocalizedError {
     case passwordTooShort
     case usernameTooLong
     case usernameTooShort
+    case noEmail
     case invalidEmail
     case invalidPhoneNumber
     
@@ -61,6 +63,8 @@ enum ValidationError: LocalizedError {
             return "Your username is too long. Maximum limit of username is 20 characters."
         case .usernameTooShort:
             return "Your username is too short. Minimum limit of username is 3 characters."
+        case .noEmail:
+            return "Please insert email."
         case .invalidEmail:
             return "Your email is not valid. Please try again."
         case .invalidPhoneNumber:

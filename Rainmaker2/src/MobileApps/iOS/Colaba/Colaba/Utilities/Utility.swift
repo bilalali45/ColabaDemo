@@ -15,43 +15,47 @@ struct Utility {
     static let mainStoryboard = UIStoryboard.init(name: "Main", bundle: nil)
     
     static func getLoginNavigationVC() -> UINavigationController{
-        return authStoryboard.instantiateViewController(identifier: "LoginNavigation")
+        return authStoryboard.instantiateViewController(withIdentifier: "LoginNavigation")  as! UINavigationController
     }
     
     static func getFaceRecognitionVC() -> FaceRecognitionViewController{
-        return authStoryboard.instantiateViewController(identifier: "FaceRecognitionViewController") as! FaceRecognitionViewController
+        return authStoryboard.instantiateViewController(withIdentifier: "FaceRecognitionViewController") as! FaceRecognitionViewController
     }
     
     static func getFingerPrintVC() -> FingerPrintViewController{
-        return authStoryboard.instantiateViewController(identifier: "FingerPrintViewController") as! FingerPrintViewController
+        return authStoryboard.instantiateViewController(withIdentifier: "FingerPrintViewController") as! FingerPrintViewController
     }
     
     static func getLoginVC() -> LoginViewController{
-        return authStoryboard.instantiateViewController(identifier: "LoginViewController") as! LoginViewController
+        return authStoryboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
     }
     
     static func getForgotPasswordVC() -> ForgotPasswordViewController{
-        return authStoryboard.instantiateViewController(identifier: "ForgotPasswordViewController") as! ForgotPasswordViewController
+        return authStoryboard.instantiateViewController(withIdentifier: "ForgotPasswordViewController") as! ForgotPasswordViewController
     }
     
     static func getResetPasswordSuccessfullVC() -> ResetPasswordSuccessfullViewController{
-        return authStoryboard.instantiateViewController(identifier: "ResetPasswordSuccessfullViewController") as! ResetPasswordSuccessfullViewController
+        return authStoryboard.instantiateViewController(withIdentifier: "ResetPasswordSuccessfullViewController") as! ResetPasswordSuccessfullViewController
     }
     
     static func getPhoneNumberVC() -> PhoneNumberViewController{
-        return authStoryboard.instantiateViewController(identifier: "PhoneNumberViewController") as! PhoneNumberViewController
+        return authStoryboard.instantiateViewController(withIdentifier: "PhoneNumberViewController") as! PhoneNumberViewController
     }
     
     static func getCodeVC() -> CodeViewController{
-        return authStoryboard.instantiateViewController(identifier: "CodeViewController") as! CodeViewController
+        return authStoryboard.instantiateViewController(withIdentifier: "CodeViewController") as! CodeViewController
+    }
+    
+    static func getMainTabBarVC() -> MainTabBarViewController{
+        return mainStoryboard.instantiateViewController(withIdentifier: "MainTabBarViewController") as! MainTabBarViewController
     }
     
     static func getDashboardVC() -> DashboardViewController{
-        return mainStoryboard.instantiateViewController(identifier: "DashboardViewController") as! DashboardViewController
+        return mainStoryboard.instantiateViewController(withIdentifier: "DashboardViewController") as! DashboardViewController
     }
     
     static func getDashboardNavVC() -> UINavigationController{
-        return mainStoryboard.instantiateViewController(identifier: "DashboardNavigation")
+        return mainStoryboard.instantiateViewController(withIdentifier: "DashboardNavigation") as! UINavigationController
     }
     
     
