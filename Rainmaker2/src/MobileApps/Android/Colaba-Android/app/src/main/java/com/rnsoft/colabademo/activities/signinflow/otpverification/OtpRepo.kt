@@ -18,8 +18,31 @@ constructor(
 
         val otpResponseResult =  otpDataSource.verifyOtpService(intermediateToken, phoneNumber, otp)
         if(otpResponseResult is Result.Success)
-            sharedPref.putBoolean(ColabaConstant.IS_LOGGED_IN, true).apply() // mark user as logged in completely...
+            otpResponseResult.data.data?.let { storeLoggedInUserInfo(it) } // mark user as logged in completely...
         return otpResponseResult
+    }
+
+    private fun storeLoggedInUserInfo(data: Data) {
+
+        sharedPref.putString(ColabaConstant.token, data.token).apply()
+
+        sharedPref.putString(ColabaConstant.refreshToken, data.refreshToken)
+            .apply()
+        sharedPref.putInt(ColabaConstant.userProfileId, data.userProfileId)
+            .apply()
+        sharedPref.putString(ColabaConstant.userName, data.userName).apply()
+        sharedPref.putString(ColabaConstant.validFrom, data.validFrom).apply()
+        sharedPref.putString(ColabaConstant.validTo, data.validTo).apply()
+        sharedPref.putInt(ColabaConstant.tokenType, data.tokenType).apply()
+        sharedPref.putString(ColabaConstant.tokenTypeName, data.tokenTypeName)
+            .apply()
+        sharedPref.putString(
+            ColabaConstant.refreshTokenValidTo,
+            data.refreshTokenValidTo
+        ).apply()
+
+        if(data.tokenTypeName == ColabaConstant.AccessToken)
+            sharedPref.putBoolean(ColabaConstant.IS_LOGGED_IN, true).apply() // mark user as logged in completely...
     }
 
 

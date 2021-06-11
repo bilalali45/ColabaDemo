@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colaba_primary_color"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -14,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
         android:translationX="38dp"
+        android:alpha="0.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_message_svg" />
@@ -32,13 +34,16 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/login_box"
         android:layout_width="0dp"
-        android:layout_height="329dp"
+        android:layout_height="wrap_content"
+
         android:layout_marginStart="30dp"
         android:layout_marginTop="52dp"
         android:layout_marginEnd="30dp"
-        android:elevation="2dp"
-        app:cardCornerRadius="6dp"
-        app:cardElevation="1dp"
+
+
+        app:cardCornerRadius="8dp"
+
+        app:cardElevation="8dp"
         app:cardUseCompatPadding="true"
 
         app:layout_constraintCircleRadius="8dp"
@@ -50,38 +55,50 @@
             android:id="@+id/inside_constraintlayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="27dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/mobile_img_otp" />
+
+
             <View
-                android:id="@+id/view"
+                android:id="@+id/email_separator"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginStart="27dp"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="36dp"
                 android:layout_marginEnd="27dp"
                 android:background="@color/colaba_line_separator"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView10" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/verifyBtn"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="27dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginEnd="27dp"
-                android:layout_marginBottom="16dp"
                 android:background="@drawable/app_button_style"
                 android:enabled="false"
                 android:text="@string/verify"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:fontFamily="@font/rubik_medium"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/permission_checkbox" />
 
             <TextView
                 android:id="@+id/nearToResetTextView"
@@ -92,8 +109,9 @@
                 android:text="@string/did_not_receive_code"
                 android:textColor="@color/colaba_text_color"
                 android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@+id/view"
-                app:layout_constraintTop_toBottomOf="@+id/view"
+                android:fontFamily="@font/rubik_regular"
+                app:layout_constraintStart_toStartOf="@+id/email_separator"
+                app:layout_constraintTop_toBottomOf="@+id/email_separator"
                 />
 
             <TextView
@@ -104,7 +122,7 @@
                 android:visibility="gone"
                 android:textColor="@color/colaba_blue_color"
                 android:textSize="14sp"
-
+                android:fontFamily="@font/rubik_regular"
                 app:layout_constraintStart_toStartOf="@+id/nearToResetTextView"
                 app:layout_constraintTop_toBottomOf="@+id/nearToResetTextView" />
 
@@ -112,15 +130,16 @@
                 android:id="@+id/permission_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="30dp"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
                 android:text="@string/do_not_ask_again"
-                android:textColor="@color/colaba_text_color"
 
+                android:textColor="@color/colaba_text_color"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toTopOf="@+id/verifyBtn"
-                app:layout_constraintStart_toStartOf="@+id/resendTextView" />
+                android:fontFamily="@font/rubik_regular"
+                app:layout_constraintStart_toStartOf="@+id/resendTextView"
+                app:layout_constraintTop_toBottomOf="@+id/timer_constraintlayout" />
 
             <EditText
                 android:id="@+id/otpCodeEditText"
@@ -134,8 +153,8 @@
                 android:textSize="14sp"
                 android:background="@android:color/transparent"
                 android:ems="10"
-                app:layout_constraintBottom_toTopOf="@+id/view"
-                app:layout_constraintStart_toStartOf="@+id/view" />
+                app:layout_constraintBottom_toTopOf="@+id/email_separator"
+                app:layout_constraintStart_toStartOf="@+id/email_separator" />
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -144,10 +163,10 @@
                 android:layout_height="wrap_content"
                 android:background="@color/cardview_light_background"
                 android:backgroundTint="@color/cardview_light_background"
-                app:layout_constraintEnd_toEndOf="@+id/view"
+                app:layout_constraintEnd_toEndOf="@+id/email_separator"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/otpCodeEditText"
-                app:layout_constraintTop_toBottomOf="@+id/view">
+                app:layout_constraintTop_toBottomOf="@+id/email_separator">
 
 
                 <TextView
@@ -214,6 +233,19 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/mobile_verification_code"
+                android:textColor="@color/colaba_text_color_two"
+                android:textSize="14sp"
+                android:fontFamily="@font/rubik_regular"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView10"
+                app:layout_constraintStart_toEndOf="@+id/imageView10"
+                app:layout_constraintTop_toTopOf="@+id/imageView10" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
@@ -254,7 +286,6 @@
         android:layout_height="wrap_content"
         android:translationX="-64dp"
         android:translationY="102dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/login_box"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/one_paper_svg" />

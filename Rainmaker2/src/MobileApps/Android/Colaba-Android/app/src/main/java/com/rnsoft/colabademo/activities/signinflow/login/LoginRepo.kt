@@ -11,25 +11,18 @@ constructor(
     @ApplicationContext val applicationContext: Context
 ) {
 
-    private var user: LoginResponse? = null
-    val isLoggedIn: Boolean
-        get() = user != null
-
-    init {
-        user = null
-    }
-
-    private var isbiometricEnabled = false
-
-    suspend fun validateLoginCredentials(
+   suspend fun validateLoginCredentials(
         userEmail: String,
         password: String,
         enableBiometric:Boolean
     ): Result<LoginResponse> {
-        isbiometricEnabled = enableBiometric
+        if(enableBiometric)
+            sharedPref.putBoolean(ColabaConstant.isbiometricEnabled, true).apply()
+
         val genericResult = dataSource.login(userEmail, password)
-        if (genericResult is Result.Success)
-            storeLoggedInUserInfo(genericResult.data)
+        if (genericResult is Result.Success) {
+            genericResult.data.data?.let { storeLoggedInUserInfo(it) }
+        }
         return genericResult
     }
 
@@ -64,41 +57,27 @@ constructor(
     }
 
 
-    private fun storeLoggedInUserInfo(loginResponse: LoginResponse) {
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
-        this.user = loginResponse
+    private fun storeLoggedInUserInfo(data: Data) {
 
+        sharedPref.putString(ColabaConstant.token, data.token).apply()
 
-        if(isbiometricEnabled)
-            sharedPref.putBoolean(ColabaConstant.isbiometricEnabled, true).apply()
+        sharedPref.putString(ColabaConstant.refreshToken, data.refreshToken)
+            .apply()
+        sharedPref.putInt(ColabaConstant.userProfileId, data.userProfileId)
+            .apply()
+        sharedPref.putString(ColabaConstant.userName, data.userName).apply()
+        sharedPref.putString(ColabaConstant.validFrom, data.validFrom).apply()
+        sharedPref.putString(ColabaConstant.validTo, data.validTo).apply()
+        sharedPref.putInt(ColabaConstant.tokenType, data.tokenType).apply()
+        sharedPref.putString(ColabaConstant.tokenTypeName, data.tokenTypeName)
+            .apply()
+        sharedPref.putString(
+            ColabaConstant.refreshTokenValidTo,
+            data.refreshTokenValidTo
+        ).apply()
 
-        if (loginResponse.data != null) {
-                sharedPref.putString(ColabaConstant.token, loginResponse.data.token).apply()
-
-            sharedPref.putString(ColabaConstant.refreshToken, loginResponse.data.refreshToken)
-                .apply()
-            sharedPref.putInt(ColabaConstant.userProfileId, loginResponse.data.userProfileId)
-                .apply()
-            sharedPref.putString(ColabaConstant.userName, loginResponse.data.userName).apply()
-            sharedPref.putString(ColabaConstant.validFrom, loginResponse.data.validFrom).apply()
-            sharedPref.putString(ColabaConstant.validTo, loginResponse.data.validTo).apply()
-            sharedPref.putInt(ColabaConstant.tokenType, loginResponse.data.tokenType).apply()
-            sharedPref.putString(ColabaConstant.tokenTypeName, loginResponse.data.tokenTypeName)
-                .apply()
-            sharedPref.putString(
-                ColabaConstant.refreshTokenValidTo,
-                loginResponse.data.refreshTokenValidTo
-            ).apply()
-
-            if(loginResponse.data.tokenTypeName == "AccessToken")
-                sharedPref.putBoolean(ColabaConstant.IS_LOGGED_IN, true).apply() // mark user as logged in completely...
-        }
-
-
-
-
-
+        if(data.tokenTypeName == ColabaConstant.AccessToken)
+            sharedPref.putBoolean(ColabaConstant.IS_LOGGED_IN, true).apply() // mark user as logged in completely...
     }
 
     private fun storeTenantInfo(tenantConfigurationResponse: TenantConfigurationResponse) {

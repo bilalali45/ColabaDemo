@@ -37,6 +37,7 @@ class PhoneNumberFragment : Fragment() {
     private lateinit var phoneNumberError:TextView
     private var len = 0
     private lateinit var loading:ProgressBar
+    private lateinit var skipLink:AppCompatTextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +48,7 @@ class PhoneNumberFragment : Fragment() {
         root = inflater.inflate(R.layout.phone_number, container, false)
 
         continueButton = root.findViewById<Button>(R.id.continueBtn)
-        val skipLink = root.findViewById<AppCompatTextView>(R.id.skipTextLink)
+        skipLink = root.findViewById<AppCompatTextView>(R.id.skipTextLink)
         loading = root.findViewById<ProgressBar>(R.id.loader_phone_screen)
         phoneNumberError = root.findViewById<TextView>(R.id.phoneErrorTextView)
         phoneNumber = root.findViewById<EditText>(R.id.editTextPhoneNumber)
@@ -78,6 +79,7 @@ class PhoneNumberFragment : Fragment() {
         skipLink.setOnClickListener {
             phoneNumberError.text =""
             loading.visibility = View.VISIBLE
+            toggleButtonState(false)
             phoneNumberViewModel.skipTwoFactor()
         }
 
@@ -85,6 +87,7 @@ class PhoneNumberFragment : Fragment() {
             phoneNumberError.text =""
             sharedPreferences.getString(ColabaConstant.token, "")?.let {
                 loading.visibility = View.VISIBLE
+                toggleButtonState(false)
                 signUpFlowViewModel.sendOtpToPhone(intermediateToken = it, phoneNumber = phoneNumber.text.toString())
             }
             //findNavController().navigate(R.id.otp_verification_id, null)
@@ -115,14 +118,26 @@ class PhoneNumberFragment : Fragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onOtpReceivedEvent(event: OtpSentEvent) {
         loading.visibility = View.INVISIBLE
-        val otpSentRespose =event.otpSentResponse
-        Log.e("otp-sent", otpSentRespose.toString())
-        findNavController().navigate(R.id.otp_verification_id, null)
+        toggleButtonState(true)
+        val otpSentResponse =event.otpSentResponse
+        Log.e("otp-sent", otpSentResponse.toString())
+        when (otpSentResponse.code) {
+            "200" -> findNavController().navigate(R.id.otp_verification_id, null)
+            else -> {
+                if(otpSentResponse.message!=null)
+                     showToast(otpSentResponse.message)
+                else
+                    showToast("Number can not be verified...")
+            }
+
+        }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSkipEvent(event: SkipEvent) {
         loading.visibility = View.INVISIBLE
+        toggleButtonState(true)
         val skipTwoFactorResponse =event.skipTwoFactorResponse
         when (skipTwoFactorResponse.code) {
             "200" -> navigateToDashboardScreen()
@@ -131,4 +146,10 @@ class PhoneNumberFragment : Fragment() {
             }
         }
     }
+
+    private fun toggleButtonState(bool:Boolean){
+        skipLink.isEnabled = bool
+        continueButton.isEnabled = bool
+    }
+
 }

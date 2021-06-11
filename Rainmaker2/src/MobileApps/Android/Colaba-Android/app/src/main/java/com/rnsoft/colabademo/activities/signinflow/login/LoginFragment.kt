@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,8 @@ class LoginFragment : Fragment() {
     private lateinit var passwordField: AppCompatEditText
     private lateinit var loading: ProgressBar
     private lateinit var biometricSwitch:SwitchCompat
+    private lateinit var forgotPasswordLink:AppCompatTextView
+    private lateinit var loginButton:AppCompatButton
     private var passwordBoolean:Boolean = true
 
 
@@ -57,12 +60,13 @@ class LoginFragment : Fragment() {
         passwordImageView = root.findViewById<AppCompatImageView>(R.id.passwordImageShow)
         biometricSwitch = root.findViewById<SwitchCompat>(R.id.switch1)
 
-        val forgotPasswordLink = root.findViewById<AppCompatTextView>(R.id.forgotPasswordLink)
-        val loginButton = root.findViewById<AppCompatButton>(R.id.loginBtn)
+        forgotPasswordLink = root.findViewById<AppCompatTextView>(R.id.forgotPasswordLink)
+        loginButton = root.findViewById<AppCompatButton>(R.id.loginBtn)
         loading = root.findViewById<ProgressBar>(R.id.loader_login_screen)
         //resetToInitialPosition()
         loginButton.setOnClickListener {
             loading.visibility = View.VISIBLE
+            toggleButtonState(false)
             resetToInitialPosition()
             loginViewModel.login(userEmailField.text.toString(), passwordField.text.toString(), biometricSwitch.isChecked)
         }
@@ -89,9 +93,8 @@ class LoginFragment : Fragment() {
 
         biometricSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                if (goldfinger.canAuthenticate()) {
-
-                }
+                if (goldfinger.canAuthenticate())
+                    Log.e("Yes", "Let Toggle On...")
                 else
                 {
                     biometricSwitch.isChecked = false
@@ -142,6 +145,7 @@ class LoginFragment : Fragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onLoginEventReceived(event: LoginEvent) {
+        toggleButtonState(true)
         event.loginResponseResult.let {
             loading.visibility = View.INVISIBLE
 
@@ -166,6 +170,10 @@ class LoginFragment : Fragment() {
         }
     }
 
+    private fun toggleButtonState(bool:Boolean){
+        forgotPasswordLink.isEnabled = bool
+        loginButton.isEnabled = bool
+    }
 
 
 }
