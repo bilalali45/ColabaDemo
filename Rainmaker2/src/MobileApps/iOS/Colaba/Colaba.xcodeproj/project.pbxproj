@@ -21,7 +21,6 @@
 		7148C6B92655500B00E1C216 /* ExtensionOfString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7148C6B82655500B00E1C216 /* ExtensionOfString.swift */; };
 		7148C6FF2655667800E1C216 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7148C6B026554ADE00E1C216 /* Validation.swift */; };
 		7186ACB02653B25A00E740D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7186ACAF2653B25A00E740D3 /* AppDelegate.swift */; };
-		7186ACB22653B25A00E740D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7186ACB12653B25A00E740D3 /* SceneDelegate.swift */; };
 		7186ACB72653B25A00E740D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7186ACB52653B25A00E740D3 /* Main.storyboard */; };
 		7186ACB92653B25B00E740D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7186ACB82653B25B00E740D3 /* Assets.xcassets */; };
 		7186ACBC2653B25B00E740D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7186ACBA2653B25B00E740D3 /* LaunchScreen.storyboard */; };
@@ -79,7 +78,6 @@
 		7148C6B82655500B00E1C216 /* ExtensionOfString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionOfString.swift; sourceTree = "<group>"; };
 		7186ACAC2653B25A00E740D3 /* Colaba.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Colaba.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7186ACAF2653B25A00E740D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		7186ACB12653B25A00E740D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7186ACB62653B25A00E740D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7186ACB82653B25B00E740D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7186ACBB2653B25B00E740D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -228,7 +226,6 @@
 				7186ACE62653C56C00E740D3 /* View Controllers */,
 				7186ACE52653C56500E740D3 /* StoryBoards */,
 				7186ACAF2653B25A00E740D3 /* AppDelegate.swift */,
-				7186ACB12653B25A00E740D3 /* SceneDelegate.swift */,
 				7186ACB82653B25B00E740D3 /* Assets.xcassets */,
 				7186ACBA2653B25B00E740D3 /* LaunchScreen.storyboard */,
 				7186ACBD2653B25B00E740D3 /* Info.plist */,
@@ -588,7 +585,6 @@
 			files = (
 				7186ACB02653B25A00E740D3 /* AppDelegate.swift in Sources */,
 				7186ACFC2653C68200E740D3 /* FingerPrintViewController.swift in Sources */,
-				7186ACB22653B25A00E740D3 /* SceneDelegate.swift in Sources */,
 				2368D6552667DA5900D5C1C5 /* BaseViewController.swift in Sources */,
 				7186AD512653CD3500E740D3 /* ExtensionOfViewController.swift in Sources */,
 				7126B7092657F1910053903B /* BiometricIDAuth.swift in Sources */,
@@ -789,10 +785,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 2HX8AP6426;
 				INFOPLIST_FILE = Colaba/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -813,10 +809,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 2HX8AP6426;
 				INFOPLIST_FILE = Colaba/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

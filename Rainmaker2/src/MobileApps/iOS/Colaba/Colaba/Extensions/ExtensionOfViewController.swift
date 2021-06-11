@@ -32,17 +32,15 @@ extension UIViewController{
     }
     
     func goToDashboard(){
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
-        
-        sceneDelegate.loadDashboardViewController()
+        let vc = Utility.getDashboardVC()
+        UIApplication.shared.windows.first?.rootViewController = vc
+        UIApplication.shared.windows.first?.makeKeyAndVisible()
     }
     
     func goToLogin(){
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
-        
-        sceneDelegate.loadLoginViewController()
+        let vc = Utility.getLoginNavigationVC()
+        UIApplication.shared.windows.first?.rootViewController = vc
+        UIApplication.shared.windows.first?.makeKeyAndVisible()
     }
     
     func presentPopup(message: String){
