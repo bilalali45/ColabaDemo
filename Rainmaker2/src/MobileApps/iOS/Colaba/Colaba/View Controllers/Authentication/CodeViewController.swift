@@ -91,7 +91,7 @@ class CodeViewController: UIViewController {
             self.btnResendCode.isHidden = false
             self.btnResendCode.setTitle("Resend code (\(self.codeLimit) left)", for: .normal)
             self.lblDescription.text = "Didn't receive the code?"
-            self.codeViewHeightConstraint.constant = 333
+            self.codeViewHeightConstraint.constant = 343
             self.btnCheckTopConstraint.constant = 30
             self.lblDescriptionTopConstraint.constant = 30
             self.timerView.isHidden = true
@@ -131,7 +131,7 @@ class CodeViewController: UIViewController {
                 self.btnResendCode.setTitle("Resend code (\(self.codeLimit) left)", for: .normal)
                 self.btnResendCode.setTitleColor(Theme.getButtonBlueColor(), for: .normal)
                 self.lblDescription.text = "Didn't receive the code?"
-                self.codeViewHeightConstraint.constant = 333
+                self.codeViewHeightConstraint.constant = 343
                 self.btnCheckTopConstraint.constant = 30
                 self.lblDescriptionTopConstraint.constant = 30
                 self.timerView.isHidden = true
