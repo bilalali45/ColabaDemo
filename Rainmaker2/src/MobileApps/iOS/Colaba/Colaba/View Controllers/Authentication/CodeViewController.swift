@@ -16,7 +16,7 @@ class CodeViewController: UIViewController {
     @IBOutlet weak var codeViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var lblPhoneNumber: UILabel!
     @IBOutlet weak var txtFieldCode: UITextField!
-    @IBOutlet weak var btnCheck: UIButton!
+    @IBOutlet weak var checkIcon: UIImageView!
     @IBOutlet weak var btnCheckTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var lblDescription: UILabel!
     @IBOutlet weak var lblDescriptionTopConstraint: NSLayoutConstraint!
@@ -65,7 +65,7 @@ class CodeViewController: UIViewController {
     }
     
     @objc func textFieldCodeChanged(){
-        btnCheck.isHidden = txtFieldCode.text!.count != 6
+        checkIcon.isHidden = txtFieldCode.text!.count != 6
         btnVerify.backgroundColor = txtFieldCode.text!.count != 6 ? Theme.getButtonGreyColor() : Theme.getButtonBlueColor()
         btnVerify.setTitleColor(txtFieldCode.text!.count != 6 ? Theme.getButtonGreyTextColor() : .white, for: .normal)
         btnVerify.isEnabled = txtFieldCode.text!.count == 6

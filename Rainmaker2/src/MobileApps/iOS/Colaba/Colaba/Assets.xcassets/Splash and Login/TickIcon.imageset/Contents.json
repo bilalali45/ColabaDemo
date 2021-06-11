@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "CodeIconNew.png",
+      "filename" : "TickIcon.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "CodeIconNew@2x.png",
+      "filename" : "TickIcon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "CodeIconNew@3x.png",
+      "filename" : "TickIcon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
