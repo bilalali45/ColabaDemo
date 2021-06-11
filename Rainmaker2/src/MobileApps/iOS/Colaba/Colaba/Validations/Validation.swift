@@ -11,7 +11,7 @@ struct Validation {
     
     func validateEmail(_ email: String?) throws -> String{
         guard let email = email else { throw ValidationError.noEmail }
-        guard email.count > 1 else { throw ValidationError.noEmail }
+        guard email.count > 0 else { throw ValidationError.noEmail }
         guard email.isValidEmail() else { throw ValidationError.invalidEmail }
         return email
     }

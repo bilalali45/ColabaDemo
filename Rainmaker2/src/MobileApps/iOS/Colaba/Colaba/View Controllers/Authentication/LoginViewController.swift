@@ -48,7 +48,7 @@ class LoginViewController: UIViewController {
     //MARK:- Methods and Actions
     
     func setupViews(){
-        loginView.layer.cornerRadius = 5
+        loginView.layer.cornerRadius = 8
         loginView.addShadow()
         btnLogin.layer.cornerRadius = 5
         txtFieldEmail.delegate = self
@@ -105,7 +105,7 @@ class LoginViewController: UIViewController {
             
         }
         catch{
-            if (error.localizedDescription == ValidationError.invalidEmail.localizedDescription){
+            if (error.localizedDescription == ValidationError.invalidEmail.localizedDescription || error.localizedDescription == ValidationError.noEmail.localizedDescription){
                 
                 self.lblEmailError.text = error.localizedDescription
                 self.lblEmailError.isHidden = false
@@ -278,33 +278,33 @@ extension LoginViewController: UIGestureRecognizerDelegate{
 
 extension LoginViewController: UITextFieldDelegate{
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if (textField == txtFieldEmail){
-            do{
-                let email = try validation.validateEmail(txtFieldEmail.text)
-                self.lblEmailError.isHidden = true
-                self.emailSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-            }
-            catch{
-                self.lblEmailError.text = error.localizedDescription
-                self.lblEmailError.isHidden = false
-                self.emailSeparator.backgroundColor = Theme.getSeparatorErrorColor()
-            }
-        }
-        else{
-            do{
-                let password = try validation.validatePassword(txtFieldPassword.text)
-                self.lblPasswordError.isHidden = true
-                self.passwordSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-            }
-            catch{
-                self.lblPasswordError.text = error.localizedDescription
-                self.lblPasswordError.isHidden = false
-                self.passwordSeparator.backgroundColor = Theme.getSeparatorErrorColor()
-                
-            }
-        }
-            
-    }
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        if (textField == txtFieldEmail){
+//            do{
+//                let email = try validation.validateEmail(txtFieldEmail.text)
+//                self.lblEmailError.isHidden = true
+//                self.emailSeparator.backgroundColor = Theme.getSeparatorNormalColor()
+//            }
+//            catch{
+//                self.lblEmailError.text = error.localizedDescription
+//                self.lblEmailError.isHidden = false
+//                self.emailSeparator.backgroundColor = Theme.getSeparatorErrorColor()
+//            }
+//        }
+//        else{
+//            do{
+//                let password = try validation.validatePassword(txtFieldPassword.text)
+//                self.lblPasswordError.isHidden = true
+//                self.passwordSeparator.backgroundColor = Theme.getSeparatorNormalColor()
+//            }
+//            catch{
+//                self.lblPasswordError.text = error.localizedDescription
+//                self.lblPasswordError.isHidden = false
+//                self.passwordSeparator.backgroundColor = Theme.getSeparatorErrorColor()
+//                
+//            }
+//        }
+//            
+//    }
     
 }

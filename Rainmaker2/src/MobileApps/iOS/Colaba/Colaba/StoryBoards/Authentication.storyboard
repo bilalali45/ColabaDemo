@@ -6,7 +6,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -32,20 +31,20 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good Morning" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aUp-mp-CYp">
                                 <rect key="frame" x="120.5" y="181" width="134" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
-                                <color key="textColor" red="0.30588235294117649" green="0.30588235294117649" blue="0.30588235294117649" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Johey Leo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="etj-OJ-fbP">
-                                <rect key="frame" x="144" y="210" width="87" height="22"/>
+                                <rect key="frame" x="144.5" y="210" width="86.5" height="21"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="18"/>
                                 <color key="textColor" red="0.26666666666666666" green="0.51764705882352935" blue="0.95686274509803915" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="face_logo" translatesAutoresizingMaskIntoConstraints="NO" id="orN-RK-A5i">
-                                <rect key="frame" x="62.5" y="257" width="250" height="250"/>
+                                <rect key="frame" x="62.5" y="256" width="250" height="250"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6La-iu-5ex">
-                                <rect key="frame" x="106" y="512" width="163" height="31"/>
+                                <rect key="frame" x="106" y="511" width="163" height="31"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="16"/>
                                 <state key="normal" title="Sign in with Password">
                                     <color key="titleColor" red="0.49411764705882355" green="0.50980392156862742" blue="0.61960784313725492" alpha="1" colorSpace="calibratedRGB"/>
@@ -58,7 +57,7 @@
                                 <rect key="frame" x="104.5" y="579" width="166" height="28"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <state key="normal" title="Login with another account">
-                                    <color key="titleColor" red="0.4941176471" green="0.50980392159999999" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.65490196078431373" green="0.65490196078431373" blue="0.65490196078431373" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="btnAnotherAccountTapped:" destination="okt-1P-eyg" eventType="touchUpInside" id="Xcp-2l-sc9"/>
@@ -66,7 +65,7 @@
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6yv-bE-K6h"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="AppBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="etj-OJ-fbP" firstAttribute="top" secondItem="aUp-mp-CYp" secondAttribute="bottom" constant="5" id="1Hg-gN-UE1"/>
                             <constraint firstItem="etj-OJ-fbP" firstAttribute="centerX" secondItem="aUp-mp-CYp" secondAttribute="centerX" id="2yx-sf-Tag"/>
@@ -124,74 +123,74 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Login_logo" translatesAutoresizingMaskIntoConstraints="NO" id="sMH-5L-EtE">
-                                <rect key="frame" x="124.5" y="75" width="126" height="41"/>
+                                <rect key="frame" x="124.5" y="70" width="126" height="41"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="KeyImage" translatesAutoresizingMaskIntoConstraints="NO" id="f94-rR-5hj">
-                                <rect key="frame" x="280.5" y="25" width="161" height="160"/>
+                                <rect key="frame" x="280.5" y="19.5" width="161" height="160"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login To Lender’s Portal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wLJ-rJ-T9I">
-                                <rect key="frame" x="72.5" y="151" width="230.5" height="24"/>
+                                <rect key="frame" x="72.5" y="141" width="230.5" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
-                                <color key="textColor" red="0.30588235294117649" green="0.30588235294117649" blue="0.30588235294117649" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginBottomImage" translatesAutoresizingMaskIntoConstraints="NO" id="mQ3-WD-fhk">
-                                <rect key="frame" x="-75" y="415" width="304" height="275"/>
+                                <rect key="frame" x="-75" y="445" width="304" height="275"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x0i-EQ-v3o">
-                                <rect key="frame" x="30" y="220" width="315" height="370"/>
+                                <rect key="frame" x="30" y="205" width="315" height="400"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="emailIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Txp-Hh-X7v">
-                                        <rect key="frame" x="27" y="17" width="19.5" height="13.5"/>
+                                        <rect key="frame" x="27" y="40" width="19.5" height="13.5"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X8M-Sf-O21">
-                                        <rect key="frame" x="56.5" y="15.5" width="35.5" height="17"/>
+                                        <rect key="frame" x="56.5" y="38.5" width="35.5" height="17"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <color key="textColor" red="0.49411764705882355" green="0.50980392156862742" blue="0.61960784313725492" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JV0-aZ-Iod">
-                                        <rect key="frame" x="27" y="42.5" width="261" height="20"/>
+                                        <rect key="frame" x="27" y="65.5" width="261" height="25"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="tHU-Ud-3De"/>
+                                            <constraint firstAttribute="height" constant="25" id="tHU-Ud-3De"/>
                                         </constraints>
-                                        <color key="textColor" red="0.30588235294117649" green="0.30588235294117649" blue="0.30588235294117649" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="textColor" name="AppBlackColor"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                     </textField>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="au8-xy-uHx">
-                                        <rect key="frame" x="27" y="65.5" width="261" height="1"/>
+                                        <rect key="frame" x="27" y="88.5" width="261" height="1"/>
                                         <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="z0K-jw-hb0"/>
                                         </constraints>
                                     </view>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invalid email, please try again." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="moS-Zn-sfL">
-                                        <rect key="frame" x="27" y="71.5" width="261" height="14.5"/>
+                                        <rect key="frame" x="27" y="94.5" width="261" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
                                         <color key="textColor" name="Separator rErrorColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="passwordIcon" translatesAutoresizingMaskIntoConstraints="NO" id="7nl-lc-v10">
-                                        <rect key="frame" x="27" y="101.5" width="12.5" height="16.5"/>
+                                        <rect key="frame" x="27" y="124.5" width="12.5" height="16.5"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NeT-O2-fJg">
-                                        <rect key="frame" x="56.5" y="101.5" width="63.5" height="17"/>
+                                        <rect key="frame" x="56.5" y="124.5" width="63.5" height="17"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <color key="textColor" red="0.4941176471" green="0.50980392159999999" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ttc-7m-QUY">
-                                        <rect key="frame" x="27" y="128.5" width="201" height="20"/>
+                                        <rect key="frame" x="27" y="151.5" width="201" height="25"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="0Xe-UE-jkH"/>
+                                            <constraint firstAttribute="height" constant="25" id="0Xe-UE-jkH"/>
                                         </constraints>
-                                        <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="textColor" name="AppBlackColor"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zCY-TR-Etv">
-                                        <rect key="frame" x="248" y="115" width="40" height="30"/>
+                                        <rect key="frame" x="248" y="138" width="40" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="6FT-8y-Fvg"/>
                                             <constraint firstAttribute="height" constant="30" id="ySH-QA-72w"/>
@@ -202,35 +201,35 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="unc-ch-k1j">
-                                        <rect key="frame" x="27" y="153" width="261" height="1"/>
+                                        <rect key="frame" x="27" y="176" width="261" height="1"/>
                                         <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="hUg-IZ-g2a"/>
                                         </constraints>
                                     </view>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invalid password, please try again." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ls6-Vl-xId">
-                                        <rect key="frame" x="27" y="159" width="261" height="14.5"/>
+                                        <rect key="frame" x="27" y="182" width="261" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
                                         <color key="textColor" name="Separator rErrorColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="faceIdIcon" translatesAutoresizingMaskIntoConstraints="NO" id="5Lf-G9-OiT">
-                                        <rect key="frame" x="27" y="194" width="17" height="17"/>
+                                        <rect key="frame" x="27" y="217" width="17" height="17"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Biometric Login" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JXl-cc-3WZ">
-                                        <rect key="frame" x="56.5" y="194" width="102" height="17"/>
+                                        <rect key="frame" x="56.5" y="217" width="102" height="17"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <color key="textColor" red="0.4941176471" green="0.50980392159999999" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Sq6-7O-gYS">
-                                        <rect key="frame" x="239" y="187" width="51" height="31"/>
+                                        <rect key="frame" x="239" y="210" width="51" height="31"/>
                                         <connections>
                                             <action selector="faceIdSwitchChanged:" destination="eh3-89-IQY" eventType="valueChanged" id="fuH-dt-Rss"/>
                                         </connections>
                                     </switch>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qlG-Ck-dwb">
-                                        <rect key="frame" x="27" y="236" width="148" height="29"/>
+                                        <rect key="frame" x="27" y="259" width="148" height="29"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <state key="normal" title="Forgot your password?">
                                             <color key="titleColor" red="0.26666666666666666" green="0.51764705882352935" blue="0.95686274509803915" alpha="1" colorSpace="calibratedRGB"/>
@@ -239,9 +238,9 @@
                                             <action selector="btnForgotPasswordTapped:" destination="eh3-89-IQY" eventType="touchUpInside" id="Pze-AK-tjd"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FiZ-T2-MvM">
-                                        <rect key="frame" x="27" y="290" width="261" height="50"/>
-                                        <color key="backgroundColor" red="0.26666666666666666" green="0.51764705882352935" blue="0.95686274509803915" alpha="1" colorSpace="calibratedRGB"/>
+                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FiZ-T2-MvM">
+                                        <rect key="frame" x="27" y="313" width="261" height="50"/>
+                                        <color key="backgroundColor" red="0.26666666666666666" green="0.51764705882352935" blue="0.95686274509803915" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="pJv-hs-bz6"/>
                                         </constraints>
@@ -269,8 +268,8 @@
                                     <constraint firstItem="qlG-Ck-dwb" firstAttribute="leading" secondItem="x0i-EQ-v3o" secondAttribute="leading" constant="27" id="KAj-eh-bVp"/>
                                     <constraint firstItem="unc-ch-k1j" firstAttribute="leading" secondItem="x0i-EQ-v3o" secondAttribute="leading" constant="27" id="LPc-Zo-kBf"/>
                                     <constraint firstItem="7nl-lc-v10" firstAttribute="top" secondItem="au8-xy-uHx" secondAttribute="bottom" constant="35" id="OsN-rV-nAx"/>
-                                    <constraint firstAttribute="height" constant="370" id="RSv-fp-J4d"/>
-                                    <constraint firstItem="Txp-Hh-X7v" firstAttribute="top" secondItem="x0i-EQ-v3o" secondAttribute="top" constant="17" id="Riy-9C-8za"/>
+                                    <constraint firstAttribute="height" constant="400" id="RSv-fp-J4d"/>
+                                    <constraint firstItem="Txp-Hh-X7v" firstAttribute="top" secondItem="x0i-EQ-v3o" secondAttribute="top" constant="40" id="Riy-9C-8za"/>
                                     <constraint firstItem="FiZ-T2-MvM" firstAttribute="top" secondItem="qlG-Ck-dwb" secondAttribute="bottom" constant="25" id="S5R-Eh-8vU"/>
                                     <constraint firstItem="qlG-Ck-dwb" firstAttribute="top" secondItem="5Lf-G9-OiT" secondAttribute="bottom" constant="25" id="WXe-3f-YmY"/>
                                     <constraint firstAttribute="trailing" secondItem="au8-xy-uHx" secondAttribute="trailing" constant="27" id="XCZ-Yw-jIf"/>
@@ -300,17 +299,17 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Ps4-Xw-0so"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="AppBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="wLJ-rJ-T9I" firstAttribute="top" secondItem="sMH-5L-EtE" secondAttribute="bottom" constant="35" id="5E6-bj-99t"/>
+                            <constraint firstItem="wLJ-rJ-T9I" firstAttribute="top" secondItem="sMH-5L-EtE" secondAttribute="bottom" constant="30" id="5E6-bj-99t"/>
                             <constraint firstItem="mQ3-WD-fhk" firstAttribute="leading" secondItem="Ps4-Xw-0so" secondAttribute="leading" constant="-75" id="6fQ-nq-xq8"/>
                             <constraint firstItem="sMH-5L-EtE" firstAttribute="centerX" secondItem="UCQ-T0-ugE" secondAttribute="centerX" id="7iI-pO-40b"/>
                             <constraint firstItem="wLJ-rJ-T9I" firstAttribute="centerX" secondItem="UCQ-T0-ugE" secondAttribute="centerX" id="As4-41-DST"/>
-                            <constraint firstItem="mQ3-WD-fhk" firstAttribute="top" secondItem="x0i-EQ-v3o" secondAttribute="bottom" constant="-175" id="EIX-da-hyL"/>
-                            <constraint firstItem="sMH-5L-EtE" firstAttribute="top" secondItem="Ps4-Xw-0so" secondAttribute="top" constant="75" id="Mfm-ox-VD1"/>
+                            <constraint firstItem="mQ3-WD-fhk" firstAttribute="top" secondItem="x0i-EQ-v3o" secondAttribute="bottom" constant="-160" id="EIX-da-hyL"/>
+                            <constraint firstItem="sMH-5L-EtE" firstAttribute="top" secondItem="Ps4-Xw-0so" secondAttribute="top" constant="70" id="Mfm-ox-VD1"/>
                             <constraint firstItem="f94-rR-5hj" firstAttribute="centerY" secondItem="sMH-5L-EtE" secondAttribute="centerY" multiplier="1.1" id="SAB-GA-B5u"/>
                             <constraint firstItem="f94-rR-5hj" firstAttribute="leading" secondItem="sMH-5L-EtE" secondAttribute="trailing" constant="30" id="TQf-sl-0Yl"/>
-                            <constraint firstItem="x0i-EQ-v3o" firstAttribute="top" secondItem="wLJ-rJ-T9I" secondAttribute="bottom" constant="45" id="kG3-0E-uJQ"/>
+                            <constraint firstItem="x0i-EQ-v3o" firstAttribute="top" secondItem="wLJ-rJ-T9I" secondAttribute="bottom" constant="40" id="kG3-0E-uJQ"/>
                             <constraint firstItem="x0i-EQ-v3o" firstAttribute="leading" secondItem="Ps4-Xw-0so" secondAttribute="leading" constant="30" id="nIZ-ht-Uda"/>
                             <constraint firstItem="Ps4-Xw-0so" firstAttribute="trailing" secondItem="x0i-EQ-v3o" secondAttribute="trailing" constant="30" id="pKa-e0-kRw"/>
                         </constraints>
@@ -346,20 +345,20 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good Morning" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IOa-5V-LBu">
                                 <rect key="frame" x="120.5" y="181" width="134" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
-                                <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Johey Leo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0FJ-me-YxA">
-                                <rect key="frame" x="144" y="210" width="87" height="22"/>
+                                <rect key="frame" x="144.5" y="210" width="86.5" height="21"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="18"/>
                                 <color key="textColor" red="0.2666666667" green="0.51764705879999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Finger_logo" translatesAutoresizingMaskIntoConstraints="NO" id="7Dt-nf-fr1">
-                                <rect key="frame" x="62.5" y="257" width="250" height="250"/>
+                                <rect key="frame" x="62.5" y="256" width="250" height="250"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JkE-Gz-5xq">
-                                <rect key="frame" x="106" y="512" width="163" height="31"/>
+                                <rect key="frame" x="106" y="511" width="163" height="31"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="16"/>
                                 <state key="normal" title="Sign in with Password">
                                     <color key="titleColor" red="0.4941176471" green="0.50980392159999999" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
@@ -372,7 +371,7 @@
                                 <rect key="frame" x="104.5" y="579" width="166" height="28"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <state key="normal" title="Login with another account">
-                                    <color key="titleColor" red="0.4941176471" green="0.50980392159999999" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.65490196078431373" green="0.65490196078431373" blue="0.65490196078431373" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="btnAnotherAccountTapped:" destination="zMC-Qr-zfG" eventType="touchUpInside" id="JpI-Zv-qKr"/>
@@ -380,7 +379,7 @@
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="myu-xb-kjX"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="AppBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="IOa-5V-LBu" firstAttribute="centerX" secondItem="krt-Z4-LcF" secondAttribute="centerX" id="0jD-2n-8KI"/>
                             <constraint firstItem="sKS-4R-RN0" firstAttribute="centerX" secondItem="JkE-Gz-5xq" secondAttribute="centerX" id="0nE-hy-ox7"/>
@@ -424,56 +423,56 @@
                                 <rect key="frame" x="261.5" y="3" width="173" height="185"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password Assistance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zQP-6T-d81">
-                                <rect key="frame" x="92" y="182" width="191.5" height="24"/>
+                                <rect key="frame" x="85" y="182" width="205" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
-                                <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your email to reset your password." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JzX-d5-SAC">
-                                <rect key="frame" x="61" y="221" width="253" height="17"/>
+                                <rect key="frame" x="57.5" y="221" width="260" height="17"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                 <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="forgotpasswordbottomIcon" translatesAutoresizingMaskIntoConstraints="NO" id="ZTo-QE-pVb">
-                                <rect key="frame" x="-60" y="459" width="182" height="179"/>
+                                <rect key="frame" x="-60" y="413" width="182" height="179"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hsP-7g-rg2">
-                                <rect key="frame" x="30" y="283" width="315" height="266"/>
+                                <rect key="frame" x="30" y="283" width="315" height="220"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="emailIcon" translatesAutoresizingMaskIntoConstraints="NO" id="K1X-ob-Xis">
-                                        <rect key="frame" x="27" y="62" width="19.5" height="13.5"/>
+                                        <rect key="frame" x="27" y="40" width="19.5" height="13.5"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iRF-hM-E4s">
-                                        <rect key="frame" x="56.5" y="60.5" width="34.5" height="17"/>
+                                        <rect key="frame" x="56.5" y="38.5" width="35.5" height="17"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <color key="textColor" red="0.4941176471" green="0.50980392159999999" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vdw-U4-ShR">
-                                        <rect key="frame" x="27" y="87.5" width="261" height="20"/>
+                                        <rect key="frame" x="27" y="65.5" width="261" height="25"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="ffo-Dv-66m"/>
+                                            <constraint firstAttribute="height" constant="25" id="ffo-Dv-66m"/>
                                         </constraints>
-                                        <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="textColor" name="AppBlackColor"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                     </textField>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ksq-hC-N6X">
-                                        <rect key="frame" x="27" y="110.5" width="261" height="1"/>
+                                        <rect key="frame" x="27" y="88.5" width="261" height="1"/>
                                         <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="Xtk-zv-Dzy"/>
                                         </constraints>
                                     </view>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invalid email, please try again." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CqT-la-f0b">
-                                        <rect key="frame" x="27" y="116.5" width="261" height="14"/>
+                                        <rect key="frame" x="27" y="94.5" width="261" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
                                         <color key="textColor" name="Separator rErrorColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PFs-R8-LMm">
-                                        <rect key="frame" x="27" y="151.5" width="261" height="50"/>
+                                        <rect key="frame" x="27" y="129.5" width="261" height="50"/>
                                         <color key="backgroundColor" red="0.2666666667" green="0.51764705879999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="CT4-Kb-gub"/>
@@ -499,11 +498,11 @@
                                     <constraint firstAttribute="trailing" secondItem="Ksq-hC-N6X" secondAttribute="trailing" constant="27" id="Nyw-qM-grW"/>
                                     <constraint firstItem="CqT-la-f0b" firstAttribute="leading" secondItem="hsP-7g-rg2" secondAttribute="leading" constant="27" id="Qya-lP-tM0"/>
                                     <constraint firstItem="CqT-la-f0b" firstAttribute="top" secondItem="Ksq-hC-N6X" secondAttribute="bottom" constant="5" id="RG3-hg-ihG"/>
-                                    <constraint firstItem="K1X-ob-Xis" firstAttribute="top" secondItem="hsP-7g-rg2" secondAttribute="top" constant="62" id="ceE-AI-9vi"/>
+                                    <constraint firstItem="K1X-ob-Xis" firstAttribute="top" secondItem="hsP-7g-rg2" secondAttribute="top" constant="40" id="ceE-AI-9vi"/>
                                     <constraint firstAttribute="trailing" secondItem="PFs-R8-LMm" secondAttribute="trailing" constant="27" id="ewt-sm-Ibi"/>
                                     <constraint firstItem="iRF-hM-E4s" firstAttribute="centerY" secondItem="K1X-ob-Xis" secondAttribute="centerY" id="odz-U9-rH8"/>
                                     <constraint firstAttribute="trailing" secondItem="vdw-U4-ShR" secondAttribute="trailing" constant="27" id="ojH-cX-GDh"/>
-                                    <constraint firstAttribute="height" constant="266" id="u4x-ZR-RxI"/>
+                                    <constraint firstAttribute="height" constant="220" id="u4x-ZR-RxI"/>
                                     <constraint firstItem="vdw-U4-ShR" firstAttribute="top" secondItem="iRF-hM-E4s" secondAttribute="bottom" constant="10" id="uO8-gU-MGe"/>
                                     <constraint firstItem="PFs-R8-LMm" firstAttribute="top" secondItem="Ksq-hC-N6X" secondAttribute="bottom" constant="40" id="vYl-Vv-PvB"/>
                                 </constraints>
@@ -521,7 +520,7 @@
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="gen-3C-mmQ"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="AppBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Nly-Y5-laa" firstAttribute="centerX" secondItem="gU6-cV-m3D" secondAttribute="centerX" id="9Rn-43-hFM"/>
                             <constraint firstItem="JzX-d5-SAC" firstAttribute="top" secondItem="zQP-6T-d81" secondAttribute="bottom" constant="15" id="FbY-Ar-i3N"/>
@@ -568,24 +567,24 @@
                                 <rect key="frame" x="261.5" y="3" width="173" height="185"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Almost Finished" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sma-a0-cwT">
-                                <rect key="frame" x="116" y="271.5" width="143" height="24"/>
+                                <rect key="frame" x="110" y="271.5" width="155.5" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
-                                <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HkG-cr-Mid">
-                                <rect key="frame" x="37.5" y="320.5" width="300" height="33"/>
+                                <rect key="frame" x="37.5" y="320.5" width="300" height="33.5"/>
                                 <string key="text">We've sent you an email with instructions
 to create a new password</string>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
-                                <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="forgotpasswordbottomIcon" translatesAutoresizingMaskIntoConstraints="NO" id="cpk-PA-EmV">
-                                <rect key="frame" x="-60" y="433.5" width="182" height="179"/>
+                                <rect key="frame" x="-60" y="434" width="182" height="179"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kbs-Iy-bGa">
-                                <rect key="frame" x="57" y="383.5" width="261" height="50"/>
+                                <rect key="frame" x="57" y="384" width="261" height="50"/>
                                 <color key="backgroundColor" red="0.2666666667" green="0.51764705879999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="4Vf-Uw-AIp"/>
@@ -600,7 +599,7 @@ to create a new password</string>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="H7c-ZJ-OdZ"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="AppBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="H7c-ZJ-OdZ" firstAttribute="trailing" secondItem="Kbs-Iy-bGa" secondAttribute="trailing" constant="57" id="53B-AK-jgs"/>
                             <constraint firstItem="Kbs-Iy-bGa" firstAttribute="top" secondItem="HkG-cr-Mid" secondAttribute="bottom" constant="30" id="5a5-LG-ytq"/>
@@ -644,7 +643,7 @@ to create a new password</string>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Number Verification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fsu-KM-ltd">
                                 <rect key="frame" x="58.5" y="161" width="258" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
-                                <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PhB-nq-dWC">
@@ -652,48 +651,48 @@ to create a new password</string>
                                 <string key="text">Enter your phone number below and we'll
 send you a verification code.</string>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
-                                <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PhoneImage" translatesAutoresizingMaskIntoConstraints="NO" id="MW4-o2-RSR">
-                                <rect key="frame" x="-40" y="413.5" width="254" height="285"/>
+                                <rect key="frame" x="-40" y="358.5" width="254" height="285"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QIa-M9-ods">
-                                <rect key="frame" x="30" y="263.5" width="315" height="320"/>
+                                <rect key="frame" x="30" y="263.5" width="315" height="265"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PhoneIcon" translatesAutoresizingMaskIntoConstraints="NO" id="3mR-IS-m92">
-                                        <rect key="frame" x="27" y="60" width="14" height="23"/>
+                                        <rect key="frame" x="27" y="40" width="14" height="23"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mobile Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6As-XB-ecf">
-                                        <rect key="frame" x="56" y="63" width="97.5" height="17"/>
+                                        <rect key="frame" x="56" y="43" width="97.5" height="17"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <color key="textColor" red="0.4941176471" green="0.50980392159999999" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="(458) 458-8789" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BaI-eR-HPM">
-                                        <rect key="frame" x="27" y="90" width="261" height="20"/>
+                                        <rect key="frame" x="27" y="70" width="261" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="WuF-VW-M4R"/>
                                         </constraints>
-                                        <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="textColor" name="AppBlackColor"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
                                     </textField>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AmT-79-T3G">
-                                        <rect key="frame" x="27" y="118" width="261" height="1"/>
+                                        <rect key="frame" x="27" y="98" width="261" height="1"/>
                                         <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="wOy-Qa-u8g"/>
                                         </constraints>
                                     </view>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invalid phone number, please try again." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ei-GV-Aky">
-                                        <rect key="frame" x="27" y="124" width="261" height="14.5"/>
+                                        <rect key="frame" x="27" y="104" width="261" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
                                         <color key="textColor" name="Separator rErrorColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RQm-5F-qdU">
-                                        <rect key="frame" x="27" y="159" width="261" height="50"/>
+                                        <rect key="frame" x="27" y="129" width="261" height="50"/>
                                         <color key="backgroundColor" red="0.2666666667" green="0.51764705879999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="viR-g5-Da3"/>
@@ -707,10 +706,10 @@ send you a verification code.</string>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rP6-hZ-1RV">
-                                        <rect key="frame" x="113.5" y="249" width="88" height="29"/>
+                                        <rect key="frame" x="113.5" y="209" width="88" height="29"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <state key="normal" title="Skip this step">
-                                            <color key="titleColor" red="0.30588235294117649" green="0.30588235294117649" blue="0.30588235294117649" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" name="AppBlackColor"/>
                                         </state>
                                         <connections>
                                             <action selector="btnSkipTapped:" destination="yrp-eb-Jxz" eventType="touchUpInside" id="TrX-ne-wNl"/>
@@ -726,13 +725,13 @@ send you a verification code.</string>
                                     <constraint firstItem="RQm-5F-qdU" firstAttribute="leading" secondItem="QIa-M9-ods" secondAttribute="leading" constant="27" id="ASw-R4-2Gz"/>
                                     <constraint firstItem="AmT-79-T3G" firstAttribute="leading" secondItem="QIa-M9-ods" secondAttribute="leading" constant="27" id="CLj-lc-sjK"/>
                                     <constraint firstItem="0Ei-GV-Aky" firstAttribute="top" secondItem="AmT-79-T3G" secondAttribute="bottom" constant="5" id="K4y-dX-TOA"/>
-                                    <constraint firstItem="3mR-IS-m92" firstAttribute="top" secondItem="QIa-M9-ods" secondAttribute="top" constant="60" id="QMW-2L-GfV"/>
-                                    <constraint firstItem="RQm-5F-qdU" firstAttribute="top" secondItem="AmT-79-T3G" secondAttribute="bottom" constant="40" id="QSm-Do-Yh3"/>
-                                    <constraint firstItem="rP6-hZ-1RV" firstAttribute="top" secondItem="RQm-5F-qdU" secondAttribute="bottom" constant="40" id="Xk1-mW-CZN"/>
+                                    <constraint firstItem="3mR-IS-m92" firstAttribute="top" secondItem="QIa-M9-ods" secondAttribute="top" constant="40" id="QMW-2L-GfV"/>
+                                    <constraint firstItem="RQm-5F-qdU" firstAttribute="top" secondItem="AmT-79-T3G" secondAttribute="bottom" constant="30" id="QSm-Do-Yh3"/>
+                                    <constraint firstItem="rP6-hZ-1RV" firstAttribute="top" secondItem="RQm-5F-qdU" secondAttribute="bottom" constant="30" id="Xk1-mW-CZN"/>
                                     <constraint firstAttribute="trailing" secondItem="AmT-79-T3G" secondAttribute="trailing" constant="27" id="bz3-fW-Qbi"/>
                                     <constraint firstItem="BaI-eR-HPM" firstAttribute="leading" secondItem="QIa-M9-ods" secondAttribute="leading" constant="27" id="dqw-AD-cal"/>
                                     <constraint firstItem="rP6-hZ-1RV" firstAttribute="centerX" secondItem="RQm-5F-qdU" secondAttribute="centerX" id="iG1-Gy-roA"/>
-                                    <constraint firstAttribute="height" constant="320" id="ia3-J8-pkH"/>
+                                    <constraint firstAttribute="height" constant="265" id="ia3-J8-pkH"/>
                                     <constraint firstItem="BaI-eR-HPM" firstAttribute="top" secondItem="6As-XB-ecf" secondAttribute="bottom" constant="10" id="ktH-IU-g7x"/>
                                     <constraint firstItem="6As-XB-ecf" firstAttribute="leading" secondItem="3mR-IS-m92" secondAttribute="trailing" constant="15" id="kzo-kb-5rB"/>
                                     <constraint firstAttribute="trailing" secondItem="RQm-5F-qdU" secondAttribute="trailing" constant="27" id="p2h-f4-YEx"/>
@@ -753,7 +752,7 @@ send you a verification code.</string>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="fSM-F5-HR6"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="AppBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="H7K-bM-BTf" firstAttribute="centerX" secondItem="Bsl-LJ-t9w" secondAttribute="centerX" id="1FC-84-KOh"/>
                             <constraint firstItem="H7K-bM-BTf" firstAttribute="top" secondItem="fSM-F5-HR6" secondAttribute="top" constant="75" id="21s-52-IoI"/>
@@ -804,52 +803,61 @@ send you a verification code.</string>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Number Verification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tWq-u2-cgc">
                                 <rect key="frame" x="58.5" y="161" width="258" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
-                                <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter the code sent to (***) ***-7787" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tLz-de-jxc">
                                 <rect key="frame" x="37.5" y="200" width="300" height="17"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
-                                <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PhoneImage" translatesAutoresizingMaskIntoConstraints="NO" id="aMh-ap-hrs">
-                                <rect key="frame" x="-40" y="406" width="254" height="285"/>
+                                <rect key="frame" x="-40" y="410" width="254" height="285"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="POU-Kn-w5K">
-                                <rect key="frame" x="30" y="247" width="315" height="329"/>
+                                <rect key="frame" x="30" y="247" width="315" height="333"/>
                                 <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CodeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="nF3-xF-Oob">
+                                        <rect key="frame" x="27" y="40" width="19.5" height="24"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mobile Verification Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qNN-Bb-aim">
+                                        <rect key="frame" x="61.5" y="43.5" width="155.5" height="17"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
+                                        <color key="textColor" red="0.4941176471" green="0.50980392159999999" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w1N-5d-dQ2">
-                                        <rect key="frame" x="27" y="35" width="261" height="20"/>
+                                        <rect key="frame" x="27" y="70.5" width="261" height="25"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="bKi-fh-JaT"/>
+                                            <constraint firstAttribute="height" constant="25" id="bKi-fh-JaT"/>
                                         </constraints>
-                                        <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="textColor" name="AppBlackColor"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     </textField>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mMR-Bo-KDa">
-                                        <rect key="frame" x="27" y="60" width="261" height="1"/>
+                                        <rect key="frame" x="27" y="100.5" width="261" height="1"/>
                                         <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="xpC-8d-CUV"/>
                                         </constraints>
                                     </view>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s7q-Oi-ve6">
-                                        <rect key="frame" x="253" y="21" width="55" height="34"/>
+                                        <rect key="frame" x="253" y="61.5" width="55" height="34"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <state key="normal" title="Check">
                                             <color key="titleColor" red="0.19607843137254902" green="0.72549019607843135" blue="0.23137254901960785" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Didn't receive the code?" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xnf-Pz-uQb">
-                                        <rect key="frame" x="27" y="101" width="261" height="17"/>
+                                        <rect key="frame" x="27" y="131.5" width="261" height="17"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
-                                        <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yXp-Nu-yQb">
-                                        <rect key="frame" x="27" y="118" width="130" height="29"/>
+                                        <rect key="frame" x="27" y="148.5" width="130" height="29"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <state key="normal" title="Resend code (4 left)">
                                             <color key="titleColor" red="0.2666666667" green="0.51764705879999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -859,7 +867,7 @@ send you a verification code.</string>
                                         </connections>
                                     </button>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4I5-3h-cao">
-                                        <rect key="frame" x="27" y="128" width="261" height="33"/>
+                                        <rect key="frame" x="27" y="158.5" width="261" height="33"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cb4-gX-AFg">
                                                 <rect key="frame" x="0.0" y="0.0" width="40" height="0.0"/>
@@ -867,19 +875,19 @@ send you a verification code.</string>
                                                     <constraint firstAttribute="width" constant="40" id="iR6-IR-aWc"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="28"/>
-                                                <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="min" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GCa-wb-XWQ">
                                                 <rect key="frame" x="41" y="-8.5" width="24.5" height="17"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
-                                                <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" red="0.65490196078431373" green="0.65490196078431373" blue="0.65490196078431373" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=":" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YNg-gN-xtD">
-                                                <rect key="frame" x="72.5" y="-17" width="8" height="34"/>
+                                                <rect key="frame" x="72.5" y="-16.5" width="8" height="33"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="28"/>
-                                                <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G7t-iJ-2EB">
@@ -888,13 +896,13 @@ send you a verification code.</string>
                                                     <constraint firstAttribute="width" constant="40" id="tQx-cO-oA3"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="28"/>
-                                                <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sec" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XO8-ck-4VF">
                                                 <rect key="frame" x="124.5" y="-8.5" width="23" height="17"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
-                                                <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" red="0.65490196078431373" green="0.65490196078431373" blue="0.65490196078431373" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="timerImage" translatesAutoresizingMaskIntoConstraints="NO" id="Yka-iq-YKH">
@@ -919,7 +927,7 @@ send you a verification code.</string>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RVX-qa-Y32">
-                                        <rect key="frame" x="27" y="177" width="18" height="18"/>
+                                        <rect key="frame" x="27" y="207.5" width="18" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="18" id="L2U-6k-ug5"/>
                                             <constraint firstAttribute="height" constant="18" id="pyb-gl-hCf"/>
@@ -930,13 +938,13 @@ send you a verification code.</string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't ask again on this computer." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rTd-ZF-nME">
-                                        <rect key="frame" x="55" y="177.5" width="215.5" height="17"/>
+                                        <rect key="frame" x="55" y="208" width="215.5" height="17"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
-                                        <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Efw-8e-LmG">
-                                        <rect key="frame" x="27" y="225" width="261" height="50"/>
+                                        <rect key="frame" x="27" y="255.5" width="261" height="50"/>
                                         <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="SCa-WN-cP9"/>
@@ -952,27 +960,31 @@ send you a verification code.</string>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="w1N-5d-dQ2" firstAttribute="top" secondItem="POU-Kn-w5K" secondAttribute="top" constant="35" id="24k-g7-T6i"/>
                                     <constraint firstAttribute="trailing" secondItem="w1N-5d-dQ2" secondAttribute="trailing" constant="27" id="3q2-ft-Jo8"/>
                                     <constraint firstItem="Efw-8e-LmG" firstAttribute="leading" secondItem="POU-Kn-w5K" secondAttribute="leading" constant="27" id="7ib-hx-Yys"/>
                                     <constraint firstItem="RVX-qa-Y32" firstAttribute="top" secondItem="yXp-Nu-yQb" secondAttribute="bottom" constant="30" id="8sd-e2-Knr"/>
+                                    <constraint firstItem="w1N-5d-dQ2" firstAttribute="top" secondItem="qNN-Bb-aim" secondAttribute="bottom" constant="10" id="Ddi-k2-1TW"/>
                                     <constraint firstItem="rTd-ZF-nME" firstAttribute="leading" secondItem="RVX-qa-Y32" secondAttribute="trailing" constant="10" id="EuJ-Ez-gOE"/>
                                     <constraint firstItem="yXp-Nu-yQb" firstAttribute="leading" secondItem="POU-Kn-w5K" secondAttribute="leading" constant="27" id="Fv5-54-8fh"/>
                                     <constraint firstItem="RVX-qa-Y32" firstAttribute="leading" secondItem="POU-Kn-w5K" secondAttribute="leading" constant="27" id="HBs-iD-0D9"/>
                                     <constraint firstItem="Efw-8e-LmG" firstAttribute="top" secondItem="RVX-qa-Y32" secondAttribute="bottom" constant="30" id="MCW-M3-1YT"/>
+                                    <constraint firstItem="nF3-xF-Oob" firstAttribute="leading" secondItem="POU-Kn-w5K" secondAttribute="leading" constant="27" id="Oou-1w-PRP"/>
                                     <constraint firstItem="mMR-Bo-KDa" firstAttribute="top" secondItem="s7q-Oi-ve6" secondAttribute="bottom" constant="5" id="OvY-N4-cXu"/>
                                     <constraint firstItem="4I5-3h-cao" firstAttribute="leading" secondItem="POU-Kn-w5K" secondAttribute="leading" constant="27" id="PqR-lw-eFh"/>
                                     <constraint firstItem="4I5-3h-cao" firstAttribute="top" secondItem="Xnf-Pz-uQb" secondAttribute="bottom" constant="10" id="QcI-lG-vHp"/>
                                     <constraint firstItem="yXp-Nu-yQb" firstAttribute="top" secondItem="Xnf-Pz-uQb" secondAttribute="bottom" id="S42-pf-XTF"/>
                                     <constraint firstAttribute="trailing" secondItem="Efw-8e-LmG" secondAttribute="trailing" constant="27" id="Tcj-Vs-5mw"/>
-                                    <constraint firstItem="Xnf-Pz-uQb" firstAttribute="top" secondItem="mMR-Bo-KDa" secondAttribute="bottom" constant="40" id="Uu8-cA-ep7"/>
+                                    <constraint firstItem="Xnf-Pz-uQb" firstAttribute="top" secondItem="mMR-Bo-KDa" secondAttribute="bottom" constant="30" id="Uu8-cA-ep7"/>
+                                    <constraint firstItem="qNN-Bb-aim" firstAttribute="leading" secondItem="nF3-xF-Oob" secondAttribute="trailing" constant="15" id="VGB-ms-4Jr"/>
+                                    <constraint firstItem="nF3-xF-Oob" firstAttribute="top" secondItem="POU-Kn-w5K" secondAttribute="top" constant="40" id="Xkf-wV-61v"/>
                                     <constraint firstItem="w1N-5d-dQ2" firstAttribute="leading" secondItem="POU-Kn-w5K" secondAttribute="leading" constant="27" id="h95-xJ-sax"/>
                                     <constraint firstItem="mMR-Bo-KDa" firstAttribute="leading" secondItem="POU-Kn-w5K" secondAttribute="leading" constant="27" id="jRT-ij-yFT"/>
                                     <constraint firstItem="mMR-Bo-KDa" firstAttribute="top" secondItem="w1N-5d-dQ2" secondAttribute="bottom" constant="5" id="kOW-vQ-jQm"/>
                                     <constraint firstAttribute="trailing" secondItem="mMR-Bo-KDa" secondAttribute="trailing" constant="27" id="lo7-3d-2sz"/>
                                     <constraint firstAttribute="trailing" secondItem="s7q-Oi-ve6" secondAttribute="trailing" constant="7" id="lsY-VW-oP6"/>
-                                    <constraint firstAttribute="height" constant="329" id="rx6-n6-leq"/>
+                                    <constraint firstAttribute="height" constant="333" id="rx6-n6-leq"/>
                                     <constraint firstItem="Xnf-Pz-uQb" firstAttribute="leading" secondItem="POU-Kn-w5K" secondAttribute="leading" constant="27" id="sWf-lC-Ji2"/>
+                                    <constraint firstItem="qNN-Bb-aim" firstAttribute="centerY" secondItem="nF3-xF-Oob" secondAttribute="centerY" id="tMz-xq-k2W"/>
                                     <constraint firstAttribute="trailing" secondItem="4I5-3h-cao" secondAttribute="trailing" constant="27" id="u6z-77-60M"/>
                                     <constraint firstItem="rTd-ZF-nME" firstAttribute="centerY" secondItem="RVX-qa-Y32" secondAttribute="centerY" id="xB3-Fb-9vO"/>
                                     <constraint firstAttribute="trailing" secondItem="Xnf-Pz-uQb" secondAttribute="trailing" constant="27" id="yhi-4z-WBQ"/>
@@ -991,7 +1003,7 @@ send you a verification code.</string>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="QxM-TG-pm9"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="AppBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="TTz-aF-SJ9" firstAttribute="centerX" secondItem="r7O-pv-fAg" secondAttribute="centerX" id="7Zs-cc-hPh"/>
                             <constraint firstItem="14w-2a-4hM" firstAttribute="centerY" secondItem="TTz-aF-SJ9" secondAttribute="centerY" multiplier="0.95" id="CPC-SA-Uow"/>
@@ -1036,6 +1048,7 @@ send you a verification code.</string>
         </scene>
     </scenes>
     <resources>
+        <image name="CodeIcon" width="19.5" height="24"/>
         <image name="Finger_logo" width="250" height="250"/>
         <image name="KeyImage" width="161.40199279785156" height="159.82200622558594"/>
         <image name="Login_logo" width="126" height="41.5"/>
@@ -1053,11 +1066,14 @@ send you a verification code.</string>
         <image name="loginBottomImage" width="304.3599853515625" height="275.05899047851562"/>
         <image name="passwordIcon" width="12.5" height="16.5"/>
         <image name="timerImage" width="19.5" height="26"/>
+        <namedColor name="AppBackgroundColor">
+            <color red="0.97647058823529409" green="0.98431372549019602" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="AppBlackColor">
+            <color red="0.30588235294117649" green="0.30588235294117649" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Separator rErrorColor">
             <color red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

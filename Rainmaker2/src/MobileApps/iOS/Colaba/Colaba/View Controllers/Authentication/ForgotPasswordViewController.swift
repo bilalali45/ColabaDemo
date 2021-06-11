@@ -41,7 +41,7 @@ class ForgotPasswordViewController: UIViewController {
     //MARK:- Actions and Methods
     
     func setupViews(){
-        emailView.layer.cornerRadius = 5
+        emailView.layer.cornerRadius = 8
         emailView.addShadow()
         btnReset.layer.cornerRadius = 5
         txtFieldEmail.delegate = self
@@ -100,17 +100,17 @@ class ForgotPasswordViewController: UIViewController {
 
 extension ForgotPasswordViewController: UITextFieldDelegate{
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        do{
-            let email = try validation.validateEmail(txtFieldEmail.text)
-            self.lblEmailError.isHidden = true
-            self.emailSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-        }
-        catch{
-            self.lblEmailError.text = error.localizedDescription
-            self.lblEmailError.isHidden = false
-            self.emailSeparator.backgroundColor = Theme.getSeparatorErrorColor()
-        }
-    }
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        do{
+//            let email = try validation.validateEmail(txtFieldEmail.text)
+//            self.lblEmailError.isHidden = true
+//            self.emailSeparator.backgroundColor = Theme.getSeparatorNormalColor()
+//        }
+//        catch{
+//            self.lblEmailError.text = error.localizedDescription
+//            self.lblEmailError.isHidden = false
+//            self.emailSeparator.backgroundColor = Theme.getSeparatorErrorColor()
+//        }
+//    }
     
 }

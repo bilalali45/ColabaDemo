@@ -48,7 +48,7 @@ class CodeViewController: UIViewController {
     //MARK:- Methods and Actions
     
     func setupViews(){
-        codeView.layer.cornerRadius = 5
+        codeView.layer.cornerRadius = 8
         codeView.addShadow()
         btnVerify.layer.cornerRadius = 5
         txtFieldCode.addTarget(self, action: #selector(textFieldCodeChanged), for: .editingChanged)
@@ -91,9 +91,9 @@ class CodeViewController: UIViewController {
             self.btnResendCode.isHidden = false
             self.btnResendCode.setTitle("Resend code (\(self.codeLimit) left)", for: .normal)
             self.lblDescription.text = "Didn't receive the code?"
-            self.codeViewHeightConstraint.constant = 329
+            self.codeViewHeightConstraint.constant = 333
             self.btnCheckTopConstraint.constant = 30
-            self.lblDescriptionTopConstraint.constant = 40
+            self.lblDescriptionTopConstraint.constant = 30
             self.timerView.isHidden = true
 //            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
 //                self.btnResendCode.isUserInteractionEnabled = true
@@ -131,9 +131,9 @@ class CodeViewController: UIViewController {
                 self.btnResendCode.setTitle("Resend code (\(self.codeLimit) left)", for: .normal)
                 self.btnResendCode.setTitleColor(Theme.getButtonBlueColor(), for: .normal)
                 self.lblDescription.text = "Didn't receive the code?"
-                self.codeViewHeightConstraint.constant = 329
+                self.codeViewHeightConstraint.constant = 333
                 self.btnCheckTopConstraint.constant = 30
-                self.lblDescriptionTopConstraint.constant = 40
+                self.lblDescriptionTopConstraint.constant = 30
                 self.timerView.isHidden = true
                 self.lblMins.text = ""
                 self.lblSecs.text = ""

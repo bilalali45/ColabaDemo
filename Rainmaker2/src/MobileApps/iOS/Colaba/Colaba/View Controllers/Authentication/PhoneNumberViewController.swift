@@ -43,7 +43,7 @@ class PhoneNumberViewController: UIViewController {
     //MARK:- Methods and Actions
     
     func setupViews(){
-        phoneView.layer.cornerRadius = 5
+        phoneView.layer.cornerRadius = 8
         phoneView.addShadow()
         btnContinue.layer.cornerRadius = 5
         txtFieldPhone.delegate = self
@@ -157,18 +157,18 @@ class PhoneNumberViewController: UIViewController {
 
 extension PhoneNumberViewController: UITextFieldDelegate{
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        do{
-            let phoneNumber = try validation.validatePhoneNumber(txtFieldPhone.text)
-            self.lblPhoneError.isHidden = true
-            self.phoneSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-        }
-        catch{
-            self.lblPhoneError.text = error.localizedDescription
-            self.lblPhoneError.isHidden = false
-            self.phoneSeparator.backgroundColor = Theme.getSeparatorErrorColor()
-        }
-    }
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        do{
+//            let phoneNumber = try validation.validatePhoneNumber(txtFieldPhone.text)
+//            self.lblPhoneError.isHidden = true
+//            self.phoneSeparator.backgroundColor = Theme.getSeparatorNormalColor()
+//        }
+//        catch{
+//            self.lblPhoneError.text = error.localizedDescription
+//            self.lblPhoneError.isHidden = false
+//            self.phoneSeparator.backgroundColor = Theme.getSeparatorErrorColor()
+//        }
+//    }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
