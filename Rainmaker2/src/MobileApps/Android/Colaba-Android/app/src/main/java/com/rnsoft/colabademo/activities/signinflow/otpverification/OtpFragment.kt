@@ -136,6 +136,8 @@ class OtpFragment: Fragment() {
         if(verificationResponse.code == "200" &&  verificationResponse.data != null) {
             if(notAskChekBox.isChecked) {
                 sharedPreferences.getString(ColabaConstant.token,"")?.let {
+                    otpLoader.visibility = View.VISIBLE
+                    toggleButtonState(false)
                     otpViewModel.notAskForOtp(it)
                 }
             }
@@ -154,11 +156,14 @@ class OtpFragment: Fragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun notAskForOtpEventReceived(event: NotAskForOtpEvent) {
         otpLoader.visibility = View.INVISIBLE
+        toggleButtonState(true)
         val notAskForOtpResponse =event.notAskForOtpResponse
         Log.e("notAskForOtpResponse==", notAskForOtpResponse.toString())
         if (notAskForOtpResponse.code == "200" && notAskForOtpResponse.status=="OK") {
             navigateToDashBoardScreen()
         }
+        else
+            navigateToDashBoardScreen()
     }
 
     private fun showToast(toastMessage: String) = Toast.makeText(requireActivity().applicationContext, toastMessage, Toast.LENGTH_LONG).show()
