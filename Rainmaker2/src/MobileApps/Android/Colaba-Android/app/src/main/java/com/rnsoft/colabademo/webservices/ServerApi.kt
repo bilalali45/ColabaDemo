@@ -65,6 +65,9 @@ interface ServerApi{
 
 
 
+    @POST(" api/mcu/mobile/identity/mcuaccount/RefreshAccessToken")
+    suspend fun refreshToken(@Body refreshTokenRequest: RefreshTokenRequest) :LogoutResponse
+
 
     // @POST("item-list")
    // suspend fun fetchItemList( @Header("Authorization")  authHeader:String): ItemListResult

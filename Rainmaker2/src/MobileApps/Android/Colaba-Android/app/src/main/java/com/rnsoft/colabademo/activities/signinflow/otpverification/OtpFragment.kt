@@ -226,20 +226,20 @@ class OtpFragment: Fragment() {
             override fun onTick(millisUntilFinished: Long) {
                 Log.e("millisUntilFinished-", millisUntilFinished.toString())
                 Log.e("Minutes - ", "$minutes  seconds - $seconds")
+                seconds--
                 if(seconds == 0 && minutes > 0) {
                     Log.e("MinutesNow--", "Decreased")
                     minutes -= 1
                     seconds = 60
                 }
                 else
-                if(minutes == 0 && seconds == 0){
+                if(minutes <= 0 && seconds <= 0){
                     Log.e("TimerStop", "StopNow")
                     toggleTimerView(false)
                     cancelTimer()
                 }
                 minuteTextView.text = "0"+minutes
                 secondTextView.text = ": "+seconds.toString()
-                seconds--
             }
             override fun onFinish() { Log.e("Timer Finished-", "Completed...") }
         }
