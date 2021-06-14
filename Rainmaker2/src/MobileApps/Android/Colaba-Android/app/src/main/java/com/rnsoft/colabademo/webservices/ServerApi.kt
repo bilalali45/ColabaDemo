@@ -7,13 +7,18 @@ interface ServerApi{
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // LOGIN SCREEEN API...........
+    /*
     @Headers(
         "Content-Type: application/json;charset=utf-8",
         "Accept: application/json;charset=utf-8",
         "Cache-Control: max-age=640000"
     )
+     */
+
     @POST("api/mcu/mobile/identity/mcuaccount/signin")
     suspend fun login(@Body loginRequest: LoginRequest): Response<LoginResponse>
+
+    suspend fun loginTwo(@Query("Email") Email:String, @Query("Password") Password:String): Response<LoginResponse>
 
     @GET("api/mcu/mobile/identity/mcuaccount/GetMcuTenantTwoFaValues")
     suspend fun getMcuTenantTwoFaValuesService( @Header("IntermediateToken")  IntermediateToken:String): TenantConfigurationResponse
