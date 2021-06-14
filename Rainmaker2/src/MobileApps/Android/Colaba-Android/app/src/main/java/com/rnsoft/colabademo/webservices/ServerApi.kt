@@ -21,7 +21,7 @@ interface ServerApi{
     @POST("api/mobile/identity/mcuaccount/SendTwoFa")
     suspend fun sendTwoFa( @Header("IntermediateToken")  IntermediateToken:String): SendTwoFaResponse
 
-    @POST("api/mcu/mobile/identity/mcuaccount/GetTwoFaSettings")
+    @GET("api/mcu/mobile/identity/mcuaccount/GetTwoFaSettings")
     suspend fun getOtpSetting(@Header("IntermediateToken")  IntermediateToken:String) :OtpSettingResponse
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,13 +50,13 @@ interface ServerApi{
     ) :OtpVerificationResponse
 
     @POST("api/mcu/mobile/identity/mcuaccount/DontAskTwoFa")
-    suspend fun notAskForOtpAgain(@Header("Token")  Token:String) :NotAskForOtpResponse
+    suspend fun notAskForOtpAgain(@Header("Authorization")  Authorization:String) :NotAskForOtpResponse
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // OTP DASHBOARD API....
     @POST("api/mcu/mobile/identity/mcuaccount/Logout")
-    suspend fun logoutUser(@Header("Token")  Token:String) :LogoutResponse
+    suspend fun logoutUser(@Header("Authorization")  Authorization:String) :LogoutResponse
 
 
 

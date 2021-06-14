@@ -163,7 +163,7 @@ class OtpFragment: Fragment() {
             navigateToDashBoardScreen()
         }
         else
-            navigateToDashBoardScreen()
+            notAskForOtpResponse.message?.let { showToast(it) }
     }
 
     private fun showToast(toastMessage: String) = Toast.makeText(requireActivity().applicationContext, toastMessage, Toast.LENGTH_LONG).show()
@@ -180,7 +180,7 @@ class OtpFragment: Fragment() {
             val test = sharedPreferences.getString(ColabaConstant.otpDataJson, "")
             val obj = Gson().fromJson(test, OtpData::class.java)
 
-            if(obj.remainingTimeoutInSeconds!=null) {
+            if(obj?.remainingTimeoutInSeconds != null) {
                 setUpTimerInitial(obj.remainingTimeoutInSeconds)
                 toggleTimerView(true)
             }

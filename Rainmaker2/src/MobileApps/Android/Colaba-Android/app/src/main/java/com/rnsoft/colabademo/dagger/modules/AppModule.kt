@@ -9,6 +9,9 @@ import androidx.security.crypto.MasterKey
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
+import com.franmontiel.persistentcookiejar.PersistentCookieJar
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,8 +21,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.net.CookieManager
-import java.net.CookiePolicy
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -72,7 +73,7 @@ class AppModule {
         @Provides
         @Singleton
         //fun provideOkHttp(tokenAuthenticator: TokenAuthenticator): OkHttpClient {
-        fun provideOkHttp(): OkHttpClient {
+        fun provideOkHttp( @ApplicationContext context: Context): OkHttpClient {
             //val interceptor = HttpLoggingInterceptor()
             //interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
             //val newLoginInterceptor = NewLoginInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
@@ -83,6 +84,10 @@ class AppModule {
                 httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             }
 
+            val testCookieJar =
+                PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
+
+
             //val cookieHandler = CookieManager( PersistentCookieStore(ctx), CookiePolicy.ACCEPT_ALL )
 
 
@@ -92,7 +97,7 @@ class AppModule {
                 //.addInterceptor(LoggingInterceptor())
                 //.addInterceptor(interceptor)
                 .addNetworkInterceptor(httpLoggingInterceptor)
-                //.cookieJar(mCookieJar)
+                .cookieJar(testCookieJar)
                 .connectTimeout(60,TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .build()

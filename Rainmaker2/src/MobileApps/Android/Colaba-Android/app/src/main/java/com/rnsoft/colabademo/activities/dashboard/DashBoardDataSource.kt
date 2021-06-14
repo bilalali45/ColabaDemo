@@ -8,7 +8,8 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
 
     suspend fun logoutUser(token: String): Result<LogoutResponse> {
         return try {
-            val response = serverApi.logoutUser(Token = token)
+            val newToken = "Bearer "+token
+            val response = serverApi.logoutUser(Authorization = newToken)
             Log.e("otp-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
