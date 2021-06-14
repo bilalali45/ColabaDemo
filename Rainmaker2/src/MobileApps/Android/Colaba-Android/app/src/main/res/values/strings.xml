@@ -49,6 +49,10 @@
     <string name="login_to_lender_portal">Login To Lender\’s Portal </string>
     <string name="did_not_receive_code">Didn\'t receive the code? </string>
     <string name="resend_code">Resend code </string>
+
+    <string name="max_resend_attempts_reached">Max resend attempts reached. Please try again after some time</string>
+
+
     <string name="dummy_otp_message">You need to complete the timeout.</string>
 
     <string name="biometric_check">Device is not registered with Biometric login. Please setup it from settings.</string>

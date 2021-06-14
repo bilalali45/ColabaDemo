@@ -39,6 +39,7 @@ class PhoneNumberFragment : Fragment() {
     private lateinit var loading:ProgressBar
     private lateinit var skipLink:AppCompatTextView
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -93,6 +94,9 @@ class PhoneNumberFragment : Fragment() {
             //findNavController().navigate(R.id.otp_verification_id, null)
         }
 
+
+
+
         return root
     }
 
@@ -123,6 +127,10 @@ class PhoneNumberFragment : Fragment() {
         Log.e("otp-sent", otpSentResponse.toString())
         when (otpSentResponse.code) {
             "200" -> findNavController().navigate(R.id.otp_verification_id, null)
+            "400" -> {
+                if(otpSentResponse.otpData?.remainingTimeoutInSeconds != null)
+                    findNavController().navigate(R.id.otp_verification_id, null)
+            }
             else -> {
                 if(otpSentResponse.message!=null)
                      showToast(otpSentResponse.message)

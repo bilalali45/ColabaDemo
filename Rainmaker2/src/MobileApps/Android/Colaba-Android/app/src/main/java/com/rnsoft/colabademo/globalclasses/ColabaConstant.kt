@@ -35,6 +35,8 @@ object ColabaConstant {
 
         const val maxOtpSendAllowed:String = "maxOtpSendAllowed"
 
+        const val twoFaResendCoolTimeInMinutes:String = "twoFaResendCoolTimeInMinutes"
+
         const val otp_message:String =   "otp_message"
 
         const val isbiometricEnabled:String =   "isbiometricEnabled"

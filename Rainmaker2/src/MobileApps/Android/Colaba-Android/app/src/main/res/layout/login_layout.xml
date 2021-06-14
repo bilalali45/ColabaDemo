@@ -55,7 +55,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="30dp"
 
         app:cardCornerRadius="8dp"
@@ -139,10 +139,10 @@
                 android:id="@+id/passwordTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_regular"
                 android:text="@string/password"
                 android:textColor="@color/colaba_text_color_two"
                 android:textSize="14sp"
-                android:fontFamily="@font/rubik_regular"
                 app:layout_constraintBottom_toBottomOf="@+id/passwordIcon"
                 app:layout_constraintStart_toStartOf="@+id/emailTextView"
                 app:layout_constraintTop_toTopOf="@+id/passwordIcon" />
@@ -198,10 +198,10 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_regular"
                 android:text="@string/biometric_login"
                 android:textColor="@color/colaba_text_color_two"
                 android:textSize="14sp"
-                android:fontFamily="@font/rubik_regular"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView4"
                 app:layout_constraintStart_toStartOf="@+id/passwordTextView"
                 app:layout_constraintTop_toTopOf="@+id/imageView4" />

@@ -10,9 +10,9 @@ data class OtpSentResponse(
 )
 
 data class OtpData(
-    val attemptsCount: Int,
+    val attemptsCount: Int = 0,
     val phoneNumber: String,
     val hasCompleted: Boolean?,
     val remainingTimeoutInSeconds: Int?,
-    val lastSendAt: String
+    val lastSendAt: String?
 )

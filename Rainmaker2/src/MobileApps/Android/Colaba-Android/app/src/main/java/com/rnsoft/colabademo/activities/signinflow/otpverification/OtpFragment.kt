@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import android.widget.CompoundButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -43,7 +42,7 @@ class OtpFragment: Fragment() {
     private lateinit var verifyButton:Button
     private lateinit var otpEditText:EditText
     private lateinit var cTimer:CountDownTimer
-    private lateinit var timerLayout:ConstraintLayout
+    private lateinit var insideTimerLayout:ConstraintLayout
     private lateinit var otpLoader:ProgressBar
     private lateinit var minuteTextView:TextView
     private lateinit var secondTextView:TextView
@@ -52,6 +51,8 @@ class OtpFragment: Fragment() {
 
     private var minutes:Int = 0
     private var seconds:Int = 0
+
+    private var attemptLeft:Int = 0
 
 
     override fun onCreateView(
@@ -65,7 +66,7 @@ class OtpFragment: Fragment() {
         resendLink = root.findViewById(R.id.resendTextView)
         nearToResetTextView = root.findViewById(R.id.nearToResetTextView)
         otpEditText = root.findViewById(R.id.otpCodeEditText)
-        timerLayout = root.findViewById(R.id.timer_constraintlayout)
+        insideTimerLayout = root.findViewById(R.id.inside_timer_constraintlayout)
         otpLoader = root.findViewById(R.id.loader_otp_screen)
         minuteTextView = root.findViewById(R.id.minuteTextView)
         secondTextView = root.findViewById(R.id.secondTextView)
@@ -100,6 +101,7 @@ class OtpFragment: Fragment() {
         }
 
         checkForTimer()
+        updateResendCount()
 
         return root
     }
@@ -119,12 +121,14 @@ class OtpFragment: Fragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun otpFragmentReceivedOtpEvent(event: OtpSentEvent) {
         otpLoader.visibility = View.INVISIBLE
-        toggleButtonState(true)
         val otpSentResponse =event.otpSentResponse
+        resendLink.isEnabled = true
+        updateResendCount()
         Log.e("otp-sent", otpSentResponse.toString())
         if (otpSentResponse.code == "400" && otpSentResponse.otpData!=null) {
             checkForTimer()
         }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -180,9 +184,13 @@ class OtpFragment: Fragment() {
             val test = sharedPreferences.getString(ColabaConstant.otpDataJson, "")
             val obj = Gson().fromJson(test, OtpData::class.java)
 
-            if(obj?.remainingTimeoutInSeconds != null) {
-                setUpTimerInitial(obj.remainingTimeoutInSeconds)
-                toggleTimerView(true)
+            if(obj!=null) {
+               if (obj.remainingTimeoutInSeconds != null && obj.remainingTimeoutInSeconds>3) {
+                    setUpTimerInitial(obj.remainingTimeoutInSeconds)
+                    toggleTimerView(true)
+                }
+                else
+                    toggleTimerView(false)
             }
             else
                 toggleTimerView(false)
@@ -191,16 +199,29 @@ class OtpFragment: Fragment() {
 
     private fun toggleTimerView(bool:Boolean) {
         if(bool) {
-            timerLayout.visibility = View.VISIBLE
-            nearToResetTextView.visibility = View.INVISIBLE
-            resendLink.visibility = View.INVISIBLE
+            insideTimerLayout.visibility = View.VISIBLE
+            nearToResetTextView.visibility = View.GONE
+            resendLink.visibility = View.GONE
         }
         else {
-            timerLayout.visibility = View.INVISIBLE
+            insideTimerLayout.visibility = View.GONE
             nearToResetTextView.visibility = View.VISIBLE
             resendLink.visibility = View.VISIBLE
         }
+        updateResendCount()
+    }
 
+    private fun updateResendCount(){
+        sharedPreferences.getString(ColabaConstant.otpDataJson, "")?.let { otpDataReceived->
+            val obj = Gson().fromJson(otpDataReceived, OtpData::class.java)
+            if (obj != null) {
+                sharedPreferences.getInt(ColabaConstant.maxOtpSendAllowed, 5).let {
+                    attemptLeft = it - obj.attemptsCount
+                }
+            }
+        }
+        val attemptsLeftString = resources.getString(R.string.resend_code) + " ($attemptLeft left)"
+        resendLink.text = attemptsLeftString
     }
 
     private fun setUpTimerInitial(remainingSeconds:Int){

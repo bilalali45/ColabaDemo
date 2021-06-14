@@ -53,6 +53,10 @@ constructor(
             settingData.maxTwoFaSendAllowed?.let {
                 sharedPref.putInt(ColabaConstant.maxOtpSendAllowed, it).apply()
             }
+
+            settingData.twoFaResendCoolTimeInMinutes?.let {
+                sharedPref.putInt(ColabaConstant.twoFaResendCoolTimeInMinutes, it).apply()
+            }
         }
     }
 
