@@ -47,7 +47,8 @@ class FaceRecognitionViewController: UIViewController {
                     return
                 }
                 UserDefaults.standard.set(kYes, forKey: kIsUserRegisteredWithBiometric)
-                self?.goToDashboard()
+                //self?.goToDashboard()
+                self?.goToMainTabBar()
 //                self!.showPopup(message: "Your face recognized successfully.", popupState: .success, popupDuration: .custom(2)) { (reason) in
 //
 //                }

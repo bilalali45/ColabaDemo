@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "SearchIcon.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -31,6 +31,14 @@ struct Theme {
         return UIColor(named: "SeparatorErrorColor")!
     }
     
+    static func getAppGreyColor() -> UIColor{
+        return UIColor(named: "AppGreyColor")!
+    }
+    
+    static func getRubikRegularFont(size: CGFloat) -> UIFont{
+        return UIFont(name: "Rubik-Regular", size: size)!
+    }
+    
     static func getCustomColorSVGImage(imageNamed: String, imageFrame: CGRect, customColor: UIColor, imageIconId: String) -> UIImage{
         let svgImage = SVGKImage(named: imageNamed)
         let svgIMGV = SVGKFastImageView(frame: imageFrame)
