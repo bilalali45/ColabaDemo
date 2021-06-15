@@ -128,6 +128,8 @@ class OtpFragment: Fragment() {
         if (otpSentResponse.code == "400" && otpSentResponse.otpData!=null) {
             checkForTimer()
         }
+        else
+            otpSentResponse.message?.let { showToast(it) }
 
     }
 
