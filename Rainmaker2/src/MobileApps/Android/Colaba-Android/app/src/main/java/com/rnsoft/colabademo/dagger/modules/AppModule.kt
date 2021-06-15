@@ -21,6 +21,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.CookieManager
+import java.net.CookiePolicy
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -73,7 +75,7 @@ class AppModule {
         @Provides
         @Singleton
         //fun provideOkHttp(tokenAuthenticator: TokenAuthenticator): OkHttpClient {
-        fun provideOkHttp( @ApplicationContext context: Context): OkHttpClient {
+        fun provideOkHttp( @ApplicationContext context: Context, tokenAuthenticator : TokenAuthenticator): OkHttpClient {
             //val interceptor = HttpLoggingInterceptor()
             //interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
             //val newLoginInterceptor = NewLoginInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
@@ -88,11 +90,12 @@ class AppModule {
                 PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
 
 
-            //val cookieHandler = CookieManager( PersistentCookieStore(ctx), CookiePolicy.ACCEPT_ALL )
+           // val cookieHandler = CookieManager( PersistentCookieStore(ctx), CookiePolicy.ACCEPT_ALL )
 
+            //val cookieHandler = CookieManager( null, CookiePolicy.ACCEPT_ALL )
 
             return OkHttpClient.Builder()
-                //.authenticator(tokenAuthenticator)
+                .authenticator(tokenAuthenticator)
                 .retryOnConnectionFailure(true)
                 //.addInterceptor(LoggingInterceptor())
                 //.addInterceptor(interceptor)

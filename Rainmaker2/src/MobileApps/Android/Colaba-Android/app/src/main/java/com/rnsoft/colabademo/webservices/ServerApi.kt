@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -66,7 +67,7 @@ interface ServerApi{
 
 
     @POST(" api/mcu/mobile/identity/mcuaccount/RefreshAccessToken")
-    suspend fun refreshToken(@Body refreshTokenRequest: RefreshTokenRequest) :LogoutResponse
+    fun refreshToken(@Body refreshTokenRequest: RefreshTokenRequest) : Call<LoginResponse>
 
 
     // @POST("item-list")
