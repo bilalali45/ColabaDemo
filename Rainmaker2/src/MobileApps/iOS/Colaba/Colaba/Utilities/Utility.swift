@@ -54,6 +54,10 @@ struct Utility {
         return mainStoryboard.instantiateViewController(withIdentifier: "DashboardViewController") as! DashboardViewController
     }
     
+    static func getDummyDashboardVC() -> DummyDashboardViewController{
+        return mainStoryboard.instantiateViewController(withIdentifier: "DummyDashboardViewController") as! DummyDashboardViewController
+    }
+    
     static func getDashboardNavVC() -> UINavigationController{
         return mainStoryboard.instantiateViewController(withIdentifier: "DashboardNavigation") as! UINavigationController
     }

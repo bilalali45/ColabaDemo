@@ -44,7 +44,8 @@ extension UIViewController{
     }
     
     func goToDashboard(){
-        let vc = Utility.getDashboardVC()
+       // let vc = Utility.getDashboardVC()
+        let vc = Utility.getDummyDashboardVC()
         UIApplication.shared.windows.first?.rootViewController = vc
         UIApplication.shared.windows.first?.makeKeyAndVisible()
     }

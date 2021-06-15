@@ -20,10 +20,12 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var txtFieldPassword: UITextField!
     @IBOutlet weak var passwordSeparator: UIView!
     @IBOutlet weak var lblPasswordError: UILabel!
+    @IBOutlet weak var btnEye: UIButton!
     @IBOutlet weak var faceIdSwitch: UISwitch!
     @IBOutlet weak var btnLogin: UIButton!
     
     var shouldShowPassword = false
+    var isAPIInProgress = false
     private let validation: Validation
     
     //MARK:- View Controller Life Cycle
@@ -64,6 +66,7 @@ class LoginViewController: UIViewController {
     
     @IBAction func btnEyeTapped(_ sender: UIButton) {
         shouldShowPassword = !shouldShowPassword
+        btnEye.setImage(UIImage(named: shouldShowPassword ? "hide" : "eyeIcon"), for: .normal)
         txtFieldPassword.isSecureTextEntry = !shouldShowPassword
     }
     
@@ -99,7 +102,10 @@ class LoginViewController: UIViewController {
                 self.emailSeparator.backgroundColor = Theme.getSeparatorNormalColor()
                 self.lblPasswordError.isHidden = true
                 self.passwordSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-                self.loginUserWithRequest(email: email, password: password)
+                
+                if (!self.isAPIInProgress){
+                    self.loginUserWithRequest(email: email, password: password)
+                }
                 
             }
             
@@ -128,6 +134,7 @@ class LoginViewController: UIViewController {
     
     func loginUserWithRequest(email: String, password: String){
         
+        isAPIInProgress = true
         let params = ["Email": email,
                       "Password": password]
         
@@ -150,6 +157,7 @@ class LoginViewController: UIViewController {
                     if let user = UserModel.getCurrentUser(){
                         if user.tokenTypeName == "AccessToken"{
                             
+                            self.isAPIInProgress = false
                             Utility.showOrHideLoader(shouldShow: false)
                             self.completeLoginWithBiometric()
                         }
@@ -161,8 +169,9 @@ class LoginViewController: UIViewController {
 
                 }
                 else{
+                    self.isAPIInProgress = false
                     Utility.showOrHideLoader(shouldShow: false)
-                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(10), completionHandler: nil)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5), completionHandler: nil)
                 }
             }
             
@@ -201,8 +210,9 @@ class LoginViewController: UIViewController {
                     
                 }
                 else{
+                    self.isAPIInProgress = false
                     Utility.showOrHideLoader(shouldShow: false)
-                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(10), completionHandler: nil)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5), completionHandler: nil)
                 }
             }
             
@@ -235,6 +245,7 @@ class LoginViewController: UIViewController {
                 Utility.showOrHideLoader(shouldShow: false)
                 
                 self.get2FASettings()
+                self.isAPIInProgress = false
                 
                 if (status == .success){ // Code is send to phone number. show code screen.
                     // Save response and navigate to code screen.
