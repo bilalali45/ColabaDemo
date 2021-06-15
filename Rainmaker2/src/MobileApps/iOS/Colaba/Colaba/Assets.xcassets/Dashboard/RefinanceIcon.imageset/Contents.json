@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "RefinanceIcon.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

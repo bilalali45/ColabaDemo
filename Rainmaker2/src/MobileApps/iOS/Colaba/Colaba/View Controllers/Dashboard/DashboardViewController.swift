@@ -7,15 +7,52 @@
 
 import UIKit
 import RealmSwift
+import CarbonKit
 
 class DashboardViewController: BaseViewController {
 
+    //MARK:- Outlets and Properties
+    @IBOutlet weak var logo: UIImageView!
+    @IBOutlet weak var btnSearch: UIButton!
+    @IBOutlet weak var tabView: UIView!
+    @IBOutlet weak var btnNew: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //refreshAccessTokenWithRequest()
+        setTopTabBar()
+        btnNew.roundButtonWithShadow()
     }
     
     //MARK:- Methods and Actions
+    
+    func setTopTabBar(){
+        let tabItems = ["All Loans", "Active Loans", "Inactive Loans"]
+        let carbonTabSwipeNavigation = CarbonTabSwipeNavigation(items: tabItems, delegate: self)
+        carbonTabSwipeNavigation.setIndicatorColor(Theme.getButtonBlueColor())
+        carbonTabSwipeNavigation.setNormalColor(Theme.getAppGreyColor(), font: Theme.getRubikRegularFont(size: 15))
+        carbonTabSwipeNavigation.setSelectedColor(Theme.getButtonBlueColor(), font: Theme.getRubikRegularFont(size: 15))
+//        carbonTabSwipeNavigation.toolbar.isTranslucent = false
+        carbonTabSwipeNavigation.carbonSegmentedControl?.tintColor = .clear
+        carbonTabSwipeNavigation.carbonSegmentedControl?.backgroundColor = .clear
+        carbonTabSwipeNavigation.carbonTabSwipeScrollView.backgroundColor = .clear
+        carbonTabSwipeNavigation.carbonTabSwipeScrollView.tintColor = .clear
+        carbonTabSwipeNavigation.carbonSegmentedControl?.imageNormalColor = .clear
+        carbonTabSwipeNavigation.carbonSegmentedControl?.imageSelectedColor = .clear
+        let segmentWidth = tabView.frame.width / 3
+        carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 0)
+        carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 1)
+        carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 2)
+        carbonTabSwipeNavigation.insert(intoRootViewController: self, andTargetView: tabView)
+    }
+    
+    @IBAction func btnSearchTapped(_ sender: UIButton) {
+        
+    }
+    
+    @IBAction func btnNewTapped(_ sender: UIButton){
+        
+    }
     
     @IBAction func btnLogoutTapped(_ sender: UIButton) {
         
@@ -90,4 +127,12 @@ class DashboardViewController: BaseViewController {
         }
         
     }
+}
+
+extension DashboardViewController: CarbonTabSwipeNavigationDelegate{
+    
+    func carbonTabSwipeNavigation(_ carbonTabSwipeNavigation: CarbonTabSwipeNavigation, viewControllerAt index: UInt) -> UIViewController {
+        return Utility.getPipelineVC()
+    }
+    
 }

@@ -54,10 +54,21 @@ struct Utility {
         return mainStoryboard.instantiateViewController(withIdentifier: "DashboardViewController") as! DashboardViewController
     }
     
+    static func getDummyDashboardVC() -> DummyDashboardViewController{
+        return mainStoryboard.instantiateViewController(withIdentifier: "DummyDashboardViewController") as! DummyDashboardViewController
+    }
+    
     static func getDashboardNavVC() -> UINavigationController{
         return mainStoryboard.instantiateViewController(withIdentifier: "DashboardNavigation") as! UINavigationController
     }
     
+    static func getPipelineVC() -> PipelineViewController{
+        return mainStoryboard.instantiateViewController(withIdentifier: "PipelineViewController") as! PipelineViewController
+    }
+    
+    static func getPipelineMoreVC() -> PipelineMoreViewController{
+        return mainStoryboard.instantiateViewController(withIdentifier: "PipelineMoreViewController") as! PipelineMoreViewController
+    }
     
     static func checkDeviceAuthType() -> String {
          let authType = LocalAuthManager.shared.biometricType

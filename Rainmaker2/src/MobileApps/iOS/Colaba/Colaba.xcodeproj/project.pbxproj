@@ -12,6 +12,13 @@
 		2368D6552667DA5900D5C1C5 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2368D6542667DA5900D5C1C5 /* BaseViewController.swift */; };
 		2368D6572667DA6700D5C1C5 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2368D6562667DA6700D5C1C5 /* DashboardViewController.swift */; };
 		236B59D1266504060001F416 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B59D0266504050001F416 /* UserModel.swift */; };
+		236EA1AC26789EAC00C2F8B5 /* PipelineMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236EA1AB26789EAC00C2F8B5 /* PipelineMoreViewController.swift */; };
+		236EA1AE2678CE1B00C2F8B5 /* DummyDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236EA1AD2678CE1B00C2F8B5 /* DummyDashboardViewController.swift */; };
+		2397AF5F26776241007A1A45 /* PipelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397AF5E26776241007A1A45 /* PipelineViewController.swift */; };
+		2397AF63267782E6007A1A45 /* PipelineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397AF61267782E6007A1A45 /* PipelineTableViewCell.swift */; };
+		2397AF64267782E6007A1A45 /* PipelineTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2397AF62267782E6007A1A45 /* PipelineTableViewCell.xib */; };
+		2397AF672677A60A007A1A45 /* PipelineDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397AF652677A60A007A1A45 /* PipelineDetailTableViewCell.swift */; };
+		2397AF682677A60A007A1A45 /* PipelineDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */; };
 		7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */; };
 		7113F51F26568E3B0066E179 /* Home.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7113F51E26568E3B0066E179 /* Home.svg */; };
 		7113F52526569D310066E179 /* LocalAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7113F52426569D310066E179 /* LocalAuthManager.swift */; };
@@ -70,6 +77,13 @@
 		2368D6542667DA5900D5C1C5 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		2368D6562667DA6700D5C1C5 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		236B59D0266504050001F416 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		236EA1AB26789EAC00C2F8B5 /* PipelineMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineMoreViewController.swift; sourceTree = "<group>"; };
+		236EA1AD2678CE1B00C2F8B5 /* DummyDashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDashboardViewController.swift; sourceTree = "<group>"; };
+		2397AF5E26776241007A1A45 /* PipelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineViewController.swift; sourceTree = "<group>"; };
+		2397AF61267782E6007A1A45 /* PipelineTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineTableViewCell.swift; sourceTree = "<group>"; };
+		2397AF62267782E6007A1A45 /* PipelineTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PipelineTableViewCell.xib; sourceTree = "<group>"; };
+		2397AF652677A60A007A1A45 /* PipelineDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineDetailTableViewCell.swift; sourceTree = "<group>"; };
+		2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PipelineDetailTableViewCell.xib; sourceTree = "<group>"; };
 		25C6C1D772F13896700CDB1C /* Pods-Colaba.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Colaba.release.xcconfig"; path = "Target Support Files/Pods-Colaba/Pods-Colaba.release.xcconfig"; sourceTree = "<group>"; };
 		3D986CBDBB7995778F877F6F /* Pods-ColabaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ColabaTests.debug.xcconfig"; path = "Target Support Files/Pods-ColabaTests/Pods-ColabaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionOfSVGKImage.swift; sourceTree = "<group>"; };
@@ -156,6 +170,9 @@
 				7160CA82267338F90061ACD5 /* NotificationViewController.swift */,
 				7160CA87267339060061ACD5 /* ProfileViewController.swift */,
 				7160CA8C26733B8C0061ACD5 /* MainTabBarViewController.swift */,
+				2397AF5E26776241007A1A45 /* PipelineViewController.swift */,
+				236EA1AB26789EAC00C2F8B5 /* PipelineMoreViewController.swift */,
+				236EA1AD2678CE1B00C2F8B5 /* DummyDashboardViewController.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -166,6 +183,17 @@
 				236B59D0266504050001F416 /* UserModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		2397AF602677821D007A1A45 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				2397AF61267782E6007A1A45 /* PipelineTableViewCell.swift */,
+				2397AF62267782E6007A1A45 /* PipelineTableViewCell.xib */,
+				2397AF652677A60A007A1A45 /* PipelineDetailTableViewCell.swift */,
+				2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		3FAC853161B2A86A8004F35B /* Pods */ = {
@@ -223,6 +251,7 @@
 		7186ACAE2653B25A00E740D3 /* Colaba */ = {
 			isa = PBXGroup;
 			children = (
+				2397AF602677821D007A1A45 /* Cells */,
 				236B59CF266503F30001F416 /* Models */,
 				71B19456265CF9970017955B /* API Router */,
 				71B1944D265CF9630017955B /*  OTP Timer Manager */,
@@ -463,8 +492,10 @@
 				7186ACB92653B25B00E740D3 /* Assets.xcassets in Resources */,
 				7186AD082653C77B00E740D3 /* Rubik-Regular.ttf in Resources */,
 				7186ACB72653B25A00E740D3 /* Main.storyboard in Resources */,
+				2397AF682677A60A007A1A45 /* PipelineDetailTableViewCell.xib in Resources */,
 				7186AD0A2653C77B00E740D3 /* Rubik-Medium.ttf in Resources */,
 				7113F51F26568E3B0066E179 /* Home.svg in Resources */,
+				2397AF64267782E6007A1A45 /* PipelineTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -603,12 +634,16 @@
 				2368D6572667DA6700D5C1C5 /* DashboardViewController.swift in Sources */,
 				7186AD742653FBB500E740D3 /* ResetPasswordSuccessfullViewController.swift in Sources */,
 				71B19458265CF9C80017955B /* APIRouter.swift in Sources */,
+				2397AF63267782E6007A1A45 /* PipelineTableViewCell.swift in Sources */,
 				7186AD602653DE8600E740D3 /* ExtensionOfView.swift in Sources */,
+				2397AF672677A60A007A1A45 /* PipelineDetailTableViewCell.swift in Sources */,
 				7113F52526569D310066E179 /* LocalAuthManager.swift in Sources */,
+				236EA1AC26789EAC00C2F8B5 /* PipelineMoreViewController.swift in Sources */,
 				236B59D1266504060001F416 /* UserModel.swift in Sources */,
 				711D33282654F1710091BC18 /* Constant.swift in Sources */,
 				7186AD6F2653ED2D00E740D3 /* ForgotPasswordViewController.swift in Sources */,
 				7186AD7E26540CEB00E740D3 /* CodeViewController.swift in Sources */,
+				2397AF5F26776241007A1A45 /* PipelineViewController.swift in Sources */,
 				7186AD7926540CCC00E740D3 /* PhoneNumberViewController.swift in Sources */,
 				7148C6B92655500B00E1C216 /* ExtensionOfString.swift in Sources */,
 				7186AD012653C6AB00E740D3 /* LoginViewController.swift in Sources */,
@@ -616,6 +651,7 @@
 				7148C6B126554ADE00E1C216 /* Validation.swift in Sources */,
 				71B1944F265CF9780017955B /* OTPTimerManager.swift in Sources */,
 				7160CA88267339060061ACD5 /* ProfileViewController.swift in Sources */,
+				236EA1AE2678CE1B00C2F8B5 /* DummyDashboardViewController.swift in Sources */,
 				7186AD562653CD5C00E740D3 /* Theme.swift in Sources */,
 				7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */,
 			);

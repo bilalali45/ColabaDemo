@@ -13,6 +13,7 @@ pod 'SwiftyJSON', '5.0.0'
 pod 'Alamofire', '5.4.1'
 pod 'NVActivityIndicatorView', '4.8.0'
 pod 'RealmSwift'
+pod 'CarbonKit'
 
   target 'ColabaTests' do
     inherit! :search_paths

@@ -12,6 +12,7 @@ class CodeViewController: UIViewController {
 
     //MARK:- Outlets and Properties
     
+    @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var codeView: UIView!
     @IBOutlet weak var codeViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var lblPhoneNumber: UILabel!
@@ -65,10 +66,12 @@ class CodeViewController: UIViewController {
     }
     
     @objc func textFieldCodeChanged(){
-        checkIcon.isHidden = txtFieldCode.text!.count != 6
-        btnVerify.backgroundColor = txtFieldCode.text!.count != 6 ? Theme.getButtonGreyColor() : Theme.getButtonBlueColor()
-        btnVerify.setTitleColor(txtFieldCode.text!.count != 6 ? Theme.getButtonGreyTextColor() : .white, for: .normal)
-        btnVerify.isEnabled = txtFieldCode.text!.count == 6
+        if (txtFieldCode.text!.count != 6){
+            self.checkIcon.isHidden = true
+        }
+        if (txtFieldCode.text!.count == 6){
+            verify2FAWithRequest()
+        }
     }
     
     func changeUIAfterResendCode(message: String){
@@ -174,7 +177,10 @@ class CodeViewController: UIViewController {
     }
     
     @IBAction func btnVerifyTapped(_ sender: UIButton) {
-        verify2FAWithRequest()
+//        if (self.isCheck){
+//            self.dontAskFor2FAWithRequest()
+//        }
+        self.completeLoginWithBiometric()
     }
     
     //MARK:- API's
@@ -226,6 +232,8 @@ class CodeViewController: UIViewController {
         
         if let otpCode = Int(txtFieldCode.text!){
             
+            txtFieldCode.resignFirstResponder()
+            txtFieldCode.endEditing(true)
             Utility.showOrHideLoader(shouldShow: true)
             
             let params = ["PhoneNumber": phoneNumber,
@@ -248,19 +256,44 @@ class CodeViewController: UIViewController {
                             realm.add(model)
                             try! realm.commitWrite()
                             
-                            if (self.isCheck){
-                                self.dontAskFor2FAWithRequest()
-                            }
-                            self.completeLoginWithBiometric()
-                    
+                            self.btnBack.isEnabled = false
+                            self.btnResendCode.isEnabled = false
+                            self.txtFieldCode.isEnabled = false
+                            self.txtFieldCode.isUserInteractionEnabled = false
+                            self.checkIcon.isHidden = false
+                            self.checkIcon.image = UIImage(named: "TickIcon")
+                            self.btnVerify.backgroundColor = Theme.getButtonBlueColor()
+                            self.btnVerify.setTitleColor(.white, for: .normal)
+                            self.btnVerify.isEnabled = true
+                            
                         }
                         else{
+                            self.btnBack.isEnabled = true
+                            self.btnResendCode.isEnabled = true
+                            self.txtFieldCode.isEnabled = true
+                            self.txtFieldCode.isUserInteractionEnabled = true
+                            self.checkIcon.isHidden = false
+                            self.checkIcon.image = UIImage(named: "Cross-Icon")
+                            self.btnVerify.backgroundColor = Theme.getButtonGreyColor()
+                            self.btnVerify.setTitleColor(Theme.getButtonGreyTextColor(), for: .normal)
+                            self.btnVerify.isEnabled = false
+                            
                             self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { reason in
                                 
                             }
                         }
                     }
                     else{
+                        
+                        self.btnBack.isEnabled = true
+                        self.btnResendCode.isEnabled = true
+                        self.txtFieldCode.isEnabled = true
+                        self.txtFieldCode.isUserInteractionEnabled = true
+                        self.checkIcon.isHidden = false
+                        self.checkIcon.image = UIImage(named: "Cross-Icon")
+                        self.btnVerify.backgroundColor = Theme.getButtonGreyColor()
+                        self.btnVerify.setTitleColor(Theme.getButtonGreyTextColor(), for: .normal)
+                        self.btnVerify.isEnabled = false
                         self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { reason in
                             
                         }

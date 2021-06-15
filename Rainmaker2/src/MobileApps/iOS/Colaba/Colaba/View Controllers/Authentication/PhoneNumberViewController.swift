@@ -175,6 +175,16 @@ extension PhoneNumberViewController: UITextFieldDelegate{
         guard let text = textField.text else { return false }
         let newString = (text as NSString).replacingCharacters(in: range, with: string)
         textField.text = self.formatPhoneNumber(with: "(XXX) XXX-XXXX", phone: newString)
+        do{
+            let phoneNumber = try validation.validatePhoneNumber(txtFieldPhone.text)
+            self.lblPhoneError.isHidden = true
+            self.phoneSeparator.backgroundColor = Theme.getSeparatorNormalColor()
+        }
+        catch{
+//            self.lblPhoneError.text = error.localizedDescription
+//            self.lblPhoneError.isHidden = false
+//            self.phoneSeparator.backgroundColor = Theme.getSeparatorErrorColor()
+        }
         return false
     }
     
