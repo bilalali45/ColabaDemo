@@ -12,6 +12,7 @@
 		2368D6552667DA5900D5C1C5 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2368D6542667DA5900D5C1C5 /* BaseViewController.swift */; };
 		2368D6572667DA6700D5C1C5 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2368D6562667DA6700D5C1C5 /* DashboardViewController.swift */; };
 		236B59D1266504060001F416 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B59D0266504050001F416 /* UserModel.swift */; };
+		236EA1AC26789EAC00C2F8B5 /* PipelineMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236EA1AB26789EAC00C2F8B5 /* PipelineMoreViewController.swift */; };
 		2397AF5F26776241007A1A45 /* PipelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397AF5E26776241007A1A45 /* PipelineViewController.swift */; };
 		2397AF63267782E6007A1A45 /* PipelineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397AF61267782E6007A1A45 /* PipelineTableViewCell.swift */; };
 		2397AF64267782E6007A1A45 /* PipelineTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2397AF62267782E6007A1A45 /* PipelineTableViewCell.xib */; };
@@ -75,6 +76,7 @@
 		2368D6542667DA5900D5C1C5 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		2368D6562667DA6700D5C1C5 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		236B59D0266504050001F416 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		236EA1AB26789EAC00C2F8B5 /* PipelineMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineMoreViewController.swift; sourceTree = "<group>"; };
 		2397AF5E26776241007A1A45 /* PipelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineViewController.swift; sourceTree = "<group>"; };
 		2397AF61267782E6007A1A45 /* PipelineTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineTableViewCell.swift; sourceTree = "<group>"; };
 		2397AF62267782E6007A1A45 /* PipelineTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PipelineTableViewCell.xib; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				7160CA87267339060061ACD5 /* ProfileViewController.swift */,
 				7160CA8C26733B8C0061ACD5 /* MainTabBarViewController.swift */,
 				2397AF5E26776241007A1A45 /* PipelineViewController.swift */,
+				236EA1AB26789EAC00C2F8B5 /* PipelineMoreViewController.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -632,6 +635,7 @@
 				7186AD602653DE8600E740D3 /* ExtensionOfView.swift in Sources */,
 				2397AF672677A60A007A1A45 /* PipelineDetailTableViewCell.swift in Sources */,
 				7113F52526569D310066E179 /* LocalAuthManager.swift in Sources */,
+				236EA1AC26789EAC00C2F8B5 /* PipelineMoreViewController.swift in Sources */,
 				236B59D1266504060001F416 /* UserModel.swift in Sources */,
 				711D33282654F1710091BC18 /* Constant.swift in Sources */,
 				7186AD6F2653ED2D00E740D3 /* ForgotPasswordViewController.swift in Sources */,

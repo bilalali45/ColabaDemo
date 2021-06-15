@@ -1,0 +1,9 @@
+<svg id="Group_17482" data-name="Group 17482" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="Group_17481" data-name="Group 17481" transform="translate(7 3)">
+    <path id="Path_11460" data-name="Path 11460" d="M10245,972.143v11.571h8.714V972.143Z" transform="translate(-10244 -969.975)" fill="#4484f4" opacity="0.3"/>
+    <g id="Group_17475" data-name="Group 17475">
+      <path id="Path_11456" data-name="Path 11456" d="M209.319,269.89H203.48a2.483,2.483,0,0,0-2.48,2.48v12.04a2.483,2.483,0,0,0,2.48,2.48h5.839a2.483,2.483,0,0,0,2.48-2.48V272.37a2.483,2.483,0,0,0-2.48-2.48Zm-3.649.824h1.458a.225.225,0,1,1,0,.451h-1.458a.225.225,0,1,1,0-.451Zm.729,15.167a.721.721,0,1,1,.721-.722.722.722,0,0,1-.721.722Zm4.272-2.9a.452.452,0,0,1-.451.451h-7.643a.452.452,0,0,1-.451-.451V272.428a.452.452,0,0,1,.451-.451h7.643a.452.452,0,0,1,.451.451Zm0,0" transform="translate(-201 -269.89)" fill="#4484f4"/>
+    </g>
+  </g>
+  <path id="Path_11457" data-name="Path 11457" d="M0,24H24V0H0Z" transform="translate(24 24) rotate(180)" fill="none"/>
+</svg>

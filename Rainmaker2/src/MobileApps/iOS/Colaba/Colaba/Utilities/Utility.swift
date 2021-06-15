@@ -62,6 +62,9 @@ struct Utility {
         return mainStoryboard.instantiateViewController(withIdentifier: "PipelineViewController") as! PipelineViewController
     }
     
+    static func getPipelineMoreVC() -> PipelineMoreViewController{
+        return mainStoryboard.instantiateViewController(withIdentifier: "PipelineMoreViewController") as! PipelineMoreViewController
+    }
     
     static func checkDeviceAuthType() -> String {
          let authType = LocalAuthManager.shared.biometricType

@@ -15,8 +15,6 @@ extension UIView{
                    shadowOpacity: Float = 1,
                    shadowRadius: CGFloat = 5.0) {
         layer.shadowColor = shadowColor
-//        layer.shadowOffset = shadowOffset
-//        layer.masksToBounds = false
         layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
         layer.shadowRadius = shadowRadius
         layer.shadowOffset = .zero
@@ -35,18 +33,18 @@ extension UIView{
     func roundAllCorners(radius: CGFloat) {
        self.clipsToBounds = true
        self.layer.cornerRadius = radius
-        self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-    }
-    
-    func roundTopCorners(radius: CGFloat) {
-        self.clipsToBounds = true
-        self.layer.cornerRadius = radius
-        self.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+       self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
     }
     
     func roundOnlyTopCorners(radius: CGFloat) {
        self.clipsToBounds = true
        self.layer.cornerRadius = radius
-       self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+       self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner] //[Top Left and Top Right]
+    }
+    
+    func roundOnlyBottomCorners(radius: CGFloat) {
+       self.clipsToBounds = true
+       self.layer.cornerRadius = radius
+       self.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner] //[Bottom Left and Bottom Right]
     }
 }

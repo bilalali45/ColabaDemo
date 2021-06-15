@@ -15,11 +15,13 @@ class DashboardViewController: BaseViewController {
     @IBOutlet weak var logo: UIImageView!
     @IBOutlet weak var btnSearch: UIButton!
     @IBOutlet weak var tabView: UIView!
+    @IBOutlet weak var btnNew: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //refreshAccessTokenWithRequest()
         setTopTabBar()
+        btnNew.roundButtonWithShadow()
     }
     
     //MARK:- Methods and Actions
@@ -45,8 +47,12 @@ class DashboardViewController: BaseViewController {
     }
     
     @IBAction func btnSearchTapped(_ sender: UIButton) {
+        
     }
     
+    @IBAction func btnNewTapped(_ sender: UIButton){
+        
+    }
     
     @IBAction func btnLogoutTapped(_ sender: UIButton) {
         

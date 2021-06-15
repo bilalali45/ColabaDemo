@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol PipelineTableViewCellDelegate: AnyObject {
+    func btnOptionsTapped(indexPath: IndexPath)
+    func btnArrowTapped(indexPath: IndexPath)
+}
+
 class PipelineTableViewCell: UITableViewCell {
 
     @IBOutlet weak var mainView: UIView!
@@ -21,11 +26,13 @@ class PipelineTableViewCell: UITableViewCell {
     @IBOutlet weak var lblDocuments: UILabel!
     @IBOutlet weak var bntArrow: UIButton!
     
+    weak var delegate: PipelineTableViewCellDelegate?
+    var indexPath = IndexPath()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        mainView.layer.cornerRadius = 8
-        mainView.addShadow()
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -35,9 +42,11 @@ class PipelineTableViewCell: UITableViewCell {
     }
     
     @IBAction func btnMoreTapped(_ sender: UIButton) {
+        self.delegate?.btnOptionsTapped(indexPath: indexPath)
     }
     
     @IBAction func btnArrowTapped(_ sender: UIButton) {
+        self.delegate?.btnArrowTapped(indexPath: indexPath)
     }
     
 }

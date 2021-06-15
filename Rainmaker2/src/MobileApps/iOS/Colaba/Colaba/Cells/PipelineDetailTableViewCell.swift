@@ -10,10 +10,19 @@ import UIKit
 class PipelineDetailTableViewCell: UITableViewCell {
 
     @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var addressIcon: UIImageView!
+    @IBOutlet weak var lblPropertyAddress: UILabel!
+    @IBOutlet weak var loanIcon: UIImageView!
+    @IBOutlet weak var lblLoanAmount: UILabel!
+    @IBOutlet weak var propertyIcon: UIImageView!
+    @IBOutlet weak var lblPropertyValue: UILabel!
+    @IBOutlet weak var bottomSeperator: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        mainView.roundOnlyBottomCorners(radius: 8)
+        mainView.addShadow()
+        bottomSeperator.layer.cornerRadius = bottomSeperator.frame.height / 2
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
