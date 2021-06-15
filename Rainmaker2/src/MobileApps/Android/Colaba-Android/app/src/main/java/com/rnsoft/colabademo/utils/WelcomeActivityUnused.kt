@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo
+package com.rnsoft.colabademo.utils
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -16,13 +16,16 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricPrompt.PromptInfo
 import androidx.core.content.ContextCompat
+import com.rnsoft.colabademo.ColabaConstant
+import com.rnsoft.colabademo.R
+import com.rnsoft.colabademo.SignUpFlowActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.Executor
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class WelcomeActivityTwo : AppCompatActivity() {
+class WelcomeActivityUnused : AppCompatActivity() {
     //private val activityScope = CoroutineScope(Dispatchers.Main)
     private lateinit var loginWithTextView: TextView
     private lateinit var withPasswordTextView: TextView
@@ -49,10 +52,10 @@ class WelcomeActivityTwo : AppCompatActivity() {
         }
 
         loginWithTextView.setOnClickListener {
-            startActivity(Intent(this@WelcomeActivityTwo, SignUpFlowActivity::class.java))
+            startActivity(Intent(this@WelcomeActivityUnused, SignUpFlowActivity::class.java))
         }
         withPasswordTextView.setOnClickListener {
-            startActivity(Intent(this@WelcomeActivityTwo, SignUpFlowActivity::class.java))
+            startActivity(Intent(this@WelcomeActivityUnused, SignUpFlowActivity::class.java))
         }
 
 

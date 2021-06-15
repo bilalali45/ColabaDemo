@@ -27,6 +27,8 @@ class ForgotPasswordFragment : Fragment() {
 
     private lateinit var errorTextView:AppCompatTextView
 
+    private lateinit var resetButton:Button
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,12 +37,13 @@ class ForgotPasswordFragment : Fragment() {
         setHasOptionsMenu(true)
         root = inflater.inflate(R.layout.password_forgot, container, false)
 
-        val resetButton = root.findViewById<Button>(R.id.resetPasswordBtn)
+        resetButton  = root.findViewById<Button>(R.id.resetPasswordBtn)
         val userEmailField = root.findViewById<AppCompatEditText>(R.id.editTextEmail)
         errorTextView = root.findViewById(R.id.emailErrorTextView)
         loading = root.findViewById(R.id.loader_forgot_screen)
 
         resetButton.setOnClickListener {
+            it.isEnabled = false
             errorTextView.text =""
             loading.visibility = View.VISIBLE
             forgotPasswordViewModel.forgotPassword(userEmailField.text.toString())
@@ -67,6 +70,7 @@ class ForgotPasswordFragment : Fragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onPasswordEventReceived(event: ForgotPasswordEvent) {
         loading.visibility = View.INVISIBLE
+        resetButton.isEnabled = true
         val forgotPasswordResponse = event.forgotPasswordResponse
         when(event.forgotPasswordResponse.code)
         {

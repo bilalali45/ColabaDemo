@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class OtpVerificationResponse(
     val code: String?,
-    @SerializedName("data") val otpVerificationData : OtpVerificationData?,
+    @SerializedName("data") val data : Data?,
     val message: String?,
     val status: String?
 )

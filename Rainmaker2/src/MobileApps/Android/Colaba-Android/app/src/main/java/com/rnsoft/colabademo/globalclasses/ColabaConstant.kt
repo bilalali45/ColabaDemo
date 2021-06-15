@@ -35,10 +35,15 @@ object ColabaConstant {
 
         const val maxOtpSendAllowed:String = "maxOtpSendAllowed"
 
+        const val twoFaResendCoolTimeInMinutes:String = "twoFaResendCoolTimeInMinutes"
+
         const val otp_message:String =   "otp_message"
 
         const val isbiometricEnabled:String =   "isbiometricEnabled"
 
+        const val AccessToken:String =   "AccessToken"
+
+        const val IntermediateToken:String =   "IntermediateToken"
 
         const val  INTERNET_ERR_MSG:String = "Please check your internet connectivity..."
 }

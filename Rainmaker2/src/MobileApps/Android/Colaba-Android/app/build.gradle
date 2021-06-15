@@ -146,6 +146,10 @@ dependencies {
     implementation 'co.infinum:goldfinger:2.0.1'
 
     //implementation 'androidx.biometric:biometric:1.1.0'
+
+
+    implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+
 }
 
 kapt {

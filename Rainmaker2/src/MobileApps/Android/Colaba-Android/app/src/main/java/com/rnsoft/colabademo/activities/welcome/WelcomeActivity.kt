@@ -53,22 +53,11 @@ class WelcomeActivity : AppCompatActivity() {
             .build()
 
         params = PromptParams.Builder(this)
-            .title("Title")
+            .title(resources.getString(R.string.authenticate_with_biometric))
             .negativeButtonText("Cancel")
-            .description("Description")
-            .subtitle("Subtitle")
+            .description(resources.getString(R.string.user_your_biometric))
+            //.subtitle("Subtitle")
             .build()
-
-
-        // Initializing both Android Keyguard Manager and Fingerprint Manager
-        // Initializing both Android Keyguard Manager and Fingerprint Manager
-        val keyguardManager = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
-        val fingerprintManager = getSystemService(FINGERPRINT_SERVICE) as FingerprintManager
-        if(!fingerprintManager.isHardwareDetected()) {
-
-        }
-        else
-            showToast("No more....")
 
         fingerPrintImageView.setOnClickListener{
             if (goldfinger.canAuthenticate()) {
@@ -84,7 +73,7 @@ class WelcomeActivity : AppCompatActivity() {
     private val fingerPrintCallBack:Goldfinger.Callback = object : Goldfinger.Callback {
         override fun onError(e: Exception) {
            /* Critical error happened */
-            showToast("Finger Print not able to be verified....")
+            showToast("Finger Print device error....")
         }
 
         override fun onResult(result: Goldfinger.Result) {
@@ -93,10 +82,9 @@ class WelcomeActivity : AppCompatActivity() {
                 val formattedResult =
                     String.format("%s - %s", result.type().toString(), result.reason().toString())
 
-                withPasswordTextView.text = formattedResult
-                showToast(formattedResult)
+                //showToast(formattedResult)
                 startActivity(Intent(this@WelcomeActivity, DashBoardActivity::class.java))
-                //userResultView.setText(formattedResult)
+
             }
         }
     }

@@ -28,17 +28,9 @@ class PhoneNumberViewModel @Inject constructor(private val phoneNumberRepo: Phon
             }
             genericResult?.let {
                 if (genericResult is Result.Success) {
-                    if (genericResult.data.code == "200")
                         EventBus.getDefault().post(SkipEvent(genericResult.data))
-                    else
-                        EventBus.getDefault().post(SkipEvent(genericResult.data))
-                    SkipTwoFactorResponse("300", null, "Webservice error, can not skip", null)
                 } else
-                    EventBus.getDefault().post(
-                        SkipEvent(
-                            SkipTwoFactorResponse("300", null, "Webservice error, can not skip", null)
-                        )
-                    )
+                    EventBus.getDefault().post(SkipEvent(SkipTwoFactorResponse("300", null, "Webservice error, can not skip", null)))
             }
 
         }

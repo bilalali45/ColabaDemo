@@ -6,6 +6,7 @@
     <string name="email">Email</string>
     <string name="wrong_credential">Wrong Credential</string>
     <string name="mobile_number">Mobile Number</string>
+    <string name="mobile_verification_code">Mobile Veification Code</string>
     <string name="password">Password</string>
     <string name="face_id">Face ID Login</string>
     <string name="biometric_login">Biometric Login</string>
@@ -38,12 +39,20 @@
     <string name="dummy_minute">08</string>
     <string name="dummy_seconds">:  30</string>
 
+
+
+    <string name="user_data_does_not_exit">  User does not exist</string>
+
     <string name="min">min</string>
     <string name="sec">sec</string>
     <string name="forgot_password">Forgot your password?  </string>
     <string name="login_to_lender_portal">Login To Lender\’s Portal </string>
     <string name="did_not_receive_code">Didn\'t receive the code? </string>
     <string name="resend_code">Resend code </string>
+
+    <string name="max_resend_attempts_reached">Max resend attempts reached. Please try again after some time</string>
+
+
     <string name="dummy_otp_message">You need to complete the timeout.</string>
 
     <string name="biometric_check">Device is not registered with Biometric login. Please setup it from settings.</string>

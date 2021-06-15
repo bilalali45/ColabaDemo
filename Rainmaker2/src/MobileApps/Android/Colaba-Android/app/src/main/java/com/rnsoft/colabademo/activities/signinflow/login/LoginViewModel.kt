@@ -43,10 +43,10 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
                 if (genericResult is Result.Success) {
                     val loginResponse = genericResult.data
 
-                    if (loginResponse.data?.tokenTypeName == "AccessToken") {
+                    if (loginResponse.data?.tokenTypeName == ColabaConstant.AccessToken) {
                         EventBus.getDefault().post(LoginEvent(LoginResponseResult(success = loginResponse, screenNumber = 1)))
                         return@launch
-                    } else if (loginResponse.data?.tokenTypeName == "IntermediateToken") {
+                    } else if (loginResponse.data?.tokenTypeName == ColabaConstant.IntermediateToken) {
                         runOtpSettingService(loginResponse.data.token)
                         //loginRepo.getOtpSettingFromService(loginResponse.data.token)
 
@@ -76,7 +76,7 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
                     }
                 } else
                     EventBus.getDefault()
-                        .post(LoginEvent(LoginResponseResult(responseError = R.string.login_failed)))
+                        .post(LoginEvent(LoginResponseResult(responseError = R.string.user_data_does_not_exit)))
 
             }
         }

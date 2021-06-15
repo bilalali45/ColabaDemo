@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import android.widget.CompoundButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -43,7 +42,7 @@ class OtpFragment: Fragment() {
     private lateinit var verifyButton:Button
     private lateinit var otpEditText:EditText
     private lateinit var cTimer:CountDownTimer
-    private lateinit var timerLayout:ConstraintLayout
+    private lateinit var insideTimerLayout:ConstraintLayout
     private lateinit var otpLoader:ProgressBar
     private lateinit var minuteTextView:TextView
     private lateinit var secondTextView:TextView
@@ -52,6 +51,8 @@ class OtpFragment: Fragment() {
 
     private var minutes:Int = 0
     private var seconds:Int = 0
+
+    private var attemptLeft:Int = 0
 
 
     override fun onCreateView(
@@ -65,7 +66,7 @@ class OtpFragment: Fragment() {
         resendLink = root.findViewById(R.id.resendTextView)
         nearToResetTextView = root.findViewById(R.id.nearToResetTextView)
         otpEditText = root.findViewById(R.id.otpCodeEditText)
-        timerLayout = root.findViewById(R.id.timer_constraintlayout)
+        insideTimerLayout = root.findViewById(R.id.inside_timer_constraintlayout)
         otpLoader = root.findViewById(R.id.loader_otp_screen)
         minuteTextView = root.findViewById(R.id.minuteTextView)
         secondTextView = root.findViewById(R.id.secondTextView)
@@ -75,9 +76,7 @@ class OtpFragment: Fragment() {
         //////////////////////////////////////////////////////////////////////////////////////////////
         otpEditText.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-
-            }
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable) {
                 val str: String = otpEditText.text.toString()
                 verifyButton.isEnabled = str.length == 6
@@ -88,6 +87,7 @@ class OtpFragment: Fragment() {
             sharedPreferences.getString(ColabaConstant.phoneNumber,"")?.let { phoneNum->
                 sharedPreferences.getString(ColabaConstant.token,"")?.let { intermediateToken ->
                     otpLoader.visibility = View.VISIBLE
+                    toggleButtonState(false)
                     signUpFlowActivity.sendOtpToPhone(intermediateToken, phoneNum)
                 }
             }
@@ -96,10 +96,12 @@ class OtpFragment: Fragment() {
         verifyButton.setOnClickListener {
             otpLoader.visibility = View.VISIBLE
             val otpVal = otpEditText.text.toString()
+            toggleButtonState(false)
             otpViewModel.verifyOtp(otpVal.toInt())
         }
 
         checkForTimer()
+        updateResendCount()
 
         return root
     }
@@ -111,7 +113,6 @@ class OtpFragment: Fragment() {
 
     override fun onStop() {
         super.onStop()
-        //var secondsCount = 0 //if(minutes>0) //  secondsCount = minutes * 60 //secondsCount += seconds //spEditor.putInt(ColabaConstant.secondsCount, secondsCount).apply()
         EventBus.getDefault().unregister(this)
     }
 
@@ -121,20 +122,29 @@ class OtpFragment: Fragment() {
     fun otpFragmentReceivedOtpEvent(event: OtpSentEvent) {
         otpLoader.visibility = View.INVISIBLE
         val otpSentResponse =event.otpSentResponse
+        resendLink.isEnabled = true
+        updateResendCount()
         Log.e("otp-sent", otpSentResponse.toString())
         if (otpSentResponse.code == "400" && otpSentResponse.otpData!=null) {
             checkForTimer()
         }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onOtpVerificationCompleteEvent(event: OtpVerificationEvent) {
         otpLoader.visibility = View.INVISIBLE
-        val verificationResponse =event.otpVerificationResponse
+        toggleButtonState(true)
+        val verificationResponse = event.otpVerificationResponse
         Log.e("verificationResponse==", verificationResponse.toString())
-        if(verificationResponse.code == "200" &&  verificationResponse.otpVerificationData != null) {
-            if(notAskChekBox.isChecked)
-               otpViewModel.notAskForOtp(verificationResponse.otpVerificationData.token)
+        if(verificationResponse.code == "200" &&  verificationResponse.data != null) {
+            if(notAskChekBox.isChecked) {
+                sharedPreferences.getString(ColabaConstant.token,"")?.let {
+                    otpLoader.visibility = View.VISIBLE
+                    toggleButtonState(false)
+                    otpViewModel.notAskForOtp(it)
+                }
+            }
             else
                 navigateToDashBoardScreen()
         }
@@ -150,11 +160,14 @@ class OtpFragment: Fragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun notAskForOtpEventReceived(event: NotAskForOtpEvent) {
         otpLoader.visibility = View.INVISIBLE
+        toggleButtonState(true)
         val notAskForOtpResponse =event.notAskForOtpResponse
         Log.e("notAskForOtpResponse==", notAskForOtpResponse.toString())
         if (notAskForOtpResponse.code == "200" && notAskForOtpResponse.status=="OK") {
             navigateToDashBoardScreen()
         }
+        else
+            notAskForOtpResponse.message?.let { showToast(it) }
     }
 
     private fun showToast(toastMessage: String) = Toast.makeText(requireActivity().applicationContext, toastMessage, Toast.LENGTH_LONG).show()
@@ -170,10 +183,14 @@ class OtpFragment: Fragment() {
         sharedPreferences.getString(ColabaConstant.otpDataJson, "").let {
             val test = sharedPreferences.getString(ColabaConstant.otpDataJson, "")
             val obj = Gson().fromJson(test, OtpData::class.java)
-            Log.e("data-", obj.phoneNumber + "  " + obj.attemptsCount.toString())
-            if(obj.remainingTimeoutInSeconds!=null) {
-                setUpTimerInitial(obj.remainingTimeoutInSeconds)
-                toggleTimerView(true)
+
+            if(obj!=null) {
+               if (obj.remainingTimeoutInSeconds != null && obj.remainingTimeoutInSeconds>3) {
+                    setUpTimerInitial(obj.remainingTimeoutInSeconds)
+                    toggleTimerView(true)
+                }
+                else
+                    toggleTimerView(false)
             }
             else
                 toggleTimerView(false)
@@ -182,16 +199,29 @@ class OtpFragment: Fragment() {
 
     private fun toggleTimerView(bool:Boolean) {
         if(bool) {
-            timerLayout.visibility = View.VISIBLE
-            nearToResetTextView.visibility = View.INVISIBLE
-            resendLink.visibility = View.INVISIBLE
+            insideTimerLayout.visibility = View.VISIBLE
+            nearToResetTextView.visibility = View.GONE
+            resendLink.visibility = View.GONE
         }
         else {
-            timerLayout.visibility = View.INVISIBLE
+            insideTimerLayout.visibility = View.GONE
             nearToResetTextView.visibility = View.VISIBLE
             resendLink.visibility = View.VISIBLE
         }
+        updateResendCount()
+    }
 
+    private fun updateResendCount(){
+        sharedPreferences.getString(ColabaConstant.otpDataJson, "")?.let { otpDataReceived->
+            val obj = Gson().fromJson(otpDataReceived, OtpData::class.java)
+            if (obj != null) {
+                sharedPreferences.getInt(ColabaConstant.maxOtpSendAllowed, 5).let {
+                    attemptLeft = it - obj.attemptsCount
+                }
+            }
+        }
+        val attemptsLeftString = resources.getString(R.string.resend_code) + " ($attemptLeft left)"
+        resendLink.text = attemptsLeftString
     }
 
     private fun setUpTimerInitial(remainingSeconds:Int){
@@ -217,20 +247,20 @@ class OtpFragment: Fragment() {
             override fun onTick(millisUntilFinished: Long) {
                 Log.e("millisUntilFinished-", millisUntilFinished.toString())
                 Log.e("Minutes - ", "$minutes  seconds - $seconds")
+                seconds--
                 if(seconds == 0 && minutes > 0) {
                     Log.e("MinutesNow--", "Decreased")
                     minutes -= 1
                     seconds = 60
                 }
                 else
-                if(minutes == 0 && seconds == 1){
+                if(minutes <= 0 && seconds <= 0){
                     Log.e("TimerStop", "StopNow")
                     toggleTimerView(false)
                     cancelTimer()
                 }
                 minuteTextView.text = "0"+minutes
                 secondTextView.text = ": "+seconds.toString()
-                seconds--
             }
             override fun onFinish() { Log.e("Timer Finished-", "Completed...") }
         }
@@ -241,6 +271,11 @@ class OtpFragment: Fragment() {
         cTimer.let {
             cTimer.cancel();
         }
+    }
+
+    private fun toggleButtonState(bool:Boolean){
+        resendLink.isEnabled = bool
+        verifyButton.isEnabled = bool
     }
 
 }

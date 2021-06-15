@@ -18,7 +18,8 @@ class OtpDataSource @Inject constructor(private val serverApi: ServerApi)
 
     suspend fun notAskForOtpAgain(token: String ): Result<NotAskForOtpResponse> {
         return try {
-            val response = serverApi.notAskForOtpAgain(Token = token)
+            val newToken = "Bearer "+token
+            val response = serverApi.notAskForOtpAgain(Authorization = newToken)
             Log.e("notAskFor-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {

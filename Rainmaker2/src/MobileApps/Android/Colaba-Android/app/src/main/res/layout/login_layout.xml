@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/colaba_primary_color"
+     >
 
 
 
@@ -17,6 +18,7 @@
         android:rotation="360"
         android:translationX="46dp"
         android:translationY="-48dp"
+        android:alpha="0.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView5"
         app:srcCompat="@drawable/ic_key" />
@@ -38,7 +40,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="66dp"
         android:text="@string/login_to_lender_portal"
         android:textColor="@color/colaba_text_color"
         android:textSize="20sp"
@@ -51,13 +53,13 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/login_box"
         android:layout_width="0dp"
-        android:layout_height="376dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="30dp"
 
-        app:cardCornerRadius="6dp"
-        app:cardElevation="2dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp"
         app:cardUseCompatPadding="true"
 
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,7 +69,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -78,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="27dp"
-                android:layout_marginTop="19dp"
+
                 android:background="@drawable/ic_email_icon_svg"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -105,13 +108,14 @@
                 android:inputType="textEmailAddress"
                 android:text=""
                 android:textColor="@color/colaba_text_color"
-                android:textSize="13sp"
-                app:layout_constraintEnd_toEndOf="@+id/view"
+                android:textSize="14sp"
+                app:fontFamily="@font/rubik_medium"
+                app:layout_constraintEnd_toEndOf="@+id/email_separator"
                 app:layout_constraintStart_toStartOf="@+id/email_icon"
                 app:layout_constraintTop_toBottomOf="@+id/email_icon" />
 
             <View
-                android:id="@+id/view"
+                android:id="@+id/email_separator"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="35dp"
@@ -135,6 +139,7 @@
                 android:id="@+id/passwordTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_regular"
                 android:text="@string/password"
                 android:textColor="@color/colaba_text_color_two"
                 android:textSize="14sp"
@@ -153,13 +158,14 @@
                 android:inputType="textPassword"
                 android:text=""
                 android:textColor="@color/colaba_text_color"
-                android:textSize="13sp"
+                android:textSize="14sp"
+                app:fontFamily="@font/rubik_medium"
                 app:layout_constraintEnd_toStartOf="@+id/passwordImageShow"
                 app:layout_constraintStart_toStartOf="@+id/passwordIcon"
                 app:layout_constraintTop_toBottomOf="@+id/passwordIcon" />
 
             <View
-                android:id="@+id/view2"
+                android:id="@+id/password_separator"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="35dp"
@@ -175,8 +181,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/view2"
-                app:layout_constraintEnd_toEndOf="@+id/view2"
+                app:layout_constraintBottom_toTopOf="@+id/password_separator"
+                app:layout_constraintEnd_toEndOf="@+id/password_separator"
                 app:srcCompat="@drawable/ic_eye_icon_svg" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -192,6 +198,7 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_regular"
                 android:text="@string/biometric_login"
                 android:textColor="@color/colaba_text_color_two"
                 android:textSize="14sp"
@@ -204,6 +211,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
+                android:fontFamily="@font/rubik_regular"
                 android:text="@string/forgot_password"
                 android:textColor="@color/colaba_blue_color"
                 app:layout_constraintStart_toStartOf="@+id/imageView4"
@@ -243,7 +251,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="20dp" />
+                app:layout_constraintGuide_end="323dp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/emailErrorTextView"
@@ -255,7 +263,7 @@
                 android:textSize="12sp"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/email_icon"
-                app:layout_constraintTop_toBottomOf="@+id/view" />
+                app:layout_constraintTop_toBottomOf="@+id/email_separator" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/passwordErrorTextView"
@@ -267,7 +275,7 @@
                 android:textSize="12sp"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/email_icon"
-                app:layout_constraintTop_toBottomOf="@+id/view2" />
+                app:layout_constraintTop_toBottomOf="@+id/password_separator" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -280,6 +288,7 @@
         android:layout_width="wrap_content"
         android:layout_height="228dp"
         android:layout_marginTop="224dp"
+        android:alpha="0.5"
         android:background="@drawable/ic_bg_paper_svg"
         android:translationX="-75dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -299,8 +308,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:indeterminateTintMode="src_atop"
-        android:elevation="2dp"
-        android:translationZ="2dp"
+        android:elevation="10dp"
+        android:translationZ="10dp"
         android:indeterminateTint="@color/colaba_blue_color"
         app:layout_constraintTop_toTopOf="parent" />
 

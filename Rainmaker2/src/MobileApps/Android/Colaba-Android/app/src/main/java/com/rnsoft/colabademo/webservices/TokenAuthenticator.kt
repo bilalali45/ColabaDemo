@@ -10,19 +10,24 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class TokenAuthenticator ( private val sharedPreferences: SharedPreferences) : Authenticator {
-    override fun authenticate(route: Route?, response: Response): Request? {
-        return null
-    }
 
-    /*
-        override fun authenticate(route: Route?, authResponse: Response?): Request? {
+        //override fun authenticate(route: Route?, response: Response): Request? { return null }
+
+        //override fun authenticate(route: Route?, authResponse: Response?): Request? {
+        override fun authenticate(route: Route?, response: Response): Request? {
             Log.e("authenticate - ", "Generating Token---")
             val newTokenResponse : LoginResponse = getNewToken() ?: return null
-            if(newTokenResponse.token.isNotBlank() && newTokenResponse.token.isNotEmpty()) {
-                sharedPreferences.edit().putString(MyAppConfigConstant.TOKEN, newTokenResponse.token).apply()
-                return authResponse?.request()!!.newBuilder()
-                    .header("Authorization", "Bearer " + newTokenResponse.token)
-                    .build()
+            val newResponseData = newTokenResponse.data
+            newResponseData?.let {
+                if (it.token.isNotBlank() && it.token.isNotEmpty()) {
+                    sharedPreferences.edit().putString(ColabaConstant.token, it.token)
+                        .apply()
+                    sharedPreferences.edit().putString(ColabaConstant.refreshToken, it.refreshToken)
+                        .apply()
+                    return response.request.newBuilder()
+                        .header("Authorization", "Bearer " + it.token)
+                        .build()
+                }
             }
             return null
         }
@@ -31,17 +36,19 @@ class TokenAuthenticator ( private val sharedPreferences: SharedPreferences) : A
         {
             // Refresh your access_token using a synchronous api request
             val retrofitInstance = Retrofit.Builder()
-                .baseUrl(MyAppConfigConstant.BASE_URL)
+                .baseUrl(ColabaConstant.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-            val testAPI = retrofitInstance.create(TestAPI::class.java)
-            val retrofitResponse = testAPI.loginWithCallBack(LoginRequest(MyAppConfigConstant.LOGIN_NAME, MyAppConfigConstant.PASSWORD)).execute()
-            if (retrofitResponse.body() != null)
-                if (retrofitResponse.body()!!.token.isNotEmpty() && retrofitResponse.body()!!.token.isNotBlank()) {
+            val testAPI = retrofitInstance.create(ServerApi::class.java)
+            val retrofitResponse = testAPI.refreshToken(
+                RefreshTokenRequest( RefreshToken =  ColabaConstant.refreshToken, Token = ColabaConstant.token)).execute()
+            retrofitResponse.body()?.let {
+                it.data?.let { loginData->
                     return retrofitResponse.body()!!
                 }
+            }
             return null
         }
 
-     */
+
 }
