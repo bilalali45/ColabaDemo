@@ -74,4 +74,16 @@
     <string name="title_profile">Profile</string>
     <string name="title_notifications">Notifications</string>
 
+    <string name="richard">Richard Glenn Randall</string>
+    <string name="refinance">Refinance</string>
+    <string name="application_started">Application Started</string>
+    <string name="docs_to_review">7 Document to Review</string>
+    <string name="time_ago"> 1 min ago</string>
+
+
+
+
+
+
+
 </resources>

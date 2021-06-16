@@ -182,6 +182,9 @@ class OtpFragment: Fragment() {
         val notAskForOtpResponse =event.notAskForOtpResponse
         Log.e("notAskForOtpResponse==", notAskForOtpResponse.toString())
         if (notAskForOtpResponse.code == "200" && notAskForOtpResponse.status=="OK") {
+            notAskForOtpResponse.notAskForData?.dontAskTwoFaIdentifier?.let {
+                spEditor.putString(ColabaConstant.dontAskTwoFaIdentifier, it).apply()
+            }
             navigateToDashBoardScreen()
         }
         else {

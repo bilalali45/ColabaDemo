@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.content.SharedPreferences
 import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
@@ -26,7 +27,15 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
     //private val _loginResult = MutableFl<LoginResponseResult>()
     //val loginResponseResult: Flow<LoginResponseResult> = Flow()
 
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+
+
+
     fun login(userEmail: String, password: String , isBiometricActive:Boolean) {
+
+        var dontAskTwoFaIdentifier = ""
+
         val emailError = isValidEmail(userEmail)
         val passwordLengthError = checkPasswordLength(password)
         if (emailError != null)
@@ -36,8 +45,13 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
                 .post(LoginEvent(LoginResponseResult(passwordError = passwordLengthError)))
         else {
             viewModelScope.launch {
+
+                sharedPreferences.getString(ColabaConstant.dontAskTwoFaIdentifier ,"")?.let {
+                    dontAskTwoFaIdentifier = it
+                }
+
                 val genericResult =
-                    loginRepo.validateLoginCredentials(userEmail, password, isBiometricActive)
+                    loginRepo.validateLoginCredentials(userEmail, password, isBiometricActive, dontAskTwoFaIdentifier)
                 Log.e("login-result - ", genericResult.toString())
 
                 if (genericResult is Result.Success) {

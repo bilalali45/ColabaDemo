@@ -14,12 +14,14 @@ constructor(
    suspend fun validateLoginCredentials(
         userEmail: String,
         password: String,
-        enableBiometric:Boolean
+        enableBiometric:Boolean,
+        dontAskTwoFaIdentifier:String=""
+
     ): Result<LoginResponse> {
         if(enableBiometric)
             sharedPref.putBoolean(ColabaConstant.isbiometricEnabled, true).apply()
 
-        val genericResult = dataSource.login(userEmail, password)
+        val genericResult = dataSource.login(userEmail, password , dontAskTwoFaIdentifier )
         if (genericResult is Result.Success) {
             genericResult.data.data?.let { storeLoggedInUserInfo(it) }
         }
