@@ -45,11 +45,11 @@ class HomeFragment : Fragment() {
             textView.text = it
         })
 
-        binding.logoutButton.setOnClickListener{
+        /*binding.logoutButton.setOnClickListener{
             sharedPreferences.getString(ColabaConstant.token,"")?.let {
                 dashBoardViewModel.logoutUser(it)
             }
-        }
+        } */
 
         return root
     }
