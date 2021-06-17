@@ -45,6 +45,8 @@ object ColabaConstant {
 
         const val IntermediateToken:String =   "IntermediateToken"
 
+        const val dontAskTwoFaIdentifier:String = "dontAskTwoFaIdentifier"
+
         const val  INTERNET_ERR_MSG:String = "Please check your internet connectivity..."
 }
 

@@ -10,4 +10,4 @@ data class NotAskForOtpResponse(
     val status: String?
 )
 
-data class NotAskForData(val isDataAvailable: Boolean?)
+data class NotAskForData(val dontAskTwoFaIdentifier:String?)

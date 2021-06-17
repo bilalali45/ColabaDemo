@@ -24,17 +24,17 @@ class SplashActivity : AppCompatActivity() {
         activityScope.launch {
             if (sharedPreferences.getBoolean(ColabaConstant.IS_LOGGED_IN, false)
                 && sharedPreferences.getBoolean(ColabaConstant.isbiometricEnabled, false)) {
-                delay(500)
+                delay(800)
                 startActivity(Intent(this@SplashActivity, WelcomeActivity::class.java))
             }
             else if(sharedPreferences.getBoolean(ColabaConstant.IS_LOGGED_IN, false)){
-                delay(500)
+                delay(800)
                 startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
             }
             else
 
             {
-                delay(300)
+                delay(800)
                 startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
             }
             finish()

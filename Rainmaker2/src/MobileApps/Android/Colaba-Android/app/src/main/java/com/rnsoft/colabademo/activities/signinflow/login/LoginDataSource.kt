@@ -7,10 +7,10 @@ import javax.inject.Inject
 
 class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
 
-    suspend fun login(userEmail: String, password: String): Result<LoginResponse> {
+    suspend fun login(userEmail: String, password: String , dontAskTwoFaIdentifier:String=""): Result<LoginResponse> {
         val serverResponse: Response<LoginResponse>
         return try {
-            serverResponse = serverApi.login(LoginRequest(userEmail, password))
+            serverResponse = serverApi.login(LoginRequest(userEmail, password), dontAskTwoFaIdentifier )
             if(serverResponse.isSuccessful) {
                 Log.e("Bingo- ", serverResponse.toString())
                 Result.Success(serverResponse.body()!!)

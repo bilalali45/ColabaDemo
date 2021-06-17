@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -54,6 +55,8 @@ class OtpFragment: Fragment() {
 
     private var attemptLeft:Int = 0
 
+    private var restoreBtnState:Boolean = false
+    private var otpTextFieldState:Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,25 +82,36 @@ class OtpFragment: Fragment() {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable) {
                 val str: String = otpEditText.text.toString()
-                verifyButton.isEnabled = str.length == 6
+                //verifyButton.isEnabled = str.length == 6
+                if(str.length == 6) {
+                    otpEditText.isEnabled = false
+                    disabledButtons()
+                    val otpVal = otpEditText.text.toString()
+                    otpViewModel.verifyOtp(otpVal.toInt())
+                }
             }
         })
 
         resendLink.setOnClickListener {
             sharedPreferences.getString(ColabaConstant.phoneNumber,"")?.let { phoneNum->
                 sharedPreferences.getString(ColabaConstant.token,"")?.let { intermediateToken ->
-                    otpLoader.visibility = View.VISIBLE
-                    toggleButtonState(false)
+                    restoreBtnState = verifyButton.isEnabled
+                    otpTextFieldState = otpEditText.isEnabled
+                    disabledButtons()
                     signUpFlowActivity.sendOtpToPhone(intermediateToken, phoneNum)
                 }
             }
         }
 
         verifyButton.setOnClickListener {
-            otpLoader.visibility = View.VISIBLE
-            val otpVal = otpEditText.text.toString()
-            toggleButtonState(false)
-            otpViewModel.verifyOtp(otpVal.toInt())
+            if(notAskChekBox.isChecked) {
+                sharedPreferences.getString(ColabaConstant.token,"")?.let {
+                    disabledButtons()
+                    otpViewModel.notAskForOtp(it)
+                }
+            }
+            else
+                navigateToDashBoardScreen()
         }
 
         checkForTimer()
@@ -119,8 +133,12 @@ class OtpFragment: Fragment() {
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun otpFragmentReceivedOtpEvent(event: OtpSentEvent) {
+    fun onOtpReceivedOnPhone(event: OtpSentEvent) {
         otpLoader.visibility = View.INVISIBLE
+
+        otpEditText.isEnabled = otpTextFieldState
+        verifyButton.isEnabled = restoreBtnState
+
         val otpSentResponse =event.otpSentResponse
         resendLink.isEnabled = true
         updateResendCount()
@@ -128,46 +146,52 @@ class OtpFragment: Fragment() {
         if (otpSentResponse.code == "400" && otpSentResponse.otpData!=null) {
             checkForTimer()
         }
+        else
+            otpSentResponse.message?.let { showToast(it) }
 
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onOtpVerificationCompleteEvent(event: OtpVerificationEvent) {
         otpLoader.visibility = View.INVISIBLE
-        toggleButtonState(true)
+        resendLink.isEnabled = true
+
         val verificationResponse = event.otpVerificationResponse
-        Log.e("verificationResponse==", verificationResponse.toString())
         if(verificationResponse.code == "200" &&  verificationResponse.data != null) {
-            if(notAskChekBox.isChecked) {
-                sharedPreferences.getString(ColabaConstant.token,"")?.let {
-                    otpLoader.visibility = View.VISIBLE
-                    toggleButtonState(false)
-                    otpViewModel.notAskForOtp(it)
-                }
-            }
-            else
-                navigateToDashBoardScreen()
+            verifyButton.isEnabled = true
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {}
         }
-        else{
-        if(verificationResponse.message!=null)
-            showToast(verificationResponse.message)
-        else
-            showToast("Response contains no message...")
+        else if(verificationResponse.message!=null) {
+                showToast(verificationResponse.message)
+                otpEditText.isEnabled = true
         }
+        else {
+                showToast("Response contains no message...")
+                otpEditText.isEnabled = true
+        }
+
+
 
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun notAskForOtpEventReceived(event: NotAskForOtpEvent) {
         otpLoader.visibility = View.INVISIBLE
-        toggleButtonState(true)
+
+
         val notAskForOtpResponse =event.notAskForOtpResponse
         Log.e("notAskForOtpResponse==", notAskForOtpResponse.toString())
         if (notAskForOtpResponse.code == "200" && notAskForOtpResponse.status=="OK") {
+            notAskForOtpResponse.notAskForData?.dontAskTwoFaIdentifier?.let {
+                spEditor.putString(ColabaConstant.dontAskTwoFaIdentifier, it).apply()
+            }
             navigateToDashBoardScreen()
         }
-        else
+        else {
+            verifyButton.isEnabled = true
+            resendLink.isEnabled = true
             notAskForOtpResponse.message?.let { showToast(it) }
+        }
     }
 
     private fun showToast(toastMessage: String) = Toast.makeText(requireActivity().applicationContext, toastMessage, Toast.LENGTH_LONG).show()
@@ -273,9 +297,13 @@ class OtpFragment: Fragment() {
         }
     }
 
-    private fun toggleButtonState(bool:Boolean){
-        resendLink.isEnabled = bool
-        verifyButton.isEnabled = bool
+
+    private fun disabledButtons(){
+        resendLink.isEnabled = false
+        verifyButton.isEnabled = false
+        otpLoader.visibility = View.VISIBLE
     }
+
+
 
 }
