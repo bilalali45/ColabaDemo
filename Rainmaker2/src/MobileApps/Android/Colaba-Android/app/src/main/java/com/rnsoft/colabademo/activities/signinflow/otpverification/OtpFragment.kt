@@ -42,7 +42,7 @@ class OtpFragment: Fragment() {
     private lateinit var nearToResetTextView:TextView
     private lateinit var verifyButton:Button
     private lateinit var otpEditText:EditText
-    private lateinit var cTimer:CountDownTimer
+    private var cTimer:CountDownTimer? = null
     private lateinit var insideTimerLayout:ConstraintLayout
     private lateinit var otpLoader:ProgressBar
     private lateinit var minuteTextView:TextView
@@ -128,6 +128,10 @@ class OtpFragment: Fragment() {
     override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)
+        cTimer?.let {
+            it.cancel()
+        }
+
     }
 
 
@@ -141,13 +145,26 @@ class OtpFragment: Fragment() {
 
         val otpSentResponse =event.otpSentResponse
         resendLink.isEnabled = true
-        updateResendCount()
+
         Log.e("otp-sent", otpSentResponse.toString())
         if (otpSentResponse.code == "400" && otpSentResponse.otpData!=null) {
             checkForTimer()
+            updateResendCount()
         }
         else
+        if (otpSentResponse.code == "429" && otpSentResponse.otpData!=null) {
+            if(otpSentResponse.otpData.twoFaMaxAttemptsCoolTimeInSeconds!=null && otpSentResponse.otpData.twoFaMaxAttemptsCoolTimeInSeconds!=0) {
+                updateResendCount()
+                checkForTimer()
+                otpSentResponse.message?.let { showToast(it) }
+            }
+            else
+                otpSentResponse.message?.let { showToast(it) }
+        }
+        else {
             otpSentResponse.message?.let { showToast(it) }
+            updateResendCount()
+        }
 
     }
 
@@ -209,15 +226,23 @@ class OtpFragment: Fragment() {
             val obj = Gson().fromJson(test, OtpData::class.java)
 
             if(obj!=null) {
-               if (obj.remainingTimeoutInSeconds != null && obj.remainingTimeoutInSeconds>3) {
-                    setUpTimerInitial(obj.remainingTimeoutInSeconds)
+               if (obj.twoFaMaxAttemptsCoolTimeInSeconds != null && obj.twoFaMaxAttemptsCoolTimeInSeconds>3) {
+                    setUpTimerInitial(obj.twoFaMaxAttemptsCoolTimeInSeconds)
                     toggleTimerView(true)
                 }
-                else
-                    toggleTimerView(false)
+                else {
+                   toggleTimerView(false)
+                   cTimer?.let {
+                       it.cancel()
+                   }
+               }
             }
-            else
+            else {
                 toggleTimerView(false)
+                cTimer?.let {
+                    it.cancel()
+                }
+            }
         }
     }
 
@@ -239,8 +264,13 @@ class OtpFragment: Fragment() {
         sharedPreferences.getString(ColabaConstant.otpDataJson, "")?.let { otpDataReceived->
             val obj = Gson().fromJson(otpDataReceived, OtpData::class.java)
             if (obj != null) {
-                sharedPreferences.getInt(ColabaConstant.maxOtpSendAllowed, 5).let {
-                    attemptLeft = it - obj.attemptsCount
+                sharedPreferences.getInt(ColabaConstant.maxOtpSendAllowed, 5).let { maxOtpSendAllowed->
+                    if(obj.attemptsCount!=null){
+                        if(obj.attemptsCount!=0)
+                            attemptLeft = maxOtpSendAllowed - obj.attemptsCount
+                    }
+                    else
+                        attemptLeft = maxOtpSendAllowed
                 }
             }
         }
@@ -255,7 +285,7 @@ class OtpFragment: Fragment() {
         if(remainingSeconds>60){
             minutes =  (remainingSeconds / 60)
             seconds = (remainingSeconds - (minutes * 60))
-            val totalSeconds:Long = (remainingSeconds * 1000).toLong()
+            var totalSeconds:Long = (remainingSeconds * 1000).toLong()
             Log.e("all - ", "$remainingSeconds becomes $minutes min $seconds seconds")
             startTimer(totalSeconds)
         }
@@ -267,12 +297,13 @@ class OtpFragment: Fragment() {
     }
 
     private fun startTimer(totalSeconds:Long){
+
         cTimer = object : CountDownTimer(totalSeconds, 1000) {
             override fun onTick(millisUntilFinished: Long) {
+                seconds--
                 Log.e("millisUntilFinished-", millisUntilFinished.toString())
                 Log.e("Minutes - ", "$minutes  seconds - $seconds")
-                seconds--
-                if(seconds == 0 && minutes > 0) {
+                if(minutes > 0  && seconds == 0)  {
                     Log.e("MinutesNow--", "Decreased")
                     minutes -= 1
                     seconds = 60
@@ -282,20 +313,28 @@ class OtpFragment: Fragment() {
                     Log.e("TimerStop", "StopNow")
                     toggleTimerView(false)
                     cancelTimer()
+                    updateResendCount()
                 }
                 minuteTextView.text = "0"+minutes
                 secondTextView.text = ": "+seconds.toString()
             }
-            override fun onFinish() { Log.e("Timer Finished-", "Completed...") }
+            override fun onFinish() {
+                Log.e("Timer Finished-", "Completed...")
+                toggleTimerView(false)
+                updateResendCount()
+                cancelTimer()
+            }
         }
-        cTimer.start()
+        cTimer?.start()
     }
 
     private fun cancelTimer() {
-        cTimer.let {
-            cTimer.cancel();
+        cTimer?.let {
+            it.cancel()
         }
     }
+
+
 
 
     private fun disabledButtons(){

@@ -70,6 +70,8 @@
     <string name="enter_the_code_sent_to">Enter the code sent to (***) ***-7787 </string>
     <string name="enter_your_phone_number">Enter your phone number below and we\'ll \n send you a verification code. </string>
 
+    <string name="webservice_error">Webservice Error </string>
+
     <string name="title_home">Home</string>
     <string name="title_profile">Profile</string>
     <string name="title_notifications">Notifications</string>
