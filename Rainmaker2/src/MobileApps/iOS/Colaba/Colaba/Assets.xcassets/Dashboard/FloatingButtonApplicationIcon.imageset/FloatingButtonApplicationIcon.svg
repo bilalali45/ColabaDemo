@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22.02" height="21.158" viewBox="0 0 22.02 21.158">
+  <g id="Group_16267" data-name="Group 16267" transform="translate(-1619 -106.999)">
+    <path id="Path_10797" data-name="Path 10797" d="M16.765,12a4.765,4.765,0,1,0,4.765,4.765A4.766,4.766,0,0,0,16.765,12Zm2.859,5.241H17.241v2.382h-.953V17.241H13.906v-.953h2.382V13.906h.953v2.382h2.382Z" transform="translate(1619.49 106.627)" fill="#4484f4"/>
+    <path id="Path_10794" data-name="Path 10794" d="M0,0H20.706V20.706H0Z" transform="translate(1619 107)" fill="none"/>
+    <path id="Subtraction_6" data-name="Subtraction 6" d="M6.528,13.8H0V0H1.724V2.589h8.628V0H12.08V6.528A6.473,6.473,0,0,0,6.528,13.8Z" transform="translate(1623.314 110.45)" fill="#4484f4" opacity="0.3"/>
+    <path id="Subtraction_5" data-name="Subtraction 5" d="M8.733,18.98H1.727A1.728,1.728,0,0,1,0,17.256V3.451A1.728,1.728,0,0,1,1.727,1.727h3.6a2.578,2.578,0,0,1,4.867,0h3.608a1.726,1.726,0,0,1,1.723,1.724V9.98a6.534,6.534,0,0,0-1.723,0V3.451H12.082V6.04H3.451V3.451H1.727v13.8H8.253a6.4,6.4,0,0,0,.48,1.723ZM7.765,1.727a.862.862,0,1,0,.866.862A.863.863,0,0,0,7.765,1.727Z" transform="translate(1621.587 106.999)" fill="#4484f4"/>
+    <g id="Group_16267-2" data-name="Group 16267" transform="translate(1625.039 114.765)">
+      <path id="Path_10800" data-name="Path 10800" d="M7,11h8.628v1.726H7Zm0,3.451h5.177v1.726H7Z" transform="translate(-7 -11)" fill="#4484f4"/>
+    </g>
+  </g>
+</svg>

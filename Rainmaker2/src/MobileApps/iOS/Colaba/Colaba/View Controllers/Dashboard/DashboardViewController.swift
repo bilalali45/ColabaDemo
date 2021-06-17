@@ -12,16 +12,27 @@ import CarbonKit
 class DashboardViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
-    @IBOutlet weak var logo: UIImageView!
+    
+    @IBOutlet weak var userIcon: UIImageView!
+    @IBOutlet weak var lblUsername: UILabel!
     @IBOutlet weak var btnSearch: UIButton!
     @IBOutlet weak var tabView: UIView!
     @IBOutlet weak var btnNew: UIButton!
+    @IBOutlet weak var floatingView: UIView!
+    @IBOutlet weak var floatingApplicationView: UIView!
+    @IBOutlet weak var floatingContactView: UIView!
+    
+    var isFloatingButtonActive = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //refreshAccessTokenWithRequest()
         setTopTabBar()
         btnNew.roundButtonWithShadow()
+        floatingView.layer.cornerRadius = 8
+        floatingView.addShadow()
+        floatingApplicationView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(applicationViewTapped)))
+        floatingContactView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(contactViewTapped)))
     }
     
     //MARK:- Methods and Actions
@@ -46,12 +57,26 @@ class DashboardViewController: BaseViewController {
         carbonTabSwipeNavigation.insert(intoRootViewController: self, andTargetView: tabView)
     }
     
-    @IBAction func btnSearchTapped(_ sender: UIButton) {
+    @objc func applicationViewTapped(){
         
     }
     
-    @IBAction func btnNewTapped(_ sender: UIButton){
+    @objc func contactViewTapped(){
         
+    }
+    
+    @IBAction func btnSearchTapped(_ sender: UIButton) {
+        let vc = Utility.getSearchVC()
+        vc.hidesBottomBarWhenPushed = true
+        self.presentVC(vc: vc)
+    }
+    
+    @IBAction func btnNewTapped(_ sender: UIButton){
+        isFloatingButtonActive = !isFloatingButtonActive
+        btnNew.rotate(angle: 45)
+        UIView.transition(with: self.floatingView, duration: 0.5, options: .transitionCrossDissolve, animations: {
+            self.floatingView.isHidden = !self.isFloatingButtonActive
+        })
     }
     
     @IBAction func btnLogoutTapped(_ sender: UIButton) {

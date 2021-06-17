@@ -177,10 +177,13 @@ class CodeViewController: UIViewController {
     }
     
     @IBAction func btnVerifyTapped(_ sender: UIButton) {
-//        if (self.isCheck){
-//            self.dontAskFor2FAWithRequest()
-//        }
-        self.completeLoginWithBiometric()
+        if (self.isCheck){
+            self.dontAskFor2FAWithRequest()
+        }
+        else{
+            self.completeLoginWithBiometric()
+        }
+        
     }
     
     //MARK:- API's
@@ -197,7 +200,7 @@ class CodeViewController: UIViewController {
                 if (status == .success){
                     print(result)
                     let attemptsCount = result["data"]["attemptsCount"].intValue
-                    let remainingTimeoutSeconds = result["data"]["remainingTimeoutInSeconds"].intValue
+                    let remainingTimeoutSeconds = result["data"]["twoFaMaxAttemptsCoolTimeInSeconds"].intValue
                     
                     self.totalAttemptsCount = attemptsCount
                     self.resendTotalTime = remainingTimeoutSeconds
@@ -307,11 +310,21 @@ class CodeViewController: UIViewController {
     
     func dontAskFor2FAWithRequest(){
         
+        Utility.showOrHideLoader(shouldShow: true)
+        
         APIRouter.sharedInstance.executeAPI(type: .dontAskFor2FA, method: .post, params: nil) { status, result, message in
             
             DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
                 if (status == .success){
-                    
+                    let dontAskValue = result["data"]["dontAskTwoFaIdentifier"].stringValue
+                    UserDefaults.standard.setValue(dontAskValue, forKey: kDontAsk2FAValue)
+                    self.completeLoginWithBiometric()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { reason in
+                        
+                    }
                 }
             }
             

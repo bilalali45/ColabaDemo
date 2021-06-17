@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PipelineViewController: UIViewController {
+class PipelineViewController: BaseViewController {
 
     //MARK:- Outlets and properties
     @IBOutlet weak var assignToMeSwitch: UISwitch!
@@ -24,7 +24,8 @@ class PipelineViewController: UIViewController {
     
     //MARK:- Methods and Actions
     @IBAction func btnFilterTapped(_ sender: UIButton) {
-        
+        let vc = Utility.getFiltersVC()
+        self.presentVC(vc: vc)
     }
     
     @IBAction func assignToMeSwitchChanged(_ sender: UISwitch) {
@@ -106,20 +107,20 @@ extension PipelineViewController: UITableViewDataSource, UITableViewDelegate{
 extension PipelineViewController: PipelineTableViewCellDelegate{
     
     func btnOptionsTapped(indexPath: IndexPath) {
-//        let vc = Utility.getPipelineMoreVC()
-//        self.presentVC(vc: vc)
+        let vc = Utility.getPipelineMoreVC()
+        self.presentVC(vc: vc)
     }
     
     func btnArrowTapped(indexPath: IndexPath) {
         
-//        if (expandableCellsIndex.contains(indexPath.section)){
-//            if let index = expandableCellsIndex.firstIndex(of: indexPath.section){
-//                expandableCellsIndex.remove(at: index)
-//            }
-//        }
-//        else{
-//            expandableCellsIndex.append(indexPath.section)
-//        }
-//        self.tblView.reloadData()
+        if (expandableCellsIndex.contains(indexPath.section)){
+            if let index = expandableCellsIndex.firstIndex(of: indexPath.section){
+                expandableCellsIndex.remove(at: index)
+            }
+        }
+        else{
+            expandableCellsIndex.append(indexPath.section)
+        }
+        self.tblView.reloadData()
     }
 }

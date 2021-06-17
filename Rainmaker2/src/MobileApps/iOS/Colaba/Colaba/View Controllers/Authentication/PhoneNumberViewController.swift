@@ -99,7 +99,7 @@ class PhoneNumberViewController: UIViewController {
                     
                     let attemptsCount = result["data"]["attemptsCount"].intValue
                     let phoneNumber = result["data"]["phoneNumber"].stringValue
-                    let remainingTimeoutSeconds = result["data"]["remainingTimeoutInSeconds"].intValue
+                    let remainingTimeoutSeconds = result["data"]["twoFaMaxAttemptsCoolTimeInSeconds"].intValue
                     
                     let vc = Utility.getCodeVC()
                     vc.totalAttemptsCount = attemptsCount

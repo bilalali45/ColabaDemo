@@ -31,20 +31,26 @@ extension UIView{
     }
     
     func roundAllCorners(radius: CGFloat) {
-       self.clipsToBounds = true
-       self.layer.cornerRadius = radius
-       self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        self.clipsToBounds = true
+        self.layer.cornerRadius = radius
+        self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
     }
     
     func roundOnlyTopCorners(radius: CGFloat) {
-       self.clipsToBounds = true
-       self.layer.cornerRadius = radius
-       self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner] //[Top Left and Top Right]
+        self.clipsToBounds = true
+        self.layer.cornerRadius = radius
+        self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner] //[Top Left and Top Right]
     }
     
     func roundOnlyBottomCorners(radius: CGFloat) {
-       self.clipsToBounds = true
-       self.layer.cornerRadius = radius
-       self.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner] //[Bottom Left and Bottom Right]
+        self.clipsToBounds = true
+        self.layer.cornerRadius = radius
+        self.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner] //[Bottom Left and Bottom Right]
+    }
+    
+    func rotate(angle: CGFloat) {
+        let radians = angle / 180.0 * CGFloat.pi
+        let rotation = self.transform.rotated(by: radians);
+        self.transform = rotation
     }
 }

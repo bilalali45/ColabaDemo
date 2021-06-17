@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "NotificationDocumentIcon.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
