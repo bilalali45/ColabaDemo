@@ -9,6 +9,9 @@ import UIKit
 
 class NotificationViewController: BaseViewController {
 
+    //MARK:- Outlets and properties
+    @IBOutlet weak var tblViewNotification: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

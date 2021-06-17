@@ -39,6 +39,10 @@ struct Theme {
         return UIFont(name: "Rubik-Regular", size: size)!
     }
     
+    static func getSearchBarBorderColor() -> UIColor{
+        return UIColor(named: "SearchBarBorderColor")!
+    }
+    
     static func getCustomColorSVGImage(imageNamed: String, imageFrame: CGRect, customColor: UIColor, imageIconId: String) -> UIImage{
         let svgImage = SVGKImage(named: imageNamed)
         let svgIMGV = SVGKFastImageView(frame: imageFrame)

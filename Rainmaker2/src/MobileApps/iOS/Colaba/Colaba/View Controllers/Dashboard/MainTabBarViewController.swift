@@ -11,6 +11,7 @@ class MainTabBarViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tabBar.tintColor = Theme.getButtonBlueColor()
         self.tabBar.items![1].badgeValue = "1"
     }
    

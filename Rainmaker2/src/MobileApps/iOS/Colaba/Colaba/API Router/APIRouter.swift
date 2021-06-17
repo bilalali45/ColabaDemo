@@ -57,6 +57,17 @@ class APIRouter: NSObject {
             headers = ["Accept":"application/json",
                        exHeaderKey: exHeaderValue]
         }
+        else if (type == .login){
+            
+            var dontAskValue = ""
+            
+            if let dontAsk2FAValue = UserDefaults.standard.value(forKey: kDontAsk2FAValue){
+                dontAskValue = dontAsk2FAValue as! String
+            }
+            
+            headers = ["dontAskTwoFaIdentifier": dontAskValue,
+                       "Accept":"application/json"]
+        }
         else if (type != .getMCUConfiguration && type != .login && type != .forgotPassword && type != .skip2FA && type != .send2FA && type != .send2FAToPhoneNo && type != .verify2FA && type != .get2FASettings && type != .refreshAccessToken){
             
             if let user = UserModel.getCurrentUser(){

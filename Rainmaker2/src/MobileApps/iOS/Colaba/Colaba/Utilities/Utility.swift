@@ -70,6 +70,14 @@ struct Utility {
         return mainStoryboard.instantiateViewController(withIdentifier: "PipelineMoreViewController") as! PipelineMoreViewController
     }
     
+    static func getFiltersVC() -> FiltersViewController{
+        return mainStoryboard.instantiateViewController(withIdentifier: "FiltersViewController") as! FiltersViewController
+    }
+    
+    static func getSearchVC() -> SearchViewController{
+        return mainStoryboard.instantiateViewController(withIdentifier: "SearchViewController") as! SearchViewController
+    }
+    
     static func checkDeviceAuthType() -> String {
          let authType = LocalAuthManager.shared.biometricType
             switch authType {
