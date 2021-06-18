@@ -8,7 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 
 private const val NUM_TABS = 3
 
-public class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
         FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int {
@@ -17,7 +17,7 @@ public class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifec
 
     override fun createFragment(position: Int): Fragment {
         when (position) {
-            0 -> return CatFragment()
+            0 -> return LoanFragment()
             1 -> return DogFragment()
         }
         return BirdFragment()

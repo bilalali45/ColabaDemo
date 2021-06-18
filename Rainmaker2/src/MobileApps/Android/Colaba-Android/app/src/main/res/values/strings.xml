@@ -16,7 +16,7 @@
     <string name="reset_password">RESET PASSWORD</string>
     <string name="continue_to">Continue</string>
     <string name="skip_this_step">Skip this step</string>
-    <string name="one_minute_ago">Skip this step</string>
+    <string name="one_minute_ago">1 minute ago</string>
     <string name="login_with_another_account">Login with another account</string>
     <string name="sign_in_with_password">Sign in with Password</string>
 
@@ -87,7 +87,32 @@
 
 
 
+    <!--       dummy data   -->
+    <string name="title_rugby">Rugby</string>
+    <string name="title_cricket">Cricket</string>
+    <string name="title_basketball">Basketball</string>
+    <string name="title_hockey">Hockey</string>
+    <string name="title_volleyball">Volleyball</string>
+    <string name="title_esports">Esports</string>
+    <string name="title_kabbadi">Kabaddi</string>
+    <string name="title_baseball">Baseball</string>
+    <string name="title_mma">MMA</string>
+    <string name="title_soccer">Soccer</string>
+    <string name="title_handball">Handball</string>
+    <string name="title_tennis">Tennis</string>
 
+    <string name="subtitle_rugby">19th century</string>
+    <string name="subtitle_cricket">16th century</string>
+    <string name="subtitle_basketball">December 21, 1891</string>
+    <string name="subtitle_hockey">19th century</string>
+    <string name="subtitle_volleyball">1895</string>
+    <string name="subtitle_esports">1972</string>
+    <string name="subtitle_kabbadi">1921</string>
+    <string name="subtitle_baseball">1869</string>
+    <string name="subtitle_mma">1993</string>
+    <string name="subtitle_soccer">1863</string>
+    <string name="subtitle_handball">2 December 1917</string>
+    <string name="subtitle_tennis">1859</string>
 
 
 
