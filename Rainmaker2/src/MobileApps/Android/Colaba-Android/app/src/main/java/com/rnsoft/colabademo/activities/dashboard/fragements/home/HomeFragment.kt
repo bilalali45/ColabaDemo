@@ -5,14 +5,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.rnsoft.colabademo.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
+val animalsArray = arrayOf(
+    "Cat",
+    "Dog",
+    "Bird"
+)
+
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -40,19 +52,20 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+        val viewPager = binding.viewPager
+        val tabLayout = binding.tabLayout
 
-        /*binding.logoutButton.setOnClickListener{
-            sharedPreferences.getString(ColabaConstant.token,"")?.let {
-                dashBoardViewModel.logoutUser(it)
-            }
-        } */
+        val adapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
+        viewPager.adapter = adapter
+
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = animalsArray[position]
+        }.attach()
+
 
         return root
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -61,3 +74,4 @@ class HomeFragment : Fragment() {
 
 
 }
+

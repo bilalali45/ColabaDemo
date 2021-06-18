@@ -1,12 +1,10 @@
-package com.example.viewpager2withtablayout.adapter
+package com.rnsoft.colabademo
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.viewpager2withtablayout.fragment.BirdFragment
-import com.example.viewpager2withtablayout.fragment.CatFragment
-import com.example.viewpager2withtablayout.fragment.DogFragment
+
 
 private const val NUM_TABS = 3
 

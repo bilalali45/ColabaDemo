@@ -49,6 +49,10 @@ class OtpFragment: Fragment() {
     private lateinit var secondTextView:TextView
     private lateinit var otpMessageTextView:TextView
     private lateinit var notAskChekBox:CheckBox
+    private lateinit var tickImage:ImageView
+    private lateinit var crossImage:ImageView
+
+
 
     private var minutes:Int = 0
     private var seconds:Int = 0
@@ -57,6 +61,7 @@ class OtpFragment: Fragment() {
 
     private var restoreBtnState:Boolean = false
     private var otpTextFieldState:Boolean = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,6 +80,8 @@ class OtpFragment: Fragment() {
         secondTextView = root.findViewById(R.id.secondTextView)
         otpMessageTextView = root.findViewById(R.id.timerMessageTextView)
         notAskChekBox = root.findViewById(R.id.permission_checkbox)
+        tickImage = root.findViewById<ImageView>(R.id.tick_image)
+        crossImage= root.findViewById<ImageView>(R.id.cross_image)
 
         //////////////////////////////////////////////////////////////////////////////////////////////
         otpEditText.addTextChangedListener(object : TextWatcher {
@@ -83,12 +90,14 @@ class OtpFragment: Fragment() {
             override fun afterTextChanged(s: Editable) {
                 val str: String = otpEditText.text.toString()
                 //verifyButton.isEnabled = str.length == 6
+                crossImage.visibility = View.INVISIBLE
                 if(str.length == 6) {
                     otpEditText.isEnabled = false
                     disabledButtons()
                     val otpVal = otpEditText.text.toString()
                     otpViewModel.verifyOtp(otpVal.toInt())
                 }
+
             }
         })
 
@@ -176,13 +185,16 @@ class OtpFragment: Fragment() {
         val verificationResponse = event.otpVerificationResponse
         if(verificationResponse.code == "200" &&  verificationResponse.data != null) {
             verifyButton.isEnabled = true
+            tickImage.visibility = View.VISIBLE
             requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {}
         }
         else if(verificationResponse.message!=null) {
+                crossImage.visibility = View.VISIBLE
                 showToast(verificationResponse.message)
                 otpEditText.isEnabled = true
         }
         else {
+                crossImage.visibility = View.VISIBLE
                 showToast("Response contains no message...")
                 otpEditText.isEnabled = true
         }

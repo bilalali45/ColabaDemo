@@ -1,11 +1,11 @@
-package com.example.viewpager2withtablayout.fragment
+package com.rnsoft.colabademo
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.viewpager2withtablayout.databinding.FragmentCatBinding
+import com.rnsoft.colabademo.databinding.FragmentCatBinding
 
 class CatFragment : Fragment() {
     private var _binding: FragmentCatBinding? = null

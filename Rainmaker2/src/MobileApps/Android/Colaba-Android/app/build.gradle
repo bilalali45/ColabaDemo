@@ -141,6 +141,9 @@ dependencies {
 
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 
+    // For tabBar layout...
+    implementation "com.google.android.material:material:1.4.0-rc01"
+
 }
 
 kapt {

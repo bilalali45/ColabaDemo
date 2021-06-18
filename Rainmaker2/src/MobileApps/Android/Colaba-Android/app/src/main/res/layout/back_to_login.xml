@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colaba_primary_color"
+    android:background="@color/colaba_primary_color_with_alpha_one"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -49,7 +49,7 @@
         android:layout_marginTop="149dp"
         android:text="@string/almost_finished"
         app:fontFamily="@font/rubik_medium"
-        android:textColor="@color/colaba_text_color"
+        android:textColor="@color/grey_color_one"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +62,7 @@
         android:layout_marginTop="25dp"
         android:gravity="center"
         android:text="@string/we_have_send_you_email"
-        android:textColor="@color/colaba_text_color"
+        android:textColor="@color/grey_color_one"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/backToLoginBtn"
         app:layout_constraintStart_toStartOf="@+id/backToLoginBtn"

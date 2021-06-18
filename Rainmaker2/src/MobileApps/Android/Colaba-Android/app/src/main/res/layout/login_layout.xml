@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colaba_primary_color"
+    android:background="@color/colaba_primary_color_with_alpha_one"
      >
 
 
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="66dp"
         android:text="@string/login_to_lender_portal"
-        android:textColor="@color/colaba_text_color"
+        android:textColor="@color/grey_color_one"
         android:textSize="20sp"
         app:fontFamily="@font/rubik_medium"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="9dp"
                 android:text="@string/email"
-                android:textColor="@color/colaba_text_color_two"
+                android:textColor="@color/grey_color_two"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/email_icon"
                 app:layout_constraintStart_toEndOf="@+id/email_icon"
@@ -107,7 +107,7 @@
                 android:ems="10"
                 android:inputType="textEmailAddress"
                 android:text=""
-                android:textColor="@color/colaba_text_color"
+                android:textColor="@color/grey_color_one"
                 android:textSize="14sp"
                 app:fontFamily="@font/rubik_medium"
                 app:layout_constraintEnd_toEndOf="@+id/email_separator"
@@ -141,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik_regular"
                 android:text="@string/password"
-                android:textColor="@color/colaba_text_color_two"
+                android:textColor="@color/grey_color_two"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/passwordIcon"
                 app:layout_constraintStart_toStartOf="@+id/emailTextView"
@@ -157,7 +157,7 @@
                 android:ems="10"
                 android:inputType="textPassword"
                 android:text=""
-                android:textColor="@color/colaba_text_color"
+                android:textColor="@color/grey_color_one"
                 android:textSize="14sp"
                 app:fontFamily="@font/rubik_medium"
                 app:layout_constraintEnd_toStartOf="@+id/passwordImageShow"
@@ -200,7 +200,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik_regular"
                 android:text="@string/biometric_login"
-                android:textColor="@color/colaba_text_color_two"
+                android:textColor="@color/grey_color_two"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView4"
                 app:layout_constraintStart_toStartOf="@+id/passwordTextView"
@@ -213,7 +213,7 @@
                 android:layout_marginTop="25dp"
                 android:fontFamily="@font/rubik_regular"
                 android:text="@string/forgot_password"
-                android:textColor="@color/colaba_blue_color"
+                android:textColor="@color/colaba_primary_color"
                 app:layout_constraintStart_toStartOf="@+id/imageView4"
                 app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
@@ -310,7 +310,7 @@
         android:indeterminateTintMode="src_atop"
         android:elevation="10dp"
         android:translationZ="10dp"
-        android:indeterminateTint="@color/colaba_blue_color"
+        android:indeterminateTint="@color/colaba_primary_color"
         app:layout_constraintTop_toTopOf="parent" />
 
 
