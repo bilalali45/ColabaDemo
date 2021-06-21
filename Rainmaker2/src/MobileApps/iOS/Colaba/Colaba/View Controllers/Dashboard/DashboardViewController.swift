@@ -27,6 +27,7 @@ class DashboardViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //refreshAccessTokenWithRequest()
+        btnNew.isHidden = true
         setTopTabBar()
         btnNew.roundButtonWithShadow()
         floatingView.layer.cornerRadius = 8

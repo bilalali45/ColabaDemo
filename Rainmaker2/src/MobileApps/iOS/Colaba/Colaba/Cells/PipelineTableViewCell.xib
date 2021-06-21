@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -30,19 +31,19 @@
                         <rect key="frame" x="1" y="20" width="431" height="145"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Richard Glenn Randall" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Bo-OX-pE5">
-                                <rect key="frame" x="14" y="17" width="180" height="20"/>
+                                <rect key="frame" x="14" y="17" width="170" height="20"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="17"/>
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="urj-4r-HWj">
-                                <rect key="frame" x="199" y="18" width="18.5" height="18"/>
+                                <rect key="frame" x="189" y="18" width="17.5" height="18"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                 <color key="textColor" name="ButtonGreyTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 min ago" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JYf-Ah-ymB">
-                                <rect key="frame" x="322" y="19" width="57" height="16"/>
+                                <rect key="frame" x="321" y="19" width="58" height="16"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <color key="textColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -62,29 +63,33 @@
                                 <rect key="frame" x="14" y="49" width="16" height="16"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Refinance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1lS-Bg-KHI">
-                                <rect key="frame" x="33" y="49" width="60" height="16"/>
+                                <rect key="frame" x="33" y="49" width="58.5" height="16"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <color key="textColor" name="ButtonBlueColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Application Started" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WAu-Kg-Qwx">
-                                <rect key="frame" x="14" y="80" width="134.5" height="18"/>
+                                <rect key="frame" x="14" y="80" width="129" height="18"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                 <color key="textColor" name="ButtonGreyTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c4M-Pi-lwp">
-                                <rect key="frame" x="150.5" y="82" width="35" height="14"/>
+                                <rect key="frame" x="145" y="82" width="35" height="14"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
                                 <color key="textColor" red="0.19607843137254902" green="0.72549019607843135" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 Document to Review" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Loz-j3-mBe">
-                                <rect key="frame" x="14" y="108" width="136" height="15.5"/>
+                                <rect key="frame" x="14" y="108" width="132" height="15.5"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <color key="textColor" red="1" green="0.33725490196078434" blue="0.32156862745098036" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="27N-EN-8na">
+                                <rect key="frame" x="0.0" y="123.5" width="431" height="21.5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rLR-sk-fDy">
                                 <rect key="frame" x="383" y="99" width="35" height="35"/>
                                 <constraints>
@@ -101,16 +106,19 @@
                         <constraints>
                             <constraint firstItem="JYf-Ah-ymB" firstAttribute="centerY" secondItem="soa-nm-cWp" secondAttribute="centerY" id="1aR-tI-8sX"/>
                             <constraint firstItem="8Bo-OX-pE5" firstAttribute="top" secondItem="4An-3s-Rmh" secondAttribute="top" constant="17" id="7AF-nu-Tij"/>
+                            <constraint firstAttribute="bottom" secondItem="27N-EN-8na" secondAttribute="bottom" id="8cD-TN-2ok"/>
                             <constraint firstItem="c4M-Pi-lwp" firstAttribute="leading" secondItem="WAu-Kg-Qwx" secondAttribute="trailing" constant="2" id="9Ge-FX-DKO"/>
                             <constraint firstItem="soa-nm-cWp" firstAttribute="leading" secondItem="JYf-Ah-ymB" secondAttribute="trailing" constant="8" id="Anx-gi-96h"/>
                             <constraint firstItem="1lS-Bg-KHI" firstAttribute="centerY" secondItem="Qkw-Vu-Wua" secondAttribute="centerY" id="Ezf-Jh-8ev"/>
                             <constraint firstItem="Qkw-Vu-Wua" firstAttribute="leading" secondItem="4An-3s-Rmh" secondAttribute="leading" constant="14" id="JiH-gi-4yo"/>
                             <constraint firstItem="Qkw-Vu-Wua" firstAttribute="top" secondItem="8Bo-OX-pE5" secondAttribute="bottom" constant="12" id="NG8-LH-c8A"/>
+                            <constraint firstItem="27N-EN-8na" firstAttribute="leading" secondItem="4An-3s-Rmh" secondAttribute="leading" id="TVR-wU-GlI"/>
                             <constraint firstItem="WAu-Kg-Qwx" firstAttribute="leading" secondItem="4An-3s-Rmh" secondAttribute="leading" constant="14" id="Twu-AH-Gzq"/>
                             <constraint firstItem="WAu-Kg-Qwx" firstAttribute="top" secondItem="Qkw-Vu-Wua" secondAttribute="bottom" constant="15" id="UgX-1k-oAL"/>
                             <constraint firstItem="urj-4r-HWj" firstAttribute="centerY" secondItem="8Bo-OX-pE5" secondAttribute="centerY" id="Vcz-mt-iP4"/>
                             <constraint firstAttribute="bottom" secondItem="rLR-sk-fDy" secondAttribute="bottom" constant="11" id="WX9-Pn-6wC"/>
                             <constraint firstAttribute="trailing" secondItem="rLR-sk-fDy" secondAttribute="trailing" constant="13" id="b5L-Zx-N07"/>
+                            <constraint firstItem="27N-EN-8na" firstAttribute="top" secondItem="Loz-j3-mBe" secondAttribute="bottom" id="blW-0G-sku"/>
                             <constraint firstItem="urj-4r-HWj" firstAttribute="leading" secondItem="8Bo-OX-pE5" secondAttribute="trailing" constant="5" id="cBU-hx-bZ4"/>
                             <constraint firstItem="Loz-j3-mBe" firstAttribute="top" secondItem="WAu-Kg-Qwx" secondAttribute="bottom" constant="10" id="f7c-f6-aYt"/>
                             <constraint firstAttribute="trailing" secondItem="soa-nm-cWp" secondAttribute="trailing" constant="14" id="fOu-QD-m4x"/>
@@ -120,6 +128,7 @@
                             <constraint firstItem="c4M-Pi-lwp" firstAttribute="centerY" secondItem="WAu-Kg-Qwx" secondAttribute="centerY" id="jiQ-56-cXQ"/>
                             <constraint firstItem="Loz-j3-mBe" firstAttribute="leading" secondItem="4An-3s-Rmh" secondAttribute="leading" constant="14" id="vLf-Bk-hE5"/>
                             <constraint firstItem="1lS-Bg-KHI" firstAttribute="leading" secondItem="Qkw-Vu-Wua" secondAttribute="trailing" constant="3" id="vpd-lR-YeV"/>
+                            <constraint firstAttribute="trailing" secondItem="27N-EN-8na" secondAttribute="trailing" id="x44-Lt-3u1"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -136,6 +145,7 @@
                 <outlet property="bntArrow" destination="rLR-sk-fDy" id="vIu-pw-3Ae"/>
                 <outlet property="btnArrowBottomConstraint" destination="WX9-Pn-6wC" id="xaP-qn-Q54"/>
                 <outlet property="btnOptions" destination="soa-nm-cWp" id="h17-LJ-Gcq"/>
+                <outlet property="emptyView" destination="27N-EN-8na" id="9uO-dI-P7k"/>
                 <outlet property="lblCheck" destination="c4M-Pi-lwp" id="YFR-i5-Lf2"/>
                 <outlet property="lblDocuments" destination="Loz-j3-mBe" id="7x2-oQ-f0R"/>
                 <outlet property="lblMoreUsers" destination="urj-4r-HWj" id="7Q1-XG-Abd"/>
@@ -163,5 +173,8 @@
         <namedColor name="ButtonGreyTextColor">
             <color red="0.65490196078431373" green="0.65490196078431373" blue="0.65490196078431373" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

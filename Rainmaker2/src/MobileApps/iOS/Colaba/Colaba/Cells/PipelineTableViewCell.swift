@@ -15,6 +15,7 @@ protocol PipelineTableViewCellDelegate: AnyObject {
 class PipelineTableViewCell: UITableViewCell {
 
     @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var emptyView: UIView!
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var lblUsername: UILabel!
     @IBOutlet weak var lblMoreUsers: UILabel!

@@ -71,6 +71,7 @@ extension PipelineViewController: UITableViewDataSource, UITableViewDelegate{
             cell.lblDocuments.text = indexPath.section % 2 == 0 ? "7 Documents to Review" : "2 Documents to Review"
             cell.lblDocuments.isHidden = indexPath.section == 2
             cell.bntArrow.setImage(UIImage(named: expandableCellsIndex.contains(indexPath.section) ? "ArrowUp" : "ArrowDown"), for: .normal)
+            cell.emptyView.isHidden = !expandableCellsIndex.contains(indexPath.section)
             return cell
         }
         else{
@@ -89,7 +90,7 @@ extension PipelineViewController: UITableViewDataSource, UITableViewDelegate{
                 return expandableCellsIndex.contains(indexPath.section) ? 140 : 145
             }
             else{
-                return 175
+                return 165
             }
         }
         else{
@@ -97,7 +98,7 @@ extension PipelineViewController: UITableViewDataSource, UITableViewDelegate{
                 return expandableCellsIndex.contains(indexPath.section) ? 165 : 170
             }
             else{
-                return 175
+                return 165
             }
         }
         
