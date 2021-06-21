@@ -39,6 +39,7 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
     suspend fun tenantConfigurationSource(IntermediateToken:String): Result<TenantConfigurationResponse> {
         return try {
             val tenantConfiguration = serverApi.getMcuTenantTwoFaValuesService(IntermediateToken)
+            Log.e("tenantConfiguration- ", tenantConfiguration.toString())
             Result.Success(tenantConfiguration)
         } catch (e: Throwable) {
             Result.Error(IOException("Error logging in", e))
@@ -48,8 +49,11 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
     suspend fun getPhoneDetail(IntermediateToken:String): Result<SendTwoFaResponse> {
         return try {
             val phoneInfoDetail = serverApi.sendTwoFa(IntermediateToken)
+
+            Log.e("SendTwoFaResponse- ", phoneInfoDetail.toString())
             Result.Success(phoneInfoDetail)
         } catch (e: Throwable) {
+            Log.e("SendTwoFaResponse- ", e.toString())
             Result.Success(SendTwoFaResponse("404", null,"Verified mobile number not found.","OK"))
             //Result.Error(IOException("Error logging in", e))
         }

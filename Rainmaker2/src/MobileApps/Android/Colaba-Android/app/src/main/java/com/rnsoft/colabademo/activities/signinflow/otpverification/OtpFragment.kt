@@ -42,13 +42,17 @@ class OtpFragment: Fragment() {
     private lateinit var nearToResetTextView:TextView
     private lateinit var verifyButton:Button
     private lateinit var otpEditText:EditText
-    private lateinit var cTimer:CountDownTimer
+    private var cTimer:CountDownTimer? = null
     private lateinit var insideTimerLayout:ConstraintLayout
     private lateinit var otpLoader:ProgressBar
     private lateinit var minuteTextView:TextView
     private lateinit var secondTextView:TextView
     private lateinit var otpMessageTextView:TextView
     private lateinit var notAskChekBox:CheckBox
+    private lateinit var tickImage:ImageView
+    private lateinit var crossImage:ImageView
+
+
 
     private var minutes:Int = 0
     private var seconds:Int = 0
@@ -57,6 +61,7 @@ class OtpFragment: Fragment() {
 
     private var restoreBtnState:Boolean = false
     private var otpTextFieldState:Boolean = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,6 +80,8 @@ class OtpFragment: Fragment() {
         secondTextView = root.findViewById(R.id.secondTextView)
         otpMessageTextView = root.findViewById(R.id.timerMessageTextView)
         notAskChekBox = root.findViewById(R.id.permission_checkbox)
+        tickImage = root.findViewById<ImageView>(R.id.tick_image)
+        crossImage= root.findViewById<ImageView>(R.id.cross_image)
 
         //////////////////////////////////////////////////////////////////////////////////////////////
         otpEditText.addTextChangedListener(object : TextWatcher {
@@ -83,12 +90,14 @@ class OtpFragment: Fragment() {
             override fun afterTextChanged(s: Editable) {
                 val str: String = otpEditText.text.toString()
                 //verifyButton.isEnabled = str.length == 6
+                crossImage.visibility = View.INVISIBLE
                 if(str.length == 6) {
                     otpEditText.isEnabled = false
                     disabledButtons()
                     val otpVal = otpEditText.text.toString()
                     otpViewModel.verifyOtp(otpVal.toInt())
                 }
+
             }
         })
 
@@ -128,6 +137,10 @@ class OtpFragment: Fragment() {
     override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)
+        cTimer?.let {
+            it.cancel()
+        }
+
     }
 
 
@@ -141,13 +154,26 @@ class OtpFragment: Fragment() {
 
         val otpSentResponse =event.otpSentResponse
         resendLink.isEnabled = true
-        updateResendCount()
+
         Log.e("otp-sent", otpSentResponse.toString())
         if (otpSentResponse.code == "400" && otpSentResponse.otpData!=null) {
             checkForTimer()
+            updateResendCount()
         }
         else
+        if (otpSentResponse.code == "429" && otpSentResponse.otpData!=null) {
+            if(otpSentResponse.otpData.twoFaMaxAttemptsCoolTimeInSeconds!=null && otpSentResponse.otpData.twoFaMaxAttemptsCoolTimeInSeconds!=0) {
+                updateResendCount()
+                checkForTimer()
+                otpSentResponse.message?.let { showToast(it) }
+            }
+            else
+                otpSentResponse.message?.let { showToast(it) }
+        }
+        else {
             otpSentResponse.message?.let { showToast(it) }
+            updateResendCount()
+        }
 
     }
 
@@ -159,13 +185,16 @@ class OtpFragment: Fragment() {
         val verificationResponse = event.otpVerificationResponse
         if(verificationResponse.code == "200" &&  verificationResponse.data != null) {
             verifyButton.isEnabled = true
+            tickImage.visibility = View.VISIBLE
             requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {}
         }
         else if(verificationResponse.message!=null) {
+                crossImage.visibility = View.VISIBLE
                 showToast(verificationResponse.message)
                 otpEditText.isEnabled = true
         }
         else {
+                crossImage.visibility = View.VISIBLE
                 showToast("Response contains no message...")
                 otpEditText.isEnabled = true
         }
@@ -209,15 +238,23 @@ class OtpFragment: Fragment() {
             val obj = Gson().fromJson(test, OtpData::class.java)
 
             if(obj!=null) {
-               if (obj.remainingTimeoutInSeconds != null && obj.remainingTimeoutInSeconds>3) {
-                    setUpTimerInitial(obj.remainingTimeoutInSeconds)
+               if (obj.twoFaMaxAttemptsCoolTimeInSeconds != null && obj.twoFaMaxAttemptsCoolTimeInSeconds>3) {
+                    setUpTimerInitial(obj.twoFaMaxAttemptsCoolTimeInSeconds)
                     toggleTimerView(true)
                 }
-                else
-                    toggleTimerView(false)
+                else {
+                   toggleTimerView(false)
+                   cTimer?.let {
+                       it.cancel()
+                   }
+               }
             }
-            else
+            else {
                 toggleTimerView(false)
+                cTimer?.let {
+                    it.cancel()
+                }
+            }
         }
     }
 
@@ -239,8 +276,13 @@ class OtpFragment: Fragment() {
         sharedPreferences.getString(ColabaConstant.otpDataJson, "")?.let { otpDataReceived->
             val obj = Gson().fromJson(otpDataReceived, OtpData::class.java)
             if (obj != null) {
-                sharedPreferences.getInt(ColabaConstant.maxOtpSendAllowed, 5).let {
-                    attemptLeft = it - obj.attemptsCount
+                sharedPreferences.getInt(ColabaConstant.maxOtpSendAllowed, 5).let { maxOtpSendAllowed->
+                    if(obj.attemptsCount!=null){
+                        if(obj.attemptsCount!=0)
+                            attemptLeft = maxOtpSendAllowed - obj.attemptsCount
+                    }
+                    else
+                        attemptLeft = maxOtpSendAllowed
                 }
             }
         }
@@ -255,7 +297,7 @@ class OtpFragment: Fragment() {
         if(remainingSeconds>60){
             minutes =  (remainingSeconds / 60)
             seconds = (remainingSeconds - (minutes * 60))
-            val totalSeconds:Long = (remainingSeconds * 1000).toLong()
+            var totalSeconds:Long = (remainingSeconds * 1000).toLong()
             Log.e("all - ", "$remainingSeconds becomes $minutes min $seconds seconds")
             startTimer(totalSeconds)
         }
@@ -267,12 +309,13 @@ class OtpFragment: Fragment() {
     }
 
     private fun startTimer(totalSeconds:Long){
+
         cTimer = object : CountDownTimer(totalSeconds, 1000) {
             override fun onTick(millisUntilFinished: Long) {
+                seconds--
                 Log.e("millisUntilFinished-", millisUntilFinished.toString())
                 Log.e("Minutes - ", "$minutes  seconds - $seconds")
-                seconds--
-                if(seconds == 0 && minutes > 0) {
+                if(minutes > 0  && seconds == 0)  {
                     Log.e("MinutesNow--", "Decreased")
                     minutes -= 1
                     seconds = 60
@@ -282,20 +325,28 @@ class OtpFragment: Fragment() {
                     Log.e("TimerStop", "StopNow")
                     toggleTimerView(false)
                     cancelTimer()
+                    updateResendCount()
                 }
                 minuteTextView.text = "0"+minutes
                 secondTextView.text = ": "+seconds.toString()
             }
-            override fun onFinish() { Log.e("Timer Finished-", "Completed...") }
+            override fun onFinish() {
+                Log.e("Timer Finished-", "Completed...")
+                toggleTimerView(false)
+                updateResendCount()
+                cancelTimer()
+            }
         }
-        cTimer.start()
+        cTimer?.start()
     }
 
     private fun cancelTimer() {
-        cTimer.let {
-            cTimer.cancel();
+        cTimer?.let {
+            it.cancel()
         }
     }
+
+
 
 
     private fun disabledButtons(){

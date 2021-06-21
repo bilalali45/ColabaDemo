@@ -164,7 +164,7 @@ class LoginFragment : Fragment() {
                     1 -> navigateToDashBoard(it.success)
                     2 -> navigateToPhoneScreen()
                     3 -> navigateToOtpScreen()
-                    else -> navigateToDashBoard(it.success)
+                    else -> showToast(R.string.we_have_send_you_email)
                 }
             }
         }

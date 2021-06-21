@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
-    android:background="@color/colaba_primary_color"
+    android:background="@color/colaba_primary_color_with_alpha_one"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/colaba"
-        android:textColor="@color/colaba_blue_color"
+        android:textColor="@color/colaba_primary_color"
         android:textSize="46sp"
         android:textStyle="bold"
         android:fontFamily="@font/gothic"

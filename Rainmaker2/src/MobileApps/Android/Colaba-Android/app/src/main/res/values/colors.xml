@@ -8,13 +8,24 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="colaba_blue_color">#FF4484F4</color>
-    <color name="colaba_text_color">#FF4E4E4E</color>
-    <color name="colaba_text_color_two">#FF7E829E</color>
-    <color name="colaba_text_color_three">#FFA7A7A7</color>
-    <color name="colaba_line_separator">#FFCCCCCC</color>
 
-    <color name="colaba_primary_color">#084484F4</color>
+    <color name="orange">#FF3D00</color>
+    <color name="grey">#D9E8E6</color>
+
+    <color name="colaba_primary_color">#FF4484F4</color>
+    <color name="colaba_primary_color_with_alpha_one">#084484F4</color>
+    <color name="grey_color_one">#FF4E4E4E</color>
+    <color name="grey_color_two">#FF7E829E</color>
+    <color name="grey_color_three">#FFA7A7A7</color>
+    <color name="grey_color_four">#FFCCCCCC</color>
+    <color name="colaba_line_separator">#FFCCCCCC</color>
+    <color name="colaba_red_color">#FFFF5652</color>
+
+    <color name="loan_view_holder_separator">#80E5E5E5</color>
+
+
+    <color name="colaba_holder_background">#0D7E829E</color>
+
 
 
 </resources>

@@ -128,8 +128,16 @@ class PhoneNumberFragment : Fragment() {
         when (otpSentResponse.code) {
             "200" -> findNavController().navigate(R.id.otp_verification_id, null)
             "400" -> {
-                if(otpSentResponse.otpData?.remainingTimeoutInSeconds != null)
+                if(otpSentResponse.otpData?.twoFaMaxAttemptsCoolTimeInSeconds != null)
                     findNavController().navigate(R.id.otp_verification_id, null)
+                else
+                    otpSentResponse.message?.let { showToast(it) }
+            }
+            "429" -> {
+                if(otpSentResponse.otpData?.twoFaMaxAttemptsCoolTimeInSeconds != null)
+                    findNavController().navigate(R.id.otp_verification_id, null)
+                else
+                    otpSentResponse.message?.let { showToast(it) }
             }
             else -> {
                 if(otpSentResponse.message!=null)

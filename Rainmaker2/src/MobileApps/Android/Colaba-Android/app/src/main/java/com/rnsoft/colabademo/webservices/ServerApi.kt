@@ -24,7 +24,7 @@ interface ServerApi{
     @GET("api/mcu/mobile/identity/mcuaccount/GetMcuTenantTwoFaValues")
     suspend fun getMcuTenantTwoFaValuesService( @Header("IntermediateToken")  IntermediateToken:String): TenantConfigurationResponse
 
-    @POST("api/mobile/identity/mcuaccount/SendTwoFa")
+    @POST("api/mcu/mobile/identity/mcuaccount/SendTwoFa")
     suspend fun sendTwoFa( @Header("IntermediateToken")  IntermediateToken:String): SendTwoFaResponse
 
     @GET("api/mcu/mobile/identity/mcuaccount/GetTwoFaSettings")

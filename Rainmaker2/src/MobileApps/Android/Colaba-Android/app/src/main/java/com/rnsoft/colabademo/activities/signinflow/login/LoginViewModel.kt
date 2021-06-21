@@ -79,6 +79,7 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
                                         "404" -> EventBus.getDefault().post(LoginEvent(LoginResponseResult(success = loginResponse, screenNumber = 2)))
                                         "200" -> EventBus.getDefault().post(LoginEvent(LoginResponseResult(success = loginResponse, screenNumber = 3)))
                                         "400" -> EventBus.getDefault().post(LoginEvent(LoginResponseResult(success = loginResponse, screenNumber = 3)))
+                                        "429" -> EventBus.getDefault().post(LoginEvent(LoginResponseResult(success = loginResponse, screenNumber = 3)))
                                         else ->
                                             Log.e("Else", "WebService-error-go")
                                     }
