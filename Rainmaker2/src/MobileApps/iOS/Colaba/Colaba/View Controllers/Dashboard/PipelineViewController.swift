@@ -54,18 +54,12 @@ extension PipelineViewController: UITableViewDataSource, UITableViewDelegate{
         if (indexPath.row == 0){
             let cell = tableView.dequeueReusableCell(withIdentifier: "PipelineTableViewCell", for: indexPath) as! PipelineTableViewCell
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                if (self.expandableCellsIndex.contains(indexPath.section)){
-                   // cell.mainView.roundOnlyTopCorners(radius: 8)
-                    cell.mainView.layer.cornerRadius = 8
-                    cell.mainView.addShadow()
-                }
-                else{
-                    cell.mainView.layer.cornerRadius = 8
-                    cell.mainView.addShadow()
-                }
-            }
-            
+            cell.mainViewHeightConstraint.constant = indexPath.section == 2 ? 123 : 145
+            cell.btnArrowBottomConstraint.constant = indexPath.section == 2 ? 15 : 11
+            cell.updateConstraintsIfNeeded()
+            cell.layoutSubviews()
+            cell.mainView.layer.cornerRadius = 8
+            cell.mainView.dropShadow()
             cell.indexPath = indexPath
             cell.delegate = self
             cell.lblUsername.text = indexPath.section % 2 == 0 ? "Richard Glenn Randal" : "Jenifer Moore"
@@ -81,6 +75,8 @@ extension PipelineViewController: UITableViewDataSource, UITableViewDelegate{
         }
         else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "PipelineDetailTableViewCell", for: indexPath) as! PipelineDetailTableViewCell
+            cell.mainView.layer.cornerRadius = 8
+            cell.mainView.dropShadow()
             return cell
         }
         
@@ -89,15 +85,19 @@ extension PipelineViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         if (indexPath.section == 2){
-            
-            return indexPath.row == 0 ? 140 : 153
+            if (indexPath.row == 0){
+                return expandableCellsIndex.contains(indexPath.section) ? 140 : 145
+            }
+            else{
+                return 175
+            }
         }
         else{
             if (indexPath.row == 0){
-                return 165
+                return expandableCellsIndex.contains(indexPath.section) ? 165 : 170
             }
             else{
-                return 153
+                return 175
             }
         }
         

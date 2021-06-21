@@ -35,8 +35,20 @@ struct Theme {
         return UIColor(named: "AppGreyColor")!
     }
     
+    static func getAppBlackColor() -> UIColor{
+        return UIColor(named: "AppBlackColor")!
+    }
+    
+    static func getDashboardBackgroundColor() -> UIColor{
+        return UIColor(named: "DashboardBackgroundColor")!
+    }
+    
     static func getRubikRegularFont(size: CGFloat) -> UIFont{
         return UIFont(name: "Rubik-Regular", size: size)!
+    }
+    
+    static func getRubikMediumFont(size: CGFloat) -> UIFont{
+        return UIFont(name: "Rubik-Medium", size: size)!
     }
     
     static func getSearchBarBorderColor() -> UIColor{

@@ -20,8 +20,20 @@ class PipelineDetailTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        mainView.roundOnlyBottomCorners(radius: 8)
-        mainView.addShadow()
+        
+        let renderRect = CGRect(origin: .zero, size: CGSize(width: 90, height: 90))
+        let renderer = UIGraphicsImageRenderer(size: renderRect.size)
+
+//        let rounded = renderer.image { ctx in
+//            ctx.cgContext.addEllipse(in: renderRect)
+//            ctx.cgContext.clip()
+//
+//            original.draw(in: renderRect)
+//        }
+        
+        
+        
+        
         bottomSeperator.layer.cornerRadius = bottomSeperator.frame.height / 2
     }
 

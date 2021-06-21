@@ -1,21 +1,92 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13142" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12042"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Rubik-Medium.ttf">
+            <string>Rubik-Medium</string>
+        </array>
+        <array key="Rubik-Regular.ttf">
+            <string>Rubik-Regular</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="NotificationsTableViewCell" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="85" id="KGk-i7-Jjw" customClass="NotificationsTableViewCell" customModule="Colaba" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="368" height="85"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="368" height="85"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gOA-fl-8Uz">
+                        <rect key="frame" x="10" y="25" width="8" height="8"/>
+                        <color key="backgroundColor" red="0.0" green="0.67843137254901964" blue="0.27450980392156865" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="8" id="0eT-TC-eZN"/>
+                            <constraint firstAttribute="width" constant="8" id="ZJX-Wy-PeK"/>
+                        </constraints>
+                    </view>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NotificationDocumentIcon" translatesAutoresizingMaskIntoConstraints="NO" id="SnH-W9-PAV">
+                        <rect key="frame" x="23" y="22" width="28" height="33"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="33" id="Yvo-XQ-kmh"/>
+                            <constraint firstAttribute="width" constant="28" id="cty-Ny-wg9"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vTi-Ox-oVT">
+                        <rect key="frame" x="66" y="22" width="227" height="43"/>
+                        <string key="text">Richard Glenn has submitted
+documents</string>
+                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="14"/>
+                        <color key="textColor" name="AppBlackColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 min" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YB4-Sc-Oyb">
+                        <rect key="frame" x="298" y="22" width="50" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="Eyz-wX-8KT"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
+                        <color key="textColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="YB4-Sc-Oyb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="22" id="1XA-TV-9V2"/>
+                    <constraint firstItem="vTi-Ox-oVT" firstAttribute="leading" secondItem="SnH-W9-PAV" secondAttribute="trailing" constant="15" id="APA-3y-s1b"/>
+                    <constraint firstAttribute="trailing" secondItem="YB4-Sc-Oyb" secondAttribute="trailing" constant="20" id="FSN-wu-m4N"/>
+                    <constraint firstItem="SnH-W9-PAV" firstAttribute="leading" secondItem="gOA-fl-8Uz" secondAttribute="trailing" constant="5" id="HeF-t3-RR9"/>
+                    <constraint firstAttribute="bottom" secondItem="vTi-Ox-oVT" secondAttribute="bottom" constant="20" id="NEv-yJ-Xek"/>
+                    <constraint firstItem="gOA-fl-8Uz" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="25" id="hnP-6H-wa0"/>
+                    <constraint firstItem="SnH-W9-PAV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="22" id="hte-ux-ysv"/>
+                    <constraint firstItem="YB4-Sc-Oyb" firstAttribute="leading" secondItem="vTi-Ox-oVT" secondAttribute="trailing" constant="5" id="ii2-ae-5Vs"/>
+                    <constraint firstItem="gOA-fl-8Uz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="kqm-Oc-Rgp"/>
+                    <constraint firstItem="vTi-Ox-oVT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="22" id="xgZ-p7-xLd"/>
+                </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="lblNotificationDetail" destination="vTi-Ox-oVT" id="0FV-gt-NyK"/>
+                <outlet property="lblTime" destination="YB4-Sc-Oyb" id="czs-ze-ji8"/>
+                <outlet property="notificationIcon" destination="SnH-W9-PAV" id="yQh-Bs-AT6"/>
+                <outlet property="readIcon" destination="gOA-fl-8Uz" id="zrT-tg-VzK"/>
+            </connections>
+            <point key="canvasLocation" x="17.39130434782609" y="86.049107142857139"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="NotificationDocumentIcon" width="27.909999847412109" height="33.38800048828125"/>
+        <namedColor name="AppBlackColor">
+            <color red="0.30588235294117649" green="0.30588235294117649" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>

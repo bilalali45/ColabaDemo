@@ -26,7 +26,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Path 11644" translatesAutoresizingMaskIntoConstraints="NO" id="Crj-yq-eox">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlaceholderImage" translatesAutoresizingMaskIntoConstraints="NO" id="Crj-yq-eox">
                                 <rect key="frame" x="15" y="54" width="40" height="40"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good evening, James" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Rs-se-qzH">
@@ -529,13 +529,34 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="WWU-LD-QlD">
                                 <rect key="frame" x="0.0" y="100" width="414" height="713"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="xeN-pf-PXr" id="QLF-s9-aHW"/>
+                                    <outlet property="delegate" destination="xeN-pf-PXr" id="6dT-vk-BGN"/>
+                                </connections>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VO9-5u-vRV">
+                                <rect key="frame" x="108.5" y="711" width="197" height="42"/>
+                                <color key="backgroundColor" name="ButtonBlueColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="3rn-kd-d9r"/>
+                                    <constraint firstAttribute="width" constant="197" id="AIg-pM-QUd"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="14"/>
+                                <state key="normal" title="See New Notifications">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnNewNotificationsTapped:" destination="xeN-pf-PXr" eventType="touchUpInside" id="b4U-vB-pGR"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="gcR-pS-0KZ"/>
                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="WWU-LD-QlD" firstAttribute="top" secondItem="ShL-f1-5v4" secondAttribute="bottom" constant="20" id="4jG-1O-wRB"/>
                             <constraint firstItem="ShL-f1-5v4" firstAttribute="top" secondItem="gcR-pS-0KZ" secondAttribute="top" constant="12" id="9aX-we-BNj"/>
+                            <constraint firstItem="gcR-pS-0KZ" firstAttribute="bottom" secondItem="VO9-5u-vRV" secondAttribute="bottom" constant="60" id="Bi9-ya-J8h"/>
+                            <constraint firstItem="VO9-5u-vRV" firstAttribute="centerX" secondItem="Ysa-JR-2wh" secondAttribute="centerX" id="H9V-f7-Alf"/>
                             <constraint firstItem="WWU-LD-QlD" firstAttribute="leading" secondItem="gcR-pS-0KZ" secondAttribute="leading" id="HF8-X5-kGL"/>
                             <constraint firstItem="ShL-f1-5v4" firstAttribute="centerX" secondItem="Ysa-JR-2wh" secondAttribute="centerX" id="Zbr-6B-obI"/>
                             <constraint firstItem="gcR-pS-0KZ" firstAttribute="bottom" secondItem="WWU-LD-QlD" secondAttribute="bottom" id="kgk-Qx-Hyg"/>
@@ -544,6 +565,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="qI7-SC-9f1"/>
                     <connections>
+                        <outlet property="btnNewNotifications" destination="VO9-5u-vRV" id="QZK-DC-IxB"/>
                         <outlet property="tblViewNotification" destination="WWU-LD-QlD" id="jUL-Nm-ZLg"/>
                     </connections>
                 </viewController>
@@ -995,8 +1017,8 @@
         <image name="FloatingButtonContactIcon" width="20.540000915527344" height="22.496000289916992"/>
         <image name="HomeIcon" width="23.979000091552734" height="24"/>
         <image name="NotificationIcon" width="21.722999572753906" height="24"/>
-        <image name="Path 11644" width="40" height="40"/>
         <image name="PendingIcon" width="23.906000137329102" height="24"/>
+        <image name="PlaceholderImage" width="40" height="40"/>
         <image name="ProfileIcon" width="24" height="24"/>
         <image name="RecentActivity" width="24" height="24"/>
         <image name="SearchBarCrossIcon" width="11.300000190734863" height="11.329000473022461"/>

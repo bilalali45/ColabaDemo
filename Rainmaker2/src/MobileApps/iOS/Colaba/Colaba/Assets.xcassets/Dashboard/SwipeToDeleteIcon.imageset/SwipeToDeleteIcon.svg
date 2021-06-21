@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="76" height="34" viewBox="0 0 76 34">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="SVGID" width="13" height="15.182" fill="#ff5652"/>
+    </clipPath>
+  </defs>
+  <g id="Group_17721" data-name="Group 17721" transform="translate(-311 -125)">
+    <g id="Rectangle_858" data-name="Rectangle 858" transform="translate(311 125)" fill="rgba(255,86,82,0.1)" stroke="#ff5652" stroke-width="1">
+      <rect width="76" height="34" stroke="none"/>
+      <rect x="0.5" y="0.5" width="75" height="33" fill="none"/>
+    </g>
+    <g id="Group_17720" data-name="Group 17720" transform="translate(-11443 300.49)">
+      <path id="Path_11617" data-name="Path 11617" d="M11788.559-161.783v10.564h8.286v-10.564l1.455-.633v-1.835h-11.133v1.518Z" transform="translate(-0.281 -0.422)" fill="#ff5652" opacity="0.3"/>
+      <g id="Group_17719" data-name="Group 17719" transform="translate(11786 -166)">
+        <g id="Group_17718" data-name="Group 17718" transform="translate(0 0)">
+          <g id="Group_17717" data-name="Group 17717" transform="translate(0)" clip-path="url(#clip-path)">
+            <path id="Path_11618" data-name="Path 11618" d="M194.435,288.268h-3.45a.57.57,0,0,0-.537-.378h-1.882a.571.571,0,0,0-.537.378h-3.45A1.58,1.58,0,0,0,183,289.847v1.436a.571.571,0,0,0,.571.571h1.074v10.625a.571.571,0,0,0,.571.571H193.8a.571.571,0,0,0,.571-.571V291.854h1.074a.571.571,0,0,0,.571-.571v-1.436a1.58,1.58,0,0,0-1.578-1.578Zm-1.207,13.64h-7.442V291.854h7.442Zm1.644-11.2h-10.73v-.865a.437.437,0,0,1,.437-.437h9.856a.438.438,0,0,1,.437.437Zm0,0" transform="translate(-183 -287.89)" fill="#ff5652"/>
+          </g>
+        </g>
+        <path id="Path_11619" data-name="Path 11619" d="M205.229,318.908a.571.571,0,0,0,.571-.571v-6.015a.571.571,0,1,0-1.142,0v6.015a.571.571,0,0,0,.571.571Zm0,0" transform="translate(-200.218 -306.859)" fill="#ff5652"/>
+        <path id="Path_11620" data-name="Path 11620" d="M219.819,318.908a.571.571,0,0,0,.571-.571v-6.015a.571.571,0,1,0-1.142,0v6.015a.571.571,0,0,0,.571.571Zm0,0" transform="translate(-211.816 -306.859)" fill="#ff5652"/>
+      </g>
+    </g>
+  </g>
+</svg>
