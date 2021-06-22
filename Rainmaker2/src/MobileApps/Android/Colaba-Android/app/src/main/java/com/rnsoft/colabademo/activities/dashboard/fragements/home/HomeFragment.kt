@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -67,7 +68,13 @@ class HomeFragment : Fragment() {
         searchImageView.setOnClickListener{
             //homeProfileLayout.visibility = View.GONE
             //this.findNavController(R.id.search_profile)
-            findNavController().navigate(R.id.navigation_search, null)
+
+
+            ModalBottomSheetDialogFragment.newInstance().show(childFragmentManager, ModalBottomSheetDialogFragment::class.java.canonicalName)
+            //setStyle(DialogFragment.STYLE_NORMAL, R.style.TutorialBottomSheetDialog)
+            //findNavController().navigate(R.id.navigation_search, null)
+
+
             // NavHostFragment.findNavController(context).navigate(R.id.navigation_search)
             //Navigation.findNavController(context,R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_search)
         }

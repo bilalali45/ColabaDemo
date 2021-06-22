@@ -20,6 +20,14 @@
     <string name="login_with_another_account">Login with another account</string>
     <string name="sign_in_with_password">Sign in with Password</string>
 
+
+
+    <string name="actions_pending">Most Actions Pending</string>
+    <string name="recent_activity">Most Recent Activity</string>
+    <string name="borrower_a_to_z">Primary Borrower Last Name (A to Z)</string>
+    <string name="borrower_z_to_a">Primary Borrower Last Name (Z to A)</string>
+
+
     <string name="pipeline">Pipeline</string>
     <string name="assigned_to_me">Assigned to Me</string>
 

@@ -54,4 +54,15 @@
         <item name="android:tabStripEnabled">false</item>
     </style>
 
+
+
+
+    <style name="TutorialBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/TutorialBottomSheetStyle</item>
+    </style>
+
+    <style name="TutorialBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/rounded_shape</item>
+    </style>
+
 </resources>
