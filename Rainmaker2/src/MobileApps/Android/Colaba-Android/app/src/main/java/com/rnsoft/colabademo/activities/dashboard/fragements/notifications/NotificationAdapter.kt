@@ -15,17 +15,17 @@ import androidx.recyclerview.widget.RecyclerView
 
 class NotificationAdapter
 internal constructor(
-    passedBorrowerList: List<NotificationModel>, onNotificationClickListener: NotificationsFragment
+    passedList: List<NotificationModel>, onNotificationClickListener: NotificationClickListener
 ) :  RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
 
 
     //: RecyclerView.Adapter<LoansAdapter.LoanViewHolder>() {
 
     private var notificationList = listOf<NotificationModel>()
-    private var clickListener: NotificationItemClickListener = onNotificationClickListener
+    private var clickListener: NotificationClickListener = onNotificationClickListener
 
     init {
-        this.notificationList = passedBorrowerList
+        this.notificationList = passedList
         this.clickListener = onNotificationClickListener
     }
 
@@ -68,7 +68,7 @@ internal constructor(
     inner class NotificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var notificationName: TextView = itemView.findViewById(R.id.notification_name)
         var notificationTime: TextView = itemView.findViewById(R.id.notification_time)
-        var activeImage: ImageView = itemView.findViewById(R.id.notification_active_icon)
+        var activeImage: ImageView = itemView.findViewById(R.id.circle_icon)
 
 
 
@@ -83,9 +83,7 @@ internal constructor(
 
 
 
-    interface NotificationItemClickListener {
-        fun onItemClick( view:View)
-    }
+
 
 
 }

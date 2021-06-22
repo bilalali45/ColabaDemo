@@ -120,6 +120,8 @@
     <string name="submitted_docs">Richard Glenn has submitted \n documents</string>
 
 
+    <string name="heading_title">Yesterday</string>
+
     <string name="search_results">Search results</string>
     <string name="results_found">6 results found</string>
 
@@ -129,8 +131,9 @@
     <string name="micheal_blakeley_address">727 Ashleigh LN # 222 <br/>  Dallas, TX 76099</string>
     <string name="micheal_blakeley_file_number">9202909209</string>
 
-
-
+    <string name="yesterday">Yesterday</string>
+    <string name="today">Today</string>
+    <string name="notifications">Notifications</string>
 
     <string name="fifteen_thirty_four">15:34</string>
 

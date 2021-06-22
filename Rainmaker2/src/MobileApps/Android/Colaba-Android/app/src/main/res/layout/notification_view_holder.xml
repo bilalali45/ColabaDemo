@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/notification_active_icon"
+        android:id="@+id/circle_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -18,21 +18,32 @@
         app:srcCompat="@drawable/solid_circle_shape" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imageView22"
+        android:id="@+id/activeBookIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        app:layout_constraintStart_toEndOf="@+id/notification_active_icon"
+        app:layout_constraintStart_toEndOf="@+id/circle_icon"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/notify_image" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/nonActiveBookIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@+id/circle_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/disable_notification_book" />
+
 
     <TextView
         android:id="@+id/notification_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
-        android:text="@string/submitted_docs"
-        app:layout_constraintStart_toEndOf="@+id/imageView22"
+        android:text="@string/title_tennis"
+        app:layout_constraintStart_toEndOf="@+id/activeBookIcon"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

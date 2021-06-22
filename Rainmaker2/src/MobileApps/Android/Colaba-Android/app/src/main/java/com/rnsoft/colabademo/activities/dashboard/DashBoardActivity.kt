@@ -34,8 +34,7 @@ class DashBoardActivity : AppCompatActivity() {
 
     private lateinit var binding: DashboardLayoutBinding
 
-    private lateinit  var searchImageView: ImageView
-    private lateinit var  homeProfileLayout:ConstraintLayout
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,26 +56,11 @@ class DashBoardActivity : AppCompatActivity() {
         //setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        val context = this
-
-        homeProfileLayout = findViewById(R.id.home_profile_layout)
-        homeProfileLayout.visibility = View.VISIBLE
-        searchImageView = findViewById(R.id.searchIconImageView)
-        searchImageView.setOnClickListener{
-            homeProfileLayout.visibility = View.GONE
-            //this.findNavController(R.id.search_profile)
-           // it.findNavController().navigate(R.id.navigation_search, null)
-           // NavHostFragment.findNavController(context).navigate(R.id.navigation_search)
-            Navigation.findNavController(this,R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_search)
-        }
-        // val searchFragment: Fragment = SearchFragment()
-            //val fragmentManager: FragmentManager = supportFragmentManager
-            //fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main,searchFragment).commit()
-
 
 
 
     }
+
 
     override fun onStart() {
         super.onStart()

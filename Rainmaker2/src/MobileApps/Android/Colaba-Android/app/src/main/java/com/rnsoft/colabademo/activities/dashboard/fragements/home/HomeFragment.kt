@@ -11,6 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -38,7 +40,8 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
 
 
-
+    private lateinit  var searchImageView: ImageView
+    private lateinit var  homeProfileLayout:ConstraintLayout
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -58,7 +61,16 @@ class HomeFragment : Fragment() {
 
         val root: View = binding.root
 
+        homeProfileLayout = root.findViewById(R.id.home_profile_layout)
 
+        searchImageView = root.findViewById(R.id.searchIconImageView)
+        searchImageView.setOnClickListener{
+            //homeProfileLayout.visibility = View.GONE
+            //this.findNavController(R.id.search_profile)
+            findNavController().navigate(R.id.navigation_search, null)
+            // NavHostFragment.findNavController(context).navigate(R.id.navigation_search)
+            //Navigation.findNavController(context,R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_search)
+        }
 
 
         val viewPager = binding.viewPager

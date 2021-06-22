@@ -11,9 +11,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ecommerce.testapp.NewNotificationListAdapter
 import com.rnsoft.colabademo.databinding.FragmentNotificationsBinding
 
-class NotificationsFragment : Fragment(), NotificationAdapter.NotificationItemClickListener {
+class NotificationsFragment : Fragment(), NotificationClickListener {
 
 
     private lateinit var notificationsViewModel: NotificationsViewModel
@@ -45,7 +46,7 @@ class NotificationsFragment : Fragment(), NotificationAdapter.NotificationItemCl
             this.setHasFixedSize(true)
             // set the custom adapter to the RecyclerView
             val notificationList = NotificationModel.sampleNotificationList(requireContext())
-            this.adapter = NotificationAdapter(notificationList, this@NotificationsFragment)
+            this.adapter = NewNotificationListAdapter(notificationList, this@NotificationsFragment)
 
         }
 
