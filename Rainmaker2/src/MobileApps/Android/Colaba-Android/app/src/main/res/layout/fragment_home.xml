@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colaba_loan_background"
     tools:context=".MainActivity">
 
 
@@ -15,16 +16,98 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabTextAppearance="@style/MineCustomTabText"
-        android:background="@color/white"
+        android:background="@color/colaba_loan_background"
 
         app:tabIconTint="@color/colaba_red_color"
         app:tabIndicatorColor="@color/colaba_primary_color"
         app:tabSelectedTextColor="@color/colaba_primary_color"
         app:tabTextColor="@color/grey_color_two" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colaba_loan_background"
+        >
+
+
+        <TextView
+            android:id="@+id/textView25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="@string/pipeline"
+            android:textStyle="bold"
+            android:textColor="@color/grey_color_one"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView20"
+            app:srcCompat="@drawable/filter_icon_two" />
+
+        <ImageView
+            android:id="@+id/imageView20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView25"
+            app:layout_constraintEnd_toStartOf="@+id/imageView12"
+            app:layout_constraintTop_toTopOf="@+id/textView25"
+            app:srcCompat="@drawable/filter_sep" />
+
+        <TextView
+            android:id="@+id/textView26"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="@string/assigned_to_me"
+            android:textColor="@color/grey_color_one"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView25"
+            app:layout_constraintEnd_toStartOf="@+id/imageView20"
+            app:layout_constraintTop_toTopOf="@+id/textView25" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="@+id/textView25"
+            app:layout_constraintEnd_toStartOf="@+id/textView26"
+            app:layout_constraintTop_toTopOf="@+id/textView25" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/loan_view_holder_separator"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
+        android:background="@color/colaba_loan_background"
         android:layout_width="match_parent"
+        android:layout_marginTop="6dp"
         android:layout_height="0dp"
         android:layout_weight="1" />
 

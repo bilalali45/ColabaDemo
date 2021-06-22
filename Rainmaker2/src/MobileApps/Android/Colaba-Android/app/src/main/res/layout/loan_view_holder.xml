@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@android:color/white"
+    android:background="@color/colaba_loan_background"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/login_box"
@@ -14,7 +14,7 @@
         android:layout_marginEnd="7dp"
 
         app:cardCornerRadius="8dp"
-        app:cardElevation="8dp"
+        app:cardElevation="6dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintCircleRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,9 +46,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="@string/richard"
             android:textColor="@color/grey_color_one"
             android:textSize="17sp"
+            android:text="@string/richard"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -75,13 +76,23 @@
             app:srcCompat="@drawable/tick_msg" />
 
         <ImageView
-            android:id="@+id/imageView12"
+            android:id="@+id/open_inside_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="18dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/down_arrow" />
+
+        <ImageView
+            android:id="@+id/close_inside_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/up_arrow" />
 
         <TextView
             android:id="@+id/textView13"
@@ -132,11 +143,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/inside_Loan_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:background="@color/colaba_holder_background"
         android:paddingBottom="12dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -235,7 +248,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.58"
+            app:layout_constraintHorizontal_bias="0.62"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageView14"
             app:srcCompat="@drawable/dollar_up" />

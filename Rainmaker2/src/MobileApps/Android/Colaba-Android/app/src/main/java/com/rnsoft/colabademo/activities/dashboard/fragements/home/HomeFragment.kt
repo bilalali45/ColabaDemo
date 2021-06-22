@@ -6,11 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -20,9 +20,9 @@ import javax.inject.Inject
 
 
 val animalsArray = arrayOf(
-    "Cat",
-    "Dog",
-    "Bird"
+    "All Loans",
+    "Active Loans",
+    "Inactive Loans"
 )
 
 
@@ -37,6 +37,9 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
 
+
+
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -50,7 +53,13 @@ class HomeFragment : Fragment() {
             ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+
+
         val root: View = binding.root
+
+
+
 
         val viewPager = binding.viewPager
         val tabLayout = binding.tabLayout
@@ -63,6 +72,7 @@ class HomeFragment : Fragment() {
         }.attach()
 
         //viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
 
         viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageScrolled(
@@ -85,15 +95,15 @@ class HomeFragment : Fragment() {
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                Toast.makeText(requireContext(), "Tab ${tab?.text} selected", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(requireContext(), "Tab ${tab?.text} selected", Toast.LENGTH_SHORT).show()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                Toast.makeText(requireContext(), "Tab ${tab?.text} unselected", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(requireContext(), "Tab ${tab?.text} unselected", Toast.LENGTH_SHORT).show()
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                Toast.makeText(requireContext(), "Tab ${tab?.text} reselected", Toast.LENGTH_SHORT).show()
+               // Toast.makeText(requireContext(), "Tab ${tab?.text} reselected", Toast.LENGTH_SHORT).show()
             }
         })
 
