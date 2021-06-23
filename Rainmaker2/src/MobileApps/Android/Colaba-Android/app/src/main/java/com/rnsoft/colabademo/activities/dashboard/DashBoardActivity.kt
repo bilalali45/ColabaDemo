@@ -1,14 +1,19 @@
 package com.rnsoft.colabademo
 
+
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.Button
+import android.view.View
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.DialogFragment
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rnsoft.colabademo.databinding.DashboardLayoutBinding
@@ -16,7 +21,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.invoke.ConstantCallSite
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class DashBoardActivity : AppCompatActivity() {
@@ -29,10 +36,15 @@ class DashBoardActivity : AppCompatActivity() {
     private lateinit var binding: DashboardLayoutBinding
 
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = DashboardLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
 
 
         val navView: BottomNavigationView = binding.navView
@@ -42,7 +54,7 @@ class DashBoardActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_profile, R.id.navigation_notifications
+                R.id.navigation_home, R.id.navigation_profile, R.id.navigation_notifications , R.id.navigation_search
             )
         )
         //setupActionBarWithNavController(navController, appBarConfiguration)
@@ -50,7 +62,9 @@ class DashBoardActivity : AppCompatActivity() {
 
 
 
+
     }
+
 
     override fun onStart() {
         super.onStart()

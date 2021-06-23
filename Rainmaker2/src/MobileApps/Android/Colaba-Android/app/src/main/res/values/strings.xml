@@ -4,6 +4,8 @@
 
     <string name="colaba">Colaba</string>
     <string name="email">Email</string>
+    <string name="call">Call</string>
+    <string name="text">Text</string>
     <string name="wrong_credential">Wrong Credential</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="mobile_verification_code">Mobile Veification Code</string>
@@ -19,6 +21,23 @@
     <string name="one_minute_ago">1 minute ago</string>
     <string name="login_with_another_account">Login with another account</string>
     <string name="sign_in_with_password">Sign in with Password</string>
+
+
+
+    <string name="plus_three">+3</string>
+    <string name="actions_pending">Most Actions Pending</string>
+    <string name="recent_activity">Most Recent Activity</string>
+    <string name="borrower_a_to_z">Primary Borrower Last Name (A to Z)</string>
+    <string name="borrower_z_to_a">Primary Borrower Last Name (Z to A)</string>
+
+    <string name="application">Application</string>
+    <string name="documents">Documents</string>
+    <string name="conversation">Conversations</string>
+    <string name="archive">Archive</string>
+
+
+    <string name="pipeline">Pipeline</string>
+    <string name="assigned_to_me">Assigned to Me</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -42,7 +61,7 @@
     <string name="dummy_minute">08</string>
     <string name="dummy_seconds">:  30</string>
 
-
+    <string name="good_evening_james">Good Evening, James</string>
 
     <string name="user_data_does_not_exit">  User does not exist</string>
 
@@ -114,6 +133,26 @@
     <string name="subtitle_handball">2 December 1917</string>
     <string name="subtitle_tennis">1859</string>
 
+    <string name="submitted_docs">Richard Glenn has submitted \n documents</string>
 
+
+    <string name="heading_title">Yesterday</string>
+
+    <string name="search_results">Search results</string>
+    <string name="results_found">6 results found</string>
+
+
+    <string name="application_submitted">Application Completed</string>
+    <string name="micheal_blakeley">Michael Blakeley</string>
+    <string name="micheal_blakeley_address">727 Ashleigh LN # 222 <br/>  Dallas, TX 76099</string>
+    <string name="micheal_blakeley_file_number">9202909209</string>
+
+    <string name="yesterday">Yesterday</string>
+    <string name="today">Today</string>
+    <string name="notifications">Notifications</string>
+
+    <string name="fifteen_thirty_four">15:34</string>
+
+    documents
 
 </resources>

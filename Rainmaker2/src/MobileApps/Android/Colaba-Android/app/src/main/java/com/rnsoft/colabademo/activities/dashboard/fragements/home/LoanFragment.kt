@@ -2,25 +2,25 @@ package com.rnsoft.colabademo
 
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.LoanItemClickListener
 import com.rnsoft.colabademo.databinding.FragmentCatBinding
 import org.json.JSONArray
 
 
-
-
-
-class LoanFragment : Fragment() {
+class LoanFragment : Fragment(), LoanItemClickListener {
     private var _binding: FragmentCatBinding? = null
     private val binding get() = _binding!!
 
     private var loanRecycleView: RecyclerView? = null
     private var covidData: JSONArray? = null
+    private lateinit var  borrowList: List<Borrower>
 
     //private val recyclerView: RecyclerView? = null
 
@@ -36,10 +36,11 @@ class LoanFragment : Fragment() {
             // set a LinearLayoutManager to handle Android
             // RecyclerView behavior
             this.layoutManager = LinearLayoutManager(activity)
-            //this.setHasFixedSize(true)
+            //(this.layoutManager as LinearLayoutManager).isMeasurementCacheEnabled = false
+            this.setHasFixedSize(true)
             // set the custom adapter to the RecyclerView
-            val borrowList = Borrower.customersList(requireContext())
-            this.adapter = LoansAdapter(borrowList)
+            borrowList = Borrower.customersList(requireContext())
+            this.adapter = LoansAdapter(borrowList, this@LoanFragment)
 
         }
 
@@ -53,15 +54,24 @@ class LoanFragment : Fragment() {
     }
 
 
-    private var layoutManager: RecyclerView.LayoutManager? = null
-    private var adapter: RecyclerView.Adapter<LoansAdapter.LoanViewHolder>? = null
-
-    override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
+      override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(itemView, savedInstanceState)
 
     }
 
+
+    override fun getCardIndex(position: Int) {
+        val borrowerBottomSheet = BorrowerCardBottomSheetDialogFragment.newInstance()
+        val bundle = Bundle()
+        bundle.putParcelable(ColabaConstant.borrowerParcelObject , borrowList.get(position))
+        borrowerBottomSheet.arguments = bundle
+        borrowerBottomSheet.show(childFragmentManager, BorrowerCardBottomSheetDialogFragment::class.java.canonicalName)
+    }
+
     //fun StatsFragment(data: JSONArray?) { covidData = data}
+
+
+
 
 
 }
