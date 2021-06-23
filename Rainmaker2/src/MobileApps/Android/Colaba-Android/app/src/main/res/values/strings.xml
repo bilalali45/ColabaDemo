@@ -4,6 +4,8 @@
 
     <string name="colaba">Colaba</string>
     <string name="email">Email</string>
+    <string name="call">Call</string>
+    <string name="text">Text</string>
     <string name="wrong_credential">Wrong Credential</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="mobile_verification_code">Mobile Veification Code</string>
@@ -22,10 +24,16 @@
 
 
 
+    <string name="plus_three">+3</string>
     <string name="actions_pending">Most Actions Pending</string>
     <string name="recent_activity">Most Recent Activity</string>
     <string name="borrower_a_to_z">Primary Borrower Last Name (A to Z)</string>
     <string name="borrower_z_to_a">Primary Borrower Last Name (Z to A)</string>
+
+    <string name="application">Application</string>
+    <string name="documents">Documents</string>
+    <string name="conversation">Conversations</string>
+    <string name="archive">Archive</string>
 
 
     <string name="pipeline">Pipeline</string>

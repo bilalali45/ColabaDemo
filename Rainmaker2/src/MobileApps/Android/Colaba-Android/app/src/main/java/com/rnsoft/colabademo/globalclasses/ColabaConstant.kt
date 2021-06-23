@@ -33,6 +33,9 @@ object ColabaConstant {
 
         const val secondsCount:String = "secondsCount"
 
+        const val borrowerParcelObject:String = "borrowerParcelObject"
+
+
         const val maxOtpSendAllowed:String = "maxOtpSendAllowed"
 
         const val twoFaResendCoolTimeInMinutes:String = "twoFaResendCoolTimeInMinutes"

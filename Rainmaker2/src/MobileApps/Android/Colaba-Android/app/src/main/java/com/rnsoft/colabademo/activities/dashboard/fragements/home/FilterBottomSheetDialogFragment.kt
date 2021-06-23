@@ -8,16 +8,19 @@ import android.view.WindowManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.rnsoft.colabademo.databinding.DialogFragmentModalBottomSheetBinding
 
-class ModalBottomSheetDialogFragment : BottomSheetDialogFragment() {
+class FilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
-        fun newInstance() = ModalBottomSheetDialogFragment()
+        fun newInstance() = FilterBottomSheetDialogFragment()
     }
   
     lateinit var binding: DialogFragmentModalBottomSheetBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogFragmentModalBottomSheetBinding.inflate(inflater, container, false)
+        binding.crossImageView.setOnClickListener{
+            dismiss();
+        }
         return binding.root
     }
 

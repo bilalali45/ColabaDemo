@@ -1,18 +1,53 @@
 package com.rnsoft.colabademo
 
 import android.content.Context
+import android.os.Parcel
+import android.os.Parcelable
+import androidx.versionedparcelable.VersionedParcelize
 
+@VersionedParcelize
 data class Borrower(
     val id: Int,
     val banner: Int,
     val borrowerName: String?,
     val subtitle: String?,
     val about: String?
-)  {
+) :Parcelable {
+
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString()
+    ) {
+    }
 
 
 
-    companion object {
+
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeInt(banner)
+        parcel.writeString(borrowerName)
+        parcel.writeString(subtitle)
+        parcel.writeString(about)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Borrower> {
+        override fun createFromParcel(parcel: Parcel): Borrower {
+            return Borrower(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Borrower?> {
+            return arrayOfNulls(size)
+        }
+
         fun customersList(context: Context): List<Borrower> {
             return listOf(
                 Borrower(0, R.drawable.bird,
@@ -37,6 +72,7 @@ data class Borrower(
                 )
             )
         }
+
     }
 }
 

@@ -8,11 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
@@ -42,6 +40,8 @@ class HomeFragment : Fragment() {
 
 
     private lateinit  var searchImageView: ImageView
+    private lateinit  var filterImageView: ImageView
+
     private lateinit var  homeProfileLayout:ConstraintLayout
 
     // This property is only valid between onCreateView and
@@ -64,20 +64,20 @@ class HomeFragment : Fragment() {
 
         homeProfileLayout = root.findViewById(R.id.home_profile_layout)
 
+        filterImageView = root.findViewById(R.id.filter_imageview)
         searchImageView = root.findViewById(R.id.searchIconImageView)
         searchImageView.setOnClickListener{
-            //homeProfileLayout.visibility = View.GONE
-            //this.findNavController(R.id.search_profile)
-
-
-            ModalBottomSheetDialogFragment.newInstance().show(childFragmentManager, ModalBottomSheetDialogFragment::class.java.canonicalName)
-            //setStyle(DialogFragment.STYLE_NORMAL, R.style.TutorialBottomSheetDialog)
-            //findNavController().navigate(R.id.navigation_search, null)
-
-
+            findNavController().navigate(R.id.navigation_search, null)
             // NavHostFragment.findNavController(context).navigate(R.id.navigation_search)
             //Navigation.findNavController(context,R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_search)
         }
+
+        filterImageView.setOnClickListener{
+            //setStyle(DialogFragment.STYLE_NORMAL, R.style.TutorialBottomSheetDialog)
+            FilterBottomSheetDialogFragment.newInstance().show(childFragmentManager, FilterBottomSheetDialogFragment::class.java.canonicalName)
+        }
+
+
 
 
         val viewPager = binding.viewPager
