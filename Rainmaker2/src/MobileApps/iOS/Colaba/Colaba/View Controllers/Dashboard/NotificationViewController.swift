@@ -20,7 +20,6 @@ class NotificationViewController: BaseViewController {
         super.viewDidLoad()
         tblViewNotification.register(UINib(nibName: "NotificationsTableViewCell", bundle: nil), forCellReuseIdentifier: "NotificationsTableViewCell")
         btnNewNotifications.layer.cornerRadius = 8
-        btnNewNotifications.dropShadow()
     }
     
     //MARK:- Methods and Actions

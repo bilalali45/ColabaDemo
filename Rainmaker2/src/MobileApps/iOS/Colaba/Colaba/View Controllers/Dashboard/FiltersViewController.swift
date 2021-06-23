@@ -21,11 +21,15 @@ class FiltersViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        mainView.layer.cornerRadius = 20
+        mainView.roundOnlyTopCorners(radius: 20)
         pendingActivityView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pendingViewTapped)))
         recentActivityView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(recentViewTapped)))
         aToZView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(aToZViewTapped)))
         zToAView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(zToAViewTapped)))
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(backgroundTapped)))
+        let swipeDownGesture = UISwipeGestureRecognizer(target: self, action: #selector(backgroundTapped))
+        swipeDownGesture.direction = .down
+        self.view.addGestureRecognizer(swipeDownGesture)
     }
     
     
@@ -44,6 +48,10 @@ class FiltersViewController: BaseViewController {
     }
     
     @objc func zToAViewTapped(){
+        self.dismissVC()
+    }
+    
+    @objc func backgroundTapped(){
         self.dismissVC()
     }
     

@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        if let isBiometricRegistered = UserDefaults.standard.value(forKey: kIsUserRegisteredWithBiometric){
 //            isAlreadyRegisteredWithBiometric = isBiometricRegistered as! String
 //        }
-//        
+//
 //        if (isAlreadyRegisteredWithBiometric == kYes && UserModel.getCurrentUser() != nil){
 //            if (Utility.checkDeviceAuthType() == kTouchID){
 //                loadFingerPrintViewController()

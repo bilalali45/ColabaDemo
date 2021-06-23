@@ -20,6 +20,7 @@
 		2397AF64267782E6007A1A45 /* PipelineTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2397AF62267782E6007A1A45 /* PipelineTableViewCell.xib */; };
 		2397AF672677A60A007A1A45 /* PipelineDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397AF652677A60A007A1A45 /* PipelineDetailTableViewCell.swift */; };
 		2397AF682677A60A007A1A45 /* PipelineDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */; };
+		239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */; };
 		23B238B82679D38900508449 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B238B72679D38900508449 /* SearchViewController.swift */; };
 		23B238BB2679E05200508449 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B238B92679E05200508449 /* SearchResultTableViewCell.swift */; };
 		23B238BC2679E05200508449 /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */; };
@@ -91,6 +92,7 @@
 		2397AF62267782E6007A1A45 /* PipelineTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PipelineTableViewCell.xib; sourceTree = "<group>"; };
 		2397AF652677A60A007A1A45 /* PipelineDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineDetailTableViewCell.swift; sourceTree = "<group>"; };
 		2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PipelineDetailTableViewCell.xib; sourceTree = "<group>"; };
+		239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewPopupViewController.swift; sourceTree = "<group>"; };
 		23B238B72679D38900508449 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		23B238B92679E05200508449 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				236EA1AD2678CE1B00C2F8B5 /* DummyDashboardViewController.swift */,
 				238D70762678E8C80067687C /* FiltersViewController.swift */,
 				23B238B72679D38900508449 /* SearchViewController.swift */,
+				239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -669,6 +672,7 @@
 				7186AD7E26540CEB00E740D3 /* CodeViewController.swift in Sources */,
 				2397AF5F26776241007A1A45 /* PipelineViewController.swift in Sources */,
 				7186AD7926540CCC00E740D3 /* PhoneNumberViewController.swift in Sources */,
+				239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */,
 				7148C6B92655500B00E1C216 /* ExtensionOfString.swift in Sources */,
 				7186AD012653C6AB00E740D3 /* LoginViewController.swift in Sources */,
 				7186ACF42653C66100E740D3 /* FaceRecognitionViewController.swift in Sources */,
@@ -857,7 +861,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 2HX8AP6426;
 				INFOPLIST_FILE = Colaba/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -881,7 +885,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 2HX8AP6426;
 				INFOPLIST_FILE = Colaba/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
