@@ -120,7 +120,7 @@ class AppModule {
         @Singleton
         fun retrofit(okHttpClient: OkHttpClient): Retrofit {
             return Retrofit.Builder()
-                .baseUrl(ColabaConstant.BASE_URL)
+                .baseUrl(BuildConfig.BASE_URL)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()

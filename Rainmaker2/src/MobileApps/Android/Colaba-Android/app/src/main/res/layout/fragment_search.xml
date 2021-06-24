@@ -57,7 +57,9 @@
             app:srcCompat="@drawable/search_cross" />
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/textView31"
+            android:id="@+id/searchEditTextField"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="8dp"

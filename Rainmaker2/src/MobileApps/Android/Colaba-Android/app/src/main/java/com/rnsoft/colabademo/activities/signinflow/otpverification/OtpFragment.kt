@@ -11,10 +11,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.rnsoft.colabademo.activities.signinflow.phone.events.OtpSentEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -123,6 +125,8 @@ class OtpFragment: Fragment() {
                 navigateToDashBoardScreen()
         }
 
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, testCallback )
+
         checkForTimer()
         updateResendCount()
 
@@ -137,12 +141,17 @@ class OtpFragment: Fragment() {
     override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)
-        cTimer?.let {
-            it.cancel()
-        }
+        //cTimer?.cancel()
 
     }
 
+
+    private val testCallback:OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            cTimer?.cancel()
+            findNavController().popBackStack()
+        }
+    }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -186,6 +195,8 @@ class OtpFragment: Fragment() {
         if(verificationResponse.code == "200" &&  verificationResponse.data != null) {
             verifyButton.isEnabled = true
             tickImage.visibility = View.VISIBLE
+            resendLink.setOnClickListener(null)
+            resendLink.isClickable = false
             requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {}
         }
         else if(verificationResponse.message!=null) {
@@ -291,21 +302,30 @@ class OtpFragment: Fragment() {
     }
 
     private fun setUpTimerInitial(remainingSeconds:Int){
-        sharedPreferences.getString(ColabaConstant.otp_message , resources.getString(R.string.dummy_otp_message))?.let{ otpMessage ->
-            otpMessageTextView.text  =  otpMessage
-        }
+
         if(remainingSeconds>60){
             minutes =  (remainingSeconds / 60)
             seconds = (remainingSeconds - (minutes * 60))
+            if(seconds<0)
+                seconds = 0
             var totalSeconds:Long = (remainingSeconds * 1000).toLong()
             Log.e("all - ", "$remainingSeconds becomes $minutes min $seconds seconds")
+            setTimeMessageAsPerDesign(minutes)
             startTimer(totalSeconds)
         }
         else{
             minutes = 0
             seconds = remainingSeconds
+            if(seconds<0)
+                seconds = 0
+            setTimeMessageAsPerDesign(minutes)
             startTimer((remainingSeconds * 1000).toLong())
         }
+    }
+
+    private  fun setTimeMessageAsPerDesign(minutes:Int){
+        val designMsg = "Max resend attempts reached. Please try again after $minutes minutes"
+        otpMessageTextView.text  =  designMsg
     }
 
     private fun startTimer(totalSeconds:Long){
@@ -319,6 +339,7 @@ class OtpFragment: Fragment() {
                     Log.e("MinutesNow--", "Decreased")
                     minutes -= 1
                     seconds = 60
+                    setTimeMessageAsPerDesign(minutes)
                 }
                 else
                 if(minutes <= 0 && seconds <= 0){
@@ -328,7 +349,10 @@ class OtpFragment: Fragment() {
                     updateResendCount()
                 }
                 minuteTextView.text = "0"+minutes
-                secondTextView.text = ": "+seconds.toString()
+                if(seconds<10)
+                    secondTextView.text = ": 0"+seconds.toString()
+                else
+                    secondTextView.text = ": "+seconds.toString()
             }
             override fun onFinish() {
                 Log.e("Timer Finished-", "Completed...")

@@ -55,6 +55,11 @@
     </style>
 
 
+    <style name="Color1SwitchStyle">
+        <item name="colorControlActivated">@color/colaba_primary_color</item>
+        <item name="colorAccent">@color/colaba_primary_color</item>
+        <item name="colorControlNormal">@color/colaba_primary_color</item>
+    </style>
 
 
     <style name="TutorialBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">

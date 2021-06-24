@@ -6,7 +6,9 @@ object ColabaConstant {
 
         const val APP_PREFERENCES: String = "COLABA_PREFERENCES"
 
-        const val BASE_URL = "https://devmobilegateway.rainsoftfn.com:5002/"
+        //const val BASE_URL = "https://devmobilegateway.rainsoftfn.com:5002/"
+
+        //const val BASE_URL = "https://qamobilegateway.rainsoftfn.com/"
 
         //const val BASE_URL = "https://devmobilegateway.rainsoftfn.com:5002/api/mobile/identity/"
         //const val BASE_URL = "https://72.255.61.15:5002/api/mobile/identity/";

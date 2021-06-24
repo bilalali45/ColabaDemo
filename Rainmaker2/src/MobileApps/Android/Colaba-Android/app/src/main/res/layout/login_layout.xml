@@ -100,6 +100,8 @@
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/editTextEmail"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -155,6 +157,8 @@
                 android:layout_marginEnd="8dp"
                 android:background="@android:color/transparent"
                 android:ems="10"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
                 android:inputType="textPassword"
                 android:text=""
                 android:textColor="@color/grey_color_one"
@@ -184,6 +188,17 @@
                 app:layout_constraintBottom_toTopOf="@+id/password_separator"
                 app:layout_constraintEnd_toEndOf="@+id/password_separator"
                 app:srcCompat="@drawable/ic_eye_icon_svg" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/passwordHideImageShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/password_separator"
+                app:layout_constraintEnd_toEndOf="@+id/password_separator"
+                app:srcCompat="@drawable/password_hide_icon" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageView4"
@@ -237,6 +252,7 @@
                 android:id="@+id/switch1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:theme="@style/Color1SwitchStyle"
                 android:layout_marginEnd="26dp"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
@@ -312,6 +328,9 @@
         android:translationZ="10dp"
         android:indeterminateTint="@color/colaba_primary_color"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+
 
 
 
