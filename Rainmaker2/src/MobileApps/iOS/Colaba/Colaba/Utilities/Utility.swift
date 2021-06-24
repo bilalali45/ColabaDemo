@@ -78,6 +78,10 @@ struct Utility {
         return mainStoryboard.instantiateViewController(withIdentifier: "SearchViewController") as! SearchViewController
     }
     
+    static func getCreateNewPopupVC() -> CreateNewPopupViewController{
+        return mainStoryboard.instantiateViewController(withIdentifier: "CreateNewPopupViewController") as! CreateNewPopupViewController
+    }
+    
     static func checkDeviceAuthType() -> String {
          let authType = LocalAuthManager.shared.biometricType
             switch authType {

@@ -270,6 +270,19 @@ class CodeViewController: UIViewController {
                             self.btnVerify.isEnabled = true
                             
                         }
+                        else if (result["code"].stringValue == "429"){
+                            let remainingTimeoutSeconds = result["data"]["twoFaMaxAttemptsCoolTimeInSeconds"].intValue
+                            self.resendTotalTime = remainingTimeoutSeconds
+                            
+                            if (self.resendTotalTime > 0){
+                                self.codeLimit = 0
+                                self.changeUIAfterResendCode(message: message)
+                            }
+                            
+                            self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { reason in
+                                
+                            }
+                        }
                         else{
                             self.btnBack.isEnabled = true
                             self.btnResendCode.isEnabled = true

@@ -25,7 +25,7 @@ class PipelineMoreViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        mainView.layer.cornerRadius = 20
+        mainView.roundOnlyTopCorners(radius: 20)
         emailView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(emailViewTapped)))
         callView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(callViewTapped)))
         messageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(messageViewTapped)))
@@ -33,6 +33,10 @@ class PipelineMoreViewController: BaseViewController {
         documentsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(documentsViewTapped)))
         conversationsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(conversationViewTapped)))
         archiveView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(archiveViewTapped)))
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(backgroundTapped)))
+        let swipeDownGesture = UISwipeGestureRecognizer(target: self, action: #selector(backgroundTapped))
+        swipeDownGesture.direction = .down
+        self.view.addGestureRecognizer(swipeDownGesture)
         
     }
     
@@ -63,6 +67,10 @@ class PipelineMoreViewController: BaseViewController {
     }
     
     @objc func archiveViewTapped(){
+        self.dismissVC()
+    }
+    
+    @objc func backgroundTapped(){
         self.dismissVC()
     }
     

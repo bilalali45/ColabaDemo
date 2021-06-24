@@ -9,10 +9,37 @@ import UIKit
 
 class MainTabBarViewController: UITabBarController {
 
+    var newButton = UIButton()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBar.tintColor = Theme.getButtonBlueColor()
         self.tabBar.items![1].badgeValue = "1"
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(popupViewCloseTapped), name: NSNotification.Name(rawValue: kNotificationPopupViewCloseTapped), object: nil)
+        
+        let centerPoint = (self.view.frame.width / 2) - 30
+        newButton = UIButton(frame: CGRect(x: centerPoint, y: -30, width: 60, height: 60))
+        newButton.backgroundColor = Theme.getButtonBlueColor()
+        newButton.setImage(UIImage(named: "PlusButton"), for: .normal)
+        newButton.roundButtonWithShadow()
+        newButton.addTarget(self, action: #selector(newButtonTapped), for: .touchUpInside)
+        self.tabBar.addSubview(newButton)
+    }
+    
+    //MARK:- Methods and Actions
+    @objc func newButtonTapped(){
+        UIView.transition(with: self.newButton, duration: 0.5, options: .transitionCrossDissolve, animations: {
+            self.newButton.isHidden = true
+        })
+        let vc = Utility.getCreateNewPopupVC()
+        self.present(vc, animated: false, completion: nil)
+    }
+    
+    @objc func popupViewCloseTapped(){
+        UIView.transition(with: self.newButton, duration: 0.5, options: .transitionCrossDissolve, animations: {
+            self.newButton.isHidden = false
+        })
     }
    
 }

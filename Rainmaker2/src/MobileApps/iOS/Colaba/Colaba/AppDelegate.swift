@@ -24,30 +24,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func showInitialViewController(){
             
-        var isAlreadyRegisteredWithBiometric = ""
-        if let isBiometricRegistered = UserDefaults.standard.value(forKey: kIsUserRegisteredWithBiometric){
-            isAlreadyRegisteredWithBiometric = isBiometricRegistered as! String
-        }
-        
-        if (isAlreadyRegisteredWithBiometric == kYes && UserModel.getCurrentUser() != nil){
-            if (Utility.checkDeviceAuthType() == kTouchID){
-                loadFingerPrintViewController()
-            }
-            else if (Utility.checkDeviceAuthType() == kFaceID){
-                loadFaceLockViewController()
-            }
-            else{
-                loadLoginViewController()
-            }
-        }
-        else{
-            loadLoginViewController()
-        }
+//        var isAlreadyRegisteredWithBiometric = ""
+//        if let isBiometricRegistered = UserDefaults.standard.value(forKey: kIsUserRegisteredWithBiometric){
+//            isAlreadyRegisteredWithBiometric = isBiometricRegistered as! String
+//        }
+//
+//        if (isAlreadyRegisteredWithBiometric == kYes && UserModel.getCurrentUser() != nil){
+//            if (Utility.checkDeviceAuthType() == kTouchID){
+//                loadFingerPrintViewController()
+//            }
+//            else if (Utility.checkDeviceAuthType() == kFaceID){
+//                loadFaceLockViewController()
+//            }
+//            else{
+//                loadLoginViewController()
+//            }
+//        }
+//        else{
+//            loadLoginViewController()
+//        }
+        self.loadTabbarController()
         self.window?.makeKeyAndVisible()
     }
 
     func loadDashboardViewController(){
         let vc = Utility.getDashboardNavVC()
+        self.window?.rootViewController = vc
+    }
+    
+    func loadTabbarController(){
+        let vc = Utility.getMainTabBarVC()
         self.window?.rootViewController = vc
     }
     
