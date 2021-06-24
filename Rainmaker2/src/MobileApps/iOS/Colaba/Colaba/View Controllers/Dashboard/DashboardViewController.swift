@@ -27,10 +27,7 @@ class DashboardViewController: BaseViewController {
         super.viewDidLoad()
         //refreshAccessTokenWithRequest()
         setTopTabBar()
-//        floatingView.layer.cornerRadius = 8
-//        floatingView.addShadow()
-//        floatingApplicationView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(applicationViewTapped)))
-//        floatingContactView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(contactViewTapped)))
+        lblUsername.text = "Good evening, \(Utility.getUserFullName())"
     }
     
     //MARK:- Methods and Actions

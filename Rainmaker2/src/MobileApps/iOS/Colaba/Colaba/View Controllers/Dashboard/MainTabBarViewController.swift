@@ -19,12 +19,18 @@ class MainTabBarViewController: UITabBarController {
         NotificationCenter.default.addObserver(self, selector: #selector(popupViewCloseTapped), name: NSNotification.Name(rawValue: kNotificationPopupViewCloseTapped), object: nil)
         
         let centerPoint = (self.view.frame.width / 2) - 30
+        let centerPoint2 = (self.view.frame.width / 2) - 45
         newButton = UIButton(frame: CGRect(x: centerPoint, y: -30, width: 60, height: 60))
         newButton.backgroundColor = Theme.getButtonBlueColor()
         newButton.setImage(UIImage(named: "PlusButton"), for: .normal)
         newButton.roundButtonWithShadow()
         newButton.addTarget(self, action: #selector(newButtonTapped), for: .touchUpInside)
         self.tabBar.addSubview(newButton)
+        let hidedButton = UIButton(frame: CGRect(x: centerPoint2, y: -30, width: 90, height: 90))
+        hidedButton.backgroundColor = .clear
+        hidedButton.roundAllCorners(radius: 45)
+        hidedButton.addTarget(self, action: #selector(newButtonTapped), for: .touchUpInside)
+        self.tabBar.addSubview(hidedButton)
     }
     
     //MARK:- Methods and Actions

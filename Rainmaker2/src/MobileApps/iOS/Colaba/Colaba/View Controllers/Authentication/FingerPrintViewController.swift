@@ -47,11 +47,6 @@ class FingerPrintViewController: UIViewController {
                 }
                 UserDefaults.standard.set(kYes, forKey: kIsUserRegisteredWithBiometric)
                 self?.goToDashboard()
-                //self?.goToMainTabBar()
-//                self!.showPopup(message: "Your finger print recognized successfully.", popupState: .success, popupDuration: .custom(2)) { (reason) in
-//                    
-//                }
-                // You are successfully verified
             }
         }
     }

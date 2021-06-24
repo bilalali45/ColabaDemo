@@ -37,6 +37,8 @@ class CodeViewController: UIViewController {
     var totalAttemptsCount = 0 // Will get from API
     var phoneNumber = ""
     var resendTimeMessage = ""
+    var isTimerRunning = false
+    var lastTimerSaveMessage = ""
     
     //MARK:- View Controller Life Cycle
     override func viewDidLoad() {
@@ -44,6 +46,8 @@ class CodeViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.10) {
             self.setupViews()
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationGoBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
    
     //MARK:- Methods and Actions
@@ -62,6 +66,30 @@ class CodeViewController: UIViewController {
         if (self.resendTotalTime > 0){
             self.codeLimit = 0
             self.changeUIAfterResendCode(message: resendTimeMessage)
+        }
+    }
+    
+    @objc func applicationDidBecomeActive(){
+        if (isTimerRunning){
+            if let timer = self.resendTimer{
+                if let timerEndAt = UserDefaults.standard.value(forKey: "TimerEndAtNotification"){
+                    let currentTimeStamp = Int(Date().timeIntervalSince1970)
+                    let difference = (timerEndAt as! Int) - currentTimeStamp
+                    timer.invalidate()
+                    self.resendTotalTime = difference > 0 ? difference : 0
+                    self.codeLimit = 0
+                    self.changeUIAfterResendCode(message: lastTimerSaveMessage)
+                }
+            }
+            
+        }
+    }
+    
+    @objc func applicationGoBackground(){
+        if (isTimerRunning){
+            let currentTimestamp = Int(Date().timeIntervalSince1970)
+            let timerEndAt = currentTimestamp + self.resendTotalTime
+            UserDefaults.standard.setValue(timerEndAt, forKey: "TimerEndAtNotification")
         }
     }
     
@@ -91,6 +119,7 @@ class CodeViewController: UIViewController {
             
             //self.btnResendCode.isUserInteractionEnabled = false
            // self.btnResendCode.setTitleColor(.lightGray, for: .normal)
+            
             self.btnResendCode.isHidden = false
             self.btnResendCode.setTitle("Resend code (\(self.codeLimit) left)", for: .normal)
             self.lblDescription.text = "Didn't receive the code?"
@@ -112,6 +141,7 @@ class CodeViewController: UIViewController {
     }
     
     func startTimer(resendTime: Int) {
+        self.isTimerRunning = true
         self.resendTotalTime = resendTime
         self.resendTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
     }
@@ -128,6 +158,7 @@ class CodeViewController: UIViewController {
             if let timer = self.resendTimer {
                 timer.invalidate()
                 self.resendTimer = nil
+                self.isTimerRunning = false
                 
                 self.codeLimit = totalCodeLimit - totalAttemptsCount
                 self.btnResendCode.isHidden = false
@@ -196,6 +227,7 @@ class CodeViewController: UIViewController {
             
             DispatchQueue.main.async {
                 Utility.showOrHideLoader(shouldShow: false)
+                self.lastTimerSaveMessage = message
                 
                 if (status == .success){
                     print(result)
@@ -246,6 +278,7 @@ class CodeViewController: UIViewController {
                 
                 DispatchQueue.main.async {
                     Utility.showOrHideLoader(shouldShow: false)
+                    self.lastTimerSaveMessage = message
                     
                     if (status == .success){
                         
