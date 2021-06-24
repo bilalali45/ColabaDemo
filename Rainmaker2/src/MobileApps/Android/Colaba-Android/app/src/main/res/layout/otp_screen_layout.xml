@@ -37,9 +37,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="18dp"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="18dp"
 
 
         app:cardCornerRadius="8dp"
@@ -110,7 +110,7 @@
                 android:fontFamily="@font/rubik_regular"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
-
+                android:buttonTint="@color/colaba_primary_color"
                 android:text="@string/do_not_ask_again"
                 android:textColor="@color/grey_color_one"
                 android:textSize="14sp"
@@ -201,9 +201,11 @@
 
                     <TextView
                         android:id="@+id/timerMessageTextView"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
+                        android:maxLines="4"
+                        android:gravity="start"
                         android:text="@string/dummy_otp_message"
                         android:textColor="@color/grey_color_one"
                         android:textSize="14sp"
@@ -253,13 +255,23 @@
                         android:id="@+id/textView19"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
+                        android:layout_marginStart="68dp"
                         android:text="@string/sec"
                         android:textColor="@color/grey_color_three"
                         android:textSize="18sp"
                         app:fontFamily="@font/rubik_medium"
                         app:layout_constraintBottom_toBottomOf="@+id/textView17"
-                        app:layout_constraintStart_toEndOf="@+id/secondTextView" />
+                        app:layout_constraintStart_toEndOf="@+id/textView17" />
+
+                    <ImageView
+                        android:id="@+id/imageView12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="13dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/secondTextView"
+                        app:layout_constraintStart_toEndOf="@+id/textView19"
+                        app:layout_constraintTop_toTopOf="@+id/secondTextView"
+                        app:srcCompat="@drawable/timer_icon" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

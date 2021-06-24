@@ -82,7 +82,7 @@
     <string name="authenticate_with_biometric">Authenticate with Biometric</string>
     <string name="user_your_biometric">Use your biometric to login to Colaba Mobile</string>
 
-    <string name="do_not_ask_again"> Don\'t ask again on this computer. </string>
+    <string name="do_not_ask_again"> Don\'t ask again on this device. </string>
     <string name="password_assistance">Password Assistance </string>
     <string name="enter_your_email">Enter your email to reset your password. </string>
     <string name="almost_finished"> Almost Finished </string>

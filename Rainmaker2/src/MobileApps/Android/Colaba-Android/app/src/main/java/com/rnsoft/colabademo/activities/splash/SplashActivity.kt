@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -22,20 +23,23 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.splash_layout)
         Log.e("Splash", "loaded")
         activityScope.launch {
+
+            //Toast.makeText(this@SplashActivity, BuildConfig.BASE_URL, Toast.LENGTH_LONG).show()
+
             if (sharedPreferences.getBoolean(ColabaConstant.IS_LOGGED_IN, false)
                 && sharedPreferences.getBoolean(ColabaConstant.isbiometricEnabled, false)) {
-                delay(800)
-                startActivity(Intent(this@SplashActivity, DashBoardActivity::class.java))
+                delay(1000)
+                startActivity(Intent(this@SplashActivity, WelcomeActivity::class.java))
             }
             else if(sharedPreferences.getBoolean(ColabaConstant.IS_LOGGED_IN, false)){
-                delay(800)
-                startActivity(Intent(this@SplashActivity, DashBoardActivity::class.java))
+                delay(1000)
+                startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
             }
             else
 
             {
-                delay(800)
-                startActivity(Intent(this@SplashActivity, DashBoardActivity::class.java))
+                delay(1000)
+                startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
             }
             finish()
         }

@@ -36,7 +36,7 @@ class TokenAuthenticator ( private val sharedPreferences: SharedPreferences) : A
         {
             // Refresh your access_token using a synchronous api request
             val retrofitInstance = Retrofit.Builder()
-                .baseUrl(ColabaConstant.BASE_URL)
+                .baseUrl(BuildConfig.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
             val testAPI = retrofitInstance.create(ServerApi::class.java)

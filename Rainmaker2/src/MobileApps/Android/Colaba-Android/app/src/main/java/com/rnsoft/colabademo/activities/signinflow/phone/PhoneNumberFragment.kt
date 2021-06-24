@@ -1,14 +1,17 @@
 package com.rnsoft.colabademo
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
@@ -21,6 +24,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class PhoneNumberFragment : Fragment() {
@@ -53,6 +57,15 @@ class PhoneNumberFragment : Fragment() {
         loading = root.findViewById<ProgressBar>(R.id.loader_phone_screen)
         phoneNumberError = root.findViewById<TextView>(R.id.phoneErrorTextView)
         phoneNumber = root.findViewById<EditText>(R.id.editTextPhoneNumber)
+
+        val locale = requireContext().resources.configuration.locale.country
+        Log.e("get-country", locale)
+
+        phoneNumber.addTextChangedListener(PhoneTextFormatter(phoneNumber, "(###) ###-####"))
+        //phoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher("US"))
+
+
+
         phoneNumber.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -61,15 +74,36 @@ class PhoneNumberFragment : Fragment() {
             }
             override fun afterTextChanged(s: Editable) {
                 val str: String = phoneNumber.text.toString()
-                if (str.length == 3 && len < str.length) {
-                    phoneNumber.setText("("+phoneNumber.text.toString() + ") ");
-                    phoneNumber.setSelection(phoneNumber.text.length);
+                /*
+                if (str.length >= 3 && len < str.length) {
+                    if(str.contains("("))
+                        phoneNumber.setText(phoneNumber.text.toString() + ") ");
+                    else
+                        phoneNumber.setText("("+phoneNumber.text.toString() + ") ")
+                    phoneNumber.setSelection(phoneNumber.text.length)
                 }
                 if (str.length == 9 && len < str.length) {
                     phoneNumber.append("-")
                 }
+
+                 */
                 continueButton.isEnabled = str.length == 14
             }
+        })
+
+
+
+        phoneNumber.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                //Perform Code
+                phoneNumber.hideKeyboard()
+                val str: String = phoneNumber.text.toString()
+                if(str.length == 14)
+                    continueButton.performClick()
+                return@OnKeyListener true
+            }
+
+            false
         })
 
         if (sharedPreferences.getInt(ColabaConstant.tenantTwoFaSetting, 0) == 3 &&
@@ -101,7 +135,10 @@ class PhoneNumberFragment : Fragment() {
     }
 
     private fun showToast(toastMessage: String) = Toast.makeText(requireActivity().applicationContext, toastMessage, Toast.LENGTH_LONG).show()
-
+    private fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
+    }
 
     private fun navigateToDashboardScreen() {
         val intent = Intent(requireActivity(), DashBoardActivity::class.java)

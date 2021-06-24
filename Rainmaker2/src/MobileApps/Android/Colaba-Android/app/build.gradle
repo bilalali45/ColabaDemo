@@ -25,7 +25,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASE_URL", '"https://qamobilegateway.rainsoftfn.com/"'
         }
+
+        debug {
+            buildConfigField "String", "BASE_URL", '"https://devmobilegateway.rainsoftfn.com:5002/"'
+        }
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

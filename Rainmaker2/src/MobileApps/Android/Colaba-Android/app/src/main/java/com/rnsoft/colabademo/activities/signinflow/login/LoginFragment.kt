@@ -41,6 +41,8 @@ class LoginFragment : Fragment() {
 
 
     private lateinit var passwordImageView:AppCompatImageView
+    private lateinit var passwordHideImageView:AppCompatImageView
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,6 +60,7 @@ class LoginFragment : Fragment() {
         emailError = root.findViewById<AppCompatTextView>(R.id.emailErrorTextView)
         passwordError = root.findViewById<AppCompatTextView>(R.id.passwordErrorTextView)
         passwordImageView = root.findViewById<AppCompatImageView>(R.id.passwordImageShow)
+        passwordHideImageView = root.findViewById<AppCompatImageView>(R.id.passwordHideImageShow)
         biometricSwitch = root.findViewById<SwitchCompat>(R.id.switch1)
 
         forgotPasswordLink = root.findViewById<AppCompatTextView>(R.id.forgotPasswordLink)
@@ -76,15 +79,17 @@ class LoginFragment : Fragment() {
         }
 
         passwordImageView.setOnClickListener{
-            if(passwordBoolean) {
-                passwordField.transformationMethod = null
-                passwordField.setSelection(passwordField.length());
-            }
-            else{
-                passwordField.transformationMethod = PasswordTransformationMethod()
-                passwordField.setSelection(passwordField.length());
-            }
-            passwordBoolean = !passwordBoolean
+            passwordField.transformationMethod = null
+            passwordField.setSelection(passwordField.length());
+            passwordImageView.visibility = View.INVISIBLE
+            passwordHideImageView.visibility = View.VISIBLE
+        }
+
+        passwordHideImageView.setOnClickListener{
+            passwordField.transformationMethod = PasswordTransformationMethod()
+            passwordField.setSelection(passwordField.length());
+            passwordHideImageView.visibility = View.INVISIBLE
+            passwordImageView.visibility = View.VISIBLE
         }
 
         goldfinger = Goldfinger.Builder(requireActivity())
