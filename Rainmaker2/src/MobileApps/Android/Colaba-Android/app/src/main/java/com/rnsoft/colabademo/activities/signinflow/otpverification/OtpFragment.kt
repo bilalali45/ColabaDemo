@@ -104,8 +104,8 @@ class OtpFragment: Fragment() {
         })
 
         resendLink.setOnClickListener {
-            sharedPreferences.getString(ColabaConstant.phoneNumber,"")?.let { phoneNum->
-                sharedPreferences.getString(ColabaConstant.token,"")?.let { intermediateToken ->
+            sharedPreferences.getString(AppConstant.phoneNumber,"")?.let { phoneNum->
+                sharedPreferences.getString(AppConstant.token,"")?.let { intermediateToken ->
                     restoreBtnState = verifyButton.isEnabled
                     otpTextFieldState = otpEditText.isEnabled
                     disabledButtons()
@@ -116,7 +116,7 @@ class OtpFragment: Fragment() {
 
         verifyButton.setOnClickListener {
             if(notAskChekBox.isChecked) {
-                sharedPreferences.getString(ColabaConstant.token,"")?.let {
+                sharedPreferences.getString(AppConstant.token,"")?.let {
                     disabledButtons()
                     otpViewModel.notAskForOtp(it)
                 }
@@ -223,7 +223,7 @@ class OtpFragment: Fragment() {
         Log.e("notAskForOtpResponse==", notAskForOtpResponse.toString())
         if (notAskForOtpResponse.code == "200" && notAskForOtpResponse.status=="OK") {
             notAskForOtpResponse.notAskForData?.dontAskTwoFaIdentifier?.let {
-                spEditor.putString(ColabaConstant.dontAskTwoFaIdentifier, it).apply()
+                spEditor.putString(AppConstant.dontAskTwoFaIdentifier, it).apply()
             }
             navigateToDashBoardScreen()
         }
@@ -244,8 +244,8 @@ class OtpFragment: Fragment() {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private fun checkForTimer(){
-        sharedPreferences.getString(ColabaConstant.otpDataJson, "").let {
-            val test = sharedPreferences.getString(ColabaConstant.otpDataJson, "")
+        sharedPreferences.getString(AppConstant.otpDataJson, "").let {
+            val test = sharedPreferences.getString(AppConstant.otpDataJson, "")
             val obj = Gson().fromJson(test, OtpData::class.java)
 
             if(obj!=null) {
@@ -284,10 +284,10 @@ class OtpFragment: Fragment() {
     }
 
     private fun updateResendCount(){
-        sharedPreferences.getString(ColabaConstant.otpDataJson, "")?.let { otpDataReceived->
+        sharedPreferences.getString(AppConstant.otpDataJson, "")?.let { otpDataReceived->
             val obj = Gson().fromJson(otpDataReceived, OtpData::class.java)
             if (obj != null) {
-                sharedPreferences.getInt(ColabaConstant.maxOtpSendAllowed, 5).let { maxOtpSendAllowed->
+                sharedPreferences.getInt(AppConstant.maxOtpSendAllowed, 5).let { maxOtpSendAllowed->
                     if(obj.attemptsCount!=null){
                         if(obj.attemptsCount!=0)
                             attemptLeft = maxOtpSendAllowed - obj.attemptsCount
@@ -324,7 +324,10 @@ class OtpFragment: Fragment() {
     }
 
     private  fun setTimeMessageAsPerDesign(minutes:Int){
-        val designMsg = "Max resend attempts reached. Please try again after $minutes minutes"
+        val designMsg = if(minutes == 0)
+            "Max resend attempts reached. Please try again after less then a minute."
+        else
+            "Max resend attempts reached. Please try again after $minutes minutes"
         otpMessageTextView.text  =  designMsg
     }
 

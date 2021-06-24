@@ -1,6 +1,10 @@
 package com.rnsoft.colabademo
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
@@ -8,14 +12,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import android.widget.CompoundButton
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+
 import co.infinum.goldfinger.Goldfinger
+import com.rnsoft.colabademo.globalclasses.AppSetting
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -34,14 +39,14 @@ class LoginFragment : Fragment() {
     private lateinit var userEmailField: AppCompatEditText
     private lateinit var passwordField: AppCompatEditText
     private lateinit var loading: ProgressBar
-    private lateinit var biometricSwitch:SwitchCompat
-    private lateinit var forgotPasswordLink:AppCompatTextView
-    private lateinit var loginButton:AppCompatButton
-    private var passwordBoolean:Boolean = true
+    private lateinit var biometricSwitch: SwitchCompat
+    private lateinit var forgotPasswordLink: AppCompatTextView
+    private lateinit var loginButton: AppCompatButton
+    private var passwordBoolean: Boolean = true
 
 
-    private lateinit var passwordImageView:AppCompatImageView
-    private lateinit var passwordHideImageView:AppCompatImageView
+    private lateinit var passwordImageView: AppCompatImageView
+    private lateinit var passwordHideImageView: AppCompatImageView
 
 
     override fun onCreateView(
@@ -51,6 +56,7 @@ class LoginFragment : Fragment() {
     ): View? {
         root = inflater.inflate(R.layout.login_layout, container, false)
         setupFragment()
+        //registerBroadcastReceiver()
         return root
     }
 
@@ -71,21 +77,21 @@ class LoginFragment : Fragment() {
             loading.visibility = View.VISIBLE
             toggleButtonState(false)
             resetToInitialPosition()
-            loginViewModel.login(userEmailField.text.toString(), passwordField.text.toString(), biometricSwitch.isChecked)
+            loginViewModel.login(userEmailField.text.toString(), passwordField.text.toString())
         }
 
         forgotPasswordLink.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.forgot_password_id, null)
         }
 
-        passwordImageView.setOnClickListener{
+        passwordImageView.setOnClickListener {
             passwordField.transformationMethod = null
             passwordField.setSelection(passwordField.length());
             passwordImageView.visibility = View.INVISIBLE
             passwordHideImageView.visibility = View.VISIBLE
         }
 
-        passwordHideImageView.setOnClickListener{
+        passwordHideImageView.setOnClickListener {
             passwordField.transformationMethod = PasswordTransformationMethod()
             passwordField.setSelection(passwordField.length());
             passwordHideImageView.visibility = View.INVISIBLE
@@ -100,12 +106,12 @@ class LoginFragment : Fragment() {
             if (isChecked) {
                 if (goldfinger.canAuthenticate())
                     Log.e("Yes", "Let Toggle On...")
-                else
-                {
+                else {
                     biometricSwitch.isChecked = false
                     showToast(R.string.biometric_check)
                 }
             }
+            AppSetting.biometricEnabled = biometricSwitch.isChecked
         }
 
 
@@ -145,6 +151,7 @@ class LoginFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+        //unregisterReceiver()
         EventBus.getDefault().unregister(this)
     }
 
@@ -175,13 +182,45 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun toggleButtonState(bool:Boolean){
+    private fun toggleButtonState(bool: Boolean) {
         forgotPasswordLink.isEnabled = bool
         loginButton.isEnabled = bool
     }
-
-
 }
+
+
+    /*
+    private var mPowerKeyReceiver: BroadcastReceiver? = null
+
+    private fun registerBroadcastReceiver() {
+        val theFilter = IntentFilter()
+        /** System Defined Broadcast  */
+        theFilter.addAction(Intent.ACTION_SCREEN_ON)
+        theFilter.addAction(Intent.ACTION_SCREEN_OFF)
+        mPowerKeyReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent) {
+                val strAction = intent.action
+                if (strAction == Intent.ACTION_SCREEN_OFF || strAction == Intent.ACTION_SCREEN_ON) {
+                    // > Your playground~!
+                    Log.e("Screen-","ON-OFF LOCK---")
+                }
+            }
+        }
+        requireActivity().applicationContext
+            .registerReceiver(mPowerKeyReceiver, theFilter)
+    }
+
+    private fun unregisterReceiver() {
+            try {
+                requireActivity().applicationContext
+                    .unregisterReceiver(mPowerKeyReceiver)
+            } catch (e: IllegalArgumentException) {
+                mPowerKeyReceiver = null
+            }
+    }
+
+
+     */
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////

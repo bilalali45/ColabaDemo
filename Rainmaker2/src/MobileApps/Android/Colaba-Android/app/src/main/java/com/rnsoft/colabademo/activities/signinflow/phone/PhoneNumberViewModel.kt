@@ -3,7 +3,6 @@ package com.rnsoft.colabademo
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rnsoft.colabademo.activities.signinflow.phone.events.OtpSentEvent
 import com.rnsoft.colabademo.activities.signinflow.phone.events.SkipEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,7 +20,7 @@ class PhoneNumberViewModel @Inject constructor(private val phoneNumberRepo: Phon
 
     fun skipTwoFactor() {
         viewModelScope.launch {
-            val genericResult = sharedPreferences.getString(ColabaConstant.token, "")?.let {
+            val genericResult = sharedPreferences.getString(AppConstant.token, "")?.let {
                 phoneNumberRepo.skipTwoFactorAuthentication(
                     it
                 )

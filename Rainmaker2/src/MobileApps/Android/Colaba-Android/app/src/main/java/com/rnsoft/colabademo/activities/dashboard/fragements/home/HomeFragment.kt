@@ -73,7 +73,7 @@ class HomeFragment : Fragment() {
         }
 
         filterImageView.setOnClickListener{
-            //setStyle(DialogFragment.STYLE_NORMAL, R.style.TutorialBottomSheetDialog)
+            //
             FilterBottomSheetDialogFragment.newInstance().show(childFragmentManager, FilterBottomSheetDialogFragment::class.java.canonicalName)
         }
 

@@ -2,8 +2,7 @@ package com.rnsoft.colabademo
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
-import com.google.gson.Gson
+import com.rnsoft.colabademo.globalclasses.AppSetting
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -24,25 +23,30 @@ constructor(
 
     private fun storeLoggedInUserInfo(data: Data) {
 
-        sharedPref.putString(ColabaConstant.token, data.token).apply()
+        if(AppSetting.biometricEnabled) {
+            sharedPref.putBoolean(AppConstant.isbiometricEnabled, true).apply()
+            AppSetting.biometricEnabled = false
+        }
 
-        sharedPref.putString(ColabaConstant.refreshToken, data.refreshToken)
+        sharedPref.putString(AppConstant.token, data.token).apply()
+
+        sharedPref.putString(AppConstant.refreshToken, data.refreshToken)
             .apply()
-        sharedPref.putInt(ColabaConstant.userProfileId, data.userProfileId)
+        sharedPref.putInt(AppConstant.userProfileId, data.userProfileId)
             .apply()
-        sharedPref.putString(ColabaConstant.userName, data.userName).apply()
-        sharedPref.putString(ColabaConstant.validFrom, data.validFrom).apply()
-        sharedPref.putString(ColabaConstant.validTo, data.validTo).apply()
-        sharedPref.putInt(ColabaConstant.tokenType, data.tokenType).apply()
-        sharedPref.putString(ColabaConstant.tokenTypeName, data.tokenTypeName)
+        sharedPref.putString(AppConstant.userName, data.userName).apply()
+        sharedPref.putString(AppConstant.validFrom, data.validFrom).apply()
+        sharedPref.putString(AppConstant.validTo, data.validTo).apply()
+        sharedPref.putInt(AppConstant.tokenType, data.tokenType).apply()
+        sharedPref.putString(AppConstant.tokenTypeName, data.tokenTypeName)
             .apply()
         sharedPref.putString(
-            ColabaConstant.refreshTokenValidTo,
+            AppConstant.refreshTokenValidTo,
             data.refreshTokenValidTo
         ).apply()
 
-        if(data.tokenTypeName == ColabaConstant.AccessToken)
-            sharedPref.putBoolean(ColabaConstant.IS_LOGGED_IN, true).apply() // mark user as logged in completely...
+        if(data.tokenTypeName == AppConstant.AccessToken)
+            sharedPref.putBoolean(AppConstant.IS_LOGGED_IN, true).apply() // mark user as logged in completely...
     }
 
 

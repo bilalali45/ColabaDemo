@@ -21,8 +21,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.net.CookieManager
-import java.net.CookiePolicy
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -51,7 +49,7 @@ class AppModule {
 
              return EncryptedSharedPreferences.create(
                 context,
-                 ColabaConstant.APP_PREFERENCES,
+                 AppConstant.APP_PREFERENCES,
                 masterKey, // masterKey created above
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM)

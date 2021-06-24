@@ -1,9 +1,7 @@
 package com.rnsoft.colabademo
 
-import android.app.KeyguardManager
 import android.content.Intent
 import android.content.SharedPreferences
-import android.hardware.fingerprint.FingerprintManager
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -37,7 +35,7 @@ class WelcomeActivity : AppCompatActivity() {
         withPasswordTextView    =   findViewById(R.id.withPasswordTextView)
         fingerPrintImageView    =   findViewById(R.id.fingerPrintImage)
 
-        sharedPreferences.getString(ColabaConstant.userName, "Default User")?.let {
+        sharedPreferences.getString(AppConstant.userName, "Default User")?.let {
             username.text = it
         }
 

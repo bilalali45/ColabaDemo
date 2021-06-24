@@ -29,7 +29,8 @@ android {
         }
 
         debug {
-            buildConfigField "String", "BASE_URL", '"https://devmobilegateway.rainsoftfn.com:5002/"'
+            //buildConfigField "String", "BASE_URL", '"https://devmobilegateway.rainsoftfn.com:5002/"'
+            buildConfigField "String", "BASE_URL", '"https://qamobilegateway.rainsoftfn.com/"'
         }
 
     }

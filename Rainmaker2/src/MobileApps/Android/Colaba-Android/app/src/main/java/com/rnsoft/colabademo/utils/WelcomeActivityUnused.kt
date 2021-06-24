@@ -16,7 +16,7 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricPrompt.PromptInfo
 import androidx.core.content.ContextCompat
-import com.rnsoft.colabademo.ColabaConstant
+import com.rnsoft.colabademo.AppConstant
 import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.SignUpFlowActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,7 +47,7 @@ class WelcomeActivityUnused : AppCompatActivity() {
         withPasswordTextView    =   findViewById(R.id.withPasswordTextView)
         fingerPrintImageView    =   findViewById(R.id.fingerPrintImage)
 
-        sharedPreferences.getString(ColabaConstant.userName, "Default User")?.let {
+        sharedPreferences.getString(AppConstant.userName, "Default User")?.let {
             username.text = it
         }
 

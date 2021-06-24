@@ -17,8 +17,8 @@ class OtpViewModel @Inject constructor(private val otpRepo: OtpRepo) :
     lateinit var sharedPreferences: SharedPreferences
 
     fun verifyOtp(otpCode:Int) {
-        sharedPreferences.getString(ColabaConstant.token, "")?.let { intermediateToken ->
-            sharedPreferences.getString(ColabaConstant.phoneNumber, "")?.let { phoneNumber ->
+        sharedPreferences.getString(AppConstant.token, "")?.let { intermediateToken ->
+            sharedPreferences.getString(AppConstant.phoneNumber, "")?.let { phoneNumber ->
                 viewModelScope.launch {
                     val genericResult = otpRepo.startOtpVerification(intermediateToken, phoneNumber, otpCode )
                     if (genericResult is Result.Success) {
@@ -31,7 +31,7 @@ class OtpViewModel @Inject constructor(private val otpRepo: OtpRepo) :
     }
 
     fun notAskForOtp(token:String){
-        sharedPreferences.getString(ColabaConstant.token, "")?.let {
+        sharedPreferences.getString(AppConstant.token, "")?.let {
             viewModelScope.launch {
                 val genericResult = otpRepo.notAskForOtpAgain(token)
                 if (genericResult is Result.Success) {
