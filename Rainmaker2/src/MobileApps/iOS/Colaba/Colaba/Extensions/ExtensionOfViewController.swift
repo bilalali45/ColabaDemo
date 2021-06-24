@@ -37,15 +37,9 @@ extension UIViewController{
         UIApplication.shared.windows.first?.makeKeyAndVisible()
     }
     
-    func goToMainTabBar(){
-        let vc = Utility.getMainTabBarVC()
-        UIApplication.shared.windows.first?.rootViewController = vc
-        UIApplication.shared.windows.first?.makeKeyAndVisible()
-    }
-    
     func goToDashboard(){
-       // let vc = Utility.getDashboardVC()
-        let vc = Utility.getDummyDashboardVC()
+        //let vc = Utility.getDummyDashboardVC()
+        let vc = Utility.getMainTabBarVC()
         UIApplication.shared.windows.first?.rootViewController = vc
         UIApplication.shared.windows.first?.makeKeyAndVisible()
     }

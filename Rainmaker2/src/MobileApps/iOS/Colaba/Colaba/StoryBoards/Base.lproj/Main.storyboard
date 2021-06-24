@@ -306,6 +306,7 @@
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="dxy-m9-hrY">
                                 <rect key="frame" x="210" y="65.5" width="51" height="31"/>
+                                <color key="onTintColor" name="ButtonBlueColor"/>
                                 <connections>
                                     <action selector="assignToMeSwitchChanged:" destination="X8g-IS-oli" eventType="valueChanged" id="d2d-78-0hl"/>
                                 </connections>

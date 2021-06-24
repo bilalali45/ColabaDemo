@@ -118,4 +118,16 @@ struct Utility {
         }
         return ""
     }
+    
+    static func getUserFullName() -> String{
+        if let user = UserModel.getCurrentUser(){
+            return "\(user.firstName) \(user.lastName)"
+        }
+        return ""
+    }
+    
+//    static func getAddress() -> String{
+//        let address = street unit city state zip country
+//        return ""
+//    }
 }
