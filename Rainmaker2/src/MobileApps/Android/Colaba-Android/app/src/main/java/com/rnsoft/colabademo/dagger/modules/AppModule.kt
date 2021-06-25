@@ -21,8 +21,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.net.CookieManager
-import java.net.CookiePolicy
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -51,7 +49,7 @@ class AppModule {
 
              return EncryptedSharedPreferences.create(
                 context,
-                 ColabaConstant.APP_PREFERENCES,
+                 AppConstant.APP_PREFERENCES,
                 masterKey, // masterKey created above
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM)
@@ -75,7 +73,10 @@ class AppModule {
         @Provides
         @Singleton
         //fun provideOkHttp(tokenAuthenticator: TokenAuthenticator): OkHttpClient {
-        fun provideOkHttp( @ApplicationContext context: Context, tokenAuthenticator : TokenAuthenticator): OkHttpClient {
+        fun provideOkHttp( @ApplicationContext context: Context,
+                           tokenAuthenticator : TokenAuthenticator,
+                           networkConnectionInterceptor: NetworkConnectionInterceptor): OkHttpClient {
+
             //val interceptor = HttpLoggingInterceptor()
             //interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
             //val newLoginInterceptor = NewLoginInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
@@ -99,13 +100,20 @@ class AppModule {
                 .retryOnConnectionFailure(true)
                 //.addInterceptor(LoggingInterceptor())
                 //.addInterceptor(interceptor)
-                .addNetworkInterceptor(httpLoggingInterceptor)
-                .cookieJar(testCookieJar)
+                //.addNetworkInterceptor(httpLoggingInterceptor)
+                .addInterceptor(networkConnectionInterceptor)
+                //.cookieJar(testCookieJar)
                 .connectTimeout(60,TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .build()
         }
 
+
+        @Provides
+        @Singleton
+        fun provideNetworkConnectionInterceptor( @ApplicationContext context: Context): NetworkConnectionInterceptor {
+            return NetworkConnectionInterceptor(context)
+        }
 
 
 

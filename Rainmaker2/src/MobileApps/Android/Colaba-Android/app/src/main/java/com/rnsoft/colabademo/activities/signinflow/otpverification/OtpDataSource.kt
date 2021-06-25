@@ -12,6 +12,10 @@ class OtpDataSource @Inject constructor(private val serverApi: ServerApi)
             Log.e("otp-", otpResponse.toString())
             Result.Success(otpResponse)
         } catch (e: Throwable) {
+            if(e is NoConnectivityException) {
+                // show No Connectivity message to user or do whatever you want.
+                Log.e("network", "issues...")
+            }
             Result.Error(IOException("Error logging in", e))
         }
     }

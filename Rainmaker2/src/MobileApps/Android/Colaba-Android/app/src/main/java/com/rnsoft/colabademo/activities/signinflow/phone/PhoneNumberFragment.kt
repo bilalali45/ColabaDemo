@@ -106,8 +106,8 @@ class PhoneNumberFragment : Fragment() {
             false
         })
 
-        if (sharedPreferences.getInt(ColabaConstant.tenantTwoFaSetting, 0) == 3 &&
-            ColabaConstant.userTwoFaSetting == null
+        if (sharedPreferences.getInt(AppConstant.tenantTwoFaSetting, 0) == 3 &&
+            AppConstant.userTwoFaSetting == null
         )
             skipLink.visibility = View.VISIBLE
 
@@ -120,7 +120,7 @@ class PhoneNumberFragment : Fragment() {
 
         continueButton.setOnClickListener {
             phoneNumberError.text =""
-            sharedPreferences.getString(ColabaConstant.token, "")?.let {
+            sharedPreferences.getString(AppConstant.token, "")?.let {
                 loading.visibility = View.VISIBLE
                 toggleButtonState(false)
                 signUpFlowViewModel.sendOtpToPhone(intermediateToken = it, phoneNumber = phoneNumber.text.toString())

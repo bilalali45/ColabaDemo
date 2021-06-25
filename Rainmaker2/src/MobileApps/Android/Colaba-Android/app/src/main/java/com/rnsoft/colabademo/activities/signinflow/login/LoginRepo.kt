@@ -15,16 +15,14 @@ constructor(
    suspend fun validateLoginCredentials(
         userEmail: String,
         password: String,
-        enableBiometric:Boolean,
         dontAskTwoFaIdentifier:String=""
 
     ): Result<LoginResponse> {
-        if(enableBiometric)
-            spEditor.putBoolean(ColabaConstant.isbiometricEnabled, true).apply()
-
+        spEditor.putBoolean(AppConstant.isbiometricEnabled, false).apply()
         val genericResult = dataSource.login(userEmail, password , dontAskTwoFaIdentifier )
         if (genericResult is Result.Success) {
             genericResult.data.data?.let { storeLoggedInUserInfo(it) }
+
         }
         return genericResult
     }
@@ -44,7 +42,7 @@ constructor(
     }
 
     suspend fun otpSettingFromService(intermediateToken:String): Result<OtpSettingResponse>{
-        spEditor.putInt(ColabaConstant.maxOtpSendAllowed, 5).apply() // Setting default value.........
+        spEditor.putInt(AppConstant.maxOtpSendAllowed, 5).apply() // Setting default value.........
         val result = dataSource.getOtpSetting(intermediateToken)
         if (result is Result.Success)
             storeOtpSetting(result.data)
@@ -54,11 +52,11 @@ constructor(
     private fun storeOtpSetting(otpSettingResponse: OtpSettingResponse){
         otpSettingResponse.otpSettingData?.let { settingData ->
             settingData.maxTwoFaSendAllowed?.let {
-                spEditor.putInt(ColabaConstant.maxOtpSendAllowed, it).apply()
+                spEditor.putInt(AppConstant.maxOtpSendAllowed, it).apply()
             }
 
             settingData.twoFaResendCoolTimeInMinutes?.let {
-                spEditor.putInt(ColabaConstant.twoFaResendCoolTimeInMinutes, it).apply()
+                spEditor.putInt(AppConstant.twoFaResendCoolTimeInMinutes, it).apply()
             }
         }
     }
@@ -66,32 +64,32 @@ constructor(
 
     private fun storeLoggedInUserInfo(data: Data) {
 
-        spEditor.putString(ColabaConstant.token, data.token).apply()
+        spEditor.putString(AppConstant.token, data.token).apply()
 
-        spEditor.putString(ColabaConstant.refreshToken, data.refreshToken)
+        spEditor.putString(AppConstant.refreshToken, data.refreshToken)
             .apply()
-        spEditor.putInt(ColabaConstant.userProfileId, data.userProfileId)
+        spEditor.putInt(AppConstant.userProfileId, data.userProfileId)
             .apply()
-        spEditor.putString(ColabaConstant.userName, data.userName).apply()
-        spEditor.putString(ColabaConstant.validFrom, data.validFrom).apply()
-        spEditor.putString(ColabaConstant.validTo, data.validTo).apply()
-        spEditor.putInt(ColabaConstant.tokenType, data.tokenType).apply()
-        spEditor.putString(ColabaConstant.tokenTypeName, data.tokenTypeName)
+        spEditor.putString(AppConstant.userName, data.userName).apply()
+        spEditor.putString(AppConstant.validFrom, data.validFrom).apply()
+        spEditor.putString(AppConstant.validTo, data.validTo).apply()
+        spEditor.putInt(AppConstant.tokenType, data.tokenType).apply()
+        spEditor.putString(AppConstant.tokenTypeName, data.tokenTypeName)
             .apply()
         spEditor.putString(
-            ColabaConstant.refreshTokenValidTo,
+            AppConstant.refreshTokenValidTo,
             data.refreshTokenValidTo
         ).apply()
 
-        if(data.tokenTypeName == ColabaConstant.AccessToken)
-            spEditor.putBoolean(ColabaConstant.IS_LOGGED_IN, true).apply() // mark user as logged in completely...
+        if(data.tokenTypeName == AppConstant.AccessToken)
+            spEditor.putBoolean(AppConstant.IS_LOGGED_IN, true).apply() // mark user as logged in completely...
     }
 
     private fun storeTenantInfo(tenantConfigurationResponse: TenantConfigurationResponse) {
 
-       ColabaConstant.userTwoFaSetting = tenantConfigurationResponse.tenantData.userTwoFaSetting
+       AppConstant.userTwoFaSetting = tenantConfigurationResponse.tenantData.userTwoFaSetting
         spEditor.putInt(
-            ColabaConstant.tenantTwoFaSetting,
+            AppConstant.tenantTwoFaSetting,
             tenantConfigurationResponse.tenantData.tenantTwoFaSetting
         ).apply()
     }
@@ -100,13 +98,13 @@ constructor(
 
         sendTwoFaResponse.twoFaData?.let { twoFaData->
             twoFaData.phoneNumber?.let {
-                spEditor.putString(ColabaConstant.phoneNumber, it)
+                spEditor.putString(AppConstant.phoneNumber, it)
                     .apply()
             }
         }
 
         sendTwoFaResponse.message?.let {
-            spEditor.putString(ColabaConstant.otp_message, sendTwoFaResponse.message)
+            spEditor.putString(AppConstant.otp_message, sendTwoFaResponse.message)
                 .apply()
         }
 
@@ -114,8 +112,8 @@ constructor(
         sendTwoFaResponse.twoFaData?.let {
             val gson = Gson()
             val otpData = gson.toJson(sendTwoFaResponse.twoFaData)
-            spEditor.putString(ColabaConstant.otpDataJson, otpData).apply()
-            spEditor.putInt(ColabaConstant.secondsCount, 0).apply()
+            spEditor.putString(AppConstant.otpDataJson, otpData).apply()
+            spEditor.putInt(AppConstant.secondsCount, 0).apply()
         }
 
     }

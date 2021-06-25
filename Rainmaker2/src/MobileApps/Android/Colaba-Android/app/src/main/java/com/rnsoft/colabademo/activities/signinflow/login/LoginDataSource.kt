@@ -27,6 +27,12 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
             }
 
         } catch (e: Throwable) {
+
+            if(e is NoConnectivityException) {
+                // show No Connectivity message to user or do whatever you want.
+                Log.e("network", "issues...")
+            }
+
             e.message?.let {
                 Log.e("Error Message - ", it)
                 //if(it.contains("HTTP 400", true))

@@ -15,7 +15,7 @@ constructor(
 {
 
     suspend fun sendOtpToPhone(intermediateToken: String, phoneNumber:String): Result<OtpSentResponse> {
-        spEditor.putString(ColabaConstant.phoneNumber, phoneNumber).apply()
+        spEditor.putString(AppConstant.phoneNumber, phoneNumber).apply()
         val otpResponseResult = signUpFlowDataSource.sendOtpService(intermediateToken,phoneNumber)
         if(otpResponseResult is Result.Success)
             setUpOtpInfo(otpResponseResult.data)
@@ -25,14 +25,14 @@ constructor(
 
     private fun setUpOtpInfo(otpSentResponse: OtpSentResponse){
         otpSentResponse.message?.let {
-            spEditor.putString(ColabaConstant.otp_message, otpSentResponse.message)
+            spEditor.putString(AppConstant.otp_message, otpSentResponse.message)
                 .apply()
         }
         otpSentResponse.otpData?.let {
             val gson = Gson()
             val otpData = gson.toJson(otpSentResponse.otpData)
-            spEditor.putString(ColabaConstant.otpDataJson, otpData).apply()
-            spEditor.putInt(ColabaConstant.secondsCount, 0).apply()
+            spEditor.putString(AppConstant.otpDataJson, otpData).apply()
+            spEditor.putInt(AppConstant.secondsCount, 0).apply()
         }
     }
 

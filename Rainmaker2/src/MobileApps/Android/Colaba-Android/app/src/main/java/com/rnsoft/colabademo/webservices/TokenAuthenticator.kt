@@ -20,9 +20,9 @@ class TokenAuthenticator ( private val sharedPreferences: SharedPreferences) : A
             val newResponseData = newTokenResponse.data
             newResponseData?.let {
                 if (it.token.isNotBlank() && it.token.isNotEmpty()) {
-                    sharedPreferences.edit().putString(ColabaConstant.token, it.token)
+                    sharedPreferences.edit().putString(AppConstant.token, it.token)
                         .apply()
-                    sharedPreferences.edit().putString(ColabaConstant.refreshToken, it.refreshToken)
+                    sharedPreferences.edit().putString(AppConstant.refreshToken, it.refreshToken)
                         .apply()
                     return response.request.newBuilder()
                         .header("Authorization", "Bearer " + it.token)
@@ -41,7 +41,7 @@ class TokenAuthenticator ( private val sharedPreferences: SharedPreferences) : A
                 .build()
             val testAPI = retrofitInstance.create(ServerApi::class.java)
             val retrofitResponse = testAPI.refreshToken(
-                RefreshTokenRequest( RefreshToken =  ColabaConstant.refreshToken, Token = ColabaConstant.token)).execute()
+                RefreshTokenRequest( RefreshToken =  AppConstant.refreshToken, Token = AppConstant.token)).execute()
             retrofitResponse.body()?.let {
                 it.data?.let { loginData->
                     return retrofitResponse.body()!!

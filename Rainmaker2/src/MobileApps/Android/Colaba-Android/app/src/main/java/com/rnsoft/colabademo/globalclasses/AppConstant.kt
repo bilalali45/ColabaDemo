@@ -1,6 +1,6 @@
 package com.rnsoft.colabademo
 
-object ColabaConstant {
+object AppConstant {
 
          var userTwoFaSetting:Boolean?= null
 

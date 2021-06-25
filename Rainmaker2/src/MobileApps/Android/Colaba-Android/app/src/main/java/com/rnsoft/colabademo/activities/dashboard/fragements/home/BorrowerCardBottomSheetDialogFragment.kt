@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.annotation.Nullable
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.rnsoft.colabademo.databinding.DialogFragmentBorrowerCardSheetBinding
 
@@ -13,12 +14,17 @@ class BorrowerCardBottomSheetDialogFragment : BottomSheetDialogFragment() {
     companion object {
         fun newInstance() = BorrowerCardBottomSheetDialogFragment()
     }
+
+    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.roundedBottomSheetDialog)
+    }
   
     lateinit var binding: DialogFragmentBorrowerCardSheetBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogFragmentBorrowerCardSheetBinding.inflate(inflater, container, false)
-        val borrowerParcelObject =  arguments?.getParcelable<Borrower>(ColabaConstant.borrowerParcelObject)
+        val borrowerParcelObject =  arguments?.getParcelable<Borrower>(AppConstant.borrowerParcelObject)
         borrowerParcelObject?.let {
             binding.borrowerName.text = it.borrowerName
         }

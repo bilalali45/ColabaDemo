@@ -17,6 +17,8 @@
         <item name="fontFamily">@font/rubik_regular</item>
 
 
+
+
         <!-- Customize your theme here.
                 <item name="android:fontFamily">@font/dancing_font</item>
                 <item name="fontFamily">@font/dancing_font</item>
@@ -62,12 +64,15 @@
     </style>
 
 
-    <style name="TutorialBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/TutorialBottomSheetStyle</item>
+    <style name="roundedBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/RoundedBottomSheetStyle</item>
     </style>
 
-    <style name="TutorialBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+    <style name="RoundedBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/rounded_shape</item>
     </style>
+
+
+
 
 </resources>

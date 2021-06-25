@@ -32,7 +32,7 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
 
 
 
-    fun login(userEmail: String, password: String , isBiometricActive:Boolean) {
+    fun login(userEmail: String, password: String) {
 
         var dontAskTwoFaIdentifier = ""
 
@@ -46,21 +46,21 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
         else {
             viewModelScope.launch {
 
-                sharedPreferences.getString(ColabaConstant.dontAskTwoFaIdentifier ,"")?.let {
+                sharedPreferences.getString(AppConstant.dontAskTwoFaIdentifier ,"")?.let {
                     dontAskTwoFaIdentifier = it
                 }
 
                 val genericResult =
-                    loginRepo.validateLoginCredentials(userEmail, password, isBiometricActive, dontAskTwoFaIdentifier)
+                    loginRepo.validateLoginCredentials(userEmail, password,  dontAskTwoFaIdentifier)
                 Log.e("login-result - ", genericResult.toString())
 
                 if (genericResult is Result.Success) {
                     val loginResponse = genericResult.data
 
-                    if (loginResponse.data?.tokenTypeName == ColabaConstant.AccessToken) {
+                    if (loginResponse.data?.tokenTypeName == AppConstant.AccessToken) {
                         EventBus.getDefault().post(LoginEvent(LoginResponseResult(success = loginResponse, screenNumber = 1)))
                         return@launch
-                    } else if (loginResponse.data?.tokenTypeName == ColabaConstant.IntermediateToken) {
+                    } else if (loginResponse.data?.tokenTypeName == AppConstant.IntermediateToken) {
                         runOtpSettingService(loginResponse.data.token)
                         //loginRepo.getOtpSettingFromService(loginResponse.data.token)
 

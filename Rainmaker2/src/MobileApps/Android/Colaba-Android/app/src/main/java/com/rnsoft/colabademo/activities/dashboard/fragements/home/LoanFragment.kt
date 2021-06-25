@@ -2,7 +2,6 @@ package com.rnsoft.colabademo
 
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,7 +62,7 @@ class LoanFragment : Fragment(), LoanItemClickListener {
     override fun getCardIndex(position: Int) {
         val borrowerBottomSheet = BorrowerCardBottomSheetDialogFragment.newInstance()
         val bundle = Bundle()
-        bundle.putParcelable(ColabaConstant.borrowerParcelObject , borrowList.get(position))
+        bundle.putParcelable(AppConstant.borrowerParcelObject , borrowList.get(position))
         borrowerBottomSheet.arguments = bundle
         borrowerBottomSheet.show(childFragmentManager, BorrowerCardBottomSheetDialogFragment::class.java.canonicalName)
     }
