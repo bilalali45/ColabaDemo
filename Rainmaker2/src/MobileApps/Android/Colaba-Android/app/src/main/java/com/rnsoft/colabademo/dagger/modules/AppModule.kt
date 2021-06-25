@@ -73,7 +73,10 @@ class AppModule {
         @Provides
         @Singleton
         //fun provideOkHttp(tokenAuthenticator: TokenAuthenticator): OkHttpClient {
-        fun provideOkHttp( @ApplicationContext context: Context, tokenAuthenticator : TokenAuthenticator): OkHttpClient {
+        fun provideOkHttp( @ApplicationContext context: Context,
+                           tokenAuthenticator : TokenAuthenticator,
+                           networkConnectionInterceptor: NetworkConnectionInterceptor): OkHttpClient {
+
             //val interceptor = HttpLoggingInterceptor()
             //interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
             //val newLoginInterceptor = NewLoginInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
@@ -97,13 +100,20 @@ class AppModule {
                 .retryOnConnectionFailure(true)
                 //.addInterceptor(LoggingInterceptor())
                 //.addInterceptor(interceptor)
-                .addNetworkInterceptor(httpLoggingInterceptor)
-                .cookieJar(testCookieJar)
+                //.addNetworkInterceptor(httpLoggingInterceptor)
+                .addInterceptor(networkConnectionInterceptor)
+                //.cookieJar(testCookieJar)
                 .connectTimeout(60,TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .build()
         }
 
+
+        @Provides
+        @Singleton
+        fun provideNetworkConnectionInterceptor( @ApplicationContext context: Context): NetworkConnectionInterceptor {
+            return NetworkConnectionInterceptor(context)
+        }
 
 
 
