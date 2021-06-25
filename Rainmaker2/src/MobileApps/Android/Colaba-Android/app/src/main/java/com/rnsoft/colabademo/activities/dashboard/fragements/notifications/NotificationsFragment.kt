@@ -4,15 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ecommerce.testapp.NewNotificationListAdapter
 import com.rnsoft.colabademo.databinding.FragmentNotificationsBinding
+
 
 class NotificationsFragment : Fragment(), NotificationClickListener {
 
@@ -49,7 +47,13 @@ class NotificationsFragment : Fragment(), NotificationClickListener {
             this.adapter = NewNotificationListAdapter(notificationList, this@NotificationsFragment)
 
         }
-
+        binding.newNotificationButton.transformationMethod = null
+        binding.newNotificationButton.setOnClickListener {
+            //val layoutManager = notificationRecycleView?.layoutManager
+            //layoutManager?.scrollToPosition(0)
+            //layoutManager?.smoothScrollToPosition(notificationRecycleView,RecyclerView.State, 0)
+            notificationRecycleView?.smoothScrollToPosition(0)
+        }
 
         return root
     }

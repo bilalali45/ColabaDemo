@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -13,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.StringRes
+import androidx.annotation.StyleableRes
 import androidx.appcompat.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -21,6 +23,7 @@ import androidx.navigation.fragment.findNavController
 
 import co.infinum.goldfinger.Goldfinger
 import com.rnsoft.colabademo.globalclasses.AppSetting
+
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -141,7 +144,11 @@ class LoginFragment : Fragment() {
 
 
     private fun showToast(@StringRes errorString: Int) {
-        Toast.makeText(requireActivity().applicationContext, errorString, Toast.LENGTH_LONG).show()
+
+        SnackbarUtils.showError(requireActivity(), "some error")
+
+        //Toast.makeText(requireActivity().applicationContext, errorString, Toast.LENGTH_LONG).show()
+
     }
 
     override fun onStart() {
@@ -186,6 +193,8 @@ class LoginFragment : Fragment() {
         forgotPasswordLink.isEnabled = bool
         loginButton.isEnabled = bool
     }
+
+
 }
 
 
