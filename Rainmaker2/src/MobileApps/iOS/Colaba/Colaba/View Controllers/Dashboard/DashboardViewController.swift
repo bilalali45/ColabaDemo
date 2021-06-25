@@ -27,7 +27,7 @@ class DashboardViewController: BaseViewController {
         super.viewDidLoad()
         //refreshAccessTokenWithRequest()
         setTopTabBar()
-        lblUsername.text = "Good evening, \(Utility.getUserFullName())"
+        lblUsername.text = "Good evening, \(Utility.getUserFirstName())"
     }
     
     //MARK:- Methods and Actions

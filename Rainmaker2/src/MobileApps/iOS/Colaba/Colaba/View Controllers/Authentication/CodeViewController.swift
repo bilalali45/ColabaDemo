@@ -245,7 +245,7 @@ class CodeViewController: UIViewController {
                         self.changeUIAfterResendCode(message: message)
                     }
                     else{
-                        self.showPopup(message: message, popupState: result["code"].stringValue == "200" ? .success : .error, popupDuration: result["code"].stringValue == "200" ? .custom(5) : .custom(10)) { reason in
+                        self.showPopup(message: message, popupState: result["code"].stringValue == "200" ? .success : .error, popupDuration: result["code"].stringValue == "200" ? .custom(2) : .custom(10)) { reason in
                             
                         }
                     }

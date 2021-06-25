@@ -7,12 +7,21 @@
 
 import UIKit
 
+protocol NotificationsTableViewCellDelegate: AnyObject {
+    func undoTapped(indexPath: IndexPath)
+}
+
 class NotificationsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var readIcon: UIView!
     @IBOutlet weak var notificationIcon: UIImageView!
     @IBOutlet weak var lblNotificationDetail: UILabel!
     @IBOutlet weak var lblTime: UILabel!
+    @IBOutlet weak var removedNotificationView: UIView!
+    @IBOutlet weak var btnUndo: UIButton!
+    
+    var indexPath = IndexPath()
+    weak var delegate: NotificationsTableViewCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,4 +34,7 @@ class NotificationsTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    @IBAction func btnUndoTapped(_ sender: UIButton){
+        self.delegate?.undoTapped(indexPath: indexPath)
+    }
 }

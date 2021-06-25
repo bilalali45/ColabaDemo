@@ -119,6 +119,20 @@ struct Utility {
         return ""
     }
     
+    static func getUserFirstName() -> String{
+        if let user = UserModel.getCurrentUser(){
+            return user.firstName
+        }
+        return ""
+    }
+    
+    static func getUserLastName() -> String{
+        if let user = UserModel.getCurrentUser(){
+            return user.lastName
+        }
+        return ""
+    }
+    
     static func getUserFullName() -> String{
         if let user = UserModel.getCurrentUser(){
             return "\(user.firstName) \(user.lastName)"

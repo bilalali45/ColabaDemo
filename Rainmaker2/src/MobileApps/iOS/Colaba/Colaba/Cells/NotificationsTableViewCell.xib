@@ -9,6 +9,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="Rubik-LightItalic.ttf">
+            <string>Rubik-LightItalic</string>
+        </array>
         <array key="Rubik-Medium.ttf">
             <string>Rubik-Medium</string>
         </array>
@@ -58,27 +61,65 @@ documents</string>
                         <color key="textColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lm0-hP-PXa">
+                        <rect key="frame" x="0.0" y="10.5" width="368" height="64.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This notification has been removed." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5cW-Am-WAR">
+                                <rect key="frame" x="26" y="25" width="192.5" height="14"/>
+                                <fontDescription key="fontDescription" name="Rubik-LightItalic" family="Rubik" pointSize="12"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vQ8-6i-Kky">
+                                <rect key="frame" x="282" y="0.0" width="60" height="64.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="AyW-NL-uKy"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
+                                <state key="normal" title="Undo">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnUndoTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="twC-xQ-pFI"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" name="ButtonBlueColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="vQ8-6i-Kky" secondAttribute="bottom" id="2Uc-OP-1tt"/>
+                            <constraint firstItem="5cW-Am-WAR" firstAttribute="centerY" secondItem="Lm0-hP-PXa" secondAttribute="centerY" id="LMZ-u3-NHH"/>
+                            <constraint firstAttribute="trailing" secondItem="vQ8-6i-Kky" secondAttribute="trailing" constant="26" id="P3n-RU-t2V"/>
+                            <constraint firstItem="vQ8-6i-Kky" firstAttribute="top" secondItem="Lm0-hP-PXa" secondAttribute="top" id="c9y-nA-Ekr"/>
+                            <constraint firstItem="5cW-Am-WAR" firstAttribute="leading" secondItem="Lm0-hP-PXa" secondAttribute="leading" constant="26" id="eQv-Zy-aYD"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="YB4-Sc-Oyb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="22" id="1XA-TV-9V2"/>
+                    <constraint firstItem="Lm0-hP-PXa" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="3Bz-KX-Dbf"/>
                     <constraint firstItem="vTi-Ox-oVT" firstAttribute="leading" secondItem="SnH-W9-PAV" secondAttribute="trailing" constant="15" id="APA-3y-s1b"/>
                     <constraint firstAttribute="trailing" secondItem="YB4-Sc-Oyb" secondAttribute="trailing" constant="20" id="FSN-wu-m4N"/>
                     <constraint firstItem="SnH-W9-PAV" firstAttribute="leading" secondItem="gOA-fl-8Uz" secondAttribute="trailing" constant="5" id="HeF-t3-RR9"/>
+                    <constraint firstItem="Lm0-hP-PXa" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="KDz-9X-fVW"/>
                     <constraint firstAttribute="bottom" secondItem="vTi-Ox-oVT" secondAttribute="bottom" constant="20" id="NEv-yJ-Xek"/>
+                    <constraint firstItem="Lm0-hP-PXa" firstAttribute="height" secondItem="vTi-Ox-oVT" secondAttribute="height" multiplier="1.5" id="fLk-eu-Lnu"/>
                     <constraint firstItem="gOA-fl-8Uz" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="25" id="hnP-6H-wa0"/>
                     <constraint firstItem="SnH-W9-PAV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="22" id="hte-ux-ysv"/>
                     <constraint firstItem="YB4-Sc-Oyb" firstAttribute="leading" secondItem="vTi-Ox-oVT" secondAttribute="trailing" constant="5" id="ii2-ae-5Vs"/>
                     <constraint firstItem="gOA-fl-8Uz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="kqm-Oc-Rgp"/>
                     <constraint firstItem="vTi-Ox-oVT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="22" id="xgZ-p7-xLd"/>
+                    <constraint firstAttribute="trailing" secondItem="Lm0-hP-PXa" secondAttribute="trailing" id="ypL-WC-qSc"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
+                <outlet property="btnUndo" destination="vQ8-6i-Kky" id="IgD-sT-oH7"/>
                 <outlet property="lblNotificationDetail" destination="vTi-Ox-oVT" id="0FV-gt-NyK"/>
                 <outlet property="lblTime" destination="YB4-Sc-Oyb" id="czs-ze-ji8"/>
                 <outlet property="notificationIcon" destination="SnH-W9-PAV" id="yQh-Bs-AT6"/>
                 <outlet property="readIcon" destination="gOA-fl-8Uz" id="zrT-tg-VzK"/>
+                <outlet property="removedNotificationView" destination="Lm0-hP-PXa" id="HUb-qa-zAm"/>
             </connections>
             <point key="canvasLocation" x="17.39130434782609" y="86.049107142857139"/>
         </tableViewCell>
@@ -87,6 +128,9 @@ documents</string>
         <image name="NotificationDocumentIcon" width="27.909999847412109" height="33.38800048828125"/>
         <namedColor name="AppBlackColor">
             <color red="0.30588235294117649" green="0.30588235294117649" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="ButtonBlueColor">
+            <color red="0.26666666666666666" green="0.51764705882352946" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

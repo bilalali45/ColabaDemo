@@ -16,6 +16,10 @@ class NotificationViewController: BaseViewController {
     var totalRowsInColumn1 = 2
     var totalRowsInColumn2 = 10
     
+    var undoIndexPath: IndexPath?
+    var undoTimer: Timer?
+    var undoTimerSeconds = 5
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tblViewNotification.register(UINib(nibName: "NotificationsTableViewCell", bundle: nil), forCellReuseIdentifier: "NotificationsTableViewCell")
@@ -23,6 +27,28 @@ class NotificationViewController: BaseViewController {
     }
     
     //MARK:- Methods and Actions
+    
+    @objc func undoTimerStart(){
+        if undoTimerSeconds != 0 {
+            undoTimerSeconds -= 1
+        }
+        else{
+            if let timer = undoTimer{
+                timer.invalidate()
+                undoTimerSeconds = 5
+                if (self.undoIndexPath != nil){
+                    if (self.undoIndexPath!.section == 0){
+                        self.totalRowsInColumn1 = self.totalRowsInColumn1 - 1
+                    }
+                    else{
+                        self.totalRowsInColumn2 = self.totalRowsInColumn2 - 1
+                    }
+                    self.tblViewNotification.deleteRows(at: [self.undoIndexPath!], with: .left)
+                    self.undoIndexPath = nil
+                }
+            }
+        }
+    }
     
     @IBAction func btnNewNotificationsTapped(_ sender: UIButton) {
         totalRowsInColumn1 = 2
@@ -57,6 +83,10 @@ extension NotificationViewController: UITableViewDataSource, UITableViewDelegate
         attributedNotificationText.addAttributes([NSAttributedString.Key.font : Theme.getRubikRegularFont(size: 14)], range: notificationText.nsRange(from: rangeOfNotificationText!))
         
         cell.lblNotificationDetail.attributedText = attributedNotificationText
+        cell.indexPath = indexPath
+        cell.delegate = self
+        
+        cell.removedNotificationView.isHidden = !(undoIndexPath == indexPath)
         
         if (indexPath.section == 0){
             cell.notificationIcon.image = UIImage(named: "NotificationDocumentIcon")
@@ -97,22 +127,44 @@ extension NotificationViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if (indexPath == undoIndexPath){
+            return false
+        }
         return true
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let deleteAction = UIContextualAction(style: .normal, title: "") { action, actionView, bool in
-            if (indexPath.section == 0){
-                self.totalRowsInColumn1 = self.totalRowsInColumn1 - 1
+            
+            if (self.undoIndexPath != nil){
+                if (self.undoIndexPath!.section == 0){
+                    self.totalRowsInColumn1 = self.totalRowsInColumn1 - 1
+                }
+                else{
+                    self.totalRowsInColumn2 = self.totalRowsInColumn2 - 1
+                }
+                self.tblViewNotification.deleteRows(at: [self.undoIndexPath!], with: .left)
+                self.undoIndexPath = nil
             }
-            else{
-                self.totalRowsInColumn2 = self.totalRowsInColumn2 - 1
-            }
-            self.tblViewNotification.deleteRows(at: [indexPath], with: .left)
+            
+            self.undoIndexPath = indexPath
+            self.undoTimer?.invalidate()
+            self.undoTimerSeconds = 5
+            self.undoTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.undoTimerStart), userInfo: nil, repeats: true)
+            self.tblViewNotification.reloadData()
         }
         deleteAction.backgroundColor = Theme.getDashboardBackgroundColor()
         deleteAction.image = UIImage(named: "SwipeToDeleteIcon")
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
+}
+
+extension NotificationViewController: NotificationsTableViewCellDelegate{
+    
+    func undoTapped(indexPath: IndexPath) {
+        self.undoIndexPath = nil
+        self.tblViewNotification.reloadData()
+    }
+    
 }

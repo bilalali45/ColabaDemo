@@ -28,9 +28,13 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlaceholderImage" translatesAutoresizingMaskIntoConstraints="NO" id="Crj-yq-eox">
                                 <rect key="frame" x="15" y="54" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="13b-4K-Yhj"/>
+                                    <constraint firstAttribute="height" constant="40" id="WPU-0B-Icz"/>
+                                </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good evening, James" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Rs-se-qzH">
-                                <rect key="frame" x="65" y="64" width="166" height="20"/>
+                                <rect key="frame" x="65" y="64" width="284" height="20"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="17"/>
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
@@ -135,6 +139,7 @@
                             <constraint firstItem="Crj-yq-eox" firstAttribute="centerY" secondItem="TTM-gn-N4B" secondAttribute="centerY" id="SyZ-VY-aSQ"/>
                             <constraint firstItem="H4K-Ob-IWQ" firstAttribute="trailing" secondItem="TTM-gn-N4B" secondAttribute="trailing" constant="5" id="ZWS-J1-yb4"/>
                             <constraint firstItem="7cX-RO-8m1" firstAttribute="leading" secondItem="H4K-Ob-IWQ" secondAttribute="leading" constant="15" id="h1e-xK-0a6"/>
+                            <constraint firstItem="TTM-gn-N4B" firstAttribute="leading" secondItem="6Rs-se-qzH" secondAttribute="trailing" constant="20" id="kf6-gL-eRh"/>
                             <constraint firstItem="6Rs-se-qzH" firstAttribute="leading" secondItem="Crj-yq-eox" secondAttribute="trailing" constant="10" id="u3o-Kx-Hll"/>
                             <constraint firstItem="Crj-yq-eox" firstAttribute="leading" secondItem="H4K-Ob-IWQ" secondAttribute="leading" constant="15" id="wkW-Me-Rhc"/>
                             <constraint firstItem="7cX-RO-8m1" firstAttribute="top" secondItem="Crj-yq-eox" secondAttribute="bottom" constant="20" id="yk2-Nu-JjO"/>

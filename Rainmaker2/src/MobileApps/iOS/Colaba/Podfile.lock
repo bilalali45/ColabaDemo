@@ -5,7 +5,6 @@ PODS:
     - CocoaLumberjack/Core (= 3.7.2)
   - CocoaLumberjack/Core (3.7.2)
   - IQKeyboardManagerSwift (6.5.6)
-  - Loaf (0.7.0)
   - NVActivityIndicatorView (4.8.0):
     - NVActivityIndicatorView/Presenter (= 4.8.0)
   - NVActivityIndicatorView/Presenter (4.8.0)
@@ -22,7 +21,6 @@ DEPENDENCIES:
   - Alamofire (= 5.4.1)
   - CarbonKit
   - IQKeyboardManagerSwift (= 6.5.6)
-  - Loaf (= 0.7.0)
   - NVActivityIndicatorView (= 4.8.0)
   - RealmSwift
   - SVGKit (= 3.0.0)
@@ -34,7 +32,6 @@ SPEC REPOS:
     - CarbonKit
     - CocoaLumberjack
     - IQKeyboardManagerSwift
-    - Loaf
     - NVActivityIndicatorView
     - Realm
     - RealmSwift
@@ -46,13 +43,12 @@ SPEC CHECKSUMS:
   CarbonKit: b60e24dbdb47179990d5e074efa87ab819c8de98
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   IQKeyboardManagerSwift: c7df9d2deb356c04522f5c4b7b6e4ce4d8ed94fe
-  Loaf: d69937cd00649f3fa260beb8b7aef0a1feb861ef
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
   Realm: ed860452717c8db8f4bf832b6807f7f2ce708839
   RealmSwift: e31c4ddbcc42ac879313d656b86f9ca539f6f4f4
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 686215ca0a2484f3768894a864f1e14674151900
+PODFILE CHECKSUM: 7fb2004a37ebc44f7c40b1384e4660d0149d6172
 
 COCOAPODS: 1.10.1
