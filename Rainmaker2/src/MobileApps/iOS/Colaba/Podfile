@@ -8,7 +8,6 @@ target 'Colaba' do
   # Pods for Colaba
 pod 'IQKeyboardManagerSwift', '6.5.6'
 pod 'SVGKit', '3.0.0'
-pod 'Loaf', '0.7.0'
 pod 'SwiftyJSON', '5.0.0'
 pod 'Alamofire', '5.4.1'
 pod 'NVActivityIndicatorView', '4.8.0'

@@ -21,6 +21,13 @@
 		2397AF672677A60A007A1A45 /* PipelineDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397AF652677A60A007A1A45 /* PipelineDetailTableViewCell.swift */; };
 		2397AF682677A60A007A1A45 /* PipelineDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */; };
 		239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */; };
+		23A56C592685B017005CE6F4 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A56C532685B017005CE6F4 /* Manager.swift */; };
+		23A56C5A2685B017005CE6F4 /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A56C542685B017005CE6F4 /* Controller.swift */; };
+		23A56C5B2685B017005CE6F4 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A56C552685B017005CE6F4 /* Animator.swift */; };
+		23A56C5C2685B017005CE6F4 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A56C562685B017005CE6F4 /* Extensions.swift */; };
+		23A56C5D2685B017005CE6F4 /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A56C572685B017005CE6F4 /* Icons.swift */; };
+		23A56C5E2685B017005CE6F4 /* Loaf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A56C582685B017005CE6F4 /* Loaf.swift */; };
+		23A56C602686152A005CE6F4 /* Rubik-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23A56C5F2686152A005CE6F4 /* Rubik-LightItalic.ttf */; };
 		23B238B82679D38900508449 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B238B72679D38900508449 /* SearchViewController.swift */; };
 		23B238BB2679E05200508449 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B238B92679E05200508449 /* SearchResultTableViewCell.swift */; };
 		23B238BC2679E05200508449 /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */; };
@@ -93,6 +100,13 @@
 		2397AF652677A60A007A1A45 /* PipelineDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineDetailTableViewCell.swift; sourceTree = "<group>"; };
 		2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PipelineDetailTableViewCell.xib; sourceTree = "<group>"; };
 		239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewPopupViewController.swift; sourceTree = "<group>"; };
+		23A56C532685B017005CE6F4 /* Manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
+		23A56C542685B017005CE6F4 /* Controller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
+		23A56C552685B017005CE6F4 /* Animator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
+		23A56C562685B017005CE6F4 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		23A56C572685B017005CE6F4 /* Icons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
+		23A56C582685B017005CE6F4 /* Loaf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loaf.swift; sourceTree = "<group>"; };
+		23A56C5F2686152A005CE6F4 /* Rubik-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-LightItalic.ttf"; sourceTree = "<group>"; };
 		23B238B72679D38900508449 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		23B238B92679E05200508449 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
@@ -217,6 +231,35 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		23A56C4E2685AFEE005CE6F4 /* Third Party Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				23A56C512685B017005CE6F4 /* Loaf */,
+			);
+			path = "Third Party Libraries";
+			sourceTree = "<group>";
+		};
+		23A56C512685B017005CE6F4 /* Loaf */ = {
+			isa = PBXGroup;
+			children = (
+				23A56C522685B017005CE6F4 /* Presenter */,
+				23A56C562685B017005CE6F4 /* Extensions.swift */,
+				23A56C572685B017005CE6F4 /* Icons.swift */,
+				23A56C582685B017005CE6F4 /* Loaf.swift */,
+			);
+			path = Loaf;
+			sourceTree = "<group>";
+		};
+		23A56C522685B017005CE6F4 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				23A56C532685B017005CE6F4 /* Manager.swift */,
+				23A56C542685B017005CE6F4 /* Controller.swift */,
+				23A56C552685B017005CE6F4 /* Animator.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
 		3FAC853161B2A86A8004F35B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -272,6 +315,7 @@
 		7186ACAE2653B25A00E740D3 /* Colaba */ = {
 			isa = PBXGroup;
 			children = (
+				23A56C4E2685AFEE005CE6F4 /* Third Party Libraries */,
 				2397AF602677821D007A1A45 /* Cells */,
 				236B59CF266503F30001F416 /* Models */,
 				71B19456265CF9970017955B /* API Router */,
@@ -355,6 +399,7 @@
 				7186AD062653C77B00E740D3 /* Rubik-Light.ttf */,
 				7186AD072653C77B00E740D3 /* Rubik-Medium.ttf */,
 				7186AD052653C77B00E740D3 /* Rubik-Regular.ttf */,
+				23A56C5F2686152A005CE6F4 /* Rubik-LightItalic.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -514,6 +559,7 @@
 				7186AD082653C77B00E740D3 /* Rubik-Regular.ttf in Resources */,
 				23B238BC2679E05200508449 /* SearchResultTableViewCell.xib in Resources */,
 				7186ACB72653B25A00E740D3 /* Main.storyboard in Resources */,
+				23A56C602686152A005CE6F4 /* Rubik-LightItalic.ttf in Resources */,
 				2397AF682677A60A007A1A45 /* PipelineDetailTableViewCell.xib in Resources */,
 				23B238C02679F44000508449 /* NotificationsTableViewCell.xib in Resources */,
 				7186AD0A2653C77B00E740D3 /* Rubik-Medium.ttf in Resources */,
@@ -659,7 +705,9 @@
 				7186AD742653FBB500E740D3 /* ResetPasswordSuccessfullViewController.swift in Sources */,
 				71B19458265CF9C80017955B /* APIRouter.swift in Sources */,
 				2397AF63267782E6007A1A45 /* PipelineTableViewCell.swift in Sources */,
+				23A56C5E2685B017005CE6F4 /* Loaf.swift in Sources */,
 				23B238B82679D38900508449 /* SearchViewController.swift in Sources */,
+				23A56C5D2685B017005CE6F4 /* Icons.swift in Sources */,
 				7186AD602653DE8600E740D3 /* ExtensionOfView.swift in Sources */,
 				2397AF672677A60A007A1A45 /* PipelineDetailTableViewCell.swift in Sources */,
 				238D70772678E8C80067687C /* FiltersViewController.swift in Sources */,
@@ -673,11 +721,15 @@
 				2397AF5F26776241007A1A45 /* PipelineViewController.swift in Sources */,
 				7186AD7926540CCC00E740D3 /* PhoneNumberViewController.swift in Sources */,
 				239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */,
+				23A56C592685B017005CE6F4 /* Manager.swift in Sources */,
 				7148C6B92655500B00E1C216 /* ExtensionOfString.swift in Sources */,
 				7186AD012653C6AB00E740D3 /* LoginViewController.swift in Sources */,
 				7186ACF42653C66100E740D3 /* FaceRecognitionViewController.swift in Sources */,
 				7148C6B126554ADE00E1C216 /* Validation.swift in Sources */,
 				71B1944F265CF9780017955B /* OTPTimerManager.swift in Sources */,
+				23A56C5B2685B017005CE6F4 /* Animator.swift in Sources */,
+				23A56C5A2685B017005CE6F4 /* Controller.swift in Sources */,
+				23A56C5C2685B017005CE6F4 /* Extensions.swift in Sources */,
 				7160CA88267339060061ACD5 /* ProfileViewController.swift in Sources */,
 				236EA1AE2678CE1B00C2F8B5 /* DummyDashboardViewController.swift in Sources */,
 				7186AD562653CD5C00E740D3 /* Theme.swift in Sources */,

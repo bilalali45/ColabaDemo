@@ -60,10 +60,10 @@ class ForgotPasswordViewController: UIViewController {
                 Utility.showOrHideLoader(shouldShow: false)
                 
                 if (status == .success){
-                    self.showPopup(message: message == "" ? "Email sent successfully" : message, popupState: .success, popupDuration: .custom(1.5)) { (reason) in
+                   // self.showPopup(message: message == "" ? "Email sent successfully" : message, popupState: .success, popupDuration: .custom(3)) { (reason) in
                         let vc = Utility.getResetPasswordSuccessfullVC()
                         self.pushToVC(vc: vc)
-                    }
+                   // }
                 }
                 else{
                     self.showPopup(message: message, popupState: .error, popupDuration: .custom(10), completionHandler: nil)
