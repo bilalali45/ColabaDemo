@@ -70,7 +70,39 @@ data class NotificationModel(
                     context.getString(R.string.submitted_docs),
                     context.getString(R.string.fifteen_thirty_four),
                     false, true
+                ),
+                NotificationModel(11,
+                    context.getString(R.string.submitted_docs),
+                    context.getString(R.string.fifteen_thirty_four),
+                    false, true
+                ),
+                NotificationModel(12,
+                    context.getString(R.string.submitted_docs),
+                    context.getString(R.string.fifteen_thirty_four),
+                    false, true
+                ),
+                NotificationModel(13,
+                    context.getString(R.string.submitted_docs),
+                    context.getString(R.string.fifteen_thirty_four),
+                    false, true
+                ),
+                NotificationModel(14,
+                    context.getString(R.string.submitted_docs),
+                    context.getString(R.string.fifteen_thirty_four),
+                    false, true
+                ),
+                NotificationModel(15,
+                    context.getString(R.string.submitted_docs),
+                    context.getString(R.string.fifteen_thirty_four),
+                    false, true
+                ),
+                NotificationModel(16,
+                    context.getString(R.string.submitted_docs),
+                    context.getString(R.string.fifteen_thirty_four),
+                    false, true
                 )
+
+
             )
         }
     }
