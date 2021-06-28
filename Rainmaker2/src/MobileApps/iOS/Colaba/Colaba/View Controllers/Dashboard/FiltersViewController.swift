@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol FiltersViewControllerDelegate: AnyObject {
+    func getOrderby(orderBy: Int)
+}
+
 class FiltersViewController: BaseViewController {
 
     //MARK:- Outlets and properties
@@ -17,6 +21,8 @@ class FiltersViewController: BaseViewController {
     @IBOutlet weak var recentActivityView: UIView!
     @IBOutlet weak var aToZView: UIView!
     @IBOutlet weak var zToAView: UIView!
+    
+    weak var delegate: FiltersViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,18 +42,22 @@ class FiltersViewController: BaseViewController {
     //MARK:- Methods and Actions
     
     @objc func pendingViewTapped(){
+        self.delegate?.getOrderby(orderBy: 0)
         self.dismissVC()
     }
     
     @objc func recentViewTapped(){
+        self.delegate?.getOrderby(orderBy: 1)
         self.dismissVC()
     }
     
     @objc func aToZViewTapped(){
+        self.delegate?.getOrderby(orderBy: 2)
         self.dismissVC()
     }
     
     @objc func zToAViewTapped(){
+        self.delegate?.getOrderby(orderBy: 3)
         self.dismissVC()
     }
     

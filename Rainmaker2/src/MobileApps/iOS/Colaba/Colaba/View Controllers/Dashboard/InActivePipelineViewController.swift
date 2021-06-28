@@ -1,15 +1,15 @@
 //
-//  PipelineViewController.swift
+//  InActivePipelineViewController.swift
 //  Colaba
 //
-//  Created by Muhammad Murtaza on 14/06/2021.
+//  Created by Muhammad Murtaza on 28/06/2021.
 //
 
 import UIKit
 import LoadingPlaceholderView
 import RealmSwift
 
-class PipelineViewController: BaseViewController {
+class InActivePipelineViewController: BaseViewController {
 
     //MARK:- Outlets and properties
     @IBOutlet weak var assignToMeSwitch: UISwitch!
@@ -20,65 +20,42 @@ class PipelineViewController: BaseViewController {
     let loadingPlaceholderView = LoadingPlaceholderView()
     var pipeLineArray = [AllLoanModel]()
     
-    var pageNumber = 1
-    var orderBy = 0 //0=MostActionsPending, 1=MostRecentActivity, 2=PrimaryBorrowerLastName(A to Z), 3=PrimaryBorrowerLastName(Z to A)
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        pipeLineArray = AllLoanModel.getAllLoans()
         tblView.register(UINib(nibName: "PipelineTableViewCell", bundle: nil), forCellReuseIdentifier: "PipelineTableViewCell")
         tblView.register(UINib(nibName: "PipelineDetailTableViewCell", bundle: nil), forCellReuseIdentifier: "PipelineDetailTableViewCell")
         tblView.coverableCellsIdentifiers = ["PipelineDetailTableViewCell", "PipelineDetailTableViewCell", "PipelineDetailTableViewCell", "PipelineDetailTableViewCell"]
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        getPipelineData()
+        
     }
     
     //MARK:- Methods and Actions
     @IBAction func btnFilterTapped(_ sender: UIButton) {
         let vc = Utility.getFiltersVC()
-        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
     @IBAction func assignToMeSwitchChanged(_ sender: UISwitch) {
-        self.getPipelineData()
+        
     }
     
     //MARK:- API's
     
     func getPipelineData(){
         
-        if (pipeLineArray.count == 0){
-            self.loadingPlaceholderView.cover(self.tblView, animated: true)
-        }
+        self.loadingPlaceholderView.cover(self.tblView, animated: true)
         
-        let extraData = "dateTime=\(Utility.getDate())&pageNumber=\(pageNumber)&pageSize=20&loanFilter=0&orderBy=\(orderBy)&assignedToMe=\(assignToMeSwitch.isOn ? true : false)"
+        let params = ["dateTime": "2021-06-22",
+                      "pageNumber": 1,
+                      "pageSize": 5,
+                      "loanFilter": 0,
+                      "orderBy": 0,
+                      "assignedToMe": assignToMeSwitch.isOn] as [String: Any]
         
-        APIRouter.sharedInstance.executeDashboardAPIs(type: .getPipelineList, method: .get, params: nil, extraData: extraData) { status, result, message in
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getPipelineList, method: .get, params: params) { status, result, message in
             
             DispatchQueue.main.async {
                 self.loadingPlaceholderView.uncover(animated: true)
                 if (status == .success){
-                    
-                    self.pipeLineArray.removeAll()
-                    let realm = try! Realm()
-                    realm.beginWrite()
-                    realm.delete(realm.objects(AllLoanModel.self))
-                    if (result.arrayValue.count > 0){
-                        let loanArray = result.arrayValue
-                        for loan in loanArray{
-                            let model = AllLoanModel()
-                            model.updateModelWithJSON(json: loan)
-                            realm.add(model)
-                        }
-                    }
-                    try! realm.commitWrite()
-                    self.pipeLineArray = Array(realm.objects(AllLoanModel.self))
-                    self.tblView.reloadData()
                     
                 }
                 else{
@@ -94,10 +71,10 @@ class PipelineViewController: BaseViewController {
     
 }
 
-extension PipelineViewController: UITableViewDataSource, UITableViewDelegate{
+extension InActivePipelineViewController: UITableViewDataSource, UITableViewDelegate{
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return pipeLineArray.count
+        return 10
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -111,27 +88,25 @@ extension PipelineViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let loanData = pipeLineArray[indexPath.section]
-        
         if (indexPath.row == 0){
             let cell = tableView.dequeueReusableCell(withIdentifier: "PipelineTableViewCell", for: indexPath) as! PipelineTableViewCell
             
-            cell.mainViewHeightConstraint.constant = loanData.documents == 0 ? 123 : 145
-            cell.btnArrowBottomConstraint.constant = loanData.documents == 0 ? 15 : 11
+            cell.mainViewHeightConstraint.constant = indexPath.section == 2 ? 123 : 145
+            cell.btnArrowBottomConstraint.constant = indexPath.section == 2 ? 15 : 11
             cell.updateConstraintsIfNeeded()
             cell.layoutSubviews()
             cell.mainView.layer.cornerRadius = 8
             cell.mainView.dropShadow()
             cell.indexPath = indexPath
             cell.delegate = self
-            cell.lblUsername.text = "\(loanData.firstName) \(loanData.lastName)"
-            cell.lblMoreUsers.text = loanData.coBorrowerCount == 0 ? "" : "+\(loanData.coBorrowerCount)"
-            cell.lblTime.text = Utility.timeAgoSince(loanData.activityTime)
-            cell.typeIcon.image = UIImage(named: loanData.loanPurpose == "Purchase" ? "PurchaseIcon" : "RefinanceIcon")
-            cell.lblType.text = loanData.loanPurpose
-            cell.lblStatus.text = loanData.milestone
-            cell.lblDocuments.text = loanData.documents == 0 ? "" : "\(loanData.documents) Documents to Review"
-            cell.lblDocuments.isHidden = loanData.documents == 0
+            cell.lblUsername.text = indexPath.section % 2 == 0 ? "Richard Glenn Randal" : "Jenifer Moore"
+            cell.lblMoreUsers.text = indexPath.section % 2 == 0 ? "+2" : ""
+            cell.lblTime.text = indexPath.section % 2 == 0 ? "1 min ago" : "23 hours ago"
+            cell.typeIcon.image = UIImage(named: indexPath.section % 2 == 0 ? "RefinanceIcon" : "PurchaseIcon")
+            cell.lblType.text = indexPath.section % 2 == 0 ? "Refinance" : "Purchase"
+            cell.lblStatus.text = indexPath.section % 2 == 0 ? "Application Started" : "Approved with Conditions"
+            cell.lblDocuments.text = indexPath.section % 2 == 0 ? "7 Documents to Review" : "2 Documents to Review"
+            cell.lblDocuments.isHidden = indexPath.section == 2
             cell.bntArrow.setImage(UIImage(named: expandableCellsIndex.contains(indexPath.section) ? "ArrowUp" : "ArrowDown"), for: .normal)
             cell.emptyView.isHidden = !expandableCellsIndex.contains(indexPath.section)
             return cell
@@ -140,9 +115,6 @@ extension PipelineViewController: UITableViewDataSource, UITableViewDelegate{
             let cell = tableView.dequeueReusableCell(withIdentifier: "PipelineDetailTableViewCell", for: indexPath) as! PipelineDetailTableViewCell
             cell.mainView.layer.cornerRadius = 8
             cell.mainView.dropShadow()
-            cell.lblPropertyAddress.text = "\(loanData.street) \(loanData.unit) \(loanData.city) \(loanData.stateName) \(loanData.zipCode) \(loanData.countryName)"
-            cell.lblPropertyValue.text = "$ \(loanData.propertyValue)"
-            cell.lblLoanAmount.text = "$ \(loanData.loanAmount)"
             return cell
         }
         
@@ -150,9 +122,7 @@ extension PipelineViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        let loanData = pipeLineArray[indexPath.section]
-        
-        if (loanData.documents == 0){
+        if (indexPath.section == 2){
             if (indexPath.row == 0){
                 return expandableCellsIndex.contains(indexPath.section) ? 140 : 145
             }
@@ -172,7 +142,7 @@ extension PipelineViewController: UITableViewDataSource, UITableViewDelegate{
     }
 }
 
-extension PipelineViewController: PipelineTableViewCellDelegate{
+extension InActivePipelineViewController: PipelineTableViewCellDelegate{
     
     func btnOptionsTapped(indexPath: IndexPath) {
         let vc = Utility.getPipelineMoreVC()
@@ -190,12 +160,5 @@ extension PipelineViewController: PipelineTableViewCellDelegate{
             expandableCellsIndex.append(indexPath.section)
         }
         self.tblView.reloadData()
-    }
-}
-
-extension PipelineViewController: FiltersViewControllerDelegate{
-    func getOrderby(orderBy: Int) {
-        self.orderBy = orderBy
-        self.getPipelineData()
     }
 }

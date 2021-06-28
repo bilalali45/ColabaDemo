@@ -27,7 +27,7 @@ class DashboardViewController: BaseViewController {
         super.viewDidLoad()
         //refreshAccessTokenWithRequest()
         setTopTabBar()
-        lblUsername.text = "Good evening, \(Utility.getUserFirstName())"
+        lblUsername.text = "\(Utility.getGreetingMessage()), \(Utility.getUserFirstName())"
     }
     
     //MARK:- Methods and Actions
@@ -144,7 +144,17 @@ class DashboardViewController: BaseViewController {
 extension DashboardViewController: CarbonTabSwipeNavigationDelegate{
     
     func carbonTabSwipeNavigation(_ carbonTabSwipeNavigation: CarbonTabSwipeNavigation, viewControllerAt index: UInt) -> UIViewController {
-        return Utility.getPipelineVC()
+        
+        if (index == 0){
+            return Utility.getPipelineVC()
+        }
+        else if (index == 1){
+            return Utility.getActivePipelineVC()
+        }
+        else{
+            return Utility.getInActivePipelineVC()
+        }
+        
     }
     
 }

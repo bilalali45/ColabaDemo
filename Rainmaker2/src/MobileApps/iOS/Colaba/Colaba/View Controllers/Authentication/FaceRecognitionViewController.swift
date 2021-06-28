@@ -12,6 +12,7 @@ class FaceRecognitionViewController: UIViewController {
     //MARK:- Outlets and Properties
     
     @IBOutlet weak var logo: UIImageView!
+    @IBOutlet weak var lblGreeting: UILabel!
     @IBOutlet weak var lblUsername: UILabel!
     @IBOutlet weak var faceImage: UIImageView!
     @IBOutlet weak var btnSignInWithPassword: UIButton!
@@ -26,6 +27,7 @@ class FaceRecognitionViewController: UIViewController {
         
         faceImage.isUserInteractionEnabled = true
         faceImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(faceImageTapped)))
+        lblGreeting.text = Utility.getGreetingMessage()
         if let user = UserModel.getCurrentUser(){
             lblUsername.text = "\(user.firstName) \(user.lastName)"
         }

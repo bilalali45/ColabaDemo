@@ -54,7 +54,7 @@ final class Controller: UIPresentationController {
         let yPosition: CGFloat
         switch loaf.location {
         case .bottom:
-            yPosition = (containerView.frame.origin.y + containerView.frame.height - size.height - containerInsets.bottom) - 50
+            yPosition = (containerView.frame.origin.y + containerView.frame.height - size.height - containerInsets.bottom) - 70
         case .top:
             yPosition = containerInsets.top
         }
