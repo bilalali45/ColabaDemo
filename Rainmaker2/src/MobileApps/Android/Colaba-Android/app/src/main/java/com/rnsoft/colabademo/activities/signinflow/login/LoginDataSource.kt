@@ -28,17 +28,16 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
 
         } catch (e: Throwable) {
 
-            if(e is NoConnectivityException) {
-                // show No Connectivity message to user or do whatever you want.
-                Log.e("network", "issues...")
-            }
-
-            e.message?.let {
-                Log.e("Error Message - ", it)
-                //if(it.contains("HTTP 400", true))
+            if(e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else {
+                e.message?.let {
+                    Log.e("Error Message - ", it)
+                    //if(it.contains("HTTP 400", true))
                     //Result.Success(loggedInUser)
+                }
+                Result.Error(IOException("Error -", e))
             }
-            Result.Error(IOException("Error -", e ) )
         }
     }
 
@@ -48,6 +47,9 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
             Log.e("tenantConfiguration- ", tenantConfiguration.toString())
             Result.Success(tenantConfiguration)
         } catch (e: Throwable) {
+            if(e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
             Result.Error(IOException("Error logging in", e))
         }
     }
@@ -60,6 +62,9 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
             Result.Success(phoneInfoDetail)
         } catch (e: Throwable) {
             Log.e("SendTwoFaResponse- ", e.toString())
+            if(e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
             Result.Success(SendTwoFaResponse("404", null,"Verified mobile number not found.","OK"))
             //Result.Error(IOException("Error logging in", e))
         }
@@ -70,6 +75,9 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
             val response = serverApi.getOtpSetting(IntermediateToken)
             Result.Success(response)
         } catch (e: Throwable) {
+            if(e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
             Result.Success(OtpSettingResponse("600", null,"Otp Setting Service error...","OK"))
         }
     }

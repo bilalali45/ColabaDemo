@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
@@ -98,7 +97,6 @@ class WelcomeActivityUnused : AppCompatActivity() {
 
     }
 
-    private fun showToast(toastMessage: String) = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show()
 
     @RequiresApi(Build.VERSION_CODES.Q)
     val fingerPrintClickListener = View.OnClickListener {

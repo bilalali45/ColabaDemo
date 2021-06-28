@@ -22,7 +22,7 @@ class CustomToast(private val context: Context) {
         val viewGroup :ViewGroup=
             ((context as Activity).findViewById<View>(R.id.toast_layout_root) as ViewGroup)
 
-        val layout: View = inflater.inflate(R.layout.custom_toast, viewGroup)
+        val layout: View = inflater.inflate(R.layout.toast_error_layout, viewGroup)
 
         val image: ImageView = layout.findViewById(R.id.image) as ImageView
         image.setImageResource(R.drawable.dollar_bag)
@@ -40,3 +40,4 @@ class CustomToast(private val context: Context) {
 
 }
 
+//private fun showToast(toastMessage: String) = Toast.makeText(requireActivity().applicationContext, toastMessage, Toast.LENGTH_LONG).show()

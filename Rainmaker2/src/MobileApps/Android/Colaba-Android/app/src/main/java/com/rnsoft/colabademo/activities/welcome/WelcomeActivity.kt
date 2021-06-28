@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import co.infinum.goldfinger.Goldfinger
 import co.infinum.goldfinger.Goldfinger.PromptParams
@@ -62,16 +61,15 @@ class WelcomeActivity : AppCompatActivity() {
                 goldfinger.authenticate(params,fingerPrintCallBack)
             }
            else
-                showToast("Finger Print not available....")
+                SandbarUtils.showRegular(this@WelcomeActivity, "Finger Print not available....")
         }
     }
 
-    private fun showToast(toastMessage: String) = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show()
 
     private val fingerPrintCallBack:Goldfinger.Callback = object : Goldfinger.Callback {
         override fun onError(e: Exception) {
            /* Critical error happened */
-            showToast("Finger Print device error....")
+            SandbarUtils.showError(this@WelcomeActivity, "Finger Print device error....")
         }
 
         override fun onResult(result: Goldfinger.Result) {

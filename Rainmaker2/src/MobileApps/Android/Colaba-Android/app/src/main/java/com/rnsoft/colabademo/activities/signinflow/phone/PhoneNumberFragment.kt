@@ -134,7 +134,8 @@ class PhoneNumberFragment : Fragment() {
         return root
     }
 
-    private fun showToast(toastMessage: String) = Toast.makeText(requireActivity().applicationContext, toastMessage, Toast.LENGTH_LONG).show()
+
+
     private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
@@ -168,19 +169,23 @@ class PhoneNumberFragment : Fragment() {
                 if(otpSentResponse.otpData?.twoFaMaxAttemptsCoolTimeInSeconds != null)
                     findNavController().navigate(R.id.otp_verification_id, null)
                 else
-                    otpSentResponse.message?.let { showToast(it) }
+                    otpSentResponse.message?.let {
+                        SandbarUtils.showRegular(requireActivity(), it)
+                    }
             }
             "429" -> {
                 if(otpSentResponse.otpData?.twoFaMaxAttemptsCoolTimeInSeconds != null)
                     findNavController().navigate(R.id.otp_verification_id, null)
                 else
-                    otpSentResponse.message?.let { showToast(it) }
+                    otpSentResponse.message?.let {
+                        SandbarUtils.showRegular(requireActivity(), it)
+                    }
             }
             else -> {
                 if(otpSentResponse.message!=null)
-                     showToast(otpSentResponse.message)
+                    SandbarUtils.showRegular(requireActivity() , otpSentResponse.message)
                 else
-                    showToast("Number can not be verified...")
+                    SandbarUtils.showError(requireActivity(),"Number can not be verified...")
             }
 
         }
@@ -195,7 +200,7 @@ class PhoneNumberFragment : Fragment() {
         when (skipTwoFactorResponse.code) {
             "200" -> navigateToDashboardScreen()
             else -> {
-                skipTwoFactorResponse.message?.let { it1 -> showToast(it1) }
+                skipTwoFactorResponse.message?.let { it1 -> SandbarUtils.showSuccess(requireActivity(), it1) }
             }
         }
     }
