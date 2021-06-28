@@ -14,6 +14,9 @@ struct Utility {
     static let authStoryboard = UIStoryboard.init(name: "Authentication", bundle: nil)
     static let mainStoryboard = UIStoryboard.init(name: "Main", bundle: nil)
     
+    static private var pipelineDateFormatter: DateFormatter?
+    static private var loanApplicationDateFormatter: DateFormatter?
+    
     static func getLoginNavigationVC() -> UINavigationController{
         return authStoryboard.instantiateViewController(withIdentifier: "LoginNavigation")  as! UINavigationController
     }
@@ -66,6 +69,14 @@ struct Utility {
         return mainStoryboard.instantiateViewController(withIdentifier: "PipelineViewController") as! PipelineViewController
     }
     
+    static func getActivePipelineVC() -> ActivePipelineViewController{
+        return mainStoryboard.instantiateViewController(withIdentifier: "ActivePipelineViewController") as! ActivePipelineViewController
+    }
+    
+    static func getInActivePipelineVC() -> InActivePipelineViewController{
+        return mainStoryboard.instantiateViewController(withIdentifier: "InActivePipelineViewController") as! InActivePipelineViewController
+    }
+    
     static func getPipelineMoreVC() -> PipelineMoreViewController{
         return mainStoryboard.instantiateViewController(withIdentifier: "PipelineMoreViewController") as! PipelineMoreViewController
     }
@@ -80,6 +91,36 @@ struct Utility {
     
     static func getCreateNewPopupVC() -> CreateNewPopupViewController{
         return mainStoryboard.instantiateViewController(withIdentifier: "CreateNewPopupViewController") as! CreateNewPopupViewController
+    }
+    
+    static var localPiplineDateFormatter: DateFormatter{
+        get{
+            if (pipelineDateFormatter == nil){
+                pipelineDateFormatter = DateFormatter()
+                pipelineDateFormatter?.timeZone = TimeZone(abbreviation: "UTC")
+                pipelineDateFormatter?.locale = .current
+                pipelineDateFormatter?.dateFormat = "yyyy-MM-dd"
+            }
+            return pipelineDateFormatter!
+        }
+        set{
+            
+        }
+    }
+    
+    static var localLoanApplicationDateFormatter: DateFormatter{
+        get{
+            if (loanApplicationDateFormatter == nil){
+                loanApplicationDateFormatter = DateFormatter()
+                loanApplicationDateFormatter?.timeZone = TimeZone(abbreviation: "UTC")
+                loanApplicationDateFormatter?.locale = .current
+                loanApplicationDateFormatter?.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            }
+            return loanApplicationDateFormatter!
+        }
+        set{
+            
+        }
     }
     
     static func checkDeviceAuthType() -> String {
@@ -140,8 +181,102 @@ struct Utility {
         return ""
     }
     
-//    static func getAddress() -> String{
-//        let address = street unit city state zip country
-//        return ""
-//    }
+    static func getDate() -> String{
+        return localPiplineDateFormatter.string(from: Date())
+    }
+    
+    static func getGreetingMessage() -> String{
+        
+        let hour = Calendar.current.component(.hour, from: Date())
+        
+        if (hour == 0 || hour == 24){
+            return "Good Morning"
+        }
+        else if (hour >= 1 && hour < 12){
+            return "Good Morning"
+        }
+        else if (hour >= 12 && hour < 17){
+            return "Good Afternoon"
+        }
+        else if (hour >= 17 && hour <= 23){
+            return "Good Evening"
+        }
+        else{
+            return "Good Morning"
+        }
+    }
+    
+    static public func timeAgoSince(_ dateString: String) -> String {
+        
+        var actualDate = ""
+        let loanDate = dateString.components(separatedBy: "T")
+        if loanDate.count > 1{
+            let loanTime = loanDate[1].components(separatedBy: ".")
+            if loanTime.first != nil{
+                actualDate = "\(loanDate.first!) \(loanTime.first!)"
+            }
+        }
+        
+        if let date = localLoanApplicationDateFormatter.date(from: actualDate){
+            let calendar = Calendar.current
+            let now = Date()
+            let unitFlags: NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfYear, .month, .year]
+            let components = (calendar as NSCalendar).components(unitFlags, from: date, to: now, options: [])
+            
+            if let year = components.year, year >= 2 {
+                return "\(year) years ago"
+            }
+            
+            if let year = components.year, year >= 1 {
+                return "Last year"
+            }
+            
+            if let month = components.month, month >= 2 {
+                return "\(month) months ago"
+            }
+            
+            if let month = components.month, month >= 1 {
+                return "Last month"
+            }
+            
+            if let week = components.weekOfYear, week >= 2 {
+                return "\(week) weeks ago"
+            }
+            
+            if let week = components.weekOfYear, week >= 1 {
+                return "Last week"
+            }
+            
+            if let day = components.day, day >= 2 {
+                return "\(day) days ago"
+            }
+            
+            if let day = components.day, day >= 1 {
+                return "Yesterday"
+            }
+            
+            if let hour = components.hour, hour >= 2 {
+                return "\(hour) hours ago"
+            }
+            
+            if let hour = components.hour, hour >= 1 {
+                return "An hour ago"
+            }
+            
+            if let minute = components.minute, minute >= 2 {
+                return "\(minute) minutes ago"
+            }
+            
+            if let minute = components.minute, minute >= 1 {
+                return "A minute ago"
+            }
+            
+            if let second = components.second, second >= 3 {
+                return "\(second) seconds ago"
+            }
+            
+            return "Just now"
+        }
+        return "Just now"
+    }
 }

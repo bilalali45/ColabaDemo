@@ -12,6 +12,7 @@ class FingerPrintViewController: UIViewController {
     //MARK:- Outlets and Properties
     
     @IBOutlet weak var logo: UIImageView!
+    @IBOutlet weak var lblGreeting: UILabel!
     @IBOutlet weak var lblUsername: UILabel!
     @IBOutlet weak var fingerImage: UIImageView!
     @IBOutlet weak var btnSignInWithPassword: UIButton!
@@ -26,6 +27,7 @@ class FingerPrintViewController: UIViewController {
         
         fingerImage.isUserInteractionEnabled = true
         fingerImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(fingerPrintImageTapped)))
+        lblGreeting.text = Utility.getGreetingMessage()
         if let user = UserModel.getCurrentUser(){
             lblUsername.text = "\(user.firstName) \(user.lastName)"
         }
