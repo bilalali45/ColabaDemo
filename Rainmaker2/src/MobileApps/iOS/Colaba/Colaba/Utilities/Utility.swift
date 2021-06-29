@@ -99,7 +99,7 @@ struct Utility {
                 pipelineDateFormatter = DateFormatter()
                 pipelineDateFormatter?.timeZone = TimeZone(abbreviation: "UTC")
                 pipelineDateFormatter?.locale = .current
-                pipelineDateFormatter?.dateFormat = "yyyy-MM-dd"
+                pipelineDateFormatter?.dateFormat = "yyyy-MM-dd HH:mm:ss"
             }
             return pipelineDateFormatter!
         }
@@ -182,7 +182,10 @@ struct Utility {
     }
     
     static func getDate() -> String{
-        return localPiplineDateFormatter.string(from: Date())
+        var date = localPiplineDateFormatter.string(from: Date())
+        date = date.replacingOccurrences(of: " ", with: "T")
+        date = "\(date)Z"
+        return date
     }
     
     static func getGreetingMessage() -> String{

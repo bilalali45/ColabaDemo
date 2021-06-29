@@ -16,7 +16,6 @@ let kFaceIdResetPopup = "This will reset your face Id verification. Do you want 
 let kFingerIdResetPopup = "This will reset your finger print verification. Do you want to continue?"
 let BASEURL = "https://devmobilegateway.rainsoftfn.com:5002/api/mcu/mobile/"
 //let BASEURL = "https://qamobilegateway.rainsoftfn.com/api/mcu/mobile/"
-let BASEURL2 = "https://172.16.100.17:5002/api/mcu/mobile/"
 let kResendEnableTimeStamp = "kResendEnableTimeStamp"
 var isBiometricAllow = false
 var shouldShowSkipButton = false
