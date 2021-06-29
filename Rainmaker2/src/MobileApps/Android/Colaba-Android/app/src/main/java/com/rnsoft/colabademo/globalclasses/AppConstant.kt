@@ -21,6 +21,8 @@ object AppConstant {
         const val refreshToken:String = "refreshToken"
         const val userProfileId:String = "userProfileId"
         const val userName:String = "userName"
+        const val firstName:String = "firstName"
+        const val lastName:String = "lastName"
         const val validFrom:String = "validFrom"
         const val validTo:String = "validTo"
         const val refreshTokenValidTo:String = "refreshTokenValidTo"
@@ -53,5 +55,6 @@ object AppConstant {
         const val dontAskTwoFaIdentifier:String = "dontAskTwoFaIdentifier"
 
         const val  INTERNET_ERR_MSG:String = "Please check your internet connectivity..."
+        const val  INTERNET_ERR_CODE:String = "6048"
 }
 

@@ -23,7 +23,11 @@ class OtpViewModel @Inject constructor(private val otpRepo: OtpRepo) :
                     val genericResult = otpRepo.startOtpVerification(intermediateToken, phoneNumber, otpCode )
                     if (genericResult is Result.Success) {
                         EventBus.getDefault().post( OtpVerificationEvent(genericResult.data))
-                    } else
+                    }
+                    else
+                    if(genericResult is Result.Error && genericResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                        EventBus.getDefault().post(OtpVerificationEvent(OtpVerificationResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
+                    else
                         EventBus.getDefault().post(OtpVerificationEvent(OtpVerificationResponse("600", null, "Web service error...", null)))
                 }
             }
@@ -37,6 +41,9 @@ class OtpViewModel @Inject constructor(private val otpRepo: OtpRepo) :
                 if (genericResult is Result.Success) {
                     EventBus.getDefault().post(NotAskForOtpEvent(genericResult.data))
                 }
+                else
+                if(genericResult is Result.Error && genericResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(NotAskForOtpEvent(NotAskForOtpResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
                 else
                     EventBus.getDefault().post(NotAskForOtpEvent(NotAskForOtpResponse("600",null,"Web service error...", null)))
             }

@@ -4,6 +4,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.loans.ActiveLoansFragment
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.loans.InActiveLoansFragment
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.loans.AllLoansFragment
 
 
 private const val NUM_TABS = 3
@@ -17,9 +20,9 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
 
     override fun createFragment(position: Int): Fragment {
         when (position) {
-            0 -> return LoanFragment()
-            1 -> return DogFragment()
+            0 -> return AllLoansFragment()
+            1 -> return ActiveLoansFragment()
         }
-        return BirdFragment()
+        return InActiveLoansFragment()
     }
 }

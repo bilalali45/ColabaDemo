@@ -1,15 +1,12 @@
 package com.rnsoft.colabademo
 
-import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class LoginRepo @Inject
 constructor(
-    private val dataSource: LoginDataSource, private val spEditor: SharedPreferences.Editor,
-    @ApplicationContext val applicationContext: Context
+    private val dataSource: LoginDataSource, private val spEditor: SharedPreferences.Editor
 ) {
 
    suspend fun validateLoginCredentials(
@@ -71,6 +68,8 @@ constructor(
         spEditor.putInt(AppConstant.userProfileId, data.userProfileId)
             .apply()
         spEditor.putString(AppConstant.userName, data.userName).apply()
+        spEditor.putString(AppConstant.firstName, data.firstName).apply()
+        spEditor.putString(AppConstant.lastName, data.lastName).apply()
         spEditor.putString(AppConstant.validFrom, data.validFrom).apply()
         spEditor.putString(AppConstant.validTo, data.validTo).apply()
         spEditor.putInt(AppConstant.tokenType, data.tokenType).apply()

@@ -181,6 +181,9 @@ class PhoneNumberFragment : Fragment() {
                         SandbarUtils.showRegular(requireActivity(), it)
                     }
             }
+            AppConstant.INTERNET_ERR_CODE->{
+                SandbarUtils.showRegular(requireActivity() , AppConstant.INTERNET_ERR_MSG)
+            }
             else -> {
                 if(otpSentResponse.message!=null)
                     SandbarUtils.showRegular(requireActivity() , otpSentResponse.message)

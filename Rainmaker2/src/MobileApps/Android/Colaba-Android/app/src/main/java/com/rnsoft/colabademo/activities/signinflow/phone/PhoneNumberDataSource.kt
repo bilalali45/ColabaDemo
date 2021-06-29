@@ -10,6 +10,9 @@ class PhoneNumberDataSource @Inject constructor(private val serverApi: ServerApi
             val skipTwoFactorResponse = serverApi.skipTwoFactorApi(intermediateToken)
             Result.Success(skipTwoFactorResponse)
         } catch (e: Throwable) {
+            if(e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
             Result.Error(IOException("Error logging in", e))
         }
     }

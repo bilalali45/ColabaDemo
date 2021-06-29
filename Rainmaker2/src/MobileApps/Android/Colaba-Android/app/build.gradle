@@ -29,8 +29,8 @@ android {
         }
 
         debug {
-            //buildConfigField "String", "BASE_URL", '"https://devmobilegateway.rainsoftfn.com:5002/"'
-            buildConfigField "String", "BASE_URL", '"https://qamobilegateway.rainsoftfn.com/"'
+            buildConfigField "String", "BASE_URL", '"https://devmobilegateway.rainsoftfn.com:5002/"'
+            //buildConfigField "String", "BASE_URL", '"https://qamobilegateway.rainsoftfn.com/"'
         }
 
     }
@@ -133,7 +133,7 @@ dependencies {
     // For developers using AndroidX in their applications - Android Permission Library By Google
     //implementation 'pub.devrel:easypermissions:3.0.0'
 
-
+    implementation 'com.github.getActivity:ToastUtils:9.2'
     // Fast Adapter...
     //implementation "com.mikepenz:fastadapter:5.2.2"
     //implementation "com.mikepenz:fastadapter-extensions-expandable:5.2.2"
@@ -157,7 +157,11 @@ dependencies {
     // For custom toast...
     //implementation 'com.muddzdev:styleabletoast:2.3.0'
 
-    //implementation 'com.github.getActivity:ToastUtils:9.2'
+    implementation 'com.github.getActivity:ToastUtils:9.2'
+
+
+    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
+
 
 }
 

@@ -20,15 +20,18 @@ class PhoneNumberViewModel @Inject constructor(private val phoneNumberRepo: Phon
 
     fun skipTwoFactor() {
         viewModelScope.launch {
-            val genericResult = sharedPreferences.getString(AppConstant.token, "")?.let {
+            val result = sharedPreferences.getString(AppConstant.token, "")?.let {
                 phoneNumberRepo.skipTwoFactorAuthentication(
                     it
                 )
             }
-            genericResult?.let {
-                if (genericResult is Result.Success) {
-                        EventBus.getDefault().post(SkipEvent(genericResult.data))
-                } else
+            result?.let {
+                if (result is Result.Success) {
+                        EventBus.getDefault().post(SkipEvent(result.data))
+                }
+                else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(SkipEvent(SkipTwoFactorResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
+                else
                     EventBus.getDefault().post(SkipEvent(SkipTwoFactorResponse("300", null, "Webservice error, can not skip", null)))
             }
 

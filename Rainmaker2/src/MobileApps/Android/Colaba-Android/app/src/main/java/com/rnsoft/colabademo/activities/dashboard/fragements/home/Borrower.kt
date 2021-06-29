@@ -73,6 +73,8 @@ data class Borrower(
             )
         }
 
+        fun emptyCustomersList(context: Context): List<Borrower>  = listOf()
+
     }
 }
 

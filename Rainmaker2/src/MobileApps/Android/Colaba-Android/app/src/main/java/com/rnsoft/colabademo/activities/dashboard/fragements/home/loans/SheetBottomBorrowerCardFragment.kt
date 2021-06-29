@@ -12,10 +12,10 @@ import com.rnsoft.colabademo.Borrower
 import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.DialogFragmentBorrowerCardSheetBinding
 
-class BorrowerCardBottomSheetDialogFragment : BottomSheetDialogFragment() {
+class SheetBottomBorrowerCardFragment : BottomSheetDialogFragment() {
 
     companion object {
-        fun newInstance() = BorrowerCardBottomSheetDialogFragment()
+        fun newInstance() = SheetBottomBorrowerCardFragment()
     }
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {

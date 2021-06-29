@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo
+package com.rnsoft.colabademo.activities.dashboard.fragements.home.loans
 
 
 import android.os.Bundle
@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.rnsoft.colabademo.activities.dashboard.fragements.home.LoanItemClickListener
+import com.rnsoft.colabademo.*
 import com.rnsoft.colabademo.databinding.FragmentCatBinding
 import org.json.JSONArray
 
 
-class LoanFragment : Fragment(), LoanItemClickListener {
+class AllLoansFragment : Fragment(), LoanItemClickListener {
     private var _binding: FragmentCatBinding? = null
     private val binding get() = _binding!!
 
@@ -39,7 +39,7 @@ class LoanFragment : Fragment(), LoanItemClickListener {
             this.setHasFixedSize(true)
             // set the custom adapter to the RecyclerView
             borrowList = Borrower.customersList(requireContext())
-            this.adapter = LoansAdapter(borrowList, this@LoanFragment)
+            this.adapter = LoansAdapter(borrowList, this@AllLoansFragment)
 
         }
 
@@ -60,11 +60,11 @@ class LoanFragment : Fragment(), LoanItemClickListener {
 
 
     override fun getCardIndex(position: Int) {
-        val borrowerBottomSheet = BorrowerCardBottomSheetDialogFragment.newInstance()
+        val borrowerBottomSheet = SheetBottomBorrowerCardFragment.newInstance()
         val bundle = Bundle()
-        bundle.putParcelable(AppConstant.borrowerParcelObject , borrowList.get(position))
+        bundle.putParcelable(AppConstant.borrowerParcelObject, borrowList.get(position))
         borrowerBottomSheet.arguments = bundle
-        borrowerBottomSheet.show(childFragmentManager, BorrowerCardBottomSheetDialogFragment::class.java.canonicalName)
+        borrowerBottomSheet.show(childFragmentManager, SheetBottomBorrowerCardFragment::class.java.canonicalName)
     }
 
     //fun StatsFragment(data: JSONArray?) { covidData = data}

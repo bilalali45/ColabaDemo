@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +17,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import co.infinum.goldfinger.Goldfinger
+import com.hjq.toast.ToastUtils
 import com.rnsoft.colabademo.globalclasses.AppSetting
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -105,6 +109,14 @@ class LoginFragment : Fragment() {
                 else {
                     biometricSwitch.isChecked = false
                     SandbarUtils.showRegular(requireActivity(), resources.getString((R.string.biometric_check)) )
+
+                    /*
+                    ToastUtils.init(requireActivity().application)
+                    ToastUtils.setView(R.layout.toast_error_layout)
+                    ToastUtils.setGravity(Gravity.BOTTOM, 0, 60)
+                    ToastUtils.show(resources.getString((R.string.biometric_check)))
+
+                     */
                 }
             }
             AppSetting.biometricEnabled = biometricSwitch.isChecked
@@ -186,6 +198,7 @@ class LoginFragment : Fragment() {
                     else -> {
                         //showToast(R.string.we_have_send_you_email)
                         SandbarUtils.showRegular(requireActivity(),"Webservice not responding...")
+
                     }
                 }
             }
