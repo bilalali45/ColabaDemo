@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -16,6 +17,7 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rnsoft.colabademo.databinding.FragmentHomeBinding
+import com.rnsoft.colabademo.globalclasses.AppSetting
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -41,6 +43,8 @@ class HomeFragment : Fragment() {
 
     private lateinit  var searchImageView: ImageView
     private lateinit  var filterImageView: ImageView
+    private lateinit  var greetingMessage: TextView
+
 
     private lateinit var  homeProfileLayout:ConstraintLayout
 
@@ -63,7 +67,7 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
         homeProfileLayout = root.findViewById(R.id.home_profile_layout)
-
+        greetingMessage = root.findViewById(R.id.greetingMessage)
         filterImageView = root.findViewById(R.id.filter_imageview)
         searchImageView = root.findViewById(R.id.searchIconImageView)
         searchImageView.setOnClickListener{
@@ -126,10 +130,18 @@ class HomeFragment : Fragment() {
             }
         })
 
+        setGreetingMessageOnTop()
 
         return root
     }
 
+    private fun setGreetingMessageOnTop(){
+        var greetingString = AppSetting.returnGreetingString()
+        sharedPreferences.getString(AppConstant.firstName,"")?.let {
+            greetingString = "$greetingString $it"
+        }
+        greetingMessage.text = greetingString
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

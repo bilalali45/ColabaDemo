@@ -2,14 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="200dp"
     android:layout_marginBottom="30dp"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toast_layout_root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_marginStart="32dp"
 
         android:layout_marginEnd="32dp"
@@ -31,21 +31,20 @@
         <TextView
             android:id="@android:id/message"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:fontFamily="@font/rubik_regular"
             android:gravity="start"
-            android:maxLines="2"
+            android:maxLines="3"
             android:singleLine="false"
-            android:text="@string/dummy_otp_message"
+            android:text="@string/dummy_ok_message"
             android:textColor="@color/grey_color_two"
             android:textSize="14sp"
 
-            app:layout_constraintBottom_toBottomOf="@+id/image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image"
-            app:layout_constraintTop_toTopOf="@+id/image" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

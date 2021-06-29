@@ -13,6 +13,8 @@ data class Data(
     val refreshTokenValidTo: String,
     val token: String,
     val userName: String,
+    val firstName: String,
+    val lastName: String,
     val userProfileId: Int,
     val validFrom: String,
     val validTo: String,

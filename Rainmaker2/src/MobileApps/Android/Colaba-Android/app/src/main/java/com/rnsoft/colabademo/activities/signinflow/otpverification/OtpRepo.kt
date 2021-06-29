@@ -35,6 +35,8 @@ constructor(
         sharedPref.putInt(AppConstant.userProfileId, data.userProfileId)
             .apply()
         sharedPref.putString(AppConstant.userName, data.userName).apply()
+        sharedPref.putString(AppConstant.firstName, data.firstName).apply()
+        sharedPref.putString(AppConstant.lastName, data.lastName).apply()
         sharedPref.putString(AppConstant.validFrom, data.validFrom).apply()
         sharedPref.putString(AppConstant.validTo, data.validTo).apply()
         sharedPref.putInt(AppConstant.tokenType, data.tokenType).apply()

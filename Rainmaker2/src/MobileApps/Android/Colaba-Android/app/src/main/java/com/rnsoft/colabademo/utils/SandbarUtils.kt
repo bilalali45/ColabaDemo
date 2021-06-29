@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 
 
 object SandbarUtils {
@@ -49,9 +49,13 @@ class SimpleCustomSandbar(parent: ViewGroup, content: View) :
         }) {
 
     init {
+
+
         getView().apply {
             setBackgroundColor(ContextCompat.getColor(view.context, android.R.color.transparent))
             setPadding(0, 0, 0, 0)
+
+
         }
     }
 
@@ -86,7 +90,7 @@ class SimpleCustomSandbar(parent: ViewGroup, content: View) :
             activity: Activity,
             message: String,
             layout_id: Int = R.layout.toast_notify_layout,
-            duration: Int = Snackbar.LENGTH_LONG
+            duration: Int = LENGTH_LONG
         ): SimpleCustomSandbar? {
             val parent =
                 findSuitableParent(activity.findViewById(android.R.id.content)) ?: return null
@@ -100,6 +104,28 @@ class SimpleCustomSandbar(parent: ViewGroup, content: View) :
                     parent,
                     toastView
                 ).setDuration(duration)
+
+
+
+                //val sbView: View = snackbar.getView()
+                /*
+                val sbView = snackbar.getView() as FrameLayout
+                val params = sbView.getChildAt(0).layoutParams
+                params.setMargins(
+                    params.leftMargin,
+                    params.topMargin,
+                    params.rightMargin,
+                    params.bottomMargin + ScreenUtils.getNavigationBarHeight(activity)
+                )
+
+                sbView.getChildAt(0).setLayoutParams(params)
+
+                val layout = snackbar.getView() as SnackbarLayout
+
+                sbView.minimumHeight = 400
+                  */
+
+
                 setCorrectAnimationAndPosition(snackbar)
                 return snackbar
             } catch (e: Exception) {
@@ -115,6 +141,7 @@ class SimpleCustomSandbar(parent: ViewGroup, content: View) :
             } else if (params is FrameLayout.LayoutParams) {
                 params.gravity = Gravity.BOTTOM
             }
+
             sandbar.view.layoutParams = params
 
             sandbar.animationMode = ANIMATION_MODE_FADE

@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.dashboard.fragements.home
+package com.rnsoft.colabademo.activities.dashboard.fragements.home.loans
 
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout

@@ -31,6 +31,8 @@ class SignUpFlowViewModel @Inject constructor(private val signUpFlowRepository: 
         val result = signUpFlowRepository.sendOtpToPhone(intermediateToken, correctPhoneNumber)
             if (result is Result.Success)
                 EventBus.getDefault().post(OtpSentEvent(result.data))
+            else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
+                EventBus.getDefault().post(OtpSentEvent(OtpSentResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
             else
                 EventBus.getDefault().post(OtpSentEvent(OtpSentResponse("300", null, "Webservice error, can not skip", null)))
         }

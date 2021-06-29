@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo
+package com.rnsoft.colabademo.activities.dashboard.fragements.home.loans
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.rnsoft.colabademo.activities.dashboard.fragements.home.LoanItemClickListener
+import com.rnsoft.colabademo.Borrower
+import com.rnsoft.colabademo.R
 
 
 class LoansAdapter
@@ -26,7 +27,7 @@ internal constructor(
         this.classScopedItemClickListener = onLoanItemClickListener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LoanViewHolder  {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LoanViewHolder {
         //val view: View = LayoutInflater.from(parent.context).inflate(R.layout.loan_view_holder, parent, false)
         //return LoanViewHolder(view)
         val holder: LoanViewHolder

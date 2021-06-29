@@ -16,6 +16,7 @@ class SignUpFlowDataSource @Inject constructor(private val serverApi: ServerApi)
                 Log.e("network", "issues...")
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
+            else
             Result.Error(IOException("Error logging in", e))
         }
     }

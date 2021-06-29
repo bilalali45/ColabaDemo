@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import co.infinum.goldfinger.Goldfinger
 import co.infinum.goldfinger.Goldfinger.PromptParams
+import com.rnsoft.colabademo.globalclasses.AppSetting
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -18,6 +19,7 @@ class WelcomeActivity : AppCompatActivity() {
     private lateinit var loginWithTextView: TextView
     private lateinit var withPasswordTextView: TextView
     private lateinit var username: TextView
+    private lateinit var greetMessage: TextView
     private lateinit var fingerPrintImageView: ImageView
 
     private lateinit var goldfinger: Goldfinger
@@ -29,6 +31,7 @@ class WelcomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.welcome_layout)
+        greetMessage             =   findViewById(R.id.greetMessage)
         username                =   findViewById(R.id.usernameTextView)
         loginWithTextView       =   findViewById(R.id.loginWithTextView)
         withPasswordTextView    =   findViewById(R.id.withPasswordTextView)
@@ -62,6 +65,14 @@ class WelcomeActivity : AppCompatActivity() {
             }
            else
                 SandbarUtils.showRegular(this@WelcomeActivity, "Finger Print not available....")
+        }
+
+        greetMessage.text = AppSetting.returnGreetingString()
+        sharedPreferences.getString(AppConstant.firstName, "")?.let { firstName->
+            username.text = firstName
+            sharedPreferences.getString(AppConstant.lastName, "")?.let {
+                username.text = username.text.toString() +" "+it
+            }
         }
     }
 

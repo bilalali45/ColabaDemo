@@ -165,7 +165,10 @@ class OtpFragment: Fragment() {
         resendLink.isEnabled = true
 
         Log.e("otp-sent", otpSentResponse.toString())
-        if (otpSentResponse.code == "400" && otpSentResponse.otpData!=null) {
+
+        if(otpSentResponse.code == AppConstant.INTERNET_ERR_CODE)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+        else if (otpSentResponse.code == "400" && otpSentResponse.otpData!=null) {
             checkForTimer()
             updateResendCount()
         }
@@ -196,6 +199,10 @@ class OtpFragment: Fragment() {
         resendLink.isEnabled = true
 
         val verificationResponse = event.otpVerificationResponse
+
+        if(verificationResponse.code == AppConstant.INTERNET_ERR_CODE)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+        else
         if(verificationResponse.code == "200" &&  verificationResponse.data != null) {
             verifyButton.isEnabled = true
             tickImage.visibility = View.VISIBLE
