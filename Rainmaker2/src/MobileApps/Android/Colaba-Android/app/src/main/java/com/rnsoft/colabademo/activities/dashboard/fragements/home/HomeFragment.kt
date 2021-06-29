@@ -114,15 +114,15 @@ class HomeFragment : Fragment() {
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                //Toast.makeText(requireContext(), "Tab ${tab?.text} selected", Toast.LENGTH_SHORT).show()
+
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                //Toast.makeText(requireContext(), "Tab ${tab?.text} unselected", Toast.LENGTH_SHORT).show()
+
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-               // Toast.makeText(requireContext(), "Tab ${tab?.text} reselected", Toast.LENGTH_SHORT).show()
+
             }
         })
 

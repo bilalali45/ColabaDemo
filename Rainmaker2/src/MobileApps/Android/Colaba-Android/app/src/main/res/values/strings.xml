@@ -46,7 +46,7 @@
     <string name="login_failed">Login credentials not verified</string>
     <string name="email_format_error">Invalid Email, Please try again…</string>
     <string name="email_empty_error"> Empty Email, Please try again…</string>
-    <string name="password_empty_error"> Password Empty, Please try again…</string>
+    <string name="password_empty_error">Password Empty, Please try again…</string>
     <string name="password_error">Invalid Password, Please try again…</string>
     <string name="password_length_error">Invalid Password, Length too short…</string>
     <string name="place_order">Place Order</string>

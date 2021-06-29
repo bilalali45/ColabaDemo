@@ -174,13 +174,17 @@ class OtpFragment: Fragment() {
             if(otpSentResponse.otpData.twoFaMaxAttemptsCoolTimeInSeconds!=null && otpSentResponse.otpData.twoFaMaxAttemptsCoolTimeInSeconds!=0) {
                 updateResendCount()
                 checkForTimer()
-                otpSentResponse.message?.let { showToast(it) }
+                otpSentResponse.message?.let {
+                    SandbarUtils.showSuccess(requireActivity(), it)
+                }
             }
             else
-                otpSentResponse.message?.let { showToast(it) }
+                otpSentResponse.message?.let {
+                    SandbarUtils.showRegular(requireActivity(), it)
+                }
         }
         else {
-            otpSentResponse.message?.let { showToast(it) }
+            otpSentResponse.message?.let {  SandbarUtils.showSuccess(requireActivity(), it) }
             updateResendCount()
         }
 
@@ -201,12 +205,12 @@ class OtpFragment: Fragment() {
         }
         else if(verificationResponse.message!=null) {
                 crossImage.visibility = View.VISIBLE
-                showToast(verificationResponse.message)
+                SandbarUtils.showRegular(requireActivity(), verificationResponse.message)
                 otpEditText.isEnabled = true
         }
         else {
                 crossImage.visibility = View.VISIBLE
-                showToast("Response contains no message...")
+                SandbarUtils.showError(requireActivity(), "Response contains no message...")
                 otpEditText.isEnabled = true
         }
 
@@ -230,11 +234,10 @@ class OtpFragment: Fragment() {
         else {
             verifyButton.isEnabled = true
             resendLink.isEnabled = true
-            notAskForOtpResponse.message?.let { showToast(it) }
+            notAskForOtpResponse.message?.let { SandbarUtils.showError(requireActivity(), it)  }
         }
     }
 
-    private fun showToast(toastMessage: String) = Toast.makeText(requireActivity().applicationContext, toastMessage, Toast.LENGTH_LONG).show()
 
     private fun navigateToDashBoardScreen(){
         startActivity(Intent(requireActivity(), DashBoardActivity::class.java))

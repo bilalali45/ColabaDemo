@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
@@ -53,10 +52,6 @@ class ForgotPasswordFragment : Fragment() {
 
 
 
-    private fun showToast(toastMessage: String) {
-        Toast.makeText(requireActivity().applicationContext, toastMessage, Toast.LENGTH_LONG).show()
-    }
-
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -78,11 +73,11 @@ class ForgotPasswordFragment : Fragment() {
             "300" ->errorTextView.text = forgotPasswordResponse.message
             "600" ->errorTextView.text = forgotPasswordResponse.message
             "200" -> {
-                showToast("success")
+                SandbarUtils.showSuccess(requireActivity(), "success")
                 findNavController().navigate(R.id.back_to_login_id, null)
             }
             else -> {
-                showToast("Failure Exception...")
+                SandbarUtils.showError(requireActivity(),"Failure Exception...")
             }
         }
     }

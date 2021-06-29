@@ -1,29 +1,22 @@
 package com.rnsoft.colabademo
 
-import android.app.Activity
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
-import android.os.Build
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import androidx.annotation.StringRes
-import androidx.annotation.StyleableRes
+import android.widget.ProgressBar
 import androidx.appcompat.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-
 import co.infinum.goldfinger.Goldfinger
 import com.rnsoft.colabademo.globalclasses.AppSetting
-
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -45,7 +38,7 @@ class LoginFragment : Fragment() {
     private lateinit var biometricSwitch: SwitchCompat
     private lateinit var forgotPasswordLink: AppCompatTextView
     private lateinit var loginButton: AppCompatButton
-    private var passwordBoolean: Boolean = true
+
 
 
     private lateinit var passwordImageView: AppCompatImageView
@@ -111,7 +104,7 @@ class LoginFragment : Fragment() {
                     Log.e("Yes", "Let Toggle On...")
                 else {
                     biometricSwitch.isChecked = false
-                    showToast(R.string.biometric_check)
+                    SandbarUtils.showRegular(requireActivity(), resources.getString((R.string.biometric_check)) )
                 }
             }
             AppSetting.biometricEnabled = biometricSwitch.isChecked
@@ -143,12 +136,15 @@ class LoginFragment : Fragment() {
         findNavController().navigate(R.id.phone_number_id, null)
 
 
-    private fun showToast(@StringRes errorString: Int) {
 
-        SnackbarUtils.showError(requireActivity(), "some error")
 
-        //Toast.makeText(requireActivity().applicationContext, errorString, Toast.LENGTH_LONG).show()
+    fun convertPixelsToDp(px: Float, context: Context): Float {
+        return px / (context.getResources()
+            .getDisplayMetrics().densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    }
 
+    fun dpFromPx(context: Context, px: Float): Float {
+        return px / context.resources.displayMetrics.density
     }
 
     override fun onStart() {
@@ -170,12 +166,16 @@ class LoginFragment : Fragment() {
 
             if (it.emailError != null) {
                 emailError.visibility = View.VISIBLE
-                emailError.text = it.emailError.let { it1 -> resources.getString(it1) }
+                emailError.text = it.emailError
             } else if (it.passwordError != null) {
                 passwordError.visibility = View.VISIBLE
-                passwordError.text = it.passwordError.let { it1 -> resources.getString(it1) }
+                passwordError.text = it.passwordError
             } else if (it.responseError != null) {
-                showToast(it.responseError)
+                //showToast(it.responseError)
+                if(it.responseError == AppConstant.INTERNET_ERR_MSG)
+                    SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+                 else
+                    SandbarUtils.showError(requireActivity(), it.responseError )
             } else if (it.success != null) {
                 emailError.visibility = View.GONE
                 passwordError.visibility = View.GONE
@@ -183,7 +183,10 @@ class LoginFragment : Fragment() {
                     1 -> navigateToDashBoard(it.success)
                     2 -> navigateToPhoneScreen()
                     3 -> navigateToOtpScreen()
-                    else -> showToast(R.string.we_have_send_you_email)
+                    else -> {
+                        //showToast(R.string.we_have_send_you_email)
+                        SandbarUtils.showRegular(requireActivity(),"Webservice not responding...")
+                    }
                 }
             }
         }
@@ -197,6 +200,10 @@ class LoginFragment : Fragment() {
 
 }
 
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Getting phone lock broadcast ......
 
     /*
     private var mPowerKeyReceiver: BroadcastReceiver? = null
@@ -232,7 +239,29 @@ class LoginFragment : Fragment() {
      */
 
 
-////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //private fun showToast(@StringRes errorString: Int) {
+
+            //SandbarUtils.showRegular(requireActivity(), "some error" )
+
+            //ToastUtils.init(requireActivity().application)
+
+            //ToastUtils.setView(R.layout.toast_error_layout)
+            //ToastUtils.setGravity(Gravity.BOTTOM, 0, 60)
+
+
+
+            //ToastUtils.show("Some Error coming from the case")
+
+
+
+
+    // }
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // adding observer to login...
 
 /*

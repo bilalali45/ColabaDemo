@@ -1,7 +1,6 @@
 package com.rnsoft.colabademo
 
 import android.app.Activity
-import android.graphics.Color
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -10,40 +9,38 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginBottom
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
-import com.rnsoft.colabademo.R
 
 
-object SnackbarUtils {
-    fun showRegular(activity: Activity, textMessage: String) {
-        show(activity, textMessage)
+object SandbarUtils {
+    fun showRegular(activity: Activity, textMessage: String , layout_id:Int = R.layout.toast_notify_layout) {
+        show(activity, textMessage, layout_id)
     }
 
-    fun showSuccess(activity: Activity, textMessage: String) {
-        show(activity, textMessage, Color.GREEN)
+    fun showSuccess(activity: Activity, textMessage: String , layout_id:Int = R.layout.toast_ok_layout) {
+        show(activity, textMessage, layout_id)
     }
 
-    fun showError(activity: Activity, textMessage: String) {
-        show(activity, textMessage, Color.RED)
+    fun showError(activity: Activity, textMessage: String , layout_id:Int = R.layout.toast_error_layout ) {
+        show(activity, textMessage, layout_id)
     }
 
-    fun showWarning(activity: Activity, textMessage: String) {
-        show(activity, textMessage, Color.argb(255, 255, 165, 0))
-    }
+    //fun showWarning(activity: Activity, textMessage: String) {
+      //  show(activity, textMessage, Color.argb(255, 255, 165, 0))
+    //}
 
     private fun show(
         activity: Activity,
         textMessage: String,
-        backgroundColor: Int = ContextCompat.getColor(activity, R.color.teal_200)
+        layout_id: Int = R.layout.toast_notify_layout
     ) {
-        SimpleCustomSnackbar.make(activity, textMessage, backgroundColor)?.show()
+        SimpleCustomSandbar.make(activity, textMessage, layout_id)?.show()
     }
 }
 
-class SimpleCustomSnackbar(parent: ViewGroup, content: View) :
-    BaseTransientBottomBar<SimpleCustomSnackbar>(
+class SimpleCustomSandbar(parent: ViewGroup, content: View) :
+    BaseTransientBottomBar<SimpleCustomSandbar>(
         parent,
         content,
         object : com.google.android.material.snackbar.ContentViewCallback {
@@ -88,18 +85,18 @@ class SimpleCustomSnackbar(parent: ViewGroup, content: View) :
         fun make(
             activity: Activity,
             message: String,
-            backgroundColor: Int = ContextCompat.getColor(activity, R.color.teal_200),
+            layout_id: Int = R.layout.toast_notify_layout,
             duration: Int = Snackbar.LENGTH_LONG
-        ): SimpleCustomSnackbar? {
+        ): SimpleCustomSandbar? {
             val parent =
                 findSuitableParent(activity.findViewById(android.R.id.content)) ?: return null
 
             try {
                 val toastView: View = LayoutInflater.from(activity)
-                    .inflate(R.layout.custom_toast, parent, false)
-                (toastView.findViewById<View>(R.id.text) as TextView).text = message
-                toastView.setBackgroundColor(backgroundColor)
-                val snackbar = SimpleCustomSnackbar(
+                    .inflate(layout_id, parent, false)
+                (toastView.findViewById<View>(android.R.id.message) as TextView).text = message
+                //toastView.setBackgroundColor(backgroundColor)
+                val snackbar = SimpleCustomSandbar(
                     parent,
                     toastView
                 ).setDuration(duration)
@@ -111,16 +108,16 @@ class SimpleCustomSnackbar(parent: ViewGroup, content: View) :
             return null
         }
 
-        private fun setCorrectAnimationAndPosition(snackbar: SimpleCustomSnackbar) {
-            val params = snackbar.view.layoutParams
+        private fun setCorrectAnimationAndPosition(sandbar: SimpleCustomSandbar) {
+            val params = sandbar.view.layoutParams
             if (params is CoordinatorLayout.LayoutParams) {
                 params.gravity = Gravity.BOTTOM
             } else if (params is FrameLayout.LayoutParams) {
                 params.gravity = Gravity.BOTTOM
             }
-            snackbar.view.layoutParams = params
+            sandbar.view.layoutParams = params
 
-            snackbar.animationMode = ANIMATION_MODE_FADE
+            sandbar.animationMode = ANIMATION_MODE_FADE
         }
     }
 }

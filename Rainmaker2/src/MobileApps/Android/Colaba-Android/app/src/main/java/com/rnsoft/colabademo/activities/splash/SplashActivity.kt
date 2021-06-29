@@ -23,7 +23,6 @@ class SplashActivity : AppCompatActivity() {
         Log.e("Splash", "loaded")
         activityScope.launch {
 
-            //Toast.makeText(this@SplashActivity, BuildConfig.BASE_URL, Toast.LENGTH_LONG).show()
 
             if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
                 && sharedPreferences.getBoolean(AppConstant.isbiometricEnabled, false)) {

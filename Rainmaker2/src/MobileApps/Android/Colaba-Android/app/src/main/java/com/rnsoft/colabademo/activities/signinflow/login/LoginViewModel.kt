@@ -53,7 +53,9 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
                 val genericResult =
                     loginRepo.validateLoginCredentials(userEmail, password,  dontAskTwoFaIdentifier)
                 Log.e("login-result - ", genericResult.toString())
-
+                if(genericResult is Result.Error)
+                    isConnectedToInternet(genericResult)
+                else
                 if (genericResult is Result.Success) {
                     val loginResponse = genericResult.data
 
@@ -66,6 +68,10 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
 
                         val resultConfiguration =
                             loginRepo.fetchTenantConfiguration(loginResponse.data.token)
+
+                        if(resultConfiguration is Result.Error)
+                            isConnectedToInternet(resultConfiguration)
+                        else
                         if (resultConfiguration is Result.Success) {
                             val tenantConfiguration = resultConfiguration.data
                             if (tenantConfiguration.tenantData.tenantTwoFaSetting == 1 ||
@@ -73,6 +79,11 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
                             ) {
                                 val phoneInfoResult =
                                     loginRepo.getPhoneNumberDetail(loginResponse.data.token)
+
+                                if(phoneInfoResult is Result.Error)
+                                    isConnectedToInternet(phoneInfoResult)
+                                else
+
                                 if (phoneInfoResult is Result.Success) {
                                     val phoneDetail = phoneInfoResult.data
                                     when (phoneDetail.code) {
@@ -89,31 +100,37 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
 
                         }
                     }
-                } else
+                }
+                else
                     EventBus.getDefault()
-                        .post(LoginEvent(LoginResponseResult(responseError = R.string.user_data_does_not_exit)))
+                        .post(LoginEvent(LoginResponseResult(responseError = " User does not exist")))
 
             }
         }
+    }
+
+    private fun isConnectedToInternet(genericResult:Result.Error){
+            if(genericResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                EventBus.getDefault().post(LoginEvent(LoginResponseResult(responseError = AppConstant.INTERNET_ERR_MSG)))
     }
 
     private suspend fun runOtpSettingService(intermediateToken:String){
         loginRepo.otpSettingFromService(intermediateToken)
     }
 
-    private fun isValidEmail(userEmail: String): Int? {
+    private fun isValidEmail(userEmail: String): String? {
         if (userEmail.isNotBlank()) {
             if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches())
-                return R.string.email_format_error
+                return "Invalid Email, Please try again…"
         } else
-            return R.string.email_empty_error
+            return "Empty Email, Please try again…"
         return null
     }
 
 
-    private fun checkPasswordLength(password: String): Int? {
+    private fun checkPasswordLength(password: String): String? {
         if (password.isEmpty())
-            return R.string.password_empty_error
+            return "Password Empty, Please try again…"
         return null
     }
 }
