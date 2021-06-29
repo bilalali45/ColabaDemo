@@ -32,17 +32,18 @@ class SplashActivity : AppCompatActivity() {
             }
             else if(sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)){
                 delay(500)
-                startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
+               // startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
                 //startActivity(Intent(this@SplashActivity, WelcomeActivity::class.java))
-                //startActivity(Intent(this@SplashActivity, DashBoardActivity::class.java))
+                startActivity(Intent(this@SplashActivity, DashBoardActivity::class.java))
+
             }
             else
-
             {
                 delay(500)
-                startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
+               // startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
+                //startActivity(Intent(this@SplashActivity, LeftActivity::class.java))
                 //startActivity(Intent(this@SplashActivity, WelcomeActivity::class.java))
-                //startActivity(Intent(this@SplashActivity, DashBoardActivity::class.java))
+                startActivity(Intent(this@SplashActivity, DashBoardActivity::class.java))
             }
             finish()
         }

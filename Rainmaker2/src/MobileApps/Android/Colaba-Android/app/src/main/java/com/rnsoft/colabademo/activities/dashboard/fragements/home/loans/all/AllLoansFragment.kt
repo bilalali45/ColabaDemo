@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.dashboard.fragements.home.loans
+package com.rnsoft.colabademo.activities.dashboard.fragements.home.loans.all
 
 
 import android.os.Bundle
@@ -9,12 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.*
-import com.rnsoft.colabademo.databinding.FragmentCatBinding
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.loans.LoanItemClickListener
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.loans.LoansAdapter
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.loans.SheetBottomBorrowerCardFragment
+import com.rnsoft.colabademo.databinding.FragmentLoanBinding
 import org.json.JSONArray
 
 
 class AllLoansFragment : Fragment(), LoanItemClickListener {
-    private var _binding: FragmentCatBinding? = null
+    private var _binding: FragmentLoanBinding? = null
     private val binding get() = _binding!!
 
     private var loanRecycleView: RecyclerView? = null
@@ -27,7 +30,7 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCatBinding.inflate(inflater, container, false)
+        _binding = FragmentLoanBinding.inflate(inflater, container, false)
         val view = binding.root
 
         loanRecycleView = view.findViewById<RecyclerView>(R.id.loan_recycler_view)

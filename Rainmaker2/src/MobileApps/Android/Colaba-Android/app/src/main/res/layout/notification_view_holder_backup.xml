@@ -1,4 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
+<com.zerobranch.layout.SwipeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe_layout"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    app:draggedItem="@id/drag_item"
+    app:rightItem="@id/right_view"
+    app:swipeDirection="left">
+
+    <ImageView
+        android:id="@+id/right_view"
+        android:layout_width="90dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="#ff5722"
+        android:gravity="center"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:src="@drawable/ic_delete"/>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -61,3 +82,5 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.zerobranch.layout.SwipeLayout>
