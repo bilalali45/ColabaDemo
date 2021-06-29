@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LoadingPlaceholderView
 
 class SearchViewController: BaseViewController {
 
@@ -18,6 +19,10 @@ class SearchViewController: BaseViewController {
     @IBOutlet weak var lblSearchResults: UILabel!
     @IBOutlet weak var tblViewSearchResult: UITableView!
     
+    let loadingPlaceholderView = LoadingPlaceholderView()
+    var pageNumber = 1
+    var searchArray = [SearchModel]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,6 +32,7 @@ class SearchViewController: BaseViewController {
         txtFieldSearch.delegate = self
         tblViewSearchResult.register(UINib(nibName: "SearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: "SearchResultTableViewCell")
         tblViewSearchResult.rowHeight = 100
+        tblViewSearchResult.coverableCellsIdentifiers = ["SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell"]
         
     }
     
@@ -41,6 +47,44 @@ class SearchViewController: BaseViewController {
         txtFieldSearch.becomeFirstResponder()
     }
     
+    //MARK:- API's
+    
+    func getSearchData(){
+        
+        self.loadingPlaceholderView.cover(tblViewSearchResult, animated: true)
+        
+        let extraData = "pageNumber=\(pageNumber)&pageSize=20&searchTerm=\(txtFieldSearch.text!)"
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .searchLoans, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                self.loadingPlaceholderView.uncover(animated: true)
+                if (status == .success){
+                    
+                    self.searchArray.removeAll()
+                    
+                    if (result.arrayValue.count > 0){
+                        let loanArray = result.arrayValue
+                        for loan in loanArray{
+                            let model = SearchModel()
+                            model.updateModelWithJSON(json: loan)
+                            self.searchArray.append(model)
+                        }
+                    }
+                    self.lblSearchResults.text = "\(result.arrayValue.count) results found"
+                    self.tblViewSearchResult.reloadData()
+                    
+                }
+                else{
+                    self.showPopup(message: "No data found", popupState: .error, popupDuration: .custom(5)) { reason in
+                        
+                    }
+                }
+            }
+            
+        }
+        
+    }
 }
 
 extension SearchViewController: UITableViewDataSource, UITableViewDelegate{

@@ -20,6 +20,7 @@ class ActivePipelineViewController: BaseViewController {
     let loadingPlaceholderView = LoadingPlaceholderView()
     var pipeLineArray = [ActiveLoanModel]()
     
+    var dateForPage1 = ""
     var pageNumber = 1
     var orderBy = 0 //0=MostActionsPending, 1=MostRecentActivity, 2=PrimaryBorrowerLastName(A to Z), 3=PrimaryBorrowerLastName(Z to A)
     
@@ -30,11 +31,13 @@ class ActivePipelineViewController: BaseViewController {
         tblView.register(UINib(nibName: "PipelineTableViewCell", bundle: nil), forCellReuseIdentifier: "PipelineTableViewCell")
         tblView.register(UINib(nibName: "PipelineDetailTableViewCell", bundle: nil), forCellReuseIdentifier: "PipelineDetailTableViewCell")
         tblView.coverableCellsIdentifiers = ["PipelineDetailTableViewCell", "PipelineDetailTableViewCell", "PipelineDetailTableViewCell", "PipelineDetailTableViewCell"]
+        dateForPage1 = Utility.getDate()
+        getPipelineData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        getPipelineData()
+        
     }
     
     //MARK:- Methods and Actions
@@ -45,6 +48,8 @@ class ActivePipelineViewController: BaseViewController {
     }
     
     @IBAction func assignToMeSwitchChanged(_ sender: UISwitch) {
+        self.pageNumber = 1
+        self.dateForPage1 = Utility.getDate()
         self.getPipelineData()
     }
     
@@ -56,7 +61,7 @@ class ActivePipelineViewController: BaseViewController {
             self.loadingPlaceholderView.cover(self.tblView, animated: true)
         }
         
-        let extraData = "dateTime=\(Utility.getDate())&pageNumber=\(pageNumber)&pageSize=20&loanFilter=1&orderBy=\(orderBy)&assignedToMe=\(assignToMeSwitch.isOn ? true : false)"
+        let extraData = "dateTime=\(dateForPage1)&pageNumber=\(pageNumber)&pageSize=20&loanFilter=1&orderBy=\(orderBy)&assignedToMe=\(assignToMeSwitch.isOn ? true : false)"
         
         APIRouter.sharedInstance.executeDashboardAPIs(type: .getPipelineList, method: .get, params: nil, extraData: extraData) { status, result, message in
             
@@ -64,21 +69,37 @@ class ActivePipelineViewController: BaseViewController {
                 self.loadingPlaceholderView.uncover(animated: true)
                 if (status == .success){
                     
-                    self.pipeLineArray.removeAll()
-                    let realm = try! Realm()
-                    realm.beginWrite()
-                    realm.delete(realm.objects(ActiveLoanModel.self))
-                    if (result.arrayValue.count > 0){
-                        let loanArray = result.arrayValue
-                        for loan in loanArray{
-                            let model = ActiveLoanModel()
-                            model.updateModelWithJSON(json: loan)
-                            realm.add(model)
+                    if (self.pageNumber == 1){
+                        self.pipeLineArray.removeAll()
+                        let realm = try! Realm()
+                        realm.beginWrite()
+                        realm.delete(realm.objects(ActiveLoanModel.self))
+                        if (result.arrayValue.count > 0){
+                            let loanArray = result.arrayValue
+                            for loan in loanArray{
+                                let model = ActiveLoanModel()
+                                model.updateModelWithJSON(json: loan)
+                                realm.add(model)
+                            }
+                        }
+                        try! realm.commitWrite()
+                        self.pipeLineArray = Array(realm.objects(ActiveLoanModel.self))
+                        self.tblView.reloadData()
+                        if (self.pipeLineArray.count > 0){
+                            self.tblView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
                         }
                     }
-                    try! realm.commitWrite()
-                    self.pipeLineArray = Array(realm.objects(ActiveLoanModel.self))
-                    self.tblView.reloadData()
+                    else{
+                        if (result.arrayValue.count > 0){
+                            let loanArray = result.arrayValue
+                            for loan in loanArray{
+                                let model = ActiveLoanModel()
+                                model.updateModelWithJSON(json: loan)
+                                self.pipeLineArray.append(model)
+                            }
+                            self.tblView.reloadData()
+                        }
+                    }
                     
                 }
                 else{
@@ -196,6 +217,8 @@ extension ActivePipelineViewController: PipelineTableViewCellDelegate{
 extension ActivePipelineViewController: FiltersViewControllerDelegate{
     func getOrderby(orderBy: Int) {
         self.orderBy = orderBy
+        self.pageNumber = 1
+        self.dateForPage1 = Utility.getDate()
         self.getPipelineData()
     }
 }

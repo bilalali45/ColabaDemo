@@ -25,6 +25,7 @@ enum EndPoint:String{
     case get2FASettings = "identity/mcuaccount/GetTwoFaSettings"
     case getPipelineList = "loanapplication/loan/GetListForPipeline?"
     case getNewPipelineRecords = "loanapplication/loan/AreNewRecordsAvailable"
+    case searchLoans = "loanapplication/loan/search?"
     case logout = "identity/mcuaccount/Logout"
     
 }
