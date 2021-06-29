@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class FingerPrintViewController: UIViewController {
 
@@ -47,8 +48,7 @@ class FingerPrintViewController: UIViewController {
                     // Face ID/Touch ID may not be configured
                     return
                 }
-                UserDefaults.standard.set(kYes, forKey: kIsUserRegisteredWithBiometric)
-                self?.goToDashboard()
+                self?.refreshAccessTokenWithRequest()
             }
         }
     }
@@ -85,4 +85,42 @@ class FingerPrintViewController: UIViewController {
         self.pushToVC(vc: vc)
     }
     
+    //MARK:- API's
+    
+    func refreshAccessTokenWithRequest(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let params = ["Token": Utility.getUserAccessToken(),
+                      "RefreshToken": Utility.getUserRefreshToken()]
+
+        APIRouter.sharedInstance.executeAPI(type: .refreshAccessToken, method: .post, params: params) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                Utility.showOrHideLoader(shouldShow: false)
+                
+                if (status == .success){
+                    
+                    let realm = try! Realm()
+                    realm.beginWrite()
+                    realm.deleteAll()
+                    let model = UserModel()
+                    model.updateModelWithJSON(json: result["data"])
+                    realm.add(model)
+                    try! realm.commitWrite()
+                    UserDefaults.standard.set(kYes, forKey: kIsUserRegisteredWithBiometric)
+                    self.goToDashboard()
+                    
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { reason in
+                        
+                    }
+                }
+            }
+            
+        }
+        
+    }
 }
