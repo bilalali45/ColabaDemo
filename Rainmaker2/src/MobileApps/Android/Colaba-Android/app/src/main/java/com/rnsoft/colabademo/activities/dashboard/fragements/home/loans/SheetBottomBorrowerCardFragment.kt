@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo
+package com.rnsoft.colabademo.activities.dashboard.fragements.home.loans
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.annotation.Nullable
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.rnsoft.colabademo.AppConstant
+import com.rnsoft.colabademo.Borrower
+import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.DialogFragmentBorrowerCardSheetBinding
 
 class BorrowerCardBottomSheetDialogFragment : BottomSheetDialogFragment() {

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.rnsoft.colabademo.databinding.FragmentDogBinding
 
-class DogFragment : Fragment() {
+class ActiveLoansFragment : Fragment() {
     private var _binding: FragmentDogBinding? = null
     private val binding get() = _binding!!
 
