@@ -105,7 +105,7 @@ class APIRouter: NSObject {
             
             if let error = response.error{
                 var errorDescription = error.localizedDescription
-                if errorDescription == "The Internet connection appears to be offline." || errorDescription == "URLSessionTask failed with error: A data connection is not currently allowed."{
+                if errorDescription == "The Internet connection appears to be offline." || errorDescription == "URLSessionTask failed with error: A data connection is not currently allowed." || errorDescription == "URLSessionTask failed with error: The Internet connection appears to be offline."{
                     errorDescription = "No Internet Connection"
                     completion?(.internetError,JSON.null,errorDescription)
                 }
@@ -176,7 +176,7 @@ class APIRouter: NSObject {
             
             if let error = response.error{
                 var errorDescription = error.localizedDescription
-                if errorDescription == "The Internet connection appears to be offline." || errorDescription == "URLSessionTask failed with error: A data connection is not currently allowed."{
+                if errorDescription == "The Internet connection appears to be offline." || errorDescription == "URLSessionTask failed with error: A data connection is not currently allowed." || errorDescription == "URLSessionTask failed with error: The Internet connection appears to be offline."{
                     errorDescription = "No Internet Connection"
                     completion?(.internetError,JSON.null,errorDescription)
                 }

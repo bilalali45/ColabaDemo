@@ -31,6 +31,8 @@ class InActivePipelineViewController: BaseViewController {
         tblView.register(UINib(nibName: "PipelineTableViewCell", bundle: nil), forCellReuseIdentifier: "PipelineTableViewCell")
         tblView.register(UINib(nibName: "PipelineDetailTableViewCell", bundle: nil), forCellReuseIdentifier: "PipelineDetailTableViewCell")
         tblView.coverableCellsIdentifiers = ["PipelineDetailTableViewCell", "PipelineDetailTableViewCell", "PipelineDetailTableViewCell", "PipelineDetailTableViewCell"]
+        tblView.loadControl = UILoadControl(target: self, action: #selector(loadMoreResult))
+        tblView.loadControl?.heightLimit = 60
         dateForPage1 = Utility.getDate()
         getPipelineData()
     }
@@ -40,6 +42,21 @@ class InActivePipelineViewController: BaseViewController {
     }
     
     //MARK:- Methods and Actions
+    
+    @objc func loadMoreResult(){
+        if (self.pipeLineArray.count % 20 == 0){
+            self.pageNumber = self.pageNumber + 1
+            self.getPipelineData()
+        }
+        else{
+            tblView.loadControl?.endLoading()
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollView.loadControl?.update()
+    }
+    
     @IBAction func btnFilterTapped(_ sender: UIButton) {
         let vc = Utility.getFiltersVC()
         vc.delegate = self
@@ -57,7 +74,7 @@ class InActivePipelineViewController: BaseViewController {
     
     func getPipelineData(){
         
-        if (pipeLineArray.count == 0){
+        if (pageNumber == 1){
             self.loadingPlaceholderView.cover(self.tblView, animated: true)
         }
         
@@ -67,6 +84,7 @@ class InActivePipelineViewController: BaseViewController {
             
             DispatchQueue.main.async {
                 self.loadingPlaceholderView.uncover(animated: true)
+                self.tblView.loadControl?.endLoading()
                 if (status == .success){
                     
                     if (self.pageNumber == 1){
@@ -106,6 +124,13 @@ class InActivePipelineViewController: BaseViewController {
                         }
                     }
                     
+                }
+                else if (status == .internetError){
+                    self.loadingPlaceholderView.uncover(animated: true)
+                    self.tblView.reloadData()
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { reason in
+                        
+                    }
                 }
                 else{
                     self.showPopup(message: "No data found", popupState: .error, popupDuration: .custom(5)) { reason in
