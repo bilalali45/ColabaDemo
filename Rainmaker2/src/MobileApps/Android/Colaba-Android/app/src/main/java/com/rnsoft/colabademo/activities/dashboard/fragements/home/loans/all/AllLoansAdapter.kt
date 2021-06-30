@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.rnsoft.colabademo.globalclasses.AppSetting
 
 class AllLoansAdapter
 internal constructor(
@@ -38,7 +40,22 @@ internal constructor(
         //holder.customer_name_textfield.text = arrayList[position]
         val borrower  = borrowerList[position]
         holder.customerName.text = borrower.firstName+" "+borrower.lastName
-        holder.cardTime.text = borrower.activityTime
+
+        borrower.activityTime?.let { activityTime->
+
+           var newString = activityTime.substring( 0 , activityTime.length-9)
+            newString+="Z"
+
+
+
+            newString = AppSetting.returnLongTimeNow(newString)
+
+            Log.e("newString",newString)
+
+            holder.cardTime.text =  newString
+        }
+        //Log.d(TAG, "Date in milli :: FOR API >= 26 >>> $timeInMilliseconds")
+
         if(borrower.documents == null)
             holder.docsToReview.visibility = View.GONE
         else
@@ -47,8 +64,7 @@ internal constructor(
         holder.mileStone.text = borrower.milestone
 
         holder.loanPurpose.text = borrower.loanPurpose
-        holder.cardTime.text = borrower.activityTime
-        holder.cardTime.text = borrower.activityTime
+       
         if(borrower.coBorrowerCount!=null && borrower.coBorrowerCount>0)
             holder.coBorrowerCount.text = "+"+borrower.coBorrowerCount
         else

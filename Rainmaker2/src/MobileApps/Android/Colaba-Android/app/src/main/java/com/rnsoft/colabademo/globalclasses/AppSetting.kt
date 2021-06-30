@@ -7,7 +7,12 @@ import android.util.Log
 import com.rnsoft.colabademo.R
 import java.text.MessageFormat
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.math.roundToInt
+
 
 object AppSetting {
     var biometricEnabled:Boolean = false
@@ -31,10 +36,71 @@ object AppSetting {
         return greetingString
     }
 
-    fun returnTimeInAmPm(){
-        val dt = Date()
-        val sdf = SimpleDateFormat("hh:mm aa")
-        val time1: String = sdf.format(dt)
+
+    fun getMilliFromDate(dateFormat: String?): Long {
+        var date = Date()
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        try {
+            date = formatter.parse(dateFormat)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        println("Today is $date")
+        return date.time
+    }
+
+    fun returnLongTimeNow(input:String):String{
+
+        var lastSeen = input
+
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+        val oldDate: Date? = formatter.parse(input)
+
+
+        val oldMillis = oldDate?.time
+
+        oldMillis?.let {
+            Log.e("oldMillis", "Date in milli :: FOR API >= 26 >>> $oldMillis")
+            Log.e("lastseen", "Date in milli :: FOR API >= 26 >>>"+ lastseen(oldMillis))
+            lastSeen = lastseen(oldMillis)
+        }
+
+        return lastSeen
+
+        /*
+        val dtf: DateTimeFormatter = DateTimeFormat.forPattern(pattern)
+        val dateTime: DateTime = dtf.parseDateTime(dateString)
+        System.out.println(dateTime) // 2010-03-01T04:00:00.000-04:00
+
+
+        dateFormat?.let {
+            Log.d("TAG", "Date in milli :: FOR API >= 26 >>> ${it.time}")
+        }
+
+
+        val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(input)
+        val milliseconds = date?.time
+        milliseconds?.let { milliseconds ->
+            val millisecondsFromNow = milliseconds - Date().time
+            Log.d("TAG", "Date in milli :: FOR API >= 26 >>> $millisecondsFromNow")
+        }
+
+
+         */
+
+
+    }
+
+    fun returnLongTime(stringFormat:String){
+
+        val formatter: DateTimeFormatter =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
+        val localDate: LocalDateTime = LocalDateTime.parse(stringFormat, formatter)
+        val timeInMilliseconds: Long = localDate.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli()
+        Log.d("TAG", "Date in milli :: FOR API >= 26 >>> $timeInMilliseconds")
+        val finalString = lastseen(timeInMilliseconds)
+        Log.d("finalString", " = $timeInMilliseconds")
+
     }
 
     private const val SHORT_DATE_FLAGS = (DateUtils.FORMAT_SHOW_DATE
@@ -149,33 +215,26 @@ object AppSetting {
                 && cal1[Calendar.DAY_OF_YEAR] == cal2[Calendar.DAY_OF_YEAR])
     }
 
-    fun lastseen(context: Context?, active: Boolean, time: Long): String? {
-        if (null == context) {
-            return ""
-        }
+    fun lastseen( time: Long): String {
         val difference = (System.currentTimeMillis() - time) / 1000
-        return if (active) {
-            context.getString(R.string.online_right_now)
-        } else if (difference < 60) {
-            context.getString(R.string.last_seen_now)
+
+        return  if (difference < 60) {
+            "just now"
         } else if (difference < 60 * 2) {
-            context.getString(R.string.last_seen_min)
+            "1 minute ago"
         } else if (difference < 60 * 60) {
-            context.getString(R.string.last_seen_mins, Math.round(difference / 60.0))
+            val minutes = (difference / 60.0).roundToInt()
+            "$minutes minutes ago"
         } else if (difference < 60 * 60 * 2) {
-            context.getString(R.string.last_seen_hour)
+           "1 hour ago"
         } else if (difference < 60 * 60 * 24) {
-            context.getString(
-                R.string.last_seen_hours,
-                Math.round(difference / (60.0 * 60.0))
-            )
+            val hours = (difference / (60.0 * 60.0)).roundToInt()
+            "$hours hours ago"
         } else if (difference < 60 * 60 * 48) {
-            context.getString(R.string.last_seen_day)
+            "1 day ago"
         } else {
-            context.getString(
-                R.string.last_seen_days,
-                Math.round(difference / (60.0 * 60.0 * 24.0))
-            )
+            val days = (difference / (60.0 * 60.0 * 24.0)).roundToInt()
+            "$days days ago"
         }
     }
 
