@@ -71,6 +71,8 @@ class SearchViewController: BaseViewController {
     func getSearchData(){
         
         if (self.pageNumber == 1){
+            searchArray = [SearchModel(), SearchModel(), SearchModel(), SearchModel(), SearchModel(), SearchModel(), SearchModel()]
+            self.tblViewSearchResult.reloadData()
             self.loadingPlaceholderView.cover(tblViewSearchResult, animated: true)
         }
         
@@ -150,6 +152,7 @@ extension SearchViewController: UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         txtFieldSearch.resignFirstResponder()
         self.pageNumber = 1
+        self.searchArray.removeAll()
         self.getSearchData()
         return true
     }

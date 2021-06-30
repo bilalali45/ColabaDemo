@@ -181,11 +181,40 @@ struct Utility {
         return ""
     }
     
+    static func getTokenValidityDate() -> String{
+        if let user = UserModel.getCurrentUser(){
+            return user.validTo
+        }
+        return ""
+    }
+    
     static func getDate() -> String{
         var date = localPiplineDateFormatter.string(from: Date())
         date = date.replacingOccurrences(of: " ", with: "T")
         date = "\(date)Z"
         return date
+    }
+    
+    static func getIsTokenExpire(tokenValidityDate: String) -> Bool{
+        //2021-07-02T18:54:21Z
+        let tokenValidToUTC = tokenValidityDate.replacingOccurrences(of: "T", with: " ").replacingOccurrences(of: "Z", with: "")
+        let todayDateStringInUTC = localLoanApplicationDateFormatter.string(from: Date())
+        
+        if let tokenValidDate = localLoanApplicationDateFormatter.date(from: tokenValidToUTC), let todayDate = localLoanApplicationDateFormatter.date(from: todayDateStringInUTC){
+            
+            let tokenValidDateInTimeStamp = Int(tokenValidDate.timeIntervalSince1970)
+            let todayDateInTimeStamp = Int(todayDate.timeIntervalSince1970)
+            
+            let difference = tokenValidDateInTimeStamp - todayDateInTimeStamp
+            if (difference > 0){
+                return false
+            }
+            else{
+                return true
+            }
+        }
+                
+        return true
     }
     
     static func getGreetingMessage() -> String{

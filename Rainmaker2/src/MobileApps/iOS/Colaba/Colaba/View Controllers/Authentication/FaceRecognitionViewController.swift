@@ -49,7 +49,15 @@ class FaceRecognitionViewController: UIViewController {
                     // Face ID/Touch ID may not be configured
                     return
                 }
-                self?.refreshAccessTokenWithRequest()
+                
+                if (Utility.getIsTokenExpire(tokenValidityDate: Utility.getTokenValidityDate())) == true{
+                    self?.refreshAccessTokenWithRequest()
+                }
+                else{
+                    UserDefaults.standard.set(kYes, forKey: kIsUserRegisteredWithBiometric)
+                    self?.goToDashboard()
+                }
+                
             }
         }
     }
