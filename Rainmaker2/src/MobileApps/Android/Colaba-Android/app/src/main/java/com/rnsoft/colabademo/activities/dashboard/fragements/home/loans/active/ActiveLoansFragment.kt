@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.dashboard.fragements.home.loans.active
+package com.rnsoft.colabademo
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,10 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.rnsoft.colabademo.Borrower
-import com.rnsoft.colabademo.R
-import com.rnsoft.colabademo.activities.dashboard.fragements.home.loans.LoanItemClickListener
-import com.rnsoft.colabademo.activities.dashboard.fragements.home.loans.LoansAdapter
 import com.rnsoft.colabademo.databinding.FragmentDogBinding
 
 class ActiveLoansFragment : Fragment() , LoanItemClickListener {
@@ -35,7 +31,7 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener {
             this.setHasFixedSize(true)
             // set the custom adapter to the RecyclerView
             borrowList = Borrower.customersList(requireContext())
-            this.adapter = LoansAdapter(borrowList, this@ActiveLoansFragment)
+            this.adapter = ActiveLoansAdapter(borrowList, this@ActiveLoansFragment)
 
         }
 

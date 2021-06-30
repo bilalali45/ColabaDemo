@@ -66,12 +66,19 @@ interface ServerApi{
 
 
 
-    @POST(" api/mcu/mobile/identity/mcuaccount/RefreshAccessToken")
+    @POST("api/mcu/mobile/identity/mcuaccount/RefreshAccessToken")
     fun refreshToken(@Body refreshTokenRequest: RefreshTokenRequest) : Call<LoginResponse>
 
-
-    // @POST("item-list")
-   // suspend fun fetchItemList( @Header("Authorization")  authHeader:String): ItemListResult
+    @GET("api/mcu/mobile/loanapplication/loan/GetListForPipeline")
+    suspend fun loadAllLoansFromApi(
+        @Header("Authorization" )  Authorization:String,
+        @Query("dateTime" , encoded = true)  dateTime:String,
+        @Query("pageNumber")  pageNumber:Int,
+        @Query("pageSize")  pageSize:Int ,
+        @Query("loanFilter") loanFilter:Int ,
+        @Query("orderBy") orderBy:Int ,
+        @Query("assignedToMe")  assignedToMe:Boolean)
+    :ArrayList<LoanItem>
 
 
     //@POST("authenticate")

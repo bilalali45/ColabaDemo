@@ -87,6 +87,8 @@ class AppModule {
                 httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             }
 
+
+
             val testCookieJar =
                 PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
 
@@ -100,8 +102,9 @@ class AppModule {
                 .retryOnConnectionFailure(true)
                 //.addInterceptor(LoggingInterceptor())
                 //.addInterceptor(interceptor)
-                //.addNetworkInterceptor(httpLoggingInterceptor)
-                .addInterceptor(networkConnectionInterceptor)
+                .addInterceptor(httpLoggingInterceptor)
+                //.addInterceptor(networkConnectionInterceptor)
+
                 //.cookieJar(testCookieJar)
                 .connectTimeout(60,TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
@@ -129,6 +132,7 @@ class AppModule {
         fun retrofit(okHttpClient: OkHttpClient): Retrofit {
             return Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)
+
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()

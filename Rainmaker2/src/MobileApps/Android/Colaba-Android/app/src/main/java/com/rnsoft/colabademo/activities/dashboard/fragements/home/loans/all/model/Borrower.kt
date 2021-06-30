@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.versionedparcelable.VersionedParcelize
+import com.rnsoft.colabademo.R
 
 @VersionedParcelize
 data class Borrower(
@@ -23,11 +24,7 @@ data class Borrower(
     ) {
     }
 
-
-
-
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
+   override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
         parcel.writeInt(banner)
         parcel.writeString(borrowerName)

@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.dashboard.fragements.home.loans
+package com.rnsoft.colabademo
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,9 +7,6 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.annotation.Nullable
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.rnsoft.colabademo.AppConstant
-import com.rnsoft.colabademo.Borrower
-import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.DialogFragmentBorrowerCardSheetBinding
 
 class SheetBottomBorrowerCardFragment : BottomSheetDialogFragment() {
@@ -27,9 +24,9 @@ class SheetBottomBorrowerCardFragment : BottomSheetDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogFragmentBorrowerCardSheetBinding.inflate(inflater, container, false)
-        val borrowerParcelObject =  arguments?.getParcelable<Borrower>(AppConstant.borrowerParcelObject)
+        val borrowerParcelObject =  arguments?.getParcelable<LoanItem>(AppConstant.borrowerParcelObject)
         borrowerParcelObject?.let {
-            binding.borrowerName.text = it.borrowerName
+            binding.borrowerName.text = it.firstName
         }
 
         binding.crossImageView.setOnClickListener{

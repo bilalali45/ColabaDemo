@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.dashboard.fragements.home.loans.all
+package com.rnsoft.colabademo
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

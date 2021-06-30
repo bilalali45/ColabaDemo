@@ -4,10 +4,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.rnsoft.colabademo.activities.dashboard.fragements.home.loans.active.ActiveLoansFragment
-import com.rnsoft.colabademo.activities.dashboard.fragements.home.loans.inactive.InActiveLoansFragment
-import com.rnsoft.colabademo.activities.dashboard.fragements.home.loans.all.AllLoansFragment
-
 
 private const val NUM_TABS = 3
 
@@ -23,6 +19,6 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
             0 -> return AllLoansFragment()
             1 -> return ActiveLoansFragment()
         }
-        return InActiveLoansFragment()
+        return NonActiveLoansFragment()
     }
 }

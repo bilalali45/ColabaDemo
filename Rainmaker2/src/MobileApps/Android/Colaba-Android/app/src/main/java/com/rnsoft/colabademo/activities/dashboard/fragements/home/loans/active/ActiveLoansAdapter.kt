@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.dashboard.fragements.home.loans
+package com.rnsoft.colabademo
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,14 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.rnsoft.colabademo.Borrower
-import com.rnsoft.colabademo.R
 
-
-class LoansAdapter
+class ActiveLoansAdapter
 internal constructor(
     passedBorrowerList: List<Borrower>, onLoanItemClickListener: LoanItemClickListener
-) :  RecyclerView.Adapter<LoansAdapter.LoanViewHolder>() {
+) :  RecyclerView.Adapter<ActiveLoansAdapter.LoanViewHolder>() {
 
 
     //: RecyclerView.Adapter<LoansAdapter.LoanViewHolder>() {

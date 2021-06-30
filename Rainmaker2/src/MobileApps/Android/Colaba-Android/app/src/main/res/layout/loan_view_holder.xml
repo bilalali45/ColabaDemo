@@ -46,15 +46,15 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/rubik_medium"
+            android:text="@string/richard"
             android:textColor="@color/grey_color_one"
             android:textSize="17sp"
-            android:text="@string/richard"
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/loanPurposeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
@@ -97,7 +97,7 @@
             app:srcCompat="@drawable/up_arrow" />
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/milestoneTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -106,10 +106,10 @@
             android:textColor="@color/grey_color_three"
             android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@+id/imageView3"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toBottomOf="@+id/loanPurposeTextView" />
 
         <TextView
-            android:id="@+id/textView15"
+            android:id="@+id/cardTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -132,7 +132,7 @@
             app:srcCompat="@drawable/vdots" />
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/docsToReviewTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -140,8 +140,20 @@
             android:text="@string/docs_to_review"
             android:textColor="@color/colaba_red_color"
             android:textSize="13sp"
-            app:layout_constraintStart_toStartOf="@+id/textView13"
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+            app:layout_constraintStart_toStartOf="@+id/milestoneTextView"
+            app:layout_constraintTop_toBottomOf="@+id/milestoneTextView" />
+
+        <TextView
+            android:id="@+id/coBorrowerCountTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="+3"
+            android:fontFamily="@font/rubik_regular"
+            android:textSize="15sp"
+            android:textColor="@color/grey_color_three"
+            app:layout_constraintBottom_toBottomOf="@+id/customer_name_textfield"
+            app:layout_constraintStart_toEndOf="@+id/customer_name_textfield" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -188,7 +200,7 @@
             app:layout_constraintTop_toTopOf="@+id/imageView14" />
 
         <TextView
-            android:id="@+id/textView18"
+            android:id="@+id/addressOne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -200,7 +212,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/addressTwo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -208,8 +220,8 @@
             android:text="22 Dallas, TX 76099"
             android:textColor="@color/grey_color_three"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@+id/textView18"
-            app:layout_constraintTop_toBottomOf="@+id/textView18" />
+            app:layout_constraintStart_toStartOf="@+id/addressOne"
+            app:layout_constraintTop_toBottomOf="@+id/addressOne" />
 
         <ImageView
             android:id="@+id/imageView15"
@@ -218,7 +230,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView20"
+            app:layout_constraintTop_toBottomOf="@+id/addressTwo"
             app:srcCompat="@drawable/dollar_bag" />
 
         <TextView
@@ -234,7 +246,7 @@
             app:layout_constraintTop_toTopOf="@+id/imageView15" />
 
         <TextView
-            android:id="@+id/textView22"
+            android:id="@+id/loanAmountTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -256,7 +268,7 @@
             app:srcCompat="@drawable/dollar_up" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/notRequiredField"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -268,7 +280,7 @@
             app:layout_constraintTop_toTopOf="@+id/imageView16" />
 
         <TextView
-            android:id="@+id/textView24"
+            android:id="@+id/propertyValueTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -276,8 +288,8 @@
             android:text="$ 10,000"
             android:textColor="@color/grey_color_three"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@+id/textView23"
-            app:layout_constraintTop_toBottomOf="@+id/textView23" />
+            app:layout_constraintStart_toStartOf="@+id/notRequiredField"
+            app:layout_constraintTop_toBottomOf="@+id/notRequiredField" />
 
         <ImageView
             android:id="@+id/imageView17"
@@ -286,7 +298,7 @@
             android:layout_marginTop="11dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView22"
+            app:layout_constraintTop_toBottomOf="@+id/loanAmountTextView"
             app:srcCompat="@drawable/up_line" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
