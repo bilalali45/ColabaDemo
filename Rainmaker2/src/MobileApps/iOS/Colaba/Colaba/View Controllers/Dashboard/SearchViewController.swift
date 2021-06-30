@@ -33,10 +33,12 @@ class SearchViewController: BaseViewController {
         tblViewSearchResult.register(UINib(nibName: "SearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: "SearchResultTableViewCell")
         tblViewSearchResult.rowHeight = 100
         tblViewSearchResult.coverableCellsIdentifiers = ["SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell"]
+        tblViewSearchResult.loadControl = UILoadControl(target: self, action: #selector(loadMoreResult))
+        tblViewSearchResult.loadControl?.heightLimit = 60
         
     }
     
-    //MARK:- Methods and Actions
+    //MARK:- Actions and Methods
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
         self.dismissVC()
@@ -50,11 +52,27 @@ class SearchViewController: BaseViewController {
         self.lblSearchResults.text = "0 result found"
     }
     
+    @objc func loadMoreResult(){
+        if (self.searchArray.count % 20 == 0){
+            self.pageNumber = self.pageNumber + 1
+            self.getSearchData()
+        }
+        else{
+            tblViewSearchResult.loadControl?.endLoading()
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollView.loadControl?.update()
+    }
+    
     //MARK:- API's
     
     func getSearchData(){
         
-        self.loadingPlaceholderView.cover(tblViewSearchResult, animated: true)
+        if (self.pageNumber == 1){
+            self.loadingPlaceholderView.cover(tblViewSearchResult, animated: true)
+        }
         
         let extraData = "pageNumber=\(pageNumber)&pageSize=20&searchTerm=\(txtFieldSearch.text!)"
         
@@ -62,24 +80,36 @@ class SearchViewController: BaseViewController {
             
             DispatchQueue.main.async {
                 self.loadingPlaceholderView.uncover(animated: true)
+                self.tblViewSearchResult.loadControl?.endLoading()
                 if (status == .success){
                     
-                    self.searchArray.removeAll()
-                    
-                    if (result.arrayValue.count > 0){
-                        let loanArray = result.arrayValue
-                        for loan in loanArray{
-                            let model = SearchModel()
-                            model.updateModelWithJSON(json: loan)
-                            self.searchArray.append(model)
+                    if (self.pageNumber == 1){
+                        self.searchArray.removeAll()
+                        if (result.arrayValue.count > 0){
+                            let loanArray = result.arrayValue
+                            for loan in loanArray{
+                                let model = SearchModel()
+                                model.updateModelWithJSON(json: loan)
+                                self.searchArray.append(model)
+                            }
+                        }
+                        else{
+                            self.showPopup(message: "No data found", popupState: .error, popupDuration: .custom(5)) { reason in
+                                
+                            }
                         }
                     }
                     else{
-                        self.showPopup(message: "No data found", popupState: .error, popupDuration: .custom(5)) { reason in
-                            
+                        if (result.arrayValue.count > 0){
+                            let loanArray = result.arrayValue
+                            for loan in loanArray{
+                                let model = SearchModel()
+                                model.updateModelWithJSON(json: loan)
+                                self.searchArray.append(model)
+                            }
                         }
                     }
-                    self.lblSearchResults.text = "\(result.arrayValue.count) results found"
+                    self.lblSearchResults.text = "\(self.searchArray.count) results found"
                     self.tblViewSearchResult.reloadData()
                     
                 }

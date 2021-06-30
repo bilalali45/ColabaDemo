@@ -50,6 +50,7 @@ class ActivePipelineViewController: BaseViewController {
     @IBAction func assignToMeSwitchChanged(_ sender: UISwitch) {
         self.pageNumber = 1
         self.dateForPage1 = Utility.getDate()
+        self.expandableCellsIndex.removeAll()
         self.getPipelineData()
     }
     
@@ -224,6 +225,7 @@ extension ActivePipelineViewController: FiltersViewControllerDelegate{
         self.orderBy = orderBy
         self.pageNumber = 1
         self.dateForPage1 = Utility.getDate()
+        self.expandableCellsIndex.removeAll()
         self.getPipelineData()
     }
 }

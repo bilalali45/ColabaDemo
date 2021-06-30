@@ -21,6 +21,8 @@
 		2397AF672677A60A007A1A45 /* PipelineDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397AF652677A60A007A1A45 /* PipelineDetailTableViewCell.swift */; };
 		2397AF682677A60A007A1A45 /* PipelineDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */; };
 		239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */; };
+		23A1CA6B268C4B8400D93DC4 /* UILoadControl_UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1CA69268C4B8300D93DC4 /* UILoadControl_UIScrollView.swift */; };
+		23A1CA6C268C4B8400D93DC4 /* UILoadControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1CA6A268C4B8400D93DC4 /* UILoadControl.swift */; };
 		23A56C592685B017005CE6F4 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A56C532685B017005CE6F4 /* Manager.swift */; };
 		23A56C5A2685B017005CE6F4 /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A56C542685B017005CE6F4 /* Controller.swift */; };
 		23A56C5B2685B017005CE6F4 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A56C552685B017005CE6F4 /* Animator.swift */; };
@@ -106,6 +108,8 @@
 		2397AF652677A60A007A1A45 /* PipelineDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineDetailTableViewCell.swift; sourceTree = "<group>"; };
 		2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PipelineDetailTableViewCell.xib; sourceTree = "<group>"; };
 		239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewPopupViewController.swift; sourceTree = "<group>"; };
+		23A1CA69268C4B8300D93DC4 /* UILoadControl_UIScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILoadControl_UIScrollView.swift; sourceTree = "<group>"; };
+		23A1CA6A268C4B8400D93DC4 /* UILoadControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILoadControl.swift; sourceTree = "<group>"; };
 		23A56C532685B017005CE6F4 /* Manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
 		23A56C542685B017005CE6F4 /* Controller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
 		23A56C552685B017005CE6F4 /* Animator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
@@ -249,9 +253,19 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		23A1CA68268C4B4600D93DC4 /* Load More */ = {
+			isa = PBXGroup;
+			children = (
+				23A1CA69268C4B8300D93DC4 /* UILoadControl_UIScrollView.swift */,
+				23A1CA6A268C4B8400D93DC4 /* UILoadControl.swift */,
+			);
+			path = "Load More";
+			sourceTree = "<group>";
+		};
 		23A56C4E2685AFEE005CE6F4 /* Third Party Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				23A1CA68268C4B4600D93DC4 /* Load More */,
 				23A56C512685B017005CE6F4 /* Loaf */,
 			);
 			path = "Third Party Libraries";
@@ -730,6 +744,7 @@
 				23A56C5D2685B017005CE6F4 /* Icons.swift in Sources */,
 				7186AD602653DE8600E740D3 /* ExtensionOfView.swift in Sources */,
 				2397AF672677A60A007A1A45 /* PipelineDetailTableViewCell.swift in Sources */,
+				23A1CA6B268C4B8400D93DC4 /* UILoadControl_UIScrollView.swift in Sources */,
 				238D70772678E8C80067687C /* FiltersViewController.swift in Sources */,
 				7113F52526569D310066E179 /* LocalAuthManager.swift in Sources */,
 				236EA1AC26789EAC00C2F8B5 /* PipelineMoreViewController.swift in Sources */,
@@ -756,6 +771,7 @@
 				7160CA88267339060061ACD5 /* ProfileViewController.swift in Sources */,
 				236EA1AE2678CE1B00C2F8B5 /* DummyDashboardViewController.swift in Sources */,
 				23C244862689B6A500EED1D0 /* AllLoanModel.swift in Sources */,
+				23A1CA6C268C4B8400D93DC4 /* UILoadControl.swift in Sources */,
 				7186AD562653CD5C00E740D3 /* Theme.swift in Sources */,
 				7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */,
 			);
