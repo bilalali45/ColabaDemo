@@ -81,6 +81,11 @@ class InActivePipelineViewController: BaseViewController {
                                 realm.add(model)
                             }
                         }
+                        else{
+                            self.showPopup(message: "No data found", popupState: .error, popupDuration: .custom(5)) { reason in
+                                
+                            }
+                        }
                         try! realm.commitWrite()
                         self.pipeLineArray = Array(realm.objects(InActiveLoanModel.self))
                         self.tblView.reloadData()

@@ -45,6 +45,9 @@ class SearchViewController: BaseViewController {
     @IBAction func btnCrossTapped(_ sender: UIButton) {
         txtFieldSearch.text = ""
         txtFieldSearch.becomeFirstResponder()
+        self.searchArray.removeAll()
+        self.tblViewSearchResult.reloadData()
+        self.lblSearchResults.text = "0 result found"
     }
     
     //MARK:- API's
@@ -71,6 +74,11 @@ class SearchViewController: BaseViewController {
                             self.searchArray.append(model)
                         }
                     }
+                    else{
+                        self.showPopup(message: "No data found", popupState: .error, popupDuration: .custom(5)) { reason in
+                            
+                        }
+                    }
                     self.lblSearchResults.text = "\(result.arrayValue.count) results found"
                     self.tblViewSearchResult.reloadData()
                     
@@ -90,11 +98,19 @@ class SearchViewController: BaseViewController {
 extension SearchViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return searchArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultTableViewCell", for: indexPath) as! SearchResultTableViewCell
+        let searchData = searchArray[indexPath.row]
+        
+        cell.lblUsername.text = "\(searchData.firstName) \(searchData.lastName)"
+        cell.lblAddress.text = "\(searchData.streetAddress) \(searchData.unitNumber) \(searchData.cityName) \(searchData.stateName) \(searchData.zipCode) \(searchData.countryName)"
+        cell.lblApplicationStatus.text = searchData.status
+        cell.lblApplicationNumber.text = "\(searchData.loanNumber)"
+        
         return cell
     }
 }
@@ -103,6 +119,8 @@ extension SearchViewController: UITextFieldDelegate{
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         txtFieldSearch.resignFirstResponder()
+        self.pageNumber = 1
+        self.getSearchData()
         return true
     }
     
