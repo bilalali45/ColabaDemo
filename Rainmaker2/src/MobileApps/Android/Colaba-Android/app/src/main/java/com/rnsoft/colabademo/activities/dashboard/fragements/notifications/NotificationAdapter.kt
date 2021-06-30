@@ -10,7 +10,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-
+import com.zerobranch.layout.SwipeLayout
+import com.zerobranch.layout.SwipeLayout.SwipeActionsListener
 
 
 class NotificationAdapter
@@ -24,6 +25,8 @@ internal constructor(
     private var notificationList = listOf<NotificationModel>()
     private var clickListener: NotificationClickListener = onNotificationClickListener
 
+    private var swipeLayout: SwipeLayout? = null
+
     init {
         this.notificationList = passedList
         this.clickListener = onNotificationClickListener
@@ -31,6 +34,7 @@ internal constructor(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder  {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.notification_view_holder, parent, false)
+
         return NotificationViewHolder(view)
     }
 
@@ -73,6 +77,7 @@ internal constructor(
 
 
 
+
         //fun bind(item: ConstraintLayout, listener: OnItemClickListener) {
             //itemView.setOnClickListener { listener.onItemClick(item) }
        // }
@@ -80,6 +85,8 @@ internal constructor(
 
 
     }
+
+
 
 
 

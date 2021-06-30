@@ -24,6 +24,8 @@
         <activity android:name=".DashBoardActivity" android:screenOrientation="portrait"/>
         <activity android:name=".WelcomeActivity" android:screenOrientation="portrait"/>
 
+        <activity android:name=".LeftActivity" android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
