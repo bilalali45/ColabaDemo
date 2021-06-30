@@ -101,7 +101,7 @@ class InActivePipelineViewController: BaseViewController {
                             }
                         }
                         else{
-                            self.showPopup(message: "No data found", popupState: .error, popupDuration: .custom(5)) { reason in
+                            self.showPopup(message: "No data found", popupState: .error, popupDuration: .custom(2)) { reason in
                                 
                             }
                         }
@@ -133,7 +133,7 @@ class InActivePipelineViewController: BaseViewController {
                     }
                 }
                 else{
-                    self.showPopup(message: "No data found", popupState: .error, popupDuration: .custom(5)) { reason in
+                    self.showPopup(message: "No data found", popupState: .error, popupDuration: .custom(2)) { reason in
                         
                     }
                 }
