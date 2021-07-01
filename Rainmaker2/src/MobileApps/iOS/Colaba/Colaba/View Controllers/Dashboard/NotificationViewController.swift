@@ -22,8 +22,8 @@ class NotificationViewController: BaseViewController {
     var readNotificationIds = [Int]()
     var deletedNotificationIds = [Int]()
     
-    var totalRowsInColumn1 = 2
-    var totalRowsInColumn2 = 10
+//    var totalRowsInColumn1 = 2
+//    var totalRowsInColumn2 = 10
     
     var undoIndexPath: IndexPath?
     var undoTimer: Timer?
@@ -41,9 +41,8 @@ class NotificationViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        if (notificationsArray.count == 0){
-            getNotifications()
-        }
+        self.lastNotificationId = -1
+        self.getNotifications()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -77,14 +76,19 @@ class NotificationViewController: BaseViewController {
                 timer.invalidate()
                 undoTimerSeconds = 5
                 if (self.undoIndexPath != nil){
-                    if (self.undoIndexPath!.section == 0){
-                        self.totalRowsInColumn1 = self.totalRowsInColumn1 - 1
+//                    if (self.undoIndexPath!.section == 0){
+//                        self.totalRowsInColumn1 = self.totalRowsInColumn1 - 1
+//                    }
+//                    else{
+//                        self.totalRowsInColumn2 = self.totalRowsInColumn2 - 1
+//                    }
+                    if (!self.deletedNotificationIds.contains(self.notificationsArray[self.undoIndexPath!.row].id)){
+                        self.deletedNotificationIds.append(self.notificationsArray[self.undoIndexPath!.row].id)
                     }
-                    else{
-                        self.totalRowsInColumn2 = self.totalRowsInColumn2 - 1
-                    }
+                    self.notificationsArray.remove(at: self.undoIndexPath!.row)
                     self.tblViewNotification.deleteRows(at: [self.undoIndexPath!], with: .left)
                     self.undoIndexPath = nil
+                    self.tblViewNotification.reloadData()
                 }
             }
         }
@@ -95,6 +99,7 @@ class NotificationViewController: BaseViewController {
 //        totalRowsInColumn2 = 10
 //        self.tblViewNotification.reloadData()
         self.readNotifications()
+        self.deleteNotifications()
         self.lastNotificationId = -1
         self.getNotifications()
         
@@ -212,7 +217,7 @@ extension NotificationViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? notificationsArray.count : totalRowsInColumn2
+        return section == 0 ? notificationsArray.count : 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -292,14 +297,22 @@ extension NotificationViewController: UITableViewDataSource, UITableViewDelegate
         let deleteAction = UIContextualAction(style: .normal, title: "") { action, actionView, bool in
             
             if (self.undoIndexPath != nil){
-                if (self.undoIndexPath!.section == 0){
-                    self.totalRowsInColumn1 = self.totalRowsInColumn1 - 1
+//                if (self.undoIndexPath!.section == 0){
+//                    self.totalRowsInColumn1 = self.totalRowsInColumn1 - 1
+//                }
+//                else{
+//                    self.totalRowsInColumn2 = self.totalRowsInColumn2 - 1
+//                }
+                
+                if (self.undoIndexPath!.row <= self.notificationsArray.count){
+                    if (!self.deletedNotificationIds.contains(self.notificationsArray[self.undoIndexPath!.row].id)){
+                        self.deletedNotificationIds.append(self.notificationsArray[self.undoIndexPath!.row].id)
+                    }
+                    self.notificationsArray.remove(at: self.undoIndexPath!.row)
+                    self.tblViewNotification.deleteRows(at: [self.undoIndexPath!], with: .left)
+                    self.undoIndexPath = nil
+                    self.tblViewNotification.reloadData()
                 }
-                else{
-                    self.totalRowsInColumn2 = self.totalRowsInColumn2 - 1
-                }
-                self.tblViewNotification.deleteRows(at: [self.undoIndexPath!], with: .left)
-                self.undoIndexPath = nil
             }
             
             self.undoIndexPath = indexPath

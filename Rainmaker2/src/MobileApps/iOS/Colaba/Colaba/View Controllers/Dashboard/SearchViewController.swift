@@ -117,7 +117,8 @@ class SearchViewController: BaseViewController {
                 }
                 else{
                     self.showPopup(message: "No data found", popupState: .error, popupDuration: .custom(2)) { reason in
-                        
+                        self.searchArray.removeAll()
+                        self.tblViewSearchResult.reloadData()
                     }
                 }
             }
