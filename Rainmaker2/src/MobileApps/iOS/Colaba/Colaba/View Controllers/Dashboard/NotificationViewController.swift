@@ -18,8 +18,9 @@ class NotificationViewController: BaseViewController {
     var notificationsDict = [String: Any]()
     let loadingPlaceholderView = LoadingPlaceholderView()
     var lastNotificationId = -1
-    var notificationsSeenIds = [Int]()
-    var notificationsReadIds = [Int]()
+    var seenNotificationIds = [Int]()
+    var readNotificationIds = [Int]()
+    var deletedNotificationIds = [Int]()
     
     var totalRowsInColumn1 = 2
     var totalRowsInColumn2 = 10
@@ -48,6 +49,7 @@ class NotificationViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         self.readNotifications()
+        self.deleteNotifications()
     }
     
     //MARK:- Methods and Actions
@@ -92,9 +94,9 @@ class NotificationViewController: BaseViewController {
 //        totalRowsInColumn1 = 2
 //        totalRowsInColumn2 = 10
 //        self.tblViewNotification.reloadData()
-        if (notificationsArray.count > 0){
-            self.tblViewNotification.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-        }
+        self.readNotifications()
+        self.lastNotificationId = -1
+        self.getNotifications()
         
     }
     
@@ -127,8 +129,11 @@ class NotificationViewController: BaseViewController {
                                 model.updateModelWithJSON(json: notification)
                                 self.notificationsArray.append(model)
                             }
-                            self.notificationsSeenIds = self.notificationsArray.map{$0.id}
+                            self.seenNotificationIds = self.notificationsArray.map{$0.id}
                             self.seenNotifications()
+                            if (notificationArray.count > 0){
+                                self.tblViewNotification.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+                            }
                         }
                         else{
                             self.showPopup(message: "No data found", popupState: .error, popupDuration: .custom(2)) { reason in
@@ -144,7 +149,7 @@ class NotificationViewController: BaseViewController {
                                 model.updateModelWithJSON(json: notification)
                                 self.notificationsArray.append(model)
                             }
-                            self.notificationsSeenIds = self.notificationsArray.map{$0.id}
+                            self.seenNotificationIds = self.notificationsArray.map{$0.id}
                             self.seenNotifications()
                         }
                     }
@@ -162,7 +167,7 @@ class NotificationViewController: BaseViewController {
     
     func seenNotifications(){
         
-        let params = ["ids": notificationsSeenIds]
+        let params = ["ids": seenNotificationIds]
         APIRouter.sharedInstance.executeDashboardAPIs(type: .seenNotification, method: .put, params: params) { (status, result, message) in
             
             DispatchQueue.main.async {
@@ -174,8 +179,21 @@ class NotificationViewController: BaseViewController {
     
     func readNotifications(){
         
-        let params = ["ids": notificationsReadIds]
+        let params = ["ids": readNotificationIds]
         APIRouter.sharedInstance.executeDashboardAPIs(type: .readNotification, method: .put, params: params) { (status, result, message) in
+            
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationRefreshCounter), object: nil, userInfo: nil)
+                
+            }
+            
+        }
+    }
+    
+    func deleteNotifications(){
+        
+        let params = ["ids": deletedNotificationIds]
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .deleteNotifications, method: .put, params: params) { (status, result, message) in
             
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationRefreshCounter), object: nil, userInfo: nil)
@@ -234,8 +252,8 @@ extension NotificationViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (!notificationsReadIds.contains(notificationsArray[indexPath.row].id)){
-            notificationsReadIds.append(notificationsArray[indexPath.row].id)
+        if (!readNotificationIds.contains(notificationsArray[indexPath.row].id)){
+            readNotificationIds.append(notificationsArray[indexPath.row].id)
         }
         notificationsArray[indexPath.row].status = "Read"
         self.tblViewNotification.reloadData()
