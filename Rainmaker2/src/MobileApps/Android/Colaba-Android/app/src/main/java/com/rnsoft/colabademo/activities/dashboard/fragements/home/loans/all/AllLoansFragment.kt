@@ -25,11 +25,14 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
     private var _binding: FragmentLoanBinding? = null
     private val binding get() = _binding!!
 
-    private var loanRecycleView: RecyclerView? = null
 
-    private lateinit var loading: ProgressBar
+
+
     private val loanViewModel: LoanViewModel by activityViewModels()
     private lateinit var loansAdapter: LoansAdapter
+    private lateinit var loading: ProgressBar
+    private var loanRecycleView: RecyclerView? = null
+    private lateinit var allLoansArrayList: ArrayList<LoanItem>
 
     ////////////////////////////////////////////////////////////////////////////
     private var stringDateTime: String = ""
@@ -43,7 +46,7 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-    private lateinit var allLoansArrayList: ArrayList<LoanItem>
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

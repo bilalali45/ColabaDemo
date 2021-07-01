@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.dashboard.fragements.search
+package com.rnsoft.colabademo
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

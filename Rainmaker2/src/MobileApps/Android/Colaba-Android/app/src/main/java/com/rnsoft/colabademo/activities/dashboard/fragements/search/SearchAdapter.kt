@@ -3,19 +3,16 @@ package com.rnsoft.colabademo
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 
 
 class SearchAdapter
 internal constructor(
-    passedSearchList: List<SearchModel>, onSearchClickListener: SearchFragment
-) :  RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
+    passedSearchList: List<SearchItem>, onSearchClickListener: SearchFragment) :  RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
-
-    //: RecyclerView.Adapter<LoansAdapter.LoanViewHolder>() {
-
-    private var searchList = listOf<SearchModel>()
+    private var searchList = listOf<SearchItem>()
     private var clickListener: SearchClickListener = onSearchClickListener
 
     init {
@@ -30,8 +27,24 @@ internal constructor(
 
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        //holder.customer_name_textfield.text = arrayList[position]
-        val singleNotification  = searchList[position]
+
+        val tenant:SearchItem  = searchList[position]
+
+        holder.borrowerName.text = tenant.firstName+" "+tenant.lastName
+        holder.borrowerId.text = tenant.loanNumber
+        holder.borrowerStatus.text = tenant.status
+
+        var tenantAddress = ""
+        if( tenant.streetAddress!=null ) tenantAddress += tenant.streetAddress
+        if( tenant.unitNumber!=null ) tenantAddress += tenant.unitNumber
+        if( tenant.cityName!=null ) tenantAddress += tenant.cityName
+
+        if( tenant.stateAbbreviation!=null  && tenant.stateAbbreviation.isNotEmpty())
+            tenantAddress += "\n"+tenant.stateAbbreviation+", "
+        if( tenant.countryName!=null ) tenantAddress += tenant.countryName+" "
+        if( tenant.zipCode!=null ) tenantAddress += tenant.zipCode
+        holder.borrowerAddress.text = tenantAddress
+
 
         //holder.notificationTime.text = singleNotification.notificationTime
         /*
@@ -62,18 +75,10 @@ internal constructor(
     }
 
     inner class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        //var notificationName: TextView = itemView.findViewById(R.id.notification_name)
-        //var notificationTime: TextView = itemView.findViewById(R.id.notification_time)
-        //var activeImage: ImageView = itemView.findViewById(R.id.notification_active_icon)
-
-
-
-
-        //fun bind(item: ConstraintLayout, listener: OnItemClickListener) {
-            //itemView.setOnClickListener { listener.onItemClick(item) }
-       // }
-
-
+        var borrowerName: TextView = itemView.findViewById(R.id.searchBorrowerName)
+        var borrowerAddress: TextView = itemView.findViewById(R.id.searchBorrowerAddress)
+        var borrowerId: TextView = itemView.findViewById(R.id.searchBorrowerId)
+        var borrowerStatus: TextView = itemView.findViewById(R.id.searchBorrowerStatus)
 
     }
 

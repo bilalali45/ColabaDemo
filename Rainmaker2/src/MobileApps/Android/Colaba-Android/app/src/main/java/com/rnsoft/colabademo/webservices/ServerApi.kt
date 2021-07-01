@@ -81,6 +81,15 @@ interface ServerApi{
     :ArrayList<LoanItem>
 
 
+    @GET("api/mcu/mobile/loanapplication/loan/search")
+    suspend fun searchByText(
+        @Header("Authorization" )  Authorization:String,
+        @Query("pageNumber")  pageNumber:Int,
+        @Query("pageSize")  pageSize:Int ,
+        @Query("searchTerm")  searchTerm:String)
+            :ArrayList<SearchItem>
+
+
     //@POST("authenticate")
     //fun loginWithCallBack(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
