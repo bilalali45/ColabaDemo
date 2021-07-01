@@ -163,7 +163,7 @@
         android:layout_marginTop="1dp"
         android:background="@color/colaba_holder_background"
         android:paddingBottom="12dp"
-        android:visibility="gone"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

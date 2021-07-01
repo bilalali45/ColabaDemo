@@ -66,6 +66,56 @@ data class Borrower(
                     context.getString(R.string.title_basketball),
                     context.getString(R.string.subtitle_basketball),
                     context.getString(R.string.subtitle_basketball)
+                ),
+                Borrower(4, R.drawable.cat,
+                    context.getString(R.string.title_hockey),
+                    context.getString(R.string.subtitle_hockey),
+                    context.getString(R.string.subtitle_hockey)
+                ),
+                Borrower(5, R.drawable.dollar_bag,
+                    context.getString(R.string.title_basketball),
+                    context.getString(R.string.subtitle_basketball),
+                    context.getString(R.string.subtitle_basketball)
+                ),
+                Borrower(6, R.drawable.cat,
+                    context.getString(R.string.title_hockey),
+                    context.getString(R.string.subtitle_hockey),
+                    context.getString(R.string.subtitle_hockey)
+                ),
+                Borrower(7, R.drawable.dollar_bag,
+                    context.getString(R.string.title_basketball),
+                    context.getString(R.string.subtitle_basketball),
+                    context.getString(R.string.subtitle_basketball)
+                ),
+                Borrower(8, R.drawable.cat,
+                    context.getString(R.string.title_hockey),
+                    context.getString(R.string.subtitle_hockey),
+                    context.getString(R.string.subtitle_hockey)
+                ),
+                Borrower(9, R.drawable.dollar_bag,
+                    context.getString(R.string.title_basketball),
+                    context.getString(R.string.subtitle_basketball),
+                    context.getString(R.string.subtitle_basketball)
+                ),
+                Borrower(10, R.drawable.cat,
+                    context.getString(R.string.title_hockey),
+                    context.getString(R.string.subtitle_hockey),
+                    context.getString(R.string.subtitle_hockey)
+                ),
+                Borrower(11, R.drawable.dollar_bag,
+                    context.getString(R.string.title_basketball),
+                    context.getString(R.string.subtitle_basketball),
+                    context.getString(R.string.subtitle_basketball)
+                ),
+                Borrower(12, R.drawable.cat,
+                    context.getString(R.string.title_hockey),
+                    context.getString(R.string.subtitle_hockey),
+                    context.getString(R.string.subtitle_hockey)
+                ),
+                Borrower(13, R.drawable.dollar_bag,
+                    context.getString(R.string.title_basketball),
+                    context.getString(R.string.subtitle_basketball),
+                    context.getString(R.string.subtitle_basketball)
                 )
             )
         }

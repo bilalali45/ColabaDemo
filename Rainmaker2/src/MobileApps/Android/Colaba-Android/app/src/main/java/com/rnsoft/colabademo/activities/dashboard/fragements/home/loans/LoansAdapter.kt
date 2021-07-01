@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo
+package com.rnsoft.colabademo.activities.dashboard.fragements.home.loans
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,12 +8,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.rnsoft.colabademo.LoanItem
+import com.rnsoft.colabademo.LoanItemClickListener
+import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.globalclasses.AppSetting
 
-class AllLoansAdapter
+class LoansAdapter
 internal constructor(
     passedBorrowerList: ArrayList<LoanItem>, onLoanItemClickListener: LoanItemClickListener
-) :  RecyclerView.Adapter<AllLoansAdapter.LoanViewHolder>() {
+) :  RecyclerView.Adapter<LoansAdapter.LoanViewHolder>() {
 
 
     //: RecyclerView.Adapter<LoansAdapter.LoanViewHolder>() {
@@ -38,7 +41,10 @@ internal constructor(
 
     override fun onBindViewHolder(holder: LoanViewHolder, position: Int) {
         //holder.customer_name_textfield.text = arrayList[position]
+        //holder.setIsRecyclable(false)
+
         val borrower  = borrowerList[position]
+
         holder.customerName.text = borrower.firstName+" "+borrower.lastName
 
         borrower.activityTime?.let { activityTime->
@@ -102,11 +108,14 @@ internal constructor(
 
 
 
+
+
         holder.openLoanImageView.setOnClickListener {
             //mOnProductListener.onItemClick(holder.loanDetailLayout)
             holder.loanDetailLayout.visibility = View.VISIBLE
             holder.closeLoanImageView.visibility = View.VISIBLE
             holder.openLoanImageView.visibility = View.INVISIBLE
+            borrower.recycleCardState = true
         }
 
         holder.closeLoanImageView.setOnClickListener {
@@ -114,8 +123,16 @@ internal constructor(
             holder.loanDetailLayout.visibility = View.GONE
             holder.closeLoanImageView.visibility = View.INVISIBLE
             holder.openLoanImageView.visibility = View.VISIBLE
-
+            borrower.recycleCardState = false
         }
+
+
+        if(borrower.recycleCardState == true)
+            holder.openLoanImageView.performClick()
+        else
+            holder.closeLoanImageView.performClick()
+
+
     }
 
     override fun getItemCount(): Int {
@@ -124,6 +141,7 @@ internal constructor(
     }
 
     inner class LoanViewHolder(itemView: View ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+
         var customerName: TextView = itemView.findViewById(R.id.customer_name_textfield)
         var loanPurpose: TextView = itemView.findViewById(R.id.loanPurposeTextView)
         var mileStone: TextView = itemView.findViewById(R.id.milestoneTextView)
@@ -156,7 +174,15 @@ internal constructor(
 
     }
 
+    /*
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
 
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+    */
 
 
 

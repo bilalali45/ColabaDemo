@@ -18,7 +18,8 @@ data class LoanItem(
     val lastName: String?,
     val loanApplicationId: Int?,
     val loanPurpose: String?,
-    val milestone: String?
+    val milestone: String?,
+    var recycleCardState:Boolean? = false
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),

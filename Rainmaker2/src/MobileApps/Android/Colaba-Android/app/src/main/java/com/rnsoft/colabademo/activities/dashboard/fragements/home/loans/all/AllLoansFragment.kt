@@ -12,11 +12,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.*
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.loans.LoansAdapter
 import com.rnsoft.colabademo.databinding.FragmentLoanBinding
 import dagger.hilt.android.AndroidEntryPoint
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -31,7 +29,7 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
 
     private lateinit var loading: ProgressBar
     private val loanViewModel: LoanViewModel by activityViewModels()
-    private lateinit var allLoansAdapter: AllLoansAdapter
+    private lateinit var loansAdapter: LoansAdapter
 
     ////////////////////////////////////////////////////////////////////////////
     private var stringDateTime: String = ""
@@ -57,7 +55,7 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
         loading = view.findViewById(R.id.loader_all_loan)
         loanRecycleView = view.findViewById(R.id.loan_recycler_view)
 
-        allLoansAdapter = AllLoansAdapter(ArrayList(), this@AllLoansFragment)
+        loansAdapter = LoansAdapter(ArrayList(), this@AllLoansFragment)
         loanRecycleView?.apply {
             // set a LinearLayoutManager to handle Android
             // RecyclerView behavior
@@ -66,7 +64,7 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
             this.setHasFixedSize(true)
             // set the custom adapter to the RecyclerView
             //borrowList = Borrower.customersList(requireContext())
-            this.adapter = allLoansAdapter
+            this.adapter = loansAdapter
 
         }
 
@@ -83,13 +81,13 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
 
         loading.visibility = View.VISIBLE
 
-        loanViewModel.allLoansArrayList.observe(viewLifecycleOwner, Observer {
+        loanViewModel.allLoansArrayList.observe(viewLifecycleOwner, {
             //val result = it ?: return@Observer
             loading.visibility = View.INVISIBLE
             allLoansArrayList = it
-            allLoansAdapter = AllLoansAdapter(it, this@AllLoansFragment)
-            loanRecycleView?.adapter = allLoansAdapter
-            allLoansAdapter.notifyDataSetChanged()
+            loansAdapter = LoansAdapter(it, this@AllLoansFragment)
+            loanRecycleView?.adapter = loansAdapter
+            loansAdapter.notifyDataSetChanged()
         })
 
         loadLoanApplications()
