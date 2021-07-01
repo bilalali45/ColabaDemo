@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.dashboard.fragements.home.loans
+package com.rnsoft.colabademo
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,10 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.rnsoft.colabademo.LoanItem
-import com.rnsoft.colabademo.LoanItemClickListener
-import com.rnsoft.colabademo.R
-import com.rnsoft.colabademo.globalclasses.AppSetting
+
 
 class LoansAdapter
 internal constructor(
@@ -56,7 +53,7 @@ internal constructor(
 
             newString = AppSetting.returnLongTimeNow(newString)
 
-            Log.e("newString",newString)
+            //Log.e("newString",newString)
 
             holder.cardTime.text =  newString
         }
@@ -64,8 +61,10 @@ internal constructor(
 
         if(borrower.documents == null)
             holder.docsToReview.visibility = View.GONE
-        else
-            holder.docsToReview.text = borrower.documents.toString()+" Document to Review"
+        else {
+            holder.docsToReview.visibility = View.VISIBLE
+            holder.docsToReview.text = borrower.documents.toString() + " Document to Review"
+        }
 
         holder.mileStone.text = borrower.milestone
 

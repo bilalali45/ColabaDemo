@@ -11,8 +11,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.rnsoft.colabademo.activities.dashboard.fragements.home.loans.LoansAdapter
-
 import com.rnsoft.colabademo.databinding.NonActiveFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -35,7 +33,7 @@ class NonActiveLoansFragment : Fragment() , LoanItemClickListener {
     private lateinit var nonActiveAdapter: LoansAdapter
     private lateinit var loading: ProgressBar
     ////////////////////////////////////////////////////////////////////////////
-    private var stringDateTime: String = ""
+    //private var stringDateTime: String = ""
     private var pageNumber: Int = 1
     private var pageSize: Int = 20
     private var loanFilter: Int = 2
@@ -57,7 +55,7 @@ class NonActiveLoansFragment : Fragment() , LoanItemClickListener {
         }
 
         loading.visibility = View.VISIBLE
-        loanViewModel.allLoansArrayList.observe(viewLifecycleOwner, Observer {
+        loanViewModel.nonActiveLoansArrayList.observe(viewLifecycleOwner, Observer {
             loading.visibility = View.INVISIBLE
             nonActiveLoansList = it
             nonActiveAdapter = LoansAdapter(it, this@NonActiveLoansFragment)
@@ -72,11 +70,12 @@ class NonActiveLoansFragment : Fragment() , LoanItemClickListener {
 
     private fun loadNonActiveApplications(){
         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-            val stringDateTime =
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
-            loanViewModel.getAllLoans(
+            if(AppSetting.nonActiveloanApiDateTime.isEmpty())
+                AppSetting.nonActiveloanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
+
+            loanViewModel.getNonActiveLoans(
                 token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIzODA2NCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJtb2JpbGV1c2VyMUBtYWlsaW5hdG9yLmNvbSIsIkZpcnN0TmFtZSI6Ik1vYmlsZSIsIkxhc3ROYW1lIjoiVXNlcjEiLCJUZW5hbnRDb2RlIjoibGVuZG92YSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJNQ1UiLCJMb2FuIE9mZmljZXIiXSwiZXhwIjoxNjI1Mjc3NDg4LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.nzloUYocTjEOWCpFEzX0uGrI3DHCwVIQLYbZjDDSBvI",
-                dateTime = stringDateTime, pageNumber = pageNumber,
+                dateTime = AppSetting.nonActiveloanApiDateTime, pageNumber = pageNumber,
                 pageSize = pageSize, loanFilter = loanFilter,
                 orderBy = orderBy, assignedToMe = assignedToMe
             )

@@ -2,7 +2,6 @@ package com.rnsoft.colabademo
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.rnsoft.colabademo.globalclasses.AppSetting
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

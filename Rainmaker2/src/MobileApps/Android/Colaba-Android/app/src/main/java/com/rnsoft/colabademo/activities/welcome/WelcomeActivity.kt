@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import co.infinum.goldfinger.Goldfinger
 import co.infinum.goldfinger.Goldfinger.PromptParams
-import com.rnsoft.colabademo.globalclasses.AppSetting
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

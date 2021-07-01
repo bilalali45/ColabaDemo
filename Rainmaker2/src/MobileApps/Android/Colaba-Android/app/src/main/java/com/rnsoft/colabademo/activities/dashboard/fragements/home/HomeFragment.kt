@@ -17,7 +17,6 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rnsoft.colabademo.databinding.FragmentHomeBinding
-import com.rnsoft.colabademo.globalclasses.AppSetting
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

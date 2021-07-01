@@ -17,14 +17,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import co.infinum.goldfinger.Goldfinger
-import com.hjq.toast.ToastUtils
-import com.rnsoft.colabademo.globalclasses.AppSetting
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 @AndroidEntryPoint

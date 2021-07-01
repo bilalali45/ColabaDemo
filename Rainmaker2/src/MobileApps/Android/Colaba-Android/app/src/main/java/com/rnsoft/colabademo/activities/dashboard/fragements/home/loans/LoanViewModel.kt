@@ -17,10 +17,23 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
     private val _allLoansArrayList = MutableLiveData<ArrayList<LoanItem>>()
     val allLoansArrayList: LiveData<ArrayList<LoanItem>> get() = _allLoansArrayList
 
-    //val list: MutableList<AllLoansArrayList> = ArrayList()
+    private val _activeLoansArrayList = MutableLiveData<ArrayList<LoanItem>>()
+    val activeLoansArrayList: LiveData<ArrayList<LoanItem>> get() = _activeLoansArrayList
+
+    private val _nonActiveLoansArrayList = MutableLiveData<ArrayList<LoanItem>>()
+    val nonActiveLoansArrayList: LiveData<ArrayList<LoanItem>> get() = _nonActiveLoansArrayList
+
+
+
+    private val localLoansArrayList: ArrayList<LoanItem> = ArrayList<LoanItem>()
+    private val localActiveLoansArrayList: ArrayList<LoanItem> = ArrayList<LoanItem>()
+    private val localNonActiveLoansArrayList: ArrayList<LoanItem> = ArrayList<LoanItem>()
+
 
     init {
         _allLoansArrayList.value = ArrayList()
+        _nonActiveLoansArrayList.value = ArrayList()
+        _activeLoansArrayList.value = ArrayList()
     }
 
     fun getAllLoans(token:String, dateTime:String,
@@ -34,7 +47,52 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                 orderBy = orderBy, assignedToMe = assignedToMe)
 
             if (result is Result.Success) {
-                 _allLoansArrayList.value = result.data
+                localLoansArrayList.addAll(result.data)
+                _allLoansArrayList.value = localLoansArrayList
+            }
+            else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
+                EventBus.getDefault().post(AllLoansLoadedEvent(null, true))
+            else
+                EventBus.getDefault().post(AllLoansLoadedEvent(null))
+        }
+    }
+
+
+    fun getActiveLoans(token:String, dateTime:String,
+                    pageNumber:Int, pageSize:Int,
+                    loanFilter:Int, orderBy:Int,
+                    assignedToMe:Boolean)
+    {
+        viewModelScope.launch {
+            val result = loanRepo.getAllLoans(token = token , dateTime = dateTime,
+                pageNumber = pageNumber, pageSize = pageSize, loanFilter = loanFilter,
+                orderBy = orderBy, assignedToMe = assignedToMe)
+
+            if (result is Result.Success) {
+                localActiveLoansArrayList.addAll(result.data)
+                _activeLoansArrayList.value = localActiveLoansArrayList
+            }
+            else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
+                EventBus.getDefault().post(AllLoansLoadedEvent(null, true))
+            else
+                EventBus.getDefault().post(AllLoansLoadedEvent(null))
+        }
+    }
+
+
+    fun getNonActiveLoans(token:String, dateTime:String,
+                    pageNumber:Int, pageSize:Int,
+                    loanFilter:Int, orderBy:Int,
+                    assignedToMe:Boolean)
+    {
+        viewModelScope.launch {
+            val result = loanRepo.getAllLoans(token = token , dateTime = dateTime,
+                pageNumber = pageNumber, pageSize = pageSize, loanFilter = loanFilter,
+                orderBy = orderBy, assignedToMe = assignedToMe)
+
+            if (result is Result.Success) {
+                localNonActiveLoansArrayList.addAll(result.data)
+                _nonActiveLoansArrayList.value = localNonActiveLoansArrayList
             }
             else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
                 EventBus.getDefault().post(AllLoansLoadedEvent(null, true))

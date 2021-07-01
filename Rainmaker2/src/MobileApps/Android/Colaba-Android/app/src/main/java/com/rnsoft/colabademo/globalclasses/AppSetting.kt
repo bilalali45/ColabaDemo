@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.globalclasses
+package com.rnsoft.colabademo
 
 import android.content.Context
 import android.text.format.DateFormat
@@ -15,8 +15,12 @@ import kotlin.math.roundToInt
 
 
 object AppSetting {
+
     var biometricEnabled:Boolean = false
 
+    var loanApiDateTime:String = ""
+    var activeloanApiDateTime:String = ""
+    var nonActiveloanApiDateTime:String = ""
 
     fun returnGreetingString():String{
         val currentTimeAgain: String =
@@ -60,8 +64,8 @@ object AppSetting {
         val oldMillis = oldDate?.time
 
         oldMillis?.let {
-            Log.e("oldMillis", "Date in milli :: FOR API >= 26 >>> $oldMillis")
-            Log.e("lastseen", "Date in milli :: FOR API >= 26 >>>"+ lastseen(oldMillis))
+            //Log.e("oldMillis", "Date in milli :: FOR API >= 26 >>> $oldMillis")
+            //Log.e("lastseen", "Date in milli :: FOR API >= 26 >>>"+ lastseen(oldMillis))
             lastSeen = lastseen(oldMillis)
         }
 
@@ -97,9 +101,9 @@ object AppSetting {
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
         val localDate: LocalDateTime = LocalDateTime.parse(stringFormat, formatter)
         val timeInMilliseconds: Long = localDate.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli()
-        Log.d("TAG", "Date in milli :: FOR API >= 26 >>> $timeInMilliseconds")
+        //Log.d("TAG", "Date in milli :: FOR API >= 26 >>> $timeInMilliseconds")
         val finalString = lastseen(timeInMilliseconds)
-        Log.d("finalString", " = $timeInMilliseconds")
+        //Log.d("finalString", " = $timeInMilliseconds")
 
     }
 
