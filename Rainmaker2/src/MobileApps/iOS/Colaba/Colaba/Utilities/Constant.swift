@@ -23,3 +23,4 @@ var totalCodeLimit = 5
 let kIsUserRegisteredWithBiometric = "UserRegisteredWithBiometric"
 let kDontAsk2FAValue = "dontAsk2FAValue"
 let kNotificationPopupViewCloseTapped = "NotificationPopupViewCloseTapped"
+let kNotificationRefreshCounter = "NotificationRefreshCounter"

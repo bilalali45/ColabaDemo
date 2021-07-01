@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -45,17 +45,17 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vTi-Ox-oVT">
-                        <rect key="frame" x="66" y="22" width="227" height="43"/>
+                        <rect key="frame" x="66" y="22" width="211" height="43"/>
                         <string key="text">Richard Glenn has submitted
 documents</string>
                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="14"/>
                         <color key="textColor" name="AppBlackColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 min" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YB4-Sc-Oyb">
-                        <rect key="frame" x="298" y="22" width="50" height="16"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="55 minutes" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YB4-Sc-Oyb">
+                        <rect key="frame" x="277" y="22" width="71" height="16"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="50" id="Eyz-wX-8KT"/>
+                            <constraint firstAttribute="width" constant="71" id="Eyz-wX-8KT"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                         <color key="textColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -65,7 +65,7 @@ documents</string>
                         <rect key="frame" x="0.0" y="10.5" width="368" height="64.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This notification has been removed." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5cW-Am-WAR">
-                                <rect key="frame" x="26" y="25" width="192.5" height="14"/>
+                                <rect key="frame" x="26" y="25" width="191" height="14"/>
                                 <fontDescription key="fontDescription" name="Rubik-LightItalic" family="Rubik" pointSize="12"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -105,7 +105,7 @@ documents</string>
                     <constraint firstItem="Lm0-hP-PXa" firstAttribute="height" secondItem="vTi-Ox-oVT" secondAttribute="height" multiplier="1.5" id="fLk-eu-Lnu"/>
                     <constraint firstItem="gOA-fl-8Uz" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="25" id="hnP-6H-wa0"/>
                     <constraint firstItem="SnH-W9-PAV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="22" id="hte-ux-ysv"/>
-                    <constraint firstItem="YB4-Sc-Oyb" firstAttribute="leading" secondItem="vTi-Ox-oVT" secondAttribute="trailing" constant="5" id="ii2-ae-5Vs"/>
+                    <constraint firstItem="YB4-Sc-Oyb" firstAttribute="leading" secondItem="vTi-Ox-oVT" secondAttribute="trailing" id="ii2-ae-5Vs"/>
                     <constraint firstItem="gOA-fl-8Uz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="kqm-Oc-Rgp"/>
                     <constraint firstItem="vTi-Ox-oVT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="22" id="xgZ-p7-xLd"/>
                     <constraint firstAttribute="trailing" secondItem="Lm0-hP-PXa" secondAttribute="trailing" id="ypL-WC-qSc"/>

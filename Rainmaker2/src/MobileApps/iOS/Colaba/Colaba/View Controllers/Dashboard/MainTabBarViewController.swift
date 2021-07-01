@@ -14,9 +14,9 @@ class MainTabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBar.tintColor = Theme.getButtonBlueColor()
-        self.tabBar.items![1].badgeValue = "1"
         
         NotificationCenter.default.addObserver(self, selector: #selector(popupViewCloseTapped), name: NSNotification.Name(rawValue: kNotificationPopupViewCloseTapped), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(getNotificationCount), name: NSNotification.Name(rawValue: kNotificationRefreshCounter), object: nil)
         
         let centerPoint = (self.view.frame.width / 2) - 30
         let centerPoint2 = (self.view.frame.width / 2) - 45
@@ -31,6 +31,11 @@ class MainTabBarViewController: UITabBarController {
         hidedButton.roundAllCorners(radius: 45)
         hidedButton.addTarget(self, action: #selector(newButtonTapped), for: .touchUpInside)
         self.tabBar.addSubview(hidedButton)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        getNotificationCount()
     }
     
     //MARK:- Methods and Actions
@@ -48,4 +53,22 @@ class MainTabBarViewController: UITabBarController {
         })
     }
    
+    //MARK:- API's
+    
+    @objc func getNotificationCount(){
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getNotificationCount, method: .get, params: nil) { (status, result, message) in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    self.tabBar.items![1].badgeValue = result["count"].intValue == 0 ? nil : "\(result["count"].intValue)"
+                }
+                else{
+                    self.tabBar.items![1].badgeValue = nil
+                }
+            }
+            
+        }
+        
+    }
 }

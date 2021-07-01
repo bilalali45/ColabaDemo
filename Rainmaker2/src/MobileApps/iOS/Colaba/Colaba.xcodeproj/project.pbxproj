@@ -41,6 +41,7 @@
 		23C2448C2689E53F00EED1D0 /* ActivePiplineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C2448B2689E53F00EED1D0 /* ActivePiplineViewController.swift */; };
 		23C2448E2689E55E00EED1D0 /* InActivePipelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C2448D2689E55E00EED1D0 /* InActivePipelineViewController.swift */; };
 		23C244902689E89300EED1D0 /* SearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C2448F2689E89300EED1D0 /* SearchModel.swift */; };
+		710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D032E268DC56500A13E63 /* NotificationModel.swift */; };
 		7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */; };
 		7113F51F26568E3B0066E179 /* Home.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7113F51E26568E3B0066E179 /* Home.svg */; };
 		7113F52526569D310066E179 /* LocalAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7113F52426569D310066E179 /* LocalAuthManager.swift */; };
@@ -130,6 +131,7 @@
 		23C2448F2689E89300EED1D0 /* SearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModel.swift; sourceTree = "<group>"; };
 		25C6C1D772F13896700CDB1C /* Pods-Colaba.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Colaba.release.xcconfig"; path = "Target Support Files/Pods-Colaba/Pods-Colaba.release.xcconfig"; sourceTree = "<group>"; };
 		3D986CBDBB7995778F877F6F /* Pods-ColabaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ColabaTests.debug.xcconfig"; path = "Target Support Files/Pods-ColabaTests/Pods-ColabaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		710D032E268DC56500A13E63 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionOfSVGKImage.swift; sourceTree = "<group>"; };
 		7113F51E26568E3B0066E179 /* Home.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Home.svg; sourceTree = "<group>"; };
 		7113F52426569D310066E179 /* LocalAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthManager.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				23C244872689E3E400EED1D0 /* ActiveLoanModel.swift */,
 				23C244892689E3F800EED1D0 /* InActiveLoanModel.swift */,
 				23C2448F2689E89300EED1D0 /* SearchModel.swift */,
+				710D032E268DC56500A13E63 /* NotificationModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -739,6 +742,7 @@
 				7186AD742653FBB500E740D3 /* ResetPasswordSuccessfullViewController.swift in Sources */,
 				71B19458265CF9C80017955B /* APIRouter.swift in Sources */,
 				2397AF63267782E6007A1A45 /* PipelineTableViewCell.swift in Sources */,
+				710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */,
 				23A56C5E2685B017005CE6F4 /* Loaf.swift in Sources */,
 				23B238B82679D38900508449 /* SearchViewController.swift in Sources */,
 				23A56C5D2685B017005CE6F4 /* Icons.swift in Sources */,

@@ -26,6 +26,11 @@ enum EndPoint:String{
     case getPipelineList = "loanapplication/loan/GetListForPipeline?"
     case getNewPipelineRecords = "loanapplication/loan/AreNewRecordsAvailable"
     case searchLoans = "loanapplication/loan/search?"
+    case getNotificationCount = "Notification/notification/getcount"
+    case getNotificationsList = "Notification/notification/GetPaged?"
+    case readNotification = "Notification/notification/Read"
+    case seenNotification = "Notification/notification/Seen"
+    case deleteNotifications = "Notification/notification/Delete"
     case logout = "identity/mcuaccount/Logout"
     
 }

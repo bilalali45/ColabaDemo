@@ -292,7 +292,7 @@ struct Utility {
             }
             
             if let hour = components.hour, hour >= 1 {
-                return "An hour ago"
+                return "1 hour ago"
             }
             
             if let minute = components.minute, minute >= 2 {
@@ -300,7 +300,7 @@ struct Utility {
             }
             
             if let minute = components.minute, minute >= 1 {
-                return "A minute ago"
+                return "1 minute ago"
             }
             
             if let second = components.second, second >= 3 {
