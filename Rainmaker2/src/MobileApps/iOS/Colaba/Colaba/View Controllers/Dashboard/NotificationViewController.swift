@@ -148,7 +148,7 @@ class NotificationViewController: BaseViewController {
                             }
                         }
                         else{
-                            self.showPopup(message: "No data found", popupState: .error, popupDuration: .custom(2)) { reason in
+                            self.showPopup(message: "No Notifications", popupState: .error, popupDuration: .custom(2)) { reason in
                                 
                             }
                         }
