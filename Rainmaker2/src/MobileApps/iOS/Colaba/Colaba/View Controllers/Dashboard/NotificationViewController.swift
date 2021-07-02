@@ -37,6 +37,8 @@ class NotificationViewController: BaseViewController {
         tblViewNotification.loadControl?.heightLimit = 60
         btnNewNotifications.layer.cornerRadius = 8
         
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidTerminate), name: UIApplication.willTerminateNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidTerminate), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,6 +67,11 @@ class NotificationViewController: BaseViewController {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollView.loadControl?.update()
+    }
+    
+    @objc func appDidTerminate(){
+        self.readNotifications()
+        self.deleteNotifications()
     }
     
     @objc func undoTimerStart(){
@@ -100,9 +107,9 @@ class NotificationViewController: BaseViewController {
 //        self.tblViewNotification.reloadData()
         self.readNotifications()
         self.deleteNotifications()
-        self.lastNotificationId = -1
-        self.getNotifications()
-        
+        if (notificationsArray.count > 0){
+            self.tblViewNotification.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        }
     }
     
     //MARK:- API's
@@ -141,7 +148,7 @@ class NotificationViewController: BaseViewController {
                             }
                         }
                         else{
-                            self.showPopup(message: "No data found", popupState: .error, popupDuration: .custom(2)) { reason in
+                            self.showPopup(message: "No Notifications", popupState: .error, popupDuration: .custom(2)) { reason in
                                 
                             }
                         }
