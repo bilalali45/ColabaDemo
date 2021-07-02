@@ -19,6 +19,8 @@ class SearchViewModel @Inject constructor(private val searchRepo: SearchRepo)  :
         _searchArrayList.value = ArrayList()
     }
 
+    private var localSearchList:ArrayList<SearchItem> = ArrayList()
+
     fun getSearchResult(token:String, pageNumber:Int, pageSize:Int, searchTerm:String)
     {
         viewModelScope.launch {
@@ -26,13 +28,18 @@ class SearchViewModel @Inject constructor(private val searchRepo: SearchRepo)  :
             val result = searchRepo.getSearchResult(token = token , pageNumber = pageNumber, pageSize = pageSize, searchTerm = searchTerm)
 
             if (result is Result.Success) {
-                _searchArrayList.value = result.data
+                localSearchList.addAll(result.data)
+                _searchArrayList.value = localSearchList
             }
             else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
                 EventBus.getDefault().post(AllLoansLoadedEvent(null, true))
             else
                 EventBus.getDefault().post(AllLoansLoadedEvent(null))
         }
+    }
+
+    fun resetSearchData(){
+        localSearchList.clear()
     }
 
 }

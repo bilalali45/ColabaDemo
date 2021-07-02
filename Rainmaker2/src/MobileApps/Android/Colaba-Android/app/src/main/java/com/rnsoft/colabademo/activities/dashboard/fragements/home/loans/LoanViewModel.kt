@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -42,6 +43,7 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                     assignedToMe:Boolean)
     {
         viewModelScope.launch {
+            Log.e("viewmodel-"," method is - getAllLoans")
             val result = loanRepo.getAllLoans(token = token , dateTime = dateTime,
                 pageNumber = pageNumber, pageSize = pageSize, loanFilter = loanFilter,
                 orderBy = orderBy, assignedToMe = assignedToMe)

@@ -4,12 +4,14 @@ import android.content.Context
 import android.text.format.DateFormat
 import android.text.format.DateUtils
 import android.util.Log
-import com.rnsoft.colabademo.R
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.TextView
+import androidx.annotation.IdRes
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.text.MessageFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -95,17 +97,29 @@ object AppSetting {
 
     }
 
-    fun returnLongTime(stringFormat:String){
 
-        val formatter: DateTimeFormatter =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
-        val localDate: LocalDateTime = LocalDateTime.parse(stringFormat, formatter)
-        val timeInMilliseconds: Long = localDate.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli()
-        //Log.d("TAG", "Date in milli :: FOR API >= 26 >>> $timeInMilliseconds")
-        val finalString = lastseen(timeInMilliseconds)
-        //Log.d("finalString", " = $timeInMilliseconds")
-
+    fun showBadge(
+        context: Context?,
+        bottomNavigationView: BottomNavigationView,
+        @IdRes itemId: Int,
+        value: String?
+    ) {
+        removeBadge(bottomNavigationView, itemId)
+        val itemView: BottomNavigationItemView = bottomNavigationView.findViewById(itemId)
+        val badge: View = LayoutInflater.from(context)
+            .inflate(R.layout.layout_news_badge, bottomNavigationView, false)
+        val text: TextView = badge.findViewById(R.id.badge_text_view)
+        text.text = value
+        itemView.addView(badge)
     }
+
+    fun removeBadge(bottomNavigationView: BottomNavigationView, @IdRes itemId: Int) {
+        val itemView: BottomNavigationItemView = bottomNavigationView.findViewById(itemId)
+        if (itemView.childCount == 3) {
+            itemView.removeViewAt(2)
+        }
+    }
+
 
     private const val SHORT_DATE_FLAGS = (DateUtils.FORMAT_SHOW_DATE
             or DateUtils.FORMAT_NO_YEAR or DateUtils.FORMAT_ABBREV_ALL)

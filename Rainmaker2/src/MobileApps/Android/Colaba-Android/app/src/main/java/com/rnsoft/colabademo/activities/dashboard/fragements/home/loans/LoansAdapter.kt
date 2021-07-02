@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -183,7 +182,21 @@ internal constructor(
     }
     */
 
+    fun updateList(newLoanItemList:ArrayList<LoanItem>){
+        val lastSize = newLoanItemList.size
+        borrowerList = newLoanItemList
+        notifyDataSetChanged()
+        //notifyItemRangeInserted(lastSize,lastSize+newLoanItemList.size-1 )
+        //notifyItemRangeInserted(lastSize,lastSize+newLoanItemList.size-1)
+    }
 
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
 
 
 }

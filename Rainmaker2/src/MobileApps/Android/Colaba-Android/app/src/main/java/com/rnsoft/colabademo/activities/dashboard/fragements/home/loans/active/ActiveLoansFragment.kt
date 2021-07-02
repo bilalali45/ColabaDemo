@@ -31,7 +31,7 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener {
 
     ////////////////////////////////////////////////////////////////////////////
     private var pageNumber: Int = 1
-    private var pageSize: Int = 4
+    private var pageSize: Int = 20
     private var loanFilter: Int = 1
     private var orderBy: Int = 0
     private var assignedToMe: Boolean = false
@@ -72,7 +72,8 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener {
             activeLoansList = it
             activeAdapter = LoansAdapter(it, this@ActiveLoansFragment)
             activeRecycler?.adapter = activeAdapter
-            activeAdapter.notifyItemRangeInserted((activeLoansList.size/2),pageSize*pageNumber)
+            //activeAdapter.notifyItemRangeInserted((activeLoansList.size/2),pageSize*pageNumber)
+            activeAdapter.notifyDataSetChanged()
         })
 
         val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {

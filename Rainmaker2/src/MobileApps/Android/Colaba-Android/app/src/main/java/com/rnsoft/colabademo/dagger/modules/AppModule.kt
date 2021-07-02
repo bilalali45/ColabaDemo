@@ -2,10 +2,6 @@ package com.rnsoft.colabademo
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.security.keystore.KeyGenParameterSpec
-import android.security.keystore.KeyProperties
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
@@ -33,7 +29,8 @@ class AppModule {
         @Singleton
         @Provides
         fun provideSharedPreferences(  @ApplicationContext context: Context): SharedPreferences {
-            //return context.getSharedPreferences(MyAppConfigConstant.APP_PREFERENCES, Context.MODE_PRIVATE)
+            return context.getSharedPreferences(AppConstant.APP_PREFERENCES, Context.MODE_PRIVATE)
+            /*
             val spec = KeyGenParameterSpec.Builder(
                 MasterKey.DEFAULT_MASTER_KEY_ALIAS,
                 KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
@@ -53,6 +50,8 @@ class AppModule {
                 masterKey, // masterKey created above
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM)
+
+             */
         }
 
 

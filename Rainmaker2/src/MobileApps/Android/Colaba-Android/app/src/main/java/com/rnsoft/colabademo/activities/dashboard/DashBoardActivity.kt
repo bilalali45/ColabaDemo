@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -35,8 +36,11 @@ class DashBoardActivity : AppCompatActivity() {
 
     private lateinit var binding: DashboardLayoutBinding
 
+    private var pageSize = 20
+    private var lastId = -1
+    private var mediumId = 1
 
-
+    private var notificationArrayList: ArrayList<NotificationItem> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +63,36 @@ class DashBoardActivity : AppCompatActivity() {
         )
         //setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+
+       lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let {
+               val count = dashBoardViewModel.getNotificationCount("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIzODA2NCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJtb2JpbGV1c2VyMUBtYWlsaW5hdG9yLmNvbSIsIkZpcnN0TmFtZSI6Ik1vYmlsZSIsIkxhc3ROYW1lIjoiVXNlcjEiLCJUZW5hbnRDb2RlIjoibGVuZG92YSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJNQ1UiLCJMb2FuIE9mZmljZXIiXSwiZXhwIjoxNjI1NDYwNjM1LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.8YNU5I3L8ifDGQymy_tofEeR9TJp1Vlt8l77xC7AXqY")
+                if(count == -1)
+                    SandbarUtils.showRegular(this@DashBoardActivity ,AppConstant.INTERNET_ERR_MSG)
+                else if(count == -100)
+                    SandbarUtils.showRegular(this@DashBoardActivity ,"Webservice not responding...")
+                else  if(count > 0)
+                {
+                    val badge = navView.getOrCreateBadge(R.id.navigation_notifications) // previously showBadge
+                    badge.number = count
+                    badge.backgroundColor = getColor(R.color.colaba_red_color)
+                    badge.badgeTextColor = getColor(R.color.white)
+                }
+            }
+
+           sharedPreferences.getString(AppConstant.token, "")?.let {
+               val borrowerNotifications = dashBoardViewModel.getNotificationListing(
+                   token=
+                   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIzODA2NCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJtb2JpbGV1c2VyMUBtYWlsaW5hdG9yLmNvbSIsIkZpcnN0TmFtZSI6Ik1vYmlsZSIsIkxhc3ROYW1lIjoiVXNlcjEiLCJUZW5hbnRDb2RlIjoibGVuZG92YSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJNQ1UiLCJMb2FuIE9mZmljZXIiXSwiZXhwIjoxNjI1NDYwNjM1LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.8YNU5I3L8ifDGQymy_tofEeR9TJp1Vlt8l77xC7AXqY",
+                   pageSize = pageSize,lastId = lastId, mediumId = mediumId)
+                if(borrowerNotifications.size>0)
+                    notificationArrayList = borrowerNotifications
+                else
+                    SandbarUtils.showRegular(this@DashBoardActivity ,"Webservice not responding...")
+           }
+        }
+
 
 
 

@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 class SearchAdapter
 internal constructor(
-    passedSearchList: List<SearchItem>, onSearchClickListener: SearchFragment) :  RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
+    passedSearchList: ArrayList<SearchItem>, onSearchClickListener: SearchFragment) :  RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
-    private var searchList = listOf<SearchItem>()
+    private var searchList = ArrayList<SearchItem>()
     private var clickListener: SearchClickListener = onSearchClickListener
 
     init {
@@ -82,7 +82,10 @@ internal constructor(
 
     }
 
-
+    fun clearData(){
+        searchList.clear()
+        notifyDataSetChanged()
+    }
 
     interface SearchClickListener {
         fun onSearchItemClick( view:View)

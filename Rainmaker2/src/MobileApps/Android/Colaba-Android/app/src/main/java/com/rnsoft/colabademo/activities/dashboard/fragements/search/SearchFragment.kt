@@ -57,15 +57,19 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        searchViewModel.resetSearchData()
+
         loading = root.findViewById(R.id.search_loader)
         searchRecyclerView = root.findViewById(R.id.search_recycle_view)
         searchAdapter = SearchAdapter(ArrayList(), this@SearchFragment)
+        val linearLayoutManager = LinearLayoutManager(activity)
         searchRecyclerView?.apply {
-            this.layoutManager = LinearLayoutManager(activity)
+            this.layoutManager = linearLayoutManager
             //(this.layoutManager as LinearLayoutManager).isMeasurementCacheEnabled = false
             this.setHasFixedSize(true)
             this.adapter = searchAdapter
         }
+
 
 
         searchViewModel.searchArrayList.observe(viewLifecycleOwner, {
@@ -91,6 +95,7 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 binding.searchEditTextField.clearFocus()
                 binding.searchEditTextField.hideKeyboard()
+                searchViewModel.resetSearchData()
                 performSearch()
                 return@OnEditorActionListener true
             }
@@ -115,7 +120,10 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
             binding.searchEditTextField.clearFocus()
             binding.searchEditTextField.hideKeyboard()
             binding.searchcrossImageView.visibility = View.INVISIBLE
-
+            binding.searchResultCountTextView.visibility = View.INVISIBLE
+            binding.searchResultTitleTextView.visibility = View.INVISIBLE
+            searchViewModel.resetSearchData()
+            searchAdapter.clearData()
             //binding.searchResultCountTextView.visibility = View.VISIBLE
             //binding.searchResultTitleTextView.visibility = View.VISIBLE
         }
@@ -123,6 +131,16 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
         binding.searchBackButton.setOnClickListener {
                 findNavController().popBackStack()
         }
+
+        val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                pageNumber++
+                performSearch()
+            }
+        }
+        searchRecyclerView?.addOnScrollListener(scrollListener)
 
         return root
     }
@@ -161,5 +179,9 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
+    override fun onStop() {
+        super.onStop()
+        searchViewModel.resetSearchData()
+    }
 
 }

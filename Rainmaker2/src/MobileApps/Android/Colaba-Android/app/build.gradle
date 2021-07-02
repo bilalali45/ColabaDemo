@@ -141,7 +141,8 @@ dependencies {
     //implementation "androidx.recyclerview:recyclerview:1.2.1"
 
     // For secure shared preference values....
-    implementation "androidx.security:security-crypto:1.1.0-alpha03"
+    //implementation "androidx.security:security-crypto:1.1.0-alpha02"
+
 
     // adding finger print library...
     implementation 'co.infinum:goldfinger:2.0.1'

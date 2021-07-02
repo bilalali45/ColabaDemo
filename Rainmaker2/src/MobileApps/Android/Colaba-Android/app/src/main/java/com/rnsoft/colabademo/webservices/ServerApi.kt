@@ -90,6 +90,20 @@ interface ServerApi{
             :ArrayList<SearchItem>
 
 
+
+    @GET("api/mcu/mobile/Notification/notification/GetPaged")
+    suspend fun getNotificationListing(
+        @Header("Authorization" )  Authorization:String,
+        @Query("pageSize")  pageSize:Int,
+        @Query("lastId")  lastId:Int ,
+        @Query("mediumId")  mediumId:Int
+      ):ArrayList<NotificationItem>
+
+
+    @GET("api/mcu/mobile/Notification/notification/getcount")
+    suspend fun getNotificationCount(@Header("Authorization" )  Authorization:String):TotalNotificationCount
+
+
     //@POST("authenticate")
     //fun loginWithCallBack(@Body loginRequest: LoginRequest): Call<LoginResponse>
 

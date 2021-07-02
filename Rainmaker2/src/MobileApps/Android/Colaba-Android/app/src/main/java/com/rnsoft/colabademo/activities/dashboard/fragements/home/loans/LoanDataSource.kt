@@ -22,7 +22,7 @@ class LoanDataSource  @Inject constructor(private val serverApi: ServerApi){
                 orderBy = orderBy,
                 assignedToMe = assignedToMe
             )
-            Log.e("otp-", response.toString())
+            Log.e("LoanDataSource-", response.toString())
             Result.Success(response)
         }
         catch (e: Throwable) {

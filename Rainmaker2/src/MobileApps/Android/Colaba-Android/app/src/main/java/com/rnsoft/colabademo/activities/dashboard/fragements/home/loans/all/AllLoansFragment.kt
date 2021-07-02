@@ -41,6 +41,7 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
     private var orderBy: Int = 0
     private var assignedToMe: Boolean = false
 
+    private var borrowerListEnded = false
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -70,7 +71,7 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
 
             this.adapter = loansAdapter
 
-
+            loansAdapter = LoansAdapter(allLoansArrayList , this@AllLoansFragment)
         }
 
         /*
@@ -89,10 +90,22 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
         loanViewModel.allLoansArrayList.observe(viewLifecycleOwner, {
             //val result = it ?: return@Observer
             loading.visibility = View.INVISIBLE
-            allLoansArrayList .addAll(it)
-            loansAdapter = LoansAdapter(allLoansArrayList , this@AllLoansFragment)
-            loanRecycleView?.adapter = loansAdapter
-            loansAdapter.notifyDataSetChanged()
+            if(it.size>0) {
+                val lastSize = allLoansArrayList.size
+                allLoansArrayList = (it)
+
+                loansAdapter = LoansAdapter(allLoansArrayList, this@AllLoansFragment)
+                loanRecycleView?.adapter = loansAdapter
+                loansAdapter.notifyItemRangeInserted(lastSize,lastSize+allLoansArrayList.size-1 )
+
+                //loanRecycleView?.post { loansAdapter.notifyItemRangeInserted(lastSize, allLoansArrayList.size - 1) }
+
+                //loanRecycleView?.adapter = loansAdapter
+                //loansAdapter.notifyDataSetChanged()
+                //loansAdapter.updateList(allLoansArrayList)
+            }
+            else
+                Log.e("should-stop"," here....")
             //loansAdapter.notifyItemRangeInserted((allLoansArrayList.size/2),pageSize*pageNumber)
         })
 
@@ -115,6 +128,8 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
         }
 
          */
+
+
 
         // Adds the scroll listener to RecyclerView
         // Adds the scroll listener to RecyclerView
