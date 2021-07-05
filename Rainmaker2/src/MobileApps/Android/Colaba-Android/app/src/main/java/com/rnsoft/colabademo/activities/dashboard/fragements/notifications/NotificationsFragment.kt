@@ -1,23 +1,28 @@
 package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ecommerce.testapp.NewNotificationListAdapter
+import com.google.android.material.snackbar.Snackbar
 import com.rnsoft.colabademo.databinding.FragmentNotificationsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
-class NotificationsFragment : Fragment(), NotificationClickListener {
+class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
 
    // private lateinit var notificationsViewModel: NotificationsViewModel
@@ -35,6 +40,8 @@ class NotificationsFragment : Fragment(), NotificationClickListener {
 
     private lateinit var notificationRecycleView: RecyclerView
     private var notificationArrayList: ArrayList<NotificationItem> = ArrayList()
+    private var readArrayList: ArrayList<Int> = ArrayList()
+    private var deleteArrayList: ArrayList<Int> = ArrayList()
     private var newNotificationAdapter:NewNotificationListAdapter = NewNotificationListAdapter(notificationArrayList, this@NotificationsFragment)
 
     /////////////////////////////////////////////////////////////////////////
@@ -42,6 +49,7 @@ class NotificationsFragment : Fragment(), NotificationClickListener {
     //private var lastId = -1
     private var mediumId = 1
     private var lastNotificationId = -1
+
 
 
     override fun onCreateView(
@@ -53,6 +61,8 @@ class NotificationsFragment : Fragment(), NotificationClickListener {
 
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        coordinatorLayout = root.findViewById<CoordinatorLayout>(R.id.coordinator_layout)
 
         notificationRecycleView = root.findViewById<RecyclerView>(R.id.notification_recycle_view)
         val linearLayoutManager = LinearLayoutManager(activity)
@@ -78,8 +88,6 @@ class NotificationsFragment : Fragment(), NotificationClickListener {
             //layoutManager?.smoothScrollToPosition(notificationRecycleView,RecyclerView.State, 0)
             notificationRecycleView.smoothScrollToPosition(0)
         }
-
-
         lifecycleScope.launchWhenResumed {
             sharedPreferences.getString(AppConstant.token, "")?.let {
                 dashBoardViewModel.getNotificationListing(
@@ -88,7 +96,6 @@ class NotificationsFragment : Fragment(), NotificationClickListener {
                 )
             }
         }
-
         dashBoardViewModel.notificationItemList.observe(viewLifecycleOwner, {
             if(it.size>0) {
                  Log.e("it-", it.size.toString() + "  " + it)
@@ -122,12 +129,86 @@ class NotificationsFragment : Fragment(), NotificationClickListener {
             }
         }
 
+        /*
+        val itemTouchHelperCallback1: ItemTouchHelper.SimpleCallback = object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT or ItemTouchHelper.UP) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                // Row is swiped from recycler view
+                // remove it from adapter
+            }
+
+            override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            }
+        }
+
+         */
+
+        // attaching the touch helper to recycler view
+
+        // attaching the touch helper to recycler view
+        //ItemTouchHelper(itemTouchHelperCallback1).attachToRecyclerView(notificationRecycleView)
+
+
         notificationRecycleView.addOnScrollListener(scrollListener)
 
         binding.newNotificationButton
 
+
+        /*
+        val touchHelperCallback: ItemTouchHelper.SimpleCallback =
+            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
+
+                override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                    return false
+                }
+
+                private val background = ColorDrawable(Color.RED)
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    newNotificationAdapter.showMenu(viewHolder.adapterPosition);
+                    listener.onSwiped(viewHolder, direction, viewHolder.adapterPosition)
+                }
+
+                override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+                    dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+                    super.onChildDraw(
+                        c, recyclerView, viewHolder,
+                        dX, dY, actionState, isCurrentlyActive)
+                    val itemView = viewHolder.itemView
+                    if (dX > 0) {
+                        background.setBounds(itemView.left, itemView.top, itemView.left + dX.toInt(), itemView.bottom)
+                    } else if (dX < 0) {
+                        background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                    } else {
+                        background.setBounds(0, 0, 0, 0)
+                    }
+                    background.draw(c)
+                }
+            }
+
+
+        val itemTouchHelper = ItemTouchHelper(touchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(notificationRecycleView)
+
+         */
+
+        val itemTouchHelperCallback: ItemTouchHelper.SimpleCallback =
+            RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this)
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(notificationRecycleView)
+
+
+
+
+
         return root
     }
+
+
 
     private fun loadFurtherNotifications(){
         sharedPreferences.getString(AppConstant.token, "")?.let {
@@ -139,10 +220,14 @@ class NotificationsFragment : Fragment(), NotificationClickListener {
 
 
     override fun onStop() {
-        super.onStop()
+
         sharedPreferences.getString(AppConstant.token,"")?.let {
-            dashBoardViewModel.deleteNotifications(AppConstant.fakeMubashirToken, ArrayList())
+            dashBoardViewModel.readNotifications(AppConstant.fakeMubashirToken, readArrayList)
         }
+        sharedPreferences.getString(AppConstant.token,"")?.let {
+            //dashBoardViewModel.deleteNotifications(AppConstant.fakeMubashirToken, deleteArrayList)
+        }
+        super.onStop()
     }
 
     override fun onDestroyView() {
@@ -154,9 +239,50 @@ class NotificationsFragment : Fragment(), NotificationClickListener {
         Log.e("onClick - ", view.toString())
     }
 
-    override fun getNotificationIndex(position: Int) {
+    override fun onNotificationRead(position: Int) {
         Log.e("position - ", position.toString())
+        val readId = notificationArrayList[position].id
+        readId?.let {
+            if (!readArrayList.contains(it))
+                readArrayList.add(it)
+        }
     }
 
 
+    override fun onNotificationDelete(position: Int) {
+        Log.e("position - ", position.toString())
+        val deleteId = notificationArrayList[position].id
+        deleteId?.let {
+            if (!deleteArrayList.contains(it))
+                deleteArrayList.add(it)
+        }
+    }
+
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int, position: Int) {
+        if (viewHolder is NewNotificationListAdapter.ContentViewHolder) {
+            // get the removed item name to display it in snack bar
+            val name = notificationArrayList[viewHolder.getAdapterPosition()].id
+
+            // backup of removed item for undo purpose
+            val deletedItem = notificationArrayList[viewHolder.getAdapterPosition()]
+            val deletedIndex = viewHolder.getAdapterPosition()
+
+            // remove the item from recycler view
+            newNotificationAdapter.removeItem(viewHolder.getAdapterPosition())
+
+            // showing snack bar with Undo option
+            val snackbar = Snackbar
+                .make(coordinatorLayout, "$name removed from Notifications!", Snackbar.LENGTH_LONG)
+            snackbar.setAction("UNDO") { // undo is selected, restore the deleted item
+                newNotificationAdapter.restoreItem(deletedItem, deletedIndex)
+            }
+            snackbar.setActionTextColor(Color.YELLOW)
+            snackbar.show()
+        }
+    }
+
+    private lateinit var coordinatorLayout: CoordinatorLayout
+
+
 }
+

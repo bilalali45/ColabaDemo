@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -120,13 +121,13 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
         viewModelScope.launch {
             val result = dashBoardRepo.readNotifications(token, ids)
             if (result is Result.Success) {
-
+                Log.e("read-notify-", result.toString())
             }
             else if (result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG){
-
+                Log.e("read-notify-", result.toString())
             }
             else{
-
+                Log.e("read-notify-", result.toString())
             }
         }
     }

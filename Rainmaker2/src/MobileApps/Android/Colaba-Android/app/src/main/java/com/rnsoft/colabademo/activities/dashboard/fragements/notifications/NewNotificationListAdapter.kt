@@ -3,11 +3,18 @@ package com.ecommerce.testapp
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.rnsoft.colabademo.*
+import com.rnsoft.colabademo.AppSetting
+import com.rnsoft.colabademo.NotificationClickListener
+import com.rnsoft.colabademo.NotificationItem
+import com.rnsoft.colabademo.R
 
 const val totalItemsToBeDisplayed = 5
 const val leftRightPadding = totalItemsToBeDisplayed * 6
@@ -17,6 +24,7 @@ class NewNotificationListAdapter internal constructor(
     private var passedList: ArrayList<NotificationItem>,
     private var notificationClickListener: NotificationClickListener
 ) :  RecyclerView.Adapter<NewNotificationListAdapter.BaseViewHolder>(){
+
 
 
 
@@ -33,6 +41,9 @@ class NewNotificationListAdapter internal constructor(
         var activeCircleIcon: ImageView = itemView.findViewById(R.id.circle_icon)
         var activeBookIcon: ImageView = itemView.findViewById(R.id.activeBookIcon)
         var nonActiveBookIcon: ImageView = itemView.findViewById(R.id.nonActiveBookIcon)
+        var drag_item: FrameLayout = itemView.findViewById(R.id.drag_item)
+        var viewBackground = itemView.findViewById<RelativeLayout>(R.id.view_background)
+        var viewForeground = itemView.findViewById<ConstraintLayout>(R.id.view_foreground)
 
         private var contentClickListener: NotificationClickListener
 
@@ -44,7 +55,13 @@ class NewNotificationListAdapter internal constructor(
         override fun onClick(v: View) {
 
             Log.e("onClick - ", v.toString())
-            contentClickListener.getNotificationIndex(adapterPosition)
+            val notificationType = passedList[adapterPosition]
+            notificationType.status = "Read"
+            activeBookIcon.visibility = View.INVISIBLE
+            activeCircleIcon.visibility = View.INVISIBLE
+            nonActiveBookIcon.visibility = View.VISIBLE
+
+            contentClickListener.onNotificationRead(adapterPosition)
         }
 
         override fun bind(item: NotificationItem) {
@@ -119,11 +136,65 @@ class NewNotificationListAdapter internal constructor(
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int)          {
         holder.bind(passedList[position])
+        (holder as ContentViewHolder).drag_item.setOnLongClickListener(OnLongClickListener {
+            showMenu(position)
+            true
+        })
+
+        if(holder is  ContentViewHolder){
+            //Set Menu Actions like:
+            //((MenuViewHolder)holder).edit.setOnClickListener(null);
+        }
     }
 
 
 
     override fun getItemCount() = passedList.size
+
+
+    fun showMenu(position: Int) {
+        for (i in 0 until passedList.size) {
+            passedList[i].isShowMenu = false
+        }
+        passedList[position].isShowMenu = true
+        //notifyDataSetChanged()
+        notifyItemRemoved(position)
+        passedList.removeAt(position)
+    }
+
+
+    fun isMenuShown(): Boolean {
+        for (i in 0 until passedList.size) {
+            if (passedList[i].isShowMenu) {
+                return true
+            }
+        }
+        return false
+    }
+
+    fun closeMenu() {
+        for (i in 0 until passedList.size) {
+            passedList[i].isShowMenu = false
+        }
+        notifyDataSetChanged()
+    }
+
+
+    fun removeItem(position: Int) {
+        passedList.removeAt(position)
+        // notify the item removed by position
+        // to perform recycler view delete animations
+        // NOTE: don't call notifyDataSetChanged()
+        notifyItemRemoved(position)
+    }
+
+    fun restoreItem(item: NotificationItem, position: Int) {
+        passedList.add(position, item)
+        // notify item added by position
+        notifyItemInserted(position)
+    }
+
+
 
     /*
     interface NewNotificationItemClickListener {
