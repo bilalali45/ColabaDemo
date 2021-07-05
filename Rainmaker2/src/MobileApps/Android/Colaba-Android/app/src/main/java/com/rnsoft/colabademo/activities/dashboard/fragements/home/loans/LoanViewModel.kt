@@ -40,23 +40,24 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
     fun getAllLoans(token:String, dateTime:String,
                     pageNumber:Int, pageSize:Int,
                     loanFilter:Int, orderBy:Int,
-                    assignedToMe:Boolean)
+                    assignedToMe:Boolean , optionalClear:Boolean = false)
     {
         viewModelScope.launch {
-            Log.e("viewmodel-"," method is - getAllLoans")
-            val result = loanRepo.getAllLoans(token = token , dateTime = dateTime,
-                pageNumber = pageNumber, pageSize = pageSize, loanFilter = loanFilter,
-                orderBy = orderBy, assignedToMe = assignedToMe)
+                Log.e("viewmodel-", " method is - getAllLoans")
+                val result = loanRepo.getAllLoans(
+                    token = token, dateTime = dateTime,
+                    pageNumber = pageNumber, pageSize = pageSize, loanFilter = loanFilter,
+                    orderBy = orderBy, assignedToMe = assignedToMe
+                )
 
-            if (result is Result.Success) {
-                //localLoansArrayList.addAll(result.data)
-                _allLoansArrayList.value = result.data
+                if (result is Result.Success) {
+                    //localLoansArrayList.addAll(result.data)
+                    _allLoansArrayList.value = result.data
+                } else if (result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(AllLoansLoadedEvent(null, true))
+                else
+                    EventBus.getDefault().post(AllLoansLoadedEvent(null))
             }
-            else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
-                EventBus.getDefault().post(AllLoansLoadedEvent(null, true))
-            else
-                EventBus.getDefault().post(AllLoansLoadedEvent(null))
-        }
     }
 
 
@@ -101,6 +102,10 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
             else
                 EventBus.getDefault().post(AllLoansLoadedEvent(null))
         }
+    }
+
+    fun <T> MutableLiveData<T>.forceRefresh() {
+        this.value = this.value
     }
 
 }

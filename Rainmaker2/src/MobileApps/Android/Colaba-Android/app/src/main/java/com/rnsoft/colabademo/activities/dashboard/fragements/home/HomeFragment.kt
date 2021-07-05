@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -18,10 +19,13 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rnsoft.colabademo.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 
-val animalsArray = arrayOf(
+val tabArray = arrayOf(
     "All Loans",
     "Active Loans",
     "Inactive Loans"
@@ -34,16 +38,21 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-   // private val dashBoardViewModel: DashBoardViewModel by activityViewModels()
+    //private val dashBoardViewModel: DashBoardViewModel by activityViewModels()
+    private val loanViewModel: LoanViewModel by activityViewModels()
 
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
 
 
+
     private lateinit  var searchImageView: ImageView
     private lateinit  var filterImageView: ImageView
     private lateinit  var greetingMessage: TextView
+    private lateinit var assignToMeSwitch:SwitchCompat
 
+    private  var selectedText:String = tabArray[0]
+    //private  lateinit var selectedTab:TabLayout.Tab
 
     private lateinit var  homeProfileLayout:ConstraintLayout
 
@@ -69,6 +78,7 @@ class HomeFragment : Fragment() {
         greetingMessage = root.findViewById(R.id.greetingMessage)
         filterImageView = root.findViewById(R.id.filter_imageview)
         searchImageView = root.findViewById(R.id.searchIconImageView)
+        assignToMeSwitch = root.findViewById(R.id.assignToMeSwitch)
         searchImageView.setOnClickListener{
             findNavController().navigate(R.id.navigation_search, null)
             // NavHostFragment.findNavController(context).navigate(R.id.navigation_search)
@@ -90,7 +100,7 @@ class HomeFragment : Fragment() {
         viewPager.adapter = adapter
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = animalsArray[position]
+            tab.text = tabArray[position]
         }.attach()
 
         //viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
@@ -108,6 +118,7 @@ class HomeFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 Log.e("Selected_Page", position.toString())
+                selectedText = tabArray[position]
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -115,9 +126,13 @@ class HomeFragment : Fragment() {
             }
         })
 
+
+
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-
+                tab?.let {
+                    selectedText = it.text as String
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -128,6 +143,33 @@ class HomeFragment : Fragment() {
 
             }
         })
+
+        assignToMeSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            //assignToMeSwitch.isEnabled = false
+            Log.e("selectedText-", selectedText)
+            if (isChecked) {
+                if(selectedText == tabArray[0]) {
+                    loadLoanApplications(1)
+                }
+                else if(selectedText == tabArray[1]){
+                    loadActiveApplications(1)
+                }
+                else{
+                    loadNonActiveApplications(1)
+                }
+
+            }else{
+                if(selectedText == tabArray[0]) {
+                    loadLoanApplications(1)
+                }
+                else if(selectedText == tabArray[1]){
+                    loadActiveApplications(1)
+                }
+                else{
+                    loadNonActiveApplications(1)
+                }
+            }
+        }
 
         setGreetingMessageOnTop()
 
@@ -147,6 +189,64 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //private var stringDateTime: String = ""
+    private var pageNumber: Int = 1
+    private var pageSize: Int = 20
+    //private var loanFilter: Int = 0
+    private var orderBy: Int = 0
+    private var assignedToMe: Boolean = false
+
+
+    private fun loadLoanApplications(loanFilter:Int) {
+        EventBus.getDefault().post(AllLoansLoadedEvent(ArrayList()))
+        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+            if(AppSetting.loanApiDateTime.isEmpty())
+                AppSetting.loanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(
+                    Date()
+                )
+            Log.e("Why-", AppSetting.loanApiDateTime)
+            Log.e("pageNumber-", pageNumber.toString() +" and page size = "+pageSize)
+            loanViewModel.getAllLoans(
+                token = AppConstant.fakeUserToken,
+                dateTime = AppSetting.loanApiDateTime, pageNumber = pageNumber,
+                pageSize = pageSize, loanFilter = loanFilter,
+                orderBy = orderBy, assignedToMe = assignedToMe,
+                optionalClear = true
+            )
+        }
+    }
+
+    private fun loadNonActiveApplications(loanFilter:Int){
+        EventBus.getDefault().post(NonActiveLoansEvent(ArrayList()))
+        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+            if(AppSetting.nonActiveloanApiDateTime.isEmpty())
+                AppSetting.nonActiveloanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
+
+            loanViewModel.getNonActiveLoans(
+                token = AppConstant.fakeUserToken,
+                dateTime = AppSetting.nonActiveloanApiDateTime, pageNumber = pageNumber,
+                pageSize = pageSize, loanFilter = loanFilter,
+                orderBy = orderBy, assignedToMe = assignedToMe
+            )
+        }
+    }
+
+    private fun loadActiveApplications(loanFilter:Int) {
+        EventBus.getDefault().post(ActiveLoansEvent(ArrayList()))
+        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+            if(AppSetting.activeloanApiDateTime.isEmpty())
+                AppSetting.activeloanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
+
+            loanViewModel.getActiveLoans(
+                token = AppConstant.fakeUserToken,
+                dateTime = AppSetting.activeloanApiDateTime, pageNumber = pageNumber,
+                pageSize = pageSize, loanFilter = loanFilter,
+                orderBy = orderBy, assignedToMe = assignedToMe
+            )
+        }
+    }
 
 }
 

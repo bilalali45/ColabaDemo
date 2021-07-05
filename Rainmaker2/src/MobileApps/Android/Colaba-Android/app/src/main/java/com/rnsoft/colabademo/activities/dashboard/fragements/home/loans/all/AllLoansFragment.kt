@@ -11,8 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.FilterBottomSheetInterface
 import com.rnsoft.colabademo.databinding.FragmentLoanBinding
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -20,7 +24,7 @@ import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
-class AllLoansFragment : Fragment(), LoanItemClickListener {
+class AllLoansFragment : Fragment(), LoanItemClickListener ,  FilterBottomSheetInterface {
     private var _binding: FragmentLoanBinding? = null
     private val binding get() = _binding!!
     private val loanViewModel: LoanViewModel by activityViewModels()
@@ -155,6 +159,35 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
             )
         }
     }
+
+
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onClearEvent(event: AllLoansLoadedEvent) {
+        loading.visibility = View.VISIBLE
+        event.allLoansArrayList?.let {
+            if (it.size == 0) {
+                allLoansArrayList.clear()
+                loansAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    override fun setOrderId(orderId: Int) {
+
+    }
+
+
 }
 
     /*
