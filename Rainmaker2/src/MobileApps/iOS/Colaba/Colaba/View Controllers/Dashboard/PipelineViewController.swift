@@ -227,7 +227,7 @@ extension PipelineViewController: PipelineTableViewCellDelegate{
     
     func btnOptionsTapped(indexPath: IndexPath) {
         let vc = Utility.getPipelineMoreVC()
-        self.presentVC(vc: vc)
+        self.present(vc, animated: false, completion: nil)
     }
     
     func btnArrowTapped(indexPath: IndexPath) {
