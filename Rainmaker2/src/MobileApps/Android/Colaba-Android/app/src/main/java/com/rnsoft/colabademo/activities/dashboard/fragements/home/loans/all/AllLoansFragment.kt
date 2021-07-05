@@ -23,13 +23,10 @@ import kotlin.collections.ArrayList
 class AllLoansFragment : Fragment(), LoanItemClickListener {
     private var _binding: FragmentLoanBinding? = null
     private val binding get() = _binding!!
-
-
-
-
     private val loanViewModel: LoanViewModel by activityViewModels()
     private lateinit var loansAdapter: LoansAdapter
     private lateinit var loading: ProgressBar
+    private lateinit var rowLoading: ProgressBar
     private var loanRecycleView: RecyclerView? = null
     private  var allLoansArrayList: ArrayList<LoanItem> = ArrayList()
 
@@ -41,7 +38,7 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
     private var orderBy: Int = 0
     private var assignedToMe: Boolean = false
 
-    private var borrowerListEnded = false
+    //private var borrowerListEnded = false
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -56,6 +53,8 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
         val view = binding.root
 
         loading = view.findViewById(R.id.loader_all_loan)
+        rowLoading = view.findViewById(R.id.loan_row_loader)
+
         loanRecycleView = view.findViewById(R.id.loan_recycler_view)
 
         val linearLayoutManager = LinearLayoutManager(activity)
@@ -70,8 +69,7 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
             //borrowList = Borrower.customersList(requireContext())
 
             this.adapter = loansAdapter
-
-            loansAdapter = LoansAdapter(allLoansArrayList , this@AllLoansFragment)
+           //loansAdapter = LoansAdapter(allLoansArrayList , this@AllLoansFragment)
         }
 
         /*
@@ -90,29 +88,24 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
         loanViewModel.allLoansArrayList.observe(viewLifecycleOwner, {
             //val result = it ?: return@Observer
             loading.visibility = View.INVISIBLE
+            rowLoading.visibility = View.INVISIBLE
             if(it.size>0) {
                 val lastSize = allLoansArrayList.size
-                allLoansArrayList = (it)
+                allLoansArrayList.addAll(it)
+                loansAdapter.notifyDataSetChanged()
+               // loansAdapter.notifyItemRangeInserted(lastSize,lastSize+allLoansArrayList.size-1 )
 
-                loansAdapter = LoansAdapter(allLoansArrayList, this@AllLoansFragment)
-                loanRecycleView?.adapter = loansAdapter
-                loansAdapter.notifyItemRangeInserted(lastSize,lastSize+allLoansArrayList.size-1 )
-
-                //loanRecycleView?.post { loansAdapter.notifyItemRangeInserted(lastSize, allLoansArrayList.size - 1) }
-
-                //loanRecycleView?.adapter = loansAdapter
-                //loansAdapter.notifyDataSetChanged()
-                //loansAdapter.updateList(allLoansArrayList)
             }
             else
                 Log.e("should-stop"," here....")
-            //loansAdapter.notifyItemRangeInserted((allLoansArrayList.size/2),pageSize*pageNumber)
+
         })
 
         val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
+                rowLoading.visibility = View.VISIBLE
                 pageNumber++
                 loadLoanApplications()
             }
@@ -155,7 +148,7 @@ class AllLoansFragment : Fragment(), LoanItemClickListener {
             Log.e("Why-", AppSetting.loanApiDateTime)
             Log.e("pageNumber-", pageNumber.toString() +" and page size = "+pageSize)
             loanViewModel.getAllLoans(
-                token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIzODA2NCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJtb2JpbGV1c2VyMUBtYWlsaW5hdG9yLmNvbSIsIkZpcnN0TmFtZSI6Ik1vYmlsZSIsIkxhc3ROYW1lIjoiVXNlcjEiLCJUZW5hbnRDb2RlIjoibGVuZG92YSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJNQ1UiLCJMb2FuIE9mZmljZXIiXSwiZXhwIjoxNjI1MzY5MjYwLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.gc9kQVAYwD1zelwUnFcKSDXsknJzdm_uv-RuEyEz6lI",
+                token = AppConstant.fakeUserToken,
                 dateTime = AppSetting.loanApiDateTime, pageNumber = pageNumber,
                 pageSize = pageSize, loanFilter = loanFilter,
                 orderBy = orderBy, assignedToMe = assignedToMe

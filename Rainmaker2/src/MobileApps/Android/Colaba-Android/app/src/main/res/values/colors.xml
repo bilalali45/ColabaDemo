@@ -35,6 +35,9 @@
 
 
     <color name="colaba_holder_background">#0D7E829E</color>
+    <color name="bg_row_background">#fa315b</color>
+    <color name="item_name">#535353</color>
+    <color name="description">#a9a9a9</color>
 
 
 

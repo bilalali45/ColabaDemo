@@ -34,7 +34,7 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-    private val dashBoardViewModel: DashBoardViewModel by activityViewModels()
+   // private val dashBoardViewModel: DashBoardViewModel by activityViewModels()
 
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null

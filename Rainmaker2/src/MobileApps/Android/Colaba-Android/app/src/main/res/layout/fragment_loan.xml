@@ -9,27 +9,23 @@
     >
 
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colaba_loan_background"
-    >
-
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/loan_recycler_view"
-        android:background="@color/colaba_loan_background"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-         />
+        android:background="@color/colaba_loan_background">
 
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/loan_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colaba_loan_background"
+            android:clipToPadding="false"
+            android:orientation="vertical" />
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <ProgressBar
         android:id="@+id/loader_all_loan"
@@ -50,6 +46,26 @@
         android:translationZ="200dp"
         android:indeterminateTint="@color/colaba_primary_color"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ProgressBar
+        android:id="@+id/loan_row_loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:elevation="205dp"
+
+        android:foregroundGravity="center"
+        android:indeterminate="true"
+
+        android:indeterminateTint="@color/colaba_primary_color"
+        android:indeterminateTintMode="src_atop"
+        android:translationZ="205dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

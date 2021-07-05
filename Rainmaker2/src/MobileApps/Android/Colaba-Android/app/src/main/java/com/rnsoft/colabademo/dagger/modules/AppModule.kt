@@ -97,7 +97,7 @@ class AppModule {
             //val cookieHandler = CookieManager( null, CookiePolicy.ACCEPT_ALL )
 
             return OkHttpClient.Builder()
-                .authenticator(tokenAuthenticator)
+                //.authenticator(tokenAuthenticator)
                 .retryOnConnectionFailure(true)
                 //.addInterceptor(LoggingInterceptor())
                 //.addInterceptor(interceptor)

@@ -184,7 +184,7 @@ internal constructor(
 
     fun updateList(newLoanItemList:ArrayList<LoanItem>){
         val lastSize = newLoanItemList.size
-        borrowerList = newLoanItemList
+        borrowerList.addAll(newLoanItemList)
         notifyDataSetChanged()
         //notifyItemRangeInserted(lastSize,lastSize+newLoanItemList.size-1 )
         //notifyItemRangeInserted(lastSize,lastSize+newLoanItemList.size-1)

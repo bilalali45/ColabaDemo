@@ -35,4 +35,15 @@ class DashBoardRepo  @Inject constructor(
         return dashBoardDataSource.getNotificationListing(token = token, pageSize = pageSize, lastId = lastId, mediumId = mediumId)
     }
 
+    suspend fun readNotifications(token:String ,ids:ArrayList<Int>):Result<Any>{
+        return dashBoardDataSource.readNotifications(token = token , ids = ids)
+    }
+
+    suspend fun seenNotifications(token:String ,ids:ArrayList<Int>):Result<Any>{
+        return dashBoardDataSource.seenNotifications(token = token , ids = ids)
+    }
+    suspend fun deleteNotifications(token:String ,ids:ArrayList<Int>):Result<Any>{
+        return dashBoardDataSource.deleteNotifications(token = token , ids = ids)
+    }
+
 }
