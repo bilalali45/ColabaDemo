@@ -21,6 +21,7 @@ import com.rnsoft.colabademo.databinding.FragmentSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
@@ -45,7 +46,7 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
     private var searchRecyclerView: RecyclerView? = null
     private lateinit var searchAdapter: SearchAdapter
     private lateinit var loading: ProgressBar
-    private lateinit var searchArrayList: ArrayList<SearchItem>
+    private var searchArrayList: ArrayList<SearchItem> = ArrayList()
 
 
     override fun onCreateView(
@@ -61,7 +62,7 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
 
         loading = root.findViewById(R.id.search_loader)
         searchRecyclerView = root.findViewById(R.id.search_recycle_view)
-        searchAdapter = SearchAdapter(ArrayList(), this@SearchFragment)
+        searchAdapter = SearchAdapter(searchArrayList, this@SearchFragment)
         val linearLayoutManager = LinearLayoutManager(activity)
         searchRecyclerView?.apply {
             this.layoutManager = linearLayoutManager
@@ -75,20 +76,22 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
         searchViewModel.searchArrayList.observe(viewLifecycleOwner, {
             //val result = it ?: return@Observer
             loading.visibility = View.INVISIBLE
-            searchArrayList = it
+
             if(it.size<=1)
                 binding.searchResultCountTextView.text = searchArrayList.size.toString() +" result found"
-            else
-                binding.searchResultCountTextView.text = searchArrayList.size.toString() +" results found"
+            else {
+                binding.searchResultCountTextView.text =
+                    searchArrayList.size.toString() + " results found"
+                searchArrayList.addAll(it)
+                searchAdapter.notifyDataSetChanged()
 
+            }
             if(hasPerformedSearchOnce) {
                 binding.searchResultCountTextView.visibility = View.VISIBLE
                 binding.searchResultTitleTextView.visibility = View.VISIBLE
             }
 
-            searchAdapter = SearchAdapter (it, this@SearchFragment)
-            searchRecyclerView?.adapter = searchAdapter
-            searchAdapter.notifyDataSetChanged()
+
         })
 
         binding.searchEditTextField.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
@@ -156,7 +159,7 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
             val searchTerm = binding.searchEditTextField.text.toString()
             if(searchTerm.isNotEmpty()) {
                 searchViewModel.getSearchResult(
-                    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIzODA2NCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJtb2JpbGV1c2VyMUBtYWlsaW5hdG9yLmNvbSIsIkZpcnN0TmFtZSI6Ik1vYmlsZSIsIkxhc3ROYW1lIjoiVXNlcjEiLCJUZW5hbnRDb2RlIjoibGVuZG92YSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJNQ1UiLCJMb2FuIE9mZmljZXIiXSwiZXhwIjoxNjI1Mjc3NDg4LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.nzloUYocTjEOWCpFEzX0uGrI3DHCwVIQLYbZjDDSBvI",
+                    token =AppConstant.fakeUserToken,
                     pageNumber = pageNumber,
                     pageSize = pageSize,
                     searchTerm = searchTerm

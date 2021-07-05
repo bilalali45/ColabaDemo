@@ -22,7 +22,7 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getNotificationListing(Authorization = newToken, pageSize = pageSize, lastId = lastId, mediumId = mediumId)
-            Log.e("NotificationListItem-", response.toString())
+            Log.e("NotificationListItems- ", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if(e is NoConnectivityException)
@@ -36,8 +36,59 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getNotificationCount(newToken)
-            Log.e("TotalNotificationCount-", response.toString())
+            Log.e("NotificationCount-", response.toString())
             Result.Success(response)
+        } catch (e: Throwable) {
+            if(e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun readNotifications(token:String,ids:ArrayList<Int>):Result<Any>{
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.readNotifications(newToken, NotificationPutArray(ids))
+            Log.e("read-Notifications-", response.toString())
+            if(response.isSuccessful)
+                Result.Success(response)
+            else
+                Result.Error(IOException("unknown webservice error"))
+        } catch (e: Throwable) {
+            if(e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun seenNotifications(token:String,ids:ArrayList<Int>):Result<Any>{
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.seenNotifications(newToken, NotificationPutArray(ids))
+            Log.e("seen-Notifications-", response.toString())
+            if(response.isSuccessful)
+                Result.Success(response)
+            else
+                Result.Error(IOException("unknown webservice error"))
+        } catch (e: Throwable) {
+            if(e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun deleteNotifications(token:String,ids:ArrayList<Int>):Result<Any>{
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.deleteNotifications(newToken, NotificationPutArray(ids))
+            Log.e("delete-Notifications-", response.toString())
+            if(response.isSuccessful)
+                Result.Success(response)
+            else
+                Result.Error(IOException("unknown webservice error"))
         } catch (e: Throwable) {
             if(e is NoConnectivityException)
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))

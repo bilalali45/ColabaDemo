@@ -7,27 +7,24 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.rnsoft.colabademo.NotificationClickListener
-import com.rnsoft.colabademo.NotificationModel
-import com.rnsoft.colabademo.R
+import com.rnsoft.colabademo.*
 
 const val totalItemsToBeDisplayed = 5
 const val leftRightPadding = totalItemsToBeDisplayed * 6
 
 
 class NewNotificationListAdapter internal constructor(
-    private var passedList: List<NotificationModel>,
-    private val notificationClickListener: NotificationClickListener
+    private var passedList: ArrayList<NotificationItem>,
+    private var notificationClickListener: NotificationClickListener
 ) :  RecyclerView.Adapter<NewNotificationListAdapter.BaseViewHolder>(){
 
 
-    //private val notificationClickListener: NotificationItemClickListener = notificationClickListener
 
     abstract class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) { abstract fun bind(
-        item: NotificationModel
+        item: NotificationItem
     ) }
 
-    inner class ContentViewHolder(itemView: View, globalOnProductListener: NotificationClickListener) : BaseViewHolder(
+    inner class ContentViewHolder(itemView: View, localClickListener: NotificationClickListener) : BaseViewHolder(
         itemView
     ), View.OnClickListener {
 
@@ -41,26 +38,56 @@ class NewNotificationListAdapter internal constructor(
 
         init {
             itemView.setOnClickListener(this)
-            this.contentClickListener = globalOnProductListener
+            this.contentClickListener = localClickListener
         }
 
-        override fun onClick(v: View?) {
+        override fun onClick(v: View) {
+
             Log.e("onClick - ", v.toString())
-            //notificationClickListener.onItemClick(v)
+            contentClickListener.getNotificationIndex(adapterPosition)
         }
 
-        override fun bind(item: NotificationModel) {
-            notificationName.text = item.notificationName
-            notificationTime.text = item.notificationTime
-            if(item.notificationActive == true) {
-                activeBookIcon.visibility = View.VISIBLE
-                activeCircleIcon.visibility = View.VISIBLE
-                nonActiveBookIcon.visibility = View.INVISIBLE
+        override fun bind(item: NotificationItem) {
+            item.payload?.let{ payload->
+                payload.payloadData?.let {  payloadData->
+                    payloadData.name?.let {
+                        notificationName.text = it
+                    }
+                    payloadData.dateTime?.let { activityTime->
+                        var newString = activityTime.substring( 0 , activityTime.length-5)
+                        newString+="Z"
+                        Log.e("newString-",newString)
+                        val newTime = AppSetting.returnNotificationTime(newString)
+                        Log.e("newTime-",newTime)
+                        notificationTime.text =  newTime
+                    }
+
+                    var tenantAddress = ""
+                    if( payloadData.address!=null ) tenantAddress += payloadData.address
+                    if( payloadData.unitNumber!=null ) tenantAddress += payloadData.unitNumber
+                    if( payloadData.city!=null ) tenantAddress += payloadData.city
+
+                    if( payloadData.state!=null  && payloadData.state.isNotEmpty())
+                        tenantAddress += "\n"+payloadData.state+", "
+                    //if( payloadData.countryName!=null ) tenantAddress += payloadData.countryName+" "
+                    if( payloadData.zipCode!=null ) tenantAddress += payloadData.zipCode
+                    //holder.borrowerAddress.text = tenantAddress
+
+                }
             }
-            else {
+
+            if(item.status.equals( "Read", true)) {
+
                 activeBookIcon.visibility = View.INVISIBLE
                 activeCircleIcon.visibility = View.INVISIBLE
                 nonActiveBookIcon.visibility = View.VISIBLE
+
+            }
+            else {
+                activeBookIcon.visibility = View.VISIBLE
+                activeCircleIcon.visibility = View.VISIBLE
+                nonActiveBookIcon.visibility = View.INVISIBLE
+
             }
 
 
@@ -68,28 +95,47 @@ class NewNotificationListAdapter internal constructor(
         }
     }
 
-    inner class HeaderViewHolder(
-        itemView: View,
-        globalOnProductListener: NotificationClickListener
-    ) : BaseViewHolder(itemView), View.OnClickListener {
-        //val productImage:ImageView = itemView.product_image
-        private val notificationName : TextView= itemView.findViewById(R.id.notificationHeaderTextView)
-
-        private var headerClickListener: NotificationClickListener
-        init {
-            itemView.setOnClickListener(this)
-            this.headerClickListener = globalOnProductListener
-        }
-        override fun bind(item: NotificationModel) {
-            notificationName.text = item.notificationName
-             //productImage.loadImage("https://via.placeholder.com/150" )
-        }
-        override fun onClick(v: View) {
-            headerClickListener.onItemClick(v)
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+        val holder: BaseViewHolder?
+        val inflater: LayoutInflater = LayoutInflater.from(parent.context)
+        holder = ContentViewHolder(
+            inflater.inflate(R.layout.notification_view_holder, parent, false),
+            notificationClickListener
+        )
+        return holder
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+
+
+    override fun getItemViewType(position: Int): Int {
+        val notificationType = passedList[position]
+
+        //return if(notificationType.isContent)
+           return R.layout.notification_view_holder
+        //else
+          //  R.layout.notification_header_view_holder
+
+    }
+
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int)          {
+        holder.bind(passedList[position])
+    }
+
+
+
+    override fun getItemCount() = passedList.size
+
+    /*
+    interface NewNotificationItemClickListener {
+        fun onItemClick( view:View)
+    }
+
+     */
+
+
+    /*
+
+     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val holder: BaseViewHolder?
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
        if(viewType == R.layout.notification_view_holder) {
@@ -110,33 +156,26 @@ class NewNotificationListAdapter internal constructor(
         return holder
     }
 
+    inner class HeaderViewHolder(
+        itemView: View,
+        globalOnProductListener: NotificationClickListener
+    ) : BaseViewHolder(itemView), View.OnClickListener {
+        //val productImage:ImageView = itemView.product_image
+        private val notificationName : TextView= itemView.findViewById(R.id.notificationHeaderTextView)
 
-    override fun getItemViewType(position: Int): Int {
-        val notificationType = passedList[position]
-
-        return if(notificationType.isContent == true)
-            R.layout.notification_view_holder
-        else
-            R.layout.notification_header_view_holder
-
+        private var headerClickListener: NotificationClickListener
+        init {
+            itemView.setOnClickListener(this)
+            this.headerClickListener = globalOnProductListener
+        }
+        override fun bind(item: NotificationItem) {
+            notificationName.text = item.notificationName
+             //productImage.loadImage("https://via.placeholder.com/150" )
+        }
+        override fun onClick(v: View) {
+            headerClickListener.onItemClick(v)
+        }
     }
-
-    override fun onBindViewHolder(holder: BaseViewHolder, position: Int)          {
-        holder.bind(passedList[position])
-    }
-
-    internal fun setAllItems(itemList: List<NotificationModel>) {
-        this.passedList = itemList
-        notifyDataSetChanged()
-    }
-
-    override fun getItemCount() = passedList.size
-
-    /*
-    interface NewNotificationItemClickListener {
-        fun onItemClick( view:View)
-    }
-
      */
 
 }

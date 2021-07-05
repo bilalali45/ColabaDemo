@@ -4,7 +4,11 @@ import com.google.gson.annotations.SerializedName
 data class NotificationItem(
     val id: Int?,
     val payload: Payload?,
-    val status: String?
+    val status: String?,
+    val notificationName: String?,
+    val notificationTime: String?,
+    val notificationActive:Boolean = false,
+    val isContent:Boolean = true
 )
 
 data class Payload(

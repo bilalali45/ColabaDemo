@@ -49,8 +49,8 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                 orderBy = orderBy, assignedToMe = assignedToMe)
 
             if (result is Result.Success) {
-                localLoansArrayList.addAll(result.data)
-                _allLoansArrayList.value = localLoansArrayList
+                //localLoansArrayList.addAll(result.data)
+                _allLoansArrayList.value = result.data
             }
             else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
                 EventBus.getDefault().post(AllLoansLoadedEvent(null, true))

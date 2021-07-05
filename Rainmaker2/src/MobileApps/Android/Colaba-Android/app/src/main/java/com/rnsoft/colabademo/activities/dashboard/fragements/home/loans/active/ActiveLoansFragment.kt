@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,7 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener {
     private val binding get() = _binding!!
 
     private val loanViewModel: LoanViewModel by activityViewModels()
-    private var activeRecycler: RecyclerView? = null
+    private lateinit var activeRecycler: RecyclerView
     private var activeLoansList: ArrayList<LoanItem> = ArrayList()
     private lateinit var activeAdapter: LoansAdapter
     private lateinit var loading: ProgressBar
@@ -48,32 +49,26 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener {
 
         loading = view.findViewById(R.id.active_loan_loader)
         activeRecycler = view.findViewById(R.id.active_recycler)
-
-        activeRecycler?.apply {
-            this.layoutManager = LinearLayoutManager(activity)
-            this.setHasFixedSize(true)
-           this.adapter = LoansAdapter(activeLoansList, this@ActiveLoansFragment)
-        }
-
         val linearLayoutManager = LinearLayoutManager(activity)
-        activeAdapter = LoansAdapter(ArrayList(), this@ActiveLoansFragment)
-        activeRecycler?.apply {
+        activeAdapter = LoansAdapter(activeLoansList, this@ActiveLoansFragment)
+        activeRecycler.apply {
             this.layoutManager = linearLayoutManager
             this.setHasFixedSize(true)
             this.adapter = activeAdapter
-
         }
 
         loading.visibility = View.VISIBLE
-
         loanViewModel.activeLoansArrayList.observe(viewLifecycleOwner, Observer {
             //val result = it ?: return@Observer
             loading.visibility = View.INVISIBLE
-            activeLoansList = it
-            activeAdapter = LoansAdapter(it, this@ActiveLoansFragment)
-            activeRecycler?.adapter = activeAdapter
-            //activeAdapter.notifyItemRangeInserted((activeLoansList.size/2),pageSize*pageNumber)
-            activeAdapter.notifyDataSetChanged()
+            if(it.size>0) {
+                activeLoansList = it
+                val lastSize = activeLoansList.size
+                activeLoansList.addAll(it)
+                activeAdapter.notifyDataSetChanged()
+            }
+            else
+                Log.e("should-stop"," here....")
         })
 
         val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
@@ -84,7 +79,7 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener {
                 loadActiveApplications()
             }
         }
-        activeRecycler?.addOnScrollListener(scrollListener)
+        activeRecycler.addOnScrollListener(scrollListener)
 
         loadActiveApplications()
 
@@ -98,7 +93,7 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener {
                 AppSetting.activeloanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
 
             loanViewModel.getActiveLoans(
-                token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIzODA2NCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJtb2JpbGV1c2VyMUBtYWlsaW5hdG9yLmNvbSIsIkZpcnN0TmFtZSI6Ik1vYmlsZSIsIkxhc3ROYW1lIjoiVXNlcjEiLCJUZW5hbnRDb2RlIjoibGVuZG92YSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJNQ1UiLCJMb2FuIE9mZmljZXIiXSwiZXhwIjoxNjI1Mjc3NDg4LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.nzloUYocTjEOWCpFEzX0uGrI3DHCwVIQLYbZjDDSBvI",
+                token = AppConstant.fakeUserToken,
                 dateTime = AppSetting.activeloanApiDateTime, pageNumber = pageNumber,
                 pageSize = pageSize, loanFilter = loanFilter,
                 orderBy = orderBy, assignedToMe = assignedToMe

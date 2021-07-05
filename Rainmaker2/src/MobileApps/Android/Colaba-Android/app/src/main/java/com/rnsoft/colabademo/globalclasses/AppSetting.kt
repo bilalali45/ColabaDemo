@@ -97,6 +97,19 @@ object AppSetting {
 
     }
 
+    fun returnNotificationTime(input:String):String{
+        var lastSeen = input
+        // "2021-07-02T11:43:07.205Z"
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+        val oldDate: Date? = formatter.parse(input)
+        val oldMillis = oldDate?.time
+        oldMillis?.let {
+            lastSeen = lastseen(oldMillis)
+        }
+
+        return lastSeen
+    }
+
 
     fun showBadge(
         context: Context?,

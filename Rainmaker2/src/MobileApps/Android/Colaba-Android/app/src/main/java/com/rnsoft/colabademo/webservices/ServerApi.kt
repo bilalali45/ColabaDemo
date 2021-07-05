@@ -104,6 +104,16 @@ interface ServerApi{
     suspend fun getNotificationCount(@Header("Authorization" )  Authorization:String):TotalNotificationCount
 
 
+    @PUT("api/mcu/mobile/Notification/notification/Seen")
+    suspend fun readNotifications(@Header("Authorization" )  Authorization:String, @Body putArray:NotificationPutArray):Response<Any>
+
+    @PUT("api/mcu/mobile/Notification/notification/Seen")
+    suspend fun seenNotifications(@Header("Authorization" )  Authorization:String, @Body putArray:NotificationPutArray):Response<Any>
+
+    @PUT("api/mcu/mobile/Notification/notification/Seen")
+    suspend fun deleteNotifications(@Header("Authorization" )  Authorization:String, @Body putArray:NotificationPutArray):Response<Any>
+
+
     //@POST("authenticate")
     //fun loginWithCallBack(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
