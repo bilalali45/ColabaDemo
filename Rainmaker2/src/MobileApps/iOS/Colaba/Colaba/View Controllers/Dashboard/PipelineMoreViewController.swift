@@ -21,6 +21,7 @@ class PipelineMoreViewController: BaseViewController {
     @IBOutlet weak var documentsView: UIView!
     @IBOutlet weak var conversationsView: UIView!
     @IBOutlet weak var archiveView: UIView!
+    @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,42 +41,72 @@ class PipelineMoreViewController: BaseViewController {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.bottomViewHeightConstraint.constant = 0
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+        UIView.animate(withDuration: 0.30, animations: {
+            self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.08)
+            
+        }, completion: nil)
+        
+    }
+    
+    
+    
     //MARK:- Methods and Actions
     
+    func dismissPopup(){
+        
+        self.bottomViewHeightConstraint.constant = -340
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+        UIView.animate(withDuration: 0.30) {
+            self.view.backgroundColor = .clear
+        } completion: { _ in
+            self.dismissVC()
+        }
+        
+    }
+    
     @objc func emailViewTapped(){
-        self.dismissVC()
+        dismissPopup()
     }
     
     @objc func callViewTapped(){
-        self.dismissVC()
+        dismissPopup()
     }
     
     @objc func messageViewTapped(){
-        self.dismissVC()
+        dismissPopup()
     }
     
     @objc func applicationViewTapped(){
-        self.dismissVC()
+        dismissPopup()
     }
     
     @objc func documentsViewTapped(){
-        self.dismissVC()
+        dismissPopup()
     }
     
     @objc func conversationViewTapped(){
-        self.dismissVC()
+        dismissPopup()
     }
     
     @objc func archiveViewTapped(){
-        self.dismissVC()
+        dismissPopup()
     }
     
     @objc func backgroundTapped(){
-        self.dismissVC()
+        dismissPopup()
     }
     
     @IBAction func btnCloseTapped(_ sender: UIButton) {
-        self.dismissVC()
+        dismissPopup()
     }
     
 

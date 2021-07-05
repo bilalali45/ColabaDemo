@@ -21,6 +21,7 @@ class FiltersViewController: BaseViewController {
     @IBOutlet weak var recentActivityView: UIView!
     @IBOutlet weak var aToZView: UIView!
     @IBOutlet weak var zToAView: UIView!
+    @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!
     
     weak var delegate: FiltersViewControllerDelegate?
     
@@ -38,34 +39,61 @@ class FiltersViewController: BaseViewController {
         self.view.addGestureRecognizer(swipeDownGesture)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.bottomViewHeightConstraint.constant = 0
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+        UIView.animate(withDuration: 0.30, animations: {
+            self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.08)
+            
+        }, completion: nil)
+        
+    }
     
     //MARK:- Methods and Actions
     
+    func dismissPopup(){
+        
+        self.bottomViewHeightConstraint.constant = -294
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+        UIView.animate(withDuration: 0.30) {
+            self.view.backgroundColor = .clear
+        } completion: { _ in
+            self.dismissVC()
+        }
+        
+    }
+    
     @objc func pendingViewTapped(){
         self.delegate?.getOrderby(orderBy: 0)
-        self.dismissVC()
+        dismissPopup()
     }
     
     @objc func recentViewTapped(){
         self.delegate?.getOrderby(orderBy: 1)
-        self.dismissVC()
+        dismissPopup()
     }
     
     @objc func aToZViewTapped(){
         self.delegate?.getOrderby(orderBy: 2)
-        self.dismissVC()
+        dismissPopup()
     }
     
     @objc func zToAViewTapped(){
         self.delegate?.getOrderby(orderBy: 3)
-        self.dismissVC()
+        dismissPopup()
     }
     
     @objc func backgroundTapped(){
-        self.dismissVC()
+        dismissPopup()
     }
     
     @IBAction func btnCloseTapped(_ sender: UIButton) {
-        self.dismissVC()
+        dismissPopup()
     }
 }

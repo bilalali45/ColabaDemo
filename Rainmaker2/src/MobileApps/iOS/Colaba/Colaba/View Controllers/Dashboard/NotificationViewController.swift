@@ -15,7 +15,10 @@ class NotificationViewController: BaseViewController {
     @IBOutlet weak var btnNewNotifications: UIButton!
     
     var notificationsArray = [NotificationModel]()
-    var notificationsDict = [String: Any]()
+    var todayNotificationArray = [NotificationModel]()
+    var yesterdayNotificationArray = [NotificationModel]()
+    var earlierNotificationArray = [NotificationModel]()
+    
     let loadingPlaceholderView = LoadingPlaceholderView()
     var lastNotificationId = -1
     var seenNotificationIds = [Int]()
@@ -44,7 +47,7 @@ class NotificationViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.lastNotificationId = -1
-        self.getNotifications()
+       	 self.getNotifications()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

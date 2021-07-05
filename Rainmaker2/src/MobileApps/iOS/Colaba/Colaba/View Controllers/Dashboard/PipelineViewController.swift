@@ -167,7 +167,7 @@ extension PipelineViewController: UITableViewDataSource, UITableViewDelegate{
         if (indexPath.row == 0){
             let cell = tableView.dequeueReusableCell(withIdentifier: "PipelineTableViewCell", for: indexPath) as! PipelineTableViewCell
             
-            cell.mainViewHeightConstraint.constant = loanData.documents == 0 ? 123 : 145
+            cell.mainViewHeightConstraint.constant = loanData.documents == 0 ? 115 : 137
             cell.btnArrowBottomConstraint.constant = loanData.documents == 0 ? 15 : 11
             cell.updateConstraintsIfNeeded()
             cell.layoutSubviews()
@@ -205,18 +205,18 @@ extension PipelineViewController: UITableViewDataSource, UITableViewDelegate{
         
         if (loanData.documents == 0){
             if (indexPath.row == 0){
-                return expandableCellsIndex.contains(indexPath.section) ? 140 : 145
+                return expandableCellsIndex.contains(indexPath.section) ? 120 : 135
             }
             else{
-                return 165
+                return 160
             }
         }
         else{
             if (indexPath.row == 0){
-                return expandableCellsIndex.contains(indexPath.section) ? 165 : 170
+                return expandableCellsIndex.contains(indexPath.section) ? 141 : 160
             }
             else{
-                return 165
+                return 160
             }
         }
         
@@ -227,7 +227,7 @@ extension PipelineViewController: PipelineTableViewCellDelegate{
     
     func btnOptionsTapped(indexPath: IndexPath) {
         let vc = Utility.getPipelineMoreVC()
-        self.presentVC(vc: vc)
+        self.present(vc, animated: false, completion: nil)
     }
     
     func btnArrowTapped(indexPath: IndexPath) {

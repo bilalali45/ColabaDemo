@@ -23,7 +23,8 @@ class MainTabBarViewController: UITabBarController {
         newButton = UIButton(frame: CGRect(x: centerPoint, y: -30, width: 60, height: 60))
         newButton.backgroundColor = Theme.getButtonBlueColor()
         newButton.setImage(UIImage(named: "PlusButton"), for: .normal)
-        newButton.roundButtonWithShadow()
+        newButton.layer.cornerRadius = newButton.frame.height / 2
+        newButton.dropShadow()
         newButton.addTarget(self, action: #selector(newButtonTapped), for: .touchUpInside)
         self.tabBar.addSubview(newButton)
         let hidedButton = UIButton(frame: CGRect(x: centerPoint2, y: -30, width: 90, height: 90))

@@ -39,10 +39,11 @@ class DashboardViewController: BaseViewController {
     func setTopTabBar(){
         let tabItems = ["All Loans", "Active Loans", "Inactive Loans"]
         let carbonTabSwipeNavigation = CarbonTabSwipeNavigation(items: tabItems, delegate: self)
-        carbonTabSwipeNavigation.setIndicatorColor(Theme.getButtonBlueColor())
+        carbonTabSwipeNavigation.setIndicatorColor(nil)
+        carbonTabSwipeNavigation.setIndicatorHeight(4)
         carbonTabSwipeNavigation.setNormalColor(Theme.getAppGreyColor(), font: Theme.getRubikRegularFont(size: 15))
         carbonTabSwipeNavigation.setSelectedColor(Theme.getButtonBlueColor(), font: Theme.getRubikRegularFont(size: 15))
-//        carbonTabSwipeNavigation.toolbar.isTranslucent = false
+        //carbonTabSwipeNavigation.toolbar.isTranslucent = false
         carbonTabSwipeNavigation.carbonSegmentedControl?.tintColor = .clear
         carbonTabSwipeNavigation.carbonSegmentedControl?.backgroundColor = .clear
         carbonTabSwipeNavigation.carbonTabSwipeScrollView.backgroundColor = .clear
@@ -50,10 +51,21 @@ class DashboardViewController: BaseViewController {
         carbonTabSwipeNavigation.carbonSegmentedControl?.imageNormalColor = .clear
         carbonTabSwipeNavigation.carbonSegmentedControl?.imageSelectedColor = .clear
         let segmentWidth = tabView.frame.width / 3
+        let indicator = carbonTabSwipeNavigation.carbonSegmentedControl?.indicator
+        let subView = UIView()
+        subView.backgroundColor = Theme.getButtonBlueColor()
+        subView.layer.cornerRadius = 2
+        indicator?.addSubview(subView)
+        subView.translatesAutoresizingMaskIntoConstraints = false
+        subView.widthAnchor.constraint(equalToConstant: segmentWidth * 0.8).isActive = true
+        subView.centerXAnchor.constraint(equalTo: indicator!.centerXAnchor, constant: 0).isActive = true
+        subView.topAnchor.constraint(equalTo: indicator!.topAnchor, constant: 0).isActive = true
+        subView.bottomAnchor.constraint(equalTo: indicator!.bottomAnchor, constant: 0).isActive = true
         carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 0)
         carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 1)
         carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 2)
         carbonTabSwipeNavigation.insert(intoRootViewController: self, andTargetView: tabView)
+        carbonTabSwipeNavigation.carbonSegmentedControl?.frame = CGRect(x: Double(tabView.frame.origin.x), y: Double(tabView.frame.origin.y), width: Double(tabView.frame.width) * 0.8, height: Double(tabView.frame.height))
     }
     
     @IBAction func btnSearchTapped(_ sender: UIButton) {
