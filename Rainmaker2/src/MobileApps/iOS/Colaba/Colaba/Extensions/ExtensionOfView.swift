@@ -21,13 +21,13 @@ extension UIView{
         layer.shadowOpacity = shadowOpacity
     }
     
-    func dropShadow(shadowColor: CGColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.10).cgColor,
+    func dropShadow(shadowColor: CGColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.075).cgColor,
                    shadowOffset: CGSize = CGSize(width: 0.0, height: 4.0),
                    shadowOpacity: Float = 1,
                    shadowRadius: CGFloat = 10.0) {
         self.layer.shadowColor = shadowColor
         self.layer.shadowRadius = shadowRadius
-        self.layer.shadowOffset = .zero
+        self.layer.shadowOffset = shadowOffset
         self.layer.shadowOpacity = shadowOpacity
         
     }

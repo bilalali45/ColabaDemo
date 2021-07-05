@@ -804,8 +804,8 @@
         <scene sceneID="enU-e2-vVm">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="sNT-VR-ji6" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="NotificationIcon" id="BAc-DW-yQp">
-                        <inset key="imageInsets" minX="80" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <tabBarItem key="tabBarItem" title="" image="NotificationIcon" badgeValue="1" id="BAc-DW-yQp">
+                        <inset key="imageInsets" minX="40" minY="0.0" maxX="-40" maxY="0.0"/>
                     </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="hhc-VY-nvx">

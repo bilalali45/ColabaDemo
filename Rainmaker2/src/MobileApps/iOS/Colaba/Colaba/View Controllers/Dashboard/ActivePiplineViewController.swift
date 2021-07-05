@@ -168,7 +168,7 @@ extension ActivePipelineViewController: UITableViewDataSource, UITableViewDelega
         if (indexPath.row == 0){
             let cell = tableView.dequeueReusableCell(withIdentifier: "PipelineTableViewCell", for: indexPath) as! PipelineTableViewCell
             
-            cell.mainViewHeightConstraint.constant = loanData.documents == 0 ? 123 : 145
+            cell.mainViewHeightConstraint.constant = loanData.documents == 0 ? 115 : 137
             cell.btnArrowBottomConstraint.constant = loanData.documents == 0 ? 15 : 11
             cell.updateConstraintsIfNeeded()
             cell.layoutSubviews()
@@ -206,18 +206,18 @@ extension ActivePipelineViewController: UITableViewDataSource, UITableViewDelega
         
         if (loanData.documents == 0){
             if (indexPath.row == 0){
-                return expandableCellsIndex.contains(indexPath.section) ? 140 : 145
+                return expandableCellsIndex.contains(indexPath.section) ? 120 : 135
             }
             else{
-                return 165
+                return 160
             }
         }
         else{
             if (indexPath.row == 0){
-                return expandableCellsIndex.contains(indexPath.section) ? 165 : 170
+                return expandableCellsIndex.contains(indexPath.section) ? 141 : 160
             }
             else{
-                return 165
+                return 160
             }
         }
         
