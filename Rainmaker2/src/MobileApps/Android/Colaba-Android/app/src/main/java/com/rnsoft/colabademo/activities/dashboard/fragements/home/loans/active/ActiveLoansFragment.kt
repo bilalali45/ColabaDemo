@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.ActiveLoanFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,8 +34,8 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
     private lateinit var activeRecycler: RecyclerView
     private var activeLoansList: ArrayList<LoanItem> = ArrayList()
     private lateinit var activeAdapter: LoansAdapter
-    private lateinit var loading: ProgressBar
-
+    //private lateinit var loading: ProgressBar
+    private lateinit var shimmerContainer: ShimmerFrameLayout
     ////////////////////////////////////////////////////////////////////////////
     private var pageNumber: Int = 1
     private var pageSize: Int = 20
@@ -51,7 +53,9 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
         _binding = ActiveLoanFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        loading = view.findViewById(R.id.active_loan_loader)
+        shimmerContainer = view.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
+        shimmerContainer.startShimmer()
+
         activeRecycler = view.findViewById(R.id.active_recycler)
         val linearLayoutManager = LinearLayoutManager(activity)
         activeAdapter = LoansAdapter(activeLoansList, this@ActiveLoansFragment)
@@ -80,13 +84,15 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
         }
 
 
-        loading.visibility = View.VISIBLE
+        //loading.visibility = View.VISIBLE
         loanViewModel.activeLoansArrayList.observe(viewLifecycleOwner, Observer {
             //val result = it ?: return@Observer
-            loading.visibility = View.INVISIBLE
+            //loading.visibility = View.INVISIBLE
             if(it.size>0) {
                 //activeLoansList = it
                 //val lastSize = activeLoansList.size
+                shimmerContainer.stopShimmer()
+                shimmerContainer.isVisible = false
                 activeLoansList.addAll(it)
                 activeAdapter.notifyDataSetChanged()
             }
@@ -99,7 +105,7 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
     }
 
     private fun loadActiveApplications() {
-        loading.visibility = View.VISIBLE
+        //loading.visibility = View.VISIBLE
         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
             if(AppSetting.activeloanApiDateTime.isEmpty())
                 AppSetting.activeloanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
@@ -128,7 +134,7 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onClearEvent(event: AllLoansLoadedEvent) {
-        loading.visibility = View.VISIBLE
+        //loading.visibility = View.VISIBLE
         event.allLoansArrayList?.let {
             if (it.size == 0) {
                 activeLoansList.clear()

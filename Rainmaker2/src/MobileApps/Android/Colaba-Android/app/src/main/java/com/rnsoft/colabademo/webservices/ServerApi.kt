@@ -104,14 +104,14 @@ interface ServerApi{
     suspend fun getNotificationCount(@Header("Authorization" )  Authorization:String):TotalNotificationCount
 
 
-    @PUT("api/mcu/mobile/Notification/notification/Seen")
-    suspend fun readNotifications(@Header("Authorization" )  Authorization:String, @Body putArray:NotificationPutArray):Response<Any>
+    @PUT("api/mcu/mobile/Notification/notification/Read")
+    suspend fun readNotifications(@Header("Authorization" )  Authorization:String, @Body ids:ArrayList<Int>):Response<Any>
 
     @PUT("api/mcu/mobile/Notification/notification/Seen")
-    suspend fun seenNotifications(@Header("Authorization" )  Authorization:String, @Body putArray:NotificationPutArray):Response<Any>
+    suspend fun seenNotifications(@Header("Authorization" )  Authorization:String, @Body ids:ArrayList<Int>):Response<Any>
 
-    @PUT("api/mcu/mobile/Notification/notification/Seen")
-    suspend fun deleteNotifications(@Header("Authorization" )  Authorization:String, @Body putArray:NotificationPutArray):Response<Any>
+    @PUT("api/mcu/mobile/Notification/notification/Delete")
+    suspend fun deleteNotifications(@Header("Authorization" )  Authorization:String, @Body ids:ArrayList<Int>):Response<Any>
 
 
     //@POST("authenticate")

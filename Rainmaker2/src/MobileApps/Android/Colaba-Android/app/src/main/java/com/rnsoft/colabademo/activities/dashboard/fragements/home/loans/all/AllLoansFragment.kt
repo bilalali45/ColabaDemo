@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -7,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.FragmentLoanBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +31,8 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
     private val binding get() = _binding!!
     private val loanViewModel: LoanViewModel by activityViewModels()
     private lateinit var loansAdapter: LoansAdapter
-    private lateinit var loading: ProgressBar
+    //private lateinit var loading: ProgressBar
+    private lateinit var shimmerContainer: ShimmerFrameLayout
     private lateinit var rowLoading: ProgressBar
     private var loanRecycleView: RecyclerView? = null
     private  var allLoansArrayList: ArrayList<LoanItem> = ArrayList()
@@ -60,7 +64,9 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
         _binding = FragmentLoanBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        loading = view.findViewById(R.id.loader_all_loan)
+
+
+        //loading = view.findViewById(R.id.loader_all_loan)
         rowLoading = view.findViewById(R.id.loan_row_loader)
 
         loanRecycleView = view.findViewById(R.id.loan_recycler_view)
@@ -80,6 +86,9 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
            //loansAdapter = LoansAdapter(allLoansArrayList , this@AllLoansFragment)
         }
 
+        shimmerContainer = view.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
+        shimmerContainer.startShimmer()
+
         /*
         viewLifecycleOwner.lifecycleScope.launchWhenStarted{
             val serviceCompleted = withContext(Dispatchers.IO) {
@@ -91,13 +100,19 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
         */
 
 
-        loading.visibility = View.VISIBLE
+
+
+        //loading.visibility = View.VISIBLE
 
         loanViewModel.allLoansArrayList.observe(viewLifecycleOwner, {
             //val result = it ?: return@Observer
-            loading.visibility = View.INVISIBLE
+            //container.stopShimmer()
+            //container.isVisible = false
+            //loading.visibility = View.INVISIBLE
             rowLoading.visibility = View.INVISIBLE
             if(it.size>0) {
+                shimmerContainer.stopShimmer()
+                shimmerContainer.isVisible = false
                 val lastSize = allLoansArrayList.size
                 allLoansArrayList.addAll(it)
                 loansAdapter.notifyDataSetChanged()
@@ -119,16 +134,7 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
             }
         }
 
-        /*
-        val scrollListener2 = object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(view: RecyclerView, dx: Int, dy: Int) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
-                loadLoanApplications()
-            }
-        }
 
-         */
 
 
 
@@ -150,7 +156,7 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
     }
 
     private fun loadLoanApplications() {
-        loading.visibility = View.VISIBLE
+        //loading.visibility = View.VISIBLE
         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
             if(AppSetting.loanApiDateTime.isEmpty())
                 AppSetting.loanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
@@ -179,7 +185,7 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onClearEvent(event: AllLoansLoadedEvent) {
-        loading.visibility = View.VISIBLE
+        //loading.visibility = View.VISIBLE
         event.allLoansArrayList?.let {
             if (it.size == 0) {
                 allLoansArrayList.clear()
@@ -191,7 +197,6 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
     override fun setOrderId(passedOrderBy: Int) {
         allLoansArrayList.clear()
         loansAdapter.notifyDataSetChanged()
-        loading.visibility = View.VISIBLE
         orderBy = passedOrderBy
         pageNumber = 1
         loadLoanApplications()

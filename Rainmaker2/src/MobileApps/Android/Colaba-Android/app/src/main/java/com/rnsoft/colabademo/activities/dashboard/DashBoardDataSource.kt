@@ -49,7 +49,8 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
     suspend fun readNotifications(token:String,ids:ArrayList<Int>):Result<Any>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.readNotifications(newToken, NotificationPutArray(ids))
+
+            val response = serverApi.readNotifications(newToken, ids)
             Log.e("read-Notifications-", response.toString())
             if(response.isSuccessful)
                 Result.Success(response)
@@ -66,7 +67,7 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
     suspend fun seenNotifications(token:String,ids:ArrayList<Int>):Result<Any>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.seenNotifications(newToken, NotificationPutArray(ids))
+            val response = serverApi.seenNotifications(newToken,ids)
             Log.e("seen-Notifications-", response.toString())
             if(response.isSuccessful)
                 Result.Success(response)
@@ -83,7 +84,7 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
     suspend fun deleteNotifications(token:String,ids:ArrayList<Int>):Result<Any>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.deleteNotifications(newToken, NotificationPutArray(ids))
+            val response = serverApi.deleteNotifications(newToken, ids)
             Log.e("delete-Notifications-", response.toString())
             if(response.isSuccessful)
                 Result.Success(response)

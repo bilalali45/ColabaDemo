@@ -3,30 +3,61 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colaba_loan_background"
     >
 
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/loan_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colaba_loan_background">
+        android:background="@color/colaba_loan_background"
+        android:clipToPadding="false"
+
+        android:orientation="vertical" />
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/loan_recycler_view"
+
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colaba_loan_background"
-            android:clipToPadding="false"
-            android:orientation="vertical" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--add  several shimmer placeholder layout -->
+
+            <include layout="@layout/shimmer_placeholder_layout"></include>
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+
+            <include layout="@layout/shimmer_placeholder_layout"></include>
+
+            <include layout="@layout/shimmer_placeholder_layout"></include>
+
+            <include layout="@layout/shimmer_placeholder_layout"></include>
+
+            <include layout="@layout/shimmer_placeholder_layout"></include>
+
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+
+    <!--
     <ProgressBar
         android:id="@+id/loader_all_loan"
         android:layout_width="wrap_content"
@@ -42,10 +73,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:indeterminateTintMode="src_atop"
-        android:elevation="200dp"
-        android:translationZ="200dp"
         android:indeterminateTint="@color/colaba_primary_color"
         app:layout_constraintTop_toTopOf="parent" />
+        -->
 
 
     <ProgressBar
@@ -54,14 +84,13 @@
         android:layout_height="wrap_content"
 
 
-        android:elevation="205dp"
-
+        android:layout_marginBottom="8dp"
         android:foregroundGravity="center"
-        android:indeterminate="true"
 
+        android:indeterminate="true"
         android:indeterminateTint="@color/colaba_primary_color"
+
         android:indeterminateTintMode="src_atop"
-        android:translationZ="205dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
