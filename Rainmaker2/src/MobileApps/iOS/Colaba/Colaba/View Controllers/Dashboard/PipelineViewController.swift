@@ -208,7 +208,7 @@ extension PipelineViewController: UITableViewDataSource, UITableViewDelegate{
                 return expandableCellsIndex.contains(indexPath.section) ? 120 : 135
             }
             else{
-                return 160
+                return UITableView.automaticDimension
             }
         }
         else{
@@ -216,7 +216,7 @@ extension PipelineViewController: UITableViewDataSource, UITableViewDelegate{
                 return expandableCellsIndex.contains(indexPath.section) ? 141 : 160
             }
             else{
-                return 160
+                return UITableView.automaticDimension
             }
         }
         

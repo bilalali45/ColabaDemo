@@ -209,7 +209,7 @@ extension ActivePipelineViewController: UITableViewDataSource, UITableViewDelega
                 return expandableCellsIndex.contains(indexPath.section) ? 120 : 135
             }
             else{
-                return 160
+                return UITableView.automaticDimension
             }
         }
         else{
@@ -217,7 +217,7 @@ extension ActivePipelineViewController: UITableViewDataSource, UITableViewDelega
                 return expandableCellsIndex.contains(indexPath.section) ? 141 : 160
             }
             else{
-                return 160
+                return UITableView.automaticDimension
             }
         }
         
