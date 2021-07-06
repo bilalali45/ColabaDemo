@@ -60,7 +60,7 @@ class InActivePipelineViewController: BaseViewController {
     @IBAction func btnFilterTapped(_ sender: UIButton) {
         let vc = Utility.getFiltersVC()
         vc.delegate = self
-        self.presentVC(vc: vc)
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func assignToMeSwitchChanged(_ sender: UISwitch) {
@@ -208,7 +208,7 @@ extension InActivePipelineViewController: UITableViewDataSource, UITableViewDele
                 return expandableCellsIndex.contains(indexPath.section) ? 120 : 135
             }
             else{
-                return 160
+                return UITableView.automaticDimension
             }
         }
         else{
@@ -216,7 +216,7 @@ extension InActivePipelineViewController: UITableViewDataSource, UITableViewDele
                 return expandableCellsIndex.contains(indexPath.section) ? 141 : 160
             }
             else{
-                return 160
+                return UITableView.automaticDimension
             }
         }
         

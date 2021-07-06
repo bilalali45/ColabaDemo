@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="borrower-sort" transform="translate(-9126 -1026)">
+    <rect id="Rectangle_1067" data-name="Rectangle 1067" width="24" height="24" transform="translate(9126 1026)" fill="none"/>
+    <g id="Group_17517" data-name="Group 17517" transform="translate(105 -26)">
+      <g id="Group_17515" data-name="Group 17515" transform="translate(9022 1053)">
+        <path id="Path_11461" data-name="Path 11461" d="M59.778,169.112A11,11,0,1,0,63,176.89a10.928,10.928,0,0,0-3.222-7.778ZM46.515,184.9a5.57,5.57,0,0,1,10.971,0,9.69,9.69,0,0,1-10.971,0Zm1.988-9.39a3.5,3.5,0,1,1,3.5,3.5,3.5,3.5,0,0,1-3.5-3.5ZM58.6,184a6.87,6.87,0,0,0-3.994-4.484,4.787,4.787,0,1,0-5.216,0A6.869,6.869,0,0,0,45.4,184a9.711,9.711,0,1,1,13.2,0Zm0,0" transform="translate(-41 -165.89)" fill="#7e829e"/>
+      </g>
+      <path id="Path_11462" data-name="Path 11462" d="M9026.89,1071.692c-1.148,2.419-8.038-8.12-.8-15.376.23,0,8.842-6.1,15.731,2.188-.115.461,3.846,6.623-2.01,13.649a7.328,7.328,0,0,0-4.88-5.586c0,.23-3.617,0-3.617,0S9028.038,1069.273,9026.89,1071.692Z" transform="translate(-0.086 -0.12)" fill="#7e829e" opacity="0.3"/>
+    </g>
+  </g>
+</svg>

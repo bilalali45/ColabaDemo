@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="archive" transform="translate(1 2.648)">
+    <rect id="Rectangle_1070" data-name="Rectangle 1070" width="24" height="24" transform="translate(-1 -2.648)" fill="none"/>
+    <path id="Path_11392" data-name="Path 11392" d="M10112.746,1148.25v10.287H10129V1148.25Z" transform="translate(-10110.057 -1142.612)" fill="#ff5652" opacity="0.3"/>
+    <path id="Path_11390" data-name="Path 11390" d="M124.414,274.89H105.586a.586.586,0,0,0-.586.586v3.53a.586.586,0,0,0,.586.586h.591v10a.586.586,0,0,0,.586.586h16.475a.586.586,0,0,0,.586-.586v-10h.591a.586.586,0,0,0,.586-.586v-3.53a.586.586,0,0,0-.586-.586Zm-1.763,14.121h-15.3v-9.419h15.3Zm1.177-10.591H106.172v-2.358h17.656Zm0,0" transform="translate(-104 -273.538)" fill="#ff5652"/>
+    <path id="Path_11391" data-name="Path 11391" d="M242.325,391.383h2.353a1.763,1.763,0,0,0,0-3.525h-2.353a1.763,1.763,0,0,0,0,3.525Zm0-2.353h2.353a.591.591,0,1,1,0,1.182h-2.353a.591.591,0,1,1,0-1.182Zm0,0" transform="translate(-232.501 -380.623)" fill="#ff5652"/>
+  </g>
+</svg>
