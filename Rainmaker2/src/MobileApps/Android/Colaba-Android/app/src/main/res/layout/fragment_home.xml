@@ -126,7 +126,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView25" />
 
         <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/switch2"
+            android:id="@+id/assignToMeSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="0dp"
@@ -152,11 +152,11 @@
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
-        android:background="@color/colaba_loan_background"
         android:layout_width="match_parent"
-        android:layout_marginTop="6dp"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_marginTop="6dp"
+        android:layout_weight="1"
+        android:background="@color/colaba_loan_background" />
 
 </LinearLayout>
 

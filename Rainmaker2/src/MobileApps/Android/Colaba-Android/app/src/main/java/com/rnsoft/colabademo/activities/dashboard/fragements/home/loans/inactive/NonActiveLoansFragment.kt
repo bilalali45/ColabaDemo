@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.databinding.NonActiveFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -101,4 +104,25 @@ class NonActiveLoansFragment : Fragment() , LoanItemClickListener {
     }
 
     override fun getCardIndex(position: Int){}
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onClearEvent(event: AllLoansLoadedEvent) {
+        loading.visibility = View.VISIBLE
+        event.allLoansArrayList?.let {
+            if (it.size == 0) {
+                nonActiveLoansList.clear()
+                nonActiveAdapter.notifyDataSetChanged()
+            }
+        }
+    }
 }

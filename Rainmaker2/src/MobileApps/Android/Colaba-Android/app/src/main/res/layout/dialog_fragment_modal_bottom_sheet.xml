@@ -9,31 +9,9 @@
     android:layout_height="wrap_content">
 
 
-    <TextView
-        android:id="@+id/borrower_z_to_a"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:fontFamily="@font/rubik_medium"
-        android:text="@string/borrower_z_to_a"
-        android:textColor="@color/grey_color_two"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView26"
-        app:layout_constraintStart_toEndOf="@+id/imageView26"
-        app:layout_constraintTop_toTopOf="@+id/imageView26" />
 
-    <TextView
-        android:id="@+id/borrower_a_to_z"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:fontFamily="@font/rubik_medium"
-        android:text="@string/borrower_a_to_z"
-        android:textColor="@color/grey_color_two"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView25"
-        app:layout_constraintStart_toEndOf="@+id/imageView25"
-        app:layout_constraintTop_toTopOf="@+id/imageView25" />
+
+
 
     <ImageView
         android:id="@+id/crossImageView"
@@ -46,14 +24,42 @@
         app:layout_constraintTop_toTopOf="@+id/borrowerName"
         app:srcCompat="@drawable/search_cross" />
 
-    <ImageView
-        android:id="@+id/imageView22"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mostPendingLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         android:layout_marginTop="36dp"
         app:layout_constraintStart_toStartOf="@+id/borrowerName"
-        app:layout_constraintTop_toBottomOf="@+id/sortBySepartor"
-        app:srcCompat="@drawable/action_pending_icon" />
+        app:layout_constraintTop_toBottomOf="@+id/sortBySepartor">
+
+        <ImageView
+            android:id="@+id/imageView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/mostPendingLayout"
+            android:layout_marginStart="28dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/action_pending_icon" />
+
+        <TextView
+            android:id="@+id/actions_pending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/actions_pending"
+            android:fontFamily="@font/rubik_medium"
+            android:textSize="14sp"
+            android:textColor="@color/grey_color_two"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView22"
+            app:layout_constraintStart_toEndOf="@+id/imageView22"
+            app:layout_constraintTop_toTopOf="@+id/imageView22" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 
     <TextView
         android:id="@+id/borrowerName"
@@ -83,62 +89,113 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/borrowerName" />
 
-    <ImageView
-        android:id="@+id/imageView24"
-        android:layout_width="wrap_content"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mostRecentLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         android:layout_marginTop="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/borrowerName"
-        app:layout_constraintTop_toBottomOf="@+id/imageView22"
-        app:srcCompat="@drawable/recent_activity_icon" />
+        app:layout_constraintTop_toBottomOf="@+id/mostPendingLayout">
 
-    <ImageView
-        android:id="@+id/imageView25"
-        android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/imageView24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/recent_activity_icon" />
+
+        <TextView
+            android:id="@+id/recent_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="@string/recent_activity"
+            android:textColor="@color/grey_color_two"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView24"
+            app:layout_constraintStart_toEndOf="@+id/imageView24"
+            app:layout_constraintTop_toTopOf="@+id/imageView24" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/borrower_a_to_z_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        app:layout_constraintStart_toStartOf="@+id/imageView24"
-        app:layout_constraintTop_toBottomOf="@+id/imageView24"
-        app:srcCompat="@drawable/borrower" />
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mostRecentLayout">
 
-    <ImageView
-        android:id="@+id/imageView26"
-        android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/imageView25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/borrower" />
+
+        <TextView
+            android:id="@+id/borrower_a_to_z"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="@string/borrower_a_to_z"
+            android:textColor="@color/grey_color_two"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView25"
+            app:layout_constraintStart_toEndOf="@+id/imageView25"
+            app:layout_constraintTop_toTopOf="@+id/imageView25" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/borrower_z_to_a_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         android:layout_marginTop="18dp"
-        app:layout_constraintStart_toStartOf="@+id/imageView25"
-        app:layout_constraintTop_toBottomOf="@+id/imageView25"
-        app:srcCompat="@drawable/borrower" />
-
-    <TextView
-        android:id="@+id/actions_pending"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:text="@string/actions_pending"
-        android:fontFamily="@font/rubik_medium"
-        android:textSize="14sp"
-        android:textColor="@color/grey_color_two"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView22"
-        app:layout_constraintStart_toEndOf="@+id/imageView22"
-        app:layout_constraintTop_toTopOf="@+id/imageView22" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/borrower_a_to_z_layout">
 
 
-    <TextView
-        android:id="@+id/recent_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:fontFamily="@font/rubik_medium"
-        android:text="@string/recent_activity"
-        android:textColor="@color/grey_color_two"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView24"
-        app:layout_constraintStart_toEndOf="@+id/imageView24"
-        app:layout_constraintTop_toTopOf="@+id/imageView24" />
+        <ImageView
+            android:id="@+id/imageView26"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/borrower" />
 
 
-    <!--
+        <TextView
+            android:id="@+id/borrower_z_to_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="@string/borrower_z_to_a"
+            android:textColor="@color/grey_color_two"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView26"
+            app:layout_constraintStart_toEndOf="@+id/imageView26"
+            app:layout_constraintTop_toTopOf="@+id/imageView26" />
+
+
+        <!--
 
     <ImageView
         android:id="@+id/take_image_icon"
@@ -240,5 +297,8 @@
         app:layout_constraintTop_toBottomOf="@id/select_image_barrier" />
 
 -->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
