@@ -12,17 +12,14 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
-import org.greenrobot.eventbus.EventBus
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 
@@ -40,7 +37,7 @@ class HomeFragment : Fragment() {
     lateinit var sharedPreferences: SharedPreferences
 
     //private val dashBoardViewModel: DashBoardViewModel by activityViewModels()
-    private val loanViewModel: LoanViewModel by activityViewModels()
+    //private val loanViewModel: LoanViewModel by activityViewModels()
 
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
@@ -54,6 +51,7 @@ class HomeFragment : Fragment() {
 
     private var selectedText:String = tabArray[0]
     private var selectedPosition:Int = 0
+    private lateinit var pageAdapter:ViewPagerAdapter
     //private  lateinit var selectedTab:TabLayout.Tab
 
     private lateinit var  homeProfileLayout:ConstraintLayout
@@ -87,10 +85,7 @@ class HomeFragment : Fragment() {
             //Navigation.findNavController(context,R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_search)
         }
 
-        filterImageView.setOnClickListener{
-            //
-            FilterBottomSheetDialogFragment.newInstance().show(childFragmentManager, FilterBottomSheetDialogFragment::class.java.canonicalName)
-        }
+
 
 
 
@@ -98,8 +93,8 @@ class HomeFragment : Fragment() {
         val viewPager = binding.viewPager
         val tabLayout = binding.tabLayout
 
-        val adapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
-        viewPager.adapter = adapter
+        pageAdapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
+        viewPager.adapter = pageAdapter
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabArray[position]
@@ -149,29 +144,25 @@ class HomeFragment : Fragment() {
         })
 
         assignToMeSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            assignToMeSwitch.isClickable = false
+            //assignToMeSwitch.isClickable = false
             Log.e("selectedText-", selectedText)
-            loanFilterInterface = adapter.fragmentHashMap[selectedPosition] as LoanFilterInterface
-
-
-                if(selectedText == tabArray[0]) {
-                    loanFilterInterface?.setAssignToMe(100)
-                    loadLoanApplications(isChecked)
-                }
-                else if(selectedText == tabArray[1]){
-                    loanFilterInterface?.setAssignToMe(200)
-                    loadActiveApplications(isChecked)
-                }
-                else{
-                    loanFilterInterface?.setAssignToMe(300)
-                    loadNonActiveApplications(isChecked)
-                }
-
+            baseFragment = pageAdapter.fragmentHashMap[selectedPosition] as BaseFragment
+            baseFragment.setAssignToMe(isChecked)
             assignToMeSwitch.postDelayed(1500) {
-                assignToMeSwitch.isClickable = true
+                //assignToMeSwitch.isClickable = true
             }
 
 
+        }
+
+        filterImageView.setOnClickListener{
+            baseFragment = pageAdapter.fragmentHashMap[selectedPosition] as BaseFragment
+            baseFragment.let {
+                CustomFilterBottomSheetDialogFragment.newInstance(baseFragment).show(childFragmentManager, CustomFilterBottomSheetDialogFragment::class.java.canonicalName)
+            }
+
+            //FilterBottomSheetDialogFragment.newInstance().show(childFragmentManager, FilterBottomSheetDialogFragment::class.java.canonicalName)
+            //FilterBottomSheetDialogFragment.newInstance(loanFilterInterface!!).show(childFragmentManager, FilterBottomSheetDialogFragment::class.java.canonicalName)
         }
 
         setGreetingMessageOnTop()
@@ -179,7 +170,8 @@ class HomeFragment : Fragment() {
         return root
     }
 
-    private var loanFilterInterface:LoanFilterInterface?=null
+    //private var loanFilterInterface:LoanFilterInterface?=null
+    private var baseFragment:BaseFragment = AllLoansFragment()
 
     private fun setGreetingMessageOnTop(){
         var greetingString = AppSetting.returnGreetingString()
@@ -203,7 +195,7 @@ class HomeFragment : Fragment() {
     private var orderBy: Int = 0
     //private var assignedToMe: Boolean = false
 
-
+    /*
     private fun loadLoanApplications(assignedToMe:Boolean) {
         EventBus.getDefault().post(AllLoansLoadedEvent(ArrayList()))
         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -252,6 +244,8 @@ class HomeFragment : Fragment() {
             )
         }
     }
+
+     */
 
 }
 

@@ -156,7 +156,7 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
 
         notificationRecycleView.addOnScrollListener(scrollListener)
 
-        binding.newNotificationButton
+
 
 
         /*

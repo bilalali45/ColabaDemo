@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.ActiveLoanFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -24,7 +24,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
-class ActiveLoansFragment : Fragment() , LoanItemClickListener  ,  LoanFilterInterface {
+class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilterInterface {
     private var _binding: ActiveLoanFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -69,8 +69,8 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener  ,  LoanFilterInt
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                pageNumber++
-                loadActiveApplications()
+                //pageNumber++
+                //loadActiveApplications()
             }
         }
         activeRecycler.addOnScrollListener(scrollListener)
@@ -99,6 +99,7 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener  ,  LoanFilterInt
     }
 
     private fun loadActiveApplications() {
+        loading.visibility = View.VISIBLE
         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
             if(AppSetting.activeloanApiDateTime.isEmpty())
                 AppSetting.activeloanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
@@ -107,7 +108,7 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener  ,  LoanFilterInt
                 token = AppConstant.fakeUserToken,
                 dateTime = AppSetting.activeloanApiDateTime, pageNumber = pageNumber,
                 pageSize = pageSize, loanFilter = loanFilter,
-                orderBy = orderBy, assignedToMe = assignedToMe
+                orderBy = orderBy, assignedToMe = globalAssignToMe
             )
         }
     }
@@ -136,15 +137,22 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener  ,  LoanFilterInt
         }
     }
 
-    override fun setOrderId(orderId: Int) {
-
-    }
-
-    override fun setAssignToMe(assignToMe: Int) {
-        Log.e("setAssignToMe = ", assignToMe.toString())
+    override fun setOrderId(passedOrderBy: Int) {
         activeLoansList.clear()
         activeAdapter.notifyDataSetChanged()
-        loading.visibility = View.VISIBLE
+        orderBy = passedOrderBy
+        pageNumber = 1
+        loadActiveApplications()
+    }
+
+    override fun setAssignToMe(passedAssignToMe: Boolean) {
+        Log.e("setAssignToMe = ", passedAssignToMe.toString())
+        activeLoansList.clear()
+        activeAdapter.notifyDataSetChanged()
+        globalAssignToMe = passedAssignToMe
+        assignedToMe = passedAssignToMe
+        pageNumber = 1
+        loadActiveApplications()
     }
 
 

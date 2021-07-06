@@ -7,11 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.NonActiveFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -23,7 +23,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
-class NonActiveLoansFragment : Fragment() , LoanItemClickListener , LoanFilterInterface {
+class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilterInterface {
     private var _binding: NonActiveFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -78,8 +78,8 @@ class NonActiveLoansFragment : Fragment() , LoanItemClickListener , LoanFilterIn
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                pageNumber++
-                loadNonActiveApplications()
+                //pageNumber++
+                //loadNonActiveApplications()
             }
         }
         nonActiveRecycler.addOnScrollListener(scrollListener)
@@ -90,6 +90,7 @@ class NonActiveLoansFragment : Fragment() , LoanItemClickListener , LoanFilterIn
     }
 
     private fun loadNonActiveApplications(){
+        loading.visibility = View.VISIBLE
         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
             if(AppSetting.nonActiveloanApiDateTime.isEmpty())
                 AppSetting.nonActiveloanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
@@ -98,7 +99,7 @@ class NonActiveLoansFragment : Fragment() , LoanItemClickListener , LoanFilterIn
                 token = AppConstant.fakeUserToken,
                 dateTime = AppSetting.nonActiveloanApiDateTime, pageNumber = pageNumber,
                 pageSize = pageSize, loanFilter = loanFilter,
-                orderBy = orderBy, assignedToMe = assignedToMe
+                orderBy = orderBy, assignedToMe = globalAssignToMe
             )
         }
     }
@@ -126,14 +127,21 @@ class NonActiveLoansFragment : Fragment() , LoanItemClickListener , LoanFilterIn
         }
     }
 
-    override fun setOrderId(orderId: Int) {
-
-    }
-
-    override fun setAssignToMe(assignToMe: Int) {
-        Log.e("setAssignToMe = ", assignToMe.toString())
+    override fun setOrderId(passedOrderBy: Int) {
         nonActiveLoansList.clear()
         nonActiveAdapter.notifyDataSetChanged()
-        loading.visibility = View.VISIBLE
+        orderBy = passedOrderBy
+        pageNumber = 1
+        loadNonActiveApplications()
+    }
+
+    override fun setAssignToMe(passedAssignToMe: Boolean) {
+        Log.e("setAssignToMe = ", passedAssignToMe.toString())
+        nonActiveLoansList.clear()
+        nonActiveAdapter.notifyDataSetChanged()
+        globalAssignToMe = passedAssignToMe
+        assignedToMe = passedAssignToMe
+        pageNumber = 1
+        loadNonActiveApplications()
     }
 }
