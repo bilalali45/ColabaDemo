@@ -23,7 +23,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
-class NonActiveLoansFragment : Fragment() , LoanItemClickListener {
+class NonActiveLoansFragment : Fragment() , LoanItemClickListener , LoanFilterInterface {
     private var _binding: NonActiveFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -64,7 +64,7 @@ class NonActiveLoansFragment : Fragment() , LoanItemClickListener {
         loanViewModel.nonActiveLoansArrayList.observe(viewLifecycleOwner, Observer {
             loading.visibility = View.INVISIBLE
             if(it.size>0) {
-                nonActiveLoansList = it
+
                 val lastSize = nonActiveLoansList.size
                 nonActiveLoansList.addAll(it)
                 nonActiveAdapter.notifyDataSetChanged()
@@ -124,5 +124,16 @@ class NonActiveLoansFragment : Fragment() , LoanItemClickListener {
                 nonActiveAdapter.notifyDataSetChanged()
             }
         }
+    }
+
+    override fun setOrderId(orderId: Int) {
+
+    }
+
+    override fun setAssignToMe(assignToMe: Int) {
+        Log.e("setAssignToMe = ", assignToMe.toString())
+        nonActiveLoansList.clear()
+        nonActiveAdapter.notifyDataSetChanged()
+        loading.visibility = View.VISIBLE
     }
 }

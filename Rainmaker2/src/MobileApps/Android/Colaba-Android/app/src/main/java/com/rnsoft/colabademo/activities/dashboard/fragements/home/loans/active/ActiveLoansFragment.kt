@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.databinding.ActiveLoanFragmentBinding
@@ -23,7 +24,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
-class ActiveLoansFragment : Fragment() , LoanItemClickListener {
+class ActiveLoansFragment : Fragment() , LoanItemClickListener  ,  LoanFilterInterface {
     private var _binding: ActiveLoanFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -57,22 +58,12 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener {
         activeRecycler.apply {
             this.layoutManager = linearLayoutManager
             this.setHasFixedSize(true)
+            activeAdapter = LoansAdapter(activeLoansList, this@ActiveLoansFragment)
             this.adapter = activeAdapter
+
         }
 
-        loading.visibility = View.VISIBLE
-        loanViewModel.activeLoansArrayList.observe(viewLifecycleOwner, Observer {
-            //val result = it ?: return@Observer
-            loading.visibility = View.INVISIBLE
-            if(it.size>0) {
-                activeLoansList = it
-                val lastSize = activeLoansList.size
-                activeLoansList.addAll(it)
-                activeAdapter.notifyDataSetChanged()
-            }
-            else
-                Log.e("should-stop"," here....")
-        })
+
 
         val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
@@ -84,7 +75,24 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener {
         }
         activeRecycler.addOnScrollListener(scrollListener)
 
-        loadActiveApplications()
+        lifecycleScope.launchWhenResumed {
+            loadActiveApplications()
+        }
+
+
+        loading.visibility = View.VISIBLE
+        loanViewModel.activeLoansArrayList.observe(viewLifecycleOwner, Observer {
+            //val result = it ?: return@Observer
+            loading.visibility = View.INVISIBLE
+            if(it.size>0) {
+                //activeLoansList = it
+                //val lastSize = activeLoansList.size
+                activeLoansList.addAll(it)
+                activeAdapter.notifyDataSetChanged()
+            }
+            else
+                Log.e("should-stop"," here....")
+        })
 
 
         return view
@@ -126,6 +134,17 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener {
                 activeAdapter.notifyDataSetChanged()
             }
         }
+    }
+
+    override fun setOrderId(orderId: Int) {
+
+    }
+
+    override fun setAssignToMe(assignToMe: Int) {
+        Log.e("setAssignToMe = ", assignToMe.toString())
+        activeLoansList.clear()
+        activeAdapter.notifyDataSetChanged()
+        loading.visibility = View.VISIBLE
     }
 
 

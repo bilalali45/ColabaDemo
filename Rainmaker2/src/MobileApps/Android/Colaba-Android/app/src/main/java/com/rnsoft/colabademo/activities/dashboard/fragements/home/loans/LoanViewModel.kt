@@ -26,9 +26,9 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
 
 
 
-    private val localLoansArrayList: ArrayList<LoanItem> = ArrayList<LoanItem>()
-    private val localActiveLoansArrayList: ArrayList<LoanItem> = ArrayList<LoanItem>()
-    private val localNonActiveLoansArrayList: ArrayList<LoanItem> = ArrayList<LoanItem>()
+    //private val localLoansArrayList: ArrayList<LoanItem> = ArrayList<LoanItem>()
+    //private val localActiveLoansArrayList: ArrayList<LoanItem> = ArrayList<LoanItem>()
+    //private val localNonActiveLoansArrayList: ArrayList<LoanItem> = ArrayList<LoanItem>()
 
 
     init {
@@ -72,8 +72,8 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                 orderBy = orderBy, assignedToMe = assignedToMe)
 
             if (result is Result.Success) {
-                localActiveLoansArrayList.addAll(result.data)
-                _activeLoansArrayList.value = localActiveLoansArrayList
+                //localActiveLoansArrayList.addAll(result.data)
+                _activeLoansArrayList.value = result.data
             }
             else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
                 EventBus.getDefault().post(AllLoansLoadedEvent(null, true))
@@ -94,8 +94,8 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                 orderBy = orderBy, assignedToMe = assignedToMe)
 
             if (result is Result.Success) {
-                localNonActiveLoansArrayList.addAll(result.data)
-                _nonActiveLoansArrayList.value = localNonActiveLoansArrayList
+                //localNonActiveLoansArrayList.addAll(result.data)
+                _nonActiveLoansArrayList.value = result.data
             }
             else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
                 EventBus.getDefault().post(AllLoansLoadedEvent(null, true))

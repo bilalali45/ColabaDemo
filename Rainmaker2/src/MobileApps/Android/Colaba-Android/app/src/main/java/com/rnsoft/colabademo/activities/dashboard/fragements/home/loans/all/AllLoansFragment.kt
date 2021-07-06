@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.rnsoft.colabademo.activities.dashboard.fragements.home.FilterBottomSheetInterface
 import com.rnsoft.colabademo.databinding.FragmentLoanBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -24,7 +23,7 @@ import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
-class AllLoansFragment : Fragment(), LoanItemClickListener ,  FilterBottomSheetInterface {
+class AllLoansFragment : Fragment(), LoanItemClickListener ,  LoanFilterInterface {
     private var _binding: FragmentLoanBinding? = null
     private val binding get() = _binding!!
     private val loanViewModel: LoanViewModel by activityViewModels()
@@ -185,6 +184,13 @@ class AllLoansFragment : Fragment(), LoanItemClickListener ,  FilterBottomSheetI
 
     override fun setOrderId(orderId: Int) {
 
+    }
+
+    override fun setAssignToMe(assignToMe: Int) {
+        Log.e("setAssignToMe = ", assignToMe.toString())
+        allLoansArrayList.clear()
+        loansAdapter.notifyDataSetChanged()
+        loading.visibility = View.VISIBLE
     }
 
 
