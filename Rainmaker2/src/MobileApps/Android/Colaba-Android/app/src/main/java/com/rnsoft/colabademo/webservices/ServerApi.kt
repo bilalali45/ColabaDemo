@@ -105,7 +105,7 @@ interface ServerApi{
 
 
     @PUT("api/mcu/mobile/Notification/notification/Read")
-    suspend fun readNotifications(@Header("Authorization" )  Authorization:String, @Body ids:ArrayList<Int>):Response<Any>
+    suspend fun readNotifications(@Header("Authorization" )  Authorization:String, @Body json:ArrayList<Int>):Response<Any>
 
     @PUT("api/mcu/mobile/Notification/notification/Seen")
     suspend fun seenNotifications(@Header("Authorization" )  Authorization:String, @Body ids:ArrayList<Int>):Response<Any>

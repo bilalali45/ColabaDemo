@@ -159,7 +159,7 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
             val searchTerm = binding.searchEditTextField.text.toString()
             if(searchTerm.isNotEmpty()) {
                 searchViewModel.getSearchResult(
-                    token =AppConstant.fakeUserToken,
+                    token = authToken,
                     pageNumber = pageNumber,
                     pageSize = pageSize,
                     searchTerm = searchTerm

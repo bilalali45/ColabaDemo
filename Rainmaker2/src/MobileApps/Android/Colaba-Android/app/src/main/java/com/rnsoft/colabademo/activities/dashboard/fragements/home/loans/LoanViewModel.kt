@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rnsoft.colabademo.activities.signinflow.phone.events.OtpSentEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
@@ -25,6 +27,8 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
     private val _nonActiveLoansArrayList = MutableLiveData<ArrayList<LoanItem>>()
     val nonActiveLoansArrayList: LiveData<ArrayList<LoanItem>> get() = _nonActiveLoansArrayList
 
+    private val _databaseLoansArrayList = MutableLiveData<ArrayList<LoanItem>>()
+    val databaseLoansArrayList: LiveData<ArrayList<LoanItem>> get() = _databaseLoansArrayList
 
 
     //private val localLoansArrayList: ArrayList<LoanItem> = ArrayList<LoanItem>()
@@ -43,7 +47,7 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                     loanFilter:Int, orderBy:Int,
                     assignedToMe:Boolean , optionalClear:Boolean = false)
     {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             //delay(5000)
                 Log.e("viewmodel-", " method is - getAllLoans")
                 val result = loanRepo.getAllLoans(
@@ -53,8 +57,9 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                 )
 
                 if (result is Result.Success) {
-                    //localLoansArrayList.addAll(result.data)
-                    _allLoansArrayList.value = result.data
+                    withContext(Dispatchers.Main) {
+                        _allLoansArrayList.value = result.data
+                    }
                 } else if (result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(AllLoansLoadedEvent(null, true))
                 else
@@ -68,14 +73,15 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                     loanFilter:Int, orderBy:Int,
                     assignedToMe:Boolean)
     {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val result = loanRepo.getAllLoans(token = token , dateTime = dateTime,
                 pageNumber = pageNumber, pageSize = pageSize, loanFilter = loanFilter,
                 orderBy = orderBy, assignedToMe = assignedToMe)
 
             if (result is Result.Success) {
-                //localActiveLoansArrayList.addAll(result.data)
-                _activeLoansArrayList.value = result.data
+                withContext(Dispatchers.Main) {
+                    _activeLoansArrayList.value = result.data
+                }
             }
             else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
                 EventBus.getDefault().post(AllLoansLoadedEvent(null, true))
@@ -90,19 +96,34 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                     loanFilter:Int, orderBy:Int,
                     assignedToMe:Boolean)
     {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val result = loanRepo.getAllLoans(token = token , dateTime = dateTime,
                 pageNumber = pageNumber, pageSize = pageSize, loanFilter = loanFilter,
                 orderBy = orderBy, assignedToMe = assignedToMe)
 
             if (result is Result.Success) {
-                //localNonActiveLoansArrayList.addAll(result.data)
-                _nonActiveLoansArrayList.value = result.data
+                withContext(Dispatchers.Main) {
+                    _nonActiveLoansArrayList.value = result.data
+                }
             }
             else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
                 EventBus.getDefault().post(AllLoansLoadedEvent(null, true))
             else
                 EventBus.getDefault().post(AllLoansLoadedEvent(null))
+        }
+    }
+
+
+    fun getLoanDataFromDatabase(loanFilter:Int)
+    {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loanRepo.getLoanDataFromRoom(loanFilter)
+            if (result.size>0) {
+                withContext(Dispatchers.Main) {
+                    _databaseLoansArrayList.value = result
+                }
+            }
+
         }
     }
 

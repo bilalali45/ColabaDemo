@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
@@ -53,6 +54,22 @@ class AppModule {
 
              */
         }
+
+
+
+        @Singleton // Tell Dagger-Hilt to create a singleton accessible everywhere in ApplicationCompenent (i.e. everywhere in the application)
+        @Provides
+        fun provideYourDatabase(@ApplicationContext app: Context) =
+            Room.databaseBuilder(
+            app,
+            AppDatabase::class.java,
+            "colaba_database"
+            ).build() // The reason we can construct a database for the repo
+
+        @Singleton
+        @Provides
+        fun provideYourDao(db: AppDatabase) = db.loansDao() // The reason we can implement a Dao for the database
+
 
 
         @Singleton

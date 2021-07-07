@@ -81,6 +81,8 @@
 
     <string name="biometric_check">Device is not registered with Biometric login. Please setup it from settings.</string>
 
+    <string name="biometric_check_two">Please setup Biometric from settings.</string>
+
     <string name="authenticate_with_biometric">Authenticate with Biometric</string>
     <string name="user_your_biometric">Use your biometric to login to Colaba Mobile</string>
 

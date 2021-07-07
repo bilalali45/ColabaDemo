@@ -29,18 +29,18 @@ import kotlin.collections.ArrayList
 class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInterface {
     private var _binding: FragmentLoanBinding? = null
     private val binding get() = _binding!!
-    private val loanViewModel: LoanViewModel by activityViewModels()
+
     private lateinit var loansAdapter: LoansAdapter
     //private lateinit var loading: ProgressBar
     private lateinit var shimmerContainer: ShimmerFrameLayout
-    private lateinit var rowLoading: ProgressBar
+    private var rowLoading: ProgressBar?=null
     private var loanRecycleView: RecyclerView? = null
     private  var allLoansArrayList: ArrayList<LoanItem> = ArrayList()
 
     ////////////////////////////////////////////////////////////////////////////
     //private var stringDateTime: String = ""
     private var pageNumber: Int = 1
-    private var pageSize: Int = 10
+    private var pageSize: Int = 20
     private var loanFilter: Int = 0
     private var orderBy: Int = 0
     private var assignedToMe: Boolean = false
@@ -109,7 +109,7 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
             //container.stopShimmer()
             //container.isVisible = false
             //loading.visibility = View.INVISIBLE
-            rowLoading.visibility = View.INVISIBLE
+            rowLoading?.visibility = View.INVISIBLE
             if(it.size>0) {
                 shimmerContainer.stopShimmer()
                 shimmerContainer.isVisible = false
@@ -128,9 +128,9 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                rowLoading.visibility = View.VISIBLE
-                //pageNumber++
-                //loadLoanApplications()
+                rowLoading?.visibility = View.VISIBLE
+                pageNumber++
+                loadLoanApplications()
             }
         }
 
@@ -142,7 +142,21 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
         // Adds the scroll listener to RecyclerView
         loanRecycleView?.addOnScrollListener(scrollListener)
 
+
+        loanViewModel.databaseLoansArrayList.observe(viewLifecycleOwner, {
+            rowLoading?.visibility = View.INVISIBLE
+            shimmerContainer.stopShimmer()
+            shimmerContainer.isVisible = false
+            allLoansArrayList.addAll(it)
+            loansAdapter.notifyDataSetChanged()
+            loanViewModel.databaseLoansArrayList.removeObservers(this)
+        })
+
+        //if(hasLoanApiDataLoaded)
+        //loadDataFromDatabase(loanFilter)
+
         loadLoanApplications()
+
 
         return view
     }
@@ -162,8 +176,10 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
                 AppSetting.loanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
             Log.e("Why-", AppSetting.loanApiDateTime)
             Log.e("pageNumber-", pageNumber.toString() +" and page size = "+pageSize)
+
+
             loanViewModel.getAllLoans(
-                token = AppConstant.fakeUserToken,
+                token = authToken,
                 dateTime = AppSetting.loanApiDateTime, pageNumber = pageNumber,
                 pageSize = pageSize, loanFilter = loanFilter,
                 orderBy = orderBy, assignedToMe = globalAssignToMe
@@ -172,6 +188,10 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
     }
 
 
+    override fun onResume() {
+        super.onResume()
+        rowLoading?.visibility = View.INVISIBLE
+    }
 
     override fun onStart() {
         super.onStart()

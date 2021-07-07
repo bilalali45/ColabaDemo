@@ -49,7 +49,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         root = inflater.inflate(R.layout.login_layout, container, false)
         setupFragment()
         //registerBroadcastReceiver()
@@ -104,7 +104,7 @@ class LoginFragment : Fragment() {
                     Log.e("Yes", "Let Toggle On...")
                 else {
                     biometricSwitch.isChecked = false
-                    SandbarUtils.showRegular(requireActivity(), resources.getString((R.string.biometric_check)) )
+                    SandbarUtils.showRegular(requireActivity(), resources.getString((R.string.biometric_check_two)) )
 
                     /*
                     ToastUtils.init(requireActivity().application)

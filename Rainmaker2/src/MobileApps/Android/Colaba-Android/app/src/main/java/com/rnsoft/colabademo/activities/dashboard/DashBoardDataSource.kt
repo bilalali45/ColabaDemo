@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
+import com.google.gson.Gson
 import java.io.IOException
 import javax.inject.Inject
 
@@ -49,6 +50,11 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
     suspend fun readNotifications(token:String,ids:ArrayList<Int>):Result<Any>{
         return try {
             val newToken = "Bearer $token"
+
+            val test = Gson()
+            val json: String = test.toJson(ids)
+
+            val someString = "{ 'ids':[10093] }"
 
             val response = serverApi.readNotifications(newToken, ids)
             Log.e("read-Notifications-", response.toString())

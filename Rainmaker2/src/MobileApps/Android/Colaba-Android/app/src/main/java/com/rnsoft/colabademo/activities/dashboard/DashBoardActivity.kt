@@ -83,12 +83,12 @@ class DashBoardActivity : AppCompatActivity() {
        lifecycleScope.launchWhenStarted {
            sharedPreferences.getString(AppConstant.token, "")?.let {
                val count =
-                   dashBoardViewModel.getNotificationCountT(AppConstant.fakeMubashirToken)
+                   dashBoardViewModel.getNotificationCountT(it)
 
                // Also run service for notifications get....
                /*
                dashBoardViewModel.getNotificationListing(
-                   token ="AppConstant.fakeMubashirToken,
+                   token ="it,
                    pageSize = pageSize, lastId = lastId, mediumId = mediumId
                )
 

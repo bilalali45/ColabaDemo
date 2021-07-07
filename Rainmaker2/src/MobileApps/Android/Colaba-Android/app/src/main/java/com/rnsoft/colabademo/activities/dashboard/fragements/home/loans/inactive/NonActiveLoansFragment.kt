@@ -33,7 +33,7 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
     lateinit var sharedPreferences: SharedPreferences
 
 
-    private val loanViewModel: LoanViewModel by activityViewModels()
+    private var rowLoading: ProgressBar? = null
     private lateinit var nonActiveRecycler: RecyclerView
     private var nonActiveLoansList: ArrayList<LoanItem> = ArrayList()
     private lateinit var nonActiveAdapter: LoansAdapter
@@ -56,6 +56,9 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
         shimmerContainer = view.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
         shimmerContainer.startShimmer()
         //loading = view.findViewById(R.id.non_active_loan_loader)
+
+        rowLoading = view.findViewById(R.id.non_active_row_loader)
+
         nonActiveRecycler = view.findViewById(R.id.inactive_loan_recycler_view)
         val linearLayoutManager = LinearLayoutManager(activity)
         nonActiveAdapter = LoansAdapter(nonActiveLoansList, this@NonActiveLoansFragment)
@@ -67,7 +70,7 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
 
         //loading.visibility = View.VISIBLE
         loanViewModel.nonActiveLoansArrayList.observe(viewLifecycleOwner, Observer {
-            //loading.visibility = View.INVISIBLE
+            rowLoading?.visibility = View.INVISIBLE
             if(it.size>0) {
                 shimmerContainer.stopShimmer()
                 shimmerContainer.isVisible = false
@@ -85,11 +88,15 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                //pageNumber++
-                //loadNonActiveApplications()
+                rowLoading?.visibility = View.VISIBLE
+                pageNumber++
+                loadNonActiveApplications()
             }
         }
         nonActiveRecycler.addOnScrollListener(scrollListener)
+
+
+        loadDataFromDatabase(loanFilter)
 
         loadNonActiveApplications()
 
@@ -102,8 +109,9 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
             if(AppSetting.nonActiveloanApiDateTime.isEmpty())
                 AppSetting.nonActiveloanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
 
+
             loanViewModel.getNonActiveLoans(
-                token = AppConstant.fakeUserToken,
+                token = authToken,
                 dateTime = AppSetting.nonActiveloanApiDateTime, pageNumber = pageNumber,
                 pageSize = pageSize, loanFilter = loanFilter,
                 orderBy = orderBy, assignedToMe = globalAssignToMe
@@ -111,7 +119,16 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
         }
     }
 
+
+
     override fun getCardIndex(position: Int){}
+
+
+    override fun onResume() {
+        super.onResume()
+        rowLoading?.visibility = View.INVISIBLE
+    }
+
 
     override fun onStart() {
         super.onStart()

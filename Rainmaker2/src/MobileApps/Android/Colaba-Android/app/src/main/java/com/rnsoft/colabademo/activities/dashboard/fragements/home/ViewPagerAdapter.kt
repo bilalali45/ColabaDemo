@@ -29,11 +29,16 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
                 fragmentHashMap[position] = fragment
                 return fragment
             }
+
+            2 -> {
+                val fragment = NonActiveLoansFragment()
+                fragmentHashMap[position] = fragment
+                return fragment
+            }
         }
 
-        val fragment = NonActiveLoansFragment()
-        fragmentHashMap[position] = fragment
-        return fragment
+
+        return Fragment()
 
     }
 }
