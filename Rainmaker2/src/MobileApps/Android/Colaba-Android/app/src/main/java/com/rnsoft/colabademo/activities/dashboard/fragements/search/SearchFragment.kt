@@ -80,10 +80,10 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
             if(it.size<=1)
                 binding.searchResultCountTextView.text = searchArrayList.size.toString() +" result found"
             else {
-                binding.searchResultCountTextView.text =
-                    searchArrayList.size.toString() + " results found"
                 searchArrayList.addAll(it)
                 searchAdapter.notifyDataSetChanged()
+                binding.searchResultCountTextView.text =
+                    searchArrayList.size.toString() + " results found"
 
             }
             if(hasPerformedSearchOnce) {

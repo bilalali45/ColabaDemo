@@ -8,12 +8,20 @@ import android.view.WindowManager
 import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.DialogFragmentModalBottomSheetBinding
 
-class FilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
+class CustomFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
-        fun newInstance() = FilterBottomSheetDialogFragment()
+         lateinit var baseFragment:BaseFragment
+
+        fun newInstance(topFragment:BaseFragment): CustomFilterBottomSheetDialogFragment {
+            baseFragment =   topFragment
+            return CustomFilterBottomSheetDialogFragment()
+        }
+
+        //fun newInstance() = CustomFilterBottomSheetDialogFragment()
     }
   
     lateinit var binding: DialogFragmentModalBottomSheetBinding
@@ -29,6 +37,31 @@ class FilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
             dismiss();
         }
         setStyle(DialogFragment.STYLE_NORMAL, R.style.roundedBottomSheetDialog)
+
+
+        binding.mostPendingLayout.setOnClickListener {
+            dismiss()
+            baseFragment.setOrderId(orderBy = 0)
+            //loadLoanApplications(orderBy = 0)
+        }
+
+        binding.mostRecentLayout.setOnClickListener {
+            dismiss()
+            baseFragment.setOrderId(orderBy = 1)
+            //loadLoanApplications(1)
+        }
+
+        binding.borrowerAToZLayout.setOnClickListener {
+            dismiss()
+            baseFragment.setOrderId(orderBy = 2)
+            //loadLoanApplications(2)
+        }
+        binding.borrowerZToALayout.setOnClickListener {
+            dismiss()
+            baseFragment.setOrderId(orderBy = 3)
+            //loadLoanApplications(3)
+        }
+
         return binding.root
     }
 

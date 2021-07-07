@@ -14,11 +14,26 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
         return NUM_TABS
     }
 
+    val fragmentHashMap: HashMap<Int, Fragment> = HashMap()
+
     override fun createFragment(position: Int): Fragment {
+
         when (position) {
-            0 -> return AllLoansFragment()
-            1 -> return ActiveLoansFragment()
+            0 -> {
+                val fragment = AllLoansFragment()
+                fragmentHashMap[position] = fragment
+                return fragment
+            }
+            1 -> {
+                val fragment = ActiveLoansFragment()
+                fragmentHashMap[position] = fragment
+                return fragment
+            }
         }
-        return NonActiveLoansFragment()
+
+        val fragment = NonActiveLoansFragment()
+        fragmentHashMap[position] = fragment
+        return fragment
+
     }
 }

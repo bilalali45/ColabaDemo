@@ -156,7 +156,7 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
 
         notificationRecycleView.addOnScrollListener(scrollListener)
 
-        binding.newNotificationButton
+
 
 
         /*
@@ -220,12 +220,16 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
 
 
     override fun onStop() {
-
+        Log.e("readArrayList-", readArrayList.size.toString())
+        Log.e("deleteArrayList-", deleteArrayList.size.toString())
         sharedPreferences.getString(AppConstant.token,"")?.let {
-            dashBoardViewModel.readNotifications(AppConstant.fakeMubashirToken, readArrayList)
+            if(readArrayList.size>0)
+                dashBoardViewModel.readNotifications(AppConstant.fakeMubashirToken, readArrayList)
+
         }
         sharedPreferences.getString(AppConstant.token,"")?.let {
-            //dashBoardViewModel.deleteNotifications(AppConstant.fakeMubashirToken, deleteArrayList)
+            //if(deleteArrayList.size>0)
+                //dashBoardViewModel.deleteNotifications(AppConstant.fakeMubashirToken, deleteArrayList)
         }
         super.onStop()
     }
@@ -267,6 +271,12 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
             val deletedItem = notificationArrayList[viewHolder.getAdapterPosition()]
             val deletedIndex = viewHolder.getAdapterPosition()
 
+            val deleteId = deletedItem.id
+            deleteId?.let {
+                if (!deleteArrayList.contains(it))
+                    deleteArrayList.add(it)
+            }
+
             // remove the item from recycler view
             newNotificationAdapter.removeItem(viewHolder.getAdapterPosition())
 
@@ -275,6 +285,11 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
                 .make(coordinatorLayout, "$name removed from Notifications!", Snackbar.LENGTH_LONG)
             snackbar.setAction("UNDO") { // undo is selected, restore the deleted item
                 newNotificationAdapter.restoreItem(deletedItem, deletedIndex)
+                val deleteId = deletedItem.id
+                deleteId?.let {
+                    if (deleteArrayList.contains(it))
+                        deleteArrayList.remove(it)
+                }
             }
             snackbar.setActionTextColor(Color.YELLOW)
             snackbar.show()

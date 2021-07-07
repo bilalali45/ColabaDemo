@@ -104,7 +104,7 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
 
     fun seenNotifications(token:String , ids:ArrayList<Int>) {
         viewModelScope.launch {
-            val result = dashBoardRepo.readNotifications(token, ids)
+            val result = dashBoardRepo.seenNotifications(token, ids)
             if (result is Result.Success) {
 
             }
@@ -134,15 +134,15 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
 
     fun deleteNotifications(token:String , ids:ArrayList<Int>) {
         viewModelScope.launch {
-            val result = dashBoardRepo.readNotifications(token, ids)
+            val result = dashBoardRepo.deleteNotifications(token, ids)
             if (result is Result.Success) {
-
+                Log.e("del-notify-", result.toString())
             }
             else if (result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG){
-
+                Log.e("del-notify-", result.toString())
             }
             else{
-
+                Log.e("del-notify-", result.toString())
             }
         }
     }

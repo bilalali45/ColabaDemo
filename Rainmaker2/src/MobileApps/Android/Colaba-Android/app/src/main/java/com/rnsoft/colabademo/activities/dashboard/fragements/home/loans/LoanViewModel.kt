@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rnsoft.colabademo.activities.signinflow.phone.events.OtpSentEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
@@ -26,9 +27,9 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
 
 
 
-    private val localLoansArrayList: ArrayList<LoanItem> = ArrayList<LoanItem>()
-    private val localActiveLoansArrayList: ArrayList<LoanItem> = ArrayList<LoanItem>()
-    private val localNonActiveLoansArrayList: ArrayList<LoanItem> = ArrayList<LoanItem>()
+    //private val localLoansArrayList: ArrayList<LoanItem> = ArrayList<LoanItem>()
+    //private val localActiveLoansArrayList: ArrayList<LoanItem> = ArrayList<LoanItem>()
+    //private val localNonActiveLoansArrayList: ArrayList<LoanItem> = ArrayList<LoanItem>()
 
 
     init {
@@ -43,6 +44,7 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                     assignedToMe:Boolean , optionalClear:Boolean = false)
     {
         viewModelScope.launch {
+            //delay(5000)
                 Log.e("viewmodel-", " method is - getAllLoans")
                 val result = loanRepo.getAllLoans(
                     token = token, dateTime = dateTime,
@@ -72,8 +74,8 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                 orderBy = orderBy, assignedToMe = assignedToMe)
 
             if (result is Result.Success) {
-                localActiveLoansArrayList.addAll(result.data)
-                _activeLoansArrayList.value = localActiveLoansArrayList
+                //localActiveLoansArrayList.addAll(result.data)
+                _activeLoansArrayList.value = result.data
             }
             else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
                 EventBus.getDefault().post(AllLoansLoadedEvent(null, true))
@@ -94,8 +96,8 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                 orderBy = orderBy, assignedToMe = assignedToMe)
 
             if (result is Result.Success) {
-                localNonActiveLoansArrayList.addAll(result.data)
-                _nonActiveLoansArrayList.value = localNonActiveLoansArrayList
+                //localNonActiveLoansArrayList.addAll(result.data)
+                _nonActiveLoansArrayList.value = result.data
             }
             else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
                 EventBus.getDefault().post(AllLoansLoadedEvent(null, true))

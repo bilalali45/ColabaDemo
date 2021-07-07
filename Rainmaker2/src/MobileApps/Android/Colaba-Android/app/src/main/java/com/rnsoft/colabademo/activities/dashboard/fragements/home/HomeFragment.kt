@@ -10,18 +10,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
-import org.greenrobot.eventbus.EventBus
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 
@@ -39,7 +37,7 @@ class HomeFragment : Fragment() {
     lateinit var sharedPreferences: SharedPreferences
 
     //private val dashBoardViewModel: DashBoardViewModel by activityViewModels()
-    private val loanViewModel: LoanViewModel by activityViewModels()
+    //private val loanViewModel: LoanViewModel by activityViewModels()
 
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
@@ -51,7 +49,9 @@ class HomeFragment : Fragment() {
     private lateinit  var greetingMessage: TextView
     private lateinit var assignToMeSwitch:SwitchCompat
 
-    private  var selectedText:String = tabArray[0]
+    private var selectedText:String = tabArray[0]
+    private var selectedPosition:Int = 0
+    private lateinit var pageAdapter:ViewPagerAdapter
     //private  lateinit var selectedTab:TabLayout.Tab
 
     private lateinit var  homeProfileLayout:ConstraintLayout
@@ -85,10 +85,7 @@ class HomeFragment : Fragment() {
             //Navigation.findNavController(context,R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_search)
         }
 
-        filterImageView.setOnClickListener{
-            //
-            FilterBottomSheetDialogFragment.newInstance().show(childFragmentManager, FilterBottomSheetDialogFragment::class.java.canonicalName)
-        }
+
 
 
 
@@ -96,8 +93,8 @@ class HomeFragment : Fragment() {
         val viewPager = binding.viewPager
         val tabLayout = binding.tabLayout
 
-        val adapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
-        viewPager.adapter = adapter
+        pageAdapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
+        viewPager.adapter = pageAdapter
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabArray[position]
@@ -119,6 +116,7 @@ class HomeFragment : Fragment() {
                 super.onPageSelected(position)
                 Log.e("Selected_Page", position.toString())
                 selectedText = tabArray[position]
+                selectedPosition = position
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -132,49 +130,48 @@ class HomeFragment : Fragment() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
                     selectedText = it.text as String
+                    Log.e("tab.position==",tab.position.toString())
+                   // loanFilterInterface = adapter.fragmentHashMap[tab.position] as LoanFilterInterface
+
+                    viewPager.adapter
+                    viewPager.currentItem
                 }
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
         assignToMeSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            //assignToMeSwitch.isEnabled = false
+            //assignToMeSwitch.isClickable = false
             Log.e("selectedText-", selectedText)
-            if (isChecked) {
-                if(selectedText == tabArray[0]) {
-                    loadLoanApplications(1)
-                }
-                else if(selectedText == tabArray[1]){
-                    loadActiveApplications(1)
-                }
-                else{
-                    loadNonActiveApplications(1)
-                }
-
-            }else{
-                if(selectedText == tabArray[0]) {
-                    loadLoanApplications(1)
-                }
-                else if(selectedText == tabArray[1]){
-                    loadActiveApplications(1)
-                }
-                else{
-                    loadNonActiveApplications(1)
-                }
+            baseFragment = pageAdapter.fragmentHashMap[selectedPosition] as BaseFragment
+            baseFragment.setAssignToMe(isChecked)
+            assignToMeSwitch.postDelayed(1500) {
+                //assignToMeSwitch.isClickable = true
             }
+
+
+        }
+
+        filterImageView.setOnClickListener{
+            baseFragment = pageAdapter.fragmentHashMap[selectedPosition] as BaseFragment
+            baseFragment.let {
+                CustomFilterBottomSheetDialogFragment.newInstance(baseFragment).show(childFragmentManager, CustomFilterBottomSheetDialogFragment::class.java.canonicalName)
+            }
+
+            //FilterBottomSheetDialogFragment.newInstance().show(childFragmentManager, FilterBottomSheetDialogFragment::class.java.canonicalName)
+            //FilterBottomSheetDialogFragment.newInstance(loanFilterInterface!!).show(childFragmentManager, FilterBottomSheetDialogFragment::class.java.canonicalName)
         }
 
         setGreetingMessageOnTop()
 
         return root
     }
+
+    //private var loanFilterInterface:LoanFilterInterface?=null
+    private var baseFragment:BaseFragment = AllLoansFragment()
 
     private fun setGreetingMessageOnTop(){
         var greetingString = AppSetting.returnGreetingString()
@@ -194,12 +191,12 @@ class HomeFragment : Fragment() {
     //private var stringDateTime: String = ""
     private var pageNumber: Int = 1
     private var pageSize: Int = 20
-    //private var loanFilter: Int = 0
+    private var loanFilter: Int = 0
     private var orderBy: Int = 0
-    private var assignedToMe: Boolean = false
+    //private var assignedToMe: Boolean = false
 
-
-    private fun loadLoanApplications(loanFilter:Int) {
+    /*
+    private fun loadLoanApplications(assignedToMe:Boolean) {
         EventBus.getDefault().post(AllLoansLoadedEvent(ArrayList()))
         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
             if(AppSetting.loanApiDateTime.isEmpty())
@@ -211,29 +208,14 @@ class HomeFragment : Fragment() {
             loanViewModel.getAllLoans(
                 token = AppConstant.fakeUserToken,
                 dateTime = AppSetting.loanApiDateTime, pageNumber = pageNumber,
-                pageSize = pageSize, loanFilter = loanFilter,
+                pageSize = pageSize, loanFilter = 0,
                 orderBy = orderBy, assignedToMe = assignedToMe,
                 optionalClear = true
             )
         }
     }
 
-    private fun loadNonActiveApplications(loanFilter:Int){
-        EventBus.getDefault().post(NonActiveLoansEvent(ArrayList()))
-        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-            if(AppSetting.nonActiveloanApiDateTime.isEmpty())
-                AppSetting.nonActiveloanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
-
-            loanViewModel.getNonActiveLoans(
-                token = AppConstant.fakeUserToken,
-                dateTime = AppSetting.nonActiveloanApiDateTime, pageNumber = pageNumber,
-                pageSize = pageSize, loanFilter = loanFilter,
-                orderBy = orderBy, assignedToMe = assignedToMe
-            )
-        }
-    }
-
-    private fun loadActiveApplications(loanFilter:Int) {
+    private fun loadActiveApplications(assignedToMe:Boolean) {
         EventBus.getDefault().post(ActiveLoansEvent(ArrayList()))
         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
             if(AppSetting.activeloanApiDateTime.isEmpty())
@@ -242,11 +224,28 @@ class HomeFragment : Fragment() {
             loanViewModel.getActiveLoans(
                 token = AppConstant.fakeUserToken,
                 dateTime = AppSetting.activeloanApiDateTime, pageNumber = pageNumber,
-                pageSize = pageSize, loanFilter = loanFilter,
+                pageSize = pageSize, loanFilter = 1,
                 orderBy = orderBy, assignedToMe = assignedToMe
             )
         }
     }
+
+    private fun loadNonActiveApplications(assignedToMe:Boolean){
+        EventBus.getDefault().post(NonActiveLoansEvent(ArrayList()))
+        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+            if(AppSetting.nonActiveloanApiDateTime.isEmpty())
+                AppSetting.nonActiveloanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
+
+            loanViewModel.getNonActiveLoans(
+                token = AppConstant.fakeUserToken,
+                dateTime = AppSetting.nonActiveloanApiDateTime, pageNumber = pageNumber,
+                pageSize = pageSize, loanFilter = 2,
+                orderBy = orderBy, assignedToMe = assignedToMe
+            )
+        }
+    }
+
+     */
 
 }
 

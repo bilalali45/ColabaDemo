@@ -7,11 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.fragment.app.Fragment
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.shimmer.ShimmerFrameLayout
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.ActiveLoanFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -23,7 +26,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
-class ActiveLoansFragment : Fragment() , LoanItemClickListener {
+class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilterInterface {
     private var _binding: ActiveLoanFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -31,8 +34,8 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener {
     private lateinit var activeRecycler: RecyclerView
     private var activeLoansList: ArrayList<LoanItem> = ArrayList()
     private lateinit var activeAdapter: LoansAdapter
-    private lateinit var loading: ProgressBar
-
+    //private lateinit var loading: ProgressBar
+    private lateinit var shimmerContainer: ShimmerFrameLayout
     ////////////////////////////////////////////////////////////////////////////
     private var pageNumber: Int = 1
     private var pageSize: Int = 20
@@ -50,23 +53,46 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener {
         _binding = ActiveLoanFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        loading = view.findViewById(R.id.active_loan_loader)
+        shimmerContainer = view.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
+        shimmerContainer.startShimmer()
+
         activeRecycler = view.findViewById(R.id.active_recycler)
         val linearLayoutManager = LinearLayoutManager(activity)
         activeAdapter = LoansAdapter(activeLoansList, this@ActiveLoansFragment)
         activeRecycler.apply {
             this.layoutManager = linearLayoutManager
             this.setHasFixedSize(true)
+            activeAdapter = LoansAdapter(activeLoansList, this@ActiveLoansFragment)
             this.adapter = activeAdapter
+
         }
 
-        loading.visibility = View.VISIBLE
+
+
+        val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                //pageNumber++
+                //loadActiveApplications()
+            }
+        }
+        activeRecycler.addOnScrollListener(scrollListener)
+
+        lifecycleScope.launchWhenResumed {
+            loadActiveApplications()
+        }
+
+
+        //loading.visibility = View.VISIBLE
         loanViewModel.activeLoansArrayList.observe(viewLifecycleOwner, Observer {
             //val result = it ?: return@Observer
-            loading.visibility = View.INVISIBLE
+            //loading.visibility = View.INVISIBLE
             if(it.size>0) {
-                activeLoansList = it
-                val lastSize = activeLoansList.size
+                //activeLoansList = it
+                //val lastSize = activeLoansList.size
+                shimmerContainer.stopShimmer()
+                shimmerContainer.isVisible = false
                 activeLoansList.addAll(it)
                 activeAdapter.notifyDataSetChanged()
             }
@@ -74,23 +100,12 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener {
                 Log.e("should-stop"," here....")
         })
 
-        val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
-                pageNumber++
-                loadActiveApplications()
-            }
-        }
-        activeRecycler.addOnScrollListener(scrollListener)
-
-        loadActiveApplications()
-
 
         return view
     }
 
     private fun loadActiveApplications() {
+        //loading.visibility = View.VISIBLE
         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
             if(AppSetting.activeloanApiDateTime.isEmpty())
                 AppSetting.activeloanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
@@ -99,7 +114,7 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener {
                 token = AppConstant.fakeUserToken,
                 dateTime = AppSetting.activeloanApiDateTime, pageNumber = pageNumber,
                 pageSize = pageSize, loanFilter = loanFilter,
-                orderBy = orderBy, assignedToMe = assignedToMe
+                orderBy = orderBy, assignedToMe = globalAssignToMe
             )
         }
     }
@@ -119,13 +134,31 @@ class ActiveLoansFragment : Fragment() , LoanItemClickListener {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onClearEvent(event: AllLoansLoadedEvent) {
-        loading.visibility = View.VISIBLE
+        //loading.visibility = View.VISIBLE
         event.allLoansArrayList?.let {
             if (it.size == 0) {
                 activeLoansList.clear()
                 activeAdapter.notifyDataSetChanged()
             }
         }
+    }
+
+    override fun setOrderId(passedOrderBy: Int) {
+        activeLoansList.clear()
+        activeAdapter.notifyDataSetChanged()
+        orderBy = passedOrderBy
+        pageNumber = 1
+        loadActiveApplications()
+    }
+
+    override fun setAssignToMe(passedAssignToMe: Boolean) {
+        Log.e("setAssignToMe = ", passedAssignToMe.toString())
+        activeLoansList.clear()
+        activeAdapter.notifyDataSetChanged()
+        globalAssignToMe = passedAssignToMe
+        assignedToMe = passedAssignToMe
+        pageNumber = 1
+        loadActiveApplications()
     }
 
 
