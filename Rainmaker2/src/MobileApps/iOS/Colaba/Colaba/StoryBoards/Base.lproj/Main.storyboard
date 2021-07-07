@@ -852,8 +852,29 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="cy3-yg-1iQ">
                                         <rect key="frame" x="28" y="105.5" width="358" height="150"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jSt-if-4FR">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VgQ-yy-Zgx">
                                                 <rect key="frame" x="0.0" y="0.0" width="358" height="24"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="most-recent-icon" translatesAutoresizingMaskIntoConstraints="NO" id="nCw-kb-bej">
+                                                        <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Most Recent Activity (Default)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ew-Ic-YEu">
+                                                        <rect key="frame" x="36" y="4" width="185" height="16.5"/>
+                                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
+                                                        <color key="textColor" name="ButtonBlueColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstItem="8Ew-Ic-YEu" firstAttribute="leading" secondItem="nCw-kb-bej" secondAttribute="trailing" constant="12" id="485-OP-Ju6"/>
+                                                    <constraint firstItem="nCw-kb-bej" firstAttribute="leading" secondItem="VgQ-yy-Zgx" secondAttribute="leading" id="6bo-xe-aAj"/>
+                                                    <constraint firstItem="8Ew-Ic-YEu" firstAttribute="centerY" secondItem="nCw-kb-bej" secondAttribute="centerY" id="Iri-im-KCl"/>
+                                                    <constraint firstItem="nCw-kb-bej" firstAttribute="top" secondItem="VgQ-yy-Zgx" secondAttribute="top" id="reH-6g-Hov"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jSt-if-4FR">
+                                                <rect key="frame" x="0.0" y="42" width="358" height="24"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pending-actions-icon" translatesAutoresizingMaskIntoConstraints="NO" id="ZBX-74-m0s">
                                                         <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
@@ -871,27 +892,6 @@
                                                     <constraint firstItem="GWk-Br-Jqr" firstAttribute="leading" secondItem="ZBX-74-m0s" secondAttribute="trailing" constant="12" id="jHT-op-ymc"/>
                                                     <constraint firstItem="ZBX-74-m0s" firstAttribute="leading" secondItem="jSt-if-4FR" secondAttribute="leading" id="sbS-Da-2Ak"/>
                                                     <constraint firstItem="GWk-Br-Jqr" firstAttribute="centerY" secondItem="ZBX-74-m0s" secondAttribute="centerY" id="zqd-Xb-Mrv"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VgQ-yy-Zgx">
-                                                <rect key="frame" x="0.0" y="42" width="358" height="24"/>
-                                                <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="most-recent-icon" translatesAutoresizingMaskIntoConstraints="NO" id="nCw-kb-bej">
-                                                        <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
-                                                    </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Most Recent Activity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ew-Ic-YEu">
-                                                        <rect key="frame" x="36" y="4" width="129.5" height="16.5"/>
-                                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
-                                                        <color key="textColor" name="AppGreyColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                <constraints>
-                                                    <constraint firstItem="8Ew-Ic-YEu" firstAttribute="leading" secondItem="nCw-kb-bej" secondAttribute="trailing" constant="12" id="485-OP-Ju6"/>
-                                                    <constraint firstItem="nCw-kb-bej" firstAttribute="leading" secondItem="VgQ-yy-Zgx" secondAttribute="leading" id="6bo-xe-aAj"/>
-                                                    <constraint firstItem="8Ew-Ic-YEu" firstAttribute="centerY" secondItem="nCw-kb-bej" secondAttribute="centerY" id="Iri-im-KCl"/>
-                                                    <constraint firstItem="nCw-kb-bej" firstAttribute="top" secondItem="VgQ-yy-Zgx" secondAttribute="top" id="reH-6g-Hov"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="evu-RI-MW3">
@@ -970,6 +970,14 @@
                         <outlet property="aToZView" destination="evu-RI-MW3" id="dQv-aD-pto"/>
                         <outlet property="bottomViewHeightConstraint" destination="FbY-aG-7Hu" id="qHe-Z5-NtY"/>
                         <outlet property="btnClose" destination="Fd4-4H-v2d" id="kiS-sy-dMo"/>
+                        <outlet property="iconAtoZ" destination="RAr-lD-TC5" id="d8W-zt-8vC"/>
+                        <outlet property="iconPendingActions" destination="ZBX-74-m0s" id="YNI-y1-fuu"/>
+                        <outlet property="iconRecentActivity" destination="nCw-kb-bej" id="42p-UA-0zQ"/>
+                        <outlet property="iconZtoA" destination="hrr-YE-r4i" id="fWR-gA-hLq"/>
+                        <outlet property="lblAtoZ" destination="BnY-Wo-gZf" id="0Qg-s9-54u"/>
+                        <outlet property="lblMostRecentActivity" destination="8Ew-Ic-YEu" id="eZg-Jd-6gN"/>
+                        <outlet property="lblPendingActions" destination="GWk-Br-Jqr" id="ICa-Xe-QM2"/>
+                        <outlet property="lblZtoA" destination="tVJ-Rr-7Je" id="zBa-RZ-MaH"/>
                         <outlet property="mainView" destination="a0b-Vg-PGy" id="2i5-bp-bNF"/>
                         <outlet property="pendingActivityView" destination="jSt-if-4FR" id="PAt-iQ-M21"/>
                         <outlet property="recentActivityView" destination="VgQ-yy-Zgx" id="lmU-lf-eas"/>

@@ -43,6 +43,10 @@ struct Theme {
         return UIColor(named: "DashboardBackgroundColor")!
     }
     
+    static func getSortIconDefaultColor() -> UIColor{
+        return UIColor(named: "SortIconDefaultColor")!
+    }
+    
     static func getRubikRegularFont(size: CGFloat) -> UIFont{
         return UIFont(name: "Rubik-Regular", size: size)!
     }

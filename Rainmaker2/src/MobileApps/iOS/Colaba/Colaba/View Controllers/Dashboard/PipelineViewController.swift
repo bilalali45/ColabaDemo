@@ -21,7 +21,6 @@ class PipelineViewController: BaseViewController {
     var pipeLineArray = [AllLoanModel]()
     
     var pageNumber = 1
-    var orderBy = 0 //0=MostActionsPending, 1=MostRecentActivity, 2=PrimaryBorrowerLastName(A to Z), 3=PrimaryBorrowerLastName(Z to A)
     var dateForPage1 = ""
     
     override func viewDidLoad() {
@@ -82,7 +81,7 @@ class PipelineViewController: BaseViewController {
             self.loadingPlaceholderView.cover(self.tblView, animated: true)
         }
         
-        let extraData = "dateTime=\(dateForPage1)&pageNumber=\(pageNumber)&pageSize=20&loanFilter=0&orderBy=\(orderBy)&assignedToMe=\(assignToMeSwitch.isOn ? true : false)"
+        let extraData = "dateTime=\(dateForPage1)&pageNumber=\(pageNumber)&pageSize=20&loanFilter=0&orderBy=\(sortingFilter)&assignedToMe=\(assignToMeSwitch.isOn ? true : false)"
         
         APIRouter.sharedInstance.executeDashboardAPIs(type: .getPipelineList, method: .get, params: nil, extraData: extraData) { status, result, message in
             
@@ -252,7 +251,7 @@ extension PipelineViewController: PipelineTableViewCellDelegate{
 
 extension PipelineViewController: FiltersViewControllerDelegate{
     func getOrderby(orderBy: Int) {
-        self.orderBy = orderBy
+        sortingFilter = orderBy
         refreshLoanData()
     }
 }
