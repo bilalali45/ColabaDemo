@@ -33,16 +33,22 @@ class ActivePipelineViewController: BaseViewController {
         tblView.coverableCellsIdentifiers = ["PipelineDetailTableViewCell", "PipelineDetailTableViewCell", "PipelineDetailTableViewCell", "PipelineDetailTableViewCell"]
         tblView.loadControl = UILoadControl(target: self, action: #selector(loadMoreResult))
         tblView.loadControl?.heightLimit = 60
-        dateForPage1 = Utility.getDate()
-        getPipelineData()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
+        refreshLoanData()
     }
     
     //MARK:- Methods and Actions
+    
+    func refreshLoanData(){
+        self.pageNumber = 1
+        self.dateForPage1 = Utility.getDate()
+        self.expandableCellsIndex.removeAll()
+        self.getPipelineData()
+    }
     
     @objc func loadMoreResult(){
         if (self.pipeLineArray.count % 20 == 0){
@@ -65,10 +71,7 @@ class ActivePipelineViewController: BaseViewController {
     }
     
     @IBAction func assignToMeSwitchChanged(_ sender: UISwitch) {
-        self.pageNumber = 1
-        self.dateForPage1 = Utility.getDate()
-        self.expandableCellsIndex.removeAll()
-        self.getPipelineData()
+        refreshLoanData()
     }
     
     //MARK:- API's
@@ -134,6 +137,8 @@ class ActivePipelineViewController: BaseViewController {
                     }
                 }
                 else{
+                    self.pipeLineArray.removeAll()
+                    self.tblView.reloadData()
                     self.showPopup(message: "No data found", popupState: .error, popupDuration: .custom(2)) { reason in
                         
                     }
@@ -248,9 +253,6 @@ extension ActivePipelineViewController: PipelineTableViewCellDelegate{
 extension ActivePipelineViewController: FiltersViewControllerDelegate{
     func getOrderby(orderBy: Int) {
         self.orderBy = orderBy
-        self.pageNumber = 1
-        self.dateForPage1 = Utility.getDate()
-        self.expandableCellsIndex.removeAll()
-        self.getPipelineData()
+        refreshLoanData()
     }
 }

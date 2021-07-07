@@ -65,7 +65,7 @@ class DashboardViewController: BaseViewController {
         carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 1)
         carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 2)
         carbonTabSwipeNavigation.insert(intoRootViewController: self, andTargetView: tabView)
-        carbonTabSwipeNavigation.carbonSegmentedControl?.frame = CGRect(x: Double(tabView.frame.origin.x), y: Double(tabView.frame.origin.y), width: Double(tabView.frame.width) * 0.8, height: Double(tabView.frame.height))
+        
     }
     
     @IBAction func btnSearchTapped(_ sender: UIButton) {
