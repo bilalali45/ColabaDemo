@@ -39,14 +39,14 @@ class PipelineViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        isAssignToMe = UserDefaults.standard.bool(forKey: kNotificationIsAssignToMe)
+        isAssignToMe = UserDefaults.standard.bool(forKey: kIsAssignToMe)
         assignToMeSwitch.setOn(isAssignToMe, animated: true)
         refreshLoanData()
     }
     
     //MARK:- Methods and Actions
     
-    func refreshLoanData(){
+    @objc func refreshLoanData(){
         self.pageNumber = 1
         self.dateForPage1 = Utility.getDate()
         self.expandableCellsIndex.removeAll()
@@ -63,18 +63,23 @@ class PipelineViewController: BaseViewController {
         }
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollView.loadControl?.update()
-    }
-    
-    @IBAction func btnFilterTapped(_ sender: UIButton) {
+    @objc func showFiltersPopup(){
         let vc = Utility.getFiltersVC()
         vc.delegate = self
         self.present(vc, animated: false, completion: nil)
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollView.loadControl?.update()
+    }
+    
+    @IBAction func btnFilterTapped(_ sender: UIButton) {
+        showFiltersPopup()
+    }
+    
     @IBAction func assignToMeSwitchChanged(_ sender: UISwitch) {
-        UserDefaults.standard.setValue(sender.isOn ? true : false, forKey: kNotificationIsAssignToMe)
+        UserDefaults.standard.setValue(sender.isOn ? true : false, forKey: kIsAssignToMe)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationAssignToMeSwitchChanged), object: nil, userInfo: nil)
         refreshLoanData()
     }
     

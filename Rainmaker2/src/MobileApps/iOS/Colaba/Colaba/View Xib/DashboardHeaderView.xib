@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Rubik-Medium.ttf">
+            <string>Rubik-Medium</string>
+        </array>
+        <array key="Rubik-Regular.ttf">
+            <string>Rubik-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="DashboardHeaderView" customModule="Colaba" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="500" height="59"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pipeline" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sRe-70-qIx">
+                    <rect key="frame" x="15" y="25" width="77.5" height="24"/>
+                    <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
+                    <color key="textColor" name="AppBlackColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="U1p-Fq-bmi">
+                    <rect key="frame" x="279" y="21.5" width="51" height="31"/>
+                    <color key="onTintColor" name="ButtonBlueColor"/>
+                    <connections>
+                        <action selector="switchAssignToMeChanged:" destination="iN0-l3-epB" eventType="valueChanged" id="iEU-ye-GoJ"/>
+                    </connections>
+                </switch>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Assigned to me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="45N-We-2zJ">
+                    <rect key="frame" x="338" y="30" width="86" height="14"/>
+                    <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
+                    <color key="textColor" red="0.4941176471" green="0.50980392159999999" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o9j-bj-ePI">
+                    <rect key="frame" x="434" y="21" width="1" height="32"/>
+                    <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="4PM-rw-A1H"/>
+                        <constraint firstAttribute="width" constant="1" id="AZx-Rc-QPR"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2AW-aK-Byh">
+                    <rect key="frame" x="445" y="17" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="gct-jI-Xvc"/>
+                        <constraint firstAttribute="width" constant="40" id="nPk-jd-ZFi"/>
+                    </constraints>
+                    <state key="normal" image="FilterIcon"/>
+                    <connections>
+                        <action selector="btnFiltersTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="N24-E0-QRF"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" name="DashboardBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="45N-We-2zJ" firstAttribute="centerY" secondItem="o9j-bj-ePI" secondAttribute="centerY" id="1I5-gs-ufl"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="2AW-aK-Byh" secondAttribute="trailing" constant="15" id="8PG-Am-B0y"/>
+                <constraint firstItem="45N-We-2zJ" firstAttribute="leading" secondItem="U1p-Fq-bmi" secondAttribute="trailing" constant="10" id="CWi-G4-IKv"/>
+                <constraint firstItem="sRe-70-qIx" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="15" id="K2A-f6-PcA"/>
+                <constraint firstItem="U1p-Fq-bmi" firstAttribute="centerY" secondItem="45N-We-2zJ" secondAttribute="centerY" id="V4t-Zd-FoN"/>
+                <constraint firstItem="2AW-aK-Byh" firstAttribute="leading" secondItem="o9j-bj-ePI" secondAttribute="trailing" constant="10" id="de5-K5-Ixe"/>
+                <constraint firstItem="o9j-bj-ePI" firstAttribute="centerY" secondItem="2AW-aK-Byh" secondAttribute="centerY" id="gCG-CO-okC"/>
+                <constraint firstItem="o9j-bj-ePI" firstAttribute="leading" secondItem="45N-We-2zJ" secondAttribute="trailing" constant="10" id="jIT-Qe-CwB"/>
+                <constraint firstItem="sRe-70-qIx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="25" id="pft-Z8-CH9"/>
+                <constraint firstItem="2AW-aK-Byh" firstAttribute="centerY" secondItem="sRe-70-qIx" secondAttribute="centerY" id="zop-if-lxa"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="btnFilters" destination="2AW-aK-Byh" id="Ux0-qE-PET"/>
+                <outlet property="switchAssignToMe" destination="U1p-Fq-bmi" id="UNF-f4-TTU"/>
+            </connections>
+            <point key="canvasLocation" x="132" y="70"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="FilterIcon" width="24.125999450683594" height="23"/>
+        <namedColor name="AppBlackColor">
+            <color red="0.30588235294117649" green="0.30588235294117649" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="ButtonBlueColor">
+            <color red="0.26666666666666666" green="0.51764705882352946" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="DashboardBackgroundColor">
+            <color red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
