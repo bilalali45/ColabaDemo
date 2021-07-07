@@ -21,6 +21,8 @@
 		2397AF672677A60A007A1A45 /* PipelineDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397AF652677A60A007A1A45 /* PipelineDetailTableViewCell.swift */; };
 		2397AF682677A60A007A1A45 /* PipelineDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */; };
 		239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */; };
+		23A0D5CE26958E58002B4BCE /* DashboardHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23A0D5CD26958E58002B4BCE /* DashboardHeaderView.xib */; };
+		23A0D5D026958E83002B4BCE /* DashboardHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A0D5CF26958E83002B4BCE /* DashboardHeaderView.swift */; };
 		23A1CA6B268C4B8400D93DC4 /* UILoadControl_UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1CA69268C4B8300D93DC4 /* UILoadControl_UIScrollView.swift */; };
 		23A1CA6C268C4B8400D93DC4 /* UILoadControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1CA6A268C4B8400D93DC4 /* UILoadControl.swift */; };
 		23A56C592685B017005CE6F4 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A56C532685B017005CE6F4 /* Manager.swift */; };
@@ -109,6 +111,8 @@
 		2397AF652677A60A007A1A45 /* PipelineDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineDetailTableViewCell.swift; sourceTree = "<group>"; };
 		2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PipelineDetailTableViewCell.xib; sourceTree = "<group>"; };
 		239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewPopupViewController.swift; sourceTree = "<group>"; };
+		23A0D5CD26958E58002B4BCE /* DashboardHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DashboardHeaderView.xib; sourceTree = "<group>"; };
+		23A0D5CF26958E83002B4BCE /* DashboardHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardHeaderView.swift; sourceTree = "<group>"; };
 		23A1CA69268C4B8300D93DC4 /* UILoadControl_UIScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILoadControl_UIScrollView.swift; sourceTree = "<group>"; };
 		23A1CA6A268C4B8400D93DC4 /* UILoadControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILoadControl.swift; sourceTree = "<group>"; };
 		23A56C532685B017005CE6F4 /* Manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
@@ -256,6 +260,15 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		23A0D5CA26958DBC002B4BCE /* View Xib */ = {
+			isa = PBXGroup;
+			children = (
+				23A0D5CD26958E58002B4BCE /* DashboardHeaderView.xib */,
+				23A0D5CF26958E83002B4BCE /* DashboardHeaderView.swift */,
+			);
+			path = "View Xib";
+			sourceTree = "<group>";
+		};
 		23A1CA68268C4B4600D93DC4 /* Load More */ = {
 			isa = PBXGroup;
 			children = (
@@ -350,6 +363,7 @@
 		7186ACAE2653B25A00E740D3 /* Colaba */ = {
 			isa = PBXGroup;
 			children = (
+				23A0D5CA26958DBC002B4BCE /* View Xib */,
 				23A56C4E2685AFEE005CE6F4 /* Third Party Libraries */,
 				2397AF602677821D007A1A45 /* Cells */,
 				236B59CF266503F30001F416 /* Models */,
@@ -589,6 +603,7 @@
 			files = (
 				7186ACEE2653C5CE00E740D3 /* Authentication.storyboard in Resources */,
 				7186AD092653C77B00E740D3 /* Rubik-Light.ttf in Resources */,
+				23A0D5CE26958E58002B4BCE /* DashboardHeaderView.xib in Resources */,
 				7186ACBC2653B25B00E740D3 /* LaunchScreen.storyboard in Resources */,
 				7186ACB92653B25B00E740D3 /* Assets.xcassets in Resources */,
 				7186AD082653C77B00E740D3 /* Rubik-Regular.ttf in Resources */,
@@ -747,6 +762,7 @@
 				23B238B82679D38900508449 /* SearchViewController.swift in Sources */,
 				23A56C5D2685B017005CE6F4 /* Icons.swift in Sources */,
 				7186AD602653DE8600E740D3 /* ExtensionOfView.swift in Sources */,
+				23A0D5D026958E83002B4BCE /* DashboardHeaderView.swift in Sources */,
 				2397AF672677A60A007A1A45 /* PipelineDetailTableViewCell.swift in Sources */,
 				23A1CA6B268C4B8400D93DC4 /* UILoadControl_UIScrollView.swift in Sources */,
 				238D70772678E8C80067687C /* FiltersViewController.swift in Sources */,
@@ -957,7 +973,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 2HX8AP6426;
 				INFOPLIST_FILE = Colaba/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -981,7 +997,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 2HX8AP6426;
 				INFOPLIST_FILE = Colaba/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

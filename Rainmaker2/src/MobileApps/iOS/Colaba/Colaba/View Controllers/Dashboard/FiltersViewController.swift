@@ -22,6 +22,19 @@ class FiltersViewController: BaseViewController {
     @IBOutlet weak var aToZView: UIView!
     @IBOutlet weak var zToAView: UIView!
     @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var iconRecentActivity: UIImageView!
+    @IBOutlet weak var lblMostRecentActivity: UILabel!
+    @IBOutlet weak var iconPendingActions: UIImageView!
+    @IBOutlet weak var lblPendingActions: UILabel!
+    @IBOutlet weak var iconAtoZ: UIImageView!
+    @IBOutlet weak var lblAtoZ: UILabel!
+    @IBOutlet weak var iconZtoA: UIImageView!
+    @IBOutlet weak var lblZtoA: UILabel!
+    
+    var imgRecentActivity = UIImage()
+    var imgPendingAction = UIImage()
+    var imgAToZ = UIImage()
+    var imgZtoA = UIImage()
     
     weak var delegate: FiltersViewControllerDelegate?
     
@@ -37,6 +50,16 @@ class FiltersViewController: BaseViewController {
         let swipeDownGesture = UISwipeGestureRecognizer(target: self, action: #selector(backgroundTapped))
         swipeDownGesture.direction = .down
         self.view.addGestureRecognizer(swipeDownGesture)
+        
+        imgRecentActivity = (UIImage(named: "most-recent-icon")?.withRenderingMode(.alwaysTemplate))!
+        imgPendingAction = (UIImage(named: "pending-actions-icon")?.withRenderingMode(.alwaysTemplate))!
+        imgAToZ = (UIImage(named: "borrower-sort-icon")?.withRenderingMode(.alwaysTemplate))!
+        imgZtoA = (UIImage(named: "borrower-sort-icon")?.withRenderingMode(.alwaysTemplate))!
+        
+        iconRecentActivity.image = imgRecentActivity
+        iconPendingActions.image = imgPendingAction
+        iconAtoZ.image = imgAToZ
+        iconZtoA.image = imgZtoA
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -51,9 +74,58 @@ class FiltersViewController: BaseViewController {
             
         }, completion: nil)
         
+        setSelectedFilter()
     }
     
     //MARK:- Methods and Actions
+    
+    func setSelectedFilter(){
+        
+        if (sortingFilter == 0){
+            lblPendingActions.textColor = Theme.getButtonBlueColor()
+            iconPendingActions.tintColor = Theme.getButtonBlueColor()
+            
+            lblMostRecentActivity.textColor = Theme.getAppGreyColor()
+            iconRecentActivity.tintColor = Theme.getAppGreyColor()
+            lblAtoZ.textColor = Theme.getAppGreyColor()
+            iconAtoZ.tintColor = Theme.getAppGreyColor()
+            lblZtoA.textColor = Theme.getAppGreyColor()
+            iconZtoA.tintColor = Theme.getAppGreyColor()
+        }
+        else if (sortingFilter == 1){
+            lblMostRecentActivity.textColor = Theme.getButtonBlueColor()
+            iconRecentActivity.tintColor = Theme.getButtonBlueColor()
+            
+            lblPendingActions.textColor = Theme.getAppGreyColor()
+            iconPendingActions.tintColor = Theme.getAppGreyColor()
+            lblAtoZ.textColor = Theme.getAppGreyColor()
+            iconAtoZ.tintColor = Theme.getAppGreyColor()
+            lblZtoA.textColor = Theme.getAppGreyColor()
+            iconZtoA.tintColor = Theme.getAppGreyColor()
+        }
+        else if (sortingFilter == 2){
+            lblAtoZ.textColor = Theme.getButtonBlueColor()
+            iconAtoZ.tintColor = Theme.getButtonBlueColor()
+            
+            lblPendingActions.textColor = Theme.getAppGreyColor()
+            iconPendingActions.tintColor = Theme.getAppGreyColor()
+            lblMostRecentActivity.textColor = Theme.getAppGreyColor()
+            iconRecentActivity.tintColor = Theme.getAppGreyColor()
+            lblZtoA.textColor = Theme.getAppGreyColor()
+            iconZtoA.tintColor = Theme.getAppGreyColor()
+        }
+        else if (sortingFilter == 3){
+            lblZtoA.textColor = Theme.getButtonBlueColor()
+            iconZtoA.tintColor = Theme.getButtonBlueColor()
+            
+            lblPendingActions.textColor = Theme.getAppGreyColor()
+            iconPendingActions.tintColor = Theme.getAppGreyColor()
+            lblMostRecentActivity.textColor = Theme.getAppGreyColor()
+            iconRecentActivity.tintColor = Theme.getAppGreyColor()
+            lblAtoZ.textColor = Theme.getAppGreyColor()
+            iconAtoZ.tintColor = Theme.getAppGreyColor()
+        }
+    }
     
     func dismissPopup(){
         
@@ -70,22 +142,30 @@ class FiltersViewController: BaseViewController {
     }
     
     @objc func pendingViewTapped(){
-        self.delegate?.getOrderby(orderBy: 0)
+        sortingFilter = 0
+        setSelectedFilter()
+        self.delegate?.getOrderby(orderBy: sortingFilter)
         dismissPopup()
     }
     
     @objc func recentViewTapped(){
-        self.delegate?.getOrderby(orderBy: 1)
+        sortingFilter = 1
+        setSelectedFilter()
+        self.delegate?.getOrderby(orderBy: sortingFilter)
         dismissPopup()
     }
     
     @objc func aToZViewTapped(){
-        self.delegate?.getOrderby(orderBy: 2)
+        sortingFilter = 2
+        setSelectedFilter()
+        self.delegate?.getOrderby(orderBy: sortingFilter)
         dismissPopup()
     }
     
     @objc func zToAViewTapped(){
-        self.delegate?.getOrderby(orderBy: 3)
+        sortingFilter = 3
+        setSelectedFilter()
+        self.delegate?.getOrderby(orderBy: sortingFilter)
         dismissPopup()
     }
     

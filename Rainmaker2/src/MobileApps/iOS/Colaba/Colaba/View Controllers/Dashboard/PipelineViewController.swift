@@ -21,8 +21,8 @@ class PipelineViewController: BaseViewController {
     var pipeLineArray = [AllLoanModel]()
     
     var pageNumber = 1
-    var orderBy = 0 //0=MostActionsPending, 1=MostRecentActivity, 2=PrimaryBorrowerLastName(A to Z), 3=PrimaryBorrowerLastName(Z to A)
     var dateForPage1 = ""
+    var isAssignToMe = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,15 +33,25 @@ class PipelineViewController: BaseViewController {
         tblView.coverableCellsIdentifiers = ["PipelineDetailTableViewCell", "PipelineDetailTableViewCell", "PipelineDetailTableViewCell", "PipelineDetailTableViewCell"]
         tblView.loadControl = UILoadControl(target: self, action: #selector(loadMoreResult))
         tblView.loadControl?.heightLimit = 60
-        dateForPage1 = Utility.getDate()
-        getPipelineData()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
+        
+        isAssignToMe = UserDefaults.standard.bool(forKey: kIsAssignToMe)
+        assignToMeSwitch.setOn(isAssignToMe, animated: true)
+        refreshLoanData()
     }
     
     //MARK:- Methods and Actions
+    
+    @objc func refreshLoanData(){
+        self.pageNumber = 1
+        self.dateForPage1 = Utility.getDate()
+        self.expandableCellsIndex.removeAll()
+        self.getPipelineData()
+    }
     
     @objc func loadMoreResult(){
         if (self.pipeLineArray.count % 20 == 0){
@@ -53,21 +63,24 @@ class PipelineViewController: BaseViewController {
         }
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollView.loadControl?.update()
-    }
-    
-    @IBAction func btnFilterTapped(_ sender: UIButton) {
+    @objc func showFiltersPopup(){
         let vc = Utility.getFiltersVC()
         vc.delegate = self
         self.present(vc, animated: false, completion: nil)
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollView.loadControl?.update()
+    }
+    
+    @IBAction func btnFilterTapped(_ sender: UIButton) {
+        showFiltersPopup()
+    }
+    
     @IBAction func assignToMeSwitchChanged(_ sender: UISwitch) {
-        self.pageNumber = 1
-        self.dateForPage1 = Utility.getDate()
-        self.expandableCellsIndex.removeAll()
-        self.getPipelineData()
+        UserDefaults.standard.setValue(sender.isOn ? true : false, forKey: kIsAssignToMe)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationAssignToMeSwitchChanged), object: nil, userInfo: nil)
+        refreshLoanData()
     }
     
     //MARK:- API's
@@ -78,7 +91,7 @@ class PipelineViewController: BaseViewController {
             self.loadingPlaceholderView.cover(self.tblView, animated: true)
         }
         
-        let extraData = "dateTime=\(dateForPage1)&pageNumber=\(pageNumber)&pageSize=20&loanFilter=0&orderBy=\(orderBy)&assignedToMe=\(assignToMeSwitch.isOn ? true : false)"
+        let extraData = "dateTime=\(dateForPage1)&pageNumber=\(pageNumber)&pageSize=20&loanFilter=0&orderBy=\(sortingFilter)&assignedToMe=\(assignToMeSwitch.isOn ? true : false)"
         
         APIRouter.sharedInstance.executeDashboardAPIs(type: .getPipelineList, method: .get, params: nil, extraData: extraData) { status, result, message in
             
@@ -133,6 +146,8 @@ class PipelineViewController: BaseViewController {
                     }
                 }
                 else{
+                    self.pipeLineArray.removeAll()
+                    self.tblView.reloadData()
                     self.showPopup(message: "No data found", popupState: .error, popupDuration: .custom(2)) { reason in
                         
                     }
@@ -246,10 +261,7 @@ extension PipelineViewController: PipelineTableViewCellDelegate{
 
 extension PipelineViewController: FiltersViewControllerDelegate{
     func getOrderby(orderBy: Int) {
-        self.orderBy = orderBy
-        self.pageNumber = 1
-        self.dateForPage1 = Utility.getDate()
-        self.expandableCellsIndex.removeAll()
-        self.getPipelineData()
+        sortingFilter = orderBy
+        refreshLoanData()
     }
 }

@@ -278,7 +278,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pipeline" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SsH-Fg-S93">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pipeline" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SsH-Fg-S93">
                                 <rect key="frame" x="15" y="69" width="71" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
                                 <color key="textColor" name="AppBlackColor"/>
@@ -290,12 +290,11 @@
                                     <constraint firstAttribute="height" constant="40" id="PjE-Lw-hep"/>
                                     <constraint firstAttribute="width" constant="40" id="t2V-ww-QL0"/>
                                 </constraints>
-                                <state key="normal" image="FilterIcon"/>
                                 <connections>
                                     <action selector="btnFilterTapped:" destination="X8g-IS-oli" eventType="touchUpInside" id="QQ7-Dg-X02"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ifs-Mv-Y3f">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ifs-Mv-Y3f">
                                 <rect key="frame" x="348" y="65" width="1" height="32"/>
                                 <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -303,7 +302,7 @@
                                     <constraint firstAttribute="height" constant="32" id="sto-fn-Oh3"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Assigned to me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Cd-8N-Svo">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Assigned to me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Cd-8N-Svo">
                                 <rect key="frame" x="254" y="74" width="84" height="14"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
                                 <color key="textColor" red="0.49411764705882355" green="0.50980392156862742" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -852,8 +851,29 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="cy3-yg-1iQ">
                                         <rect key="frame" x="28" y="105.5" width="358" height="150"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jSt-if-4FR">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VgQ-yy-Zgx">
                                                 <rect key="frame" x="0.0" y="0.0" width="358" height="24"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="most-recent-icon" translatesAutoresizingMaskIntoConstraints="NO" id="nCw-kb-bej">
+                                                        <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Most Recent Activity (Default)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ew-Ic-YEu">
+                                                        <rect key="frame" x="36" y="4" width="185" height="16.5"/>
+                                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
+                                                        <color key="textColor" name="ButtonBlueColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstItem="8Ew-Ic-YEu" firstAttribute="leading" secondItem="nCw-kb-bej" secondAttribute="trailing" constant="12" id="485-OP-Ju6"/>
+                                                    <constraint firstItem="nCw-kb-bej" firstAttribute="leading" secondItem="VgQ-yy-Zgx" secondAttribute="leading" id="6bo-xe-aAj"/>
+                                                    <constraint firstItem="8Ew-Ic-YEu" firstAttribute="centerY" secondItem="nCw-kb-bej" secondAttribute="centerY" id="Iri-im-KCl"/>
+                                                    <constraint firstItem="nCw-kb-bej" firstAttribute="top" secondItem="VgQ-yy-Zgx" secondAttribute="top" id="reH-6g-Hov"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jSt-if-4FR">
+                                                <rect key="frame" x="0.0" y="42" width="358" height="24"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pending-actions-icon" translatesAutoresizingMaskIntoConstraints="NO" id="ZBX-74-m0s">
                                                         <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
@@ -871,27 +891,6 @@
                                                     <constraint firstItem="GWk-Br-Jqr" firstAttribute="leading" secondItem="ZBX-74-m0s" secondAttribute="trailing" constant="12" id="jHT-op-ymc"/>
                                                     <constraint firstItem="ZBX-74-m0s" firstAttribute="leading" secondItem="jSt-if-4FR" secondAttribute="leading" id="sbS-Da-2Ak"/>
                                                     <constraint firstItem="GWk-Br-Jqr" firstAttribute="centerY" secondItem="ZBX-74-m0s" secondAttribute="centerY" id="zqd-Xb-Mrv"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VgQ-yy-Zgx">
-                                                <rect key="frame" x="0.0" y="42" width="358" height="24"/>
-                                                <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="most-recent-icon" translatesAutoresizingMaskIntoConstraints="NO" id="nCw-kb-bej">
-                                                        <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
-                                                    </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Most Recent Activity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ew-Ic-YEu">
-                                                        <rect key="frame" x="36" y="4" width="129.5" height="16.5"/>
-                                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
-                                                        <color key="textColor" name="AppGreyColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                <constraints>
-                                                    <constraint firstItem="8Ew-Ic-YEu" firstAttribute="leading" secondItem="nCw-kb-bej" secondAttribute="trailing" constant="12" id="485-OP-Ju6"/>
-                                                    <constraint firstItem="nCw-kb-bej" firstAttribute="leading" secondItem="VgQ-yy-Zgx" secondAttribute="leading" id="6bo-xe-aAj"/>
-                                                    <constraint firstItem="8Ew-Ic-YEu" firstAttribute="centerY" secondItem="nCw-kb-bej" secondAttribute="centerY" id="Iri-im-KCl"/>
-                                                    <constraint firstItem="nCw-kb-bej" firstAttribute="top" secondItem="VgQ-yy-Zgx" secondAttribute="top" id="reH-6g-Hov"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="evu-RI-MW3">
@@ -970,6 +969,14 @@
                         <outlet property="aToZView" destination="evu-RI-MW3" id="dQv-aD-pto"/>
                         <outlet property="bottomViewHeightConstraint" destination="FbY-aG-7Hu" id="qHe-Z5-NtY"/>
                         <outlet property="btnClose" destination="Fd4-4H-v2d" id="kiS-sy-dMo"/>
+                        <outlet property="iconAtoZ" destination="RAr-lD-TC5" id="d8W-zt-8vC"/>
+                        <outlet property="iconPendingActions" destination="ZBX-74-m0s" id="YNI-y1-fuu"/>
+                        <outlet property="iconRecentActivity" destination="nCw-kb-bej" id="42p-UA-0zQ"/>
+                        <outlet property="iconZtoA" destination="hrr-YE-r4i" id="fWR-gA-hLq"/>
+                        <outlet property="lblAtoZ" destination="BnY-Wo-gZf" id="0Qg-s9-54u"/>
+                        <outlet property="lblMostRecentActivity" destination="8Ew-Ic-YEu" id="eZg-Jd-6gN"/>
+                        <outlet property="lblPendingActions" destination="GWk-Br-Jqr" id="ICa-Xe-QM2"/>
+                        <outlet property="lblZtoA" destination="tVJ-Rr-7Je" id="zBa-RZ-MaH"/>
                         <outlet property="mainView" destination="a0b-Vg-PGy" id="2i5-bp-bNF"/>
                         <outlet property="pendingActivityView" destination="jSt-if-4FR" id="PAt-iQ-M21"/>
                         <outlet property="recentActivityView" destination="VgQ-yy-Zgx" id="lmU-lf-eas"/>
@@ -1091,7 +1098,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pipeline" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ih-zu-sGX">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pipeline" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ih-zu-sGX">
                                 <rect key="frame" x="15" y="69" width="71" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
                                 <color key="textColor" name="AppBlackColor"/>
@@ -1103,12 +1110,11 @@
                                     <constraint firstAttribute="height" constant="40" id="2Uy-xw-ltu"/>
                                     <constraint firstAttribute="width" constant="40" id="CAa-ra-DEk"/>
                                 </constraints>
-                                <state key="normal" image="FilterIcon"/>
                                 <connections>
                                     <action selector="btnFilterTapped:" destination="0tP-EC-q0V" eventType="touchUpInside" id="pGo-L3-6cr"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2O6-1T-wrX">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2O6-1T-wrX">
                                 <rect key="frame" x="348" y="65" width="1" height="32"/>
                                 <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -1116,7 +1122,7 @@
                                     <constraint firstAttribute="width" constant="1" id="cUn-lC-eRU"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Assigned to me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0wp-81-lAW">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Assigned to me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0wp-81-lAW">
                                 <rect key="frame" x="254" y="74" width="84" height="14"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
                                 <color key="textColor" red="0.4941176471" green="0.50980392159999999" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1175,7 +1181,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pipeline" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dM5-Gw-KUj">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pipeline" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dM5-Gw-KUj">
                                 <rect key="frame" x="15" y="69" width="71" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
                                 <color key="textColor" name="AppBlackColor"/>
@@ -1187,12 +1193,11 @@
                                     <constraint firstAttribute="height" constant="40" id="Gb5-ON-MTN"/>
                                     <constraint firstAttribute="width" constant="40" id="cA8-AU-xZK"/>
                                 </constraints>
-                                <state key="normal" image="FilterIcon"/>
                                 <connections>
                                     <action selector="btnFilterTapped:" destination="UyY-Tv-LKf" eventType="touchUpInside" id="8pu-8y-W9B"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aQT-58-6cB">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aQT-58-6cB">
                                 <rect key="frame" x="348" y="65" width="1" height="32"/>
                                 <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -1200,7 +1205,7 @@
                                     <constraint firstAttribute="height" constant="32" id="vev-CN-4Cd"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Assigned to me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oqh-1K-XKx">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Assigned to me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oqh-1K-XKx">
                                 <rect key="frame" x="254" y="74" width="84" height="14"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
                                 <color key="textColor" red="0.4941176471" green="0.50980392159999999" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1256,7 +1261,6 @@
         <image name="Call-Icon" width="24" height="24"/>
         <image name="CloseIcon" width="12" height="12"/>
         <image name="Conversations-icon" width="24" height="24"/>
-        <image name="FilterIcon" width="24.125999450683594" height="23"/>
         <image name="FloatingButtonApplicationIcon" width="22.020000457763672" height="21.158000946044922"/>
         <image name="FloatingButtonContactIcon" width="20.540000915527344" height="22.496000289916992"/>
         <image name="HomeIcon" width="23.979000091552734" height="24"/>

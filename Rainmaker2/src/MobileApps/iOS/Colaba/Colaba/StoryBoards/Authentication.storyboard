@@ -41,10 +41,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="face_logo" translatesAutoresizingMaskIntoConstraints="NO" id="orN-RK-A5i">
-                                <rect key="frame" x="62.5" y="256" width="250" height="250"/>
+                                <rect key="frame" x="99.5" y="293" width="176.5" height="176.5"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6La-iu-5ex">
-                                <rect key="frame" x="106" y="511" width="163" height="31"/>
+                                <rect key="frame" x="106" y="509.5" width="163" height="31"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="16"/>
                                 <state key="normal" title="Sign in with Password">
                                     <color key="titleColor" red="0.49411764705882355" green="0.50980392156862742" blue="0.61960784313725492" alpha="1" colorSpace="calibratedRGB"/>
@@ -76,8 +76,8 @@
                             <constraint firstItem="aUp-mp-CYp" firstAttribute="top" secondItem="SVx-7Q-LQf" secondAttribute="bottom" constant="65" id="e7O-lA-ioW"/>
                             <constraint firstItem="aUp-mp-CYp" firstAttribute="centerX" secondItem="viN-IK-QJj" secondAttribute="centerX" id="ebA-yv-T2T"/>
                             <constraint firstItem="IGd-wt-QyP" firstAttribute="centerX" secondItem="6La-iu-5ex" secondAttribute="centerX" id="gO6-Lu-d0w"/>
-                            <constraint firstItem="orN-RK-A5i" firstAttribute="top" secondItem="etj-OJ-fbP" secondAttribute="bottom" constant="25" id="hX4-UH-SHc"/>
-                            <constraint firstItem="6La-iu-5ex" firstAttribute="top" secondItem="orN-RK-A5i" secondAttribute="bottom" constant="5" id="kMF-fD-TAe"/>
+                            <constraint firstItem="orN-RK-A5i" firstAttribute="top" secondItem="etj-OJ-fbP" secondAttribute="bottom" constant="62" id="hX4-UH-SHc"/>
+                            <constraint firstItem="6La-iu-5ex" firstAttribute="top" secondItem="orN-RK-A5i" secondAttribute="bottom" constant="40" id="kMF-fD-TAe"/>
                             <constraint firstItem="6La-iu-5ex" firstAttribute="centerX" secondItem="orN-RK-A5i" secondAttribute="centerX" id="wjM-yN-axW"/>
                         </constraints>
                     </view>
@@ -1062,7 +1062,7 @@ send you a verification code.</string>
         <image name="emailIcon" width="19.5" height="13.5"/>
         <image name="eyeIcon" width="22" height="15"/>
         <image name="faceIdIcon" width="17" height="17"/>
-        <image name="face_logo" width="250" height="250"/>
+        <image name="face_logo" width="176.60800170898438" height="176.60800170898438"/>
         <image name="forgotpasswordbottomIcon" width="181.53399658203125" height="179.18600463867188"/>
         <image name="forgotpasswordtopIcon" width="173.22799682617188" height="184.927001953125"/>
         <image name="loginBottomImage" width="304.3599853515625" height="275.05899047851562"/>
