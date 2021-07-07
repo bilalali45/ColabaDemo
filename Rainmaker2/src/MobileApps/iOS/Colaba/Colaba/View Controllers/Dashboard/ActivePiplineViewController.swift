@@ -22,6 +22,7 @@ class ActivePipelineViewController: BaseViewController {
     
     var dateForPage1 = ""
     var pageNumber = 1
+    var isAssignToMe = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +37,10 @@ class ActivePipelineViewController: BaseViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
+        
+        isAssignToMe = UserDefaults.standard.bool(forKey: kNotificationIsAssignToMe)
+        assignToMeSwitch.setOn(isAssignToMe, animated: true)
         refreshLoanData()
     }
     
@@ -70,6 +74,7 @@ class ActivePipelineViewController: BaseViewController {
     }
     
     @IBAction func assignToMeSwitchChanged(_ sender: UISwitch) {
+        UserDefaults.standard.setValue(sender.isOn ? true : false, forKey: kNotificationIsAssignToMe)
         refreshLoanData()
     }
     

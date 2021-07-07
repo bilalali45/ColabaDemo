@@ -24,4 +24,5 @@ let kIsUserRegisteredWithBiometric = "UserRegisteredWithBiometric"
 let kDontAsk2FAValue = "dontAsk2FAValue"
 let kNotificationPopupViewCloseTapped = "NotificationPopupViewCloseTapped"
 let kNotificationRefreshCounter = "NotificationRefreshCounter"
+let kNotificationIsAssignToMe = "NotificationIsAssignToMe"
 var sortingFilter = 1
