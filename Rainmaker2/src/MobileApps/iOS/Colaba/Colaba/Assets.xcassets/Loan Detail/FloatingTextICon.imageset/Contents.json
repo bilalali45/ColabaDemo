@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "flaoting-text-icon.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

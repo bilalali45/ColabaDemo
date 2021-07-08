@@ -43,6 +43,11 @@
 		23C2448C2689E53F00EED1D0 /* ActivePiplineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C2448B2689E53F00EED1D0 /* ActivePiplineViewController.swift */; };
 		23C2448E2689E55E00EED1D0 /* InActivePipelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C2448D2689E55E00EED1D0 /* InActivePipelineViewController.swift */; };
 		23C244902689E89300EED1D0 /* SearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C2448F2689E89300EED1D0 /* SearchModel.swift */; };
+		23DBAD202696EB2D00119680 /* PipelineDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23DBAD1F2696EB2D00119680 /* PipelineDetail.storyboard */; };
+		23DBAD222696EBA800119680 /* LoanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DBAD212696EBA800119680 /* LoanDetailViewController.swift */; };
+		23DBAD242697149300119680 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DBAD232697149300119680 /* OverviewViewController.swift */; };
+		23DBAD26269714A800119680 /* ApplicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DBAD25269714A800119680 /* ApplicationViewController.swift */; };
+		23DBAD28269714B300119680 /* DocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DBAD27269714B300119680 /* DocumentsViewController.swift */; };
 		710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D032E268DC56500A13E63 /* NotificationModel.swift */; };
 		7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */; };
 		7113F51F26568E3B0066E179 /* Home.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7113F51E26568E3B0066E179 /* Home.svg */; };
@@ -133,6 +138,11 @@
 		23C2448B2689E53F00EED1D0 /* ActivePiplineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivePiplineViewController.swift; sourceTree = "<group>"; };
 		23C2448D2689E55E00EED1D0 /* InActivePipelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InActivePipelineViewController.swift; sourceTree = "<group>"; };
 		23C2448F2689E89300EED1D0 /* SearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModel.swift; sourceTree = "<group>"; };
+		23DBAD1F2696EB2D00119680 /* PipelineDetail.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PipelineDetail.storyboard; sourceTree = "<group>"; };
+		23DBAD212696EBA800119680 /* LoanDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanDetailViewController.swift; sourceTree = "<group>"; };
+		23DBAD232697149300119680 /* OverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
+		23DBAD25269714A800119680 /* ApplicationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationViewController.swift; sourceTree = "<group>"; };
+		23DBAD27269714B300119680 /* DocumentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsViewController.swift; sourceTree = "<group>"; };
 		25C6C1D772F13896700CDB1C /* Pods-Colaba.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Colaba.release.xcconfig"; path = "Target Support Files/Pods-Colaba/Pods-Colaba.release.xcconfig"; sourceTree = "<group>"; };
 		3D986CBDBB7995778F877F6F /* Pods-ColabaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ColabaTests.debug.xcconfig"; path = "Target Support Files/Pods-ColabaTests/Pods-ColabaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		710D032E268DC56500A13E63 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
@@ -308,6 +318,17 @@
 			path = Presenter;
 			sourceTree = "<group>";
 		};
+		23DBAD1E2696EAAA00119680 /* Pipeline Detail */ = {
+			isa = PBXGroup;
+			children = (
+				23DBAD212696EBA800119680 /* LoanDetailViewController.swift */,
+				23DBAD232697149300119680 /* OverviewViewController.swift */,
+				23DBAD25269714A800119680 /* ApplicationViewController.swift */,
+				23DBAD27269714B300119680 /* DocumentsViewController.swift */,
+			);
+			path = "Pipeline Detail";
+			sourceTree = "<group>";
+		};
 		3FAC853161B2A86A8004F35B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -408,6 +429,7 @@
 			children = (
 				7186ACB52653B25A00E740D3 /* Main.storyboard */,
 				7186ACED2653C5CE00E740D3 /* Authentication.storyboard */,
+				23DBAD1F2696EB2D00119680 /* PipelineDetail.storyboard */,
 			);
 			path = StoryBoards;
 			sourceTree = "<group>";
@@ -415,6 +437,7 @@
 		7186ACE62653C56C00E740D3 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				23DBAD1E2696EAAA00119680 /* Pipeline Detail */,
 				2368D6532667DA3900D5C1C5 /* Dashboard */,
 				7186ACF22653C61700E740D3 /* Authentication */,
 			);
@@ -610,6 +633,7 @@
 				23B238BC2679E05200508449 /* SearchResultTableViewCell.xib in Resources */,
 				7186ACB72653B25A00E740D3 /* Main.storyboard in Resources */,
 				23A56C602686152A005CE6F4 /* Rubik-LightItalic.ttf in Resources */,
+				23DBAD202696EB2D00119680 /* PipelineDetail.storyboard in Resources */,
 				2397AF682677A60A007A1A45 /* PipelineDetailTableViewCell.xib in Resources */,
 				23B238C02679F44000508449 /* NotificationsTableViewCell.xib in Resources */,
 				7186AD0A2653C77B00E740D3 /* Rubik-Medium.ttf in Resources */,
@@ -746,11 +770,13 @@
 				7186ACFC2653C68200E740D3 /* FingerPrintViewController.swift in Sources */,
 				7160CA83267338F90061ACD5 /* NotificationViewController.swift in Sources */,
 				23C244902689E89300EED1D0 /* SearchModel.swift in Sources */,
+				23DBAD222696EBA800119680 /* LoanDetailViewController.swift in Sources */,
 				2368D6552667DA5900D5C1C5 /* BaseViewController.swift in Sources */,
 				7186AD512653CD3500E740D3 /* ExtensionOfViewController.swift in Sources */,
 				7126B7092657F1910053903B /* BiometricIDAuth.swift in Sources */,
 				7186AD5B2653CD6800E740D3 /* Utility.swift in Sources */,
 				23C244882689E3E400EED1D0 /* ActiveLoanModel.swift in Sources */,
+				23DBAD26269714A800119680 /* ApplicationViewController.swift in Sources */,
 				23B238BF2679F44000508449 /* NotificationsTableViewCell.swift in Sources */,
 				7160CA8D26733B8C0061ACD5 /* MainTabBarViewController.swift in Sources */,
 				2368D6572667DA6700D5C1C5 /* DashboardViewController.swift in Sources */,
@@ -770,6 +796,7 @@
 				236EA1AC26789EAC00C2F8B5 /* PipelineMoreViewController.swift in Sources */,
 				236B59D1266504060001F416 /* UserModel.swift in Sources */,
 				711D33282654F1710091BC18 /* Constant.swift in Sources */,
+				23DBAD242697149300119680 /* OverviewViewController.swift in Sources */,
 				23B238BB2679E05200508449 /* SearchResultTableViewCell.swift in Sources */,
 				7186AD6F2653ED2D00E740D3 /* ForgotPasswordViewController.swift in Sources */,
 				7186AD7E26540CEB00E740D3 /* CodeViewController.swift in Sources */,
@@ -780,6 +807,7 @@
 				23A56C592685B017005CE6F4 /* Manager.swift in Sources */,
 				23C2448A2689E3F800EED1D0 /* InActiveLoanModel.swift in Sources */,
 				7148C6B92655500B00E1C216 /* ExtensionOfString.swift in Sources */,
+				23DBAD28269714B300119680 /* DocumentsViewController.swift in Sources */,
 				7186AD012653C6AB00E740D3 /* LoginViewController.swift in Sources */,
 				7186ACF42653C66100E740D3 /* FaceRecognitionViewController.swift in Sources */,
 				7148C6B126554ADE00E1C216 /* Validation.swift in Sources */,

@@ -41,8 +41,6 @@ class DashboardViewController: BaseViewController {
         let tabItems = ["All Loans", "Active Loans", "Inactive Loans"]
         let carbonTabSwipeNavigation = CarbonTabSwipeNavigation(items: tabItems, delegate: self)
         
-        
-        
         let headerView = UIView(frame: CGRect(x: 0, y: (carbonTabSwipeNavigation.carbonSegmentedControl?.frame.origin.y)! + 41, width: self.view.bounds.width, height: 59))
         headerView.backgroundColor = .clear
         

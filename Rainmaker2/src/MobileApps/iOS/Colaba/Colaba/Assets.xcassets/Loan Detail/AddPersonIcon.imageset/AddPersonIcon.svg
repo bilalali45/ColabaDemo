@@ -1,0 +1,6 @@
+<svg id="person_add_black_24dp" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <path id="Path_11145" data-name="Path 11145" d="M0,0H28V28H0Z" fill="none"/>
+  <path id="Path_11146" data-name="Path 11146" d="M16,16c-3.138,0-6.732,1.493-7,2.333H23C22.767,17.5,19.15,16,16,16Z" transform="translate(1.5 2.667)" fill="#7e829e" opacity="0.3"/>
+  <circle id="Ellipse_165" data-name="Ellipse 165" cx="2.333" cy="2.333" r="2.333" transform="translate(15.167 7)" fill="#7e829e" opacity="0.3"/>
+  <path id="Path_11147" data-name="Path 11147" d="M17.333,13.333a4.667,4.667,0,1,0-4.667-4.667A4.665,4.665,0,0,0,17.333,13.333Zm0-7A2.333,2.333,0,1,1,15,8.667,2.34,2.34,0,0,1,17.333,6.333Zm0,9.333C14.218,15.667,8,17.23,8,20.333v2.333H26.667V20.333C26.667,17.23,20.448,15.667,17.333,15.667Zm-7,4.667c.257-.84,3.862-2.333,7-2.333s6.767,1.505,7,2.333Zm-3.5-3.5v-3.5h3.5V11h-3.5V7.5H4.5V11H1v2.333H4.5v3.5Z" transform="translate(0.167 0.667)" fill="#7e829e"/>
+</svg>
