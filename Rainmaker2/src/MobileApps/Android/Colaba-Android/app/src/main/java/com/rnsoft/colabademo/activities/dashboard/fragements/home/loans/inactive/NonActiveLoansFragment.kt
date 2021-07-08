@@ -13,6 +13,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.NonActiveFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,6 +70,26 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
             this.adapter =nonActiveAdapter
         }
 
+
+
+        val token: TypeToken<ArrayList<LoanItem>> = object : TypeToken<ArrayList<LoanItem>>() {}
+        val gson = Gson()
+        if(sharedPreferences.contains(AppConstant.oldNonActiveLoans)) {
+            sharedPreferences.getString(AppConstant.oldNonActiveLoans, "")?.let { oldLoans ->
+                //val list: List<LoanItem> = gson.fromJson(oldLoans, ceptype)
+                //Log.e("convered-", list.toString())
+                val oldJsonList: ArrayList<LoanItem> = gson.fromJson(oldLoans, token.type)
+                Log.e("oldJsonList-", oldJsonList.toString())
+                val oldAdapter = LoansAdapter(oldJsonList , this@NonActiveLoansFragment)
+                nonActiveRecycler.adapter = oldAdapter
+                oldAdapter.notifyDataSetChanged()
+                shimmerContainer.stopShimmer()
+                shimmerContainer.isVisible = false
+            }
+        }
+
+
+
         //loading.visibility = View.VISIBLE
         loanViewModel.nonActiveLoansArrayList.observe(viewLifecycleOwner, Observer {
             rowLoading?.visibility = View.INVISIBLE
@@ -76,6 +98,7 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
                 shimmerContainer.isVisible = false
                 shimmerContainer.removeAllViews()
                 val lastSize = nonActiveLoansList.size
+                nonActiveRecycler.adapter = nonActiveAdapter
                 nonActiveLoansList.addAll(it)
                 nonActiveAdapter.notifyDataSetChanged()
                 // loansAdapter.notifyItemRangeInserted(lastSize,lastSize+allLoansArrayList.size-1 )

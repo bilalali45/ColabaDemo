@@ -228,8 +228,8 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
 
         }
         sharedPreferences.getString(AppConstant.token,"")?.let {
-            //if(deleteArrayList.size>0)
-                //dashBoardViewModel.deleteNotifications(it, deleteArrayList)
+            if(deleteArrayList.size>0)
+                dashBoardViewModel.deleteNotifications(it, deleteArrayList)
         }
         super.onStop()
     }

@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
+import com.google.gson.Gson
 import com.rnsoft.colabademo.database.tables.AllLoanTable
 import java.lang.Exception
 import javax.inject.Inject
@@ -20,9 +21,6 @@ class LoanRepo @Inject constructor(
     :Result<ArrayList<LoanItem>>
     {
 
-
-
-
         val loansResult = loanDataSource.loadAllLoans(token = token ,  dateTime = dateTime,
             pageNumber = pageNumber, pageSize = pageSize, loanFilter = loanFilter,
             orderBy = orderBy, assignedToMe = assignedToMe)
@@ -33,15 +31,27 @@ class LoanRepo @Inject constructor(
         return loansResult
     }
 
-    private suspend fun storeLoansResultToRoom(loanResult: ArrayList<LoanItem>, repoLoanFilter: Int){
-        if(repoLoanFilter == 0 && !AppSetting.hasLoanApiDataLoaded)
-            AppSetting.hasLoanApiDataLoaded = fillLoanTable(loanResult , repoLoanFilter)
-        else if(repoLoanFilter == 1 && !AppSetting.hasActiveLoanApiDataLoaded)
-            AppSetting.hasActiveLoanApiDataLoaded = fillLoanTable(loanResult , repoLoanFilter)
-        else if(repoLoanFilter == 2 && !AppSetting.hasNonActiveLoanApiDataLoaded)
-            AppSetting.hasNonActiveLoanApiDataLoaded = fillLoanTable(loanResult, repoLoanFilter)
+
+    private fun storeLoansResultToRoom(loanResult: ArrayList<LoanItem>, repoLoanFilter: Int){
+        if(repoLoanFilter == 0 && !AppSetting.hasLoanApiDataLoaded) {
+            val loanResultString = Gson().toJson(loanResult)
+            preferenceEditor.putString(AppConstant.oldLoans, loanResultString).apply()
+            AppSetting.hasLoanApiDataLoaded = true
+        }
+        else if(repoLoanFilter == 1 && !AppSetting.hasActiveLoanApiDataLoaded) {
+            val loanResultString = Gson().toJson(loanResult)
+            preferenceEditor.putString(AppConstant.oldActiveLoans, loanResultString).apply()
+            AppSetting.hasActiveLoanApiDataLoaded = true
+        }
+        else if(repoLoanFilter == 2 && !AppSetting.hasNonActiveLoanApiDataLoaded) {
+            val loanResultString = Gson().toJson(loanResult)
+            preferenceEditor.putString(AppConstant.oldNonActiveLoans, loanResultString).apply()
+            AppSetting.hasNonActiveLoanApiDataLoaded = true
+        }
+
     }
 
+    /*
     private suspend fun fillLoanTable(loanResult:ArrayList<LoanItem>, repoLoanFilter:Int) :Boolean{
         try {
             // first delete all loans w.r.t loan filter then store latest ones to cache....
@@ -123,6 +133,8 @@ class LoanRepo @Inject constructor(
 
         return  loanItemList
     }
+
+     */
 
 
 

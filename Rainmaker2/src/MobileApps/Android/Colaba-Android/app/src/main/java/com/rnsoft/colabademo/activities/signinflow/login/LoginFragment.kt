@@ -10,6 +10,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.appcompat.widget.*
 import androidx.fragment.app.Fragment
@@ -38,7 +39,7 @@ class LoginFragment : Fragment() {
     private lateinit var biometricSwitch: SwitchCompat
     private lateinit var forgotPasswordLink: AppCompatTextView
     private lateinit var loginButton: AppCompatButton
-
+    private lateinit var imageView5: ImageView
 
 
     private lateinit var passwordImageView: AppCompatImageView
@@ -64,6 +65,12 @@ class LoginFragment : Fragment() {
         passwordImageView = root.findViewById<AppCompatImageView>(R.id.passwordImageShow)
         passwordHideImageView = root.findViewById<AppCompatImageView>(R.id.passwordHideImageShow)
         biometricSwitch = root.findViewById<SwitchCompat>(R.id.switch1)
+
+
+        imageView5 =  root.findViewById<ImageView>(R.id.imageView5)
+        imageView5.setOnClickListener{
+            navigateToDashBoard(null)
+        }
 
         forgotPasswordLink = root.findViewById<AppCompatTextView>(R.id.forgotPasswordLink)
         loginButton = root.findViewById<AppCompatButton>(R.id.loginBtn)
@@ -130,7 +137,7 @@ class LoginFragment : Fragment() {
         emailError.visibility = View.GONE
     }
 
-    private fun navigateToDashBoard(model: LoginResponse) {
+    private fun navigateToDashBoard(model: LoginResponse?) {
         //val displayName = model.token
         val intent = Intent(requireActivity(), DashBoardActivity::class.java)
         startActivity(intent)

@@ -1,7 +1,6 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
-import com.google.gson.Gson
 import java.io.IOException
 import javax.inject.Inject
 
@@ -47,16 +46,11 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
         }
     }
 
-    suspend fun readNotifications(token:String,ids:ArrayList<Int>):Result<Any>{
+    suspend fun readNotifications(token:String , ids:ArrayList<Int>):Result<Any>{
         return try {
             val newToken = "Bearer $token"
-
-            val test = Gson()
-            val json: String = test.toJson(ids)
-
-            val someString = "{ 'ids':[10093] }"
-
-            val response = serverApi.readNotifications(newToken, ids)
+            val putParams = PutParameters(ids)
+            val response = serverApi.readNotifications(newToken, putParams)
             Log.e("read-Notifications-", response.toString())
             if(response.isSuccessful)
                 Result.Success(response)
@@ -73,7 +67,8 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
     suspend fun seenNotifications(token:String,ids:ArrayList<Int>):Result<Any>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.seenNotifications(newToken,ids)
+            val putParams = PutParameters(ids)
+            val response = serverApi.seenNotifications(newToken , putParams)
             Log.e("seen-Notifications-", response.toString())
             if(response.isSuccessful)
                 Result.Success(response)
@@ -90,7 +85,8 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
     suspend fun deleteNotifications(token:String,ids:ArrayList<Int>):Result<Any>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.deleteNotifications(newToken, ids)
+            val putParams = PutParameters(ids)
+            val response = serverApi.deleteNotifications(newToken, putParams)
             Log.e("delete-Notifications-", response.toString())
             if(response.isSuccessful)
                 Result.Success(response)

@@ -15,6 +15,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.ActiveLoanFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,7 +71,23 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
             this.setHasFixedSize(true)
             activeAdapter = LoansAdapter(activeLoansList, this@ActiveLoansFragment)
             this.adapter = activeAdapter
+        }
 
+
+        val token: TypeToken<ArrayList<LoanItem>> = object : TypeToken<ArrayList<LoanItem>>() {}
+        val gson = Gson()
+        if(sharedPreferences.contains(AppConstant.oldActiveLoans)) {
+            sharedPreferences.getString(AppConstant.oldActiveLoans, "")?.let { oldLoans ->
+                //val list: List<LoanItem> = gson.fromJson(oldLoans, ceptype)
+                //Log.e("convered-", list.toString())
+                val oldJsonList: ArrayList<LoanItem> = gson.fromJson(oldLoans, token.type)
+                Log.e("oldJsonList-", oldJsonList.toString())
+                val oldAdapter = LoansAdapter(oldJsonList , this@ActiveLoansFragment)
+                activeRecycler.adapter = oldAdapter
+                oldAdapter.notifyDataSetChanged()
+                shimmerContainer.stopShimmer()
+                shimmerContainer.isVisible = false
+            }
         }
 
 
@@ -97,6 +115,7 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
                 //val lastSize = activeLoansList.size
                 shimmerContainer.stopShimmer()
                 shimmerContainer.isVisible = false
+                activeRecycler.adapter = activeAdapter
                 activeLoansList.addAll(it)
                 activeAdapter.notifyDataSetChanged()
             }
@@ -106,7 +125,7 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
 
         loadDataFromDatabase(loanFilter)
 
-        loadActiveApplications()
+
 
         return view
     }
@@ -135,6 +154,10 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
     override fun onResume() {
         super.onResume()
         rowLoading?.visibility = View.INVISIBLE
+        activeLoansList.clear()
+        activeAdapter.notifyDataSetChanged()
+        pageNumber = 1
+        loadActiveApplications()
     }
 
     override fun onStart() {

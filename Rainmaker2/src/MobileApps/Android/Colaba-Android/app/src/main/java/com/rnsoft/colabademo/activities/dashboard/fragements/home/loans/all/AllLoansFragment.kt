@@ -9,16 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.FragmentLoanBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -82,7 +84,7 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
             // set the custom adapter to the RecyclerView
             //borrowList = Borrower.customersList(requireContext())
 
-            this.adapter = loansAdapter
+            //this.adapter = loansAdapter
            //loansAdapter = LoansAdapter(allLoansArrayList , this@AllLoansFragment)
         }
 
@@ -99,6 +101,25 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
         }
         */
 
+        //val ceptype: Type = object : TypeToken<ArrayList<LoanItem?>?>() {}.type
+
+
+        val token: TypeToken<ArrayList<LoanItem>> = object : TypeToken<ArrayList<LoanItem>>() {}
+        val gson = Gson()
+        if(sharedPreferences.contains(AppConstant.oldLoans)) {
+            sharedPreferences.getString(AppConstant.oldLoans, "")?.let { oldLoans ->
+                //val list: List<LoanItem> = gson.fromJson(oldLoans, ceptype)
+                //Log.e("convered-", list.toString())
+                val oldJsonList: ArrayList<LoanItem> = gson.fromJson(oldLoans, token.type)
+                Log.e("oldJsonList-", oldJsonList.toString())
+                val oldAdapter = LoansAdapter(oldJsonList , this@AllLoansFragment)
+                loanRecycleView?.adapter = oldAdapter
+                oldAdapter.notifyDataSetChanged()
+                shimmerContainer.stopShimmer()
+                shimmerContainer.isVisible = false
+            }
+        }
+
 
 
 
@@ -113,6 +134,7 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
             if(it.size>0) {
                 shimmerContainer.stopShimmer()
                 shimmerContainer.isVisible = false
+                loanRecycleView?.adapter = loansAdapter
                 val lastSize = allLoansArrayList.size
                 allLoansArrayList.addAll(it)
                 loansAdapter.notifyDataSetChanged()
@@ -143,6 +165,7 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
         loanRecycleView?.addOnScrollListener(scrollListener)
 
 
+        /*
         loanViewModel.databaseLoansArrayList.observe(viewLifecycleOwner, {
             rowLoading?.visibility = View.INVISIBLE
             shimmerContainer.stopShimmer()
@@ -151,6 +174,7 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
             loansAdapter.notifyDataSetChanged()
             loanViewModel.databaseLoansArrayList.removeObservers(this)
         })
+        */
 
         //if(hasLoanApiDataLoaded)
         //loadDataFromDatabase(loanFilter)

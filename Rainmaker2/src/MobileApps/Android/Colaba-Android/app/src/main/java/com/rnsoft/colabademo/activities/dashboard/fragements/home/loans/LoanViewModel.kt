@@ -9,6 +9,8 @@ import com.rnsoft.colabademo.activities.signinflow.phone.events.OtpSentEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
@@ -114,8 +116,10 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
     }
 
 
+
     fun getLoanDataFromDatabase(loanFilter:Int)
     {
+        /*
         viewModelScope.launch(Dispatchers.IO) {
             val result = loanRepo.getLoanDataFromRoom(loanFilter)
             if (result.size>0) {
@@ -123,8 +127,9 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                     _databaseLoansArrayList.value = result
                 }
             }
-
         }
+
+         */
     }
 
     fun <T> MutableLiveData<T>.forceRefresh() {

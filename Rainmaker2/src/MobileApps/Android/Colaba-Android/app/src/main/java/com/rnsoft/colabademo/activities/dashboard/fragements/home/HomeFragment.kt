@@ -117,6 +117,10 @@ class HomeFragment : Fragment() {
                 Log.e("Selected_Page", position.toString())
                 selectedText = tabArray[position]
                 selectedPosition = position
+                val test2:Fragment? = requireActivity().supportFragmentManager.findFragmentByTag("f${position}")
+                if(test2!=null){
+                    baseFragment = test2 as BaseFragment
+                }
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -130,9 +134,6 @@ class HomeFragment : Fragment() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
                     selectedText = it.text as String
-                    Log.e("tab.position==",tab.position.toString())
-                   // loanFilterInterface = adapter.fragmentHashMap[tab.position] as LoanFilterInterface
-
                     viewPager.adapter
                     viewPager.currentItem
                 }
@@ -146,19 +147,16 @@ class HomeFragment : Fragment() {
         assignToMeSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             //assignToMeSwitch.isClickable = false
             Log.e("selectedText-", selectedText)
-            baseFragment = pageAdapter.fragmentHashMap[selectedPosition] as BaseFragment
-            baseFragment.setAssignToMe(isChecked)
-            assignToMeSwitch.postDelayed(1500) {
+            baseFragment?.setAssignToMe(isChecked)
+            //assignToMeSwitch.postDelayed(1500) {
                 //assignToMeSwitch.isClickable = true
-            }
 
-
+            //}
         }
 
         filterImageView.setOnClickListener{
-            baseFragment = pageAdapter.fragmentHashMap[selectedPosition] as BaseFragment
-            baseFragment.let {
-                CustomFilterBottomSheetDialogFragment.newInstance(baseFragment).show(childFragmentManager, CustomFilterBottomSheetDialogFragment::class.java.canonicalName)
+            baseFragment?.let {
+                CustomFilterBottomSheetDialogFragment.newInstance(it).show(childFragmentManager, CustomFilterBottomSheetDialogFragment::class.java.canonicalName)
             }
 
             //FilterBottomSheetDialogFragment.newInstance().show(childFragmentManager, FilterBottomSheetDialogFragment::class.java.canonicalName)
@@ -171,7 +169,7 @@ class HomeFragment : Fragment() {
     }
 
     //private var loanFilterInterface:LoanFilterInterface?=null
-    private var baseFragment:BaseFragment = AllLoansFragment()
+    private var baseFragment:BaseFragment? = null
 
     private fun setGreetingMessageOnTop(){
         var greetingString = AppSetting.returnGreetingString()
