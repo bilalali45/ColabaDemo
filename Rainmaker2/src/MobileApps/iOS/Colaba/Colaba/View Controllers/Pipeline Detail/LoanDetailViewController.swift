@@ -7,6 +7,7 @@
 
 import UIKit
 import CarbonKit
+import MessageUI
 
 class LoanDetailViewController: BaseViewController {
 
@@ -119,6 +120,29 @@ class LoanDetailViewController: BaseViewController {
         }
     }
     
+    private func createEmailUrl(to: String, subject: String, body: String) -> URL? {
+        let subjectEncoded = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let bodyEncoded = body.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        
+        let gmailUrl = URL(string: "googlegmail://co?to=\(to)&subject=\(subjectEncoded)&body=\(bodyEncoded)")
+        let outlookUrl = URL(string: "ms-outlook://compose?to=\(to)&subject=\(subjectEncoded)")
+        let yahooMail = URL(string: "ymail://mail/compose?to=\(to)&subject=\(subjectEncoded)&body=\(bodyEncoded)")
+        let sparkUrl = URL(string: "readdle-spark://compose?recipient=\(to)&subject=\(subjectEncoded)&body=\(bodyEncoded)")
+        let defaultUrl = URL(string: "mailto:\(to)?subject=\(subjectEncoded)&body=\(bodyEncoded)")
+        
+        if let gmailUrl = gmailUrl, UIApplication.shared.canOpenURL(gmailUrl) {
+            return gmailUrl
+        } else if let outlookUrl = outlookUrl, UIApplication.shared.canOpenURL(outlookUrl) {
+            return outlookUrl
+        } else if let yahooMail = yahooMail, UIApplication.shared.canOpenURL(yahooMail) {
+            return yahooMail
+        } else if let sparkUrl = sparkUrl, UIApplication.shared.canOpenURL(sparkUrl) {
+            return sparkUrl
+        }
+        
+        return defaultUrl
+    }
+    
     @IBAction func btnBackTapped(_ sender: UIButton) {
         self.dismissVC()
     }
@@ -132,16 +156,42 @@ class LoanDetailViewController: BaseViewController {
     }
     
     @IBAction func btnCallTapped(_ sender: UIButton) {
-        
+        if let url = URL(string: "tel://4444444444)") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+         }
     }
     
     @IBAction func btnSmsTapped(_ sender: UIButton) {
-        
+        let sms: String = "sms:+1234567890&body=Colaba"
+        if let strURL = sms.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed){
+            if let smsURL = URL(string: strURL){
+                UIApplication.shared.open(smsURL, options: [:], completionHandler: nil)
+            }
+        }
     }
     
     @IBAction func btnEmailTapped(_ sender: UIButton) {
         
+        let recipientEmail = "murtaza@gmail.com"
+        let subject = "Colaba Email"
+        let body = "Testing Email"
+                    
+        // Show default mail composer
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients([recipientEmail])
+            mail.setSubject(subject)
+            mail.setMessageBody(body, isHTML: false)
+            
+            present(mail, animated: true)
+        
+        // Show third party email composer if default Mail app is not present
+        } else if let emailUrl = createEmailUrl(to: recipientEmail, subject: subject, body: body) {
+            UIApplication.shared.open(emailUrl)
+        }
     }
+                
 }
 
 extension LoanDetailViewController: CarbonTabSwipeNavigationDelegate{
@@ -160,4 +210,11 @@ extension LoanDetailViewController: CarbonTabSwipeNavigationDelegate{
         
     }
     
+}
+
+extension LoanDetailViewController: MFMailComposeViewControllerDelegate{
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
 }
