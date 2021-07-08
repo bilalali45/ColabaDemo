@@ -13,6 +13,7 @@ struct Utility {
     
     static let authStoryboard = UIStoryboard.init(name: "Authentication", bundle: nil)
     static let mainStoryboard = UIStoryboard.init(name: "Main", bundle: nil)
+    static let loanDetailStoryboard = UIStoryboard.init(name: "PipelineDetail", bundle: nil)
     
     static private var pipelineDateFormatter: DateFormatter?
     static private var loanApplicationDateFormatter: DateFormatter?
@@ -91,6 +92,22 @@ struct Utility {
     
     static func getCreateNewPopupVC() -> CreateNewPopupViewController{
         return mainStoryboard.instantiateViewController(withIdentifier: "CreateNewPopupViewController") as! CreateNewPopupViewController
+    }
+    
+    static func getLoanDetailVC() -> LoanDetailViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "LoanDetailViewController") as! LoanDetailViewController
+    }
+    
+    static func getOverviewVC() -> OverviewViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "OverviewViewController") as! OverviewViewController
+    }
+    
+    static func getApplicationVC() -> ApplicationViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "ApplicationViewController") as! ApplicationViewController
+    }
+    
+    static func getDocumentsVC() -> DocumentsViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "DocumentsViewController") as! DocumentsViewController
     }
     
     static var localPiplineDateFormatter: DateFormatter{

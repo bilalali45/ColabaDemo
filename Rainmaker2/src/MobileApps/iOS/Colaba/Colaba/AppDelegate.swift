@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func loadTabbarController(){
-        let vc = Utility.getMainTabBarVC()
+        let vc = Utility.getLoanDetailVC()
         self.window?.rootViewController = vc
     }
     

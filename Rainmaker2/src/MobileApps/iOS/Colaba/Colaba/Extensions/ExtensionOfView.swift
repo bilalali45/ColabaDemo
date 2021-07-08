@@ -32,13 +32,13 @@ extension UIView{
         
     }
     
-    func roundButtonWithShadow(_ radius: CGFloat? = nil) {
-        self.layer.cornerRadius = radius ?? self.frame.width / 2
-        self.layer.shadowColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.05).cgColor
+    func roundButtonWithShadow() {
+        self.layer.cornerRadius = self.frame.height/2
+        self.layer.shadowColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor
         self.layer.shadowOffset = .zero
-        self.layer.shadowRadius = 10.0
-        self.layer.shadowOpacity = 1.0
-        self.layer.masksToBounds = false
+        self.layer.shadowOpacity = 1
+        self.layer.shadowRadius = 8.0
+        
     }
     
     func roundAllCorners(radius: CGFloat) {
