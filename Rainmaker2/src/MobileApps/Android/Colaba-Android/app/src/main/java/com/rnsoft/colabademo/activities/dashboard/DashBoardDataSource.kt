@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
+import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
@@ -13,8 +14,10 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
             Log.e("LogoutResponse-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
-            Result.Success(LogoutResponse("500", null, "invalid-token ", "OK" ))
-            //Result.Error(IOException("Error logging in", e))
+            if(e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
         }
     }
 
@@ -60,7 +63,7 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
             if(e is NoConnectivityException)
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             else
-                Result.Error(IOException("Error notification -", e))
+                Result.Error(IOException(e.message))
         }
     }
 
@@ -68,10 +71,19 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
         return try {
             val newToken = "Bearer $token"
             val putParams = PutParameters(ids)
-            val response = serverApi.seenNotifications(newToken , putParams)
-            Log.e("seen-Notifications-", response.toString())
-            if(response.isSuccessful)
-                Result.Success(response)
+            val response = serverApi.seenNotifications(newToken, putParams)
+            if (response != null){
+                val responseString = response as String
+                Log.e("seen-Notifications-", responseString.toString())
+                val webResponse = response as Response<Any>
+
+                if (webResponse.isSuccessful)
+                    Result.Success(webResponse)
+                else {
+                    Log.e("NOTHING", "Bingo")
+                    Result.Error(IOException("unknown webservice error"))
+                }
+            }
             else
                 Result.Error(IOException("unknown webservice error"))
         } catch (e: Throwable) {

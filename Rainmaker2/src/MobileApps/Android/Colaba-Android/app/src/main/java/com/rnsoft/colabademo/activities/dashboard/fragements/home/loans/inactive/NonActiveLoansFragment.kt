@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,7 +38,7 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
     private lateinit var nonActiveRecycler: RecyclerView
     private var nonActiveLoansList: ArrayList<LoanItem> = ArrayList()
     private lateinit var nonActiveAdapter: LoansAdapter
-    private lateinit var shimmerContainer: ShimmerFrameLayout
+    private var shimmerContainer: ShimmerFrameLayout?=null
     //private lateinit var loading: ProgressBar
     ////////////////////////////////////////////////////////////////////////////
     //private var stringDateTime: String = ""
@@ -56,7 +55,7 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
         _binding = NonActiveFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
         shimmerContainer = view.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
-        shimmerContainer.startShimmer()
+        shimmerContainer?.startShimmer()
         //loading = view.findViewById(R.id.non_active_loan_loader)
 
         rowLoading = view.findViewById(R.id.non_active_row_loader)
@@ -83,8 +82,8 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
                 val oldAdapter = LoansAdapter(oldJsonList , this@NonActiveLoansFragment)
                 nonActiveRecycler.adapter = oldAdapter
                 oldAdapter.notifyDataSetChanged()
-                shimmerContainer.stopShimmer()
-                shimmerContainer.isVisible = false
+                shimmerContainer?.stopShimmer()
+                shimmerContainer?.isVisible = false
             }
         }
 
@@ -94,9 +93,9 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
         loanViewModel.nonActiveLoansArrayList.observe(viewLifecycleOwner, Observer {
             rowLoading?.visibility = View.INVISIBLE
             if(it.size>0) {
-                shimmerContainer.stopShimmer()
-                shimmerContainer.isVisible = false
-                shimmerContainer.removeAllViews()
+                shimmerContainer?.stopShimmer()
+                shimmerContainer?.isVisible = false
+
                 val lastSize = nonActiveLoansList.size
                 nonActiveRecycler.adapter = nonActiveAdapter
                 nonActiveLoansList.addAll(it)
@@ -164,13 +163,16 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onClearEvent(event: AllLoansLoadedEvent) {
-        event.allLoansArrayList?.let {
-            if (it.size == 0) {
-                nonActiveLoansList.clear()
-                nonActiveAdapter.notifyDataSetChanged()
+    fun onErrorReceived(event: WebServiceErrorEvent) {
+        rowLoading?.visibility = View.INVISIBLE
+        shimmerContainer?.stopShimmer()
+        shimmerContainer?.isVisible = false
+        if(event.isInternetError)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+        else
+            if(event.errorResult!=null){
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
             }
-        }
     }
 
     override fun setOrderId(passedOrderBy: Int) {

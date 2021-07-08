@@ -32,9 +32,9 @@ class SearchViewModel @Inject constructor(private val searchRepo: SearchRepo)  :
                 _searchArrayList.value = localSearchList
             }
             else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
-                EventBus.getDefault().post(AllLoansLoadedEvent(null, true))
-            else
-                EventBus.getDefault().post(AllLoansLoadedEvent(null))
+                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+            else if(result is Result.Error)
+                EventBus.getDefault().post(WebServiceErrorEvent(result))
         }
     }
 

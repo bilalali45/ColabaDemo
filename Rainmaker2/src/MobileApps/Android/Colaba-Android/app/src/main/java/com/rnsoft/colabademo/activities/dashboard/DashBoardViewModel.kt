@@ -74,17 +74,18 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
                     lastId = lastId,
                     mediumId = mediumId
                 )
-                if (responseResult is Result.Success) {
+                if (responseResult is Result.Success)
                     _notificationItemList.value = (responseResult.data)
-
-                }
+                else if(responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if(responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
 
         }
     }
 
 
     fun getFurtherNotificationList(token:String, pageSize:Int, lastId:Int, mediumId:Int) {
-
             viewModelScope.launch {
                 val responseResult = dashBoardRepo.getNotificationListing(
                     token = token, pageSize = pageSize,
@@ -92,10 +93,11 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
                 )
                 if (responseResult is Result.Success) {
                     _notificationItemList.value = (responseResult.data)
-
                 }
-
-
+                else if(responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if(responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
             }
     }
 
@@ -109,11 +111,10 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
 
             }
             else if (result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG){
-
+                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
             }
-            else{
-
-            }
+            //else if(result is Result.Error)
+                //EventBus.getDefault().post(WebServiceErrorEvent(result))
         }
     }
 
@@ -123,12 +124,11 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
             if (result is Result.Success) {
                 Log.e("read-notify-", result.toString())
             }
-            else if (result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG){
-                Log.e("read-notify-", result.toString())
-            }
-            else{
-                Log.e("read-notify-", result.toString())
-            }
+            else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
+                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+            //else if(result is Result.Error)
+                //EventBus.getDefault().post(WebServiceErrorEvent(result))
+
         }
     }
 
@@ -138,12 +138,10 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
             if (result is Result.Success) {
                 Log.e("del-notify-", result.toString())
             }
-            else if (result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG){
-                Log.e("del-notify-", result.toString())
-            }
-            else{
-                Log.e("del-notify-", result.toString())
-            }
+            else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
+                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+            //else if(result is Result.Error)
+               // EventBus.getDefault().post(WebServiceErrorEvent(result))
         }
     }
 

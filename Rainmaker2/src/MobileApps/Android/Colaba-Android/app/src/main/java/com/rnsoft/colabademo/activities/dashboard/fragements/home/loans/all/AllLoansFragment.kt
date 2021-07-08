@@ -20,7 +20,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -34,7 +33,7 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
 
     private lateinit var loansAdapter: LoansAdapter
     //private lateinit var loading: ProgressBar
-    private lateinit var shimmerContainer: ShimmerFrameLayout
+    private var shimmerContainer: ShimmerFrameLayout? = null
     private var rowLoading: ProgressBar?=null
     private var loanRecycleView: RecyclerView? = null
     private  var allLoansArrayList: ArrayList<LoanItem> = ArrayList()
@@ -89,7 +88,7 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
         }
 
         shimmerContainer = view.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
-        shimmerContainer.startShimmer()
+        shimmerContainer?.startShimmer()
 
         /*
         viewLifecycleOwner.lifecycleScope.launchWhenStarted{
@@ -115,8 +114,8 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
                 val oldAdapter = LoansAdapter(oldJsonList , this@AllLoansFragment)
                 loanRecycleView?.adapter = oldAdapter
                 oldAdapter.notifyDataSetChanged()
-                shimmerContainer.stopShimmer()
-                shimmerContainer.isVisible = false
+                shimmerContainer?.stopShimmer()
+                shimmerContainer?.isVisible = false
             }
         }
 
@@ -132,8 +131,8 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
             //loading.visibility = View.INVISIBLE
             rowLoading?.visibility = View.INVISIBLE
             if(it.size>0) {
-                shimmerContainer.stopShimmer()
-                shimmerContainer.isVisible = false
+                shimmerContainer?.stopShimmer()
+                shimmerContainer?.isVisible = false
                 loanRecycleView?.adapter = loansAdapter
                 val lastSize = allLoansArrayList.size
                 allLoansArrayList.addAll(it)
@@ -228,13 +227,15 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onClearEvent(event: AllLoansLoadedEvent) {
-        //loading.visibility = View.VISIBLE
-        event.allLoansArrayList?.let {
-            if (it.size == 0) {
-                allLoansArrayList.clear()
-                loansAdapter.notifyDataSetChanged()
-            }
+    fun onErrorReceived(event: WebServiceErrorEvent) {
+        rowLoading?.visibility = View.INVISIBLE
+        shimmerContainer?.stopShimmer()
+        shimmerContainer?.isVisible = false
+        if(event.isInternetError)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+        else
+        if(event.errorResult!=null){
+            SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
         }
     }
 
