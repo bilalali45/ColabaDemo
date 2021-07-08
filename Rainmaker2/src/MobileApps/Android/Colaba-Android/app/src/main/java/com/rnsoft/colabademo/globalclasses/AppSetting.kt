@@ -15,7 +15,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
 
-
 object AppSetting {
 
     var biometricEnabled:Boolean = false
@@ -23,6 +22,14 @@ object AppSetting {
     var loanApiDateTime:String = ""
     var activeloanApiDateTime:String = ""
     var nonActiveloanApiDateTime:String = ""
+
+
+
+    //////////////////////////////////////////////
+    // check in Repo to query Room database....
+    var hasLoanApiDataLoaded = false
+    var hasActiveLoanApiDataLoaded = false
+    var hasNonActiveLoanApiDataLoaded = false
 
     fun returnGreetingString():String{
         val currentTimeAgain: String =

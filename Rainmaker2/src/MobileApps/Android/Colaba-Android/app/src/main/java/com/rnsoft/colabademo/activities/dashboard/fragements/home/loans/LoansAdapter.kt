@@ -69,7 +69,7 @@ internal constructor(
 
         holder.loanPurpose.text = borrower.loanPurpose
        
-        if(borrower.coBorrowerCount!=null && borrower.coBorrowerCount>0)
+        if(borrower.coBorrowerCount!=null && borrower.coBorrowerCount!! >0)
             holder.coBorrowerCount.text = "+"+borrower.coBorrowerCount
         else
             holder.coBorrowerCount.visibility = View.GONE

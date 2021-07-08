@@ -9,16 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.FragmentLoanBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -29,18 +31,18 @@ import kotlin.collections.ArrayList
 class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInterface {
     private var _binding: FragmentLoanBinding? = null
     private val binding get() = _binding!!
-    private val loanViewModel: LoanViewModel by activityViewModels()
+
     private lateinit var loansAdapter: LoansAdapter
     //private lateinit var loading: ProgressBar
     private lateinit var shimmerContainer: ShimmerFrameLayout
-    private lateinit var rowLoading: ProgressBar
+    private var rowLoading: ProgressBar?=null
     private var loanRecycleView: RecyclerView? = null
     private  var allLoansArrayList: ArrayList<LoanItem> = ArrayList()
 
     ////////////////////////////////////////////////////////////////////////////
     //private var stringDateTime: String = ""
     private var pageNumber: Int = 1
-    private var pageSize: Int = 10
+    private var pageSize: Int = 20
     private var loanFilter: Int = 0
     private var orderBy: Int = 0
     private var assignedToMe: Boolean = false
@@ -82,7 +84,7 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
             // set the custom adapter to the RecyclerView
             //borrowList = Borrower.customersList(requireContext())
 
-            this.adapter = loansAdapter
+            //this.adapter = loansAdapter
            //loansAdapter = LoansAdapter(allLoansArrayList , this@AllLoansFragment)
         }
 
@@ -99,6 +101,25 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
         }
         */
 
+        //val ceptype: Type = object : TypeToken<ArrayList<LoanItem?>?>() {}.type
+
+
+        val token: TypeToken<ArrayList<LoanItem>> = object : TypeToken<ArrayList<LoanItem>>() {}
+        val gson = Gson()
+        if(sharedPreferences.contains(AppConstant.oldLoans)) {
+            sharedPreferences.getString(AppConstant.oldLoans, "")?.let { oldLoans ->
+                //val list: List<LoanItem> = gson.fromJson(oldLoans, ceptype)
+                //Log.e("convered-", list.toString())
+                val oldJsonList: ArrayList<LoanItem> = gson.fromJson(oldLoans, token.type)
+                Log.e("oldJsonList-", oldJsonList.toString())
+                val oldAdapter = LoansAdapter(oldJsonList , this@AllLoansFragment)
+                loanRecycleView?.adapter = oldAdapter
+                oldAdapter.notifyDataSetChanged()
+                shimmerContainer.stopShimmer()
+                shimmerContainer.isVisible = false
+            }
+        }
+
 
 
 
@@ -109,10 +130,11 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
             //container.stopShimmer()
             //container.isVisible = false
             //loading.visibility = View.INVISIBLE
-            rowLoading.visibility = View.INVISIBLE
+            rowLoading?.visibility = View.INVISIBLE
             if(it.size>0) {
                 shimmerContainer.stopShimmer()
                 shimmerContainer.isVisible = false
+                loanRecycleView?.adapter = loansAdapter
                 val lastSize = allLoansArrayList.size
                 allLoansArrayList.addAll(it)
                 loansAdapter.notifyDataSetChanged()
@@ -128,9 +150,9 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                rowLoading.visibility = View.VISIBLE
-                //pageNumber++
-                //loadLoanApplications()
+                rowLoading?.visibility = View.VISIBLE
+                pageNumber++
+                loadLoanApplications()
             }
         }
 
@@ -142,7 +164,23 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
         // Adds the scroll listener to RecyclerView
         loanRecycleView?.addOnScrollListener(scrollListener)
 
+
+        /*
+        loanViewModel.databaseLoansArrayList.observe(viewLifecycleOwner, {
+            rowLoading?.visibility = View.INVISIBLE
+            shimmerContainer.stopShimmer()
+            shimmerContainer.isVisible = false
+            allLoansArrayList.addAll(it)
+            loansAdapter.notifyDataSetChanged()
+            loanViewModel.databaseLoansArrayList.removeObservers(this)
+        })
+        */
+
+        //if(hasLoanApiDataLoaded)
+        //loadDataFromDatabase(loanFilter)
+
         loadLoanApplications()
+
 
         return view
     }
@@ -162,8 +200,10 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
                 AppSetting.loanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
             Log.e("Why-", AppSetting.loanApiDateTime)
             Log.e("pageNumber-", pageNumber.toString() +" and page size = "+pageSize)
+
+
             loanViewModel.getAllLoans(
-                token = AppConstant.fakeUserToken,
+                token = authToken,
                 dateTime = AppSetting.loanApiDateTime, pageNumber = pageNumber,
                 pageSize = pageSize, loanFilter = loanFilter,
                 orderBy = orderBy, assignedToMe = globalAssignToMe
@@ -172,6 +212,10 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
     }
 
 
+    override fun onResume() {
+        super.onResume()
+        rowLoading?.visibility = View.INVISIBLE
+    }
 
     override fun onStart() {
         super.onStart()

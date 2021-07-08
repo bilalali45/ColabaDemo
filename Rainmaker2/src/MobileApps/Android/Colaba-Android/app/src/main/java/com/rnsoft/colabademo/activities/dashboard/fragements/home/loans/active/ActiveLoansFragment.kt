@@ -9,11 +9,14 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.ActiveLoanFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +33,8 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
     private var _binding: ActiveLoanFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val loanViewModel: LoanViewModel by activityViewModels()
+
+    private  var rowLoading: ProgressBar? = null
     private lateinit var activeRecycler: RecyclerView
     private var activeLoansList: ArrayList<LoanItem> = ArrayList()
     private lateinit var activeAdapter: LoansAdapter
@@ -56,7 +60,10 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
         shimmerContainer = view.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
         shimmerContainer.startShimmer()
 
+        rowLoading = view.findViewById(R.id.active_row_loader)
+
         activeRecycler = view.findViewById(R.id.active_recycler)
+
         val linearLayoutManager = LinearLayoutManager(activity)
         activeAdapter = LoansAdapter(activeLoansList, this@ActiveLoansFragment)
         activeRecycler.apply {
@@ -64,7 +71,23 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
             this.setHasFixedSize(true)
             activeAdapter = LoansAdapter(activeLoansList, this@ActiveLoansFragment)
             this.adapter = activeAdapter
+        }
 
+
+        val token: TypeToken<ArrayList<LoanItem>> = object : TypeToken<ArrayList<LoanItem>>() {}
+        val gson = Gson()
+        if(sharedPreferences.contains(AppConstant.oldActiveLoans)) {
+            sharedPreferences.getString(AppConstant.oldActiveLoans, "")?.let { oldLoans ->
+                //val list: List<LoanItem> = gson.fromJson(oldLoans, ceptype)
+                //Log.e("convered-", list.toString())
+                val oldJsonList: ArrayList<LoanItem> = gson.fromJson(oldLoans, token.type)
+                Log.e("oldJsonList-", oldJsonList.toString())
+                val oldAdapter = LoansAdapter(oldJsonList , this@ActiveLoansFragment)
+                activeRecycler.adapter = oldAdapter
+                oldAdapter.notifyDataSetChanged()
+                shimmerContainer.stopShimmer()
+                shimmerContainer.isVisible = false
+            }
         }
 
 
@@ -73,26 +96,26 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                //pageNumber++
-                //loadActiveApplications()
+                rowLoading?.visibility = View.VISIBLE
+                pageNumber++
+                loadActiveApplications()
             }
         }
         activeRecycler.addOnScrollListener(scrollListener)
 
-        lifecycleScope.launchWhenResumed {
-            loadActiveApplications()
-        }
+
 
 
         //loading.visibility = View.VISIBLE
         loanViewModel.activeLoansArrayList.observe(viewLifecycleOwner, Observer {
             //val result = it ?: return@Observer
-            //loading.visibility = View.INVISIBLE
+            rowLoading?.visibility = View.INVISIBLE
             if(it.size>0) {
                 //activeLoansList = it
                 //val lastSize = activeLoansList.size
                 shimmerContainer.stopShimmer()
                 shimmerContainer.isVisible = false
+                activeRecycler.adapter = activeAdapter
                 activeLoansList.addAll(it)
                 activeAdapter.notifyDataSetChanged()
             }
@@ -100,9 +123,14 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
                 Log.e("should-stop"," here....")
         })
 
+        loadDataFromDatabase(loanFilter)
+
+
 
         return view
     }
+
+
 
     private fun loadActiveApplications() {
         //loading.visibility = View.VISIBLE
@@ -110,8 +138,9 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
             if(AppSetting.activeloanApiDateTime.isEmpty())
                 AppSetting.activeloanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
 
+
             loanViewModel.getActiveLoans(
-                token = AppConstant.fakeUserToken,
+                token = authToken,
                 dateTime = AppSetting.activeloanApiDateTime, pageNumber = pageNumber,
                 pageSize = pageSize, loanFilter = loanFilter,
                 orderBy = orderBy, assignedToMe = globalAssignToMe
@@ -120,6 +149,16 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
     }
 
     override fun getCardIndex(position: Int) {}
+
+
+    override fun onResume() {
+        super.onResume()
+        rowLoading?.visibility = View.INVISIBLE
+        activeLoansList.clear()
+        activeAdapter.notifyDataSetChanged()
+        pageNumber = 1
+        loadActiveApplications()
+    }
 
     override fun onStart() {
         super.onStart()

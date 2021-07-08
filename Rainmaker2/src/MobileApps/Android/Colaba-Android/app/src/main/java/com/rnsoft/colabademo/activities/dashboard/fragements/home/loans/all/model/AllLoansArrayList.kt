@@ -8,19 +8,20 @@ import androidx.versionedparcelable.VersionedParcelize
 
 @VersionedParcelize
 data class LoanItem(
-    val activityTime: String?,
-    val cellNumber: String?,
-    val coBorrowerCount: Int?,
-    val detail: Detail?,
-    val documents: Int?,
-    val email: String?,
-    val firstName: String?,
-    val lastName: String?,
-    val loanApplicationId: Int?,
-    val loanPurpose: String?,
-    val milestone: String?,
-    var recycleCardState:Boolean? = false
-): Parcelable {
+    var activityTime: String? = "",
+    var cellNumber: String? = "",
+    var coBorrowerCount: Int? = null,
+    var detail: Detail? = null,
+    var documents: Int?  = null,
+    var email: String?  = null,
+    var firstName: String?  = null,
+    var lastName: String?  = null,
+    var loanApplicationId: Int?  = null,
+    var loanPurpose: String?  = null,
+    var milestone: String?  = null,
+    var recycleCardState:Boolean? = false,
+
+    ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
@@ -40,17 +41,17 @@ data class LoanItem(
         parcel.writeString(activityTime)
         parcel.writeString(cellNumber)
         if (coBorrowerCount != null) {
-            parcel.writeInt(coBorrowerCount)
+            parcel.writeInt(coBorrowerCount!!)
         }
         parcel.writeParcelable(detail, flags)
         if (documents != null) {
-            parcel.writeInt(documents)
+            parcel.writeInt(documents!!)
         }
         parcel.writeString(email)
         parcel.writeString(firstName)
         parcel.writeString(lastName)
         if (loanApplicationId != null) {
-            parcel.writeInt(loanApplicationId)
+            parcel.writeInt(loanApplicationId!!)
         }
         parcel.writeString(loanPurpose)
         parcel.writeString(milestone)
@@ -74,9 +75,9 @@ data class LoanItem(
 
 @VersionedParcelize
 data class Detail(
-    val address: Address?,
-    val loanAmount: Int?,
-    val propertyValue: Int?
+    var address: Address?,
+    var loanAmount: Int?,
+    var propertyValue: Int?
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readParcelable(Address::class.java.classLoader),
@@ -88,10 +89,10 @@ data class Detail(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeParcelable(address, flags)
         if (loanAmount != null) {
-            parcel.writeInt(loanAmount)
+            parcel.writeInt(loanAmount!!)
         }
         if (propertyValue != null) {
-            parcel.writeInt(propertyValue)
+            parcel.writeInt(propertyValue!!)
         }
     }
 
@@ -113,14 +114,14 @@ data class Detail(
 
 @VersionedParcelize
 data class Address(
-    val city: String?,
-    val countryId: Int?,
-    val countryName: String?,
-    val stateId: Int?,
-    val stateName: String?,
-    val street: String?,
-    val unit: String?,
-    val zipCode: String?
+    var city: String?,
+    var countryId: Int?,
+    var countryName: String?,
+    var stateId: Int?,
+    var stateName: String?,
+    var street: String?,
+    var unit: String?,
+    var zipCode: String?
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -137,11 +138,11 @@ data class Address(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(city)
         if (countryId != null) {
-            parcel.writeInt(countryId)
+            parcel.writeInt(countryId!!)
         }
         parcel.writeString(countryName)
         if (stateId != null) {
-            parcel.writeInt(stateId)
+            parcel.writeInt(stateId!!)
         }
         parcel.writeString(stateName)
         parcel.writeString(street)

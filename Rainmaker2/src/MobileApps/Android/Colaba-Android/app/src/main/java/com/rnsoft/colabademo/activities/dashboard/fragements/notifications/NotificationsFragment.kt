@@ -91,7 +91,7 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
         lifecycleScope.launchWhenResumed {
             sharedPreferences.getString(AppConstant.token, "")?.let {
                 dashBoardViewModel.getNotificationListing(
-                    token = AppConstant.fakeMubashirToken,
+                    token = it,
                     pageSize = pageSize, lastId = -1, mediumId = mediumId
                 )
             }
@@ -112,9 +112,9 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
                      lastNotificationId  = lastId
                  }
                 // load the count notification service and other service and update count by LiveData...
-                sharedPreferences.getString(AppConstant.token, "")?.let {
-                      dashBoardViewModel.getNotificationCountT(AppConstant.fakeMubashirToken)
-                    dashBoardViewModel.seenNotifications(AppConstant.fakeMubashirToken, seenIds)
+                sharedPreferences.getString(AppConstant.token, "")?.let { token->
+                      dashBoardViewModel.getNotificationCountT(token)
+                    dashBoardViewModel.seenNotifications(token, seenIds)
                 }
             }
 
@@ -213,7 +213,7 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
     private fun loadFurtherNotifications(){
         sharedPreferences.getString(AppConstant.token, "")?.let {
             dashBoardViewModel.getFurtherNotificationList(
-                token = AppConstant.fakeMubashirToken,   pageSize = pageSize, lastId = lastNotificationId, mediumId = mediumId
+                token = it,   pageSize = pageSize, lastId = lastNotificationId, mediumId = mediumId
             )
         }
     }
@@ -224,12 +224,12 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
         Log.e("deleteArrayList-", deleteArrayList.size.toString())
         sharedPreferences.getString(AppConstant.token,"")?.let {
             if(readArrayList.size>0)
-                dashBoardViewModel.readNotifications(AppConstant.fakeMubashirToken, readArrayList)
+                dashBoardViewModel.readNotifications(it, readArrayList)
 
         }
         sharedPreferences.getString(AppConstant.token,"")?.let {
-            //if(deleteArrayList.size>0)
-                //dashBoardViewModel.deleteNotifications(AppConstant.fakeMubashirToken, deleteArrayList)
+            if(deleteArrayList.size>0)
+                dashBoardViewModel.deleteNotifications(it, deleteArrayList)
         }
         super.onStop()
     }
