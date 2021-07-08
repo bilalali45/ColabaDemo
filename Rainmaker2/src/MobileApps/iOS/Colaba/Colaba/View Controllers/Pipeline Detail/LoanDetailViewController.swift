@@ -8,7 +8,7 @@
 import UIKit
 import CarbonKit
 
-class LoanDetailViewController: UIViewController {
+class LoanDetailViewController: BaseViewController {
 
     //MARK:- Outlets and properties
     
@@ -24,6 +24,9 @@ class LoanDetailViewController: UIViewController {
     @IBOutlet weak var btnCall: UIButton!
     @IBOutlet weak var btnSms: UIButton!
     @IBOutlet weak var btnEmail: UIButton!
+    @IBOutlet weak var walkthroughView: UIView!
+    @IBOutlet weak var walkthroughViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var walkthroughViewBottomConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +72,16 @@ class LoanDetailViewController: UIViewController {
         }
         
         setupFooterButtons(buttons: [btnCall, btnSms, btnEmail])
+        walkthroughView.layer.cornerRadius = walkthroughView.frame.height / 2
+        walkthroughView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(walkthroughViewTapped)))
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.walkthroughViewTrailingConstraint.constant = -320
+            self.walkthroughViewBottomConstraint.constant = 320
+            UIView.animate(withDuration: 0.4) {
+                self.view.layoutIfNeeded()
+            }
+        }
     }
     
     func setupFooterButtons(buttons: [UIButton]){
@@ -77,6 +90,15 @@ class LoanDetailViewController: UIViewController {
             button.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
             button.roundButtonWithShadow()
         }
+    }
+    
+    @objc func walkthroughViewTapped(){
+        self.walkthroughViewTrailingConstraint.constant = -640
+        self.walkthroughViewBottomConstraint.constant = 640
+        UIView.animate(withDuration: 0.4) {
+            self.view.layoutIfNeeded()
+        }
+        
     }
     
     @objc func hidesNavigationBar(){
