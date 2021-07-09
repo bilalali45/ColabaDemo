@@ -279,7 +279,7 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
 
             snackbar.setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.colaba_primary_color))
             snackbar.setActionTextColor(resources.getColor(R.color.white, activity?.theme))
-
+            snackbar.setTextColor(resources.getColor(R.color.white, activity?.theme))
             snackbar.setAction("UNDO") { // undo is selected, restore the deleted item
                 newNotificationAdapter.restoreItem(deletedItem, deletedIndex)
                 val deleteId = deletedItem.id
@@ -288,7 +288,6 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
                         deleteArrayList.remove(it)
                 }
             }
-            snackbar.setActionTextColor(Color.YELLOW)
             snackbar.show()
         }
     }

@@ -10,7 +10,7 @@
 
 
     <TextView
-        android:id="@+id/borrower_z_to_a"
+        android:id="@+id/borrowerztoa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -18,12 +18,12 @@
         android:text="@string/archive"
         android:textColor="@color/grey_color_two"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView26"
-        app:layout_constraintStart_toEndOf="@+id/imageView26"
-        app:layout_constraintTop_toTopOf="@+id/imageView26" />
+        app:layout_constraintBottom_toBottomOf="@+id/borrowerIconReverse"
+        app:layout_constraintStart_toEndOf="@+id/borrowerIconReverse"
+        app:layout_constraintTop_toTopOf="@+id/borrowerIconReverse" />
 
     <TextView
-        android:id="@+id/borrower_a_to_z"
+        android:id="@+id/borroweratoz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -31,9 +31,9 @@
         android:text="@string/conversation"
         android:textColor="@color/grey_color_two"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView25"
-        app:layout_constraintStart_toEndOf="@+id/imageView25"
-        app:layout_constraintTop_toTopOf="@+id/imageView25" />
+        app:layout_constraintBottom_toBottomOf="@+id/borrowerIcon"
+        app:layout_constraintStart_toEndOf="@+id/borrowerIcon"
+        app:layout_constraintTop_toTopOf="@+id/borrowerIcon" />
 
     <ImageView
         android:id="@+id/crossImageView"
@@ -47,7 +47,7 @@
         app:srcCompat="@drawable/search_cross" />
 
     <ImageView
-        android:id="@+id/imageView22"
+        android:id="@+id/pending_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -84,34 +84,34 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
     <ImageView
-        android:id="@+id/imageView24"
+        android:id="@+id/recentIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         app:layout_constraintStart_toStartOf="@+id/borrowerName"
-        app:layout_constraintTop_toBottomOf="@+id/imageView22"
+        app:layout_constraintTop_toBottomOf="@+id/pending_icon"
         app:srcCompat="@drawable/docs_icon" />
 
     <ImageView
-        android:id="@+id/imageView25"
+        android:id="@+id/borrowerIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        app:layout_constraintStart_toStartOf="@+id/imageView24"
-        app:layout_constraintTop_toBottomOf="@+id/imageView24"
+        app:layout_constraintStart_toStartOf="@+id/recentIcon"
+        app:layout_constraintTop_toBottomOf="@+id/recentIcon"
         app:srcCompat="@drawable/convo_icon" />
 
     <ImageView
-        android:id="@+id/imageView26"
+        android:id="@+id/borrowerIconReverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        app:layout_constraintStart_toStartOf="@+id/imageView25"
-        app:layout_constraintTop_toBottomOf="@+id/imageView25"
+        app:layout_constraintStart_toStartOf="@+id/borrowerIcon"
+        app:layout_constraintTop_toBottomOf="@+id/borrowerIcon"
         app:srcCompat="@drawable/archive_icon" />
 
     <TextView
-        android:id="@+id/actions_pending"
+        android:id="@+id/pendingTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -119,13 +119,13 @@
         android:fontFamily="@font/rubik_medium"
         android:textSize="14sp"
         android:textColor="@color/grey_color_two"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView22"
-        app:layout_constraintStart_toEndOf="@+id/imageView22"
-        app:layout_constraintTop_toTopOf="@+id/imageView22" />
+        app:layout_constraintBottom_toBottomOf="@+id/pending_icon"
+        app:layout_constraintStart_toEndOf="@+id/pending_icon"
+        app:layout_constraintTop_toTopOf="@+id/pending_icon" />
 
 
     <TextView
-        android:id="@+id/recent_activity"
+        android:id="@+id/recentTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -133,9 +133,9 @@
         android:text="@string/documents"
         android:textColor="@color/grey_color_two"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView24"
-        app:layout_constraintStart_toEndOf="@+id/imageView24"
-        app:layout_constraintTop_toTopOf="@+id/imageView24" />
+        app:layout_constraintBottom_toBottomOf="@+id/recentIcon"
+        app:layout_constraintStart_toEndOf="@+id/recentIcon"
+        app:layout_constraintTop_toTopOf="@+id/recentIcon" />
 
     <TextView
         android:id="@+id/textView34"

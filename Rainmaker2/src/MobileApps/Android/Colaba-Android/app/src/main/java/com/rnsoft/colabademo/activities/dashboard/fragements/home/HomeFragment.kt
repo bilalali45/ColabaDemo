@@ -2,10 +2,13 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
@@ -86,7 +89,10 @@ class HomeFragment : Fragment() {
         }
 
 
-
+        if(sharedPreferences.contains(AppConstant.ASSIGN_TO_ME)){
+            assignToMeSwitch.isChecked =  sharedPreferences.getBoolean(AppConstant.ASSIGN_TO_ME, false)
+            BaseFragment.globalAssignToMe = assignToMeSwitch.isChecked
+        }
 
 
 
@@ -144,15 +150,9 @@ class HomeFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-        assignToMeSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            //assignToMeSwitch.isClickable = false
-            Log.e("selectedText-", selectedText)
-            baseFragment?.setAssignToMe(isChecked)
-            //assignToMeSwitch.postDelayed(1500) {
-                //assignToMeSwitch.isClickable = true
+        assignToMeSwitch.setOnCheckedChangeListener(assignToMeChangeListener)
 
-            //}
-        }
+
 
         filterImageView.setOnClickListener{
             baseFragment?.let {
@@ -167,6 +167,14 @@ class HomeFragment : Fragment() {
 
         return root
     }
+
+    val assignToMeChangeListener =
+        CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            //assignToMeSwitch.setOnClickListener(null)
+            Log.e("selectedText-", selectedText)
+            baseFragment?.setAssignToMe(isChecked)
+            sharedPreferences.edit().putBoolean(AppConstant.ASSIGN_TO_ME, isChecked).apply()
+        }
 
     //private var loanFilterInterface:LoanFilterInterface?=null
     private var baseFragment:BaseFragment? = null

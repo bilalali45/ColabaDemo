@@ -38,11 +38,12 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
     //private lateinit var loading: ProgressBar
     private var shimmerContainer: ShimmerFrameLayout?=null
     ////////////////////////////////////////////////////////////////////////////
+    private val pageSize: Int = 20
+    private val loanFilter: Int = 1
+
     private var pageNumber: Int = 1
-    private var pageSize: Int = 20
-    private var loanFilter: Int = 1
-    private var orderBy: Int = 0
-    private var assignedToMe: Boolean = false
+    //private var orderBy: Int = 0
+    //private var assignedToMe: Boolean = false
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -140,7 +141,7 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
                 token = authToken,
                 dateTime = AppSetting.activeloanApiDateTime, pageNumber = pageNumber,
                 pageSize = pageSize, loanFilter = loanFilter,
-                orderBy = orderBy, assignedToMe = globalAssignToMe
+                orderBy = globalOrderBy, assignedToMe = globalAssignToMe
             )
         }
     }
@@ -182,7 +183,8 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
     override fun setOrderId(passedOrderBy: Int) {
         activeLoansList.clear()
         activeAdapter.notifyDataSetChanged()
-        orderBy = passedOrderBy
+        //orderBy = passedOrderBy
+        globalOrderBy = passedOrderBy
         pageNumber = 1
         loadActiveApplications()
     }
@@ -192,7 +194,7 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
         activeLoansList.clear()
         activeAdapter.notifyDataSetChanged()
         globalAssignToMe = passedAssignToMe
-        assignedToMe = passedAssignToMe
+        //assignedToMe = passedAssignToMe
         pageNumber = 1
         loadActiveApplications()
     }

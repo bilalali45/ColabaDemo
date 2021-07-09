@@ -32,46 +32,31 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
     private val binding get() = _binding!!
 
     private lateinit var loansAdapter: LoansAdapter
-    //private lateinit var loading: ProgressBar
     private var shimmerContainer: ShimmerFrameLayout? = null
     private var rowLoading: ProgressBar?=null
     private var loanRecycleView: RecyclerView? = null
     private  var allLoansArrayList: ArrayList<LoanItem> = ArrayList()
 
     ////////////////////////////////////////////////////////////////////////////
-    //private var stringDateTime: String = ""
+    private val pageSize: Int = 20
+    private val loanFilter: Int = 0
+
     private var pageNumber: Int = 1
-    private var pageSize: Int = 20
-    private var loanFilter: Int = 0
-    private var orderBy: Int = 0
-    private var assignedToMe: Boolean = false
-
-    //private var borrowerListEnded = false
-
-    init {
-       // assignToMeGlobal = false
-    }
+    //private var orderBy: Int = 0
+    //private var assignedToMe: Boolean = false
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+        savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
         _binding = FragmentLoanBinding.inflate(inflater, container, false)
         val view = binding.root
 
-
-
-        //loading = view.findViewById(R.id.loader_all_loan)
         rowLoading = view.findViewById(R.id.loan_row_loader)
-
         loanRecycleView = view.findViewById(R.id.loan_recycler_view)
-
         val linearLayoutManager = LinearLayoutManager(activity)
         loansAdapter = LoansAdapter(allLoansArrayList , this@AllLoansFragment)
         loanRecycleView?.apply {
@@ -205,7 +190,7 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
                 token = authToken,
                 dateTime = AppSetting.loanApiDateTime, pageNumber = pageNumber,
                 pageSize = pageSize, loanFilter = loanFilter,
-                orderBy = orderBy, assignedToMe = globalAssignToMe
+                orderBy = globalOrderBy, assignedToMe = globalAssignToMe
             )
         }
     }
@@ -242,7 +227,8 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
     override fun setOrderId(passedOrderBy: Int) {
         allLoansArrayList.clear()
         loansAdapter.notifyDataSetChanged()
-        orderBy = passedOrderBy
+        // = passedOrderBy
+        globalOrderBy = passedOrderBy
         pageNumber = 1
         loadLoanApplications()
     }
@@ -252,7 +238,7 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
         allLoansArrayList.clear()
         loansAdapter.notifyDataSetChanged()
         globalAssignToMe = passedAssignToMe
-        assignedToMe = passedAssignToMe
+        //assignedToMe = passedAssignToMe
         pageNumber = 1
         loadLoanApplications()
     }
