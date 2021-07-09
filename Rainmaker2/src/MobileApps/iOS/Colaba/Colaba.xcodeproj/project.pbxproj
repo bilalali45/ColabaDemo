@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		1684B186A82DC0DA7659AF00 /* Pods_Colaba_ColabaUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75F148EE0E75561316105F49 /* Pods_Colaba_ColabaUITests.framework */; };
 		1E33FD0E116F4CD11CE532FC /* Pods_Colaba.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2935F442F6A697341170A45 /* Pods_Colaba.framework */; };
+		2320138D2698324800F500E2 /* BorrowerAddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2320138B2698324800F500E2 /* BorrowerAddressTableViewCell.swift */; };
+		2320138E2698324800F500E2 /* BorrowerAddressTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2320138C2698324800F500E2 /* BorrowerAddressTableViewCell.xib */; };
+		232013912698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2320138F2698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift */; };
+		232013922698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 232013902698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib */; };
 		2368D6552667DA5900D5C1C5 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2368D6542667DA5900D5C1C5 /* BaseViewController.swift */; };
 		2368D6572667DA6700D5C1C5 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2368D6562667DA6700D5C1C5 /* DashboardViewController.swift */; };
 		236B59D1266504060001F416 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B59D0266504050001F416 /* UserModel.swift */; };
@@ -43,6 +47,8 @@
 		23C2448C2689E53F00EED1D0 /* ActivePiplineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C2448B2689E53F00EED1D0 /* ActivePiplineViewController.swift */; };
 		23C2448E2689E55E00EED1D0 /* InActivePipelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C2448D2689E55E00EED1D0 /* InActivePipelineViewController.swift */; };
 		23C244902689E89300EED1D0 /* SearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C2448F2689E89300EED1D0 /* SearchModel.swift */; };
+		23C9130626982A120067920E /* BorrowerOverviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C9130426982A120067920E /* BorrowerOverviewTableViewCell.swift */; };
+		23C9130726982A120067920E /* BorrowerOverviewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23C9130526982A120067920E /* BorrowerOverviewTableViewCell.xib */; };
 		23DBAD202696EB2D00119680 /* PipelineDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23DBAD1F2696EB2D00119680 /* PipelineDetail.storyboard */; };
 		23DBAD222696EBA800119680 /* LoanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DBAD212696EBA800119680 /* LoanDetailViewController.swift */; };
 		23DBAD242697149300119680 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DBAD232697149300119680 /* OverviewViewController.swift */; };
@@ -104,6 +110,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2320138B2698324800F500E2 /* BorrowerAddressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerAddressTableViewCell.swift; sourceTree = "<group>"; };
+		2320138C2698324800F500E2 /* BorrowerAddressTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerAddressTableViewCell.xib; sourceTree = "<group>"; };
+		2320138F2698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerLoanInfoTableViewCell.swift; sourceTree = "<group>"; };
+		232013902698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerLoanInfoTableViewCell.xib; sourceTree = "<group>"; };
 		2368D6542667DA5900D5C1C5 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		2368D6562667DA6700D5C1C5 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		236B59D0266504050001F416 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
@@ -138,6 +148,8 @@
 		23C2448B2689E53F00EED1D0 /* ActivePiplineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivePiplineViewController.swift; sourceTree = "<group>"; };
 		23C2448D2689E55E00EED1D0 /* InActivePipelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InActivePipelineViewController.swift; sourceTree = "<group>"; };
 		23C2448F2689E89300EED1D0 /* SearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModel.swift; sourceTree = "<group>"; };
+		23C9130426982A120067920E /* BorrowerOverviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerOverviewTableViewCell.swift; sourceTree = "<group>"; };
+		23C9130526982A120067920E /* BorrowerOverviewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerOverviewTableViewCell.xib; sourceTree = "<group>"; };
 		23DBAD1F2696EB2D00119680 /* PipelineDetail.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PipelineDetail.storyboard; sourceTree = "<group>"; };
 		23DBAD212696EBA800119680 /* LoanDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanDetailViewController.swift; sourceTree = "<group>"; };
 		23DBAD232697149300119680 /* OverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
@@ -266,6 +278,12 @@
 				23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */,
 				23B238BD2679F44000508449 /* NotificationsTableViewCell.swift */,
 				23B238BE2679F44000508449 /* NotificationsTableViewCell.xib */,
+				23C9130426982A120067920E /* BorrowerOverviewTableViewCell.swift */,
+				23C9130526982A120067920E /* BorrowerOverviewTableViewCell.xib */,
+				2320138B2698324800F500E2 /* BorrowerAddressTableViewCell.swift */,
+				2320138C2698324800F500E2 /* BorrowerAddressTableViewCell.xib */,
+				2320138F2698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift */,
+				232013902698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -627,6 +645,7 @@
 				7186ACEE2653C5CE00E740D3 /* Authentication.storyboard in Resources */,
 				7186AD092653C77B00E740D3 /* Rubik-Light.ttf in Resources */,
 				23A0D5CE26958E58002B4BCE /* DashboardHeaderView.xib in Resources */,
+				2320138E2698324800F500E2 /* BorrowerAddressTableViewCell.xib in Resources */,
 				7186ACBC2653B25B00E740D3 /* LaunchScreen.storyboard in Resources */,
 				7186ACB92653B25B00E740D3 /* Assets.xcassets in Resources */,
 				7186AD082653C77B00E740D3 /* Rubik-Regular.ttf in Resources */,
@@ -634,6 +653,8 @@
 				7186ACB72653B25A00E740D3 /* Main.storyboard in Resources */,
 				23A56C602686152A005CE6F4 /* Rubik-LightItalic.ttf in Resources */,
 				23DBAD202696EB2D00119680 /* PipelineDetail.storyboard in Resources */,
+				232013922698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib in Resources */,
+				23C9130726982A120067920E /* BorrowerOverviewTableViewCell.xib in Resources */,
 				2397AF682677A60A007A1A45 /* PipelineDetailTableViewCell.xib in Resources */,
 				23B238C02679F44000508449 /* NotificationsTableViewCell.xib in Resources */,
 				7186AD0A2653C77B00E740D3 /* Rubik-Medium.ttf in Resources */,
@@ -798,6 +819,7 @@
 				711D33282654F1710091BC18 /* Constant.swift in Sources */,
 				23DBAD242697149300119680 /* OverviewViewController.swift in Sources */,
 				23B238BB2679E05200508449 /* SearchResultTableViewCell.swift in Sources */,
+				232013912698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift in Sources */,
 				7186AD6F2653ED2D00E740D3 /* ForgotPasswordViewController.swift in Sources */,
 				7186AD7E26540CEB00E740D3 /* CodeViewController.swift in Sources */,
 				2397AF5F26776241007A1A45 /* PipelineViewController.swift in Sources */,
@@ -806,6 +828,7 @@
 				239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */,
 				23A56C592685B017005CE6F4 /* Manager.swift in Sources */,
 				23C2448A2689E3F800EED1D0 /* InActiveLoanModel.swift in Sources */,
+				2320138D2698324800F500E2 /* BorrowerAddressTableViewCell.swift in Sources */,
 				7148C6B92655500B00E1C216 /* ExtensionOfString.swift in Sources */,
 				23DBAD28269714B300119680 /* DocumentsViewController.swift in Sources */,
 				7186AD012653C6AB00E740D3 /* LoginViewController.swift in Sources */,
@@ -816,6 +839,7 @@
 				23A56C5A2685B017005CE6F4 /* Controller.swift in Sources */,
 				23C2448E2689E55E00EED1D0 /* InActivePipelineViewController.swift in Sources */,
 				23A56C5C2685B017005CE6F4 /* Extensions.swift in Sources */,
+				23C9130626982A120067920E /* BorrowerOverviewTableViewCell.swift in Sources */,
 				7160CA88267339060061ACD5 /* ProfileViewController.swift in Sources */,
 				236EA1AE2678CE1B00C2F8B5 /* DummyDashboardViewController.swift in Sources */,
 				23C244862689B6A500EED1D0 /* AllLoanModel.swift in Sources */,

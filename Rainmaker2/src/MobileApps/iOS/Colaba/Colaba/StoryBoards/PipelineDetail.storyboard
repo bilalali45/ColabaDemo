@@ -220,9 +220,28 @@
                     <view key="view" contentMode="scaleToFill" id="MbG-PD-wu6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QZT-fM-ga4">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="C6E-TL-EUA" id="tG8-xN-t35"/>
+                                    <outlet property="delegate" destination="C6E-TL-EUA" id="VHg-60-aVY"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="cUV-ct-CPr"/>
                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="QZT-fM-ga4" firstAttribute="top" secondItem="cUV-ct-CPr" secondAttribute="top" id="4hC-tg-mbr"/>
+                            <constraint firstItem="QZT-fM-ga4" firstAttribute="leading" secondItem="cUV-ct-CPr" secondAttribute="leading" id="55R-z9-QTt"/>
+                            <constraint firstItem="cUV-ct-CPr" firstAttribute="trailing" secondItem="QZT-fM-ga4" secondAttribute="trailing" id="K6f-wa-chA"/>
+                            <constraint firstItem="cUV-ct-CPr" firstAttribute="bottom" secondItem="QZT-fM-ga4" secondAttribute="bottom" id="RtL-wh-CWd"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tableViewOverView" destination="QZT-fM-ga4" id="RDJ-8w-w48"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ncY-Ye-bXh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
