@@ -13,6 +13,11 @@
 		2320138E2698324800F500E2 /* BorrowerAddressTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2320138C2698324800F500E2 /* BorrowerAddressTableViewCell.xib */; };
 		232013912698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2320138F2698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift */; };
 		232013922698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 232013902698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib */; };
+		235BBD6A2698649700687174 /* UtilitiesUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235BBD692698649700687174 /* UtilitiesUnitTest.swift */; };
+		235BBD6C26986F1A00687174 /* ValidationUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235BBD6B26986F1A00687174 /* ValidationUnitTest.swift */; };
+		235BBD6E2698736200687174 /* APIRouterUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235BBD6D2698736200687174 /* APIRouterUnitTest.swift */; };
+		235BBD7126988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235BBD6F26988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.swift */; };
+		235BBD7226988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 235BBD7026988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.xib */; };
 		2368D6552667DA5900D5C1C5 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2368D6542667DA5900D5C1C5 /* BaseViewController.swift */; };
 		2368D6572667DA6700D5C1C5 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2368D6562667DA6700D5C1C5 /* DashboardViewController.swift */; };
 		236B59D1266504060001F416 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B59D0266504050001F416 /* UserModel.swift */; };
@@ -54,6 +59,9 @@
 		23DBAD242697149300119680 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DBAD232697149300119680 /* OverviewViewController.swift */; };
 		23DBAD26269714A800119680 /* ApplicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DBAD25269714A800119680 /* ApplicationViewController.swift */; };
 		23DBAD28269714B300119680 /* DocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DBAD27269714B300119680 /* DocumentsViewController.swift */; };
+		23E9C74A269C214A0066C978 /* ApplicationStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E9C749269C214A0066C978 /* ApplicationStatusViewController.swift */; };
+		23E9C74D269C23070066C978 /* ApplicationStatusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E9C74B269C23070066C978 /* ApplicationStatusTableViewCell.swift */; };
+		23E9C74E269C23070066C978 /* ApplicationStatusTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23E9C74C269C23070066C978 /* ApplicationStatusTableViewCell.xib */; };
 		710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D032E268DC56500A13E63 /* NotificationModel.swift */; };
 		7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */; };
 		7113F51F26568E3B0066E179 /* Home.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7113F51E26568E3B0066E179 /* Home.svg */; };
@@ -70,7 +78,6 @@
 		7186ACB72653B25A00E740D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7186ACB52653B25A00E740D3 /* Main.storyboard */; };
 		7186ACB92653B25B00E740D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7186ACB82653B25B00E740D3 /* Assets.xcassets */; };
 		7186ACBC2653B25B00E740D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7186ACBA2653B25B00E740D3 /* LaunchScreen.storyboard */; };
-		7186ACC72653B25B00E740D3 /* ColabaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7186ACC62653B25B00E740D3 /* ColabaTests.swift */; };
 		7186ACD22653B25B00E740D3 /* ColabaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7186ACD12653B25B00E740D3 /* ColabaUITests.swift */; };
 		7186ACEE2653C5CE00E740D3 /* Authentication.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7186ACED2653C5CE00E740D3 /* Authentication.storyboard */; };
 		7186ACF42653C66100E740D3 /* FaceRecognitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7186ACF32653C66100E740D3 /* FaceRecognitionViewController.swift */; };
@@ -114,6 +121,11 @@
 		2320138C2698324800F500E2 /* BorrowerAddressTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerAddressTableViewCell.xib; sourceTree = "<group>"; };
 		2320138F2698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerLoanInfoTableViewCell.swift; sourceTree = "<group>"; };
 		232013902698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerLoanInfoTableViewCell.xib; sourceTree = "<group>"; };
+		235BBD692698649700687174 /* UtilitiesUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilitiesUnitTest.swift; sourceTree = "<group>"; };
+		235BBD6B26986F1A00687174 /* ValidationUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationUnitTest.swift; sourceTree = "<group>"; };
+		235BBD6D2698736200687174 /* APIRouterUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRouterUnitTest.swift; sourceTree = "<group>"; };
+		235BBD6F26988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerApplicationStatusButtonTableViewCell.swift; sourceTree = "<group>"; };
+		235BBD7026988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerApplicationStatusButtonTableViewCell.xib; sourceTree = "<group>"; };
 		2368D6542667DA5900D5C1C5 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		2368D6562667DA6700D5C1C5 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		236B59D0266504050001F416 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
@@ -155,6 +167,9 @@
 		23DBAD232697149300119680 /* OverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
 		23DBAD25269714A800119680 /* ApplicationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationViewController.swift; sourceTree = "<group>"; };
 		23DBAD27269714B300119680 /* DocumentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsViewController.swift; sourceTree = "<group>"; };
+		23E9C749269C214A0066C978 /* ApplicationStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationStatusViewController.swift; sourceTree = "<group>"; };
+		23E9C74B269C23070066C978 /* ApplicationStatusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationStatusTableViewCell.swift; sourceTree = "<group>"; };
+		23E9C74C269C23070066C978 /* ApplicationStatusTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApplicationStatusTableViewCell.xib; sourceTree = "<group>"; };
 		25C6C1D772F13896700CDB1C /* Pods-Colaba.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Colaba.release.xcconfig"; path = "Target Support Files/Pods-Colaba/Pods-Colaba.release.xcconfig"; sourceTree = "<group>"; };
 		3D986CBDBB7995778F877F6F /* Pods-ColabaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ColabaTests.debug.xcconfig"; path = "Target Support Files/Pods-ColabaTests/Pods-ColabaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		710D032E268DC56500A13E63 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
@@ -175,7 +190,6 @@
 		7186ACBB2653B25B00E740D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7186ACBD2653B25B00E740D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7186ACC22653B25B00E740D3 /* ColabaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ColabaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		7186ACC62653B25B00E740D3 /* ColabaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColabaTests.swift; sourceTree = "<group>"; };
 		7186ACC82653B25B00E740D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7186ACCD2653B25B00E740D3 /* ColabaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ColabaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7186ACD12653B25B00E740D3 /* ColabaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColabaUITests.swift; sourceTree = "<group>"; };
@@ -284,6 +298,10 @@
 				2320138C2698324800F500E2 /* BorrowerAddressTableViewCell.xib */,
 				2320138F2698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift */,
 				232013902698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib */,
+				235BBD6F26988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.swift */,
+				235BBD7026988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.xib */,
+				23E9C74B269C23070066C978 /* ApplicationStatusTableViewCell.swift */,
+				23E9C74C269C23070066C978 /* ApplicationStatusTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -343,6 +361,7 @@
 				23DBAD232697149300119680 /* OverviewViewController.swift */,
 				23DBAD25269714A800119680 /* ApplicationViewController.swift */,
 				23DBAD27269714B300119680 /* DocumentsViewController.swift */,
+				23E9C749269C214A0066C978 /* ApplicationStatusViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -427,8 +446,10 @@
 		7186ACC52653B25B00E740D3 /* ColabaTests */ = {
 			isa = PBXGroup;
 			children = (
-				7186ACC62653B25B00E740D3 /* ColabaTests.swift */,
 				7186ACC82653B25B00E740D3 /* Info.plist */,
+				235BBD692698649700687174 /* UtilitiesUnitTest.swift */,
+				235BBD6B26986F1A00687174 /* ValidationUnitTest.swift */,
+				235BBD6D2698736200687174 /* APIRouterUnitTest.swift */,
 			);
 			path = ColabaTests;
 			sourceTree = "<group>";
@@ -645,12 +666,14 @@
 				7186ACEE2653C5CE00E740D3 /* Authentication.storyboard in Resources */,
 				7186AD092653C77B00E740D3 /* Rubik-Light.ttf in Resources */,
 				23A0D5CE26958E58002B4BCE /* DashboardHeaderView.xib in Resources */,
+				235BBD7226988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.xib in Resources */,
 				2320138E2698324800F500E2 /* BorrowerAddressTableViewCell.xib in Resources */,
 				7186ACBC2653B25B00E740D3 /* LaunchScreen.storyboard in Resources */,
 				7186ACB92653B25B00E740D3 /* Assets.xcassets in Resources */,
 				7186AD082653C77B00E740D3 /* Rubik-Regular.ttf in Resources */,
 				23B238BC2679E05200508449 /* SearchResultTableViewCell.xib in Resources */,
 				7186ACB72653B25A00E740D3 /* Main.storyboard in Resources */,
+				23E9C74E269C23070066C978 /* ApplicationStatusTableViewCell.xib in Resources */,
 				23A56C602686152A005CE6F4 /* Rubik-LightItalic.ttf in Resources */,
 				23DBAD202696EB2D00119680 /* PipelineDetail.storyboard in Resources */,
 				232013922698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib in Resources */,
@@ -813,12 +836,14 @@
 				2397AF672677A60A007A1A45 /* PipelineDetailTableViewCell.swift in Sources */,
 				23A1CA6B268C4B8400D93DC4 /* UILoadControl_UIScrollView.swift in Sources */,
 				238D70772678E8C80067687C /* FiltersViewController.swift in Sources */,
+				23E9C74D269C23070066C978 /* ApplicationStatusTableViewCell.swift in Sources */,
 				7113F52526569D310066E179 /* LocalAuthManager.swift in Sources */,
 				236EA1AC26789EAC00C2F8B5 /* PipelineMoreViewController.swift in Sources */,
 				236B59D1266504060001F416 /* UserModel.swift in Sources */,
 				711D33282654F1710091BC18 /* Constant.swift in Sources */,
 				23DBAD242697149300119680 /* OverviewViewController.swift in Sources */,
 				23B238BB2679E05200508449 /* SearchResultTableViewCell.swift in Sources */,
+				23E9C74A269C214A0066C978 /* ApplicationStatusViewController.swift in Sources */,
 				232013912698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift in Sources */,
 				7186AD6F2653ED2D00E740D3 /* ForgotPasswordViewController.swift in Sources */,
 				7186AD7E26540CEB00E740D3 /* CodeViewController.swift in Sources */,
@@ -829,6 +854,7 @@
 				23A56C592685B017005CE6F4 /* Manager.swift in Sources */,
 				23C2448A2689E3F800EED1D0 /* InActiveLoanModel.swift in Sources */,
 				2320138D2698324800F500E2 /* BorrowerAddressTableViewCell.swift in Sources */,
+				235BBD7126988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.swift in Sources */,
 				7148C6B92655500B00E1C216 /* ExtensionOfString.swift in Sources */,
 				23DBAD28269714B300119680 /* DocumentsViewController.swift in Sources */,
 				7186AD012653C6AB00E740D3 /* LoginViewController.swift in Sources */,
@@ -853,8 +879,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				235BBD6A2698649700687174 /* UtilitiesUnitTest.swift in Sources */,
 				7148C6FF2655667800E1C216 /* Validation.swift in Sources */,
-				7186ACC72653B25B00E740D3 /* ColabaTests.swift in Sources */,
+				235BBD6E2698736200687174 /* APIRouterUnitTest.swift in Sources */,
+				235BBD6C26986F1A00687174 /* ValidationUnitTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

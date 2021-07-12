@@ -74,6 +74,18 @@ extension UIView{
         NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: container, attribute: .top, multiplier: 1.0, constant: 0).isActive = true
         NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: container, attribute: .bottom, multiplier: 1.0, constant: 0).isActive = true
     }
+    
+    func createDottedLine(width: CGFloat, color: CGColor) {
+        let lineLayer = CAShapeLayer()
+        lineLayer.strokeColor = color
+        lineLayer.lineWidth = width
+        lineLayer.lineDashPattern = [2,2]
+        let path = CGMutablePath()
+        path.addLines(between: [CGPoint(x: self.bounds.origin.x + 1, y: self.bounds.origin.y),
+                                CGPoint(x: self.bounds.origin.x + 1, y: 61)])
+        lineLayer.path = path
+        self.layer.addSublayer(lineLayer)
+    }
 }
 
 extension UIDevice {

@@ -17,6 +17,7 @@ class OverviewViewController: BaseViewController {
         tableViewOverView.register(UINib(nibName: "BorrowerOverviewTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerOverviewTableViewCell")
         tableViewOverView.register(UINib(nibName: "BorrowerAddressTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerAddressTableViewCell")
         tableViewOverView.register(UINib(nibName: "BorrowerLoanInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerLoanInfoTableViewCell")
+        tableViewOverView.register(UINib(nibName: "BorrowerApplicationStatusButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerApplicationStatusButtonTableViewCell")
         
     }
     
@@ -25,7 +26,7 @@ class OverviewViewController: BaseViewController {
 extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 4
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -38,9 +39,20 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
             let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerAddressTableViewCell", for: indexPath) as! BorrowerAddressTableViewCell
             return cell
         }
-        else{
+        else if (indexPath.row == 2){
             let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerLoanInfoTableViewCell", for: indexPath) as! BorrowerLoanInfoTableViewCell
             return cell
+        }
+        else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerApplicationStatusButtonTableViewCell", for: indexPath) as! BorrowerApplicationStatusButtonTableViewCell
+            return cell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if (indexPath.row == 3){
+            let vc = Utility.getApplicationStatusVC()
+            self.pushToVC(vc: vc)
         }
     }
     
@@ -48,6 +60,9 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
         
         if (indexPath.row == 2){
             return 107
+        }
+        else if (indexPath.row == 3){
+            return 130
         }
         else{
             return UITableView.automaticDimension
