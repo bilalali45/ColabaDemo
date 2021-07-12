@@ -269,9 +269,28 @@
                     <view key="view" contentMode="scaleToFill" id="T3y-6e-Lk7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="RTq-jg-1eg">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Ym2-BP-dxA" id="2mS-8E-Gzh"/>
+                                    <outlet property="delegate" destination="Ym2-BP-dxA" id="Rry-uw-v6n"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="HDh-Ic-Ytq"/>
                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="RTq-jg-1eg" firstAttribute="leading" secondItem="HDh-Ic-Ytq" secondAttribute="leading" id="EI0-lR-SNQ"/>
+                            <constraint firstItem="RTq-jg-1eg" firstAttribute="top" secondItem="HDh-Ic-Ytq" secondAttribute="top" id="a0C-ES-0Hz"/>
+                            <constraint firstItem="HDh-Ic-Ytq" firstAttribute="bottom" secondItem="RTq-jg-1eg" secondAttribute="bottom" id="bMF-9o-hOB"/>
+                            <constraint firstItem="HDh-Ic-Ytq" firstAttribute="trailing" secondItem="RTq-jg-1eg" secondAttribute="trailing" id="l40-WT-dP5"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tblViewDocuments" destination="RTq-jg-1eg" id="hwP-4W-dVh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zsL-8H-mRS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

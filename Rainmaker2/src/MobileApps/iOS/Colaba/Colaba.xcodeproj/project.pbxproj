@@ -62,6 +62,8 @@
 		23E9C74A269C214A0066C978 /* ApplicationStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E9C749269C214A0066C978 /* ApplicationStatusViewController.swift */; };
 		23E9C74D269C23070066C978 /* ApplicationStatusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E9C74B269C23070066C978 /* ApplicationStatusTableViewCell.swift */; };
 		23E9C74E269C23070066C978 /* ApplicationStatusTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23E9C74C269C23070066C978 /* ApplicationStatusTableViewCell.xib */; };
+		23E9C751269C3F980066C978 /* DocumentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E9C74F269C3F980066C978 /* DocumentsTableViewCell.swift */; };
+		23E9C752269C3F980066C978 /* DocumentsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23E9C750269C3F980066C978 /* DocumentsTableViewCell.xib */; };
 		710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D032E268DC56500A13E63 /* NotificationModel.swift */; };
 		7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */; };
 		7113F51F26568E3B0066E179 /* Home.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7113F51E26568E3B0066E179 /* Home.svg */; };
@@ -170,6 +172,8 @@
 		23E9C749269C214A0066C978 /* ApplicationStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationStatusViewController.swift; sourceTree = "<group>"; };
 		23E9C74B269C23070066C978 /* ApplicationStatusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationStatusTableViewCell.swift; sourceTree = "<group>"; };
 		23E9C74C269C23070066C978 /* ApplicationStatusTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApplicationStatusTableViewCell.xib; sourceTree = "<group>"; };
+		23E9C74F269C3F980066C978 /* DocumentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsTableViewCell.swift; sourceTree = "<group>"; };
+		23E9C750269C3F980066C978 /* DocumentsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DocumentsTableViewCell.xib; sourceTree = "<group>"; };
 		25C6C1D772F13896700CDB1C /* Pods-Colaba.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Colaba.release.xcconfig"; path = "Target Support Files/Pods-Colaba/Pods-Colaba.release.xcconfig"; sourceTree = "<group>"; };
 		3D986CBDBB7995778F877F6F /* Pods-ColabaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ColabaTests.debug.xcconfig"; path = "Target Support Files/Pods-ColabaTests/Pods-ColabaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		710D032E268DC56500A13E63 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
@@ -302,6 +306,8 @@
 				235BBD7026988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.xib */,
 				23E9C74B269C23070066C978 /* ApplicationStatusTableViewCell.swift */,
 				23E9C74C269C23070066C978 /* ApplicationStatusTableViewCell.xib */,
+				23E9C74F269C3F980066C978 /* DocumentsTableViewCell.swift */,
+				23E9C750269C3F980066C978 /* DocumentsTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -671,6 +677,7 @@
 				7186ACBC2653B25B00E740D3 /* LaunchScreen.storyboard in Resources */,
 				7186ACB92653B25B00E740D3 /* Assets.xcassets in Resources */,
 				7186AD082653C77B00E740D3 /* Rubik-Regular.ttf in Resources */,
+				23E9C752269C3F980066C978 /* DocumentsTableViewCell.xib in Resources */,
 				23B238BC2679E05200508449 /* SearchResultTableViewCell.xib in Resources */,
 				7186ACB72653B25A00E740D3 /* Main.storyboard in Resources */,
 				23E9C74E269C23070066C978 /* ApplicationStatusTableViewCell.xib in Resources */,
@@ -831,6 +838,7 @@
 				23A56C5E2685B017005CE6F4 /* Loaf.swift in Sources */,
 				23B238B82679D38900508449 /* SearchViewController.swift in Sources */,
 				23A56C5D2685B017005CE6F4 /* Icons.swift in Sources */,
+				23E9C751269C3F980066C978 /* DocumentsTableViewCell.swift in Sources */,
 				7186AD602653DE8600E740D3 /* ExtensionOfView.swift in Sources */,
 				23A0D5D026958E83002B4BCE /* DashboardHeaderView.swift in Sources */,
 				2397AF672677A60A007A1A45 /* PipelineDetailTableViewCell.swift in Sources */,

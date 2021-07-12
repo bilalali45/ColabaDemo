@@ -15,7 +15,7 @@ class UtilitiesUnitTest: XCTestCase {
     }
     
     func testTokenExpiryReturnsFalse(){
-        XCTAssertFalse(Utility.getIsTokenExpire(tokenValidityDate: "2021-07-11T22:49:40Z"))
+        XCTAssertFalse(Utility.getIsTokenExpire(tokenValidityDate: "2021-07-15T22:49:40Z"))
     }
     
     func testTokenExpiryReturnsTrue(){
