@@ -64,6 +64,9 @@
 		23E9C74E269C23070066C978 /* ApplicationStatusTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23E9C74C269C23070066C978 /* ApplicationStatusTableViewCell.xib */; };
 		23E9C751269C3F980066C978 /* DocumentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E9C74F269C3F980066C978 /* DocumentsTableViewCell.swift */; };
 		23E9C752269C3F980066C978 /* DocumentsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23E9C750269C3F980066C978 /* DocumentsTableViewCell.xib */; };
+		23E9C754269C5F100066C978 /* DocumentsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E9C753269C5F100066C978 /* DocumentsDetailViewController.swift */; };
+		23E9C757269C6C140066C978 /* DocumentsDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E9C755269C6C130066C978 /* DocumentsDetailTableViewCell.swift */; };
+		23E9C758269C6C140066C978 /* DocumentsDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23E9C756269C6C130066C978 /* DocumentsDetailTableViewCell.xib */; };
 		710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D032E268DC56500A13E63 /* NotificationModel.swift */; };
 		7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */; };
 		7113F51F26568E3B0066E179 /* Home.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7113F51E26568E3B0066E179 /* Home.svg */; };
@@ -174,6 +177,9 @@
 		23E9C74C269C23070066C978 /* ApplicationStatusTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApplicationStatusTableViewCell.xib; sourceTree = "<group>"; };
 		23E9C74F269C3F980066C978 /* DocumentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsTableViewCell.swift; sourceTree = "<group>"; };
 		23E9C750269C3F980066C978 /* DocumentsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DocumentsTableViewCell.xib; sourceTree = "<group>"; };
+		23E9C753269C5F100066C978 /* DocumentsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsDetailViewController.swift; sourceTree = "<group>"; };
+		23E9C755269C6C130066C978 /* DocumentsDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsDetailTableViewCell.swift; sourceTree = "<group>"; };
+		23E9C756269C6C130066C978 /* DocumentsDetailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DocumentsDetailTableViewCell.xib; sourceTree = "<group>"; };
 		25C6C1D772F13896700CDB1C /* Pods-Colaba.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Colaba.release.xcconfig"; path = "Target Support Files/Pods-Colaba/Pods-Colaba.release.xcconfig"; sourceTree = "<group>"; };
 		3D986CBDBB7995778F877F6F /* Pods-ColabaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ColabaTests.debug.xcconfig"; path = "Target Support Files/Pods-ColabaTests/Pods-ColabaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		710D032E268DC56500A13E63 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
@@ -308,6 +314,8 @@
 				23E9C74C269C23070066C978 /* ApplicationStatusTableViewCell.xib */,
 				23E9C74F269C3F980066C978 /* DocumentsTableViewCell.swift */,
 				23E9C750269C3F980066C978 /* DocumentsTableViewCell.xib */,
+				23E9C755269C6C130066C978 /* DocumentsDetailTableViewCell.swift */,
+				23E9C756269C6C130066C978 /* DocumentsDetailTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -368,6 +376,7 @@
 				23DBAD25269714A800119680 /* ApplicationViewController.swift */,
 				23DBAD27269714B300119680 /* DocumentsViewController.swift */,
 				23E9C749269C214A0066C978 /* ApplicationStatusViewController.swift */,
+				23E9C753269C5F100066C978 /* DocumentsDetailViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -689,6 +698,7 @@
 				23B238C02679F44000508449 /* NotificationsTableViewCell.xib in Resources */,
 				7186AD0A2653C77B00E740D3 /* Rubik-Medium.ttf in Resources */,
 				7113F51F26568E3B0066E179 /* Home.svg in Resources */,
+				23E9C758269C6C140066C978 /* DocumentsDetailTableViewCell.xib in Resources */,
 				2397AF64267782E6007A1A45 /* PipelineTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -835,7 +845,9 @@
 				71B19458265CF9C80017955B /* APIRouter.swift in Sources */,
 				2397AF63267782E6007A1A45 /* PipelineTableViewCell.swift in Sources */,
 				710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */,
+				23E9C754269C5F100066C978 /* DocumentsDetailViewController.swift in Sources */,
 				23A56C5E2685B017005CE6F4 /* Loaf.swift in Sources */,
+				23E9C757269C6C140066C978 /* DocumentsDetailTableViewCell.swift in Sources */,
 				23B238B82679D38900508449 /* SearchViewController.swift in Sources */,
 				23A56C5D2685B017005CE6F4 /* Icons.swift in Sources */,
 				23E9C751269C3F980066C978 /* DocumentsTableViewCell.swift in Sources */,

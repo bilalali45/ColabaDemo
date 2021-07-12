@@ -31,19 +31,19 @@
                         <rect key="frame" x="15" y="20" width="369" height="95"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bank Statements" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e6g-RP-KgA">
-                                <rect key="frame" x="20" y="15" width="143" height="21"/>
+                                <rect key="frame" x="20" y="15" width="131" height="20"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="17"/>
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yesterday, 8:32 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hfx-nJ-kS1">
-                                <rect key="frame" x="234" y="20" width="115" height="16"/>
+                                <rect key="frame" x="237" y="20" width="112" height="16"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <color key="textColor" name="ButtonGreyTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nej-CT-U0J">
-                                <rect key="frame" x="20" y="46" width="129" height="30"/>
+                                <rect key="frame" x="20" y="45" width="129" height="30"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pdf-icon" translatesAutoresizingMaskIntoConstraints="NO" id="XS3-zu-2cI">
                                         <rect key="frame" x="12" y="8" width="13" height="14"/>
@@ -70,7 +70,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ti4-Lk-MYJ">
-                                <rect key="frame" x="154" y="46" width="128" height="30"/>
+                                <rect key="frame" x="154" y="45" width="128" height="30"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jpg-icon" translatesAutoresizingMaskIntoConstraints="NO" id="s5V-VT-wNm">
                                         <rect key="frame" x="12" y="8" width="13" height="14"/>
@@ -97,7 +97,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ov1-UT-L7I">
-                                <rect key="frame" x="288" y="46" width="30" height="30"/>
+                                <rect key="frame" x="288" y="45" width="30" height="30"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ucH-dT-tVR">
                                         <rect key="frame" x="6.5" y="6.5" width="17" height="17"/>
@@ -115,10 +115,10 @@
                                 </constraints>
                             </view>
                             <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="no-attatchment" translatesAutoresizingMaskIntoConstraints="NO" id="mn6-Fb-egP">
-                                <rect key="frame" x="20" y="60" width="16" height="4"/>
+                                <rect key="frame" x="20" y="59" width="16" height="4"/>
                             </imageView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No attachments" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G5E-sr-8K2">
-                                <rect key="frame" x="47" y="54" width="98" height="16"/>
+                                <rect key="frame" x="47" y="53" width="93" height="16"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <color key="textColor" name="ButtonGreyTextColor"/>
                                 <nil key="highlightedColor"/>
