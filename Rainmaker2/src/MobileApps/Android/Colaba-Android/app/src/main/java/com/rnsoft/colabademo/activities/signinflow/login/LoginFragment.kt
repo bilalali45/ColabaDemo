@@ -200,7 +200,7 @@ class LoginFragment : Fragment() {
                     3 -> navigateToOtpScreen()
                     else -> {
                         //showToast(R.string.we_have_send_you_email)
-                        SandbarUtils.showRegular(requireActivity(),"Webservice not responding...")
+                        SandbarUtils.showRegular(requireActivity(),AppConstant.INTERNET_ERR_MSG)
 
                     }
                 }

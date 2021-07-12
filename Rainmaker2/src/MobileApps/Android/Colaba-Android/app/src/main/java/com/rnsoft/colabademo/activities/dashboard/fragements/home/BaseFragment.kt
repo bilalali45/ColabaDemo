@@ -6,16 +6,21 @@ import com.rnsoft.colabademo.LoanViewModel
 
 open class BaseFragment: Fragment() {
 
-    protected var globalAssignToMe: Boolean = false
+    companion object {
+        var globalAssignToMe: Boolean = false
+        var globalOrderBy:Int = 0
+    }
+
     open fun setOrderId(orderBy: Int) {}
     open fun setAssignToMe(assignToMe:Boolean) {}
 
     protected val loanViewModel: LoanViewModel by activityViewModels()
 
     protected fun loadDataFromDatabase(loanFilter:Int){
-
         loanViewModel.getLoanDataFromDatabase(loanFilter = loanFilter)
-
     }
+
+
+
 
 }

@@ -54,8 +54,10 @@ object AppConstant {
 
         const val dontAskTwoFaIdentifier:String = "dontAskTwoFaIdentifier"
 
-        const val  INTERNET_ERR_MSG:String = "Please check your internet connectivity..."
+        const val  INTERNET_ERR_MSG:String = "Please check internet connectivity.."
+        const val  WEB_SERVICE_ERR_MSG:String = "Webservice not responding..."
         const val  INTERNET_ERR_CODE:String = "6048"
+        const val  ASSIGN_TO_ME:String = "ASSIGN_TO_ME"
 
 
         const val oldLoans:String = "oldLoans"

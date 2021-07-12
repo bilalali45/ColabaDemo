@@ -108,7 +108,7 @@ interface ServerApi{
     suspend fun readNotifications(@Header("Authorization" )  Authorization:String, @Body putParams:PutParameters):Response<Any>
 
     @PUT("api/mcu/mobile/Notification/notification/Seen")
-    suspend fun seenNotifications(@Header("Authorization" )  Authorization:String, @Body putParams:PutParameters):Response<Any>
+    suspend fun seenNotifications(@Header("Authorization" )  Authorization:String, @Body putParams:PutParameters):Any
 
     @PUT("api/mcu/mobile/Notification/notification/Delete")
     suspend fun deleteNotifications(@Header("Authorization" )  Authorization:String, @Body putParams:PutParameters):Response<Any>

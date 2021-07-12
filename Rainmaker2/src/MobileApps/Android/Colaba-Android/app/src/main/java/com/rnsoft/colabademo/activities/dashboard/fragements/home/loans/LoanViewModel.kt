@@ -5,12 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rnsoft.colabademo.activities.signinflow.phone.events.OtpSentEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
@@ -51,22 +47,22 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
     {
         viewModelScope.launch(Dispatchers.IO) {
             //delay(5000)
-                Log.e("viewmodel-", " method is - getAllLoans")
-                val result = loanRepo.getAllLoans(
-                    token = token, dateTime = dateTime,
-                    pageNumber = pageNumber, pageSize = pageSize, loanFilter = loanFilter,
-                    orderBy = orderBy, assignedToMe = assignedToMe
-                )
+            Log.e("viewmodel-", " method is - getAllLoans")
+            val result = loanRepo.getAllLoans(
+                token = token, dateTime = dateTime,
+                pageNumber = pageNumber, pageSize = pageSize, loanFilter = loanFilter,
+                orderBy = orderBy, assignedToMe = assignedToMe
+            )
 
-                if (result is Result.Success) {
-                    withContext(Dispatchers.Main) {
-                        _allLoansArrayList.value = result.data
-                    }
-                } else if (result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
-                    EventBus.getDefault().post(AllLoansLoadedEvent(null, true))
-                else
-                    EventBus.getDefault().post(AllLoansLoadedEvent(null))
-            }
+            if (result is Result.Success) {
+                withContext(Dispatchers.Main) {
+                    _allLoansArrayList.value = result.data
+                }
+            } else if (result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
+                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+            else if (result is Result.Error)
+                EventBus.getDefault().post(WebServiceErrorEvent(errorResult = result ))
+        }
     }
 
 
@@ -86,9 +82,9 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                 }
             }
             else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
-                EventBus.getDefault().post(AllLoansLoadedEvent(null, true))
-            else
-                EventBus.getDefault().post(AllLoansLoadedEvent(null))
+                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+            else if (result is Result.Error)
+                EventBus.getDefault().post(WebServiceErrorEvent(errorResult = result ))
         }
     }
 
@@ -109,9 +105,9 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                 }
             }
             else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
-                EventBus.getDefault().post(AllLoansLoadedEvent(null, true))
-            else
-                EventBus.getDefault().post(AllLoansLoadedEvent(null))
+                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+            else if (result is Result.Error)
+                EventBus.getDefault().post(WebServiceErrorEvent(errorResult = result ))
         }
     }
 

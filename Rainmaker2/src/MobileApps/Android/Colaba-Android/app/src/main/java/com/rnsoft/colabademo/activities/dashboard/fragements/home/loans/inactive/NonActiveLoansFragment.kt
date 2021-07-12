@@ -8,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -39,15 +37,17 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
     private lateinit var nonActiveRecycler: RecyclerView
     private var nonActiveLoansList: ArrayList<LoanItem> = ArrayList()
     private lateinit var nonActiveAdapter: LoansAdapter
-    private lateinit var shimmerContainer: ShimmerFrameLayout
+    private var shimmerContainer: ShimmerFrameLayout?=null
     //private lateinit var loading: ProgressBar
     ////////////////////////////////////////////////////////////////////////////
     //private var stringDateTime: String = ""
+
+    private val pageSize: Int = 20
+    private val loanFilter: Int = 2
+
     private var pageNumber: Int = 1
-    private var pageSize: Int = 20
-    private var loanFilter: Int = 2
-    private var orderBy: Int = 0
-    private var assignedToMe: Boolean = false
+    //private var orderBy: Int = 0
+    //private var assignedToMe: Boolean = false
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +56,7 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
         _binding = NonActiveFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
         shimmerContainer = view.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
-        shimmerContainer.startShimmer()
+        shimmerContainer?.startShimmer()
         //loading = view.findViewById(R.id.non_active_loan_loader)
 
         rowLoading = view.findViewById(R.id.non_active_row_loader)
@@ -83,21 +83,21 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
                 val oldAdapter = LoansAdapter(oldJsonList , this@NonActiveLoansFragment)
                 nonActiveRecycler.adapter = oldAdapter
                 oldAdapter.notifyDataSetChanged()
-                shimmerContainer.stopShimmer()
-                shimmerContainer.isVisible = false
+                shimmerContainer?.stopShimmer()
+                shimmerContainer?.isVisible = false
             }
         }
 
 
 
         //loading.visibility = View.VISIBLE
-        loanViewModel.nonActiveLoansArrayList.observe(viewLifecycleOwner, Observer {
+        loanViewModel.nonActiveLoansArrayList.observe(viewLifecycleOwner, {
             rowLoading?.visibility = View.INVISIBLE
             if(it.size>0) {
-                shimmerContainer.stopShimmer()
-                shimmerContainer.isVisible = false
-                shimmerContainer.removeAllViews()
-                val lastSize = nonActiveLoansList.size
+                shimmerContainer?.stopShimmer()
+                shimmerContainer?.isVisible = false
+
+                nonActiveLoansList.size
                 nonActiveRecycler.adapter = nonActiveAdapter
                 nonActiveLoansList.addAll(it)
                 nonActiveAdapter.notifyDataSetChanged()
@@ -137,7 +137,7 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
                 token = authToken,
                 dateTime = AppSetting.nonActiveloanApiDateTime, pageNumber = pageNumber,
                 pageSize = pageSize, loanFilter = loanFilter,
-                orderBy = orderBy, assignedToMe = globalAssignToMe
+                orderBy = globalOrderBy, assignedToMe = globalAssignToMe
             )
         }
     }
@@ -164,19 +164,23 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onClearEvent(event: AllLoansLoadedEvent) {
-        event.allLoansArrayList?.let {
-            if (it.size == 0) {
-                nonActiveLoansList.clear()
-                nonActiveAdapter.notifyDataSetChanged()
+    fun onErrorReceived(event: WebServiceErrorEvent) {
+        rowLoading?.visibility = View.INVISIBLE
+        shimmerContainer?.stopShimmer()
+        shimmerContainer?.isVisible = false
+        if(event.isInternetError)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+        else
+            if(event.errorResult!=null){
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
             }
-        }
     }
 
     override fun setOrderId(passedOrderBy: Int) {
         nonActiveLoansList.clear()
         nonActiveAdapter.notifyDataSetChanged()
-        orderBy = passedOrderBy
+        //orderBy = passedOrderBy
+        globalOrderBy = passedOrderBy
         pageNumber = 1
         loadNonActiveApplications()
     }
@@ -186,7 +190,7 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
         nonActiveLoansList.clear()
         nonActiveAdapter.notifyDataSetChanged()
         globalAssignToMe = passedAssignToMe
-        assignedToMe = passedAssignToMe
+        //assignedToMe = passedAssignToMe
         pageNumber = 1
         loadNonActiveApplications()
     }

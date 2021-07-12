@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +20,9 @@ import com.ecommerce.testapp.NewNotificationListAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.rnsoft.colabademo.databinding.FragmentNotificationsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
 
@@ -103,8 +108,9 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
                 newNotificationAdapter.notifyDataSetChanged()
                 val seenIds:ArrayList<Int> = ArrayList()
                 for (i in it){
-                    i.id?.let {
-                        seenIds.add(i.id)
+                    i.id?.let { seenId->
+                        Log.e("seen-id-" ,seenId.toString())
+                        seenIds.add(seenId)
                     }
                 }
 
@@ -219,20 +225,7 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
     }
 
 
-    override fun onStop() {
-        Log.e("readArrayList-", readArrayList.size.toString())
-        Log.e("deleteArrayList-", deleteArrayList.size.toString())
-        sharedPreferences.getString(AppConstant.token,"")?.let {
-            if(readArrayList.size>0)
-                dashBoardViewModel.readNotifications(it, readArrayList)
 
-        }
-        sharedPreferences.getString(AppConstant.token,"")?.let {
-            if(deleteArrayList.size>0)
-                dashBoardViewModel.deleteNotifications(it, deleteArrayList)
-        }
-        super.onStop()
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -282,7 +275,11 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
 
             // showing snack bar with Undo option
             val snackbar = Snackbar
-                .make(coordinatorLayout, "$name removed from Notifications!", Snackbar.LENGTH_LONG)
+                .make(coordinatorLayout, "The notification has been removed.", Snackbar.LENGTH_LONG)
+
+            snackbar.setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.colaba_primary_color))
+            snackbar.setActionTextColor(resources.getColor(R.color.white, activity?.theme))
+            snackbar.setTextColor(resources.getColor(R.color.white, activity?.theme))
             snackbar.setAction("UNDO") { // undo is selected, restore the deleted item
                 newNotificationAdapter.restoreItem(deletedItem, deletedIndex)
                 val deleteId = deletedItem.id
@@ -291,12 +288,47 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
                         deleteArrayList.remove(it)
                 }
             }
-            snackbar.setActionTextColor(Color.YELLOW)
             snackbar.show()
         }
     }
 
     private lateinit var coordinatorLayout: CoordinatorLayout
+
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        Log.e("readArrayList-", readArrayList.size.toString())
+        Log.e("deleteArrayList-", deleteArrayList.size.toString())
+        sharedPreferences.getString(AppConstant.token,"")?.let {
+            if(readArrayList.size>0)
+                dashBoardViewModel.readNotifications(it, readArrayList)
+
+        }
+        sharedPreferences.getString(AppConstant.token,"")?.let {
+            if(deleteArrayList.size>0)
+                dashBoardViewModel.deleteNotifications(it, deleteArrayList)
+        }
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onErrorReceived(event: WebServiceErrorEvent) {
+        //shimmerContainer?.stopShimmer()
+        //shimmerContainer?.isVisible = false
+        //searchRowLoader.visibility = View.INVISIBLE
+        if(event.isInternetError)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+        else
+        if(event.errorResult!=null)
+            SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
+    }
 
 
 }

@@ -8,10 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -39,13 +36,14 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
     private var activeLoansList: ArrayList<LoanItem> = ArrayList()
     private lateinit var activeAdapter: LoansAdapter
     //private lateinit var loading: ProgressBar
-    private lateinit var shimmerContainer: ShimmerFrameLayout
+    private var shimmerContainer: ShimmerFrameLayout?=null
     ////////////////////////////////////////////////////////////////////////////
+    private val pageSize: Int = 20
+    private val loanFilter: Int = 1
+
     private var pageNumber: Int = 1
-    private var pageSize: Int = 20
-    private var loanFilter: Int = 1
-    private var orderBy: Int = 0
-    private var assignedToMe: Boolean = false
+    //private var orderBy: Int = 0
+    //private var assignedToMe: Boolean = false
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -58,7 +56,7 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
         val view = binding.root
 
         shimmerContainer = view.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
-        shimmerContainer.startShimmer()
+        shimmerContainer?.startShimmer()
 
         rowLoading = view.findViewById(R.id.active_row_loader)
 
@@ -85,8 +83,8 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
                 val oldAdapter = LoansAdapter(oldJsonList , this@ActiveLoansFragment)
                 activeRecycler.adapter = oldAdapter
                 oldAdapter.notifyDataSetChanged()
-                shimmerContainer.stopShimmer()
-                shimmerContainer.isVisible = false
+                shimmerContainer?.stopShimmer()
+                shimmerContainer?.isVisible = false
             }
         }
 
@@ -113,8 +111,8 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
             if(it.size>0) {
                 //activeLoansList = it
                 //val lastSize = activeLoansList.size
-                shimmerContainer.stopShimmer()
-                shimmerContainer.isVisible = false
+                shimmerContainer?.stopShimmer()
+                shimmerContainer?.isVisible = false
                 activeRecycler.adapter = activeAdapter
                 activeLoansList.addAll(it)
                 activeAdapter.notifyDataSetChanged()
@@ -143,7 +141,7 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
                 token = authToken,
                 dateTime = AppSetting.activeloanApiDateTime, pageNumber = pageNumber,
                 pageSize = pageSize, loanFilter = loanFilter,
-                orderBy = orderBy, assignedToMe = globalAssignToMe
+                orderBy = globalOrderBy, assignedToMe = globalAssignToMe
             )
         }
     }
@@ -167,25 +165,26 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
 
     override fun onStop() {
         super.onStop()
-        //unregisterReceiver()
         EventBus.getDefault().unregister(this)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onClearEvent(event: AllLoansLoadedEvent) {
-        //loading.visibility = View.VISIBLE
-        event.allLoansArrayList?.let {
-            if (it.size == 0) {
-                activeLoansList.clear()
-                activeAdapter.notifyDataSetChanged()
-            }
-        }
+    fun onErrorReceived(event: WebServiceErrorEvent) {
+        rowLoading?.visibility = View.INVISIBLE
+        shimmerContainer?.stopShimmer()
+        shimmerContainer?.isVisible = false
+        if(event.isInternetError)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+        else
+        if(event.errorResult!=null)
+            SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
     }
 
     override fun setOrderId(passedOrderBy: Int) {
         activeLoansList.clear()
         activeAdapter.notifyDataSetChanged()
-        orderBy = passedOrderBy
+        //orderBy = passedOrderBy
+        globalOrderBy = passedOrderBy
         pageNumber = 1
         loadActiveApplications()
     }
@@ -195,7 +194,7 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
         activeLoansList.clear()
         activeAdapter.notifyDataSetChanged()
         globalAssignToMe = passedAssignToMe
-        assignedToMe = passedAssignToMe
+        //assignedToMe = passedAssignToMe
         pageNumber = 1
         loadActiveApplications()
     }

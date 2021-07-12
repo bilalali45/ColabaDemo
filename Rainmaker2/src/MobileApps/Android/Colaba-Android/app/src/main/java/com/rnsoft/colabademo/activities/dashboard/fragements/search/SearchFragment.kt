@@ -12,13 +12,18 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import android.widget.TextView.OnEditorActionListener
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.rnsoft.colabademo.databinding.FragmentSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -45,9 +50,9 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
 
     private var searchRecyclerView: RecyclerView? = null
     private lateinit var searchAdapter: SearchAdapter
-    private lateinit var loading: ProgressBar
+    private lateinit var searchRowLoader: ProgressBar
     private var searchArrayList: ArrayList<SearchItem> = ArrayList()
-
+    private var shimmerContainer: ShimmerFrameLayout?=null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,9 +63,12 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        shimmerContainer = root.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
+
+
         searchViewModel.resetSearchData()
 
-        loading = root.findViewById(R.id.search_loader)
+        searchRowLoader = root.findViewById(R.id.search_row_loader)
         searchRecyclerView = root.findViewById(R.id.search_recycle_view)
         searchAdapter = SearchAdapter(searchArrayList, this@SearchFragment)
         val linearLayoutManager = LinearLayoutManager(activity)
@@ -71,11 +79,11 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
             this.adapter = searchAdapter
         }
 
-
-
         searchViewModel.searchArrayList.observe(viewLifecycleOwner, {
             //val result = it ?: return@Observer
-            loading.visibility = View.INVISIBLE
+            searchRowLoader.visibility = View.INVISIBLE
+            shimmerContainer?.stopShimmer()
+            shimmerContainer?.isVisible = false
 
             if(it.size<=1)
                 binding.searchResultCountTextView.text = searchArrayList.size.toString() +" result found"
@@ -99,6 +107,8 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
                 binding.searchEditTextField.clearFocus()
                 binding.searchEditTextField.hideKeyboard()
                 searchViewModel.resetSearchData()
+                shimmerContainer?.isVisible = true
+                shimmerContainer?.startShimmer()
                 performSearch()
                 return@OnEditorActionListener true
             }
@@ -117,7 +127,6 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
             }
         })
 
-
         binding.searchcrossImageView.setOnClickListener{
             binding.searchEditTextField.setText("")
             binding.searchEditTextField.clearFocus()
@@ -127,6 +136,10 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
             binding.searchResultTitleTextView.visibility = View.INVISIBLE
             searchViewModel.resetSearchData()
             searchAdapter.clearData()
+            searchRowLoader.visibility = View.INVISIBLE
+            searchRowLoader.visibility = View.INVISIBLE
+            shimmerContainer?.stopShimmer()
+            shimmerContainer?.isVisible = false
             //binding.searchResultCountTextView.visibility = View.VISIBLE
             //binding.searchResultTitleTextView.visibility = View.VISIBLE
         }
@@ -139,10 +152,13 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
+                searchRowLoader.visibility = View.VISIBLE
+                searchRowLoader.bringToFront()
                 pageNumber++
                 performSearch()
             }
         }
+
         searchRecyclerView?.addOnScrollListener(scrollListener)
 
         return root
@@ -153,8 +169,6 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
     private fun performSearch() {
         //...perform search
         hasPerformedSearchOnce = true
-        loading.visibility = View.VISIBLE
-        loading.bringToFront()
         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
             val searchTerm = binding.searchEditTextField.text.toString()
             if(searchTerm.isNotEmpty()) {
@@ -182,9 +196,27 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
     override fun onStop() {
         super.onStop()
         searchViewModel.resetSearchData()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onErrorReceived(event: WebServiceErrorEvent) {
+        shimmerContainer?.stopShimmer()
+        shimmerContainer?.isVisible = false
+        searchRowLoader.visibility = View.INVISIBLE
+        if(event.isInternetError)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+        else
+        if(event.errorResult!=null)
+            SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
     }
 
 }

@@ -119,7 +119,7 @@ class AppModule {
                 //.addInterceptor(LoggingInterceptor())
                 //.addInterceptor(interceptor)
                 .addInterceptor(httpLoggingInterceptor)
-                //.addInterceptor(networkConnectionInterceptor)
+                .addInterceptor(networkConnectionInterceptor)
 
                 //.cookieJar(testCookieJar)
                 .connectTimeout(60,TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS)

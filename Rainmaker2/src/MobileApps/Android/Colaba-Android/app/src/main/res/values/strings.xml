@@ -32,6 +32,7 @@
 
     <string name="application">Application</string>
     <string name="documents">Documents</string>
+    <string name="documents_small">documents</string>
     <string name="conversation">Conversations</string>
     <string name="archive">Archive</string>
 
@@ -123,6 +124,7 @@
     <string name="title_soccer">Soccer</string>
     <string name="title_handball">Handball</string>
     <string name="title_tennis">Tennis</string>
+    <string name="has_submitted">has submitted</string>
 
     <string name="subtitle_rugby">19th century</string>
     <string name="subtitle_cricket">16th century</string>
@@ -173,5 +175,7 @@
     <string name="action_settings">Settings</string>
     <string name="my_cart">My Cart</string>
     <string name="delete">DELETE</string>
+
+    <string name="internet_error">Please connect to the network…</string>
 
 </resources>
