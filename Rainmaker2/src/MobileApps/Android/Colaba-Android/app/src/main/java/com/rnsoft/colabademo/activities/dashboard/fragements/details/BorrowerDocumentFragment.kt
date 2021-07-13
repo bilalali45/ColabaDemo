@@ -5,17 +5,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.facebook.shimmer.ShimmerFrameLayout
+import com.rnsoft.colabademo.databinding.BorrowerDocLayoutBinding
 import com.rnsoft.colabademo.databinding.DetailBorrowerLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class BorrowerDocumentFragment : Fragment()  {
+class BorrowerDocumentFragment : Fragment() , LoanItemClickListener  {
 
-    private var _binding: DetailBorrowerLayoutBinding? = null
+    private var _binding: BorrowerDocLayoutBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var docsRecycler: RecyclerView
+    private var docsArrayList: ArrayList<LoanItem> = ArrayList()
+    private lateinit var docsAdapter: DocsAdapter
+    private var shimmerContainer: ShimmerFrameLayout?=null
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -25,10 +35,31 @@ class BorrowerDocumentFragment : Fragment()  {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = DetailBorrowerLayoutBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        _binding = BorrowerDocLayoutBinding.inflate(inflater, container, false)
+        val view: View = binding.root
 
-        return root
+        shimmerContainer = view.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
+        shimmerContainer?.startShimmer()
+
+        docsRecycler = view.findViewById(R.id.docs_recycle_view)
+
+        val linearLayoutManager = LinearLayoutManager(activity)
+        docsAdapter = DocsAdapter(docsArrayList, this@BorrowerDocumentFragment)
+        docsRecycler.apply {
+            this.layoutManager = linearLayoutManager
+            this.setHasFixedSize(true)
+            this.adapter = docsAdapter
+        }
+
+        return view
+
+    }
+
+    override fun getCardIndex(position: Int) {
+
+    }
+
+    override fun navigateCardToDetailActivity(position: Int) {
 
     }
 
