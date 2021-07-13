@@ -20,7 +20,9 @@
     <color name="colaba_primary_color">#FF4484F4</color>
 
     <color name="colaba_primary_color_half_alpha">#804484F4</color>
-    #4484F4
+
+    <color name="colaba_primary_color_thirty_alpha">#4D4484F4</color>
+
     <color name="colaba_primary_color_with_alpha_one">#084484F4</color>
     <color name="grey_color_one">#FF4E4E4E</color>
     <color name="grey_color_two">#FF7E829E</color>
@@ -29,9 +31,14 @@
     <color name="colaba_line_separator">#FFCCCCCC</color>
     <color name="colaba_red_color">#FFFF5652</color>
 
+
+
     <color name="colaba_grey_line_color">#FF707070</color>
 
     <color name="loan_view_holder_separator">#80E5E5E5</color>
+
+    <color name="colaba_primary_color_five_alpha">#0D4484F4</color>
+
 
 
     <color name="colaba_holder_background">#0D7E829E</color>
