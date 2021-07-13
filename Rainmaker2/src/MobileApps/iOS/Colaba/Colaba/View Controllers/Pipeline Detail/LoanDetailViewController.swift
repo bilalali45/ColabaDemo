@@ -210,6 +210,15 @@ extension LoanDetailViewController: CarbonTabSwipeNavigationDelegate{
         
     }
     
+    func carbonTabSwipeNavigation(_ carbonTabSwipeNavigation: CarbonTabSwipeNavigation, didMoveAt index: UInt) {
+        if (index == 0){
+            self.tabView.backgroundColor = .white
+        }
+        else{
+            self.tabView.backgroundColor = Theme.getDashboardBackgroundColor()
+        }
+    }
+    
 }
 
 extension LoanDetailViewController: MFMailComposeViewControllerDelegate{

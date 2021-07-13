@@ -54,7 +54,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func loadTabbarController(){
         let vc = Utility.getLoanDetailVC()
-        self.window?.rootViewController = vc
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navVC.navigationBar.isHidden = true
+        self.window?.rootViewController = navVC
     }
     
     func loadLoginViewController(){

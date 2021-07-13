@@ -110,6 +110,14 @@ struct Utility {
         return loanDetailStoryboard.instantiateViewController(withIdentifier: "DocumentsViewController") as! DocumentsViewController
     }
     
+    static func getApplicationStatusVC() -> ApplicationStatusViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "ApplicationStatusViewController") as! ApplicationStatusViewController
+    }
+    
+    static func getDocumentsDetailVC() -> DocumentsDetailViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "DocumentsDetailViewController") as! DocumentsDetailViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
