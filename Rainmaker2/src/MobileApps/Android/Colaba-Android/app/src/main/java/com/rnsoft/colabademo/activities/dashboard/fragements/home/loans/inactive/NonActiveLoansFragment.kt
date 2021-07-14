@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -121,7 +122,7 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
 
         loadDataFromDatabase(loanFilter)
 
-        loadNonActiveApplications()
+        //loadNonActiveApplications()
 
         return view
     }
@@ -144,12 +145,27 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
 
 
 
-    override fun getCardIndex(position: Int){}
+    override fun getCardIndex(position: Int) {
+        val borrowerBottomSheet = SheetBottomBorrowerCardFragment.newInstance()
+        val bundle = Bundle()
+        bundle.putParcelable(AppConstant.borrowerParcelObject, nonActiveLoansList[position])
+        borrowerBottomSheet.arguments = bundle
+        borrowerBottomSheet.show(childFragmentManager, SheetBottomBorrowerCardFragment::class.java.canonicalName)
+    }
+
+    override fun navigateCardToDetailActivity(position: Int) {
+        startActivity(Intent(requireActivity(), DetailActivity::class.java))
+        //requireActivity().finish()
+    }
 
 
     override fun onResume() {
         super.onResume()
         rowLoading?.visibility = View.INVISIBLE
+        nonActiveLoansList.clear()
+        nonActiveAdapter.notifyDataSetChanged()
+        pageNumber = 1
+        loadNonActiveApplications()
     }
 
 

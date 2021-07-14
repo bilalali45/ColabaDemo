@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -163,7 +164,7 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
         //if(hasLoanApiDataLoaded)
         //loadDataFromDatabase(loanFilter)
 
-        loadLoanApplications()
+        //loadLoanApplications()
 
 
         return view
@@ -175,6 +176,11 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
         bundle.putParcelable(AppConstant.borrowerParcelObject, allLoansArrayList[position])
         borrowerBottomSheet.arguments = bundle
         borrowerBottomSheet.show(childFragmentManager, SheetBottomBorrowerCardFragment::class.java.canonicalName)
+    }
+
+    override fun navigateCardToDetailActivity(position: Int) {
+        startActivity(Intent(requireActivity(), DetailActivity::class.java))
+        //requireActivity().finish()
     }
 
     private fun loadLoanApplications() {
@@ -199,6 +205,10 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
     override fun onResume() {
         super.onResume()
         rowLoading?.visibility = View.INVISIBLE
+        allLoansArrayList.clear()
+        loansAdapter.notifyDataSetChanged()
+        pageNumber = 1
+        loadLoanApplications()
     }
 
     override fun onStart() {

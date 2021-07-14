@@ -64,6 +64,8 @@
 
     <string name="good_evening_james">Good Evening, James</string>
 
+    <string name="purchase">Purchase</string>
+
     <string name="user_data_does_not_exit">  User does not exist</string>
 
     <string name="min">min</string>

@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 
@@ -156,12 +157,22 @@ internal constructor(
         var openLoanImageView: ImageView = itemView.findViewById(R.id.open_inside_view)
         var closeLoanImageView: ImageView = itemView.findViewById(R.id.close_inside_view)
         var dotsImageView: ImageView = itemView.findViewById(R.id.loandotsImageView)
+        var cardBox:CardView = itemView.findViewById(R.id.cardBox)
         var loanDetailLayout: ConstraintLayout = itemView.findViewById(R.id.inside_Loan_layout)
-        init {
-            dotsImageView.setOnClickListener(this)
-        }
+
+       init {
+           dotsImageView.setOnClickListener {
+               classScopedItemClickListener.getCardIndex(adapterPosition)
+           }
+
+           cardBox.setOnClickListener{
+               classScopedItemClickListener.navigateCardToDetailActivity(adapterPosition)
+           }
+
+       }
+
         override fun onClick(v: View?) {
-            classScopedItemClickListener.getCardIndex(adapterPosition)
+
         }
 
         //fun bind(item: ConstraintLayout, listener: OnItemClickListener) {

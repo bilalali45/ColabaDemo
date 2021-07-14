@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -146,7 +147,18 @@ class ActiveLoansFragment : BaseFragment() , LoanItemClickListener  ,  LoanFilte
         }
     }
 
-    override fun getCardIndex(position: Int) {}
+    override fun getCardIndex(position: Int) {
+        val borrowerBottomSheet = SheetBottomBorrowerCardFragment.newInstance()
+        val bundle = Bundle()
+        bundle.putParcelable(AppConstant.borrowerParcelObject, activeLoansList[position])
+        borrowerBottomSheet.arguments = bundle
+        borrowerBottomSheet.show(childFragmentManager, SheetBottomBorrowerCardFragment::class.java.canonicalName)
+    }
+
+    override fun navigateCardToDetailActivity(position: Int) {
+        startActivity(Intent(requireActivity(), DetailActivity::class.java))
+        //requireActivity().finish()
+    }
 
 
     override fun onResume() {
