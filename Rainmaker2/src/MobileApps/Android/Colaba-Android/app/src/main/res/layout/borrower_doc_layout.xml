@@ -15,7 +15,12 @@
         android:layout_height="match_parent"
         android:background="@color/colaba_loan_background"
         android:clipToPadding="false"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 

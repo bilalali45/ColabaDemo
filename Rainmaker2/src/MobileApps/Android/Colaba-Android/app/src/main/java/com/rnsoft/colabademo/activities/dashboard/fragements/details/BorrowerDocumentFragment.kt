@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.rnsoft.colabademo.databinding.BorrowerDocLayoutBinding
-import com.rnsoft.colabademo.databinding.DetailBorrowerLayoutBinding
+
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -23,7 +23,7 @@ class BorrowerDocumentFragment : Fragment() , LoanItemClickListener  {
     private val binding get() = _binding!!
 
     private lateinit var docsRecycler: RecyclerView
-    private var docsArrayList: ArrayList<LoanItem> = ArrayList()
+    private var docsArrayList: ArrayList<DocItem> = ArrayList()
     private lateinit var docsAdapter: DocsAdapter
     private var shimmerContainer: ShimmerFrameLayout?=null
 
@@ -44,6 +44,7 @@ class BorrowerDocumentFragment : Fragment() , LoanItemClickListener  {
         docsRecycler = view.findViewById(R.id.docs_recycle_view)
 
         val linearLayoutManager = LinearLayoutManager(activity)
+        docsArrayList = DocItem.testDocList()
         docsAdapter = DocsAdapter(docsArrayList, this@BorrowerDocumentFragment)
         docsRecycler.apply {
             this.layoutManager = linearLayoutManager

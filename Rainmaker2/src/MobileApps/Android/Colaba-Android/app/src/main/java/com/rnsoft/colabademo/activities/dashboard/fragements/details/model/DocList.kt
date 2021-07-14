@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.versionedparcelable.VersionedParcelize
@@ -54,7 +55,48 @@ data class DocItem(
         override fun newArray(size: Int): Array<DocItem?> {
             return arrayOfNulls(size)
         }
+
+        fun testDocList(): ArrayList<DocItem> {
+
+            val testArray: ArrayList<DocItem> = ArrayList()
+
+            testArray.add(
+                DocItem(
+                    "Yesterday, 8:32 PM", "Bank Statements",
+                    "Bank-S..0-1.pdf", "pdf",
+                    "Bank-S..0-2.jpg", "pdf", 0, 4
+                )
+            )
+
+            testArray.add(
+                DocItem(
+                    "Yesterday, 8:32 PM", "Bank Statements",
+                    "W-2s_2018.pdf", "pdf",
+                    "", "", 1, 1
+                )
+            )
+
+            testArray.add(
+                DocItem(
+                    "Yesterday, 8:32 PM", "Bank Statements",
+                    "", "",
+                    "", "", 2, 0
+                )
+            )
+
+            testArray.add(
+                DocItem(
+                    "Yesterday, 8:32 PM", "Bank Statements",
+                    "Tax-file-..34.pdf", "pdf",
+                    "Tax-tran..01.pdf", "pdf", 3, 1
+                )
+            )
+
+            return testArray
+        }
     }
+
+
 
 
 }

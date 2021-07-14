@@ -38,12 +38,15 @@ internal constructor(
         var docType: TextView = itemView.findViewById(R.id.doc_type)
         var docUploadedTime: TextView = itemView.findViewById(R.id.doc_uploaded_time)
 
+        var docOneLayout:ConstraintLayout = itemView.findViewById(R.id.doc_one)
         var docOneName: TextView = itemView.findViewById(R.id.doc_one_name)
         var docOneImage: ImageView = itemView.findViewById(R.id.doc_one_image)
 
+        var docTwoLayout:ConstraintLayout = itemView.findViewById(R.id.doc_two)
         var docTwoName: TextView = itemView.findViewById(R.id.doc_two_name)
         var docTwoImage: ImageView = itemView.findViewById(R.id.doc_two_image)
 
+        var docThreeLayout:ConstraintLayout = itemView.findViewById(R.id.doc_three)
         var docThreeName: TextView = itemView.findViewById(R.id.doc_three_name)
 
     }
@@ -53,12 +56,16 @@ internal constructor(
 
         holder.docType.text = doc.docType
 
+        holder.docUploadedTime.text = doc.docUploadedTime
+
+        /*
         doc.docUploadedTime?.let { activityTime->
            var newString = activityTime.substring( 0 , activityTime.length-9)
             newString+="Z"
             newString = AppSetting.returnLongTimeNow(newString)
             holder.docUploadedTime.text =  newString
         }
+         */
 
 
         if(doc.totalDocs != null && doc.totalDocs == 0) {
@@ -68,9 +75,27 @@ internal constructor(
         else {
             holder.containsThreeChild.visibility = View.VISIBLE
             holder.containsNoChild.visibility = View.GONE
-            holder.docOneName.text = doc.docOneName
-            holder.docTwoName.text = doc.docTwoName
-            holder.docThreeName.text = (doc.totalDocs?.minus(2)).toString()
+            if(!doc.docOneName.isNullOrEmpty()) {
+                holder.docOneName.text = doc.docOneName
+                holder.docOneImage.visibility = View.VISIBLE
+            }
+            else
+                holder.docOneLayout.visibility = View.INVISIBLE
+
+            if(!doc.docTwoName.isNullOrEmpty()) {
+                holder.docTwoName.text = doc.docTwoName
+                holder.docTwoImage.visibility = View.VISIBLE
+            }
+            else
+                holder.docTwoLayout.visibility = View.INVISIBLE
+
+            doc.totalDocs?.let {
+                if(it>2)
+                    holder.docThreeName.text = "+"+(it.minus(2)).toString()
+                else
+                    holder.docThreeLayout.visibility = View.INVISIBLE
+            }
+
         }
     }
 
