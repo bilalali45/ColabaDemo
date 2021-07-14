@@ -216,7 +216,9 @@ extension LoanDetailViewController: CarbonTabSwipeNavigationDelegate{
             return Utility.getApplicationVC()
         }
         else{
-            return Utility.getDocumentsVC()
+            let vc = Utility.getDocumentsVC()
+            vc.loanApplicationId = self.loanApplicationId
+            return vc
         }
         
     }

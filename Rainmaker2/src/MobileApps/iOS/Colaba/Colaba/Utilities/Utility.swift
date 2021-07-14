@@ -17,6 +17,7 @@ struct Utility {
     
     static private var pipelineDateFormatter: DateFormatter?
     static private var loanApplicationDateFormatter: DateFormatter?
+    static private var documentDateFormatter: DateFormatter?
     
     static func getLoginNavigationVC() -> UINavigationController{
         return authStoryboard.instantiateViewController(withIdentifier: "LoginNavigation")  as! UINavigationController
@@ -148,6 +149,22 @@ struct Utility {
         }
     }
     
+    static var localDocumentDateFormatter: DateFormatter{
+        get{
+            if (documentDateFormatter == nil){
+                documentDateFormatter = DateFormatter()
+                documentDateFormatter?.timeZone = TimeZone(abbreviation: "UTC")
+                documentDateFormatter?.locale = .current
+                documentDateFormatter?.dateFormat = "eee MMM dd, yyyy HH:mm a"
+            }
+            return documentDateFormatter!
+        }
+        set{
+            
+        }
+        
+    }
+    
     static func checkDeviceAuthType() -> String {
          let authType = LocalAuthManager.shared.biometricType
             switch authType {
@@ -263,6 +280,24 @@ struct Utility {
         }
     }
     
+    static func getDocumentFilesTimeStamp(_ dateString: String) -> Int{
+        var actualDate = ""
+        let loanDate = dateString.components(separatedBy: "T")
+        if loanDate.count > 1{
+            let loanTime = loanDate[1].components(separatedBy: ".")
+            if loanTime.first != nil{
+                actualDate = "\(loanDate.first!) \(loanTime.first!)"
+            }
+        }
+        
+        if let date = localLoanApplicationDateFormatter.date(from: actualDate){
+            return Int(date.timeIntervalSince1970)
+        }
+        else{
+            return 0
+        }
+    }
+    
     static public func timeAgoSince(_ dateString: String) -> String {
         
         var actualDate = ""
@@ -335,5 +370,23 @@ struct Utility {
             return "Just now"
         }
         return "Just now"
+    }
+    
+    static func getDocumentDate(_ dateString: String) -> String{
+        
+        var actualDate = ""
+        let loanDate = dateString.components(separatedBy: "T")
+        if loanDate.count > 1{
+            let loanTime = loanDate[1].components(separatedBy: ".")
+            if loanTime.first != nil{
+                actualDate = "\(loanDate.first!) \(loanTime.first!)"
+            }
+        }
+        
+        if let date = localLoanApplicationDateFormatter.date(from: actualDate){
+            return localDocumentDateFormatter.string(from: date)
+        }
+        
+        return ""
     }
 }

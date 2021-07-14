@@ -60,6 +60,7 @@
 		23DBAD26269714A800119680 /* ApplicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DBAD25269714A800119680 /* ApplicationViewController.swift */; };
 		23DBAD28269714B300119680 /* DocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DBAD27269714B300119680 /* DocumentsViewController.swift */; };
 		23DF0CEE269ED82000F29B70 /* LoanInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DF0CED269ED82000F29B70 /* LoanInfoModel.swift */; };
+		23DF0CF0269F022B00F29B70 /* LoanDocumentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DF0CEF269F022B00F29B70 /* LoanDocumentModel.swift */; };
 		23E9C74A269C214A0066C978 /* ApplicationStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E9C749269C214A0066C978 /* ApplicationStatusViewController.swift */; };
 		23E9C74D269C23070066C978 /* ApplicationStatusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E9C74B269C23070066C978 /* ApplicationStatusTableViewCell.swift */; };
 		23E9C74E269C23070066C978 /* ApplicationStatusTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23E9C74C269C23070066C978 /* ApplicationStatusTableViewCell.xib */; };
@@ -174,6 +175,7 @@
 		23DBAD25269714A800119680 /* ApplicationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationViewController.swift; sourceTree = "<group>"; };
 		23DBAD27269714B300119680 /* DocumentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsViewController.swift; sourceTree = "<group>"; };
 		23DF0CED269ED82000F29B70 /* LoanInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanInfoModel.swift; sourceTree = "<group>"; };
+		23DF0CEF269F022B00F29B70 /* LoanDocumentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanDocumentModel.swift; sourceTree = "<group>"; };
 		23E9C749269C214A0066C978 /* ApplicationStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationStatusViewController.swift; sourceTree = "<group>"; };
 		23E9C74B269C23070066C978 /* ApplicationStatusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationStatusTableViewCell.swift; sourceTree = "<group>"; };
 		23E9C74C269C23070066C978 /* ApplicationStatusTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApplicationStatusTableViewCell.xib; sourceTree = "<group>"; };
@@ -290,6 +292,7 @@
 				23C2448F2689E89300EED1D0 /* SearchModel.swift */,
 				710D032E268DC56500A13E63 /* NotificationModel.swift */,
 				23DF0CED269ED82000F29B70 /* LoanInfoModel.swift */,
+				23DF0CEF269F022B00F29B70 /* LoanDocumentModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -840,6 +843,7 @@
 				7126B7092657F1910053903B /* BiometricIDAuth.swift in Sources */,
 				7186AD5B2653CD6800E740D3 /* Utility.swift in Sources */,
 				23C244882689E3E400EED1D0 /* ActiveLoanModel.swift in Sources */,
+				23DF0CF0269F022B00F29B70 /* LoanDocumentModel.swift in Sources */,
 				23DBAD26269714A800119680 /* ApplicationViewController.swift in Sources */,
 				23B238BF2679F44000508449 /* NotificationsTableViewCell.swift in Sources */,
 				7160CA8D26733B8C0061ACD5 /* MainTabBarViewController.swift in Sources */,

@@ -32,6 +32,7 @@ enum EndPoint:String{
     case seenNotification = "Notification/notification/Seen"
     case deleteNotifications = "Notification/notification/Delete"
     case getLoanInformation = "loanapplication/loan/getloaninfo?"
+    case getLoanDocuments = "documentmanagement/mcudocument/getdocuments?"
     case logout = "identity/mcuaccount/Logout"
     
 }

@@ -10,14 +10,19 @@ import QuickLook
 
 class DocumentsDetailViewController: UIViewController {
 
+    //MARK:- Outlets and Properties
+    
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblDocumentName: UILabel!
     @IBOutlet weak var tblViewDocuments: UITableView!
     
+    var selectedDocument = LoanDocumentModel()
     lazy var previewItem = NSURL()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        lblDocumentName.text = selectedDocument.docName
         tblViewDocuments.register(UINib(nibName: "DocumentsDetailTableViewCell", bundle: nil), forCellReuseIdentifier: "DocumentsDetailTableViewCell")
     }
     
@@ -69,13 +74,20 @@ class DocumentsDetailViewController: UIViewController {
 extension DocumentsDetailViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return selectedDocument.files.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsDetailTableViewCell", for: indexPath) as! DocumentsDetailTableViewCell
+        let file = selectedDocument.files[indexPath.row]
+        
+        cell.lblAttatchmentName.font = file.isRead ? Theme.getRubikRegularFont(size: 15) : Theme.getRubikMediumFont(size: 15)
+        cell.lblAttatchmentName.text = file.clientName == "" ? file.mcuName : file.clientName
+        cell.lblTime.text = Utility.getDocumentDate(file.fileUploadedOn)
         cell.mainView.layer.cornerRadius = 8
         cell.mainView.dropShadow()
+        
         return cell
     }
     

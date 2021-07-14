@@ -10,6 +10,8 @@ import LoadingPlaceholderView
 
 class OverviewViewController: BaseViewController {
 
+    //MARK:- Outlets and Properties
+    
     @IBOutlet weak var tableViewOverView: UITableView!
     
     var loanApplicationId = 0
