@@ -70,7 +70,7 @@ data class DocItem(
 
             testArray.add(
                 DocItem(
-                    "Yesterday, 8:32 PM", "Bank Statements",
+                    "Yesterday, 8:32 PM", "W-2s 2018",
                     "W-2s_2018.pdf", "pdf",
                     "", "", 1, 1
                 )
@@ -78,7 +78,7 @@ data class DocItem(
 
             testArray.add(
                 DocItem(
-                    "Yesterday, 8:32 PM", "Bank Statements",
+                    "Yesterday, 8:32 PM", "Home Insurance",
                     "", "",
                     "", "", 2, 0
                 )
@@ -86,7 +86,7 @@ data class DocItem(
 
             testArray.add(
                 DocItem(
-                    "Yesterday, 8:32 PM", "Bank Statements",
+                    "Yesterday, 8:32 PM", "Tax Transcripts",
                     "Tax-file-..34.pdf", "pdf",
                     "Tax-tran..01.pdf", "pdf", 3, 1
                 )
