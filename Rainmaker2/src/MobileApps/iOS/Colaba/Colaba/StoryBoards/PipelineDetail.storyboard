@@ -397,7 +397,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bank Statement" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a9W-WE-C6g">
-                                        <rect key="frame" x="117" y="21.5" width="141.5" height="21"/>
+                                        <rect key="frame" x="37.5" y="21.5" width="300" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
@@ -410,6 +410,7 @@
                                     <constraint firstItem="a9W-WE-C6g" firstAttribute="centerY" secondItem="3Fb-Se-sMo" secondAttribute="centerY" id="RDw-cF-X0o"/>
                                     <constraint firstItem="N8k-WV-ip3" firstAttribute="leading" secondItem="3Fb-Se-sMo" secondAttribute="leading" constant="15" id="Y7g-a4-pqY"/>
                                     <constraint firstItem="a9W-WE-C6g" firstAttribute="centerX" secondItem="3Fb-Se-sMo" secondAttribute="centerX" id="pss-hH-eOf"/>
+                                    <constraint firstItem="a9W-WE-C6g" firstAttribute="width" secondItem="3Fb-Se-sMo" secondAttribute="width" multiplier="0.8" id="qZR-C9-bc9"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="872-k8-3c9">

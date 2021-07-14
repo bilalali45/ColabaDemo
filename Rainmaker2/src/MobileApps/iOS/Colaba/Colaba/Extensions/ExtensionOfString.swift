@@ -24,3 +24,13 @@ extension String {
     
     
 }
+
+extension Int{
+    
+    func withCommas() -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .currency
+        numberFormatter.alwaysShowsDecimalSeparator = false
+        return numberFormatter.string(from: NSNumber(value:self))!
+    }
+}
