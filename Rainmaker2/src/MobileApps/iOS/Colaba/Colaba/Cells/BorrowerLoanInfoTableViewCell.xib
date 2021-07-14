@@ -30,20 +30,20 @@
                         <rect key="frame" x="15" y="0.0" width="20" height="20"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loan Information" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GHc-Eh-ZMx">
-                        <rect key="frame" x="40" y="4" width="98.5" height="16"/>
+                        <rect key="frame" x="40" y="4" width="108.5" height="16"/>
                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                         <color key="textColor" name="AppBlackColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LUi-eJ-BHm">
-                        <rect key="frame" x="150.5" y="11.5" width="265.5" height="1"/>
+                        <rect key="frame" x="160.5" y="11.5" width="255.5" height="1"/>
                         <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="UGc-lJ-fXL"/>
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loan Purpose" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8MJ-jf-O02">
-                        <rect key="frame" x="15" y="40" width="75" height="16"/>
+                        <rect key="frame" x="15" y="40" width="76.5" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="5Ff-7c-yWT"/>
                         </constraints>
@@ -52,7 +52,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Purchase" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J3t-MF-MaA">
-                        <rect key="frame" x="15" y="61" width="63" height="16"/>
+                        <rect key="frame" x="15" y="61" width="69" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="gEL-dH-eRJ"/>
                         </constraints>
@@ -61,7 +61,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loan Payment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QVg-o7-Fuk">
-                        <rect key="frame" x="227" y="40" width="77.5" height="16"/>
+                        <rect key="frame" x="214.5" y="40" width="80.5" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="7ne-D7-53Z"/>
                         </constraints>
@@ -70,13 +70,13 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$500,000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x6K-Ew-9GU">
-                        <rect key="frame" x="233.5" y="61" width="71" height="20"/>
+                        <rect key="frame" x="212.5" y="61" width="82" height="20"/>
                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="17"/>
                         <color key="textColor" name="AppBlackColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Down Payment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AmP-XJ-Ls2">
-                        <rect key="frame" x="334" y="40" width="82" height="16"/>
+                        <rect key="frame" x="331" y="40" width="85" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="eJL-UH-NsP"/>
                         </constraints>
@@ -85,7 +85,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$80,000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Jh-4W-ybX">
-                        <rect key="frame" x="354.5" y="61" width="61.5" height="20"/>
+                        <rect key="frame" x="344.5" y="61" width="71.5" height="20"/>
                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="17"/>
                         <color key="textColor" name="AppBlackColor"/>
                         <nil key="highlightedColor"/>
@@ -93,7 +93,6 @@
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstItem="7Jh-4W-ybX" firstAttribute="leading" secondItem="QVg-o7-Fuk" secondAttribute="trailing" constant="50" id="5P3-Va-yM6"/>
                     <constraint firstItem="QVg-o7-Fuk" firstAttribute="top" secondItem="AmP-XJ-Ls2" secondAttribute="top" id="7tA-M5-JQg"/>
                     <constraint firstItem="i4g-9S-iSt" firstAttribute="leading" secondItem="b7a-de-DIX" secondAttribute="leading" constant="15" id="Ig5-sz-LPe"/>
                     <constraint firstItem="7Jh-4W-ybX" firstAttribute="top" secondItem="AmP-XJ-Ls2" secondAttribute="bottom" constant="5" id="JLg-A1-V7E"/>
@@ -108,6 +107,7 @@
                     <constraint firstItem="8MJ-jf-O02" firstAttribute="top" secondItem="GHc-Eh-ZMx" secondAttribute="bottom" constant="20" id="lXL-ab-6nR"/>
                     <constraint firstItem="GHc-Eh-ZMx" firstAttribute="centerY" secondItem="i4g-9S-iSt" secondAttribute="centerY" multiplier="1.2" id="n7K-vf-OeF"/>
                     <constraint firstItem="J3t-MF-MaA" firstAttribute="leading" secondItem="b7a-de-DIX" secondAttribute="leading" constant="15" id="swj-2b-axk"/>
+                    <constraint firstItem="AmP-XJ-Ls2" firstAttribute="leading" secondItem="QVg-o7-Fuk" secondAttribute="trailing" constant="36" id="vD0-RN-JCV"/>
                     <constraint firstItem="AmP-XJ-Ls2" firstAttribute="top" secondItem="GHc-Eh-ZMx" secondAttribute="bottom" constant="20" id="vqK-WS-49a"/>
                     <constraint firstItem="x6K-Ew-9GU" firstAttribute="top" secondItem="QVg-o7-Fuk" secondAttribute="bottom" constant="5" id="wvD-uX-mwe"/>
                     <constraint firstAttribute="trailing" secondItem="AmP-XJ-Ls2" secondAttribute="trailing" constant="20" id="x9D-yw-5lS"/>

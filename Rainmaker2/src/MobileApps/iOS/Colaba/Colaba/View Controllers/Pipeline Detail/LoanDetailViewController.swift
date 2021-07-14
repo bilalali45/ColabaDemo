@@ -29,6 +29,12 @@ class LoanDetailViewController: BaseViewController {
     @IBOutlet weak var walkthroughViewTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var walkthroughViewBottomConstraint: NSLayoutConstraint!
     
+    var loanApplicationId = 0
+    var borrowerName = ""
+    var loanPurpose = ""
+    var phoneNumber = ""
+    var email = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupHeaderAndFooter()
@@ -75,6 +81,9 @@ class LoanDetailViewController: BaseViewController {
         setupFooterButtons(buttons: [btnCall, btnSms, btnEmail])
         walkthroughView.layer.cornerRadius = walkthroughView.frame.height / 2
         walkthroughView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(walkthroughViewTapped)))
+        
+        lblBorrowerName.text = borrowerName
+        lblLoanPurpose.text = loanPurpose.uppercased()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.walkthroughViewTrailingConstraint.constant = -320
@@ -156,13 +165,13 @@ class LoanDetailViewController: BaseViewController {
     }
     
     @IBAction func btnCallTapped(_ sender: UIButton) {
-        if let url = URL(string: "tel://4444444444)") {
+        if let url = URL(string: "tel://\(phoneNumber))") {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
          }
     }
     
     @IBAction func btnSmsTapped(_ sender: UIButton) {
-        let sms: String = "sms:+1234567890&body=Colaba"
+        let sms: String = "sms:\(phoneNumber)&body=Colaba"
         if let strURL = sms.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed){
             if let smsURL = URL(string: strURL){
                 UIApplication.shared.open(smsURL, options: [:], completionHandler: nil)
@@ -172,7 +181,7 @@ class LoanDetailViewController: BaseViewController {
     
     @IBAction func btnEmailTapped(_ sender: UIButton) {
         
-        let recipientEmail = "murtaza@gmail.com"
+        let recipientEmail = email
         let subject = "Colaba Email"
         let body = "Testing Email"
                     
@@ -199,7 +208,9 @@ extension LoanDetailViewController: CarbonTabSwipeNavigationDelegate{
     func carbonTabSwipeNavigation(_ carbonTabSwipeNavigation: CarbonTabSwipeNavigation, viewControllerAt index: UInt) -> UIViewController {
         
         if (index == 0){
-            return Utility.getOverviewVC()
+            let vc = Utility.getOverviewVC()
+            vc.loanApplicationId = self.loanApplicationId
+            return vc
         }
         else if (index == 1){
             return Utility.getApplicationVC()

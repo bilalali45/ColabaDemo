@@ -10,6 +10,7 @@ import UIKit
 class DocumentsViewController: BaseViewController {
 
     @IBOutlet weak var tblViewDocuments: UITableView!
+    
     var documentsName = ["Bank Statements", "W-2s 2018", "Home Insurance", "Tax Transcripts"]
     var documentsTime = ["Yesterday, 8:32 PM", "22h ago", "", "Saturday, 4:12 PM"]
     

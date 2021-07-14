@@ -207,8 +207,8 @@ extension ActivePipelineViewController: UITableViewDataSource, UITableViewDelega
             cell.mainView.layer.cornerRadius = 8
             cell.mainView.dropShadow()
             cell.lblPropertyAddress.text = "\(loanData.street) \(loanData.unit) \(loanData.city) \(loanData.stateName) \(loanData.zipCode) \(loanData.countryName)"
-            cell.lblPropertyValue.text = "$ \(loanData.propertyValue)"
-            cell.lblLoanAmount.text = "$ \(loanData.loanAmount)"
+            cell.lblPropertyValue.text = loanData.propertyValue.withCommas().replacingOccurrences(of: ".00", with: "")
+            cell.lblLoanAmount.text = loanData.loanAmount.withCommas().replacingOccurrences(of: ".00", with: "")
             return cell
         }
         
@@ -216,7 +216,13 @@ extension ActivePipelineViewController: UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        let loanApplication = pipeLineArray[indexPath.section]
         let vc = Utility.getLoanDetailVC()
+        vc.loanApplicationId = loanApplication.loanApplicationId
+        vc.borrowerName = "\(loanApplication.firstName) \(loanApplication.lastName)"
+        vc.loanPurpose = loanApplication.loanPurpose
+        vc.phoneNumber = loanApplication.cellNumber
+        vc.email = loanApplication.email
         let navVC = UINavigationController(rootViewController: vc)
         navVC.navigationBar.isHidden = true
         navVC.modalPresentationStyle = .fullScreen
