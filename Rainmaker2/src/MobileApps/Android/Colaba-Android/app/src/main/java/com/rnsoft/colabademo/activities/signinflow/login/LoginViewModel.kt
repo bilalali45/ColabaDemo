@@ -32,12 +32,14 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
 
 
 
+
+
     fun login(userEmail: String, password: String) {
 
         var dontAskTwoFaIdentifier = ""
 
-        val emailError = isValidEmail(userEmail)
-        val passwordLengthError = checkPasswordLength(password)
+        val emailError = LoginUtil.isValidEmail(userEmail)
+        val passwordLengthError = LoginUtil.checkPasswordLength(password)
         if (emailError != null)
             EventBus.getDefault().post(LoginEvent(LoginResponseResult(emailError = emailError)))
         else if (passwordLengthError != null)
@@ -110,21 +112,7 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
         loginRepo.otpSettingFromService(intermediateToken)
     }
 
-    private fun isValidEmail(userEmail: String): String? {
-        if (userEmail.isNotBlank()) {
-            if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches())
-                return "Invalid Email, Please try again…"
-        } else
-            return "Empty Email, Please try again…"
-        return null
-    }
 
-
-    private fun checkPasswordLength(password: String): String? {
-        if (password.isEmpty())
-            return "Password Empty, Please try again…"
-        return null
-    }
 }
 
 /*
