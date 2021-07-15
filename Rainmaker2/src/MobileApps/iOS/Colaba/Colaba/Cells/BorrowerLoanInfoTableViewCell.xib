@@ -61,7 +61,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loan Payment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QVg-o7-Fuk">
-                        <rect key="frame" x="214.5" y="40" width="80.5" height="16"/>
+                        <rect key="frame" x="210.5" y="40" width="80.5" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="7ne-D7-53Z"/>
                         </constraints>
@@ -70,7 +70,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$500,000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x6K-Ew-9GU">
-                        <rect key="frame" x="212.5" y="61" width="82" height="20"/>
+                        <rect key="frame" x="209" y="61" width="82" height="20"/>
                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="17"/>
                         <color key="textColor" name="AppBlackColor"/>
                         <nil key="highlightedColor"/>
@@ -98,7 +98,7 @@
                     <constraint firstItem="7Jh-4W-ybX" firstAttribute="top" secondItem="AmP-XJ-Ls2" secondAttribute="bottom" constant="5" id="JLg-A1-V7E"/>
                     <constraint firstItem="GHc-Eh-ZMx" firstAttribute="leading" secondItem="i4g-9S-iSt" secondAttribute="trailing" constant="5" id="LMh-xo-AZN"/>
                     <constraint firstAttribute="trailing" secondItem="7Jh-4W-ybX" secondAttribute="trailing" constant="20" id="MIL-55-bqQ"/>
-                    <constraint firstItem="7Jh-4W-ybX" firstAttribute="leading" secondItem="x6K-Ew-9GU" secondAttribute="trailing" constant="50" id="NO6-um-X32"/>
+                    <constraint firstItem="x6K-Ew-9GU" firstAttribute="trailing" secondItem="QVg-o7-Fuk" secondAttribute="trailing" id="NHg-ax-Mwo"/>
                     <constraint firstAttribute="trailing" secondItem="LUi-eJ-BHm" secondAttribute="trailing" constant="20" id="Pfw-bU-dto"/>
                     <constraint firstItem="i4g-9S-iSt" firstAttribute="top" secondItem="b7a-de-DIX" secondAttribute="top" id="QTw-DT-ucJ"/>
                     <constraint firstItem="LUi-eJ-BHm" firstAttribute="centerY" secondItem="GHc-Eh-ZMx" secondAttribute="centerY" id="Vnd-6m-Ntr"/>
@@ -107,7 +107,7 @@
                     <constraint firstItem="8MJ-jf-O02" firstAttribute="top" secondItem="GHc-Eh-ZMx" secondAttribute="bottom" constant="20" id="lXL-ab-6nR"/>
                     <constraint firstItem="GHc-Eh-ZMx" firstAttribute="centerY" secondItem="i4g-9S-iSt" secondAttribute="centerY" multiplier="1.2" id="n7K-vf-OeF"/>
                     <constraint firstItem="J3t-MF-MaA" firstAttribute="leading" secondItem="b7a-de-DIX" secondAttribute="leading" constant="15" id="swj-2b-axk"/>
-                    <constraint firstItem="AmP-XJ-Ls2" firstAttribute="leading" secondItem="QVg-o7-Fuk" secondAttribute="trailing" constant="36" id="vD0-RN-JCV"/>
+                    <constraint firstItem="AmP-XJ-Ls2" firstAttribute="leading" secondItem="QVg-o7-Fuk" secondAttribute="trailing" constant="40" id="vD0-RN-JCV"/>
                     <constraint firstItem="AmP-XJ-Ls2" firstAttribute="top" secondItem="GHc-Eh-ZMx" secondAttribute="bottom" constant="20" id="vqK-WS-49a"/>
                     <constraint firstItem="x6K-Ew-9GU" firstAttribute="top" secondItem="QVg-o7-Fuk" secondAttribute="bottom" constant="5" id="wvD-uX-mwe"/>
                     <constraint firstAttribute="trailing" secondItem="AmP-XJ-Ls2" secondAttribute="trailing" constant="20" id="x9D-yw-5lS"/>

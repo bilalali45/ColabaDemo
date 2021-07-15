@@ -22,6 +22,10 @@ class DocumentsViewController: BaseViewController {
         super.viewDidLoad()
         tblViewDocuments.register(UINib(nibName: "DocumentsTableViewCell", bundle: nil), forCellReuseIdentifier: "DocumentsTableViewCell")
         tblViewDocuments.coverableCellsIdentifiers = ["DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell"]
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         getDocuments()
     }
     
