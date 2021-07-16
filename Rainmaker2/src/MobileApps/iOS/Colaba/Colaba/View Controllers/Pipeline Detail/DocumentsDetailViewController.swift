@@ -56,7 +56,6 @@ class DocumentsDetailViewController: UIViewController {
                         // Display file
                         let previewController = QLPreviewController()
                         previewController.dataSource = self
-                        previewController.navigationItem.title = ""
                         self.presentVC(vc: previewController)
                     }
                 }
@@ -88,6 +87,7 @@ extension DocumentsDetailViewController: UITableViewDataSource, UITableViewDeleg
         let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsDetailTableViewCell", for: indexPath) as! DocumentsDetailTableViewCell
         let file = selectedDocument.files[indexPath.row]
         
+        cell.iconDocument.image = Utility.getDocumentFileTypeIcon(fileName: file.clientName == "" ? file.mcuName : file.clientName)
         cell.lblAttatchmentName.font = file.isRead ? Theme.getRubikRegularFont(size: 15) : Theme.getRubikMediumFont(size: 15)
         cell.lblAttatchmentName.text = file.clientName == "" ? file.mcuName : file.clientName
         cell.lblTime.text = Utility.getDocumentDate(file.fileUploadedOn)
