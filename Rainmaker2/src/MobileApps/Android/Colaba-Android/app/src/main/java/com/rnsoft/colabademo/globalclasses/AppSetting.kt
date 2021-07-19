@@ -50,17 +50,7 @@ object AppSetting {
     }
 
 
-    fun getMilliFromDate(dateFormat: String?): Long {
-        var date = Date()
-        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        try {
-            date = formatter.parse(dateFormat)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        println("Today is $date")
-        return date.time
-    }
+
 
     fun returnLongTimeNow(input:String):String{
 
@@ -80,28 +70,6 @@ object AppSetting {
 
         return lastSeen
 
-        /*
-        val dtf: DateTimeFormatter = DateTimeFormat.forPattern(pattern)
-        val dateTime: DateTime = dtf.parseDateTime(dateString)
-        System.out.println(dateTime) // 2010-03-01T04:00:00.000-04:00
-
-
-        dateFormat?.let {
-            Log.d("TAG", "Date in milli :: FOR API >= 26 >>> ${it.time}")
-        }
-
-
-        val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(input)
-        val milliseconds = date?.time
-        milliseconds?.let { milliseconds ->
-            val millisecondsFromNow = milliseconds - Date().time
-            Log.d("TAG", "Date in milli :: FOR API >= 26 >>> $millisecondsFromNow")
-        }
-
-
-         */
-
-
     }
 
     fun returnNotificationTime(input:String):String{
@@ -115,6 +83,29 @@ object AppSetting {
         }
 
         return lastSeen
+    }
+
+    fun lastseen( time: Long): String {
+        val difference = (System.currentTimeMillis() - time) / 1000
+
+        return  if (difference < 60) {
+            "just now"
+        } else if (difference < 60 * 2) {
+            "1 minute ago"
+        } else if (difference < 60 * 60) {
+            val minutes = (difference / 60.0).roundToInt()
+            "$minutes minutes ago"
+        } else if (difference < 60 * 60 * 2) {
+            "1 hour ago"
+        } else if (difference < 60 * 60 * 24) {
+            val hours = (difference / (60.0 * 60.0)).roundToInt()
+            "$hours hours ago"
+        } else if (difference < 60 * 60 * 48) {
+            "1 day ago"
+        } else {
+            val days = (difference / (60.0 * 60.0 * 24.0)).roundToInt()
+            "$days days ago"
+        }
     }
 
 
@@ -141,6 +132,8 @@ object AppSetting {
     }
 
 
+
+    /*
     private const val SHORT_DATE_FLAGS = (DateUtils.FORMAT_SHOW_DATE
             or DateUtils.FORMAT_NO_YEAR or DateUtils.FORMAT_ABBREV_ALL)
     private const val FULL_DATE_FLAGS = (DateUtils.FORMAT_SHOW_TIME
@@ -193,6 +186,19 @@ object AppSetting {
         return sameDay(date, System.currentTimeMillis())
     }
 
+    fun sameDay(a: Long, b: Long): Boolean {
+        return sameDay(Date(a), Date(b))
+    }
+
+    private fun sameDay(a: Date, b: Date): Boolean {
+        val cal1 = Calendar.getInstance()
+        val cal2 = Calendar.getInstance()
+        cal1.time = a
+        cal2.time = b
+        return (cal1[Calendar.YEAR] == cal2[Calendar.YEAR]
+                && cal1[Calendar.DAY_OF_YEAR] == cal2[Calendar.DAY_OF_YEAR])
+    }
+
     private fun yesterday(date: Date): Boolean {
         return yesterday(date.time)
     }
@@ -240,40 +246,20 @@ object AppSetting {
         return week == targetWeek && year == targetYear
     }
 
-    fun sameDay(a: Long, b: Long): Boolean {
-        return sameDay(Date(a), Date(b))
-    }
 
-    private fun sameDay(a: Date, b: Date): Boolean {
-        val cal1 = Calendar.getInstance()
-        val cal2 = Calendar.getInstance()
-        cal1.time = a
-        cal2.time = b
-        return (cal1[Calendar.YEAR] == cal2[Calendar.YEAR]
-                && cal1[Calendar.DAY_OF_YEAR] == cal2[Calendar.DAY_OF_YEAR])
-    }
 
-    fun lastseen( time: Long): String {
-        val difference = (System.currentTimeMillis() - time) / 1000
 
-        return  if (difference < 60) {
-            "just now"
-        } else if (difference < 60 * 2) {
-            "1 minute ago"
-        } else if (difference < 60 * 60) {
-            val minutes = (difference / 60.0).roundToInt()
-            "$minutes minutes ago"
-        } else if (difference < 60 * 60 * 2) {
-           "1 hour ago"
-        } else if (difference < 60 * 60 * 24) {
-            val hours = (difference / (60.0 * 60.0)).roundToInt()
-            "$hours hours ago"
-        } else if (difference < 60 * 60 * 48) {
-            "1 day ago"
-        } else {
-            val days = (difference / (60.0 * 60.0 * 24.0)).roundToInt()
-            "$days days ago"
+
+    fun getMilliFromDate(dateFormat: String?): Long {
+        var date = Date()
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        try {
+            date = formatter.parse(dateFormat)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+        println("Today is $date")
+        return date.time
     }
 
 
@@ -285,9 +271,9 @@ object AppSetting {
         //milliseconds
         var different = endDate - startDate
 
-//        System.out.println("startDate : " + startDate);
-//        System.out.println("endDate : " + endDate);
-//        System.out.println("different : " + different);
+        //        System.out.println("startDate : " + startDate);
+        //        System.out.println("endDate : " + endDate);
+        //        System.out.println("different : " + different);
         val secondsInMilli: Long = 1000
         val minutesInMilli = secondsInMilli * 60
         val hoursInMilli = minutesInMilli * 60
@@ -300,8 +286,8 @@ object AppSetting {
         different = different % minutesInMilli
         val elapsedSeconds = different / secondsInMilli
 
-//        System.out.printf("%d days, %d hours, %d minutes, %d seconds%n",
-//                elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
+        //        System.out.printf("%d days, %d hours, %d minutes, %d seconds%n",
+        //                elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
         return if (elapsedDays > 0) {
             MessageFormat.format(
                 "{0}d {1}h {2}m {3}s",
@@ -327,5 +313,7 @@ object AppSetting {
             MessageFormat.format("{0} s", if (elapsedSeconds > 0) elapsedSeconds else 0)
         }
     }
+
+     */
 
 }

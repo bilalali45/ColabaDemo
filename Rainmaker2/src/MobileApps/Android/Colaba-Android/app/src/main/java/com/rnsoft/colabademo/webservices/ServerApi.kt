@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import com.rnsoft.colabademo.activities.dashboard.fragements.details.model.BorrowerDocsModel
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -113,6 +114,19 @@ interface ServerApi{
     @PUT("api/mcu/mobile/Notification/notification/Delete")
     suspend fun deleteNotifications(@Header("Authorization" )  Authorization:String, @Body putParams:PutParameters):Response<Any>
 
+
+    @GET("api/mcu/mobile/loanapplication/loan/getloaninfo")
+    suspend fun getLoanInfo(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int):BorrowerOverviewModel
+
+
+
+
+    @GET("api/mcu/mobile/documentmanagement/mcudocument/getdocuments")
+    suspend fun getBorrowerDocuments(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int):ArrayList<BorrowerDocsModel>
 
     //@POST("authenticate")
     //fun loginWithCallBack(@Body loginRequest: LoginRequest): Call<LoginResponse>

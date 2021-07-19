@@ -252,7 +252,7 @@
                         app:layout_constraintStart_toEndOf="@+id/textView17" />
 
                     <TextView
-                        android:id="@+id/textView19"
+                        android:id="@+id/completeAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="68dp"
@@ -269,7 +269,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="13dp"
                         app:layout_constraintBottom_toBottomOf="@+id/secondTextView"
-                        app:layout_constraintStart_toEndOf="@+id/textView19"
+                        app:layout_constraintStart_toEndOf="@+id/completeAddress"
                         app:layout_constraintTop_toTopOf="@+id/secondTextView"
                         app:srcCompat="@drawable/timer_icon" />
 

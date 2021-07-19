@@ -39,6 +39,14 @@ object AppConstant {
 
         const val borrowerParcelObject:String = "borrowerParcelObject"
 
+        const val loanApplicationId:String = "loanApplicationId"
+
+        const val loanPurpose:String = "loanPurpose"
+
+
+
+        const val docNames:String = "docNames"
+
 
         const val maxOtpSendAllowed:String = "maxOtpSendAllowed"
 

@@ -118,8 +118,7 @@ class LoginFragment : Fragment() {
                     ToastUtils.setView(R.layout.toast_error_layout)
                     ToastUtils.setGravity(Gravity.BOTTOM, 0, 60)
                     ToastUtils.show(resources.getString((R.string.biometric_check)))
-
-                     */
+                    */
                 }
             }
             AppSetting.biometricEnabled = biometricSwitch.isChecked
@@ -153,16 +152,7 @@ class LoginFragment : Fragment() {
 
 
 
-    fun convertPixelsToDp(px: Float, context: Context): Float {
-        return px / (context.getResources()
-            .getDisplayMetrics().densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-    }
-
-    fun dpFromPx(context: Context, px: Float): Float {
-        return px / context.resources.displayMetrics.density
-    }
-
-    override fun onStart() {
+   override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
     }
