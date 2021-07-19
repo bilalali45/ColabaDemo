@@ -38,56 +38,58 @@ class DashboardViewController: BaseViewController {
     
     func setTopTabBar(){
         
-        let tabItems = ["All Loans", "Active Loans", "Inactive Loans"]
-        let carbonTabSwipeNavigation = CarbonTabSwipeNavigation(items: tabItems, delegate: self)
-        
-        let headerView = UIView(frame: CGRect(x: 0, y: (carbonTabSwipeNavigation.carbonSegmentedControl?.frame.origin.y)! + 41, width: self.view.bounds.width, height: 59))
-        headerView.backgroundColor = .clear
-        
-        let nib = Bundle.main.loadNibNamed("DashboardHeaderView", owner: self, options: nil)
-        if let contentView = nib?.first as? UIView{
-            contentView.frame = headerView.bounds
-            contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            headerView.addSubview(contentView)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            let tabItems = ["All Loans", "Active Loans", "Inactive Loans"]
+            let carbonTabSwipeNavigation = CarbonTabSwipeNavigation(items: tabItems, delegate: self)
+            
+            let headerView = UIView(frame: CGRect(x: 0, y: (carbonTabSwipeNavigation.carbonSegmentedControl?.frame.origin.y)! + 41, width: self.view.bounds.width, height: 59))
+            headerView.backgroundColor = .clear
+            
+            let nib = Bundle.main.loadNibNamed("DashboardHeaderView", owner: self, options: nil)
+            if let contentView = nib?.first as? UIView{
+                contentView.frame = headerView.bounds
+                contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                headerView.addSubview(contentView)
+            }
+            
+            carbonTabSwipeNavigation.carbonSegmentedControl?.addSubview(headerView)
+            carbonTabSwipeNavigation.carbonSegmentedControl?.bringSubviewToFront(headerView)
+            carbonTabSwipeNavigation.setIndicatorColor(nil)
+            carbonTabSwipeNavigation.setIndicatorHeight(4)
+            carbonTabSwipeNavigation.setNormalColor(Theme.getAppGreyColor(), font: Theme.getRubikRegularFont(size: 15))
+            carbonTabSwipeNavigation.setSelectedColor(Theme.getButtonBlueColor(), font: Theme.getRubikRegularFont(size: 15))
+            //carbonTabSwipeNavigation.toolbar.isTranslucent = false
+            carbonTabSwipeNavigation.carbonSegmentedControl?.tintColor = .clear
+            carbonTabSwipeNavigation.carbonSegmentedControl?.backgroundColor = .clear
+            carbonTabSwipeNavigation.carbonTabSwipeScrollView.backgroundColor = .clear
+            carbonTabSwipeNavigation.carbonTabSwipeScrollView.tintColor = .clear
+            carbonTabSwipeNavigation.carbonSegmentedControl?.imageNormalColor = .clear
+            carbonTabSwipeNavigation.carbonSegmentedControl?.imageSelectedColor = .clear
+            
+            var segmentWidth: CGFloat = 0.0
+            
+            if (UIDevice.current.screenType == .iPhones_4_4S || UIDevice.current.screenType == .iPhones_5_5s_5c_SE || UIDevice.current.screenType == .iPhones_6_6s_7_8){
+                segmentWidth = (self.tabView.frame.width / 3) - 15
+            }
+            else{
+                segmentWidth = (self.tabView.frame.width / 3)
+            }
+            
+            let indicator = carbonTabSwipeNavigation.carbonSegmentedControl?.indicator
+            let subView = UIView()
+            subView.backgroundColor = Theme.getButtonBlueColor()
+            subView.layer.cornerRadius = 2
+            indicator?.addSubview(subView)
+            subView.translatesAutoresizingMaskIntoConstraints = false
+            subView.widthAnchor.constraint(equalToConstant: segmentWidth * 0.8).isActive = true
+            subView.centerXAnchor.constraint(equalTo: indicator!.centerXAnchor, constant: 0).isActive = true
+            subView.topAnchor.constraint(equalTo: indicator!.topAnchor, constant: 0).isActive = true
+            subView.bottomAnchor.constraint(equalTo: indicator!.bottomAnchor, constant: 0).isActive = true
+            carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 0)
+            carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 1)
+            carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 2)
+            carbonTabSwipeNavigation.insert(intoRootViewController: self, andTargetView: self.tabView)
         }
-        
-        carbonTabSwipeNavigation.carbonSegmentedControl?.addSubview(headerView)
-        carbonTabSwipeNavigation.carbonSegmentedControl?.bringSubviewToFront(headerView)
-        carbonTabSwipeNavigation.setIndicatorColor(nil)
-        carbonTabSwipeNavigation.setIndicatorHeight(4)
-        carbonTabSwipeNavigation.setNormalColor(Theme.getAppGreyColor(), font: Theme.getRubikRegularFont(size: 15))
-        carbonTabSwipeNavigation.setSelectedColor(Theme.getButtonBlueColor(), font: Theme.getRubikRegularFont(size: 15))
-        //carbonTabSwipeNavigation.toolbar.isTranslucent = false
-        carbonTabSwipeNavigation.carbonSegmentedControl?.tintColor = .clear
-        carbonTabSwipeNavigation.carbonSegmentedControl?.backgroundColor = .clear
-        carbonTabSwipeNavigation.carbonTabSwipeScrollView.backgroundColor = .clear
-        carbonTabSwipeNavigation.carbonTabSwipeScrollView.tintColor = .clear
-        carbonTabSwipeNavigation.carbonSegmentedControl?.imageNormalColor = .clear
-        carbonTabSwipeNavigation.carbonSegmentedControl?.imageSelectedColor = .clear
-        
-        var segmentWidth: CGFloat = 0.0
-        
-        if (UIDevice.current.screenType == .iPhones_4_4S || UIDevice.current.screenType == .iPhones_5_5s_5c_SE || UIDevice.current.screenType == .iPhones_6_6s_7_8){
-            segmentWidth = (tabView.frame.width / 3) - 15
-        }
-        else{
-            segmentWidth = (tabView.frame.width / 3)
-        }
-        
-        let indicator = carbonTabSwipeNavigation.carbonSegmentedControl?.indicator
-        let subView = UIView()
-        subView.backgroundColor = Theme.getButtonBlueColor()
-        subView.layer.cornerRadius = 2
-        indicator?.addSubview(subView)
-        subView.translatesAutoresizingMaskIntoConstraints = false
-        subView.widthAnchor.constraint(equalToConstant: segmentWidth * 0.8).isActive = true
-        subView.centerXAnchor.constraint(equalTo: indicator!.centerXAnchor, constant: 0).isActive = true
-        subView.topAnchor.constraint(equalTo: indicator!.topAnchor, constant: 0).isActive = true
-        subView.bottomAnchor.constraint(equalTo: indicator!.bottomAnchor, constant: 0).isActive = true
-        carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 0)
-        carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 1)
-        carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 2)
-        carbonTabSwipeNavigation.insert(intoRootViewController: self, andTargetView: tabView)
         
     }
     

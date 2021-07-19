@@ -34,10 +34,16 @@ class LoanDetailViewController: BaseViewController {
     var loanPurpose = ""
     var phoneNumber = ""
     var email = ""
+    var documentCounterView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupHeaderAndFooter()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getUnreadDocuments()
     }
     
     //MARK:- Methods and Actions
@@ -55,10 +61,11 @@ class LoanDetailViewController: BaseViewController {
             carbonTabSwipeNavigation.carbonSegmentedControl?.imageNormalColor = .clear
             carbonTabSwipeNavigation.carbonSegmentedControl?.imageSelectedColor = .clear
             
-            let documentCounterView = UIView(frame: CGRect(x: (self.view.bounds.width) - 31, y: 7, width: 7, height: 7))
-            documentCounterView.backgroundColor = .red
-            documentCounterView.layer.cornerRadius = documentCounterView.frame.height / 2
-            //carbonTabSwipeNavigation.carbonSegmentedControl?.addSubview(documentCounterView)
+            self.documentCounterView = UIView(frame: CGRect(x: (self.view.bounds.width) - 31, y: 7, width: 7, height: 7))
+            self.documentCounterView.backgroundColor = .red
+            self.documentCounterView.layer.cornerRadius = self.documentCounterView.frame.height / 2
+            self.documentCounterView.isHidden = true
+            carbonTabSwipeNavigation.carbonSegmentedControl?.addSubview(self.documentCounterView)
             
             let segmentWidth = (self.tabView.frame.width / 3)
             
@@ -81,6 +88,9 @@ class LoanDetailViewController: BaseViewController {
         setupFooterButtons(buttons: [btnCall, btnSms, btnEmail])
         walkthroughView.layer.cornerRadius = walkthroughView.frame.height / 2
         walkthroughView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(walkthroughViewTapped)))
+        let swipeDownGesture = UISwipeGestureRecognizer(target: self, action: #selector(walkthroughViewTapped))
+        swipeDownGesture.direction = .down
+        walkthroughView.addGestureRecognizer(swipeDownGesture)
         
         lblBorrowerName.text = borrowerName
         lblLoanPurpose.text = loanPurpose.uppercased()
@@ -198,6 +208,44 @@ class LoanDetailViewController: BaseViewController {
         // Show third party email composer if default Mail app is not present
         } else if let emailUrl = createEmailUrl(to: recipientEmail, subject: subject, body: body) {
             UIApplication.shared.open(emailUrl)
+        }
+    }
+    
+    //MARK:- API's
+    
+    func getUnreadDocuments(){
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)"
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getLoanDocuments, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                if (status == .success){
+                    
+                    if (result.arrayValue.count == 0){
+                        self.documentCounterView.isHidden = true
+                        return
+                    }
+                    var documentFilesArray: [DocumentFileModel] = []
+                    let documentArray = result.arrayValue
+                    for document in documentArray{
+                        let documentModel = LoanDocumentModel()
+                        documentModel.updateModelWithJSON(json: document)
+                        documentFilesArray = documentFilesArray + documentModel.files
+                    }
+                    if documentFilesArray.filter({$0.isRead == false}).count > 0{
+                        self.documentCounterView.isHidden = false
+                    }
+                    else{
+                        self.documentCounterView.isHidden = true
+                    }
+                }
+                else{
+                    self.documentCounterView.isHidden = true
+                }
+            }
+            
         }
     }
                 

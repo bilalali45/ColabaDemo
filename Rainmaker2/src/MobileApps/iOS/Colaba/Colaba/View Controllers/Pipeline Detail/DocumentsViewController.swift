@@ -22,6 +22,10 @@ class DocumentsViewController: BaseViewController {
         super.viewDidLoad()
         tblViewDocuments.register(UINib(nibName: "DocumentsTableViewCell", bundle: nil), forCellReuseIdentifier: "DocumentsTableViewCell")
         tblViewDocuments.coverableCellsIdentifiers = ["DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell"]
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         getDocuments()
     }
     
@@ -102,20 +106,24 @@ extension DocumentsViewController: UITableViewDataSource, UITableViewDelegate{
         cell.viewOtherAttatchment.isHidden = document.files.count < 3
         cell.iconNoAttatchment.isHidden = document.files.count > 0
         cell.lblNoAttatchment.isHidden = document.files.count > 0
-        cell.lblTime.isHidden = document.files.count == 0
+        //cell.lblTime.isHidden = document.files.count == 0
         
         if let file1 = document.files.first{
             cell.lblAttatchment1.text = file1.clientName == "" ? file1.mcuName : file1.clientName
+            cell.iconAttatchment1.image = Utility.getDocumentFileTypeIcon(fileName: file1.clientName == "" ? file1.mcuName : file1.clientName)
         }
         else{
             cell.lblAttatchment1.text = ""
+            cell.iconAttatchment1.image = nil
         }
         
         if document.files.count > 1{
             cell.lblAttachment2.text = document.files[1].clientName == "" ? document.files[1].mcuName : document.files[1].clientName
+            cell.iconAttachment2.image = Utility.getDocumentFileTypeIcon(fileName: document.files[1].clientName == "" ? document.files[1].mcuName : document.files[1].clientName)
         }
         else{
             cell.lblAttachment2.text = ""
+            cell.iconAttachment2.image = nil
         }
         
         let remainingCount = document.files.count - 2

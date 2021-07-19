@@ -153,9 +153,8 @@ struct Utility {
         get{
             if (documentDateFormatter == nil){
                 documentDateFormatter = DateFormatter()
-                documentDateFormatter?.timeZone = TimeZone(abbreviation: "UTC")
                 documentDateFormatter?.locale = .current
-                documentDateFormatter?.dateFormat = "eee MMM dd, yyyy HH:mm a"
+                documentDateFormatter?.dateFormat = "eee MMM dd, yyyy hh:mm a"
             }
             return documentDateFormatter!
         }
@@ -388,5 +387,27 @@ struct Utility {
         }
         
         return ""
+    }
+    
+    static func getDocumentFileTypeIcon(fileName: String) -> UIImage{
+        
+        if let fileType = fileName.components(separatedBy: ".").last{
+            if (fileType == "pdf"){
+                return UIImage(named: "pdf-icon")!
+            }
+            else if (fileType == "png"){
+                return UIImage(named: "png-icon")!
+            }
+            else if (fileType == "jpg" || fileType == "jpeg"){
+                return UIImage(named: "jpg-icon")!
+            }
+            else{
+                return UIImage(named: "png-icon")!
+            }
+        }
+        else{
+            return UIImage(named: "png-icon")!
+        }
+        
     }
 }

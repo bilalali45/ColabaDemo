@@ -10,6 +10,7 @@ import Alamofire
 import SwiftyJSON
 
 typealias completionBlock = (StatusCodes,JSON,String) -> ()
+typealias fileCompletionBlock = (StatusCodes, Data?, String) -> ()
 
 enum EndPoint:String{
     
@@ -33,6 +34,7 @@ enum EndPoint:String{
     case deleteNotifications = "Notification/notification/Delete"
     case getLoanInformation = "loanapplication/loan/getloaninfo?"
     case getLoanDocuments = "documentmanagement/mcudocument/getdocuments?"
+    case viewLoanDocument = "documentmanagement/mcudocument/View?"
     case logout = "identity/mcuaccount/Logout"
     
 }
@@ -217,6 +219,64 @@ class APIRouter: NSObject {
             completion?(.failure,JSON.null,NSLocalizedString("Something went wrong, please try again!", comment: ""))
         }
     
+    }
+    
+    func downloadFileFromRequest(type: EndPoint,method: HTTPMethod, params: Parameters? = nil, extraData: String? = nil, completion: fileCompletionBlock?){
+        
+        var request: DataRequest!
+        var headers = HTTPHeaders()
+        headers = ["Accept":"application/json",
+                   "Authorization": "Bearer \(Utility.getUserAccessToken())"]
+        
+        var endPoint = ""
+        if let extraValueAfterEndPoint = extraData{
+            endPoint = "\(type.rawValue)\(extraValueAfterEndPoint)"
+        }
+        else{
+            endPoint = type.rawValue
+        }
+        
+        request = AF.request(BASEURL + endPoint, method: .get, parameters: nil, encoding: URLEncoding.queryString, headers:headers)
+        request.downloadProgress(closure: { progress in
+            
+        }).responseData { response in
+            
+            if response.response?.statusCode == 401{
+                completion?(.authError,nil,"UnAuthorized User")
+                return
+            }
+            
+            if let error = response.error{
+                var errorDescription = error.localizedDescription
+                if errorDescription == "The Internet connection appears to be offline." || errorDescription == "URLSessionTask failed with error: A data connection is not currently allowed." || errorDescription == "URLSessionTask failed with error: The Internet connection appears to be offline."{
+                    errorDescription = "No Internet Connection"
+                    completion?(.internetError,nil,errorDescription)
+                }
+                else{
+                    completion?(.failure,nil,"Fail to download file")
+                }
+                
+                return
+            }
+            if let data = response.value{
+                
+                if (response.response?.statusCode == 200){
+                    completion?(.success,data,"file downloaded")
+                }
+                else if (response.response?.statusCode == 400){
+                    completion?(.failure,nil,"Fail to download file")
+                }
+                else if (response.response?.statusCode == 500 || response.response?.statusCode == 501 || response.response?.statusCode == 502 || response.response?.statusCode == 503){
+                    completion?(.failure,nil,"Internal server error")
+                }
+                else{
+                    completion?(.failure,nil,"Something went wrong")
+                }
+                
+                return
+            }
+        }
+        
     }
         
 }
