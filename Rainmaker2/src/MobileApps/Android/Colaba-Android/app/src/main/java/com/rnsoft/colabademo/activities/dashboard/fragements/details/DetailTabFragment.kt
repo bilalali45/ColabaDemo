@@ -6,12 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.widget.SwitchCompat
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -37,6 +34,8 @@ class DetailTabFragment : Fragment() {
     private val binding get() = _binding!!
     private var selectedPosition:Int = 0
     private lateinit var pageAdapter:DetailPagerAdapter
+
+    private val detailViewModel: DetailViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -96,15 +95,42 @@ class DetailTabFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
+        binding.backButton.setOnClickListener{
+            requireActivity().finish()
+        }
 
-        setGreetingMessageOnTop()
+        loadDetailWebservices()
+
+
 
         return root
     }
 
 
+    private fun loadDetailWebservices(){
+        lifecycleScope.launchWhenStarted {
+            val detailActivity = (activity as? DetailActivity)
+            detailActivity?.let {
+                fillHeaderValues()
+                val testLoanId = it.loanApplicationId
+                testLoanId?.let { loanId->
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        detailViewModel.getLoanInfo(token = authToken, loanApplicationId = loanId)
+                        detailViewModel.getBorrowerDocuments(token = authToken, loanApplicationId = loanId)
+                    }
+                }
+            }
+        }
+    }
 
-    private fun setGreetingMessageOnTop(){
+    private fun fillHeaderValues(){
+        val getParentActivity =  activity as DetailActivity
+        val borrowerCompleteName = getParentActivity.borrowerFirstName + " "+getParentActivity.borrowerLastName
+        var greetingString = AppSetting.returnGreetingString()
+        greetingString = "$greetingString, $borrowerCompleteName"
+        binding.borrowerNameGreeting.text = greetingString
+        binding.borrowerPurpose.text = getParentActivity.borrowerLoanPurpose
+
 
     }
 

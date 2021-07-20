@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-import com.rnsoft.colabademo.activities.dashboard.fragements.details.model.BorrowerDocsModel
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*

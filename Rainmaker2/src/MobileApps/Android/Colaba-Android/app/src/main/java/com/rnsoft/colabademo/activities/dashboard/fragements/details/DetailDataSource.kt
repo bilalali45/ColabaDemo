@@ -1,8 +1,6 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
-import com.rnsoft.colabademo.activities.dashboard.fragements.details.model.BorrowerDocsModel
-import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 

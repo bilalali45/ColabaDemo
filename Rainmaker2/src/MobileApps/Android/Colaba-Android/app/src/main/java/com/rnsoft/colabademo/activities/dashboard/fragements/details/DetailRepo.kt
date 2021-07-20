@@ -1,9 +1,6 @@
 package com.rnsoft.colabademo
 
-import android.content.Context
 import android.content.SharedPreferences
-import com.rnsoft.colabademo.activities.dashboard.fragements.details.model.BorrowerDocsModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class DetailRepo  @Inject constructor(

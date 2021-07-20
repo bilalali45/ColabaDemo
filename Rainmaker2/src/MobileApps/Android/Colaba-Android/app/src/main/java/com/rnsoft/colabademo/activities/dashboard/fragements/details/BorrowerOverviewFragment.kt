@@ -32,16 +32,46 @@ class BorrowerOverviewFragment : Fragment()  {
         _binding = DetailBorrowerLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        detailViewModel.borrowerOverviewModel.observe(viewLifecycleOwner, {  borrowerOverviewModel->
-            if(borrowerOverviewModel!=null) {
+        detailViewModel.borrowerOverviewModel.observe(viewLifecycleOwner, {  overviewModel->
+            if(overviewModel!=null) {
                 binding.mainBorrowerName.text = ""
-                val coBorrowers = borrowerOverviewModel.coBorrowers
-                binding.coBorrowerNames.text = coBorrowers?.joinToString(separator = ",")
-                binding.loanId.text ="Loan#"+borrowerOverviewModel.loanNumber
-                binding.loanPurpose.text = borrowerOverviewModel.loanPurpose
-                binding.loanPayment.text ="$"+borrowerOverviewModel.loanAmount
-                binding.downPayment.text ="$"+borrowerOverviewModel.downPayment
+                val coBorrowers = overviewModel.coBorrowers
 
+                var mainBorrowerName = ""
+                if (coBorrowers != null) {
+                    val coBorrowerNames:ArrayList<String> = ArrayList()
+                    for (coBorrower in coBorrowers){
+                        val coBorrowerName = coBorrower.firstName+" "+coBorrower.lastName
+                        if(coBorrower.ownTypeId!=1)
+                            coBorrowerNames.add(coBorrowerName)
+                        else
+                            mainBorrowerName = coBorrowerName
+                    }
+                    binding.coBorrowerNames.text = coBorrowerNames.joinToString(separator = ",")
+                }
+
+                binding.mainBorrowerName.text = mainBorrowerName
+                 if(overviewModel.loanNumber!=null && !overviewModel.loanNumber.equals("null", true))
+                    binding.loanId.text ="Loan#"+overviewModel.loanNumber
+
+                binding.loanPurpose.text = overviewModel.loanPurpose
+                binding.loanPayment.text ="$"+overviewModel.loanAmount
+                binding.downPayment.text ="$"+overviewModel.downPayment
+                overviewModel.webBorrowerAddress?.let {
+                    // 4101  Oak Tree Avenue  LN # 222,\nChicago, MD 60605
+                    binding.completeAddress.text = it.street+" "+it.city+",\n"+it.stateName+", "+it.countryName+" "+it.zipCode
+
+                }
+
+                if(overviewModel.postedOn!=null && !overviewModel.postedOn.equals("null", true)) {
+                    binding.bytesPosted.text = "Posted to Byte on " + overviewModel.postedOn
+                    binding.bytesPosted.visibility = View.VISIBLE
+                    binding.bytesTick.visibility = View.VISIBLE
+                }
+                else {
+                    binding.bytesPosted.visibility = View.GONE
+                    binding.bytesTick.visibility = View.GONE
+                }
 
 
             }

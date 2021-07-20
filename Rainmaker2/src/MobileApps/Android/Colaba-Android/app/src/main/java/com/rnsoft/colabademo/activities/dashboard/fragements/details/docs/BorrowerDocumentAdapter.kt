@@ -7,13 +7,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class BorrowerDocumentAdapter
 internal constructor(
-    passedDocsList: ArrayList<DocItem>, onLoanItemClickListener: LoanItemClickListener
+    passedDocsList: ArrayList<BorrowerDocsModel>, onLoanItemClickListener: LoanItemClickListener
 ) :  RecyclerView.Adapter<BorrowerDocumentAdapter.DocsViewHolder>() {
 
-    private var docsList = ArrayList<DocItem>()
+    private var docsList = ArrayList<BorrowerDocsModel>()
     private var classScopedItemClickListener: LoanItemClickListener = onLoanItemClickListener
 
     init {
@@ -52,54 +55,78 @@ internal constructor(
     override fun onBindViewHolder(holder: DocsViewHolder, position: Int) {
         val doc  = docsList[position]
 
-        holder.docType.text = doc.docType
+        holder.docType.text = doc.docName
 
-        holder.docUploadedTime.text = doc.docUploadedTime
 
-        /*
-        doc.docUploadedTime?.let { activityTime->
-           var newString = activityTime.substring( 0 , activityTime.length-9)
-            newString+="Z"
-            newString = AppSetting.returnLongTimeNow(newString)
+
+        doc.createdOn.let { activityTime->
+            //var newString = activityTime.substring( 0 , activityTime.length-5)
+            //newString+="Z"
+            val newString = returnDocCreatedTime(activityTime)
             holder.docUploadedTime.text =  newString
         }
-         */
 
 
-        if(doc.totalDocs != null && doc.totalDocs == 0) {
-            holder.containsThreeChild.visibility = View.GONE
+
+
+        if(doc.subFiles.isEmpty()){
             holder.containsNoChild.visibility = View.VISIBLE
+            holder.containsThreeChild.visibility = View.GONE
         }
-        else {
+        else
+        if(doc.subFiles.isNotEmpty()) {
             holder.containsThreeChild.visibility = View.VISIBLE
             holder.containsNoChild.visibility = View.GONE
-            if(!doc.docOneName.isNullOrEmpty()) {
-                holder.docOneName.text = doc.docOneName
+
+            val fileOne = doc.subFiles[0]
+            if(fileOne.clientName.isNotEmpty()) {
+                holder.docOneName.text = fileOne.clientName
                 holder.docOneImage.visibility = View.VISIBLE
             }
-            else
-                holder.docOneLayout.visibility = View.INVISIBLE
 
-            if(!doc.docTwoName.isNullOrEmpty()) {
-                holder.docTwoName.text = doc.docTwoName
+
+            var fileTwo:SubFiles? = null
+            if(doc.subFiles.size>1)
+                fileTwo = doc.subFiles[1]
+
+            if(fileTwo!=null && fileTwo.clientName.isNotEmpty()){
+                holder.docTwoName.text = fileTwo.clientName
                 holder.docTwoImage.visibility = View.VISIBLE
             }
             else
                 holder.docTwoLayout.visibility = View.INVISIBLE
 
-            doc.totalDocs?.let {
-                if(it>2)
-                    holder.docThreeName.text = "+"+(it.minus(2)).toString()
-                else
-                    holder.docThreeLayout.visibility = View.INVISIBLE
-            }
+
+            if(doc.subFiles.size>2)
+                holder.docThreeName.text = "+"+(doc.subFiles.size.minus(2)).toString()
+            else
+                holder.docThreeLayout.visibility = View.INVISIBLE
+
 
         }
     }
 
     override fun getItemCount(): Int =  docsList.size
 
+    private fun returnDocCreatedTime(input:String):String{
 
+        var lastSeen = input
+
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
+        val oldDate: Date? = formatter.parse(input)
+
+
+        val oldMillis = oldDate?.time
+
+        oldMillis?.let {
+            //Log.e("oldMillis", "Date in milli :: FOR API >= 26 >>> $oldMillis")
+            //Log.e("lastseen", "Date in milli :: FOR API >= 26 >>>"+ lastseen(oldMillis))
+            lastSeen = AppSetting.lastseen(oldMillis)
+        }
+
+        return lastSeen
+
+    }
 
 
 
