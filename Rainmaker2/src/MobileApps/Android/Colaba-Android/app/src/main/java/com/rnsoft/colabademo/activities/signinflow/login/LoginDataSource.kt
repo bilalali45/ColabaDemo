@@ -11,14 +11,10 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
         val serverResponse: Response<LoginResponse>
         return try {
             serverResponse = serverApi.login(LoginRequest(userEmail, password), dontAskTwoFaIdentifier )
-            if(serverResponse.isSuccessful) {
-                Log.e("Bingo- ", serverResponse.toString())
+            if(serverResponse.isSuccessful)
                 Result.Success(serverResponse.body()!!)
-            }
             else
             {
-                Log.e("what-code ", serverResponse.toString())
-                Log.e("what-code ", serverResponse.code().toString())
                 Log.e("what-code ", serverResponse.errorBody().toString())
                 Log.e("what-code ", serverResponse.errorBody()?.charStream().toString())
                 Log.e("source- ",  serverResponse.errorBody()?.source().toString())
@@ -27,17 +23,10 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
             }
 
         } catch (e: Throwable) {
-
             if(e is NoConnectivityException)
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
-            else {
-                e.message?.let {
-                    Log.e("Error Message - ", it)
-                    //if(it.contains("HTTP 400", true))
-                    //Result.Success(loggedInUser)
-                }
-                Result.Error(IOException("Error -", e))
-            }
+            else
+                Result.Error(IOException(e.localizedMessage))
         }
     }
 
@@ -57,7 +46,6 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
     suspend fun getPhoneDetail(IntermediateToken:String): Result<SendTwoFaResponse> {
         return try {
             val phoneInfoDetail = serverApi.sendTwoFa(IntermediateToken)
-
             Log.e("SendTwoFaResponse- ", phoneInfoDetail.toString())
             Result.Success(phoneInfoDetail)
         } catch (e: Throwable) {
@@ -66,7 +54,6 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             else
             Result.Success(SendTwoFaResponse("404", null,"Verified mobile number not found.","OK"))
-            //Result.Error(IOException("Error logging in", e))
         }
     }
 

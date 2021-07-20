@@ -114,6 +114,19 @@ interface ServerApi{
     suspend fun deleteNotifications(@Header("Authorization" )  Authorization:String, @Body putParams:PutParameters):Response<Any>
 
 
+    @GET("api/mcu/mobile/loanapplication/loan/getloaninfo")
+    suspend fun getLoanInfo(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int):BorrowerOverviewModel
+
+
+
+
+    @GET("api/mcu/mobile/documentmanagement/mcudocument/getdocuments")
+    suspend fun getBorrowerDocuments(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int):ArrayList<BorrowerDocsModel>
+
     //@POST("authenticate")
     //fun loginWithCallBack(@Body loginRequest: LoginRequest): Call<LoginResponse>
 

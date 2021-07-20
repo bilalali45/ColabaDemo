@@ -187,9 +187,9 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
         if(event.isInternetError)
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
         else
-            if(event.errorResult!=null){
-                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
-            }
+        if(event.errorResult!=null)
+            SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
+
     }
 
     override fun setOrderId(passedOrderBy: Int) {

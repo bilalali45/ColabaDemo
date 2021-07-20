@@ -3,12 +3,16 @@ package com.rnsoft.colabademo
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.databinding.DetailTopLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.util.*
 import javax.inject.Inject
 
 
@@ -19,25 +23,22 @@ class DetailActivity : AppCompatActivity() {
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: DetailTopLayoutBinding
 
+    var loanApplicationId:Int? = null
+    var borrowerFirstName:String? = null
+    var borrowerLastName:String? = null
+    var borrowerLoanPurpose:String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DetailTopLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        EventBus.getDefault().unregister(this)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onLogoutEventReceived(event: LogoutEvent) {
-        startActivity(Intent(this@DetailActivity, SignUpFlowActivity::class.java))
-        finish()
+        val extras = intent.extras
+        extras?.let {
+            loanApplicationId = it.getInt(AppConstant.loanApplicationId)
+            borrowerFirstName = it.getString(AppConstant.firstName)
+            borrowerLastName = it.getString(AppConstant.lastName)
+            borrowerLoanPurpose = it.getString(AppConstant.loanPurpose)
+            Log.e("Names- ", "$borrowerFirstName $borrowerLastName")
+        }
     }
 }

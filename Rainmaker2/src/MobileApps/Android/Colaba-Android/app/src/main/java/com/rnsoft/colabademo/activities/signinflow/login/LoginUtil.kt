@@ -42,10 +42,4 @@ object LoginUtil {
         return null
     }
 
-    fun containsWhiteSpace(testCode: String): Boolean {
-
-
-
-        return false
-    }
 }

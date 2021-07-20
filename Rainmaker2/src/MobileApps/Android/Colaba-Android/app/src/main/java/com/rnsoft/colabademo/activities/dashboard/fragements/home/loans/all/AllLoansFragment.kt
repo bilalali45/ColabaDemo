@@ -179,8 +179,16 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
     }
 
     override fun navigateCardToDetailActivity(position: Int) {
-        startActivity(Intent(requireActivity(), DetailActivity::class.java))
-        //requireActivity().finish()
+        val borrowerDetailIntent= Intent(requireActivity(), DetailActivity::class.java)
+        val test = allLoansArrayList[position]
+        Log.e("Before" , test.loanApplicationId.toString())
+        //borrowerDetailIntent.putExtra(AppConstant.borrowerParcelObject, allLoansArrayList[position])
+        borrowerDetailIntent.putExtra(AppConstant.loanApplicationId,  test.loanApplicationId)
+        borrowerDetailIntent.putExtra(AppConstant.loanPurpose,  test.loanPurpose)
+        borrowerDetailIntent.putExtra(AppConstant.firstName,  test.firstName)
+        borrowerDetailIntent.putExtra(AppConstant.lastName,  test.lastName)
+        startActivity(borrowerDetailIntent)
+
     }
 
     private fun loadLoanApplications() {
@@ -189,8 +197,7 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
             if(AppSetting.loanApiDateTime.isEmpty())
                 AppSetting.loanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
             Log.e("Why-", AppSetting.loanApiDateTime)
-            Log.e("pageNumber-", pageNumber.toString() +" and page size = "+pageSize)
-
+            Log.e("pageNumber-", "$pageNumber and page size = $pageSize")
 
             loanViewModel.getAllLoans(
                 token = authToken,
