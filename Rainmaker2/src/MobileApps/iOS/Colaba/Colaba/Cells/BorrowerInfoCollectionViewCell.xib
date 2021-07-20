@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Rubik-Regular.ttf">
+            <string>Rubik-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="BorrowerInfoCollectionViewCell" id="gTV-IL-0wX" customClass="BorrowerInfoCollectionViewCell" customModule="Colaba" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="371" height="91"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="371" height="91"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y8c-jN-j9Y">
+                        <rect key="frame" x="2" y="2" width="367" height="70"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Richard Glenn Randall" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tEx-9E-WAn">
+                                <rect key="frame" x="15" y="15" width="337" height="20"/>
+                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="17"/>
+                                <color key="textColor" name="AppBlackColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Primary Borrower" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eI1-aT-I4l">
+                                <rect key="frame" x="15" y="40" width="337" height="15.5"/>
+                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
+                                <color key="textColor" name="AppGreyColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="tEx-9E-WAn" firstAttribute="top" secondItem="y8c-jN-j9Y" secondAttribute="top" constant="15" id="2tF-cs-SzB"/>
+                            <constraint firstItem="eI1-aT-I4l" firstAttribute="top" secondItem="tEx-9E-WAn" secondAttribute="bottom" constant="5" id="7j1-On-iZ6"/>
+                            <constraint firstAttribute="trailing" secondItem="eI1-aT-I4l" secondAttribute="trailing" constant="15" id="IEq-GH-ZWc"/>
+                            <constraint firstAttribute="height" constant="70" id="POq-PB-CcY"/>
+                            <constraint firstAttribute="trailing" secondItem="tEx-9E-WAn" secondAttribute="trailing" constant="15" id="hD9-89-SCB"/>
+                            <constraint firstItem="eI1-aT-I4l" firstAttribute="leading" secondItem="y8c-jN-j9Y" secondAttribute="leading" constant="15" id="jIv-ue-w6G"/>
+                            <constraint firstItem="tEx-9E-WAn" firstAttribute="leading" secondItem="y8c-jN-j9Y" secondAttribute="leading" constant="15" id="o0A-xJ-MiN"/>
+                        </constraints>
+                    </view>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hIx-Wx-LCe">
+                        <rect key="frame" x="2" y="2" width="190" height="70"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zf9-op-Qe3">
+                                <rect key="frame" x="15" y="24" width="20" height="22"/>
+                                <state key="normal" image="Add-More"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add More Borrowers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zyd-Dc-glQ">
+                                <rect key="frame" x="47" y="27" width="121" height="16"/>
+                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
+                                <color key="textColor" name="ButtonBlueColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Zyd-Dc-glQ" firstAttribute="centerY" secondItem="zf9-op-Qe3" secondAttribute="centerY" id="GBf-vt-Ezw"/>
+                            <constraint firstItem="Zyd-Dc-glQ" firstAttribute="leading" secondItem="zf9-op-Qe3" secondAttribute="trailing" constant="12" id="NNp-hR-ypM"/>
+                            <constraint firstAttribute="height" constant="70" id="Zch-kr-wWT"/>
+                            <constraint firstAttribute="width" constant="190" id="ay9-RU-3QF"/>
+                            <constraint firstItem="zf9-op-Qe3" firstAttribute="leading" secondItem="hIx-Wx-LCe" secondAttribute="leading" constant="15" id="jPN-d7-TAt"/>
+                            <constraint firstItem="zf9-op-Qe3" firstAttribute="centerY" secondItem="hIx-Wx-LCe" secondAttribute="centerY" id="s45-nL-iU1"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" name="DashboardBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="hIx-Wx-LCe" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="2" id="2bN-tq-BvT"/>
+                <constraint firstItem="y8c-jN-j9Y" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="2" id="Od1-bV-9se"/>
+                <constraint firstAttribute="trailing" secondItem="y8c-jN-j9Y" secondAttribute="trailing" constant="2" id="Pym-NW-dOT"/>
+                <constraint firstItem="y8c-jN-j9Y" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="2" id="ib9-zn-eyY"/>
+                <constraint firstItem="hIx-Wx-LCe" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="2" id="p5z-Za-5zb"/>
+            </constraints>
+            <size key="customSize" width="371" height="91"/>
+            <connections>
+                <outlet property="addMoreView" destination="hIx-Wx-LCe" id="dSH-jo-FmP"/>
+                <outlet property="lblBorrowerName" destination="tEx-9E-WAn" id="dpb-WU-c2p"/>
+                <outlet property="lblBorrowerType" destination="eI1-aT-I4l" id="nUH-Ug-EIf"/>
+                <outlet property="mainView" destination="y8c-jN-j9Y" id="jTF-Wp-dOC"/>
+            </connections>
+            <point key="canvasLocation" x="215.21739130434784" y="101.45089285714285"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="Add-More" width="20" height="20"/>
+        <namedColor name="AppBlackColor">
+            <color red="0.30588235294117649" green="0.30588235294117649" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="AppGreyColor">
+            <color red="0.49411764705882355" green="0.50980392156862742" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="ButtonBlueColor">
+            <color red="0.26666666666666666" green="0.51764705882352946" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="DashboardBackgroundColor">
+            <color red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Rubik-Medium.ttf">
+            <string>Rubik-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ApplicationTabHeaderView" customModule="Colaba" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="500" height="60"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Application-Tab-Borrower-Info" translatesAutoresizingMaskIntoConstraints="NO" id="418-gW-ZKG">
+                    <rect key="frame" x="20" y="0.0" width="23" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="23" id="GZg-Ws-8UM"/>
+                        <constraint firstAttribute="height" constant="23" id="rVn-E5-uG1"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Borrower Information" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tnk-Rs-W7d">
+                    <rect key="frame" x="48" y="4.5" width="125.5" height="14"/>
+                    <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="12"/>
+                    <color key="textColor" name="AppBlackColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" name="DashboardBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="418-gW-ZKG" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="1yn-gk-XRJ"/>
+                <constraint firstItem="418-gW-ZKG" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Ptp-FT-cFW"/>
+                <constraint firstItem="tnk-Rs-W7d" firstAttribute="centerY" secondItem="418-gW-ZKG" secondAttribute="centerY" id="gSb-65-gW2"/>
+                <constraint firstItem="tnk-Rs-W7d" firstAttribute="leading" secondItem="418-gW-ZKG" secondAttribute="trailing" constant="5" id="vtv-os-b61"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="icon" destination="418-gW-ZKG" id="ovs-Kh-p9F"/>
+                <outlet property="lblTitle" destination="tnk-Rs-W7d" id="5ty-xi-7U8"/>
+            </connections>
+            <point key="canvasLocation" x="156.52173913043478" y="-191.51785714285714"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Application-Tab-Borrower-Info" width="18.03700065612793" height="16"/>
+        <namedColor name="AppBlackColor">
+            <color red="0.30588235294117649" green="0.30588235294117649" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="DashboardBackgroundColor">
+            <color red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
