@@ -133,7 +133,7 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath.row == 3){
+        if (indexPath.row == 1){
             let vc = Utility.getApplicationStatusVC()
             self.pushToVC(vc: vc)
         }
