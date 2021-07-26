@@ -61,20 +61,16 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Ans-No" translatesAutoresizingMaskIntoConstraints="NO" id="ycC-oF-kie">
-                                <rect key="frame" x="15" y="112.5" width="12" height="12"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="12" id="DV8-gx-YbX"/>
-                                    <constraint firstAttribute="height" constant="12" id="ksr-9o-8WH"/>
-                                </constraints>
+                                <rect key="frame" x="15" y="112.5" width="16.5" height="16.5"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eGQ-iR-mSf">
-                                <rect key="frame" x="33" y="109.5" width="19" height="18"/>
+                                <rect key="frame" x="35.5" y="112" width="19" height="18"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" - Maria" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Fh-y7-rOw">
-                                <rect key="frame" x="52" y="109.5" width="52.5" height="18"/>
+                                <rect key="frame" x="54.5" y="112" width="52" height="18"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                 <color key="textColor" name="AppGreyColor"/>
                                 <nil key="highlightedColor"/>
@@ -90,7 +86,7 @@
                             <constraint firstItem="ycC-oF-kie" firstAttribute="top" secondItem="gKy-Gi-aZ7" secondAttribute="bottom" constant="11" id="a9y-ZF-dL9"/>
                             <constraint firstItem="PV3-AL-jbs" firstAttribute="top" secondItem="CcK-py-62H" secondAttribute="bottom" constant="10" id="aLK-uW-b2Y"/>
                             <constraint firstItem="PV3-AL-jbs" firstAttribute="leading" secondItem="1im-BT-Q2J" secondAttribute="leading" constant="15" id="c0w-jQ-cXQ"/>
-                            <constraint firstItem="eGQ-iR-mSf" firstAttribute="leading" secondItem="ycC-oF-kie" secondAttribute="trailing" constant="6" id="cbD-9E-xoe"/>
+                            <constraint firstItem="eGQ-iR-mSf" firstAttribute="leading" secondItem="ycC-oF-kie" secondAttribute="trailing" constant="4" id="cbD-9E-xoe"/>
                             <constraint firstItem="a9I-y4-wl7" firstAttribute="leading" secondItem="48i-TC-ig2" secondAttribute="trailing" id="hbG-wl-jIb"/>
                             <constraint firstAttribute="height" constant="147" id="ita-c1-L3O"/>
                             <constraint firstItem="CcK-py-62H" firstAttribute="leading" secondItem="1im-BT-Q2J" secondAttribute="leading" constant="15" id="kSY-2A-BgB"/>
