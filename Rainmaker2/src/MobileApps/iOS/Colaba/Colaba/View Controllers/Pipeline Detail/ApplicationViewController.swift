@@ -89,6 +89,7 @@ class ApplicationViewController: BaseViewController {
             questionsCollectionViewLayout.itemSize = CGSize(width: itemWidth, height: 157)
             self.questionsCollectionView.collectionViewLayout = questionsCollectionViewLayout
             
+            self.questionsCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: true)
         }
     }
     
@@ -97,7 +98,7 @@ class ApplicationViewController: BaseViewController {
 extension ApplicationViewController: UICollectionViewDataSource, UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collectionView == questionsCollectionView ? 10 : 3
+        return collectionView == questionsCollectionView ? 4 : 3
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -45,7 +45,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="05 Dec 2020, 15:23" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZAT-xY-2xS">
-                        <rect key="frame" x="70" y="24.5" width="116" height="16"/>
+                        <rect key="frame" x="70" y="24.5" width="115.5" height="16"/>
                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                         <color key="textColor" name="ButtonGreyTextColor"/>
                         <nil key="highlightedColor"/>

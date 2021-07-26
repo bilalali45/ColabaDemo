@@ -25,7 +25,8 @@ class OverviewViewController: BaseViewController {
         tableViewOverView.register(UINib(nibName: "BorrowerAddressTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerAddressTableViewCell")
         tableViewOverView.register(UINib(nibName: "BorrowerLoanInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerLoanInfoTableViewCell")
         tableViewOverView.register(UINib(nibName: "BorrowerApplicationStatusButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerApplicationStatusButtonTableViewCell")
-        tableViewOverView.coverableCellsIdentifiers = ["BorrowerOverviewTableViewCell", "BorrowerAddressTableViewCell", "BorrowerLoanInfoTableViewCell", "BorrowerApplicationStatusButtonTableViewCell"]
+        tableViewOverView.register(UINib(nibName: "BorrowerAddressAndLoanInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerAddressAndLoanInfoTableViewCell")
+        tableViewOverView.coverableCellsIdentifiers = ["BorrowerOverviewTableViewCell", "BorrowerApplicationStatusButtonTableViewCell", "BorrowerAddressAndLoanInfoTableViewCell"]
         getLoanApplicationInfo()
     }
     
@@ -72,7 +73,7 @@ class OverviewViewController: BaseViewController {
 extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -111,22 +112,22 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
             return cell
         }
         else if (indexPath.row == 1){
-            let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerAddressTableViewCell", for: indexPath) as! BorrowerAddressTableViewCell
-            cell.lblAddress.text = "\(loanInfoData.street) \(loanInfoData.unit) \(loanInfoData.city) \(loanInfoData.stateName) \(loanInfoData.zipCode) \(loanInfoData.countryName)"
-            cell.lblPropertyValue.text = loanInfoData.propertyValue.withCommas().replacingOccurrences(of: ".00", with: "")
-            cell.lblFamilyType.text = loanInfoData.propertyType
-            return cell
-        }
-        else if (indexPath.row == 2){
-            let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerLoanInfoTableViewCell", for: indexPath) as! BorrowerLoanInfoTableViewCell
-            cell.lblLoanPurpose.text = loanInfoData.loanPurpose
-            cell.lblLoanPayment.text = loanInfoData.loanAmount.withCommas().replacingOccurrences(of: ".00", with: "")
-            cell.lblDownPayment.text = loanInfoData.downPayment.withCommas().replacingOccurrences(of: ".00", with: "")
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerApplicationStatusButtonTableViewCell", for: indexPath) as! BorrowerApplicationStatusButtonTableViewCell
+            cell.lblApplicationStatus.text = loanInfoData.milestone
             return cell
         }
         else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerApplicationStatusButtonTableViewCell", for: indexPath) as! BorrowerApplicationStatusButtonTableViewCell
-            cell.lblApplicationStatus.text = loanInfoData.milestone
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerAddressAndLoanInfoTableViewCell", for: indexPath) as! BorrowerAddressAndLoanInfoTableViewCell
+            cell.mainView.layer.cornerRadius = 6
+            cell.mainView.layer.borderWidth = 1
+            cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            cell.mainView.dropShadowToCollectionViewCell()
+            cell.lblLoanPurpose.text = loanInfoData.loanPurpose
+            cell.lblAddress.text = "\(loanInfoData.street) \(loanInfoData.unit)\n\(loanInfoData.city) \(loanInfoData.stateName) \(loanInfoData.zipCode) \(loanInfoData.countryName)"
+            cell.lblPropertyType.text = loanInfoData.propertyType
+            cell.lblPropertyValue.text = loanInfoData.propertyValue.withCommas().replacingOccurrences(of: ".00", with: "")
+            cell.lblLoanAmount.text = loanInfoData.loanAmount.withCommas().replacingOccurrences(of: ".00", with: "")
+            cell.lblDownPayment.text = loanInfoData.downPayment.withCommas().replacingOccurrences(of: ".00", with: "")
             return cell
         }
     }
@@ -140,11 +141,11 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if (indexPath.row == 2){
-            return 107
+        if (indexPath.row == 1){
+            return 106
         }
-        else if (indexPath.row == 3){
-            return 130
+        else if (indexPath.row == 2){
+            return 278
         }
         else{
             return UITableView.automaticDimension
