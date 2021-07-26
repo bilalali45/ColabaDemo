@@ -28,7 +28,7 @@ import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
-class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInterface {
+class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInterface {
     private var _binding: FragmentLoanBinding? = null
     private val binding get() = _binding!!
 
@@ -178,7 +178,7 @@ class AllLoansFragment : BaseFragment(), LoanItemClickListener ,  LoanFilterInte
         borrowerBottomSheet.show(childFragmentManager, SheetBottomBorrowerCardFragment::class.java.canonicalName)
     }
 
-    override fun navigateCardToDetailActivity(position: Int) {
+    override fun navigateTo(position: Int) {
         val borrowerDetailIntent= Intent(requireActivity(), DetailActivity::class.java)
         val test = allLoansArrayList[position]
         Log.e("Before" , test.loanApplicationId.toString())

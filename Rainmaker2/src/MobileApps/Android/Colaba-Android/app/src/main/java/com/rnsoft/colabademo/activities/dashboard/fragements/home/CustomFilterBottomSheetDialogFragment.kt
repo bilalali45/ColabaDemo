@@ -60,11 +60,14 @@ class CustomFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
                 binding.pendingIcon.setColorFilter(resources.getColor(R.color.colaba_primary_color, activity?.theme))
                 binding.pendingTextView.setTextColor(resources.getColor(R.color.colaba_primary_color , activity?.theme))
+
+
             }
             1->{
 
                 binding.recentIcon.setColorFilter(resources.getColor(R.color.colaba_primary_color, activity?.theme))
                 binding.recentTextView.setTextColor(resources.getColor(R.color.colaba_primary_color , activity?.theme))
+
 
             }
             2->{
@@ -95,14 +98,13 @@ class CustomFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         binding.mostPendingLayout.setOnClickListener {
             dismiss()
-            baseFragment.setOrderId(orderBy = 0)
+            baseFragment.setOrderId(orderBy = 1)
 
-            //loadLoanApplications(orderBy = 0)
         }
 
         binding.mostRecentLayout.setOnClickListener {
             dismiss()
-            baseFragment.setOrderId(orderBy = 1)
+            baseFragment.setOrderId(orderBy = 0)
             //loadLoanApplications(1)
         }
 

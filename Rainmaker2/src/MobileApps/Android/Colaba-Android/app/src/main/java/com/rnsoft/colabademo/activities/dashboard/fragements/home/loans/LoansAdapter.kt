@@ -12,18 +12,18 @@ import androidx.recyclerview.widget.RecyclerView
 
 class LoansAdapter
 internal constructor(
-    passedBorrowerList: ArrayList<LoanItem>, onLoanItemClickListener: LoanItemClickListener
+    passedBorrowerList: ArrayList<LoanItem>, onAdapterClickListener: AdapterClickListener
 ) :  RecyclerView.Adapter<LoansAdapter.LoanViewHolder>() {
 
 
     //: RecyclerView.Adapter<LoansAdapter.LoanViewHolder>() {
 
     private var borrowerList = ArrayList<LoanItem>()
-    private var classScopedItemClickListener: LoanItemClickListener = onLoanItemClickListener
+    private var classScopedItemClickListener: AdapterClickListener = onAdapterClickListener
 
     init {
         this.borrowerList = passedBorrowerList
-        this.classScopedItemClickListener = onLoanItemClickListener
+        this.classScopedItemClickListener = onAdapterClickListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LoanViewHolder {
@@ -157,7 +157,7 @@ internal constructor(
         var openLoanImageView: ImageView = itemView.findViewById(R.id.open_inside_view)
         var closeLoanImageView: ImageView = itemView.findViewById(R.id.close_inside_view)
         var dotsImageView: ImageView = itemView.findViewById(R.id.loandotsImageView)
-        var cardBox:CardView = itemView.findViewById(R.id.cardBox)
+        var cardBox:CardView = itemView.findViewById(R.id.docCardView)
         var loanDetailLayout: ConstraintLayout = itemView.findViewById(R.id.inside_Loan_layout)
 
        init {
@@ -166,7 +166,7 @@ internal constructor(
            }
 
            cardBox.setOnClickListener{
-               classScopedItemClickListener.navigateCardToDetailActivity(adapterPosition)
+               classScopedItemClickListener.navigateTo(adapterPosition)
            }
 
        }

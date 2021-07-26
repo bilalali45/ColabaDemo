@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
@@ -13,15 +14,15 @@ import kotlin.collections.ArrayList
 
 class BorrowerDocumentAdapter
 internal constructor(
-    passedDocsList: ArrayList<BorrowerDocsModel>, onLoanItemClickListener: LoanItemClickListener
+    passedDocsList: ArrayList<BorrowerDocsModel>, onAdapterClickListener: AdapterClickListener
 ) :  RecyclerView.Adapter<BorrowerDocumentAdapter.DocsViewHolder>() {
 
     private var docsList = ArrayList<BorrowerDocsModel>()
-    private var classScopedItemClickListener: LoanItemClickListener = onLoanItemClickListener
+    private var classScopedItemClickListener: AdapterClickListener = onAdapterClickListener
 
     init {
         this.docsList = passedDocsList
-        this.classScopedItemClickListener = onLoanItemClickListener
+        this.classScopedItemClickListener = onAdapterClickListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocsViewHolder {
@@ -49,6 +50,14 @@ internal constructor(
 
         var docThreeLayout:ConstraintLayout = itemView.findViewById(R.id.doc_three)
         var docThreeName: TextView = itemView.findViewById(R.id.doc_three_name)
+
+        var docCardView: CardView = itemView.findViewById(R.id.docCardView)
+
+        init {
+            docCardView.setOnClickListener{
+                classScopedItemClickListener.navigateTo(adapterPosition)
+            }
+        }
 
     }
 
@@ -79,22 +88,31 @@ internal constructor(
             holder.containsNoChild.visibility = View.GONE
 
             val fileOne = doc.subFiles[0]
-            if(fileOne.clientName.isNotEmpty()) {
+            if(fileOne.clientName.isNotEmpty() && fileOne.clientName.isNotBlank()) {
                 holder.docOneName.text = fileOne.clientName
                 holder.docOneImage.visibility = View.VISIBLE
             }
+            else {
+                holder.docOneName.text = fileOne.mcuName
+                holder.docOneImage.visibility = View.VISIBLE
+            }
+
 
 
             var fileTwo:SubFiles? = null
             if(doc.subFiles.size>1)
                 fileTwo = doc.subFiles[1]
 
-            if(fileTwo!=null && fileTwo.clientName.isNotEmpty()){
-                holder.docTwoName.text = fileTwo.clientName
-                holder.docTwoImage.visibility = View.VISIBLE
+            if(fileTwo!=null) {
+                if (fileTwo.clientName.isNotEmpty() && fileTwo.clientName.isNotBlank()) {
+                    holder.docTwoName.text = fileTwo.clientName
+                    holder.docTwoImage.visibility = View.VISIBLE
+                } else if (fileTwo.mcuName.isNotEmpty() && fileTwo.mcuName.isNotBlank()) {
+                    holder.docTwoName.text = fileTwo.mcuName
+                    holder.docTwoImage.visibility = View.VISIBLE
+                } else
+                    holder.docTwoLayout.visibility = View.INVISIBLE
             }
-            else
-                holder.docTwoLayout.visibility = View.INVISIBLE
 
 
             if(doc.subFiles.size>2)

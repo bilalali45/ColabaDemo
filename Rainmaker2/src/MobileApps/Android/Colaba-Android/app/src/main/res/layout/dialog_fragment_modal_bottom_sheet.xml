@@ -33,6 +33,30 @@
         app:layout_constraintStart_toStartOf="@+id/borrowerName"
         app:layout_constraintTop_toBottomOf="@+id/sortBySepartor">
 
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/recentIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_recent_icon" />
+
+        <TextView
+            android:id="@+id/recentTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="@string/recent_activity"
+            android:textColor="@color/colaba_primary_color"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/recentIcon"
+            app:layout_constraintStart_toEndOf="@+id/recentIcon"
+            app:layout_constraintTop_toTopOf="@+id/recentIcon" />
+
+        <!--
         <ImageView
             android:id="@+id/pending_icon"
             android:layout_width="wrap_content"
@@ -57,6 +81,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/pending_icon"
             app:layout_constraintStart_toEndOf="@+id/pending_icon"
             app:layout_constraintTop_toTopOf="@+id/pending_icon" />
+            -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -103,27 +128,30 @@
         app:layout_constraintStart_toStartOf="@+id/borrowerName"
         app:layout_constraintTop_toBottomOf="@+id/mostPendingLayout">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/recentIcon"
+        <ImageView
+            android:id="@+id/pending_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/mostRecentLayout"
+            android:backgroundTint="@color/colaba_primary_color"
             android:layout_marginStart="28dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/ic_recent_icon" />
+            android:src="@drawable/ic_action_pending_icon"
+            />
 
         <TextView
-            android:id="@+id/recentTextView"
+            android:id="@+id/pendingTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:text="@string/actions_pending"
             android:fontFamily="@font/rubik_medium"
-            android:text="@string/recent_activity"
-            android:textColor="@color/grey_color_two"
+
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/recentIcon"
-            app:layout_constraintStart_toEndOf="@+id/recentIcon"
-            app:layout_constraintTop_toTopOf="@+id/recentIcon" />
+            android:textColor="@color/grey_color_two"
+            app:layout_constraintBottom_toBottomOf="@+id/pending_icon"
+            app:layout_constraintStart_toEndOf="@+id/pending_icon"
+            app:layout_constraintTop_toTopOf="@+id/pending_icon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

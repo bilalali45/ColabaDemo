@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,6 +43,16 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
                 EventBus.getDefault().post(WebServiceErrorEvent(null, true))
             else if(responseResult is Result.Error)
                 EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+        }
+    }
+
+     fun downloadFile(token:String,  id:String, requestId:String, docId:String, fileId:String){
+        viewModelScope.launch {
+            val responseResult = detailRepo.downloadFile(token = token, id = id, requestId = requestId, docId = docId, fileId = fileId )
+            if (responseResult is Response<*>){
+
+            }
+
         }
     }
 

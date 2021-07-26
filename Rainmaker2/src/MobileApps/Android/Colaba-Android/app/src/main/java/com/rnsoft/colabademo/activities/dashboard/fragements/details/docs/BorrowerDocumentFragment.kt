@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.gson.Gson
 import com.rnsoft.colabademo.databinding.BorrowerDocLayoutBinding
 
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,7 +20,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class BorrowerDocumentFragment : Fragment() , LoanItemClickListener {
+class BorrowerDocumentFragment : Fragment() , AdapterClickListener {
 
     private var _binding: BorrowerDocLayoutBinding? = null
     private val binding get() = _binding!!
@@ -61,7 +63,6 @@ class BorrowerDocumentFragment : Fragment() , LoanItemClickListener {
                 docsArrayList = it
                 borrowerDocumentAdapter = BorrowerDocumentAdapter(docsArrayList, this@BorrowerDocumentFragment)
                 docsRecycler.adapter = borrowerDocumentAdapter
-
                 borrowerDocumentAdapter.notifyDataSetChanged()
 
                 Log.e("list", "coming-$it")
@@ -77,12 +78,23 @@ class BorrowerDocumentFragment : Fragment() , LoanItemClickListener {
 
     }
 
-    override fun navigateCardToDetailActivity(position: Int) {
-        val listFragment = DocumentListFragment()
-        val bundle = Bundle()
-        //bundle.putParcelable(AppConstant.docNames, docsArrayList[position])
-        listFragment.arguments = bundle
-        //findNavController().navigate(R.)
+    override fun navigateTo(position: Int) {
+        val selectedDocumentType = docsArrayList[position]
+        if (selectedDocumentType.subFiles.size > 0) {
+            val listFragment = DocumentListFragment()
+            val bundle = Bundle()
+            Log.e("subFiles","- "+selectedDocumentType.subFiles.toString())
+            val fileNames = Gson().toJson(selectedDocumentType.subFiles)
+            bundle.putString(AppConstant.innerFilesName, fileNames)
+            bundle.putString(AppConstant.download_id, selectedDocumentType.id)
+            bundle.putString(AppConstant.download_requestId, selectedDocumentType.requestId)
+            bundle.putString(AppConstant.download_docId, selectedDocumentType.docId)
+            listFragment.arguments = bundle
+            findNavController().navigate(R.id.docs_list_inner_fragment, bundle)
+
+
+        }
     }
+
 
 }

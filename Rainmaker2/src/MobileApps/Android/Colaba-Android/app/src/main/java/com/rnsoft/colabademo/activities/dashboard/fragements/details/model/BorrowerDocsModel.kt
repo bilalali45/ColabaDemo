@@ -17,7 +17,7 @@ data class BorrowerDocsModel(
 data class SubFiles(
     val byteProStatus: String,
     val clientName: String,
-    val fileModifiedOn: Any,
+    val fileModifiedOn: String,
     val fileUploadedOn: String,
     val id: String,
     val isRead: Boolean,
