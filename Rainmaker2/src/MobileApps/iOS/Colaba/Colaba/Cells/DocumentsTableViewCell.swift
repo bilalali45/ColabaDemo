@@ -12,6 +12,8 @@ class DocumentsTableViewCell: UITableViewCell {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var lblDocumentName: UILabel!
     @IBOutlet weak var lblTime: UILabel!
+    @IBOutlet weak var iconStatus: UIImageView!
+    @IBOutlet weak var lblStatus: UILabel!
     @IBOutlet weak var viewAttatchment1: UIView!
     @IBOutlet weak var iconAttatchment1: UIImageView!
     @IBOutlet weak var lblAttatchment1: UILabel!
@@ -22,6 +24,7 @@ class DocumentsTableViewCell: UITableViewCell {
     @IBOutlet weak var lblOtherAttatchment: UILabel!
     @IBOutlet weak var iconNoAttatchment: UIImageView!
     @IBOutlet weak var lblNoAttatchment: UILabel!
+    @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()

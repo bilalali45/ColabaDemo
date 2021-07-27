@@ -62,6 +62,11 @@ class ApplicationViewController: BaseViewController {
         monthlyIncomeView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         monthlyIncomeView.dropShadowToCollectionViewCell()
         
+        let propertyTypeText = "Single Family Residency   ·   Investment Property"
+        let propertyTypeAttributedText = NSMutableAttributedString(string: propertyTypeText)
+        let range1 = propertyTypeText.range(of: "·")
+        propertyTypeAttributedText.addAttribute(NSAttributedString.Key.font, value: Theme.getRubikBoldFont(size: 15), range: propertyTypeText.nsRange(from: range1!))
+        lblPropertyType.attributedText = propertyTypeAttributedText
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             let borrowerInfoCollectionViewLayout = UICollectionViewFlowLayout()

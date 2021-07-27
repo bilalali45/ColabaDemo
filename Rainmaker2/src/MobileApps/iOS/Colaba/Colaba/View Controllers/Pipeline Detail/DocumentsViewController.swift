@@ -88,13 +88,18 @@ extension DocumentsViewController: UITableViewDataSource, UITableViewDelegate{
         let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTableViewCell", for: indexPath) as! DocumentsTableViewCell
         let document = documentsArray[indexPath.row]
         
+        cell.mainViewHeightConstraint.constant = document.docName.count > 25 ? 135 : 110
         cell.mainView.layer.cornerRadius = 8
         cell.mainView.dropShadow()
+        cell.updateConstraintsIfNeeded()
+        cell.layoutSubviews()
         
         let files = document.files.sorted { file1, file2 in
             return file1.fileUploadedTimeStamp > file2.fileUploadedTimeStamp
         }
         cell.lblDocumentName.text = document.docName
+        cell.lblStatus.text = document.status
+        cell.iconStatus.image = Utility.getDocumentStatusIcon(documentStatus: document.status)
         if (files.count > 0){
             cell.lblTime.text = Utility.timeAgoSince(files.first!.fileUploadedOn)
         }
@@ -137,16 +142,14 @@ extension DocumentsViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let document = documentsArray[indexPath.row]
-        if (document.files.count > 0){
-            let vc = Utility.getDocumentsDetailVC()
-            vc.selectedDocument = document
-            self.pushToVC(vc: vc)
-        }
+        let vc = Utility.getDocumentsDetailVC()
+        vc.selectedDocument = document
+        self.pushToVC(vc: vc)
         
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 116
+        return documentsArray[indexPath.row].docName.count > 25 ? 156 : 131
     }
     
 }

@@ -14,6 +14,8 @@
 		232013912698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2320138F2698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift */; };
 		232013922698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 232013902698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib */; };
 		2330CD2226AFEBDF00FF3C43 /* rubik_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2330CD2126AFEBDF00FF3C43 /* rubik_bold.ttf */; };
+		2330CD2526B000ED00FF3C43 /* DocumentMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2330CD2326B000ED00FF3C43 /* DocumentMessageTableViewCell.swift */; };
+		2330CD2626B000ED00FF3C43 /* DocumentMessageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2330CD2426B000ED00FF3C43 /* DocumentMessageTableViewCell.xib */; };
 		234DB4F226A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234DB4F026A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.swift */; };
 		234DB4F326A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 234DB4F126A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.xib */; };
 		235BBD6A2698649700687174 /* UtilitiesUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235BBD692698649700687174 /* UtilitiesUnitTest.swift */; };
@@ -140,6 +142,8 @@
 		2320138F2698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerLoanInfoTableViewCell.swift; sourceTree = "<group>"; };
 		232013902698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerLoanInfoTableViewCell.xib; sourceTree = "<group>"; };
 		2330CD2126AFEBDF00FF3C43 /* rubik_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = rubik_bold.ttf; path = "../../../../Android/Colaba-Android/app/src/main/res/font/rubik_bold.ttf"; sourceTree = "<group>"; };
+		2330CD2326B000ED00FF3C43 /* DocumentMessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentMessageTableViewCell.swift; sourceTree = "<group>"; };
+		2330CD2426B000ED00FF3C43 /* DocumentMessageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DocumentMessageTableViewCell.xib; sourceTree = "<group>"; };
 		234DB4F026A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GovernmentQuestionsCollectionViewCell.swift; sourceTree = "<group>"; };
 		234DB4F126A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GovernmentQuestionsCollectionViewCell.xib; sourceTree = "<group>"; };
 		235BBD692698649700687174 /* UtilitiesUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilitiesUnitTest.swift; sourceTree = "<group>"; };
@@ -352,6 +356,8 @@
 				234DB4F126A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.xib */,
 				23908F9C26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift */,
 				23908F9D26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib */,
+				2330CD2326B000ED00FF3C43 /* DocumentMessageTableViewCell.swift */,
+				2330CD2426B000ED00FF3C43 /* DocumentMessageTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -727,6 +733,7 @@
 				7186ACBC2653B25B00E740D3 /* LaunchScreen.storyboard in Resources */,
 				7186ACB92653B25B00E740D3 /* Assets.xcassets in Resources */,
 				7186AD082653C77B00E740D3 /* Rubik-Regular.ttf in Resources */,
+				2330CD2626B000ED00FF3C43 /* DocumentMessageTableViewCell.xib in Resources */,
 				2390FEE226A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.xib in Resources */,
 				2330CD2226AFEBDF00FF3C43 /* rubik_bold.ttf in Resources */,
 				23E9C752269C3F980066C978 /* DocumentsTableViewCell.xib in Resources */,
@@ -897,6 +904,7 @@
 				23E9C757269C6C140066C978 /* DocumentsDetailTableViewCell.swift in Sources */,
 				234DB4F226A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.swift in Sources */,
 				23B238B82679D38900508449 /* SearchViewController.swift in Sources */,
+				2330CD2526B000ED00FF3C43 /* DocumentMessageTableViewCell.swift in Sources */,
 				23A56C5D2685B017005CE6F4 /* Icons.swift in Sources */,
 				23E9C751269C3F980066C978 /* DocumentsTableViewCell.swift in Sources */,
 				7186AD602653DE8600E740D3 /* ExtensionOfView.swift in Sources */,

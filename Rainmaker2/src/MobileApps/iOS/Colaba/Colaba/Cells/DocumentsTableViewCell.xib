@@ -20,30 +20,43 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="DocumentsTableViewCell" rowHeight="136" id="KGk-i7-Jjw" customClass="DocumentsTableViewCell" customModule="Colaba" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="402" height="136"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="DocumentsTableViewCell" rowHeight="192" id="KGk-i7-Jjw" customClass="DocumentsTableViewCell" customModule="Colaba" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="399" height="192"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="402" height="136"/>
+                <rect key="frame" x="0.0" y="0.0" width="399" height="192"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RfP-4b-eOh">
-                        <rect key="frame" x="15" y="20" width="372" height="95"/>
+                        <rect key="frame" x="15" y="20" width="369" height="135"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bank Statements" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e6g-RP-KgA">
-                                <rect key="frame" x="20" y="15" width="142.5" height="20.5"/>
-                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="17"/>
-                                <color key="textColor" name="AppBlackColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bank Statements Bank Statements Bank Statements" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e6g-RP-KgA">
+                                <rect key="frame" x="20" y="15" width="239" height="35"/>
+                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
+                                <color key="textColor" name="AppGreyColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Today" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hfx-nJ-kS1">
-                                <rect key="frame" x="172.5" y="20" width="179.5" height="15.5"/>
+                                <rect key="frame" x="269" y="20" width="80" height="15.5"/>
+                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
+                                <color key="textColor" name="ButtonGreyTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Pending" translatesAutoresizingMaskIntoConstraints="NO" id="doL-RH-4A1">
+                                <rect key="frame" x="20" y="60" width="6" height="6"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="6" id="LPV-9B-bwx"/>
+                                    <constraint firstAttribute="width" constant="6" id="U3y-Li-hcS"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Pending" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ejw-5f-6hx">
+                                <rect key="frame" x="31" y="55" width="48" height="15.5"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <color key="textColor" name="ButtonGreyTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nej-CT-U0J">
-                                <rect key="frame" x="20" y="45.5" width="130" height="30"/>
+                                <rect key="frame" x="20" y="80.5" width="129" height="30"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pdf-icon" translatesAutoresizingMaskIntoConstraints="NO" id="XS3-zu-2cI">
                                         <rect key="frame" x="12" y="8" width="13" height="14"/>
@@ -53,7 +66,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bank-S..0-1.pdf" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jew-dL-XSd">
-                                        <rect key="frame" x="29" y="7" width="96" height="16"/>
+                                        <rect key="frame" x="29" y="7" width="95" height="16"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -70,7 +83,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ti4-Lk-MYJ">
-                                <rect key="frame" x="155" y="45.5" width="129" height="30"/>
+                                <rect key="frame" x="154" y="80.5" width="128" height="30"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jpg-icon" translatesAutoresizingMaskIntoConstraints="NO" id="s5V-VT-wNm">
                                         <rect key="frame" x="12" y="8" width="13" height="14"/>
@@ -80,7 +93,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bank-S..0-2.jpg" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IUc-4R-BUu">
-                                        <rect key="frame" x="29" y="7" width="95" height="16"/>
+                                        <rect key="frame" x="29" y="7" width="94" height="16"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -97,7 +110,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ov1-UT-L7I">
-                                <rect key="frame" x="290" y="45.5" width="30" height="30"/>
+                                <rect key="frame" x="288" y="80.5" width="30" height="30"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ucH-dT-tVR">
                                         <rect key="frame" x="6.5" y="6.5" width="17" height="17"/>
@@ -115,10 +128,10 @@
                                 </constraints>
                             </view>
                             <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="no-attatchment" translatesAutoresizingMaskIntoConstraints="NO" id="mn6-Fb-egP">
-                                <rect key="frame" x="20" y="59.5" width="16" height="4"/>
+                                <rect key="frame" x="20" y="94.5" width="16" height="4"/>
                             </imageView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No attachments" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G5E-sr-8K2">
-                                <rect key="frame" x="47" y="53.5" width="97.5" height="16"/>
+                                <rect key="frame" x="47" y="88.5" width="93" height="16"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <color key="textColor" name="ButtonGreyTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -127,22 +140,26 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Hfx-nJ-kS1" secondAttribute="trailing" constant="20" id="0dz-Fe-AZl"/>
+                            <constraint firstItem="Nej-CT-U0J" firstAttribute="top" secondItem="Ejw-5f-6hx" secondAttribute="bottom" constant="10" id="86M-Vl-XBX"/>
                             <constraint firstItem="ov1-UT-L7I" firstAttribute="leading" secondItem="Ti4-Lk-MYJ" secondAttribute="trailing" constant="6" id="ArN-aZ-xTV"/>
-                            <constraint firstItem="Nej-CT-U0J" firstAttribute="top" secondItem="e6g-RP-KgA" secondAttribute="bottom" constant="10" id="CdY-qp-Jc1"/>
                             <constraint firstItem="Hfx-nJ-kS1" firstAttribute="top" secondItem="RfP-4b-eOh" secondAttribute="top" constant="20" id="DBt-5K-PLB"/>
                             <constraint firstItem="Ti4-Lk-MYJ" firstAttribute="width" secondItem="Nej-CT-U0J" secondAttribute="width" multiplier="0.988372" id="E0d-TW-uND"/>
-                            <constraint firstItem="Ti4-Lk-MYJ" firstAttribute="top" secondItem="e6g-RP-KgA" secondAttribute="bottom" constant="10" id="FRu-O9-w9y"/>
                             <constraint firstItem="Nej-CT-U0J" firstAttribute="width" secondItem="RfP-4b-eOh" secondAttribute="width" multiplier="0.35" id="HCJ-AH-0tu"/>
-                            <constraint firstItem="ov1-UT-L7I" firstAttribute="top" secondItem="e6g-RP-KgA" secondAttribute="bottom" constant="10" id="IHz-R9-Czx"/>
                             <constraint firstItem="e6g-RP-KgA" firstAttribute="top" secondItem="RfP-4b-eOh" secondAttribute="top" constant="15" id="NtG-aT-lHF"/>
+                            <constraint firstItem="doL-RH-4A1" firstAttribute="leading" secondItem="RfP-4b-eOh" secondAttribute="leading" constant="20" id="Nxq-T8-wVX"/>
                             <constraint firstItem="mn6-Fb-egP" firstAttribute="leading" secondItem="RfP-4b-eOh" secondAttribute="leading" constant="20" id="PcJ-2T-J3K"/>
-                            <constraint firstAttribute="height" constant="95" id="R3u-xT-IbF"/>
-                            <constraint firstItem="mn6-Fb-egP" firstAttribute="top" secondItem="e6g-RP-KgA" secondAttribute="bottom" constant="24" id="XKa-4A-EFJ"/>
+                            <constraint firstItem="Ti4-Lk-MYJ" firstAttribute="top" secondItem="Ejw-5f-6hx" secondAttribute="bottom" constant="10" id="PzJ-aw-jnT"/>
+                            <constraint firstAttribute="height" constant="135" id="R3u-xT-IbF"/>
+                            <constraint firstItem="doL-RH-4A1" firstAttribute="top" secondItem="e6g-RP-KgA" secondAttribute="bottom" constant="10" id="TJR-NN-FCZ"/>
+                            <constraint firstItem="ov1-UT-L7I" firstAttribute="top" secondItem="Ejw-5f-6hx" secondAttribute="bottom" constant="10" id="UCi-b8-xjP"/>
                             <constraint firstItem="e6g-RP-KgA" firstAttribute="leading" secondItem="RfP-4b-eOh" secondAttribute="leading" constant="20" id="XLa-LS-zJk"/>
                             <constraint firstItem="G5E-sr-8K2" firstAttribute="leading" secondItem="mn6-Fb-egP" secondAttribute="trailing" constant="11" id="fTJ-dk-Pva"/>
+                            <constraint firstItem="mn6-Fb-egP" firstAttribute="top" secondItem="Ejw-5f-6hx" secondAttribute="bottom" constant="24" id="fhb-aY-g0H"/>
                             <constraint firstItem="Hfx-nJ-kS1" firstAttribute="leading" secondItem="e6g-RP-KgA" secondAttribute="trailing" constant="10" id="iKt-kk-uzf"/>
                             <constraint firstItem="G5E-sr-8K2" firstAttribute="centerY" secondItem="mn6-Fb-egP" secondAttribute="centerY" id="kYE-ZY-qs4"/>
                             <constraint firstItem="Ti4-Lk-MYJ" firstAttribute="leading" secondItem="Nej-CT-U0J" secondAttribute="trailing" constant="5" id="kfp-Ua-dYh"/>
+                            <constraint firstItem="Ejw-5f-6hx" firstAttribute="leading" secondItem="doL-RH-4A1" secondAttribute="trailing" constant="5" id="pre-Tt-70n"/>
+                            <constraint firstItem="Ejw-5f-6hx" firstAttribute="top" secondItem="e6g-RP-KgA" secondAttribute="bottom" constant="5" id="sTM-ho-2Ya"/>
                             <constraint firstItem="Nej-CT-U0J" firstAttribute="leading" secondItem="RfP-4b-eOh" secondAttribute="leading" constant="20" id="wOt-5i-AEd"/>
                         </constraints>
                     </view>
@@ -160,26 +177,30 @@
                 <outlet property="iconAttachment2" destination="s5V-VT-wNm" id="8Pm-U1-mfI"/>
                 <outlet property="iconAttatchment1" destination="XS3-zu-2cI" id="DqI-4d-aEv"/>
                 <outlet property="iconNoAttatchment" destination="mn6-Fb-egP" id="XBL-bn-svw"/>
+                <outlet property="iconStatus" destination="doL-RH-4A1" id="e9G-oF-xue"/>
                 <outlet property="lblAttachment2" destination="IUc-4R-BUu" id="89s-SW-ekd"/>
                 <outlet property="lblAttatchment1" destination="jew-dL-XSd" id="hS0-mz-mzR"/>
                 <outlet property="lblDocumentName" destination="e6g-RP-KgA" id="sLS-kY-zJS"/>
                 <outlet property="lblNoAttatchment" destination="G5E-sr-8K2" id="mhb-QA-rYT"/>
                 <outlet property="lblOtherAttatchment" destination="ucH-dT-tVR" id="bha-Ja-tdu"/>
+                <outlet property="lblStatus" destination="Ejw-5f-6hx" id="lEN-ji-qMj"/>
                 <outlet property="lblTime" destination="Hfx-nJ-kS1" id="CsX-tP-RPv"/>
                 <outlet property="mainView" destination="RfP-4b-eOh" id="Fs3-5b-kiO"/>
+                <outlet property="mainViewHeightConstraint" destination="R3u-xT-IbF" id="DbQ-nP-anL"/>
                 <outlet property="viewAttatchment1" destination="Nej-CT-U0J" id="zRV-a5-fgu"/>
                 <outlet property="viewAttatchment2" destination="Ti4-Lk-MYJ" id="get-MC-2EE"/>
                 <outlet property="viewOtherAttatchment" destination="ov1-UT-L7I" id="PBt-C3-abQ"/>
             </connections>
-            <point key="canvasLocation" x="-40.579710144927539" y="88.392857142857139"/>
+            <point key="canvasLocation" x="-42.753623188405797" y="107.14285714285714"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="jpg-icon" width="12.739999771118164" height="14"/>
+        <image name="Pending" width="6" height="6"/>
+        <image name="jpg-icon" width="13" height="14"/>
         <image name="no-attatchment" width="16" height="4"/>
-        <image name="pdf-icon" width="12.739999771118164" height="14"/>
-        <namedColor name="AppBlackColor">
-            <color red="0.30588235294117649" green="0.30588235294117649" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <image name="pdf-icon" width="13" height="14"/>
+        <namedColor name="AppGreyColor">
+            <color red="0.49411764705882355" green="0.50980392156862742" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="ButtonGreyTextColor">
             <color red="0.65490196078431373" green="0.65490196078431373" blue="0.65490196078431373" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -410,4 +410,22 @@ struct Utility {
         }
         
     }
+    
+    static func getDocumentStatusIcon(documentStatus: String) -> UIImage{
+        if (documentStatus.contains("Pending")){
+            return UIImage(named: "Blue-Dot")!
+        }
+        else if (documentStatus.contains("Started")){
+            return UIImage(named: "Yellow-Dot")!
+        }
+        else if (documentStatus.contains("Completed")){
+            return UIImage(named: "Green-Dot")!
+        }
+        else if (documentStatus.contains("Borrower")){
+            return UIImage(named: "Red-Dot")!
+        }
+        else{
+            return UIImage(named: "Red-Dot")!
+        }
+    }
 }
