@@ -422,7 +422,16 @@ struct Utility {
             return UIImage(named: "Green-Dot")!
         }
         else if (documentStatus.contains("Borrower")){
+            return UIImage(named: "Pink-Dot")!
+        }
+        else if (documentStatus.contains("In draft")){
+            return UIImage(named: "LightBlue-Dot")!
+        }
+        else if (documentStatus.contains("Deleted")){
             return UIImage(named: "Red-Dot")!
+        }
+        else if (documentStatus.contains("Manually")){
+            return UIImage(named: "Grey-Dot")!
         }
         else{
             return UIImage(named: "Red-Dot")!
