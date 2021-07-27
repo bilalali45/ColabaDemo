@@ -38,7 +38,7 @@ class DashboardViewController: BaseViewController {
     
     func setTopTabBar(){
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) {
             let tabItems = ["All Loans", "Active Loans", "Inactive Loans"]
             let carbonTabSwipeNavigation = CarbonTabSwipeNavigation(items: tabItems, delegate: self)
             

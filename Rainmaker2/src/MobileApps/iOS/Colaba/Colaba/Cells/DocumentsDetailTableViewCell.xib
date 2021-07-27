@@ -83,7 +83,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="pdf-icon" width="12.739999771118164" height="14"/>
+        <image name="pdf-icon" width="13" height="14"/>
         <namedColor name="ButtonGreyTextColor">
             <color red="0.65490196078431373" green="0.65490196078431373" blue="0.65490196078431373" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
