@@ -19,8 +19,6 @@ class ApplicationViewController: BaseViewController {
     @IBOutlet weak var addressView: UIView!
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var lblPropertyType: UILabel!
-    @IBOutlet weak var circleView: UIView!
-    @IBOutlet weak var lblPropertyPurpose: UILabel!
     @IBOutlet weak var loanInfoView: UIView!
     @IBOutlet weak var LoanInfoMainView: UIView!
     @IBOutlet weak var lblLoanPayment: UILabel!
@@ -51,7 +49,6 @@ class ApplicationViewController: BaseViewController {
         addressView.layer.borderWidth = 1
         addressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         addressView.dropShadowToCollectionViewCell()
-        circleView.layer.cornerRadius = circleView.frame.height / 2
         LoanInfoMainView.layer.cornerRadius = 6
         LoanInfoMainView.layer.borderWidth = 1
         LoanInfoMainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor

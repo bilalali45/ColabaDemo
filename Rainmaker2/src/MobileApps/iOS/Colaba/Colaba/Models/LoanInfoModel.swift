@@ -18,6 +18,8 @@ class LoanInfoModel: NSObject{
     var loanNumber: String = ""
     var loanPurpose: String = ""
     var milestone: String = ""
+    var propertyUsage: String = ""
+    var loanGoal: String = ""
     var milestoneId: Int = 0
     var postedOn: String = ""
     var propertyType: String = ""
@@ -47,6 +49,8 @@ class LoanInfoModel: NSObject{
         loanNumber = json["loanNumber"].stringValue
         loanPurpose = json["loanPurpose"].stringValue
         milestone = json["milestone"].stringValue
+        propertyUsage = json["propertyUsage"].stringValue
+        loanGoal = json["loanGoal"].stringValue
         milestoneId = json["milestoneId"].intValue
         postedOn = json["postedOn"].stringValue
         propertyType = json["propertyType"].stringValue

@@ -55,6 +55,10 @@ struct Theme {
         return UIFont(name: "Rubik-Medium", size: size)!
     }
     
+    static func getRubikBoldFont(size: CGFloat) -> UIFont{
+        return UIFont(name: "Rubik-Bold", size: size)!
+    }
+    
     static func getSearchBarBorderColor() -> UIColor{
         return UIColor(named: "SearchBarBorderColor")!
     }
