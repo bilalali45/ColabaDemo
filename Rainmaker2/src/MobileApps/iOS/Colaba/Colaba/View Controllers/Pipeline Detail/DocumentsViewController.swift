@@ -88,11 +88,8 @@ extension DocumentsViewController: UITableViewDataSource, UITableViewDelegate{
         let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTableViewCell", for: indexPath) as! DocumentsTableViewCell
         let document = documentsArray[indexPath.row]
         
-        cell.mainViewHeightConstraint.constant = document.docName.count > 25 ? 135 : 110
         cell.mainView.layer.cornerRadius = 8
         cell.mainView.dropShadow()
-        cell.updateConstraintsIfNeeded()
-        cell.layoutSubviews()
         
         let files = document.files.sorted { file1, file2 in
             return file1.fileUploadedTimeStamp > file2.fileUploadedTimeStamp
@@ -111,7 +108,6 @@ extension DocumentsViewController: UITableViewDataSource, UITableViewDelegate{
         cell.viewOtherAttatchment.isHidden = document.files.count < 3
         cell.iconNoAttatchment.isHidden = document.files.count > 0
         cell.lblNoAttatchment.isHidden = document.files.count > 0
-        //cell.lblTime.isHidden = document.files.count == 0
         
         if let file1 = document.files.first{
             cell.lblAttatchment1.text = file1.clientName == "" ? file1.mcuName : file1.clientName
@@ -149,7 +145,7 @@ extension DocumentsViewController: UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return documentsArray[indexPath.row].docName.count > 25 ? 156 : 131
+        return UITableView.automaticDimension
     }
     
 }
