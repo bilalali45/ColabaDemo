@@ -1,8 +1,10 @@
 package com.rnsoft.colabademo
 
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
+import java.io.File
 
 interface ServerApi{
 
@@ -120,14 +122,20 @@ interface ServerApi{
         @Query("loanApplicationId")  loanApplicationId:Int):BorrowerOverviewModel
 
 
-
-
     @GET("api/mcu/mobile/documentmanagement/mcudocument/getdocuments")
     suspend fun getBorrowerDocuments(
         @Header("Authorization" )  Authorization:String,
         @Query("loanApplicationId")  loanApplicationId:Int):ArrayList<BorrowerDocsModel>
 
-    //@POST("authenticate")
-    //fun loginWithCallBack(@Body loginRequest: LoginRequest): Call<LoginResponse>
+
+    @Streaming
+    @GET("api/mcu/mobile/documentmanagement/mcudocument/View")
+    suspend fun downloadFile(
+        @Header("Authorization" )  Authorization:String,
+        @Query("id")  id:String,
+        @Query("requestId")  requestId:String,
+        @Query("docId")  docId:String,
+        @Query("fileId")  fileId:String):Response<ResponseBody>
+
 
 }

@@ -26,7 +26,7 @@
 
     <string name="plus_three">+3</string>
     <string name="actions_pending">Most Actions Pending</string>
-    <string name="recent_activity">Most Recent Activity</string>
+    <string name="recent_activity">Most Recent Activity (Default)</string>
     <string name="borrower_a_to_z">Primary Borrower Last Name (A to Z)</string>
     <string name="borrower_z_to_a">Primary Borrower Last Name (Z to A)</string>
 

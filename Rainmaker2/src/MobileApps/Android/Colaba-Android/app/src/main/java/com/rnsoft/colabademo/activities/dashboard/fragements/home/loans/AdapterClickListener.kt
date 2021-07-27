@@ -1,8 +1,8 @@
 package com.rnsoft.colabademo
 
-interface LoanItemClickListener {
+interface AdapterClickListener {
     //fun onItemClick(testLayout: ConstraintLayout)
     fun getCardIndex(position: Int)
-    fun navigateCardToDetailActivity(position: Int)
+    fun navigateTo(position: Int)
 }
 

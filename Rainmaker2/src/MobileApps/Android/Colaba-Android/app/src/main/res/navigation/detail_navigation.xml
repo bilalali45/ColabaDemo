@@ -12,10 +12,10 @@
         tools:layout="@layout/detail_tab_layout" />
 
    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.rnsoft.colabademo.NotificationsFragment"
+        android:id="@+id/docs_list_inner_fragment"
+        android:name="com.rnsoft.colabademo.DocumentListFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/detail_list_layout" />
 
 
 

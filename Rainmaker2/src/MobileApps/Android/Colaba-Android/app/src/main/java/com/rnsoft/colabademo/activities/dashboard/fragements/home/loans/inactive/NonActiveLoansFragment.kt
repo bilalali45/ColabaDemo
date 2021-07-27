@@ -26,7 +26,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
-class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilterInterface {
+class NonActiveLoansFragment : BaseFragment() , AdapterClickListener , LoanFilterInterface {
     private var _binding: NonActiveFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -153,7 +153,7 @@ class NonActiveLoansFragment : BaseFragment() , LoanItemClickListener , LoanFilt
         borrowerBottomSheet.show(childFragmentManager, SheetBottomBorrowerCardFragment::class.java.canonicalName)
     }
 
-    override fun navigateCardToDetailActivity(position: Int) {
+    override fun navigateTo(position: Int) {
         startActivity(Intent(requireActivity(), DetailActivity::class.java))
         //requireActivity().finish()
     }
