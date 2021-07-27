@@ -25,7 +25,7 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/message_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -41,12 +41,13 @@
         app:elevation="135dp"
         app:fabSize="normal"
         app:layout_anchorGravity="bottom|center_horizontal"
-        app:layout_constraintStart_toEndOf="@+id/fab3"
-        app:layout_constraintTop_toTopOf="@+id/fab3"
+        app:layout_constraintStart_toEndOf="@+id/email_fab"
+        app:layout_constraintTop_toTopOf="@+id/email_fab"
         app:tint="@null" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab2"
+        android:id="@+id/phone_fab"
+        android:autoLink="phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -64,13 +65,13 @@
         app:layout_anchorGravity="bottom|center_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/fab"
-        app:layout_constraintTop_toTopOf="@+id/fab"
+        app:layout_constraintStart_toEndOf="@+id/message_fab"
+        app:layout_constraintTop_toTopOf="@+id/message_fab"
         app:srcCompat="@drawable/blue_phone_icon"
         app:tint="@null" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab3"
+        android:id="@+id/email_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -91,7 +92,7 @@
 
         app:layout_anchorGravity="bottom|center_horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/fab"
+        app:layout_constraintEnd_toStartOf="@+id/message_fab"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"

@@ -9,7 +9,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
     private val activityScope = CoroutineScope(Dispatchers.Main)

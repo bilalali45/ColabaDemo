@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.util.DisplayMetrics
@@ -22,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -107,8 +109,10 @@ class LoginFragment : Fragment() {
 
         biometricSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                if (goldfinger.canAuthenticate())
+                if (goldfinger.canAuthenticate()) {
                     Log.e("Yes", "Let Toggle On...")
+
+                }
                 else {
                     biometricSwitch.isChecked = false
                     SandbarUtils.showRegular(requireActivity(), resources.getString((R.string.biometric_check_two)) )
@@ -163,6 +167,10 @@ class LoginFragment : Fragment() {
         EventBus.getDefault().unregister(this)
     }
 
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onLoginEventReceived(event: LoginEvent) {
         toggleButtonState(true)
@@ -185,7 +193,12 @@ class LoginFragment : Fragment() {
                 emailError.visibility = View.GONE
                 passwordError.visibility = View.GONE
                 when (it.screenNumber) {
-                    1 -> navigateToDashBoard(it.success)
+                    1 -> {
+                        if(biometricSwitch.isChecked)
+                            sharedPreferences.edit().putBoolean(AppConstant.isbiometricEnabled, true).apply()
+                        navigateToDashBoard(it.success)
+
+                    }
                     2 -> navigateToPhoneScreen()
                     3 -> navigateToOtpScreen()
                     else -> {
