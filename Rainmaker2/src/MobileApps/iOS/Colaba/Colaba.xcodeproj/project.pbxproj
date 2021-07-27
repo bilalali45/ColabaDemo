@@ -13,6 +13,7 @@
 		2320138E2698324800F500E2 /* BorrowerAddressTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2320138C2698324800F500E2 /* BorrowerAddressTableViewCell.xib */; };
 		232013912698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2320138F2698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift */; };
 		232013922698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 232013902698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib */; };
+		2330CD2226AFEBDF00FF3C43 /* rubik_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2330CD2126AFEBDF00FF3C43 /* rubik_bold.ttf */; };
 		234DB4F226A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234DB4F026A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.swift */; };
 		234DB4F326A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 234DB4F126A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.xib */; };
 		235BBD6A2698649700687174 /* UtilitiesUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235BBD692698649700687174 /* UtilitiesUnitTest.swift */; };
@@ -138,6 +139,7 @@
 		2320138C2698324800F500E2 /* BorrowerAddressTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerAddressTableViewCell.xib; sourceTree = "<group>"; };
 		2320138F2698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerLoanInfoTableViewCell.swift; sourceTree = "<group>"; };
 		232013902698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerLoanInfoTableViewCell.xib; sourceTree = "<group>"; };
+		2330CD2126AFEBDF00FF3C43 /* rubik_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = rubik_bold.ttf; path = "../../../../Android/Colaba-Android/app/src/main/res/font/rubik_bold.ttf"; sourceTree = "<group>"; };
 		234DB4F026A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GovernmentQuestionsCollectionViewCell.swift; sourceTree = "<group>"; };
 		234DB4F126A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GovernmentQuestionsCollectionViewCell.xib; sourceTree = "<group>"; };
 		235BBD692698649700687174 /* UtilitiesUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilitiesUnitTest.swift; sourceTree = "<group>"; };
@@ -562,6 +564,7 @@
 				7186AD072653C77B00E740D3 /* Rubik-Medium.ttf */,
 				7186AD052653C77B00E740D3 /* Rubik-Regular.ttf */,
 				23A56C5F2686152A005CE6F4 /* Rubik-LightItalic.ttf */,
+				2330CD2126AFEBDF00FF3C43 /* rubik_bold.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -725,6 +728,7 @@
 				7186ACB92653B25B00E740D3 /* Assets.xcassets in Resources */,
 				7186AD082653C77B00E740D3 /* Rubik-Regular.ttf in Resources */,
 				2390FEE226A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.xib in Resources */,
+				2330CD2226AFEBDF00FF3C43 /* rubik_bold.ttf in Resources */,
 				23E9C752269C3F980066C978 /* DocumentsTableViewCell.xib in Resources */,
 				23B238BC2679E05200508449 /* SearchResultTableViewCell.xib in Resources */,
 				7186ACB72653B25A00E740D3 /* Main.storyboard in Resources */,

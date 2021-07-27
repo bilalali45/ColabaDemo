@@ -123,11 +123,26 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
             cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
             cell.mainView.dropShadowToCollectionViewCell()
             cell.lblLoanPurpose.text = loanInfoData.loanPurpose
+            cell.lblLoanType.text = "- \(loanInfoData.loanGoal)"
             cell.lblAddress.text = "\(loanInfoData.street) \(loanInfoData.unit)\n\(loanInfoData.city) \(loanInfoData.stateName) \(loanInfoData.zipCode) \(loanInfoData.countryName)"
-            cell.lblPropertyType.text = loanInfoData.propertyType
+            let propertyTypeText = "\(loanInfoData.propertyType)   ·   \(loanInfoData.propertyUsage)"
+            let propertyTypeAttributedText = NSMutableAttributedString(string: propertyTypeText)
+            let range1 = propertyTypeText.range(of: "·")
+            propertyTypeAttributedText.addAttribute(NSAttributedString.Key.font, value: Theme.getRubikBoldFont(size: 15), range: propertyTypeText.nsRange(from: range1!))
+            cell.lblPropertyType.attributedText = propertyTypeAttributedText
             cell.lblPropertyValue.text = loanInfoData.propertyValue.withCommas().replacingOccurrences(of: ".00", with: "")
             cell.lblLoanAmount.text = loanInfoData.loanAmount.withCommas().replacingOccurrences(of: ".00", with: "")
             cell.lblDownPayment.text = loanInfoData.downPayment.withCommas().replacingOccurrences(of: ".00", with: "")
+            
+            if (loanInfoData.downPayment > 0 && loanInfoData.propertyValue > 0){
+                var downPaymentPercentage:Double = Double(loanInfoData.downPayment) / Double(loanInfoData.propertyValue)
+                downPaymentPercentage = downPaymentPercentage * 100
+                cell.lblDownPaymentPercentage.text = String(format: "-%.0f%%", downPaymentPercentage.rounded())
+            }
+            else{
+                cell.lblDownPaymentPercentage.text = ""
+            }
+            
             return cell
         }
     }
