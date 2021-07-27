@@ -13,7 +13,7 @@
         android:id="@+id/detail_fragment_activity"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:background="@color/colaba_loan_background"
         app:defaultNavHost="true"
         app:layout_constraintHorizontal_bias="0.0"

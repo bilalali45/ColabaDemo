@@ -8,7 +8,7 @@ open class BaseFragment: Fragment() {
 
     companion object {
         var globalAssignToMe: Boolean = false
-        var globalOrderBy:Int = 1
+        var globalOrderBy:Int = 0
     }
 
     open fun setOrderId(orderBy: Int) {}
