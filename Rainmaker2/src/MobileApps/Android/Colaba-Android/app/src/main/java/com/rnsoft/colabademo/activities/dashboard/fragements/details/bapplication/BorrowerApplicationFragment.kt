@@ -14,11 +14,11 @@ import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.listeners.ClickEventHook
+import com.rnsoft.colabademo.*
 import com.rnsoft.colabademo.databinding.DetailApplicationTabBinding
 
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class BorrowerApplicationFragment : Fragment() {

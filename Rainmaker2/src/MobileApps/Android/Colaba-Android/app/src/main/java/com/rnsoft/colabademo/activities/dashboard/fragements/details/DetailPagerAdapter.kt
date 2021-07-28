@@ -18,7 +18,7 @@ class DetailPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
 
         when (position) {
             0 -> {
-                val fragment =BorrowerOverviewFragment()
+                val fragment = BorrowerOverviewFragment()
                 return fragment
             }
             1 -> {

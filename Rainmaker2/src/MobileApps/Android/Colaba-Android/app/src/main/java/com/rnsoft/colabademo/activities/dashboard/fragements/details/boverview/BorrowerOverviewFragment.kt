@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.databinding.DetailBorrowerLayoutBinding
 import com.rnsoft.colabademo.databinding.DetailBorrowerLayoutTwoBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -73,15 +72,26 @@ class BorrowerOverviewFragment : Fragment()  {
                      binding.loanId.visibility = View.GONE
 
                 binding.loanPurpose.text = overviewModel.loanPurpose
-                binding.loanPayment.text =  "$"+overviewModel.loanAmount
-                binding.downPayment.text =  "$"+overviewModel.downPayment
                 binding.borrowerPropertyType.text = overviewModel.propertyType
-                binding.propertyValue.text = "$"+overviewModel.propertyValue
                 binding.loanGoalTextView.text = "- "+overviewModel.loanGoal
                 binding.propertyUsageTextView.text = overviewModel.propertyUsage
                 binding.borrowerAppStatus.text = overviewModel.milestone
 
-                //overviewModel.downPayment?.let { AppSetting.returnAmountFormattedString(it) }
+                overviewModel.downPayment?.let {
+                    val stringValue = AppSetting.returnAmountFormattedString(it)
+                    binding.downPayment.text =  "$"+stringValue
+                }
+
+                overviewModel.loanAmount?.let {
+                    val stringValue = AppSetting.returnAmountFormattedString(it)
+                    binding.loanPayment.text = "$"+stringValue
+                }
+
+                overviewModel.propertyValue?.let {
+                    val stringValue = AppSetting.returnAmountFormattedString(it)
+                    binding.propertyValue.text = "$"+stringValue
+                }
+
 
                 var percentage = 0
                 overviewModel.downPayment?.let{ downPayment ->

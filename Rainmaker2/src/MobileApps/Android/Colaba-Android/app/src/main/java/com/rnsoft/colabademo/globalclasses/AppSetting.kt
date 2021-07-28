@@ -70,12 +70,11 @@ object AppSetting {
 
     }
 
-    fun returnAmountFormattedString(amount:Double){
-
-        val df2 = DecimalFormat("###,###,###,###")
-        val dd = 200100.2397
-        val dd2dec: Double = df2.format(dd).toDouble()
-        Log.e("new-deci-format", dd2dec.toString())
+    fun returnAmountFormattedString(amount:Double):String{
+        val df2 = DecimalFormat()
+        df2.maximumFractionDigits = 0
+        Log.e("new-deci-format",    df2.format(amount).toString())
+        return df2.format(amount).toString()
     }
 
     fun returnNotificationTime(input:String):String{

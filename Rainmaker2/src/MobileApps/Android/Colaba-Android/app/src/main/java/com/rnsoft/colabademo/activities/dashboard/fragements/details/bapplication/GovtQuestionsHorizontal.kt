@@ -1,13 +1,11 @@
 package com.rnsoft.colabademo
 
-import android.content.Context
-import android.graphics.Point
 import android.view.View
-import android.view.WindowManager
 import android.widget.TextView
 
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
+import com.rnsoft.colabademo.R
 
 open class GovtQuestionsHorizontal : AbstractItem<GovtQuestionsHorizontal.ViewHolder>() {
     var questionTitle: String? = null

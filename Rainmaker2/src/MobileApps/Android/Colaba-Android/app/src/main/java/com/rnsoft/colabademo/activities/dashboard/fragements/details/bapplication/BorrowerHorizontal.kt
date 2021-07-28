@@ -8,6 +8,7 @@ import android.widget.TextView
 
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
+import com.rnsoft.colabademo.R
 
 open class BorrowerHorizontal : AbstractItem<BorrowerHorizontal.ViewHolder>() {
     var name: String? = null
