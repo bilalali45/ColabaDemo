@@ -58,8 +58,8 @@
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Single Family Property" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="62D-du-0iy">
-                                <rect key="frame" x="38" y="121.5" width="328" height="15.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Single Family Property" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.84999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="62D-du-0iy">
+                                <rect key="frame" x="38" y="121.5" width="351" height="15.5"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <color key="textColor" name="AppGreyColor"/>
                                 <nil key="highlightedColor"/>
@@ -183,7 +183,7 @@
                             <constraint firstAttribute="trailing" secondItem="vb1-G7-dbd" secondAttribute="trailing" constant="20" id="3G6-oT-Fxt"/>
                             <constraint firstItem="Pli-qR-ogW" firstAttribute="top" secondItem="KJj-bc-TSD" secondAttribute="top" constant="30" id="6Q3-mh-doN"/>
                             <constraint firstItem="6su-3o-l3X" firstAttribute="top" secondItem="Pli-qR-ogW" secondAttribute="bottom" constant="25" id="8LG-GO-ASp"/>
-                            <constraint firstAttribute="trailing" secondItem="62D-du-0iy" secondAttribute="trailing" constant="38" id="9Ns-mi-JkU"/>
+                            <constraint firstAttribute="trailing" secondItem="62D-du-0iy" secondAttribute="trailing" constant="15" id="9Ns-mi-JkU"/>
                             <constraint firstItem="62D-du-0iy" firstAttribute="leading" secondItem="KJj-bc-TSD" secondAttribute="leading" constant="38" id="9Qo-In-p3I"/>
                             <constraint firstAttribute="height" constant="253" id="MuT-QG-nLU"/>
                             <constraint firstItem="QhD-Jj-x3Y" firstAttribute="centerY" secondItem="Pli-qR-ogW" secondAttribute="centerY" id="Nhf-c6-6Wy"/>
