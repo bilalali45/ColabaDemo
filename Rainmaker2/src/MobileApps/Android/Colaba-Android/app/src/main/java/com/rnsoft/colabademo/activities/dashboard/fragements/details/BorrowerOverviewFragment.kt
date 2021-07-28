@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.DetailBorrowerLayoutBinding
 import com.rnsoft.colabademo.databinding.DetailBorrowerLayoutTwoBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,6 +36,11 @@ class BorrowerOverviewFragment : Fragment()  {
 
         detailViewModel.borrowerOverviewModel.observe(viewLifecycleOwner, {  overviewModel->
             if(overviewModel!=null) {
+
+                binding.constraintLayout4.setOnClickListener {
+                    findNavController().navigate(R.id.borrower_app_status_fragment)
+                }
+
                 binding.mainBorrowerName.text = ""
                 val coBorrowers = overviewModel.coBorrowers
                 var mainBorrowerName = ""
