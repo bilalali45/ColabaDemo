@@ -1,8 +1,6 @@
 package com.rnsoft.colabademo
 
 import android.content.Context
-import android.text.format.DateFormat
-import android.text.format.DateUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +8,7 @@ import android.widget.TextView
 import androidx.annotation.IdRes
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.text.MessageFormat
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
@@ -70,6 +68,14 @@ object AppSetting {
 
         return lastSeen
 
+    }
+
+    fun returnAmountFormattedString(amount:Double){
+
+        val df2 = DecimalFormat("###,###,###,###")
+        val dd = 200100.2397
+        val dd2dec: Double = df2.format(dd).toDouble()
+        Log.e("new-deci-format", dd2dec.toString())
     }
 
     fun returnNotificationTime(input:String):String{

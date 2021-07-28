@@ -200,13 +200,13 @@
                     android:id="@+id/imageView25"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView40"
+                    app:layout_constraintBottom_toBottomOf="@+id/propertyUsageTextView"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView40"
+                    app:layout_constraintTop_toTopOf="@+id/propertyUsageTextView"
                     app:srcCompat="@drawable/docs_not_icon" />
 
                 <TextView
-                    android:id="@+id/textView40"
+                    android:id="@+id/propertyUsageTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="11dp"

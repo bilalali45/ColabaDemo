@@ -24,7 +24,7 @@
             android:layout_marginStart="18dp"
             android:layout_marginTop="34dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="Richard Glenn Randall"
+            android:text=""
             android:textColor="@color/grey_color_one"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -38,6 +38,8 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/rubik_light"
             android:text=" "
+            android:maxLines="1"
+            android:singleLine="true"
             android:visibility="gone"
             android:textColor="@color/grey_color_two"
             android:textSize="13sp"
@@ -125,12 +127,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView30"
+            android:id="@+id/borrower_app_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="Application Started"
+            android:text=""
             android:textColor="@color/grey_color_one"
             android:textSize="17sp"
             android:textStyle="bold"
@@ -178,7 +180,7 @@
             android:id="@+id/textView18"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
+            android:layout_marginTop="25dp"
             android:fontFamily="@font/rubik_regular"
             android:src="@drawable/ic_location_svg"
             android:text="Address"
@@ -204,7 +206,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView18" />
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/borrowerPropertyType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -221,13 +223,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="@+id/textView20"
-            app:layout_constraintStart_toEndOf="@+id/textView20"
-            app:layout_constraintTop_toTopOf="@+id/textView20"
+            app:layout_constraintBottom_toBottomOf="@+id/borrowerPropertyType"
+            app:layout_constraintStart_toEndOf="@+id/borrowerPropertyType"
+            app:layout_constraintTop_toTopOf="@+id/borrowerPropertyType"
             app:srcCompat="@drawable/circle_grey" />
 
         <TextView
-            android:id="@+id/textView40"
+            android:id="@+id/propertyUsageTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -236,7 +238,7 @@
             android:textColor="@color/grey_color_two"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/circle_icon"
-            app:layout_constraintTop_toTopOf="@+id/textView20" />
+            app:layout_constraintTop_toTopOf="@+id/borrowerPropertyType" />
 
 
         <View
@@ -247,7 +249,7 @@
             android:background="@color/loan_view_holder_separator"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView20" />
+            app:layout_constraintTop_toBottomOf="@+id/borrowerPropertyType" />
 
         <TextView
             android:id="@+id/textView22"
@@ -259,7 +261,7 @@
             android:textColor="@color/grey_color_two"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView20"
+            app:layout_constraintStart_toStartOf="@+id/borrowerPropertyType"
             app:layout_constraintTop_toBottomOf="@+id/propertyValue" />
 
 
@@ -269,7 +271,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:fontFamily="@font/rubik_regular"
-            android:text="$2,800,000"
+            android:text=""
             android:textColor="@color/grey_color_one"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -303,7 +305,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="$1,900,000"
+            android:text=""
             android:textColor="@color/grey_color_one"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -317,7 +319,7 @@
             android:layout_marginStart="3dp"
             android:layout_marginBottom="7dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="$200,000"
+            android:text=""
             android:textColor="@color/grey_color_one"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -325,7 +327,7 @@
             app:layout_constraintStart_toEndOf="@+id/imageView38" />
 
         <TextView
-            android:id="@+id/textView45"
+            android:id="@+id/loanGoalTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -350,8 +352,8 @@
             android:id="@+id/imageView37"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            app:layout_constraintStart_toEndOf="@+id/propertyValue"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toEndOf="@+id/textView22"
             app:layout_constraintTop_toTopOf="@+id/loanPayment"
             app:srcCompat="@drawable/ic_dollar_bag_svg" />
 
@@ -360,18 +362,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@+id/loanPayment"
+            app:layout_constraintStart_toEndOf="@+id/textView24"
             app:layout_constraintTop_toTopOf="@+id/imageView37"
             app:srcCompat="@drawable/ic_dollar_arc_svg" />
 
         <TextView
-            android:id="@+id/textView46"
+            android:id="@+id/percentageTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="2dp"
             android:fontFamily="@font/rubik_regular"
-            android:textColor="@color/grey_color_one"
             android:text="-20%"
+            android:textColor="@color/grey_color_one"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="@+id/downPayment"
             app:layout_constraintStart_toEndOf="@+id/downPayment"

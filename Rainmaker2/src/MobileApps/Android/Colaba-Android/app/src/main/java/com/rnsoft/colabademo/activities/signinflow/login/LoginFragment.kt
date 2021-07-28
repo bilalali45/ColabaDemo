@@ -55,6 +55,7 @@ class LoginFragment : Fragment() {
     ): View {
         root = inflater.inflate(R.layout.login_layout, container, false)
         setupFragment()
+        //AppSetting.returnAmountFormattedString(0.0)
         //registerBroadcastReceiver()
         return root
     }

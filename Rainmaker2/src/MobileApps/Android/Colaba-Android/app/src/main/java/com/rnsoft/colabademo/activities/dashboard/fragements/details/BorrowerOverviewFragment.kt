@@ -37,8 +37,8 @@ class BorrowerOverviewFragment : Fragment()  {
             if(overviewModel!=null) {
                 binding.mainBorrowerName.text = ""
                 val coBorrowers = overviewModel.coBorrowers
-
                 var mainBorrowerName = ""
+
                 if (coBorrowers != null) {
                     val coBorrowerNames:ArrayList<String> = ArrayList()
                     if(coBorrowers.size == 0)
@@ -64,14 +64,32 @@ class BorrowerOverviewFragment : Fragment()  {
                  }
                 else
                      binding.loanId.visibility = View.GONE
+                     binding.loanId.visibility = View.GONE
 
                 binding.loanPurpose.text = overviewModel.loanPurpose
-                binding.loanPayment.text ="$"+overviewModel.loanAmount
-                binding.downPayment.text ="$"+overviewModel.downPayment
-                overviewModel.webBorrowerAddress?.let {
-                    // 4101  Oak Tree Avenue  LN # 222,\nChicago, MD 60605
-                    binding.completeAddress.text = it.street+" "+it.city+",\n"+it.stateName+", "+it.countryName+" "+it.zipCode
+                binding.loanPayment.text =  "$"+overviewModel.loanAmount
+                binding.downPayment.text =  "$"+overviewModel.downPayment
+                binding.borrowerPropertyType.text = overviewModel.propertyType
+                binding.propertyValue.text = "$"+overviewModel.propertyValue
+                binding.loanGoalTextView.text = "- "+overviewModel.loanGoal
+                binding.propertyUsageTextView.text = overviewModel.propertyUsage
+                binding.borrowerAppStatus.text = overviewModel.milestone
 
+                //overviewModel.downPayment?.let { AppSetting.returnAmountFormattedString(it) }
+
+                var percentage = 0
+                overviewModel.downPayment?.let{ downPayment ->
+                    overviewModel.propertyValue?.let { propertyValue ->
+                        if(propertyValue!=0.0 && downPayment!=0.0)
+                            percentage  = ((downPayment / propertyValue) * 100).toInt()
+                    }
+                }
+
+                if(percentage!=0)
+                    binding.percentageTextView.text = "- "+percentage.toString()+"%"
+
+                overviewModel.webBorrowerAddress?.let {
+                    binding.completeAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
                 }
 
                 if(overviewModel.postedOn!=null && !overviewModel.postedOn.equals("null", true)) {
