@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -68,6 +69,10 @@ class DocumentListFragment : Fragment(), AdapterClickListener {
                 this.adapter = documentListAdapter
                 documentListAdapter.notifyDataSetChanged()
             }
+        }
+
+        binding.backButton.setOnClickListener{
+           findNavController().popBackStack()
         }
         return view
     }

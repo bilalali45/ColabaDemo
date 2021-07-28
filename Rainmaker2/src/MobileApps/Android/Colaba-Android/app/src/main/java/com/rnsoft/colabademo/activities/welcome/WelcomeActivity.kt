@@ -60,7 +60,7 @@ class WelcomeActivity : AppCompatActivity() {
 
         fingerPrintImageView.setOnClickListener{
             if (goldfinger.canAuthenticate()) {
-                goldfinger.authenticate(params,fingerPrintCallBack)
+                goldfinger.authenticate(params , fingerPrintCallBack)
             }
            else
                 SandbarUtils.showRegular(this@WelcomeActivity, "Finger Print not available....")
@@ -84,7 +84,8 @@ class WelcomeActivity : AppCompatActivity() {
 
         override fun onResult(result: Goldfinger.Result) {
            /* Result received */
-            if (result.type() == Goldfinger.Type.SUCCESS || result.type() == Goldfinger.Type.ERROR) {
+            //  || result.type() == Goldfinger.Type.ERROR) {
+            if (result.type() == Goldfinger.Type.SUCCESS){
                 val formattedResult =
                     String.format("%s - %s", result.type().toString(), result.reason().toString())
 

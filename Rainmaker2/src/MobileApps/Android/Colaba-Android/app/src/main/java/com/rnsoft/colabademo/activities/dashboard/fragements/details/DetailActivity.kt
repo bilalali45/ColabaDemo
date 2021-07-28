@@ -2,17 +2,12 @@ package com.rnsoft.colabademo
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.databinding.DetailTopLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
-import java.util.*
 import javax.inject.Inject
 
 
@@ -39,6 +34,29 @@ class DetailActivity : AppCompatActivity() {
             borrowerLastName = it.getString(AppConstant.lastName)
             borrowerLoanPurpose = it.getString(AppConstant.loanPurpose)
             Log.e("Names- ", "$borrowerFirstName $borrowerLastName")
+        }
+
+        binding.emailFab.setOnClickListener{
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "plain/text"
+            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("info@colaba.com"))
+            intent.putExtra(Intent.EXTRA_SUBJECT, "subject")
+            intent.putExtra(Intent.EXTRA_TEXT, "mail body")
+            startActivity(Intent.createChooser(intent, ""))
+        }
+
+        binding.messageFab.setOnClickListener{
+            val smsIntent = Intent(Intent.ACTION_VIEW)
+            smsIntent.type = "vnd.android-dir/mms-sms"
+            smsIntent.putExtra("address", "450-450-8548")
+            smsIntent.putExtra("sms_body", "Colaba info message")
+            startActivity(smsIntent)
+        }
+
+        binding.phoneFab.setOnClickListener{
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:4504508548")
+            startActivity(intent)
         }
     }
 }

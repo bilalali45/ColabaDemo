@@ -15,7 +15,9 @@ data class BorrowerOverviewModel(
     val milestoneId: Int?,
     val postedOn: String? = "",
     val propertyType: String? = "",
-    val propertyValue: Double?
+    val propertyValue: Double?,
+    val propertyUsage: String? = "",
+    val loanGoal: String? = ""
 )
 
 data class CoBorrower(

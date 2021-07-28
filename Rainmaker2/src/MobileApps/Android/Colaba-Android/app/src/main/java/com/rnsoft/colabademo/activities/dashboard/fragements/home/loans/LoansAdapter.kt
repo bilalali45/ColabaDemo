@@ -69,7 +69,16 @@ internal constructor(
         holder.mileStone.text = borrower.milestone
 
         holder.loanPurpose.text = borrower.loanPurpose
-       
+
+        if(borrower.loanPurpose.equals("Purchase", true)) {
+            holder.refinanceIcon.visibility = View.INVISIBLE
+            holder.purchaseIcon.visibility = View.VISIBLE
+        }
+        else {
+            holder.refinanceIcon.visibility = View.VISIBLE
+            holder.purchaseIcon.visibility = View.INVISIBLE
+        }
+
         if(borrower.coBorrowerCount!=null && borrower.coBorrowerCount!! >0)
             holder.coBorrowerCount.text = "+"+borrower.coBorrowerCount
         else
@@ -147,6 +156,9 @@ internal constructor(
         var cardTime: TextView = itemView.findViewById(R.id.cardTimeTextView)
         var docsToReview: TextView = itemView.findViewById(R.id.docsToReviewTextView)
         var coBorrowerCount: TextView = itemView.findViewById(R.id.coBorrowerCountTextView)
+
+        var refinanceIcon:ImageView = itemView.findViewById(R.id.imageView3)
+        var purchaseIcon:ImageView = itemView.findViewById(R.id.imageView43)
 
         var loanAmount: TextView = itemView.findViewById(R.id.loanAmountTextView)
         var propertyValue: TextView = itemView.findViewById(R.id.propertyValueTextView)

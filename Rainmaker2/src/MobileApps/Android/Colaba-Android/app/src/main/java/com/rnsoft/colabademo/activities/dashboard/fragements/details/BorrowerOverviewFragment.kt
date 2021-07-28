@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.DetailBorrowerLayoutBinding
+import com.rnsoft.colabademo.databinding.DetailBorrowerLayoutTwoBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -16,7 +18,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class BorrowerOverviewFragment : Fragment()  {
 
-    private var _binding: DetailBorrowerLayoutBinding? = null
+    private var _binding: DetailBorrowerLayoutTwoBinding? = null
     private val binding get() = _binding!!
 
     private val detailViewModel: DetailViewModel by activityViewModels()
@@ -29,38 +31,71 @@ class BorrowerOverviewFragment : Fragment()  {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = DetailBorrowerLayoutBinding.inflate(inflater, container, false)
+        _binding = DetailBorrowerLayoutTwoBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         detailViewModel.borrowerOverviewModel.observe(viewLifecycleOwner, {  overviewModel->
             if(overviewModel!=null) {
+
+                binding.constraintLayout4.setOnClickListener {
+                    findNavController().navigate(R.id.borrower_app_status_fragment)
+                }
+
                 binding.mainBorrowerName.text = ""
                 val coBorrowers = overviewModel.coBorrowers
-
                 var mainBorrowerName = ""
+
                 if (coBorrowers != null) {
                     val coBorrowerNames:ArrayList<String> = ArrayList()
-                    for (coBorrower in coBorrowers){
-                        val coBorrowerName = coBorrower.firstName+" "+coBorrower.lastName
-                        if(coBorrower.ownTypeId!=1)
-                            coBorrowerNames.add(coBorrowerName)
-                        else
-                            mainBorrowerName = coBorrowerName
+                    if(coBorrowers.size == 0)
+                        binding.coBorrowerNames.visibility = View.GONE
+                    else{
+                        for (coBorrower in coBorrowers){
+                            val coBorrowerName = coBorrower.firstName+" "+coBorrower.lastName
+                            if(coBorrower.ownTypeId!=1)
+                                coBorrowerNames.add(coBorrowerName)
+                            else
+                                mainBorrowerName = coBorrowerName
+                        }
+                        binding.coBorrowerNames.visibility = View.VISIBLE
+                        binding.coBorrowerNames.text = coBorrowerNames.joinToString(separator = ",")
                     }
-                    binding.coBorrowerNames.text = coBorrowerNames.joinToString(separator = ",")
                 }
 
                 binding.mainBorrowerName.text = mainBorrowerName
-                 if(overviewModel.loanNumber!=null && !overviewModel.loanNumber.equals("null", true))
-                    binding.loanId.text ="Loan#"+overviewModel.loanNumber
+
+                 if(overviewModel.loanNumber!=null && !overviewModel.loanNumber.equals("null", true)  && overviewModel.loanNumber.isNotEmpty()) {
+                     binding.loanId.visibility = View.VISIBLE
+                     binding.loanId.text = "Loan#" + overviewModel.loanNumber
+                 }
+                else
+                     binding.loanId.visibility = View.GONE
+                     binding.loanId.visibility = View.GONE
 
                 binding.loanPurpose.text = overviewModel.loanPurpose
-                binding.loanPayment.text ="$"+overviewModel.loanAmount
-                binding.downPayment.text ="$"+overviewModel.downPayment
-                overviewModel.webBorrowerAddress?.let {
-                    // 4101  Oak Tree Avenue  LN # 222,\nChicago, MD 60605
-                    binding.completeAddress.text = it.street+" "+it.city+",\n"+it.stateName+", "+it.countryName+" "+it.zipCode
+                binding.loanPayment.text =  "$"+overviewModel.loanAmount
+                binding.downPayment.text =  "$"+overviewModel.downPayment
+                binding.borrowerPropertyType.text = overviewModel.propertyType
+                binding.propertyValue.text = "$"+overviewModel.propertyValue
+                binding.loanGoalTextView.text = "- "+overviewModel.loanGoal
+                binding.propertyUsageTextView.text = overviewModel.propertyUsage
+                binding.borrowerAppStatus.text = overviewModel.milestone
 
+                //overviewModel.downPayment?.let { AppSetting.returnAmountFormattedString(it) }
+
+                var percentage = 0
+                overviewModel.downPayment?.let{ downPayment ->
+                    overviewModel.propertyValue?.let { propertyValue ->
+                        if(propertyValue!=0.0 && downPayment!=0.0)
+                            percentage  = ((downPayment / propertyValue) * 100).toInt()
+                    }
+                }
+
+                if(percentage!=0)
+                    binding.percentageTextView.text = "- "+percentage.toString()+"%"
+
+                overviewModel.webBorrowerAddress?.let {
+                    binding.completeAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
                 }
 
                 if(overviewModel.postedOn!=null && !overviewModel.postedOn.equals("null", true)) {

@@ -42,7 +42,7 @@ class DashBoardActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        binding.fab.bringToFront()
+
 
         val navView: BottomNavigationView = binding.navView
 

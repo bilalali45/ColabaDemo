@@ -105,18 +105,23 @@ internal constructor(
 
             if(fileTwo!=null) {
                 if (fileTwo.clientName.isNotEmpty() && fileTwo.clientName.isNotBlank()) {
+                    holder.docTwoLayout.visibility = View.VISIBLE
                     holder.docTwoName.text = fileTwo.clientName
                     holder.docTwoImage.visibility = View.VISIBLE
                 } else if (fileTwo.mcuName.isNotEmpty() && fileTwo.mcuName.isNotBlank()) {
+                    holder.docTwoLayout.visibility = View.VISIBLE
                     holder.docTwoName.text = fileTwo.mcuName
                     holder.docTwoImage.visibility = View.VISIBLE
-                } else
+                } else {
                     holder.docTwoLayout.visibility = View.INVISIBLE
+                }
             }
 
 
-            if(doc.subFiles.size>2)
-                holder.docThreeName.text = "+"+(doc.subFiles.size.minus(2)).toString()
+            if(doc.subFiles.size>2) {
+                holder.docThreeLayout.visibility = View.VISIBLE
+                holder.docThreeName.text = "+" + (doc.subFiles.size.minus(2)).toString()
+            }
             else
                 holder.docThreeLayout.visibility = View.INVISIBLE
 

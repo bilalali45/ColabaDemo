@@ -77,6 +77,15 @@
             app:srcCompat="@drawable/tick_msg" />
 
         <ImageView
+            android:id="@+id/imageView43"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="@+id/customer_name_textfield"
+            app:layout_constraintTop_toBottomOf="@+id/customer_name_textfield"
+            app:srcCompat="@drawable/dashboard_purchase_icon" />
+
+        <ImageView
             android:id="@+id/open_inside_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

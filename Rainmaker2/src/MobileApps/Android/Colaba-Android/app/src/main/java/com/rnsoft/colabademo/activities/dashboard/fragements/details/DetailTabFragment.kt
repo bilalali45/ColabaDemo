@@ -126,9 +126,9 @@ class DetailTabFragment : Fragment() {
     private fun fillHeaderValues(){
         val getParentActivity =  activity as DetailActivity
         val borrowerCompleteName = getParentActivity.borrowerFirstName + " "+getParentActivity.borrowerLastName
-        var greetingString = AppSetting.returnGreetingString()
-        greetingString = "$greetingString, $borrowerCompleteName"
-        binding.borrowerNameGreeting.text = greetingString
+        //var greetingString = AppSetting.returnGreetingString()
+        //greetingString = "$greetingString, $borrowerCompleteName"
+        binding.borrowerNameGreeting.text = borrowerCompleteName
         binding.borrowerPurpose.text = getParentActivity.borrowerLoanPurpose
 
 
