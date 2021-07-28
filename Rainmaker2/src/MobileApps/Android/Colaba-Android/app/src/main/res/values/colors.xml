@@ -41,8 +41,11 @@
 
     <color name="loan_view_holder_separator">#80E5E5E5</color>
 
+    <color name="plus_circle_inside_color">#FF4484F4</color>
 
+    <color name="plus_circle_inside_color_with_thirty_alpha">#4D4484F4</color>
 
+    <color name="plus_circle_inside_color_with_ten_alpha">#1A4484F4</color>
 
 
     <color name="colaba_holder_background">#0D7E829E</color>

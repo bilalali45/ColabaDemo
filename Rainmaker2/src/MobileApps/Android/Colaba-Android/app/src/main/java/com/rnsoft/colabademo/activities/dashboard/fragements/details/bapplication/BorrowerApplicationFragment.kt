@@ -12,13 +12,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.GenericItem
+import com.mikepenz.fastadapter.adapters.GenericItemAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.listeners.ClickEventHook
-import com.rnsoft.colabademo.*
 import com.rnsoft.colabademo.databinding.DetailApplicationTabBinding
-
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
+
 
 @AndroidEntryPoint
 class BorrowerApplicationFragment : Fragment() {
@@ -79,20 +82,42 @@ class BorrowerApplicationFragment : Fragment() {
         }
         Log.e("simpleItemsList", simpleItemsList.size.toString())
 
+        val simpleFooterList: ArrayList<BorrowerHorizontal> = ArrayList()
+        simpleFooterList.add(BorrowerHorizontal())
+
+
+
         //create the ItemAdapter holding your Items
-        val itemAdapter = ItemAdapter<BorrowerHorizontal>()
+        val itemAdapter  = ItemAdapter<BorrowerHorizontal>()
+
+        //create last item holder your Items
+        val headerAdapter = ItemAdapter<BorrowerHorizontal>()
+
+
+       // val headerAdapter: HeaderViewListAdapter<FooterHorizontal> = HeaderViewListAdapter()
+
+        //val itemAdapterGeneric = GenericItemAdapter()
+        //val genericItemAdapter = GenericItemAdapter()
+
+        //val footerAdapter = ItemAdapter<FooterHorizontal>()
 
         //create the managing FastAdapter, by passing in the itemAdapter
-        val fastAdapter = FastAdapter.with(itemAdapter)
+        val fastAdapter :FastAdapter<GenericItem>  = FastAdapter.with(listOf(headerAdapter , itemAdapter ))
+
+        //val fastAdapterTwo = FastAdapter.with<GenericItem, ItemAdapter<*>>(listOf(itemAdapter, headerAdapter))
 
         //set our adapters to the RecyclerView
         //horizontalRecyclerView.setAdapter(fastAdapter)
         //horizontalRecyclerView.itemAnimator = DefaultItemAnimator()
-        horizontalRecyclerView.adapter = fastAdapter
+        horizontalRecyclerView.adapter =    fastAdapter
+
+
 
 
 
         itemAdapter.add(simpleItemsList)
+
+        headerAdapter.add(simpleItemsList)
 
         //set the items to your ItemAdapter
         //horizontalRecyclerView.itemAnimator = DefaultItemAnimator()
@@ -105,10 +130,11 @@ class BorrowerApplicationFragment : Fragment() {
             LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         fastAdapter.notifyAdapterDataSetChanged()
 
-        fastAdapter.addEventHook(object : ClickEventHook<BorrowerHorizontal>() {
+        /*
+        fastAdapter.addEventHook(object : ClickEventHook<GenericItem>() {
             override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
                 //return the views on which you want to bind this event
-                return if (viewHolder is BorrowerHorizontal.ViewHolder) {
+                return if (viewHolder is GenericItem) {
                     Log.e("viewHolder", viewHolder.toString())
                     viewHolder.itemView
 
@@ -120,14 +146,18 @@ class BorrowerApplicationFragment : Fragment() {
             override fun onClick(
                 v: View,
                 position: Int,
-                fastAdapter: FastAdapter<BorrowerHorizontal>,
-                item: BorrowerHorizontal
+                fastAdapter: FastAdapter<GenericItem>,
+                item: GenericItem
             ) {
                 //react on the click event
                 //productActivityViewModel.loadItem(itemList[position])
                 // findNavController().navigate(R.id.detail_fragment, null)
             }
         })
+
+         */
+
+
     }
 
 
@@ -233,3 +263,5 @@ class BorrowerApplicationFragment : Fragment() {
     }
 
 }
+
+
