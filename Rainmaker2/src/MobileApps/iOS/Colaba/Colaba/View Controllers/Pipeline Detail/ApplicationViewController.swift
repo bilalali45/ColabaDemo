@@ -114,7 +114,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
             cell.addMoreView.layer.cornerRadius = 6
             cell.addMoreView.layer.borderWidth = 1
             cell.addMoreView.layer.borderColor = Theme.getAppGreyColor().withAlphaComponent(0.3).cgColor
-            cell.addMoreView.dropShadowToCollectionViewCell()
+            cell.addMoreView.backgroundColor = .clear
             cell.lblBorrowerName.text = indexPath.row == 1 ? "Maria Randall" : "Richard Glenn Randall"
             cell.lblBorrowerType.text = indexPath.row == 1 ? "Co-Borrower" : "Primary Borrower"
             cell.mainView.isHidden = indexPath.row == 2
@@ -130,7 +130,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
             cell.addMoreView.layer.cornerRadius = 6
             cell.addMoreView.layer.borderWidth = 1
             cell.addMoreView.layer.borderColor = Theme.getAppGreyColor().withAlphaComponent(0.3).cgColor
-            cell.addMoreView.dropShadowToCollectionViewCell()
+            cell.addMoreView.backgroundColor = .clear
             cell.lblAddress.text = indexPath.row == 1 ? "727 Ashleigh Lane,\nSouth Lake TX, 76092" : "5919 Trussville Crossings\nParkways,"
             cell.lblPropertyType.text = indexPath.row == 1 ? "Single Family Property" : "Land"
             cell.mainView.isHidden = indexPath.row == 2
@@ -154,32 +154,3 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
     }
     
 }
-
-//extension ApplicationViewController: UITableViewDataSource, UITableViewDelegate{
-//
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return 6
-//    }
-//
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return 0
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        return UITableViewCell()
-//    }
-//
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return 100
-//    }
-//
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let nib = Bundle.main.loadNibNamed("ApplicationTabHeaderView", owner: self, options: nil)
-//        let contentView = nib?.first as! ApplicationTabHeaderView
-//        contentView.frame = tableView.bounds
-//        contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//        contentView.lblTitle.text = "Hello World"
-//        return contentView
-//    }
-//
-//}
