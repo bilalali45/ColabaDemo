@@ -16,7 +16,6 @@ import com.rnsoft.colabademo.databinding.DetailTabLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-
 val detailTabArray = arrayOf(
     "Overview",
     "Application",
