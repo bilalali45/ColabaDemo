@@ -69,7 +69,7 @@ class DashboardViewController: BaseViewController {
             var segmentWidth: CGFloat = 0.0
             
             if (UIDevice.current.screenType == .iPhones_4_4S || UIDevice.current.screenType == .iPhones_5_5s_5c_SE || UIDevice.current.screenType == .iPhones_6_6s_7_8){
-                segmentWidth = (self.tabView.frame.width / 3) - 15
+                segmentWidth = (self.tabView.frame.width / 3)
             }
             else{
                 segmentWidth = (self.tabView.frame.width / 3)
