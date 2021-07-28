@@ -410,7 +410,7 @@
                                                                 </constraints>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$800,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ib0-xe-drH">
-                                                                <rect key="frame" x="39" y="41" width="122" height="23"/>
+                                                                <rect key="frame" x="39" y="41" width="122.5" height="23"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="19"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -422,10 +422,10 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Down-Payment" translatesAutoresizingMaskIntoConstraints="NO" id="chN-3Q-SgO">
-                                                                <rect key="frame" x="166" y="41" width="19.5" height="22.5"/>
+                                                                <rect key="frame" x="166.5" y="41" width="19" height="22.5"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$200,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9bG-3h-b1t">
-                                                                <rect key="frame" x="195.5" y="41" width="87.5" height="23"/>
+                                                                <rect key="frame" x="195.5" y="41" width="88" height="23"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="19"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -437,7 +437,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-20%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B8j-xh-5wc">
-                                                                <rect key="frame" x="287" y="46.5" width="24.5" height="12"/>
+                                                                <rect key="frame" x="287.5" y="46.5" width="24" height="12"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="10"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -539,7 +539,7 @@
                                                                 </constraints>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$12,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2nO-IH-XQq">
-                                                                <rect key="frame" x="40" y="16" width="71.5" height="23"/>
+                                                                <rect key="frame" x="40" y="16" width="71" height="23"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="19"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -757,19 +757,19 @@
                                 <rect key="frame" x="0.0" y="15" width="375" height="30"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lDp-Gf-fXc">
-                                        <rect key="frame" x="0.0" y="0.0" width="840" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="750" height="30"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T3L-yd-r5s">
                                                 <rect key="frame" x="20" y="0.0" width="50" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IAF-JH-9gO">
-                                                        <rect key="frame" x="17.5" y="7.5" width="15" height="15.5"/>
+                                                        <rect key="frame" x="17.5" y="7.5" width="15" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="7Bh-Vc-j0y"/>
                                                     <constraint firstItem="IAF-JH-9gO" firstAttribute="centerX" secondItem="T3L-yd-r5s" secondAttribute="centerX" id="Nao-GT-xCO"/>
@@ -787,13 +787,13 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In Draft" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sbY-RU-Q55">
-                                                        <rect key="frame" x="26" y="7.5" width="45.5" height="15.5"/>
+                                                        <rect key="frame" x="26" y="7.5" width="45.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstItem="oQb-0w-yJx" firstAttribute="centerY" secondItem="6R8-T4-o1K" secondAttribute="centerY" id="4nU-MZ-ePa"/>
                                                     <constraint firstItem="sbY-RU-Q55" firstAttribute="leading" secondItem="oQb-0w-yJx" secondAttribute="trailing" constant="5" id="6QB-jB-AZa"/>
@@ -805,7 +805,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aq8-Cc-e9b">
                                                 <rect key="frame" x="167" y="0.0" width="130" height="30"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Pink-Dot" translatesAutoresizingMaskIntoConstraints="NO" id="UdM-sp-Hb7">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Red-Dot" translatesAutoresizingMaskIntoConstraints="NO" id="UdM-sp-Hb7">
                                                         <rect key="frame" x="15" y="12" width="6" height="6"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="6" id="g28-BJ-Igo"/>
@@ -813,13 +813,13 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Borrower to do" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JPc-1Q-Xpf">
-                                                        <rect key="frame" x="26" y="7.5" width="89" height="15.5"/>
+                                                        <rect key="frame" x="26" y="7.5" width="89" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="130" id="Ouf-Z0-TBC"/>
                                                     <constraint firstItem="JPc-1Q-Xpf" firstAttribute="centerY" secondItem="aq8-Cc-e9b" secondAttribute="centerY" id="VSL-Or-pbn"/>
@@ -839,13 +839,13 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pF0-BJ-80F">
-                                                        <rect key="frame" x="26" y="7.5" width="50" height="15.5"/>
+                                                        <rect key="frame" x="26" y="7.5" width="50" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstItem="pF0-BJ-80F" firstAttribute="centerY" secondItem="Mub-x1-u1b" secondAttribute="centerY" id="7SM-OO-ixR"/>
                                                     <constraint firstItem="Gj0-7s-7UM" firstAttribute="centerY" secondItem="Mub-x1-u1b" secondAttribute="centerY" id="Nj1-o6-knL"/>
@@ -865,13 +865,13 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Started" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HpZ-hT-xwW">
-                                                        <rect key="frame" x="26" y="7.5" width="45.5" height="15.5"/>
+                                                        <rect key="frame" x="26" y="7.5" width="45.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="87" id="CXw-4s-wtK"/>
                                                     <constraint firstItem="8Cx-ks-2Kf" firstAttribute="leading" secondItem="JVg-Tu-I2u" secondAttribute="leading" constant="15" id="DzP-BR-g6x"/>
@@ -891,13 +891,13 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Completed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hWb-8l-8FF">
-                                                        <rect key="frame" x="26" y="7.5" width="66" height="15.5"/>
+                                                        <rect key="frame" x="26" y="7.5" width="66" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstItem="hWb-8l-8FF" firstAttribute="centerY" secondItem="kaD-ft-61d" secondAttribute="centerY" id="5of-aI-y8X"/>
                                                     <constraint firstItem="YU5-c1-4lS" firstAttribute="centerY" secondItem="kaD-ft-61d" secondAttribute="centerY" id="SFS-z1-fVa"/>
@@ -917,13 +917,13 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manually added" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oZM-La-0Qg">
-                                                        <rect key="frame" x="26" y="7.5" width="94.5" height="15.5"/>
+                                                        <rect key="frame" x="26" y="7.5" width="94.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="136" id="0dX-Cd-kO5"/>
                                                     <constraint firstItem="kbB-7l-Ick" firstAttribute="leading" secondItem="n2j-m9-IVR" secondAttribute="leading" constant="15" id="QMi-G0-mkA"/>
@@ -932,41 +932,12 @@
                                                     <constraint firstItem="oZM-La-0Qg" firstAttribute="leading" secondItem="kbB-7l-Ick" secondAttribute="trailing" constant="5" id="vV1-L0-uml"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mDo-KA-vlH">
-                                                <rect key="frame" x="743" y="0.0" width="88" height="30"/>
-                                                <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Red-Dot" translatesAutoresizingMaskIntoConstraints="NO" id="ugz-sL-Psu">
-                                                        <rect key="frame" x="15" y="12" width="6" height="6"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="6" id="5UP-Rv-E4L"/>
-                                                            <constraint firstAttribute="height" constant="6" id="idI-DH-VMU"/>
-                                                        </constraints>
-                                                    </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deleted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hzF-ei-EvM">
-                                                        <rect key="frame" x="26" y="7.5" width="47" height="15.5"/>
-                                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
-                                                        <color key="textColor" name="ButtonGreyTextColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="88" id="H1j-BB-FJb"/>
-                                                    <constraint firstItem="ugz-sL-Psu" firstAttribute="leading" secondItem="mDo-KA-vlH" secondAttribute="leading" constant="15" id="ZdJ-na-g3q"/>
-                                                    <constraint firstItem="hzF-ei-EvM" firstAttribute="centerY" secondItem="mDo-KA-vlH" secondAttribute="centerY" id="iQW-FL-1jQ"/>
-                                                    <constraint firstItem="ugz-sL-Psu" firstAttribute="centerY" secondItem="mDo-KA-vlH" secondAttribute="centerY" id="rHf-OK-Z7w"/>
-                                                    <constraint firstItem="hzF-ei-EvM" firstAttribute="leading" secondItem="ugz-sL-Psu" secondAttribute="trailing" constant="5" id="ttR-0q-GFF"/>
-                                                </constraints>
-                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="T3L-yd-r5s" firstAttribute="leading" secondItem="lDp-Gf-fXc" secondAttribute="leading" constant="20" id="2uJ-1c-2zk"/>
                                             <constraint firstItem="kaD-ft-61d" firstAttribute="leading" secondItem="JVg-Tu-I2u" secondAttribute="trailing" constant="5" id="3g9-Vs-VMV"/>
                                             <constraint firstAttribute="bottom" secondItem="kaD-ft-61d" secondAttribute="bottom" id="47d-FS-DDV"/>
-                                            <constraint firstItem="mDo-KA-vlH" firstAttribute="leading" secondItem="n2j-m9-IVR" secondAttribute="trailing" constant="5" id="4vX-RN-6cd"/>
-                                            <constraint firstItem="mDo-KA-vlH" firstAttribute="top" secondItem="lDp-Gf-fXc" secondAttribute="top" id="6PW-m1-i4I"/>
-                                            <constraint firstAttribute="bottom" secondItem="mDo-KA-vlH" secondAttribute="bottom" id="8ma-z4-Wfx"/>
                                             <constraint firstAttribute="bottom" secondItem="JVg-Tu-I2u" secondAttribute="bottom" id="8ou-iP-Br8"/>
                                             <constraint firstItem="T3L-yd-r5s" firstAttribute="top" secondItem="lDp-Gf-fXc" secondAttribute="top" id="8tF-3q-Eah"/>
                                             <constraint firstAttribute="bottom" secondItem="6R8-T4-o1K" secondAttribute="bottom" id="Gly-Dz-IH6"/>
@@ -979,7 +950,7 @@
                                             <constraint firstItem="JVg-Tu-I2u" firstAttribute="top" secondItem="lDp-Gf-fXc" secondAttribute="top" id="dAj-xr-dwY"/>
                                             <constraint firstItem="kaD-ft-61d" firstAttribute="top" secondItem="lDp-Gf-fXc" secondAttribute="top" id="e4Z-qb-Yc6"/>
                                             <constraint firstAttribute="bottom" secondItem="T3L-yd-r5s" secondAttribute="bottom" id="f98-zM-Oi9"/>
-                                            <constraint firstAttribute="width" constant="840" id="o5I-Bp-V5m"/>
+                                            <constraint firstAttribute="width" constant="750" id="o5I-Bp-V5m"/>
                                             <constraint firstItem="6R8-T4-o1K" firstAttribute="top" secondItem="lDp-Gf-fXc" secondAttribute="top" id="pdc-D6-Z4D"/>
                                             <constraint firstItem="n2j-m9-IVR" firstAttribute="top" secondItem="lDp-Gf-fXc" secondAttribute="top" id="qcE-oe-hku"/>
                                             <constraint firstItem="Mub-x1-u1b" firstAttribute="top" secondItem="lDp-Gf-fXc" secondAttribute="top" id="rS3-cR-g6n"/>
@@ -1023,7 +994,6 @@
                         <outlet property="allView" destination="T3L-yd-r5s" id="g8F-bg-iR1"/>
                         <outlet property="borrowerToDoView" destination="aq8-Cc-e9b" id="AiM-oo-QCa"/>
                         <outlet property="completedView" destination="kaD-ft-61d" id="Jbq-xy-DEp"/>
-                        <outlet property="deletedView" destination="mDo-KA-vlH" id="ayG-81-WG2"/>
                         <outlet property="draftView" destination="6R8-T4-o1K" id="Hvv-PA-stf"/>
                         <outlet property="manuallyView" destination="n2j-m9-IVR" id="4E4-RC-Fz4"/>
                         <outlet property="pendingView" destination="Mub-x1-u1b" id="9yj-9N-V8x"/>
@@ -1058,7 +1028,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Application Status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r9W-Gl-Nwf">
-                                        <rect key="frame" x="107" y="21.5" width="161.5" height="21"/>
+                                        <rect key="frame" x="107" y="21.5" width="161" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
@@ -1214,7 +1184,6 @@
         <image name="Loan-Payment" width="13.711000442504883" height="18"/>
         <image name="Location-Icon" width="14.737000465393066" height="20"/>
         <image name="OptionsIcon" width="5.5720000267028809" height="22.288000106811523"/>
-        <image name="Pink-Dot" width="6" height="6"/>
         <image name="Red-Dot" width="6" height="6"/>
         <image name="Total-Assets" width="19.379999160766602" height="17.827999114990234"/>
         <image name="Total-Monthly-Income" width="19" height="18.556999206542969"/>

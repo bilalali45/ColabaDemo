@@ -19,7 +19,6 @@ class DocumentsViewController: BaseViewController {
     @IBOutlet weak var startedView: UIView!
     @IBOutlet weak var completedView: UIView!
     @IBOutlet weak var manuallyView: UIView!
-    @IBOutlet weak var deletedView: UIView!
     @IBOutlet weak var tblViewDocuments: UITableView!
     
     var loanApplicationId = 0
@@ -34,8 +33,8 @@ class DocumentsViewController: BaseViewController {
         tblViewDocuments.contentInset = UIEdgeInsets(top: -20, left: 0, bottom: 0, right: 0)
         tblViewDocuments.register(UINib(nibName: "DocumentsTableViewCell", bundle: nil), forCellReuseIdentifier: "DocumentsTableViewCell")
         tblViewDocuments.coverableCellsIdentifiers = ["DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell"]
-        roundAllFilterViews(filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView, deletedView])
-        filterViewTapped(selectedFilterView: allView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView, deletedView])
+        roundAllFilterViews(filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView])
+        filterViewTapped(selectedFilterView: allView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView])
         allView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(allFitersTapped)))
         draftView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(draftFilterTapped)))
         borrowerToDoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(borrowerFilterTapped)))
@@ -43,7 +42,6 @@ class DocumentsViewController: BaseViewController {
         startedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(startedFilterTapped)))
         completedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(completedFilterTapped)))
         manuallyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(manuallyAddedFilterTapped)))
-        deletedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(deletedFilterTapped)))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,7 +65,7 @@ class DocumentsViewController: BaseViewController {
                 filterView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
             }
             else{
-                filterView.backgroundColor = Theme.getButtonGreyColor()
+                filterView.backgroundColor = Theme.getButtonGreyColor().withAlphaComponent(0.5)
                 filterView.layer.borderWidth = 0
             }
         }
@@ -95,42 +93,35 @@ class DocumentsViewController: BaseViewController {
         else if (selectedFilterView == manuallyView){
             filterDocumentsArray = documentsArray.filter{$0.status == "Manually added"}
         }
-        else if (selectedFilterView == deletedView){
-            filterDocumentsArray = documentsArray.filter{$0.status == "Deleted"}
-        }
         self.tblViewDocuments.reloadData()
     }
     
     @objc func allFitersTapped(){
-        filterViewTapped(selectedFilterView: allView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView, deletedView])
+        filterViewTapped(selectedFilterView: allView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView])
     }
     
     @objc func draftFilterTapped(){
-        filterViewTapped(selectedFilterView: draftView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView, deletedView])
+        filterViewTapped(selectedFilterView: draftView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView])
     }
     
     @objc func borrowerFilterTapped(){
-        filterViewTapped(selectedFilterView: borrowerToDoView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView, deletedView])
+        filterViewTapped(selectedFilterView: borrowerToDoView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView])
     }
     
     @objc func pendingFilterTapped(){
-        filterViewTapped(selectedFilterView: pendingView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView, deletedView])
+        filterViewTapped(selectedFilterView: pendingView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView])
     }
     
     @objc func startedFilterTapped(){
-        filterViewTapped(selectedFilterView: startedView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView, deletedView])
+        filterViewTapped(selectedFilterView: startedView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView])
     }
     
     @objc func completedFilterTapped(){
-        filterViewTapped(selectedFilterView: completedView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView, deletedView])
+        filterViewTapped(selectedFilterView: completedView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView])
     }
     
     @objc func manuallyAddedFilterTapped(){
-        filterViewTapped(selectedFilterView: manuallyView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView, deletedView])
-    }
-    
-    @objc func deletedFilterTapped(){
-        filterViewTapped(selectedFilterView: deletedView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView, deletedView])
+        filterViewTapped(selectedFilterView: manuallyView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView])
     }
     
     //MARK:- API's
