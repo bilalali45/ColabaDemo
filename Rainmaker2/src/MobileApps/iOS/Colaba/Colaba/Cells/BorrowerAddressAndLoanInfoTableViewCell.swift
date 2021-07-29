@@ -11,9 +11,11 @@ class BorrowerAddressAndLoanInfoTableViewCell: UITableViewCell {
 
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var lblLoanPurpose: UILabel!
+    @IBOutlet weak var lblLoanPurposeTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var lblLoanType: UILabel!
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var lblPropertyType: UILabel!
+    @IBOutlet weak var loanDetailStackView: UIStackView!
     @IBOutlet weak var propertyValueView: UIView!
     @IBOutlet weak var lblPropertyValue: UILabel!
     @IBOutlet weak var loanAmountView: UIView!
@@ -21,6 +23,12 @@ class BorrowerAddressAndLoanInfoTableViewCell: UITableViewCell {
     @IBOutlet weak var downPaymentView: UIView!
     @IBOutlet weak var lblDownPayment: UILabel!
     @IBOutlet weak var lblDownPaymentPercentage: UILabel!
+    @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomDownPaymentView: UIView!
+    @IBOutlet weak var lblBottomDownPayment: UILabel!
+    @IBOutlet weak var lblBottomDownPaymentPercentage: UILabel!
+    @IBOutlet weak var mapIconTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var lblAddressTopConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()
