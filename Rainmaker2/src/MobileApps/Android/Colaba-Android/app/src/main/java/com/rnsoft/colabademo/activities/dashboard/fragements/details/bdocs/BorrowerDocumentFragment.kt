@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class BorrowerDocumentFragment : Fragment() , AdapterClickListener {
+class BorrowerDocumentFragment : Fragment() , AdapterClickListener,View.OnClickListener {
 
     private var _binding: BorrowerDocLayoutBinding? = null
     private val binding get() = _binding!!
@@ -72,9 +72,54 @@ class BorrowerDocumentFragment : Fragment() , AdapterClickListener {
                 Log.e("else-stop", " borrowerDocsModelList not available....")
         })
 
+        var btnToDo = view.findViewById<Button>(R.id.btn_filter_todo)
+        btnToDo.setOnClickListener(this)
+
         return view
 
     }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.btn_all -> {
+            }
+            R.id.btn_filter_todo -> {
+                Log.e("Todo", "click")
+                getDocItems(AppConstant.borrower_todo)
+            }
+            else -> {
+            }
+        }
+    }
+
+
+    private fun getDocItems(docFilter: String) {
+        var filterDocsList: ArrayList<BorrowerDocsModel> ?= null
+        for (i in docsArrayList.indices) {
+            var status = docsArrayList.get(i).status
+            if (docFilter.equals(status)) {
+                Log.e("match", "yes")
+
+                   var model = BorrowerDocsModel(docsArrayList.get(i).createdOn,
+                    docsArrayList.get(i).docId,
+                    docsArrayList.get(i).docName,
+                    docsArrayList.get(i).subFiles,
+                    docsArrayList.get(i).id,
+                    docsArrayList.get(i).requestId,
+                    docsArrayList.get(i).status,
+                    docsArrayList.get(i)?.typeId, docsArrayList.get(i).userName)
+//
+//                filterDocsList?.add(model)
+
+
+                // borrowerDocumentAdapter = BorrowerDocumentAdapter(filterDocsList, this@BorrowerDocumentFragment)
+                //docsRecycler.adapter = borrowerDocumentAdapter
+                //borrowerDocumentAdapter.notifyDataSetChanged()
+
+            }
+        }
+    }
+
 
     override fun getCardIndex(position: Int) {
 
