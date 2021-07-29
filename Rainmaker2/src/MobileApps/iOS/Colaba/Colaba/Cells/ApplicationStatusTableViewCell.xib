@@ -39,13 +39,13 @@
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Application Started" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a38-u0-n66">
-                        <rect key="frame" x="70" y="-3.5" width="152.5" height="20"/>
+                        <rect key="frame" x="70" y="-3.5" width="146" height="20"/>
                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="17"/>
                         <color key="textColor" name="AppBlackColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="05 Dec 2020, 15:23" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZAT-xY-2xS">
-                        <rect key="frame" x="70" y="24.5" width="115.5" height="16"/>
+                        <rect key="frame" x="70" y="24.5" width="113.5" height="16"/>
                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                         <color key="textColor" name="ButtonGreyTextColor"/>
                         <nil key="highlightedColor"/>

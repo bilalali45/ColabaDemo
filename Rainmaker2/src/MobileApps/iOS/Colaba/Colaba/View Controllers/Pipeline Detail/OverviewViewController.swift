@@ -133,15 +133,27 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
             cell.lblPropertyValue.text = loanInfoData.propertyValue.withCommas().replacingOccurrences(of: ".00", with: "")
             cell.lblLoanAmount.text = loanInfoData.loanAmount.withCommas().replacingOccurrences(of: ".00", with: "")
             cell.lblDownPayment.text = loanInfoData.downPayment.withCommas().replacingOccurrences(of: ".00", with: "")
+            cell.lblBottomDownPayment.text = loanInfoData.downPayment.withCommas().replacingOccurrences(of: ".00", with: "")
             
             if (loanInfoData.downPayment > 0 && loanInfoData.propertyValue > 0){
                 var downPaymentPercentage:Double = Double(loanInfoData.downPayment) / Double(loanInfoData.propertyValue)
                 downPaymentPercentage = downPaymentPercentage * 100
-                cell.lblDownPaymentPercentage.text = String(format: "-%.0f%%", downPaymentPercentage.rounded())
+                cell.lblDownPaymentPercentage.text = String(format: "(%.0f%%)", downPaymentPercentage.rounded())
+                cell.lblBottomDownPaymentPercentage.text = String(format: "(%.0f%%)", downPaymentPercentage.rounded())
             }
             else{
                 cell.lblDownPaymentPercentage.text = ""
             }
+            
+            cell.mainViewHeightConstraint.constant = Utility.checkIsSmallDevice() ? 278 : 253
+            cell.lblLoanPurposeTopConstraint.constant = Utility.checkIsSmallDevice() ? 15 : 30
+            cell.mapIconTopConstraint.constant = Utility.checkIsSmallDevice() ? 16 : 26
+            cell.lblAddressTopConstraint.constant = Utility.checkIsSmallDevice() ? 15 : 25
+            cell.loanDetailStackView.spacing = Utility.checkIsSmallDevice() ? 35 : 15
+            cell.downPaymentView.isHidden = Utility.checkIsSmallDevice()
+            cell.bottomDownPaymentView.isHidden = !Utility.checkIsSmallDevice()
+            cell.updateConstraintsIfNeeded()
+            cell.layoutSubviews()
             
             return cell
         }
@@ -160,7 +172,7 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
             return 106
         }
         else if (indexPath.row == 2){
-            return 278
+            return  Utility.checkIsSmallDevice() ? 335 : 278
         }
         else{
             return UITableView.automaticDimension

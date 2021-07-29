@@ -434,4 +434,13 @@ struct Utility {
             return UIImage(named: "Red-Dot")!
         }
     }
+    
+    static func checkIsSmallDevice() -> Bool{
+        if (UIDevice.current.screenType == .iPhones_4_4S || UIDevice.current.screenType == .iPhones_5_5s_5c_SE || UIDevice.current.screenType == .iPhones_6_6s_7_8){
+            return true
+        }
+        else{
+            return false
+        }
+    }
 }
