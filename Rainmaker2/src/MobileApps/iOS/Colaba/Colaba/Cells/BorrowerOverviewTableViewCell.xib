@@ -38,7 +38,7 @@
                         <color key="textColor" name="AppBlackColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maria Randall,  John Glenn Randall,  Jessy Glenn Randall" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iks-US-gqT">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maria Randall,  John Glenn Randall,  Jessy Glenn Randall" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iks-US-gqT" customClass="MarqueeLabel" customModule="MarqueeLabel">
                         <rect key="frame" x="15" y="68" width="342" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="bog-0x-rap"/>
@@ -46,6 +46,11 @@
                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="13"/>
                         <color key="textColor" name="AppGreyColor"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="linesSpacing">
+                                <real key="value" value="1"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loan#29214653" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KA4-HO-FtO">
                         <rect key="frame" x="15" y="99" width="342" height="18"/>
@@ -102,6 +107,11 @@
             <point key="canvasLocation" x="169.56521739130437" y="122.87946428571428"/>
         </tableViewCell>
     </objects>
+    <designables>
+        <designable name="Iks-US-gqT">
+            <size key="intrinsicContentSize" width="333.5" height="15.5"/>
+        </designable>
+    </designables>
     <resources>
         <image name="ByteIcon" width="10.98799991607666" height="10.98799991607666"/>
         <namedColor name="AppBlackColor">

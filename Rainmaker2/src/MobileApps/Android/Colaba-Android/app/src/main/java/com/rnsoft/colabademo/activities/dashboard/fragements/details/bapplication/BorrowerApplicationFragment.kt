@@ -14,11 +14,10 @@ import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.listeners.ClickEventHook
-import com.rnsoft.colabademo.*
 import com.rnsoft.colabademo.databinding.DetailApplicationTabBinding
-
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class BorrowerApplicationFragment : Fragment() {
@@ -46,14 +45,38 @@ class BorrowerApplicationFragment : Fragment() {
         govtQuestionsRecyclerView = root.findViewById(R.id.govtQuestionHorizontalRecyclerView)
 
         val localList: ArrayList<TabBorrowerList> = ArrayList()
-        localList.add(TabBorrowerList(0, "Richard Glenn Randall", "Primary Borrower"))
+        localList.add(TabBorrowerList(0, "Richard Glenn Randall", "Co Borrower"))
         localList.add(TabBorrowerList(1, "Maria Randall", "Co-Borrower"))
-        setUpBorrowerHorizontalFastAdapter(localList)
+        localList.add(TabBorrowerList(2, "Test-b", "Add Borrowers", true))
+        //setUpBorrowerHorizontalFastAdapter(localList)
+
+        val linearLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
+        val customBorrowerAdapter  = CustomBorrowerAdapter(localList)
+        horizontalRecyclerView.apply {
+            this.layoutManager =linearLayoutManager
+            this.setHasFixedSize(true)
+            this.adapter = customBorrowerAdapter
+        }
+        customBorrowerAdapter.notifyDataSetChanged()
+
+
 
         val realStateList: ArrayList<TabRealStateList> = ArrayList()
         realStateList.add(TabRealStateList(0, "5919 Trussville Crossings\nParkways,", "Land"))
         realStateList.add(TabRealStateList(1, "727 Ashleigh Lane,\n" + "South Lake TX, 76092", "Single Family Property"))
-        setUpRealStateRecycleView(realStateList)
+        realStateList.add(TabRealStateList(2, "5919 Trussville Crossings\nParkways,", "Land"))
+        realStateList.add(TabRealStateList(3, "5919 Trussville Crossings\nParkways,", "Land", true))
+        //setUpRealStateRecycleView(realStateList)
+
+        val realStateLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
+        val realStateAdapter  = RealStateAdapter(realStateList)
+        realStateRecyclerView.apply {
+            this.layoutManager =realStateLayoutManager
+            this.setHasFixedSize(true)
+            this.adapter = realStateAdapter
+        }
+        realStateAdapter.notifyDataSetChanged()
+
 
         val questionList: ArrayList<TabGovtQuestionList> = ArrayList()
         questionList.add(TabGovtQuestionList(0, "Undisclosed Borrowed Funds", "Are you borrowing any money for this real estate transaction (e.g., money for your ..."))
@@ -67,32 +90,59 @@ class BorrowerApplicationFragment : Fragment() {
 
     }
 
+    private fun  setUpBorrowerList(localList: ArrayList<TabBorrowerList>) {
+
+    }
+
     private fun setUpBorrowerHorizontalFastAdapter(localTabBorrowerList: ArrayList<TabBorrowerList>) {
         val simpleItemsList: ArrayList<BorrowerHorizontal> = ArrayList()
 
         for (eachItem in localTabBorrowerList) {
-
-            val simpleItem = BorrowerHorizontal()
+            val simpleItem = BorrowerHorizontal(false)
             simpleItem.name = eachItem.name
             simpleItem.coName = eachItem.coName
             simpleItemsList.add(simpleItem)
         }
+        //simpleItemsList.add(BorrowerHorizontal(true))
         Log.e("simpleItemsList", simpleItemsList.size.toString())
 
+        //val simpleFooterList: ArrayList<BorrowerHorizontal> = ArrayList()
+        //simpleFooterList.add(BorrowerHorizontal())
+
+
+
         //create the ItemAdapter holding your Items
-        val itemAdapter = ItemAdapter<BorrowerHorizontal>()
+        val itemAdapter  = ItemAdapter<BorrowerHorizontal>()
+
+        //create last item holder your Items
+        //val headerAdapter = ItemAdapter<BorrowerHorizontal>()
+
+
+       // val headerAdapter: HeaderViewListAdapter<FooterHorizontal> = HeaderViewListAdapter()
+
+        //val itemAdapterGeneric = GenericItemAdapter()
+        //val genericItemAdapter = GenericItemAdapter()
+
+        //val footerAdapter = ItemAdapter<FooterHorizontal>()
 
         //create the managing FastAdapter, by passing in the itemAdapter
-        val fastAdapter = FastAdapter.with(itemAdapter)
+        //val fastAdapter :FastAdapter<GenericItem>  = FastAdapter.with(listOf(headerAdapter , itemAdapter ))
+        val fastAdapter  = FastAdapter.with(itemAdapter)
+
+        //val fastAdapterTwo = FastAdapter.with<GenericItem, ItemAdapter<*>>(listOf(itemAdapter, headerAdapter))
 
         //set our adapters to the RecyclerView
         //horizontalRecyclerView.setAdapter(fastAdapter)
         //horizontalRecyclerView.itemAnimator = DefaultItemAnimator()
-        horizontalRecyclerView.adapter = fastAdapter
+        horizontalRecyclerView.adapter =    fastAdapter
+
+
 
 
 
         itemAdapter.add(simpleItemsList)
+
+        //headerAdapter.add(simpleItemsList)
 
         //set the items to your ItemAdapter
         //horizontalRecyclerView.itemAnimator = DefaultItemAnimator()
@@ -105,10 +155,11 @@ class BorrowerApplicationFragment : Fragment() {
             LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         fastAdapter.notifyAdapterDataSetChanged()
 
-        fastAdapter.addEventHook(object : ClickEventHook<BorrowerHorizontal>() {
+        /*
+        fastAdapter.addEventHook(object : ClickEventHook<GenericItem>() {
             override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
                 //return the views on which you want to bind this event
-                return if (viewHolder is BorrowerHorizontal.ViewHolder) {
+                return if (viewHolder is GenericItem) {
                     Log.e("viewHolder", viewHolder.toString())
                     viewHolder.itemView
 
@@ -120,14 +171,18 @@ class BorrowerApplicationFragment : Fragment() {
             override fun onClick(
                 v: View,
                 position: Int,
-                fastAdapter: FastAdapter<BorrowerHorizontal>,
-                item: BorrowerHorizontal
+                fastAdapter: FastAdapter<GenericItem>,
+                item: GenericItem
             ) {
                 //react on the click event
                 //productActivityViewModel.loadItem(itemList[position])
                 // findNavController().navigate(R.id.detail_fragment, null)
             }
         })
+
+         */
+
+
     }
 
 
@@ -233,3 +288,5 @@ class BorrowerApplicationFragment : Fragment() {
     }
 
 }
+
+

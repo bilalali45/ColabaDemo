@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import MarqueeLabel
 
 class BorrowerOverviewTableViewCell: UITableViewCell {
 
     @IBOutlet weak var lblBorrowerName: UILabel!
-    @IBOutlet weak var lblCoBorrowerName: UILabel!
+    @IBOutlet weak var lblCoBorrowerName: MarqueeLabel!
     @IBOutlet weak var lblCoBorrowerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var lblCoBorrowerTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var lblLoanNo: UILabel!
@@ -22,7 +23,6 @@ class BorrowerOverviewTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
