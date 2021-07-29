@@ -22,6 +22,19 @@
     <string name="login_with_another_account">Login with another account</string>
     <string name="sign_in_with_password">Sign in with Password</string>
 
+    <string name="doc_filter_all">All</string>
+    <string name="doc_filter_in_draft">In Draft</string>
+    <string name="doc_filter_borrower_to_do">Borrower To Do</string>
+    <string name="doc_filter_pending">Pending</string>
+    <string name="doc_filter_completed">Completed</string>
+    <string name="doc_filter_started">Started</string>
+    <string name="doc_filter_manually_added">Manually Added</string>
+
+
+
+
+
+
 
 
     <string name="plus_three">+3</string>
@@ -65,7 +78,6 @@
     <string name="good_evening_james">James</string>
 
     <string name="purchase">Purchase</string>
-
     <string name="user_data_does_not_exit">  User does not exist</string>
 
     <string name="min">min</string>

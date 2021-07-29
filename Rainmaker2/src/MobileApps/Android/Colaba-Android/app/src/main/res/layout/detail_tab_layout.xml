@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/colaba_loan_background"
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,7 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
 
         <ImageView
             android:id="@+id/backButton"
@@ -34,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:fontFamily="@font/rubik_regular"
+            android:fontFamily="@font/rubik_medium"
             android:text="@string/good_evening_james"
             android:textColor="@color/grey_color_one"
             android:textSize="18sp"
@@ -48,8 +46,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:fontFamily="@font/rubik_regular"
+            android:fontFamily="@font/rubik_light"
             android:text="@string/purchase"
+            android:textAllCaps="true"
             android:textColor="@color/grey_color_three"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -99,7 +98,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/colaba_loan_background" />
+        android:background="@drawable/layout_border_top" />
 
 </LinearLayout>
 

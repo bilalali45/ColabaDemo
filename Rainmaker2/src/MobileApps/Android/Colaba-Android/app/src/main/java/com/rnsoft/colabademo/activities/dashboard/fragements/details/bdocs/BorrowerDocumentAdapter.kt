@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
 import java.util.*
@@ -63,10 +65,7 @@ internal constructor(
 
     override fun onBindViewHolder(holder: DocsViewHolder, position: Int) {
         val doc  = docsList[position]
-
         holder.docType.text = doc.docName
-
-
 
         doc.createdOn.let { activityTime->
             //var newString = activityTime.substring( 0 , activityTime.length-5)
@@ -91,13 +90,29 @@ internal constructor(
             if(fileOne.clientName.isNotEmpty() && fileOne.clientName.isNotBlank()) {
                 holder.docOneName.text = fileOne.clientName
                 holder.docOneImage.visibility = View.VISIBLE
+                val docType = getDocType(fileOne.clientName)
+                if(docType.equals("png")){
+                    Log.e("hrere","yes")
+                    holder.docOneImage.setImageResource(R.drawable.ic_png)
+                } else if(docType.equals("pdf")){
+                    holder.docOneImage.setImageResource(R.drawable.ic_pdf)
+                } else if(docType.equals("jpg")){
+                    holder.docOneImage.setImageResource(R.drawable.ic_jpg)
+                }
             }
             else {
                 holder.docOneName.text = fileOne.mcuName
                 holder.docOneImage.visibility = View.VISIBLE
+                val docType = getDocType(fileOne.mcuName)
+                if(docType.equals("png")){
+                    holder.docOneImage.setImageResource(R.drawable.ic_png)
+                } else if(docType.equals("pdf")){
+                    holder.docOneImage.setImageResource(R.drawable.ic_pdf)
+                } else if(docType.equals("jpg")){
+                    holder.docOneImage.setImageResource(R.drawable.ic_jpg)
+                }
+
             }
-
-
 
             var fileTwo:SubFiles? = null
             if(doc.subFiles.size>1)
@@ -108,10 +123,27 @@ internal constructor(
                     holder.docTwoLayout.visibility = View.VISIBLE
                     holder.docTwoName.text = fileTwo.clientName
                     holder.docTwoImage.visibility = View.VISIBLE
+                    val docType = getDocType(fileTwo.clientName)
+                    if(docType.equals("png")){
+                        holder.docTwoImage.setImageResource(R.drawable.ic_png)
+                    } else if(docType.equals("pdf")){
+                        holder.docTwoImage.setImageResource(R.drawable.ic_pdf)
+                    } else if(docType.equals("jpg")){
+                        holder.docTwoImage.setImageResource(R.drawable.ic_jpg)
+                    }
+
                 } else if (fileTwo.mcuName.isNotEmpty() && fileTwo.mcuName.isNotBlank()) {
                     holder.docTwoLayout.visibility = View.VISIBLE
                     holder.docTwoName.text = fileTwo.mcuName
                     holder.docTwoImage.visibility = View.VISIBLE
+                    val docType = getDocType(fileTwo.mcuName)
+                    if(docType.equals("png")){
+                        holder.docTwoImage.setImageResource(R.drawable.ic_png)
+                    } else if(docType.equals("pdf")){
+                        holder.docTwoImage.setImageResource(R.drawable.ic_pdf)
+                    } else if(docType.equals("jpg")){
+                        holder.docTwoImage.setImageResource(R.drawable.ic_jpg)
+                    }
                 } else {
                     holder.docTwoLayout.visibility = View.INVISIBLE
                 }
@@ -127,6 +159,19 @@ internal constructor(
 
 
         }
+    }
+
+    fun getDocType(docType:String):String{
+        val doctype = docType.split(".").toTypedArray()
+        val type = doctype[1]
+        return type
+    }
+
+    fun setDocImage(docType: String, imageView: ImageView){
+        if(docType.equals("png")){
+            imageView.setBackgroundResource(R.drawable.ic_png)
+        }
+
     }
 
     override fun getItemCount(): Int =  docsList.size

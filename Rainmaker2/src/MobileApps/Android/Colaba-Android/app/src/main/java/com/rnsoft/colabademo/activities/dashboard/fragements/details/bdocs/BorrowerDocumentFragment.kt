@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -30,6 +31,7 @@ class BorrowerDocumentFragment : Fragment() , AdapterClickListener {
     private var docsArrayList: ArrayList<BorrowerDocsModel> = ArrayList()
     private lateinit var borrowerDocumentAdapter: BorrowerDocumentAdapter
     private var shimmerContainer: ShimmerFrameLayout?=null
+    lateinit var btnAll :Button
 
     private val detailViewModel: DetailViewModel by activityViewModels()
 
@@ -49,7 +51,6 @@ class BorrowerDocumentFragment : Fragment() , AdapterClickListener {
         shimmerContainer?.startShimmer()
 
         docsRecycler = view.findViewById(R.id.docs_recycle_view)
-
         val linearLayoutManager = LinearLayoutManager(activity)
 
         borrowerDocumentAdapter = BorrowerDocumentAdapter(docsArrayList, this@BorrowerDocumentFragment)
