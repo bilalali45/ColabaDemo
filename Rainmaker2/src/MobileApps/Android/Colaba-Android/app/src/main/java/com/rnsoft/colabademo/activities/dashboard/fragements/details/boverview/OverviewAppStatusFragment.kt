@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class BorrowerAppStatusFragment : Fragment(), AdapterClickListener {
+class OverviewAppStatusFragment : Fragment(), AdapterClickListener {
 
     private var _binding: ApplicationStatusLayoutBinding? = null
     private val binding get() = _binding!!

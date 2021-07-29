@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/borrower_app_status_fragment"
-        android:name="com.rnsoft.colabademo.BorrowerAppStatusFragment"
+        android:name="com.rnsoft.colabademo.OverviewAppStatusFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/application_status_layout" />
 
