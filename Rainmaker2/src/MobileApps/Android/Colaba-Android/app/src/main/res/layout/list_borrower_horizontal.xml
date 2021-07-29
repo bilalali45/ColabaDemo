@@ -2,44 +2,104 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="292dp"
-    android:layout_height="70dp"
-    android:layout_marginEnd="10dp"
-    android:background="@drawable/search_view_holder_style"
-    >
+    android:layout_width="wrap_content"
+    android:layout_height="70dp">
+<!--
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/last_cell"
+        android:layout_width="190dp"
+        android:layout_height="70dp"
+        android:translationZ="2dp"
+        android:elevation="2dp"
+        android:background="@drawable/add_more_borrower_border"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/product_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_weight="1"
-        android:maxLines="1"
+        <TextView
+            android:id="@+id/addMoreTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/rubik_regular"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="Add More Borrowers"
+            android:textColor="@color/colaba_primary_color"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/addMoreImageView"
+            app:layout_constraintStart_toEndOf="@+id/addMoreImageView"
+            app:layout_constraintTop_toTopOf="@+id/addMoreImageView" />
 
-        android:singleLine="true"
-        android:text="Richard Glenn Randall"
-        android:textSize="12sp"
+        <ImageView
+            android:id="@+id/addMoreImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_plus_inside_circle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    -->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/data_cell"
+        android:layout_width="292dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/search_view_holder_style">
 
-    <TextView
-        android:id="@+id/product_price"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="8dp"
-        android:layout_weight="1"
-        android:text="Primary Borrower"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/product_name" />
+
+
+        <TextView
+            android:id="@+id/main_borrower_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="Primary Borrower"
+            android:textSize="17sp"
+            android:fontFamily="@font/rubik_regular"
+            android:textColor="@color/grey_color_one"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/co_borrower_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/rubik_regular"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="Richard Glenn Randall"
+            android:textColor="@color/grey_color_two"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_borrower_test" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
