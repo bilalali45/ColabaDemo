@@ -19,6 +19,7 @@ class LoanDocumentModel: NSObject{
     var status: String = ""
     var typeId: String = ""
     var userName: String = ""
+    var message: String = ""
     
     func updateModelWithJSON(json: JSON){
         createdOn = json["createdOn"].stringValue
@@ -36,6 +37,7 @@ class LoanDocumentModel: NSObject{
         status = json["status"].stringValue
         typeId = json["typeId"].stringValue
         userName = json["userName"].stringValue
+        message = json["message"].stringValue
 
     }
     

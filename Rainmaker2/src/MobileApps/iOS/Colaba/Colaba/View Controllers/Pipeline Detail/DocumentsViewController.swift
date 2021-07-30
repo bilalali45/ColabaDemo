@@ -30,7 +30,7 @@ class DocumentsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tblViewDocuments.contentInset = UIEdgeInsets(top: -20, left: 0, bottom: 0, right: 0)
+        tblViewDocuments.contentInset = UIEdgeInsets(top: -20, left: 0, bottom: 50, right: 0)
         tblViewDocuments.register(UINib(nibName: "DocumentsTableViewCell", bundle: nil), forCellReuseIdentifier: "DocumentsTableViewCell")
         tblViewDocuments.coverableCellsIdentifiers = ["DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell"]
         roundAllFilterViews(filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView])

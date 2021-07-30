@@ -39,5 +39,17 @@ class APIRouterUnitTest: XCTestCase {
         
     }
     
+    func testFileDownloadResponseReturnValidFile(){
+        let extraData = "id=60dc16e123207e1b3cbfb71a&requestId=60e70cffce2bbdb7033dc6e3&docId=60e70cffce2bbdb7033dc6e4&fileId=60e70d01ce2bbdb7033dc6e5"
+        api.downloadFileFromRequest(type: .viewLoanDocument, method: .get, params: nil, extraData: extraData) { status, fileData, message in
+            XCTAssertTrue(status == .success)
+        }
+    }
     
+    func testFileDownloadResponseReturnError(){
+        let extraData = "id=60dc16e123207e1b3cbfb71a&requestId=60e70cffce2bbdb7033dc6e3&docId=60e70cffce2bbdb7033dc6e4&fileId=6"
+        api.downloadFileFromRequest(type: .viewLoanDocument, method: .get, params: nil, extraData: extraData) { status, fileData, message in
+            XCTAssertFalse(status == .success)
+        }
+    }
 }
