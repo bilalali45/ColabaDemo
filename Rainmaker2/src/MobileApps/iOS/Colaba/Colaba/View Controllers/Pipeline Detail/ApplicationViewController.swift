@@ -110,7 +110,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
             cell.mainView.layer.cornerRadius = 6
             cell.mainView.layer.borderWidth = 1
             cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-            cell.mainView.dropShadowToCollectionViewCell()
+            cell.mainView.dropShadowToCollectionViewCell(shadowColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor, shadowRadius: 2)
             cell.addMoreView.layer.cornerRadius = 6
             cell.addMoreView.layer.borderWidth = 1
             cell.addMoreView.layer.borderColor = Theme.getAppGreyColor().withAlphaComponent(0.3).cgColor
@@ -126,7 +126,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
             cell.mainView.layer.cornerRadius = 6
             cell.mainView.layer.borderWidth = 1
             cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-            cell.mainView.dropShadowToCollectionViewCell()
+            cell.mainView.dropShadowToCollectionViewCell(shadowColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor, shadowRadius: 2)
             cell.addMoreView.layer.cornerRadius = 6
             cell.addMoreView.layer.borderWidth = 1
             cell.addMoreView.layer.borderColor = Theme.getAppGreyColor().withAlphaComponent(0.3).cgColor
@@ -142,7 +142,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
             cell.mainView.layer.cornerRadius = 6
             cell.mainView.layer.borderWidth = 1
             cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-            cell.mainView.dropShadowToCollectionViewCell()
+            cell.mainView.dropShadowToCollectionViewCell(shadowColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor, shadowRadius: 2)
             cell.lblQuestionHeading.text = indexPath.row % 2 == 0 ? "Undisclosed Borrowed Funds" : "Ownership Interest in Property"
             cell.lblQuestion.text = indexPath.row % 2 == 0 ? "Are you borrowing any money for this real estate transaction (e.g., money for your ..." : "Have you had an ownership interest in another property in the last three years?"
             cell.iconAns1.image = UIImage(named: indexPath.row % 2 == 0 ? "Ans-Yes" : "Ans-NA")

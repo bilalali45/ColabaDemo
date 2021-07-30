@@ -41,11 +41,12 @@ extension UIView{
         
     }
     
-    func dropShadowToCollectionViewCell(shadowColor: CGColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor){
+    func dropShadowToCollectionViewCell(shadowColor: CGColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor,
+                                        shadowRadius: CGFloat = 6.0){
         self.layer.shadowColor = shadowColor
         self.layer.shadowOffset = .zero
         self.layer.shadowOpacity = 1
-        self.layer.shadowRadius = 6.0
+        self.layer.shadowRadius = shadowRadius
     }
     
     func roundAllCorners(radius: CGFloat) {
