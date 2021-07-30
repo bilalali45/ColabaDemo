@@ -13,15 +13,16 @@
         android:text="@string/doc_filter_all"
         android:textSize="13sp"
         android:fontFamily="@font/rubik_regular"
-        android:focusableInTouchMode="true"
         android:textAllCaps="false"
         android:gravity="center"
+        android:focusableInTouchMode="true"
         android:background="@drawable/selector_filter_btns"
         android:textColor="@color/doc_filter_text_color_selector">
         <requestFocus/>
     </androidx.appcompat.widget.AppCompatButton>
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_filter_indraft"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
@@ -30,7 +31,6 @@
         android:layout_marginStart="10dp"
         android:text="@string/doc_filter_in_draft"
         android:textSize="13sp"
-        android:focusableInTouchMode="true"
         android:fontFamily="@font/rubik_regular"
         android:textAllCaps="false"
         android:gravity="start|center"
@@ -53,7 +53,6 @@
         android:textSize="13sp"
         android:fontFamily="@font/rubik_regular"
         android:textAllCaps="false"
-        android:focusableInTouchMode="true"
         android:drawableStart="@drawable/circle_medium"
         android:drawableTint="@color/colaba_red_color"
         android:background="@drawable/selector_filter_btns"
@@ -61,6 +60,7 @@
         />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_filter_started"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
@@ -71,7 +71,6 @@
         android:textSize="13sp"
         android:fontFamily="@font/rubik_regular"
         android:textAllCaps="false"
-        android:focusableInTouchMode="true"
         android:gravity="start|center"
         android:drawableStart="@drawable/circle_medium"
         android:drawableTint="@color/filter_yellow"
@@ -80,6 +79,7 @@
         />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_filter_pending"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
@@ -90,7 +90,6 @@
         android:textSize="13sp"
         android:fontFamily="@font/rubik_regular"
         android:textAllCaps="false"
-        android:focusableInTouchMode="true"
         android:gravity="start|center"
         android:drawableStart="@drawable/circle_medium"
         android:drawableTint="@color/colaba_apptheme_blue"
@@ -99,6 +98,7 @@
         />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_filter_completed"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
@@ -109,7 +109,6 @@
         android:textSize="13sp"
         android:fontFamily="@font/rubik_regular"
         android:textAllCaps="false"
-        android:focusableInTouchMode="true"
         android:gravity="start|center"
         android:drawableStart="@drawable/circle_medium"
         android:drawableTint="@color/filter_green"
@@ -117,6 +116,7 @@
         android:textColor="@color/doc_filter_text_color_selector"
         />
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_filter_manullayAdded"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
@@ -127,8 +127,8 @@
         android:textSize="13sp"
         android:fontFamily="@font/rubik_regular"
         android:textAllCaps="false"
-        android:focusableInTouchMode="true"
         android:gravity="start|center"
+        android:layout_marginEnd="10dp"
         android:drawableStart="@drawable/circle_medium"
         android:drawableTint="@color/filter_grey"
         android:background="@drawable/selector_filter_btns"

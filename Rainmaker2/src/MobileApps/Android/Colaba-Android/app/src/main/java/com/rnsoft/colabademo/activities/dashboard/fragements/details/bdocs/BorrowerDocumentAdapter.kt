@@ -1,5 +1,10 @@
 package com.rnsoft.colabademo
 
+import android.R.color
+import android.content.Context
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
+import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,11 +19,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
+
 class BorrowerDocumentAdapter
 internal constructor(
     passedDocsList: ArrayList<BorrowerDocsModel>, onAdapterClickListener: AdapterClickListener
-) :  RecyclerView.Adapter<BorrowerDocumentAdapter.DocsViewHolder>() {
+) : RecyclerView.Adapter<BorrowerDocumentAdapter.DocsViewHolder>() {
 
+    lateinit var holder: DocsViewHolder
     private var docsList = ArrayList<BorrowerDocsModel>()
     private var classScopedItemClickListener: AdapterClickListener = onAdapterClickListener
 
@@ -28,13 +35,13 @@ internal constructor(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocsViewHolder {
-        val holder: DocsViewHolder
+        //val holder: DocsViewHolder
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         holder = DocsViewHolder(inflater.inflate(R.layout.doc_view_holder_layout, parent, false))
         return holder
     }
 
-    inner class DocsViewHolder(itemView: View ) : RecyclerView.ViewHolder(itemView) {
+    inner class DocsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var containsThreeChild: ConstraintLayout = itemView.findViewById(R.id.containsThreeChild)
         var containsNoChild: ConstraintLayout = itemView.findViewById(R.id.containsNoChild)
@@ -42,21 +49,23 @@ internal constructor(
         var docType: TextView = itemView.findViewById(R.id.doc_type)
         var docUploadedTime: TextView = itemView.findViewById(R.id.doc_uploaded_time)
 
-        var docOneLayout:ConstraintLayout = itemView.findViewById(R.id.doc_one)
+        var docOneLayout: ConstraintLayout = itemView.findViewById(R.id.doc_one)
         var docOneName: TextView = itemView.findViewById(R.id.doc_one_name)
         var docOneImage: ImageView = itemView.findViewById(R.id.doc_one_image)
 
-        var docTwoLayout:ConstraintLayout = itemView.findViewById(R.id.doc_two)
+        var docTwoLayout: ConstraintLayout = itemView.findViewById(R.id.doc_two)
         var docTwoName: TextView = itemView.findViewById(R.id.doc_two_name)
         var docTwoImage: ImageView = itemView.findViewById(R.id.doc_two_image)
 
-        var docThreeLayout:ConstraintLayout = itemView.findViewById(R.id.doc_three)
+        var docThreeLayout: ConstraintLayout = itemView.findViewById(R.id.doc_three)
         var docThreeName: TextView = itemView.findViewById(R.id.doc_three_name)
 
         var docCardView: CardView = itemView.findViewById(R.id.docCardView)
 
+        var docFilter: TextView = itemView.findViewById(R.id.doc_status)
+
         init {
-            docCardView.setOnClickListener{
+            docCardView.setOnClickListener {
                 classScopedItemClickListener.navigateTo(adapterPosition)
             }
         }
@@ -64,119 +73,132 @@ internal constructor(
     }
 
     override fun onBindViewHolder(holder: DocsViewHolder, position: Int) {
-        val doc  = docsList[position]
+        val doc = docsList[position]
         holder.docType.text = doc.docName
+        Log.e("isREad", ""+doc.isRead)
+         if(doc.isRead==true){
+             holder.docType.text = doc.docName
+         } else {
+             holder.docType.text = doc.docName // set bold
+             holder.docType.setTypeface(null,Typeface.BOLD)
+         }
 
-        doc.createdOn.let { activityTime->
+
+
+        doc.createdOn.let { activityTime ->
             //var newString = activityTime.substring( 0 , activityTime.length-5)
             //newString+="Z"
-            val newString = returnDocCreatedTime(activityTime)
-            holder.docUploadedTime.text =  newString
+            val newString = returnDocCreatedTime(activityTime!!)
+            holder.docUploadedTime.text = newString
         }
 
+        // set filter
+        holder.docFilter.text = doc.status
+        setDocFilterColor(doc.status!!)
 
-
-
-        if(doc.subFiles.isEmpty()){
+        if (doc.subFiles.isEmpty()) {
             holder.containsNoChild.visibility = View.VISIBLE
             holder.containsThreeChild.visibility = View.GONE
-        }
-        else
-        if(doc.subFiles.isNotEmpty()) {
-            holder.containsThreeChild.visibility = View.VISIBLE
-            holder.containsNoChild.visibility = View.GONE
+            holder.docUploadedTime.visibility = View.GONE
+        } else
+            if (doc.subFiles.isNotEmpty()) {
+                holder.containsThreeChild.visibility = View.VISIBLE
+                holder.containsNoChild.visibility = View.GONE
+                holder.docUploadedTime.visibility = View.VISIBLE
 
-            val fileOne = doc.subFiles[0]
-            if(fileOne.clientName.isNotEmpty() && fileOne.clientName.isNotBlank()) {
-                holder.docOneName.text = fileOne.clientName
-                holder.docOneImage.visibility = View.VISIBLE
-                val docType = getDocType(fileOne.clientName)
-                if(docType.equals("png")){
-                    Log.e("hrere","yes")
-                    holder.docOneImage.setImageResource(R.drawable.ic_png)
-                } else if(docType.equals("pdf")){
-                    holder.docOneImage.setImageResource(R.drawable.ic_pdf)
-                } else if(docType.equals("jpg")){
-                    holder.docOneImage.setImageResource(R.drawable.ic_jpg)
-                }
-            }
-            else {
-                holder.docOneName.text = fileOne.mcuName
-                holder.docOneImage.visibility = View.VISIBLE
-                val docType = getDocType(fileOne.mcuName)
-                if(docType.equals("png")){
-                    holder.docOneImage.setImageResource(R.drawable.ic_png)
-                } else if(docType.equals("pdf")){
-                    holder.docOneImage.setImageResource(R.drawable.ic_pdf)
-                } else if(docType.equals("jpg")){
-                    holder.docOneImage.setImageResource(R.drawable.ic_jpg)
-                }
+                val fileOne = doc.subFiles[0]
+                if (fileOne.clientName.isNotEmpty() && fileOne.clientName.isNotBlank()) {
+                    holder.docOneName.text = fileOne.clientName
+                    holder.docOneImage.visibility = View.VISIBLE
+                    val docType = getDocType(fileOne.clientName)
+                    setDocImage(docType,holder.docOneImage)
 
-            }
-
-            var fileTwo:SubFiles? = null
-            if(doc.subFiles.size>1)
-                fileTwo = doc.subFiles[1]
-
-            if(fileTwo!=null) {
-                if (fileTwo.clientName.isNotEmpty() && fileTwo.clientName.isNotBlank()) {
-                    holder.docTwoLayout.visibility = View.VISIBLE
-                    holder.docTwoName.text = fileTwo.clientName
-                    holder.docTwoImage.visibility = View.VISIBLE
-                    val docType = getDocType(fileTwo.clientName)
-                    if(docType.equals("png")){
-                        holder.docTwoImage.setImageResource(R.drawable.ic_png)
-                    } else if(docType.equals("pdf")){
-                        holder.docTwoImage.setImageResource(R.drawable.ic_pdf)
-                    } else if(docType.equals("jpg")){
-                        holder.docTwoImage.setImageResource(R.drawable.ic_jpg)
-                    }
-
-                } else if (fileTwo.mcuName.isNotEmpty() && fileTwo.mcuName.isNotBlank()) {
-                    holder.docTwoLayout.visibility = View.VISIBLE
-                    holder.docTwoName.text = fileTwo.mcuName
-                    holder.docTwoImage.visibility = View.VISIBLE
-                    val docType = getDocType(fileTwo.mcuName)
-                    if(docType.equals("png")){
-                        holder.docTwoImage.setImageResource(R.drawable.ic_png)
-                    } else if(docType.equals("pdf")){
-                        holder.docTwoImage.setImageResource(R.drawable.ic_pdf)
-                    } else if(docType.equals("jpg")){
-                        holder.docTwoImage.setImageResource(R.drawable.ic_jpg)
-                    }
                 } else {
-                    holder.docTwoLayout.visibility = View.INVISIBLE
+                    holder.docOneName.text = fileOne.mcuName
+                    holder.docOneImage.visibility = View.VISIBLE
+                    val docType = getDocType(fileOne.mcuName)
+                    setDocImage(docType, holder.docOneImage)
                 }
+
+                var fileTwo: SubFiles? = null
+                if (doc.subFiles.size > 1)
+                    fileTwo = doc.subFiles[1]
+
+                if (fileTwo != null) {
+                    if (fileTwo.clientName.isNotEmpty() && fileTwo.clientName.isNotBlank()) {
+                        holder.docTwoLayout.visibility = View.VISIBLE
+                        holder.docTwoName.text = fileTwo.clientName
+                        holder.docTwoImage.visibility = View.VISIBLE
+                        val docType = getDocType(fileTwo.clientName)
+                        setDocImage(docType,holder.docTwoImage)
+
+                    } else if (fileTwo.mcuName.isNotEmpty() && fileTwo.mcuName.isNotBlank()) {
+                        holder.docTwoLayout.visibility = View.VISIBLE
+                        holder.docTwoName.text = fileTwo.mcuName
+                        holder.docTwoImage.visibility = View.VISIBLE
+                        val docType = getDocType(fileTwo.mcuName)
+                        setDocImage(docType,holder.docTwoImage)
+                    } else {
+                        holder.docTwoLayout.visibility = View.INVISIBLE
+                    }
+                }
+
+                if (doc.subFiles.size > 2) {
+                    holder.docThreeLayout.visibility = View.VISIBLE
+                    holder.docThreeName.text = "+" + (doc.subFiles.size.minus(2)).toString()
+                } else
+                    holder.docThreeLayout.visibility = View.INVISIBLE
             }
 
+    }
 
-            if(doc.subFiles.size>2) {
-                holder.docThreeLayout.visibility = View.VISIBLE
-                holder.docThreeName.text = "+" + (doc.subFiles.size.minus(2)).toString()
-            }
-            else
-                holder.docThreeLayout.visibility = View.INVISIBLE
-
-
+    private fun setDocFilterColor(filter: String) {
+        if (filter.equals(AppConstant.filter_inDraft)) {
+            holder.docFilter.compoundDrawables?.getOrNull(0)
+                ?.setTint(holder.docFilter.context.resources.getColor(R.color.filter_blue))
+        }
+        if (filter.equals(AppConstant.filter_borrower_todo)) {
+            holder.docFilter.compoundDrawables?.getOrNull(0)
+                ?.setTint(holder.docFilter.context.resources.getColor(R.color.colaba_red_color))
+        }
+        if (filter.equals(AppConstant.filter_started)) {
+            holder.docFilter.compoundDrawables?.getOrNull(0)
+                ?.setTint(holder.docFilter.context.resources.getColor(R.color.filter_yellow))
+        }
+        if (filter.equals(AppConstant.filter_pending)) {
+            holder.docFilter.compoundDrawables?.getOrNull(0)
+                ?.setTint(holder.docFilter.context.resources.getColor(R.color.colaba_apptheme_blue))
+        }
+        if (filter.equals(AppConstant.filter_completed)) {
+            holder.docFilter.compoundDrawables?.getOrNull(0)
+                ?.setTint(holder.docFilter.context.resources.getColor(R.color.filter_green))
+        }
+        if (filter.equals(AppConstant.filter_manuallyAdded)) {
+            holder.docFilter.compoundDrawables?.getOrNull(0)
+                ?.setTint(holder.docFilter.context.resources.getColor(R.color.filter_grey))
         }
     }
 
-    fun getDocType(docType:String):String{
+
+    fun getDocType(docType: String): String {
         val doctype = docType.split(".").toTypedArray()
         val type = doctype[1]
         return type
     }
 
-    fun setDocImage(docType: String, imageView: ImageView){
-        if(docType.equals("png")){
-            imageView.setBackgroundResource(R.drawable.ic_png)
+    fun setDocImage(docType: String, imageView: ImageView) {
+        if (docType.equals(AppConstant.file_format_png,ignoreCase = true)) {
+            imageView.setImageResource(R.drawable.ic_png)
+        } else if (docType.equals(AppConstant.file_format_pdf,ignoreCase = true)) {
+            imageView.setImageResource(R.drawable.ic_pdf)
+        } else if (docType.equals(AppConstant.file_format_jpg,ignoreCase = true) || (docType.equals(AppConstant.file_format_jpeg,ignoreCase = true))) {
+            imageView.setImageResource(R.drawable.ic_jpg)
         }
-
     }
 
-    override fun getItemCount(): Int =  docsList.size
+    override fun getItemCount(): Int = docsList.size
 
-    private fun returnDocCreatedTime(input:String):String{
+    private fun returnDocCreatedTime(input: String): String {
 
         var lastSeen = input
 
@@ -195,8 +217,6 @@ internal constructor(
         return lastSeen
 
     }
-
-
 
 
 }

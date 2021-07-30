@@ -3,15 +3,16 @@ package com.rnsoft.colabademo
 import com.google.gson.annotations.SerializedName
 
 data class BorrowerDocsModel(
-    val createdOn: String,
-    val docId: String,
-    val docName: String,
+    val createdOn: String?,
+    val docId: String?,
+    val docName: String?,
     @SerializedName("files") val subFiles : ArrayList<SubFiles>,
-    val id: String,
-    val requestId: String,
-    val status: String,
-    val typeId: String,
-    val userName: String
+    val id: String?,
+    val requestId: String?,
+    val status: String?,
+    val typeId: String?,
+    val userName: String?,
+    val isRead: Boolean?
 )
 
 data class SubFiles(
