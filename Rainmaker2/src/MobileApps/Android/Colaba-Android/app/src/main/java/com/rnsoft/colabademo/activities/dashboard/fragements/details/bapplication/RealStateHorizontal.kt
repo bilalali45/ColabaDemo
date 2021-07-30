@@ -5,7 +5,6 @@ import android.widget.TextView
 
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
-import com.rnsoft.colabademo.R
 
 open class RealStateHorizontal : AbstractItem<RealStateHorizontal.ViewHolder>() {
     var propertyAddress: String? = null
@@ -17,7 +16,7 @@ open class RealStateHorizontal : AbstractItem<RealStateHorizontal.ViewHolder>() 
 
     /** defines the layout which will be used for this item in the list */
     override val layoutRes: Int
-        get() = R.layout.list_realstate_horizontal
+        get() = R.layout.realstate_horizontal
 
     override fun getViewHolder(v: View): ViewHolder {
 

@@ -2,17 +2,19 @@ package com.rnsoft.colabademo
 
 import android.content.Context
 import android.graphics.Point
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
-
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
-import com.rnsoft.colabademo.R
 
-open class BorrowerHorizontal : AbstractItem<BorrowerHorizontal.ViewHolder>() {
+open class BorrowerHorizontal(private val isLastItem: Boolean = true ) : AbstractItem<BorrowerHorizontal.ViewHolder>() {
     var name: String? = null
     var coName: String? = null
+
+
 
     /** defines the type defining this item. must be unique. preferably an id */
 
@@ -22,9 +24,12 @@ open class BorrowerHorizontal : AbstractItem<BorrowerHorizontal.ViewHolder>() {
     override val layoutRes: Int
         get() = R.layout.list_borrower_horizontal
 
+
+
     override fun getViewHolder(v: View): ViewHolder {
         //v.layoutParams.width = (getScreenWidth(v.context) / totalItemsToBeDisplayed)
-        return ViewHolder(v)
+        Log.e("getViewHolder", isLastItem.toString())
+        return ViewHolder(v, isLastItem)
     }
 
     fun getScreenWidth(context: Context): Int {
@@ -35,13 +40,19 @@ open class BorrowerHorizontal : AbstractItem<BorrowerHorizontal.ViewHolder>() {
         return size.x
     }
 
-    class ViewHolder(view: View) : FastAdapter.ViewHolder<BorrowerHorizontal>(view) {
-        var name: TextView = view.findViewById(R.id.product_name)
-        var coName: TextView = view.findViewById(R.id.product_price)
+    class ViewHolder(view: View, private val isLastItem:Boolean = true) : FastAdapter.ViewHolder<BorrowerHorizontal>(view) {
+        var name: TextView = view.findViewById(R.id.main_borrower_test)
+        var coName: TextView = view.findViewById(R.id.co_borrower_test)
+        private val dataCellConstraintLayout:ConstraintLayout = view.findViewById(R.id.data_cell) as ConstraintLayout
+        //val lastCellConstraintLayout:ConstraintLayout = view.findViewById(R.id.last_cell) as ConstraintLayout
+
+
 
         override fun bindView(item: BorrowerHorizontal, payloads: List<Any>) {
             name.text = item.name
             coName.text = item.coName
+            Log.e("is-last-item", isLastItem.toString())
+
         }
 
         override fun unbindView(item: BorrowerHorizontal) {
