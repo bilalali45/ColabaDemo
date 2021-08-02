@@ -35,6 +35,7 @@ enum EndPoint:String{
     case getLoanInformation = "loanapplication/loan/getloaninfo?"
     case getLoanDocuments = "documentmanagement/mcudocument/getdocuments?"
     case viewLoanDocument = "documentmanagement/mcudocument/View?"
+    case getLoanApplicationData = "loanapplication/Loan/GetBorrowerLoanApplication?"
     case logout = "identity/mcuaccount/Logout"
     
 }

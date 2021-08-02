@@ -109,6 +109,7 @@ class DocumentListFragment : Fragment(), AdapterClickListener {
     override fun navigateTo(position: Int) {
         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
             val selectedFile = docsArrayList[position]
+            /*
             if (download_docId != null && download_requestId != null && download_id != null)
                 detailViewModel.downloadFile(
                     token = authToken,
@@ -117,6 +118,8 @@ class DocumentListFragment : Fragment(), AdapterClickListener {
                     docId = download_docId!!,
                     fileId = selectedFile.id
                 )
+
+             */
         }
     }
 

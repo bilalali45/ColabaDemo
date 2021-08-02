@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,6 +18,10 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
 
     private val _borrowerDocsModelList : MutableLiveData<ArrayList<BorrowerDocsModel>> =   MutableLiveData()
     val borrowerDocsModelList: LiveData<ArrayList<BorrowerDocsModel>> get() = _borrowerDocsModelList
+
+    private val _borrowerApplicationTabModel : MutableLiveData<BorrowerApplicationTabModel> =   MutableLiveData()
+    val borrowerApplicationTabModel: LiveData<BorrowerApplicationTabModel> get() = _borrowerApplicationTabModel
+
 
 
     suspend fun getLoanInfo(token:String, loanApplicationId:Int) {
@@ -48,17 +51,17 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
         }
     }
 
-     fun downloadFile(token:String,  id:String, requestId:String, docId:String, fileId:String){
+    suspend fun getBorrowerApplicationTabData(token:String, borrowerId:Int) {
         viewModelScope.launch {
-            val responseResult = detailRepo.downloadFile(token = token, id = id, requestId = requestId, docId = docId, fileId = fileId )
-            if (responseResult is Response<*>){
-
-            }
-
+            val responseResult = detailRepo.getBorrowerApplicationTabData(token = token, borrowerId = borrowerId)
+            if (responseResult is Result.Success)
+                _borrowerApplicationTabModel.value = (responseResult.data)
+            else if(responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+            else if(responseResult is Result.Error)
+                EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
         }
     }
-
-
 
 
 

@@ -15,7 +15,7 @@ class UtilitiesUnitTest: XCTestCase {
     }
     
     func testTokenExpiryReturnsFalse(){
-        XCTAssertFalse(Utility.getIsTokenExpire(tokenValidityDate: "2021-07-15T22:49:40Z"))
+        XCTAssertFalse(Utility.getIsTokenExpire(tokenValidityDate: "2021-08-15T22:49:40Z"))
     }
     
     func testTokenExpiryReturnsTrue(){
@@ -24,5 +24,13 @@ class UtilitiesUnitTest: XCTestCase {
     
     func testTokenExpiryWithEmptyDateReturnsTrue(){
         XCTAssertTrue(Utility.getIsTokenExpire(tokenValidityDate: ""))
+    }
+    
+    func testDocumentFileTypeIcon(){
+        XCTAssertNotNil(Utility.getDocumentFileTypeIcon(fileName: "two-fa.png"))
+    }
+    
+    func testDocumentStatusIcon(){
+        XCTAssertNotNil(Utility.getDocumentStatusIcon(documentStatus: "Pending"))
     }
 }

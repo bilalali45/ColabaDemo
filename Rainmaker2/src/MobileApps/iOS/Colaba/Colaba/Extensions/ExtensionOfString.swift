@@ -30,6 +30,7 @@ extension Int{
     func withCommas() -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .currency
+        numberFormatter.locale = Locale(identifier: "en_US")
         numberFormatter.alwaysShowsDecimalSeparator = false
         return numberFormatter.string(from: NSNumber(value:self))!
     }
