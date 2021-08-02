@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LoadingPlaceholderView
 
 class ApplicationViewController: BaseViewController {
 
@@ -34,9 +35,14 @@ class ApplicationViewController: BaseViewController {
     @IBOutlet weak var governmentQuestionsView: UIView!
     @IBOutlet weak var questionsCollectionView: UICollectionView!
     
+    var loanApplicationId = 0
+    var loanApplicationDetail = LoanApplicationModel()
+    let loadingPlaceholderView = LoadingPlaceholderView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        getLoanApplicationDetail()
     }
     
     //MARK:- Methods and Actions
@@ -95,12 +101,69 @@ class ApplicationViewController: BaseViewController {
         }
     }
     
+    func setApplicationData(){
+        self.lblAddress.text = "\(loanApplicationDetail.street) \(loanApplicationDetail.unit)\n\(loanApplicationDetail.city) \(loanApplicationDetail.stateName) \(loanApplicationDetail.zipCode) \(loanApplicationDetail.countryName)"
+        self.lblPropertyType.text = "\(loanApplicationDetail.propertyTypeName)   ·   \(loanApplicationDetail.propertyUsageName)"
+        self.lblLoanPayment.text = loanApplicationDetail.loanAmount.withCommas().replacingOccurrences(of: ".00", with: "")
+        self.lblDownPayment.text = loanApplicationDetail.deposit.withCommas().replacingOccurrences(of: ".00", with: "")
+        self.lblPercentage.text = String(format: "(%.0f%%)", loanApplicationDetail.depositPercent.rounded())
+        let totalAssets = Int(loanApplicationDetail.totalAsset)
+        let totalIncome = Int(loanApplicationDetail.totalMonthyIncome)
+        self.lblTotalAssets.text = totalAssets.withCommas().replacingOccurrences(of: ".00", with: "")
+        self.lblMonthlyIncome.text = totalIncome.withCommas().replacingOccurrences(of: ".00", with: "")
+        self.borrowerCollectionView.reloadData()
+        self.realEstateCollectionView.reloadData()
+        self.questionsCollectionView.reloadData()
+        self.borrowerCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: true)
+    }
+    
+    //MARK:- API's
+    
+    func getLoanApplicationDetail(){
+        
+        loadingPlaceholderView.cover(self.view, animated: true)
+        let extraData = "borrowerId=\(loanApplicationId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getLoanApplicationData, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                self.loadingPlaceholderView.uncover(animated: true)
+                
+                if (status == .success){
+                    self.mainView.isHidden = false
+                    let loanApplicationModel = LoanApplicationModel()
+                    loanApplicationModel.updateModelWithJSON(json: result["data"])
+                    self.loanApplicationDetail = loanApplicationModel
+                    self.setApplicationData()
+                }
+                else{
+                    self.mainView.isHidden = true
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { reason in
+                        
+                    }
+                }
+            }
+            
+        }
+        
+    }
+    
 }
 
 extension ApplicationViewController: UICollectionViewDataSource, UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collectionView == questionsCollectionView ? 4 : 3
+        
+        if (collectionView == borrowerCollectionView){
+            return 3
+        }
+        else if (collectionView == realEstateCollectionView){
+            return 3
+        }
+        else{
+            return 4
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -115,7 +178,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
             cell.addMoreView.layer.borderWidth = 1
             cell.addMoreView.layer.borderColor = Theme.getAppGreyColor().withAlphaComponent(0.3).cgColor
             cell.addMoreView.backgroundColor = .clear
-            cell.lblBorrowerName.text = indexPath.row == 1 ? "Maria Randall" : "Richard Glenn Randall"
+            cell.lblBorrowerName.text = indexPath.row == 1 ? "Maria Randall" : "\(loanApplicationDetail.firstName) \(loanApplicationDetail.lastName)"
             cell.lblBorrowerType.text = indexPath.row == 1 ? "Co-Borrower" : "Primary Borrower"
             cell.mainView.isHidden = indexPath.row == 2
             cell.addMoreView.isHidden = indexPath.row != 2

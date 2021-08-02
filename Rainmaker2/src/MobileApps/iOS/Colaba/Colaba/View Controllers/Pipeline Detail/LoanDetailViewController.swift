@@ -72,7 +72,7 @@ class LoanDetailViewController: BaseViewController {
             let indicator = carbonTabSwipeNavigation.carbonSegmentedControl?.indicator
             let subView = UIView()
             subView.backgroundColor = Theme.getButtonBlueColor()
-            subView.layer.cornerRadius = 2
+            subView.roundOnlyTopCorners(radius: 4)
             indicator?.addSubview(subView)
             subView.translatesAutoresizingMaskIntoConstraints = false
             subView.widthAnchor.constraint(equalToConstant: segmentWidth * 0.8).isActive = true
@@ -261,7 +261,9 @@ extension LoanDetailViewController: CarbonTabSwipeNavigationDelegate{
             return vc
         }
         else if (index == 1){
-            return Utility.getApplicationVC()
+            let vc = Utility.getApplicationVC()
+            vc.loanApplicationId = self.loanApplicationId
+            return vc
         }
         else{
             let vc = Utility.getDocumentsVC()

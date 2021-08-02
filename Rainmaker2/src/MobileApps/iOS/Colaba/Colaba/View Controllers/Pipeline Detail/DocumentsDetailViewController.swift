@@ -81,22 +81,14 @@ class DocumentsDetailViewController: UIViewController {
 extension DocumentsDetailViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return selectedDocument.files.count + 1
+        return selectedDocument.message == "" ? selectedDocument.files.count : selectedDocument.files.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if (indexPath.row == 0){
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentMessageTableViewCell", for: indexPath) as! DocumentMessageTableViewCell
-            cell.mainView.layer.cornerRadius = 6
-            cell.mainView.layer.borderWidth = 1
-            cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-            cell.mainView.dropShadowToCollectionViewCell()
-            return cell
-        }
-        else{
+        if (selectedDocument.message == ""){
             let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsDetailTableViewCell", for: indexPath) as! DocumentsDetailTableViewCell
-            let file = selectedDocument.files[indexPath.row - 1]
+            let file = selectedDocument.files[indexPath.row]
             
             cell.iconDocument.image = Utility.getDocumentFileTypeIcon(fileName: file.clientName == "" ? file.mcuName : file.clientName)
             cell.lblAttatchmentName.font = file.isRead ? Theme.getRubikRegularFont(size: 15) : Theme.getRubikMediumFont(size: 15)
@@ -107,28 +99,67 @@ extension DocumentsDetailViewController: UITableViewDataSource, UITableViewDeleg
             
             return cell
         }
+        else{
+            if (indexPath.row == 0){
+                let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentMessageTableViewCell", for: indexPath) as! DocumentMessageTableViewCell
+                cell.mainView.layer.cornerRadius = 6
+                cell.mainView.layer.borderWidth = 1
+                cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+                cell.mainView.dropShadowToCollectionViewCell()
+                cell.lblMessage.text = selectedDocument.message
+                return cell
+            }
+            else{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsDetailTableViewCell", for: indexPath) as! DocumentsDetailTableViewCell
+                let file = selectedDocument.files[indexPath.row - 1]
+                
+                cell.iconDocument.image = Utility.getDocumentFileTypeIcon(fileName: file.clientName == "" ? file.mcuName : file.clientName)
+                cell.lblAttatchmentName.font = file.isRead ? Theme.getRubikRegularFont(size: 15) : Theme.getRubikMediumFont(size: 15)
+                cell.lblAttatchmentName.text = file.clientName == "" ? file.mcuName : file.clientName
+                cell.lblTime.text = Utility.getDocumentDate(file.fileUploadedOn)
+                cell.mainView.layer.cornerRadius = 8
+                cell.mainView.dropShadow()
+                
+                return cell
+            }
+        }
+        
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if (indexPath.row != 0){
-            let file = selectedDocument.files[indexPath.row - 1]
+        if (selectedDocument.message == ""){
+            let file = selectedDocument.files[indexPath.row]
             file.isRead = true
             showDocumentFile(fileName: file.clientName == "" ? file.mcuName : file.clientName, fileId: file.fileId)
             self.tblViewDocuments.reloadData()
+        }
+        else{
+            if (indexPath.row != 0){
+                let file = selectedDocument.files[indexPath.row - 1]
+                file.isRead = true
+                showDocumentFile(fileName: file.clientName == "" ? file.mcuName : file.clientName, fileId: file.fileId)
+                self.tblViewDocuments.reloadData()
+            }
         }
         
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if (indexPath.row == 0){
-            return UITableView.automaticDimension
-        }
-        else{
+        if (selectedDocument.message == ""){
             return 96
         }
+        else{
+            if (indexPath.row == 0){
+                return UITableView.automaticDimension
+            }
+            else{
+                return 96
+            }
+        }
+        
         
     }
 }
