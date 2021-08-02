@@ -1,9 +1,6 @@
 package com.rnsoft.colabademo
 
-import android.R.color
 import android.content.Context
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,6 +22,7 @@ internal constructor(
     passedDocsList: ArrayList<BorrowerDocsModel>, onAdapterClickListener: AdapterClickListener
 ) : RecyclerView.Adapter<BorrowerDocumentAdapter.DocsViewHolder>() {
 
+    private lateinit var context : Context
     lateinit var holder: DocsViewHolder
     private var docsList = ArrayList<BorrowerDocsModel>()
     private var classScopedItemClickListener: AdapterClickListener = onAdapterClickListener
@@ -35,8 +33,8 @@ internal constructor(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocsViewHolder {
-        //val holder: DocsViewHolder
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
+        this.context = parent.context
         holder = DocsViewHolder(inflater.inflate(R.layout.doc_view_holder_layout, parent, false))
         return holder
     }
@@ -63,31 +61,31 @@ internal constructor(
         var docCardView: CardView = itemView.findViewById(R.id.docCardView)
 
         var docFilter: TextView = itemView.findViewById(R.id.doc_status)
+        var imageFilterCirle: ImageView = itemView.findViewById(R.id.image_filter_circle)
+
 
         init {
             docCardView.setOnClickListener {
                 classScopedItemClickListener.navigateTo(adapterPosition)
             }
         }
-
     }
+
 
     override fun onBindViewHolder(holder: DocsViewHolder, position: Int) {
         val doc = docsList[position]
+
+        // set Doc name
         holder.docType.text = doc.docName
-        Log.e("isREad", ""+doc.isRead)
-         if(doc.isRead==true){
-             holder.docType.text = doc.docName
-         } else {
-             holder.docType.text = doc.docName // set bold
-             holder.docType.setTypeface(null,Typeface.BOLD)
-         }
-
-
+        if(doc.subFiles.size>0){
+            for(file in doc.subFiles){
+                if((!file.isRead)){
+                    holder.docType.setTypeface(null,Typeface.BOLD)
+                }
+            }
+        }
 
         doc.createdOn.let { activityTime ->
-            //var newString = activityTime.substring( 0 , activityTime.length-5)
-            //newString+="Z"
             val newString = returnDocCreatedTime(activityTime!!)
             holder.docUploadedTime.text = newString
         }
@@ -151,42 +149,35 @@ internal constructor(
             }
 
     }
-
     private fun setDocFilterColor(filter: String) {
-        if (filter.equals(AppConstant.filter_inDraft)) {
-            holder.docFilter.compoundDrawables?.getOrNull(0)
-                ?.setTint(holder.docFilter.context.resources.getColor(R.color.filter_blue))
+        if (filter.equals(AppConstant.filter_inDraft, ignoreCase = true)) {
+            holder.imageFilterCirle.setColorFilter(ContextCompat.getColor(context, R.color.filter_blue));
         }
-        if (filter.equals(AppConstant.filter_borrower_todo)) {
-            holder.docFilter.compoundDrawables?.getOrNull(0)
-                ?.setTint(holder.docFilter.context.resources.getColor(R.color.colaba_red_color))
+        else if (filter.equals(AppConstant.filter_borrower_todo, ignoreCase = true)) {
+            holder.imageFilterCirle.setColorFilter(ContextCompat.getColor(context, R.color.colaba_red_color));
         }
-        if (filter.equals(AppConstant.filter_started)) {
-            holder.docFilter.compoundDrawables?.getOrNull(0)
-                ?.setTint(holder.docFilter.context.resources.getColor(R.color.filter_yellow))
+        else if (filter.equals(AppConstant.filter_started, ignoreCase = true)) {
+            holder.imageFilterCirle.setColorFilter(ContextCompat.getColor(context, R.color.filter_yellow));
         }
-        if (filter.equals(AppConstant.filter_pending)) {
-            holder.docFilter.compoundDrawables?.getOrNull(0)
-                ?.setTint(holder.docFilter.context.resources.getColor(R.color.colaba_apptheme_blue))
+        else if (filter.equals(AppConstant.filter_pending, ignoreCase = true) ||
+            filter.equals(AppConstant.filter_pending_review, ignoreCase = true)) {
+            holder.imageFilterCirle.setColorFilter(ContextCompat.getColor(context, R.color.colaba_apptheme_blue));
         }
-        if (filter.equals(AppConstant.filter_completed)) {
-            holder.docFilter.compoundDrawables?.getOrNull(0)
-                ?.setTint(holder.docFilter.context.resources.getColor(R.color.filter_green))
+        else if (filter.equals(AppConstant.filter_completed,ignoreCase = true)) {
+            holder.imageFilterCirle.setColorFilter(ContextCompat.getColor(context, R.color.filter_green));
         }
-        if (filter.equals(AppConstant.filter_manuallyAdded)) {
-            holder.docFilter.compoundDrawables?.getOrNull(0)
-                ?.setTint(holder.docFilter.context.resources.getColor(R.color.filter_grey))
+        else if (filter.equals(AppConstant.filter_manuallyAdded, ignoreCase = true)) {
+            holder.imageFilterCirle.setColorFilter(ContextCompat.getColor(context, R.color.filter_grey))
         }
     }
 
-
-    fun getDocType(docType: String): String {
+    private fun getDocType(docType: String): String {
         val doctype = docType.split(".").toTypedArray()
         val type = doctype[1]
         return type
     }
 
-    fun setDocImage(docType: String, imageView: ImageView) {
+    private fun setDocImage(docType: String, imageView: ImageView) {
         if (docType.equals(AppConstant.file_format_png,ignoreCase = true)) {
             imageView.setImageResource(R.drawable.ic_png)
         } else if (docType.equals(AppConstant.file_format_pdf,ignoreCase = true)) {
@@ -198,25 +189,19 @@ internal constructor(
 
     override fun getItemCount(): Int = docsList.size
 
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
     private fun returnDocCreatedTime(input: String): String {
-
         var lastSeen = input
-
         val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
         val oldDate: Date? = formatter.parse(input)
-
-
         val oldMillis = oldDate?.time
 
         oldMillis?.let {
-            //Log.e("oldMillis", "Date in milli :: FOR API >= 26 >>> $oldMillis")
-            //Log.e("lastseen", "Date in milli :: FOR API >= 26 >>>"+ lastseen(oldMillis))
             lastSeen = AppSetting.lastseen(oldMillis)
         }
-
         return lastSeen
-
     }
-
-
 }

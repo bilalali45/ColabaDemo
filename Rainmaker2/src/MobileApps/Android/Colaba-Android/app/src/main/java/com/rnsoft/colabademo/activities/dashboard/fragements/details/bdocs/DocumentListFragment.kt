@@ -2,9 +2,12 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -32,6 +35,9 @@ class DocumentListFragment : Fragment(), AdapterClickListener {
     private var download_id: String? = null
     private var download_requestId: String? = null
     private var download_docId: String? = null
+    private var doc_name: String? = null
+    private var doc_message: String? = null
+    lateinit var tvDocName : TextView
 
     private val detailViewModel: DetailViewModel by activityViewModels()
 
@@ -43,14 +49,23 @@ class DocumentListFragment : Fragment(), AdapterClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = DetailListLayoutBinding.inflate(inflater, container, false)
         val view: View = binding.root
+
+        doc_name = arguments?.getString(AppConstant.docName)
+        doc_message = arguments?.getString(AppConstant.docMessage)
+        docsArrayList = arguments?.getParcelableArrayList(AppConstant.docObject)!!
+
+        Log.e("List frag", "doc name : " + doc_name + doc_message)
+        tvDocName = view.findViewById(R.id.doc_type_name)
+        setDocNameAndMsg(doc_name!!,doc_message!!)
 
         docsRecycler = view.findViewById(R.id.docs_detail_list_recycle_view)
         val linearLayoutManager = LinearLayoutManager(activity)
 
         lifecycleScope.launchWhenStarted {
+            doc_name = arguments?.getString(AppConstant.docName)
+            doc_message = arguments?.getString(AppConstant.docMessage)
             val filesNames = arguments?.getString(AppConstant.innerFilesName)
             download_id = arguments?.getString(AppConstant.download_id).toString()
             download_requestId = arguments?.getString(AppConstant.download_requestId).toString()
@@ -60,8 +75,10 @@ class DocumentListFragment : Fragment(), AdapterClickListener {
                 val token: TypeToken<ArrayList<SubFiles>> =
                     object : TypeToken<ArrayList<SubFiles>>() {}
                 docsArrayList.clear()
+
                 docsArrayList = Gson().fromJson(it, token.type)
             }
+            Log.e("Doc List Frag", "$docsArrayList")
             documentListAdapter = DocumentListAdapter(docsArrayList, this@DocumentListFragment)
             docsRecycler.apply {
                 this.layoutManager = linearLayoutManager
@@ -76,8 +93,16 @@ class DocumentListFragment : Fragment(), AdapterClickListener {
         }
         return view
     }
+    fun setDocNameAndMsg(docName:String, docMsg:String){
+        tvDocName.text = docName
+
+    }
 
     override fun getCardIndex(position: Int) {
+
+    }
+
+    private fun initViews(){
 
     }
 

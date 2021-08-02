@@ -2,30 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:layout_marginTop="10dp">
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_all"
-        android:layout_width="40dp"
+        android:layout_width="45dp"
         android:layout_height="30dp"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="18dp"
         android:text="@string/doc_filter_all"
         android:textSize="13sp"
         android:fontFamily="@font/rubik_regular"
         android:textAllCaps="false"
         android:gravity="center"
-        android:focusableInTouchMode="true"
-        android:background="@drawable/selector_filter_btns"
+        android:background="@drawable/style_filter_btns"
         android:textColor="@color/doc_filter_text_color_selector">
-        <requestFocus/>
     </androidx.appcompat.widget.AppCompatButton>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_filter_indraft"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginTop="10dp"
         android:paddingStart="5dp"
         android:paddingEnd="15dp"
         android:layout_marginStart="10dp"
@@ -36,7 +33,7 @@
         android:gravity="start|center"
         android:drawableStart="@drawable/circle_medium"
         android:drawableTint="@color/filter_blue"
-        android:background="@drawable/selector_filter_btns"
+        android:background="@drawable/style_filter_btns"
         android:textColor="@color/doc_filter_text_color_selector"
         />
 
@@ -44,7 +41,6 @@
         android:id="@+id/btn_filter_todo"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginTop="10dp"
         android:paddingStart="5dp"
         android:paddingEnd="15dp"
         android:layout_marginStart="10dp"
@@ -55,7 +51,7 @@
         android:textAllCaps="false"
         android:drawableStart="@drawable/circle_medium"
         android:drawableTint="@color/colaba_red_color"
-        android:background="@drawable/selector_filter_btns"
+        android:background="@drawable/style_filter_btns"
         android:textColor="@color/doc_filter_text_color_selector"
         />
 
@@ -63,7 +59,6 @@
         android:id="@+id/btn_filter_started"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginTop="10dp"
         android:paddingStart="5dp"
         android:paddingEnd="15dp"
         android:layout_marginStart="10dp"
@@ -74,7 +69,7 @@
         android:gravity="start|center"
         android:drawableStart="@drawable/circle_medium"
         android:drawableTint="@color/filter_yellow"
-        android:background="@drawable/selector_filter_btns"
+        android:background="@drawable/style_filter_btns"
         android:textColor="@color/doc_filter_text_color_selector"
         />
 
@@ -82,7 +77,6 @@
         android:id="@+id/btn_filter_pending"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginTop="10dp"
         android:paddingStart="5dp"
         android:paddingEnd="15dp"
         android:layout_marginStart="10dp"
@@ -93,7 +87,7 @@
         android:gravity="start|center"
         android:drawableStart="@drawable/circle_medium"
         android:drawableTint="@color/colaba_apptheme_blue"
-        android:background="@drawable/selector_filter_btns"
+        android:background="@drawable/style_filter_btns"
         android:textColor="@color/doc_filter_text_color_selector"
         />
 
@@ -101,7 +95,6 @@
         android:id="@+id/btn_filter_completed"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginTop="10dp"
         android:paddingStart="5dp"
         android:paddingEnd="15dp"
         android:layout_marginStart="10dp"
@@ -112,14 +105,13 @@
         android:gravity="start|center"
         android:drawableStart="@drawable/circle_medium"
         android:drawableTint="@color/filter_green"
-        android:background="@drawable/selector_filter_btns"
+        android:background="@drawable/style_filter_btns"
         android:textColor="@color/doc_filter_text_color_selector"
         />
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_filter_manullayAdded"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginTop="10dp"
         android:paddingStart="5dp"
         android:paddingEnd="15dp"
         android:layout_marginStart="10dp"
@@ -131,7 +123,7 @@
         android:layout_marginEnd="10dp"
         android:drawableStart="@drawable/circle_medium"
         android:drawableTint="@color/filter_grey"
-        android:background="@drawable/selector_filter_btns"
+        android:background="@drawable/style_filter_btns"
         android:textColor="@color/doc_filter_text_color_selector"
         />
 

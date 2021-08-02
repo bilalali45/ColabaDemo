@@ -75,21 +75,25 @@
             app:layout_constraintTop_toTopOf="@+id/searchIconImageView"
             app:srcCompat="@drawable/three_dots" />
 
-
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/detail_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:background="@color/colaba_loan_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/borrower_purpose"
             app:tabIconTint="@color/colaba_red_color"
-            app:tabIndicatorColor="@color/colaba_primary_color"
-            app:tabSelectedTextColor="@color/colaba_primary_color"
+            app:tabIndicator="@drawable/tab_indicator"
+            app:tabIndicatorHeight="4dp"
+            app:tabIndicatorColor="@color/colaba_apptheme_blue"
+            app:tabSelectedTextColor="@color/colaba_apptheme_blue"
             app:tabTextAppearance="@style/MineCustomTabText"
-            app:tabTextColor="@color/grey_color_two" />
+            app:tabTextColor="@color/grey_color_two"
+            app:tabIndicatorFullWidth="false"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

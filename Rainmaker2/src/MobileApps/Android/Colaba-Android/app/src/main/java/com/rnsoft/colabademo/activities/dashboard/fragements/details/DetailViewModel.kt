@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,12 +33,14 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
         }
     }
 
-
     suspend fun getBorrowerDocuments(token:String, loanApplicationId:Int) {
         viewModelScope.launch {
             val responseResult = detailRepo.getBorrowerDocuments(token = token, loanApplicationId = loanApplicationId)
-            if (responseResult is Result.Success)
+            //Log.e("Detail VM","token: " + token + " loan id: " + loanApplicationId )
+            if (responseResult is Result.Success){
                 _borrowerDocsModelList.value = (responseResult.data)
+                 //Log.e("Doc-response", "$responseResult")
+            }
             else if(responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                 EventBus.getDefault().post(WebServiceErrorEvent(null, true))
             else if(responseResult is Result.Error)

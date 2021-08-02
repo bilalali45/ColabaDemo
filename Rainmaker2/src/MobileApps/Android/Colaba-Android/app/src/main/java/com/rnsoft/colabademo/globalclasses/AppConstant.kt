@@ -30,7 +30,7 @@ object AppConstant {
         const val tokenTypeName:String = "tokenTypeName"
 
         const val tenantTwoFaSetting:String = "tenantTwoFaSetting"
-        //const val userTwoFaSetting:String = "userTwoFaSetting"
+
 
         const val otpDataJson:String =  "otpDataJson"
         const val phoneNumber:String = "phoneNumber"
@@ -42,10 +42,6 @@ object AppConstant {
         const val loanApplicationId:String = "loanApplicationId"
 
         const val loanPurpose:String = "loanPurpose"
-
-
-
-        const val docNames:String = "docNames"
 
 
         const val maxOtpSendAllowed:String = "maxOtpSendAllowed"
@@ -69,7 +65,9 @@ object AppConstant {
         const val  ASSIGN_TO_ME:String = "ASSIGN_TO_ME"
 
         const val  innerFilesName:String = "innerFilesName"
-
+        const val  docObject:String = "docObject"
+        const val  docName:String = "docName"
+        const val  docMessage:String = "docMessage"
 
         const val oldLoans:String = "oldLoans"
         const val oldActiveLoans:String = "oldActiveLoans"
@@ -79,13 +77,16 @@ object AppConstant {
         const val download_requestId:String = "download_requestId"
         const val download_docId:String = "download_docId"
 
+        // doc filters/status
         const val filter_inDraft:String = "In Draft"
         const val filter_borrower_todo:String = "Borrower to do"
         const val filter_started:String = "Started"
         const val filter_pending:String = "Pending"
+        const val filter_pending_review:String = "Pending review"
         const val filter_completed:String = "Completed"
         const val filter_manuallyAdded:String = "Manually Added"
 
+        // file formats
         const val file_format_pdf:String = "pdf"
         const val file_format_png:String = "png"
         const val file_format_jpg:String = "jpg"

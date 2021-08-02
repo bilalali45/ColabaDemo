@@ -8,8 +8,6 @@
     android:background="@color/colaba_loan_background"
     tools:context=".MainActivity">
 
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/home_profile_layout"
         android:layout_width="match_parent"
@@ -19,7 +17,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
 
         <ImageView
             android:id="@+id/backButton"
@@ -47,9 +44,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/backButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="@color/colaba_loan_background"
