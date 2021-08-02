@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
@@ -28,6 +29,9 @@ class BorrowerApplicationFragment : Fragment() {
     private lateinit var horizontalRecyclerView: RecyclerView
     private lateinit var realStateRecyclerView: RecyclerView
     private lateinit var govtQuestionsRecyclerView: RecyclerView
+
+    private val detailViewModel: DetailViewModel by activityViewModels()
+
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -85,6 +89,28 @@ class BorrowerApplicationFragment : Fragment() {
         questionList.add(TabGovtQuestionList(3, "Undisclosed Mortgage Applications", "Have you had an ownership interest in another property in the last three years?"))
         questionList.add(TabGovtQuestionList(4, "Debt Co-signer or Guarantor", "Are you a co-signer or guarantor on any debt or loan that is not disclosed on this application..."))
         setUpGovtQuestionsRecycleView(questionList)
+
+        detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, { appTabModel->
+            if (appTabModel != null) {
+                appTabModel.borrowerAppData?.subjectProperty?.borrowerAddress?.let {
+                    binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+                }
+
+                appTabModel.borrowerAppData?.subjectProperty?.propertyTypeName?.let{
+                    binding.bAppPropertyType.text = it
+                }
+
+                appTabModel.borrowerAppData?.subjectProperty?.propertyUsageName.let{
+                    binding.bAppPropertyUsage.text = it
+                }
+
+                appTabModel.borrowerAppData?.loanInformation?.loanAmount?.let{
+                    binding.bAppLoanPayment.text = it.toString()
+                }
+
+
+            }
+        })
 
         return root
 
