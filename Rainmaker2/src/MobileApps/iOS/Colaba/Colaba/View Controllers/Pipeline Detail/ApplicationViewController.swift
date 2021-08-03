@@ -68,42 +68,15 @@ class ApplicationViewController: BaseViewController {
         monthlyIncomeView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         monthlyIncomeView.dropShadowToCollectionViewCell()
         
-        let propertyTypeText = "Single Family Residency   ·   Investment Property"
-        let propertyTypeAttributedText = NSMutableAttributedString(string: propertyTypeText)
-        let range1 = propertyTypeText.range(of: "·")
-        propertyTypeAttributedText.addAttribute(NSAttributedString.Key.font, value: Theme.getRubikBoldFont(size: 15), range: propertyTypeText.nsRange(from: range1!))
-        lblPropertyType.attributedText = propertyTypeAttributedText
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            let borrowerInfoCollectionViewLayout = UICollectionViewFlowLayout()
-            borrowerInfoCollectionViewLayout.scrollDirection = .horizontal
-            borrowerInfoCollectionViewLayout.sectionInset = UIEdgeInsets(top: 12, left: 20, bottom: 2, right: -80)
-            borrowerInfoCollectionViewLayout.minimumLineSpacing = 10
-            let itemWidth = UIScreen.main.bounds.width * 0.75
-            borrowerInfoCollectionViewLayout.itemSize = CGSize(width: itemWidth, height: 80)
-            self.borrowerCollectionView.collectionViewLayout = borrowerInfoCollectionViewLayout
-            
-            let realEstateCollectionViewLayout = UICollectionViewFlowLayout()
-            realEstateCollectionViewLayout.scrollDirection = .horizontal
-            realEstateCollectionViewLayout.sectionInset = UIEdgeInsets(top: 12, left: 20, bottom: 2, right: -80)
-            realEstateCollectionViewLayout.minimumLineSpacing = 10
-            realEstateCollectionViewLayout.itemSize = CGSize(width: itemWidth, height: 107)
-            self.realEstateCollectionView.collectionViewLayout = realEstateCollectionViewLayout
-            
-            let questionsCollectionViewLayout = UICollectionViewFlowLayout()
-            questionsCollectionViewLayout.scrollDirection = .horizontal
-            questionsCollectionViewLayout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
-            questionsCollectionViewLayout.minimumLineSpacing = 10
-            questionsCollectionViewLayout.itemSize = CGSize(width: itemWidth, height: 212)
-            self.questionsCollectionView.collectionViewLayout = questionsCollectionViewLayout
-            
-            self.questionsCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: true)
-        }
     }
     
     func setApplicationData(){
         self.lblAddress.text = "\(loanApplicationDetail.street) \(loanApplicationDetail.unit)\n\(loanApplicationDetail.city) \(loanApplicationDetail.stateName) \(loanApplicationDetail.zipCode) \(loanApplicationDetail.countryName)"
-        self.lblPropertyType.text = "\(loanApplicationDetail.propertyTypeName)   ·   \(loanApplicationDetail.propertyUsageName)"
+        let propertyTypeText = "\(loanApplicationDetail.propertyTypeName)   ·   \(loanApplicationDetail.propertyUsageName)"
+        let propertyTypeAttributedText = NSMutableAttributedString(string: propertyTypeText)
+        let range1 = propertyTypeText.range(of: "·")
+        propertyTypeAttributedText.addAttribute(NSAttributedString.Key.font, value: Theme.getRubikBoldFont(size: 15), range: propertyTypeText.nsRange(from: range1!))
+        self.lblPropertyType.attributedText = propertyTypeAttributedText
         self.lblLoanPayment.text = loanApplicationDetail.loanAmount.withCommas().replacingOccurrences(of: ".00", with: "")
         self.lblDownPayment.text = loanApplicationDetail.deposit.withCommas().replacingOccurrences(of: ".00", with: "")
         self.lblPercentage.text = String(format: "(%.0f%%)", loanApplicationDetail.depositPercent.rounded())
@@ -114,7 +87,35 @@ class ApplicationViewController: BaseViewController {
         self.borrowerCollectionView.reloadData()
         self.realEstateCollectionView.reloadData()
         self.questionsCollectionView.reloadData()
-        self.borrowerCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: true)
+        
+        let borrowerInfoCollectionViewLayout = UICollectionViewFlowLayout()
+        borrowerInfoCollectionViewLayout.scrollDirection = .horizontal
+        borrowerInfoCollectionViewLayout.sectionInset = UIEdgeInsets(top: 12, left: 20, bottom: 2, right: -80)
+        borrowerInfoCollectionViewLayout.minimumLineSpacing = 10
+        let itemWidth = UIScreen.main.bounds.width * 0.75
+        borrowerInfoCollectionViewLayout.itemSize = CGSize(width: itemWidth, height: 80)
+        self.borrowerCollectionView.collectionViewLayout = borrowerInfoCollectionViewLayout
+        
+        let realEstateCollectionViewLayout = UICollectionViewFlowLayout()
+        realEstateCollectionViewLayout.scrollDirection = .horizontal
+        realEstateCollectionViewLayout.sectionInset = UIEdgeInsets(top: 12, left: 20, bottom: 2, right: -80)
+        realEstateCollectionViewLayout.minimumLineSpacing = 10
+        realEstateCollectionViewLayout.itemSize = CGSize(width: itemWidth, height: 107)
+        self.realEstateCollectionView.collectionViewLayout = realEstateCollectionViewLayout
+        
+        let questionsCollectionViewLayout = UICollectionViewFlowLayout()
+        questionsCollectionViewLayout.scrollDirection = .horizontal
+        questionsCollectionViewLayout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        questionsCollectionViewLayout.minimumLineSpacing = 10
+        questionsCollectionViewLayout.itemSize = CGSize(width: itemWidth, height: 212)
+        self.questionsCollectionView.collectionViewLayout = questionsCollectionViewLayout
+        
+//        self.borrowerCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: true)
+//        self.realEstateCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: true)
+//        if (loanApplicationDetail.governmentQuestions.count > 0){
+//            self.questionsCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: true)
+//        }
+        
     }
     
     //MARK:- API's
@@ -122,7 +123,7 @@ class ApplicationViewController: BaseViewController {
     func getLoanApplicationDetail(){
         
         loadingPlaceholderView.cover(self.view, animated: true)
-        let extraData = "borrowerId=\(loanApplicationId)"
+        let extraData = "loanApplicationId=\(loanApplicationId)"
         
         APIRouter.sharedInstance.executeAPI(type: .getLoanApplicationData, method: .get, params: nil, extraData: extraData) { status, result, message in
             
@@ -155,13 +156,13 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if (collectionView == borrowerCollectionView){
-            return 3
+            return loanApplicationDetail.borrowersInformation.count + 1
         }
         else if (collectionView == realEstateCollectionView){
-            return 3
+            return loanApplicationDetail.realEstatesOwned.count + 1
         }
         else{
-            return 4
+            return loanApplicationDetail.governmentQuestions.count
         }
         
     }
@@ -170,6 +171,18 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
         
         if (collectionView == borrowerCollectionView){
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BorrowerInfoCollectionViewCell", for: indexPath) as! BorrowerInfoCollectionViewCell
+            
+            if (indexPath.row != loanApplicationDetail.borrowersInformation.count){
+                let borrower = loanApplicationDetail.borrowersInformation[indexPath.row]
+                cell.lblBorrowerName.text = "\(borrower.firstName) \(borrower.lastName)"
+                cell.lblBorrowerType.text = borrower.ownTypeId == 1 ? "Primary Borrower" : "Co-Borrower"
+                cell.mainView.isHidden = false
+                cell.addMoreView.isHidden = true
+            }
+            else{
+                cell.mainView.isHidden = true
+                cell.addMoreView.isHidden = false
+            }
             cell.mainView.layer.cornerRadius = 6
             cell.mainView.layer.borderWidth = 1
             cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
@@ -178,14 +191,25 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
             cell.addMoreView.layer.borderWidth = 1
             cell.addMoreView.layer.borderColor = Theme.getAppGreyColor().withAlphaComponent(0.3).cgColor
             cell.addMoreView.backgroundColor = .clear
-            cell.lblBorrowerName.text = indexPath.row == 1 ? "Maria Randall" : "\(loanApplicationDetail.firstName) \(loanApplicationDetail.lastName)"
-            cell.lblBorrowerType.text = indexPath.row == 1 ? "Co-Borrower" : "Primary Borrower"
-            cell.mainView.isHidden = indexPath.row == 2
-            cell.addMoreView.isHidden = indexPath.row != 2
+            
             return cell
         }
         else if (collectionView == realEstateCollectionView){
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RealEstateCollectionViewCell", for: indexPath) as! RealEstateCollectionViewCell
+            
+            if (indexPath.row != loanApplicationDetail.realEstatesOwned.count){
+                let realEstate = loanApplicationDetail.realEstatesOwned[indexPath.row]
+                cell.lblAddress.text = "\(realEstate.street) \(realEstate.unit)\n\(realEstate.city) \(realEstate.stateName) \(realEstate.zipCode) \(realEstate.countryName)"
+                cell.lblPropertyType.text = realEstate.propertyTypeName
+                cell.mainView.isHidden = false
+                cell.addMoreView.isHidden = true
+            }
+            else{
+                cell.mainView.isHidden = true
+                cell.addMoreView.isHidden = false
+            }
+            
+            
             cell.mainView.layer.cornerRadius = 6
             cell.mainView.layer.borderWidth = 1
             cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
@@ -194,49 +218,25 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
             cell.addMoreView.layer.borderWidth = 1
             cell.addMoreView.layer.borderColor = Theme.getAppGreyColor().withAlphaComponent(0.3).cgColor
             cell.addMoreView.backgroundColor = .clear
-            cell.lblAddress.text = indexPath.row == 1 ? "727 Ashleigh Lane,\nSouth Lake TX, 76092" : "5919 Trussville Crossings\nParkways,"
-            cell.lblPropertyType.text = indexPath.row == 1 ? "Single Family Property" : "Land"
-            cell.mainView.isHidden = indexPath.row == 2
-            cell.addMoreView.isHidden = indexPath.row != 2
+            
             return cell
         }
         else{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GovernmentQuestionsCollectionViewCell", for: indexPath) as! GovernmentQuestionsCollectionViewCell //Main View Height Constraint 90 for 0, 120 for 1, 147 for 2, 174 for 3, 202 for 4
+            let question = loanApplicationDetail.governmentQuestions[indexPath.row]
+            
             cell.mainView.layer.cornerRadius = 6
             cell.mainView.layer.borderWidth = 1
             cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-            cell.lblQuestionHeading.text = indexPath.row % 2 == 0 ? "Undisclosed Borrowed Funds" : "Ownership Interest in Property"
-            cell.lblQuestion.text = indexPath.row % 2 == 0 ? "Are you borrowing any money for this real estate transaction (e.g., money for your ..." : "Have you had an ownership interest in another property in the last three years?"
-            cell.iconAns1.image = UIImage(named: indexPath.row % 2 == 0 ? "Ans-Yes" : "Ans-NA")
-            cell.lblAns1.text = indexPath.row % 2 == 0 ? "Yes" : "N/a"
-            cell.lblAns1.font = indexPath.row % 2 == 0 ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
+            cell.lblQuestionHeading.text = question.questionHeader
+            cell.lblQuestion.text = question.questionText
             
-            if (indexPath.row == 0){
-                cell.mainViewHeightConstraint.constant = 147
+            if (question.questionResponses.count == 0){
+                cell.mainViewHeightConstraint.constant = 90
                 
-                cell.iconAns1.isHidden = false
-                cell.lblAns1.isHidden = false
-                cell.lblUser1.isHidden = false
-                
-                cell.iconAns2.isHidden = false
-                cell.lblAns2.isHidden = false
-                cell.lblUser2.isHidden = false
-                
-                cell.iconAns3.isHidden = true
-                cell.lblAns3.isHidden = true
-                cell.lblUser3.isHidden = true
-                
-                cell.iconAns4.isHidden = true
-                cell.lblAns4.isHidden = true
-                cell.lblUser4.isHidden = true
-                
-            }
-            else if (indexPath.row == 1){
-                cell.mainViewHeightConstraint.constant = 120
-                
-                cell.iconAns1.isHidden = false
-                cell.lblAns1.isHidden = false
-                cell.lblUser1.isHidden = false
+                cell.iconAns1.isHidden = true
+                cell.lblAns1.isHidden = true
+                cell.lblUser1.isHidden = true
                 
                 cell.iconAns2.isHidden = true
                 cell.lblAns2.isHidden = true
@@ -250,20 +250,171 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                 cell.lblAns4.isHidden = true
                 cell.lblUser4.isHidden = true
             }
-            else if (indexPath.row == 2){
-                cell.mainViewHeightConstraint.constant = 174
+            else if (question.questionResponses.count == 1){
+                cell.mainViewHeightConstraint.constant = 120
+                
+                let questionResponse1 = question.questionResponses[0]
                 
                 cell.iconAns1.isHidden = false
                 cell.lblAns1.isHidden = false
                 cell.lblUser1.isHidden = false
                 
+                if questionResponse1.questionResponseText == "Yes"{
+                    cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns1.text = "Yes"
+                    cell.lblAns1.font = Theme.getRubikMediumFont(size: 15)
+                }
+                else if (questionResponse1.questionResponseText == "No"){
+                    cell.iconAns1.image = UIImage(named: "Ans-No")
+                    cell.lblAns1.text = "No"
+                    cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                }
+                else{
+                    cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns1.text = "N/a"
+                    cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                }
+                cell.lblUser1.text = " - \(questionResponse1.borrowerFirstName)"
+                
+                cell.iconAns2.isHidden = true
+                cell.lblAns2.isHidden = true
+                cell.lblUser2.isHidden = true
+                
+                cell.iconAns3.isHidden = true
+                cell.lblAns3.isHidden = true
+                cell.lblUser3.isHidden = true
+                
+                cell.iconAns4.isHidden = true
+                cell.lblAns4.isHidden = true
+                cell.lblUser4.isHidden = true
+            }
+            else if (question.questionResponses.count == 2){
+                cell.mainViewHeightConstraint.constant = 147
+                
+                let questionResponse1 = question.questionResponses[0]
+                let questionResponse2 = question.questionResponses[1]
+                
+                cell.iconAns1.isHidden = false
+                cell.lblAns1.isHidden = false
+                cell.lblUser1.isHidden = false
+                
+                if questionResponse1.questionResponseText == "Yes"{
+                    cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns1.text = "Yes"
+                    cell.lblAns1.font = Theme.getRubikMediumFont(size: 15)
+                    
+                }
+                else if (questionResponse1.questionResponseText == "No"){
+                    cell.iconAns1.image = UIImage(named: "Ans-No")
+                    cell.lblAns1.text = "No"
+                    cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                }
+                else{
+                    cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns1.text = "N/a"
+                    cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                }
+                cell.lblUser1.text = " - \(questionResponse1.borrowerFirstName)"
+                
                 cell.iconAns2.isHidden = false
                 cell.lblAns2.isHidden = false
                 cell.lblUser2.isHidden = false
                 
+                if questionResponse2.questionResponseText == "Yes"{
+                    cell.iconAns2.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns2.text = "Yes"
+                    cell.lblAns2.font = Theme.getRubikMediumFont(size: 15)
+                }
+                else if (questionResponse2.questionResponseText == "No"){
+                    cell.iconAns2.image = UIImage(named: "Ans-No")
+                    cell.lblAns2.text = "No"
+                    cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
+                }
+                else{
+                    cell.iconAns2.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns2.text = "N/a"
+                    cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
+                }
+                cell.lblUser2.text = " - \(questionResponse2.borrowerFirstName)"
+                
+                cell.iconAns3.isHidden = true
+                cell.lblAns3.isHidden = true
+                cell.lblUser3.isHidden = true
+                
+                cell.iconAns4.isHidden = true
+                cell.lblAns4.isHidden = true
+                cell.lblUser4.isHidden = true
+                
+            }
+            else if (question.questionResponses.count == 3){
+                cell.mainViewHeightConstraint.constant = 174
+                
+                let questionResponse1 = question.questionResponses[0]
+                let questionResponse2 = question.questionResponses[1]
+                let questionResponse3 = question.questionResponses[2]
+                
+                cell.iconAns1.isHidden = false
+                cell.lblAns1.isHidden = false
+                cell.lblUser1.isHidden = false
+                
+                if questionResponse1.questionResponseText == "Yes"{
+                    cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns1.text = "Yes"
+                    cell.lblAns1.font = Theme.getRubikMediumFont(size: 15)
+                }
+                else if (questionResponse1.questionResponseText == "No"){
+                    cell.iconAns1.image = UIImage(named: "Ans-No")
+                    cell.lblAns1.text = "No"
+                    cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                }
+                else{
+                    cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns1.text = "N/a"
+                    cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                }
+                cell.lblUser1.text = " - \(questionResponse1.borrowerFirstName)"
+                
+                cell.iconAns2.isHidden = false
+                cell.lblAns2.isHidden = false
+                cell.lblUser2.isHidden = false
+                
+                if questionResponse2.questionResponseText == "Yes"{
+                    cell.iconAns2.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns2.text = "Yes"
+                    cell.lblAns2.font = Theme.getRubikMediumFont(size: 15)
+                }
+                else if (questionResponse2.questionResponseText == "No"){
+                    cell.iconAns2.image = UIImage(named: "Ans-No")
+                    cell.lblAns2.text = "No"
+                    cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
+                }
+                else{
+                    cell.iconAns2.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns2.text = "N/a"
+                    cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
+                }
+                cell.lblUser2.text = " - \(questionResponse2.borrowerFirstName)"
+                
                 cell.iconAns3.isHidden = false
                 cell.lblAns3.isHidden = false
                 cell.lblUser3.isHidden = false
+                
+                if questionResponse3.questionResponseText == "Yes"{
+                    cell.iconAns3.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns3.text = "Yes"
+                    cell.lblAns3.font = Theme.getRubikMediumFont(size: 15)
+                }
+                else if (questionResponse3.questionResponseText == "No"){
+                    cell.iconAns3.image = UIImage(named: "Ans-No")
+                    cell.lblAns3.text = "No"
+                    cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
+                }
+                else{
+                    cell.iconAns3.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns3.text = "N/a"
+                    cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
+                }
+                cell.lblUser3.text = " - \(questionResponse3.borrowerFirstName)"
                 
                 cell.iconAns4.isHidden = true
                 cell.lblAns4.isHidden = true
@@ -272,21 +423,94 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
             else{
                 cell.mainViewHeightConstraint.constant = 202
                 
+                let questionResponse1 = question.questionResponses[0]
+                let questionResponse2 = question.questionResponses[1]
+                let questionResponse3 = question.questionResponses[2]
+                let questionResponse4 = question.questionResponses[3]
+                
                 cell.iconAns1.isHidden = false
                 cell.lblAns1.isHidden = false
                 cell.lblUser1.isHidden = false
+                
+                if questionResponse1.questionResponseText == "Yes"{
+                    cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns1.text = "Yes"
+                    cell.lblAns1.font = Theme.getRubikMediumFont(size: 15)
+                }
+                else if (questionResponse1.questionResponseText == "No"){
+                    cell.iconAns1.image = UIImage(named: "Ans-No")
+                    cell.lblAns1.text = "No"
+                    cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                }
+                else{
+                    cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns1.text = "N/a"
+                    cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                }
+                cell.lblUser1.text = " - \(questionResponse1.borrowerFirstName)"
                 
                 cell.iconAns2.isHidden = false
                 cell.lblAns2.isHidden = false
                 cell.lblUser2.isHidden = false
                 
+                if questionResponse2.questionResponseText == "Yes"{
+                    cell.iconAns2.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns2.text = "Yes"
+                    cell.lblAns2.font = Theme.getRubikMediumFont(size: 15)
+                }
+                else if (questionResponse2.questionResponseText == "No"){
+                    cell.iconAns2.image = UIImage(named: "Ans-No")
+                    cell.lblAns2.text = "No"
+                    cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
+                }
+                else{
+                    cell.iconAns2.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns2.text = "N/a"
+                    cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
+                }
+                cell.lblUser2.text = " - \(questionResponse2.borrowerFirstName)"
+                
                 cell.iconAns3.isHidden = false
                 cell.lblAns3.isHidden = false
                 cell.lblUser3.isHidden = false
                 
+                if questionResponse3.questionResponseText == "Yes"{
+                    cell.iconAns3.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns3.text = "Yes"
+                    cell.lblAns3.font = Theme.getRubikMediumFont(size: 15)
+                }
+                else if (questionResponse3.questionResponseText == "No"){
+                    cell.iconAns3.image = UIImage(named: "Ans-No")
+                    cell.lblAns3.text = "No"
+                    cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
+                }
+                else{
+                    cell.iconAns3.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns3.text = "N/a"
+                    cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
+                }
+                cell.lblUser3.text = " - \(questionResponse3.borrowerFirstName)"
+                
                 cell.iconAns4.isHidden = false
                 cell.lblAns4.isHidden = false
                 cell.lblUser4.isHidden = false
+                
+                if questionResponse4.questionResponseText == "Yes"{
+                    cell.iconAns4.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns4.text = "Yes"
+                    cell.lblAns4.font = Theme.getRubikMediumFont(size: 15)
+                }
+                else if (questionResponse4.questionResponseText == "No"){
+                    cell.iconAns4.image = UIImage(named: "Ans-No")
+                    cell.lblAns4.text = "No"
+                    cell.lblAns4.font = Theme.getRubikRegularFont(size: 15)
+                }
+                else{
+                    cell.iconAns4.image = UIImage(named: "Ans-Yes")
+                    cell.lblAns4.text = "N/a"
+                    cell.lblAns4.font = Theme.getRubikRegularFont(size: 15)
+                }
+                cell.lblUser4.text = " - \(questionResponse4.borrowerFirstName)"
             }
             cell.mainView.dropShadowToCollectionViewCell(shadowColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor, shadowRadius: 2)
             cell.updateConstraintsIfNeeded()
