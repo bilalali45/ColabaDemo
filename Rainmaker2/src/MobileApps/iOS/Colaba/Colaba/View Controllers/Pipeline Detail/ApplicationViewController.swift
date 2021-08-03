@@ -92,9 +92,9 @@ class ApplicationViewController: BaseViewController {
             
             let questionsCollectionViewLayout = UICollectionViewFlowLayout()
             questionsCollectionViewLayout.scrollDirection = .horizontal
-            questionsCollectionViewLayout.sectionInset = UIEdgeInsets(top: 12, left: 20, bottom: 2, right: 0)
+            questionsCollectionViewLayout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
             questionsCollectionViewLayout.minimumLineSpacing = 10
-            questionsCollectionViewLayout.itemSize = CGSize(width: itemWidth, height: 157)
+            questionsCollectionViewLayout.itemSize = CGSize(width: itemWidth, height: 212)
             self.questionsCollectionView.collectionViewLayout = questionsCollectionViewLayout
             
             self.questionsCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: true)
@@ -201,16 +201,96 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
             return cell
         }
         else{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GovernmentQuestionsCollectionViewCell", for: indexPath) as! GovernmentQuestionsCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GovernmentQuestionsCollectionViewCell", for: indexPath) as! GovernmentQuestionsCollectionViewCell //Main View Height Constraint 90 for 0, 120 for 1, 147 for 2, 174 for 3, 202 for 4
             cell.mainView.layer.cornerRadius = 6
             cell.mainView.layer.borderWidth = 1
             cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-            cell.mainView.dropShadowToCollectionViewCell(shadowColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor, shadowRadius: 2)
             cell.lblQuestionHeading.text = indexPath.row % 2 == 0 ? "Undisclosed Borrowed Funds" : "Ownership Interest in Property"
             cell.lblQuestion.text = indexPath.row % 2 == 0 ? "Are you borrowing any money for this real estate transaction (e.g., money for your ..." : "Have you had an ownership interest in another property in the last three years?"
             cell.iconAns1.image = UIImage(named: indexPath.row % 2 == 0 ? "Ans-Yes" : "Ans-NA")
             cell.lblAns1.text = indexPath.row % 2 == 0 ? "Yes" : "N/a"
             cell.lblAns1.font = indexPath.row % 2 == 0 ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
+            
+            if (indexPath.row == 0){
+                cell.mainViewHeightConstraint.constant = 147
+                
+                cell.iconAns1.isHidden = false
+                cell.lblAns1.isHidden = false
+                cell.lblUser1.isHidden = false
+                
+                cell.iconAns2.isHidden = false
+                cell.lblAns2.isHidden = false
+                cell.lblUser2.isHidden = false
+                
+                cell.iconAns3.isHidden = true
+                cell.lblAns3.isHidden = true
+                cell.lblUser3.isHidden = true
+                
+                cell.iconAns4.isHidden = true
+                cell.lblAns4.isHidden = true
+                cell.lblUser4.isHidden = true
+                
+            }
+            else if (indexPath.row == 1){
+                cell.mainViewHeightConstraint.constant = 120
+                
+                cell.iconAns1.isHidden = false
+                cell.lblAns1.isHidden = false
+                cell.lblUser1.isHidden = false
+                
+                cell.iconAns2.isHidden = true
+                cell.lblAns2.isHidden = true
+                cell.lblUser2.isHidden = true
+                
+                cell.iconAns3.isHidden = true
+                cell.lblAns3.isHidden = true
+                cell.lblUser3.isHidden = true
+                
+                cell.iconAns4.isHidden = true
+                cell.lblAns4.isHidden = true
+                cell.lblUser4.isHidden = true
+            }
+            else if (indexPath.row == 2){
+                cell.mainViewHeightConstraint.constant = 174
+                
+                cell.iconAns1.isHidden = false
+                cell.lblAns1.isHidden = false
+                cell.lblUser1.isHidden = false
+                
+                cell.iconAns2.isHidden = false
+                cell.lblAns2.isHidden = false
+                cell.lblUser2.isHidden = false
+                
+                cell.iconAns3.isHidden = false
+                cell.lblAns3.isHidden = false
+                cell.lblUser3.isHidden = false
+                
+                cell.iconAns4.isHidden = true
+                cell.lblAns4.isHidden = true
+                cell.lblUser4.isHidden = true
+            }
+            else{
+                cell.mainViewHeightConstraint.constant = 202
+                
+                cell.iconAns1.isHidden = false
+                cell.lblAns1.isHidden = false
+                cell.lblUser1.isHidden = false
+                
+                cell.iconAns2.isHidden = false
+                cell.lblAns2.isHidden = false
+                cell.lblUser2.isHidden = false
+                
+                cell.iconAns3.isHidden = false
+                cell.lblAns3.isHidden = false
+                cell.lblUser3.isHidden = false
+                
+                cell.iconAns4.isHidden = false
+                cell.lblAns4.isHidden = false
+                cell.lblUser4.isHidden = false
+            }
+            cell.mainView.dropShadowToCollectionViewCell(shadowColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor, shadowRadius: 2)
+            cell.updateConstraintsIfNeeded()
+            cell.layoutSubviews()
             return cell
         }
         
