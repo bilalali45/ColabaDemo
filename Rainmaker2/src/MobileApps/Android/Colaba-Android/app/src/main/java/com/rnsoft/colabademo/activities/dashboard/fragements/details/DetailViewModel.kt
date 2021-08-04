@@ -72,15 +72,6 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
                 docId = docId,
                 fileId = fileId
             )
-
-          //  if (responseResult?.body() is ResponseBody) {
-//                val responseBody = responseResult.body()
-//                val fileName= "testFileName.pdf"
-//                val pathWhereYouWantToSaveFile = context.filesDir.absolutePath+fileName
-//                val whatSaved = saveFile(responseBody, pathWhereYouWantToSaveFile)
-//                Log.e("file-save", whatSaved)
-           // }
-
         }
     }
 

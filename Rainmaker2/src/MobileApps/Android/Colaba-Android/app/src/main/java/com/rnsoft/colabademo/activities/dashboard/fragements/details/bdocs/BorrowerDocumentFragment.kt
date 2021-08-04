@@ -123,7 +123,6 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
     }
 
     private fun populateRecyclerview(arrayList: ArrayList<BorrowerDocsModel>) {
-        Log.e("populate", "true")
         borrowerDocumentAdapter =
             BorrowerDocumentAdapter(arrayList, this@BorrowerDocumentFragment)
         docsRecycler.adapter = borrowerDocumentAdapter
