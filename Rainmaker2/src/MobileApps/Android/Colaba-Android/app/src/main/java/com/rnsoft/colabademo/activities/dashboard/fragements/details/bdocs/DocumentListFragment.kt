@@ -8,6 +8,7 @@ import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -37,7 +38,10 @@ class DocumentListFragment : Fragment(), AdapterClickListener {
     private var download_docId: String? = null
     private var doc_name: String? = null
     private var doc_message: String? = null
-    lateinit var tvDocName : TextView
+    lateinit var tvDocName: TextView
+    lateinit var tvDocMsg: TextView
+    lateinit var doc_msg_layout: ConstraintLayout
+
 
     private val detailViewModel: DetailViewModel by activityViewModels()
 
@@ -52,20 +56,15 @@ class DocumentListFragment : Fragment(), AdapterClickListener {
         _binding = DetailListLayoutBinding.inflate(inflater, container, false)
         val view: View = binding.root
 
-        doc_name = arguments?.getString(AppConstant.docName)
-        doc_message = arguments?.getString(AppConstant.docMessage)
-        docsArrayList = arguments?.getParcelableArrayList(AppConstant.docObject)!!
-
-        Log.e("List frag", "doc name : " + doc_name + doc_message)
-        tvDocName = view.findViewById(R.id.doc_type_name)
-        setDocNameAndMsg(doc_name!!,doc_message!!)
 
         docsRecycler = view.findViewById(R.id.docs_detail_list_recycle_view)
         val linearLayoutManager = LinearLayoutManager(activity)
 
         lifecycleScope.launchWhenStarted {
+
             doc_name = arguments?.getString(AppConstant.docName)
             doc_message = arguments?.getString(AppConstant.docMessage)
+            docsArrayList = arguments?.getParcelableArrayList(AppConstant.docObject)!!
             val filesNames = arguments?.getString(AppConstant.innerFilesName)
             download_id = arguments?.getString(AppConstant.download_id).toString()
             download_requestId = arguments?.getString(AppConstant.download_requestId).toString()
@@ -75,52 +74,66 @@ class DocumentListFragment : Fragment(), AdapterClickListener {
                 val token: TypeToken<ArrayList<SubFiles>> =
                     object : TypeToken<ArrayList<SubFiles>>() {}
                 docsArrayList.clear()
-
                 docsArrayList = Gson().fromJson(it, token.type)
+
+                tvDocName = view.findViewById(R.id.doc_type_name)
+                tvDocMsg = view.findViewById(R.id.doc_msg)
+                doc_msg_layout = view.findViewById(R.id.layout_doc_msg)
+                //setDocNameAndMsg(doc_name!!,doc_message!!)
+                tvDocName.text = doc_name
+                if (doc_message?.isNotEmpty() == true) {
+                    tvDocMsg.text = doc_message
+                    doc_msg_layout.visibility = View.VISIBLE
+                } else {
+                    doc_msg_layout.visibility = View.GONE
+                }
+
+                Log.e("Doc List Frag", "$docsArrayList")
+                documentListAdapter = DocumentListAdapter(docsArrayList, this@DocumentListFragment)
+                docsRecycler.apply {
+                    this.layoutManager = linearLayoutManager
+                    this.setHasFixedSize(true)
+                    this.adapter = documentListAdapter
+                    documentListAdapter.notifyDataSetChanged()
+                }
             }
-            Log.e("Doc List Frag", "$docsArrayList")
-            documentListAdapter = DocumentListAdapter(docsArrayList, this@DocumentListFragment)
-            docsRecycler.apply {
-                this.layoutManager = linearLayoutManager
-                this.setHasFixedSize(true)
-                this.adapter = documentListAdapter
-                documentListAdapter.notifyDataSetChanged()
+        }
+
+            binding.backButton.setOnClickListener {
+                findNavController().popBackStack()
+            }
+            return view
+        }
+
+        fun setDocNameAndMsg(docName: String, docMsg: String) {
+            tvDocName.text = docName
+            if (docMsg.length > 0) {
+                tvDocMsg.text = docMsg
+                doc_msg_layout.visibility = View.VISIBLE
+            } else {
+                doc_msg_layout.visibility = View.GONE
             }
         }
 
-        binding.backButton.setOnClickListener{
-           findNavController().popBackStack()
+        override fun getCardIndex(position: Int) {
+
         }
-        return view
-    }
-    fun setDocNameAndMsg(docName:String, docMsg:String){
-        tvDocName.text = docName
 
-    }
+        override fun navigateTo(position: Int) {
+            Log.e("param", " downloadId: " + download_id + " downRequeId: " + download_requestId +  " downDocId: " +download_docId)
 
-    override fun getCardIndex(position: Int) {
 
-    }
-
-    private fun initViews(){
-
-    }
-
-    override fun navigateTo(position: Int) {
-        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-            val selectedFile = docsArrayList[position]
-            /*
-            if (download_docId != null && download_requestId != null && download_id != null)
-                detailViewModel.downloadFile(
-                    token = authToken,
-                    id = download_id!!,
-                    requestId = download_requestId!!,
-                    docId = download_docId!!,
-                    fileId = selectedFile.id
-                )
-
-             */
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                val selectedFile = docsArrayList[position]
+                if (download_docId != null && download_requestId != null && download_id != null)
+                    detailViewModel.downloadFile(
+                        token = authToken,
+                        id = download_id!!,
+                        requestId = download_requestId!!,
+                        docId = download_docId!!,
+                        fileId = selectedFile.id
+                    )
+            }
         }
-    }
 
-}
+    }

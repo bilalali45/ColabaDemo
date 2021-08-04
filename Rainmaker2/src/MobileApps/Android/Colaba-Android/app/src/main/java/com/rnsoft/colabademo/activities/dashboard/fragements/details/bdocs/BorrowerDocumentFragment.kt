@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -29,16 +30,19 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
 
     private lateinit var docsRecycler: RecyclerView
     private var docsArrayList: ArrayList<BorrowerDocsModel> = ArrayList()
+    lateinit var filterDocsList :ArrayList<BorrowerDocsModel>
     private lateinit var borrowerDocumentAdapter: BorrowerDocumentAdapter
     private var shimmerContainer: ShimmerFrameLayout? = null
-    lateinit var btnAll: AppCompatButton
-    lateinit var btnInDraft: AppCompatButton
-    lateinit var btnToDo: AppCompatButton
-    lateinit var btnFilterStarted: AppCompatButton
-    lateinit var btnFilterPending: AppCompatButton
-    lateinit var btnFilterCompleted: AppCompatButton
-    lateinit var btnFilterManullayAdded: AppCompatButton
+    lateinit var btnAll: AppCompatTextView
+    lateinit var btnInDraft: AppCompatTextView
+    lateinit var btnToDo: AppCompatTextView
+    lateinit var btnFilterStarted: AppCompatTextView
+    lateinit var btnFilterPending: AppCompatTextView
+    lateinit var btnFilterCompleted: AppCompatTextView
+    lateinit var btnFilterManullayAdded: AppCompatTextView
     var isStart: Boolean = true
+    var filter : String = "All"
+
 
     var state: Parcelable? = null
 
@@ -76,6 +80,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
                 if (it != null && it.size > 0) {
                     docsArrayList = it
                     isStart = false
+                    filter = AppConstant.filter_all
                     populateRecyclerview(docsArrayList)
                     //Log.e("list", "coming-$it")
                 } else
@@ -110,7 +115,6 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
 
     }
 
-
     private fun populateRecyclerview(arrayList: ArrayList<BorrowerDocsModel>) {
         borrowerDocumentAdapter =
             BorrowerDocumentAdapter(arrayList, this@BorrowerDocumentFragment)
@@ -121,6 +125,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_all -> {
+                filter = AppConstant.filter_all
                 btnAll.isActivated = true
                 btnInDraft.isActivated = false
                 btnToDo.isActivated = false
@@ -131,6 +136,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
                 populateRecyclerview(docsArrayList)
             }
             R.id.btn_filter_indraft -> {
+                filter = AppConstant.filter_inDraft
                 selectStatusFilter(
                     false, true, false, false,
                     false, false, false
@@ -138,14 +144,15 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
                 getDocItems(AppConstant.filter_inDraft)
             }
             R.id.btn_filter_todo -> {
+                filter = AppConstant.filter_borrower_todo
                 selectStatusFilter(
                     false, false, true,
-
-                    false, false, false, false
-                )
+                    false, false, false, false)
                 getDocItems(AppConstant.filter_borrower_todo)
             }
             R.id.btn_filter_started -> {
+                filter = AppConstant.filter_started
+
                 selectStatusFilter(
                     false, false, false,
                     true, false, false, false
@@ -153,6 +160,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
                 getDocItems(AppConstant.filter_started)
             }
             R.id.btn_filter_pending -> {
+                filter = AppConstant.filter_pending_review
                 selectStatusFilter(
                     false, false, false,
 
@@ -161,6 +169,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
                 getDocItems(AppConstant.filter_pending_review)
             }
             R.id.btn_filter_completed -> {
+                filter = AppConstant.filter_completed
                 selectStatusFilter(
                     false, false, false,
                     false, false, true, false
@@ -168,6 +177,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
                 getDocItems(AppConstant.filter_completed)
             }
             R.id.btn_filter_manullayAdded -> {
+                filter = AppConstant.filter_manuallyAdded
                 selectStatusFilter(
                     false, false, false,
                     false, false, false, true
@@ -249,7 +259,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
     }
 
     private fun getDocItems(docFilter: String) {
-        val filterDocsList = ArrayList<BorrowerDocsModel>()
+        filterDocsList = ArrayList<BorrowerDocsModel>()
         for (i in docsArrayList.indices) {
             if (docFilter.equals(docsArrayList.get(i).status, ignoreCase = true)) {
 
@@ -268,6 +278,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
                 filterDocsList.add(doc)
             }
         }
+        Log.e("Pending", "$filterDocsList")
         populateRecyclerview(filterDocsList)
 
     }
@@ -276,7 +287,17 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
     }
 
     override fun navigateTo(position: Int) {
-        val selectedDocumentType = docsArrayList[position]
+        //lateinit var selectedDocumentType : ArrayList<BorrowerDocsModel>
+        /*if(filter.equals(AppConstant.filter_all)){
+           val selectedDocumentType = docsArrayList[position]
+        } else {
+            val selectedDocumentType = filterDocsList[position]
+        } */
+
+        //Log.e(filter, "$filterDocsList")
+
+        val selectedDocumentType = if(filter.equals(AppConstant.filter_all)) docsArrayList[position] else filterDocsList[position]
+
         val listFragment = DocumentListFragment()
         val bundle = Bundle()
         //Log.e("subFiles", "- " + selectedDocumentType.subFiles.toString())

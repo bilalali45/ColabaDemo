@@ -71,7 +71,6 @@ internal constructor(
         }
     }
 
-
     override fun onBindViewHolder(holder: DocsViewHolder, position: Int) {
         val doc = docsList[position]
 
@@ -108,6 +107,7 @@ internal constructor(
                 if (fileOne.clientName.isNotEmpty() && fileOne.clientName.isNotBlank()) {
                     holder.docOneName.text = fileOne.clientName
                     holder.docOneImage.visibility = View.VISIBLE
+
                     val docType = getDocType(fileOne.clientName)
                     setDocImage(docType,holder.docOneImage)
 

@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:layout_marginTop="10dp">
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btn_all"
         android:layout_width="45dp"
         android:layout_height="30dp"
@@ -14,12 +14,13 @@
         android:textSize="13sp"
         android:fontFamily="@font/rubik_regular"
         android:textAllCaps="false"
+        android:clickable="true"
         android:gravity="center"
         android:background="@drawable/style_filter_btns"
         android:textColor="@color/doc_filter_text_color_selector">
-    </androidx.appcompat.widget.AppCompatButton>
+    </androidx.appcompat.widget.AppCompatTextView>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btn_filter_indraft"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
@@ -37,7 +38,7 @@
         android:textColor="@color/doc_filter_text_color_selector"
         />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btn_filter_todo"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
@@ -55,7 +56,7 @@
         android:textColor="@color/doc_filter_text_color_selector"
         />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btn_filter_started"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
@@ -73,7 +74,7 @@
         android:textColor="@color/doc_filter_text_color_selector"
         />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btn_filter_pending"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
@@ -91,7 +92,7 @@
         android:textColor="@color/doc_filter_text_color_selector"
         />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btn_filter_completed"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
@@ -108,7 +109,7 @@
         android:background="@drawable/style_filter_btns"
         android:textColor="@color/doc_filter_text_color_selector"
         />
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btn_filter_manullayAdded"
         android:layout_width="wrap_content"
         android:layout_height="30dp"

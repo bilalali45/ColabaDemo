@@ -1,7 +1,10 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
+import okhttp3.ResponseBody
+import retrofit2.Response
 import java.io.IOException
+import java.io.InputStream
 import javax.inject.Inject
 
 class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
@@ -51,6 +54,25 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             else
                 Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun downloadFile(token:String, id:String, requestId:String, docId:String, fileId:String):Response<ResponseBody>?{
+        try {
+            val newToken = "Bearer $token"
+            val result = serverApi.downloadFile(Authorization = newToken, id = id, requestId = requestId, docId = docId, fileId = fileId)
+            Log.e("downloadFile-", result.toString())
+            return result
+        } catch (e: Throwable) {
+            /*
+            if(e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+             */
+
+            return  null
+
         }
     }
 

@@ -78,6 +78,7 @@ object AppConstant {
         const val download_docId:String = "download_docId"
 
         // doc filters/status
+        const val filter_all:String = "All"
         const val filter_inDraft:String = "In Draft"
         const val filter_borrower_todo:String = "Borrower to do"
         const val filter_started:String = "Started"

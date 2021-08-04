@@ -31,12 +31,6 @@
     <string name="doc_filter_manually_added">Manually Added</string>
 
 
-
-
-
-
-
-
     <string name="plus_three">+3</string>
     <string name="actions_pending">Most Actions Pending</string>
     <string name="recent_activity">Most Recent Activity (Default)</string>
@@ -124,7 +118,6 @@
     <string name="time_ago"> 1 min ago</string>
 
 
-
     <!--       dummy data   -->
     <string name="title_rugby">Rugby</string>
     <string name="title_cricket">Cricket</string>
@@ -164,7 +157,7 @@
 
     <string name="application_submitted">Application Completed</string>
     <string name="micheal_blakeley">Michael Blakeley</string>
-    <string name="micheal_blakeley_address">727 Ashleigh LN # 222 <br/>  Dallas, TX 76099</string>
+    <string name="micheal_blakeley_address">727 Ashleigh LN # 222 <br />  Dallas, TX 76099</string>
     <string name="micheal_blakeley_file_number">9202909209</string>
 
     <string name="yesterday">Yesterday</string>
