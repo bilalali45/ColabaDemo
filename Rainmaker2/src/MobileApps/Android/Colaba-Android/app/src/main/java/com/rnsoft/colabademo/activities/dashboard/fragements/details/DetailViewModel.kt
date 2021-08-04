@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
@@ -24,10 +26,12 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
 
 
     suspend fun getLoanInfo(token:String, loanApplicationId:Int) {
-        viewModelScope.launch {
+        viewModelScope.launch (Dispatchers.IO) {
             val responseResult = detailRepo.getLoanInfo(token = token, loanApplicationId = loanApplicationId)
             if (responseResult is Result.Success)
-                _borrowerOverviewModel.value = (responseResult.data)
+                withContext(Dispatchers.Main) {
+                    _borrowerOverviewModel.value = (responseResult.data)
+                }
             else if(responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                 EventBus.getDefault().post(WebServiceErrorEvent(null, true))
             else if(responseResult is Result.Error)
@@ -37,10 +41,12 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
 
 
     suspend fun getBorrowerDocuments(token:String, loanApplicationId:Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val responseResult = detailRepo.getBorrowerDocuments(token = token, loanApplicationId = loanApplicationId)
             if (responseResult is Result.Success)
-                _borrowerDocsModelList.value = (responseResult.data)
+                withContext(Dispatchers.Main) {
+                    _borrowerDocsModelList.value = (responseResult.data)
+                }
             else if(responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                 EventBus.getDefault().post(WebServiceErrorEvent(null, true))
             else if(responseResult is Result.Error)
@@ -48,11 +54,14 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
         }
     }
 
-    suspend fun getBorrowerApplicationTabData(token:String, borrowerId:Int) {
-        viewModelScope.launch {
-            val responseResult = detailRepo.getBorrowerApplicationTabData(token = token, borrowerId = borrowerId)
-            if (responseResult is Result.Success)
-                _borrowerApplicationTabModel.value = (responseResult.data)
+    suspend fun getBorrowerApplicationTabData(token:String, loanApplicationId:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = detailRepo.getBorrowerApplicationTabData(token = token, loanApplicationId = loanApplicationId)
+            if (responseResult is Result.Success) {
+                withContext(Dispatchers.Main) {
+                    _borrowerApplicationTabModel.value = (responseResult.data)
+                }
+            }
             else if(responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                 EventBus.getDefault().post(WebServiceErrorEvent(null, true))
             else if(responseResult is Result.Error)

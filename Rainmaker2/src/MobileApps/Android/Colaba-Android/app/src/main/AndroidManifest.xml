@@ -4,16 +4,18 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".ApplicationClass"
-        android:icon="@mipmap/ic_launcher"
         android:allowBackup="false"
         android:fullBackupContent="false"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ColabaDemo">
+        <activity android:name=".activities.dashboard.DocViewerActivity"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -28,16 +30,25 @@
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".SignUpFlowActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".DashBoardActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".WelcomeActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".DetailActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".LeftActivity" android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".SignUpFlowActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DashBoardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WelcomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LeftActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -65,7 +65,9 @@
             app:tabIndicatorColor="@color/colaba_primary_color"
             app:tabSelectedTextColor="@color/colaba_primary_color"
             app:tabTextAppearance="@style/MineCustomTabText"
-            app:tabTextColor="@color/grey_color_two" />
+            app:tabTextColor="@color/grey_color_two"
+            app:tabIndicatorHeight="4dp"
+            app:tabIndicator="@drawable/tab_indicator"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

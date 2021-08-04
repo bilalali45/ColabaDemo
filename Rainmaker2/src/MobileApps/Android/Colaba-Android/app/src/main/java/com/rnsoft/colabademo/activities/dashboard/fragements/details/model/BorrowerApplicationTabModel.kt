@@ -11,41 +11,68 @@ data class BorrowerApplicationTabModel(
 
 data class BorrowerAppData(
     val assetAndIncome: AssetAndIncome?,
-    val borrowerInformation: BorrowerInformation?,
+    val borrowerQuestionsModel: ArrayList<BorrowerQuestionsModel>?,
+    val borrowersInformation: ArrayList<BorrowersInformation>?,
     val loanInformation: LoanInformation?,
+    val realStateOwns: ArrayList<RealStateOwn>?,
     val subjectProperty: SubjectProperty?
 )
-
 
 data class AssetAndIncome(
     val totalAsset: Double,
     val totalMonthyIncome: Double
 )
 
-data class BorrowerInformation(
+
+
+data class BorrowersInformation(
     val borrowerId: Int,
-    val firstName: String?,
-    val lastName: String?
+    val firstName: String,
+    val lastName: String,
+    val ownTypeName: String,
+    val owntypeId: Int,
+    val isFooter:Boolean = false
 )
 
 data class LoanInformation(
     val deposit: Double,
     val depositPercent: Double,
     val loanAmount: Double,
-    val loanPurposeDescription: String?,
+    val loanPurposeDescription: String,
     val loanPurposeId: Int
 )
 
-data class SubjectProperty(
-    @SerializedName("address") val borrowerAddress: BorrowerAddress?,
-    val propertyInfoId: Int,
-    val propertyTypeId: Int,
-    val propertyTypeName: String?,
-    val propertyUsageId: Int,
-    val propertyUsageName: String?
+
+data class BorrowerQuestionsModel(
+    val questionDetail: QuestionDetail?,
+    val questionResponses: ArrayList<QuestionResponse>?
 )
 
-data class BorrowerAddress(
+data class QuestionDetail(
+    val questionHeader: String,
+    val questionId: Int,
+    val questionText: String
+
+)
+
+data class QuestionResponse(
+    val borrowerFirstName: String,
+    val borrowerId: Int,
+    val borrowerLastName: String,
+    val questionId: Int,
+    val questionResponseText: String
+)
+
+data class RealStateOwn(
+    @SerializedName("address") val realStateAddress : RealStateAddress?,
+    val borrowerId: Int,
+    val propertyInfoId: Int,
+    val propertyTypeId: Int,
+    val propertyTypeName: String,
+    val isFooter:Boolean = false
+)
+
+data class RealStateAddress(
     val city: String,
     val countryId: Int,
     val countryName: String,
@@ -55,3 +82,26 @@ data class BorrowerAddress(
     val unit: String,
     val zipCode: String
 )
+
+
+data class SubjectProperty(
+    @SerializedName("address") val subjectPropertyAddress : SubjectPropertyAddress?,
+    val propertyInfoId: Int,
+    val propertyTypeId: Int,
+    val propertyTypeName: String,
+    val propertyUsageId: Int,
+    val propertyUsageName: String
+)
+
+
+data class SubjectPropertyAddress(
+    val city: String,
+    val countryId: Int,
+    val countryName: String,
+    val stateId: Int,
+    val stateName: String,
+    val street: String,
+    val unit: String,
+    val zipCode: String
+)
+

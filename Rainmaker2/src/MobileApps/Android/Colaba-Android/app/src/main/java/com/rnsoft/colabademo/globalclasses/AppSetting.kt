@@ -54,8 +54,18 @@ object AppSetting {
 
         var lastSeen = input
 
-        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
-        val oldDate: Date? = formatter.parse(input)
+
+
+        if(input.contains(":Z"))
+            lastSeen =  input.substring(0, input.length-2).toString()
+        else
+            lastSeen =  input.substring(0, input.length-4)
+
+        Log.e("input-time--", lastSeen)
+
+        //val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.US)
+        val oldDate: Date? = formatter.parse(lastSeen)
 
 
         val oldMillis = oldDate?.time

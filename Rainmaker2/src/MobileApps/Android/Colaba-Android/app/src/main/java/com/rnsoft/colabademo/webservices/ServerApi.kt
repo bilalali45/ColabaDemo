@@ -140,7 +140,7 @@ interface ServerApi{
     @GET("api/mcu/mobile/loanapplication/Loan/GetBorrowerLoanApplication")
     suspend fun getBorrowerApplicationTabData(
         @Header("Authorization" )  Authorization:String,
-        @Query("borrowerId")  borrowerId:Int):BorrowerApplicationTabModel
+        @Query("loanApplicationId")  loanApplicationId:Int):BorrowerApplicationTabModel
 
 
 }
