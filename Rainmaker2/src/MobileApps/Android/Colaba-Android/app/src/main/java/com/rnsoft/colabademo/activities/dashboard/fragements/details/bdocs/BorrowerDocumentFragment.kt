@@ -309,7 +309,6 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
                 filterDocsList.add(doc)
             }
         }
-        Log.e("Pending", "$filterDocsList")
         if(filterDocsList.size>0) {
             layout_noDocUplaoded.visibility= View.GONE
             docsRecycler.visibility=View.VISIBLE
