@@ -7,6 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="doc_filter_txt_color">#A7A7A7</color>
 
 
     <color name="orange">#FF3D00</color>
@@ -16,6 +17,7 @@
 
 
     <color name="colaba_loan_background">#FFF8F8F8</color>
+    <color name="layout_border_color">#E5E5E5</color>
 
     <color name="colaba_primary_color">#FF4484F4</color>
 
@@ -38,8 +40,9 @@
 
 
     <color name="colaba_grey_line_color">#FF707070</color>
-
     <color name="loan_view_holder_separator">#80E5E5E5</color>
+    <color name="colaba_grey_fill">#4DE5E5E5</color>
+    <color name="colaba_apptheme_blue">#FF4484F4</color>
 
     <color name="plus_circle_inside_color">#FF4484F4</color>
 
@@ -53,8 +56,13 @@
     <color name="item_name">#535353</color>
     <color name="description">#a9a9a9</color>
 
-
     <color name="txt_color_black">#4E4E4E</color>
+    <color name="txt_color_no_doc">#707070</color>
+
+    <color name="filter_blue">#7bb3d8</color>
+    <color name="filter_yellow">#FFBB00</color>
+    <color name="filter_green">#00AD46</color>
+    <color name="filter_grey">#7e829e</color>
 
 
 </resources>
