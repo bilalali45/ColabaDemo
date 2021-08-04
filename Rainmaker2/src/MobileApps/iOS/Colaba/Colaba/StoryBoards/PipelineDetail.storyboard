@@ -627,7 +627,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pXR-FG-myH">
-                                                <rect key="frame" x="0.0" y="882" width="375" height="210"/>
+                                                <rect key="frame" x="0.0" y="882" width="375" height="260"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Application-Tab-Govt-Questions" translatesAutoresizingMaskIntoConstraints="NO" id="BSh-Fk-Et1">
                                                         <rect key="frame" x="20" y="0.0" width="23" height="23"/>
@@ -643,10 +643,10 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="t9V-sb-78k">
-                                                        <rect key="frame" x="0.0" y="23" width="375" height="157"/>
+                                                        <rect key="frame" x="0.0" y="23" width="375" height="227"/>
                                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="157" id="gpt-IM-nWf"/>
+                                                            <constraint firstAttribute="height" constant="227" id="gpt-IM-nWf"/>
                                                         </constraints>
                                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2Ui-bT-kDi">
                                                             <size key="itemSize" width="128" height="128"/>
@@ -664,7 +664,7 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstItem="EeK-YG-ehV" firstAttribute="centerY" secondItem="BSh-Fk-Et1" secondAttribute="centerY" id="8k3-7s-bYQ"/>
-                                                    <constraint firstAttribute="height" constant="210" id="Af1-Ds-v4q"/>
+                                                    <constraint firstAttribute="height" constant="260" id="Af1-Ds-v4q"/>
                                                     <constraint firstItem="BSh-Fk-Et1" firstAttribute="top" secondItem="pXR-FG-myH" secondAttribute="top" id="McR-nc-NMR"/>
                                                     <constraint firstItem="BSh-Fk-Et1" firstAttribute="leading" secondItem="pXR-FG-myH" secondAttribute="leading" constant="20" id="Mfp-sV-1Z1"/>
                                                     <constraint firstItem="t9V-sb-78k" firstAttribute="top" secondItem="BSh-Fk-Et1" secondAttribute="bottom" id="bx4-BN-01b"/>

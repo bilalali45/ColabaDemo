@@ -71,12 +71,21 @@ class BorrowerModel: NSObject{
     
     var firstName: String = ""
     var lastName: String = ""
+    var borrowerId: Int = 0
     var ownTypeId: Int = 0
     
     func updateModelWithJSON(json: JSON){
         firstName = json["firstName"].stringValue
         lastName = json["lastName"].stringValue
-        ownTypeId = json["ownTypeId"].intValue
+        borrowerId = json["borrowerId"].intValue
+        
+        if (json["owntypeId"].exists()){
+            ownTypeId = json["owntypeId"].intValue
+        }
+        else{
+            ownTypeId = json["ownTypeId"].intValue
+        }
+        
     }
     
 }
