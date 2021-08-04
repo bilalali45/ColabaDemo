@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -39,7 +40,6 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
         }
     }
 
-
     suspend fun getBorrowerDocuments(token:String, loanApplicationId:Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = detailRepo.getBorrowerDocuments(token = token, loanApplicationId = loanApplicationId)
@@ -69,8 +69,25 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
         }
     }
 
+    fun downloadFile(token:String,  id:String, requestId:String, docId:String, fileId:String) {
+        viewModelScope.launch {
+            val responseResult = detailRepo.downloadFile(
+                token = token,
+                id = id,
+                requestId = requestId,
+                docId = docId,
+                fileId = fileId
+            )
 
+          //  if (responseResult?.body() is ResponseBody) {
+//                val responseBody = responseResult.body()
+//                val fileName= "testFileName.pdf"
+//                val pathWhereYouWantToSaveFile = context.filesDir.absolutePath+fileName
+//                val whatSaved = saveFile(responseBody, pathWhereYouWantToSaveFile)
+//                Log.e("file-save", whatSaved)
+           // }
 
-
+        }
+    }
 
 }

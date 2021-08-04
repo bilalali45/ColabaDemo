@@ -85,7 +85,7 @@ internal constructor(
         }
 
         doc.createdOn.let { activityTime ->
-            val newString = returnDocCreatedTime(activityTime!!)
+            val newString = AppSetting.returnLongTimeNow(activityTime!!)
             holder.docUploadedTime.text = newString
         }
 

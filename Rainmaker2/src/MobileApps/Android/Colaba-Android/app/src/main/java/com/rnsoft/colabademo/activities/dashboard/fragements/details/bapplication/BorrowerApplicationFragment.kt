@@ -36,6 +36,9 @@ class BorrowerApplicationFragment : Fragment() {
     private var realStateList: ArrayList<RealStateOwn> = ArrayList()
     private var questionList: ArrayList<BorrowerQuestionsModel> = ArrayList()
 
+    private var borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList)
+    private var realStateAdapter  = RealStateAdapter(realStateList)
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(
@@ -58,10 +61,10 @@ class BorrowerApplicationFragment : Fragment() {
         //setUpBorrowerHorizontalFastAdapter(localList)
 
         val linearLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
-        val borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList)
+
         horizontalRecyclerView.apply {
             this.layoutManager =linearLayoutManager
-            this.setHasFixedSize(true)
+            //this.setHasFixedSize(true)
             this.adapter = borrowerInfoAdapter
         }
         //borrowerInfoAdapter.notifyDataSetChanged()
@@ -76,10 +79,10 @@ class BorrowerApplicationFragment : Fragment() {
         //setUpRealStateRecycleView(realStateList)
 
         val realStateLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
-        val realStateAdapter  = RealStateAdapter(realStateList)
+
         realStateRecyclerView.apply {
             this.layoutManager =realStateLayoutManager
-            this.setHasFixedSize(true)
+            //this.setHasFixedSize(true)
             this.adapter = realStateAdapter
         }
         realStateAdapter.notifyDataSetChanged()
@@ -125,6 +128,10 @@ class BorrowerApplicationFragment : Fragment() {
                     bAppData.borrowersInformation?.let {
                        borrowerInfoList.clear()
                        borrowerInfoList = it
+                       borrowerInfoList.add(BorrowersInformation(0,"","","",0, true))
+                       borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList)
+                       horizontalRecyclerView.adapter = borrowerInfoAdapter
+
                        borrowerInfoAdapter.notifyDataSetChanged()
                    }
                 }
@@ -141,6 +148,9 @@ class BorrowerApplicationFragment : Fragment() {
                     bAppData.realStateOwns?.let {
                         realStateList.clear()
                         realStateList = it
+                        realStateList.add(RealStateOwn(null,0,0,0,"", true))
+                        realStateAdapter  = RealStateAdapter(realStateList)
+                        realStateRecyclerView.adapter = realStateAdapter
                         realStateAdapter.notifyDataSetChanged()
                     }
                 }
@@ -163,6 +173,17 @@ class BorrowerApplicationFragment : Fragment() {
             val simpleItem = GovtQuestionsHorizontal()
             simpleItem.questionTitle = eachItem.questionDetail?.questionHeader
             simpleItem.question = eachItem.questionDetail?.questionText
+            eachItem.questionResponses?.let { answers->
+               for(answer in answers){
+                   if(answer.questionResponseText.equals("Yes", true))
+                       simpleItem.answer1 = "- "+answer.borrowerFirstName
+                   else
+                   if(answer.questionResponseText.equals("No", true))
+                        simpleItem.answer2 = "- "+answer.borrowerFirstName
+                   else
+                       simpleItem.answer3 = "- "+answer.borrowerFirstName
+               }
+            }
             simpleItemsList.add(simpleItem)
         }
 
