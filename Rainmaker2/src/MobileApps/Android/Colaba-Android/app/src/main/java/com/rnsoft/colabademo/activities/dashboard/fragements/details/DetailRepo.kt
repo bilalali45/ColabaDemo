@@ -16,8 +16,8 @@ class DetailRepo  @Inject constructor(
         return detailDataSource.getBorrowerDocuments(token = token , loanApplicationId = loanApplicationId)
     }
 
-    suspend fun getBorrowerApplicationTabData(token:String ,borrowerId:Int):Result<BorrowerApplicationTabModel>{
-        return detailDataSource.getBorrowerApplicationTabData(token = token , borrowerId = borrowerId)
+    suspend fun getBorrowerApplicationTabData(token:String ,loanApplicationId:Int):Result<BorrowerApplicationTabModel>{
+        return detailDataSource.getBorrowerApplicationTabData(token = token , loanApplicationId = loanApplicationId)
 
     }
 
