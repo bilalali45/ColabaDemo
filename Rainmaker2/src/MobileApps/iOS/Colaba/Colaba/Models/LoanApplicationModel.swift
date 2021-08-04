@@ -24,8 +24,8 @@ class LoanApplicationModel: NSObject{
     var propertyTypeName: String = ""
     var propertyUsageId: Int = 0
     var propertyUsageName: String = ""
-    var deposit: Int = 0
-    var depositPercent: Double = 0.0
+    var downPayment: Int = 0
+    var downPaymentPercentage: Double = 0.0
     var loanAmount: Int = 0
     var loanPurposeDescription: String = ""
     var loanPurposeId: Int = 0
@@ -54,7 +54,7 @@ class LoanApplicationModel: NSObject{
         propertyTypeId = subjectProperty["propertyTypeId"].intValue
         propertyTypeName = subjectProperty["propertyTypeName"].stringValue
         propertyUsageId = subjectProperty["propertyUsageId"].intValue
-        propertyUsageName = subjectProperty["propertyUsageName"].stringValue
+        propertyUsageName = subjectProperty["propertyUsageDescription"].stringValue
         let address = subjectProperty["address"]
         city = address["city"].stringValue
         countryId = address["countryId"].intValue
@@ -64,8 +64,8 @@ class LoanApplicationModel: NSObject{
         street = address["street"].stringValue
         unit = address["unit"].stringValue
         zipCode = address["zipCode"].stringValue
-        deposit = loanInformation["deposit"].intValue
-        depositPercent = loanInformation["depositPercent"].doubleValue
+        downPayment = loanInformation["downPayment"].intValue
+        downPaymentPercentage = loanInformation["downPaymentPercent"].doubleValue
         loanAmount = loanInformation["loanAmount"].intValue
         loanPurposeDescription = loanInformation["loanPurposeDescription"].stringValue
         loanPurposeId = loanInformation["loanPurposeId"].intValue

@@ -96,10 +96,14 @@ class LoanDetailViewController: BaseViewController {
         lblLoanPurpose.text = loanPurpose.uppercased()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.walkthroughViewTrailingConstraint.constant = -320
-            self.walkthroughViewBottomConstraint.constant = 320
-            UIView.animate(withDuration: 0.4) {
-                self.view.layoutIfNeeded()
+            
+            if (UserDefaults.standard.bool(forKey: kIsWalkthroughShowed) == false){
+                UserDefaults.standard.setValue(true, forKey: kIsWalkthroughShowed)
+                self.walkthroughViewTrailingConstraint.constant = -320
+                self.walkthroughViewBottomConstraint.constant = 320
+                UIView.animate(withDuration: 0.4) {
+                    self.view.layoutIfNeeded()
+                }
             }
         }
     }

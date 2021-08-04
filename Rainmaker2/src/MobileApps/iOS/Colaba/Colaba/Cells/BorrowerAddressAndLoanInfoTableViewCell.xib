@@ -72,10 +72,10 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="vb1-G7-dbd">
-                                <rect key="frame" x="20" y="183" width="361" height="40"/>
+                                <rect key="frame" x="21" y="183" width="360" height="40"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Akg-59-pUd">
-                                        <rect key="frame" x="0.0" y="0.0" width="110.5" height="40"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="110" height="40"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Property-Value" translatesAutoresizingMaskIntoConstraints="NO" id="c95-vp-Psj">
                                                 <rect key="frame" x="0.0" y="0.0" width="12.5" height="13"/>
@@ -104,7 +104,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xTM-FP-0NU">
-                                        <rect key="frame" x="125.5" y="0.0" width="110" height="40"/>
+                                        <rect key="frame" x="125" y="0.0" width="110" height="40"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Loan-Amount" translatesAutoresizingMaskIntoConstraints="NO" id="Es8-cr-2Ny">
                                                 <rect key="frame" x="0.0" y="0.0" width="10.5" height="14"/>
@@ -133,20 +133,20 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uYM-7c-z39">
-                                        <rect key="frame" x="250.5" y="0.0" width="110.5" height="40"/>
+                                        <rect key="frame" x="250" y="0.0" width="110" height="40"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Down-Payments" translatesAutoresizingMaskIntoConstraints="NO" id="dhy-cc-UqQ">
                                                 <rect key="frame" x="0.0" y="0.0" width="14" height="16"/>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$200,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d89-RI-c0f">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="$200,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d89-RI-c0f">
                                                 <rect key="frame" x="19" y="0.0" width="69" height="18"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-20%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WfS-FL-xM6">
-                                                <rect key="frame" x="92" y="3" width="24.5" height="12"/>
-                                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="10"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(20%)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WfS-FL-xM6">
+                                                <rect key="frame" x="90" y="3.5" width="24" height="11"/>
+                                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="9"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -164,7 +164,7 @@
                                             <constraint firstItem="dhy-cc-UqQ" firstAttribute="top" secondItem="uYM-7c-z39" secondAttribute="top" id="VdV-C7-Usd"/>
                                             <constraint firstItem="d89-RI-c0f" firstAttribute="top" secondItem="uYM-7c-z39" secondAttribute="top" id="WbB-jd-T9K"/>
                                             <constraint firstItem="glC-HU-3Vn" firstAttribute="leading" secondItem="d89-RI-c0f" secondAttribute="leading" id="end-2w-0d5"/>
-                                            <constraint firstItem="WfS-FL-xM6" firstAttribute="leading" secondItem="d89-RI-c0f" secondAttribute="trailing" constant="4" id="kkI-JX-abf"/>
+                                            <constraint firstItem="WfS-FL-xM6" firstAttribute="leading" secondItem="d89-RI-c0f" secondAttribute="trailing" constant="2" id="kkI-JX-abf"/>
                                             <constraint firstItem="d89-RI-c0f" firstAttribute="leading" secondItem="dhy-cc-UqQ" secondAttribute="trailing" constant="5" id="nAf-qn-t8T"/>
                                             <constraint firstItem="glC-HU-3Vn" firstAttribute="top" secondItem="d89-RI-c0f" secondAttribute="bottom" constant="7" id="ncQ-rD-3GT"/>
                                         </constraints>
@@ -216,7 +216,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="6su-3o-l3X" secondAttribute="trailing" constant="20" id="0sx-ls-ZEG"/>
-                            <constraint firstItem="vb1-G7-dbd" firstAttribute="leading" secondItem="KJj-bc-TSD" secondAttribute="leading" constant="20" id="2Ue-Df-je5"/>
+                            <constraint firstItem="vb1-G7-dbd" firstAttribute="leading" secondItem="KJj-bc-TSD" secondAttribute="leading" constant="21" id="2Ue-Df-je5"/>
                             <constraint firstAttribute="trailing" secondItem="aQ7-Nb-9rf" secondAttribute="trailing" constant="20" id="2xS-KK-5NR"/>
                             <constraint firstAttribute="trailing" secondItem="vb1-G7-dbd" secondAttribute="trailing" constant="20" id="3G6-oT-Fxt"/>
                             <constraint firstItem="Pli-qR-ogW" firstAttribute="top" secondItem="KJj-bc-TSD" secondAttribute="top" constant="30" id="6Q3-mh-doN"/>

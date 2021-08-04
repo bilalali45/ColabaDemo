@@ -27,5 +27,6 @@ let kNotificationRefreshCounter = "NotificationRefreshCounter"
 let kIsAssignToMe = "IsAssignToMe"
 let kNotificationAssignToMeSwitchChanged = "NotificationAssignToMeSwitchChanged"
 let kNotificationBtnFiltersTapped = "NotificationBtnFiltersTapped"
+let kIsWalkthroughShowed = "isWalkthroughShowed"
 
 var sortingFilter = 1
