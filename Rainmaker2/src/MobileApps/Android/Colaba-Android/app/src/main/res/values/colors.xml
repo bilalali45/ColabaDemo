@@ -38,7 +38,6 @@
     <color name="colaba_red_color">#FFFF5652</color>
 
 
-
     <color name="colaba_grey_line_color">#FF707070</color>
     <color name="loan_view_holder_separator">#80E5E5E5</color>
     <color name="colaba_grey_fill">#4DE5E5E5</color>
@@ -63,6 +62,8 @@
     <color name="filter_yellow">#FFBB00</color>
     <color name="filter_green">#00AD46</color>
     <color name="filter_grey">#7e829e</color>
+
+    <color name="content_background_color">#80F8F8F8</color>
 
 
 </resources>

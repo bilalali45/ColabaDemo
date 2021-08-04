@@ -123,7 +123,6 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
     }
 
     private fun populateRecyclerview(arrayList: ArrayList<BorrowerDocsModel>) {
-        Log.e("populate", "true")
         borrowerDocumentAdapter =
             BorrowerDocumentAdapter(arrayList, this@BorrowerDocumentFragment)
         docsRecycler.adapter = borrowerDocumentAdapter
@@ -310,7 +309,6 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
                 filterDocsList.add(doc)
             }
         }
-        Log.e("Pending", "$filterDocsList")
         if(filterDocsList.size>0) {
             layout_noDocUplaoded.visibility= View.GONE
             docsRecycler.visibility=View.VISIBLE

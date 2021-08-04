@@ -72,10 +72,11 @@ class DetailRepo  @Inject constructor(
             i.setDataAndType(localUri, applicationContext.getContentResolver().getType(localUri))
             applicationContext.startActivity(i) */
 
+            /*
             val intent = Intent(applicationContext,DocViewerActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             intent.putExtra("file",whatSaved)
-            applicationContext.startActivity(intent)
+            applicationContext.startActivity(intent) */
 
         }
         return  result
