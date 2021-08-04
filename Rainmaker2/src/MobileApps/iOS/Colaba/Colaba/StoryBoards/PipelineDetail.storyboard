@@ -337,7 +337,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Single Family Residency   ·   Investment Property" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yJ6-3w-xbu">
-                                                                <rect key="frame" x="47" y="64" width="268" height="15.5"/>
+                                                                <rect key="frame" x="47" y="64" width="288" height="15.5"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                                 <color key="textColor" name="AppGreyColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -349,11 +349,11 @@
                                                             <constraint firstItem="yJ6-3w-xbu" firstAttribute="leading" secondItem="UfS-NJ-aEV" secondAttribute="leading" id="DXt-Gy-pv7"/>
                                                             <constraint firstItem="27f-hS-49a" firstAttribute="top" secondItem="ySq-mt-c8H" secondAttribute="top" constant="17" id="Di9-In-anc"/>
                                                             <constraint firstAttribute="height" constant="96" id="GFL-OW-l9U"/>
+                                                            <constraint firstAttribute="trailing" secondItem="yJ6-3w-xbu" secondAttribute="trailing" id="S68-RW-Q7A"/>
                                                             <constraint firstAttribute="trailing" secondItem="UfS-NJ-aEV" secondAttribute="trailing" constant="20" id="Tcx-0Z-TwC"/>
                                                             <constraint firstItem="27f-hS-49a" firstAttribute="leading" secondItem="ySq-mt-c8H" secondAttribute="leading" constant="17" id="ZA3-j1-CQF"/>
                                                             <constraint firstItem="UfS-NJ-aEV" firstAttribute="leading" secondItem="27f-hS-49a" secondAttribute="trailing" constant="10" id="dMZ-fI-5PF"/>
                                                             <constraint firstItem="UfS-NJ-aEV" firstAttribute="top" secondItem="ySq-mt-c8H" secondAttribute="top" constant="16" id="g3g-4w-BHN"/>
-                                                            <constraint firstItem="yJ6-3w-xbu" firstAttribute="trailing" secondItem="UfS-NJ-aEV" secondAttribute="trailing" id="yBz-gK-Zi2"/>
                                                         </constraints>
                                                     </view>
                                                 </subviews>
