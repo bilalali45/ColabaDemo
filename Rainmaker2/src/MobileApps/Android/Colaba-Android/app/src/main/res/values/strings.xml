@@ -30,6 +30,8 @@
     <string name="doc_filter_started">Started</string>
     <string name="doc_filter_manually_added">Manually Added</string>
 
+    <string name="no_doc_uploaded">No documents uploaded yet</string>
+    <string name="no_doc_found">No documents found</string>
 
     <string name="plus_three">+3</string>
     <string name="actions_pending">Most Actions Pending</string>
