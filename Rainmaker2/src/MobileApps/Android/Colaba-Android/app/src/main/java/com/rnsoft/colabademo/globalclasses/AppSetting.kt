@@ -100,6 +100,37 @@ object AppSetting {
         return lastSeen
     }
 
+    fun documentDetailDateTimeFormat(input: String):String{
+        var receivedTimeString = input
+        receivedTimeString = if(input.contains(":Z"))
+            input.substring(0, input.length-2).toString()
+        else
+            input.substring(0, input.length-4)
+
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.US)
+        val oldDate: Date? = formatter.parse(receivedTimeString)
+        val oldMillis = oldDate?.time
+        var finalTimeInFormat = ""
+
+        //val dateFormatter = SimpleDateFormat("E MMM dd,yyyy hh:mm a");
+       // System.out.println("Format 2:   " + dateFormatter.format(now));
+       oldMillis?.let {
+           finalTimeInFormat = getDate(it, "E MMM dd,yyyy hh:mm a")
+       }
+
+        return finalTimeInFormat
+    }
+
+    fun getDate(milliSeconds: Long, dateFormat: String?): String {
+        // Create a DateFormatter object for displaying date in specified format.
+        val formatter = SimpleDateFormat(dateFormat)
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = milliSeconds
+        return formatter.format(calendar.time)
+    }
+
     fun lastseen( time: Long): String {
         val difference = (System.currentTimeMillis() - time) / 1000
 
