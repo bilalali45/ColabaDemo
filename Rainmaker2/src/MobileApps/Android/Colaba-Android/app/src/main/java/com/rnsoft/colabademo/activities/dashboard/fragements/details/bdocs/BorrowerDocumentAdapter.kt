@@ -85,10 +85,15 @@ internal constructor(
             }
         }
 
-        doc.createdOn.let { activityTime ->
+        /*doc.createdOn.let { activityTime ->
             val newString = AppSetting.returnLongTimeNow(activityTime!!)
             holder.docUploadedTime.text = newString
-        }
+        } */
+
+
+
+
+
 
         // set filter
         holder.docFilter.text = doc.status
@@ -147,6 +152,13 @@ internal constructor(
                     holder.docThreeName.text = "+" + (doc.subFiles.size.minus(2)).toString()
                 } else
                     holder.docThreeLayout.visibility = View.INVISIBLE
+
+                for (items in doc.subFiles.indices){
+                    var fileUploadOn = doc.subFiles[items].fileUploadedOn
+                    Log.e("fileUploadedOn", fileUploadOn)
+                    AppSetting.getDocumentUploadedDate(fileUploadOn)
+
+                }
             }
 
     }

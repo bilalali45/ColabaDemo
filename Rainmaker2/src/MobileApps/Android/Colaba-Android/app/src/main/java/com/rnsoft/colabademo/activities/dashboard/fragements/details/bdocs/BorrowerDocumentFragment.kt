@@ -81,6 +81,8 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
             this.adapter = borrowerDocumentAdapter
         }
 
+        Log.e("Doc created on", "$docsArrayList")
+
         detailViewModel.borrowerDocsModelList.observe(viewLifecycleOwner, {
             if (isStart) {
                 if (it != null && it.size > 0) {
@@ -94,7 +96,6 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
                 }
             }
         })
-
 
         btnAll = view.findViewById(R.id.btn_all)
         btnAll.setOnClickListener(this)

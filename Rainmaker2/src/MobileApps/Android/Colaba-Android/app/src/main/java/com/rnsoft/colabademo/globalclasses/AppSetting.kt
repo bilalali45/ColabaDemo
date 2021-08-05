@@ -10,20 +10,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.math.roundToInt
 
 object AppSetting {
 
     var biometricEnabled:Boolean = false
-
     var loanApiDateTime:String = ""
     var activeloanApiDateTime:String = ""
     var nonActiveloanApiDateTime:String = ""
 
-
-
-    //////////////////////////////////////////////
     // check in Repo to query Room database....
     var hasLoanApiDataLoaded = false
     var hasActiveLoanApiDataLoaded = false
@@ -48,13 +46,39 @@ object AppSetting {
     }
 
 
+    fun getDocumentUploadedDate(fileUploaded:String):String{
+        var trim: String
+        if(fileUploaded.contains(":Z")) {
+            trim=  fileUploaded.substring(0, fileUploaded.length - 2)
+        }
+        else
+            trim  =  fileUploaded.substring(0, fileUploaded.length-4)
+        Log.e("trimDAte", trim)
 
+        val localDateTime: LocalDateTime = LocalDateTime.parse(trim)
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+        val output: String = formatter.format(localDateTime)
+
+        val dayOfTheWeek = DateTimeFormatter.("EEEE", date) as String
+
+
+
+        Log.e("NewDate", ""+output)
+
+
+        /* val formatter = SimpleDateFormat("MMMM dd yyyy hh:mm:ss")
+         val dt = formatter.parse(trim)
+         Log.e("New Date", dt.toString()) */
+
+        //println(formatter.format(dt))
+
+        return fileUploaded
+
+    }
 
     fun returnLongTimeNow(input:String):String{
 
         var lastSeen = input
-
-
 
         if(input.contains(":Z"))
             lastSeen =  input.substring(0, input.length-2).toString()
@@ -122,7 +146,6 @@ object AppSetting {
             "$days days ago"
         }
     }
-
 
     fun showBadge(
         context: Context?,
