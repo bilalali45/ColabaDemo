@@ -80,18 +80,19 @@ class FaceRecognitionViewController: UIViewController {
         
     }
     
-    @IBAction func btnLoginWithPasswordTapped(_ sender: UIButton) {
+    func showLogin(){
         isBiometricAllow = false
         UserDefaults.standard.set(kNo, forKey: kIsUserRegisteredWithBiometric)
         let vc = Utility.getLoginVC()
         self.pushToVC(vc: vc)
     }
     
+    @IBAction func btnLoginWithPasswordTapped(_ sender: UIButton) {
+        showLogin()
+    }
+    
     @IBAction func btnAnotherAccountTapped(_ sender: UIButton) {
-        isBiometricAllow = false
-        UserDefaults.standard.set(kNo, forKey: kIsUserRegisteredWithBiometric)
-        let vc = Utility.getLoginVC()
-        self.pushToVC(vc: vc)
+        showLogin()
     }
     
     //MARK:- API's
@@ -109,7 +110,7 @@ class FaceRecognitionViewController: UIViewController {
                 
                 Utility.showOrHideLoader(shouldShow: false)
                 
-                if (status == .success){
+                if (status == .success && result["code"].stringValue == "200"){
                     
                     let realm = try! Realm()
                     realm.beginWrite()
@@ -124,7 +125,7 @@ class FaceRecognitionViewController: UIViewController {
                 }
                 else{
                     self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { reason in
-                        
+                        self.showLogin()
                     }
                 }
             }
