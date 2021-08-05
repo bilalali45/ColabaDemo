@@ -78,8 +78,8 @@ class ApplicationViewController: BaseViewController {
         propertyTypeAttributedText.addAttribute(NSAttributedString.Key.font, value: Theme.getRubikBoldFont(size: 15), range: propertyTypeText.nsRange(from: range1!))
         self.lblPropertyType.attributedText = propertyTypeAttributedText
         self.lblLoanPayment.text = loanApplicationDetail.loanAmount.withCommas().replacingOccurrences(of: ".00", with: "")
-        self.lblDownPayment.text = loanApplicationDetail.deposit.withCommas().replacingOccurrences(of: ".00", with: "")
-        self.lblPercentage.text = String(format: "(%.0f%%)", loanApplicationDetail.depositPercent.rounded())
+        self.lblDownPayment.text = loanApplicationDetail.downPayment.withCommas().replacingOccurrences(of: ".00", with: "")
+        self.lblPercentage.text = String(format: "(%.0f%%)", loanApplicationDetail.downPaymentPercentage.rounded())
         let totalAssets = Int(loanApplicationDetail.totalAsset)
         let totalIncome = Int(loanApplicationDetail.totalMonthyIncome)
         self.lblTotalAssets.text = totalAssets.withCommas().replacingOccurrences(of: ".00", with: "")
@@ -270,7 +270,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                     cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
                 }
                 else{
-                    cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                    cell.iconAns1.image = UIImage(named: "Ans-NA")
                     cell.lblAns1.text = "N/a"
                     cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
                 }
@@ -310,7 +310,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                     cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
                 }
                 else{
-                    cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                    cell.iconAns1.image = UIImage(named: "Ans-NA")
                     cell.lblAns1.text = "N/a"
                     cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
                 }
@@ -331,7 +331,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                     cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
                 }
                 else{
-                    cell.iconAns2.image = UIImage(named: "Ans-Yes")
+                    cell.iconAns2.image = UIImage(named: "Ans-NA")
                     cell.lblAns2.text = "N/a"
                     cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
                 }
@@ -368,7 +368,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                     cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
                 }
                 else{
-                    cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                    cell.iconAns1.image = UIImage(named: "Ans-NA")
                     cell.lblAns1.text = "N/a"
                     cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
                 }
@@ -389,7 +389,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                     cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
                 }
                 else{
-                    cell.iconAns2.image = UIImage(named: "Ans-Yes")
+                    cell.iconAns2.image = UIImage(named: "Ans-NA")
                     cell.lblAns2.text = "N/a"
                     cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
                 }
@@ -410,7 +410,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                     cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
                 }
                 else{
-                    cell.iconAns3.image = UIImage(named: "Ans-Yes")
+                    cell.iconAns3.image = UIImage(named: "Ans-NA")
                     cell.lblAns3.text = "N/a"
                     cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
                 }
@@ -443,7 +443,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                     cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
                 }
                 else{
-                    cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                    cell.iconAns1.image = UIImage(named: "Ans-NA")
                     cell.lblAns1.text = "N/a"
                     cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
                 }
@@ -464,7 +464,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                     cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
                 }
                 else{
-                    cell.iconAns2.image = UIImage(named: "Ans-Yes")
+                    cell.iconAns2.image = UIImage(named: "Ans-NA")
                     cell.lblAns2.text = "N/a"
                     cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
                 }
@@ -485,7 +485,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                     cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
                 }
                 else{
-                    cell.iconAns3.image = UIImage(named: "Ans-Yes")
+                    cell.iconAns3.image = UIImage(named: "Ans-NA")
                     cell.lblAns3.text = "N/a"
                     cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
                 }
@@ -506,7 +506,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                     cell.lblAns4.font = Theme.getRubikRegularFont(size: 15)
                 }
                 else{
-                    cell.iconAns4.image = UIImage(named: "Ans-Yes")
+                    cell.iconAns4.image = UIImage(named: "Ans-NA")
                     cell.lblAns4.text = "N/a"
                     cell.lblAns4.font = Theme.getRubikRegularFont(size: 15)
                 }

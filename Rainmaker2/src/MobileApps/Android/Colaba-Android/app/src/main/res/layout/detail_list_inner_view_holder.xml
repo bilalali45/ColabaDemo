@@ -2,8 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:paddingBottom="4dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -43,7 +41,6 @@
                 android:text="Bank Statements"
                 android:textColor="@color/grey_color_two"
                 android:textSize="17sp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/doc_image"
                 app:layout_constraintStart_toEndOf="@+id/doc_image"
                 app:layout_constraintTop_toTopOf="@+id/doc_image" />

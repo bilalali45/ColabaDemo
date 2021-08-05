@@ -42,11 +42,11 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
 
     suspend fun getBorrowerApplicationTabData(
         token: String,
-        borrowerId: Int
+        loanApplicationId: Int
     ): Result<BorrowerApplicationTabModel> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getBorrowerApplicationTabData(newToken, borrowerId)
+            val response = serverApi.getBorrowerApplicationTabData(newToken, loanApplicationId)
             Log.e("ApplicationTabData-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {

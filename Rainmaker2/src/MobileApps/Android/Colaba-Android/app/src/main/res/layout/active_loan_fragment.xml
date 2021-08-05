@@ -82,7 +82,7 @@
         android:foregroundGravity="center"
 
         android:indeterminate="true"
-        android:indeterminateTint="@color/colaba_primary_color"
+        android:indeterminateTint="@color/colaba_apptheme_blue"
 
         android:indeterminateTintMode="src_atop"
         android:visibility="invisible"

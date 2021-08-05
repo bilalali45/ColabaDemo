@@ -46,7 +46,7 @@ class SignUpFlowActivity : AppCompatActivity() {
                 destination.id.toString()
             }
 
-            Log.d("NavigationActivity", "Navigated to $dest")
+            //Log.d("NavigationActivity", "Navigated to $dest")
         }
 
 

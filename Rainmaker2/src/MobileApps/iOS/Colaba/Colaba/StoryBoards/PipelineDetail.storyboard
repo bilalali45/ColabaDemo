@@ -50,7 +50,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PURCHASE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WFQ-P0-cOh">
-                                        <rect key="frame" x="159" y="36" width="57" height="13"/>
+                                        <rect key="frame" x="158" y="36" width="59.5" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -266,20 +266,16 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="180"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Application-Tab-Borrower-Info" translatesAutoresizingMaskIntoConstraints="NO" id="VFh-8T-Fi7">
-                                                        <rect key="frame" x="20" y="36" width="23" height="23"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="23" id="aSp-dd-47D"/>
-                                                            <constraint firstAttribute="width" constant="23" id="jp4-3o-JqL"/>
-                                                        </constraints>
+                                                        <rect key="frame" x="20" y="36" width="20" height="20"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BORROWER INFORMATION" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FEB-7t-auW">
-                                                        <rect key="frame" x="48" y="40.5" width="150" height="14"/>
+                                                        <rect key="frame" x="45" y="39" width="154" height="14"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="12"/>
                                                         <color key="textColor" name="AppGreyColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PKe-jR-bfj">
-                                                        <rect key="frame" x="0.0" y="59" width="375" height="80"/>
+                                                        <rect key="frame" x="0.0" y="56" width="375" height="80"/>
                                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="80" id="gC0-81-sW6"/>
@@ -313,30 +309,26 @@
                                                 <rect key="frame" x="0.0" y="180" width="375" height="180"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Application-Tab-Property" translatesAutoresizingMaskIntoConstraints="NO" id="c2I-SX-eXK">
-                                                        <rect key="frame" x="20" y="0.0" width="23" height="23"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="23" id="8AQ-32-LmT"/>
-                                                            <constraint firstAttribute="width" constant="23" id="XON-WY-ae7"/>
-                                                        </constraints>
+                                                        <rect key="frame" x="20" y="0.0" width="20" height="20"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SUBJECT PROPERTY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eV6-CN-C9J">
-                                                        <rect key="frame" x="48" y="4.5" width="121" height="14"/>
+                                                        <rect key="frame" x="45" y="3" width="120" height="14"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="12"/>
                                                         <color key="textColor" name="AppGreyColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ySq-mt-c8H">
-                                                        <rect key="frame" x="20" y="30.5" width="335" height="96"/>
+                                                        <rect key="frame" x="20" y="29" width="335" height="96"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Location-Icon" translatesAutoresizingMaskIntoConstraints="NO" id="27f-hS-49a">
-                                                                <rect key="frame" x="17" y="17" width="15" height="20"/>
+                                                                <rect key="frame" x="17" y="17" width="20" height="20"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="20" id="3dN-pL-zZK"/>
-                                                                    <constraint firstAttribute="width" constant="15" id="MJL-Fm-mLa"/>
+                                                                    <constraint firstAttribute="width" constant="20" id="AQc-cv-zEK"/>
+                                                                    <constraint firstAttribute="height" constant="20" id="OJH-6a-stb"/>
                                                                 </constraints>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4101  Oak Tree Avenue, Parkway,  LN #222, Chicago, MD 60605" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UfS-NJ-aEV">
-                                                                <rect key="frame" x="42" y="16" width="273" height="38"/>
+                                                                <rect key="frame" x="47" y="16" width="268" height="38"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="38" id="qfX-CO-Mee"/>
                                                                 </constraints>
@@ -345,7 +337,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Single Family Residency   ·   Investment Property" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yJ6-3w-xbu">
-                                                                <rect key="frame" x="42" y="64" width="273" height="15.5"/>
+                                                                <rect key="frame" x="47" y="64" width="288" height="15.5"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                                 <color key="textColor" name="AppGreyColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -357,11 +349,11 @@
                                                             <constraint firstItem="yJ6-3w-xbu" firstAttribute="leading" secondItem="UfS-NJ-aEV" secondAttribute="leading" id="DXt-Gy-pv7"/>
                                                             <constraint firstItem="27f-hS-49a" firstAttribute="top" secondItem="ySq-mt-c8H" secondAttribute="top" constant="17" id="Di9-In-anc"/>
                                                             <constraint firstAttribute="height" constant="96" id="GFL-OW-l9U"/>
+                                                            <constraint firstAttribute="trailing" secondItem="yJ6-3w-xbu" secondAttribute="trailing" id="S68-RW-Q7A"/>
                                                             <constraint firstAttribute="trailing" secondItem="UfS-NJ-aEV" secondAttribute="trailing" constant="20" id="Tcx-0Z-TwC"/>
                                                             <constraint firstItem="27f-hS-49a" firstAttribute="leading" secondItem="ySq-mt-c8H" secondAttribute="leading" constant="17" id="ZA3-j1-CQF"/>
                                                             <constraint firstItem="UfS-NJ-aEV" firstAttribute="leading" secondItem="27f-hS-49a" secondAttribute="trailing" constant="10" id="dMZ-fI-5PF"/>
                                                             <constraint firstItem="UfS-NJ-aEV" firstAttribute="top" secondItem="ySq-mt-c8H" secondAttribute="top" constant="16" id="g3g-4w-BHN"/>
-                                                            <constraint firstItem="yJ6-3w-xbu" firstAttribute="trailing" secondItem="UfS-NJ-aEV" secondAttribute="trailing" id="yBz-gK-Zi2"/>
                                                         </constraints>
                                                     </view>
                                                 </subviews>
@@ -381,63 +373,63 @@
                                                 <rect key="frame" x="0.0" y="360" width="375" height="182"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Application-Tab-LoanInfo" translatesAutoresizingMaskIntoConstraints="NO" id="9Hd-eK-8tP">
-                                                        <rect key="frame" x="20" y="0.0" width="23" height="23"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="23" id="Glu-GU-pac"/>
-                                                            <constraint firstAttribute="height" constant="23" id="r71-kF-KQh"/>
-                                                        </constraints>
+                                                        <rect key="frame" x="20" y="0.0" width="20" height="20"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LOAN INFORMATION" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMI-WF-Urq">
-                                                        <rect key="frame" x="48" y="4.5" width="115.5" height="14"/>
+                                                        <rect key="frame" x="45" y="3" width="116.5" height="14"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="12"/>
                                                         <color key="textColor" name="AppGreyColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Sk-Gc-X6O">
-                                                        <rect key="frame" x="20" y="30.5" width="335" height="98"/>
+                                                        <rect key="frame" x="20" y="29" width="335" height="98"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Purchase" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rew-j6-rij">
-                                                                <rect key="frame" x="15" y="15" width="60" height="16"/>
+                                                                <rect key="frame" x="15" y="15" width="54.5" height="16"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                                                                 <color key="textColor" name="AppGreyColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Loan-Payment" translatesAutoresizingMaskIntoConstraints="NO" id="eVQ-lp-H5u">
-                                                                <rect key="frame" x="15" y="44" width="14" height="18"/>
+                                                                <rect key="frame" x="15" y="44" width="20" height="20"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="width" constant="14" id="45s-k3-c3a"/>
-                                                                    <constraint firstAttribute="height" constant="18" id="E2M-ZZ-WYW"/>
+                                                                    <constraint firstAttribute="width" constant="20" id="45s-k3-c3a"/>
+                                                                    <constraint firstAttribute="height" constant="20" id="E2M-ZZ-WYW"/>
                                                                 </constraints>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$800,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ib0-xe-drH">
-                                                                <rect key="frame" x="39" y="41" width="122.5" height="23"/>
+                                                                <rect key="frame" x="45" y="41" width="116" height="23"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="19"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loan Payment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KeP-je-jcg">
-                                                                <rect key="frame" x="39" y="69" width="87" height="16"/>
+                                                                <rect key="frame" x="45" y="69" width="84" height="16"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                                 <color key="textColor" name="AppGreyColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Down-Payment" translatesAutoresizingMaskIntoConstraints="NO" id="chN-3Q-SgO">
-                                                                <rect key="frame" x="166.5" y="41" width="19" height="22.5"/>
+                                                                <rect key="frame" x="166" y="41" width="20" height="20"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="20" id="CyN-e5-N6p"/>
+                                                                    <constraint firstAttribute="width" constant="20" id="Pdq-nk-F9o"/>
+                                                                </constraints>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$200,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9bG-3h-b1t">
-                                                                <rect key="frame" x="195.5" y="41" width="87.5" height="23"/>
+                                                                <rect key="frame" x="196" y="41" width="79.5" height="23"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="19"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Down Payment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ESt-OD-ZvV">
-                                                                <rect key="frame" x="195.5" y="69" width="92" height="16"/>
+                                                                <rect key="frame" x="196" y="69" width="89" height="16"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                                 <color key="textColor" name="AppGreyColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(20%)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B8j-xh-5wc">
-                                                                <rect key="frame" x="287" y="46.5" width="26.5" height="12"/>
+                                                                <rect key="frame" x="279.5" y="46.5" width="26.5" height="12"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="10"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -482,36 +474,28 @@
                                                 <rect key="frame" x="0.0" y="542" width="375" height="158"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Application-Tab-Assets" translatesAutoresizingMaskIntoConstraints="NO" id="G8J-4z-sbE">
-                                                        <rect key="frame" x="20" y="0.0" width="23" height="23"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="23" id="dXO-Kx-cDp"/>
-                                                            <constraint firstAttribute="height" constant="23" id="yla-pY-SJu"/>
-                                                        </constraints>
+                                                        <rect key="frame" x="20" y="0.0" width="20.5" height="20"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ASSETS &amp; INCOME" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HbC-ED-33Y">
-                                                        <rect key="frame" x="48" y="4.5" width="107" height="14"/>
+                                                        <rect key="frame" x="45.5" y="3" width="107" height="14"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="12"/>
                                                         <color key="textColor" name="AppGreyColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kLp-Ff-XQT">
-                                                        <rect key="frame" x="20" y="30.5" width="161.5" height="75"/>
+                                                        <rect key="frame" x="20" y="29" width="161.5" height="75"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Total-Assets" translatesAutoresizingMaskIntoConstraints="NO" id="hF4-65-oce">
-                                                                <rect key="frame" x="14" y="19" width="19" height="18"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="19" id="BuM-5m-Fxk"/>
-                                                                    <constraint firstAttribute="height" constant="18" id="E7R-Bm-gCW"/>
-                                                                </constraints>
+                                                                <rect key="frame" x="14" y="19" width="20" height="20"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$320,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nio-zC-iQU">
-                                                                <rect key="frame" x="40" y="16" width="86.5" height="23"/>
+                                                                <rect key="frame" x="41" y="16" width="79.5" height="23"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="19"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Assets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DH5-nI-qNE">
-                                                                <rect key="frame" x="40" y="44" width="73" height="16"/>
+                                                                <rect key="frame" x="41" y="44" width="70.5" height="16"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                                 <color key="textColor" name="AppGreyColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -529,23 +513,23 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="an5-Vg-Lbu">
-                                                        <rect key="frame" x="194" y="30.5" width="161" height="75"/>
+                                                        <rect key="frame" x="194" y="29" width="161" height="75"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Total-Monthly-Income" translatesAutoresizingMaskIntoConstraints="NO" id="VEM-NH-rJG">
-                                                                <rect key="frame" x="14" y="19" width="19" height="18"/>
+                                                                <rect key="frame" x="14" y="19" width="20" height="20"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="width" constant="19" id="5PC-g5-RT2"/>
-                                                                    <constraint firstAttribute="height" constant="18" id="CIf-A0-CAs"/>
+                                                                    <constraint firstAttribute="width" constant="20" id="5PC-g5-RT2"/>
+                                                                    <constraint firstAttribute="height" constant="20" id="CIf-A0-CAs"/>
                                                                 </constraints>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$12,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2nO-IH-XQq">
-                                                                <rect key="frame" x="40" y="16" width="71.5" height="23"/>
+                                                                <rect key="frame" x="41" y="16" width="69" height="23"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="19"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Monthly Income" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.84999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="ct3-Pb-qep">
-                                                                <rect key="frame" x="40" y="44" width="116" height="16"/>
+                                                                <rect key="frame" x="41" y="44" width="115" height="16"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                                 <color key="textColor" name="AppGreyColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -583,20 +567,16 @@
                                                 <rect key="frame" x="0.0" y="700" width="375" height="182"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Application-Tab-Real-Estate" translatesAutoresizingMaskIntoConstraints="NO" id="LyU-Ke-BOo">
-                                                        <rect key="frame" x="20" y="0.0" width="23" height="23"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="23" id="Sas-cm-6nf"/>
-                                                            <constraint firstAttribute="width" constant="23" id="xfS-g0-Xad"/>
-                                                        </constraints>
+                                                        <rect key="frame" x="20" y="0.0" width="20" height="20"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="REAL ESTATE OWNED" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pvh-r3-hyo">
-                                                        <rect key="frame" x="48" y="4.5" width="122.5" height="14"/>
+                                                        <rect key="frame" x="45" y="3" width="123.5" height="14"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="12"/>
                                                         <color key="textColor" name="AppGreyColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="rF2-Rf-h6z">
-                                                        <rect key="frame" x="0.0" y="23" width="375" height="107"/>
+                                                        <rect key="frame" x="0.0" y="20" width="375" height="107"/>
                                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="107" id="v7N-oA-rff"/>
@@ -630,20 +610,16 @@
                                                 <rect key="frame" x="0.0" y="882" width="375" height="260"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Application-Tab-Govt-Questions" translatesAutoresizingMaskIntoConstraints="NO" id="BSh-Fk-Et1">
-                                                        <rect key="frame" x="20" y="0.0" width="23" height="23"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="23" id="IB1-Ag-xbQ"/>
-                                                            <constraint firstAttribute="height" constant="23" id="kiw-YL-Hgz"/>
-                                                        </constraints>
+                                                        <rect key="frame" x="20" y="0.0" width="20" height="20"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GOVERNMENT QUESTIONS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EeK-YG-ehV">
-                                                        <rect key="frame" x="48" y="4.5" width="151.5" height="14"/>
+                                                        <rect key="frame" x="45" y="3" width="155" height="14"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="12"/>
                                                         <color key="textColor" name="AppGreyColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="t9V-sb-78k">
-                                                        <rect key="frame" x="0.0" y="23" width="375" height="227"/>
+                                                        <rect key="frame" x="0.0" y="20" width="375" height="227"/>
                                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="227" id="gpt-IM-nWf"/>
@@ -787,7 +763,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In Draft" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sbY-RU-Q55">
-                                                        <rect key="frame" x="26" y="7.5" width="45.5" height="15"/>
+                                                        <rect key="frame" x="26" y="7.5" width="43" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -813,7 +789,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Borrower to do" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JPc-1Q-Xpf">
-                                                        <rect key="frame" x="26" y="7.5" width="89" height="15"/>
+                                                        <rect key="frame" x="26" y="7.5" width="87.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -839,7 +815,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Started" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HpZ-hT-xwW">
-                                                        <rect key="frame" x="26" y="7.5" width="45.5" height="15"/>
+                                                        <rect key="frame" x="26" y="7.5" width="43" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -865,7 +841,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pF0-BJ-80F">
-                                                        <rect key="frame" x="26" y="7.5" width="50" height="15"/>
+                                                        <rect key="frame" x="26" y="7.5" width="48" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -891,7 +867,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Completed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hWb-8l-8FF">
-                                                        <rect key="frame" x="26" y="7.5" width="66" height="15"/>
+                                                        <rect key="frame" x="26" y="7.5" width="64.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -917,7 +893,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manually added" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oZM-La-0Qg">
-                                                        <rect key="frame" x="26" y="7.5" width="94.5" height="15"/>
+                                                        <rect key="frame" x="26" y="7.5" width="93" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -977,17 +953,30 @@
                                     <outlet property="delegate" destination="Ym2-BP-dxA" id="Rry-uw-v6n"/>
                                 </connections>
                             </tableView>
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="No-Documents" translatesAutoresizingMaskIntoConstraints="NO" id="f8P-pf-qYr">
+                                <rect key="frame" x="64" y="186.5" width="247.5" height="227"/>
+                            </imageView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No documents found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M0d-L9-5ZE">
+                                <rect key="frame" x="107" y="437.5" width="161" height="20"/>
+                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="17"/>
+                                <color key="textColor" name="AppGreyColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="HDh-Ic-Ytq"/>
                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="f8P-pf-qYr" firstAttribute="centerX" secondItem="T3y-6e-Lk7" secondAttribute="centerX" id="92N-P5-3R3"/>
                             <constraint firstItem="RTq-jg-1eg" firstAttribute="leading" secondItem="HDh-Ic-Ytq" secondAttribute="leading" id="EI0-lR-SNQ"/>
+                            <constraint firstItem="M0d-L9-5ZE" firstAttribute="centerX" secondItem="T3y-6e-Lk7" secondAttribute="centerX" id="Qyb-Bt-dNJ"/>
                             <constraint firstItem="HDh-Ic-Ytq" firstAttribute="bottom" secondItem="RTq-jg-1eg" secondAttribute="bottom" id="bMF-9o-hOB"/>
                             <constraint firstItem="RTq-jg-1eg" firstAttribute="top" secondItem="RXo-Tq-NIT" secondAttribute="bottom" constant="15" id="g2h-lO-jX7"/>
                             <constraint firstItem="HDh-Ic-Ytq" firstAttribute="trailing" secondItem="RTq-jg-1eg" secondAttribute="trailing" id="l40-WT-dP5"/>
+                            <constraint firstItem="f8P-pf-qYr" firstAttribute="centerY" secondItem="T3y-6e-Lk7" secondAttribute="centerY" multiplier="0.9" id="lkZ-eo-Iy5"/>
                             <constraint firstItem="HDh-Ic-Ytq" firstAttribute="trailing" secondItem="RXo-Tq-NIT" secondAttribute="trailing" id="mbA-qe-qeH"/>
                             <constraint firstItem="RXo-Tq-NIT" firstAttribute="top" secondItem="HDh-Ic-Ytq" secondAttribute="top" constant="15" id="nfS-kR-pgz"/>
                             <constraint firstItem="RXo-Tq-NIT" firstAttribute="leading" secondItem="HDh-Ic-Ytq" secondAttribute="leading" id="pXh-B1-90u"/>
+                            <constraint firstItem="M0d-L9-5ZE" firstAttribute="top" secondItem="f8P-pf-qYr" secondAttribute="bottom" constant="24" id="rV4-LE-pNk"/>
                         </constraints>
                     </view>
                     <connections>
@@ -995,6 +984,8 @@
                         <outlet property="borrowerToDoView" destination="aq8-Cc-e9b" id="AiM-oo-QCa"/>
                         <outlet property="completedView" destination="kaD-ft-61d" id="Jbq-xy-DEp"/>
                         <outlet property="draftView" destination="6R8-T4-o1K" id="Hvv-PA-stf"/>
+                        <outlet property="iconNoDocument" destination="f8P-pf-qYr" id="z9O-7g-j8k"/>
+                        <outlet property="lblNoDocuments" destination="M0d-L9-5ZE" id="iow-B5-RGc"/>
                         <outlet property="manuallyView" destination="n2j-m9-IVR" id="4E4-RC-Fz4"/>
                         <outlet property="pendingView" destination="Mub-x1-u1b" id="9yj-9N-V8x"/>
                         <outlet property="startedView" destination="JVg-Tu-I2u" id="EWV-BK-tRW"/>
@@ -1028,7 +1019,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Application Status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r9W-Gl-Nwf">
-                                        <rect key="frame" x="107" y="21.5" width="161.5" height="21"/>
+                                        <rect key="frame" x="114" y="21.5" width="147.5" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
@@ -1081,7 +1072,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8lC-0a-nQh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1406" y="239"/>
+            <point key="canvasLocation" x="2068" y="239"/>
         </scene>
         <!--Documents Detail View Controller-->
         <scene sceneID="bXK-mm-2Tv">
@@ -1137,6 +1128,15 @@
                                     <outlet property="delegate" destination="psL-1F-jmf" id="nQX-Uj-9il"/>
                                 </connections>
                             </tableView>
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="No-File" translatesAutoresizingMaskIntoConstraints="NO" id="Xdr-Hv-8Lj">
+                                <rect key="frame" x="101" y="243.5" width="173" height="227"/>
+                            </imageView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No documents uploaded yet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eHW-0E-rsf">
+                                <rect key="frame" x="79.5" y="500.5" width="216.5" height="20"/>
+                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="17"/>
+                                <color key="textColor" name="AppGreyColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="OzF-89-zBu"/>
                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
@@ -1148,30 +1148,36 @@
                             <constraint firstItem="OzF-89-zBu" firstAttribute="trailing" secondItem="872-k8-3c9" secondAttribute="trailing" id="NrE-mc-2Nf"/>
                             <constraint firstItem="3Fb-Se-sMo" firstAttribute="leading" secondItem="OzF-89-zBu" secondAttribute="leading" id="SbF-ZO-HQc"/>
                             <constraint firstItem="872-k8-3c9" firstAttribute="top" secondItem="3Fb-Se-sMo" secondAttribute="bottom" id="bsp-YQ-MaQ"/>
+                            <constraint firstItem="eHW-0E-rsf" firstAttribute="top" secondItem="Xdr-Hv-8Lj" secondAttribute="bottom" constant="30" id="cE3-xM-2Yn"/>
+                            <constraint firstItem="eHW-0E-rsf" firstAttribute="centerX" secondItem="wvK-NR-bQD" secondAttribute="centerX" id="epV-ri-zab"/>
                             <constraint firstItem="3Fb-Se-sMo" firstAttribute="top" secondItem="OzF-89-zBu" secondAttribute="top" id="lKz-I4-cBn"/>
                             <constraint firstItem="SCE-aA-K3a" firstAttribute="top" secondItem="872-k8-3c9" secondAttribute="bottom" id="r38-zu-Yxc"/>
+                            <constraint firstItem="Xdr-Hv-8Lj" firstAttribute="centerX" secondItem="wvK-NR-bQD" secondAttribute="centerX" id="syK-0S-cJp"/>
+                            <constraint firstItem="Xdr-Hv-8Lj" firstAttribute="centerY" secondItem="wvK-NR-bQD" secondAttribute="centerY" multiplier="1.07" id="u1F-PA-6qB"/>
                             <constraint firstItem="SCE-aA-K3a" firstAttribute="leading" secondItem="OzF-89-zBu" secondAttribute="leading" id="z0K-uX-IkL"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="btnBack" destination="N8k-WV-ip3" id="14y-rj-01z"/>
+                        <outlet property="iconNoFiles" destination="Xdr-Hv-8Lj" id="sRv-lV-kK9"/>
                         <outlet property="lblDocumentName" destination="a9W-WE-C6g" id="mD1-eH-VL3"/>
+                        <outlet property="lblNoFiles" destination="eHW-0E-rsf" id="xHK-NB-6Uh"/>
                         <outlet property="tblViewDocuments" destination="SCE-aA-K3a" id="AF9-Kx-mrT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bl7-II-DZ7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2092" y="239"/>
+            <point key="canvasLocation" x="1398" y="239"/>
         </scene>
     </scenes>
     <resources>
         <image name="AddPersonIcon" width="28" height="28"/>
-        <image name="Application-Tab-Assets" width="24.646999359130859" height="23.333000183105469"/>
-        <image name="Application-Tab-Borrower-Info" width="18.03700065612793" height="16"/>
-        <image name="Application-Tab-Govt-Questions" width="15.788000106811523" height="17"/>
-        <image name="Application-Tab-LoanInfo" width="12.579999923706055" height="16.00200080871582"/>
-        <image name="Application-Tab-Property" width="17.5" height="16.827999114990234"/>
-        <image name="Application-Tab-Real-Estate" width="16.145000457763672" height="16"/>
+        <image name="Application-Tab-Assets" width="20.676000595092773" height="20"/>
+        <image name="Application-Tab-Borrower-Info" width="20" height="20"/>
+        <image name="Application-Tab-Govt-Questions" width="20" height="20"/>
+        <image name="Application-Tab-LoanInfo" width="20" height="20"/>
+        <image name="Application-Tab-Property" width="20" height="20"/>
+        <image name="Application-Tab-Real-Estate" width="20" height="20"/>
         <image name="Blue-Dot" width="6" height="6"/>
         <image name="CurveArrow" width="15.041000366210938" height="57.404998779296875"/>
         <image name="Down-Payment" width="19.552000045776367" height="22.724000930786133"/>
@@ -1182,11 +1188,13 @@
         <image name="Grey-Dot" width="6" height="6"/>
         <image name="LightBlue-Dot" width="6" height="6"/>
         <image name="Loan-Payment" width="13.711000442504883" height="18"/>
-        <image name="Location-Icon" width="14.737000465393066" height="20"/>
+        <image name="Location-Icon" width="20" height="20"/>
+        <image name="No-Documents" width="247.71499633789062" height="227.25199890136719"/>
+        <image name="No-File" width="173.36700439453125" height="227.25799560546875"/>
         <image name="OptionsIcon" width="5.5720000267028809" height="22.288000106811523"/>
         <image name="Red-Dot" width="6" height="6"/>
-        <image name="Total-Assets" width="19.379999160766602" height="17.827999114990234"/>
-        <image name="Total-Monthly-Income" width="19" height="18.556999206542969"/>
+        <image name="Total-Assets" width="20" height="20"/>
+        <image name="Total-Monthly-Income" width="20" height="20"/>
         <image name="Yellow-Dot" width="6" height="6"/>
         <image name="back" width="19" height="27"/>
         <namedColor name="AppBlackColor">

@@ -116,7 +116,7 @@ class DetailTabFragment : Fragment() {
                     sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                         detailViewModel.getLoanInfo(token = authToken, loanApplicationId = loanId)
                         detailViewModel.getBorrowerDocuments(token = authToken, loanApplicationId = loanId)
-                        detailViewModel.getBorrowerApplicationTabData(token = authToken, borrowerId = loanId)
+                        detailViewModel.getBorrowerApplicationTabData(token = authToken, loanApplicationId = loanId)
                     }
                 }
             }

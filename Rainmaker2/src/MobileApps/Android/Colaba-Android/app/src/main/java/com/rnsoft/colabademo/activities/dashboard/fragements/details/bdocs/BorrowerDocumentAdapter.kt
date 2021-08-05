@@ -78,6 +78,7 @@ internal constructor(
         holder.docType.text = doc.docName
         if(doc.subFiles.size>0){
             for(file in doc.subFiles){
+                //Log.e("READ", doc.docName + "  " + file.isRead)
                 if((!file.isRead)){
                     holder.docType.setTypeface(null,Typeface.BOLD)
                 }

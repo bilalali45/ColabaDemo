@@ -16,6 +16,8 @@ class DocumentsDetailViewController: UIViewController {
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblDocumentName: UILabel!
     @IBOutlet weak var tblViewDocuments: UITableView!
+    @IBOutlet weak var iconNoFiles: UIImageView!
+    @IBOutlet weak var lblNoFiles: UILabel!
     
     var selectedDocument = LoanDocumentModel()
     lazy var previewItem = NSURL()
@@ -81,6 +83,8 @@ class DocumentsDetailViewController: UIViewController {
 extension DocumentsDetailViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        iconNoFiles.isHidden = selectedDocument.files.count > 0
+        lblNoFiles.isHidden = selectedDocument.files.count > 0
         return selectedDocument.message == "" ? selectedDocument.files.count : selectedDocument.files.count + 1
     }
     

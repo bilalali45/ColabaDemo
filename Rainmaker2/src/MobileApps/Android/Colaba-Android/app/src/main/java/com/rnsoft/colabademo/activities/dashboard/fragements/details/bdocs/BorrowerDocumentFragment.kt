@@ -224,6 +224,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
             btnFilterPending.isActivated = false
             btnFilterCompleted.isActivated = false
             btnFilterManullayAdded.isActivated = false
+
         } else if (statusInDraft) {
             btnAll.isActivated = false
             btnInDraft.isActivated = true
@@ -232,6 +233,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
             btnFilterPending.isActivated = false
             btnFilterCompleted.isActivated = false
             btnFilterManullayAdded.isActivated = false
+
         } else if (statusToDo) {
             btnAll.isActivated = false
             btnInDraft.isActivated = false
@@ -240,6 +242,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
             btnFilterPending.isActivated = false
             btnFilterCompleted.isActivated = false
             btnFilterManullayAdded.isActivated = false
+
         } else if (statusStarted) {
             btnAll.isActivated = false
             btnInDraft.isActivated = false
@@ -248,6 +251,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
             btnFilterPending.isActivated = false
             btnFilterCompleted.isActivated = false
             btnFilterManullayAdded.isActivated = false
+
         } else if (statusPending) {
             btnAll.isActivated = false
             btnInDraft.isActivated = false
@@ -256,6 +260,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
             btnFilterPending.isActivated = true
             btnFilterCompleted.isActivated = false
             btnFilterManullayAdded.isActivated = false
+
         } else if (statusCompleted) {
             btnAll.isActivated = false
             btnInDraft.isActivated = false
@@ -264,6 +269,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
             btnFilterPending.isActivated = false
             btnFilterCompleted.isActivated = true
             btnFilterManullayAdded.isActivated = false
+
         } else if (statusManuallyAdded) {
             btnAll.isActivated = false
             btnInDraft.isActivated = false

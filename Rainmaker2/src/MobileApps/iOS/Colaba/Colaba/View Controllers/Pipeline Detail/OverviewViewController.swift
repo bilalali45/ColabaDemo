@@ -149,7 +149,7 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
             cell.lblLoanPurposeTopConstraint.constant = Utility.checkIsSmallDevice() ? 15 : 30
             cell.mapIconTopConstraint.constant = Utility.checkIsSmallDevice() ? 16 : 26
             cell.lblAddressTopConstraint.constant = Utility.checkIsSmallDevice() ? 15 : 25
-            cell.loanDetailStackView.spacing = Utility.checkIsSmallDevice() ? 35 : 15
+            cell.loanDetailStackView.spacing = Utility.checkIsSmallDevice() ? 35 : 12
             cell.downPaymentView.isHidden = Utility.checkIsSmallDevice()
             cell.bottomDownPaymentView.isHidden = !Utility.checkIsSmallDevice()
             cell.updateConstraintsIfNeeded()

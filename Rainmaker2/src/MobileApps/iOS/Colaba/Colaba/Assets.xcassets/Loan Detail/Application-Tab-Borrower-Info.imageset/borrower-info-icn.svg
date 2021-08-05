@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="18.037" height="16" viewBox="0 0 18.037 16">
-  <g id="Group_17951" data-name="Group 17951" transform="translate(-0.002 -0.001)">
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="borrower-info-icn" transform="translate(0.546 2)">
+    <rect id="Rectangle_1204" data-name="Rectangle 1204" width="20" height="20" transform="translate(-0.546 -2)" fill="none"/>
     <path id="Path_1024" data-name="Path 1024" d="M9.378,30.316l-6.3,5.909v9.2h4.06V40.663h4.27v4.765h4.482v-9.2Z" transform="translate(-0.529 -29.785)" fill="#4484f4" opacity="0.3"/>
     <path id="Union_16" data-name="Union 16" d="M11.115,16a.577.577,0,0,1-.577-.577V11.789h-2.9v3.634A.577.577,0,0,1,7.058,16H2.75a.577.577,0,0,1-.576-.577v-7.7L.967,8.828a.577.577,0,1,1-.781-.849L8.705.152a.577.577,0,0,1,.785,0l8.364,7.826a.577.577,0,1,1-.788.843l-1.047-.98v7.578a.577.577,0,0,1-.577.577Zm0-5.365a.577.577,0,0,1,.577.577v3.633h3.173V6.765l-5.773-5.4L3.327,6.66v8.186H6.481V11.212a.577.577,0,0,1,.577-.577Z" transform="translate(0.002 0.001)" fill="#4484f4"/>
   </g>

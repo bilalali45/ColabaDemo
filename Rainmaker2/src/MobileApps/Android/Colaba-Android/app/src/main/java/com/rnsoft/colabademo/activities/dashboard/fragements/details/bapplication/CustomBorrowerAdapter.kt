@@ -7,23 +7,25 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomBorrowerAdapter internal constructor(private var tabBorrowerDataList: ArrayList<TabBorrowerList>) :
+class CustomBorrowerAdapter internal constructor(private var tabBorrowerDataList: ArrayList<BorrowersInformation>) :
     RecyclerView.Adapter<CustomBorrowerAdapter.BaseViewHolder>(){
 
-    abstract class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) { abstract fun bind(item: TabBorrowerList) }
+    abstract class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) { abstract fun bind(
+        item: BorrowersInformation
+    ) }
     //abstract class BaseViewHolder<TabBorrowerList>(itemView: View) : RecyclerView.ViewHolder(itemView) { abstract fun bind(item: TabBorrowerList) }
 
     inner class BorrowerItemViewHolder(itemView: View) : BaseViewHolder(itemView) {
         private val coBorrowerNames : TextView = itemView.findViewById(R.id.co_borrower_test)
         private val mainBorrowerName:TextView = itemView.findViewById(R.id.main_borrower_test)
-        override fun bind(item: TabBorrowerList) {
-            mainBorrowerName.text = item.name
-            coBorrowerNames.text = item.coName
+        override fun bind(item: BorrowersInformation) {
+            mainBorrowerName.text = item.firstName
+            coBorrowerNames.text = item.lastName
         }
     }
 
     inner class BorrowerFooterViewHolder(itemView: View) : BaseViewHolder(itemView) {
-        override fun bind(item: TabBorrowerList) {}
+        override fun bind(item: BorrowersInformation) {}
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {

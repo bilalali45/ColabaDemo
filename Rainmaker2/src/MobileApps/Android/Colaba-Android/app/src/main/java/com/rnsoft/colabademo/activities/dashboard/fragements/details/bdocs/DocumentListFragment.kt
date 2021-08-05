@@ -57,11 +57,12 @@ class DocumentListFragment : Fragment(), AdapterClickListener {
             doc_name = arguments?.getString(AppConstant.docName)
             doc_message = arguments?.getString(AppConstant.docMessage)
             docsArrayList = arguments?.getParcelableArrayList(AppConstant.docObject)!!
-            val filesNames = arguments?.getString(AppConstant.innerFilesName)
+            //val filesNames = arguments?.getString(AppConstant.innerFilesName)
             download_id = arguments?.getString(AppConstant.download_id).toString()
             download_requestId = arguments?.getString(AppConstant.download_requestId).toString()
             download_docId = arguments?.getString(AppConstant.download_docId).toString()
 
+            // set name and message
             tvDocName.text = doc_name
             if (doc_message?.isNotEmpty() == true) {
                 tvDocMsg.text = doc_message

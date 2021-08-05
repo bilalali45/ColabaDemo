@@ -20,6 +20,8 @@ class DocumentsViewController: BaseViewController {
     @IBOutlet weak var completedView: UIView!
     @IBOutlet weak var manuallyView: UIView!
     @IBOutlet weak var tblViewDocuments: UITableView!
+    @IBOutlet weak var iconNoDocument: UIImageView!
+    @IBOutlet weak var lblNoDocuments: UILabel!
     
     var loanApplicationId = 0
     var documentsArray = [LoanDocumentModel]()
@@ -140,9 +142,6 @@ class DocumentsViewController: BaseViewController {
                 if (status == .success){
                     
                     if (result.arrayValue.count == 0){
-                        self.showPopup(message: "No documents found", popupState: .error, popupDuration: .custom(2)) { reason in
-                            
-                        }
                         return
                     }
                     
@@ -164,6 +163,7 @@ class DocumentsViewController: BaseViewController {
                     self.showPopup(message: "No documents found", popupState: .error, popupDuration: .custom(2)) { reason in
                         
                     }
+                    self.tblViewDocuments.reloadData()
                 }
             }
             
@@ -175,7 +175,18 @@ class DocumentsViewController: BaseViewController {
 extension DocumentsViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isFiltersApplied ? filterDocumentsArray.count : documentsArray.count
+        
+        if (isFiltersApplied){
+            iconNoDocument.isHidden = filterDocumentsArray.count > 0
+            lblNoDocuments.isHidden = filterDocumentsArray.count > 0
+            return filterDocumentsArray.count
+        }
+        else{
+            iconNoDocument.isHidden = documentsArray.count > 0
+            lblNoDocuments.isHidden = documentsArray.count > 0
+            return documentsArray.count
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="19" height="18.557" viewBox="0 0 19 18.557">
-  <g id="Group_18608" data-name="Group 18608" transform="translate(-5753 -3746)" opacity="0.5">
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="monthly-income-icn-m" transform="translate(-5752 -3745)" opacity="0.5">
+    <rect id="Rectangle_1212" data-name="Rectangle 1212" width="20" height="20" transform="translate(5752 3745)" fill="none"/>
     <path id="Path_11938" data-name="Path 11938" d="M1.646,28.381H5.288a.645.645,0,0,0,.646-.646V25.106a.643.643,0,0,0-.817-.621l-3.642.988A.644.644,0,0,0,1,26.094v1.64A.641.641,0,0,0,1.646,28.381Z" transform="translate(5752 3736.176)" fill="#4484f4"/>
     <path id="Path_11939" data-name="Path 11939" d="M14.6,26.111a.645.645,0,0,0,.646-.646V19.727a.643.643,0,0,0-.418-.6l-2.1-.811a.636.636,0,0,0-.69.152L10.5,20.05a.627.627,0,0,0-.184.45v4.965a.645.645,0,0,0,.646.646H14.6Z" transform="translate(5748.583 3738.446)" fill="#4484f4"/>
     <path id="Path_11940" data-name="Path 11940" d="M23.911,25.072a.645.645,0,0,0,.646-.646V16.078a.647.647,0,0,0-.975-.551L19.94,17.7a.662.662,0,0,0-.31.557v6.169a.645.645,0,0,0,.646.646h3.635Z" transform="translate(5745.169 3739.485)" fill="#4484f4"/>
