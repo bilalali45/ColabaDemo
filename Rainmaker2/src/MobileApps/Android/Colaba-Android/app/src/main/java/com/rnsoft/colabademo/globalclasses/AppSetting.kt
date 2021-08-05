@@ -61,7 +61,7 @@ object AppSetting {
         else
             lastSeen =  input.substring(0, input.length-4)
 
-        Log.e("input-time--", lastSeen)
+        //Log.e("input-time--", lastSeen)
 
         //val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
         val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.US)

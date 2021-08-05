@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colaba_loan_background">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/content_background_color">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/home_profile_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?android:attr/actionBarSize"
         android:background="@color/colaba_loan_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,10 +47,21 @@
             app:layout_constraintStart_toEndOf="@+id/backButton"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colaba_line_separator"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_doc_msg"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
@@ -86,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik_regular"
                 android:padding="15dp"
-                android:text="msgadfd"
+                android:text="msg"
                 android:textColor="@color/grey_color_two"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -100,8 +112,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@color/colaba_loan_background"
-        android:visibility="visible"
+        android:background="@color/content_background_color"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_doc_msg">
 
@@ -115,7 +126,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/detail_list_inner_view_holder" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -326,7 +326,7 @@
         android:indeterminateTintMode="src_atop"
         android:elevation="10dp"
         android:translationZ="10dp"
-        android:indeterminateTint="@color/colaba_primary_color"
+        android:indeterminateTint="@color/colaba_apptheme_blue"
         app:layout_constraintTop_toTopOf="parent" />
 
 

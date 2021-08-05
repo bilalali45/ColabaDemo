@@ -46,15 +46,32 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="gone">
+            android:visibility="visible">
 
-            <include
-                layout="@layout/layout_no_docs_uploaded"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <ImageView
+                android:id="@+id/img_no_data_found"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_no_documents"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_regular"
+                android:text="@string/no_doc_found"
+                android:textColor="@color/txt_color_no_doc"
+                android:textSize="15sp"
+                android:layout_marginTop="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_no_data_found"/>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_view_container"
@@ -94,9 +111,10 @@
         android:id="@+id/layout_no_documents"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ImageView
+            android:id="@+id/img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_no_documents"
@@ -108,11 +126,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:fontFamily="@font/rubik_regular"
-            android:text="@string/no_doc_uploaded"
+            android:text="@string/no_doc_found"
             android:textColor="@color/txt_color_no_doc"
-            android:textSize="15sp"/>
+            android:textSize="15sp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

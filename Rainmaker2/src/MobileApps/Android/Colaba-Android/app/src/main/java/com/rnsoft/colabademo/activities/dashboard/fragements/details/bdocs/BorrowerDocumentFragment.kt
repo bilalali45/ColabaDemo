@@ -123,7 +123,6 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
     }
 
     private fun populateRecyclerview(arrayList: ArrayList<BorrowerDocsModel>) {
-        Log.e("populate", "true")
         borrowerDocumentAdapter =
             BorrowerDocumentAdapter(arrayList, this@BorrowerDocumentFragment)
         docsRecycler.adapter = borrowerDocumentAdapter
@@ -225,6 +224,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
             btnFilterPending.isActivated = false
             btnFilterCompleted.isActivated = false
             btnFilterManullayAdded.isActivated = false
+
         } else if (statusInDraft) {
             btnAll.isActivated = false
             btnInDraft.isActivated = true
@@ -233,6 +233,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
             btnFilterPending.isActivated = false
             btnFilterCompleted.isActivated = false
             btnFilterManullayAdded.isActivated = false
+
         } else if (statusToDo) {
             btnAll.isActivated = false
             btnInDraft.isActivated = false
@@ -241,6 +242,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
             btnFilterPending.isActivated = false
             btnFilterCompleted.isActivated = false
             btnFilterManullayAdded.isActivated = false
+
         } else if (statusStarted) {
             btnAll.isActivated = false
             btnInDraft.isActivated = false
@@ -249,6 +251,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
             btnFilterPending.isActivated = false
             btnFilterCompleted.isActivated = false
             btnFilterManullayAdded.isActivated = false
+
         } else if (statusPending) {
             btnAll.isActivated = false
             btnInDraft.isActivated = false
@@ -257,6 +260,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
             btnFilterPending.isActivated = true
             btnFilterCompleted.isActivated = false
             btnFilterManullayAdded.isActivated = false
+
         } else if (statusCompleted) {
             btnAll.isActivated = false
             btnInDraft.isActivated = false
@@ -265,6 +269,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
             btnFilterPending.isActivated = false
             btnFilterCompleted.isActivated = true
             btnFilterManullayAdded.isActivated = false
+
         } else if (statusManuallyAdded) {
             btnAll.isActivated = false
             btnInDraft.isActivated = false
@@ -310,7 +315,6 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
                 filterDocsList.add(doc)
             }
         }
-        Log.e("Pending", "$filterDocsList")
         if(filterDocsList.size>0) {
             layout_noDocUplaoded.visibility= View.GONE
             docsRecycler.visibility=View.VISIBLE

@@ -174,11 +174,11 @@ internal constructor(
 
        init {
            dotsImageView.setOnClickListener {
-               classScopedItemClickListener.getCardIndex(adapterPosition)
+               classScopedItemClickListener.getCardIndex(absoluteAdapterPosition)
            }
 
            cardBox.setOnClickListener{
-               classScopedItemClickListener.navigateTo(adapterPosition)
+               classScopedItemClickListener.navigateTo(absoluteAdapterPosition)
            }
 
        }
