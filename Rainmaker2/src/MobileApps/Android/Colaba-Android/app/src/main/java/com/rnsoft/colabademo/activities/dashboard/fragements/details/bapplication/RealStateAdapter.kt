@@ -18,7 +18,10 @@ class RealStateAdapter internal constructor(private var realStateDataList: Array
         private var propertyAddress: TextView = itemView.findViewById(R.id.propertyAddress)
         private var propertyType: TextView = itemView.findViewById(R.id.propertyType)
         override fun bind(item: RealStateOwn) {
-            propertyAddress.text = item.propertyInfoId.toString()
+          item.propertyInfoId.toString()
+            item.realStateAddress?.let {
+                propertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+            }
             propertyType.text = item.propertyTypeName
         }
     }

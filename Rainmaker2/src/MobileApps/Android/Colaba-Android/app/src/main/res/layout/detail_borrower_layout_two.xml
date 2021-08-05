@@ -55,7 +55,7 @@
             android:text="Loan#"
             android:visibility="gone"
             android:textColor="@color/grey_color_two"
-            android:textSize="15sp"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/coBorrowerNames"
             app:layout_constraintTop_toBottomOf="@+id/coBorrowerNames" />
 
@@ -167,8 +167,8 @@
             android:id="@+id/loanPurpose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="25dp"
             android:fontFamily="@font/rubik_medium"
             android:text="Purchase"
             android:textColor="@color/grey_color_one"
@@ -200,8 +200,7 @@
             android:singleLine="false"
             android:text=""
             android:textColor="@color/grey_color_one"
-            android:textSize="15sp"
-            android:textStyle="bold"
+            android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/textView18"
             app:layout_constraintTop_toTopOf="@+id/textView18" />
 
@@ -273,8 +272,7 @@
             android:fontFamily="@font/rubik_regular"
             android:text="$0"
             android:textColor="@color/grey_color_one"
-            android:textSize="15sp"
-            android:textStyle="bold"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/textView22"
             app:layout_constraintTop_toBottomOf="@+id/border_end" />
 
@@ -307,8 +305,7 @@
             android:fontFamily="@font/rubik_medium"
             android:text="$0"
             android:textColor="@color/grey_color_one"
-            android:textSize="15sp"
-            android:textStyle="bold"
+            android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/imageView37"
             app:layout_constraintTop_toTopOf="@+id/propertyValue" />
 
@@ -321,8 +318,7 @@
             android:fontFamily="@font/rubik_medium"
             android:text="$0"
             android:textColor="@color/grey_color_one"
-            android:textSize="15sp"
-            android:textStyle="bold"
+            android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/textView25"
             app:layout_constraintStart_toEndOf="@+id/imageView38" />
 
@@ -343,7 +339,7 @@
             android:id="@+id/imageView35"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/propertyValue"
             app:srcCompat="@drawable/ic_dollar_home_svg" />
@@ -352,7 +348,7 @@
             android:id="@+id/imageView37"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="14dp"
             app:layout_constraintStart_toEndOf="@+id/textView22"
             app:layout_constraintTop_toTopOf="@+id/loanPayment"
             app:srcCompat="@drawable/ic_dollar_bag_svg" />
@@ -361,7 +357,7 @@
             android:id="@+id/imageView38"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="14dp"
             app:layout_constraintStart_toEndOf="@+id/textView24"
             app:layout_constraintTop_toTopOf="@+id/imageView37"
             app:srcCompat="@drawable/ic_dollar_arc_svg" />

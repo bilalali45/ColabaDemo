@@ -35,8 +35,8 @@ data class BorrowersInformation(
 )
 
 data class LoanInformation(
-    val deposit: Double,
-    val depositPercent: Double,
+    val downPayment: Double,
+    val downPaymentPercent: Double,
     val loanAmount: Double,
     val loanPurposeDescription: String,
     val loanPurposeId: Int
@@ -90,7 +90,8 @@ data class SubjectProperty(
     val propertyTypeId: Int,
     val propertyTypeName: String,
     val propertyUsageId: Int,
-    val propertyUsageName: String
+    val propertyUsageName: String,
+    val propertyUsageDescription: String
 )
 
 
