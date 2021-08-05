@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MessageUI
 
 class PipelineMoreViewController: BaseViewController {
 
@@ -23,6 +24,11 @@ class PipelineMoreViewController: BaseViewController {
     @IBOutlet weak var archiveView: UIView!
     @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!
     
+    var userFullName = ""
+    var coBorrowers = 0
+    var phoneNumber = ""
+    var email = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,6 +45,8 @@ class PipelineMoreViewController: BaseViewController {
         swipeDownGesture.direction = .down
         self.view.addGestureRecognizer(swipeDownGesture)
         
+        lblUsername.text = userFullName
+        lblMoreUsers.text = coBorrowers == 0 ? "" : "+\(coBorrowers)"
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -74,15 +82,62 @@ class PipelineMoreViewController: BaseViewController {
     }
     
     @objc func emailViewTapped(){
-        dismissPopup()
+        let recipientEmail = email
+        let subject = "Colaba Email"
+        let body = "Testing Email"
+                    
+        // Show default mail composer
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients([recipientEmail])
+            mail.setSubject(subject)
+            mail.setMessageBody(body, isHTML: false)
+            
+            present(mail, animated: true)
+        
+        // Show third party email composer if default Mail app is not present
+        } else if let emailUrl = createEmailUrl(to: recipientEmail, subject: subject, body: body) {
+            UIApplication.shared.open(emailUrl)
+        }
     }
     
     @objc func callViewTapped(){
-        dismissPopup()
+        if let url = URL(string: "tel://\(phoneNumber))") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+         }
     }
     
     @objc func messageViewTapped(){
-        dismissPopup()
+        let sms: String = "sms:\(phoneNumber)&body=Colaba"
+        if let strURL = sms.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed){
+            if let smsURL = URL(string: strURL){
+                UIApplication.shared.open(smsURL, options: [:], completionHandler: nil)
+            }
+        }
+    }
+    
+    private func createEmailUrl(to: String, subject: String, body: String) -> URL? {
+        let subjectEncoded = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let bodyEncoded = body.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        
+        let gmailUrl = URL(string: "googlegmail://co?to=\(to)&subject=\(subjectEncoded)&body=\(bodyEncoded)")
+        let outlookUrl = URL(string: "ms-outlook://compose?to=\(to)&subject=\(subjectEncoded)")
+        let yahooMail = URL(string: "ymail://mail/compose?to=\(to)&subject=\(subjectEncoded)&body=\(bodyEncoded)")
+        let sparkUrl = URL(string: "readdle-spark://compose?recipient=\(to)&subject=\(subjectEncoded)&body=\(bodyEncoded)")
+        let defaultUrl = URL(string: "mailto:\(to)?subject=\(subjectEncoded)&body=\(bodyEncoded)")
+        
+        if let gmailUrl = gmailUrl, UIApplication.shared.canOpenURL(gmailUrl) {
+            return gmailUrl
+        } else if let outlookUrl = outlookUrl, UIApplication.shared.canOpenURL(outlookUrl) {
+            return outlookUrl
+        } else if let yahooMail = yahooMail, UIApplication.shared.canOpenURL(yahooMail) {
+            return yahooMail
+        } else if let sparkUrl = sparkUrl, UIApplication.shared.canOpenURL(sparkUrl) {
+            return sparkUrl
+        }
+        
+        return defaultUrl
     }
     
     @objc func applicationViewTapped(){
@@ -109,5 +164,11 @@ class PipelineMoreViewController: BaseViewController {
         dismissPopup()
     }
     
+}
 
+extension PipelineMoreViewController: MFMailComposeViewControllerDelegate{
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
 }
