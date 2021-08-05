@@ -50,27 +50,66 @@ object AppSetting {
         var trim: String
         if(fileUploaded.contains(":Z")) {
             trim=  fileUploaded.substring(0, fileUploaded.length - 2)
-        }
-        else
+        } else
             trim  =  fileUploaded.substring(0, fileUploaded.length-4)
-        Log.e("trimDAte", trim)
+        Log.e(" Doc Uploaded Date", trim)
 
-        val localDateTime: LocalDateTime = LocalDateTime.parse(trim)
-        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
-        val output: String = formatter.format(localDateTime)
+        val uploadedDateTime: LocalDateTime = LocalDateTime.parse(trim)
+        //val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+        var uploadedDay = uploadedDateTime.dayOfMonth
+        var uploadedMonth = uploadedDateTime.monthValue
+        var uploadedYear = uploadedDateTime.year
+        var uploadedMinutes = uploadedDateTime.minute
+        var uploadedHour = uploadedDateTime.hour
+        var uploadedSec = uploadedDateTime.second
 
-        val dayOfTheWeek = DateTimeFormatter.("EEEE", date) as String
+        Log.e("Time: ", " min: " +  uploadedMinutes + " Hour : " + uploadedHour + " uploadedSec" + uploadedSec)
+        Log.e("days: ", " Day: " +  uploadedDay + " Month: " + uploadedMonth + " YEAr" + uploadedYear)
+
+        val cal = Calendar.getInstance()
+        cal[Calendar.HOUR]
+        val rightNow = Calendar.getInstance()
+        val currentHour = rightNow[Calendar.HOUR]
+        val currentMinutes = rightNow[Calendar.MINUTE]
+        val currentSeconds = rightNow[Calendar.SECOND]
+
+        val currentDay = rightNow[Calendar.DAY_OF_MONTH]
+        val currentMonth = rightNow[Calendar.MONTH]
+        val currentYear = rightNow[Calendar.YEAR]
+
+        Log.e(" CurrentHour", ""+currentHour + " CurrentMinute: " +currentMinutes + " Seconds: " +currentSeconds)
+        Log.e(" currentDay", ""+currentDay + " CurrentMonth:" +currentMonth + "  currentYear: " +currentYear)
+
+        if(uploadedYear - currentYear >= 2){
+            return "years ago"
+
+        }
+        if(uploadedYear - currentYear >= 1 ){
+            return "Last year"
+        }
+        if(uploadedMonth - currentMonth >= 2){
+            return "months ago"
+
+        }
+        if(uploadedMonth- currentMonth >= 1 ){
+            return "Last month"
+        }
+        if(uploadedDay - currentDay >= 2){
+            return "days ago"
+
+        }
+        if(uploadedDay- uploadedDay >= 1 ){
+            return "Yesterday"
+        }
+        if(uploadedHour - currentHour >= 2){
+            return "hours ago"
+
+        }
+        if(uploadedHour - currentHour >= 1){
+            return "Yesterday"
+        }
 
 
-
-        Log.e("NewDate", ""+output)
-
-
-        /* val formatter = SimpleDateFormat("MMMM dd yyyy hh:mm:ss")
-         val dt = formatter.parse(trim)
-         Log.e("New Date", dt.toString()) */
-
-        //println(formatter.format(dt))
 
         return fileUploaded
 
