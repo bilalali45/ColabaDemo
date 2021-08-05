@@ -39,7 +39,6 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
         }
     }
 
-
     suspend fun getBorrowerDocuments(token:String, loanApplicationId:Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = detailRepo.getBorrowerDocuments(token = token, loanApplicationId = loanApplicationId)
@@ -80,4 +79,5 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
             )
         }
     }
+
 }

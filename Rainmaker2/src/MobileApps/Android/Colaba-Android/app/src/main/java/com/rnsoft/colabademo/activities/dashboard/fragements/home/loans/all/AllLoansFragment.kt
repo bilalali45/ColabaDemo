@@ -36,8 +36,9 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
     private var shimmerContainer: ShimmerFrameLayout? = null
     private var rowLoading: ProgressBar?=null
     private var loanRecycleView: RecyclerView? = null
+    private val linearLayoutManager = LinearLayoutManager(activity)
     private  var allLoansArrayList: ArrayList<LoanItem> = ArrayList()
-
+    private var oldListDisplaying:Boolean = false
     ////////////////////////////////////////////////////////////////////////////
     private val pageSize: Int = 20
     private val loanFilter: Int = 0
@@ -58,7 +59,7 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
 
         rowLoading = view.findViewById(R.id.loan_row_loader)
         loanRecycleView = view.findViewById(R.id.loan_recycler_view)
-        val linearLayoutManager = LinearLayoutManager(activity)
+
         loansAdapter = LoansAdapter(allLoansArrayList , this@AllLoansFragment)
         loanRecycleView?.apply {
             // set a LinearLayoutManager to handle Android
@@ -66,49 +67,18 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
             this.layoutManager =linearLayoutManager
             //(this.layoutManager as LinearLayoutManager).isMeasurementCacheEnabled = false
             this.setHasFixedSize(true)
+            //linearLayoutManager.reverseLayout = true;
+            //linearLayoutManager.stackFromEnd = true;
             // set the custom adapter to the RecyclerView
             //borrowList = Borrower.customersList(requireContext())
+            loansAdapter = LoansAdapter(allLoansArrayList , this@AllLoansFragment)
+            this.adapter = loansAdapter
 
-            //this.adapter = loansAdapter
-           //loansAdapter = LoansAdapter(allLoansArrayList , this@AllLoansFragment)
         }
 
         shimmerContainer = view.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
         shimmerContainer?.startShimmer()
 
-        /*
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted{
-            val serviceCompleted = withContext(Dispatchers.IO) {
-                sharedPreferences.getString(AppConstant.token,"")?.let{
-                    loanViewModel.getAllLoans(it)
-                }
-            }
-        }
-        */
-
-        //val ceptype: Type = object : TypeToken<ArrayList<LoanItem?>?>() {}.type
-
-
-        val token: TypeToken<ArrayList<LoanItem>> = object : TypeToken<ArrayList<LoanItem>>() {}
-        val gson = Gson()
-        if(sharedPreferences.contains(AppConstant.oldLoans)) {
-            sharedPreferences.getString(AppConstant.oldLoans, "")?.let { oldLoans ->
-                //val list: List<LoanItem> = gson.fromJson(oldLoans, ceptype)
-                //Log.e("convered-", list.toString())
-                val oldJsonList: ArrayList<LoanItem> = gson.fromJson(oldLoans, token.type)
-                Log.e("oldJsonList-", oldJsonList.toString())
-                val oldAdapter = LoansAdapter(oldJsonList , this@AllLoansFragment)
-                loanRecycleView?.adapter = oldAdapter
-                oldAdapter.notifyDataSetChanged()
-                shimmerContainer?.stopShimmer()
-                shimmerContainer?.isVisible = false
-            }
-        }
-
-
-
-
-        //loading.visibility = View.VISIBLE
 
         loanViewModel.allLoansArrayList.observe(viewLifecycleOwner, {
             //val result = it ?: return@Observer
@@ -119,55 +89,42 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
             if(it.size>0) {
                 shimmerContainer?.stopShimmer()
                 shimmerContainer?.isVisible = false
-                loanRecycleView?.adapter = loansAdapter
+                if(oldListDisplaying){
+                    oldListDisplaying = false
+                    allLoansArrayList.clear()
+                    //loansAdapter.notifyDataSetChanged()
+                }
+                //loanRecycleView?.adapter = loansAdapter
                 val lastSize = allLoansArrayList.size
                 allLoansArrayList.addAll(it)
                 loansAdapter.notifyDataSetChanged()
-               // loansAdapter.notifyItemRangeInserted(lastSize,lastSize+allLoansArrayList.size-1 )
-
+                loanRecycleView?.addOnScrollListener(scrollListener)
+                //loansAdapter.notifyItemRangeInserted(lastSize,lastSize+allLoansArrayList.size-1 )
             }
-            else
-                Log.e("should-stop"," here....")
+            else {
+                Log.e("no-record", " found....")
+                shimmerContainer?.stopShimmer()
+                shimmerContainer?.isVisible = false
+                //SandbarUtils.showError(requireActivity(), AppConstant.NO_RECORDS_FOUND )
+            }
 
         })
 
-        val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
-                rowLoading?.visibility = View.VISIBLE
-                pageNumber++
-                loadLoanApplications()
-            }
-        }
 
-
-
-
-
-        // Adds the scroll listener to RecyclerView
         // Adds the scroll listener to RecyclerView
         loanRecycleView?.addOnScrollListener(scrollListener)
 
-
-        /*
-        loanViewModel.databaseLoansArrayList.observe(viewLifecycleOwner, {
-            rowLoading?.visibility = View.INVISIBLE
-            shimmerContainer.stopShimmer()
-            shimmerContainer.isVisible = false
-            allLoansArrayList.addAll(it)
-            loansAdapter.notifyDataSetChanged()
-            loanViewModel.databaseLoansArrayList.removeObservers(this)
-        })
-        */
-
-        //if(hasLoanApiDataLoaded)
-        //loadDataFromDatabase(loanFilter)
-
-        //loadLoanApplications()
-
-
         return view
+    }
+
+    val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
+        override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+            // Triggered only when new data needs to be appended to the list
+            // Add whatever code is needed to append new items to the bottom of the list
+            rowLoading?.visibility = View.VISIBLE
+            pageNumber++
+            loadLoanApplications()
+        }
     }
 
     override fun getCardIndex(position: Int) {
@@ -192,22 +149,46 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
     }
 
     private fun loadLoanApplications() {
-        //loading.visibility = View.VISIBLE
-        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-            if(AppSetting.loanApiDateTime.isEmpty())
-                AppSetting.loanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
-            Log.e("Why-", AppSetting.loanApiDateTime)
-            Log.e("pageNumber-", "$pageNumber and page size = $pageSize")
+        // now load data from internet if connected...
+        if(NetworkSetting.isNetworkAvailable(requireContext())){
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if(AppSetting.loanApiDateTime.isEmpty())
+                    AppSetting.loanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
+                Log.e("Why-", AppSetting.loanApiDateTime)
+                Log.e("pageNumber-", "$pageNumber and page size = $pageSize")
 
-            loanViewModel.getAllLoans(
-                token = authToken,
-                dateTime = AppSetting.loanApiDateTime, pageNumber = pageNumber,
-                pageSize = pageSize, loanFilter = loanFilter,
-                orderBy = globalOrderBy, assignedToMe = globalAssignToMe
-            )
+                loanViewModel.getAllLoans(
+                    token = authToken,
+                    dateTime = AppSetting.loanApiDateTime, pageNumber = pageNumber,
+                    pageSize = pageSize, loanFilter = loanFilter,
+                    orderBy = globalOrderBy, assignedToMe = globalAssignToMe
+                )
+            }
+        }
+        else {
+            rowLoading?.visibility = View.INVISIBLE
         }
     }
 
+
+    private fun loadDataFromCache(){
+        // load data from cache first...
+        if(!NetworkSetting.isNetworkAvailable(requireContext())) {
+            val token: TypeToken<ArrayList<LoanItem>> = object : TypeToken<ArrayList<LoanItem>>() {}
+            if (sharedPreferences.contains(AppConstant.oldLoans)) {
+                sharedPreferences.getString(AppConstant.oldLoans, "")?.let { oldLoans ->
+                    val oldJsonList: ArrayList<LoanItem> = Gson().fromJson(oldLoans, token.type)
+                    //Log.e("oldJsonList-", oldJsonList.toString())
+                    shimmerContainer?.stopShimmer()
+                    shimmerContainer?.isVisible = false
+                    oldListDisplaying = true
+                    allLoansArrayList.clear()
+                    allLoansArrayList.addAll(oldJsonList)
+                    loansAdapter.notifyDataSetChanged()
+                }
+            }
+        }
+    }
 
     override fun onResume() {
         super.onResume()
@@ -215,6 +196,7 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
         allLoansArrayList.clear()
         loansAdapter.notifyDataSetChanged()
         pageNumber = 1
+        loadDataFromCache()
         loadLoanApplications()
     }
 
@@ -236,9 +218,9 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
         if(event.isInternetError)
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
         else
-        if(event.errorResult!=null){
-            SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
-        }
+            if(event.errorResult!=null){
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
+            }
     }
 
     override fun setOrderId(passedOrderBy: Int) {
@@ -263,15 +245,15 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
 
 }
 
-    /*
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewLifecycleOwner.launch{
-           val serviceCompleted = withContext(Dispatchers.IO) {
-               sharedPreferences.getString(AppConstant.token,"")?.let{
-                   loanViewModel.getAllLoans(it)
-               }
+/*
+override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    viewLifecycleOwner.launch{
+       val serviceCompleted = withContext(Dispatchers.IO) {
+           sharedPreferences.getString(AppConstant.token,"")?.let{
+               loanViewModel.getAllLoans(it)
            }
-        }
+       }
     }
-    */
+}
+*/
