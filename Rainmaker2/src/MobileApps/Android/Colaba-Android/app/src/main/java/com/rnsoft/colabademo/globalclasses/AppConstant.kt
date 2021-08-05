@@ -61,6 +61,7 @@ object AppConstant {
         const val  NO_CONVERSATION:String = "NO_CONVERSATION.."
         const val  INTERNET_ERR_MSG:String = "Please check internet connectivity.."
         const val  WEB_SERVICE_ERR_MSG:String = "Webservice not responding..."
+        const val  NO_RECORDS_FOUND:String = "No records found..."
         const val  INTERNET_ERR_CODE:String = "6048"
         const val  ASSIGN_TO_ME:String = "ASSIGN_TO_ME"
 

@@ -55,11 +55,6 @@ class BorrowerApplicationFragment : Fragment() {
         govtQuestionsRecyclerView = root.findViewById(R.id.govtQuestionHorizontalRecyclerView)
 
 
-        //borrowerInfoList.add(TabBorrowerList(0, "Richard Glenn Randall", "Co Borrower"))
-       // borrowerInfoList.add(TabBorrowerList(1, "Maria Randall", "Co-Borrower"))
-       // borrowerInfoList.add(TabBorrowerList(2, "Test-b", "Add Borrowers", true))
-        //setUpBorrowerHorizontalFastAdapter(localList)
-
         val linearLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
 
         horizontalRecyclerView.apply {
@@ -67,16 +62,6 @@ class BorrowerApplicationFragment : Fragment() {
             //this.setHasFixedSize(true)
             this.adapter = borrowerInfoAdapter
         }
-        //borrowerInfoAdapter.notifyDataSetChanged()
-
-
-
-
-        //realStateList.add(TabRealStateList(0, "5919 Trussville Crossings\nParkways,", "Land"))
-        //realStateList.add(TabRealStateList(1, "727 Ashleigh Lane,\n" + "South Lake TX, 76092", "Single Family Property"))
-        //realStateList.add(TabRealStateList(2, "5919 Trussville Crossings\nParkways,", "Land"))
-        //realStateList.add(TabRealStateList(3, "5919 Trussville Crossings\nParkways,", "Land", true))
-        //setUpRealStateRecycleView(realStateList)
 
         val realStateLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
 
@@ -88,16 +73,10 @@ class BorrowerApplicationFragment : Fragment() {
         realStateAdapter.notifyDataSetChanged()
 
 
-
-        //questionList.add(TabGovtQuestionList(0, "Undisclosed Borrowed Funds", "Are you borrowing any money for this real estate transaction (e.g., money for your ..."))
-        //questionList.add(TabGovtQuestionList(1, "Ownership Interest in Property", "Have you had an ownership interest in another property in the last three years?"))
-        //questionList.add(TabGovtQuestionList(2, "Priority Liens", "Are you currently the delinquent or in the default on a Federal debt list?"))
-        //questionList.add(TabGovtQuestionList(3, "Undisclosed Mortgage Applications", "Have you had an ownership interest in another property in the last three years?"))
-       // questionList.add(TabGovtQuestionList(4, "Debt Co-signer or Guarantor", "Are you a co-signer or guarantor on any debt or loan that is not disclosed on this application..."))
-        //setUpGovtQuestionsRecycleView(questionList)
-
-        detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, { appTabModel->
+       detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, { appTabModel->
             if (appTabModel != null) {
+                binding.applicationTabLayout.visibility = View.VISIBLE
+
                 appTabModel.borrowerAppData?.subjectProperty?.subjectPropertyAddress?.let {
                     binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
                 }
@@ -128,11 +107,7 @@ class BorrowerApplicationFragment : Fragment() {
                     bAppData.borrowersInformation?.let {
                        borrowerInfoList.clear()
                        borrowerInfoList = it
-                       borrowerInfoList.add(BorrowersInformation(0,"","","",0, true))
-                       borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList)
-                       horizontalRecyclerView.adapter = borrowerInfoAdapter
 
-                       borrowerInfoAdapter.notifyDataSetChanged()
                    }
                 }
 
@@ -148,16 +123,29 @@ class BorrowerApplicationFragment : Fragment() {
                     bAppData.realStateOwns?.let {
                         realStateList.clear()
                         realStateList = it
-                        realStateList.add(RealStateOwn(null,0,0,0,"", true))
-                        realStateAdapter  = RealStateAdapter(realStateList)
-                        realStateRecyclerView.adapter = realStateAdapter
-                        realStateAdapter.notifyDataSetChanged()
+
                     }
                 }
 
 
 
+
+                //////////////////////////////////////////////////////////////////////////////////////////////////
+                // add add-more last cell to the adapters
+                borrowerInfoList.add(BorrowersInformation(0,"","","",0, true))
+                borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList)
+                horizontalRecyclerView.adapter = borrowerInfoAdapter
+                borrowerInfoAdapter.notifyDataSetChanged()
+
+
+                realStateList.add(RealStateOwn(null,0,0,0,"", true))
+                realStateAdapter  = RealStateAdapter(realStateList)
+                realStateRecyclerView.adapter = realStateAdapter
+                realStateAdapter.notifyDataSetChanged()
+
             }
+           else
+               binding.applicationTabLayout.visibility = View.INVISIBLE
         })
 
         return root
