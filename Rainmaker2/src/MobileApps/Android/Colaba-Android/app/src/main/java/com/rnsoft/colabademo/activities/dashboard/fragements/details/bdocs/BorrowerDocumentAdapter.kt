@@ -45,7 +45,7 @@ internal constructor(
         var containsNoChild: ConstraintLayout = itemView.findViewById(R.id.containsNoChild)
 
         var docType: TextView = itemView.findViewById(R.id.doc_type)
-        var docUploadedTime: TextView = itemView.findViewById(R.id.doc_uploaded_time)
+        var tvDocUploadedTime: TextView = itemView.findViewById(R.id.doc_uploaded_time)
 
         var docOneLayout: ConstraintLayout = itemView.findViewById(R.id.doc_one)
         var docOneName: TextView = itemView.findViewById(R.id.doc_one_name)
@@ -84,15 +84,14 @@ internal constructor(
                 }
             }
         }
+        doc.createdOn.let { activityTime ->
+            //val newString = AppSetting.returnLongTimeNow(activityTime!!)
+            //holder.docUploadedTime.text = newString
 
-        /*doc.createdOn.let { activityTime ->
-            val newString = AppSetting.returnLongTimeNow(activityTime!!)
-            holder.docUploadedTime.text = newString
-        } */
-
-
-
-
+            var time = AppSetting.getDocumentUploadedDate(doc.createdOn!!, doc.docName!!)
+            holder.tvDocUploadedTime.text = time
+        }
+        //Log.e("fileUploadedOn", fileUploadOn)
 
 
         // set filter
@@ -102,12 +101,12 @@ internal constructor(
         if (doc.subFiles.isEmpty()) {
             holder.containsNoChild.visibility = View.VISIBLE
             holder.containsThreeChild.visibility = View.GONE
-            holder.docUploadedTime.visibility = View.GONE
+            holder.tvDocUploadedTime.visibility = View.GONE
         } else
             if (doc.subFiles.isNotEmpty()) {
                 holder.containsThreeChild.visibility = View.VISIBLE
                 holder.containsNoChild.visibility = View.GONE
-                holder.docUploadedTime.visibility = View.VISIBLE
+                holder.tvDocUploadedTime.visibility = View.VISIBLE
 
                 val fileOne = doc.subFiles[0]
                 if (fileOne.clientName.isNotEmpty() && fileOne.clientName.isNotBlank()) {
@@ -153,12 +152,13 @@ internal constructor(
                 } else
                     holder.docThreeLayout.visibility = View.INVISIBLE
 
-                for (items in doc.subFiles.indices){
+                /*for (items in doc.subFiles.indices){
+                    Log.e("name", ""+ doc.docName)
                     var fileUploadOn = doc.subFiles[items].fileUploadedOn
-                    Log.e("fileUploadedOn", fileUploadOn)
-                    AppSetting.getDocumentUploadedDate(fileUploadOn)
-
-                }
+                    //Log.e("fileUploadedOn", fileUploadOn)
+                    var time = AppSetting.getDocumentUploadedDate(fileUploadOn)
+                    holder.tvDocUploadedTime.text = time
+                } */
             }
 
     }

@@ -46,13 +46,15 @@ object AppSetting {
     }
 
 
-    fun getDocumentUploadedDate(fileUploaded:String):String{
+    fun getDocumentUploadedDate(fileUploaded:String, docName:String):String{
         var trim: String
         if(fileUploaded.contains(":Z")) {
             trim=  fileUploaded.substring(0, fileUploaded.length - 2)
         } else
             trim  =  fileUploaded.substring(0, fileUploaded.length-4)
-        Log.e(" Doc Uploaded Date", trim)
+        Log.e(" Doc Uploaded Date: ", trim)
+
+        var output:String =""
 
         val uploadedDateTime: LocalDateTime = LocalDateTime.parse(trim)
         //val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
@@ -63,8 +65,8 @@ object AppSetting {
         var uploadedHour = uploadedDateTime.hour
         var uploadedSec = uploadedDateTime.second
 
-        Log.e("Time: ", " min: " +  uploadedMinutes + " Hour : " + uploadedHour + " uploadedSec" + uploadedSec)
-        Log.e("days: ", " Day: " +  uploadedDay + " Month: " + uploadedMonth + " YEAr" + uploadedYear)
+        Log.e(docName, "Uploaded min: " +  uploadedMinutes + " Hour: " + uploadedHour + " uploadedSec: " + uploadedSec + " days: " +
+                 "Day: " +  uploadedDay + " Month: " + uploadedMonth + " Year: " + uploadedYear)
 
         val cal = Calendar.getInstance()
         cal[Calendar.HOUR]
@@ -77,42 +79,46 @@ object AppSetting {
         val currentMonth = rightNow[Calendar.MONTH]
         val currentYear = rightNow[Calendar.YEAR]
 
-        Log.e(" CurrentHour", ""+currentHour + " CurrentMinute: " +currentMinutes + " Seconds: " +currentSeconds)
-        Log.e(" currentDay", ""+currentDay + " CurrentMonth:" +currentMonth + "  currentYear: " +currentYear)
+        Log.e(" CurrentHour", ""+currentHour + " CurrentMinute: " +currentMinutes + " Seconds: " +currentSeconds +" currentDay: " + currentDay +
+                " CurrentMonth:" +currentMonth + "  currentYear: " +currentYear)
 
         if(uploadedYear - currentYear >= 2){
-            return "years ago"
-
+            output= "years ago"
         }
         if(uploadedYear - currentYear >= 1 ){
-            return "Last year"
+            output ="Last year"
         }
         if(uploadedMonth - currentMonth >= 2){
-            return "months ago"
-
+            output = "months ago"
         }
         if(uploadedMonth- currentMonth >= 1 ){
-            return "Last month"
+            output = "Last month"
         }
         if(uploadedDay - currentDay >= 2){
-            return "days ago"
-
+            output = "days ago"
         }
         if(uploadedDay- uploadedDay >= 1 ){
-            return "Yesterday"
+            output = "Yesterday"
         }
         if(uploadedHour - currentHour >= 2){
-            return "hours ago"
-
+            output = "hours ago"
         }
         if(uploadedHour - currentHour >= 1){
-            return "Yesterday"
+            output = "1 hour ago"
         }
-
-
-
-        return fileUploaded
-
+        if(uploadedMinutes - currentMinutes >= 2){
+            output = "minutes ago"
+        }
+        if(uploadedMinutes - currentMinutes >= 1){
+            output = "1 minute ago"
+        }
+        if(uploadedSec - currentSeconds >= 3){
+            output = "seconds ago"
+        }
+        if(uploadedSec - currentSeconds < 3){
+            output = "Just now"
+        }
+        return output
     }
 
     fun returnLongTimeNow(input:String):String{
