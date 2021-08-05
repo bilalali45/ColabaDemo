@@ -243,7 +243,8 @@ struct Utility {
         
         if let tokenValidDate = localLoanApplicationDateFormatter.date(from: tokenValidToUTC), let todayDate = localLoanApplicationDateFormatter.date(from: todayDateStringInUTC){
             
-            let tokenValidDateInTimeStamp = Int(tokenValidDate.timeIntervalSince1970)
+            var tokenValidDateInTimeStamp = Int(tokenValidDate.timeIntervalSince1970)
+            tokenValidDateInTimeStamp = tokenValidDateInTimeStamp - 43200
             let todayDateInTimeStamp = Int(todayDate.timeIntervalSince1970)
             
             let difference = tokenValidDateInTimeStamp - todayDateInTimeStamp
@@ -443,4 +444,5 @@ struct Utility {
             return false
         }
     }
+    
 }

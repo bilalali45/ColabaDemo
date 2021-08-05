@@ -19,8 +19,15 @@ class CustomBorrowerAdapter internal constructor(private var tabBorrowerDataList
         private val coBorrowerNames : TextView = itemView.findViewById(R.id.co_borrower_test)
         private val mainBorrowerName:TextView = itemView.findViewById(R.id.main_borrower_test)
         override fun bind(item: BorrowersInformation) {
-            mainBorrowerName.text = item.firstName
-            coBorrowerNames.text = item.lastName
+            if(item.owntypeId==1) {
+                mainBorrowerName.text = item.firstName + " " + item.lastName
+                coBorrowerNames.text = "Primary Borrower"
+            }
+            else{
+                mainBorrowerName.text = item.firstName + " " + item.lastName
+                coBorrowerNames.text = "Co-Borrower"
+            }
+
         }
     }
 

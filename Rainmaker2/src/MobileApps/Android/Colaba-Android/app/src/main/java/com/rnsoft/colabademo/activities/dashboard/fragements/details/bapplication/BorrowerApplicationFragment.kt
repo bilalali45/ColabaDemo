@@ -3,14 +3,12 @@ package com.rnsoft.colabademo
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -18,6 +16,7 @@ import com.mikepenz.fastadapter.listeners.ClickEventHook
 import com.rnsoft.colabademo.databinding.DetailApplicationTabBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
@@ -63,6 +62,8 @@ class BorrowerApplicationFragment : Fragment() {
             this.adapter = borrowerInfoAdapter
         }
 
+
+
         val realStateLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
 
         realStateRecyclerView.apply {
@@ -87,19 +88,29 @@ class BorrowerApplicationFragment : Fragment() {
                     binding.bAppPropertyType.text = it
                 }
 
-                appTabModel.borrowerAppData?.subjectProperty?.propertyUsageName.let{
+                appTabModel.borrowerAppData?.subjectProperty?.propertyUsageDescription.let{
                     binding.bAppPropertyUsage.text = it
                 }
 
                 appTabModel.borrowerAppData?.loanInformation?.loanAmount?.let{
-                    binding.bAppLoanPayment.text = it.toString()
+                    binding.bAppLoanPayment.text = AppSetting.returnAmountFormattedString(it)
                 }
 
-                binding.bAppPercentage.text = "("+30.toString()+"%)"
+                appTabModel.borrowerAppData?.loanInformation?.downPayment?.let{
+                    binding.bAppDownPayment.text = AppSetting.returnAmountFormattedString(it)
+                }
 
-                binding.bAppTotalAssets.text =  appTabModel.borrowerAppData?.assetAndIncome?.totalAsset.toString()
+                appTabModel.borrowerAppData?.loanInformation?.downPaymentPercent?.let {
+                    binding.bAppPercentage.text = "("+it.roundToInt()+"%)"
+                }
 
-                binding.bAppMonthlylncome.text = appTabModel.borrowerAppData?.assetAndIncome?.totalAsset.toString()
+                appTabModel.borrowerAppData?.assetAndIncome?.totalAsset?.let{
+                    binding.bAppTotalAssets.text =AppSetting.returnAmountFormattedString(it)
+                }
+
+                appTabModel.borrowerAppData?.assetAndIncome?.totalMonthyIncome?.let{
+                    binding.bAppMonthlylncome.text =AppSetting.returnAmountFormattedString(it)
+                }
 
 
 
@@ -146,6 +157,43 @@ class BorrowerApplicationFragment : Fragment() {
             }
            else
                binding.applicationTabLayout.visibility = View.INVISIBLE
+        })
+
+
+        horizontalRecyclerView.addOnItemTouchListener(object : OnItemTouchListener {
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                when (e.action) {
+                    MotionEvent.ACTION_MOVE -> rv.parent.requestDisallowInterceptTouchEvent(true)
+                }
+                return false
+            }
+
+            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+        })
+
+        realStateRecyclerView.addOnItemTouchListener(object : OnItemTouchListener {
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                when (e.action) {
+                    MotionEvent.ACTION_MOVE -> rv.parent.requestDisallowInterceptTouchEvent(true)
+                }
+                return false
+            }
+
+            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+        })
+
+        govtQuestionsRecyclerView.addOnItemTouchListener(object : OnItemTouchListener {
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                when (e.action) {
+                    MotionEvent.ACTION_MOVE -> rv.parent.requestDisallowInterceptTouchEvent(true)
+                }
+                return false
+            }
+
+            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
         })
 
         return root
