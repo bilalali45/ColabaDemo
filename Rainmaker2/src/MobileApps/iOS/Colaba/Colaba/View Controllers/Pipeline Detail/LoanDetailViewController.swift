@@ -54,6 +54,8 @@ class LoanDetailViewController: BaseViewController {
             let tabItems = ["Overview", "Application", "Documents"]
             let carbonTabSwipeNavigation = CarbonTabSwipeNavigation(items: tabItems, delegate: self)
             
+            carbonTabSwipeNavigation.carbonSegmentedControl?.backgroundColor = Theme.getTopTabsColor()
+            carbonTabSwipeNavigation.setTabBarHeight(50)
             carbonTabSwipeNavigation.setIndicatorColor(nil)
             carbonTabSwipeNavigation.setIndicatorHeight(4)
             carbonTabSwipeNavigation.setNormalColor(Theme.getAppGreyColor(), font: Theme.getRubikRegularFont(size: 15))
@@ -61,7 +63,7 @@ class LoanDetailViewController: BaseViewController {
             carbonTabSwipeNavigation.carbonSegmentedControl?.imageNormalColor = .clear
             carbonTabSwipeNavigation.carbonSegmentedControl?.imageSelectedColor = .clear
             
-            self.documentCounterView = UIView(frame: CGRect(x: (self.view.bounds.width) - 31, y: 7, width: 7, height: 7))
+            self.documentCounterView = UIView(frame: CGRect(x: (self.view.bounds.width) - 31, y: 13, width: 7, height: 7))
             self.documentCounterView.backgroundColor = .red
             self.documentCounterView.layer.cornerRadius = self.documentCounterView.frame.height / 2
             self.documentCounterView.isHidden = true

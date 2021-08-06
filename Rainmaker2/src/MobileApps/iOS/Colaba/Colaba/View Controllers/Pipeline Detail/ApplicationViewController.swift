@@ -51,6 +51,7 @@ class ApplicationViewController: BaseViewController {
         borrowerCollectionView.register(UINib(nibName: "BorrowerInfoCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "BorrowerInfoCollectionViewCell")
         realEstateCollectionView.register(UINib(nibName: "RealEstateCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "RealEstateCollectionViewCell")
         questionsCollectionView.register(UINib(nibName: "GovernmentQuestionsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "GovernmentQuestionsCollectionViewCell")
+        questionsCollectionView.register(UINib(nibName: "DemographicInformationCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "DemographicInformationCollectionViewCell")
         addressView.layer.cornerRadius = 6
         addressView.layer.borderWidth = 1
         addressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
@@ -162,7 +163,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
             return loanApplicationDetail.realEstatesOwned.count + 1
         }
         else{
-            return loanApplicationDetail.governmentQuestions.count
+            return loanApplicationDetail.governmentQuestions.count + 1
         }
         
     }
@@ -222,300 +223,310 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
             return cell
         }
         else{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GovernmentQuestionsCollectionViewCell", for: indexPath) as! GovernmentQuestionsCollectionViewCell //Main View Height Constraint 90 for 0, 120 for 1, 147 for 2, 174 for 3, 202 for 4
-            let question = loanApplicationDetail.governmentQuestions[indexPath.row]
             
-            cell.mainView.layer.cornerRadius = 6
-            cell.mainView.layer.borderWidth = 1
-            cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-            cell.lblQuestionHeading.text = question.questionHeader
-            cell.lblQuestion.text = question.questionText
-            
-            if (question.questionResponses.count == 0){
-                cell.mainViewHeightConstraint.constant = 90
+            if (indexPath.row != loanApplicationDetail.governmentQuestions.count){
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GovernmentQuestionsCollectionViewCell", for: indexPath) as! GovernmentQuestionsCollectionViewCell //Main View Height Constraint 90 for 0, 120 for 1, 147 for 2, 174 for 3, 202 for 4
+                let question = loanApplicationDetail.governmentQuestions[indexPath.row]
                 
-                cell.iconAns1.isHidden = true
-                cell.lblAns1.isHidden = true
-                cell.lblUser1.isHidden = true
+                cell.mainView.layer.cornerRadius = 6
+                cell.mainView.layer.borderWidth = 1
+                cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+                cell.lblQuestionHeading.text = question.questionHeader
+                cell.lblQuestion.text = question.questionText
                 
-                cell.iconAns2.isHidden = true
-                cell.lblAns2.isHidden = true
-                cell.lblUser2.isHidden = true
-                
-                cell.iconAns3.isHidden = true
-                cell.lblAns3.isHidden = true
-                cell.lblUser3.isHidden = true
-                
-                cell.iconAns4.isHidden = true
-                cell.lblAns4.isHidden = true
-                cell.lblUser4.isHidden = true
-            }
-            else if (question.questionResponses.count == 1){
-                cell.mainViewHeightConstraint.constant = 120
-                
-                let questionResponse1 = question.questionResponses[0]
-                
-                cell.iconAns1.isHidden = false
-                cell.lblAns1.isHidden = false
-                cell.lblUser1.isHidden = false
-                
-                if questionResponse1.questionResponseText == "Yes"{
-                    cell.iconAns1.image = UIImage(named: "Ans-Yes")
-                    cell.lblAns1.text = "Yes"
-                    cell.lblAns1.font = Theme.getRubikMediumFont(size: 15)
+                if (question.questionResponses.count == 0){
+                    cell.mainViewHeightConstraint.constant = 90
+                    
+                    cell.iconAns1.isHidden = true
+                    cell.lblAns1.isHidden = true
+                    cell.lblUser1.isHidden = true
+                    
+                    cell.iconAns2.isHidden = true
+                    cell.lblAns2.isHidden = true
+                    cell.lblUser2.isHidden = true
+                    
+                    cell.iconAns3.isHidden = true
+                    cell.lblAns3.isHidden = true
+                    cell.lblUser3.isHidden = true
+                    
+                    cell.iconAns4.isHidden = true
+                    cell.lblAns4.isHidden = true
+                    cell.lblUser4.isHidden = true
                 }
-                else if (questionResponse1.questionResponseText == "No"){
-                    cell.iconAns1.image = UIImage(named: "Ans-No")
-                    cell.lblAns1.text = "No"
-                    cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                else if (question.questionResponses.count == 1){
+                    cell.mainViewHeightConstraint.constant = 120
+                    
+                    let questionResponse1 = question.questionResponses[0]
+                    
+                    cell.iconAns1.isHidden = false
+                    cell.lblAns1.isHidden = false
+                    cell.lblUser1.isHidden = false
+                    
+                    if questionResponse1.questionResponseText == "Yes"{
+                        cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns1.text = "Yes"
+                        cell.lblAns1.font = Theme.getRubikMediumFont(size: 15)
+                    }
+                    else if (questionResponse1.questionResponseText == "No"){
+                        cell.iconAns1.image = UIImage(named: "Ans-No")
+                        cell.lblAns1.text = "No"
+                        cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns1.image = UIImage(named: "Ans-NA")
+                        cell.lblAns1.text = "N/a"
+                        cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    cell.lblUser1.text = " - \(questionResponse1.borrowerFirstName)"
+                    
+                    cell.iconAns2.isHidden = true
+                    cell.lblAns2.isHidden = true
+                    cell.lblUser2.isHidden = true
+                    
+                    cell.iconAns3.isHidden = true
+                    cell.lblAns3.isHidden = true
+                    cell.lblUser3.isHidden = true
+                    
+                    cell.iconAns4.isHidden = true
+                    cell.lblAns4.isHidden = true
+                    cell.lblUser4.isHidden = true
                 }
-                else{
-                    cell.iconAns1.image = UIImage(named: "Ans-NA")
-                    cell.lblAns1.text = "N/a"
-                    cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
-                }
-                cell.lblUser1.text = " - \(questionResponse1.borrowerFirstName)"
-                
-                cell.iconAns2.isHidden = true
-                cell.lblAns2.isHidden = true
-                cell.lblUser2.isHidden = true
-                
-                cell.iconAns3.isHidden = true
-                cell.lblAns3.isHidden = true
-                cell.lblUser3.isHidden = true
-                
-                cell.iconAns4.isHidden = true
-                cell.lblAns4.isHidden = true
-                cell.lblUser4.isHidden = true
-            }
-            else if (question.questionResponses.count == 2){
-                cell.mainViewHeightConstraint.constant = 147
-                
-                let questionResponse1 = question.questionResponses[0]
-                let questionResponse2 = question.questionResponses[1]
-                
-                cell.iconAns1.isHidden = false
-                cell.lblAns1.isHidden = false
-                cell.lblUser1.isHidden = false
-                
-                if questionResponse1.questionResponseText == "Yes"{
-                    cell.iconAns1.image = UIImage(named: "Ans-Yes")
-                    cell.lblAns1.text = "Yes"
-                    cell.lblAns1.font = Theme.getRubikMediumFont(size: 15)
+                else if (question.questionResponses.count == 2){
+                    cell.mainViewHeightConstraint.constant = 147
+                    
+                    let questionResponse1 = question.questionResponses[0]
+                    let questionResponse2 = question.questionResponses[1]
+                    
+                    cell.iconAns1.isHidden = false
+                    cell.lblAns1.isHidden = false
+                    cell.lblUser1.isHidden = false
+                    
+                    if questionResponse1.questionResponseText == "Yes"{
+                        cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns1.text = "Yes"
+                        cell.lblAns1.font = Theme.getRubikMediumFont(size: 15)
+                        
+                    }
+                    else if (questionResponse1.questionResponseText == "No"){
+                        cell.iconAns1.image = UIImage(named: "Ans-No")
+                        cell.lblAns1.text = "No"
+                        cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns1.image = UIImage(named: "Ans-NA")
+                        cell.lblAns1.text = "N/a"
+                        cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    cell.lblUser1.text = " - \(questionResponse1.borrowerFirstName)"
+                    
+                    cell.iconAns2.isHidden = false
+                    cell.lblAns2.isHidden = false
+                    cell.lblUser2.isHidden = false
+                    
+                    if questionResponse2.questionResponseText == "Yes"{
+                        cell.iconAns2.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns2.text = "Yes"
+                        cell.lblAns2.font = Theme.getRubikMediumFont(size: 15)
+                    }
+                    else if (questionResponse2.questionResponseText == "No"){
+                        cell.iconAns2.image = UIImage(named: "Ans-No")
+                        cell.lblAns2.text = "No"
+                        cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns2.image = UIImage(named: "Ans-NA")
+                        cell.lblAns2.text = "N/a"
+                        cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    cell.lblUser2.text = " - \(questionResponse2.borrowerFirstName)"
+                    
+                    cell.iconAns3.isHidden = true
+                    cell.lblAns3.isHidden = true
+                    cell.lblUser3.isHidden = true
+                    
+                    cell.iconAns4.isHidden = true
+                    cell.lblAns4.isHidden = true
+                    cell.lblUser4.isHidden = true
                     
                 }
-                else if (questionResponse1.questionResponseText == "No"){
-                    cell.iconAns1.image = UIImage(named: "Ans-No")
-                    cell.lblAns1.text = "No"
-                    cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                else if (question.questionResponses.count == 3){
+                    cell.mainViewHeightConstraint.constant = 174
+                    
+                    let questionResponse1 = question.questionResponses[0]
+                    let questionResponse2 = question.questionResponses[1]
+                    let questionResponse3 = question.questionResponses[2]
+                    
+                    cell.iconAns1.isHidden = false
+                    cell.lblAns1.isHidden = false
+                    cell.lblUser1.isHidden = false
+                    
+                    if questionResponse1.questionResponseText == "Yes"{
+                        cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns1.text = "Yes"
+                        cell.lblAns1.font = Theme.getRubikMediumFont(size: 15)
+                    }
+                    else if (questionResponse1.questionResponseText == "No"){
+                        cell.iconAns1.image = UIImage(named: "Ans-No")
+                        cell.lblAns1.text = "No"
+                        cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns1.image = UIImage(named: "Ans-NA")
+                        cell.lblAns1.text = "N/a"
+                        cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    cell.lblUser1.text = " - \(questionResponse1.borrowerFirstName)"
+                    
+                    cell.iconAns2.isHidden = false
+                    cell.lblAns2.isHidden = false
+                    cell.lblUser2.isHidden = false
+                    
+                    if questionResponse2.questionResponseText == "Yes"{
+                        cell.iconAns2.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns2.text = "Yes"
+                        cell.lblAns2.font = Theme.getRubikMediumFont(size: 15)
+                    }
+                    else if (questionResponse2.questionResponseText == "No"){
+                        cell.iconAns2.image = UIImage(named: "Ans-No")
+                        cell.lblAns2.text = "No"
+                        cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns2.image = UIImage(named: "Ans-NA")
+                        cell.lblAns2.text = "N/a"
+                        cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    cell.lblUser2.text = " - \(questionResponse2.borrowerFirstName)"
+                    
+                    cell.iconAns3.isHidden = false
+                    cell.lblAns3.isHidden = false
+                    cell.lblUser3.isHidden = false
+                    
+                    if questionResponse3.questionResponseText == "Yes"{
+                        cell.iconAns3.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns3.text = "Yes"
+                        cell.lblAns3.font = Theme.getRubikMediumFont(size: 15)
+                    }
+                    else if (questionResponse3.questionResponseText == "No"){
+                        cell.iconAns3.image = UIImage(named: "Ans-No")
+                        cell.lblAns3.text = "No"
+                        cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns3.image = UIImage(named: "Ans-NA")
+                        cell.lblAns3.text = "N/a"
+                        cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    cell.lblUser3.text = " - \(questionResponse3.borrowerFirstName)"
+                    
+                    cell.iconAns4.isHidden = true
+                    cell.lblAns4.isHidden = true
+                    cell.lblUser4.isHidden = true
                 }
                 else{
-                    cell.iconAns1.image = UIImage(named: "Ans-NA")
-                    cell.lblAns1.text = "N/a"
-                    cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                    cell.mainViewHeightConstraint.constant = 202
+                    
+                    let questionResponse1 = question.questionResponses[0]
+                    let questionResponse2 = question.questionResponses[1]
+                    let questionResponse3 = question.questionResponses[2]
+                    let questionResponse4 = question.questionResponses[3]
+                    
+                    cell.iconAns1.isHidden = false
+                    cell.lblAns1.isHidden = false
+                    cell.lblUser1.isHidden = false
+                    
+                    if questionResponse1.questionResponseText == "Yes"{
+                        cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns1.text = "Yes"
+                        cell.lblAns1.font = Theme.getRubikMediumFont(size: 15)
+                    }
+                    else if (questionResponse1.questionResponseText == "No"){
+                        cell.iconAns1.image = UIImage(named: "Ans-No")
+                        cell.lblAns1.text = "No"
+                        cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns1.image = UIImage(named: "Ans-NA")
+                        cell.lblAns1.text = "N/a"
+                        cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    cell.lblUser1.text = " - \(questionResponse1.borrowerFirstName)"
+                    
+                    cell.iconAns2.isHidden = false
+                    cell.lblAns2.isHidden = false
+                    cell.lblUser2.isHidden = false
+                    
+                    if questionResponse2.questionResponseText == "Yes"{
+                        cell.iconAns2.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns2.text = "Yes"
+                        cell.lblAns2.font = Theme.getRubikMediumFont(size: 15)
+                    }
+                    else if (questionResponse2.questionResponseText == "No"){
+                        cell.iconAns2.image = UIImage(named: "Ans-No")
+                        cell.lblAns2.text = "No"
+                        cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns2.image = UIImage(named: "Ans-NA")
+                        cell.lblAns2.text = "N/a"
+                        cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    cell.lblUser2.text = " - \(questionResponse2.borrowerFirstName)"
+                    
+                    cell.iconAns3.isHidden = false
+                    cell.lblAns3.isHidden = false
+                    cell.lblUser3.isHidden = false
+                    
+                    if questionResponse3.questionResponseText == "Yes"{
+                        cell.iconAns3.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns3.text = "Yes"
+                        cell.lblAns3.font = Theme.getRubikMediumFont(size: 15)
+                    }
+                    else if (questionResponse3.questionResponseText == "No"){
+                        cell.iconAns3.image = UIImage(named: "Ans-No")
+                        cell.lblAns3.text = "No"
+                        cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns3.image = UIImage(named: "Ans-NA")
+                        cell.lblAns3.text = "N/a"
+                        cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    cell.lblUser3.text = " - \(questionResponse3.borrowerFirstName)"
+                    
+                    cell.iconAns4.isHidden = false
+                    cell.lblAns4.isHidden = false
+                    cell.lblUser4.isHidden = false
+                    
+                    if questionResponse4.questionResponseText == "Yes"{
+                        cell.iconAns4.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns4.text = "Yes"
+                        cell.lblAns4.font = Theme.getRubikMediumFont(size: 15)
+                    }
+                    else if (questionResponse4.questionResponseText == "No"){
+                        cell.iconAns4.image = UIImage(named: "Ans-No")
+                        cell.lblAns4.text = "No"
+                        cell.lblAns4.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns4.image = UIImage(named: "Ans-NA")
+                        cell.lblAns4.text = "N/a"
+                        cell.lblAns4.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    cell.lblUser4.text = " - \(questionResponse4.borrowerFirstName)"
                 }
-                cell.lblUser1.text = " - \(questionResponse1.borrowerFirstName)"
-                
-                cell.iconAns2.isHidden = false
-                cell.lblAns2.isHidden = false
-                cell.lblUser2.isHidden = false
-                
-                if questionResponse2.questionResponseText == "Yes"{
-                    cell.iconAns2.image = UIImage(named: "Ans-Yes")
-                    cell.lblAns2.text = "Yes"
-                    cell.lblAns2.font = Theme.getRubikMediumFont(size: 15)
-                }
-                else if (questionResponse2.questionResponseText == "No"){
-                    cell.iconAns2.image = UIImage(named: "Ans-No")
-                    cell.lblAns2.text = "No"
-                    cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
-                }
-                else{
-                    cell.iconAns2.image = UIImage(named: "Ans-NA")
-                    cell.lblAns2.text = "N/a"
-                    cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
-                }
-                cell.lblUser2.text = " - \(questionResponse2.borrowerFirstName)"
-                
-                cell.iconAns3.isHidden = true
-                cell.lblAns3.isHidden = true
-                cell.lblUser3.isHidden = true
-                
-                cell.iconAns4.isHidden = true
-                cell.lblAns4.isHidden = true
-                cell.lblUser4.isHidden = true
-                
-            }
-            else if (question.questionResponses.count == 3){
-                cell.mainViewHeightConstraint.constant = 174
-                
-                let questionResponse1 = question.questionResponses[0]
-                let questionResponse2 = question.questionResponses[1]
-                let questionResponse3 = question.questionResponses[2]
-                
-                cell.iconAns1.isHidden = false
-                cell.lblAns1.isHidden = false
-                cell.lblUser1.isHidden = false
-                
-                if questionResponse1.questionResponseText == "Yes"{
-                    cell.iconAns1.image = UIImage(named: "Ans-Yes")
-                    cell.lblAns1.text = "Yes"
-                    cell.lblAns1.font = Theme.getRubikMediumFont(size: 15)
-                }
-                else if (questionResponse1.questionResponseText == "No"){
-                    cell.iconAns1.image = UIImage(named: "Ans-No")
-                    cell.lblAns1.text = "No"
-                    cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
-                }
-                else{
-                    cell.iconAns1.image = UIImage(named: "Ans-NA")
-                    cell.lblAns1.text = "N/a"
-                    cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
-                }
-                cell.lblUser1.text = " - \(questionResponse1.borrowerFirstName)"
-                
-                cell.iconAns2.isHidden = false
-                cell.lblAns2.isHidden = false
-                cell.lblUser2.isHidden = false
-                
-                if questionResponse2.questionResponseText == "Yes"{
-                    cell.iconAns2.image = UIImage(named: "Ans-Yes")
-                    cell.lblAns2.text = "Yes"
-                    cell.lblAns2.font = Theme.getRubikMediumFont(size: 15)
-                }
-                else if (questionResponse2.questionResponseText == "No"){
-                    cell.iconAns2.image = UIImage(named: "Ans-No")
-                    cell.lblAns2.text = "No"
-                    cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
-                }
-                else{
-                    cell.iconAns2.image = UIImage(named: "Ans-NA")
-                    cell.lblAns2.text = "N/a"
-                    cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
-                }
-                cell.lblUser2.text = " - \(questionResponse2.borrowerFirstName)"
-                
-                cell.iconAns3.isHidden = false
-                cell.lblAns3.isHidden = false
-                cell.lblUser3.isHidden = false
-                
-                if questionResponse3.questionResponseText == "Yes"{
-                    cell.iconAns3.image = UIImage(named: "Ans-Yes")
-                    cell.lblAns3.text = "Yes"
-                    cell.lblAns3.font = Theme.getRubikMediumFont(size: 15)
-                }
-                else if (questionResponse3.questionResponseText == "No"){
-                    cell.iconAns3.image = UIImage(named: "Ans-No")
-                    cell.lblAns3.text = "No"
-                    cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
-                }
-                else{
-                    cell.iconAns3.image = UIImage(named: "Ans-NA")
-                    cell.lblAns3.text = "N/a"
-                    cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
-                }
-                cell.lblUser3.text = " - \(questionResponse3.borrowerFirstName)"
-                
-                cell.iconAns4.isHidden = true
-                cell.lblAns4.isHidden = true
-                cell.lblUser4.isHidden = true
+                cell.mainView.dropShadowToCollectionViewCell(shadowColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor, shadowRadius: 2)
+                cell.updateConstraintsIfNeeded()
+                cell.layoutSubviews()
+                return cell
             }
             else{
-                cell.mainViewHeightConstraint.constant = 202
-                
-                let questionResponse1 = question.questionResponses[0]
-                let questionResponse2 = question.questionResponses[1]
-                let questionResponse3 = question.questionResponses[2]
-                let questionResponse4 = question.questionResponses[3]
-                
-                cell.iconAns1.isHidden = false
-                cell.lblAns1.isHidden = false
-                cell.lblUser1.isHidden = false
-                
-                if questionResponse1.questionResponseText == "Yes"{
-                    cell.iconAns1.image = UIImage(named: "Ans-Yes")
-                    cell.lblAns1.text = "Yes"
-                    cell.lblAns1.font = Theme.getRubikMediumFont(size: 15)
-                }
-                else if (questionResponse1.questionResponseText == "No"){
-                    cell.iconAns1.image = UIImage(named: "Ans-No")
-                    cell.lblAns1.text = "No"
-                    cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
-                }
-                else{
-                    cell.iconAns1.image = UIImage(named: "Ans-NA")
-                    cell.lblAns1.text = "N/a"
-                    cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
-                }
-                cell.lblUser1.text = " - \(questionResponse1.borrowerFirstName)"
-                
-                cell.iconAns2.isHidden = false
-                cell.lblAns2.isHidden = false
-                cell.lblUser2.isHidden = false
-                
-                if questionResponse2.questionResponseText == "Yes"{
-                    cell.iconAns2.image = UIImage(named: "Ans-Yes")
-                    cell.lblAns2.text = "Yes"
-                    cell.lblAns2.font = Theme.getRubikMediumFont(size: 15)
-                }
-                else if (questionResponse2.questionResponseText == "No"){
-                    cell.iconAns2.image = UIImage(named: "Ans-No")
-                    cell.lblAns2.text = "No"
-                    cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
-                }
-                else{
-                    cell.iconAns2.image = UIImage(named: "Ans-NA")
-                    cell.lblAns2.text = "N/a"
-                    cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
-                }
-                cell.lblUser2.text = " - \(questionResponse2.borrowerFirstName)"
-                
-                cell.iconAns3.isHidden = false
-                cell.lblAns3.isHidden = false
-                cell.lblUser3.isHidden = false
-                
-                if questionResponse3.questionResponseText == "Yes"{
-                    cell.iconAns3.image = UIImage(named: "Ans-Yes")
-                    cell.lblAns3.text = "Yes"
-                    cell.lblAns3.font = Theme.getRubikMediumFont(size: 15)
-                }
-                else if (questionResponse3.questionResponseText == "No"){
-                    cell.iconAns3.image = UIImage(named: "Ans-No")
-                    cell.lblAns3.text = "No"
-                    cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
-                }
-                else{
-                    cell.iconAns3.image = UIImage(named: "Ans-NA")
-                    cell.lblAns3.text = "N/a"
-                    cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
-                }
-                cell.lblUser3.text = " - \(questionResponse3.borrowerFirstName)"
-                
-                cell.iconAns4.isHidden = false
-                cell.lblAns4.isHidden = false
-                cell.lblUser4.isHidden = false
-                
-                if questionResponse4.questionResponseText == "Yes"{
-                    cell.iconAns4.image = UIImage(named: "Ans-Yes")
-                    cell.lblAns4.text = "Yes"
-                    cell.lblAns4.font = Theme.getRubikMediumFont(size: 15)
-                }
-                else if (questionResponse4.questionResponseText == "No"){
-                    cell.iconAns4.image = UIImage(named: "Ans-No")
-                    cell.lblAns4.text = "No"
-                    cell.lblAns4.font = Theme.getRubikRegularFont(size: 15)
-                }
-                else{
-                    cell.iconAns4.image = UIImage(named: "Ans-NA")
-                    cell.lblAns4.text = "N/a"
-                    cell.lblAns4.font = Theme.getRubikRegularFont(size: 15)
-                }
-                cell.lblUser4.text = " - \(questionResponse4.borrowerFirstName)"
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DemographicInformationCollectionViewCell", for: indexPath) as! DemographicInformationCollectionViewCell // Height of main view 90, 123, 147, 171, 195
+                cell.mainView.layer.cornerRadius = 6
+                cell.mainView.layer.borderWidth = 1
+                cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+                return cell
             }
-            cell.mainView.dropShadowToCollectionViewCell(shadowColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor, shadowRadius: 2)
-            cell.updateConstraintsIfNeeded()
-            cell.layoutSubviews()
-            return cell
         }
         
     }
