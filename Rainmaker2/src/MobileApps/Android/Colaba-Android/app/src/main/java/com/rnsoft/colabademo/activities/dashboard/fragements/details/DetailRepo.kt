@@ -47,12 +47,15 @@ class DetailRepo  @Inject constructor(
             val whatSaved = saveFile(responseBody, pathWhereYouWantToSaveFile)
             Log.e("file-save", whatSaved)
 
+            /*
             val localUri = FileProvider.getUriForFile(applicationContext, applicationContext.packageName + ".provider", fileName)
             val i = Intent(Intent.ACTION_VIEW)
             i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             i.setDataAndType(localUri, applicationContext.getContentResolver().getType(localUri))
             applicationContext.startActivity(i)
+
+             */
 
             //val file = File(Environment.getExternalStorageDirectory().absolutePath + "/" + filename)
             /*val savedFile = File(whatSaved)

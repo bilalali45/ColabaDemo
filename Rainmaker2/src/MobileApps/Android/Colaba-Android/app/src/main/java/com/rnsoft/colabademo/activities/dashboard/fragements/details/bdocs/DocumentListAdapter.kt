@@ -65,8 +65,9 @@ internal constructor(
         }
 
         // set doc time
-        var uploadedTime = AppSetting.returnLongTimeNow(doc.fileUploadedOn)
-        holder.tvDocUploadedTime.text = uploadedTime
+        //var uploadedTime = AppSetting.returnLongTimeNow(doc.fileUploadedOn)
+        var newFormattedDateTime = AppSetting.documentDetailDateTimeFormat(doc.fileUploadedOn)
+        holder.tvDocUploadedTime.text = newFormattedDateTime
 
     }
 

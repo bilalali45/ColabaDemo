@@ -22,6 +22,9 @@ class DetailActivity : AppCompatActivity() {
     var borrowerFirstName:String? = null
     var borrowerLastName:String? = null
     var borrowerLoanPurpose:String? = null
+    var borrowerCellNumber:String? = null
+    var borrowerEmail:String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,30 +36,38 @@ class DetailActivity : AppCompatActivity() {
             borrowerFirstName = it.getString(AppConstant.firstName)
             borrowerLastName = it.getString(AppConstant.lastName)
             borrowerLoanPurpose = it.getString(AppConstant.loanPurpose)
+            borrowerCellNumber = it.getString(AppConstant.bPhoneNumber)
+            borrowerEmail = it.getString(AppConstant.bEmail)
             Log.e("Names- ", "$borrowerFirstName $borrowerLastName")
         }
 
         binding.emailFab.setOnClickListener{
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.type = "plain/text"
-            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("info@colaba.com"))
-            intent.putExtra(Intent.EXTRA_SUBJECT, "subject")
-            intent.putExtra(Intent.EXTRA_TEXT, "mail body")
-            startActivity(Intent.createChooser(intent, ""))
+            borrowerEmail?.let {
+                val intent = Intent(Intent.ACTION_SEND)
+                intent.type = "plain/text"
+                intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(it))
+                intent.putExtra(Intent.EXTRA_SUBJECT, "subject")
+                intent.putExtra(Intent.EXTRA_TEXT, "mail body")
+                startActivity(Intent.createChooser(intent, ""))
+            }
         }
 
         binding.messageFab.setOnClickListener{
-            val smsIntent = Intent(Intent.ACTION_VIEW)
-            smsIntent.type = "vnd.android-dir/mms-sms"
-            smsIntent.putExtra("address", "450-450-8548")
-            smsIntent.putExtra("sms_body", "Colaba info message")
-            startActivity(smsIntent)
+            borrowerCellNumber?.let {
+                val smsIntent = Intent(Intent.ACTION_VIEW)
+                smsIntent.type = "vnd.android-dir/mms-sms"
+                smsIntent.putExtra("address", borrowerCellNumber)
+                //smsIntent.putExtra("sms_body", "Colaba info message")
+                startActivity(smsIntent)
+            }
         }
 
         binding.phoneFab.setOnClickListener{
-            val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse("tel:4504508548")
-            startActivity(intent)
+            borrowerCellNumber?.let {
+                val intent = Intent(Intent.ACTION_DIAL)
+                intent.data = Uri.parse("tel:$it")
+                startActivity(intent)
+            }
         }
     }
 }

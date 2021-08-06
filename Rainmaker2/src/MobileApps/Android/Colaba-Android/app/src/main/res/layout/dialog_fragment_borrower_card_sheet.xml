@@ -154,37 +154,22 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
+
         app:layout_constraintEnd_toStartOf="@+id/crossImageView"
         app:layout_constraintStart_toStartOf="@+id/borrowerName"
         app:layout_constraintTop_toBottomOf="@+id/borrowerName">
 
-        <TextView
-            android:id="@+id/textView37"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:fontFamily="@font/rubik_regular"
-            android:text="@string/call"
-            android:textColor="@color/grey_color_one"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView28"
-            app:layout_constraintStart_toEndOf="@+id/imageView28"
-            app:layout_constraintTop_toTopOf="@+id/imageView28" />
 
-        <TextView
-            android:id="@+id/textView36"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottomEmailConstraintLayout"
+            android:padding="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/rubik_regular"
-            android:text="@string/email"
-            android:textColor="@color/grey_color_one"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView29"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView29" />
+            android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/imageView27"
@@ -194,38 +179,90 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/sheet_email_icon" />
 
-        <ImageView
-            android:id="@+id/imageView28"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="75dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView27"
-            app:layout_constraintStart_toEndOf="@+id/textView35"
-            app:layout_constraintTop_toTopOf="@+id/imageView27"
-            app:srcCompat="@drawable/sheet_phone_icon" />
+            <TextView
+                android:id="@+id/textView35"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/rubik_regular"
+                android:text="@string/email"
+                android:textColor="@color/grey_color_one"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView27"
+                app:layout_constraintStart_toEndOf="@+id/imageView27"
+                app:layout_constraintTop_toTopOf="@+id/imageView27" />
 
-        <ImageView
-            android:id="@+id/imageView29"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView27"
-            app:layout_constraintEnd_toStartOf="@+id/textView36"
-            app:layout_constraintTop_toTopOf="@+id/imageView28"
-            app:srcCompat="@drawable/sheet_msg_icon" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/textView35"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottomPhoneConstraintLayout"
+            android:padding="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:fontFamily="@font/rubik_regular"
-            android:text="@string/email"
-            android:textColor="@color/grey_color_one"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView27"
-            app:layout_constraintStart_toEndOf="@+id/imageView27"
-            app:layout_constraintTop_toTopOf="@+id/imageView27" />
+            android:layout_marginStart="78dp"
+            app:layout_constraintStart_toEndOf="@+id/bottomEmailConstraintLayout"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <ImageView
+                android:id="@+id/imageView28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/sheet_phone_icon" />
+
+            <TextView
+                android:id="@+id/textView37"
+                android:layout_width="27dp"
+                android:layout_height="19dp"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/rubik_regular"
+                android:text="@string/call"
+                android:textColor="@color/grey_color_one"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView28"
+                app:layout_constraintStart_toEndOf="@+id/imageView28"
+                app:layout_constraintTop_toTopOf="@+id/imageView28" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottomMessageConstraintLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="72dp"
+            android:padding="4dp"
+            app:layout_constraintStart_toEndOf="@+id/bottomPhoneConstraintLayout"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <ImageView
+                android:id="@+id/imageView29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/sheet_msg_icon" />
+
+
+            <TextView
+                android:id="@+id/textView36"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/rubik_regular"
+                android:text="@string/text"
+                android:textColor="@color/grey_color_one"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView29"
+                app:layout_constraintStart_toEndOf="@+id/imageView29"
+                app:layout_constraintTop_toTopOf="@+id/imageView29" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

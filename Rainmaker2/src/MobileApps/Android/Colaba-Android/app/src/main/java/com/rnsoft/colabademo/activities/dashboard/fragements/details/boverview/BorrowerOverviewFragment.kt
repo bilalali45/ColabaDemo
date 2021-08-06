@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.DetailBorrowerLayoutTwoBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
@@ -97,12 +98,12 @@ class BorrowerOverviewFragment : Fragment()  {
                 overviewModel.downPayment?.let{ downPayment ->
                     overviewModel.propertyValue?.let { propertyValue ->
                         if(propertyValue!=0.0 && downPayment!=0.0)
-                            percentage  = ((downPayment / propertyValue) * 100).toInt()
+                            percentage  = ((downPayment / propertyValue) * 100).roundToInt()
                     }
                 }
 
                 if(percentage!=0)
-                    binding.percentageTextView.text = "- "+percentage.toString()+"%"
+                    binding.percentageTextView.text = "("+percentage.toString()+"%)"
 
                 overviewModel.webBorrowerAddress?.let {
                     binding.completeAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName

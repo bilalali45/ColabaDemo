@@ -144,6 +144,8 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
         borrowerDetailIntent.putExtra(AppConstant.loanPurpose,  test.loanPurpose)
         borrowerDetailIntent.putExtra(AppConstant.firstName,  test.firstName)
         borrowerDetailIntent.putExtra(AppConstant.lastName,  test.lastName)
+        borrowerDetailIntent.putExtra(AppConstant.bPhoneNumber,  test.cellNumber)
+        borrowerDetailIntent.putExtra(AppConstant.bEmail,  test.email)
         startActivity(borrowerDetailIntent)
 
     }
