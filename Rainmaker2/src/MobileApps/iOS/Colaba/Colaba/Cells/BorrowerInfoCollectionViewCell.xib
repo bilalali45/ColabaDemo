@@ -58,13 +58,13 @@
                                 <state key="normal" image="Add-More"/>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add More Borrowers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zyd-Dc-glQ">
-                                <rect key="frame" x="47" y="27" width="122.5" height="16"/>
+                                <rect key="frame" x="47" y="27" width="121" height="16"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <color key="textColor" name="ButtonBlueColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" name="TopTabsColor"/>
                         <constraints>
                             <constraint firstItem="Zyd-Dc-glQ" firstAttribute="centerY" secondItem="zf9-op-Qe3" secondAttribute="centerY" id="GBf-vt-Ezw"/>
                             <constraint firstItem="Zyd-Dc-glQ" firstAttribute="leading" secondItem="zf9-op-Qe3" secondAttribute="trailing" constant="12" id="NNp-hR-ypM"/>
@@ -105,6 +105,9 @@
         </namedColor>
         <namedColor name="ButtonBlueColor">
             <color red="0.26666666666666666" green="0.51764705882352946" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TopTabsColor">
+            <color red="0.98431372549019602" green="0.98431372549019602" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

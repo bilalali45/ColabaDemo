@@ -674,7 +674,7 @@
                                                     </label>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PKe-jR-bfj">
                                                         <rect key="frame" x="0.0" y="56" width="375" height="80"/>
-                                                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                                                        <color key="backgroundColor" name="TopTabsColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="80" id="gC0-81-sW6"/>
                                                         </constraints>
@@ -975,7 +975,7 @@
                                                     </label>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="rF2-Rf-h6z">
                                                         <rect key="frame" x="0.0" y="20" width="375" height="107"/>
-                                                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                                                        <color key="backgroundColor" name="TopTabsColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="107" id="v7N-oA-rff"/>
                                                         </constraints>
@@ -1005,7 +1005,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pXR-FG-myH">
-                                                <rect key="frame" x="0.0" y="882" width="375" height="260"/>
+                                                <rect key="frame" x="0.0" y="882" width="375" height="318"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Application-Tab-Govt-Questions" translatesAutoresizingMaskIntoConstraints="NO" id="BSh-Fk-Et1">
                                                         <rect key="frame" x="20" y="0.0" width="20" height="20"/>
@@ -1018,7 +1018,7 @@
                                                     </label>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="t9V-sb-78k">
                                                         <rect key="frame" x="0.0" y="20" width="375" height="227"/>
-                                                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                                                        <color key="backgroundColor" name="TopTabsColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="227" id="gpt-IM-nWf"/>
                                                         </constraints>
@@ -1038,7 +1038,7 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstItem="EeK-YG-ehV" firstAttribute="centerY" secondItem="BSh-Fk-Et1" secondAttribute="centerY" id="8k3-7s-bYQ"/>
-                                                    <constraint firstAttribute="height" constant="260" id="Af1-Ds-v4q"/>
+                                                    <constraint firstAttribute="height" constant="318" id="Af1-Ds-v4q"/>
                                                     <constraint firstItem="BSh-Fk-Et1" firstAttribute="top" secondItem="pXR-FG-myH" secondAttribute="top" id="McR-nc-NMR"/>
                                                     <constraint firstItem="BSh-Fk-Et1" firstAttribute="leading" secondItem="pXR-FG-myH" secondAttribute="leading" constant="20" id="Mfp-sV-1Z1"/>
                                                     <constraint firstItem="t9V-sb-78k" firstAttribute="top" secondItem="BSh-Fk-Et1" secondAttribute="bottom" id="bx4-BN-01b"/>
@@ -1082,7 +1082,7 @@
                             </scrollView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="dLc-Jo-eHW"/>
-                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                        <color key="backgroundColor" name="TopTabsColor"/>
                         <constraints>
                             <constraint firstItem="dLc-Jo-eHW" firstAttribute="bottom" secondItem="mCc-94-uSm" secondAttribute="bottom" id="AXO-wD-7gO"/>
                             <constraint firstItem="mCc-94-uSm" firstAttribute="top" secondItem="dLc-Jo-eHW" secondAttribute="top" id="JIh-8D-U3h"/>

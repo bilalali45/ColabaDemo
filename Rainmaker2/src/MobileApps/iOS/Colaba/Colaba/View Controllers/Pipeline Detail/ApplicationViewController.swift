@@ -38,11 +38,17 @@ class ApplicationViewController: BaseViewController {
     var loanApplicationId = 0
     var loanApplicationDetail = LoanApplicationModel()
     let loadingPlaceholderView = LoadingPlaceholderView()
+    var lastContentOffset: CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         getLoanApplicationDetail()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowNavigationBar), object: nil, userInfo: nil)
     }
     
     //MARK:- Methods and Actions
@@ -68,7 +74,7 @@ class ApplicationViewController: BaseViewController {
         monthlyIncomeView.layer.borderWidth = 1
         monthlyIncomeView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         monthlyIncomeView.dropShadowToCollectionViewCell()
-        
+        mainScrollView.delegate = self
     }
     
     func setApplicationData(){
@@ -152,7 +158,7 @@ class ApplicationViewController: BaseViewController {
     
 }
 
-extension ApplicationViewController: UICollectionViewDataSource, UICollectionViewDelegate{
+extension ApplicationViewController: UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -531,4 +537,17 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
         
     }
     
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.lastContentOffset = scrollView.contentOffset.y
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if self.lastContentOffset < scrollView.contentOffset.y {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationHidesNavigationBar), object: nil, userInfo: nil)
+        } else if self.lastContentOffset > scrollView.contentOffset.y {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowNavigationBar), object: nil, userInfo: nil)
+        } else {
+            // didn't move
+        }
+    }
 }

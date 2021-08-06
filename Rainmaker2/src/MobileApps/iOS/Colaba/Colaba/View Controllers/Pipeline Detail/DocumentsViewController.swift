@@ -28,6 +28,7 @@ class DocumentsViewController: BaseViewController {
     var filterDocumentsArray = [LoanDocumentModel]()
     let loadingPlaceholderView = LoadingPlaceholderView()
     var isFiltersApplied = false
+    var lastContentOffset: CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +50,9 @@ class DocumentsViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getDocuments()
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowNavigationBar), object: nil, userInfo: nil)
     }
+    
     
     //MARK:- Methods and Actions
     
@@ -254,4 +257,21 @@ extension DocumentsViewController: UITableViewDataSource, UITableViewDelegate{
         return UITableView.automaticDimension
     }
     
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.lastContentOffset = scrollView.contentOffset.y
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        if (documentsArray.count > 3){
+            if self.lastContentOffset < scrollView.contentOffset.y {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationHidesNavigationBar), object: nil, userInfo: nil)
+            } else if self.lastContentOffset > scrollView.contentOffset.y {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowNavigationBar), object: nil, userInfo: nil)
+            } else {
+                // didn't move
+            }
+        }
+        
+    }
 }
