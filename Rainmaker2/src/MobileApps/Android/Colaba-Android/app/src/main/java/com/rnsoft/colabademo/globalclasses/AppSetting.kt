@@ -10,24 +10,23 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.math.roundToInt
 
+
 object AppSetting {
 
-    var biometricEnabled:Boolean = false
-    var loanApiDateTime:String = ""
-    var activeloanApiDateTime:String = ""
-    var nonActiveloanApiDateTime:String = ""
+    var biometricEnabled: Boolean = false
+    var loanApiDateTime: String = ""
+    var activeloanApiDateTime: String = ""
+    var nonActiveloanApiDateTime: String = ""
 
     // check in Repo to query Room database....
     var hasLoanApiDataLoaded = false
     var hasActiveLoanApiDataLoaded = false
     var hasNonActiveLoanApiDataLoaded = false
 
-    fun returnGreetingString():String{
+    fun returnGreetingString(): String {
         val currentTimeAgain: String =
             SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
         Log.e("currentTimeAgain-time-", currentTimeAgain)
@@ -35,9 +34,9 @@ object AppSetting {
         var greetingString = ""
 
         val timeInArray = currentTimeAgain.split(":").map { it.toInt() }
-        if(timeInArray[0]<12 )
+        if (timeInArray[0] < 12)
             greetingString = "Good Morning"
-        else if(timeInArray[0] in 13..16)
+        else if (timeInArray[0] in 13..16)
             greetingString = "Good Afternoon"
         else
             greetingString = "Good Evening"
@@ -45,90 +44,154 @@ object AppSetting {
         return greetingString
     }
 
+    fun getUploadedDate(fileUploaded: String, docName: String) : String{
 
-    fun getDocumentUploadedDate(fileUploaded:String, docName:String):String{
+        var output: String = ""
         var trim: String
-        if(fileUploaded.contains(":Z")) {
-            trim=  fileUploaded.substring(0, fileUploaded.length - 2)
+        if (fileUploaded.contains(":Z")) {
+            trim = fileUploaded.substring(0, fileUploaded.length - 2)
         } else
-            trim  =  fileUploaded.substring(0, fileUploaded.length-4)
+            trim = fileUploaded.substring(0, fileUploaded.length - 4)
+
         Log.e(" Doc Uploaded Date: ", trim)
 
-        var output:String =""
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val firstDate: Date? = formatter.parse(trim)
 
-        val uploadedDateTime: LocalDateTime = LocalDateTime.parse(trim)
-        //val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
-        var uploadedDay = uploadedDateTime.dayOfMonth
-        var uploadedMonth = uploadedDateTime.monthValue
-        var uploadedYear = uploadedDateTime.year
-        var uploadedMinutes = uploadedDateTime.minute
-        var uploadedHour = uploadedDateTime.hour
-        var uploadedSec = uploadedDateTime.second
+        //var currentTime = Date()
+        //val currentDate : String = formatter.format(currentTime)
+        //val secondDate : Date? = formatter.parse(currentDate)
+        //Log.e("first Date", ""+firstDate)
+        //Log.e("second Date", ""+secondDate)
+        //val difference : Long = Date(firstDate - secondDate)
+        //val cal = Calendar.getInstance()
+        //cal.time = diff
 
-        Log.e(docName, "Uploaded min: " +  uploadedMinutes + " Hour: " + uploadedHour + " uploadedSec: " + uploadedSec + " days: " +
-                 "Day: " +  uploadedDay + " Month: " + uploadedMonth + " Year: " + uploadedYear)
+
+        return output
+
+    }
+
+    fun getDocumentUploadedDate(fileUploaded: String, docName: String): String {
+
+        var output: String = ""
+        var trim: String
+        if (fileUploaded.contains(":Z")) {
+            trim = fileUploaded.substring(0, fileUploaded.length - 2)
+        } else
+            trim = fileUploaded.substring(0, fileUploaded.length - 4)
+
+        Log.e(" Doc Uploaded Date: ", trim)
+
+        /*val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val firstDate: Date? = formatter.parse(trim)
+
+        var currentTime = Date()
+        val currentDate : String = formatter.format(currentTime)
+        val secondDate : Date? = formatter.parse(currentDate)
+        Log.e("first Date", ""+firstDate)
+        Log.e("second Date", ""+secondDate)
+        //val difference : Long = Date(firstDate - secondDate)
+        val cal = Calendar.getInstance()
+        //cal.time = diff */
+        val format1 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+        val dt1 :Date = format1.parse(trim)
 
         val cal = Calendar.getInstance()
-        cal[Calendar.HOUR]
-        val rightNow = Calendar.getInstance()
-        val currentHour = rightNow[Calendar.HOUR]
-        val currentMinutes = rightNow[Calendar.MINUTE]
-        val currentSeconds = rightNow[Calendar.SECOND]
+        cal.time= dt1
+        var uploadedDay = cal[Calendar.DAY_OF_MONTH]
+        var uploadedMonth = cal[Calendar.MONTH]
+        var uploadedYear = cal[Calendar.YEAR]
+        var uploadedMinutes = cal[Calendar.MINUTE]
+        var uploadedHour = cal[Calendar.HOUR]
+        var uploadedSec = cal[Calendar.SECOND]
+        var uploadedWeek = cal[Calendar.WEEK_OF_YEAR]
 
-        val currentDay = rightNow[Calendar.DAY_OF_MONTH]
-        val currentMonth = rightNow[Calendar.MONTH]
-        val currentYear = rightNow[Calendar.YEAR]
+        Log.e(
+            docName,
+            "Uploaded min: " + uploadedMinutes + " Hour: " + uploadedHour + " uploadedSec: " + uploadedSec + " days: " +
+                    "Day: " + uploadedDay + " Month: " + uploadedMonth + " Year: " + uploadedYear + " Week: " + uploadedWeek
+        )
 
-        Log.e(" CurrentHour", ""+currentHour + " CurrentMinute: " +currentMinutes + " Seconds: " +currentSeconds +" currentDay: " + currentDay +
-                " CurrentMonth:" +currentMonth + "  currentYear: " +currentYear)
+        val now = Calendar.getInstance()
+        //var now : LocalDateTime =LocalDateTime.now()
+        val currentHour = now[Calendar.HOUR]
+        val currentMinutes = now[Calendar.MINUTE]
+        val currentSeconds = now[Calendar.SECOND]
+        val currentDay = now[Calendar.DAY_OF_MONTH]
+        val currentMonth = now[Calendar.MONTH]
+        val currentYear = now[Calendar.YEAR]
 
-        if(uploadedYear - currentYear >= 2){
-            output= "years ago"
+        Log.e(
+            " CurrentHour",
+            "" + currentHour + " CurrentMinute: " + currentMinutes + " Seconds: " + currentSeconds + " CurrentDay: " + currentDay +
+                    " CurrentMonth: " + currentMonth + "  CurrentYear: " + currentYear)
+
+        val day = uploadedDay - now[Calendar.DAY_OF_MONTH]
+        val year = uploadedYear - now[Calendar.YEAR]
+        val month = uploadedMonth - now[Calendar.MONTH]
+        val hour = uploadedHour - now[Calendar.HOUR]
+        val min = uploadedMinutes - now[Calendar.MINUTE]
+        val sec = uploadedSec - now[Calendar.SECOND]
+
+        if (Math.abs(year) >= 2) {
+            output = Math.abs(year).toString().plus(" years ago")
+            return output
         }
-        if(uploadedYear - currentYear >= 1 ){
-            output ="Last year"
+        if (Math.abs(year) >= 1) {
+            output = "Last year"
+            return output
         }
-        if(uploadedMonth - currentMonth >= 2){
-            output = "months ago"
+        if (Math.abs(month + 1) >= 2) {
+            output = Math.abs(month + 1).toString().plus(" months ago")
+            return output
         }
-        if(uploadedMonth- currentMonth >= 1 ){
+        if (Math.abs(month + 1) >= 1) {
             output = "Last month"
+            return output
         }
-        if(uploadedDay - currentDay >= 2){
-            output = "days ago"
+        if (Math.abs(day) >= 2) {
+            output = Math.abs(day).toString().plus(" days ago")
         }
-        if(uploadedDay- uploadedDay >= 1 ){
+        if (Math.abs(day) <= 1) {
             output = "Yesterday"
         }
-        if(uploadedHour - currentHour >= 2){
-            output = "hours ago"
+        if (Math.abs(hour) >= 2) {
+            output = Math.abs(hour).toString().plus(" hours ago")
+            return output
         }
-        if(uploadedHour - currentHour >= 1){
+        if (Math.abs(hour) >= 1) {
             output = "1 hour ago"
+            return output
         }
-        if(uploadedMinutes - currentMinutes >= 2){
-            output = "minutes ago"
+        if (Math.abs(min) >= 2) {
+            output = Math.abs(min).toString().plus(" minutes ago")
+            return output
         }
-        if(uploadedMinutes - currentMinutes >= 1){
+        if (Math.abs(min) >= 1) {
             output = "1 minute ago"
+            return output
         }
-        if(uploadedSec - currentSeconds >= 3){
-            output = "seconds ago"
+        if (Math.abs(sec) >= 3) {
+            output = Math.abs(sec).toString().plus("seconds ago")
+            return output
         }
-        if(uploadedSec - currentSeconds < 3){
+        if (Math.abs(sec) < 3) {
             output = "Just now"
+            return output
         }
+
         return output
     }
 
-    fun returnLongTimeNow(input:String):String{
+    fun returnLongTimeNow(input: String): String {
 
         var lastSeen = input
 
-        if(input.contains(":Z"))
-            lastSeen =  input.substring(0, input.length-2).toString()
+        if (input.contains(":Z"))
+            lastSeen = input.substring(0, input.length - 2).toString()
         else
-            lastSeen =  input.substring(0, input.length-4)
+            lastSeen = input.substring(0, input.length - 4)
 
         //Log.e("input-time--", lastSeen)
 
@@ -149,14 +212,14 @@ object AppSetting {
 
     }
 
-    fun returnAmountFormattedString(amount:Double):String{
+    fun returnAmountFormattedString(amount: Double): String {
         val df2 = DecimalFormat()
         df2.maximumFractionDigits = 0
-        Log.e("new-deci-format",    df2.format(amount).toString())
+        Log.e("new-deci-format", df2.format(amount).toString())
         return df2.format(amount).toString()
     }
 
-    fun returnNotificationTime(input:String):String{
+    fun returnNotificationTime(input: String): String {
         var lastSeen = input
         // "2021-07-02T11:43:07.205Z"
         val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
@@ -169,12 +232,12 @@ object AppSetting {
         return lastSeen
     }
 
-    fun documentDetailDateTimeFormat(input: String):String{
+    fun documentDetailDateTimeFormat(input: String): String {
         var receivedTimeString = input
-        receivedTimeString = if(input.contains(":Z"))
-            input.substring(0, input.length-2).toString()
+        receivedTimeString = if (input.contains(":Z"))
+            input.substring(0, input.length - 2).toString()
         else
-            input.substring(0, input.length-4)
+            input.substring(0, input.length - 4)
 
         val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.US)
         val oldDate: Date? = formatter.parse(receivedTimeString)
@@ -182,10 +245,10 @@ object AppSetting {
         var finalTimeInFormat = ""
 
         //val dateFormatter = SimpleDateFormat("E MMM dd,yyyy hh:mm a");
-       // System.out.println("Format 2:   " + dateFormatter.format(now));
-       oldMillis?.let {
-           finalTimeInFormat = getDate(it, "E MMM dd,yyyy hh:mm a")
-       }
+        // System.out.println("Format 2:   " + dateFormatter.format(now));
+        oldMillis?.let {
+            finalTimeInFormat = getDate(it, "E MMM dd,yyyy hh:mm a")
+        }
 
         return finalTimeInFormat
     }
@@ -200,10 +263,10 @@ object AppSetting {
         return formatter.format(calendar.time)
     }
 
-    fun lastseen( time: Long): String {
+    fun lastseen(time: Long): String {
         val difference = (System.currentTimeMillis() - time) / 1000
 
-        return  if (difference < 60) {
+        return if (difference < 60) {
             "just now"
         } else if (difference < 60 * 2) {
             "1 minute ago"
@@ -244,111 +307,7 @@ object AppSetting {
             itemView.removeViewAt(2)
         }
     }
-
-
-
-    /*
-    private const val SHORT_DATE_FLAGS = (DateUtils.FORMAT_SHOW_DATE
-            or DateUtils.FORMAT_NO_YEAR or DateUtils.FORMAT_ABBREV_ALL)
-    private const val FULL_DATE_FLAGS = (DateUtils.FORMAT_SHOW_TIME
-            or DateUtils.FORMAT_ABBREV_ALL or DateUtils.FORMAT_SHOW_DATE)
-
-    fun readableTimeDifference(context: Context, time: Long): String? {
-        return readableTimeDifference(context, time, false)
-    }
-
-    fun readableTimeDifferenceFull(context: Context, time: Long): String? {
-        return readableTimeDifference(context, time, true)
-    }
-
-    fun readableTimeDifference(context: Context, time: Long, fullDate: Boolean): String? {
-        if (time == 0L) {
-            return context.getString(R.string.just_now)
-        }
-        val date = Date(time)
-        return if (fullDate) {
-            if (today(date)) {
-                DateFormat.format("hh:mm a", date).toString()
-            } else {
-                DateUtils.formatDateTime(context, date.time, SHORT_DATE_FLAGS)
-            }
-        } else {
-            DateFormat.format("hh:mm a", date).toString()
-        }
-    }
-
-    fun getReadableTimeDifference(context: Context, time: Long): String? {
-        if (time == 0L) {
-            return context.getString(R.string.just_now)
-        }
-        val date = Date(time)
-        return if (today(date)) {
-            DateFormat.format("hh:mm a", date).toString()
-        } else if (isDateInCurrentWeek(date)) {
-            getWeekName(time) + " - " + DateFormat.format("hh:mm a", date).toString()
-        } else {
-            (DateUtils.formatDateTime(context, date.time, SHORT_DATE_FLAGS) + " - "
-                    + DateFormat.format("hh:mm a", date).toString())
-        }
-    }
-
-    private fun today(date: Date): Boolean {
-        return sameDay(date, Date(System.currentTimeMillis()))
-    }
-
-    fun today(date: Long): Boolean {
-        return sameDay(date, System.currentTimeMillis())
-    }
-
-    fun sameDay(a: Long, b: Long): Boolean {
-        return sameDay(Date(a), Date(b))
-    }
-
-    private fun sameDay(a: Date, b: Date): Boolean {
-        val cal1 = Calendar.getInstance()
-        val cal2 = Calendar.getInstance()
-        cal1.time = a
-        cal2.time = b
-        return (cal1[Calendar.YEAR] == cal2[Calendar.YEAR]
-                && cal1[Calendar.DAY_OF_YEAR] == cal2[Calendar.DAY_OF_YEAR])
-    }
-
-    private fun yesterday(date: Date): Boolean {
-        return yesterday(date.time)
-    }
-
-    fun yesterday(date: Long): Boolean {
-        val cal1 = Calendar.getInstance()
-        val cal2 = Calendar.getInstance()
-        cal1.add(Calendar.DAY_OF_YEAR, -1)
-        cal2.time = Date(date)
-        return (cal1[Calendar.YEAR] == cal2[Calendar.YEAR]
-                && cal1[Calendar.DAY_OF_YEAR] == cal2[Calendar.DAY_OF_YEAR])
-    }
-
-    private fun getWeekName(date: Long): String {
-        val c = Calendar.getInstance()
-        c.timeInMillis = date
-        val dayOfWeek = c[Calendar.DAY_OF_WEEK]
-        var weekDay = ""
-        if (Calendar.MONDAY == dayOfWeek) {
-            weekDay = "Mon"
-        } else if (Calendar.TUESDAY == dayOfWeek) {
-            weekDay = "Tue"
-        } else if (Calendar.WEDNESDAY == dayOfWeek) {
-            weekDay = "Wed"
-        } else if (Calendar.THURSDAY == dayOfWeek) {
-            weekDay = "Thu"
-        } else if (Calendar.FRIDAY == dayOfWeek) {
-            weekDay = "Fri"
-        } else if (Calendar.SATURDAY == dayOfWeek) {
-            weekDay = "Sat"
-        } else if (Calendar.SUNDAY == dayOfWeek) {
-            weekDay = "Sun"
-        }
-        return weekDay
-    }
-
+/*
     fun isDateInCurrentWeek(date: Date?): Boolean {
         val currentCalendar = Calendar.getInstance()
         val week = currentCalendar[Calendar.WEEK_OF_YEAR]
@@ -359,9 +318,6 @@ object AppSetting {
         val targetYear = targetCalendar[Calendar.YEAR]
         return week == targetWeek && year == targetYear
     }
-
-
-
 
 
     fun getMilliFromDate(dateFormat: String?): Long {

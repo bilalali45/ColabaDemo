@@ -84,13 +84,10 @@ internal constructor(
                 }
             }
         }
-        doc.createdOn.let { activityTime ->
+        /*doc.createdOn.let { activityTime ->
             //val newString = AppSetting.returnLongTimeNow(activityTime!!)
             //holder.docUploadedTime.text = newString
-
-            var time = AppSetting.getDocumentUploadedDate(doc.createdOn!!, doc.docName!!)
-            holder.tvDocUploadedTime.text = time
-        }
+        } */
         //Log.e("fileUploadedOn", fileUploadOn)
 
 
@@ -152,13 +149,11 @@ internal constructor(
                 } else
                     holder.docThreeLayout.visibility = View.INVISIBLE
 
-                /*for (items in doc.subFiles.indices){
-                    Log.e("name", ""+ doc.docName)
-                    var fileUploadOn = doc.subFiles[items].fileUploadedOn
-                    //Log.e("fileUploadedOn", fileUploadOn)
-                    var time = AppSetting.getDocumentUploadedDate(fileUploadOn)
-                    holder.tvDocUploadedTime.text = time
-                } */
+
+                var fileUploadOn = doc.subFiles[0].fileUploadedOn
+                var time = AppSetting.getUploadedDate(fileUploadOn, doc.docName!!)
+                holder.tvDocUploadedTime.text = time
+
             }
 
     }
