@@ -70,10 +70,18 @@
                         <color key="textColor" red="0.0" green="0.67843137254901964" blue="0.27450980392156865" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9LY-Zn-XbK">
+                        <rect key="frame" x="0.0" y="178" width="372" height="1"/>
+                        <color key="backgroundColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="C6z-B4-MT1"/>
+                        </constraints>
+                    </view>
                 </subviews>
-                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <color key="backgroundColor" name="TopTabsColor"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="Iks-US-gqT" secondAttribute="trailing" constant="15" id="6d6-1G-Y16"/>
+                    <constraint firstAttribute="bottom" secondItem="9LY-Zn-XbK" secondAttribute="bottom" id="9iB-gk-CVO"/>
                     <constraint firstItem="MSm-II-hqn" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="9zr-UZ-szc"/>
                     <constraint firstItem="C1E-rv-iqF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="GUt-X8-b1W"/>
                     <constraint firstItem="Iks-US-gqT" firstAttribute="top" secondItem="C1E-rv-iqF" secondAttribute="bottom" constant="10" id="QMj-A3-Ahc"/>
@@ -81,6 +89,7 @@
                     <constraint firstItem="YKs-XQ-uGH" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="31" id="Y0a-7a-BqL"/>
                     <constraint firstAttribute="bottom" secondItem="YKs-XQ-uGH" secondAttribute="bottom" constant="30" id="bkx-Pb-FnP"/>
                     <constraint firstItem="Iks-US-gqT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="d20-va-83S"/>
+                    <constraint firstItem="9LY-Zn-XbK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="e8Y-2Q-FIN"/>
                     <constraint firstItem="MSm-II-hqn" firstAttribute="top" secondItem="KA4-HO-FtO" secondAttribute="bottom" constant="17" id="jyh-eW-RlS"/>
                     <constraint firstAttribute="trailing" secondItem="C1E-rv-iqF" secondAttribute="trailing" constant="15" id="ob0-CN-Tee"/>
                     <constraint firstItem="KA4-HO-FtO" firstAttribute="top" secondItem="Iks-US-gqT" secondAttribute="bottom" constant="15" id="pEf-DD-17M"/>
@@ -88,10 +97,11 @@
                     <constraint firstItem="YKs-XQ-uGH" firstAttribute="top" secondItem="KA4-HO-FtO" secondAttribute="bottom" constant="15" id="uOe-9a-6dV"/>
                     <constraint firstItem="KA4-HO-FtO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="uc9-iC-JI4"/>
                     <constraint firstAttribute="trailing" secondItem="KA4-HO-FtO" secondAttribute="trailing" constant="15" id="uuH-j2-IYX"/>
+                    <constraint firstAttribute="trailing" secondItem="9LY-Zn-XbK" secondAttribute="trailing" id="x0E-ls-JDw"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" name="TopTabsColor"/>
             <connections>
                 <outlet property="iconByte" destination="MSm-II-hqn" id="6P9-7S-NlR"/>
                 <outlet property="lblBorrowerName" destination="C1E-rv-iqF" id="jkn-TU-ilS"/>
@@ -109,7 +119,7 @@
     </objects>
     <designables>
         <designable name="Iks-US-gqT">
-            <size key="intrinsicContentSize" width="333.5" height="15.5"/>
+            <size key="intrinsicContentSize" width="331" height="15.5"/>
         </designable>
     </designables>
     <resources>
@@ -119,6 +129,9 @@
         </namedColor>
         <namedColor name="AppGreyColor">
             <color red="0.49411764705882355" green="0.50980392156862742" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TopTabsColor">
+            <color red="0.98431372549019602" green="0.98431372549019602" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

@@ -23,6 +23,9 @@
 		235BBD6E2698736200687174 /* APIRouterUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235BBD6D2698736200687174 /* APIRouterUnitTest.swift */; };
 		235BBD7126988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235BBD6F26988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.swift */; };
 		235BBD7226988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 235BBD7026988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.xib */; };
+		2368799C26BC173E0045D294 /* BorrowerInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2368799B26BC173E0045D294 /* BorrowerInformationViewController.swift */; };
+		2368799F26BC35360045D294 /* DemographicInformationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2368799D26BC35360045D294 /* DemographicInformationCollectionViewCell.swift */; };
+		236879A026BC35360045D294 /* DemographicInformationCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2368799E26BC35360045D294 /* DemographicInformationCollectionViewCell.xib */; };
 		2368D6552667DA5900D5C1C5 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2368D6542667DA5900D5C1C5 /* BaseViewController.swift */; };
 		2368D6572667DA6700D5C1C5 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2368D6562667DA6700D5C1C5 /* DashboardViewController.swift */; };
 		236B59D1266504060001F416 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B59D0266504050001F416 /* UserModel.swift */; };
@@ -152,6 +155,9 @@
 		235BBD6D2698736200687174 /* APIRouterUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRouterUnitTest.swift; sourceTree = "<group>"; };
 		235BBD6F26988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerApplicationStatusButtonTableViewCell.swift; sourceTree = "<group>"; };
 		235BBD7026988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerApplicationStatusButtonTableViewCell.xib; sourceTree = "<group>"; };
+		2368799B26BC173E0045D294 /* BorrowerInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerInformationViewController.swift; sourceTree = "<group>"; };
+		2368799D26BC35360045D294 /* DemographicInformationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemographicInformationCollectionViewCell.swift; sourceTree = "<group>"; };
+		2368799E26BC35360045D294 /* DemographicInformationCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DemographicInformationCollectionViewCell.xib; sourceTree = "<group>"; };
 		2368D6542667DA5900D5C1C5 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		2368D6562667DA6700D5C1C5 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		236B59D0266504050001F416 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
@@ -361,6 +367,8 @@
 				23908F9D26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib */,
 				2330CD2326B000ED00FF3C43 /* DocumentMessageTableViewCell.swift */,
 				2330CD2426B000ED00FF3C43 /* DocumentMessageTableViewCell.xib */,
+				2368799D26BC35360045D294 /* DemographicInformationCollectionViewCell.swift */,
+				2368799E26BC35360045D294 /* DemographicInformationCollectionViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -424,6 +432,7 @@
 				23DBAD27269714B300119680 /* DocumentsViewController.swift */,
 				23E9C749269C214A0066C978 /* ApplicationStatusViewController.swift */,
 				23E9C753269C5F100066C978 /* DocumentsDetailViewController.swift */,
+				2368799B26BC173E0045D294 /* BorrowerInformationViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -749,6 +758,7 @@
 				23DBAD202696EB2D00119680 /* PipelineDetail.storyboard in Resources */,
 				232013922698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib in Resources */,
 				23C9130726982A120067920E /* BorrowerOverviewTableViewCell.xib in Resources */,
+				236879A026BC35360045D294 /* DemographicInformationCollectionViewCell.xib in Resources */,
 				2397AF682677A60A007A1A45 /* PipelineDetailTableViewCell.xib in Resources */,
 				23B238C02679F44000508449 /* NotificationsTableViewCell.xib in Resources */,
 				7186AD0A2653C77B00E740D3 /* Rubik-Medium.ttf in Resources */,
@@ -915,6 +925,7 @@
 				23A0D5D026958E83002B4BCE /* DashboardHeaderView.swift in Sources */,
 				2397AF672677A60A007A1A45 /* PipelineDetailTableViewCell.swift in Sources */,
 				23A1CA6B268C4B8400D93DC4 /* UILoadControl_UIScrollView.swift in Sources */,
+				2368799F26BC35360045D294 /* DemographicInformationCollectionViewCell.swift in Sources */,
 				238D70772678E8C80067687C /* FiltersViewController.swift in Sources */,
 				23E9C74D269C23070066C978 /* ApplicationStatusTableViewCell.swift in Sources */,
 				7113F52526569D310066E179 /* LocalAuthManager.swift in Sources */,
@@ -951,6 +962,7 @@
 				23A56C5C2685B017005CE6F4 /* Extensions.swift in Sources */,
 				23C9130626982A120067920E /* BorrowerOverviewTableViewCell.swift in Sources */,
 				7160CA88267339060061ACD5 /* ProfileViewController.swift in Sources */,
+				2368799C26BC173E0045D294 /* BorrowerInformationViewController.swift in Sources */,
 				236EA1AE2678CE1B00C2F8B5 /* DummyDashboardViewController.swift in Sources */,
 				23C244862689B6A500EED1D0 /* AllLoanModel.swift in Sources */,
 				23A1CA6C268C4B8400D93DC4 /* UILoadControl.swift in Sources */,

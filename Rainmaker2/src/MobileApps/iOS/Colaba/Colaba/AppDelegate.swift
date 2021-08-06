@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         else{
             loadLoginViewController()
         }
-//        self.loadTabbarController()
+//        self.loadBorrowerInfoController()
 //        self.window?.makeKeyAndVisible()
     }
 
@@ -52,12 +52,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = vc
     }
     
-    func loadTabbarController(){
-        let vc = Utility.getLoanDetailVC()
-        let navVC = UINavigationController(rootViewController: vc)
-        navVC.modalPresentationStyle = .fullScreen
-        navVC.navigationBar.isHidden = true
-        self.window?.rootViewController = navVC
+    func loadBorrowerInfoController(){
+        let vc = Utility.getBorrowerInformationVC()
+        self.window?.rootViewController = vc
     }
     
     func loadLoginViewController(){

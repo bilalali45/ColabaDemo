@@ -49,13 +49,13 @@
                                 <rect key="frame" x="15" y="93" width="16" height="16"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="48i-TC-ig2">
-                                <rect key="frame" x="37" y="92" width="25.5" height="18"/>
+                                <rect key="frame" x="37" y="92" width="24" height="18"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" - Richard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a9I-y4-wl7">
-                                <rect key="frame" x="62.5" y="92" width="68.5" height="18"/>
+                                <rect key="frame" x="61" y="92" width="66" height="18"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                 <color key="textColor" name="AppGreyColor"/>
                                 <nil key="highlightedColor"/>
@@ -100,7 +100,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" - Maria" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aPX-rZ-Dq8">
-                                <rect key="frame" x="56.5" y="174.5" width="52.5" height="18"/>
+                                <rect key="frame" x="56.5" y="174.5" width="52" height="18"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                 <color key="textColor" name="AppGreyColor"/>
                                 <nil key="highlightedColor"/>

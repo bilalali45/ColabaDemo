@@ -63,6 +63,10 @@ struct Theme {
         return UIColor(named: "SearchBarBorderColor")!
     }
     
+    static func getTopTabsColor() -> UIColor{
+        return UIColor(named: "TopTabsColor")!
+    }
+    
     static func getCustomColorSVGImage(imageNamed: String, imageFrame: CGRect, customColor: UIColor, imageIconId: String) -> UIImage{
         let svgImage = SVGKImage(named: imageNamed)
         let svgIMGV = SVGKFastImageView(frame: imageFrame)
