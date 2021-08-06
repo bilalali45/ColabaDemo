@@ -15,6 +15,7 @@ pod 'RealmSwift'
 pod 'CarbonKit'
 pod 'LoadingPlaceholderView'
 pod 'MarqueeLabel'
+pod 'Material'
 
   target 'ColabaTests' do
     inherit! :search_paths

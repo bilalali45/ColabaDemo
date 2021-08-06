@@ -7,6 +7,13 @@ PODS:
   - IQKeyboardManagerSwift (6.5.6)
   - LoadingPlaceholderView (0.0.2)
   - MarqueeLabel (4.2.0)
+  - Material (3.1.8):
+    - Material/Core (= 3.1.8)
+  - Material/Core (3.1.8):
+    - Motion (~> 3.1.1)
+  - Motion (3.1.3):
+    - Motion/Core (= 3.1.3)
+  - Motion/Core (3.1.3)
   - NVActivityIndicatorView (4.8.0):
     - NVActivityIndicatorView/Presenter (= 4.8.0)
   - NVActivityIndicatorView/Presenter (4.8.0)
@@ -25,6 +32,7 @@ DEPENDENCIES:
   - IQKeyboardManagerSwift (= 6.5.6)
   - LoadingPlaceholderView
   - MarqueeLabel
+  - Material
   - NVActivityIndicatorView (= 4.8.0)
   - RealmSwift
   - SVGKit (= 3.0.0)
@@ -38,6 +46,8 @@ SPEC REPOS:
     - IQKeyboardManagerSwift
     - LoadingPlaceholderView
     - MarqueeLabel
+    - Material
+    - Motion
     - NVActivityIndicatorView
     - Realm
     - RealmSwift
@@ -51,12 +61,14 @@ SPEC CHECKSUMS:
   IQKeyboardManagerSwift: c7df9d2deb356c04522f5c4b7b6e4ce4d8ed94fe
   LoadingPlaceholderView: e913f5ae2673612d405ce395acca7cedb1bfaa81
   MarqueeLabel: f4117d82a55209171e8f66bd4859fa11ade335a1
+  Material: a2a3f400a3b549d53ef89e56c58c4535b29db387
+  Motion: cf1e060e489f6661126374d5c60dbd2ed991605c
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
   Realm: ed860452717c8db8f4bf832b6807f7f2ce708839
   RealmSwift: e31c4ddbcc42ac879313d656b86f9ca539f6f4f4
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: dd60df001f49c283f4214d3437d0784119d95dec
+PODFILE CHECKSUM: 47fbe5eca80d5b812c3e509276a552b3c62d2f6f
 
 COCOAPODS: 1.10.1
