@@ -152,6 +152,7 @@ internal constructor(
 
                 var fileUploadOn = doc.subFiles[0].fileUploadedOn
                 var time = AppSetting.getUploadedDate(fileUploadOn, doc.docName!!)
+                Log.e("fileUploadOn", fileUploadOn)
                 holder.tvDocUploadedTime.text = time
 
             }

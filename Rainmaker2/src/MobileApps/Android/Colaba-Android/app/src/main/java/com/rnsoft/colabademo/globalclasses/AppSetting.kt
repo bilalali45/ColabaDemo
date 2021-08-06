@@ -10,6 +10,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
+import java.time.Duration
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -53,20 +57,42 @@ object AppSetting {
         } else
             trim = fileUploaded.substring(0, fileUploaded.length - 4)
 
-        Log.e(" Doc Uploaded Date: ", trim)
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+        val dt1 :Date = formatter.parse(trim)
+        val firstDate : String = formatter.format(dt1)
 
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        val firstDate: Date? = formatter.parse(trim)
+        var secondDate = Date()
+        val currentDate : String = formatter.format(secondDate)
+        Log.e("secondDate", ""+currentDate)
+        Log.e("date1",  firstDate)
 
-        //var currentTime = Date()
-        //val currentDate : String = formatter.format(currentTime)
-        //val secondDate : Date? = formatter.parse(currentDate)
-        //Log.e("first Date", ""+firstDate)
-        //Log.e("second Date", ""+secondDate)
-        //val difference : Long = Date(firstDate - secondDate)
+        val date1 = formatter.parse(firstDate)
+        val date2 = formatter.parse(currentDate)
+        val difference: Long = (date2.time - date1.time)
+        //Log.e("difference", ""+difference)
+
+        val secondsInMilli: Long = 1000
+        val minutesInMilli = secondsInMilli * 60
+        val hoursInMilli = minutesInMilli * 60
+        val daysInMilli = hoursInMilli * 24
+        val days: Long = difference / daysInMilli
+        //Log.e("Days", ""+days)
+
         //val cal = Calendar.getInstance()
-        //cal.time = diff
+        //cal.time = difference
 
+
+        val dBefore: LocalDate = LocalDate.parse(firstDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        val dAfter: LocalDate = LocalDate.parse(currentDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+
+        val diff: Long = dBefore.until(dAfter, ChronoUnit.WEEKS)
+        println("difference is : $diff Week")
+
+
+
+        //val dt1 :String = formatter.parse(trim)
+        //val difference : Long = Date(firstDate - secondDate)
+        //Log.e("uploadedDate", ""+dt1)
 
         return output
 
