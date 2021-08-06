@@ -253,6 +253,12 @@ dependencies {
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    // IO - https://commons.apache.org/proper/commons-io/
+    implementation group: 'commons-io', name: 'commons-io', version: '2.7'
+
+    // String / Text
+    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.8'
+
 }
 
 kapt {

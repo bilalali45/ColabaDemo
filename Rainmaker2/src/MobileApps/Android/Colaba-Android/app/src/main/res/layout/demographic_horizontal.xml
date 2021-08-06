@@ -10,11 +10,23 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="292dp"
         android:layout_height="wrap_content"
-        android:paddingBottom="11dp"
         android:background="@drawable/search_view_holder_style"
+        android:paddingBottom="11dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/answer3_na2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik_regular"
+            android:text="Fedrick"
+            android:textColor="@color/grey_color_two"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="@+id/answer2_no"
+            tools:layout_editor_absoluteY="121dp" />
 
         <TextView
             android:id="@+id/questionTitle"
@@ -28,7 +40,7 @@
             android:fontFamily="@font/rubik_regular"
             android:maxLines="1"
             android:singleLine="true"
-            android:text="Richard Glenn Randall"
+            android:text="Demographic Information"
             android:textColor="@color/grey_color_one"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,57 +57,38 @@
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:fontFamily="@font/rubik_regular"
-            android:maxLines="2"
-            android:singleLine="false"
-            android:text="Are you borrowing any money for this real\nestate transaction (e.g., money for your ."
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="Race / Ethnicity / Gender"
             android:textColor="@color/grey_color_two"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/questionTitle" />
 
-        <ImageView
-            android:id="@+id/answer1_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="19dp"
-            app:layout_constraintStart_toStartOf="@+id/question"
-            app:layout_constraintTop_toBottomOf="@+id/question"
-            app:srcCompat="@drawable/ic_answer_tick" />
-
         <TextView
             android:id="@+id/answer1_yes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/rubik_regular"
-            android:text="Yes"
-            android:textColor="@color/grey_color_one"
+            android:text="Maria"
+            android:textColor="@color/grey_color_two"
             android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@+id/answer1_icon"
-            app:layout_constraintStart_toEndOf="@+id/answer1_icon"
-            app:layout_constraintTop_toTopOf="@+id/answer1_icon" />
-
-        <ImageView
-            android:id="@+id/answer2_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:layout_constraintStart_toStartOf="@+id/answer1_icon"
-            app:layout_constraintTop_toBottomOf="@+id/answer1_icon"
-            app:srcCompat="@drawable/ic_answer_cross" />
+            app:layout_constraintStart_toStartOf="@+id/question"
+            app:layout_constraintTop_toBottomOf="@+id/question" />
 
         <TextView
             android:id="@+id/answer2_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/rubik_regular"
-            android:text="No"
-            android:textColor="@color/grey_color_one"
+            android:text="Richard"
+            android:textColor="@color/grey_color_two"
             android:textSize="15sp"
-            app:layout_constraintStart_toEndOf="@+id/answer2_icon"
-            app:layout_constraintTop_toTopOf="@+id/answer2_icon" />
+            app:layout_constraintStart_toStartOf="@+id/answer1_yes"
+            app:layout_constraintTop_toBottomOf="@+id/answer1_yes" />
 
         <TextView
             android:id="@+id/answer1_name"
@@ -103,8 +96,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:fontFamily="@font/rubik_regular"
-            android:text="- "
-            android:textColor="@color/grey_color_two"
+            android:text="- Asian / Indian"
+            android:textColor="@color/grey_color_one"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@+id/answer1_yes"
             app:layout_constraintStart_toEndOf="@+id/answer1_yes"
@@ -116,36 +109,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:fontFamily="@font/rubik_regular"
-            android:text="- "
-            android:textColor="@color/grey_color_two"
+            android:text="- Native hawian"
+            android:textColor="@color/grey_color_one"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@+id/answer2_no"
             app:layout_constraintStart_toEndOf="@+id/answer2_no"
             app:layout_constraintTop_toTopOf="@+id/answer2_no" />
 
-
-        <ImageView
-            android:id="@+id/answer3_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="@+id/answer2_icon"
-            app:layout_constraintTop_toBottomOf="@+id/answer2_icon"
-            app:srcCompat="@drawable/ic_answer_dash" />
-
-        <TextView
-            android:id="@+id/answer3_na"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
-            android:fontFamily="@font/rubik_regular"
-            android:text="N/A"
-            android:textColor="@color/grey_color_one"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@+id/answer3_icon"
-            app:layout_constraintStart_toEndOf="@+id/answer3_icon"
-            app:layout_constraintTop_toTopOf="@+id/answer3_icon" />
 
         <TextView
             android:id="@+id/answer3_name"
@@ -153,12 +123,38 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:fontFamily="@font/rubik_regular"
-            android:text="- "
+            android:text="- Asian / Indian"
+            android:textColor="@color/grey_color_one"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@+id/answer3_na2"
+            tools:layout_editor_absoluteY="121dp" />
+
+        <TextView
+            android:id="@+id/answer4_na"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="Sohail"
             android:textColor="@color/grey_color_two"
             android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@+id/answer3_na"
-            app:layout_constraintStart_toEndOf="@+id/answer3_na"
-            app:layout_constraintTop_toTopOf="@+id/answer3_na" />
+            app:layout_constraintTop_toBottomOf="@+id/answer3_na2"
+            tools:layout_editor_absoluteX="16dp" />
+
+
+        <TextView
+            android:id="@+id/answer4_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="- Asian / Indian"
+            android:textColor="@color/grey_color_one"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/answer4_na"
+            app:layout_constraintStart_toEndOf="@+id/answer4_na"
+            app:layout_constraintTop_toTopOf="@+id/answer4_na" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
