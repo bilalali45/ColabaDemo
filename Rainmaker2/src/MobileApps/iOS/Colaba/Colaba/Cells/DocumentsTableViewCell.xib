@@ -46,7 +46,7 @@
                                 <color key="textColor" name="ButtonGreyTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Pending" translatesAutoresizingMaskIntoConstraints="NO" id="doL-RH-4A1">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Blue-Dot" translatesAutoresizingMaskIntoConstraints="NO" id="doL-RH-4A1">
                                 <rect key="frame" x="20" y="61" width="6" height="6"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="6" id="LPV-9B-bwx"/>
@@ -203,7 +203,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="Pending" width="6" height="6"/>
+        <image name="Blue-Dot" width="6" height="6"/>
         <image name="jpg-icon" width="13" height="14"/>
         <image name="no-attatchment" width="16" height="4"/>
         <image name="pdf-icon" width="13" height="14"/>

@@ -44,7 +44,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Land" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZRb-Yq-JaS">
-                                <rect key="frame" x="47" y="64" width="29.5" height="15.5"/>
+                                <rect key="frame" x="47" y="64" width="30.5" height="15.5"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <color key="textColor" name="AppGreyColor"/>
                                 <nil key="highlightedColor"/>
@@ -70,13 +70,13 @@
                                 <state key="normal" image="Add-More"/>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add More Properties" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1L1-Ad-Plb">
-                                <rect key="frame" x="47" y="40.5" width="120.5" height="16"/>
+                                <rect key="frame" x="47" y="40.5" width="123" height="16"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <color key="textColor" name="ButtonBlueColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" name="TopTabsColor"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="97" id="55L-7m-ps4"/>
                             <constraint firstItem="1L1-Ad-Plb" firstAttribute="leading" secondItem="7yO-Tu-FXi" secondAttribute="trailing" constant="12" id="5q0-KV-sbg"/>
@@ -89,7 +89,7 @@
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
-            <color key="backgroundColor" name="DashboardBackgroundColor"/>
+            <color key="backgroundColor" name="TopTabsColor"/>
             <constraints>
                 <constraint firstItem="es5-5g-cPZ" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="2" id="2pG-nG-S5x"/>
                 <constraint firstItem="BFp-Uj-dOO" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="2" id="UsB-F0-fW2"/>
@@ -119,8 +119,8 @@
         <namedColor name="ButtonBlueColor">
             <color red="0.26666666666666666" green="0.51764705882352946" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="DashboardBackgroundColor">
-            <color red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="TopTabsColor">
+            <color red="0.98431372549019602" green="0.98431372549019602" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

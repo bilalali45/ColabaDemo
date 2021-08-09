@@ -39,6 +39,10 @@ class LoanDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupHeaderAndFooter()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(hidesNavigationBar), name: NSNotification.Name(rawValue: kNotificationHidesNavigationBar), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showNavigationBar), name: NSNotification.Name(rawValue: kNotificationShowNavigationBar), object: nil)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
