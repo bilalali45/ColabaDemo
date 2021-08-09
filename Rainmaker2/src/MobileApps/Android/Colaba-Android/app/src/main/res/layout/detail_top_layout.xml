@@ -6,9 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/colaba_loan_background">
 
-
-
-
     <fragment
         android:id="@+id/detail_fragment_activity"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -23,7 +20,6 @@
         app:layout_constraintVertical_bias="1.0"
         app:navGraph="@navigation/detail_navigation" />
 
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/message_fab"
         android:layout_width="wrap_content"
@@ -37,7 +33,6 @@
         android:tint="@color/colaba_primary_color_thirty_alpha"
         app:backgroundTint="@color/colaba_primary_color_thirty_alpha"
         app:borderWidth="1dp"
-
         app:elevation="135dp"
         app:fabSize="normal"
         app:layout_anchorGravity="bottom|center_horizontal"
@@ -72,13 +67,12 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/email_fab"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="34dp"
         android:background="@color/white"
-
         android:backgroundTint="@color/white"
         android:clickable="true"
         android:src="@drawable/blue_email_icon"
@@ -86,10 +80,7 @@
         app:backgroundTint="@color/colaba_primary_color_thirty_alpha"
         app:borderWidth="1dp"
         app:elevation="135dp"
-
-
         app:fabSize="normal"
-
         app:layout_anchorGravity="bottom|center_horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/message_fab"
@@ -98,6 +89,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/blue_email_icon"
         app:tint="@null" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -277,7 +277,7 @@ class NotificationsFragment : Fragment(), NotificationClickListener, RecyclerIte
             val snackbar = Snackbar
                 .make(coordinatorLayout, "The notification has been removed.", Snackbar.LENGTH_LONG)
 
-            snackbar.setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.colaba_primary_color))
+            snackbar.setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.colaba_apptheme_blue))
             snackbar.setActionTextColor(resources.getColor(R.color.white, activity?.theme))
             snackbar.setTextColor(resources.getColor(R.color.white, activity?.theme))
             snackbar.setAction("UNDO") { // undo is selected, restore the deleted item

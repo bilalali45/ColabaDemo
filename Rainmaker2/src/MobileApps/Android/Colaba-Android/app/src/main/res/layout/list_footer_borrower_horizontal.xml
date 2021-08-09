@@ -20,7 +20,7 @@
         android:text="Add More Borrowers"
         android:textSize="12sp"
         android:fontFamily="@font/rubik_regular"
-        android:textColor="@color/colaba_primary_color"
+        android:textColor="@color/colaba_apptheme_blue"
         app:layout_constraintBottom_toBottomOf="@+id/addMoreImageView"
         app:layout_constraintStart_toEndOf="@+id/addMoreImageView"
         app:layout_constraintTop_toTopOf="@+id/addMoreImageView" />

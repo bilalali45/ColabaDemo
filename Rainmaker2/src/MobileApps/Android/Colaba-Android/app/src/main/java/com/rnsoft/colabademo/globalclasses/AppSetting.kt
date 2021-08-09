@@ -12,6 +12,7 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.time.Duration
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.*
@@ -48,8 +49,8 @@ object AppSetting {
         return greetingString
     }
 
-    fun getUploadedDate(fileUploaded: String, docName: String) : String{
-
+    fun getDocumentUploadedDate(fileUploaded: String, docName: String): String {
+        // maths.abs used for converting - valueto plus
         var output: String = ""
         var trim: String
         if (fileUploaded.contains(":Z")) {
@@ -58,107 +59,34 @@ object AppSetting {
             trim = fileUploaded.substring(0, fileUploaded.length - 4)
 
         val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
-        val dt1 :Date = formatter.parse(trim)
-        val firstDate : String = formatter.format(dt1)
+        val dt1: Date = formatter.parse(trim)
+        val firstDate: String = formatter.format(dt1)
 
         var secondDate = Date()
-        val currentDate : String = formatter.format(secondDate)
-        Log.e("secondDate", ""+currentDate)
-        Log.e("date1",  firstDate)
+        val currentDate: String = formatter.format(secondDate)
+        Log.e("fileUploadOn", fileUploaded + " Doc name: " + docName)
+        Log.e("date1", firstDate)
+        Log.e("secondDate", "" + currentDate)
 
-        val date1 = formatter.parse(firstDate)
-        val date2 = formatter.parse(currentDate)
-        val difference: Long = (date2.time - date1.time)
-        //Log.e("difference", ""+difference)
+        val dBefore: LocalDateTime = LocalDateTime.parse(firstDate)
+        val dAfter: LocalDateTime = LocalDateTime.parse(currentDate)
 
-        val secondsInMilli: Long = 1000
-        val minutesInMilli = secondsInMilli * 60
-        val hoursInMilli = minutesInMilli * 60
-        val daysInMilli = hoursInMilli * 24
-        val days: Long = difference / daysInMilli
-        //Log.e("Days", ""+days)
+        val sec: Long = dBefore.until(dAfter, ChronoUnit.SECONDS)
+        val min: Long = dBefore.until(dAfter, ChronoUnit.MINUTES)
+        val hour: Long = dBefore.until(dAfter, ChronoUnit.HOURS)
+        val day: Long = dBefore.until(dAfter, ChronoUnit.DAYS)
+        val week: Long = dBefore.until(dAfter, ChronoUnit.WEEKS)
+        val month: Long = dBefore.until(dAfter, ChronoUnit.MONTHS)
+        val year: Long = dBefore.until(dAfter, ChronoUnit.YEARS)
 
-        //val cal = Calendar.getInstance()
-        //cal.time = difference
-
-
-        val dBefore: LocalDate = LocalDate.parse(firstDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-        val dAfter: LocalDate = LocalDate.parse(currentDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-
-        val diff: Long = dBefore.until(dAfter, ChronoUnit.WEEKS)
-        println("difference is : $diff Week")
-
-
-
-        //val dt1 :String = formatter.parse(trim)
-        //val difference : Long = Date(firstDate - secondDate)
-        //Log.e("uploadedDate", ""+dt1)
-
-        return output
-
-    }
-
-    fun getDocumentUploadedDate(fileUploaded: String, docName: String): String {
-
-        var output: String = ""
-        var trim: String
-        if (fileUploaded.contains(":Z")) {
-            trim = fileUploaded.substring(0, fileUploaded.length - 2)
-        } else
-            trim = fileUploaded.substring(0, fileUploaded.length - 4)
-
-        Log.e(" Doc Uploaded Date: ", trim)
-
-        /*val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-        val firstDate: Date? = formatter.parse(trim)
-
-        var currentTime = Date()
-        val currentDate : String = formatter.format(currentTime)
-        val secondDate : Date? = formatter.parse(currentDate)
-        Log.e("first Date", ""+firstDate)
-        Log.e("second Date", ""+secondDate)
-        //val difference : Long = Date(firstDate - secondDate)
-        val cal = Calendar.getInstance()
-        //cal.time = diff */
-        val format1 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
-        val dt1 :Date = format1.parse(trim)
-
-        val cal = Calendar.getInstance()
-        cal.time= dt1
-        var uploadedDay = cal[Calendar.DAY_OF_MONTH]
-        var uploadedMonth = cal[Calendar.MONTH]
-        var uploadedYear = cal[Calendar.YEAR]
-        var uploadedMinutes = cal[Calendar.MINUTE]
-        var uploadedHour = cal[Calendar.HOUR]
-        var uploadedSec = cal[Calendar.SECOND]
-        var uploadedWeek = cal[Calendar.WEEK_OF_YEAR]
-
-        Log.e(
-            docName,
-            "Uploaded min: " + uploadedMinutes + " Hour: " + uploadedHour + " uploadedSec: " + uploadedSec + " days: " +
-                    "Day: " + uploadedDay + " Month: " + uploadedMonth + " Year: " + uploadedYear + " Week: " + uploadedWeek
-        )
-
-        val now = Calendar.getInstance()
-        //var now : LocalDateTime =LocalDateTime.now()
-        val currentHour = now[Calendar.HOUR]
-        val currentMinutes = now[Calendar.MINUTE]
-        val currentSeconds = now[Calendar.SECOND]
-        val currentDay = now[Calendar.DAY_OF_MONTH]
-        val currentMonth = now[Calendar.MONTH]
-        val currentYear = now[Calendar.YEAR]
-
-        Log.e(
-            " CurrentHour",
-            "" + currentHour + " CurrentMinute: " + currentMinutes + " Seconds: " + currentSeconds + " CurrentDay: " + currentDay +
-                    " CurrentMonth: " + currentMonth + "  CurrentYear: " + currentYear)
-
-        val day = uploadedDay - now[Calendar.DAY_OF_MONTH]
-        val year = uploadedYear - now[Calendar.YEAR]
-        val month = uploadedMonth - now[Calendar.MONTH]
-        val hour = uploadedHour - now[Calendar.HOUR]
-        val min = uploadedMinutes - now[Calendar.MINUTE]
-        val sec = uploadedSec - now[Calendar.SECOND]
+        println("************************")
+        println("Year is : $year")
+        println("month is : $month")
+        println("week is : $week")
+        println("day is : $day")
+        println("hour is : $hour")
+        println("min is : $min")
+        println("sec is : $sec")
 
         if (Math.abs(year) >= 2) {
             output = Math.abs(year).toString().plus(" years ago")
@@ -168,19 +96,29 @@ object AppSetting {
             output = "Last year"
             return output
         }
-        if (Math.abs(month + 1) >= 2) {
-            output = Math.abs(month + 1).toString().plus(" months ago")
+        if (Math.abs(month) >= 2) {
+            output = Math.abs(month).toString().plus(" months ago")
             return output
         }
-        if (Math.abs(month + 1) >= 1) {
+        if (Math.abs(month) >= 1) {
             output = "Last month"
+            return output
+        }
+        if (Math.abs(week) >= 2) {
+            output = Math.abs(week).toString().plus(" weeks ago")
+            return output
+        }
+        if (Math.abs(week) >= 1) {
+            output = "Last week"
             return output
         }
         if (Math.abs(day) >= 2) {
             output = Math.abs(day).toString().plus(" days ago")
+            return output
         }
-        if (Math.abs(day) <= 1) {
+        if (Math.abs(day) >= 1) {
             output = "Yesterday"
+            return output
         }
         if (Math.abs(hour) >= 2) {
             output = Math.abs(hour).toString().plus(" hours ago")
@@ -199,16 +137,16 @@ object AppSetting {
             return output
         }
         if (Math.abs(sec) >= 3) {
-            output = Math.abs(sec).toString().plus("seconds ago")
+            output = Math.abs(sec).toString().plus(" seconds ago")
             return output
         }
         if (Math.abs(sec) < 3) {
             output = "Just now"
             return output
         }
-
         return output
     }
+
 
     fun returnLongTimeNow(input: String): String {
 
@@ -333,6 +271,7 @@ object AppSetting {
             itemView.removeViewAt(2)
         }
     }
+
 /*
     fun isDateInCurrentWeek(date: Date?): Boolean {
         val currentCalendar = Calendar.getInstance()

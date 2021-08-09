@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:padding="4dp"
-            app:layout_constraintBottom_toTopOf="@+id/detail_tab_layout"
+            app:layout_constraintBottom_toTopOf="@+id/tab_top_border"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/search_back" />
@@ -75,17 +75,39 @@
             app:layout_constraintTop_toTopOf="@+id/searchIconImageView"
             app:srcCompat="@drawable/three_dots" />
 
+        <View
+            android:id="@+id/tab_top_border"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colaba_app_border_color"
+            android:layout_marginTop="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/borrower_purpose" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/borrower_overview_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_profile_layout">
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/detail_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="20dp"
-            android:background="@color/colaba_loan_background"
+            android:background="@color/borrower_overview_background"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/borrower_purpose"
+            app:layout_constraintTop_toTopOf="parent"
             app:tabIconTint="@color/colaba_red_color"
             app:tabIndicator="@drawable/tab_indicator"
             app:tabIndicatorColor="@color/colaba_apptheme_blue"
@@ -100,10 +122,11 @@
             android:layout_height="1dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:background="@color/loan_view_holder_separator"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_tab_layout" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_tab_layout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@color/colaba_app_border_color" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

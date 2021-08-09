@@ -41,7 +41,7 @@
             android:layout_marginEnd="14dp"
             android:text="@string/application_started"
             android:fontFamily="@font/rubik_regular"
-            android:textColor="@color/colaba_primary_color"
+            android:textColor="@color/colaba_apptheme_blue"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/searchBorrowerName"
             app:layout_constraintEnd_toEndOf="parent"
