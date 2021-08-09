@@ -10,7 +10,7 @@ import SwiftyJSON
 
 class LoanApplicationModel: NSObject{
     
-    var borrowersInformation: [BorrowerModel] = []
+    var borrowersInformation: [BorrowerInfoModel] = []
     var city: String = ""
     var countryId: Int = 0
     var countryName: String = ""
@@ -45,7 +45,7 @@ class LoanApplicationModel: NSObject{
         
         borrowersInformation.removeAll()
         for borrower in borrowerInformation{
-            let model = BorrowerModel()
+            let model = BorrowerInfoModel()
             model.updateModelWithJSON(json: borrower)
             borrowersInformation.append(model)
         }
@@ -88,6 +88,123 @@ class LoanApplicationModel: NSObject{
         
     }
     
+}
+
+class BorrowerInfoModel: NSObject{
+    
+    var borrowerId: Int = 0
+    var ethnicities: [Ethnicity] = []
+    var firstName:String = ""
+    var genderId : Int!
+    var genderName:String = ""
+    var lastName:String = ""
+    var ownTypeName:String = ""
+    var ownTypeId: Int = 0
+    var races: [Race] = []
+    
+    func updateModelWithJSON(json: JSON){
+        borrowerId = json["borrowerId"].intValue
+        ethnicities.removeAll()
+        
+        let ethnicitiesArray = json["ethnicities"].arrayValue
+        for ethnicity in ethnicitiesArray{
+            let model = Ethnicity()
+            model.updateModelWithJSON(json: ethnicity)
+            ethnicities.append(model)
+        }
+        
+        firstName = json["firstName"].stringValue
+        genderId = json["genderId"].intValue
+        genderName = json["genderName"].stringValue
+        lastName = json["lastName"].stringValue
+        ownTypeName = json["ownTypeName"].stringValue
+        ownTypeId = json["owntypeId"].intValue
+        
+        races.removeAll()
+        let racesArray = json["races"].arrayValue
+        for race in racesArray{
+            let model = Race()
+            model.updateModelWithJSON(json: race)
+            races.append(model)
+        }
+    }
+    
+}
+
+class Race: NSObject {
+    
+    var id: Int = 0
+    var name: String = ""
+    var raceDetails: [RaceDetail] = []
+    var raceNameAndDetail: String = ""
+    
+    func updateModelWithJSON(json: JSON){
+        id = json["id"].intValue
+        name = json["name"].stringValue
+        
+        let raceDetail = json["raceDetails"].arrayValue
+        for detail in raceDetail{
+            let model = RaceDetail()
+            model.updateModelWithJSON(json: detail)
+            raceDetails.append(model)
+        }
+        
+        if (raceDetails.count > 0){
+            raceNameAndDetail = "\(name)/\(raceDetails.first!.name)"
+        }
+        else{
+            raceNameAndDetail = name
+        }
+    }
+    
+}
+
+class RaceDetail: NSObject{
+    var id: Int = 0
+    var name: String = ""
+    
+    func updateModelWithJSON(json: JSON){
+        id = json["id"].intValue
+        name = json["name"].stringValue
+    }
+}
+
+class Ethnicity: NSObject {
+    
+    var id: Int = 0
+    var name: String = ""
+    var ethnicityDetails: [EthnicityDetail] = []
+    var ethnicityNameAndDetail: String = ""
+    
+    func updateModelWithJSON(json: JSON){
+        id = json["id"].intValue
+        name = json["name"].stringValue
+        
+        let raceDetail = json["ethnicityDetails"].arrayValue
+        for detail in raceDetail{
+            let model = EthnicityDetail()
+            model.updateModelWithJSON(json: detail)
+            ethnicityDetails.append(model)
+        }
+        
+        if (ethnicityDetails.count > 0){
+            ethnicityNameAndDetail = "\(name)/\(ethnicityDetails.first!.name)"
+        }
+        else{
+            ethnicityNameAndDetail = name
+        }
+    }
+    
+}
+
+class EthnicityDetail: NSObject{
+    var id: Int = 0
+    var name: String = ""
+    
+    func updateModelWithJSON(json: JSON){
+        id = json["id"].intValue
+        name = json["name"].stringValue
+    }
 }
 
 class RealEstateOwned: NSObject{
