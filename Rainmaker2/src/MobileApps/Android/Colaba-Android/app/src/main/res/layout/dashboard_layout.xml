@@ -72,7 +72,7 @@
         android:src="@drawable/plus_icon"
         android:translationY="5dp"
         android:translationZ="135dp"
-        app:backgroundTint="@color/colaba_apptheme_blue"
+        app:backgroundTint="@color/colaba_primary_color"
         app:borderWidth="0dp"
         app:elevation="135dp"
         app:fabSize="normal"

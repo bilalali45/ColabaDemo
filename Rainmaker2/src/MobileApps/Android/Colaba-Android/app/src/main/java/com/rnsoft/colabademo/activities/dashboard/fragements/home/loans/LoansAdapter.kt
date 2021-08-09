@@ -45,19 +45,9 @@ internal constructor(
         holder.customerName.text = borrower.firstName+" "+borrower.lastName
 
         borrower.activityTime?.let { activityTime->
-
-           var newString = activityTime.substring( 0 , activityTime.length-9)
-            newString+="Z"
-
-
-
-            newString = AppSetting.returnLongTimeNow(newString)
-
-            //Log.e("newString",newString)
-
-            holder.cardTime.text =  newString
+            var time = AppSetting.getDocumentUploadedDate(activityTime)
+            holder.cardTime.text =  time
         }
-        //Log.d(TAG, "Date in milli :: FOR API >= 26 >>> $timeInMilliseconds")
 
         if(borrower.documents == null)
             holder.docsToReview.visibility = View.GONE

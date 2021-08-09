@@ -42,8 +42,6 @@ class DashBoardActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-
-
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -51,7 +49,10 @@ class DashBoardActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_profile, R.id.navigation_notifications , R.id.navigation_search
+                R.id.navigation_home,
+                R.id.navigation_profile,
+                R.id.navigation_notifications,
+                R.id.navigation_search
             )
         )
         //setupActionBarWithNavController(navController, appBarConfiguration)
@@ -59,7 +60,10 @@ class DashBoardActivity : AppCompatActivity() {
 
         dashBoardViewModel.notificationCount.observe(this@DashBoardActivity, { count ->
             when {
-                count == -1 -> SandbarUtils.showRegular(this@DashBoardActivity, AppConstant.INTERNET_ERR_MSG)
+                count == -1 -> SandbarUtils.showRegular(
+                    this@DashBoardActivity,
+                    AppConstant.INTERNET_ERR_MSG
+                )
                 //count == -100 -> SandbarUtils.showRegular(this@DashBoardActivity, "Webservice not responding...")
                 count > 0 -> {
                     val badge =
@@ -74,36 +78,33 @@ class DashBoardActivity : AppCompatActivity() {
                     badge.isVisible = false
                 }
                 else -> {
-                    SandbarUtils.showRegular(this@DashBoardActivity, "Webservice count not responding...")
+                    SandbarUtils.showRegular(
+                        this@DashBoardActivity,
+                        "Webservice count not responding..."
+                    )
                 }
 
             }
         })
 
-       lifecycleScope.launchWhenStarted {
-           sharedPreferences.getString(AppConstant.token, "")?.let {
-               val count =
-                   dashBoardViewModel.getNotificationCountT(it)
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let {
+                val count =
+                    dashBoardViewModel.getNotificationCountT(it)
 
-               // Also run service for notifications get....
-               /*
-               dashBoardViewModel.getNotificationListing(
-                   token ="it,
-                   pageSize = pageSize, lastId = lastId, mediumId = mediumId
-               )
+                // Also run service for notifications get....
+                /*
+                dashBoardViewModel.getNotificationListing(
+                    token ="it,
+                    pageSize = pageSize, lastId = lastId, mediumId = mediumId
+                )
 
-                */
-           }
-       }
-
-
-
-
-
-
-
-
+                 */
+            }
         }
+
+
+    }
 
 
     override fun onStart() {
