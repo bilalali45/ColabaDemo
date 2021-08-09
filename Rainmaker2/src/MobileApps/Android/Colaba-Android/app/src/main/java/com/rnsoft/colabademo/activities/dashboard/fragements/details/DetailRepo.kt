@@ -4,8 +4,10 @@ package com.rnsoft.colabademo
 import android.Manifest
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.util.Log
@@ -13,6 +15,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import com.rnsoft.colabademo.activities.dashboard.DocViewerActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.ResponseBody
 import org.apache.commons.io.IOUtils
@@ -37,17 +40,14 @@ class DetailRepo  @Inject constructor(
 
     suspend fun getBorrowerApplicationTabData(token:String ,loanApplicationId:Int):Result<BorrowerApplicationTabModel>{
         return detailDataSource.getBorrowerApplicationTabData(token = token , loanApplicationId = loanApplicationId)
-
     }
 
-    suspend fun downloadFile(token:String , id:String, requestId:String, docId:String, fileId:String): Response<ResponseBody>? {
+     suspend fun downloadFile(token:String , id:String, requestId:String, docId:String, fileId:String): Response<ResponseBody>? {
         val result = detailDataSource.downloadFile(token = token , id = id, requestId = requestId, docId = docId, fileId = fileId)
         if(result?.body() is ResponseBody) {
             val responseBody = result.body()
-
             if(hasWriteStoragePermission())
                 Log.e("file--", "permission given...")
-
             try {
                 val path = Environment.getExternalStorageDirectory()
                 val file = File(path, "file_name.jpg")
@@ -58,28 +58,13 @@ class DetailRepo  @Inject constructor(
                 Log.e("Bingo--","can not write....")
             }
 
-
-
             try {
                 //you can now get your file in the InputStream
                 val isRead: InputStream? = responseBody?.byteStream()
 
                 //isRead?.toFile(Environment.DIRECTORY_DCIM)
 
-
-
-
-
-
                 isRead?.let { isRead->
-
-
-
-
-
-
-
-
 
                     val buffer = ByteArrayOutputStream()
 
@@ -94,23 +79,17 @@ class DetailRepo  @Inject constructor(
                     saveFileToExternalStorage(buffer.toByteArray())
 
                     saveFileNow(responseBody,"/data/user/0/com.rnsoft.colabademo/bingo.pdf")
-
                 }
-
                 val testFile =   File(ContextCompat.getExternalFilesDirs(applicationContext,null).toString() + File.separator + "testing.png")
 
                 if(isRead!=null)
                     testFile.copyInputStreamToFile(isRead)
-
 
                 //if (isRead != null) { copyStreamToFile(isRead) }
 
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-
-
-
 
 
             val fileName= "testFileName.pdf"
@@ -120,11 +99,8 @@ class DetailRepo  @Inject constructor(
 
             val writtenToDisk = responseBody?.let {
                 writeResponseBodyToDisk(it)
-
-
             }
             Log.d("File download was a success? ", writtenToDisk.toString())
-
             /*
             val localUri = FileProvider.getUriForFile(applicationContext, applicationContext.packageName + ".provider", fileName)
             val i = Intent(Intent.ACTION_VIEW)

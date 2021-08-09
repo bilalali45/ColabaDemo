@@ -32,19 +32,20 @@
 
             <TextView
                 android:id="@+id/doc_type"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="15dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/rubik_medium"
                 android:maxLines="2"
                 android:text="Bank Statead"
                 android:textColor="@color/grey_color_two"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 app:layout_constraintHorizontal_bias="0.55"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/doc_uploaded_time"/>
 
             <TextView
                 android:id="@+id/doc_uploaded_time"
@@ -65,6 +66,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
+                android:layout_marginTop="2dp"
+                android:scaleType="center"
                 android:src="@drawable/circle_medium"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/doc_type" />
@@ -74,12 +77,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="7dp"
                 android:fontFamily="@font/rubik_regular"
                 android:gravity="center"
                 android:maxLines="2"
                 android:text="Pending"
-                android:textColor="@color/grey_color_two"
+                android:textColor="@color/grey_color_three"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="@id/image_filter_circle"
                 app:layout_constraintTop_toBottomOf="@+id/doc_type" />

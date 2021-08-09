@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/colaba"
-        android:textColor="@color/colaba_primary_color"
+        android:textColor="@color/colaba_apptheme_blue"
         android:textSize="46sp"
         android:textStyle="bold"
         android:fontFamily="@font/gothic"

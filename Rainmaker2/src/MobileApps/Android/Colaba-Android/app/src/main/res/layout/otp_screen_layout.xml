@@ -110,7 +110,7 @@
                 android:fontFamily="@font/rubik_regular"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
-                android:buttonTint="@color/colaba_primary_color"
+                android:buttonTint="@color/colaba_apptheme_blue"
                 android:text="@string/do_not_ask_again"
                 android:textColor="@color/grey_color_one"
                 android:textSize="14sp"
@@ -186,7 +186,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/rubik_regular"
                     android:text="@string/resend_code"
-                    android:textColor="@color/colaba_primary_color"
+                    android:textColor="@color/colaba_apptheme_blue"
                     android:textSize="14sp"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@+id/nearToResetTextView"
@@ -351,7 +351,7 @@
         android:indeterminateTintMode="src_atop"
         android:elevation="10dp"
         android:translationZ="10dp"
-        android:indeterminateTint="@color/colaba_primary_color"
+        android:indeterminateTint="@color/colaba_apptheme_blue"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
