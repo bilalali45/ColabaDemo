@@ -137,6 +137,7 @@ interface ServerApi{
         @Query("docId")  docId:String,
         @Query("fileId")  fileId:String):Response<ResponseBody>
 
+
     @GET("api/mcu/mobile/loanapplication/Loan/GetBorrowerLoanApplication")
     suspend fun getBorrowerApplicationTabData(
         @Header("Authorization" )  Authorization:String,

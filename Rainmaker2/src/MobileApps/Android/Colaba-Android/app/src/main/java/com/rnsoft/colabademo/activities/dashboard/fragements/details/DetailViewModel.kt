@@ -8,7 +8,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +25,8 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
     private val _borrowerApplicationTabModel : MutableLiveData<BorrowerApplicationTabModel> =   MutableLiveData()
     val borrowerApplicationTabModel: LiveData<BorrowerApplicationTabModel> get() = _borrowerApplicationTabModel
 
+    private val _fileName : MutableLiveData<String> =   MutableLiveData()
+    val fileName: LiveData<String> get() = _fileName
 
 
     suspend fun getLoanInfo(token:String, loanApplicationId:Int) {
@@ -70,13 +74,21 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
 
     fun downloadFile(token:String,  id:String, requestId:String, docId:String, fileId:String) {
         viewModelScope.launch {
-            val responseResult = detailRepo.downloadFile(
+            val receivedName = detailRepo.downloadFile(
                 token = token,
                 id = id,
                 requestId = requestId,
                 docId = docId,
                 fileId = fileId
             )
+
+            if(receivedName.isNullOrEmpty() || receivedName.isNullOrBlank()){
+                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+            }
+            else {
+                _fileName.value = receivedName
+            }
+
         }
     }
 
