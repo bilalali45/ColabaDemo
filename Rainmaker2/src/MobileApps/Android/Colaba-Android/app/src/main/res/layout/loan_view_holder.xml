@@ -61,7 +61,7 @@
             android:layout_marginStart="3dp"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/refinance"
-            android:textColor="@color/colaba_primary_color"
+            android:textColor="@color/colaba_apptheme_blue"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView3"
             app:layout_constraintStart_toEndOf="@+id/imageView3"
