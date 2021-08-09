@@ -108,7 +108,7 @@ class DocumentListFragment : Fragment(), AdapterClickListener {
         //Log.e("param", " downloadId: " + download_id + " downRequeId: " + download_requestId + " downDocId: " + download_docId)
         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
             val selectedFile = docsArrayList[position]
-            if (download_docId != null && download_requestId != null && download_id != null)
+            if (download_docId != null && download_requestId != null && download_id != null) {
                 detailViewModel.downloadFile(
                     token = authToken,
                     id = download_id!!,
@@ -116,8 +116,10 @@ class DocumentListFragment : Fragment(), AdapterClickListener {
                     docId = download_docId!!,
                     fileId = selectedFile.id
                 )
+            }
         }
     }
+
     override fun getCardIndex(position: Int) {
 
     }
