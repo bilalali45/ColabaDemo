@@ -58,28 +58,28 @@ class CustomFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
         when(BaseFragment.globalOrderBy){
             0->{
 
-                binding.pendingIcon.setColorFilter(resources.getColor(R.color.colaba_primary_color, activity?.theme))
-                binding.pendingTextView.setTextColor(resources.getColor(R.color.colaba_primary_color , activity?.theme))
+                binding.pendingIcon.setColorFilter(resources.getColor(R.color.colaba_apptheme_blue, activity?.theme))
+                binding.pendingTextView.setTextColor(resources.getColor(R.color.colaba_apptheme_blue , activity?.theme))
 
 
             }
             1->{
 
-                binding.recentIcon.setColorFilter(resources.getColor(R.color.colaba_primary_color, activity?.theme))
-                binding.recentTextView.setTextColor(resources.getColor(R.color.colaba_primary_color , activity?.theme))
+                binding.recentIcon.setColorFilter(resources.getColor(R.color.colaba_apptheme_blue, activity?.theme))
+                binding.recentTextView.setTextColor(resources.getColor(R.color.colaba_apptheme_blue , activity?.theme))
 
 
             }
             2->{
 
-                binding.borrowerIcon.setColorFilter(resources.getColor(R.color.colaba_primary_color , activity?.theme))
-                binding.borroweratoz.setTextColor(resources.getColor(R.color.colaba_primary_color, activity?.theme))
+                binding.borrowerIcon.setColorFilter(resources.getColor(R.color.colaba_apptheme_blue , activity?.theme))
+                binding.borroweratoz.setTextColor(resources.getColor(R.color.colaba_apptheme_blue, activity?.theme))
 
             }
             3->{
 
-                binding.borrowerIconReverse.setColorFilter(resources.getColor(R.color.colaba_primary_color, activity?.theme))
-                binding.borrowerztoa.setTextColor(resources.getColor(R.color.colaba_primary_color, activity?.theme))
+                binding.borrowerIconReverse.setColorFilter(resources.getColor(R.color.colaba_apptheme_blue, activity?.theme))
+                binding.borrowerztoa.setTextColor(resources.getColor(R.color.colaba_apptheme_blue, activity?.theme))
 
             }
             else-> {

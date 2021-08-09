@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:text="@string/user_name"
-        android:textColor="@color/colaba_primary_color"
+        android:textColor="@color/colaba_apptheme_blue"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

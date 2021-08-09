@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
         android:fontFamily="@font/rubik_regular"
-        android:textColor="@color/colaba_primary_color"
+        android:textColor="@color/colaba_apptheme_blue"
         android:background="@color/colaba_primary_color_half_alpha"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
