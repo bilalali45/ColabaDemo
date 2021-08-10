@@ -2,17 +2,12 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
-import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
-import com.mikepenz.fastadapter.FastAdapter
-import com.mikepenz.fastadapter.adapters.ItemAdapter
-import com.mikepenz.fastadapter.listeners.ClickEventHook
 import com.rnsoft.colabademo.databinding.DetailApplicationTabBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -27,7 +22,7 @@ class BorrowerApplicationFragment : Fragment() {
 
     private lateinit var horizontalRecyclerView: RecyclerView
     private lateinit var realStateRecyclerView: RecyclerView
-    private lateinit var govtQuestionsRecyclerView: RecyclerView
+    private lateinit var questionsRecyclerView: RecyclerView
 
     private val detailViewModel: DetailViewModel by activityViewModels()
 
@@ -37,6 +32,7 @@ class BorrowerApplicationFragment : Fragment() {
 
     private var borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList)
     private var realStateAdapter  = RealStateAdapter(realStateList)
+    private var questionAdapter  = QuestionAdapter(questionList)
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -51,7 +47,7 @@ class BorrowerApplicationFragment : Fragment() {
 
         horizontalRecyclerView = root.findViewById(R.id.horizontalRecycleView)
         realStateRecyclerView = root.findViewById(R.id.realStateHorizontalRecyclerView)
-        govtQuestionsRecyclerView = root.findViewById(R.id.govtQuestionHorizontalRecyclerView)
+        questionsRecyclerView = root.findViewById(R.id.govtQuestionHorizontalRecyclerView)
 
 
         val linearLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
@@ -72,6 +68,16 @@ class BorrowerApplicationFragment : Fragment() {
             this.adapter = realStateAdapter
         }
         realStateAdapter.notifyDataSetChanged()
+
+
+        val questionLayoutManger = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
+
+        questionsRecyclerView.apply {
+            this.layoutManager =questionLayoutManger
+            //this.setHasFixedSize(true)
+            this.adapter = questionAdapter
+        }
+        questionAdapter.notifyDataSetChanged()
 
 
        detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, { appTabModel->
@@ -126,7 +132,7 @@ class BorrowerApplicationFragment : Fragment() {
                     bAppData.borrowerQuestionsModel?.let {
                         questionList.clear()
                         questionList = it
-                        setUpGovtQuestionsRecycleView(questionList)
+                        //setUpGovtQuestionsRecycleView(questionList)
                     }
                 }
 
@@ -137,8 +143,6 @@ class BorrowerApplicationFragment : Fragment() {
 
                     }
                 }
-
-
 
 
                 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,6 +157,11 @@ class BorrowerApplicationFragment : Fragment() {
                 realStateAdapter  = RealStateAdapter(realStateList)
                 realStateRecyclerView.adapter = realStateAdapter
                 realStateAdapter.notifyDataSetChanged()
+
+                questionList.add(BorrowerQuestionsModel(null,null, true))
+                questionAdapter  = QuestionAdapter(questionList)
+                questionsRecyclerView.adapter = questionAdapter
+                questionAdapter.notifyDataSetChanged()
 
             }
            else
@@ -184,7 +193,7 @@ class BorrowerApplicationFragment : Fragment() {
             override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
         })
 
-        govtQuestionsRecyclerView.addOnItemTouchListener(object : OnItemTouchListener {
+        questionsRecyclerView.addOnItemTouchListener(object : OnItemTouchListener {
             override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
                 when (e.action) {
                     MotionEvent.ACTION_MOVE -> rv.parent.requestDisallowInterceptTouchEvent(true)
@@ -201,6 +210,7 @@ class BorrowerApplicationFragment : Fragment() {
 
     }
 
+    /*
     private fun setUpGovtQuestionsRecycleView(passedList: ArrayList<BorrowerQuestionsModel>) {
         val simpleItemsList: ArrayList<GovtQuestionsHorizontal> = ArrayList()
         for (eachItem in passedList) {
@@ -249,6 +259,8 @@ class BorrowerApplicationFragment : Fragment() {
 
         })
     }
+
+     */
 
 }
 

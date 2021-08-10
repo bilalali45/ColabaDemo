@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class GovtQuestionAdapter internal constructor(private var questionsModel: ArrayList<BorrowerQuestionsModel>) :
-    RecyclerView.Adapter<GovtQuestionAdapter.BaseViewHolder>(){
+class QuestionAdapter internal constructor(private var questionsModel: ArrayList<BorrowerQuestionsModel>) :
+    RecyclerView.Adapter<QuestionAdapter.BaseViewHolder>(){
 
     abstract class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) { abstract fun bind(item: BorrowerQuestionsModel) }
 
