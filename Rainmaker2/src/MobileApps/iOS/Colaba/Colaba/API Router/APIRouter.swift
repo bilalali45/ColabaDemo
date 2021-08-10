@@ -8,6 +8,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import NVActivityIndicatorView
 
 typealias completionBlock = (StatusCodes,JSON,String) -> ()
 typealias fileCompletionBlock = (StatusCodes, Data?, String) -> ()
@@ -239,9 +240,15 @@ class APIRouter: NSObject {
         
         request = AF.request(BASEURL + endPoint, method: .get, parameters: nil, encoding: URLEncoding.queryString, headers:headers)
         request.downloadProgress(closure: { progress in
+            let progressPercentage = progress.fractionCompleted * 100
+            print("PROGRESS PERCENTAGE ISSSSSS \(progressPercentage)")
             
+            let activityData = ActivityData(size: CGSize(width: 50, height: 50), message: String(format: "%.0f%%", progressPercentage), messageFont: Theme.getRubikMediumFont(size: 15), messageSpacing: nil, type: .circleStrokeSpin, color: UIColor.init(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.40), padding: nil, displayTimeThreshold: nil, minimumDisplayTime: 0, backgroundColor: .clear, textColor: Theme.getAppGreyColor())
+            NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+            NVActivityIndicatorPresenter.sharedInstance.setMessage(String(format: "%.0f%%", progressPercentage))
+                
         }).responseData { response in
-            
+            NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
             if response.response?.statusCode == 401{
                 completion?(.authError,nil,"UnAuthorized User")
                 return

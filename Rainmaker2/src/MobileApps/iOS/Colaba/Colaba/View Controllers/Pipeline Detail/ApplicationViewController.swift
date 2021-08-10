@@ -676,12 +676,12 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
         
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if (collectionView == borrowerCollectionView){
-            let vc = Utility.getBorrowerInformationVC()
-            self.pushToVC(vc: vc)
-        }
-    }
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        if (collectionView == borrowerCollectionView){
+//            let vc = Utility.getBorrowerInformationVC()
+//            self.pushToVC(vc: vc)
+//        }
+//    }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.lastContentOffset = scrollView.contentOffset.y
