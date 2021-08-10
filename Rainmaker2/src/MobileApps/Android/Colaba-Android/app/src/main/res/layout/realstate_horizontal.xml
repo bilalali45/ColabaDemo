@@ -4,9 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="292dp"
     android:layout_height="97dp"
-    android:layout_marginEnd="10dp"
-    android:background="@drawable/search_view_holder_style"
-    >
+    android:paddingStart="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/data_cell"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/search_view_holder_style">
 
     <ImageView
         android:id="@+id/imageView32"
@@ -17,7 +26,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_location_svg" />
-
 
     <TextView
         android:id="@+id/propertyAddress"
@@ -57,3 +65,4 @@
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
+</androidx.constraintlayout.widget.ConstraintLayout>

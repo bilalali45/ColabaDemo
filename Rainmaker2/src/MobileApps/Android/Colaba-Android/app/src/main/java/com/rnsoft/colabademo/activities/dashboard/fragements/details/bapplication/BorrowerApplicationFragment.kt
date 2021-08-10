@@ -193,15 +193,13 @@ class BorrowerApplicationFragment : Fragment() {
             }
 
             override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+
             override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
         })
 
         return root
 
     }
-
-
-
 
     private fun setUpGovtQuestionsRecycleView(passedList: ArrayList<BorrowerQuestionsModel>) {
         val simpleItemsList: ArrayList<GovtQuestionsHorizontal> = ArrayList()
@@ -239,7 +237,7 @@ class BorrowerApplicationFragment : Fragment() {
             override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
                 //return the views on which you want to bind this event
                 return if (viewHolder is GovtQuestionsHorizontal.ViewHolder) {
-                    Log.e("viewHolder", viewHolder.toString())
+                    //Log.e("viewHolder", viewHolder.toString())
                     viewHolder.itemView
 
                 } else
