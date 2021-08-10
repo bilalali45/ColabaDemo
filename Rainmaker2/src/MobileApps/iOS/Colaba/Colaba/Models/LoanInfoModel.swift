@@ -78,13 +78,7 @@ class BorrowerModel: NSObject{
         firstName = json["firstName"].stringValue
         lastName = json["lastName"].stringValue
         borrowerId = json["borrowerId"].intValue
-        
-        if (json["owntypeId"].exists()){
-            ownTypeId = json["owntypeId"].intValue
-        }
-        else{
-            ownTypeId = json["ownTypeId"].intValue
-        }
+        ownTypeId = json["ownTypeId"].intValue
         
     }
     

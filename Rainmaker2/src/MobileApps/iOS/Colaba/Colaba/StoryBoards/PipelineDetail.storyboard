@@ -271,7 +271,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Primary Borrower" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xAm-0p-AU5">
-                                        <rect key="frame" x="37.5" y="21.5" width="300" height="21"/>
+                                        <rect key="frame" x="37.5" y="21.5" width="300" height="21.5"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
@@ -588,12 +588,57 @@
                                                     <constraint firstItem="wh0-Ip-Hd1" firstAttribute="leading" secondItem="Fo3-Kt-UTd" secondAttribute="leading" constant="20" id="xzH-37-Ixh"/>
                                                 </constraints>
                                             </view>
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ke1-AH-zOE">
+                                                <rect key="frame" x="0.0" y="535" width="375" height="255"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="255" id="X8s-kp-49j"/>
+                                                </constraints>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="uq2-fN-Er5" id="1mk-25-HJx"/>
+                                                    <outlet property="delegate" destination="uq2-fN-Er5" id="eYr-pj-rWy"/>
+                                                </connections>
+                                            </tableView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iyq-RQ-zM9">
+                                                <rect key="frame" x="20" y="791" width="335" height="50"/>
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="mgy-Bs-Saf">
+                                                        <rect key="frame" x="73" y="0.0" width="189" height="50"/>
+                                                        <subviews>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Add-Address-Button" translatesAutoresizingMaskIntoConstraints="NO" id="M8u-mJ-thw">
+                                                                <rect key="frame" x="0.0" y="0.0" width="28" height="50"/>
+                                                            </imageView>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Previous Residence" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mvB-b7-IRH">
+                                                                <rect key="frame" x="38" y="0.0" width="151" height="50"/>
+                                                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
+                                                                <color key="textColor" name="ButtonBlueColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="50" id="4G0-8Z-qid"/>
+                                                        </constraints>
+                                                    </stackView>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="mgy-Bs-Saf" firstAttribute="centerY" secondItem="iyq-RQ-zM9" secondAttribute="centerY" id="Diz-yu-Gll"/>
+                                                    <constraint firstAttribute="height" constant="50" id="Jce-LT-F7g"/>
+                                                    <constraint firstItem="mgy-Bs-Saf" firstAttribute="centerX" secondItem="iyq-RQ-zM9" secondAttribute="centerX" id="LSD-6I-kG5"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                         <constraints>
+                                            <constraint firstItem="Ke1-AH-zOE" firstAttribute="leading" secondItem="OKO-hG-2Wo" secondAttribute="leading" id="02C-1D-Kju"/>
+                                            <constraint firstItem="iyq-RQ-zM9" firstAttribute="leading" secondItem="OKO-hG-2Wo" secondAttribute="leading" constant="20" id="Mgi-to-37b"/>
+                                            <constraint firstItem="iyq-RQ-zM9" firstAttribute="top" secondItem="Ke1-AH-zOE" secondAttribute="bottom" constant="1" id="UVD-13-3Lv"/>
+                                            <constraint firstItem="Ke1-AH-zOE" firstAttribute="top" secondItem="Fo3-Kt-UTd" secondAttribute="bottom" constant="35" id="Xmk-x4-Z1G"/>
+                                            <constraint firstAttribute="trailing" secondItem="iyq-RQ-zM9" secondAttribute="trailing" constant="20" id="Xwg-nY-aHj"/>
                                             <constraint firstItem="Fo3-Kt-UTd" firstAttribute="leading" secondItem="OKO-hG-2Wo" secondAttribute="leading" id="avh-2z-n9a"/>
                                             <constraint firstAttribute="trailing" secondItem="Fo3-Kt-UTd" secondAttribute="trailing" id="hcb-o6-Tov"/>
                                             <constraint firstItem="Fo3-Kt-UTd" firstAttribute="top" secondItem="OKO-hG-2Wo" secondAttribute="top" id="i1R-sI-Qjh"/>
+                                            <constraint firstAttribute="trailing" secondItem="Ke1-AH-zOE" secondAttribute="trailing" id="jOm-FM-xIX"/>
                                             <constraint firstAttribute="height" constant="900" id="tf7-YS-Imi"/>
                                         </constraints>
                                     </view>
@@ -624,6 +669,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addAddressView" destination="iyq-RQ-zM9" id="XCY-E8-yYk"/>
                         <outlet property="borrowerInfoView" destination="Fo3-Kt-UTd" id="lwm-6k-kg5"/>
                         <outlet property="btnBack" destination="LyI-8H-uxl" id="lWp-rE-dNO"/>
                         <outlet property="lblBorrowerType" destination="xAm-0p-AU5" id="8sv-Jx-XR5"/>
@@ -631,6 +677,8 @@
                         <outlet property="mainView" destination="OKO-hG-2Wo" id="yhn-KH-aAP"/>
                         <outlet property="mainViewHeightConstraint" destination="tf7-YS-Imi" id="ZrT-ll-MUx"/>
                         <outlet property="seperatorView" destination="hbA-ZG-a62" id="lMX-rT-quA"/>
+                        <outlet property="tblViewAddress" destination="Ke1-AH-zOE" id="4Ol-Ry-CQd"/>
+                        <outlet property="tblViewHeightConstraint" destination="X8s-kp-49j" id="FgC-vf-Aem"/>
                         <outlet property="txtfieldCellNumber" destination="Klh-Ra-23l" id="Gjb-aK-biJ"/>
                         <outlet property="txtfieldEmail" destination="76M-f5-Ucv" id="ZPk-R1-qLq"/>
                         <outlet property="txtfieldExtensionNumber" destination="io0-sC-XPt" id="ae4-ZZ-bR2"/>
@@ -674,7 +722,7 @@
                                                     </label>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PKe-jR-bfj">
                                                         <rect key="frame" x="0.0" y="56" width="375" height="80"/>
-                                                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                                                        <color key="backgroundColor" name="TopTabsColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="80" id="gC0-81-sW6"/>
                                                         </constraints>
@@ -975,7 +1023,7 @@
                                                     </label>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="rF2-Rf-h6z">
                                                         <rect key="frame" x="0.0" y="20" width="375" height="107"/>
-                                                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                                                        <color key="backgroundColor" name="TopTabsColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="107" id="v7N-oA-rff"/>
                                                         </constraints>
@@ -1005,7 +1053,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pXR-FG-myH">
-                                                <rect key="frame" x="0.0" y="882" width="375" height="260"/>
+                                                <rect key="frame" x="0.0" y="882" width="375" height="318"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Application-Tab-Govt-Questions" translatesAutoresizingMaskIntoConstraints="NO" id="BSh-Fk-Et1">
                                                         <rect key="frame" x="20" y="0.0" width="20" height="20"/>
@@ -1018,7 +1066,7 @@
                                                     </label>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="t9V-sb-78k">
                                                         <rect key="frame" x="0.0" y="20" width="375" height="227"/>
-                                                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                                                        <color key="backgroundColor" name="TopTabsColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="227" id="gpt-IM-nWf"/>
                                                         </constraints>
@@ -1038,7 +1086,7 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstItem="EeK-YG-ehV" firstAttribute="centerY" secondItem="BSh-Fk-Et1" secondAttribute="centerY" id="8k3-7s-bYQ"/>
-                                                    <constraint firstAttribute="height" constant="260" id="Af1-Ds-v4q"/>
+                                                    <constraint firstAttribute="height" constant="318" id="Af1-Ds-v4q"/>
                                                     <constraint firstItem="BSh-Fk-Et1" firstAttribute="top" secondItem="pXR-FG-myH" secondAttribute="top" id="McR-nc-NMR"/>
                                                     <constraint firstItem="BSh-Fk-Et1" firstAttribute="leading" secondItem="pXR-FG-myH" secondAttribute="leading" constant="20" id="Mfp-sV-1Z1"/>
                                                     <constraint firstItem="t9V-sb-78k" firstAttribute="top" secondItem="BSh-Fk-Et1" secondAttribute="bottom" id="bx4-BN-01b"/>
@@ -1082,7 +1130,7 @@
                             </scrollView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="dLc-Jo-eHW"/>
-                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                        <color key="backgroundColor" name="TopTabsColor"/>
                         <constraints>
                             <constraint firstItem="dLc-Jo-eHW" firstAttribute="bottom" secondItem="mCc-94-uSm" secondAttribute="bottom" id="AXO-wD-7gO"/>
                             <constraint firstItem="mCc-94-uSm" firstAttribute="top" secondItem="dLc-Jo-eHW" secondAttribute="top" id="JIh-8D-U3h"/>
@@ -1569,6 +1617,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Add-Address-Button" width="28" height="28"/>
         <image name="AddPersonIcon" width="28" height="28"/>
         <image name="Application-Tab-Assets" width="20.676000595092773" height="20"/>
         <image name="Application-Tab-Borrower-Info" width="20" height="20"/>

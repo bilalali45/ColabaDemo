@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Rubik-Medium.ttf">
+            <string>Rubik-Medium</string>
+        </array>
+        <array key="Rubik-Regular.ttf">
+            <string>Rubik-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="BorrowerAddressInfoTableViewCell" rowHeight="151" id="KGk-i7-Jjw" customClass="BorrowerAddressInfoTableViewCell" customModule="Colaba" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="441" height="152"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="441" height="152"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k7c-W5-NQR">
+                        <rect key="frame" x="20" y="1" width="401" height="142"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Address-MapIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Hbv-fB-5R2">
+                        <rect key="frame" x="36" y="17" width="14.5" height="20"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Home Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4P0-yx-r6o">
+                        <rect key="frame" x="55.5" y="19" width="143" height="16"/>
+                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
+                        <color key="textColor" name="AppBlackColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vC0-E4-iMQ">
+                        <rect key="frame" x="35" y="51" width="371" height="44.5"/>
+                        <string key="text">5919 Trussville Crossings Parkways, ZV Street,
+Birmingham AL 35235</string>
+                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
+                        <color key="textColor" name="AppBlackColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From Dec 2020" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="avU-mN-P2t">
+                        <rect key="frame" x="35" y="110.5" width="93" height="15.5"/>
+                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
+                        <color key="textColor" name="AppGreyColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rental $6,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j7t-zW-HQX">
+                        <rect key="frame" x="320" y="110.5" width="86" height="15.5"/>
+                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
+                        <color key="textColor" name="AppGreyColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="k7c-W5-NQR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="1" id="03k-fH-Rcs"/>
+                    <constraint firstItem="4P0-yx-r6o" firstAttribute="leading" secondItem="Hbv-fB-5R2" secondAttribute="trailing" constant="5" id="0rM-St-5h4"/>
+                    <constraint firstAttribute="bottom" secondItem="avU-mN-P2t" secondAttribute="bottom" constant="26" id="4XL-dx-Zbh"/>
+                    <constraint firstItem="4P0-yx-r6o" firstAttribute="centerY" secondItem="Hbv-fB-5R2" secondAttribute="centerY" id="6AD-OI-dCk"/>
+                    <constraint firstAttribute="bottom" secondItem="k7c-W5-NQR" secondAttribute="bottom" constant="9" id="BAU-t9-sl4"/>
+                    <constraint firstItem="vC0-E4-iMQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="35" id="ODt-KP-aah"/>
+                    <constraint firstItem="j7t-zW-HQX" firstAttribute="top" secondItem="vC0-E4-iMQ" secondAttribute="bottom" constant="15" id="UZT-Zx-U3p"/>
+                    <constraint firstAttribute="bottom" secondItem="j7t-zW-HQX" secondAttribute="bottom" constant="26" id="ZrM-0i-NmE"/>
+                    <constraint firstItem="Hbv-fB-5R2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="cEk-c0-wkW"/>
+                    <constraint firstItem="k7c-W5-NQR" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="ggF-t5-Bpd"/>
+                    <constraint firstItem="avU-mN-P2t" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="35" id="hKR-Uu-EQE"/>
+                    <constraint firstItem="Hbv-fB-5R2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="36" id="pqW-Rd-Rkh"/>
+                    <constraint firstItem="avU-mN-P2t" firstAttribute="top" secondItem="vC0-E4-iMQ" secondAttribute="bottom" constant="15" id="qHz-Kb-6HH"/>
+                    <constraint firstItem="vC0-E4-iMQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="51" id="qWf-wA-oU3"/>
+                    <constraint firstAttribute="trailing" secondItem="vC0-E4-iMQ" secondAttribute="trailing" constant="35" id="tpB-Z9-RFn"/>
+                    <constraint firstAttribute="trailing" secondItem="k7c-W5-NQR" secondAttribute="trailing" constant="20" id="v2W-KM-oxv"/>
+                    <constraint firstAttribute="trailing" secondItem="j7t-zW-HQX" secondAttribute="trailing" constant="35" id="xr5-l4-uHQ"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="addressIcon" destination="Hbv-fB-5R2" id="FCn-TZ-6E6"/>
+                <outlet property="lblAddress" destination="vC0-E4-iMQ" id="D8C-0B-C23"/>
+                <outlet property="lblAddressTopConstraint" destination="qWf-wA-oU3" id="Gpb-HN-Iia"/>
+                <outlet property="lblDate" destination="avU-mN-P2t" id="OsR-fA-1UR"/>
+                <outlet property="lblHeading" destination="4P0-yx-r6o" id="2c2-Of-qqb"/>
+                <outlet property="lblRent" destination="j7t-zW-HQX" id="4tz-H2-qUL"/>
+                <outlet property="mainView" destination="k7c-W5-NQR" id="7Ji-uQ-9Zq"/>
+            </connections>
+            <point key="canvasLocation" x="74.637681159420296" y="147.32142857142856"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Address-MapIcon" width="14.737000465393066" height="20"/>
+        <namedColor name="AppBlackColor">
+            <color red="0.30588235294117649" green="0.30588235294117649" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="AppGreyColor">
+            <color red="0.49411764705882355" green="0.50980392156862742" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

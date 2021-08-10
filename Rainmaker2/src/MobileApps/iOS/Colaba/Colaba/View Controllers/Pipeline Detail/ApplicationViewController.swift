@@ -38,11 +38,17 @@ class ApplicationViewController: BaseViewController {
     var loanApplicationId = 0
     var loanApplicationDetail = LoanApplicationModel()
     let loadingPlaceholderView = LoadingPlaceholderView()
+    var lastContentOffset: CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         getLoanApplicationDetail()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowNavigationBar), object: nil, userInfo: nil)
     }
     
     //MARK:- Methods and Actions
@@ -68,7 +74,7 @@ class ApplicationViewController: BaseViewController {
         monthlyIncomeView.layer.borderWidth = 1
         monthlyIncomeView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         monthlyIncomeView.dropShadowToCollectionViewCell()
-        
+        mainScrollView.delegate = self
     }
     
     func setApplicationData(){
@@ -152,7 +158,7 @@ class ApplicationViewController: BaseViewController {
     
 }
 
-extension ApplicationViewController: UICollectionViewDataSource, UICollectionViewDelegate{
+extension ApplicationViewController: UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -525,10 +531,169 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                 cell.mainView.layer.cornerRadius = 6
                 cell.mainView.layer.borderWidth = 1
                 cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+                
+                if (loanApplicationDetail.borrowersInformation.count == 1){
+                    cell.mainViewHeightConstraint.constant = 123
+                    
+                    cell.lblUser1.isHidden = false
+                    cell.lblAns1.isHidden = false
+                    let borrower1 = loanApplicationDetail.borrowersInformation[0]
+                    cell.lblUser1.text = "\(borrower1.firstName) - "
+                    var userDetail = ""
+                    let racesNames = borrower1.races.map{$0.raceNameAndDetail}
+                    let ethnicityNames = borrower1.ethnicities.map{$0.ethnicityNameAndDetail}
+                    userDetail = "\(racesNames.joined(separator: "/")) \(racesNames.count == 0 ? "" : "-") \(ethnicityNames.joined(separator: "/")) \(ethnicityNames.count == 0 ? "" : "-") \(borrower1.genderName)"
+                    cell.lblAns1.text = userDetail
+                    
+                    cell.lblUser2.isHidden = true
+                    cell.lblAns2.isHidden = true
+                    
+                    cell.lblUser3.isHidden = true
+                    cell.lblAns3.isHidden = true
+                    
+                    cell.lblUser4.isHidden = true
+                    cell.lblAns4.isHidden = true
+                    
+                }
+                else if (loanApplicationDetail.borrowersInformation.count == 2){
+                    cell.mainViewHeightConstraint.constant = 147
+                    
+                    cell.lblUser1.isHidden = false
+                    cell.lblAns1.isHidden = false
+                    let borrower1 = loanApplicationDetail.borrowersInformation[0]
+                    cell.lblUser1.text = "\(borrower1.firstName) - "
+                    var userDetail = ""
+                    let racesNames = borrower1.races.map{$0.raceNameAndDetail}
+                    let ethnicityNames = borrower1.ethnicities.map{$0.ethnicityNameAndDetail}
+                    userDetail = "\(racesNames.joined(separator: "/")) \(racesNames.count == 0 ? "" : "-") \(ethnicityNames.joined(separator: "/")) \(ethnicityNames.count == 0 ? "" : "-") \(borrower1.genderName)"
+                    cell.lblAns1.text = userDetail
+                    
+                    cell.lblUser2.isHidden = false
+                    cell.lblAns2.isHidden = false
+                    let borrower2 = loanApplicationDetail.borrowersInformation[1]
+                    cell.lblUser2.text = "\(borrower2.firstName) - "
+                    var userDetail2 = ""
+                    let racesNames2 = borrower2.races.map{$0.raceNameAndDetail}
+                    let ethnicityNames2 = borrower2.ethnicities.map{$0.ethnicityNameAndDetail}
+                    userDetail2 = "\(racesNames2.joined(separator: "/")) \(racesNames2.count == 0 ? "" : "-") \(ethnicityNames2.joined(separator: "/")) \(ethnicityNames2.count == 0 ? "" : "-") \(borrower2.genderName)"
+                    cell.lblAns2.text = userDetail2
+                    
+                    cell.lblUser3.isHidden = true
+                    cell.lblAns3.isHidden = true
+                    
+                    cell.lblUser4.isHidden = true
+                    cell.lblAns4.isHidden = true
+                    
+                }
+                else if (loanApplicationDetail.borrowersInformation.count == 3){
+                    cell.mainViewHeightConstraint.constant = 171
+                    
+                    cell.lblUser1.isHidden = false
+                    cell.lblAns1.isHidden = false
+                    let borrower1 = loanApplicationDetail.borrowersInformation[0]
+                    cell.lblUser1.text = "\(borrower1.firstName) - "
+                    var userDetail = ""
+                    let racesNames = borrower1.races.map{$0.raceNameAndDetail}
+                    let ethnicityNames = borrower1.ethnicities.map{$0.ethnicityNameAndDetail}
+                    userDetail = "\(racesNames.joined(separator: "/")) \(racesNames.count == 0 ? "" : "-") \(ethnicityNames.joined(separator: "/")) \(ethnicityNames.count == 0 ? "" : "-") \(borrower1.genderName)"
+                    cell.lblAns1.text = userDetail
+                    
+                    cell.lblUser2.isHidden = false
+                    cell.lblAns2.isHidden = false
+                    let borrower2 = loanApplicationDetail.borrowersInformation[1]
+                    cell.lblUser2.text = "\(borrower2.firstName) - "
+                    var userDetail2 = ""
+                    let racesNames2 = borrower2.races.map{$0.raceNameAndDetail}
+                    let ethnicityNames2 = borrower2.ethnicities.map{$0.ethnicityNameAndDetail}
+                    userDetail2 = "\(racesNames2.joined(separator: "/")) \(racesNames2.count == 0 ? "" : "-") \(ethnicityNames2.joined(separator: "/")) \(ethnicityNames2.count == 0 ? "" : "-") \(borrower2.genderName)"
+                    cell.lblAns2.text = userDetail2
+                    
+                    cell.lblUser3.isHidden = false
+                    cell.lblAns3.isHidden = false
+                    let borrower3 = loanApplicationDetail.borrowersInformation[2]
+                    cell.lblUser3.text = "\(borrower3.firstName) - "
+                    var userDetail3 = ""
+                    let racesNames3 = borrower3.races.map{$0.raceNameAndDetail}
+                    let ethnicityNames3 = borrower3.ethnicities.map{$0.ethnicityNameAndDetail}
+                    userDetail3 = "\(racesNames3.joined(separator: "/")) \(racesNames3.count == 0 ? "" : "-") \(ethnicityNames3.joined(separator: "/")) \(ethnicityNames3.count == 0 ? "" : "-") \(borrower3.genderName)"
+                    cell.lblAns3.text = userDetail3
+                    
+                    cell.lblUser4.isHidden = true
+                    cell.lblAns4.isHidden = true
+                    
+                }
+                else if (loanApplicationDetail.borrowersInformation.count == 4){
+                    cell.mainViewHeightConstraint.constant = 195
+                    
+                    cell.lblUser1.isHidden = false
+                    cell.lblAns1.isHidden = false
+                    let borrower1 = loanApplicationDetail.borrowersInformation[0]
+                    cell.lblUser1.text = "\(borrower1.firstName) - "
+                    var userDetail = ""
+                    let racesNames = borrower1.races.map{$0.raceNameAndDetail}
+                    let ethnicityNames = borrower1.ethnicities.map{$0.ethnicityNameAndDetail}
+                    userDetail = "\(racesNames.joined(separator: "/")) \(racesNames.count == 0 ? "" : "-") \(ethnicityNames.joined(separator: "/")) \(ethnicityNames.count == 0 ? "" : "-") \(borrower1.genderName)"
+                    cell.lblAns1.text = userDetail
+                    
+                    cell.lblUser2.isHidden = false
+                    cell.lblAns2.isHidden = false
+                    let borrower2 = loanApplicationDetail.borrowersInformation[1]
+                    cell.lblUser2.text = "\(borrower2.firstName) - "
+                    var userDetail2 = ""
+                    let racesNames2 = borrower2.races.map{$0.raceNameAndDetail}
+                    let ethnicityNames2 = borrower2.ethnicities.map{$0.ethnicityNameAndDetail}
+                    userDetail2 = "\(racesNames2.joined(separator: "/")) \(racesNames2.count == 0 ? "" : "-") \(ethnicityNames2.joined(separator: "/")) \(ethnicityNames2.count == 0 ? "" : "-") \(borrower2.genderName)"
+                    cell.lblAns2.text = userDetail2
+                    
+                    cell.lblUser3.isHidden = false
+                    cell.lblAns3.isHidden = false
+                    let borrower3 = loanApplicationDetail.borrowersInformation[2]
+                    cell.lblUser3.text = "\(borrower3.firstName) - "
+                    var userDetail3 = ""
+                    let racesNames3 = borrower3.races.map{$0.raceNameAndDetail}
+                    let ethnicityNames3 = borrower3.ethnicities.map{$0.ethnicityNameAndDetail}
+                    userDetail3 = "\(racesNames3.joined(separator: "/")) \(racesNames3.count == 0 ? "" : "-") \(ethnicityNames3.joined(separator: "/")) \(ethnicityNames3.count == 0 ? "" : "-") \(borrower3.genderName)"
+                    cell.lblAns3.text = userDetail3
+                    
+                    cell.lblUser4.isHidden = false
+                    cell.lblAns4.isHidden = false
+                    let borrower4 = loanApplicationDetail.borrowersInformation[3]
+                    cell.lblUser4.text = "\(borrower4.firstName) - "
+                    var userDetail4 = ""
+                    let racesNames4 = borrower4.races.map{$0.raceNameAndDetail}
+                    let ethnicityNames4 = borrower4.ethnicities.map{$0.ethnicityNameAndDetail}
+                    userDetail4 = "\(racesNames4.joined(separator: "/")) \(racesNames4.count == 0 ? "" : "-") \(ethnicityNames4.joined(separator: "/")) \(ethnicityNames4.count == 0 ? "" : "-") \(borrower4.genderName)"
+                    cell.lblAns4.text = userDetail4
+                    
+                }
+                
+                cell.mainView.dropShadowToCollectionViewCell(shadowColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor, shadowRadius: 2)
+                cell.updateConstraintsIfNeeded()
+                cell.layoutSubviews()
                 return cell
             }
         }
         
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if (collectionView == borrowerCollectionView){
+            let vc = Utility.getBorrowerInformationVC()
+            self.pushToVC(vc: vc)
+        }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.lastContentOffset = scrollView.contentOffset.y
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if self.lastContentOffset < scrollView.contentOffset.y {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationHidesNavigationBar), object: nil, userInfo: nil)
+        } else if self.lastContentOffset > scrollView.contentOffset.y {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowNavigationBar), object: nil, userInfo: nil)
+        } else {
+            // didn't move
+        }
+    }
 }

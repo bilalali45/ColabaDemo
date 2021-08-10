@@ -19,6 +19,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.rnsoft.colabademo.activities.dashboard.DocViewerActivity
 import com.rnsoft.colabademo.databinding.DetailListLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -98,6 +99,12 @@ class DocumentListFragment : Fragment(), AdapterClickListener {
             }
         }
 
+        detailViewModel.fileName.observe(viewLifecycleOwner, {
+           if(!it.isNullOrBlank() && !it.isNullOrEmpty()){
+               redirectToPdfFragment(it)
+           }
+        })
+
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -122,6 +129,14 @@ class DocumentListFragment : Fragment(), AdapterClickListener {
 
     override fun getCardIndex(position: Int) {
 
+    }
+
+    private fun redirectToPdfFragment(pdfFileName:String){
+        val pdfViewFragment = PdfViewFragment()
+        val bundle = Bundle()
+        bundle.putString(AppConstant.pdfFileName, pdfFileName)
+        pdfViewFragment.arguments = bundle
+        findNavController().navigate(R.id.pdf_view_fragment_id, pdfViewFragment.arguments)
     }
 
 }

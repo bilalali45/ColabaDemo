@@ -28,5 +28,7 @@ let kIsAssignToMe = "IsAssignToMe"
 let kNotificationAssignToMeSwitchChanged = "NotificationAssignToMeSwitchChanged"
 let kNotificationBtnFiltersTapped = "NotificationBtnFiltersTapped"
 let kIsWalkthroughShowed = "isWalkthroughShowed"
+let kNotificationHidesNavigationBar = "notificationHidesNavigationBar"
+let kNotificationShowNavigationBar = "notificationShowNavigationBar"
 
 var sortingFilter = 1
