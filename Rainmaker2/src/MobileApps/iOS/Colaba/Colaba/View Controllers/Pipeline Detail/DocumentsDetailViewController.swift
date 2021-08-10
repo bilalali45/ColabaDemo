@@ -34,14 +34,11 @@ class DocumentsDetailViewController: UIViewController {
     //MARK:- Methods and Actions
     func showDocumentFile(fileName: String, fileId: String){
         
-        Utility.showOrHideLoader(shouldShow: true)
-        
         let extraData = "id=\(selectedDocument.id)&requestId=\(selectedDocument.requestId)&docId=\(selectedDocument.docId)&fileId=\(fileId)"
         
         APIRouter.sharedInstance.downloadFileFromRequest(type: .viewLoanDocument, method: .get, params: nil, extraData: extraData) { status, fileData, message in
             
             DispatchQueue.main.async {
-                Utility.showOrHideLoader(shouldShow: false)
                 
                 if (status == .success){
                     if let downloadedFileData = fileData{

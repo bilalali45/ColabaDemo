@@ -42,10 +42,10 @@ extension UIView{
     }
     
     func dropShadowToCollectionViewCell(shadowColor: CGColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor,
-                                        shadowRadius: CGFloat = 6.0){
+                                        shadowRadius: CGFloat = 6.0, shadowOpacity: Float = 1){
         self.layer.shadowColor = shadowColor
         self.layer.shadowOffset = .zero
-        self.layer.shadowOpacity = 1
+        self.layer.shadowOpacity = shadowOpacity
         self.layer.shadowRadius = shadowRadius
     }
     

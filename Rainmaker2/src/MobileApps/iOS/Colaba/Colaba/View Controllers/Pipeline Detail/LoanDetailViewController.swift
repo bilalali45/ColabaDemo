@@ -132,21 +132,29 @@ class LoanDetailViewController: BaseViewController {
     }
     
     @objc func hidesNavigationBar(){
-        self.navigationViewTopConstraint.constant = -84
-        self.navigationView.isHidden = true
-        self.navigationSeperator.isHidden = true
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
+        
+        DispatchQueue.main.async {
+            self.navigationViewTopConstraint.constant = -84
+            self.navigationView.isHidden = true
+            self.navigationSeperator.isHidden = true
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
         }
+        
     }
     
     @objc func showNavigationBar(){
-        self.navigationViewTopConstraint.constant = 0
-        self.navigationView.isHidden = false
-        self.navigationSeperator.isHidden = false
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
+        
+        DispatchQueue.main.async {
+            self.navigationViewTopConstraint.constant = 0
+            self.navigationView.isHidden = false
+            self.navigationSeperator.isHidden = false
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
         }
+        
     }
     
     private func createEmailUrl(to: String, subject: String, body: String) -> URL? {
