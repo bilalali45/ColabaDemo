@@ -3,49 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="70dp">
-<!--
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/last_cell"
-        android:layout_width="190dp"
-        android:layout_height="70dp"
-        android:translationZ="2dp"
-        android:elevation="2dp"
-        android:background="@drawable/add_more_borrower_border"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/addMoreTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/rubik_regular"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:text="Add More Borrowers"
-            android:textColor="@color/colaba_primary_color"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/addMoreImageView"
-            app:layout_constraintStart_toEndOf="@+id/addMoreImageView"
-            app:layout_constraintTop_toTopOf="@+id/addMoreImageView" />
-
-        <ImageView
-            android:id="@+id/addMoreImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_plus_inside_circle" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    -->
+    android:layout_height="70dp"
+    android:paddingStart="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/data_cell"
@@ -57,8 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/search_view_holder_style">
-
-
 
         <TextView
             android:id="@+id/main_borrower_test"

@@ -23,6 +23,8 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
     private val _borrowerApplicationTabModel : MutableLiveData<BorrowerApplicationTabModel> =   MutableLiveData()
     val borrowerApplicationTabModel: LiveData<BorrowerApplicationTabModel> get() = _borrowerApplicationTabModel
 
+    //private val _fileName : MutableLiveData<String> =   MutableLiveData()
+    //val fileName: LiveData<String> get() = _fileName
 
 
     suspend fun getLoanInfo(token:String, loanApplicationId:Int) {
@@ -68,15 +70,20 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
         }
     }
 
-    fun downloadFile(token:String,  id:String, requestId:String, docId:String, fileId:String) {
+    fun downloadFile(token:String,  id:String, requestId:String, docId:String, fileId:String , fileName:String) {
         viewModelScope.launch {
-            val responseResult = detailRepo.downloadFile(
+            val hasFileSaved = detailRepo.downloadFile(
                 token = token,
                 id = id,
                 requestId = requestId,
                 docId = docId,
-                fileId = fileId
+                fileId = fileId,
+                fileName = fileName
             )
+            if(!hasFileSaved)
+                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+            else
+                EventBus.getDefault().post(FileDownloadEvent(fileName))
         }
     }
 

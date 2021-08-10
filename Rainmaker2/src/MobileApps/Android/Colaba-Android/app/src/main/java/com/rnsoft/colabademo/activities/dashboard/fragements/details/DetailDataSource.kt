@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.util.Log
 import okhttp3.ResponseBody
 import retrofit2.Response
+import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import javax.inject.Inject
@@ -61,7 +62,17 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
         try {
             val newToken = "Bearer $token"
             val result = serverApi.downloadFile(Authorization = newToken, id = id, requestId = requestId, docId = docId, fileId = fileId)
-            Log.e("downloadFile-", result.toString())
+            Log.e("result.body()-", result.body().toString())
+            Log.e("result.raw()-", result.raw().toString())
+            Log.e("result.code()-", result.code().toString())
+            Log.e("result.errorBody()", result.errorBody().toString())
+            Log.e("result.charStream ", result.errorBody()?.charStream().toString())
+            Log.e("result.source() ",  result.errorBody()?.source().toString())
+
+            val isSame = result is Response<ResponseBody>
+            val isWhat = result as Response<File>
+
+
             return result
         } catch (e: Throwable) {
             /*

@@ -49,7 +49,7 @@ object AppSetting {
         return greetingString
     }
 
-    fun getDocumentUploadedDate(fileUploaded: String, docName: String): String {
+    fun getDocumentUploadedDate(fileUploaded: String): String {
         // maths.abs used for converting - valueto plus
         var output: String = ""
         var trim: String
@@ -59,14 +59,15 @@ object AppSetting {
             trim = fileUploaded.substring(0, fileUploaded.length - 4)
 
         val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"))
         val dt1: Date = formatter.parse(trim)
         val firstDate: String = formatter.format(dt1)
 
         var secondDate = Date()
         val currentDate: String = formatter.format(secondDate)
-        Log.e("fileUploadOn", fileUploaded + " Doc name: " + docName)
-        Log.e("date1", firstDate)
-        Log.e("secondDate", "" + currentDate)
+        //Log.e("fileUploadOn", fileUploaded + " Doc name: " + docName)
+        //Log.e("date1", firstDate)
+        //Log.e("secondDate", "" + currentDate)
 
         val dBefore: LocalDateTime = LocalDateTime.parse(firstDate)
         val dAfter: LocalDateTime = LocalDateTime.parse(currentDate)
@@ -79,14 +80,14 @@ object AppSetting {
         val month: Long = dBefore.until(dAfter, ChronoUnit.MONTHS)
         val year: Long = dBefore.until(dAfter, ChronoUnit.YEARS)
 
-        println("************************")
+        /*println("************************")
         println("Year is : $year")
         println("month is : $month")
         println("week is : $week")
         println("day is : $day")
         println("hour is : $hour")
         println("min is : $min")
-        println("sec is : $sec")
+        println("sec is : $sec") */
 
         if (Math.abs(year) >= 2) {
             output = Math.abs(year).toString().plus(" years ago")

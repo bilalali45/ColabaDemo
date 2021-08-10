@@ -13,15 +13,15 @@ import androidx.recyclerview.widget.RecyclerView
 
 class DocumentListAdapter
 internal constructor(
-    passedDocsList: ArrayList<SubFiles>, onAdapterClickListener: AdapterClickListener
+    passedDocsList: ArrayList<SubFiles>, onDocsViewClickListener: DocsViewClickListener
 ) : RecyclerView.Adapter<DocumentListAdapter.DocInnerListViewHolder>() {
 
     private var docsList = ArrayList<SubFiles>()
-    private var classScopedItemClickListener: AdapterClickListener = onAdapterClickListener
+    private var classScopedItemClickListener: DocsViewClickListener = onDocsViewClickListener
 
     init {
         this.docsList = passedDocsList
-        this.classScopedItemClickListener = onAdapterClickListener
+        this.classScopedItemClickListener = onDocsViewClickListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocInnerListViewHolder {
@@ -45,7 +45,8 @@ internal constructor(
 
         init {
             fileCardView.setOnClickListener {
-                classScopedItemClickListener.navigateTo(adapterPosition)
+                if(docName.text.isNotBlank() && docName.text.isNotEmpty())
+                    classScopedItemClickListener.navigateTo(adapterPosition , docName = docName.text.toString())
             }
         }
 

@@ -113,6 +113,8 @@
     <string name="title_home">Home</string>
     <string name="title_profile">Profile</string>
     <string name="title_notifications">Notifications</string>
+    <string name="pdf_view">Pdf View</string>
+    <string name="image_view">Image View</string>
 
     <string name="richard">Richard Glenn Randall</string>
     <string name="refinance">Refinance</string>

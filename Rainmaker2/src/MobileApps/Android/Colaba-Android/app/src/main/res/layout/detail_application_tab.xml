@@ -47,17 +47,14 @@
         android:id="@+id/horizontalRecycleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:layout_marginStart="21dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="21dp"
         android:orientation="horizontal"
-
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/imageView13"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:reverseLayout="true" />
+        app:reverseLayout="true"
+        tools:listitem="@layout/list_borrower_horizontal"/>
 
     <ImageView
         android:id="@+id/imageView23"
@@ -67,6 +64,7 @@
         app:layout_constraintStart_toStartOf="@+id/imageView13"
         app:layout_constraintTop_toBottomOf="@+id/horizontalRecycleView"
         app:srcCompat="@drawable/ic_subject_svg" />
+
 
     <TextView
         android:id="@+id/textView4"
@@ -82,19 +80,30 @@
         app:layout_constraintStart_toEndOf="@+id/imageView23"
         app:layout_constraintTop_toTopOf="@+id/imageView23" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:id="@+id/constraintLayout5"
         android:layout_width="match_parent"
-        android:layout_height="96dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="21dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="21dp"
-        android:background="@drawable/search_view_holder_style"
+        android:clipToPadding="false"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4">
 
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:background="@drawable/search_view_holder_style"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
             android:id="@+id/imageView24"
@@ -146,6 +155,12 @@
             app:layout_constraintStart_toEndOf="@+id/bAppPropertyType"
             app:layout_constraintTop_toTopOf="@+id/bAppPropertyType" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+
 
     <ImageView
         android:id="@+id/imageView26"
@@ -432,15 +447,14 @@
         android:id="@+id/realStateHorizontalRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="21dp"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/imageView66"
         app:layout_constraintTop_toBottomOf="@+id/textView64"
-        app:reverseLayout="true" />
+        app:reverseLayout="true"
+        tools:listitem="@layout/realstate_horizontal"/>
 
     <ImageView
         android:id="@+id/imageView76"
@@ -470,16 +484,15 @@
         android:id="@+id/govtQuestionHorizontalRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="21dp"
+        android:layout_marginEnd="10dp"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/imageView76"
         app:layout_constraintTop_toBottomOf="@+id/textView74"
-        app:reverseLayout="true" />
-
+        app:reverseLayout="true"
+        tools:listitem="@layout/list_govt_question_horizontal"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,8 +6,7 @@
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colaba_loan_background"
-    >
+    android:background="@color/colaba_loan_background">
 
 
     <androidx.recyclerview.widget.RecyclerView
