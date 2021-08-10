@@ -35,7 +35,7 @@ class ImageViewFragment : Fragment(), AdapterClickListener {
         val view: View = binding.root
 
         imageView = view.findViewById(R.id.imagesImageView)
-        titleTextView = view.findViewById(R.id.titleTextView)
+        titleTextView = view.findViewById(R.id.imageTitleTextView)
         titleTextView.text = imageFileName
         imageFileName = arguments?.getString(AppConstant.downloadedFileName).toString()
         val file = File(requireContext().filesDir, imageFileName )

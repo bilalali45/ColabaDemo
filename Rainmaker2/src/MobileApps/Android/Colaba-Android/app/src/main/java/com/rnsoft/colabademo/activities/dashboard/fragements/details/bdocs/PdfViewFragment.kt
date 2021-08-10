@@ -34,7 +34,7 @@ class PdfViewFragment : Fragment(), AdapterClickListener {
         val view: View = binding.root
 
         pdfView = view.findViewById(R.id.dmitry_pdf)
-        titleTextView = view.findViewById(R.id.titleTextView)
+        titleTextView = view.findViewById(R.id.pdfTitleTextView)
 
 
         pdfFileName = arguments?.getString(AppConstant.downloadedFileName).toString()

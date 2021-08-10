@@ -147,7 +147,7 @@ class BorrowerApplicationFragment : Fragment() {
 
                 //////////////////////////////////////////////////////////////////////////////////////////////////
                 // add add-more last cell to the adapters
-                borrowerInfoList.add(BorrowersInformation(0,"","","",0, true))
+                borrowerInfoList.add(BorrowersInformation(0,"",0,"","", "",0,null, null, true))
                 borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList)
                 horizontalRecyclerView.adapter = borrowerInfoAdapter
                 borrowerInfoAdapter.notifyDataSetChanged()
