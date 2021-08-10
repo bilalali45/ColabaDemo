@@ -45,9 +45,10 @@ class DetailRepo  @Inject constructor(
         return detailDataSource.getBorrowerApplicationTabData(token = token , loanApplicationId = loanApplicationId)
     }
 
-     suspend fun downloadFile(token:String , id:String, requestId:String, docId:String, fileId:String): String {
-        val result = detailDataSource.downloadFile(token = token , id = id, requestId = requestId, docId = docId, fileId = fileId)
-        var  fileName = ""
+     suspend fun downloadFile(token:String , id:String, requestId:String, docId:String, fileId:String , fileName:String): Boolean {
+        val result = detailDataSource.downloadFile(token = token , id = id, requestId = requestId, docId = docId, fileId = fileId )
+         var bool = false
+         Log.e("fileName", "= $fileName")
          if(result?.body() is ResponseBody) {
              val responseBody = result.body()
              try {
@@ -61,17 +62,45 @@ class DetailRepo  @Inject constructor(
                          buffer.write(data, 0, nRead)
                      }
 
-                     fileName = saveFileToExternalStorage(buffer.toByteArray())
-                     Log.e("save", " saveFileToExternalStorage? = $fileName")
+                     bool = saveFileToExternalStorage(buffer.toByteArray() , fileName)
+                     Log.e("bool", "= $bool")
                  }
              } catch (e: Exception) {
                  Log.e("Exception", " can not save PDF file...")
              }
          }
-         Log.e("File", " Should be created...")
+         Log.e("File", " is file created??$bool")
 
-        return  fileName
+        return  bool
     }
+
+
+    private fun saveFileToExternalStorage(data: ByteArray , fileName:String): Boolean {
+        val path: File = applicationContext.filesDir
+        val file = File(path, fileName )
+        var outputStream: FileOutputStream? = null
+        try {
+            outputStream = FileOutputStream(file)
+            outputStream.write(data)
+            outputStream.flush()
+            outputStream.close()
+        } catch (e: java.lang.Exception) {
+            Toast.makeText(applicationContext, e.message, Toast.LENGTH_LONG)
+            return false
+        }
+        return true
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     private fun savaTextFileForTesting(){
         val path: File = applicationContext.cacheDir
@@ -89,8 +118,6 @@ class DetailRepo  @Inject constructor(
     private fun someOtherTest(result:Response<ResponseBody>){
         if(result?.body() is ResponseBody) {
             val responseBody = result.body()
-            if(hasWriteStoragePermission())
-                Log.e("file--", "permission given...")
             try {
                 val path = Environment.getExternalStorageDirectory()
                 val file = File(path, "file_name.jpg")
@@ -119,7 +146,7 @@ class DetailRepo  @Inject constructor(
                         buffer.write(data, 0, nRead)
                     }
 
-                    val filesaved = saveFileToExternalStorage(buffer.toByteArray())
+                    val filesaved = saveFileToExternalStorage(buffer.toByteArray() , "test")
 
 
 
@@ -195,43 +222,7 @@ class DetailRepo  @Inject constructor(
 
     private val REQUEST_PERMISSIONS_CODE_WRITE_STORAGE = 20
 
-    private fun hasWriteStoragePermission(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            return true
-        } else
-            if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(
-                    applicationContext as Activity,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    REQUEST_PERMISSIONS_CODE_WRITE_STORAGE
-                )
-
-                return false
-            }
-
-        return true
-    }
-
-    private fun saveFileToExternalStorage(data: ByteArray): String {
-        //val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Form1.pdf")
-
-        val fileName = "TestPdf.pdf"
-        val path: File = applicationContext.filesDir
-        val file = File(path, fileName )
-
-        var outputStream: FileOutputStream? = null
-        try {
-            outputStream = FileOutputStream(file)
-            outputStream.write(data)
-            outputStream.flush()
-            outputStream.close()
-            } catch (e: java.lang.Exception) {
-            Toast.makeText(applicationContext, e.message, Toast.LENGTH_LONG)
-            return ""
-        }
-        return fileName
-    }
 
     private fun openSavedPDf(file: File) {
         // Method - 1

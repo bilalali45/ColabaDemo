@@ -29,4 +29,10 @@
         android:label="@string/pdf_view"
         tools:layout="@layout/pdf_view_layout" />
 
+    <fragment
+        android:id="@+id/image_view_fragment_id"
+        android:name="com.rnsoft.colabademo.ImageViewFragment"
+        android:label="@string/image_view"
+        tools:layout="@layout/image_view_layout" />
+
 </navigation>

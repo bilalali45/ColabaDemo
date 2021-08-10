@@ -8,9 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,8 +23,8 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
     private val _borrowerApplicationTabModel : MutableLiveData<BorrowerApplicationTabModel> =   MutableLiveData()
     val borrowerApplicationTabModel: LiveData<BorrowerApplicationTabModel> get() = _borrowerApplicationTabModel
 
-    private val _fileName : MutableLiveData<String> =   MutableLiveData()
-    val fileName: LiveData<String> get() = _fileName
+    //private val _fileName : MutableLiveData<String> =   MutableLiveData()
+    //val fileName: LiveData<String> get() = _fileName
 
 
     suspend fun getLoanInfo(token:String, loanApplicationId:Int) {
@@ -72,23 +70,20 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo ) :
         }
     }
 
-    fun downloadFile(token:String,  id:String, requestId:String, docId:String, fileId:String) {
+    fun downloadFile(token:String,  id:String, requestId:String, docId:String, fileId:String , fileName:String) {
         viewModelScope.launch {
-            val receivedName = detailRepo.downloadFile(
+            val hasFileSaved = detailRepo.downloadFile(
                 token = token,
                 id = id,
                 requestId = requestId,
                 docId = docId,
-                fileId = fileId
+                fileId = fileId,
+                fileName = fileName
             )
-
-            if(receivedName.isNullOrEmpty() || receivedName.isNullOrBlank()){
+            if(!hasFileSaved)
                 EventBus.getDefault().post(WebServiceErrorEvent(null, true))
-            }
-            else {
-                _fileName.value = receivedName
-            }
-
+            else
+                EventBus.getDefault().post(FileDownloadEvent(fileName))
         }
     }
 
