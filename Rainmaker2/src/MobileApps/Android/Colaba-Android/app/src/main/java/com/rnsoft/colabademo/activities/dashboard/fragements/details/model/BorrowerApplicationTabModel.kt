@@ -45,7 +45,8 @@ data class LoanInformation(
 
 data class BorrowerQuestionsModel(
     val questionDetail: QuestionDetail?,
-    val questionResponses: ArrayList<QuestionResponse>?
+    val questionResponses: ArrayList<QuestionResponse>?,
+    val isDemoGraphic:Boolean = false
 )
 
 data class QuestionDetail(
