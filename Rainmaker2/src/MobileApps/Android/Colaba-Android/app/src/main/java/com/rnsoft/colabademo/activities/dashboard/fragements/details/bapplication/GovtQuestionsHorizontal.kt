@@ -4,9 +4,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 
-import com.mikepenz.fastadapter.FastAdapter
-import com.mikepenz.fastadapter.items.AbstractItem
-
 open class GovtQuestionsHorizontal : AbstractItem<GovtQuestionsHorizontal.ViewHolder>() {
     var questionTitle: String? = null
     var question: String? = null

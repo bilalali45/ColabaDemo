@@ -37,9 +37,9 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
     private var doc_message: String? = null
     lateinit var tvDocName: TextView
     lateinit var tvDocMsg: TextView
+    lateinit var tvPercentage: TextView
     lateinit var doc_msg_layout: ConstraintLayout
     lateinit var layoutNoDocUploaded: ConstraintLayout
-
     private  var downloadLoader: ProgressBar? = null
 
     @Inject
@@ -56,6 +56,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
         docsRecycler = view.findViewById(R.id.docs_detail_list_recycle_view)
         tvDocName = view.findViewById(R.id.doc_type_name)
         tvDocMsg = view.findViewById(R.id.doc_msg)
+        tvPercentage = view.findViewById(R.id.tv_percentage)
         doc_msg_layout = view.findViewById(R.id.layout_doc_msg)
         layoutNoDocUploaded = view.findViewById(R.id.layout_no_doc_upload)
         downloadLoader = view.findViewById(R.id.doc_download_loader)
@@ -63,7 +64,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
         lifecycleScope.launchWhenStarted {
 
             doc_name = arguments?.getString(AppConstant.docName)
-            Log.e("doc_name", doc_name.toString())
+            //Log.e("doc_name", doc_name.toString())
             doc_message = arguments?.getString(AppConstant.docMessage)
             docsArrayList = arguments?.getParcelableArrayList(AppConstant.docObject)!!
             //val filesNames = arguments?.getString(AppConstant.innerFilesName)
@@ -111,6 +112,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
             selectedFile.clientName
             if (download_docId != null && download_requestId != null && download_id != null) {
                 downloadLoader?.visibility = View.VISIBLE
+                tvDocName.visibility = View.VISIBLE
                 detailViewModel.downloadFile(
                     token = authToken,
                     id = download_id!!,
@@ -133,17 +135,21 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
 
     override fun onStart() {
         super.onStart()
+        Log.e("Event", "started")
         EventBus.getDefault().register(this)
     }
 
     override fun onStop() {
         super.onStop()
+        Log.e("Event", "Stop")
         EventBus.getDefault().unregister(this)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onErrorReceived(event: WebServiceErrorEvent) {
         downloadLoader?.visibility = View.GONE
+        tvDocName.visibility = View.GONE
+
         if(event.isInternetError)
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
         else
@@ -154,6 +160,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onFileDownloadCompleted(event: FileDownloadEvent) {
         downloadLoader?.visibility = View.GONE
+        tvDocName.visibility = View.GONE
         event.docFileName?.let {
             if (!it.isNullOrBlank() && !it.isNullOrEmpty()) {
                 if(it.contains(".pdf"))
