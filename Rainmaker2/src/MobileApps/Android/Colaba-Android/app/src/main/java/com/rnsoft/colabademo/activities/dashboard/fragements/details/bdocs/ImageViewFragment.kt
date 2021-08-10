@@ -36,8 +36,8 @@ class ImageViewFragment : Fragment(), AdapterClickListener {
 
         imageView = view.findViewById(R.id.imagesImageView)
         titleTextView = view.findViewById(R.id.imageTitleTextView)
-        titleTextView.text = imageFileName
         imageFileName = arguments?.getString(AppConstant.downloadedFileName).toString()
+        titleTextView.text = imageFileName
         val file = File(requireContext().filesDir, imageFileName )
 
         Glide.with(requireActivity())
