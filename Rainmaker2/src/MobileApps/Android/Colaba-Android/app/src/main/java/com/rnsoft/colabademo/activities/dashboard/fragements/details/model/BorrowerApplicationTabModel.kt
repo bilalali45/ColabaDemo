@@ -28,10 +28,25 @@ data class AssetAndIncome(
 data class BorrowersInformation(
     val borrowerId: Int,
     val firstName: String,
+    val genderId: Int,
+    val genderName: String,
     val lastName: String,
     val ownTypeName: String,
     val owntypeId: Int,
+    val ethnicities: List<Any>?,
+    val races: List<Race>?,
     val isFooter:Boolean = false
+)
+
+data class Race(
+    val id: Int,
+    val name: String,
+    val raceDetails: List<RaceDetail>
+)
+
+data class RaceDetail(
+    val id: Int,
+    val name: String
 )
 
 data class LoanInformation(

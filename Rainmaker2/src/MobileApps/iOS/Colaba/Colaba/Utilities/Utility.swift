@@ -123,6 +123,10 @@ struct Utility {
         return loanDetailStoryboard.instantiateViewController(withIdentifier: "BorrowerInformationViewController") as! BorrowerInformationViewController
     }
     
+    static func getAddResidenceVC() -> AddResidenceViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "AddResidenceViewController") as! AddResidenceViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){

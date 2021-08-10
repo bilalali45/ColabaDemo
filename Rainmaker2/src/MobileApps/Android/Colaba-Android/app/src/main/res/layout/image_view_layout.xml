@@ -27,7 +27,7 @@
             app:srcCompat="@drawable/search_back" />
 
         <TextView
-            android:id="@+id/titleTextView"
+            android:id="@+id/imageTitleTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"

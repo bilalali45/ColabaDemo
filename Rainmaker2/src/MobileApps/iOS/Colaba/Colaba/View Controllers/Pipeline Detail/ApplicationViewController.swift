@@ -46,8 +46,8 @@ class ApplicationViewController: BaseViewController {
         getLoanApplicationDetail()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowNavigationBar), object: nil, userInfo: nil)
     }
     
@@ -676,12 +676,12 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
         
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if (collectionView == borrowerCollectionView){
-            let vc = Utility.getBorrowerInformationVC()
-            self.pushToVC(vc: vc)
-        }
-    }
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        if (collectionView == borrowerCollectionView){
+//            let vc = Utility.getBorrowerInformationVC()
+//            self.pushToVC(vc: vc)
+//        }
+//    }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.lastContentOffset = scrollView.contentOffset.y

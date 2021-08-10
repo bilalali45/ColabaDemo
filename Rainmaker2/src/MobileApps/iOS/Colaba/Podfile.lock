@@ -11,6 +11,7 @@ PODS:
     - Material/Core (= 3.1.8)
   - Material/Core (3.1.8):
     - Motion (~> 3.1.1)
+  - MonthYearPicker (4.0.2)
   - Motion (3.1.3):
     - Motion/Core (= 3.1.3)
   - Motion/Core (3.1.3)
@@ -33,6 +34,7 @@ DEPENDENCIES:
   - LoadingPlaceholderView
   - MarqueeLabel
   - Material
+  - MonthYearPicker
   - NVActivityIndicatorView (= 4.8.0)
   - RealmSwift
   - SVGKit (= 3.0.0)
@@ -47,6 +49,7 @@ SPEC REPOS:
     - LoadingPlaceholderView
     - MarqueeLabel
     - Material
+    - MonthYearPicker
     - Motion
     - NVActivityIndicatorView
     - Realm
@@ -62,6 +65,7 @@ SPEC CHECKSUMS:
   LoadingPlaceholderView: e913f5ae2673612d405ce395acca7cedb1bfaa81
   MarqueeLabel: f4117d82a55209171e8f66bd4859fa11ade335a1
   Material: a2a3f400a3b549d53ef89e56c58c4535b29db387
+  MonthYearPicker: 91f77106e6806d8c93c69e943ab0795fd420657f
   Motion: cf1e060e489f6661126374d5c60dbd2ed991605c
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
   Realm: ed860452717c8db8f4bf832b6807f7f2ce708839
@@ -69,6 +73,6 @@ SPEC CHECKSUMS:
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 47fbe5eca80d5b812c3e509276a552b3c62d2f6f
+PODFILE CHECKSUM: 8158f8ad7a3ca1edc085286fb2dbdd4e03355066
 
 COCOAPODS: 1.10.1
