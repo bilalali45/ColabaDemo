@@ -2,7 +2,7 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +41,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
     lateinit var doc_msg_layout: ConstraintLayout
     lateinit var layoutNoDocUploaded: ConstraintLayout
     private  var downloadLoader: ProgressBar? = null
+    val handler= Handler()
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -112,7 +113,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
             selectedFile.clientName
             if (download_docId != null && download_requestId != null && download_id != null) {
                 downloadLoader?.visibility = View.VISIBLE
-                tvDocName.visibility = View.VISIBLE
+                tvPercentage.visibility = View.VISIBLE
                 detailViewModel.downloadFile(
                     token = authToken,
                     id = download_id!!,
@@ -121,6 +122,25 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
                     fileId = selectedFile.id,
                     fileName = docName
                 )
+
+                var progressStatus : Int = 20
+
+                /*Thread {
+                    while (progressStatus < 100) {
+                        progressStatus += 10
+                        requireActivity().runOnUiThread(Runnable {
+                            tvPercentage.setText(progressStatus).toString().plus("%")
+                        })
+
+
+                        try {
+                            // Sleep for 200 milliseconds.
+                            Thread.sleep(500)
+                        } catch (e: InterruptedException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }.start() */
             }
             else
                 SandbarUtils.showRegular(requireActivity(), "File can not be downloaded...")
@@ -135,20 +155,18 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
 
     override fun onStart() {
         super.onStart()
-        Log.e("Event", "started")
         EventBus.getDefault().register(this)
     }
 
     override fun onStop() {
         super.onStop()
-        Log.e("Event", "Stop")
         EventBus.getDefault().unregister(this)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onErrorReceived(event: WebServiceErrorEvent) {
         downloadLoader?.visibility = View.GONE
-        tvDocName.visibility = View.GONE
+        tvPercentage.visibility = View.GONE
 
         if(event.isInternetError)
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
@@ -160,7 +178,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onFileDownloadCompleted(event: FileDownloadEvent) {
         downloadLoader?.visibility = View.GONE
-        tvDocName.visibility = View.GONE
+        tvPercentage.visibility = View.GONE
         event.docFileName?.let {
             if (!it.isNullOrBlank() && !it.isNullOrEmpty()) {
                 if(it.contains(".pdf"))
