@@ -190,4 +190,6 @@
 
     <string name="internet_error">Please connect to the network…</string>
 
+    <string name="borrower_info_title">Primary Borrower</string>
+
 </resources>

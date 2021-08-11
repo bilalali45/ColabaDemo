@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:text="Application Status"
-                android:textColor="@color/txt_color_black"
+                android:textColor="@color/txt_color_app_screen_title"
                 android:textSize="17sp"
                 android:fontFamily="@font/rubik_regular"/>
 
