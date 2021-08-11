@@ -54,6 +54,7 @@ class DetailRepo  @Inject constructor(
              try {
                  //you can now get your file in the InputStream
                  val isRead: InputStream? = responseBody?.byteStream()
+                 Log.e("file lenght", ""+responseBody?.contentLength())
                  isRead?.let { isRead ->
                      val buffer = ByteArrayOutputStream()
                      var nRead: Int

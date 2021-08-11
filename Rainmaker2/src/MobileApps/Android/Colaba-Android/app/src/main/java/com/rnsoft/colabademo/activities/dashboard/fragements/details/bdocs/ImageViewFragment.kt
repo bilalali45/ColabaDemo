@@ -35,14 +35,16 @@ class ImageViewFragment : Fragment(), AdapterClickListener {
         val view: View = binding.root
 
         imageView = view.findViewById(R.id.imagesImageView)
-        titleTextView = view.findViewById(R.id.titleTextView)
-        titleTextView.text = imageFileName
+        titleTextView = view.findViewById(R.id.imageTitleTextView)
         imageFileName = arguments?.getString(AppConstant.downloadedFileName).toString()
+        titleTextView.text = imageFileName
         val file = File(requireContext().filesDir, imageFileName )
 
         Glide.with(requireActivity())
             .load(file) // Uri of the picture
             .into(imageView)
+
+        hideFabIcons()
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
@@ -56,6 +58,10 @@ class ImageViewFragment : Fragment(), AdapterClickListener {
     }
     override fun getCardIndex(position: Int) {
 
+    }
+
+    fun hideFabIcons(){
+        (activity as DetailActivity).hideFabIcons()
     }
 
 

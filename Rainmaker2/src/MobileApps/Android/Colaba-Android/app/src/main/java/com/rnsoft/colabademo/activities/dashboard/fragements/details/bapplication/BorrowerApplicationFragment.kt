@@ -120,21 +120,29 @@ class BorrowerApplicationFragment : Fragment() {
 
 
 
+                var races:ArrayList<Race>? =null
+                var ethnicities:ArrayList<Ethnicity>? =null
+
                 appTabModel.borrowerAppData?.let { bAppData->
-                    bAppData.borrowersInformation?.let {
-                       borrowerInfoList.clear()
-                       borrowerInfoList = it
+                    bAppData.borrowersInformation?.let { borrowersList ->
+                        borrowerInfoList.clear()
+                        borrowerInfoList = borrowersList
+
+                        for(borrower in borrowersList){
+                           if(borrower.owntypeId == 1) {
+                               borrower.races?.let {
+                                   races = it
+                               }
+                               borrower.ethnicities?.let {
+                                   ethnicities = it
+                               }
+                           }
+                        }
 
                    }
                 }
 
-                appTabModel.borrowerAppData?.let { bAppData->
-                    bAppData.borrowerQuestionsModel?.let {
-                        questionList.clear()
-                        questionList = it
-                        //setUpGovtQuestionsRecycleView(questionList)
-                    }
-                }
+
 
                 appTabModel.borrowerAppData?.let { bAppData->
                     bAppData.realStateOwns?.let {
@@ -144,10 +152,17 @@ class BorrowerApplicationFragment : Fragment() {
                     }
                 }
 
+                appTabModel.borrowerAppData?.let { bAppData->
+                    bAppData.borrowerQuestionsModel?.let {
+                        questionList.clear()
+                        questionList = it
+                    }
+                }
+
 
                 //////////////////////////////////////////////////////////////////////////////////////////////////
                 // add add-more last cell to the adapters
-                borrowerInfoList.add(BorrowersInformation(0,"","","",0, true))
+                borrowerInfoList.add(BorrowersInformation(0,"",0,"","", "",0,null, null, true))
                 borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList)
                 horizontalRecyclerView.adapter = borrowerInfoAdapter
                 borrowerInfoAdapter.notifyDataSetChanged()
@@ -158,7 +173,9 @@ class BorrowerApplicationFragment : Fragment() {
                 realStateRecyclerView.adapter = realStateAdapter
                 realStateAdapter.notifyDataSetChanged()
 
-                questionList.add(BorrowerQuestionsModel(null,null, true))
+
+
+                questionList.add(BorrowerQuestionsModel(null,null, true, races, ethnicities ))
                 questionAdapter  = QuestionAdapter(questionList)
                 questionsRecyclerView.adapter = questionAdapter
                 questionAdapter.notifyDataSetChanged()

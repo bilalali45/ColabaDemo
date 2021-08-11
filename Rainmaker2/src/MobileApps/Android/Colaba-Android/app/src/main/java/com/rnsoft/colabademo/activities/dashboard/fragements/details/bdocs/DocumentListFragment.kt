@@ -2,7 +2,7 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,10 +37,11 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
     private var doc_message: String? = null
     lateinit var tvDocName: TextView
     lateinit var tvDocMsg: TextView
+    //lateinit var tvPercentage: TextView
     lateinit var doc_msg_layout: ConstraintLayout
     lateinit var layoutNoDocUploaded: ConstraintLayout
-
     private  var downloadLoader: ProgressBar? = null
+    val handler= Handler()
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -56,6 +57,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
         docsRecycler = view.findViewById(R.id.docs_detail_list_recycle_view)
         tvDocName = view.findViewById(R.id.doc_type_name)
         tvDocMsg = view.findViewById(R.id.doc_msg)
+        //tvPercentage = view.findViewById(R.id.tv_percentage)
         doc_msg_layout = view.findViewById(R.id.layout_doc_msg)
         layoutNoDocUploaded = view.findViewById(R.id.layout_no_doc_upload)
         downloadLoader = view.findViewById(R.id.doc_download_loader)
@@ -63,7 +65,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
         lifecycleScope.launchWhenStarted {
 
             doc_name = arguments?.getString(AppConstant.docName)
-            Log.e("doc_name", doc_name.toString())
+            //Log.e("doc_name", doc_name.toString())
             doc_message = arguments?.getString(AppConstant.docMessage)
             docsArrayList = arguments?.getParcelableArrayList(AppConstant.docObject)!!
             //val filesNames = arguments?.getString(AppConstant.innerFilesName)
@@ -101,6 +103,9 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        (activity as DetailActivity).showFabIcons()
+
         return view
     }
 
@@ -111,6 +116,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
             selectedFile.clientName
             if (download_docId != null && download_requestId != null && download_id != null) {
                 downloadLoader?.visibility = View.VISIBLE
+                //tvPercentage.visibility = View.VISIBLE
                 detailViewModel.downloadFile(
                     token = authToken,
                     id = download_id!!,
@@ -130,7 +136,6 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
     }
 
 
-
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -144,6 +149,8 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onErrorReceived(event: WebServiceErrorEvent) {
         downloadLoader?.visibility = View.GONE
+        //tvPercentage.visibility = View.GONE
+
         if(event.isInternetError)
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
         else
@@ -154,6 +161,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onFileDownloadCompleted(event: FileDownloadEvent) {
         downloadLoader?.visibility = View.GONE
+        //tvPercentage.visibility = View.GONE
         event.docFileName?.let {
             if (!it.isNullOrBlank() && !it.isNullOrEmpty()) {
                 if(it.contains(".pdf"))

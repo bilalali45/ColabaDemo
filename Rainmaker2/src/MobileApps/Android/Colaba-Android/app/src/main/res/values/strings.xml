@@ -73,6 +73,7 @@
     <string name="dummy_seconds">:  30</string>
 
     <string name="good_evening_james">James</string>
+    <string name="current_residence">Current Residence</string>
 
     <string name="purchase">Purchase</string>
     <string name="user_data_does_not_exit">  User does not exist</string>
@@ -189,5 +190,7 @@
     <string name="delete">DELETE</string>
 
     <string name="internet_error">Please connect to the network…</string>
+
+    <string name="borrower_info_title">Primary Borrower</string>
 
 </resources>

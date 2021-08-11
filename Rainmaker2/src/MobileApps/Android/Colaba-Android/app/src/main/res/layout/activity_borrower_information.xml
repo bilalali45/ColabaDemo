@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context=".activities.info.BorrowerInfoActivity"
+    android:background="@color/content_background_color">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,11 +36,9 @@
             android:layout_marginStart="5dp"
             android:layout_marginEnd="20dp"
             android:ellipsize="end"
-            android:fontFamily="@font/rubik_regular"
+            android:fontFamily="@font/rubik_medium"
             android:gravity="center"
-            android:maxLines="1"
-            android:scrollHorizontally="true"
-            android:text="Bank Statement"
+            android:text="@string/borrower_info_title"
             android:textColor="@color/grey_color_one"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -56,14 +57,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageView
-        android:id="@+id/imagesImageView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_profile_layout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
