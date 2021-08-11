@@ -103,6 +103,9 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        (activity as DetailActivity).showFabIcons()
+
         return view
     }
 

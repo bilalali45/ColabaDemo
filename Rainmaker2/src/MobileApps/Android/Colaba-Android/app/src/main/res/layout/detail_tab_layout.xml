@@ -66,7 +66,7 @@
             app:srcCompat="@drawable/add_person_icon" />
 
         <ImageView
-            android:id="@+id/threeDots"
+            android:id="@+id/del_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"

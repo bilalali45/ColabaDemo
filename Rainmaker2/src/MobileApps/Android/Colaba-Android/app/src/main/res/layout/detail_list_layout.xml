@@ -150,8 +150,8 @@
 
     <ProgressBar
         android:id="@+id/doc_download_loader"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:foregroundGravity="center"
         android:indeterminate="true"
         android:indeterminateTint="@color/colaba_apptheme_blue"

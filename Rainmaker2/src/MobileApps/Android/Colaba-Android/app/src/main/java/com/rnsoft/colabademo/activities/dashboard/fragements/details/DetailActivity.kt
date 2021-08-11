@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.rnsoft.colabademo.databinding.DetailTopLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,5 +70,17 @@ class DetailActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+    }
+
+    fun hideFabIcons(){
+        binding.emailFab.visibility = View.INVISIBLE
+        binding.messageFab.visibility = View.INVISIBLE
+        binding.phoneFab.visibility = View.INVISIBLE
+    }
+
+    fun showFabIcons(){
+        binding.emailFab.visibility = View.VISIBLE
+        binding.messageFab.visibility = View.VISIBLE
+        binding.phoneFab.visibility = View.VISIBLE
     }
 }
