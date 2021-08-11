@@ -53,8 +53,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func loadBorrowerInfoController(){
-        //let vc = Utility.getBorrowerInformationVC()
-        let vc = Utility.getAddResidenceVC()
+        let vc = Utility.getBorrowerInformationVC()
+        //let vc = Utility.getAddResidenceVC()
         self.window?.rootViewController = vc
     }
     
