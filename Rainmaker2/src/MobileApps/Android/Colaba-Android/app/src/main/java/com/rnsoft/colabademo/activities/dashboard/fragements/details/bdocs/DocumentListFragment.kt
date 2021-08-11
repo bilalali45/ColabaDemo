@@ -37,7 +37,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
     private var doc_message: String? = null
     lateinit var tvDocName: TextView
     lateinit var tvDocMsg: TextView
-    lateinit var tvPercentage: TextView
+    //lateinit var tvPercentage: TextView
     lateinit var doc_msg_layout: ConstraintLayout
     lateinit var layoutNoDocUploaded: ConstraintLayout
     private  var downloadLoader: ProgressBar? = null
@@ -57,7 +57,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
         docsRecycler = view.findViewById(R.id.docs_detail_list_recycle_view)
         tvDocName = view.findViewById(R.id.doc_type_name)
         tvDocMsg = view.findViewById(R.id.doc_msg)
-        tvPercentage = view.findViewById(R.id.tv_percentage)
+        //tvPercentage = view.findViewById(R.id.tv_percentage)
         doc_msg_layout = view.findViewById(R.id.layout_doc_msg)
         layoutNoDocUploaded = view.findViewById(R.id.layout_no_doc_upload)
         downloadLoader = view.findViewById(R.id.doc_download_loader)
@@ -113,7 +113,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
             selectedFile.clientName
             if (download_docId != null && download_requestId != null && download_id != null) {
                 downloadLoader?.visibility = View.VISIBLE
-                tvPercentage.visibility = View.VISIBLE
+                //tvPercentage.visibility = View.VISIBLE
                 detailViewModel.downloadFile(
                     token = authToken,
                     id = download_id!!,
@@ -122,25 +122,6 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
                     fileId = selectedFile.id,
                     fileName = docName
                 )
-
-                var progressStatus : Int = 20
-
-                /*Thread {
-                    while (progressStatus < 100) {
-                        progressStatus += 10
-                        requireActivity().runOnUiThread(Runnable {
-                            tvPercentage.setText(progressStatus).toString().plus("%")
-                        })
-
-
-                        try {
-                            // Sleep for 200 milliseconds.
-                            Thread.sleep(500)
-                        } catch (e: InterruptedException) {
-                            e.printStackTrace()
-                        }
-                    }
-                }.start() */
             }
             else
                 SandbarUtils.showRegular(requireActivity(), "File can not be downloaded...")
@@ -150,7 +131,6 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
     override fun getCardIndex(position: Int) {
 
     }
-
 
 
     override fun onStart() {
@@ -166,7 +146,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onErrorReceived(event: WebServiceErrorEvent) {
         downloadLoader?.visibility = View.GONE
-        tvPercentage.visibility = View.GONE
+        //tvPercentage.visibility = View.GONE
 
         if(event.isInternetError)
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
@@ -178,7 +158,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onFileDownloadCompleted(event: FileDownloadEvent) {
         downloadLoader?.visibility = View.GONE
-        tvPercentage.visibility = View.GONE
+        //tvPercentage.visibility = View.GONE
         event.docFileName?.let {
             if (!it.isNullOrBlank() && !it.isNullOrEmpty()) {
                 if(it.contains(".pdf"))
