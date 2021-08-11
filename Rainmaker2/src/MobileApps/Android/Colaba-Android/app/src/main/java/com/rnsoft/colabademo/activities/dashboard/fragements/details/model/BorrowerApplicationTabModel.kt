@@ -33,15 +33,27 @@ data class BorrowersInformation(
     val lastName: String,
     val ownTypeName: String,
     val owntypeId: Int,
-    val ethnicities: List<Any>?,
-    val races: List<Race>?,
+    val ethnicities: ArrayList<Ethnicity>?,
+    val races: ArrayList<Race>?,
     val isFooter:Boolean = false
 )
+
+data class Ethnicity(
+    val id: Int?,
+    val name: String?,
+    val ethnicityDetails: ArrayList<EthnicityDetail>?
+)
+
+data class EthnicityDetail(
+    val id: Int,
+    val name: String
+)
+
 
 data class Race(
     val id: Int,
     val name: String,
-    val raceDetails: List<RaceDetail>
+    val raceDetails: ArrayList<RaceDetail>
 )
 
 data class RaceDetail(
@@ -61,7 +73,9 @@ data class LoanInformation(
 data class BorrowerQuestionsModel(
     val questionDetail: QuestionDetail?,
     val questionResponses: ArrayList<QuestionResponse>?,
-    val isDemoGraphic:Boolean = false
+    val isDemoGraphic:Boolean = false,
+    val races: ArrayList<Race>?,
+    val ethnicities: ArrayList<Ethnicity>?
 )
 
 data class QuestionDetail(

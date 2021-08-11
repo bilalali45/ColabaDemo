@@ -19,6 +19,7 @@
 
         <TextView
             android:id="@+id/answer3_na2"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -49,7 +50,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/question"
+            android:id="@+id/race_ethnicity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -69,6 +70,7 @@
 
         <TextView
             android:id="@+id/answer1_yes"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -76,11 +78,12 @@
             android:text="Maria"
             android:textColor="@color/grey_color_two"
             android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@+id/question"
-            app:layout_constraintTop_toBottomOf="@+id/question" />
+            app:layout_constraintStart_toStartOf="@+id/race_ethnicity"
+            app:layout_constraintTop_toBottomOf="@+id/race_ethnicity" />
 
         <TextView
             android:id="@+id/answer2_no"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -93,6 +96,7 @@
 
         <TextView
             android:id="@+id/answer1_name"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -106,6 +110,7 @@
 
         <TextView
             android:id="@+id/answer2_name"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -120,6 +125,7 @@
 
         <TextView
             android:id="@+id/answer3_name"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -133,6 +139,7 @@
 
         <TextView
             android:id="@+id/answer4_na"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -146,6 +153,7 @@
 
         <TextView
             android:id="@+id/answer4_name"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"

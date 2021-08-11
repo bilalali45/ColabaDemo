@@ -78,7 +78,47 @@ class QuestionAdapter internal constructor(private var questionsModel: ArrayList
     }
 
     inner class DemoGraphicViewHolder(itemView: View) : BaseViewHolder(itemView) {
+        private var raceEthnicityTextView: TextView = itemView.findViewById(R.id.race_ethnicity)
+
         override fun bind(item: BorrowerQuestionsModel) {
+            var raceEthnicity = ""
+            item.races?.let {  races->
+                for (race in races){
+                    raceEthnicity += race.name+"/"
+                    if(race.raceDetails.size>0){
+                        var raceSubTypeString = ""
+                        for(raceSubType in race.raceDetails){
+                            raceSubTypeString = raceSubType.name+"/"
+                        }
+                        raceEthnicity += raceSubTypeString
+                    }
+
+                }
+            }
+            item.ethnicities?.let{ ethnicities->
+                for (ethnicity in ethnicities){
+                    raceEthnicity += ethnicity.name+"/"
+                    ethnicity.ethnicityDetails?.let {ethnicityDetails->
+                        if (ethnicityDetails.size > 0) {
+                            var ethnicitySubTypeString = ""
+                            for (ethnicitySubType in ethnicityDetails) {
+                                ethnicitySubTypeString = ethnicitySubType.name + "/"
+                            }
+                            raceEthnicity += ethnicitySubTypeString
+                        }
+                    }
+
+                }
+            }
+
+            if(raceEthnicity.lastIndexOf("/") == raceEthnicity.length-1){
+                raceEthnicity = raceEthnicity.substring(0,raceEthnicity.length-1
+                )
+            }
+
+
+            raceEthnicity = raceEthnicity+" - Gender"
+            raceEthnicityTextView.text = raceEthnicity
         }
     }
 
