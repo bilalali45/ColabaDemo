@@ -13,6 +13,7 @@ class BorrowerInformationViewController: UIViewController {
     //MARK:- Outlets and Properties
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblBorrowerType: UILabel!
+    @IBOutlet weak var lblBorrowerName: UILabel!
     @IBOutlet weak var seperatorView: UIView!
     @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
@@ -349,11 +350,7 @@ class BorrowerInformationViewController: UIViewController {
         if let  datePicker = self.txtfieldDOB.inputView as? UIDatePicker {
             self.txtfieldDOB.text = dobDateFormatter.string(from: datePicker.date)
         }
-     }
-    
-    @objc func btnDatePickerDoneButtonTapped() {
-        self.txtfieldDOB.resignFirstResponder()
-     }
+    }
     
     @objc func activeDutyTapped(){
         isActiveDutyPersonal = !isActiveDutyPersonal

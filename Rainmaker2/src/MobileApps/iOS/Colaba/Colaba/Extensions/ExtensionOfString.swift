@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import MonthYearPicker
 
 extension String {
     
@@ -56,6 +57,25 @@ extension UITextField {
     } else {
         // Fallback on earlier versions
     }
+    datePicker.addTarget(target, action: selector, for: .valueChanged)
+    self.inputView = datePicker
+
+    //Add Tool Bar as input AccessoryView
+    let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 44))
+    let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+    let cancelBarButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(cancelPressed))
+        let doneBarButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(cancelPressed))
+    toolBar.setItems([cancelBarButton, flexibleSpace, doneBarButton], animated: false)
+
+    self.inputAccessoryView = toolBar
+ }
+    
+    func addInputViewMonthYearDatePicker(target: Any, selector: Selector) {
+
+    let screenWidth = UIScreen.main.bounds.width
+
+    //Add DatePicker as inputView
+    let datePicker = MonthYearPickerView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 216))
     datePicker.addTarget(target, action: selector, for: .valueChanged)
     self.inputView = datePicker
 

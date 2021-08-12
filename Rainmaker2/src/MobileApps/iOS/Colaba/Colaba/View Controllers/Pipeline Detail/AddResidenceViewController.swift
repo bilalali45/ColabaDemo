@@ -14,10 +14,11 @@ class AddResidenceViewController: UIViewController {
     //MARK:- Outlets and Properties
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblTopHeading: UILabel!
+    @IBOutlet weak var lblBorrowerName: UILabel!
     @IBOutlet weak var btnDelete: UIButton!
     @IBOutlet weak var seperatorView: UIView!
     @IBOutlet weak var mainView: UIView!
-    @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint! //350 and 1000
+    @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint! //350 and 1100
     @IBOutlet weak var txtfieldHomeAddress: TextField!
     @IBOutlet weak var btnSearch: UIButton!
     @IBOutlet weak var btnDropDown: UIButton!
@@ -31,9 +32,6 @@ class AddResidenceViewController: UIViewController {
     @IBOutlet weak var txtfieldCountry: TextField!
     @IBOutlet weak var btnCountryDropDown: UIButton!
     @IBOutlet weak var txtfieldMoveInDate: TextField!
-    @IBOutlet weak var dateView: UIView!
-    @IBOutlet weak var dateViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var datePickerView: MonthYearPickerView!
     @IBOutlet weak var txtfieldMoveInDateTopConstraint: NSLayoutConstraint! //583 and 30
     @IBOutlet weak var btnCalendar: UIButton!
     @IBOutlet weak var btnCalendarTopConstraint: NSLayoutConstraint! //589 and 36
@@ -42,6 +40,9 @@ class AddResidenceViewController: UIViewController {
     @IBOutlet weak var txtfieldMonthlyRent: TextField!
     @IBOutlet weak var addMailingAddressStackView: UIStackView!
     @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var tblViewMailingAddress: UITableView!
+    
+    let moveInDateFormatter = DateFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,8 +64,12 @@ class AddResidenceViewController: UIViewController {
         addMailingAddressStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addMailingAddressStackViewTapped)))
         btnSaveChanges.layer.cornerRadius = 5
         btnSaveChanges.dropShadowToCollectionViewCell()
-        datePickerView.date = Date()
-        datePickerView.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
+        
+        moveInDateFormatter.dateStyle = .medium
+        moveInDateFormatter.dateFormat = "MM/yyyy"
+        txtfieldMoveInDate.addInputViewMonthYearDatePicker(target: self, selector: #selector(dateChanged))
+        
+        tblViewMailingAddress.register(UINib(nibName: "BorrowerAddressInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerAddressInfoTableViewCell")
         
     }
     
@@ -82,7 +87,7 @@ class AddResidenceViewController: UIViewController {
     }
     
     func showAllFields(){
-        mainViewHeightConstraint.constant = 1000
+        mainViewHeightConstraint.constant = 1100
         txtfieldMoveInDateTopConstraint.constant = 583
         btnCalendarTopConstraint.constant = 589
         txtfieldAppartmentNumber.isHidden = false
@@ -95,6 +100,7 @@ class AddResidenceViewController: UIViewController {
         txtfieldCountry.isHidden = false
         btnCountryDropDown.isHidden = false
         addMailingAddressStackView.isHidden = false
+        tblViewMailingAddress.isHidden = true
         
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
@@ -105,8 +111,10 @@ class AddResidenceViewController: UIViewController {
         
     }
     
-    @objc func dateChanged(_ sender: MonthYearPickerView){
-        
+    @objc func dateChanged() {
+        if let  datePicker = self.txtfieldMoveInDate.inputView as? MonthYearPickerView {
+            self.txtfieldMoveInDate.text = moveInDateFormatter.string(from: datePicker.date)
+        }
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
@@ -133,10 +141,7 @@ class AddResidenceViewController: UIViewController {
     }
     
     @IBAction func btnCalendarTapped(_ sender: UIButton) {
-        dateViewBottomConstraint.constant = 0
-        UIView.animate(withDuration: 0.4) {
-            self.view.layoutIfNeeded()
-        }
+        
     }
     
     @IBAction func btnHousingDropDownTapped(_ sender: UIButton) {
@@ -147,12 +152,54 @@ class AddResidenceViewController: UIViewController {
         
     }
     
-    @IBAction func btnDoneTapped(_ sender: UIButton) {
-        dateViewBottomConstraint.constant = -370
-        UIView.animate(withDuration: 0.4) {
-            self.view.layoutIfNeeded()
-        }
+}
+
+extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate{
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
     }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerAddressInfoTableViewCell", for: indexPath) as! BorrowerAddressInfoTableViewCell
+        cell.addressIcon.isHidden = true
+        cell.lblHeading.isHidden = true
+        cell.lblRent.isHidden = true
+        cell.lblAddressTopConstraint.constant = 15
+        cell.lblAddress.text = "4101  Oak Tree Avenue  LN # 222, Chicago, MD 60605"
+        cell.lblDate.text = "Mailing Address"
+        cell.mainView.layer.cornerRadius = 6
+        cell.mainView.layer.borderWidth = 1
+        cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        cell.mainView.dropShadowToCollectionViewCell()
+        cell.mainView.updateConstraintsIfNeeded()
+        cell.mainView.layoutSubviews()
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let deleteAction = UIContextualAction(style: .normal, title: "") { action, actionView, bool in
+            
+        }
+        deleteAction.backgroundColor = Theme.getDashboardBackgroundColor()
+        deleteAction.image = UIImage(named: "AddressDeleteIconBig")
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+        
+    }
+    
 }
 
 extension AddResidenceViewController: UITextFieldDelegate{
@@ -163,6 +210,9 @@ extension AddResidenceViewController: UITextFieldDelegate{
             if txtfieldHomeAddress.text == ""{
                 txtfieldHomeAddress.text = "       "
             }
+        }
+        if (textField == txtfieldMoveInDate){
+            dateChanged()
         }
     }
     
