@@ -41,6 +41,8 @@
 		2390FED626A6B639007A5A52 /* ApplicationTabHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2390FED526A6B639007A5A52 /* ApplicationTabHeaderView.swift */; };
 		2390FEE126A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2390FEDF26A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.swift */; };
 		2390FEE226A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2390FEE026A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.xib */; };
+		2392A4CB26C4F9700083EFE4 /* DependentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392A4C926C4F9700083EFE4 /* DependentCollectionViewCell.swift */; };
+		2392A4CC26C4F9700083EFE4 /* DependentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2392A4CA26C4F9700083EFE4 /* DependentCollectionViewCell.xib */; };
 		2397AF5F26776241007A1A45 /* PipelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397AF5E26776241007A1A45 /* PipelineViewController.swift */; };
 		2397AF63267782E6007A1A45 /* PipelineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397AF61267782E6007A1A45 /* PipelineTableViewCell.swift */; };
 		2397AF64267782E6007A1A45 /* PipelineTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2397AF62267782E6007A1A45 /* PipelineTableViewCell.xib */; };
@@ -176,6 +178,8 @@
 		2390FED526A6B639007A5A52 /* ApplicationTabHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationTabHeaderView.swift; sourceTree = "<group>"; };
 		2390FEDF26A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerInfoCollectionViewCell.swift; sourceTree = "<group>"; };
 		2390FEE026A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerInfoCollectionViewCell.xib; sourceTree = "<group>"; };
+		2392A4C926C4F9700083EFE4 /* DependentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependentCollectionViewCell.swift; sourceTree = "<group>"; };
+		2392A4CA26C4F9700083EFE4 /* DependentCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DependentCollectionViewCell.xib; sourceTree = "<group>"; };
 		2397AF5E26776241007A1A45 /* PipelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineViewController.swift; sourceTree = "<group>"; };
 		2397AF61267782E6007A1A45 /* PipelineTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineTableViewCell.swift; sourceTree = "<group>"; };
 		2397AF62267782E6007A1A45 /* PipelineTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PipelineTableViewCell.xib; sourceTree = "<group>"; };
@@ -377,6 +381,8 @@
 				2368799E26BC35360045D294 /* DemographicInformationCollectionViewCell.xib */,
 				2321247526C10F4100439A44 /* BorrowerAddressInfoTableViewCell.swift */,
 				2321247626C10F4100439A44 /* BorrowerAddressInfoTableViewCell.xib */,
+				2392A4C926C4F9700083EFE4 /* DependentCollectionViewCell.swift */,
+				2392A4CA26C4F9700083EFE4 /* DependentCollectionViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -758,6 +764,7 @@
 				2390FEE226A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.xib in Resources */,
 				2330CD2226AFEBDF00FF3C43 /* rubik_bold.ttf in Resources */,
 				23E9C752269C3F980066C978 /* DocumentsTableViewCell.xib in Resources */,
+				2392A4CC26C4F9700083EFE4 /* DependentCollectionViewCell.xib in Resources */,
 				23B238BC2679E05200508449 /* SearchResultTableViewCell.xib in Resources */,
 				7186ACB72653B25A00E740D3 /* Main.storyboard in Resources */,
 				2390FED426A6B624007A5A52 /* ApplicationTabHeaderView.xib in Resources */,
@@ -931,6 +938,7 @@
 				23B238B82679D38900508449 /* SearchViewController.swift in Sources */,
 				2330CD2526B000ED00FF3C43 /* DocumentMessageTableViewCell.swift in Sources */,
 				23A56C5D2685B017005CE6F4 /* Icons.swift in Sources */,
+				2392A4CB26C4F9700083EFE4 /* DependentCollectionViewCell.swift in Sources */,
 				23E9C751269C3F980066C978 /* DocumentsTableViewCell.swift in Sources */,
 				7186AD602653DE8600E740D3 /* ExtensionOfView.swift in Sources */,
 				23A0D5D026958E83002B4BCE /* DashboardHeaderView.swift in Sources */,

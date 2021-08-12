@@ -16,6 +16,32 @@ struct Validation {
         return email
     }
     
+    func validateBorrowerFirstName(_ firstName: String?) throws -> String{
+        guard let firstName = firstName else { throw ValidationError.requiredField }
+        guard firstName.count > 0 else { throw ValidationError.requiredField }
+        return firstName
+    }
+    
+    func validateBorrowerLastName(_ lastName: String?) throws -> String{
+        guard let lastName = lastName else { throw ValidationError.requiredField }
+        guard lastName.count > 0 else { throw ValidationError.requiredField }
+        return lastName
+    }
+    
+    func validateBorrowerEmail(_ email: String?) throws -> String{
+        guard let email = email else { throw ValidationError.requiredField }
+        guard email.count > 0 else { throw ValidationError.requiredField }
+        guard email.isValidEmail() else { throw ValidationError.invalidBorrowerEmail }
+        return email
+    }
+    
+    func validateBorrowrHomePhoneNumber(_ phoneNumber: String?) throws -> String {
+        guard let phone = phoneNumber else { throw ValidationError.requiredField }
+        guard phone.count > 0 else { throw ValidationError.requiredField }
+        guard phone.count >= 14 else { throw ValidationError.invalidPhoneNumber }
+        return phone
+    }
+    
 //    func validateUsername(_ username: String?) throws -> String {
 //        guard let username = username else { throw ValidationError.invalidValue }
 //        guard username.count >= 3 else { throw ValidationError.usernameTooShort }
@@ -47,6 +73,8 @@ enum ValidationError: LocalizedError {
     case noEmail
     case invalidEmail
     case invalidPhoneNumber
+    case requiredField
+    case invalidBorrowerEmail
     
     var errorDescription: String? {
         switch self {
@@ -66,7 +94,12 @@ enum ValidationError: LocalizedError {
             return "Your email is not valid. Please try again."
         case .invalidPhoneNumber:
             return "Your phone number is not valid. Please try again."
+        case .requiredField:
+            return "This field is required."
+        case .invalidBorrowerEmail:
+            return "Please enter a valid email address"
         }
+        
         
     }
     
