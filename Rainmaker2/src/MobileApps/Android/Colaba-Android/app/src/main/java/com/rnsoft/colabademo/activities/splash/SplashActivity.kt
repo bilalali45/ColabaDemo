@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.rnsoft.colabademo.activities.dashboard.DocViewerActivity
+import com.rnsoft.colabademo.activities.info.BorrowerInfoActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -30,7 +31,7 @@ class SplashActivity : AppCompatActivity() {
                 startActivity(Intent(this@SplashActivity, WelcomeActivity::class.java))
             } else if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)) {
                 delay(500)
-                startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
+                startActivity(Intent(this@SplashActivity, BorrowerInfoActivity::class.java))
             } else {
                 delay(500)
                 startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
