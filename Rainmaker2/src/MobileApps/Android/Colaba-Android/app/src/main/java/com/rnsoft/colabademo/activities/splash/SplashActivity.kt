@@ -4,7 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.rnsoft.colabademo.activities.dashboard.DocViewerActivity
+import com.rnsoft.colabademo.activities.info.BorrowerInfoActivity
 import com.rnsoft.colabademo.test.Residence
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
