@@ -44,6 +44,8 @@ class ImageViewFragment : Fragment(), AdapterClickListener {
             .load(file) // Uri of the picture
             .into(imageView)
 
+        hideFabIcons()
+
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -56,6 +58,10 @@ class ImageViewFragment : Fragment(), AdapterClickListener {
     }
     override fun getCardIndex(position: Int) {
 
+    }
+
+    fun hideFabIcons(){
+        (activity as DetailActivity).hideFabIcons()
     }
 
 

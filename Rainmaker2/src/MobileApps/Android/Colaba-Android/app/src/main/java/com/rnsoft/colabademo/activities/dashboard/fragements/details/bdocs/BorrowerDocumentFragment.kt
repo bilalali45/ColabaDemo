@@ -119,6 +119,8 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
         btnFilterManullayAdded = view.findViewById(R.id.btn_filter_manullayAdded)
         btnFilterManullayAdded.setOnClickListener(this)
 
+        (activity as DetailActivity).showFabIcons()
+
         return view
 
     }

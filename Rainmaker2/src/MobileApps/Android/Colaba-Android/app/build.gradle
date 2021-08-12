@@ -8,6 +8,10 @@ plugins {
 
 android {
 
+    signingConfigs {
+        releaseBuild {
+        }
+    }
     testOptions {
         unitTests.includeAndroidResources = true
         unitTests.returnDefaultValues = true

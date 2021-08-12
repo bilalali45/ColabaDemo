@@ -47,6 +47,8 @@ class PdfViewFragment : Fragment(), AdapterClickListener {
             findNavController().popBackStack()
         }
 
+        hideFabIcons()
+
         return view
     }
 
@@ -55,5 +57,9 @@ class PdfViewFragment : Fragment(), AdapterClickListener {
     }
     override fun getCardIndex(position: Int) {
 
+    }
+
+    fun hideFabIcons(){
+        (activity as DetailActivity).hideFabIcons()
     }
 }
