@@ -74,6 +74,8 @@
 
     <string name="good_evening_james">James</string>
     <string name="current_residence">Current Residence</string>
+    <string name="mailing_address">Mailing Address</string>
+
 
     <string name="purchase">Purchase</string>
     <string name="user_data_does_not_exit">  User does not exist</string>
@@ -116,6 +118,20 @@
     <string name="title_notifications">Notifications</string>
     <string name="pdf_view">Pdf View</string>
     <string name="image_view">Image View</string>
+
+    <string name="street_address">Street Address</string>
+    <string name="unit_or_apt">Unit Or Apt. Number (Optional)</string>
+    <string name="city">City</string>
+    <string name="county">County</string>
+    <string name="state">State</string>
+    <string name="zip_code">Zip Code</string>
+    <string name="country">Country</string>
+    <string name="housing_status">Housing Status</string>
+    <string name="monthly_rent">Monthly Rent ($)</string>
+    <string name="move_in_date">Move in Date</string>
+    <string name="save_changes">SAVE CHANGES</string>
+
+
 
     <string name="richard">Richard Glenn Randall</string>
     <string name="refinance">Refinance</string>

@@ -63,6 +63,11 @@
     </style>
 
 
+    <style name="InputText_Overlay" parent="android:Theme">
+        <item name="colorPrimary">@color/grey_color_two</item>
+    </style>
+
+
     <style name="Color1SwitchStyle">
         <item name="colorControlActivated">@color/colaba_apptheme_blue</item>
         <item name="colorAccent">@color/colaba_apptheme_blue</item>
