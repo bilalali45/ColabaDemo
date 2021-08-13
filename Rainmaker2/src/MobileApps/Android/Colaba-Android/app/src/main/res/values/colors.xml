@@ -60,15 +60,16 @@
     <color name="txt_color_app_headings">#4E4E4E</color>
     <color name="txt_color_no_doc">#707070</color>
     <color name="txt_primary_info">#7E829E</color>
-
+    <color name="txt_primary_info_deselect">#A7A7A7</color>
 
     <color name="filter_blue">#7bb3d8</color>
     <color name="filter_yellow">#FFBB00</color>
     <color name="filter_green">#00AD46</color>
-    <color name="filter_grey">#7e829e</color>
+    <color name="filter_grey">#7E829E</color>
 
     <color name="content_background_color">#80F8F8F8</color>
-    <color name="colaba_app_border_color">#EEEEEE</color>
+    <color name="colaba_app_border_color">#E5E5E5</color>
+    <color name="border_grey_light">#CCCCCC</color>
     <color name="borrower_overview_background">#FBFBFB</color>
 
 

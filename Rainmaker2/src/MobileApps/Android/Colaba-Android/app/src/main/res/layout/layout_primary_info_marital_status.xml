@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/martial_status"
+        android:textAlignment="center"
+        android:textColor="@color/txt_primary_info"
+        android:fontFamily="@font/rubik_medium"
+        android:textSize="13sp" />
+
+    <RadioGroup
+        android:id="@+id/rg_marital_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <RadioButton
+            android:id="@+id/marital_status_unmarried"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/martial_status_unmarried"
+            android:textColor="@color/txt_color_app_headings"
+            android:textSize="14sp"
+            android:fontFamily="@font/rubik_regular"
+            android:button="@drawable/selector_radio_primary_info"/>
+
+        <RadioButton
+            android:id="@+id/marital_status_married"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/martial_status_married"
+            android:textColor="@color/txt_color_app_headings"
+            android:textSize="14sp"
+            android:fontFamily="@font/rubik_regular"/>
+
+        <RadioButton
+            android:id="@+id/marital_status_divorced"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/martial_status_divorced"
+            android:textColor="@color/txt_color_app_headings"
+            android:textSize="14sp"
+            android:fontFamily="@font/rubik_regular"/>
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/layout_unmarried_addendum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/search_view_holder_style"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/unmarried_addendum"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/txt_color_app_headings"
+            android:fontFamily="@font/rubik_medium"
+            android:textSize="14sp"
+            android:layout_marginEnd="20dp"/>
+
+        <TextView
+            android:id="@+id/unmarried_addendum_ques"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/unmarried_addendum_ques"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/txt_primary_info"
+            android:fontFamily="@font/rubik_regular"
+            android:textSize="13sp"
+            android:ellipsize="end"/>
+
+        <TextView
+            android:id="@id/unmarried_addendum_ans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yes"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/txt_color_app_headings"
+            android:fontFamily="@font/rubik_medium"
+            android:textSize="15sp"
+            android:layout_marginBottom="20dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

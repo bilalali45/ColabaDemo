@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/military_service"
+        android:textAlignment="center"
+        android:textColor="@color/txt_primary_info"
+        android:fontFamily="@font/rubik_medium"
+        android:textSize="13sp" />
+
+    <CheckBox
+        android:id="@+id/simpleCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/active_duty_personel"
+        android:checked="true"/>
+
+    <LinearLayout
+        android:id="@+id/layout_service_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/search_view_holder_style"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/service_lastdate"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/txt_color_app_headings"
+            android:fontFamily="@font/rubik_medium"
+            android:textSize="14sp"
+            android:layout_marginEnd="20dp"/>
+
+        <TextView
+            android:id="@+id/unmarried_addendum_ques"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10/20"
+            android:drawableLeft="@drawable/ic_calendar"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="20dp"
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/txt_primary_info"
+            android:fontFamily="@font/rubik_regular"
+            android:textSize="13sp"
+            android:ellipsize="end"/>
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/chb_res_national_guard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/national_guard"
+        android:checked="true"/>
+
+    <LinearLayout
+        android:id="@+id/layout_res_national_guard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/search_view_holder_style">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Was Richard glenn ever activated during their tour of duty"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/txt_color_app_headings"
+            android:fontFamily="@font/rubik_medium"
+            android:textSize="14sp"
+            android:layout_marginEnd="20dp"/>
+
+        <TextView
+            android:id="@+id/res_national_guard_ans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yes"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/txt_color_app_headings"
+            android:fontFamily="@font/rubik_medium"
+            android:textSize="15sp"
+            android:layout_marginBottom="20dp"/>
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/chb_veteran"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/veteran"
+        android:checked="false"/>
+
+    <CheckBox
+        android:id="@+id/chb_surviving_spouse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/surviving_spouse"
+        android:checked="false"/>
+
+
+
+
+
+
+</LinearLayout>
