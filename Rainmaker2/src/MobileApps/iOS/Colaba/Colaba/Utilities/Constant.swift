@@ -16,6 +16,7 @@ let kFaceIdResetPopup = "This will reset your face Id verification. Do you want 
 let kFingerIdResetPopup = "This will reset your finger print verification. Do you want to continue?"
 //let BASEURL = "https://devmobilegateway.rainsoftfn.com:5002/api/mcu/mobile/"
 let BASEURL = "https://qamobilegateway.rainsoftfn.com/api/mcu/mobile/"
+//let BASEURL = "https://mobilegateway.rainsoftfn.xyz/api/mcu/mobile/"
 let kResendEnableTimeStamp = "kResendEnableTimeStamp"
 var isBiometricAllow = false
 var shouldShowSkipButton = false
@@ -30,5 +31,6 @@ let kNotificationBtnFiltersTapped = "NotificationBtnFiltersTapped"
 let kIsWalkthroughShowed = "isWalkthroughShowed"
 let kNotificationHidesNavigationBar = "notificationHidesNavigationBar"
 let kNotificationShowNavigationBar = "notificationShowNavigationBar"
+let kNotificationShowMailingAddress = "notificationShowMailingAddress"
 
 var sortingFilter = 1

@@ -55,7 +55,7 @@ Birmingham AL 35235</string>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rental $6,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j7t-zW-HQX">
-                        <rect key="frame" x="320" y="110.5" width="86" height="15.5"/>
+                        <rect key="frame" x="320.5" y="110.5" width="85.5" height="15.5"/>
                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                         <color key="textColor" name="AppGreyColor"/>
                         <nil key="highlightedColor"/>
