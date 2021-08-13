@@ -203,7 +203,7 @@ class BorrowerInformationViewController: UIViewController {
         reserveOrNationalGuardMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(reserveOrNationalGuardMainViewTapped)))
         
         btnSaveChanges.layer.cornerRadius = 5
-        btnSaveChanges.dropShadowToCollectionViewCell()
+        btnSaveChanges.addShadow()
     }
     
     func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){
@@ -232,12 +232,17 @@ class BorrowerInformationViewController: UIViewController {
     
     @objc func addAddressViewTapped(){
         let vc = Utility.getAddResidenceVC()
-        self.presentVC(vc: vc)
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navVC.navigationBar.isHidden = true
+        self.presentVC(vc: navVC)
     }
     
     @objc func unmarriedTapped(){
         maritalStatus = 1
         changeMaritalStatus()
+        let vc = Utility.getUnmarriedFollowUpQuestionsVC()
+        self.presentVC(vc: vc)
     }
     
     @objc func marriedTapped(){
@@ -288,7 +293,8 @@ class BorrowerInformationViewController: UIViewController {
     }
    
     @objc func unmarriedMainViewTapped(){
-        
+        let vc = Utility.getUnmarriedFollowUpQuestionsVC()
+        self.presentVC(vc: vc)
     }
     
     @objc func usCitizenTapped(){
@@ -557,7 +563,10 @@ extension BorrowerInformationViewController: UITableViewDataSource, UITableViewD
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = Utility.getAddResidenceVC()
-        self.presentVC(vc: vc)
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navVC.navigationBar.isHidden = true
+        self.presentVC(vc: navVC)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -22,7 +22,7 @@ class AddResidenceViewController: UIViewController {
     @IBOutlet weak var txtfieldHomeAddress: TextField!
     @IBOutlet weak var btnSearch: UIButton!
     @IBOutlet weak var btnDropDown: UIButton!
-    @IBOutlet weak var txtfieldAppartmentNumber: TextField!
+    @IBOutlet weak var txtfieldStreetAddress: TextField!
     @IBOutlet weak var txtfieldUnitNo: TextField!
     @IBOutlet weak var txtfieldCity: TextField!
     @IBOutlet weak var txtfieldCounty: TextField!
@@ -46,7 +46,8 @@ class AddResidenceViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setMaterialTextFieldsAndViews(textfields: [txtfieldHomeAddress, txtfieldAppartmentNumber, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry, txtfieldMoveInDate, txtfieldHousingStatus, txtfieldMonthlyRent])
+        setMaterialTextFieldsAndViews(textfields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry, txtfieldMoveInDate, txtfieldHousingStatus, txtfieldMonthlyRent])
+        NotificationCenter.default.addObserver(self, selector: #selector(showMailingAddress), name: NSNotification.Name(rawValue: kNotificationShowMailingAddress), object: nil)
     }
 
     //MARK:- Methods and Actions
@@ -90,7 +91,7 @@ class AddResidenceViewController: UIViewController {
         mainViewHeightConstraint.constant = 1100
         txtfieldMoveInDateTopConstraint.constant = 583
         btnCalendarTopConstraint.constant = 589
-        txtfieldAppartmentNumber.isHidden = false
+        txtfieldStreetAddress.isHidden = false
         txtfieldUnitNo.isHidden = false
         txtfieldCity.isHidden = false
         txtfieldCounty.isHidden = false
@@ -107,8 +108,17 @@ class AddResidenceViewController: UIViewController {
         }
     }
     
+    @objc func showMailingAddress(){
+        self.showPopup(message: "Mailing address has been added", popupState: .success, popupDuration: .custom(5)) { reason in
+            
+        }
+        self.tblViewMailingAddress.isHidden = false
+        self.addMailingAddressStackView.isHidden = true
+    }
+    
     @objc func addMailingAddressStackViewTapped(){
-        
+        let vc = Utility.getAddMailingAddressVC()
+        self.pushToVC(vc: vc)
     }
     
     @objc func dateChanged() {
@@ -149,7 +159,7 @@ class AddResidenceViewController: UIViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        
+        self.dismissVC()
     }
     
 }
@@ -178,7 +188,8 @@ extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let vc = Utility.getAddMailingAddressVC()
+        self.pushToVC(vc: vc)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -225,7 +236,7 @@ extension AddResidenceViewController: UITextFieldDelegate{
             }
         }
         
-        setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldHomeAddress, txtfieldAppartmentNumber, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry, txtfieldMoveInDate, txtfieldHousingStatus, txtfieldMonthlyRent])
+        setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry, txtfieldMoveInDate, txtfieldHousingStatus, txtfieldMonthlyRent])
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

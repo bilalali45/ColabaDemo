@@ -127,6 +127,14 @@ struct Utility {
         return loanDetailStoryboard.instantiateViewController(withIdentifier: "AddResidenceViewController") as! AddResidenceViewController
     }
     
+    static func getAddMailingAddressVC() -> AddMailingAddressViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "AddMailingAddressViewController") as! AddMailingAddressViewController
+    }
+    
+    static func getUnmarriedFollowUpQuestionsVC() -> UnmarriedFollowUpQuestionsViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "UnmarriedFollowUpQuestionsViewController") as! UnmarriedFollowUpQuestionsViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
