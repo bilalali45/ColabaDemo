@@ -19,36 +19,42 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
 
-        <RadioButton
-            android:id="@+id/marital_status_unmarried"
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_us_citizen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/us_citizen"
             android:textColor="@color/txt_color_app_headings"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:button="@drawable/radiodraw"
+            android:paddingStart="15dp"/>
 
-        <RadioButton
-            android:id="@+id/marital_status_married"
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_pr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/pr_green_card"
             android:textColor="@color/txt_color_app_headings"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:button="@drawable/radiodraw"
+            android:paddingStart="15dp"/>
 
-        <RadioButton
-            android:id="@+id/marital_status_divorced"
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_non_pr_other"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/non_pr"
             android:textColor="@color/txt_color_app_headings"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:button="@drawable/radiodraw"
+            android:paddingStart="15dp"/>
     </RadioGroup>
 
     <LinearLayout
-        android:id="@+id/layout_unmarried_addendum"
+        android:id="@+id/layout_visa_status_other"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"

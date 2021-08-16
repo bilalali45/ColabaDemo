@@ -208,7 +208,7 @@
     <string name="unmarried_addendum_ques">Is there a persoon who is not your legal spouse but who currently has real property rights similar to...</string>
     <string name="citizenship">Citizenship</string>
     <string name="us_citizen">US Citizen</string>
-    <string name="pr_green_card">Permantent Resident Alien (Green Card)</string>
+    <string name="pr_green_card">Permanent Resident Alien (Green Card)</string>
     <string name="non_pr">Non Permantent Resident Alien</string>
     <string name="visa_status">Visa Status</string>
     <string name="others">Others</string>

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_marginStart="20dp"
     android:layout_marginEnd="20dp">
@@ -15,12 +16,14 @@
         android:fontFamily="@font/rubik_medium"
         android:textSize="13sp" />
 
-    <CheckBox
+   <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/simpleCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/active_duty_personel"
-        android:checked="true"/>
+        android:checked="true"
+        style="@style/custom_checkbox"
+        />
 
     <LinearLayout
         android:id="@+id/layout_service_date"
@@ -58,19 +61,21 @@
 
     </LinearLayout>
 
-    <CheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/chb_res_national_guard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/national_guard"
-        android:checked="true"/>
+        android:buttonTint="@drawable/selector_custom_checkbox"
+        />
 
     <LinearLayout
         android:id="@+id/layout_res_national_guard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/search_view_holder_style">
+        android:background="@drawable/search_view_holder_style"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -102,14 +107,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/veteran"
-        android:checked="false"/>
+        android:checked="false"
+        android:buttonTint="@drawable/selector_custom_checkbox"
+        />
 
     <CheckBox
         android:id="@+id/chb_surviving_spouse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/surviving_spouse"
-        android:checked="false"/>
+        android:checked="false"
+        android:buttonTint="@drawable/selector_custom_checkbox"
+        />
 
 
 

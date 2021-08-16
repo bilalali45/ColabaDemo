@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -20,33 +21,40 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
 
-        <RadioButton
-            android:id="@+id/marital_status_unmarried"
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_unmarried"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/martial_status_unmarried"
             android:textColor="@color/txt_color_app_headings"
             android:textSize="14sp"
             android:fontFamily="@font/rubik_regular"
-            android:button="@drawable/selector_radio_primary_info"/>
+            android:button="@drawable/radiodraw"
+            android:paddingStart="15dp" />
 
-        <RadioButton
-            android:id="@+id/marital_status_married"
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_married"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik_regular"
             android:text="@string/martial_status_married"
             android:textColor="@color/txt_color_app_headings"
             android:textSize="14sp"
-            android:fontFamily="@font/rubik_regular"/>
+            android:paddingStart="15dp"
+            android:button="@drawable/radiodraw"
+            tools:ignore="RtlSymmetry" />
 
-        <RadioButton
-            android:id="@+id/marital_status_divorced"
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_divorced"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/martial_status_divorced"
             android:textColor="@color/txt_color_app_headings"
             android:textSize="14sp"
-            android:fontFamily="@font/rubik_regular"/>
+            android:fontFamily="@font/rubik_regular"
+            android:paddingStart="15dp"
+            android:button="@drawable/radiodraw"
+            tools:ignore="RtlSymmetry" />
     </RadioGroup>
 
     <LinearLayout
