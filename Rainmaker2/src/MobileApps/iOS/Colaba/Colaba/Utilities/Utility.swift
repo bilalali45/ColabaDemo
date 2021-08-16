@@ -147,6 +147,14 @@ struct Utility {
         return loanDetailStoryboard.instantiateViewController(withIdentifier: "ReserveFollowUpQuestionsViewController") as! ReserveFollowUpQuestionsViewController
     }
     
+    static func getSaveAddressPopupVC() -> SaveAddressPopupViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "SaveAddressPopupViewController") as! SaveAddressPopupViewController
+    }
+    
+    static func getDeleteAddressPopupVC() -> DeleteAddressPopupViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "DeleteAddressPopupViewController") as! DeleteAddressPopupViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){

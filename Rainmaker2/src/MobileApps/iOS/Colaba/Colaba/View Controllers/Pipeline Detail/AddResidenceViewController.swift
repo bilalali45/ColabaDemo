@@ -48,6 +48,7 @@ class AddResidenceViewController: UIViewController {
         super.viewDidLoad()
         setMaterialTextFieldsAndViews(textfields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry, txtfieldMoveInDate, txtfieldHousingStatus, txtfieldMonthlyRent])
         NotificationCenter.default.addObserver(self, selector: #selector(showMailingAddress), name: NSNotification.Name(rawValue: kNotificationShowMailingAddress), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissAddressVC), name: NSNotification.Name(rawValue: kNotificationSaveAddressAndDismiss), object: nil)
     }
 
     //MARK:- Methods and Actions
@@ -127,12 +128,20 @@ class AddResidenceViewController: UIViewController {
         }
     }
     
+    @objc func dismissAddressVC(){
+        self.dismissVC()
+    }
+    
     @IBAction func btnBackTapped(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
+        let vc = Utility.getSaveAddressPopupVC()
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnDeleteTapped(_ sender: UIButton) {
-        
+        let vc = Utility.getDeleteAddressPopupVC()
+        vc.popupTitle = "Are you sure you want to delete Richard's Current Residence?"
+        vc.screenType = 2
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnSearchTapped(_ sender: UIButton){

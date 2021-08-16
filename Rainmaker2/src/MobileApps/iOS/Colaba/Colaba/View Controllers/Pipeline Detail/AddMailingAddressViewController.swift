@@ -37,6 +37,7 @@ class AddMailingAddressViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setMaterialTextFieldsAndViews(textfields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry])
+        NotificationCenter.default.addObserver(self, selector: #selector(goBackAfterDelete), name: NSNotification.Name(rawValue: kNotificationDeleteMailingAddressAndDismiss), object: nil)
     }
 
     //MARK:- Methods and Actions
@@ -86,12 +87,19 @@ class AddMailingAddressViewController: UIViewController {
         }
     }
     
+    @objc func goBackAfterDelete(){
+        self.goBack()
+    }
+    
     @IBAction func btnBackTapped(_ sender: UIButton) {
         self.goBack()
     }
     
     @IBAction func btnDeleteTapped(_ sender: UIButton) {
-        
+        let vc = Utility.getDeleteAddressPopupVC()
+        vc.popupTitle = "Are you sure you want to delete Richard's Mailing Address?"
+        vc.screenType = 3
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnSearchTapped(_ sender: UIButton){

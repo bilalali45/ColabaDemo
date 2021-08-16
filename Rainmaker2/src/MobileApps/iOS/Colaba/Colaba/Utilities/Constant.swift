@@ -32,5 +32,7 @@ let kIsWalkthroughShowed = "isWalkthroughShowed"
 let kNotificationHidesNavigationBar = "notificationHidesNavigationBar"
 let kNotificationShowNavigationBar = "notificationShowNavigationBar"
 let kNotificationShowMailingAddress = "notificationShowMailingAddress"
+let kNotificationSaveAddressAndDismiss = "notificationSaveAddressAndDismiss"
+let kNotificationDeleteMailingAddressAndDismiss = "notificationDeleteMailingAddressAndDismiss"
 
 var sortingFilter = 1
