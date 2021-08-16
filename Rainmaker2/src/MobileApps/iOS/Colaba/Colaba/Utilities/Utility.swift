@@ -135,6 +135,18 @@ struct Utility {
         return loanDetailStoryboard.instantiateViewController(withIdentifier: "UnmarriedFollowUpQuestionsViewController") as! UnmarriedFollowUpQuestionsViewController
     }
     
+    static func getNonPermanentResidenceFollowUpQuestionsVC() -> NonPermanentResidenceFollowUpQuestionsViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "NonPermanentResidenceFollowUpQuestionsViewController") as! NonPermanentResidenceFollowUpQuestionsViewController
+    }
+    
+    static func getActiveDutyPersonnelFollowUpQuestionVC() -> ActiveDutyPersonnelFollowUpQuestionViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "ActiveDutyPersonnelFollowUpQuestionViewController") as! ActiveDutyPersonnelFollowUpQuestionViewController
+    }
+    
+    static func getReserveFollowUpQuestionsVC() -> ReserveFollowUpQuestionsViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "ReserveFollowUpQuestionsViewController") as! ReserveFollowUpQuestionsViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){

@@ -188,7 +188,7 @@ class BorrowerInformationViewController: UIViewController {
         
         dobDateFormatter.dateStyle = .medium
         dobDateFormatter.dateFormat = "dd/MM/yyyy"
-        txtfieldDOB.addInputViewDatePicker(target: self, selector: #selector(dateChanged))
+        txtfieldDOB.addInputViewDatePicker(target: self, selector: #selector(dateChanged), maximumDate: Date())
         
         lastDateOfServiceMainView.layer.cornerRadius = 6
         lastDateOfServiceMainView.layer.borderWidth = 1
@@ -310,6 +310,8 @@ class BorrowerInformationViewController: UIViewController {
     @objc func nonPermanentResidentTapped(){
         citizenshipStatus = 3
         changeCitizenshipStatus()
+        let vc = Utility.getNonPermanentResidenceFollowUpQuestionsVC()
+        self.presentVC(vc: vc)
     }
     
     func changeCitizenshipStatus(){
@@ -349,7 +351,8 @@ class BorrowerInformationViewController: UIViewController {
     }
     
     @objc func nonPermanentResidentMainViewTapped(){
-        
+        let vc = Utility.getNonPermanentResidenceFollowUpQuestionsVC()
+        self.presentVC(vc: vc)
     }
     
     @objc func dateChanged() {
@@ -363,10 +366,15 @@ class BorrowerInformationViewController: UIViewController {
         btnActiveDuty.setImage(UIImage(named: isActiveDutyPersonal ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
         lblActiveDuty.font = isActiveDutyPersonal ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         changeMilitaryStatus()
+        if (isActiveDutyPersonal){
+            let vc = Utility.getActiveDutyPersonnelFollowUpQuestionVC()
+            self.presentVC(vc: vc)
+        }
     }
     
     @objc func lastDateOfServiceMainViewTapped(){
-        
+        let vc = Utility.getActiveDutyPersonnelFollowUpQuestionVC()
+        self.presentVC(vc: vc)
     }
     
     @objc func reserveNationalGuardTapped(){
@@ -374,10 +382,15 @@ class BorrowerInformationViewController: UIViewController {
         btnReserveNationalGuard.setImage(UIImage(named: isReserveOrNationalCard ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
         lblReserveNationalGuard.font = isReserveOrNationalCard ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         changeMilitaryStatus()
+        if (isReserveOrNationalCard){
+            let vc = Utility.getReserveFollowUpQuestionsVC()
+            self.presentVC(vc: vc)
+        }
     }
     
     @objc func reserveOrNationalGuardMainViewTapped(){
-        
+        let vc = Utility.getReserveFollowUpQuestionsVC()
+        self.presentVC(vc: vc)
     }
     
     @objc func veteranTapped(){

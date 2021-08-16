@@ -21,7 +21,7 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
     @IBOutlet weak var yesStackView: UIStackView!
     @IBOutlet weak var btnYes: UIButton!
     @IBOutlet weak var lblYes: UILabel!
-    @IBOutlet weak var NoStackView: UIStackView!
+    @IBOutlet weak var noStackView: UIStackView!
     @IBOutlet weak var btnNo: UIButton!
     @IBOutlet weak var lblNo: UILabel!
     @IBOutlet weak var txtfieldTypeOfRelation: TextField!
@@ -31,9 +31,13 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
     @IBOutlet weak var txtviewRelationshipDetail: TextView!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
+    var isNonLegalSpouse = 1 // 1 for yes 2 for no
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setMaterialTextFieldsAndViews(textfields: [txtfieldTypeOfRelation, txtfieldState])
+        yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
+        noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
     }
 
     //MARK:- Methods and Actions
@@ -73,6 +77,23 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    @objc func yesStackViewTapped(){
+        isNonLegalSpouse = 1
+        changeNonLegalSpouseStatus()
+    }
+    
+    @objc func noStackViewTapped(){
+        isNonLegalSpouse = 2
+        changeNonLegalSpouseStatus()
+    }
+    
+    func changeNonLegalSpouseStatus(){
+        btnYes.setImage(UIImage(named: isNonLegalSpouse == 1 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+        lblYes.font = isNonLegalSpouse == 1 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        btnNo.setImage(UIImage(named: isNonLegalSpouse == 2 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+        lblNo.font = isNonLegalSpouse == 2 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {

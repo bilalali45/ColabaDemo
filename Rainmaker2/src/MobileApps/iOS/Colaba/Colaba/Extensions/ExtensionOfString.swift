@@ -45,13 +45,16 @@ extension Int{
 
 extension UITextField {
 
-    func addInputViewDatePicker(target: Any, selector: Selector) {
+    func addInputViewDatePicker(target: Any, selector: Selector, maximumDate: Date?=nil) {
 
     let screenWidth = UIScreen.main.bounds.width
 
     //Add DatePicker as inputView
     let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 216))
     datePicker.datePickerMode = .date
+    if let maxDate = maximumDate{
+        datePicker.maximumDate = maxDate
+    }
     if #available(iOS 13.4, *) {
         datePicker.preferredDatePickerStyle = .wheels
     } else {

@@ -93,6 +93,9 @@
 		23E9C758269C6C140066C978 /* DocumentsDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23E9C756269C6C130066C978 /* DocumentsDetailTableViewCell.xib */; };
 		23EB790226A6ED980071BC13 /* RealEstateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EB790026A6ED980071BC13 /* RealEstateCollectionViewCell.swift */; };
 		23EB790326A6ED980071BC13 /* RealEstateCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23EB790126A6ED980071BC13 /* RealEstateCollectionViewCell.xib */; };
+		23F23B3D26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B3C26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift */; };
+		23F23B3F26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B3E26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift */; };
+		23F23B4126CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B4026CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift */; };
 		710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D032E268DC56500A13E63 /* NotificationModel.swift */; };
 		7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */; };
 		7113F51F26568E3B0066E179 /* Home.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7113F51E26568E3B0066E179 /* Home.svg */; };
@@ -232,6 +235,9 @@
 		23E9C756269C6C130066C978 /* DocumentsDetailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DocumentsDetailTableViewCell.xib; sourceTree = "<group>"; };
 		23EB790026A6ED980071BC13 /* RealEstateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealEstateCollectionViewCell.swift; sourceTree = "<group>"; };
 		23EB790126A6ED980071BC13 /* RealEstateCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RealEstateCollectionViewCell.xib; sourceTree = "<group>"; };
+		23F23B3C26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPermanentResidenceFollowUpQuestionsViewController.swift; sourceTree = "<group>"; };
+		23F23B3E26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveDutyPersonnelFollowUpQuestionViewController.swift; sourceTree = "<group>"; };
+		23F23B4026CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveFollowUpQuestionsViewController.swift; sourceTree = "<group>"; };
 		25C6C1D772F13896700CDB1C /* Pods-Colaba.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Colaba.release.xcconfig"; path = "Target Support Files/Pods-Colaba/Pods-Colaba.release.xcconfig"; sourceTree = "<group>"; };
 		3D986CBDBB7995778F877F6F /* Pods-ColabaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ColabaTests.debug.xcconfig"; path = "Target Support Files/Pods-ColabaTests/Pods-ColabaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		710D032E268DC56500A13E63 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
@@ -454,6 +460,9 @@
 				2321247926C17A0E00439A44 /* AddResidenceViewController.swift */,
 				2392A4CD26C55FEE0083EFE4 /* AddMailingAddressViewController.swift */,
 				23A4912826C68258001A57C3 /* UnmarriedFollowUpQuestionsViewController.swift */,
+				23F23B3C26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift */,
+				23F23B3E26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift */,
+				23F23B4026CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -940,6 +949,7 @@
 				710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */,
 				23E9C754269C5F100066C978 /* DocumentsDetailViewController.swift in Sources */,
 				23A56C5E2685B017005CE6F4 /* Loaf.swift in Sources */,
+				23F23B3F26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift in Sources */,
 				23E9C757269C6C140066C978 /* DocumentsDetailTableViewCell.swift in Sources */,
 				234DB4F226A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.swift in Sources */,
 				23B238B82679D38900508449 /* SearchViewController.swift in Sources */,
@@ -967,10 +977,12 @@
 				7186AD7E26540CEB00E740D3 /* CodeViewController.swift in Sources */,
 				2397AF5F26776241007A1A45 /* PipelineViewController.swift in Sources */,
 				23C2448C2689E53F00EED1D0 /* ActivePiplineViewController.swift in Sources */,
+				23F23B4126CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift in Sources */,
 				7186AD7926540CCC00E740D3 /* PhoneNumberViewController.swift in Sources */,
 				2390FEE126A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.swift in Sources */,
 				239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */,
 				23A56C592685B017005CE6F4 /* Manager.swift in Sources */,
+				23F23B3D26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift in Sources */,
 				23C2448A2689E3F800EED1D0 /* InActiveLoanModel.swift in Sources */,
 				2320138D2698324800F500E2 /* BorrowerAddressTableViewCell.swift in Sources */,
 				2321247726C10F4100439A44 /* BorrowerAddressInfoTableViewCell.swift in Sources */,
