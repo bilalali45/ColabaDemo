@@ -8,7 +8,7 @@ import com.rnsoft.colabademo.R
 class Residence: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.current_residence_layout)
+        setContentView(R.layout.mailing_test_layout)
 
         Log.e("Activity", "onCreate")
     }
