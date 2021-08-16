@@ -15,9 +15,15 @@
         <item name="android:font">@font/rubik_regular</item>
     </style>
 
-    <style name="custom_checkbox" parent="Theme.AppCompat.Light">
+    <style name="custom_checkbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="colorControlNormal">#ffffff</item>
         <item name="colorControlActivated">@color/colaba_apptheme_blue</item>
+    </style>
+
+    <style name="checkBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="colorControlNormal">@drawable/checkbox_unchecked</item><!-- border color -->
+        <item name="colorControlActivated">@drawable/checkbox_checked</item> <!-- fill color -->
+        <item name="colorControlHighlight">@drawable/checkbox_checked</item> <!-- animation color -->
     </style>
 
 </resources>

@@ -78,6 +78,11 @@
         <item name="android:background">@drawable/rounded_shape</item>
     </style>
 
+    <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="colorControlNormal">@drawable/checkbox_unchecked</item><!-- border color -->
+        <item name="colorControlActivated">@drawable/checkbox_checked</item> <!-- fill color -->
+        <item name="colorControlHighlight">@drawable/checkbox_checked</item> <!-- animation color -->
+    </style>
 
 
 

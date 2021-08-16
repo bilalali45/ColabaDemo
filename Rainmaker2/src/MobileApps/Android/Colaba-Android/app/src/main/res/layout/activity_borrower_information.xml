@@ -81,6 +81,20 @@
             app:layout_constraintTop_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+                <!--<DatePicker
+                    android:visibility="visible"
+                    android:id="@+id/dobDatePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:datePickerMode="calendar"
+                    android:elevation="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    /> -->
+
+
             <LinearLayout
                 android:id="@+id/layout1"
                 android:layout_width="match_parent"
@@ -414,7 +428,8 @@
                 android:layout_marginTop="20dp"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_cell_num">
+                app:layout_constraintTop_toBottomOf="@+id/layout_cell_num"
+                android:visibility="gone">
 
                 <include
                     layout="@layout/layout_primary_info_residence"
@@ -457,14 +472,16 @@
                     layout="@layout/layout_primary_info_marital_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp" />
+                    android:layout_marginTop="50dp"
+                    android:visibility="gone"/>
 
                 <include
                     android:id="@+id/layout_citizenship"
                     layout="@layout/layout_primary_info_citizenship"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp" />
+                    android:layout_marginTop="50dp"
+                    android:visibility="gone"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_dob"
@@ -476,9 +493,13 @@
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="1dp"
                     app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-                    app:hintTextColor="@color/txt_primary_info">
+                    app:hintTextColor="@color/txt_primary_info"
+                    app:endIconDrawable="@drawable/ic_calendar"
+                    app:endIconMode="custom"
+                    app:endIconTint="@color/grey_color_three">
 
                     <EditText
+                        android:id="@+id/edDatePicker"
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
                         android:background="@android:color/transparent"
@@ -498,28 +519,32 @@
                     android:id="@+id/layout_security_num"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="64dp"
                     android:hint="@string/social_security_num"
                     app:boxStrokeColor="@color/colaba_apptheme_blue"
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="1dp"
                     app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-                    app:hintTextColor="@color/txt_primary_info">
+                    app:hintTextColor="@color/txt_primary_info"
+                    app:endIconDrawable="@drawable/ic_eye_hide"
+                    app:endIconMode="custom"
+                    app:passwordToggleEnabled="true"
+                    android:layout_marginTop="60dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ed_security_num"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="64dp"
                         android:background="@android:color/transparent"
                         android:ems="10"
                         android:imeOptions="actionDone"
                         android:paddingStart="0dp"
-                        android:paddingTop="30dp"
                         android:paddingEnd="0dp"
                         android:singleLine="true"
                         android:textColor="@color/primary_info_label_color"
                         android:textSize="@dimen/ed_txt_size_primary_info"
-                        android:fontFamily="@font/rubik_medium" />
+                        android:fontFamily="@font/rubik_medium"
+                        android:inputType="textPassword"
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -623,7 +648,8 @@
                     layout="@layout/layout_primary_info_military"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp" />
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="50dp"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
