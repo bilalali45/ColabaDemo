@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_marginStart="20dp"
     android:layout_marginEnd="20dp">
@@ -17,7 +17,7 @@
         android:textSize="13sp" />
 
    <androidx.appcompat.widget.AppCompatCheckBox
-        android:id="@+id/simpleCheckBox"
+        android:id="@+id/chb_duty_personel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/active_duty_personel"
@@ -26,7 +26,7 @@
         />
 
     <LinearLayout
-        android:id="@+id/layout_service_date"
+        android:id="@+id/layout_active_personnel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -45,7 +45,6 @@
             android:layout_marginEnd="20dp"/>
 
         <TextView
-            android:id="@+id/unmarried_addendum_ques"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="10/20"
@@ -66,11 +65,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/national_guard"
-        android:buttonTint="@drawable/selector_custom_checkbox"
+        style="@style/CheckBox"
         />
 
     <LinearLayout
-        android:id="@+id/layout_res_national_guard"
+        android:id="@+id/layout_national_guard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -108,17 +107,19 @@
         android:layout_height="wrap_content"
         android:text="@string/veteran"
         android:checked="false"
-        android:buttonTint="@drawable/selector_custom_checkbox"
+        style="@style/CheckBox"
         />
 
-    <CheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/chb_surviving_spouse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/surviving_spouse"
         android:checked="false"
-        app:buttonTint="@drawable/selector_custom_checkbox"
         />
+
+    <!--android:buttonTint="@drawable/selector_custom_checkbox" -->
+
 
 
 
