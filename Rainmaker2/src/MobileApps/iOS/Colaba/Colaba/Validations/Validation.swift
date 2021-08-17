@@ -62,6 +62,61 @@ struct Validation {
         guard phone.count >= 14 else { throw ValidationError.invalidPhoneNumber }
         return phone
     }
+    
+    func validateSearchHomeAddress(_ homeAddress: String?) throws -> String{
+        guard let homeAddress = homeAddress else { throw ValidationError.requiredField }
+        guard homeAddress.count > 0 else { throw ValidationError.requiredField }
+        return homeAddress
+    }
+    
+    func validateStreetAddressHomeAddress(_ streetAddress: String?) throws -> String{
+        guard let streetAddress = streetAddress else { throw ValidationError.requiredField }
+        guard streetAddress.count > 0 else { throw ValidationError.requiredField }
+        return streetAddress
+    }
+    
+    func validateCity(_ city: String?) throws -> String{
+        guard let city = city else { throw ValidationError.requiredField }
+        guard city.count > 0 else { throw ValidationError.requiredField }
+        return city
+    }
+    
+    func validateState(_ state: String?) throws -> String{
+        guard let state = state else { throw ValidationError.requiredField }
+        guard state.count > 0 else { throw ValidationError.requiredField }
+        return state
+    }
+    
+    func validateZipcode(_ zipCode: String?) throws -> String{
+        guard let zipCode = zipCode else { throw ValidationError.requiredField }
+        guard zipCode.count > 0 else { throw ValidationError.requiredField }
+        return zipCode
+    }
+    
+    func validateCountry(_ country: String?) throws -> String{
+        guard let country = country else { throw ValidationError.requiredField }
+        guard country.count > 0 else { throw ValidationError.requiredField }
+        return country
+    }
+    
+    func validateMoveInDate(_ moveInDate: String?) throws -> String{
+        guard let moveInDate = moveInDate else { throw ValidationError.requiredField }
+        guard moveInDate.count > 0 else { throw ValidationError.requiredField }
+        return moveInDate
+    }
+    
+    func validateHousingStatus(_ housingStatus: String?) throws -> String{
+        guard let housingStatus = housingStatus else { throw ValidationError.requiredField }
+        guard housingStatus.count > 0 else { throw ValidationError.requiredField }
+        return housingStatus
+    }
+    
+    func validateMonthlyRent(_ monthlyRent: String?) throws -> String{
+        guard let monthlyRent = monthlyRent else { throw ValidationError.requiredField }
+        guard monthlyRent.count > 0 else { throw ValidationError.requiredField }
+        return monthlyRent
+    }
+    
 }
 
 enum ValidationError: LocalizedError {

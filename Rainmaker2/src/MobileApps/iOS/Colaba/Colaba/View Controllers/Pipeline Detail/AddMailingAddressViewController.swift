@@ -38,6 +38,17 @@ class AddMailingAddressViewController: UIViewController {
     let moveInDateFormatter = DateFormatter()
     let countryDropDown = DropDown()
     let stateDropDown = DropDown()
+    private let validation: Validation
+    
+    init(validation: Validation) {
+        self.validation = validation
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        self.validation = Validation()
+        super.init(coder: coder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +69,7 @@ class AddMailingAddressViewController: UIViewController {
             textfield.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
             textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
             textfield.detailColor = .red
+            textfield.detailVerticalOffset = 4
         }
         btnSaveChanges.layer.cornerRadius = 5
         btnSaveChanges.dropShadowToCollectionViewCell()
@@ -69,6 +81,8 @@ class AddMailingAddressViewController: UIViewController {
         
         countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldCountry.detail = ""
             txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldCountry.text = item
             countryDropDown.hide()
@@ -81,6 +95,8 @@ class AddMailingAddressViewController: UIViewController {
         
         stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldState.detail = ""
             txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldState.text = item
             stateDropDown.hide()
@@ -123,6 +139,8 @@ class AddMailingAddressViewController: UIViewController {
             countryDropDown.dataSource = kCountryListArray
             countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
                 txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
+                txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
+                txtfieldCountry.detail = ""
                 txtfieldCountry.text = item
                 btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }
@@ -131,6 +149,8 @@ class AddMailingAddressViewController: UIViewController {
             let filterCountries = kCountryListArray.filter{$0.contains(txtfieldCountry.text!)}
             countryDropDown.dataSource = filterCountries
             countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
+                txtfieldCountry.detail = ""
                 txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
                 txtfieldCountry.text = item
                 btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
@@ -144,6 +164,8 @@ class AddMailingAddressViewController: UIViewController {
         if (txtfieldState.text == ""){
             stateDropDown.dataSource = kUSAStatesArray
             stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
+                txtfieldState.detail = ""
                 txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
                 txtfieldState.text = item
                 btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
@@ -153,6 +175,8 @@ class AddMailingAddressViewController: UIViewController {
             let filterStates = kUSAStatesArray.filter{$0.contains(txtfieldState.text!)}
             stateDropDown.dataSource = filterStates
             stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
+                txtfieldState.detail = ""
                 txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
                 txtfieldState.text = item
                 btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
@@ -193,8 +217,91 @@ class AddMailingAddressViewController: UIViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        self.goBack()
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowMailingAddress), object: nil)
+        
+        do{
+            let searchHomeAddress = try validation.validateSearchHomeAddress(txtfieldHomeAddress.text)
+            DispatchQueue.main.async {
+                self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldHomeAddress.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldHomeAddress.dividerColor = .red
+            self.txtfieldHomeAddress.detail = error.localizedDescription
+        }
+        
+        do{
+            let streetAddress = try validation.validateStreetAddressHomeAddress(txtfieldStreetAddress.text)
+            DispatchQueue.main.async {
+                self.txtfieldStreetAddress.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldStreetAddress.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldStreetAddress.dividerColor = .red
+            self.txtfieldStreetAddress.detail = error.localizedDescription
+        }
+        
+        do{
+            let city = try validation.validateCity(txtfieldCity.text)
+            DispatchQueue.main.async {
+                self.txtfieldCity.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldCity.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldCity.dividerColor = .red
+            self.txtfieldCity.detail = error.localizedDescription
+        }
+        
+        do{
+            let state = try validation.validateState(txtfieldState.text)
+            DispatchQueue.main.async {
+                self.txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldState.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldState.dividerColor = .red
+            self.txtfieldState.detail = error.localizedDescription
+        }
+        
+        do{
+            let zipCode = try validation.validateZipcode(txtfieldZipCode.text)
+            DispatchQueue.main.async {
+                self.txtfieldZipCode.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldZipCode.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldZipCode.dividerColor = .red
+            self.txtfieldZipCode.detail = error.localizedDescription
+        }
+        
+        do{
+            let country = try validation.validateCountry(txtfieldCountry.text)
+            DispatchQueue.main.async {
+                self.txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldCountry.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldCountry.dividerColor = .red
+            self.txtfieldCountry.detail = error.localizedDescription
+        }
+        
+        
+        if (self.txtfieldHomeAddress.text != "" && txtfieldStreetAddress.text != "" && txtfieldCity.text != "" && txtfieldState.text != "" && txtfieldZipCode.text != "" && txtfieldCountry.text != ""){
+            self.goBack()
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowMailingAddress), object: nil)
+        }
+        
     }
     
 }
@@ -230,14 +337,96 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
                 txtfieldHomeAddress.text = ""
                 txtfieldHomeAddress.placeholder = "       Search Home Address"
             }
+            
+            do{
+                let searchHomeAddress = try validation.validateSearchHomeAddress(txtfieldHomeAddress.text!.replacingOccurrences(of: "       ", with: ""))
+                DispatchQueue.main.async {
+                    self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldHomeAddress.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldHomeAddress.dividerColor = .red
+                self.txtfieldHomeAddress.detail = error.localizedDescription
+            }
         }
         
         if (textField == txtfieldState){
             btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            do{
+                let state = try validation.validateState(txtfieldState.text)
+                DispatchQueue.main.async {
+                    self.txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldState.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldState.dividerColor = .red
+                self.txtfieldState.detail = error.localizedDescription
+            }
         }
         
         if (textField == txtfieldCountry){
             btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            do{
+                let country = try validation.validateCountry(txtfieldCountry.text)
+                DispatchQueue.main.async {
+                    self.txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldCountry.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldCountry.dividerColor = .red
+                self.txtfieldCountry.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldStreetAddress){
+            do{
+                let streetAddress = try validation.validateStreetAddressHomeAddress(txtfieldStreetAddress.text)
+                DispatchQueue.main.async {
+                    self.txtfieldStreetAddress.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldStreetAddress.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldStreetAddress.dividerColor = .red
+                self.txtfieldStreetAddress.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldCity){
+            do{
+                let city = try validation.validateCity(txtfieldCity.text)
+                DispatchQueue.main.async {
+                    self.txtfieldCity.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldCity.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldCity.dividerColor = .red
+                self.txtfieldCity.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldZipCode){
+            do{
+                let zipCode = try validation.validateZipcode(txtfieldZipCode.text)
+                DispatchQueue.main.async {
+                    self.txtfieldZipCode.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldZipCode.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldZipCode.dividerColor = .red
+                self.txtfieldZipCode.detail = error.localizedDescription
+            }
         }
         
         setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry])
@@ -251,6 +440,9 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
             else{
                 return true
             }
+        }
+        if (textField == txtfieldZipCode){
+            return string == "" ? true : (txtfieldZipCode.text!.count < 5)
         }
         return true
     }

@@ -44,6 +44,7 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
             textfield.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
             textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
             textfield.detailColor = .red
+            textfield.detailVerticalOffset = 4
         }
         txtviewStatusDetail.dividerThickness = 1
         txtviewStatusDetail.isDividerHidden = false

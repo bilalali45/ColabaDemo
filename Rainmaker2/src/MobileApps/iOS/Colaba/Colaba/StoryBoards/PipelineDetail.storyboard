@@ -2518,7 +2518,7 @@
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardType="numberPad"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Zip Code"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
@@ -2986,7 +2986,7 @@
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardType="numberPad"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Zip Code"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
