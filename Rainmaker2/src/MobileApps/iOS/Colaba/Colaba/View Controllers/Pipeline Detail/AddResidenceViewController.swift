@@ -81,6 +81,7 @@ class AddResidenceViewController: UIViewController {
         housingStatusDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnHousingStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldHousingStatus.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldHousingStatus.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldHousingStatus.text = item
             housingStatusDropDown.hide()
             txtfieldMonthlyRent.isHidden = item != "Rent"
@@ -98,6 +99,7 @@ class AddResidenceViewController: UIViewController {
         
         countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldCountry.text = item
             countryDropDown.hide()
         }
@@ -109,6 +111,7 @@ class AddResidenceViewController: UIViewController {
         
         stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldState.text = item
             stateDropDown.hide()
         }
@@ -191,6 +194,7 @@ class AddResidenceViewController: UIViewController {
             countryDropDown.dataSource = kCountryListArray
             countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
                 txtfieldCountry.text = item
+                txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
                 btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }
         }
@@ -199,6 +203,7 @@ class AddResidenceViewController: UIViewController {
             countryDropDown.dataSource = filterCountries
             countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
                 txtfieldCountry.text = item
+                txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
                 btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }
         }
@@ -211,6 +216,7 @@ class AddResidenceViewController: UIViewController {
             stateDropDown.dataSource = kUSAStatesArray
             stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
                 txtfieldState.text = item
+                txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
                 btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }
         }
@@ -219,6 +225,7 @@ class AddResidenceViewController: UIViewController {
             stateDropDown.dataSource = filterStates
             stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
                 txtfieldState.text = item
+                txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
                 btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }
         }

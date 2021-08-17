@@ -69,6 +69,7 @@ class AddMailingAddressViewController: UIViewController {
         
         countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldCountry.text = item
             countryDropDown.hide()
         }
@@ -80,6 +81,7 @@ class AddMailingAddressViewController: UIViewController {
         
         stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldState.text = item
             stateDropDown.hide()
         }
@@ -120,6 +122,7 @@ class AddMailingAddressViewController: UIViewController {
         if (txtfieldCountry.text == ""){
             countryDropDown.dataSource = kCountryListArray
             countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
                 txtfieldCountry.text = item
                 btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }
@@ -128,6 +131,7 @@ class AddMailingAddressViewController: UIViewController {
             let filterCountries = kCountryListArray.filter{$0.contains(txtfieldCountry.text!)}
             countryDropDown.dataSource = filterCountries
             countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
                 txtfieldCountry.text = item
                 btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }
@@ -140,6 +144,7 @@ class AddMailingAddressViewController: UIViewController {
         if (txtfieldState.text == ""){
             stateDropDown.dataSource = kUSAStatesArray
             stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
                 txtfieldState.text = item
                 btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }
@@ -148,6 +153,7 @@ class AddMailingAddressViewController: UIViewController {
             let filterStates = kUSAStatesArray.filter{$0.contains(txtfieldState.text!)}
             stateDropDown.dataSource = filterStates
             stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
                 txtfieldState.text = item
                 btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }

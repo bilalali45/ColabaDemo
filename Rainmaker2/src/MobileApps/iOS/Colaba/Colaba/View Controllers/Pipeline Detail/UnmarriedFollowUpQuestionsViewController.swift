@@ -77,6 +77,7 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
         relationshipTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnTypeOfRelationDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldTypeOfRelation.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldTypeOfRelation.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldTypeOfRelation.text = item
             relationshipTypeDropDown.hide()
             txtviewRelationshipDetail.isHidden = item != "Other"
@@ -89,6 +90,7 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
         
         stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldState.text = item
             stateDropDown.hide()
         }
@@ -138,6 +140,7 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
         if (txtfieldState.text == ""){
             stateDropDown.dataSource = kUSAStatesArray
             stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
                 txtfieldState.text = item
                 btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }
@@ -146,6 +149,7 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
             let filterStates = kUSAStatesArray.filter{$0.contains(txtfieldState.text!)}
             stateDropDown.dataSource = filterStates
             stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
                 txtfieldState.text = item
                 btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }

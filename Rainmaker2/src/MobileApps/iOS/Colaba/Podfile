@@ -18,6 +18,7 @@ pod 'MarqueeLabel'
 pod 'Material'
 pod 'MonthYearPicker'
 pod 'DropDown'
+pod 'MaterialComponents/TextControls+FilledTextAreas'
 
   target 'ColabaTests' do
     inherit! :search_paths
