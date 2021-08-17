@@ -3518,11 +3518,17 @@
                                             <action selector="btnStateDropDownTapped:" destination="JNi-kh-Wqc" eventType="touchUpInside" id="DlI-HO-hSW"/>
                                         </connections>
                                     </button>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Relationship Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4nv-ej-WmW">
+                                        <rect key="frame" x="22" y="346.5" width="110" height="14.5"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
+                                        <color key="textColor" name="AppGreyColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f0J-jN-p75" customClass="TextView" customModule="Material">
-                                        <rect key="frame" x="20" y="346.5" width="335" height="91"/>
+                                        <rect key="frame" x="20" y="372" width="335" height="77"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="91" id="irn-Yv-xTV"/>
+                                            <constraint firstAttribute="height" constant="77" id="irn-Yv-xTV"/>
                                         </constraints>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
@@ -3531,9 +3537,8 @@
                                             <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
                                                 <real key="value" value="1"/>
                                             </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Relationship Details"/>
                                             <userDefinedRuntimeAttribute type="number" keyPath="linesSpacing">
-                                                <real key="value" value="3"/>
+                                                <real key="value" value="0.0"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </textView>
@@ -3556,15 +3561,17 @@
                                     <constraint firstItem="mfm-XY-0el" firstAttribute="top" secondItem="riK-2Y-Ltx" secondAttribute="bottom" id="Qir-EU-Xdy"/>
                                     <constraint firstAttribute="height" constant="500" id="SNl-Yz-9nK"/>
                                     <constraint firstItem="tPl-Hs-yd9" firstAttribute="top" secondItem="Iy8-HM-Fu0" secondAttribute="bottom" constant="20" id="VpL-bW-c0X"/>
+                                    <constraint firstItem="4nv-ej-WmW" firstAttribute="leading" secondItem="3hc-9C-mZE" secondAttribute="leading" constant="22" id="WC9-kz-TtJ"/>
                                     <constraint firstItem="FVr-SW-7Mm" firstAttribute="top" secondItem="yuV-Ip-o6t" secondAttribute="bottom" constant="6" id="WX8-dg-Izn"/>
                                     <constraint firstItem="yuV-Ip-o6t" firstAttribute="leading" secondItem="3hc-9C-mZE" secondAttribute="leading" constant="20" id="Y8x-O4-Puu"/>
                                     <constraint firstAttribute="trailing" secondItem="FVr-SW-7Mm" secondAttribute="trailing" constant="20" id="bLC-2A-iLf"/>
                                     <constraint firstAttribute="trailing" secondItem="mfm-XY-0el" secondAttribute="trailing" constant="20" id="edv-s3-fOm"/>
                                     <constraint firstItem="FVr-SW-7Mm" firstAttribute="top" secondItem="riK-2Y-Ltx" secondAttribute="bottom" constant="30" id="gca-C1-PNy"/>
+                                    <constraint firstItem="4nv-ej-WmW" firstAttribute="top" secondItem="FVr-SW-7Mm" secondAttribute="bottom" constant="30" id="oVo-l6-XJk"/>
                                     <constraint firstItem="Iy8-HM-Fu0" firstAttribute="leading" secondItem="3hc-9C-mZE" secondAttribute="leading" constant="20" id="p4v-6X-umj"/>
                                     <constraint firstItem="2hR-9r-fcq" firstAttribute="top" secondItem="tfI-9v-bVw" secondAttribute="bottom" constant="37" id="qN6-SQ-2Nt"/>
-                                    <constraint firstItem="f0J-jN-p75" firstAttribute="top" secondItem="FVr-SW-7Mm" secondAttribute="bottom" constant="30" id="rGk-wo-uUe"/>
                                     <constraint firstItem="FVr-SW-7Mm" firstAttribute="leading" secondItem="3hc-9C-mZE" secondAttribute="leading" constant="20" id="szP-Yz-FYz"/>
+                                    <constraint firstItem="f0J-jN-p75" firstAttribute="top" secondItem="4nv-ej-WmW" secondAttribute="bottom" constant="11" id="uhr-wt-4pu"/>
                                     <constraint firstItem="f0J-jN-p75" firstAttribute="leading" secondItem="3hc-9C-mZE" secondAttribute="leading" constant="20" id="vJe-g0-wFL"/>
                                     <constraint firstAttribute="trailing" secondItem="f0J-jN-p75" secondAttribute="trailing" constant="20" id="yVJ-5u-Ttn"/>
                                 </constraints>
@@ -3611,6 +3618,7 @@
                         <outlet property="lblBorrowerName" destination="Gto-6M-4dT" id="1dp-Qa-0Yp"/>
                         <outlet property="lblNo" destination="Rb0-ct-e3Q" id="Bt2-Xc-m8d"/>
                         <outlet property="lblQuestion" destination="Iy8-HM-Fu0" id="4Qg-gd-6ZX"/>
+                        <outlet property="lblRelationshipDetail" destination="4nv-ej-WmW" id="yLs-qa-Fqp"/>
                         <outlet property="lblTopHeading" destination="FpZ-T3-2Bx" id="xXQ-Fo-iG3"/>
                         <outlet property="lblYes" destination="LP7-6f-Ylu" id="vAh-pv-t56"/>
                         <outlet property="mainView" destination="3hc-9C-mZE" id="fHV-AG-dxb"/>
@@ -3626,7 +3634,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ewq-zv-gU3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1398" y="913"/>
+            <point key="canvasLocation" x="1397.5999999999999" y="912.5937031484259"/>
         </scene>
         <!--Non Permanent Residence Follow Up Questions View Controller-->
         <scene sceneID="Mbf-TA-1ga">
@@ -3724,11 +3732,17 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="textfield-dropdownIcon"/>
                                     </button>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XJS-IV-0D6">
+                                        <rect key="frame" x="22" y="109" width="78" height="15"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
+                                        <color key="textColor" name="AppGreyColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VcQ-rC-7QT" customClass="TextView" customModule="Material">
-                                        <rect key="frame" x="20" y="109" width="335" height="71"/>
+                                        <rect key="frame" x="20" y="135" width="335" height="57"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="71" id="eKx-jN-c41"/>
+                                            <constraint firstAttribute="height" constant="57" id="eKx-jN-c41"/>
                                         </constraints>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
@@ -3737,9 +3751,8 @@
                                             <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
                                                 <real key="value" value="1"/>
                                             </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Status details"/>
                                             <userDefinedRuntimeAttribute type="number" keyPath="linesSpacing">
-                                                <real key="value" value="2"/>
+                                                <real key="value" value="0.0"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </textView>
@@ -3749,13 +3762,15 @@
                                     <constraint firstAttribute="trailing" secondItem="gBB-d5-sta" secondAttribute="trailing" constant="20" id="0W1-LW-c1y"/>
                                     <constraint firstAttribute="trailing" secondItem="2wD-fT-cOq" secondAttribute="trailing" constant="20" id="3oW-2b-gDa"/>
                                     <constraint firstAttribute="trailing" secondItem="CEC-fl-5KQ" secondAttribute="trailing" constant="22" id="Fz6-aX-TP3"/>
+                                    <constraint firstItem="XJS-IV-0D6" firstAttribute="leading" secondItem="GL7-Aq-huI" secondAttribute="leading" constant="22" id="INF-Wq-BgQ"/>
+                                    <constraint firstItem="VcQ-rC-7QT" firstAttribute="top" secondItem="XJS-IV-0D6" secondAttribute="bottom" constant="11" id="LrC-JS-EjP"/>
                                     <constraint firstAttribute="height" constant="200" id="M2N-u5-qqK"/>
                                     <constraint firstItem="gBB-d5-sta" firstAttribute="top" secondItem="GL7-Aq-huI" secondAttribute="top" constant="30" id="Mx8-a7-VYE"/>
                                     <constraint firstItem="2wD-fT-cOq" firstAttribute="top" secondItem="gBB-d5-sta" secondAttribute="bottom" id="V6P-yq-Xug"/>
+                                    <constraint firstItem="XJS-IV-0D6" firstAttribute="top" secondItem="gBB-d5-sta" secondAttribute="bottom" constant="30" id="a5z-Rf-2mc"/>
                                     <constraint firstItem="2wD-fT-cOq" firstAttribute="leading" secondItem="GL7-Aq-huI" secondAttribute="leading" constant="20" id="gz1-dl-VlG"/>
                                     <constraint firstItem="CEC-fl-5KQ" firstAttribute="top" secondItem="GL7-Aq-huI" secondAttribute="top" constant="37" id="hKd-KO-Ohv"/>
                                     <constraint firstItem="gBB-d5-sta" firstAttribute="leading" secondItem="GL7-Aq-huI" secondAttribute="leading" constant="20" id="itL-EY-Dr4"/>
-                                    <constraint firstItem="VcQ-rC-7QT" firstAttribute="top" secondItem="gBB-d5-sta" secondAttribute="bottom" constant="30" id="qAa-eQ-wQP"/>
                                     <constraint firstItem="VcQ-rC-7QT" firstAttribute="leading" secondItem="GL7-Aq-huI" secondAttribute="leading" constant="20" id="ruY-vH-bqH"/>
                                     <constraint firstAttribute="trailing" secondItem="VcQ-rC-7QT" secondAttribute="trailing" constant="20" id="zm2-hc-1R8"/>
                                 </constraints>
@@ -3797,6 +3812,7 @@
                         <outlet property="btnSaveChanges" destination="bTQ-Ta-8Ch" id="Dbi-de-XTj"/>
                         <outlet property="btnVisaStatusDropDown" destination="CEC-fl-5KQ" id="G10-WQ-ChI"/>
                         <outlet property="lblBorrowerName" destination="aq5-jN-aUZ" id="GXQ-Al-eis"/>
+                        <outlet property="lblStatusDetail" destination="XJS-IV-0D6" id="tET-R4-1Kv"/>
                         <outlet property="lblTopHeading" destination="B90-12-lY9" id="tWL-xM-q4D"/>
                         <outlet property="mainView" destination="GL7-Aq-huI" id="eQ4-fw-Kze"/>
                         <outlet property="separatorView" destination="4f1-PG-U5l" id="5dV-Ct-R0V"/>
@@ -3807,7 +3823,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FhP-DV-abX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2068" y="913"/>
+            <point key="canvasLocation" x="2068" y="912.5937031484259"/>
         </scene>
         <!--Active Duty Personnel Follow Up Question View Controller-->
         <scene sceneID="XCy-YI-5K0">

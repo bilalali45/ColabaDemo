@@ -21,6 +21,7 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
     @IBOutlet weak var txtfieldVisaStatus: TextField!
     @IBOutlet weak var visaStatusDropDownAnchorView: UIView!
     @IBOutlet weak var btnVisaStatusDropDown: UIButton!
+    @IBOutlet weak var lblStatusDetail: UILabel!
     @IBOutlet weak var txtviewStatusDetail: TextView!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
@@ -46,13 +47,10 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
         }
         txtviewStatusDetail.dividerThickness = 1
         txtviewStatusDetail.isDividerHidden = false
-        //txtviewRelationshipDetail.dividerActiveColor = Theme.getButtonBlueColor()
         txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
-        //txtviewRelationshipDetail.placeholderActiveColor = Theme.getAppGreyColor()
-        //txtviewRelationshipDetail.delegate = self
+        txtviewStatusDetail.delegate = self
         txtviewStatusDetail.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-        //txtviewRelationshipDetail.detailLabel.font = Theme.getRubikRegularFont(size: 12)
-        //txtviewRelationshipDetail.detailColor = .red
+        
         
         btnSaveChanges.layer.cornerRadius = 5
         btnSaveChanges.dropShadowToCollectionViewCell()
@@ -66,6 +64,7 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
             txtfieldVisaStatus.text = item
             visaStatusDropDown.hide()
             txtviewStatusDetail.isHidden = item != "Other"
+            lblStatusDetail.isHidden = item != "Other"
             txtfieldVisaStatus.dividerColor = Theme.getSeparatorNormalColor()
         }
     }
@@ -114,6 +113,20 @@ extension NonPermanentResidenceFollowUpQuestionsViewController: UITextFieldDeleg
         }
         
         setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldVisaStatus])
+    }
+    
+}
+
+extension NonPermanentResidenceFollowUpQuestionsViewController: UITextViewDelegate{
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        txtviewStatusDetail.dividerThickness = 2
+        txtviewStatusDetail.dividerColor = Theme.getButtonBlueColor()
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        txtviewStatusDetail.dividerThickness = 1
+        txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
     }
     
 }

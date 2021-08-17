@@ -31,6 +31,7 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
     @IBOutlet weak var txtfieldState: TextField!
     @IBOutlet weak var stateDropDownAnchorView: UIView!
     @IBOutlet weak var btnStateDropDown: UIButton!
+    @IBOutlet weak var lblRelationshipDetail: UILabel!
     @IBOutlet weak var txtviewRelationshipDetail: TextView!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
@@ -60,13 +61,9 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
         }
         txtviewRelationshipDetail.dividerThickness = 1
         txtviewRelationshipDetail.isDividerHidden = false
-        //txtviewRelationshipDetail.dividerActiveColor = Theme.getButtonBlueColor()
         txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
-        //txtviewRelationshipDetail.placeholderActiveColor = Theme.getAppGreyColor()
-        //txtviewRelationshipDetail.delegate = self
         txtviewRelationshipDetail.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-        //txtviewRelationshipDetail.detailLabel.font = Theme.getRubikRegularFont(size: 12)
-        //txtviewRelationshipDetail.detailColor = .red
+        txtviewRelationshipDetail.delegate = self
         
         btnSaveChanges.layer.cornerRadius = 5
         btnSaveChanges.dropShadowToCollectionViewCell()
@@ -81,6 +78,7 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
             txtfieldTypeOfRelation.text = item
             relationshipTypeDropDown.hide()
             txtviewRelationshipDetail.isHidden = item != "Other"
+            lblRelationshipDetail.isHidden = item != "Other"
         }
         
         stateDropDown.dismissMode = .manual
@@ -130,9 +128,11 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
         btnStateDropDown.isHidden = isNonLegalSpouse != 1
         if (isNonLegalSpouse == 1){
             txtviewRelationshipDetail.isHidden = txtfieldTypeOfRelation.text != "Other"
+            lblRelationshipDetail.isHidden = txtfieldTypeOfRelation.text != "Other"
         }
         else{
             txtviewRelationshipDetail.isHidden = true
+            lblRelationshipDetail.isHidden = true
         }
     }
     
@@ -204,6 +204,20 @@ extension UnmarriedFollowUpQuestionsViewController: UITextFieldDelegate{
         }
         
         setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldTypeOfRelation, txtfieldState])
+    }
+    
+}
+
+extension UnmarriedFollowUpQuestionsViewController: UITextViewDelegate{
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        txtviewRelationshipDetail.dividerThickness = 2
+        txtviewRelationshipDetail.dividerColor = Theme.getButtonBlueColor()
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        txtviewRelationshipDetail.dividerThickness = 1
+        txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
     }
     
 }
