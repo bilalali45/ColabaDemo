@@ -17,6 +17,7 @@ import com.rnsoft.colabademo.databinding.ActivityBorrowerInformationBinding
 import com.rnsoft.colabademo.databinding.SubLayoutMilitaryBinding
 import com.rnsoft.colabademo.databinding.SublayoutCitizenshipBinding
 import com.rnsoft.colabademo.databinding.SublayoutMaritalStatusBinding
+import com.rnsoft.colabademo.test.MyCustomFocusListener
 import java.lang.reflect.Type
 import java.util.*
 
@@ -44,6 +45,14 @@ class BorrowerInfoActivity : AppCompatActivity(),View.OnClickListener{
         initViews()
         setEndIconClicks()
 
+        //binding.layoutFirstName.helperText="This is required"
+
+        //binding.layoutFirstName.setError("This is required")
+      //  binding.edFirstName.setError("Please enter your name")
+
+
+
+
 
     }
 
@@ -60,11 +69,24 @@ class BorrowerInfoActivity : AppCompatActivity(),View.OnClickListener{
         bindingMilitary.chbVeteran.setOnClickListener(this)
         bindingMilitary.chbSurvivingSpouse.setOnClickListener(this)
 
+        binding.edFirstName.setOnFocusChangeListener(MyCustomFocusListener(binding.edFirstName, binding.layoutFirstName, this))
+        binding.edMiddleName.setOnFocusChangeListener(MyCustomFocusListener(binding.edMiddleName, binding.layoutMiddleName, this))
+        binding.edLastName.setOnFocusChangeListener(MyCustomFocusListener(binding.edLastName, binding.layoutLastName, this))
+        binding.edSuffix.setOnFocusChangeListener(MyCustomFocusListener(binding.edSuffix, binding.layoutSuffix , this))
+        binding.edEmail.setOnFocusChangeListener(MyCustomFocusListener(binding.edEmail, binding.layoutEmail, this))
+        binding.edHomeNumber.setOnFocusChangeListener(MyCustomFocusListener(binding.edHomeNumber, binding.layoutHomeNum, this))
+        binding.edWorkNum.setOnFocusChangeListener(MyCustomFocusListener(binding.edWorkNum, binding.layoutWorkNum , this))
+        binding.edExtNum.setOnFocusChangeListener(MyCustomFocusListener(binding.edExtNum, binding.layoutExtNum , this))
+        binding.edCellNum.setOnFocusChangeListener(MyCustomFocusListener(binding.edCellNum, binding.layoutCellNum , this))
+        binding.edSecurityNum.setOnFocusChangeListener(MyCustomFocusListener(binding.edSecurityNum, binding.layoutSecurityNum, this))
+        binding.edDependents.setOnFocusChangeListener(MyCustomFocusListener(binding.edDependents, binding.layoutDependants, this))
+        binding.edDateOfBirth.setOnFocusChangeListener(MyCustomFocusListener(binding.edDateOfBirth, binding.layoutDateOfBirth , this))
+
     }
 
     private fun setEndIconClicks() {
 
-        binding.layoutDob.setEndIconOnClickListener(View.OnClickListener {
+        binding.layoutDateOfBirth.setEndIconOnClickListener(View.OnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
@@ -72,7 +94,7 @@ class BorrowerInfoActivity : AppCompatActivity(),View.OnClickListener{
             val newMonth = month + 1
             val dpd = DatePickerDialog(
                 this, { view, year, monthOfYear, dayOfMonth ->
-                    binding.edDatePicker.setText("" + dayOfMonth + "-" + newMonth + "-" + year)
+                    binding.edDateOfBirth.setText("" + dayOfMonth + "-" + newMonth + "-" + year)
                 },
                 year,
                 month,
@@ -81,7 +103,6 @@ class BorrowerInfoActivity : AppCompatActivity(),View.OnClickListener{
             dpd.show()
 
         })
-
 
         // click for security number
         binding.layoutSecurityNum.setEndIconOnClickListener(View.OnClickListener {
@@ -93,7 +114,6 @@ class BorrowerInfoActivity : AppCompatActivity(),View.OnClickListener{
             } else {
                 binding.edSecurityNum.setTransformationMethod(PasswordTransformationMethod.getInstance())
                 binding.layoutSecurityNum.setEndIconDrawable(R.drawable.ic_eye_hide)
-
             }
         })
     }
@@ -157,42 +177,6 @@ class BorrowerInfoActivity : AppCompatActivity(),View.OnClickListener{
             citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
             citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
             citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.BOLD)
-        }
-    }
-
-    private fun setMilitaryStatus(isActiveDuty:Boolean, isNationalGuard:Boolean, isVeteran:Boolean, isSurvivingSpouse:Boolean){
-
-        if(isActiveDuty){
-            bindingMilitary.layoutActivePersonnel.visibility = View.VISIBLE
-            bindingMilitary.layoutNationalGuard.visibility = View.GONE
-            bindingMilitary.chbDutyPersonel.setTypeface(null,Typeface.BOLD)
-            bindingMilitary.chbResNationalGuard.setTypeface(null,Typeface.NORMAL)
-            bindingMilitary.chbVeteran.setTypeface(null,Typeface.NORMAL)
-            bindingMilitary.chbDutyPersonel.setTypeface(null,Typeface.NORMAL)
-        }
-        if(isNationalGuard){
-            bindingMilitary.layoutActivePersonnel.visibility = View.GONE
-            bindingMilitary.layoutNationalGuard.visibility = View.VISIBLE
-            bindingMilitary.chbDutyPersonel.setTypeface(null,Typeface.NORMAL)
-            bindingMilitary.chbResNationalGuard.setTypeface(null,Typeface.BOLD)
-            bindingMilitary.chbVeteran.setTypeface(null,Typeface.NORMAL)
-            bindingMilitary.chbDutyPersonel.setTypeface(null,Typeface.NORMAL)
-        }
-        if(isVeteran){
-            bindingMilitary.layoutActivePersonnel.visibility = View.GONE
-            bindingMilitary.layoutNationalGuard.visibility = View.GONE
-            bindingMilitary.chbDutyPersonel.setTypeface(null,Typeface.NORMAL)
-            bindingMilitary.chbResNationalGuard.setTypeface(null,Typeface.NORMAL)
-            bindingMilitary.chbVeteran.setTypeface(null,Typeface.BOLD)
-            bindingMilitary.chbDutyPersonel.setTypeface(null,Typeface.NORMAL)
-        }
-        if(isSurvivingSpouse){
-            bindingMilitary.layoutActivePersonnel.visibility = View.GONE
-            bindingMilitary.layoutNationalGuard.visibility = View.GONE
-            bindingMilitary.chbDutyPersonel.setTypeface(null,Typeface.NORMAL)
-            bindingMilitary.chbResNationalGuard.setTypeface(null,Typeface.NORMAL)
-            bindingMilitary.chbVeteran.setTypeface(null,Typeface.NORMAL)
-            bindingMilitary.chbDutyPersonel.setTypeface(null,Typeface.BOLD)
         }
     }
 
