@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/rubik_medium"
+        android:text="@string/citizenship"
+        android:textAlignment="center"
+        android:textColor="@color/txt_primary_info"
+        android:textSize="13sp" />
+
+    <RadioGroup
+        android:id="@+id/rg_marital_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_us_citizen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik_regular"
+            android:text="@string/us_citizen"
+            android:textColor="@color/txt_color_app_headings"
+            android:textSize="14sp"
+            android:button="@drawable/radiodraw"
+            android:paddingStart="15dp"
+            android:clickable="true"/>
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_pr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik_regular"
+            android:text="@string/pr_green_card"
+            android:textColor="@color/txt_color_app_headings"
+            android:textSize="14sp"
+            android:button="@drawable/radiodraw"
+            android:paddingStart="15dp"
+            android:clickable="true"
+            tools:ignore="RtlSymmetry" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_non_pr_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik_regular"
+            android:text="@string/non_pr"
+            android:textColor="@color/txt_color_app_headings"
+            android:textSize="14sp"
+            android:button="@drawable/radiodraw"
+            android:paddingStart="15dp"
+            android:clickable="true"
+            tools:ignore="RtlSymmetry" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/layout_visa_status_other"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/search_view_holder_style"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/unmarried_addendum_ques"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="@string/visa_status"
+            android:textColor="@color/txt_primary_info"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/unmarried_addendum_ans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="@string/others"
+            android:textColor="@color/txt_color_app_headings"
+            android:textSize="15sp" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

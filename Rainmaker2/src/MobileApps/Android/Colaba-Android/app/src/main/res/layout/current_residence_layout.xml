@@ -251,11 +251,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
-            android:background="@null"
-            android:hint="@string/county"
-            android:paddingStart="-17dp"
+
+
             app:boxBackgroundColor="@android:color/transparent"
-            app:hintTextColor="@color/grey_color_two"
+            app:hintTextColor="@color/colaba_red_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cityLayout">
@@ -263,9 +262,13 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/countyEditText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="64dp"
+                android:paddingTop="30dp"
                 android:background="@null"
                 android:cursorVisible="true"
+                android:paddingStart="0dp"
+                android:hint="@string/county"
+                android:textSize="15sp"
                 android:inputType="textPostalAddress"
                 android:text=""
                 android:textColor="@color/grey_color_one" />
@@ -326,8 +329,8 @@
                 android:id="@+id/zipcodeEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:cursorVisible="true"
+
+
                 android:inputType="textPostalAddress"
                 android:text=""
                 android:textColor="@color/grey_color_one" />
