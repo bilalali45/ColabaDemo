@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -28,7 +29,8 @@
             android:textColor="@color/txt_color_app_headings"
             android:textSize="14sp"
             android:button="@drawable/radiodraw"
-            android:paddingStart="15dp"/>
+            android:paddingStart="15dp"
+            android:clickable="true"/>
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_pr"
@@ -39,7 +41,9 @@
             android:textColor="@color/txt_color_app_headings"
             android:textSize="14sp"
             android:button="@drawable/radiodraw"
-            android:paddingStart="15dp"/>
+            android:paddingStart="15dp"
+            android:clickable="true"
+            tools:ignore="RtlSymmetry" />
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_non_pr_other"
@@ -50,7 +54,9 @@
             android:textColor="@color/txt_color_app_headings"
             android:textSize="14sp"
             android:button="@drawable/radiodraw"
-            android:paddingStart="15dp"/>
+            android:paddingStart="15dp"
+            android:clickable="true"
+            tools:ignore="RtlSymmetry" />
     </RadioGroup>
 
     <LinearLayout
@@ -59,7 +65,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/search_view_holder_style"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/unmarried_addendum_ques"

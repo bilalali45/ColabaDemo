@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo.activities.info
 
 import android.app.DatePickerDialog
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
@@ -12,78 +13,60 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.ActivityBorrowerInformationBinding
-import kotlinx.android.synthetic.main.layout_primary_info_citizenship.*
-import kotlinx.android.synthetic.main.layout_primary_info_marital_status.*
-import kotlinx.android.synthetic.main.layout_primary_info_marital_status.view.*
+import com.rnsoft.colabademo.databinding.SublayoutCitizenshipBinding
+import com.rnsoft.colabademo.databinding.SublayoutMaritalStatusBinding
 import java.util.*
 
 /**
  * Created by Anita Kiran on 8/11/2021.
  */
 
-class BorrowerInfoActivity : AppCompatActivity(){
-    lateinit var binding : ActivityBorrowerInformationBinding
-    lateinit var maritalStatusLayout : View
-    lateinit var rbUnmarried: RadioButton
-    lateinit var unmarriedAddendum : LinearLayout
-    val isPasswordVisible : Boolean = false
+class BorrowerInfoActivity : AppCompatActivity(),View.OnClickListener{
+
+    lateinit var binding: ActivityBorrowerInformationBinding
+    lateinit var msBinding: SublayoutMaritalStatusBinding
+    lateinit var citizenshipBinding: SublayoutCitizenshipBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBorrowerInformationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        msBinding = binding.layoutMaritalStatus
+        citizenshipBinding = binding.layoutCitizenship
+
 
         initViews()
-        setMaritalStatus()
         setEndIconClicks()
 
+    }
 
+    private fun initViews() {
+        msBinding.rbUnmarried.setOnClickListener(this)
+        msBinding.rbMarried.setOnClickListener(this)
+        msBinding.rbDivorced.setOnClickListener(this)
+        citizenshipBinding.rbUsCitizen.setOnClickListener(this)
+        citizenshipBinding.rbNonPrOther.setOnClickListener(this)
+        citizenshipBinding.rbPr.setOnClickListener(this)
 
     }
 
-
-
-     fun setMaritalStatus(){
-
-         if(rbUnmarried.isSelected==true){
-             Log.e("here", "selected")
-             unmarriedAddendum.visibility = View.GONE
-         }
-
-         if(rbUnmarried.isChecked==true){
-             Log.e("here", "checked")
-             unmarriedAddendum.visibility = View.GONE
-         }
-
-         if(rbUnmarried.isPressed==true){
-             Log.e("here", "press")
-             unmarriedAddendum.visibility = View.GONE
-         }
-
-         if(rbUnmarried.isActivated==true){
-             Log.e("here", "activated")
-             unmarriedAddendum.visibility = View.GONE
-         }
-    }
-
-     fun initViews(){
-         maritalStatusLayout = findViewById(R.id.layout_maritalStatus)
-         rbUnmarried = findViewById(R.id.rb_unmarried)
-         unmarriedAddendum= maritalStatusLayout.findViewById(R.id.layout_unmarried_addendum)
-    }
-
-    private fun setEndIconClicks(){
+    private fun setEndIconClicks() {
 
         binding.layoutDob.setEndIconOnClickListener(View.OnClickListener {
-           // binding.dobDatePicker.visibility = View.VISIBLE
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val newMonth = month+1
-            val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                binding.edDatePicker.setText("" + dayOfMonth + "-" + newMonth + "-" + year)
-            }, year, month, day)
+            val newMonth = month + 1
+            val dpd = DatePickerDialog(
+                this, { view, year, monthOfYear, dayOfMonth ->
+                    binding.edDatePicker.setText("" + dayOfMonth + "-" + newMonth + "-" + year)
+                },
+                year,
+                month,
+                day
+            )
             dpd.show()
 
         })
@@ -91,11 +74,12 @@ class BorrowerInfoActivity : AppCompatActivity(){
 
         // click for security number
         binding.layoutSecurityNum.setEndIconOnClickListener(View.OnClickListener {
-            if(binding.edSecurityNum.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){ //  hide password
+            if (binding.edSecurityNum.getTransformationMethod()
+                    .equals(PasswordTransformationMethod.getInstance())
+            ) { //  hide password
                 binding.edSecurityNum.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
                 binding.layoutSecurityNum.setEndIconDrawable(R.drawable.ic_eye_icon_svg)
-            }
-            else{
+            } else {
                 binding.edSecurityNum.setTransformationMethod(PasswordTransformationMethod.getInstance())
                 binding.layoutSecurityNum.setEndIconDrawable(R.drawable.ic_eye_hide)
 
@@ -103,18 +87,62 @@ class BorrowerInfoActivity : AppCompatActivity(){
         })
     }
 
-    /*private fun setDateOfBirth(){
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
+    override fun onClick(view: View?) {
 
-//        binding.dobDatePicker.setOnClickListener {
-//            val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                binding.edDatePicker.setText("" + dayOfMonth + " " + month + ", " + year)
-//            }, year, month, day)
-//            dpd.show()
-//        }
+        val checked = (view as RadioButton).isChecked
+        when (view.getId()) {
+            R.id.rb_unmarried -> if (checked) setMaritalStatus(true, false,false)
+            R.id.rb_married -> if (checked) setMaritalStatus(false, true,false)
+            R.id.rb_divorced -> if (checked) setMaritalStatus(false, false,true)
+            R.id.rb_us_citizen -> if (checked) setCitizenship(true, false,false)
+            R.id.rb_pr -> if (checked)  setCitizenship(false, true,false)
+            R.id.rb_non_pr_other -> if (checked)  setCitizenship(false, false,true)
 
-    } */
+        }
+    }
+
+    private fun setMaritalStatus(isUnmarried:Boolean, isMarried:Boolean, isDivorced:Boolean){
+
+        if(isUnmarried){
+            msBinding.unmarriedAddendum.visibility = View.VISIBLE
+            msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
+            msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
+            msBinding.rbDivorced.setTypeface(null, Typeface.NORMAL)
+        }
+        if(isMarried){
+            msBinding.unmarriedAddendum.visibility = View.GONE
+            msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
+            msBinding.rbMarried.setTypeface(null, Typeface.BOLD)
+            msBinding.rbDivorced.setTypeface(null, Typeface.NORMAL)
+        }
+        if(isDivorced){
+            msBinding.unmarriedAddendum.visibility = View.GONE
+            msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
+            msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
+            msBinding.rbDivorced.setTypeface(null, Typeface.BOLD)
+        }
+    }
+
+    private fun setCitizenship(usCitizen:Boolean, PR:Boolean, nonPR:Boolean){
+
+        if(usCitizen){
+            citizenshipBinding.layoutVisaStatusOther.visibility = View.GONE
+            citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.BOLD)
+            citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
+            citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.NORMAL)
+        }
+        if(PR){
+            citizenshipBinding.layoutVisaStatusOther.visibility = View.GONE
+            citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
+            citizenshipBinding.rbPr.setTypeface(null, Typeface.BOLD)
+            citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.NORMAL)
+        }
+        if(nonPR){
+            citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
+            citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
+            citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
+            citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.BOLD)
+        }
+    }
+
 }

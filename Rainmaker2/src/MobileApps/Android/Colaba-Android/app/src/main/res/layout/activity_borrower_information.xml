@@ -97,7 +97,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/rubik_light"
                     android:hint="Legal First Name"
-                    app:boxStrokeColor="@color/colaba_apptheme_blue"
+                    app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="1dp"
                     app:counterTextAppearance="@color/colaba_red_color"
@@ -135,7 +135,7 @@
                     android:fontFamily="@font/rubik_light"
                     android:hint="Middle Name"
                     android:textColorHint="@color/txt_primary_info_deselect"
-                    app:boxStrokeColor="@color/colaba_apptheme_blue"
+                    app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="1dp"
                     app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
@@ -155,7 +155,7 @@
                         android:paddingTop="30dp"
                         android:paddingEnd="0dp"
                         android:singleLine="true"
-                        android:textColor="@color/primary_info_label_color"
+                        android:textColor="@color/grey_color_one"
                         android:textSize="@dimen/ed_txt_size_primary_info" />
 
 
@@ -180,7 +180,7 @@
                     android:fontFamily="@font/rubik_light"
                     android:hint="Legal Last Name"
                     android:textColorHint="@color/txt_primary_info_deselect"
-                    app:boxStrokeColor="@color/colaba_apptheme_blue"
+                    app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="1dp"
                     app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
@@ -200,7 +200,7 @@
                         android:paddingTop="30dp"
                         android:paddingEnd="0dp"
                         android:singleLine="true"
-                        android:textColor="@color/primary_info_label_color"
+                        android:textColor="@color/grey_color_one"
                         android:textSize="@dimen/ed_txt_size_primary_info" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -213,7 +213,7 @@
                     android:fontFamily="@font/rubik_light"
                     android:hint="Suffix"
                     android:textColorHint="@color/txt_primary_info_deselect"
-                    app:boxStrokeColor="@color/colaba_apptheme_blue"
+                    app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="1dp"
                     app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
@@ -232,7 +232,7 @@
                         android:paddingTop="30dp"
                         android:paddingEnd="0dp"
                         android:singleLine="true"
-                        android:textColor="@color/primary_info_label_color"
+                        android:textColor="@color/grey_color_one"
                         android:textSize="@dimen/ed_txt_size_primary_info" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -247,7 +247,7 @@
                 android:fontFamily="@font/rubik_light"
                 android:hint="Email Address"
                 android:textColorHint="@color/txt_primary_info_deselect"
-                app:boxStrokeColor="@color/colaba_apptheme_blue"
+                app:boxStrokeColor="@color/primary_info_line_color"
                 app:boxStrokeWidth="1dp"
                 app:boxStrokeWidthFocused="1dp"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
@@ -267,7 +267,7 @@
                     android:paddingTop="30dp"
                     android:paddingEnd="0dp"
                     android:singleLine="true"
-                    android:textColor="@color/primary_info_label_color"
+                    android:textColor="@color/grey_color_one"
                     android:textSize="@dimen/ed_txt_size_primary_info" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -280,7 +280,7 @@
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/home_number"
                 android:textColorHint="@color/txt_primary_info_deselect"
-                app:boxStrokeColor="@color/colaba_apptheme_blue"
+                app:boxStrokeColor="@color/primary_info_line_color"
                 app:boxStrokeWidth="1dp"
                 app:boxStrokeWidthFocused="1dp"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
@@ -299,9 +299,8 @@
                     android:paddingTop="30dp"
                     android:paddingEnd="0dp"
                     android:singleLine="true"
-                    android:textColor="@color/primary_info_label_color"
+                    android:textColor="@color/grey_color_one"
                     android:textSize="@dimen/ed_txt_size_primary_info" />
-
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -321,7 +320,7 @@
                     android:layout_weight="1"
                     android:hint="@string/work_number"
                     android:textColorHint="@color/txt_primary_info_deselect"
-                    app:boxStrokeColor="@color/colaba_apptheme_blue"
+                    app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="1dp"
                     app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
@@ -338,7 +337,7 @@
                         android:paddingTop="30dp"
                         android:paddingEnd="0dp"
                         android:singleLine="true"
-                        android:textColor="@color/primary_info_label_color"
+                        android:textColor="@color/grey_color_one"
                         android:textSize="@dimen/ed_txt_size_primary_info"
                         android:fontFamily="@font/rubik_medium" />
 
@@ -352,7 +351,7 @@
                     android:layout_weight="1"
                     android:hint="@string/ext_number"
                     android:textColorHint="@color/txt_primary_info_deselect"
-                    app:boxStrokeColor="@color/colaba_apptheme_blue"
+                    app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="1dp"
                     app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
@@ -369,7 +368,7 @@
                         android:paddingTop="30dp"
                         android:paddingEnd="0dp"
                         android:singleLine="true"
-                        android:textColor="@color/primary_info_label_color"
+                        android:textColor="@color/grey_color_one"
                         android:textSize="@dimen/ed_txt_size_primary_info"
                         android:fontFamily="@font/rubik_medium" />
 
@@ -383,7 +382,7 @@
                 android:layout_marginTop="20dp"
                 android:hint="@string/cell_number"
                 android:textColorHint="@color/txt_primary_info_deselect"
-                app:boxStrokeColor="@color/colaba_apptheme_blue"
+                app:boxStrokeColor="@color/primary_info_line_color"
                 app:boxStrokeWidth="1dp"
                 app:boxStrokeWidthFocused="1dp"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
@@ -401,7 +400,7 @@
                     android:paddingTop="30dp"
                     android:paddingEnd="0dp"
                     android:singleLine="true"
-                    android:textColor="@color/primary_info_label_color"
+                    android:textColor="@color/primary_info_line_color"
                     android:textSize="@dimen/ed_txt_size_primary_info"
                     android:fontFamily="@font/rubik_medium" />
 
@@ -415,7 +414,7 @@
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_cell_num"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <include
                     layout="@layout/layout_primary_info_residence"
@@ -455,19 +454,19 @@
 
                 <include
                     android:id="@+id/layout_maritalStatus"
-                    layout="@layout/layout_primary_info_marital_status"
+                    layout="@layout/sublayout_marital_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
-                    android:visibility="gone"/>
+                    android:visibility="visible"/>
 
                 <include
                     android:id="@+id/layout_citizenship"
-                    layout="@layout/layout_primary_info_citizenship"
+                    layout="@layout/sublayout_citizenship"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
-                    android:visibility="gone"/>
+                    android:visibility="visible"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_dob"
@@ -475,7 +474,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="70dp"
                     android:hint="@string/dob"
-                    app:boxStrokeColor="@color/colaba_apptheme_blue"
+                    app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="1dp"
                     app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
@@ -495,7 +494,7 @@
                         android:paddingTop="30dp"
                         android:paddingEnd="0dp"
                         android:singleLine="true"
-                        android:textColor="@color/primary_info_label_color"
+                        android:textColor="@color/grey_color_one"
                         android:textSize="@dimen/ed_txt_size_primary_info"
                         android:fontFamily="@font/rubik_medium" />
 
@@ -506,7 +505,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/social_security_num"
-                    app:boxStrokeColor="@color/colaba_apptheme_blue"
+                    app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="1dp"
                     app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
@@ -516,7 +515,7 @@
                     app:passwordToggleEnabled="true"
                     android:layout_marginTop="60dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <EditText
                         android:id="@+id/ed_security_num"
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
@@ -526,7 +525,7 @@
                         android:paddingStart="0dp"
                         android:paddingEnd="0dp"
                         android:singleLine="true"
-                        android:textColor="@color/primary_info_label_color"
+                        android:textColor="@color/grey_color_one"
                         android:textSize="@dimen/ed_txt_size_primary_info"
                         android:fontFamily="@font/rubik_medium"
                         android:inputType="textPassword"
@@ -539,13 +538,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="35dp"
                     android:hint="@string/no_of_dependents"
-                    app:boxStrokeColor="@color/colaba_apptheme_blue"
+                    app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="1dp"
                     app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
                     app:hintTextColor="@color/txt_primary_info">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <EditText
                         android:id="@+id/ed_dependents"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -556,7 +555,7 @@
                         android:paddingTop="30dp"
                         android:paddingEnd="0dp"
                         android:singleLine="true"
-                        android:textColor="@color/primary_info_label_color"
+                        android:textColor="@color/grey_color_one"
                         android:textSize="@dimen/ed_txt_size_primary_info"
                         app:fontFamily="@font/rubik_medium" />
 
@@ -576,7 +575,7 @@
                         android:layout_weight="1"
                         android:hint="1st Dependent age"
                         android:textColorHint="@color/txt_primary_info"
-                        app:boxStrokeColor="@color/colaba_apptheme_blue"
+                        app:boxStrokeColor="@color/primary_info_line_color"
                         app:boxStrokeWidth="1dp"
                         app:boxStrokeWidthFocused="1dp"
                         app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
@@ -592,7 +591,7 @@
                             android:paddingTop="30dp"
                             android:paddingEnd="0dp"
                             android:singleLine="true"
-                            android:textColor="@color/primary_info_label_color"
+                            android:textColor="@color/grey_color_one"
                             android:textSize="@dimen/ed_txt_size_primary_info"
                             android:fontFamily="@font/rubik_medium" />
 
@@ -605,7 +604,7 @@
                         android:layout_weight="1"
                         android:hint="2nd Dependent age"
                         android:textColorHint="@color/txt_primary_info"
-                        app:boxStrokeColor="@color/colaba_apptheme_blue"
+                        app:boxStrokeColor="@color/primary_info_line_color"
                         app:boxStrokeWidth="1dp"
                         app:boxStrokeWidthFocused="1dp"
                         app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
@@ -621,7 +620,7 @@
                             android:paddingTop="30dp"
                             android:paddingEnd="0dp"
                             android:singleLine="true"
-                            android:textColor="@color/primary_info_label_color"
+                            android:textColor="@color/grey_color_one"
                             android:textSize="@dimen/ed_txt_size_primary_info"
                             android:fontFamily="@font/rubik_medium" />
 
