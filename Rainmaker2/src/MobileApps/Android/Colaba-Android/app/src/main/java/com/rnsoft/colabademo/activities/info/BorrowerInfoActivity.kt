@@ -48,11 +48,7 @@ class BorrowerInfoActivity : AppCompatActivity(),View.OnClickListener{
         //binding.layoutFirstName.helperText="This is required"
 
         //binding.layoutFirstName.setError("This is required")
-      //  binding.edFirstName.setError("Please enter your name")
-
-
-
-
+        //binding.edFirstName.setError("Please enter your name")
 
     }
 

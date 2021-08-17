@@ -11,7 +11,7 @@
         android:fontFamily="@font/rubik_medium"
         android:text="@string/citizenship"
         android:textAlignment="center"
-        android:textColor="@color/txt_primary_info"
+        android:textColor="@color/grey_color_two"
         android:textSize="13sp" />
 
     <RadioGroup
@@ -76,7 +76,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/visa_status"
-            android:textColor="@color/txt_primary_info"
+            android:textColor="@color/grey_color_two"
             android:textSize="13sp" />
 
         <TextView
@@ -90,7 +90,6 @@
             android:text="@string/others"
             android:textColor="@color/txt_color_app_headings"
             android:textSize="15sp" />
-
 
     </LinearLayout>
 
