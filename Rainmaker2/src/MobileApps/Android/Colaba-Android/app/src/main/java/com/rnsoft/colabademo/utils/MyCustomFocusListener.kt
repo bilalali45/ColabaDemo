@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.test
+package com.rnsoft.colabademo
 
 import android.content.Context
 import android.content.res.ColorStateList
