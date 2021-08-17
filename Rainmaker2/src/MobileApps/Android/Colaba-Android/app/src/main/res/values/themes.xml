@@ -132,5 +132,18 @@
     </style>
 
 
+    <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="colorControlNormal">@drawable/checkbox_unchecked</item><!-- border color -->
+        <item name="colorControlActivated">@drawable/checkbox_checked</item> <!-- fill color -->
+        <item name="colorControlHighlight">@drawable/checkbox_checked</item> <!-- animation color -->
+    </style>
+
+
+    <style name="inputError" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colaba_red_color</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/rubik_regular</item>
+        <item name="android:font">@font/rubik_regular</item>
+    </style>
 
 </resources>

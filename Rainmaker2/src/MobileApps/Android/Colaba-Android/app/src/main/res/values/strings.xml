@@ -207,6 +207,40 @@
 
     <string name="internet_error">Please connect to the network…</string>
 
-    <string name="borrower_info_title">Primary Borrower</string>
+    <string name="heading_borrower_info">Primary Borrower</string>
+
+
+    <!-- primary info labels-->
+    <string name="first_name">Legal First Name</string>
+    <string name="middle_name">Middle Name</string>
+    <string name="last_name">Legal Last Name</string>
+    <string name="suffix">Suffix</string>
+    <string name="email_add">Email Address</string>
+    <string name="home_number">Home Number</string>
+    <string name="work_number">Work Number</string>
+    <string name="ext_number">Extension Number</string>
+    <string name="cell_number">Cell Number</string>
+    <string name="current_home_address">Current Home Address</string>
+    <string name="martial_status">Marital Status</string>
+    <string name="martial_status_married">Married</string>
+    <string name="martial_status_unmarried">Unmarried</string>
+    <string name="martial_status_divorced">Divorced</string>
+    <string name="unmarried_addendum">Unmarried Addendum</string>
+    <string name="unmarried_addendum_ques">Is there a persoon who is not your legal spouse but who currently has real property rights similar to...</string>
+    <string name="citizenship">Citizenship</string>
+    <string name="us_citizen">US Citizen</string>
+    <string name="pr_green_card">Permanent Resident Alien (Green Card)</string>
+    <string name="non_pr">Non Permantent Resident Alien</string>
+    <string name="visa_status">Visa Status</string>
+    <string name="others">Others</string>
+    <string name="dob">Date of Birth</string>
+    <string name="social_security_num">Social Security Number</string>
+    <string name="no_of_dependents">No. Of Dependents</string>
+    <string name="military_service">Military Service</string>
+    <string name="service_lastdate">Last date of service/tour</string>
+    <string name="active_duty_personel">Active Duty Personnel</string>
+    <string name="national_guard">Reservce Or National Guard</string>
+    <string name="veteran">Veteran</string>
+    <string name="surviving_spouse">Surviving Spouse</string>
 
 </resources>
