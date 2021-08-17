@@ -549,6 +549,13 @@ extension AddResidenceViewController: UITextFieldDelegate{
         }
         
         if (textField == txtfieldState){
+            
+            if !(kUSAStatesArray.contains(txtfieldState.text!)){
+                txtfieldState.text = ""
+                txtfieldState.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+                stateDropDown.hide()
+            }
+            
             btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             do{
                 let state = try validation.validateState(txtfieldState.text)
@@ -565,6 +572,13 @@ extension AddResidenceViewController: UITextFieldDelegate{
         }
         
         if (textField == txtfieldCountry){
+            
+            if !(kCountryListArray.contains(txtfieldCountry.text!)){
+                txtfieldCountry.text = ""
+                txtfieldCountry.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+                countryDropDown.hide()
+            }
+            
             btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             do{
                 let country = try validation.validateCountry(txtfieldCountry.text)
