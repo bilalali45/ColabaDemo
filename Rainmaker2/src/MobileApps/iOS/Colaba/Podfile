@@ -17,6 +17,7 @@ pod 'LoadingPlaceholderView'
 pod 'MarqueeLabel'
 pod 'Material'
 pod 'MonthYearPicker'
+pod 'DropDown'
 
   target 'ColabaTests' do
     inherit! :search_paths

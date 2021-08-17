@@ -7,6 +7,7 @@
 
 import UIKit
 import Material
+import DropDown
 
 class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
     
@@ -18,9 +19,12 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var txtfieldVisaStatus: TextField!
+    @IBOutlet weak var visaStatusDropDownAnchorView: UIView!
     @IBOutlet weak var btnVisaStatusDropDown: UIButton!
     @IBOutlet weak var txtviewStatusDetail: TextView!
     @IBOutlet weak var btnSaveChanges: UIButton!
+    
+    let visaStatusDropDown = DropDown()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,6 +56,17 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
         
         btnSaveChanges.layer.cornerRadius = 5
         btnSaveChanges.dropShadowToCollectionViewCell()
+        
+        visaStatusDropDown.dismissMode = .manual
+        visaStatusDropDown.anchorView = visaStatusDropDownAnchorView
+        visaStatusDropDown.dataSource = kVisaStatusArray
+        visaStatusDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            btnVisaStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldVisaStatus.text = item
+            visaStatusDropDown.hide()
+            txtviewStatusDetail.isHidden = item != "Other"
+            txtfieldVisaStatus.dividerColor = Theme.getSeparatorNormalColor()
+        }
     }
     
     func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){
@@ -79,7 +94,24 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
 
 extension NonPermanentResidenceFollowUpQuestionsViewController: UITextFieldDelegate{
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        if (textField == txtfieldVisaStatus){
+            textField.endEditing(true)
+            btnVisaStatusDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+            visaStatusDropDown.show()
+            txtfieldVisaStatus.dividerColor = Theme.getButtonBlueColor()
+        }
+        
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        if (textField == txtfieldVisaStatus){
+            btnVisaStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldVisaStatus.dividerColor = Theme.getSeparatorNormalColor()
+        }
+        
         setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldVisaStatus])
     }
     

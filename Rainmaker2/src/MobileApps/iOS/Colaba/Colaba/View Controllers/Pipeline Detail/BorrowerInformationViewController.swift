@@ -91,6 +91,7 @@ class BorrowerInformationViewController: UIViewController {
     @IBOutlet weak var lblReserveNationalGuardAns: UILabel!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
+    var totalAddresses = 2
     var maritalStatus = 1 //1 for unmarried, 2 for married and 3 for separated
     var citizenshipStatus = 1 // 1 for US Citizen, 2 for Permanent and 3 for Non Permanent
     var isShowSecurityNo = false
@@ -554,7 +555,7 @@ class BorrowerInformationViewController: UIViewController {
 extension BorrowerInformationViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return totalAddresses
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -592,13 +593,35 @@ extension BorrowerInformationViewController: UITableViewDataSource, UITableViewD
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        let deleteAction = UIContextualAction(style: .normal, title: "") { action, actionView, bool in
-            
+        let deleteView = UIView()
+        deleteView.frame = CGRect(x: 0, y: 0, width: 60, height: 135)
+        deleteView.backgroundColor = UIColor(patternImage: UIImage(named: "AddressDeleteIconBig")!)
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "") { action, actionView, bool in
+            DispatchQueue.main.async {
+                let vc = Utility.getDeleteAddressPopupVC()
+                vc.popupTitle = "Are you sure you want to delete Richard's Current Residence?"
+                vc.screenType = 1
+                vc.indexPath = indexPath
+                vc.delegate = self
+                self.present(vc, animated: false, completion: nil)
+            }
         }
         deleteAction.backgroundColor = Theme.getDashboardBackgroundColor()
-        deleteAction.image = UIImage(named: indexPath.row == 0 ? "AddressDeleteIconBig" : "AddressDeleteIconSmall")
+        deleteAction.image = UIImage(named: "AddressDeleteIconBig")
         return UISwipeActionsConfiguration(actions: [deleteAction])
         
+    }
+}
+
+extension BorrowerInformationViewController: DeleteAddressPopupViewControllerDelegate{
+    func deleteAddress(indexPath: IndexPath) {
+        totalAddresses = totalAddresses - 1
+        self.tblViewAddress.deleteRows(at: [indexPath], with: .left)
+        self.tblViewAddress.reloadData()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.setScreenHeight()
+        }
     }
 }
 

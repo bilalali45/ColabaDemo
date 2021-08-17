@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol DeleteAddressPopupViewControllerDelegate: AnyObject {
+    func deleteAddress(indexPath: IndexPath)
+}
+
 class DeleteAddressPopupViewController: UIViewController {
 
     //MARK:- Outlets and Properties
@@ -20,6 +24,8 @@ class DeleteAddressPopupViewController: UIViewController {
     
     var popupTitle = ""
     var screenType = 1 // 1 for main Screen, 2 for Address Screen, 3 for Mailing Screen
+    var indexPath = IndexPath()
+    weak var delegate: DeleteAddressPopupViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,7 +75,7 @@ class DeleteAddressPopupViewController: UIViewController {
         self.dismissPopup()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
             if (self.screenType == 1){
-                
+                self.delegate?.deleteAddress(indexPath: self.indexPath)
             }
             else if (self.screenType == 2){
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationSaveAddressAndDismiss), object: nil)

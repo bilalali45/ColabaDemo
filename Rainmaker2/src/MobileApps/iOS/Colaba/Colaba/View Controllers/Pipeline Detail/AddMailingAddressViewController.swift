@@ -7,6 +7,7 @@
 
 import UIKit
 import Material
+import DropDown
 
 class AddMailingAddressViewController: UIViewController {
 
@@ -26,18 +27,24 @@ class AddMailingAddressViewController: UIViewController {
     @IBOutlet weak var txtfieldCity: TextField!
     @IBOutlet weak var txtfieldCounty: TextField!
     @IBOutlet weak var txtfieldState: TextField!
+    @IBOutlet weak var stateDropDownAnchorView: UIView!
     @IBOutlet weak var btnStateDropDown: UIButton!
     @IBOutlet weak var txtfieldZipCode: TextField!
     @IBOutlet weak var txtfieldCountry: TextField!
+    @IBOutlet weak var countryDropDownAnchorView: UIView!
     @IBOutlet weak var btnCountryDropDown: UIButton!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
     let moveInDateFormatter = DateFormatter()
+    let countryDropDown = DropDown()
+    let stateDropDown = DropDown()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setMaterialTextFieldsAndViews(textfields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry])
         NotificationCenter.default.addObserver(self, selector: #selector(goBackAfterDelete), name: NSNotification.Name(rawValue: kNotificationDeleteMailingAddressAndDismiss), object: nil)
+        txtfieldCountry.addTarget(self, action: #selector(txtfieldCountryTextChanged), for: .editingChanged)
+        txtfieldState.addTarget(self, action: #selector(txtfieldStateTextChanged), for: .editingChanged)
     }
 
     //MARK:- Methods and Actions
@@ -55,6 +62,27 @@ class AddMailingAddressViewController: UIViewController {
         btnSaveChanges.layer.cornerRadius = 5
         btnSaveChanges.dropShadowToCollectionViewCell()
         
+        countryDropDown.dismissMode = .manual
+        countryDropDown.anchorView = countryDropDownAnchorView
+        countryDropDown.direction = .top
+        countryDropDown.dataSource = kCountryListArray
+        
+        countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldCountry.text = item
+            countryDropDown.hide()
+        }
+        
+        stateDropDown.dismissMode = .manual
+        stateDropDown.anchorView = stateDropDownAnchorView
+        stateDropDown.direction = .top
+        stateDropDown.dataSource = kUSAStatesArray
+        
+        stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldState.text = item
+            stateDropDown.hide()
+        }
     }
     
     func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){
@@ -85,6 +113,47 @@ class AddMailingAddressViewController: UIViewController {
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
         }
+    }
+    
+    @objc func txtfieldCountryTextChanged(){
+        
+        if (txtfieldCountry.text == ""){
+            countryDropDown.dataSource = kCountryListArray
+            countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldCountry.text = item
+                btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            }
+        }
+        else{
+            let filterCountries = kCountryListArray.filter{$0.contains(txtfieldCountry.text!)}
+            countryDropDown.dataSource = filterCountries
+            countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldCountry.text = item
+                btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            }
+        }
+        
+        countryDropDown.show()
+    }
+    
+    @objc func txtfieldStateTextChanged(){
+        if (txtfieldState.text == ""){
+            stateDropDown.dataSource = kUSAStatesArray
+            stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldState.text = item
+                btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            }
+        }
+        else{
+            let filterStates = kUSAStatesArray.filter{$0.contains(txtfieldState.text!)}
+            stateDropDown.dataSource = filterStates
+            stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldState.text = item
+                btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            }
+        }
+        
+        stateDropDown.show()
     }
     
     @objc func goBackAfterDelete(){
@@ -134,6 +203,18 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
             }
         }
         
+        if (textField == txtfieldCountry){
+            //textField.endEditing(true)
+            btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+            countryDropDown.show()
+        }
+        
+        if (textField == txtfieldState){
+            //textField.endEditing(true)
+            btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+            stateDropDown.show()
+        }
+        
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -143,6 +224,14 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
                 txtfieldHomeAddress.text = ""
                 txtfieldHomeAddress.placeholder = "       Search Home Address"
             }
+        }
+        
+        if (textField == txtfieldState){
+            btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        }
+        
+        if (textField == txtfieldCountry){
+            btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
         }
         
         setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry])
