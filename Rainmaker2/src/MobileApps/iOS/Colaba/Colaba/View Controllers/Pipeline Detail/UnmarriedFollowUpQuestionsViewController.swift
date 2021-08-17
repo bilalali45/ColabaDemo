@@ -201,6 +201,13 @@ extension UnmarriedFollowUpQuestionsViewController: UITextFieldDelegate{
         }
         
         if (textField == txtfieldState){
+            
+            if !(kUSAStatesArray.contains(txtfieldState.text!)){
+                txtfieldState.text = ""
+                txtfieldState.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+                stateDropDown.hide()
+            }
+            
             btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
         }
         
