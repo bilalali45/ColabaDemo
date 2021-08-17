@@ -194,7 +194,12 @@
     <string name="heading_borrower_info">Primary Borrower</string>
 
 
-    <!-- labels-->
+    <!-- primary info labels-->
+    <string name="first_name">Legal First Name</string>
+    <string name="middle_name">Middle Name</string>
+    <string name="last_name">Legal Last Name</string>
+    <string name="suffix">Suffix</string>
+    <string name="email_add">Email Address</string>
     <string name="home_number">Home Number</string>
     <string name="work_number">Work Number</string>
     <string name="ext_number">Extension Number</string>
