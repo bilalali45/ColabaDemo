@@ -8,6 +8,7 @@
 import UIKit
 import Material
 import MonthYearPicker
+import DropDown
 
 class AddResidenceViewController: UIViewController {
 
@@ -27,27 +28,49 @@ class AddResidenceViewController: UIViewController {
     @IBOutlet weak var txtfieldCity: TextField!
     @IBOutlet weak var txtfieldCounty: TextField!
     @IBOutlet weak var txtfieldState: TextField!
+    @IBOutlet weak var stateDropDownAnchorView: UIView!
     @IBOutlet weak var btnStateDropDown: UIButton!
     @IBOutlet weak var txtfieldZipCode: TextField!
     @IBOutlet weak var txtfieldCountry: TextField!
+    @IBOutlet weak var countryDropDownAnchorView: UIView!
     @IBOutlet weak var btnCountryDropDown: UIButton!
     @IBOutlet weak var txtfieldMoveInDate: TextField!
     @IBOutlet weak var txtfieldMoveInDateTopConstraint: NSLayoutConstraint! //583 and 30
     @IBOutlet weak var btnCalendar: UIButton!
     @IBOutlet weak var btnCalendarTopConstraint: NSLayoutConstraint! //589 and 36
     @IBOutlet weak var txtfieldHousingStatus: TextField!
+    @IBOutlet weak var housingStatusDropDownAnchorView: UIView!
     @IBOutlet weak var btnHousingStatusDropDown: UIButton!
     @IBOutlet weak var txtfieldMonthlyRent: TextField!
+    @IBOutlet weak var txtfieldMonthlyRentTopConstraint: NSLayoutConstraint! //30 or 0
+    @IBOutlet weak var txtfieldMonthlyRentHeightConstraint: NSLayoutConstraint! //49 or 0
     @IBOutlet weak var addMailingAddressStackView: UIStackView!
     @IBOutlet weak var btnSaveChanges: UIButton!
     @IBOutlet weak var tblViewMailingAddress: UITableView!
     
     let moveInDateFormatter = DateFormatter()
+    let housingStatusDropDown = DropDown()
+    let countryDropDown = DropDown()
+    let stateDropDown = DropDown()
+    var numberOfMailingAddress = 1
+    private let validation: Validation
+    
+    init(validation: Validation) {
+        self.validation = validation
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        self.validation = Validation()
+        super.init(coder: coder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setMaterialTextFieldsAndViews(textfields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry, txtfieldMoveInDate, txtfieldHousingStatus, txtfieldMonthlyRent])
         NotificationCenter.default.addObserver(self, selector: #selector(showMailingAddress), name: NSNotification.Name(rawValue: kNotificationShowMailingAddress), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissAddressVC), name: NSNotification.Name(rawValue: kNotificationSaveAddressAndDismiss), object: nil)
+        
     }
 
     //MARK:- Methods and Actions
@@ -61,7 +84,56 @@ class AddResidenceViewController: UIViewController {
             textfield.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
             textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
             textfield.detailColor = .red
+            textfield.detailVerticalOffset = 4
         }
+        
+        housingStatusDropDown.dismissMode = .manual
+        housingStatusDropDown.anchorView = housingStatusDropDownAnchorView
+        housingStatusDropDown.dataSource = kHousingStatusArray
+        housingStatusDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            btnHousingStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldHousingStatus.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldHousingStatus.detail = ""
+            txtfieldHousingStatus.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldHousingStatus.placeholderLabel.textColor = Theme.getAppGreyColor()
+            txtfieldHousingStatus.text = item
+            housingStatusDropDown.hide()
+            txtfieldMonthlyRent.isHidden = item != "Rent"
+            txtfieldMonthlyRentTopConstraint.constant = item == "Rent" ? 30 : 0
+            txtfieldMonthlyRentHeightConstraint.constant = item == "Rent" ? 49 : 0
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutSubviews()
+            }
+        }
+        
+        countryDropDown.dismissMode = .manual
+        countryDropDown.anchorView = countryDropDownAnchorView
+        countryDropDown.direction = .top
+        countryDropDown.dataSource = kCountryListArray
+        
+        countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldCountry.detail = ""
+            txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
+            txtfieldCountry.text = item
+            countryDropDown.hide()
+        }
+        
+        stateDropDown.dismissMode = .manual
+        stateDropDown.anchorView = stateDropDownAnchorView
+        stateDropDown.direction = .top
+        stateDropDown.dataSource = kUSAStatesArray
+        
+        stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldState.detail = ""
+            txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
+            txtfieldState.text = item
+            stateDropDown.hide()
+        }
+        
         addMailingAddressStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addMailingAddressStackViewTapped)))
         btnSaveChanges.layer.cornerRadius = 5
         btnSaveChanges.dropShadowToCollectionViewCell()
@@ -69,6 +141,9 @@ class AddResidenceViewController: UIViewController {
         moveInDateFormatter.dateStyle = .medium
         moveInDateFormatter.dateFormat = "MM/yyyy"
         txtfieldMoveInDate.addInputViewMonthYearDatePicker(target: self, selector: #selector(dateChanged))
+        
+        txtfieldCountry.addTarget(self, action: #selector(txtfieldCountryTextChanged), for: .editingChanged)
+        txtfieldState.addTarget(self, action: #selector(txtfieldStateTextChanged), for: .editingChanged)
         
         tblViewMailingAddress.register(UINib(nibName: "BorrowerAddressInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerAddressInfoTableViewCell")
         
@@ -127,12 +202,73 @@ class AddResidenceViewController: UIViewController {
         }
     }
     
+    @objc func dismissAddressVC(){
+        self.dismissVC()
+    }
+    
+    @objc func txtfieldCountryTextChanged(){
+        
+        if (txtfieldCountry.text == ""){
+            countryDropDown.dataSource = kCountryListArray
+            countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
+                txtfieldCountry.detail = ""
+                txtfieldCountry.text = item
+                txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
+                btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            }
+        }
+        else{
+            let filterCountries = kCountryListArray.filter{$0.contains(txtfieldCountry.text!)}
+            countryDropDown.dataSource = filterCountries
+            countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
+                txtfieldCountry.detail = ""
+                txtfieldCountry.text = item
+                txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
+                btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            }
+        }
+        
+        countryDropDown.show()
+    }
+    
+    @objc func txtfieldStateTextChanged(){
+        if (txtfieldState.text == ""){
+            stateDropDown.dataSource = kUSAStatesArray
+            stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
+                txtfieldState.detail = ""
+                txtfieldState.text = item
+                txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
+                btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            }
+        }
+        else{
+            let filterStates = kUSAStatesArray.filter{$0.contains(txtfieldState.text!)}
+            stateDropDown.dataSource = filterStates
+            stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+                txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
+                txtfieldState.detail = ""
+                txtfieldState.text = item
+                txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
+                btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            }
+        }
+        
+        stateDropDown.show()
+    }
+    
     @IBAction func btnBackTapped(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
+        let vc = Utility.getSaveAddressPopupVC()
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnDeleteTapped(_ sender: UIButton) {
-        
+        let vc = Utility.getDeleteAddressPopupVC()
+        vc.popupTitle = "Are you sure you want to delete Richard's Current Residence?"
+        vc.screenType = 2
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnSearchTapped(_ sender: UIButton){
@@ -159,7 +295,135 @@ class AddResidenceViewController: UIViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        self.dismissVC()
+        
+        do{
+            let searchHomeAddress = try validation.validateSearchHomeAddress(txtfieldHomeAddress.text)
+            DispatchQueue.main.async {
+                self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldHomeAddress.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldHomeAddress.dividerColor = .red
+            self.txtfieldHomeAddress.detail = error.localizedDescription
+        }
+        
+        do{
+            let streetAddress = try validation.validateStreetAddressHomeAddress(txtfieldStreetAddress.text)
+            DispatchQueue.main.async {
+                self.txtfieldStreetAddress.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldStreetAddress.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldStreetAddress.dividerColor = .red
+            self.txtfieldStreetAddress.detail = error.localizedDescription
+        }
+        
+        do{
+            let city = try validation.validateCity(txtfieldCity.text)
+            DispatchQueue.main.async {
+                self.txtfieldCity.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldCity.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldCity.dividerColor = .red
+            self.txtfieldCity.detail = error.localizedDescription
+        }
+        
+        do{
+            let state = try validation.validateState(txtfieldState.text)
+            DispatchQueue.main.async {
+                self.txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldState.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldState.dividerColor = .red
+            self.txtfieldState.detail = error.localizedDescription
+        }
+        
+        do{
+            let zipCode = try validation.validateZipcode(txtfieldZipCode.text)
+            DispatchQueue.main.async {
+                self.txtfieldZipCode.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldZipCode.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldZipCode.dividerColor = .red
+            self.txtfieldZipCode.detail = error.localizedDescription
+        }
+        
+        do{
+            let country = try validation.validateCountry(txtfieldCountry.text)
+            DispatchQueue.main.async {
+                self.txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldCountry.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldCountry.dividerColor = .red
+            self.txtfieldCountry.detail = error.localizedDescription
+        }
+        
+        do{
+            let moveInDate = try validation.validateMoveInDate(txtfieldMoveInDate.text)
+            DispatchQueue.main.async {
+                self.txtfieldMoveInDate.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldMoveInDate.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldMoveInDate.dividerColor = .red
+            self.txtfieldMoveInDate.detail = error.localizedDescription
+        }
+        
+        do{
+            let housingStatus = try validation.validateHousingStatus(txtfieldHousingStatus.text)
+            DispatchQueue.main.async {
+                self.txtfieldHousingStatus.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldHousingStatus.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldHousingStatus.dividerColor = .red
+            self.txtfieldHousingStatus.detail = error.localizedDescription
+        }
+        
+        if (txtfieldHousingStatus.text == "Rent"){
+            do{
+                let rent = try validation.validateMonthlyRent(txtfieldMonthlyRent.text)
+                DispatchQueue.main.async {
+                    self.txtfieldMonthlyRent.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldMonthlyRent.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldMonthlyRent.dividerColor = .red
+                self.txtfieldMonthlyRent.detail = error.localizedDescription
+            }
+        }
+        
+        if (self.txtfieldHomeAddress.text != "" && txtfieldStreetAddress.text != "" && txtfieldCity.text != "" && txtfieldState.text != "" && txtfieldZipCode.text != "" && txtfieldCountry.text != "" && txtfieldMoveInDate.text != "" && txtfieldHousingStatus.text != ""){
+            if (txtfieldHousingStatus.text == "Rent" && txtfieldMonthlyRent.text != ""){
+                self.dismissVC()
+            }
+            else if (txtfieldHousingStatus.text != "Rent"){
+                self.dismissVC()
+            }
+        }
+        
     }
     
 }
@@ -167,7 +431,7 @@ class AddResidenceViewController: UIViewController {
 extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return numberOfMailingAddress
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -203,7 +467,12 @@ extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let deleteAction = UIContextualAction(style: .normal, title: "") { action, actionView, bool in
-            
+            let vc = Utility.getDeleteAddressPopupVC()
+            vc.popupTitle = "Are you sure you want to delete Richard's Mailing Address?"
+            vc.screenType = 1
+            vc.indexPath = indexPath
+            vc.delegate = self
+            self.present(vc, animated: false, completion: nil)
         }
         deleteAction.backgroundColor = Theme.getDashboardBackgroundColor()
         deleteAction.image = UIImage(named: "AddressDeleteIconBig")
@@ -211,6 +480,18 @@ extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate
         
     }
     
+}
+
+extension AddResidenceViewController: DeleteAddressPopupViewControllerDelegate{
+    func deleteAddress(indexPath: IndexPath) {
+        numberOfMailingAddress = 0
+        self.tblViewMailingAddress.deleteRows(at: [indexPath], with: .left)
+        self.tblViewMailingAddress.reloadData()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.tblViewMailingAddress.isHidden = true
+            self.addMailingAddressStackView.isHidden = false
+        }
+    }
 }
 
 extension AddResidenceViewController: UITextFieldDelegate{
@@ -225,6 +506,24 @@ extension AddResidenceViewController: UITextFieldDelegate{
         if (textField == txtfieldMoveInDate){
             dateChanged()
         }
+        if (textField == txtfieldHousingStatus){
+            textField.endEditing(true)
+            txtfieldHousingStatus.dividerColor = Theme.getButtonBlueColor()
+            btnHousingStatusDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+            housingStatusDropDown.show()
+        }
+        
+        if (textField == txtfieldCountry){
+            //textField.endEditing(true)
+            btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+            countryDropDown.show()
+        }
+        
+        if (textField == txtfieldState){
+            //textField.endEditing(true)
+            btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+            stateDropDown.show()
+        }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -233,6 +532,145 @@ extension AddResidenceViewController: UITextFieldDelegate{
             if (txtfieldHomeAddress.text == "       "){
                 txtfieldHomeAddress.text = ""
                 txtfieldHomeAddress.placeholder = "       Search Home Address"
+            }
+            
+            do{
+                let searchHomeAddress = try validation.validateSearchHomeAddress(txtfieldHomeAddress.text!.replacingOccurrences(of: "       ", with: ""))
+                DispatchQueue.main.async {
+                    self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldHomeAddress.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldHomeAddress.dividerColor = .red
+                self.txtfieldHomeAddress.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldState){
+            btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            do{
+                let state = try validation.validateState(txtfieldState.text)
+                DispatchQueue.main.async {
+                    self.txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldState.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldState.dividerColor = .red
+                self.txtfieldState.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldCountry){
+            btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            do{
+                let country = try validation.validateCountry(txtfieldCountry.text)
+                DispatchQueue.main.async {
+                    self.txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldCountry.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldCountry.dividerColor = .red
+                self.txtfieldCountry.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldHousingStatus){
+            btnHousingStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldHousingStatus.dividerColor = Theme.getSeparatorNormalColor()
+            do{
+                let housingStatus = try validation.validateHousingStatus(txtfieldHousingStatus.text)
+                DispatchQueue.main.async {
+                    self.txtfieldHousingStatus.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldHousingStatus.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldHousingStatus.dividerColor = .red
+                self.txtfieldHousingStatus.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldStreetAddress){
+            do{
+                let streetAddress = try validation.validateStreetAddressHomeAddress(txtfieldStreetAddress.text)
+                DispatchQueue.main.async {
+                    self.txtfieldStreetAddress.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldStreetAddress.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldStreetAddress.dividerColor = .red
+                self.txtfieldStreetAddress.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldCity){
+            do{
+                let city = try validation.validateCity(txtfieldCity.text)
+                DispatchQueue.main.async {
+                    self.txtfieldCity.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldCity.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldCity.dividerColor = .red
+                self.txtfieldCity.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldZipCode){
+            do{
+                let zipCode = try validation.validateZipcode(txtfieldZipCode.text)
+                DispatchQueue.main.async {
+                    self.txtfieldZipCode.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldZipCode.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldZipCode.dividerColor = .red
+                self.txtfieldZipCode.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldMoveInDate){
+            do{
+                let moveInDate = try validation.validateMoveInDate(txtfieldMoveInDate.text)
+                DispatchQueue.main.async {
+                    self.txtfieldMoveInDate.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldMoveInDate.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldMoveInDate.dividerColor = .red
+                self.txtfieldMoveInDate.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldMonthlyRent){
+            if (txtfieldHousingStatus.text == "Rent"){
+                do{
+                    let rent = try validation.validateMonthlyRent(txtfieldMonthlyRent.text)
+                    DispatchQueue.main.async {
+                        self.txtfieldMonthlyRent.dividerColor = Theme.getSeparatorNormalColor()
+                        self.txtfieldMonthlyRent.detail = ""
+                    }
+                    
+                }
+                catch{
+                    self.txtfieldMonthlyRent.dividerColor = .red
+                    self.txtfieldMonthlyRent.detail = error.localizedDescription
+                }
             }
         }
         
@@ -247,6 +685,9 @@ extension AddResidenceViewController: UITextFieldDelegate{
             else{
                 return true
             }
+        }
+        if (textField == txtfieldZipCode){
+            return string == "" ? true : (txtfieldZipCode.text!.count < 5)
         }
         return true
     }
