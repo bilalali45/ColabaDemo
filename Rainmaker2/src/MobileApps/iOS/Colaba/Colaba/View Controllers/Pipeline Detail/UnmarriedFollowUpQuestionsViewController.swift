@@ -33,11 +33,23 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
     @IBOutlet weak var btnStateDropDown: UIButton!
     @IBOutlet weak var lblRelationshipDetail: UILabel!
     @IBOutlet weak var txtviewRelationshipDetail: TextView!
+    @IBOutlet weak var lblRelationshipDetailError: UILabel!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
-    var isNonLegalSpouse = 0 // 1 for yes 2 for no
+    var isNonLegalSpouse = 2 // 1 for yes 2 for no
     let relationshipTypeDropDown = DropDown()
     let stateDropDown = DropDown()
+    private let validation: Validation
+    
+    init(validation: Validation) {
+        self.validation = validation
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        self.validation = Validation()
+        super.init(coder: coder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,9 +89,11 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
             txtfieldTypeOfRelation.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldTypeOfRelation.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldTypeOfRelation.text = item
+            txtfieldTypeOfRelation.detail = ""
             relationshipTypeDropDown.hide()
             txtviewRelationshipDetail.isHidden = item != "Other"
             lblRelationshipDetail.isHidden = item != "Other"
+            lblRelationshipDetailError.isHidden = item != "Other"
         }
         
         stateDropDown.dismissMode = .manual
@@ -91,6 +105,8 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
             btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldState.text = item
+            txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldState.detail = ""
             stateDropDown.hide()
         }
     }
@@ -143,6 +159,8 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
             stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
                 txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
                 txtfieldState.text = item
+                txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
+                txtfieldState.detail = ""
                 btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }
         }
@@ -152,6 +170,8 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
             stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
                 txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
                 txtfieldState.text = item
+                txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
+                txtfieldState.detail = ""
                 btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }
         }
@@ -172,7 +192,62 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton){
-        self.dismissVC()
+        
+        if (isNonLegalSpouse == 1){
+            do{
+                let typeOfRelationship = try validation.validateTypeOfRelationship(txtfieldTypeOfRelation.text)
+                DispatchQueue.main.async {
+                    self.txtfieldTypeOfRelation.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldTypeOfRelation.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldTypeOfRelation.dividerColor = .red
+                self.txtfieldTypeOfRelation.detail = error.localizedDescription
+            }
+            
+            do{
+                let relationshipState = try validation.validateState(txtfieldState.text)
+                DispatchQueue.main.async {
+                    self.txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldState.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldState.dividerColor = .red
+                self.txtfieldState.detail = error.localizedDescription
+            }
+            
+            if (txtfieldTypeOfRelation.text == "Other"){
+                do{
+                    let relationshipDetail = try validation.validateRelationshipDetail(txtviewRelationshipDetail.text)
+                    DispatchQueue.main.async {
+                        self.lblRelationshipDetailError.isHidden = true
+                        self.txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
+                    }
+                    
+                }
+                catch{
+                    self.lblRelationshipDetailError.isHidden = false
+                    self.lblRelationshipDetailError.text = error.localizedDescription
+                    self.txtviewRelationshipDetail.dividerColor = Theme.getSeparatorErrorColor()
+                }
+            }
+            
+            if (txtfieldTypeOfRelation.text != "" && txtfieldState.text != ""){
+                if (txtfieldTypeOfRelation.text == "Other" && txtviewRelationshipDetail.text != ""){
+                    self.dismissVC()
+                }
+                else if (txtfieldTypeOfRelation.text != "Other"){
+                    self.dismissVC()
+                }
+            }
+        }
+        else{
+            self.dismissVC()
+        }
     }
 }
 
@@ -198,6 +273,20 @@ extension UnmarriedFollowUpQuestionsViewController: UITextFieldDelegate{
         if (textField == txtfieldTypeOfRelation){
             btnTypeOfRelationDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldTypeOfRelation.dividerColor = Theme.getSeparatorNormalColor()
+            
+            do{
+                let typeOfRelationship = try validation.validateTypeOfRelationship(txtfieldTypeOfRelation.text)
+                DispatchQueue.main.async {
+                    self.txtfieldTypeOfRelation.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldTypeOfRelation.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldTypeOfRelation.dividerColor = .red
+                self.txtfieldTypeOfRelation.detail = error.localizedDescription
+            }
+            
         }
         
         if (textField == txtfieldState){
@@ -209,6 +298,18 @@ extension UnmarriedFollowUpQuestionsViewController: UITextFieldDelegate{
             }
             
             btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            do{
+                let state = try validation.validateState(txtfieldState.text)
+                DispatchQueue.main.async {
+                    self.txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldState.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldState.dividerColor = .red
+                self.txtfieldState.detail = error.localizedDescription
+            }
         }
         
         setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldTypeOfRelation, txtfieldState])
@@ -226,6 +327,21 @@ extension UnmarriedFollowUpQuestionsViewController: UITextViewDelegate{
     func textViewDidEndEditing(_ textView: UITextView) {
         txtviewRelationshipDetail.dividerThickness = 1
         txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
+        
+        do{
+            let relationshipDetail = try validation.validateRelationshipDetail(txtviewRelationshipDetail.text)
+            DispatchQueue.main.async {
+                self.lblRelationshipDetailError.isHidden = true
+                self.txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
+            }
+            
+        }
+        catch{
+            self.lblRelationshipDetailError.isHidden = false
+            self.lblRelationshipDetailError.text = error.localizedDescription
+            self.txtviewRelationshipDetail.dividerColor = Theme.getSeparatorErrorColor()
+        }
+        
     }
     
 }

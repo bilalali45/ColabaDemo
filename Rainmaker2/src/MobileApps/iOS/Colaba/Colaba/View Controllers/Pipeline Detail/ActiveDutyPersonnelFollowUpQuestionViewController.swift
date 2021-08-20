@@ -22,6 +22,17 @@ class ActiveDutyPersonnelFollowUpQuestionViewController: UIViewController {
     @IBOutlet weak var btnSaveChanges: UIButton!
     
     let lastDateOfServiceDateFormatter = DateFormatter()
+    private let validation: Validation
+    
+    init(validation: Validation) {
+        self.validation = validation
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        self.validation = Validation()
+        super.init(coder: coder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,6 +77,8 @@ class ActiveDutyPersonnelFollowUpQuestionViewController: UIViewController {
     @objc func dateChanged() {
         if let  datePicker = self.txtfieldLastDate.inputView as? MonthYearPickerView {
             self.txtfieldLastDate.text = lastDateOfServiceDateFormatter.string(from: datePicker.date)
+            self.txtfieldLastDate.dividerColor = Theme.getSeparatorNormalColor()
+            self.txtfieldLastDate.detail = ""
         }
     }
     
@@ -74,7 +87,23 @@ class ActiveDutyPersonnelFollowUpQuestionViewController: UIViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        self.dismissVC()
+        
+        do{
+            let lastDateOfService = try validation.validateLastDateOfService(txtfieldLastDate.text)
+            DispatchQueue.main.async {
+                self.txtfieldLastDate.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldLastDate.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldLastDate.dividerColor = .red
+            self.txtfieldLastDate.detail = error.localizedDescription
+        }
+        
+        if (txtfieldLastDate.text != ""){
+            self.dismissVC()
+        }
     }
     
 }

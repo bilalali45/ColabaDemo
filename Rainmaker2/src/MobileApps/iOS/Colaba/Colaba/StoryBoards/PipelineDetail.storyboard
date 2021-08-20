@@ -3415,18 +3415,18 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="tfI-9v-bVw">
-                                        <rect key="frame" x="20" y="136.5" width="52" height="22"/>
+                                        <rect key="frame" x="20" y="136.5" width="52.5" height="22"/>
                                         <subviews>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="abX-BR-YxH">
                                                 <rect key="frame" x="0.0" y="0.0" width="18" height="22"/>
-                                                <state key="normal" image="RadioButtonUnselected"/>
+                                                <state key="normal" image="RadioButtonSelected"/>
                                                 <connections>
                                                     <action selector="btnMarriedTapped:" destination="uq2-fN-Er5" eventType="touchUpInside" id="DcG-CD-yKp"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rb0-ct-e3Q">
-                                                <rect key="frame" x="34" y="0.0" width="18" height="22"/>
-                                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
+                                                <rect key="frame" x="34" y="0.0" width="18.5" height="22"/>
+                                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="14"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -3542,6 +3542,12 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </textView>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0w8-50-57b">
+                                        <rect key="frame" x="20" y="453" width="0.0" height="0.0"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
+                                        <color key="textColor" name="SeparatorErrorColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                 <constraints>
@@ -3567,6 +3573,8 @@
                                     <constraint firstAttribute="trailing" secondItem="FVr-SW-7Mm" secondAttribute="trailing" constant="20" id="bLC-2A-iLf"/>
                                     <constraint firstAttribute="trailing" secondItem="mfm-XY-0el" secondAttribute="trailing" constant="20" id="edv-s3-fOm"/>
                                     <constraint firstItem="FVr-SW-7Mm" firstAttribute="top" secondItem="riK-2Y-Ltx" secondAttribute="bottom" constant="30" id="gca-C1-PNy"/>
+                                    <constraint firstItem="0w8-50-57b" firstAttribute="top" secondItem="f0J-jN-p75" secondAttribute="bottom" constant="4" id="hf3-nW-aZ6"/>
+                                    <constraint firstItem="0w8-50-57b" firstAttribute="leading" secondItem="3hc-9C-mZE" secondAttribute="leading" constant="20" id="j58-C5-2e0"/>
                                     <constraint firstItem="4nv-ej-WmW" firstAttribute="top" secondItem="FVr-SW-7Mm" secondAttribute="bottom" constant="30" id="oVo-l6-XJk"/>
                                     <constraint firstItem="Iy8-HM-Fu0" firstAttribute="leading" secondItem="3hc-9C-mZE" secondAttribute="leading" constant="20" id="p4v-6X-umj"/>
                                     <constraint firstItem="2hR-9r-fcq" firstAttribute="top" secondItem="tfI-9v-bVw" secondAttribute="bottom" constant="37" id="qN6-SQ-2Nt"/>
@@ -3619,6 +3627,7 @@
                         <outlet property="lblNo" destination="Rb0-ct-e3Q" id="Bt2-Xc-m8d"/>
                         <outlet property="lblQuestion" destination="Iy8-HM-Fu0" id="4Qg-gd-6ZX"/>
                         <outlet property="lblRelationshipDetail" destination="4nv-ej-WmW" id="yLs-qa-Fqp"/>
+                        <outlet property="lblRelationshipDetailError" destination="0w8-50-57b" id="89Z-wf-89V"/>
                         <outlet property="lblTopHeading" destination="FpZ-T3-2Bx" id="xXQ-Fo-iG3"/>
                         <outlet property="lblYes" destination="LP7-6f-Ylu" id="vAh-pv-t56"/>
                         <outlet property="mainView" destination="3hc-9C-mZE" id="fHV-AG-dxb"/>
@@ -3690,7 +3699,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GL7-Aq-huI">
-                                <rect key="frame" x="0.0" y="65" width="375" height="200"/>
+                                <rect key="frame" x="0.0" y="65" width="375" height="240"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gBB-d5-sta" customClass="TextField" customModule="Material">
                                         <rect key="frame" x="20" y="30" width="335" height="49"/>
@@ -3756,15 +3765,23 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </textView>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1t2-Qm-2kK">
+                                        <rect key="frame" x="20" y="196" width="0.0" height="0.0"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
+                                        <color key="textColor" name="SeparatorErrorColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="gBB-d5-sta" secondAttribute="trailing" constant="20" id="0W1-LW-c1y"/>
                                     <constraint firstAttribute="trailing" secondItem="2wD-fT-cOq" secondAttribute="trailing" constant="20" id="3oW-2b-gDa"/>
+                                    <constraint firstItem="1t2-Qm-2kK" firstAttribute="leading" secondItem="GL7-Aq-huI" secondAttribute="leading" constant="20" id="9we-Bx-ZjS"/>
+                                    <constraint firstItem="1t2-Qm-2kK" firstAttribute="top" secondItem="VcQ-rC-7QT" secondAttribute="bottom" constant="4" id="F6N-SO-biJ"/>
                                     <constraint firstAttribute="trailing" secondItem="CEC-fl-5KQ" secondAttribute="trailing" constant="22" id="Fz6-aX-TP3"/>
                                     <constraint firstItem="XJS-IV-0D6" firstAttribute="leading" secondItem="GL7-Aq-huI" secondAttribute="leading" constant="22" id="INF-Wq-BgQ"/>
                                     <constraint firstItem="VcQ-rC-7QT" firstAttribute="top" secondItem="XJS-IV-0D6" secondAttribute="bottom" constant="11" id="LrC-JS-EjP"/>
-                                    <constraint firstAttribute="height" constant="200" id="M2N-u5-qqK"/>
+                                    <constraint firstAttribute="height" constant="240" id="M2N-u5-qqK"/>
                                     <constraint firstItem="gBB-d5-sta" firstAttribute="top" secondItem="GL7-Aq-huI" secondAttribute="top" constant="30" id="Mx8-a7-VYE"/>
                                     <constraint firstItem="2wD-fT-cOq" firstAttribute="top" secondItem="gBB-d5-sta" secondAttribute="bottom" id="V6P-yq-Xug"/>
                                     <constraint firstItem="XJS-IV-0D6" firstAttribute="top" secondItem="gBB-d5-sta" secondAttribute="bottom" constant="30" id="a5z-Rf-2mc"/>
@@ -3813,6 +3830,7 @@
                         <outlet property="btnVisaStatusDropDown" destination="CEC-fl-5KQ" id="G10-WQ-ChI"/>
                         <outlet property="lblBorrowerName" destination="aq5-jN-aUZ" id="GXQ-Al-eis"/>
                         <outlet property="lblStatusDetail" destination="XJS-IV-0D6" id="tET-R4-1Kv"/>
+                        <outlet property="lblStatusDetailError" destination="1t2-Qm-2kK" id="l9R-mS-tlD"/>
                         <outlet property="lblTopHeading" destination="B90-12-lY9" id="tWL-xM-q4D"/>
                         <outlet property="mainView" destination="GL7-Aq-huI" id="eQ4-fw-Kze"/>
                         <outlet property="separatorView" destination="4f1-PG-U5l" id="5dV-Ct-R0V"/>
@@ -4403,6 +4421,9 @@
         </namedColor>
         <namedColor name="DashboardBackgroundColor">
             <color red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="SeparatorErrorColor">
+            <color red="1" green="0.14901960784313725" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TopTabsColor">
             <color red="0.98431372549019602" green="0.98431372549019602" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
