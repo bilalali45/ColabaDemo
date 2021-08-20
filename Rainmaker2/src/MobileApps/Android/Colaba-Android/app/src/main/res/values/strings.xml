@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ColabaDemo</string>
+    <string name="app_name">Colaba</string>
 
     <string name="colaba">Colaba</string>
     <string name="email">Email</string>
@@ -208,7 +208,7 @@
     <string name="martial_status">Marital Status</string>
     <string name="martial_status_married">Married</string>
     <string name="martial_status_unmarried">Unmarried</string>
-    <string name="martial_status_divorced">Divorced</string>
+    <string name="martial_status_separated">Separated</string>
     <string name="unmarried_addendum">Unmarried Addendum</string>
     <string name="unmarried_addendum_ques">Is there a persoon who is not your legal spouse but who currently has real property rights similar to...</string>
     <string name="citizenship">Citizenship</string>
@@ -226,5 +226,11 @@
     <string name="national_guard">Reservce Or National Guard</string>
     <string name="veteran">Veteran</string>
     <string name="surviving_spouse">Surviving Spouse</string>
+    <string name="error_field_required">This field is required.</string>
+    <string name="invalid_email">Please enter a valid email address.</string>
+    <string name="invalid_phone_num">Your phone number is not valid. Please try again.</string>
+
+
+
 
 </resources>

@@ -11,19 +11,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/military_service"
+        android:textStyle="bold"
         android:textAlignment="center"
         android:textColor="@color/grey_color_two"
         android:fontFamily="@font/rubik_medium"
         android:textSize="13sp" />
 
-   <androidx.appcompat.widget.AppCompatCheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/chb_duty_personel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/active_duty_personel"
-        android:checked="false"
-        style="@style/CheckBox"
-        />
+        app:buttonCompat="@drawable/cb_selector"
+        android:paddingStart="15dp"
+        android:layout_marginTop="10dp"/>
 
     <LinearLayout
         android:id="@+id/layout_active_personnel"
@@ -60,13 +61,13 @@
 
     </LinearLayout>
 
-    <CheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/chb_res_national_guard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/national_guard"
-        style="@style/CheckBox"
-        />
+        app:buttonCompat="@drawable/cb_selector"
+        android:paddingStart="15dp" />
 
     <LinearLayout
         android:id="@+id/layout_national_guard"
@@ -101,29 +102,20 @@
 
     </LinearLayout>
 
-    <CheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/chb_veteran"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/veteran"
-        android:checked="false"
-        style="@style/CheckBox"
-        />
+        app:buttonCompat="@drawable/cb_selector"
+        android:paddingStart="15dp" />
 
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/chb_surviving_spouse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/surviving_spouse"
-        android:checked="false"
-        />
-
-    <!--android:buttonTint="@drawable/selector_custom_checkbox" -->
-
-
-
-
-
-
+        app:buttonCompat="@drawable/cb_selector"
+        android:paddingStart="15dp" />
 
 </LinearLayout>

@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/rubik_medium"
         android:text="@string/citizenship"
+        android:textStyle="bold"
         android:textAlignment="center"
         android:textColor="@color/grey_color_two"
         android:textSize="13sp" />
