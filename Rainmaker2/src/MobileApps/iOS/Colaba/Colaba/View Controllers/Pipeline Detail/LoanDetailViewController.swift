@@ -276,6 +276,7 @@ extension LoanDetailViewController: CarbonTabSwipeNavigationDelegate{
         if (index == 0){
             let vc = Utility.getOverviewVC()
             vc.loanApplicationId = self.loanApplicationId
+            vc.delegate = self
             return vc
         }
         else if (index == 1){
@@ -302,9 +303,18 @@ extension LoanDetailViewController: CarbonTabSwipeNavigationDelegate{
     
 }
 
+extension LoanDetailViewController: OverviewViewControllerDelegate{
+    func getLoanDetailForMainPage(loanPurpose: String, email: String, phoneNumber: String) {
+        lblLoanPurpose.text = loanPurpose.uppercased()
+        self.email = email
+        self.phoneNumber = phoneNumber
+    }
+}
+
 extension LoanDetailViewController: MFMailComposeViewControllerDelegate{
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true, completion: nil)
     }
 }
+

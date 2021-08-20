@@ -7,6 +7,7 @@
 
 import Foundation
 
+let kGoogleAPIKey = "AIzaSyBzPEiQOTReBzy6W1UcIyHApPu7_5Die6w"
 let kDeviceNotRegistered = "Device is not registered with Biometric login. Please setup it from settings."
 let kFaceID = "FaceID"
 let kTouchID = "TouchID"
@@ -31,6 +32,8 @@ let kNotificationBtnFiltersTapped = "NotificationBtnFiltersTapped"
 let kIsWalkthroughShowed = "isWalkthroughShowed"
 let kNotificationHidesNavigationBar = "notificationHidesNavigationBar"
 let kNotificationShowNavigationBar = "notificationShowNavigationBar"
+let kNotificationHidesHomeNavigationBar = "notificationHidesHomeNavigationBar"
+let kNotificationShowHomeNavigationBar = "notificationShowHomeNavigationBar"
 let kNotificationShowMailingAddress = "notificationShowMailingAddress"
 let kNotificationSaveAddressAndDismiss = "notificationSaveAddressAndDismiss"
 let kNotificationDeleteMailingAddressAndDismiss = "notificationDeleteMailingAddressAndDismiss"
