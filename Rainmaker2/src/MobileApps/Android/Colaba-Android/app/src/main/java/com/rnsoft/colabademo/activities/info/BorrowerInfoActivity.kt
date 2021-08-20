@@ -12,12 +12,13 @@ import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.TypeAdapterFactory
+import com.rnsoft.colabademo.MyCustomFocusListener
 import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.ActivityBorrowerInformationBinding
 import com.rnsoft.colabademo.databinding.SubLayoutMilitaryBinding
 import com.rnsoft.colabademo.databinding.SublayoutCitizenshipBinding
 import com.rnsoft.colabademo.databinding.SublayoutMaritalStatusBinding
-import com.rnsoft.colabademo.test.MyCustomFocusListener
+
 import java.lang.reflect.Type
 import java.util.*
 
