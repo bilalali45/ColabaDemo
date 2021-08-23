@@ -22,7 +22,7 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
     @IBOutlet weak var visaStatusDropDownAnchorView: UIView!
     @IBOutlet weak var btnVisaStatusDropDown: UIButton!
     @IBOutlet weak var lblStatusDetail: UILabel!
-    @IBOutlet weak var txtviewStatusDetail: TextView!
+    @IBOutlet weak var txtviewStatusDetail: UITextView!
     @IBOutlet weak var lblStatusDetailError: UILabel!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
@@ -57,13 +57,17 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
             textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
             textfield.detailColor = .red
             textfield.detailVerticalOffset = 4
+            textfield.placeholderVerticalOffset = 8
         }
-        txtviewStatusDetail.dividerThickness = 1
-        txtviewStatusDetail.isDividerHidden = false
-        txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
+//        txtviewStatusDetail.dividerThickness = 1
+//        txtviewStatusDetail.isDividerHidden = false
+//        txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
+//        txtviewStatusDetail.delegate = self
+//        txtviewStatusDetail.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+        txtviewStatusDetail.layer.cornerRadius = 5
+        txtviewStatusDetail.layer.borderColor = Theme.getButtonGreyColor().cgColor
+        txtviewStatusDetail.layer.borderWidth = 1
         txtviewStatusDetail.delegate = self
-        txtviewStatusDetail.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-        
         
         btnSaveChanges.layer.cornerRadius = 5
         btnSaveChanges.dropShadowToCollectionViewCell()
@@ -187,27 +191,27 @@ extension NonPermanentResidenceFollowUpQuestionsViewController: UITextFieldDeleg
 
 extension NonPermanentResidenceFollowUpQuestionsViewController: UITextViewDelegate{
     
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        txtviewStatusDetail.dividerThickness = 2
-        txtviewStatusDetail.dividerColor = Theme.getButtonBlueColor()
-    }
+//    func textViewDidBeginEditing(_ textView: UITextView) {
+//        txtviewStatusDetail.dividerThickness = 2
+//        txtviewStatusDetail.dividerColor = Theme.getButtonBlueColor()
+//    }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        txtviewStatusDetail.dividerThickness = 1
-        txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
+        //txtviewStatusDetail.dividerThickness = 1
+        //txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
         
         do{
             let visaStatusDetail = try validation.validateVisaStatusDetail(txtviewStatusDetail.text)
             DispatchQueue.main.async {
                 self.lblStatusDetailError.isHidden = true
-                self.txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
+                //self.txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
             }
             
         }
         catch{
             self.lblStatusDetailError.isHidden = false
             self.lblStatusDetailError.text = error.localizedDescription
-            self.txtviewStatusDetail.dividerColor = Theme.getSeparatorErrorColor()
+            //self.txtviewStatusDetail.dividerColor = Theme.getSeparatorErrorColor()
         }
         
     }
