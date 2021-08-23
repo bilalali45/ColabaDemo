@@ -70,6 +70,7 @@ class AddMailingAddressViewController: UIViewController {
             textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
             textfield.detailColor = .red
             textfield.detailVerticalOffset = 4
+            textfield.placeholderVerticalOffset = 8
         }
         btnSaveChanges.layer.cornerRadius = 5
         btnSaveChanges.dropShadowToCollectionViewCell()
@@ -117,7 +118,7 @@ class AddMailingAddressViewController: UIViewController {
     }
     
     func showAllFields(){
-        mainViewHeightConstraint.constant = 700
+        mainViewHeightConstraint.constant = 640
         txtfieldStreetAddress.isHidden = false
         txtfieldUnitNo.isHidden = false
         txtfieldCity.isHidden = false

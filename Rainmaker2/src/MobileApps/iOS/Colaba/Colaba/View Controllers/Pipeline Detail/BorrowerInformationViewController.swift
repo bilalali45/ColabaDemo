@@ -149,7 +149,7 @@ class BorrowerInformationViewController: UIViewController {
         let citizenshipViewHeight = citizenshipView.frame.height
         let dependentsCollectionViewHeight = dependentsCollectionView.contentSize.height
         let militaryViewHeight = militaryView.frame.height
-        let totalHeight = addressTableViewHeight + maritalStatusViewHeight + citizenshipViewHeight + dependentsCollectionViewHeight + militaryViewHeight + 1100
+        let totalHeight = addressTableViewHeight + maritalStatusViewHeight + citizenshipViewHeight + dependentsCollectionViewHeight + militaryViewHeight + 1000
         tblViewHeightConstraint.constant = addressTableViewHeight
         dependentsCollectionViewHeightConstraint.constant = dependentsCollectionViewHeight
         self.mainViewHeightConstraint.constant = totalHeight
@@ -169,6 +169,7 @@ class BorrowerInformationViewController: UIViewController {
             textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
             textfield.detailColor = .red
             textfield.detailVerticalOffset = 4
+            textfield.placeholderVerticalOffset = 8
         }
         
         addAddressView.layer.cornerRadius = 6

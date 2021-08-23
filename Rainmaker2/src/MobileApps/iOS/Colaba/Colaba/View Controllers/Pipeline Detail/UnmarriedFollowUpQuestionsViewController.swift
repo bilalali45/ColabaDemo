@@ -32,7 +32,7 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
     @IBOutlet weak var stateDropDownAnchorView: UIView!
     @IBOutlet weak var btnStateDropDown: UIButton!
     @IBOutlet weak var lblRelationshipDetail: UILabel!
-    @IBOutlet weak var txtviewRelationshipDetail: TextView!
+    @IBOutlet weak var txtviewRelationshipDetail: UITextView!
     @IBOutlet weak var lblRelationshipDetailError: UILabel!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
@@ -71,11 +71,16 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
             textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
             textfield.detailColor = .red
             textfield.detailVerticalOffset = 4
+            textfield.placeholderVerticalOffset = 8
         }
-        txtviewRelationshipDetail.dividerThickness = 1
-        txtviewRelationshipDetail.isDividerHidden = false
-        txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
-        txtviewRelationshipDetail.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+//        txtviewRelationshipDetail.dividerThickness = 1
+//        txtviewRelationshipDetail.isDividerHidden = false
+//        txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
+//        txtviewRelationshipDetail.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+//        txtviewRelationshipDetail.delegate = self
+        txtviewRelationshipDetail.layer.cornerRadius = 5
+        txtviewRelationshipDetail.layer.borderColor = Theme.getButtonGreyColor().cgColor
+        txtviewRelationshipDetail.layer.borderWidth = 1
         txtviewRelationshipDetail.delegate = self
         
         btnSaveChanges.layer.cornerRadius = 5
@@ -319,27 +324,27 @@ extension UnmarriedFollowUpQuestionsViewController: UITextFieldDelegate{
 
 extension UnmarriedFollowUpQuestionsViewController: UITextViewDelegate{
     
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        txtviewRelationshipDetail.dividerThickness = 2
-        txtviewRelationshipDetail.dividerColor = Theme.getButtonBlueColor()
-    }
+//    func textViewDidBeginEditing(_ textView: UITextView) {
+//        txtviewRelationshipDetail.dividerThickness = 2
+//        txtviewRelationshipDetail.dividerColor = Theme.getButtonBlueColor()
+//    }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        txtviewRelationshipDetail.dividerThickness = 1
-        txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
+        //txtviewRelationshipDetail.dividerThickness = 1
+        //txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
         
         do{
             let relationshipDetail = try validation.validateRelationshipDetail(txtviewRelationshipDetail.text)
             DispatchQueue.main.async {
                 self.lblRelationshipDetailError.isHidden = true
-                self.txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
+                //self.txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
             }
             
         }
         catch{
             self.lblRelationshipDetailError.isHidden = false
             self.lblRelationshipDetailError.text = error.localizedDescription
-            self.txtviewRelationshipDetail.dividerColor = Theme.getSeparatorErrorColor()
+           // self.txtviewRelationshipDetail.dividerColor = Theme.getSeparatorErrorColor()
         }
         
     }
