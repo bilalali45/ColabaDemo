@@ -31,7 +31,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/tab_top_border"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/search_back" />
+                app:srcCompat="@drawable/ic_grey_cross" />
 
             <TextView
                 android:id="@+id/borrower_name_greeting"
@@ -93,36 +93,49 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+
             app:layout_constraintStart_toStartOf="@+id/textView9"
             app:layout_constraintTop_toBottomOf="@+id/textView9">
 
             <RadioButton
                 android:id="@+id/radioButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="22dp"
+                android:textColor="@color/grey_color_one"
+                android:textSize="15sp"
+                android:fontFamily="@font/rubik_regular"
                 android:text="Yes" />
 
             <RadioButton
                 android:id="@+id/radioButton2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No" />
+                android:layout_height="22dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/rubik_regular"
+                android:text="No"
+                android:textColor="@color/grey_color_one"
+                android:textSize="15sp" />
         </RadioGroup>
 
         <TextView
             android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/rubik_regular"
             android:text="Types of Relationship"
+            android:textColor="@color/grey_color_two"
+            android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@+id/radioGroup"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
 
         <Spinner
             android:id="@+id/spinner1"
-            style="@style/Widget.AppCompat.DropDownItem.Spinner"
 
+            android:fontFamily="@font/rubik_regular"
+            android:textColor="@color/grey_color_one"
+            android:textSize="15sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -138,15 +151,19 @@
             android:id="@+id/textView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/rubik_regular"
             android:text="In What State Was This Relationship Formed?"
+            android:textColor="@color/grey_color_two"
+            android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@+id/spinner1"
             app:layout_constraintTop_toBottomOf="@+id/spinner1" />
 
         <Spinner
             android:id="@+id/spinner2"
-            style="@style/Widget.AppCompat.DropDownItem.Spinner"
-
+            android:fontFamily="@font/rubik_regular"
+            android:textColor="@color/grey_color_one"
+            android:textSize="15sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -162,8 +179,12 @@
             android:id="@+id/relationship_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/rubik_regular"
             android:text="Relationship Details"
+
+            android:textColor="@color/grey_color_two"
+            android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@+id/spinner2"
             app:layout_constraintTop_toBottomOf="@+id/spinner2" />
 
@@ -176,19 +197,37 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:background="@color/white"
-            android:fontFamily="@font/rubik_regular"
+
             android:hint="@string/mailing_address"
             android:imeOptions="actionNext"
             android:paddingStart="0dp"
             android:singleLine="false"
             android:text="@string/ipsum_dolor"
             android:textColor="@color/grey_color_one"
-
             android:textSize="15sp"
-
+            android:fontFamily="@font/rubik_regular"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/relationship_label" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/phone_fab"
+            android:layout_width="152dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="23dp"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/app_button_style"
+            android:fontFamily="@font/rubik_medium"
+            android:text="@string/save_changes"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:elevation="3dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
