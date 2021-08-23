@@ -9,6 +9,7 @@ import UIKit
 import Material
 import MonthYearPicker
 import DropDown
+import GooglePlaces
 
 class AddResidenceViewController: UIViewController {
 
@@ -183,6 +184,59 @@ class AddResidenceViewController: UIViewController {
         }
     }
     
+    func getAddressFromLatLon(pdblLatitude: String, withLongitude pdblLongitude: String) {
+            var center : CLLocationCoordinate2D = CLLocationCoordinate2D()
+            let lat: Double = Double("\(pdblLatitude)")!
+            //21.228124
+            let lon: Double = Double("\(pdblLongitude)")!
+            //72.833770
+            let ceo: CLGeocoder = CLGeocoder()
+            center.latitude = lat
+            center.longitude = lon
+
+            let loc: CLLocation = CLLocation(latitude:center.latitude, longitude: center.longitude)
+
+
+            ceo.reverseGeocodeLocation(loc, completionHandler:
+                {(placemarks, error) in
+                    if (error != nil)
+                    {
+                        print("reverse geodcode fail: \(error!.localizedDescription)")
+                    }
+                    let pm = placemarks! as [CLPlacemark]
+
+                    if pm.count > 0 {
+                        let pm = placemarks![0]
+                        print(pm.country)
+                        print(pm.locality)
+                        print(pm.subLocality)
+                        print(pm.thoroughfare)
+                        print(pm.postalCode)
+                        print(pm.subThoroughfare)
+                        var addressString : String = ""
+                        if pm.subLocality != nil {
+                            addressString = addressString + pm.subLocality! + ", "
+                        }
+                        if pm.thoroughfare != nil {
+                            addressString = addressString + pm.thoroughfare! + ", "
+                        }
+                        if pm.locality != nil {
+                            addressString = addressString + pm.locality! + ", "
+                        }
+                        if pm.country != nil {
+                            addressString = addressString + pm.country! + ", "
+                        }
+                        if pm.postalCode != nil {
+                            addressString = addressString + pm.postalCode! + " "
+                        }
+
+
+                        print(addressString)
+                  }
+            })
+
+        }
+    
     @objc func showMailingAddress(){
         self.showPopup(message: "Mailing address has been added", popupState: .success, popupDuration: .custom(5)) { reason in
             
@@ -273,10 +327,41 @@ class AddResidenceViewController: UIViewController {
     
     @IBAction func btnSearchTapped(_ sender: UIButton){
         showAllFields()
+        //getAddressFromLatLon(pdblLatitude: "21.228124", withLongitude: "72.833770")
+//        let autocompleteController = GMSAutocompleteViewController()
+//            autocompleteController.delegate = self
+//
+//            // Specify the place data types to return.
+//            let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.name.rawValue) |
+//                                                        UInt(GMSPlaceField.placeID.rawValue))
+//            autocompleteController.placeFields = fields
+//
+//            // Specify a filter.
+//            let filter = GMSAutocompleteFilter()
+//            filter.type = .address
+//            autocompleteController.autocompleteFilter = filter
+//
+//            // Display the autocomplete view controller.
+//        self.present(autocompleteController, animated: true, completion: nil)
     }
     
     @IBAction func btnDropdownTapped(_ sender: UIButton){
         showAllFields()
+//        let autocompleteController = GMSAutocompleteViewController()
+//            autocompleteController.delegate = self
+//
+//            // Specify the place data types to return.
+//            let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.name.rawValue) |
+//                                                        UInt(GMSPlaceField.placeID.rawValue))
+//            autocompleteController.placeFields = fields
+//
+//            // Specify a filter.
+//            let filter = GMSAutocompleteFilter()
+//            filter.type = .address
+//            autocompleteController.autocompleteFilter = filter
+//
+//            // Display the autocomplete view controller.
+//            present(autocompleteController, animated: true, completion: nil)
     }
     
     @IBAction func btnStateDropDownTapped(_ sender: UIButton) {
@@ -705,4 +790,36 @@ extension AddResidenceViewController: UITextFieldDelegate{
         }
         return true
     }
+}
+
+extension AddResidenceViewController: GMSAutocompleteViewControllerDelegate {
+
+  // Handle the user's selection.
+  func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+    print("Place name: \(place.name)")
+    print("Place ID: \(place.placeID)")
+    print("Place attributions: \(place.attributions)")
+    getAddressFromLatLon(pdblLatitude: "\(place.coordinate.latitude)", withLongitude: "\(place.coordinate.longitude)")
+    dismiss(animated: true, completion: nil)
+  }
+
+  func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+    // TODO: handle the error.
+    print("Error: ", error.localizedDescription)
+  }
+
+  // User canceled the operation.
+  func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+    dismiss(animated: true, completion: nil)
+  }
+
+  // Turn the network activity indicator on and off again.
+  func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+    UIApplication.shared.isNetworkActivityIndicatorVisible = true
+  }
+
+  func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+  }
+
 }

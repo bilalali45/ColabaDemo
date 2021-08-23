@@ -23,9 +23,21 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
     @IBOutlet weak var btnVisaStatusDropDown: UIButton!
     @IBOutlet weak var lblStatusDetail: UILabel!
     @IBOutlet weak var txtviewStatusDetail: TextView!
+    @IBOutlet weak var lblStatusDetailError: UILabel!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
     let visaStatusDropDown = DropDown()
+    private let validation: Validation
+    
+    init(validation: Validation) {
+        self.validation = validation
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        self.validation = Validation()
+        super.init(coder: coder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,7 +78,9 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
             visaStatusDropDown.hide()
             txtviewStatusDetail.isHidden = item != "Other"
             lblStatusDetail.isHidden = item != "Other"
+            lblStatusDetailError.isHidden = item != "Other"
             txtfieldVisaStatus.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldVisaStatus.detail = ""
         }
     }
     
@@ -88,7 +102,46 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        self.dismissVC()
+        
+        do{
+            let visaStatus = try validation.validateVisaStatus(txtfieldVisaStatus.text)
+            DispatchQueue.main.async {
+                self.txtfieldVisaStatus.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldVisaStatus.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldVisaStatus.dividerColor = .red
+            self.txtfieldVisaStatus.detail = error.localizedDescription
+        }
+        
+        if (txtfieldVisaStatus.text == "Other"){
+            do{
+                let visaStatusDetail = try validation.validateVisaStatusDetail(txtviewStatusDetail.text)
+                DispatchQueue.main.async {
+                    self.lblStatusDetailError.isHidden = true
+                    self.txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
+                }
+                
+            }
+            catch{
+                self.lblStatusDetailError.isHidden = false
+                self.lblStatusDetailError.text = error.localizedDescription
+                self.txtviewStatusDetail.dividerColor = Theme.getSeparatorErrorColor()
+            }
+        }
+        
+        if (txtfieldVisaStatus.text != ""){
+            if (txtfieldVisaStatus.text == "Other" && txtviewStatusDetail.text != ""){
+                self.dismissVC()
+            }
+            else if (txtfieldVisaStatus.text != "Other"){
+                self.dismissVC()
+            }
+        }
+        
+        
     }
     
 }
@@ -102,6 +155,20 @@ extension NonPermanentResidenceFollowUpQuestionsViewController: UITextFieldDeleg
             btnVisaStatusDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
             visaStatusDropDown.show()
             txtfieldVisaStatus.dividerColor = Theme.getButtonBlueColor()
+            
+            do{
+                let visaStatus = try validation.validateVisaStatus(txtfieldVisaStatus.text)
+                DispatchQueue.main.async {
+                    self.txtfieldVisaStatus.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldVisaStatus.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldVisaStatus.dividerColor = .red
+                self.txtfieldVisaStatus.detail = error.localizedDescription
+            }
+            
         }
         
     }
@@ -128,6 +195,21 @@ extension NonPermanentResidenceFollowUpQuestionsViewController: UITextViewDelega
     func textViewDidEndEditing(_ textView: UITextView) {
         txtviewStatusDetail.dividerThickness = 1
         txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
+        
+        do{
+            let visaStatusDetail = try validation.validateVisaStatusDetail(txtviewStatusDetail.text)
+            DispatchQueue.main.async {
+                self.lblStatusDetailError.isHidden = true
+                self.txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
+            }
+            
+        }
+        catch{
+            self.lblStatusDetailError.isHidden = false
+            self.lblStatusDetailError.text = error.localizedDescription
+            self.txtviewStatusDetail.dividerColor = Theme.getSeparatorErrorColor()
+        }
+        
     }
     
 }

@@ -18,6 +18,8 @@ pod 'MarqueeLabel'
 pod 'Material'
 pod 'MonthYearPicker'
 pod 'DropDown'
+pod 'GooglePlaces'
+pod 'GoogleMaps'
 
   target 'ColabaTests' do
     inherit! :search_paths

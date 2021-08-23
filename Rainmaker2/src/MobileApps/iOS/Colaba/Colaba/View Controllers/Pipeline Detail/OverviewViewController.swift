@@ -8,6 +8,10 @@
 import UIKit
 import LoadingPlaceholderView
 
+protocol OverviewViewControllerDelegate: AnyObject {
+    func getLoanDetailForMainPage(loanPurpose: String, email: String, phoneNumber: String)
+}
+
 class OverviewViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -17,6 +21,7 @@ class OverviewViewController: BaseViewController {
     var loanApplicationId = 0
     let loadingPlaceholderView = LoadingPlaceholderView()
     var loanInfoData = LoanInfoModel()
+    weak var delegate: OverviewViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +58,7 @@ class OverviewViewController: BaseViewController {
                     model.updateModelWithJSON(json: result)
                     self.loanInfoData = model
                     self.tableViewOverView.reloadData()
+                    self.delegate?.getLoanDetailForMainPage(loanPurpose: self.loanInfoData.loanPurpose, email: self.loanInfoData.email, phoneNumber: self.loanInfoData.cellPhone)
                 }
                 else if (status == .internetError){
                     self.tableViewOverView.reloadData()
@@ -103,7 +109,7 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
             cell.lblCoBorrowerName.isHidden = secondaryBorrowers.count == 0
             cell.lblCoBorrowerTopConstraint.constant = secondaryBorrowers.count == 0 ? 0 : 10
             cell.lblCoBorrowerHeightConstraint.constant = secondaryBorrowers.count == 0 ? 0 : 16
-            cell.lblLoanNo.text = "Loan#\(loanInfoData.loanNumber)"
+            cell.lblLoanNo.text = "Loan No. \(loanInfoData.loanNumber)"
             cell.lblLoanNo.isHidden = loanInfoData.loanNumber == ""
             cell.lblLoanNoTopConstraint.constant = loanInfoData.loanNumber == "" ? 0 : 15
             cell.lblLoanNoHeightConstraint.constant = loanInfoData.loanNumber == "" ? 0 : 18
@@ -129,7 +135,7 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
             cell.mainView.dropShadowToCollectionViewCell()
             cell.lblLoanPurpose.text = loanInfoData.loanPurpose
             cell.lblLoanType.text = "- \(loanInfoData.loanGoal)"
-            cell.lblAddress.text = "\(loanInfoData.street) \(loanInfoData.unit)\n\(loanInfoData.city) \(loanInfoData.stateName) \(loanInfoData.zipCode) \(loanInfoData.countryName)"
+            cell.lblAddress.text = "\(loanInfoData.street) \(loanInfoData.unit),\n\(loanInfoData.city), \(loanInfoData.stateName) \(loanInfoData.zipCode)"
             let propertyTypeText = "\(loanInfoData.propertyType)   ·   \(loanInfoData.propertyUsage)"
             let propertyTypeAttributedText = NSMutableAttributedString(string: propertyTypeText)
             let range1 = propertyTypeText.range(of: "·")

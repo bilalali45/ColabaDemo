@@ -13,6 +13,8 @@ class DashboardViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     
+    @IBOutlet weak var navigationView: UIView!
+    @IBOutlet weak var navigationViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var userIcon: UIImageView!
     @IBOutlet weak var lblUsername: UILabel!
     @IBOutlet weak var btnSearch: UIButton!
@@ -27,6 +29,8 @@ class DashboardViewController: BaseViewController {
         super.viewDidLoad()
         //refreshAccessTokenWithRequest()
         setTopTabBar()
+        NotificationCenter.default.addObserver(self, selector: #selector(hidesNavigationBar), name: NSNotification.Name(rawValue: kNotificationHidesHomeNavigationBar), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showNavigationBar), name: NSNotification.Name(rawValue: kNotificationShowHomeNavigationBar), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,6 +93,30 @@ class DashboardViewController: BaseViewController {
             carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 1)
             carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 2)
             carbonTabSwipeNavigation.insert(intoRootViewController: self, andTargetView: self.tabView)
+        }
+        
+    }
+    
+    @objc func hidesNavigationBar(){
+        
+        DispatchQueue.main.async {
+            self.navigationViewTopConstraint.constant = -70
+            self.navigationView.isHidden = true
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+        }
+        
+    }
+    
+    @objc func showNavigationBar(){
+        
+        DispatchQueue.main.async {
+            self.navigationViewTopConstraint.constant = 0
+            self.navigationView.isHidden = false
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
         }
         
     }

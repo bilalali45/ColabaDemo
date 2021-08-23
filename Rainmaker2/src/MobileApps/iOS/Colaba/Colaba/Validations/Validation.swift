@@ -117,6 +117,35 @@ struct Validation {
         return monthlyRent
     }
     
+    func validateTypeOfRelationship(_ typeOfRelationShip: String?) throws -> String{
+        guard let typeOfRelationShip = typeOfRelationShip else { throw ValidationError.requiredField }
+        guard typeOfRelationShip.count > 0 else { throw ValidationError.requiredField }
+        return typeOfRelationShip
+    }
+    
+    func validateRelationshipDetail(_ relationshipDetail: String?) throws -> String{
+        guard let relationshipDetail = relationshipDetail else { throw ValidationError.requiredField }
+        guard relationshipDetail.count > 0 else { throw ValidationError.requiredField }
+        return relationshipDetail
+    }
+    
+    func validateVisaStatus(_ visaStatus: String?) throws -> String{
+        guard let visaStatus = visaStatus else { throw ValidationError.requiredField }
+        guard visaStatus.count > 0 else { throw ValidationError.requiredField }
+        return visaStatus
+    }
+    
+    func validateVisaStatusDetail(_ visaStatusDetail: String?) throws -> String{
+        guard let visaStatusDetail = visaStatusDetail else { throw ValidationError.requiredField }
+        guard visaStatusDetail.count > 0 else { throw ValidationError.requiredField }
+        return visaStatusDetail
+    }
+    
+    func validateLastDateOfService(_ lastDateOfService: String?) throws -> String{
+        guard let lastDateOfService = lastDateOfService else { throw ValidationError.requiredField }
+        guard lastDateOfService.count > 0 else { throw ValidationError.requiredField }
+        return lastDateOfService
+    }
 }
 
 enum ValidationError: LocalizedError {
