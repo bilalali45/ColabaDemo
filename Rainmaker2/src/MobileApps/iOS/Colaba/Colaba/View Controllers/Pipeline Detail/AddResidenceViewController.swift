@@ -20,7 +20,7 @@ class AddResidenceViewController: UIViewController {
     @IBOutlet weak var btnDelete: UIButton!
     @IBOutlet weak var seperatorView: UIView!
     @IBOutlet weak var mainView: UIView!
-    @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint! //350 and 1100
+    @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint! //330 and 1050
     @IBOutlet weak var txtfieldHomeAddress: TextField!
     @IBOutlet weak var btnSearch: UIButton!
     @IBOutlet weak var btnDropDown: UIButton!
@@ -36,7 +36,7 @@ class AddResidenceViewController: UIViewController {
     @IBOutlet weak var countryDropDownAnchorView: UIView!
     @IBOutlet weak var btnCountryDropDown: UIButton!
     @IBOutlet weak var txtfieldMoveInDate: TextField!
-    @IBOutlet weak var txtfieldMoveInDateTopConstraint: NSLayoutConstraint! //583 and 30
+    @IBOutlet weak var txtfieldMoveInDateTopConstraint: NSLayoutConstraint! //513 and 30
     @IBOutlet weak var btnCalendar: UIButton!
     @IBOutlet weak var btnCalendarTopConstraint: NSLayoutConstraint! //589 and 36
     @IBOutlet weak var txtfieldHousingStatus: TextField!
@@ -44,7 +44,7 @@ class AddResidenceViewController: UIViewController {
     @IBOutlet weak var btnHousingStatusDropDown: UIButton!
     @IBOutlet weak var txtfieldMonthlyRent: TextField!
     @IBOutlet weak var txtfieldMonthlyRentTopConstraint: NSLayoutConstraint! //30 or 0
-    @IBOutlet weak var txtfieldMonthlyRentHeightConstraint: NSLayoutConstraint! //49 or 0
+    @IBOutlet weak var txtfieldMonthlyRentHeightConstraint: NSLayoutConstraint! //39 or 0
     @IBOutlet weak var addMailingAddressStackView: UIStackView!
     @IBOutlet weak var btnSaveChanges: UIButton!
     @IBOutlet weak var tblViewMailingAddress: UITableView!
@@ -86,6 +86,7 @@ class AddResidenceViewController: UIViewController {
             textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
             textfield.detailColor = .red
             textfield.detailVerticalOffset = 4
+            textfield.placeholderVerticalOffset = 8
         }
         
         housingStatusDropDown.dismissMode = .manual
@@ -101,7 +102,7 @@ class AddResidenceViewController: UIViewController {
             housingStatusDropDown.hide()
             txtfieldMonthlyRent.isHidden = item != "Rent"
             txtfieldMonthlyRentTopConstraint.constant = item == "Rent" ? 30 : 0
-            txtfieldMonthlyRentHeightConstraint.constant = item == "Rent" ? 49 : 0
+            txtfieldMonthlyRentHeightConstraint.constant = item == "Rent" ? 39 : 0
             UIView.animate(withDuration: 0.5) {
                 self.view.layoutSubviews()
             }
@@ -163,10 +164,28 @@ class AddResidenceViewController: UIViewController {
         }
     }
     
+    func showAutoCompletePlaces(){
+        let autocompleteController = GMSAutocompleteViewController()
+            autocompleteController.delegate = self
+
+//            // Specify the place data types to return.
+//            let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.name.rawValue) |
+//                                                        UInt(GMSPlaceField.placeID.rawValue))
+//            autocompleteController.placeFields = fields
+
+            // Specify a filter.
+            let filter = GMSAutocompleteFilter()
+            filter.type = .address
+            autocompleteController.autocompleteFilter = filter
+
+            // Display the autocomplete view controller.
+            self.present(autocompleteController, animated: true, completion: nil)
+    }
+    
     func showAllFields(){
-        mainViewHeightConstraint.constant = 1100
-        txtfieldMoveInDateTopConstraint.constant = 583
-        btnCalendarTopConstraint.constant = 589
+        mainViewHeightConstraint.constant = 990
+        txtfieldMoveInDateTopConstraint.constant = 513
+        btnCalendarTopConstraint.constant = 517
         txtfieldStreetAddress.isHidden = false
         txtfieldUnitNo.isHidden = false
         txtfieldCity.isHidden = false
@@ -195,47 +214,34 @@ class AddResidenceViewController: UIViewController {
             center.longitude = lon
 
             let loc: CLLocation = CLLocation(latitude:center.latitude, longitude: center.longitude)
-
-
             ceo.reverseGeocodeLocation(loc, completionHandler:
-                {(placemarks, error) in
-                    if (error != nil)
-                    {
-                        print("reverse geodcode fail: \(error!.localizedDescription)")
-                    }
-                    let pm = placemarks! as [CLPlacemark]
-
-                    if pm.count > 0 {
-                        let pm = placemarks![0]
-                        print(pm.country)
-                        print(pm.locality)
-                        print(pm.subLocality)
-                        print(pm.thoroughfare)
-                        print(pm.postalCode)
-                        print(pm.subThoroughfare)
-                        var addressString : String = ""
-                        if pm.subLocality != nil {
-                            addressString = addressString + pm.subLocality! + ", "
+            {(placemarks, error) in
+                if (error != nil)
+                {
+                    print("reverse geodcode fail: \(error!.localizedDescription)")
+                }
+                else{
+                    if let pm = placemarks?.first {
+                        if let city = pm.locality{
+                            self.txtfieldCity.text = city
                         }
-                        if pm.thoroughfare != nil {
-                            addressString = addressString + pm.thoroughfare! + ", "
+                        if let county = pm.subAdministrativeArea{
+                            self.txtfieldCounty.text = county
                         }
-                        if pm.locality != nil {
-                            addressString = addressString + pm.locality! + ", "
+                        if let state = pm.administrativeArea{
+                            self.txtfieldState.text = state
                         }
-                        if pm.country != nil {
-                            addressString = addressString + pm.country! + ", "
+                        if let zipCode = pm.postalCode{
+                            self.txtfieldZipCode.text = zipCode
                         }
-                        if pm.postalCode != nil {
-                            addressString = addressString + pm.postalCode! + " "
+                        if let country = pm.country{
+                            self.txtfieldCountry.text = country
                         }
-
-
-                        print(addressString)
+                        
                   }
-            })
-
-        }
+                }
+        })
+    }
     
     @objc func showMailingAddress(){
         self.showPopup(message: "Mailing address has been added", popupState: .success, popupDuration: .custom(5)) { reason in
@@ -326,7 +332,7 @@ class AddResidenceViewController: UIViewController {
     }
     
     @IBAction func btnSearchTapped(_ sender: UIButton){
-        showAllFields()
+        //showAllFields()
         //getAddressFromLatLon(pdblLatitude: "21.228124", withLongitude: "72.833770")
 //        let autocompleteController = GMSAutocompleteViewController()
 //            autocompleteController.delegate = self
@@ -346,7 +352,7 @@ class AddResidenceViewController: UIViewController {
     }
     
     @IBAction func btnDropdownTapped(_ sender: UIButton){
-        showAllFields()
+       // showAllFields()
 //        let autocompleteController = GMSAutocompleteViewController()
 //            autocompleteController.delegate = self
 //
@@ -583,10 +589,12 @@ extension AddResidenceViewController: UITextFieldDelegate{
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if (textField == txtfieldHomeAddress){
+            showAutoCompletePlaces()
             txtfieldHomeAddress.placeholder = "Search Home Address"
             if txtfieldHomeAddress.text == ""{
                 txtfieldHomeAddress.text = "       "
             }
+            
         }
         if (textField == txtfieldMoveInDate){
             dateChanged()
@@ -796,9 +804,16 @@ extension AddResidenceViewController: GMSAutocompleteViewControllerDelegate {
 
   // Handle the user's selection.
   func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-    print("Place name: \(place.name)")
-    print("Place ID: \(place.placeID)")
-    print("Place attributions: \(place.attributions)")
+    if let formattedAddress = place.formattedAddress{
+        txtfieldHomeAddress.text = "       \(formattedAddress)"
+        txtfieldHomeAddress.placeholder = "Search Home Address"
+        txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
+        txtfieldHomeAddress.detail = ""
+    }
+    if let shortName = place.addressComponents?.first?.shortName{
+        txtfieldStreetAddress.text = shortName
+    }
+    showAllFields()
     getAddressFromLatLon(pdblLatitude: "\(place.coordinate.latitude)", withLongitude: "\(place.coordinate.longitude)")
     dismiss(animated: true, completion: nil)
   }

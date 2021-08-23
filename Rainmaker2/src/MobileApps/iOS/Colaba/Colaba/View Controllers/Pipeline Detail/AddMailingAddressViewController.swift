@@ -8,6 +8,7 @@
 import UIKit
 import Material
 import DropDown
+import GooglePlaces
 
 class AddMailingAddressViewController: UIViewController {
 
@@ -70,6 +71,7 @@ class AddMailingAddressViewController: UIViewController {
             textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
             textfield.detailColor = .red
             textfield.detailVerticalOffset = 4
+            textfield.placeholderVerticalOffset = 8
         }
         btnSaveChanges.layer.cornerRadius = 5
         btnSaveChanges.dropShadowToCollectionViewCell()
@@ -116,8 +118,26 @@ class AddMailingAddressViewController: UIViewController {
         }
     }
     
+    func showAutoCompletePlaces(){
+        let autocompleteController = GMSAutocompleteViewController()
+            autocompleteController.delegate = self
+
+//            // Specify the place data types to return.
+//            let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.name.rawValue) |
+//                                                        UInt(GMSPlaceField.placeID.rawValue))
+//            autocompleteController.placeFields = fields
+
+            // Specify a filter.
+            let filter = GMSAutocompleteFilter()
+            filter.type = .address
+            autocompleteController.autocompleteFilter = filter
+
+            // Display the autocomplete view controller.
+            self.present(autocompleteController, animated: true, completion: nil)
+    }
+    
     func showAllFields(){
-        mainViewHeightConstraint.constant = 700
+        mainViewHeightConstraint.constant = 640
         txtfieldStreetAddress.isHidden = false
         txtfieldUnitNo.isHidden = false
         txtfieldCity.isHidden = false
@@ -131,6 +151,46 @@ class AddMailingAddressViewController: UIViewController {
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
         }
+    }
+    
+    func getAddressFromLatLon(pdblLatitude: String, withLongitude pdblLongitude: String) {
+            var center : CLLocationCoordinate2D = CLLocationCoordinate2D()
+            let lat: Double = Double("\(pdblLatitude)")!
+            //21.228124
+            let lon: Double = Double("\(pdblLongitude)")!
+            //72.833770
+            let ceo: CLGeocoder = CLGeocoder()
+            center.latitude = lat
+            center.longitude = lon
+
+            let loc: CLLocation = CLLocation(latitude:center.latitude, longitude: center.longitude)
+            ceo.reverseGeocodeLocation(loc, completionHandler:
+            {(placemarks, error) in
+                if (error != nil)
+                {
+                    print("reverse geodcode fail: \(error!.localizedDescription)")
+                }
+                else{
+                    if let pm = placemarks?.first {
+                        if let city = pm.locality{
+                            self.txtfieldCity.text = city
+                        }
+                        if let county = pm.subAdministrativeArea{
+                            self.txtfieldCounty.text = county
+                        }
+                        if let state = pm.administrativeArea{
+                            self.txtfieldState.text = state
+                        }
+                        if let zipCode = pm.postalCode{
+                            self.txtfieldZipCode.text = zipCode
+                        }
+                        if let country = pm.country{
+                            self.txtfieldCountry.text = country
+                        }
+                        
+                  }
+                }
+        })
     }
     
     @objc func txtfieldCountryTextChanged(){
@@ -310,6 +370,7 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if (textField == txtfieldHomeAddress){
+            showAutoCompletePlaces()
             txtfieldHomeAddress.placeholder = "Search Home Address"
             if txtfieldHomeAddress.text == ""{
                 txtfieldHomeAddress.text = "       "
@@ -460,4 +521,43 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
         }
         return true
     }
+}
+
+extension AddMailingAddressViewController: GMSAutocompleteViewControllerDelegate {
+
+  // Handle the user's selection.
+  func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+    if let formattedAddress = place.formattedAddress{
+        txtfieldHomeAddress.text = "       \(formattedAddress)"
+        txtfieldHomeAddress.placeholder = "Search Home Address"
+        txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
+        txtfieldHomeAddress.detail = ""
+    }
+    if let shortName = place.addressComponents?.first?.shortName{
+        txtfieldStreetAddress.text = shortName
+    }
+    showAllFields()
+    getAddressFromLatLon(pdblLatitude: "\(place.coordinate.latitude)", withLongitude: "\(place.coordinate.longitude)")
+    dismiss(animated: true, completion: nil)
+  }
+
+  func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+    // TODO: handle the error.
+    print("Error: ", error.localizedDescription)
+  }
+
+  // User canceled the operation.
+  func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+    dismiss(animated: true, completion: nil)
+  }
+
+  // Turn the network activity indicator on and off again.
+  func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+    UIApplication.shared.isNetworkActivityIndicatorVisible = true
+  }
+
+  func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+  }
+
 }

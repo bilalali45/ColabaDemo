@@ -55,6 +55,7 @@ class ActiveDutyPersonnelFollowUpQuestionViewController: UIViewController {
             textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
             textfield.detailColor = .red
             textfield.detailVerticalOffset = 4
+            textfield.placeholderVerticalOffset = 8
         }
         
         btnSaveChanges.layer.cornerRadius = 5
