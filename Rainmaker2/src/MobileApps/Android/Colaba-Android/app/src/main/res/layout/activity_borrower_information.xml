@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/content_background_color"
+    android:background="#80FFFFFF"
     tools:context=".activities.info.BorrowerInfoActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_info_screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colaba_loan_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -91,13 +90,13 @@
                 android:id="@+id/layout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:orientation="horizontal"
                 android:weightSum="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_first_name"
@@ -171,13 +170,13 @@
                 android:id="@+id/layout_two"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="25dp"
+                android:layout_marginEnd="20dp"
                 android:orientation="horizontal"
                 android:weightSum="2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout1"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp">
+                app:layout_constraintTop_toBottomOf="@+id/layout1">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_last_name"
@@ -252,8 +251,8 @@
                 android:id="@+id/layout_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/email_add"
@@ -284,11 +283,15 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- layout home num -->
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_home_num"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="25dp"
+                android:layout_marginEnd="20dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/home_number"
                 android:textColorHint="@color/primary_info_label_color"
@@ -300,9 +303,7 @@
                 app:helperTextTextAppearance="@style/inputError"
                 app:helperTextTextColor="@color/colaba_red_color"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-                app:layout_constraintTop_toBottomOf="@+id/layout_email"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp">
+                app:layout_constraintTop_toBottomOf="@+id/layout_email">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_home_number"
@@ -322,17 +323,19 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- work num ,ext num-->
+
             <LinearLayout
                 android:id="@+id/layout_work_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="25dp"
+                android:layout_marginEnd="20dp"
                 android:orientation="horizontal"
                 android:weightSum="2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_home_num"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp">
+                app:layout_constraintTop_toBottomOf="@+id/layout_home_num">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_work_num"
@@ -403,21 +406,21 @@
             <!--   Cell Number -->
 
             <com.google.android.material.textfield.TextInputLayout
+                android:visibility="visible"
                 android:id="@+id/layout_cell_num"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="25dp"
+                android:layout_marginEnd="20dp"
                 android:hint="@string/cell_number"
                 android:textColorHint="@color/primary_info_label_color"
-                android:visibility="visible"
                 app:boxCollapsedPaddingTop="1dp"
                 app:boxStrokeColor="@color/primary_info_line_color"
                 app:boxStrokeWidth="0.5dp"
                 app:boxStrokeWidthFocused="1dp"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-                app:layout_constraintTop_toBottomOf="@+id/layout_work_number"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp">
+                app:layout_constraintTop_toBottomOf="@+id/layout_work_number">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_cell_num"
@@ -436,6 +439,8 @@
                     android:textSize="@dimen/ed_txt_size_primary_info" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- layout residence -->
 
             <LinearLayout
                 android:id="@+id/layout_residence"
@@ -456,12 +461,12 @@
                     android:id="@+id/add_new_address"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/style_btn_add_residence"
-                    android:gravity="center"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
-                    android:clickable="true">
+                    android:background="@drawable/style_btn_add_residence"
+                    android:clickable="true"
+                    android:gravity="center">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -482,12 +487,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_residence"
                 android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp">
+                android:layout_marginEnd="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_residence">
 
                 <!--  marital status -->
                 <include
@@ -495,25 +501,28 @@
                     layout="@layout/sublayout_marital_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="60dp" />
+                    android:layout_marginTop="60dp"
+                    android:visibility="visible" />
 
                 <!--  citizenship -->
-
                 <include
                     android:id="@+id/layout_citizenship"
                     layout="@layout/sublayout_citizenship"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp" />
+                    android:layout_marginTop="50dp"
+                    android:visibility="visible" />
+
+                <!-- date of birth -->
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:visibility="visible"
                     android:id="@+id/layout_date_of_birth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="70dp"
                     android:hint="@string/dob"
                     android:textColorHint="@color/primary_info_label_color"
-                    android:visibility="visible"
                     app:boxCollapsedPaddingTop="1dp"
                     app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="0.5dp"
@@ -533,21 +542,23 @@
                         android:imeOptions="actionDone"
                         android:paddingStart="0dp"
                         android:singleLine="true"
+                        android:editable="false"
                         android:textColor="@color/grey_color_one"
                         android:textSize="@dimen/ed_txt_size_primary_info" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+
                 <!--  Security num -->
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:visibility="visible"
                     android:id="@+id/layout_security_num"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
                     android:hint="@string/social_security_num"
                     android:textColorHint="@color/primary_info_label_color"
-                    android:visibility="visible"
                     app:boxCollapsedPaddingTop="1dp"
                     app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="0.5dp"
@@ -592,35 +603,34 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
+                        android:inputType="number"
                         android:digits="0123456789"
                         android:ems="10"
                         android:fontFamily="@font/rubik_regular"
-                        android:imeOptions="actionDone"
-                        android:inputType="number"
                         android:paddingStart="0dp"
+                        android:imeOptions="actionDone"
                         android:singleLine="true"
+                        android:imeActionLabel="Done"
                         android:textColor="@color/grey_color_one"
                         android:textSize="@dimen/ed_txt_size_primary_info" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <LinearLayout
+                <include
                     android:id="@+id/layout_add_dependents"
+                    layout="@layout/dependent_input_field"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content" />
 
-                </LinearLayout>
-
-                <!-- militart service-->
+                <!-- military service-->
                 <include
                     android:id="@+id/layout_military_service"
                     layout="@layout/sub_layout_military"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
-                    android:layout_marginBottom="120dp" />
+                    android:layout_marginBottom="160dp"
+                    android:visibility="visible" />
 
             </LinearLayout>
 
@@ -629,17 +639,17 @@
     </ScrollView>
 
     <Button
+        android:visibility="visible"
         android:id="@+id/btn_save_info"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="26dp"
+        android:layout_marginBottom="20dp"
         android:fontFamily="@font/rubik_regular"
         android:text="SAVE CHANGES"
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold"
-        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

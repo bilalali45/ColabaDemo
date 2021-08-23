@@ -2,6 +2,7 @@ package com.rnsoft.colabademo.activities.info
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
@@ -10,20 +11,21 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
+import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.PhoneTextFormatter
 import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.activities.info.model.Address
-import com.rnsoft.colabademo.databinding.ActivityBorrowerInformationBinding
-import com.rnsoft.colabademo.databinding.SubLayoutMilitaryBinding
-import com.rnsoft.colabademo.databinding.SublayoutCitizenshipBinding
-import com.rnsoft.colabademo.databinding.SublayoutMaritalStatusBinding
+import com.rnsoft.colabademo.databinding.*
 import com.rnsoft.colabademo.test.MyCustomFocusListener
 import com.rnsoft.colabademo.utils.RecyclerTouchListener
 import kotlinx.android.synthetic.main.activity_borrower_information.*
@@ -41,12 +43,12 @@ class BorrowerInfoActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var msBinding: SublayoutMaritalStatusBinding
     lateinit var citizenshipBinding: SublayoutCitizenshipBinding
     lateinit var bindingMilitary: SubLayoutMilitaryBinding
+    lateinit var bindingDependents : DependentInputFieldBinding
     lateinit var linear: LinearLayout
     var list: ArrayList<Address> = ArrayList()
     private var touchListener: RecyclerTouchListener? = null
 
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBorrowerInformationBinding.inflate(layoutInflater)
@@ -54,96 +56,122 @@ class BorrowerInfoActivity : AppCompatActivity(), View.OnClickListener {
         msBinding = binding.layoutMaritalStatus
         citizenshipBinding = binding.layoutCitizenship
         bindingMilitary = binding.layoutMilitaryService
+        bindingDependents = binding.layoutAddDependents
 
         initViews()
         setEndIconClicks()
-
-        /* val til = TextInputLayout(this)
-         val et = EditText(this)
-         til.addView(et)
-         til.hint = "Dynamic View"
-         binding.layoutAddDependents.addView(til) */
-
-        // TextInputLayout textInputLayout = (TextInputLayout) LayoutInflator.from(this).inflate(R.layout.text_input_layout, null);
-
-        //val linearLayout = findViewById<View>(R.id.linearlayout) as LinearLayout
-        linear =
-            LayoutInflater.from(this).inflate(R.layout.dynamic_inputfield_two, null) as LinearLayout
-        //linear.layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
-        //linear.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
-        binding.layoutAddDependents.addView(linear)
-
-        binding.scrollPrimaryInfo.isNestedScrollingEnabled = false
-
         setResidence()
-        //setFocusforError()
+        setSingleItemFocus()
 
-       /* binding.edDateOfBirth.setOnFocusChangeListener { view, hasFocus ->
+        // done button click of add dependents
+        binding.edDependents.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                addDependentField()
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+            }
+            false
+        }
+
+    }
+
+    private fun setSingleItemFocus(){
+
+        // check first name
+        binding.edFirstName.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
+                setTextInputLayoutHintColor(binding.layoutFirstName, R.color.grey_color_two )
+            } else {
+                if (binding.edFirstName.text?.length == 0) {
+                    setTextInputLayoutHintColor(binding.layoutFirstName,R.color.grey_color_three)
+                } else {
+                    setTextInputLayoutHintColor(binding.layoutFirstName,R.color.grey_color_two)
+                    clearError(binding.layoutFirstName)
+                }
+            }
+        }
+
+        // last name
+
+        binding.edLastName.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                setTextInputLayoutHintColor(binding.layoutLastName, R.color.grey_color_two )
+            } else {
+                if (binding.edLastName.text?.length == 0) {
+                    setTextInputLayoutHintColor(binding.layoutLastName,R.color.grey_color_three)
+                } else {
+                    setTextInputLayoutHintColor(binding.layoutLastName,R.color.grey_color_two)
+                    clearError(binding.layoutLastName)
+                }
+            }
+        }
+
+        // home number
+        binding.edHomeNumber.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                setTextInputLayoutHintColor(binding.layoutHomeNum, R.color.grey_color_two )
+            } else {
+                if (binding.edHomeNumber.text?.length == 0) {
+                    setTextInputLayoutHintColor(binding.layoutHomeNum,R.color.grey_color_three)
+                } else {
+                    setTextInputLayoutHintColor(binding.layoutHomeNum,R.color.grey_color_two)
+                    if (binding.edHomeNumber.text?.length!! < 14) {
+                        setError(binding.layoutHomeNum, getString(R.string.invalid_phone_num))
+                    } else {
+                        clearError(binding.layoutHomeNum)
+                    }
+
+                }
+            }
+        }
+
+        // email
+        binding.edEmail.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                setTextInputLayoutHintColor(binding.layoutEmail, R.color.grey_color_two)
+            } else {
+                if (binding.edEmail.text?.length == 0) {
+                    setTextInputLayoutHintColor(binding.layoutEmail, R.color.grey_color_three)
+                } else {
+                    setTextInputLayoutHintColor(binding.layoutEmail, R.color.grey_color_two)
+
+                    if (!isValidEmailAddress(binding.edEmail.text.toString())) {
+                        setError(binding.layoutEmail, getString(R.string.invalid_email))
+                    } else {
+                        clearError(binding.layoutEmail)
+                    }
+                }
+            }
+        }
+
+        binding.edDependents.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                setTextInputLayoutHintColor(binding.layoutDependants, R.color.grey_color_two )
+            } else {
+                if (binding.edDependents.text?.length == 0) {
+                    setTextInputLayoutHintColor(binding.layoutDependants,R.color.grey_color_three)
+                } else {
+                    setTextInputLayoutHintColor(binding.layoutDependants,R.color.grey_color_two)
+                    addDependentField()
+                }
+            }
+        }
+
+        // date of birth
+        binding.edDateOfBirth.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                setTextInputLayoutHintColor(binding.layoutDateOfBirth, R.color.grey_color_two )
                 openCalendar()
-
-          //      binding.layoutLastName.boxStrokeColor = ContextCompat.getColor(this, R.color.colaba_red_color)
-
-                binding.layoutDateOfBirth.set(AppCompatResources.getColorStateList(
-                        this,
-                        R.color.primary_info_label_color
-                    )
-                )
-            }
-        } */
-
-/*
-        binding.edDateOfBirth.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                if(binding.edDateOfBirth.isCursorVisible) {
-                    openCalendar()
+            } else {
+                if (binding.edDateOfBirth.text?.length == 0) {
+                    setTextInputLayoutHintColor(binding.layoutDateOfBirth,R.color.grey_color_three)
+                } else {
+                    setTextInputLayoutHintColor(binding.layoutDateOfBirth,R.color.grey_color_two)
                 }
             }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        }) */
-
-        binding.recyclerview.setOnTouchListener(object : View.OnTouchListener {
-            @SuppressLint("ClickableViewAccessibility")
-            override fun onTouch(v: View, m: MotionEvent): Boolean {
-                binding.scrollPrimaryInfo.requestDisallowInterceptTouchEvent(true)
-                return false
-            }
-        })
-    }
-
-    private fun setResidence() {
-
-        list.add(Address("5919 Trussvile ", "West Road"))
-        list.add(Address("5919 Trussvile,", "West Road"))
-        binding.recyclerview.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        binding.recyclerview.hasFixedSize()
-       // binding.recyclerview.isNestedScrollingEnabled = false
-
-        val adapter = ResidenceAdapter(this@BorrowerInfoActivity)
-        adapter.setTaskList(list)
-        binding.recyclerview.setAdapter(adapter)
-
-        touchListener = RecyclerTouchListener(this, binding.recyclerview)
-        touchListener!!
-            .setClickable(object : RecyclerTouchListener.OnRowClickListener {
-                override fun onRowClicked(position: Int) { }
-                override fun onIndependentViewClicked(independentViewID: Int, position: Int) {}
-            })
-            .setSwipeOptionViews(R.id.delete_task)
-            .setSwipeable(R.id.rowFG, R.id.rowBG, object :
-                RecyclerTouchListener.OnSwipeOptionsClickListener {
-
-                override fun onSwipeOptionClicked(viewID: Int, position: Int) {
-                    list.removeAt(position)
-                    adapter.setTaskList(list)
-                }
-            })
-        binding.recyclerview.addOnItemTouchListener(touchListener!!)
+        }
 
     }
+
 
     private fun initViews() {
         binding.backButton.setOnClickListener(this)
@@ -161,66 +189,39 @@ class BorrowerInfoActivity : AppCompatActivity(), View.OnClickListener {
         bindingMilitary.chbVeteran.setOnClickListener(this)
         bindingMilitary.chbSurvivingSpouse.setOnClickListener(this)
 
-        binding.edFirstName.setOnFocusChangeListener(MyCustomFocusListener(binding.edFirstName, binding.layoutFirstName, this))
         binding.edMiddleName.setOnFocusChangeListener(MyCustomFocusListener(binding.edMiddleName, binding.layoutMiddleName, this))
-        binding.edLastName.setOnFocusChangeListener(MyCustomFocusListener(binding.edLastName, binding.layoutLastName, this))
         binding.edSuffix.setOnFocusChangeListener(MyCustomFocusListener(binding.edSuffix, binding.layoutSuffix, this))
-        binding.edEmail.setOnFocusChangeListener(MyCustomFocusListener(binding.edEmail, binding.layoutEmail, this))
-        binding.edHomeNumber.setOnFocusChangeListener(MyCustomFocusListener(binding.edHomeNumber, binding.layoutHomeNum, this))
-        binding.edWorkNum.setOnFocusChangeListener(
-            MyCustomFocusListener(
-                binding.edWorkNum,
-                binding.layoutWorkNum, this))
-        binding.edExtNum.setOnFocusChangeListener(
-            MyCustomFocusListener(
-                binding.edExtNum,
-                binding.layoutExtNum,
-                this
-            )
-        )
-        binding.edCellNum.setOnFocusChangeListener(
-            MyCustomFocusListener(
-                binding.edCellNum,
-                binding.layoutCellNum,
-                this
-            )
-        )
-        binding.edSecurityNum.setOnFocusChangeListener(
-            MyCustomFocusListener(
-                binding.edSecurityNum,
-                binding.layoutSecurityNum,
-                this
-            )
-        )
-        binding.edDependents.setOnFocusChangeListener(
-            MyCustomFocusListener(
-                binding.edDependents,
-                binding.layoutDependants,
-                this
-            )
-        )
-        binding.edDateOfBirth.setOnFocusChangeListener(
-            MyCustomFocusListener(
-                binding.edDateOfBirth,
-                binding.layoutDateOfBirth,
-                this
-            )
-        )
+        binding.edWorkNum.setOnFocusChangeListener(MyCustomFocusListener(binding.edWorkNum,binding.layoutWorkNum, this))
+        binding.edExtNum.setOnFocusChangeListener(MyCustomFocusListener(binding.edExtNum, binding.layoutExtNum, this))
+        binding.edCellNum.setOnFocusChangeListener(MyCustomFocusListener(binding.edCellNum, binding.layoutCellNum, this))
+        binding.edSecurityNum.setOnFocusChangeListener(MyCustomFocusListener(binding.edSecurityNum,binding.layoutSecurityNum, this))
+        binding.edDependents.setOnFocusChangeListener(MyCustomFocusListener(binding.edDependents, binding.layoutDependants, this))
+        binding.edDateOfBirth.setOnFocusChangeListener(MyCustomFocusListener(binding.edDateOfBirth, binding.layoutDateOfBirth, this))
 
-        binding.edHomeNumber.addTextChangedListener(
-            PhoneTextFormatter(
-                binding.edHomeNumber,
-                "(###) ###-####"))
+        bindingDependents.edDependent1.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent1, bindingDependents.layoutDependent1, this))
+        bindingDependents.edDependent2.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent2, bindingDependents.layoutDependent2, this))
+        bindingDependents.edDependent3.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent3, bindingDependents.layoutDependent3, this))
+        bindingDependents.edDependent4.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent4, bindingDependents.layoutDependent4, this))
+        bindingDependents.edDependent5.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent5, bindingDependents.layoutDependent5, this))
+        bindingDependents.edDependent6.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent6, bindingDependents.layoutDependent6, this))
+        bindingDependents.edDependent7.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent7, bindingDependents.layoutDependent7, this))
+        bindingDependents.edDependent8.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent8, bindingDependents.layoutDependent8, this))
+        bindingDependents.edDependent9.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent9, bindingDependents.layoutDependent9, this))
+        bindingDependents.edDependent10.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent10, bindingDependents.layoutDependent10, this))
+
+        binding.edHomeNumber.addTextChangedListener(PhoneTextFormatter(binding.edHomeNumber, "(###) ###-####"))
         binding.edWorkNum.addTextChangedListener(PhoneTextFormatter(binding.edWorkNum, "(###) ###-####"))
         binding.edCellNum.addTextChangedListener(PhoneTextFormatter(binding.edCellNum, "(###) ###-####"))
 
         binding.edDateOfBirth.setOnClickListener(this)
+
+
     }
 
     private fun setEndIconClicks() {
 
         binding.layoutDateOfBirth.setEndIconOnClickListener(View.OnClickListener {
-           openCalendar()
+            openCalendar()
         })
 
         // click for security number
@@ -256,8 +257,45 @@ class BorrowerInfoActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun setResidence() {
+
+        list.add(Address("5919 Trussvile ", "West Road"))
+        list.add(Address("5919 Trussvile,", "West Road"))
+        binding.recyclerview.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        binding.recyclerview.hasFixedSize()
+        // binding.recyclerview.isNestedScrollingEnabled = false
+
+        val adapter = ResidenceAdapter(this@BorrowerInfoActivity)
+        adapter.setTaskList(list)
+        binding.recyclerview.setAdapter(adapter)
+
+        touchListener = RecyclerTouchListener(this, binding.recyclerview)
+        touchListener!!
+            .setClickable(object : RecyclerTouchListener.OnRowClickListener {
+                override fun onRowClicked(position: Int) { }
+                override fun onIndependentViewClicked(independentViewID: Int, position: Int) {}
+            })
+            .setSwipeOptionViews(R.id.delete_task)
+            .setSwipeable(R.id.rowFG, R.id.rowBG, object :
+                RecyclerTouchListener.OnSwipeOptionsClickListener {
+
+                override fun onSwipeOptionClicked(viewID: Int, position: Int) {
+                    list.removeAt(position)
+                    adapter.setTaskList(list)
+                }
+            })
+        binding.recyclerview.addOnItemTouchListener(touchListener!!)
 
 
+        // disable touch from recyclerview
+        binding.recyclerview.setOnTouchListener(object : View.OnTouchListener {
+            @SuppressLint("ClickableViewAccessibility")
+            override fun onTouch(v: View, m: MotionEvent): Boolean {
+                binding.scrollPrimaryInfo.requestDisallowInterceptTouchEvent(true)
+                return false
+            }
+        })
+    }
 
     private fun checkValidations() {
         val firstName: String = binding.edFirstName.text.toString()
@@ -321,48 +359,217 @@ class BorrowerInfoActivity : AppCompatActivity(), View.OnClickListener {
         )
     }
 
-    private fun setFocusforError() {
+    private fun addDependentField() {
+        /* val til = TextInputLayout(this)
+         val et = EditText(this)
+         til.addView(et)
+         til.hint = "Dynamic View"
+         binding.layoutAddDependents.addView(til) */
+        // TextInputLayout textInputLayout = (TextInputLayout) LayoutInflator.from(this).inflate(R.layout.text_input_layout, null);
+        //val linearLayout = findViewById<View>(R.id.linearlayout) as LinearLayout
+        //linear.layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
+        //linear.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
+        /*linear = LayoutInflater.from(this).inflate(R.layout.dynamic_inputfield_two, null) as LinearLayout
+        binding.layoutAddDependents.addView(linear)*/
+        val count = Integer.parseInt(binding.edDependents.text.toString())
+        if (count > 0) {
+            bindingDependents.dynamicDependents.visibility = View.VISIBLE
 
-        binding.edEmail.setOnFocusChangeListener { view, hasFocus ->
-            if (!hasFocus) {
-                if (binding.edEmail.text.toString().length > 0) {
-                    if (!isValidEmailAddress(binding.edEmail.text.toString())) {
-                        setError(binding.layoutEmail, getString(R.string.invalid_email))
-                    } else {
-                        clearError(binding.layoutEmail)
-                    }
-                }
+            if (count == 1) {
+                bindingDependents.row1.visibility = View.VISIBLE
+                bindingDependents.layoutDependent1.visibility = View.VISIBLE
+                bindingDependents.row2.visibility = View.GONE
+                bindingDependents.row3.visibility = View.GONE
+                bindingDependents.row4.visibility = View.GONE
+                bindingDependents.row5.visibility = View.GONE
+
+                bindingDependents.layoutDependent2.visibility = View.GONE
+                bindingDependents.layoutDependent3.visibility = View.GONE
+                bindingDependents.layoutDependent4.visibility = View.GONE
+                bindingDependents.layoutDependent5.visibility = View.GONE
+                bindingDependents.layoutDependent6.visibility = View.GONE
+                bindingDependents.layoutDependent7.visibility = View.GONE
+                bindingDependents.layoutDependent8.visibility = View.GONE
+                bindingDependents.layoutDependent9.visibility = View.GONE
+                bindingDependents.layoutDependent10.visibility = View.GONE
+
+
+            } else if (count == 2) {
+                bindingDependents.row1.visibility = View.VISIBLE
+                bindingDependents.row2.visibility = View.GONE
+                bindingDependents.row3.visibility = View.GONE
+                bindingDependents.row4.visibility = View.GONE
+                bindingDependents.row5.visibility = View.GONE
+
+                bindingDependents.layoutDependent1.visibility = View.VISIBLE
+                bindingDependents.layoutDependent2.visibility = View.VISIBLE
+                bindingDependents.layoutDependent3.visibility = View.GONE
+                bindingDependents.layoutDependent4.visibility = View.GONE
+                bindingDependents.layoutDependent5.visibility = View.GONE
+                bindingDependents.layoutDependent6.visibility = View.GONE
+                bindingDependents.layoutDependent7.visibility = View.GONE
+                bindingDependents.layoutDependent8.visibility = View.GONE
+                bindingDependents.layoutDependent9.visibility = View.GONE
+                bindingDependents.layoutDependent10.visibility = View.GONE
+
+            } else if (count == 3) {
+                bindingDependents.row1.visibility = View.VISIBLE
+                bindingDependents.row2.visibility = View.VISIBLE
+                bindingDependents.row3.visibility = View.GONE
+                bindingDependents.row4.visibility = View.GONE
+                bindingDependents.row5.visibility = View.GONE
+
+                bindingDependents.layoutDependent1.visibility = View.VISIBLE
+                bindingDependents.layoutDependent2.visibility = View.VISIBLE
+                bindingDependents.layoutDependent3.visibility = View.VISIBLE
+                bindingDependents.layoutDependent4.visibility = View.GONE
+                bindingDependents.layoutDependent5.visibility = View.GONE
+                bindingDependents.layoutDependent6.visibility = View.GONE
+                bindingDependents.layoutDependent7.visibility = View.GONE
+                bindingDependents.layoutDependent8.visibility = View.GONE
+                bindingDependents.layoutDependent9.visibility = View.GONE
+                bindingDependents.layoutDependent10.visibility = View.GONE
+
+            } else if (count == 4) {
+                bindingDependents.row1.visibility = View.VISIBLE
+                bindingDependents.row2.visibility = View.VISIBLE
+                bindingDependents.row3.visibility = View.GONE
+                bindingDependents.row4.visibility = View.GONE
+                bindingDependents.row5.visibility = View.GONE
+
+                bindingDependents.layoutDependent1.visibility = View.VISIBLE
+                bindingDependents.layoutDependent2.visibility = View.VISIBLE
+                bindingDependents.layoutDependent3.visibility = View.VISIBLE
+                bindingDependents.layoutDependent4.visibility = View.VISIBLE
+
+                bindingDependents.layoutDependent5.visibility = View.GONE
+                bindingDependents.layoutDependent6.visibility = View.GONE
+                bindingDependents.layoutDependent7.visibility = View.GONE
+                bindingDependents.layoutDependent8.visibility = View.GONE
+                bindingDependents.layoutDependent9.visibility = View.GONE
+                bindingDependents.layoutDependent10.visibility = View.GONE
+
+            } else if (count == 5) {
+                bindingDependents.row1.visibility = View.VISIBLE
+                bindingDependents.row2.visibility = View.VISIBLE
+                bindingDependents.row3.visibility = View.VISIBLE
+                bindingDependents.row4.visibility = View.GONE
+                bindingDependents.row5.visibility = View.GONE
+
+                bindingDependents.layoutDependent1.visibility = View.VISIBLE
+                bindingDependents.layoutDependent2.visibility = View.VISIBLE
+                bindingDependents.layoutDependent3.visibility = View.VISIBLE
+                bindingDependents.layoutDependent4.visibility = View.VISIBLE
+                bindingDependents.layoutDependent5.visibility = View.VISIBLE
+
+                bindingDependents.layoutDependent6.visibility = View.GONE
+                bindingDependents.layoutDependent7.visibility = View.GONE
+                bindingDependents.layoutDependent8.visibility = View.GONE
+                bindingDependents.layoutDependent9.visibility = View.GONE
+                bindingDependents.layoutDependent10.visibility = View.GONE
+
+            } else if (count == 6) {
+                bindingDependents.row1.visibility = View.VISIBLE
+                bindingDependents.row2.visibility = View.VISIBLE
+                bindingDependents.row3.visibility = View.VISIBLE
+                bindingDependents.row4.visibility = View.GONE
+                bindingDependents.row5.visibility = View.GONE
+
+                bindingDependents.layoutDependent1.visibility = View.VISIBLE
+                bindingDependents.layoutDependent2.visibility = View.VISIBLE
+                bindingDependents.layoutDependent3.visibility = View.VISIBLE
+                bindingDependents.layoutDependent4.visibility = View.VISIBLE
+                bindingDependents.layoutDependent5.visibility = View.VISIBLE
+                bindingDependents.layoutDependent6.visibility = View.VISIBLE
+
+                bindingDependents.layoutDependent7.visibility = View.GONE
+                bindingDependents.layoutDependent8.visibility = View.GONE
+                bindingDependents.layoutDependent9.visibility = View.GONE
+                bindingDependents.layoutDependent10.visibility = View.GONE
+
+            } else if (count == 7) {
+                bindingDependents.row1.visibility = View.VISIBLE
+                bindingDependents.row2.visibility = View.VISIBLE
+                bindingDependents.row3.visibility = View.VISIBLE
+                bindingDependents.row4.visibility = View.VISIBLE
+                bindingDependents.row5.visibility = View.GONE
+
+                bindingDependents.layoutDependent1.visibility = View.VISIBLE
+                bindingDependents.layoutDependent2.visibility = View.VISIBLE
+                bindingDependents.layoutDependent3.visibility = View.VISIBLE
+                bindingDependents.layoutDependent4.visibility = View.VISIBLE
+                bindingDependents.layoutDependent5.visibility = View.VISIBLE
+                bindingDependents.layoutDependent6.visibility = View.VISIBLE
+                bindingDependents.layoutDependent7.visibility = View.VISIBLE
+
+                bindingDependents.layoutDependent8.visibility = View.GONE
+                bindingDependents.layoutDependent9.visibility = View.GONE
+                bindingDependents.layoutDependent10.visibility = View.GONE
+
+            } else if (count == 8) {
+                bindingDependents.row1.visibility = View.VISIBLE
+                bindingDependents.row2.visibility = View.VISIBLE
+                bindingDependents.row3.visibility = View.VISIBLE
+                bindingDependents.row4.visibility = View.VISIBLE
+                bindingDependents.row5.visibility = View.GONE
+
+                bindingDependents.layoutDependent1.visibility = View.VISIBLE
+                bindingDependents.layoutDependent2.visibility = View.VISIBLE
+                bindingDependents.layoutDependent3.visibility = View.VISIBLE
+                bindingDependents.layoutDependent4.visibility = View.VISIBLE
+                bindingDependents.layoutDependent5.visibility = View.VISIBLE
+                bindingDependents.layoutDependent6.visibility = View.VISIBLE
+                bindingDependents.layoutDependent7.visibility = View.VISIBLE
+                bindingDependents.layoutDependent8.visibility = View.VISIBLE
+
+                bindingDependents.layoutDependent9.visibility = View.GONE
+                bindingDependents.layoutDependent10.visibility = View.GONE
+
+            } else if (count == 9) {
+                bindingDependents.row1.visibility = View.VISIBLE
+                bindingDependents.row2.visibility = View.VISIBLE
+                bindingDependents.row3.visibility = View.VISIBLE
+                bindingDependents.row4.visibility = View.VISIBLE
+                bindingDependents.row5.visibility = View.VISIBLE
+
+                bindingDependents.layoutDependent1.visibility = View.VISIBLE
+                bindingDependents.layoutDependent2.visibility = View.VISIBLE
+                bindingDependents.layoutDependent3.visibility = View.VISIBLE
+                bindingDependents.layoutDependent4.visibility = View.VISIBLE
+                bindingDependents.layoutDependent5.visibility = View.VISIBLE
+                bindingDependents.layoutDependent6.visibility = View.VISIBLE
+                bindingDependents.layoutDependent7.visibility = View.VISIBLE
+                bindingDependents.layoutDependent8.visibility = View.VISIBLE
+                bindingDependents.layoutDependent9.visibility = View.VISIBLE
+
+                bindingDependents.layoutDependent10.visibility = View.GONE
+
+            } else if (count == 10) {
+                bindingDependents.row1.visibility = View.VISIBLE
+                bindingDependents.row2.visibility = View.VISIBLE
+                bindingDependents.row3.visibility = View.VISIBLE
+                bindingDependents.row4.visibility = View.VISIBLE
+                bindingDependents.row5.visibility = View.VISIBLE
+
+                bindingDependents.layoutDependent1.visibility = View.VISIBLE
+                bindingDependents.layoutDependent2.visibility = View.VISIBLE
+                bindingDependents.layoutDependent3.visibility = View.VISIBLE
+                bindingDependents.layoutDependent4.visibility = View.VISIBLE
+                bindingDependents.layoutDependent5.visibility = View.VISIBLE
+                bindingDependents.layoutDependent6.visibility = View.VISIBLE
+                bindingDependents.layoutDependent7.visibility = View.VISIBLE
+                bindingDependents.layoutDependent8.visibility = View.VISIBLE
+                bindingDependents.layoutDependent9.visibility = View.VISIBLE
+                bindingDependents.layoutDependent10.visibility = View.VISIBLE
+
             }
+        } else { // dependent 0
+            bindingDependents.dynamicDependents.visibility = View.GONE
         }
+    }
 
-        binding.edHomeNumber.setOnFocusChangeListener { view, hasFocus ->
-            if (!hasFocus) {
-                if (binding.edHomeNumber.text.toString().length > 0) {
-                    if (binding.edHomeNumber.text.toString().length < 14) {
-                        setError(binding.layoutHomeNum, getString(R.string.invalid_phone_num))
-                    } else {
-                        clearError(binding.layoutHomeNum)
-                    }
-                }
-            }
-        }
-
-        binding.edFirstName.setOnFocusChangeListener { view, hasFocus ->
-            if (!hasFocus) {
-                if (binding.edFirstName.text.toString().length > 0) {
-                    clearError(binding.layoutFirstName)
-                }
-            }
-        }
-
-        binding.edLastName.setOnFocusChangeListener { view, hasFocus ->
-            if (!hasFocus) {
-                if (binding.edLastName.text.toString().length > 0) {
-                    clearError(binding.layoutLastName)
-                }
-            }
-        }
-
+    private fun setTextInputLayoutHintColor(textInputLayout: TextInputLayout, @ColorRes colorIdRes: Int) {
+        textInputLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(this, colorIdRes))
     }
 
     private fun setMaritalStatus(isUnmarried: Boolean, isMarried: Boolean, isDivorced: Boolean) {
@@ -479,5 +686,21 @@ class BorrowerInfoActivity : AppCompatActivity(), View.OnClickListener {
         dpd.show()
 
     }
+
+
+/*
+        binding.edDateOfBirth.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                if(binding.edDateOfBirth.isCursorVisible) {
+                    openCalendar()
+                }
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        }) */
+
+
 
 }

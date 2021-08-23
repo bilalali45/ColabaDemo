@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginStart="20dp"
-    android:layout_marginEnd="20dp">
+    android:layout_marginEnd="20dp"
+    android:background="#80FFFFFF">
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,23 +39,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/service_lastdate"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="20dp"
-            android:textColor="@color/txt_color_app_headings"
-            android:fontFamily="@font/rubik_medium"
-            android:textSize="14sp"
-            android:layout_marginEnd="20dp"/>
+            android:layout_marginEnd="40dp"
+            android:textColor="@color/grey_color_two"
+            android:fontFamily="@font/rubik_regular"
+            android:textSize="13sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="10/20"
-            android:drawableLeft="@drawable/ic_calendar"
+            android:drawableStart="@drawable/ic_calendar"
+            android:drawablePadding="5dp"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="20dp"
-            android:padding="5dp"
+            android:textAlignment="center"
             android:layout_marginTop="10dp"
-            android:textColor="@color/grey_color_two"
+            android:textColor="@color/grey_color_one"
             android:fontFamily="@font/rubik_regular"
             android:textSize="13sp"
             android:ellipsize="end"/>
@@ -80,25 +82,28 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Was Richard glenn ever activated during their tour of duty"
-            android:layout_marginStart="20dp"
+            android:text="Was Richard glenn ever activated during their tour of duty?"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="20dp"
-            android:textColor="@color/txt_color_app_headings"
-            android:fontFamily="@font/rubik_medium"
-            android:textSize="14sp"
-            android:layout_marginEnd="20dp"/>
+            android:layout_marginEnd="40dp"
+            android:textColor="@color/grey_color_two"
+            android:fontFamily="@font/rubik_regular"
+            android:textSize="13sp"
+            android:lineSpacingExtra="10dp"
+            />
 
         <TextView
             android:id="@+id/res_national_guard_ans"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Yes"
-            android:layout_marginStart="20dp"
+            android:textStyle="bold"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp"
             android:textColor="@color/txt_color_app_headings"
             android:fontFamily="@font/rubik_medium"
-            android:textSize="15sp"
-            android:layout_marginBottom="20dp"/>
+            android:textSize="15sp" />
 
     </LinearLayout>
 
