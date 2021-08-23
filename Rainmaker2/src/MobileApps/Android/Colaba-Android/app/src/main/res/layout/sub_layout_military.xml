@@ -21,11 +21,11 @@
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/chb_duty_personel"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="18dp"
         android:text="@string/active_duty_personel"
         app:buttonCompat="@drawable/cb_selector"
         android:paddingStart="15dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="20dp"/>
 
     <LinearLayout
         android:id="@+id/layout_active_personnel"
@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/search_view_holder_style"
+        android:layout_marginTop="20dp"
         android:visibility="gone">
 
         <TextView
@@ -66,10 +67,11 @@
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/chb_res_national_guard"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="18dp"
         android:text="@string/national_guard"
         app:buttonCompat="@drawable/cb_selector"
-        android:paddingStart="15dp" />
+        android:paddingStart="15dp"
+        android:layout_marginTop="20dp"/>
 
     <LinearLayout
         android:id="@+id/layout_national_guard"
@@ -77,7 +79,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/search_view_holder_style"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:layout_marginTop="20dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -110,15 +113,17 @@
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/chb_veteran"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="18dp"
         android:text="@string/veteran"
         app:buttonCompat="@drawable/cb_selector"
-        android:paddingStart="15dp" />
+        android:paddingStart="15dp"
+        android:layout_marginTop="20dp"/>
 
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/chb_surviving_spouse"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="18dp"
+        android:layout_marginTop="20dp"
         android:text="@string/surviving_spouse"
         app:buttonCompat="@drawable/cb_selector"
         android:paddingStart="15dp" />

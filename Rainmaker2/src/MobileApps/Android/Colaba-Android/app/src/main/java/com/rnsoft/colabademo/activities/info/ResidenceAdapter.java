@@ -32,7 +32,15 @@ public class ResidenceAdapter extends RecyclerView.Adapter<ResidenceAdapter.MyVi
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Address address = taskList.get(position);
         holder.tvTaskName.setText(address.getName());
-        //holder.tvTaskDesc.setText(task.getDesc());
+
+        if(position ==0){
+            holder.tvHeading.setVisibility(View.VISIBLE);
+            holder.tvRent.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvHeading.setVisibility(View.GONE);
+            holder.tvRent.setVisibility(View.GONE);
+        }
+
     }
     @Override
     public int getItemCount() {
@@ -44,11 +52,13 @@ public class ResidenceAdapter extends RecyclerView.Adapter<ResidenceAdapter.MyVi
     }
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tvTaskName;
-        private TextView tvTaskDesc;
+        private TextView tvHeading;
+        private TextView tvRent;
         public MyViewHolder(View itemView) {
             super(itemView);
             tvTaskName = itemView.findViewById(R.id.tv_address);
-            //tvTaskDesc = itemView.findViewById(R.id.task_desc);
+            tvHeading = itemView.findViewById(R.id.tv_currentAddress_heading);
+            tvRent = itemView.findViewById(R.id.tv_homerent);
         }
     }
 }

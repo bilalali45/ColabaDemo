@@ -21,12 +21,12 @@
         android:id="@+id/rg_marital_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="20dp">
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_unmarried"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:text="@string/martial_status_unmarried"
             android:textColor="@color/grey_color_one"
             android:textSize="14sp"
@@ -38,25 +38,27 @@
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_married"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/martial_status_married"
             android:textColor="@color/grey_color_one"
             android:textSize="14sp"
             android:paddingStart="15dp"
             android:button="@drawable/radiodraw"
+            android:layout_marginTop="18dp"
             tools:ignore="RtlSymmetry"
             android:clickable="true"/>
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_divorced"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:text="@string/martial_status_separated"
             android:textColor="@color/grey_color_one"
             android:textSize="14sp"
             android:fontFamily="@font/rubik_regular"
             android:paddingStart="15dp"
+            android:layout_marginTop="18dp"
             android:button="@drawable/radiodraw"
             tools:ignore="RtlSymmetry"
             android:clickable="true"/>
