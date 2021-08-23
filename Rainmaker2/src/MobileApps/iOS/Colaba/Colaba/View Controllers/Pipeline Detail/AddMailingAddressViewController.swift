@@ -36,6 +36,10 @@ class AddMailingAddressViewController: UIViewController {
     @IBOutlet weak var btnCountryDropDown: UIButton!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
+    @IBOutlet weak var tblViewPlaces: UITableView!
+    var placesData=[GMSAutocompletePrediction]()
+    var fetcher: GMSAutocompleteFetcher?
+    
     let moveInDateFormatter = DateFormatter()
     let countryDropDown = DropDown()
     let stateDropDown = DropDown()
@@ -57,6 +61,22 @@ class AddMailingAddressViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(goBackAfterDelete), name: NSNotification.Name(rawValue: kNotificationDeleteMailingAddressAndDismiss), object: nil)
         txtfieldCountry.addTarget(self, action: #selector(txtfieldCountryTextChanged), for: .editingChanged)
         txtfieldState.addTarget(self, action: #selector(txtfieldStateTextChanged), for: .editingChanged)
+        
+        let filter = GMSAutocompleteFilter()
+        filter.type = .address
+
+        // Create the fetcher.
+        fetcher = GMSAutocompleteFetcher(filter: filter)
+        fetcher?.delegate = self as GMSAutocompleteFetcherDelegate
+
+        txtfieldHomeAddress.addTarget(self, action: #selector(txtfieldHomeAddressTextChanged), for: UIControl.Event.editingChanged)
+
+        tblViewPlaces.delegate = self
+        tblViewPlaces.dataSource = self
+
+        tblViewPlaces.reloadData()
+        tblViewPlaces.dropShadowToCollectionViewCell()
+        
     }
 
     //MARK:- Methods and Actions
@@ -116,6 +136,12 @@ class AddMailingAddressViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    @objc func txtfieldHomeAddressTextChanged(){
+        btnDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+        tblViewPlaces.isHidden = txtfieldHomeAddress.text == "       "
+        fetcher?.sourceTextHasChanged(txtfieldHomeAddress.text!.replacingOccurrences(of: "       ", with: ""))
     }
     
     func showAutoCompletePlaces(){
@@ -366,11 +392,60 @@ class AddMailingAddressViewController: UIViewController {
     
 }
 
+extension AddMailingAddressViewController: UITableViewDataSource, UITableViewDelegate{
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return placesData.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell: UITableViewCell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier:"addCategoryCell")
+
+        cell.selectionStyle =  .default
+        cell.backgroundColor = UIColor.white
+        cell.contentView.backgroundColor = UIColor.clear
+        cell.textLabel?.textAlignment = NSTextAlignment.left
+        cell.textLabel?.textColor = Theme.getAppBlackColor()
+        cell.textLabel?.font = Theme.getRubikMediumFont(size: 14)
+        cell.textLabel?.text = placesData[indexPath.row].attributedFullText.string
+        return cell
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tblViewPlaces.isHidden = true
+        btnDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        GMSPlacesClient.shared().fetchPlace(fromPlaceID: placesData[indexPath.row].placeID, placeFields: .all, sessionToken: nil) { place, error in
+            if let formattedAddress = place?.formattedAddress{
+                self.txtfieldHomeAddress.text = "       \(formattedAddress)"
+                self.txtfieldHomeAddress.placeholder = "Search Home Address"
+                self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldHomeAddress.detail = ""
+            }
+            if let shortName = place?.addressComponents?.first?.shortName{
+                self.txtfieldStreetAddress.text = shortName
+            }
+            self.showAllFields()
+            if let latitude = place?.coordinate.latitude, let longitude = place?.coordinate.longitude{
+                self.getAddressFromLatLon(pdblLatitude: "\(latitude)", withLongitude: "\(longitude)")
+            }
+            
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+}
+
 extension AddMailingAddressViewController: UITextFieldDelegate{
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if (textField == txtfieldHomeAddress){
-            showAutoCompletePlaces()
+            //showAutoCompletePlaces()
             txtfieldHomeAddress.placeholder = "Search Home Address"
             if txtfieldHomeAddress.text == ""{
                 txtfieldHomeAddress.text = "       "
@@ -394,6 +469,7 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if (textField == txtfieldHomeAddress){
+            btnDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             if (txtfieldHomeAddress.text == "       "){
                 txtfieldHomeAddress.text = ""
                 txtfieldHomeAddress.placeholder = "       Search Home Address"
@@ -560,4 +636,19 @@ extension AddMailingAddressViewController: GMSAutocompleteViewControllerDelegate
     UIApplication.shared.isNetworkActivityIndicatorVisible = false
   }
 
+}
+
+extension AddMailingAddressViewController: GMSAutocompleteFetcherDelegate {
+    
+    func didAutocomplete(with predictions: [GMSAutocompletePrediction]) {
+        placesData.removeAll()
+        placesData = predictions
+
+        tblViewPlaces.reloadData()
+    }
+
+    func didFailAutocompleteWithError(_ error: Error) {
+        print(error.localizedDescription)
+    }
+    
 }
