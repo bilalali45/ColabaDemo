@@ -47,7 +47,7 @@ class CustomBorrowerAdapter internal constructor(private var tabBorrowerDataList
 
     override fun getItemViewType(position: Int): Int {
         val layoutType = tabBorrowerDataList[position]
-        Log.e("is-footer", layoutType.isFooter.toString() )
+        //Log.e("is-footer", layoutType.isFooter.toString() )
         return if(layoutType.isFooter)
             R.layout.list_footer_borrower_horizontal
         else

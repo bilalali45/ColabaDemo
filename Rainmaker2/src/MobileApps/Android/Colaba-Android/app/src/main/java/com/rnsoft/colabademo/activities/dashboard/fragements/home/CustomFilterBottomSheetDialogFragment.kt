@@ -38,7 +38,6 @@ class CustomFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.roundedBottomSheetDialog)
-
     }
 
     private fun setInitialSelection(){
