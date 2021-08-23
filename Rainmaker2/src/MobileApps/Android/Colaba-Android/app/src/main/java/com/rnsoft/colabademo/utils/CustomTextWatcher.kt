@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo
+package com.rnsoft.colabademo.utils
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -9,6 +9,7 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.rnsoft.colabademo.R
 
 class CustomTextWatcher(private val mEditText: TextInputEditText, private val mTextInputLayout: TextInputLayout , private val context: Context) :
     TextWatcher {
@@ -31,7 +32,9 @@ class CustomTextWatcher(private val mEditText: TextInputEditText, private val mT
         //Sets the collapsed hint text color
             //mTextInputLayout.setHintTextColor(myList2)
 
-            setTextInputLayoutHintColor(mTextInputLayout, context = context, R.color.biometric_error_color )
+            setTextInputLayoutHintColor(mTextInputLayout, context = context,
+                R.color.biometric_error_color
+            )
 
         }
         else {
@@ -47,7 +50,9 @@ class CustomTextWatcher(private val mEditText: TextInputEditText, private val mT
             mTextInputLayout.hintTextColor = myList
             //mTextInputLayout.defaultHintTextColor = myList
 
-            setTextInputLayoutHintColor(mTextInputLayout, context = context, R.color.colaba_primary_color )
+            setTextInputLayoutHintColor(mTextInputLayout, context = context,
+                R.color.colaba_primary_color
+            )
 
             //setUpperHintColor(Color.CYAN, mTextInputLayout)
         }

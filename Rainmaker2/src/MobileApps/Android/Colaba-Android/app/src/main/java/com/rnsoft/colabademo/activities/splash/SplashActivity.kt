@@ -4,7 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.rnsoft.colabademo.test.ResidenceTestActivity
+import com.rnsoft.colabademo.borroweraddresses.ResidenceTestActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -21,7 +21,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.splash_layout)
         activityScope.launch {
 
-            startActivity(Intent(this@SplashActivity, ResidenceTestActivity::class.java))
+            startActivity(Intent(this@SplashActivity, BorrowerAddressActivity::class.java))
             /*
             if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
                 && sharedPreferences.getBoolean(AppConstant.isbiometricEnabled, false)

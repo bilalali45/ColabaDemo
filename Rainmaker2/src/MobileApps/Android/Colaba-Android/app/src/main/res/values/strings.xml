@@ -33,7 +33,7 @@
     <string name="no_doc_uploaded">No documents uploaded yet</string>
     <string name="no_doc_found">No documents found</string>
 
-    <string name="delete_mailing_address">Are you sure you want to delete Richard's Mailing Address?</string>
+    <string name="delete_mailing_address">Are you sure you want to delete Richard\'s Mailing Address?</string>
 
 
     <string name="plus_three">+3</string>
@@ -128,6 +128,11 @@
     <string name="title_notifications">Notifications</string>
     <string name="pdf_view">Pdf View</string>
     <string name="image_view">Image View</string>
+
+
+
+
+
 
     <string name="street_address">Street Address</string>
     <string name="unit_or_apt">Unit Or Apt. Number (Optional)</string>

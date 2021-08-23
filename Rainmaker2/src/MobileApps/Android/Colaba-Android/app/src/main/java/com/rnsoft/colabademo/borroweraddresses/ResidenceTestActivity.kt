@@ -1,32 +1,20 @@
-package com.rnsoft.colabademo.test
+package com.rnsoft.colabademo.borroweraddresses
 
-import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.view.View
-import android.view.View.OnFocusChangeListener
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.R
-import android.widget.EditText
-import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
-import com.google.android.material.textfield.TextInputEditText
-import com.rnsoft.colabademo.CustomTextWatcher
-import org.w3c.dom.Text
-import java.lang.Exception
-import java.lang.reflect.Field
-import java.lang.reflect.Method
+import java.util.*
 
 
 class ResidenceTestActivity: AppCompatActivity() {
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.layout_active_duty)
+        setContentView(R.layout.active_duty_layout)
         /*
         val textInputEditText                =   findViewById<TextInputEditText>(R.id.filledTextField)
         val textInputLayout                =   findViewById<TextInputLayout>(R.id.filledTextInputLayout)
