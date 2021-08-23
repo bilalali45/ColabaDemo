@@ -26,7 +26,7 @@ import java.lang.reflect.Method
 class Residence: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.mailing_test_layout)
+        setContentView(R.layout.current_residence_layout)
         /*
         val textInputEditText                =   findViewById<TextInputEditText>(R.id.filledTextField)
         val textInputLayout                =   findViewById<TextInputLayout>(R.id.filledTextInputLayout)

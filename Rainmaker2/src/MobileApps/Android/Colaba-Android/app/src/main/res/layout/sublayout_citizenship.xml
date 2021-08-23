@@ -3,15 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#80FFFFFF">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/rubik_medium"
         android:text="@string/citizenship"
+        android:textStyle="bold"
         android:textAlignment="center"
-        android:textColor="@color/txt_primary_info"
+        android:textColor="@color/grey_color_two"
         android:textSize="13sp" />
 
     <RadioGroup
@@ -66,17 +68,17 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/search_view_holder_style"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
-            android:id="@+id/unmarried_addendum_ques"
+            android:id="@+id/visa_status_ques"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/visa_status"
-            android:textColor="@color/txt_primary_info"
+            android:textColor="@color/grey_color_two"
             android:textSize="13sp" />
 
         <TextView
@@ -88,9 +90,8 @@
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/others"
-            android:textColor="@color/txt_color_app_headings"
+            android:textColor="@color/grey_color_one"
             android:textSize="15sp" />
-
 
     </LinearLayout>
 

@@ -4,16 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_marginTop="20dp">
+    android:layout_marginTop="20dp"
+    android:background="#80FFFFFF">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/martial_status"
         android:textAlignment="center"
-        android:textColor="@color/txt_primary_info"
+        android:textColor="@color/grey_color_two"
         android:fontFamily="@font/rubik_medium"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:textStyle="bold"/>
 
     <RadioGroup
         android:id="@+id/rg_marital_status"
@@ -50,7 +52,7 @@
             android:id="@+id/rb_divorced"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/martial_status_divorced"
+            android:text="@string/martial_status_separated"
             android:textColor="@color/grey_color_one"
             android:textSize="14sp"
             android:fontFamily="@font/rubik_regular"
@@ -73,6 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/unmarried_addendum"
+            android:textStyle="bold"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:textColor="@color/txt_color_app_headings"
@@ -84,19 +87,22 @@
             android:id="@+id/unmarried_addendum_ques"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/unmarried_addendum_ques"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginTop="10dp"
-            android:textColor="@color/txt_primary_info"
+            android:ellipsize="end"
             android:fontFamily="@font/rubik_regular"
+            android:text="@string/unmarried_addendum_ques"
+            android:textColor="@color/grey_color_two"
             android:textSize="13sp"
-            android:ellipsize="end"/>
+            android:lineSpacingExtra="10dp"/>
 
         <TextView
             android:id="@id/unmarried_addendum_ans"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Yes"
+            android:textStyle="bold"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
             android:textColor="@color/txt_color_app_headings"
