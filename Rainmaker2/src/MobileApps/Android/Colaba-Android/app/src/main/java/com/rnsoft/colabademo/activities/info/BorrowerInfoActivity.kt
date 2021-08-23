@@ -18,7 +18,7 @@ class BorrowerInfoActivity : AppCompatActivity() {
         binding = ActivityMainInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager.beginTransaction().replace(R.id.main_info, MainInfoFragment())
+        supportFragmentManager.beginTransaction().replace(R.id.main_info, PrimaryBorrowerInfoFragment())
             .commit()
     }
 }

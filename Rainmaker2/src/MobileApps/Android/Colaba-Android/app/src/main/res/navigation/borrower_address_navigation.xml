@@ -3,7 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_non_permanent">
+    app:startDestination="@+id/navigation_primary_borrower_info">
+
+
+    <fragment
+        android:id="@+id/navigation_primary_borrower_info"
+        android:name="com.rnsoft.colabademo.activities.info.PrimaryBorrowerInfoFragment"
+        android:label="@string/primary_borrower_info"
+        tools:layout="@layout/primary_borrower_info_layout" />
 
     <fragment
         android:id="@+id/navigation_current_address"

@@ -33,9 +33,9 @@ import kotlin.collections.ArrayList
  * Created by Anita Kiran on 8/23/2021.
  */
 
-class MainInfoFragment : Fragment(), View.OnClickListener {
+class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
 
-    lateinit var bi: MainInfoFragmentBinding
+    lateinit var bi: PrimaryBorrowerInfoLayoutBinding
     lateinit var msBinding: SublayoutMaritalStatusBinding
     lateinit var citizenshipBinding: SublayoutCitizenshipBinding
     lateinit var bindingMilitary: SubLayoutMilitaryBinding
@@ -49,7 +49,7 @@ class MainInfoFragment : Fragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        bi = MainInfoFragmentBinding.inflate(inflater, container, false)
+        bi = PrimaryBorrowerInfoLayoutBinding.inflate(inflater, container, false)
         msBinding = bi.layoutMaritalStatus
         citizenshipBinding = bi.layoutCitizenship
         bindingMilitary = bi.layoutMilitaryService

@@ -32,11 +32,11 @@ class BorrowerAddressActivity : AppCompatActivity() {
         binding = BorrowerAddressLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_borrower_address_main)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
+                R.id.navigation_primary_borrower_info,
                 R.id.navigation_current_address,
                 R.id.navigation_mailing_address,
                 R.id.navigation_active_duty,
@@ -45,7 +45,7 @@ class BorrowerAddressActivity : AppCompatActivity() {
                 R.id.navigation_non_permanent,
             )
         )
-        navView.setupWithNavController(navController)
+
 
 
     }

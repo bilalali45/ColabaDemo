@@ -41,6 +41,8 @@
     <string name="recent_activity">Most Recent Activity (Default)</string>
     <string name="save_continue">Save &amp; Continue</string>
 
+    <string name="primary_borrower_info">Primary Borrower Info</string>
+
     <string name="borrower_a_to_z">Primary Borrower Last Name (A to Z)</string>
     <string name="borrower_z_to_a">Primary Borrower Last Name (Z to A)</string>
 
