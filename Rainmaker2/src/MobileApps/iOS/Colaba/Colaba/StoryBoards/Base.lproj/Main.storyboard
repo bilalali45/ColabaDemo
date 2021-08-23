@@ -26,30 +26,46 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlaceholderImage" translatesAutoresizingMaskIntoConstraints="NO" id="Crj-yq-eox">
-                                <rect key="frame" x="15" y="54" width="40" height="40"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vof-dM-0wu">
+                                <rect key="frame" x="0.0" y="44" width="414" height="70"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlaceholderImage" translatesAutoresizingMaskIntoConstraints="NO" id="Crj-yq-eox">
+                                        <rect key="frame" x="15" y="10" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="13b-4K-Yhj"/>
+                                            <constraint firstAttribute="height" constant="40" id="WPU-0B-Icz"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good evening, James" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Rs-se-qzH">
+                                        <rect key="frame" x="65" y="20" width="284" height="20"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="17"/>
+                                        <color key="textColor" name="AppBlackColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TTM-gn-N4B">
+                                        <rect key="frame" x="369" y="10" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="1Ak-L0-Zsm"/>
+                                            <constraint firstAttribute="height" constant="40" id="hx6-hl-y4I"/>
+                                        </constraints>
+                                        <state key="normal" image="SearchIcon"/>
+                                        <connections>
+                                            <action selector="btnSearchTapped:" destination="uCL-iG-R1y" eventType="touchUpInside" id="HGe-2M-Oxk"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="13b-4K-Yhj"/>
-                                    <constraint firstAttribute="height" constant="40" id="WPU-0B-Icz"/>
+                                    <constraint firstItem="Crj-yq-eox" firstAttribute="leading" secondItem="Vof-dM-0wu" secondAttribute="leading" constant="15" id="03P-iy-x6o"/>
+                                    <constraint firstAttribute="trailing" secondItem="TTM-gn-N4B" secondAttribute="trailing" constant="5" id="5YK-ra-Gc7"/>
+                                    <constraint firstItem="TTM-gn-N4B" firstAttribute="leading" secondItem="6Rs-se-qzH" secondAttribute="trailing" constant="20" id="Gc4-ym-JS0"/>
+                                    <constraint firstItem="Crj-yq-eox" firstAttribute="centerY" secondItem="TTM-gn-N4B" secondAttribute="centerY" id="HtV-2r-Mzk"/>
+                                    <constraint firstAttribute="height" constant="70" id="a35-k9-arV"/>
+                                    <constraint firstItem="6Rs-se-qzH" firstAttribute="centerY" secondItem="Crj-yq-eox" secondAttribute="centerY" id="gZ7-nr-d1t"/>
+                                    <constraint firstItem="TTM-gn-N4B" firstAttribute="top" secondItem="Vof-dM-0wu" secondAttribute="top" constant="10" id="oia-li-uwl"/>
+                                    <constraint firstItem="6Rs-se-qzH" firstAttribute="leading" secondItem="Crj-yq-eox" secondAttribute="trailing" constant="10" id="t8C-Li-Au8"/>
                                 </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good evening, James" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Rs-se-qzH">
-                                <rect key="frame" x="65" y="64" width="284" height="20"/>
-                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="17"/>
-                                <color key="textColor" name="AppBlackColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TTM-gn-N4B">
-                                <rect key="frame" x="369" y="54" width="40" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="1Ak-L0-Zsm"/>
-                                    <constraint firstAttribute="height" constant="40" id="hx6-hl-y4I"/>
-                                </constraints>
-                                <state key="normal" image="SearchIcon"/>
-                                <connections>
-                                    <action selector="btnSearchTapped:" destination="uCL-iG-R1y" eventType="touchUpInside" id="HGe-2M-Oxk"/>
-                                </connections>
-                            </button>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7cX-RO-8m1">
                                 <rect key="frame" x="0.0" y="114" width="414" height="697"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -131,18 +147,14 @@
                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="H4K-Ob-IWQ" firstAttribute="trailing" secondItem="hEE-hn-7Jg" secondAttribute="trailing" constant="55" id="2rb-SY-526"/>
+                            <constraint firstItem="Vof-dM-0wu" firstAttribute="top" secondItem="H4K-Ob-IWQ" secondAttribute="top" id="9E7-nt-v8e"/>
                             <constraint firstItem="H4K-Ob-IWQ" firstAttribute="trailing" secondItem="7cX-RO-8m1" secondAttribute="trailing" id="B9q-PR-CIu"/>
-                            <constraint firstItem="TTM-gn-N4B" firstAttribute="top" secondItem="H4K-Ob-IWQ" secondAttribute="top" constant="10" id="CGP-9h-OS0"/>
-                            <constraint firstItem="6Rs-se-qzH" firstAttribute="centerY" secondItem="Crj-yq-eox" secondAttribute="centerY" id="E1v-eS-4M1"/>
                             <constraint firstItem="H4K-Ob-IWQ" firstAttribute="bottom" secondItem="hEE-hn-7Jg" secondAttribute="bottom" constant="60" id="ElJ-4V-4Kv"/>
                             <constraint firstItem="H4K-Ob-IWQ" firstAttribute="bottom" secondItem="7cX-RO-8m1" secondAttribute="bottom" constant="2" id="M8R-H7-Uev"/>
-                            <constraint firstItem="Crj-yq-eox" firstAttribute="centerY" secondItem="TTM-gn-N4B" secondAttribute="centerY" id="SyZ-VY-aSQ"/>
-                            <constraint firstItem="H4K-Ob-IWQ" firstAttribute="trailing" secondItem="TTM-gn-N4B" secondAttribute="trailing" constant="5" id="ZWS-J1-yb4"/>
+                            <constraint firstItem="7cX-RO-8m1" firstAttribute="top" secondItem="Vof-dM-0wu" secondAttribute="bottom" id="NcP-u2-yom"/>
+                            <constraint firstItem="H4K-Ob-IWQ" firstAttribute="trailing" secondItem="Vof-dM-0wu" secondAttribute="trailing" id="fcj-6O-cKC"/>
                             <constraint firstItem="7cX-RO-8m1" firstAttribute="leading" secondItem="H4K-Ob-IWQ" secondAttribute="leading" id="h1e-xK-0a6"/>
-                            <constraint firstItem="TTM-gn-N4B" firstAttribute="leading" secondItem="6Rs-se-qzH" secondAttribute="trailing" constant="20" id="kf6-gL-eRh"/>
-                            <constraint firstItem="6Rs-se-qzH" firstAttribute="leading" secondItem="Crj-yq-eox" secondAttribute="trailing" constant="10" id="u3o-Kx-Hll"/>
-                            <constraint firstItem="Crj-yq-eox" firstAttribute="leading" secondItem="H4K-Ob-IWQ" secondAttribute="leading" constant="15" id="wkW-Me-Rhc"/>
-                            <constraint firstItem="7cX-RO-8m1" firstAttribute="top" secondItem="Crj-yq-eox" secondAttribute="bottom" constant="20" id="yk2-Nu-JjO"/>
+                            <constraint firstItem="Vof-dM-0wu" firstAttribute="leading" secondItem="H4K-Ob-IWQ" secondAttribute="leading" id="zfL-Oe-y6h"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="VVO-br-Wre"/>
@@ -152,6 +164,8 @@
                         <outlet property="floatingContactView" destination="sal-22-Rks" id="LNe-im-ITu"/>
                         <outlet property="floatingView" destination="hEE-hn-7Jg" id="CPb-Ie-xLZ"/>
                         <outlet property="lblUsername" destination="6Rs-se-qzH" id="UMN-Zj-04d"/>
+                        <outlet property="navigationView" destination="Vof-dM-0wu" id="UWF-FK-UeG"/>
+                        <outlet property="navigationViewTopConstraint" destination="9E7-nt-v8e" id="Uin-rT-1Br"/>
                         <outlet property="tabView" destination="7cX-RO-8m1" id="oSg-Hn-t6R"/>
                         <outlet property="userIcon" destination="Crj-yq-eox" id="HXv-fx-MTx"/>
                     </connections>

@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="60" height="135" viewBox="0 0 60 135">
-  <g id="Group_18794" data-name="Group 18794" transform="translate(9511 -2674)">
-    <g id="Rectangle_1153" data-name="Rectangle 1153" transform="translate(-9511 2674)" fill="rgba(255,86,82,0.1)" stroke="#ff5652" stroke-width="1">
-      <rect width="60" height="135" rx="6" stroke="none"/>
-      <rect x="0.5" y="0.5" width="59" height="134" rx="5.5" fill="none"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
+  <g id="Group_18794" data-name="Group 18794" transform="translate(9511 -2711)">
+    <g id="Rectangle_1153" data-name="Rectangle 1153" transform="translate(-9511 2711)" fill="rgba(255,86,82,0.1)" stroke="#ff5652" stroke-width="1">
+      <rect width="60" height="60" rx="6" stroke="none"/>
+      <rect x="0.5" y="0.5" width="59" height="59" rx="5.5" fill="none"/>
     </g>
     <g id="delete-24px_1_" data-name="delete-24px (1)" transform="translate(-9493 2730)">
       <path id="Path_11061" data-name="Path 11061" d="M0,0H24V24H0Z" fill="none"/>

@@ -35,6 +35,7 @@ class LoanDetailViewController: BaseViewController {
     var phoneNumber = ""
     var email = ""
     var documentCounterView = UIView()
+    var selectedTab = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,7 +68,7 @@ class LoanDetailViewController: BaseViewController {
             carbonTabSwipeNavigation.carbonSegmentedControl?.imageNormalColor = .clear
             carbonTabSwipeNavigation.carbonSegmentedControl?.imageSelectedColor = .clear
             
-            self.documentCounterView = UIView(frame: CGRect(x: (self.view.bounds.width) - 31, y: 13, width: 7, height: 7))
+            self.documentCounterView = UIView(frame: CGRect(x: (self.view.bounds.width) - 23, y: 15, width: 7, height: 7))
             self.documentCounterView.backgroundColor = .red
             self.documentCounterView.layer.cornerRadius = self.documentCounterView.frame.height / 2
             self.documentCounterView.isHidden = true
@@ -89,6 +90,8 @@ class LoanDetailViewController: BaseViewController {
             carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 1)
             carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 2)
             carbonTabSwipeNavigation.insert(intoRootViewController: self, andTargetView: self.tabView)
+            carbonTabSwipeNavigation.setCurrentTabIndex(UInt(self.selectedTab), withAnimation: true)
+            
         }
         
         setupFooterButtons(buttons: [btnCall, btnSms, btnEmail])
@@ -276,6 +279,7 @@ extension LoanDetailViewController: CarbonTabSwipeNavigationDelegate{
         if (index == 0){
             let vc = Utility.getOverviewVC()
             vc.loanApplicationId = self.loanApplicationId
+            vc.delegate = self
             return vc
         }
         else if (index == 1){
@@ -302,9 +306,18 @@ extension LoanDetailViewController: CarbonTabSwipeNavigationDelegate{
     
 }
 
+extension LoanDetailViewController: OverviewViewControllerDelegate{
+    func getLoanDetailForMainPage(loanPurpose: String, email: String, phoneNumber: String) {
+        lblLoanPurpose.text = loanPurpose.uppercased()
+        self.email = email
+        self.phoneNumber = phoneNumber
+    }
+}
+
 extension LoanDetailViewController: MFMailComposeViewControllerDelegate{
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true, completion: nil)
     }
 }
+

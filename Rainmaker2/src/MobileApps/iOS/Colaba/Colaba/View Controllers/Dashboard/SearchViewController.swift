@@ -35,7 +35,7 @@ class SearchViewController: BaseViewController {
         tblViewSearchResult.coverableCellsIdentifiers = ["SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell"]
         tblViewSearchResult.loadControl = UILoadControl(target: self, action: #selector(loadMoreResult))
         tblViewSearchResult.loadControl?.heightLimit = 60
-        
+        txtFieldSearch.becomeFirstResponder()
     }
     
     //MARK:- Actions and Methods
@@ -140,11 +140,24 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate{
         let searchData = searchArray[indexPath.row]
         
         cell.lblUsername.text = "\(searchData.firstName) \(searchData.lastName)"
-        cell.lblAddress.text = "\(searchData.streetAddress) \(searchData.unitNumber) \(searchData.cityName) \(searchData.stateName) \(searchData.zipCode) \(searchData.countryName)"
+        cell.lblAddress.text = "\(searchData.streetAddress) \(searchData.unitNumber),\n\(searchData.cityName), \(searchData.stateName) \(searchData.zipCode)"
         cell.lblApplicationStatus.text = searchData.status
         cell.lblApplicationNumber.text = "\(searchData.loanNumber)"
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let loanApplication = searchArray[indexPath.section]
+        let vc = Utility.getLoanDetailVC()
+        vc.loanApplicationId = loanApplication.id
+        vc.borrowerName = "\(loanApplication.firstName) \(loanApplication.lastName)"
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.navigationBar.isHidden = true
+        navVC.modalPresentationStyle = .fullScreen
+        self.presentVC(vc: navVC)
+        
     }
 }
 

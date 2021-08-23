@@ -23,6 +23,7 @@ class ActivePipelineViewController: BaseViewController {
     var dateForPage1 = ""
     var pageNumber = 1
     var isAssignToMe = false
+    var lastContentOffset: CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +43,11 @@ class ActivePipelineViewController: BaseViewController {
         isAssignToMe = UserDefaults.standard.bool(forKey: kIsAssignToMe)
         assignToMeSwitch.setOn(isAssignToMe, animated: true)
         refreshLoanData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowHomeNavigationBar), object: nil, userInfo: nil)
     }
     
     //MARK:- Methods and Actions
@@ -69,8 +75,19 @@ class ActivePipelineViewController: BaseViewController {
         self.present(vc, animated: false, completion: nil)
     }
     
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.lastContentOffset = scrollView.contentOffset.y
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollView.loadControl?.update()
+        if self.lastContentOffset < scrollView.contentOffset.y {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationHidesHomeNavigationBar), object: nil, userInfo: nil)
+        } else if self.lastContentOffset > scrollView.contentOffset.y {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowHomeNavigationBar), object: nil, userInfo: nil)
+        } else {
+            // didn't move
+        }
     }
     
     @IBAction func btnFilterTapped(_ sender: UIButton) {
@@ -206,7 +223,7 @@ extension ActivePipelineViewController: UITableViewDataSource, UITableViewDelega
             let cell = tableView.dequeueReusableCell(withIdentifier: "PipelineDetailTableViewCell", for: indexPath) as! PipelineDetailTableViewCell
             cell.mainView.layer.cornerRadius = 8
             cell.mainView.dropShadow()
-            cell.lblPropertyAddress.text = "\(loanData.street) \(loanData.unit) \(loanData.city) \(loanData.stateName) \(loanData.zipCode) \(loanData.countryName)"
+            cell.lblPropertyAddress.text = "\(loanData.street) \(loanData.unit),\n\(loanData.city), \(loanData.stateName) \(loanData.zipCode)"
             cell.lblPropertyValue.text = loanData.propertyValue.withCommas().replacingOccurrences(of: ".00", with: "")
             cell.lblLoanAmount.text = loanData.loanAmount.withCommas().replacingOccurrences(of: ".00", with: "")
             return cell
@@ -259,6 +276,8 @@ extension ActivePipelineViewController: PipelineTableViewCellDelegate{
     func btnOptionsTapped(indexPath: IndexPath) {
         let vc = Utility.getPipelineMoreVC()
         let loanData = pipeLineArray[indexPath.section]
+        vc.loanApplicationId = loanData.loanApplicationId
+        vc.loanPurpose = loanData.loanPurpose
         vc.userFullName = "\(loanData.firstName) \(loanData.lastName)"
         vc.coBorrowers = loanData.coBorrowerCount
         vc.phoneNumber = loanData.cellNumber

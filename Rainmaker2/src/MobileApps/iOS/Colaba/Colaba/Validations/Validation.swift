@@ -16,6 +16,32 @@ struct Validation {
         return email
     }
     
+    func validateBorrowerFirstName(_ firstName: String?) throws -> String{
+        guard let firstName = firstName else { throw ValidationError.requiredField }
+        guard firstName.count > 0 else { throw ValidationError.requiredField }
+        return firstName
+    }
+    
+    func validateBorrowerLastName(_ lastName: String?) throws -> String{
+        guard let lastName = lastName else { throw ValidationError.requiredField }
+        guard lastName.count > 0 else { throw ValidationError.requiredField }
+        return lastName
+    }
+    
+    func validateBorrowerEmail(_ email: String?) throws -> String{
+        guard let email = email else { throw ValidationError.requiredField }
+        guard email.count > 0 else { throw ValidationError.requiredField }
+        guard email.isValidEmail() else { throw ValidationError.invalidBorrowerEmail }
+        return email
+    }
+    
+    func validateBorrowrHomePhoneNumber(_ phoneNumber: String?) throws -> String {
+        guard let phone = phoneNumber else { throw ValidationError.requiredField }
+        guard phone.count > 0 else { throw ValidationError.requiredField }
+        guard phone.count >= 14 else { throw ValidationError.invalidPhoneNumber }
+        return phone
+    }
+    
 //    func validateUsername(_ username: String?) throws -> String {
 //        guard let username = username else { throw ValidationError.invalidValue }
 //        guard username.count >= 3 else { throw ValidationError.usernameTooShort }
@@ -36,6 +62,90 @@ struct Validation {
         guard phone.count >= 14 else { throw ValidationError.invalidPhoneNumber }
         return phone
     }
+    
+    func validateSearchHomeAddress(_ homeAddress: String?) throws -> String{
+        guard let homeAddress = homeAddress else { throw ValidationError.requiredField }
+        guard homeAddress.count > 0 else { throw ValidationError.requiredField }
+        return homeAddress
+    }
+    
+    func validateStreetAddressHomeAddress(_ streetAddress: String?) throws -> String{
+        guard let streetAddress = streetAddress else { throw ValidationError.requiredField }
+        guard streetAddress.count > 0 else { throw ValidationError.requiredField }
+        return streetAddress
+    }
+    
+    func validateCity(_ city: String?) throws -> String{
+        guard let city = city else { throw ValidationError.requiredField }
+        guard city.count > 0 else { throw ValidationError.requiredField }
+        return city
+    }
+    
+    func validateState(_ state: String?) throws -> String{
+        guard let state = state else { throw ValidationError.requiredField }
+        guard state.count > 0 else { throw ValidationError.requiredField }
+        return state
+    }
+    
+    func validateZipcode(_ zipCode: String?) throws -> String{
+        guard let zipCode = zipCode else { throw ValidationError.requiredField }
+        guard zipCode.count > 0 else { throw ValidationError.requiredField }
+        return zipCode
+    }
+    
+    func validateCountry(_ country: String?) throws -> String{
+        guard let country = country else { throw ValidationError.requiredField }
+        guard country.count > 0 else { throw ValidationError.requiredField }
+        return country
+    }
+    
+    func validateMoveInDate(_ moveInDate: String?) throws -> String{
+        guard let moveInDate = moveInDate else { throw ValidationError.requiredField }
+        guard moveInDate.count > 0 else { throw ValidationError.requiredField }
+        return moveInDate
+    }
+    
+    func validateHousingStatus(_ housingStatus: String?) throws -> String{
+        guard let housingStatus = housingStatus else { throw ValidationError.requiredField }
+        guard housingStatus.count > 0 else { throw ValidationError.requiredField }
+        return housingStatus
+    }
+    
+    func validateMonthlyRent(_ monthlyRent: String?) throws -> String{
+        guard let monthlyRent = monthlyRent else { throw ValidationError.requiredField }
+        guard monthlyRent.count > 0 else { throw ValidationError.requiredField }
+        return monthlyRent
+    }
+    
+    func validateTypeOfRelationship(_ typeOfRelationShip: String?) throws -> String{
+        guard let typeOfRelationShip = typeOfRelationShip else { throw ValidationError.requiredField }
+        guard typeOfRelationShip.count > 0 else { throw ValidationError.requiredField }
+        return typeOfRelationShip
+    }
+    
+    func validateRelationshipDetail(_ relationshipDetail: String?) throws -> String{
+        guard let relationshipDetail = relationshipDetail else { throw ValidationError.requiredField }
+        guard relationshipDetail.count > 0 else { throw ValidationError.requiredField }
+        return relationshipDetail
+    }
+    
+    func validateVisaStatus(_ visaStatus: String?) throws -> String{
+        guard let visaStatus = visaStatus else { throw ValidationError.requiredField }
+        guard visaStatus.count > 0 else { throw ValidationError.requiredField }
+        return visaStatus
+    }
+    
+    func validateVisaStatusDetail(_ visaStatusDetail: String?) throws -> String{
+        guard let visaStatusDetail = visaStatusDetail else { throw ValidationError.requiredField }
+        guard visaStatusDetail.count > 0 else { throw ValidationError.requiredField }
+        return visaStatusDetail
+    }
+    
+    func validateLastDateOfService(_ lastDateOfService: String?) throws -> String{
+        guard let lastDateOfService = lastDateOfService else { throw ValidationError.requiredField }
+        guard lastDateOfService.count > 0 else { throw ValidationError.requiredField }
+        return lastDateOfService
+    }
 }
 
 enum ValidationError: LocalizedError {
@@ -47,6 +157,8 @@ enum ValidationError: LocalizedError {
     case noEmail
     case invalidEmail
     case invalidPhoneNumber
+    case requiredField
+    case invalidBorrowerEmail
     
     var errorDescription: String? {
         switch self {
@@ -66,7 +178,12 @@ enum ValidationError: LocalizedError {
             return "Your email is not valid. Please try again."
         case .invalidPhoneNumber:
             return "Your phone number is not valid. Please try again."
+        case .requiredField:
+            return "This field is required."
+        case .invalidBorrowerEmail:
+            return "Please enter a valid email address"
         }
+        
         
     }
     

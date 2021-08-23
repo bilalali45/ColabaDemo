@@ -78,7 +78,7 @@ class ApplicationViewController: BaseViewController {
     }
     
     func setApplicationData(){
-        self.lblAddress.text = "\(loanApplicationDetail.street) \(loanApplicationDetail.unit)\n\(loanApplicationDetail.city) \(loanApplicationDetail.stateName) \(loanApplicationDetail.zipCode) \(loanApplicationDetail.countryName)"
+        self.lblAddress.text = "\(loanApplicationDetail.street) \(loanApplicationDetail.unit),\n\(loanApplicationDetail.city), \(loanApplicationDetail.stateName) \(loanApplicationDetail.zipCode)"
         let propertyTypeText = "\(loanApplicationDetail.propertyTypeName)   ·   \(loanApplicationDetail.propertyUsageName)"
         let propertyTypeAttributedText = NSMutableAttributedString(string: propertyTypeText)
         let range1 = propertyTypeText.range(of: "·")
@@ -206,7 +206,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
             
             if (indexPath.row != loanApplicationDetail.realEstatesOwned.count){
                 let realEstate = loanApplicationDetail.realEstatesOwned[indexPath.row]
-                cell.lblAddress.text = "\(realEstate.street) \(realEstate.unit)\n\(realEstate.city) \(realEstate.stateName) \(realEstate.zipCode) \(realEstate.countryName)"
+                cell.lblAddress.text = "\(realEstate.street) \(realEstate.unit),\n\(realEstate.city), \(realEstate.stateName) \(realEstate.zipCode)"
                 cell.lblPropertyType.text = realEstate.propertyTypeName
                 cell.mainView.isHidden = false
                 cell.addMoreView.isHidden = true

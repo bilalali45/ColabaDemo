@@ -24,6 +24,8 @@ class PipelineMoreViewController: BaseViewController {
     @IBOutlet weak var archiveView: UIView!
     @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!
     
+    var loanApplicationId = 0
+    var loanPurpose = ""
     var userFullName = ""
     var coBorrowers = 0
     var phoneNumber = ""
@@ -141,11 +143,31 @@ class PipelineMoreViewController: BaseViewController {
     }
     
     @objc func applicationViewTapped(){
-        dismissPopup()
+        let vc = Utility.getLoanDetailVC()
+        vc.selectedTab = 1
+        vc.loanApplicationId = self.loanApplicationId
+        vc.borrowerName = self.userFullName
+        vc.loanPurpose = self.loanPurpose
+        vc.phoneNumber = self.phoneNumber
+        vc.email = self.email
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.navigationBar.isHidden = true
+        navVC.modalPresentationStyle = .overFullScreen
+        self.presentVC(vc: navVC)
     }
     
     @objc func documentsViewTapped(){
-        dismissPopup()
+        let vc = Utility.getLoanDetailVC()
+        vc.selectedTab = 2
+        vc.loanApplicationId = self.loanApplicationId
+        vc.borrowerName = self.userFullName
+        vc.loanPurpose = self.loanPurpose
+        vc.phoneNumber = self.phoneNumber
+        vc.email = self.email
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.navigationBar.isHidden = true
+        navVC.modalPresentationStyle = .overFullScreen
+        self.presentVC(vc: navVC)
     }
     
     @objc func conversationViewTapped(){
