@@ -62,6 +62,8 @@
     <string name="password_length_error">Invalid Password, Length too short…</string>
     <string name="place_order">Place Order</string>
     <string name="test_id">test1</string>
+    <string name="ipsum_dolor"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum ultrices magna ornare eu.</string>
+
     <string name="test_password">123</string>
 
     <string name="good_morning"> Good Morning </string>
@@ -199,6 +201,8 @@
     <string name="last_seen_day">last seen 1 day ago</string>
     <string name="last_seen_days">last seen %d days ago</string>
     <string name="just_now">just now</string>
+
+    <string name="legal_spouse">Is there a person who is not your legal spouse but who currently has real property rights similar to those of a legal spouse?</string>
 
 
     <string name="action_settings">Settings</string>

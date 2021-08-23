@@ -29,7 +29,7 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/filledTextField"
+            android:id="@+id/relationshipEditText"
             android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
