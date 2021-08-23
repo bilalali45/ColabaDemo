@@ -35,7 +35,7 @@ class SearchViewController: BaseViewController {
         tblViewSearchResult.coverableCellsIdentifiers = ["SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell", "SearchResultTableViewCell"]
         tblViewSearchResult.loadControl = UILoadControl(target: self, action: #selector(loadMoreResult))
         tblViewSearchResult.loadControl?.heightLimit = 60
-        
+        txtFieldSearch.becomeFirstResponder()
     }
     
     //MARK:- Actions and Methods

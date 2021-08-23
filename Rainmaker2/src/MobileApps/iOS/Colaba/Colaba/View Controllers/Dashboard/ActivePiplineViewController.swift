@@ -276,6 +276,8 @@ extension ActivePipelineViewController: PipelineTableViewCellDelegate{
     func btnOptionsTapped(indexPath: IndexPath) {
         let vc = Utility.getPipelineMoreVC()
         let loanData = pipeLineArray[indexPath.section]
+        vc.loanApplicationId = loanData.loanApplicationId
+        vc.loanPurpose = loanData.loanPurpose
         vc.userFullName = "\(loanData.firstName) \(loanData.lastName)"
         vc.coBorrowers = loanData.coBorrowerCount
         vc.phoneNumber = loanData.cellNumber

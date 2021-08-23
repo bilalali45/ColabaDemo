@@ -35,6 +35,7 @@ class LoanDetailViewController: BaseViewController {
     var phoneNumber = ""
     var email = ""
     var documentCounterView = UIView()
+    var selectedTab = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,7 +68,7 @@ class LoanDetailViewController: BaseViewController {
             carbonTabSwipeNavigation.carbonSegmentedControl?.imageNormalColor = .clear
             carbonTabSwipeNavigation.carbonSegmentedControl?.imageSelectedColor = .clear
             
-            self.documentCounterView = UIView(frame: CGRect(x: (self.view.bounds.width) - 31, y: 13, width: 7, height: 7))
+            self.documentCounterView = UIView(frame: CGRect(x: (self.view.bounds.width) - 23, y: 15, width: 7, height: 7))
             self.documentCounterView.backgroundColor = .red
             self.documentCounterView.layer.cornerRadius = self.documentCounterView.frame.height / 2
             self.documentCounterView.isHidden = true
@@ -89,6 +90,8 @@ class LoanDetailViewController: BaseViewController {
             carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 1)
             carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 2)
             carbonTabSwipeNavigation.insert(intoRootViewController: self, andTargetView: self.tabView)
+            carbonTabSwipeNavigation.setCurrentTabIndex(UInt(self.selectedTab), withAnimation: true)
+            
         }
         
         setupFooterButtons(buttons: [btnCall, btnSms, btnEmail])

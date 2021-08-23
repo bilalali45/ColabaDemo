@@ -44,7 +44,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Land" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZRb-Yq-JaS">
-                                <rect key="frame" x="47" y="64" width="30.5" height="15.5"/>
+                                <rect key="frame" x="47" y="64" width="29.5" height="15.5"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <color key="textColor" name="AppGreyColor"/>
                                 <nil key="highlightedColor"/>
@@ -63,14 +63,14 @@
                         </constraints>
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="es5-5g-cPZ">
-                        <rect key="frame" x="2" y="2" width="190" height="97"/>
+                        <rect key="frame" x="2" y="2" width="147" height="97"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7yO-Tu-FXi">
                                 <rect key="frame" x="15" y="37.5" width="20" height="22"/>
                                 <state key="normal" image="Add-More"/>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add More Properties" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1L1-Ad-Plb">
-                                <rect key="frame" x="47" y="40.5" width="123" height="16"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Property" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1L1-Ad-Plb">
+                                <rect key="frame" x="47" y="40.5" width="77.5" height="16"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <color key="textColor" name="ButtonBlueColor"/>
                                 <nil key="highlightedColor"/>
@@ -81,7 +81,7 @@
                             <constraint firstAttribute="height" constant="97" id="55L-7m-ps4"/>
                             <constraint firstItem="1L1-Ad-Plb" firstAttribute="leading" secondItem="7yO-Tu-FXi" secondAttribute="trailing" constant="12" id="5q0-KV-sbg"/>
                             <constraint firstItem="1L1-Ad-Plb" firstAttribute="centerY" secondItem="7yO-Tu-FXi" secondAttribute="centerY" id="OtY-ox-doC"/>
-                            <constraint firstAttribute="width" constant="190" id="euu-zz-sjS"/>
+                            <constraint firstAttribute="width" constant="147" id="euu-zz-sjS"/>
                             <constraint firstItem="7yO-Tu-FXi" firstAttribute="leading" secondItem="es5-5g-cPZ" secondAttribute="leading" constant="15" id="jH1-RA-WRu"/>
                             <constraint firstItem="7yO-Tu-FXi" firstAttribute="centerY" secondItem="es5-5g-cPZ" secondAttribute="centerY" id="loo-1s-M1b"/>
                         </constraints>

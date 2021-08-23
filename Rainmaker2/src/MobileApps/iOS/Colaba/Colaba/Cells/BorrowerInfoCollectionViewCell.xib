@@ -51,14 +51,14 @@
                         </constraints>
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hIx-Wx-LCe">
-                        <rect key="frame" x="2" y="2" width="190" height="70"/>
+                        <rect key="frame" x="2" y="2" width="150" height="70"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zf9-op-Qe3">
                                 <rect key="frame" x="15" y="24" width="20" height="22"/>
                                 <state key="normal" image="Add-More"/>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add More Borrowers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zyd-Dc-glQ">
-                                <rect key="frame" x="47" y="27" width="121" height="16"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Borrower" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zyd-Dc-glQ">
+                                <rect key="frame" x="47" y="27" width="83" height="16"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <color key="textColor" name="ButtonBlueColor"/>
                                 <nil key="highlightedColor"/>
@@ -69,7 +69,7 @@
                             <constraint firstItem="Zyd-Dc-glQ" firstAttribute="centerY" secondItem="zf9-op-Qe3" secondAttribute="centerY" id="GBf-vt-Ezw"/>
                             <constraint firstItem="Zyd-Dc-glQ" firstAttribute="leading" secondItem="zf9-op-Qe3" secondAttribute="trailing" constant="12" id="NNp-hR-ypM"/>
                             <constraint firstAttribute="height" constant="70" id="Zch-kr-wWT"/>
-                            <constraint firstAttribute="width" constant="190" id="ay9-RU-3QF"/>
+                            <constraint firstAttribute="width" constant="150" id="ay9-RU-3QF"/>
                             <constraint firstItem="zf9-op-Qe3" firstAttribute="leading" secondItem="hIx-Wx-LCe" secondAttribute="leading" constant="15" id="jPN-d7-TAt"/>
                             <constraint firstItem="zf9-op-Qe3" firstAttribute="centerY" secondItem="hIx-Wx-LCe" secondAttribute="centerY" id="s45-nL-iU1"/>
                         </constraints>
