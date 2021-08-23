@@ -256,8 +256,8 @@ class BorrowerInfoActivity : AppCompatActivity(), View.OnClickListener {
     @SuppressLint("ClickableViewAccessibility")
     private fun setResidence() {
 
-        list.add(Address("5919 Trussvile ", "West Road"))
-        list.add(Address("5919 Trussvile,", "West Road"))
+        list.add(Address("5919 Trussvile Crossings Parkways, ZV Street, Birmingham AL 35235", "West Road"))
+        list.add(Address("5919 Trussvile Crossings Pkwy, Birmingham AL 35235", "West Road"))
         binding.recyclerview.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         binding.recyclerview.hasFixedSize()
         // binding.recyclerview.isNestedScrollingEnabled = false

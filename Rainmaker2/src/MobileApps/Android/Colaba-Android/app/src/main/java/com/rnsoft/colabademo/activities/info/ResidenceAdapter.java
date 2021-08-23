@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rnsoft.colabademo.R;
 import com.rnsoft.colabademo.activities.info.model.Address;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class ResidenceAdapter extends RecyclerView.Adapter<ResidenceAdapter.MyVi
         } else {
             holder.tvHeading.setVisibility(View.GONE);
             holder.tvRent.setVisibility(View.GONE);
+            holder.tvDate.setText("From Aug 2019 to Nov 2020");
         }
 
     }
@@ -54,11 +57,13 @@ public class ResidenceAdapter extends RecyclerView.Adapter<ResidenceAdapter.MyVi
         private TextView tvTaskName;
         private TextView tvHeading;
         private TextView tvRent;
+        private TextView tvDate;
         public MyViewHolder(View itemView) {
             super(itemView);
             tvTaskName = itemView.findViewById(R.id.tv_address);
             tvHeading = itemView.findViewById(R.id.tv_currentAddress_heading);
             tvRent = itemView.findViewById(R.id.tv_homerent);
+            tvDate = itemView.findViewById(R.id.tv_residence_date);
         }
     }
 }
