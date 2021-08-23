@@ -168,10 +168,10 @@ class AddResidenceViewController: UIViewController {
         let autocompleteController = GMSAutocompleteViewController()
             autocompleteController.delegate = self
 
-            // Specify the place data types to return.
-            let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.name.rawValue) |
-                                                        UInt(GMSPlaceField.placeID.rawValue))
-            autocompleteController.placeFields = fields
+//            // Specify the place data types to return.
+//            let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.name.rawValue) |
+//                                                        UInt(GMSPlaceField.placeID.rawValue))
+//            autocompleteController.placeFields = fields
 
             // Specify a filter.
             let filter = GMSAutocompleteFilter()
@@ -214,46 +214,34 @@ class AddResidenceViewController: UIViewController {
             center.longitude = lon
 
             let loc: CLLocation = CLLocation(latitude:center.latitude, longitude: center.longitude)
-
-
             ceo.reverseGeocodeLocation(loc, completionHandler:
-                {(placemarks, error) in
-                    if (error != nil)
-                    {
-                        print("reverse geodcode fail: \(error!.localizedDescription)")
-                    }
-                    else{
-                        if let pm = placemarks?.first {
-                            print(pm.country)
-                            print(pm.locality)
-                            print(pm.subLocality)
-                            print(pm.thoroughfare)
-                            print(pm.postalCode)
-                            print(pm.subThoroughfare)
-                            var addressString : String = ""
-                            if pm.subLocality != nil {
-                                addressString = addressString + pm.subLocality! + ", "
-                            }
-                            if pm.thoroughfare != nil {
-                                addressString = addressString + pm.thoroughfare! + ", "
-                            }
-                            if pm.locality != nil {
-                                addressString = addressString + pm.locality! + ", "
-                            }
-                            if pm.country != nil {
-                                addressString = addressString + pm.country! + ", "
-                            }
-                            if pm.postalCode != nil {
-                                addressString = addressString + pm.postalCode! + " "
-                            }
-
-
-                            print(addressString)
-                      }
-                    }
-            })
-
-        }
+            {(placemarks, error) in
+                if (error != nil)
+                {
+                    print("reverse geodcode fail: \(error!.localizedDescription)")
+                }
+                else{
+                    if let pm = placemarks?.first {
+                        if let city = pm.locality{
+                            self.txtfieldCity.text = city
+                        }
+                        if let county = pm.subAdministrativeArea{
+                            self.txtfieldCounty.text = county
+                        }
+                        if let state = pm.administrativeArea{
+                            self.txtfieldState.text = state
+                        }
+                        if let zipCode = pm.postalCode{
+                            self.txtfieldZipCode.text = zipCode
+                        }
+                        if let country = pm.country{
+                            self.txtfieldCountry.text = country
+                        }
+                        
+                  }
+                }
+        })
+    }
     
     @objc func showMailingAddress(){
         self.showPopup(message: "Mailing address has been added", popupState: .success, popupDuration: .custom(5)) { reason in
@@ -601,11 +589,12 @@ extension AddResidenceViewController: UITextFieldDelegate{
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if (textField == txtfieldHomeAddress){
+            showAutoCompletePlaces()
             txtfieldHomeAddress.placeholder = "Search Home Address"
             if txtfieldHomeAddress.text == ""{
                 txtfieldHomeAddress.text = "       "
             }
-            showAutoCompletePlaces()
+            
         }
         if (textField == txtfieldMoveInDate){
             dateChanged()
@@ -815,16 +804,16 @@ extension AddResidenceViewController: GMSAutocompleteViewControllerDelegate {
 
   // Handle the user's selection.
   func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-    print("Place name: \(place.name)")
-    print("Place ID: \(place.placeID)")
-    print("Place attributions: \(place.attributions)")
-    if let name = place.name{
-        txtfieldHomeAddress.text = "       \(name)"
+    if let formattedAddress = place.formattedAddress{
+        txtfieldHomeAddress.text = "       \(formattedAddress)"
         txtfieldHomeAddress.placeholder = "Search Home Address"
         txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
         txtfieldHomeAddress.detail = ""
-        showAllFields()
     }
+    if let shortName = place.addressComponents?.first?.shortName{
+        txtfieldStreetAddress.text = shortName
+    }
+    showAllFields()
     getAddressFromLatLon(pdblLatitude: "\(place.coordinate.latitude)", withLongitude: "\(place.coordinate.longitude)")
     dismiss(animated: true, completion: nil)
   }
