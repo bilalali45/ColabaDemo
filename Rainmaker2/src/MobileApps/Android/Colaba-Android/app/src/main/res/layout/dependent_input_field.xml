@@ -6,7 +6,9 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+
+
+  <!--  <LinearLayout
         android:visibility="gone"
         android:id="@+id/row1"
         android:layout_width="match_parent"
@@ -79,7 +81,6 @@
 
     </LinearLayout>
 
-    <!-- 2nd row -->
 
     <LinearLayout
         android:id="@+id/row2"
@@ -156,8 +157,6 @@
     </LinearLayout>
 
 
-    <!-- 3rd row -->
-
     <LinearLayout
         android:id="@+id/row3"
         android:visibility="gone"
@@ -232,7 +231,6 @@
 
     </LinearLayout>
 
-    <!-- 4th Row-->
 
     <LinearLayout
         android:id="@+id/row4"
@@ -308,7 +306,6 @@
 
     </LinearLayout>
 
-    <!-- 5th row -->
 
     <LinearLayout
         android:id="@+id/row5"
@@ -381,7 +378,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
+    </LinearLayout> -->
 
 
 </LinearLayout>
