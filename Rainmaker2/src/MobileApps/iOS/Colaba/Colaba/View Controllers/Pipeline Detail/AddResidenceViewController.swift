@@ -49,6 +49,10 @@ class AddResidenceViewController: UIViewController {
     @IBOutlet weak var btnSaveChanges: UIButton!
     @IBOutlet weak var tblViewMailingAddress: UITableView!
     
+    @IBOutlet weak var tblViewPlaces: UITableView!
+    var placesData=[GMSAutocompletePrediction]()
+    var fetcher: GMSAutocompleteFetcher?
+    
     let moveInDateFormatter = DateFormatter()
     let housingStatusDropDown = DropDown()
     let countryDropDown = DropDown()
@@ -72,6 +76,20 @@ class AddResidenceViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(showMailingAddress), name: NSNotification.Name(rawValue: kNotificationShowMailingAddress), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(dismissAddressVC), name: NSNotification.Name(rawValue: kNotificationSaveAddressAndDismiss), object: nil)
         
+        let filter = GMSAutocompleteFilter()
+        filter.type = .address
+
+        // Create the fetcher.
+        fetcher = GMSAutocompleteFetcher(filter: filter)
+        fetcher?.delegate = self as GMSAutocompleteFetcherDelegate
+
+        txtfieldHomeAddress.addTarget(self, action: #selector(txtfieldHomeAddressTextChanged), for: UIControl.Event.editingChanged)
+
+        tblViewPlaces.delegate = self
+        tblViewPlaces.dataSource = self
+
+        tblViewPlaces.reloadData()
+        tblViewPlaces.dropShadowToCollectionViewCell()
     }
 
     //MARK:- Methods and Actions
@@ -162,6 +180,12 @@ class AddResidenceViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    @objc func txtfieldHomeAddressTextChanged(){
+        btnDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+        tblViewPlaces.isHidden = txtfieldHomeAddress.text == "       "
+        fetcher?.sourceTextHasChanged(txtfieldHomeAddress.text!.replacingOccurrences(of: "       ", with: ""))
     }
     
     func showAutoCompletePlaces(){
@@ -522,29 +546,77 @@ class AddResidenceViewController: UIViewController {
 extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return numberOfMailingAddress
+        if (tableView == tblViewPlaces){
+            return placesData.count
+        }
+        else{
+            return numberOfMailingAddress
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerAddressInfoTableViewCell", for: indexPath) as! BorrowerAddressInfoTableViewCell
-        cell.addressIcon.isHidden = true
-        cell.lblHeading.isHidden = true
-        cell.lblRent.isHidden = true
-        cell.lblAddressTopConstraint.constant = 15
-        cell.lblAddress.text = "4101  Oak Tree Avenue  LN # 222, Chicago, MD 60605"
-        cell.lblDate.text = "Mailing Address"
-        cell.mainView.layer.cornerRadius = 6
-        cell.mainView.layer.borderWidth = 1
-        cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        cell.mainView.dropShadowToCollectionViewCell()
-        cell.mainView.updateConstraintsIfNeeded()
-        cell.mainView.layoutSubviews()
-        return cell
+        
+        if (tableView == tblViewPlaces){
+            let cell: UITableViewCell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier:"addCategoryCell")
+
+            cell.selectionStyle =  .default
+            cell.backgroundColor = UIColor.white
+            cell.contentView.backgroundColor = UIColor.clear
+            cell.textLabel?.textAlignment = NSTextAlignment.left
+            cell.textLabel?.textColor = Theme.getAppBlackColor()
+            cell.textLabel?.font = Theme.getRubikMediumFont(size: 14)
+            cell.textLabel?.text = placesData[indexPath.row].attributedFullText.string
+            return cell
+            
+        }
+        else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerAddressInfoTableViewCell", for: indexPath) as! BorrowerAddressInfoTableViewCell
+            cell.addressIcon.isHidden = true
+            cell.lblHeading.isHidden = true
+            cell.lblRent.isHidden = true
+            cell.lblAddressTopConstraint.constant = 15
+            cell.lblAddress.text = "4101  Oak Tree Avenue  LN # 222, Chicago, MD 60605"
+            cell.lblDate.text = "Mailing Address"
+            cell.mainView.layer.cornerRadius = 6
+            cell.mainView.layer.borderWidth = 1
+            cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            cell.mainView.dropShadowToCollectionViewCell()
+            cell.mainView.updateConstraintsIfNeeded()
+            cell.mainView.layoutSubviews()
+            return cell
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = Utility.getAddMailingAddressVC()
-        self.pushToVC(vc: vc)
+        
+        if (tableView == tblViewPlaces){
+            tblViewPlaces.isHidden = true
+            btnDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            GMSPlacesClient.shared().fetchPlace(fromPlaceID: placesData[indexPath.row].placeID, placeFields: .all, sessionToken: nil) { place, error in
+                if let formattedAddress = place?.formattedAddress{
+                    self.txtfieldHomeAddress.text = "       \(formattedAddress)"
+                    self.txtfieldHomeAddress.placeholder = "Search Home Address"
+                    self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldHomeAddress.detail = ""
+                }
+                if let shortName = place?.addressComponents?.first?.shortName{
+                    self.txtfieldStreetAddress.text = shortName
+                }
+                self.showAllFields()
+                if let latitude = place?.coordinate.latitude, let longitude = place?.coordinate.longitude{
+                    self.getAddressFromLatLon(pdblLatitude: "\(latitude)", withLongitude: "\(longitude)")
+                }
+                
+            }
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+        else{
+            let vc = Utility.getAddMailingAddressVC()
+            self.pushToVC(vc: vc)
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -552,7 +624,7 @@ extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
+        return tableView == tblViewMailingAddress
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -589,7 +661,7 @@ extension AddResidenceViewController: UITextFieldDelegate{
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if (textField == txtfieldHomeAddress){
-            showAutoCompletePlaces()
+            //showAutoCompletePlaces()
             txtfieldHomeAddress.placeholder = "Search Home Address"
             if txtfieldHomeAddress.text == ""{
                 txtfieldHomeAddress.text = "       "
@@ -622,6 +694,8 @@ extension AddResidenceViewController: UITextFieldDelegate{
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if (textField == txtfieldHomeAddress){
+            tblViewPlaces.isHidden = true
+            btnDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             if (txtfieldHomeAddress.text == "       "){
                 txtfieldHomeAddress.text = ""
                 txtfieldHomeAddress.placeholder = "       Search Home Address"
@@ -837,4 +911,19 @@ extension AddResidenceViewController: GMSAutocompleteViewControllerDelegate {
     UIApplication.shared.isNetworkActivityIndicatorVisible = false
   }
 
+}
+
+extension AddResidenceViewController: GMSAutocompleteFetcherDelegate {
+    
+    func didAutocomplete(with predictions: [GMSAutocompletePrediction]) {
+        placesData.removeAll()
+        placesData = predictions
+
+        tblViewPlaces.reloadData()
+    }
+
+    func didFailAutocompleteWithError(_ error: Error) {
+        print(error.localizedDescription)
+    }
+    
 }
