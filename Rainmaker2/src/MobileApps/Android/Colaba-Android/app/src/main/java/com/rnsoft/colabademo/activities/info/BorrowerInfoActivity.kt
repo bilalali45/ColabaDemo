@@ -22,25 +22,13 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
-<<<<<<< HEAD
-import com.google.gson.TypeAdapterFactory
 import com.rnsoft.colabademo.MyCustomFocusListener
-import com.rnsoft.colabademo.R
-import com.rnsoft.colabademo.databinding.ActivityBorrowerInformationBinding
-import com.rnsoft.colabademo.databinding.SubLayoutMilitaryBinding
-import com.rnsoft.colabademo.databinding.SublayoutCitizenshipBinding
-import com.rnsoft.colabademo.databinding.SublayoutMaritalStatusBinding
-
-import java.lang.reflect.Type
-=======
 import com.rnsoft.colabademo.PhoneTextFormatter
 import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.activities.info.model.Address
 import com.rnsoft.colabademo.databinding.*
-import com.rnsoft.colabademo.test.MyCustomFocusListener
 import com.rnsoft.colabademo.utils.RecyclerTouchListener
 import kotlinx.android.synthetic.main.activity_borrower_information.*
->>>>>>> Colaba-AnitaVersion
 import java.util.*
 import java.util.regex.Pattern
 

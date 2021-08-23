@@ -111,17 +111,9 @@
                     app:boxStrokeWidth="0.5dp"
                     app:boxStrokeWidthFocused="1dp"
                     app:helperTextEnabled="true"
-
-
-                    app:errorEnabled="true"
-                    android:defaultFocusHighlightEnabled="false"
-                    app:boxCollapsedPaddingTop="1dp"
-                    app:boxStrokeErrorColor="@color/colaba_red_color"
-                    app:errorTextAppearance="@style/error_appearance"
-                    app:errorIconDrawable="@null"
-
-
-                  >
+                    app:helperTextTextAppearance="@style/inputError"
+                    app:helperTextTextColor="@color/colaba_red_color"
+                    app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ed_first_name"
@@ -133,11 +125,6 @@
                         android:fontFamily="@font/rubik_regular"
                         android:imeOptions="actionDone"
                         android:paddingStart="0dp"
-<<<<<<< HEAD
-
-
-=======
->>>>>>> Colaba-AnitaVersion
                         android:singleLine="true"
                         android:textColor="@color/grey_color_one"
                         android:textSize="@dimen/ed_txt_size_primary_info" />
@@ -157,13 +144,8 @@
                     app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="0.5dp"
                     app:boxStrokeWidthFocused="1dp"
-<<<<<<< HEAD
-                    app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-                    app:hintTextColor="@color/grey_color_two">
-=======
                     app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
                     <!--app:hintTextColor="@color/grey_color_two"-->
->>>>>>> Colaba-AnitaVersion
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ed_middle_name"
@@ -203,32 +185,15 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/rubik_light"
                     android:hint="@string/last_name"
-<<<<<<< HEAD
-                    android:textColorHint="@color/grey_color_three"
-
-                    app:errorEnabled="true"
-                    android:defaultFocusHighlightEnabled="false"
-                    app:boxCollapsedPaddingTop="1dp"
-
-                    app:boxStrokeErrorColor="@color/colaba_red_color"
-                    app:errorTextAppearance="@style/error_appearance"
-                    app:errorIconDrawable="@null"
-
-=======
                     android:textColorHint="@color/primary_info_label_color"
                     app:boxCollapsedPaddingTop="1dp"
->>>>>>> Colaba-AnitaVersion
                     app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="0.5dp"
                     app:boxStrokeWidthFocused="1dp"
-<<<<<<< HEAD
-                    >
-=======
                     app:helperTextEnabled="true"
                     app:helperTextTextAppearance="@style/inputError"
                     app:helperTextTextColor="@color/colaba_red_color"
                     app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
->>>>>>> Colaba-AnitaVersion
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ed_last_name"
@@ -536,11 +501,7 @@
                     layout="@layout/sublayout_marital_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-<<<<<<< HEAD
-                    android:layout_marginTop="50dp"
-=======
                     android:layout_marginTop="60dp"
->>>>>>> Colaba-AnitaVersion
                     android:visibility="visible" />
 
                 <!--  citizenship -->
@@ -551,11 +512,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
                     android:visibility="visible" />
-<<<<<<< HEAD
-=======
 
                 <!-- date of birth -->
->>>>>>> Colaba-AnitaVersion
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:visibility="visible"
