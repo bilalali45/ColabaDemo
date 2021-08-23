@@ -25,7 +25,7 @@
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_us_citizen"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="22dp"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/us_citizen"
             android:textColor="@color/txt_color_app_headings"
@@ -37,7 +37,7 @@
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_pr"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="22dp"
             android:layout_marginTop="18dp"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/pr_green_card"
@@ -51,7 +51,7 @@
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_non_pr_other"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="22dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/non_pr"
@@ -70,7 +70,7 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/search_view_holder_style"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/visa_status_ques"

@@ -7,20 +7,19 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.datepicker.MaterialDatePicker.Builder.datePicker
 import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.MyCustomFocusListener
 import com.rnsoft.colabademo.PhoneTextFormatter
@@ -42,7 +41,7 @@ class BorrowerInfoActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var binding: ActivityBorrowerInformationBinding
     lateinit var msBinding: SublayoutMaritalStatusBinding
     lateinit var citizenshipBinding: SublayoutCitizenshipBinding
-    lateinit var bindingMilitary: SubLayoutMilitaryBinding
+    lateinit var  bindingMilitary: SubLayoutMilitaryBinding
     lateinit var bindingDependents : DependentInputFieldBinding
     lateinit var linear: LinearLayout
     var list: ArrayList<Address> = ArrayList()
@@ -71,9 +70,9 @@ class BorrowerInfoActivity : AppCompatActivity(), View.OnClickListener {
             }
             false
         }
-
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setSingleItemFocus(){
 
         // check first name
@@ -91,7 +90,6 @@ class BorrowerInfoActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // last name
-
         binding.edLastName.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 setTextInputLayoutHintColor(binding.layoutLastName, R.color.grey_color_two )
@@ -143,6 +141,7 @@ class BorrowerInfoActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
+        // dependents
         binding.edDependents.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 setTextInputLayoutHintColor(binding.layoutDependants, R.color.grey_color_two )
@@ -157,18 +156,15 @@ class BorrowerInfoActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // date of birth
-        binding.edDateOfBirth.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus) {
-                setTextInputLayoutHintColor(binding.layoutDateOfBirth, R.color.grey_color_two )
-                openCalendar()
-            } else {
-                if (binding.edDateOfBirth.text?.length == 0) {
-                    setTextInputLayoutHintColor(binding.layoutDateOfBirth,R.color.grey_color_three)
-                } else {
-                    setTextInputLayoutHintColor(binding.layoutDateOfBirth,R.color.grey_color_two)
+        binding.edDateOfBirth.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View, m: MotionEvent): Boolean {
+                when (m.getAction()) {
+                    MotionEvent.ACTION_DOWN -> openCalendar()
                 }
+                return false
+
             }
-        }
+        })
 
     }
 
@@ -257,6 +253,7 @@ class BorrowerInfoActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setResidence() {
 
         list.add(Address("5919 Trussvile ", "West Road"))
@@ -669,7 +666,6 @@ class BorrowerInfoActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun openCalendar(){
-
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
@@ -677,7 +673,7 @@ class BorrowerInfoActivity : AppCompatActivity(), View.OnClickListener {
         val newMonth = month + 1
         val dpd = DatePickerDialog(
             this, { view, year, monthOfYear, dayOfMonth ->
-                binding.edDateOfBirth.setText("" + dayOfMonth + "-" + newMonth + "-" + year)
+                binding.edDateOfBirth.setText("" + dayOfMonth + "/" + newMonth + "/" + year)
             },
             year,
             month,

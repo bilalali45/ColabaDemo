@@ -21,7 +21,7 @@
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/chb_duty_personel"
         android:layout_width="wrap_content"
-        android:layout_height="18dp"
+        android:layout_height="19dp"
         android:text="@string/active_duty_personel"
         app:buttonCompat="@drawable/cb_selector"
         android:paddingStart="15dp"
@@ -67,7 +67,7 @@
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/chb_res_national_guard"
         android:layout_width="wrap_content"
-        android:layout_height="18dp"
+        android:layout_height="19dp"
         android:text="@string/national_guard"
         app:buttonCompat="@drawable/cb_selector"
         android:paddingStart="15dp"
@@ -92,8 +92,7 @@
             android:textColor="@color/grey_color_two"
             android:fontFamily="@font/rubik_regular"
             android:textSize="13sp"
-            android:lineSpacingExtra="10dp"
-            />
+            android:lineSpacingExtra="10dp" />
 
         <TextView
             android:id="@+id/res_national_guard_ans"
@@ -113,7 +112,7 @@
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/chb_veteran"
         android:layout_width="wrap_content"
-        android:layout_height="18dp"
+        android:layout_height="19dp"
         android:text="@string/veteran"
         app:buttonCompat="@drawable/cb_selector"
         android:paddingStart="15dp"
@@ -122,7 +121,7 @@
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/chb_surviving_spouse"
         android:layout_width="wrap_content"
-        android:layout_height="18dp"
+        android:layout_height="19dp"
         android:layout_marginTop="20dp"
         android:text="@string/surviving_spouse"
         app:buttonCompat="@drawable/cb_selector"
