@@ -272,6 +272,10 @@ dependencies {
     // String / Text
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.8'
 
+
+    // GOOGLE Places library...
+    //implementation 'com.google.android.libraries.places:places:2.4.0'
+
 }
 
 kapt {

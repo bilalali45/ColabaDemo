@@ -74,7 +74,6 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
 
-
         val root: View = binding.root
 
         homeProfileLayout = root.findViewById(R.id.home_profile_layout)
@@ -107,7 +106,6 @@ class HomeFragment : Fragment() {
         }.attach()
 
         //viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-
 
         viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageScrolled(

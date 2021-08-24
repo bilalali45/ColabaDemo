@@ -15,9 +15,13 @@ class SaveCurrentResidenceDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
         lateinit var baseFragment:BaseFragment
-        fun newInstance(topFragment:BaseFragment): CustomFilterBottomSheetDialogFragment {
+        /*fun newInstance(topFragment:BaseFragment): CustomFilterBottomSheetDialogFragment {
             baseFragment    =   topFragment
             return CustomFilterBottomSheetDialogFragment()
+        } */
+
+        fun newInstance(): SaveCurrentResidenceDialogFragment {
+            return SaveCurrentResidenceDialogFragment()
         }
     }
 

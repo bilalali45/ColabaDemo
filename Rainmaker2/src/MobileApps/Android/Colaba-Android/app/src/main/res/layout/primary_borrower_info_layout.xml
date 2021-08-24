@@ -541,8 +541,8 @@
                         android:fontFamily="@font/rubik_regular"
                         android:imeOptions="actionDone"
                         android:paddingStart="0dp"
-                        android:singleLine="true"
                         android:editable="false"
+                        android:singleLine="true"
                         android:textColor="@color/grey_color_one"
                         android:textSize="@dimen/ed_txt_size_primary_info" />
 
@@ -629,7 +629,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
-                    android:layout_marginBottom="160dp"
+                    android:layout_marginBottom="300dp"
                     android:visibility="visible" />
 
             </LinearLayout>
@@ -642,7 +642,7 @@
         android:visibility="visible"
         android:id="@+id/btn_save_info"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:fontFamily="@font/rubik_regular"

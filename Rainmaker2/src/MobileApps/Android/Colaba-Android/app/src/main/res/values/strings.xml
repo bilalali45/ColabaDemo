@@ -33,13 +33,15 @@
     <string name="no_doc_uploaded">No documents uploaded yet</string>
     <string name="no_doc_found">No documents found</string>
 
-    <string name="delete_mailing_address">Are you sure you want to delete Richard's Mailing Address?</string>
+    <string name="delete_mailing_address">Are you sure you want to delete Richard\'s Mailing Address?</string>
 
 
     <string name="plus_three">+3</string>
     <string name="actions_pending">Most Actions Pending</string>
     <string name="recent_activity">Most Recent Activity (Default)</string>
     <string name="save_continue">Save &amp; Continue</string>
+
+    <string name="primary_borrower_info">Primary Borrower Info</string>
 
     <string name="borrower_a_to_z">Primary Borrower Last Name (A to Z)</string>
     <string name="borrower_z_to_a">Primary Borrower Last Name (Z to A)</string>
@@ -128,6 +130,11 @@
     <string name="title_notifications">Notifications</string>
     <string name="pdf_view">Pdf View</string>
     <string name="image_view">Image View</string>
+
+
+
+
+
 
     <string name="street_address">Street Address</string>
     <string name="unit_or_apt">Unit Or Apt. Number (Optional)</string>
