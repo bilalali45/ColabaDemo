@@ -83,8 +83,9 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
         txtviewRelationshipDetail.layer.borderWidth = 1
         txtviewRelationshipDetail.delegate = self
         
-        btnSaveChanges.layer.cornerRadius = 5
-        btnSaveChanges.dropShadowToCollectionViewCell()
+        btnSaveChanges.layer.borderWidth = 1
+        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
         
         relationshipTypeDropDown.dismissMode = .manual
         relationshipTypeDropDown.anchorView = relationshipTypeDropDownAnchorView

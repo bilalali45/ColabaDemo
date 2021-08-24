@@ -209,8 +209,9 @@ class BorrowerInformationViewController: UIViewController {
         reserveOrNationalGuardMainView.dropShadowToCollectionViewCell()
         reserveOrNationalGuardMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(reserveOrNationalGuardMainViewTapped)))
         
-        btnSaveChanges.layer.cornerRadius = 5
-        btnSaveChanges.addShadow()
+        btnSaveChanges.layer.borderWidth = 1
+        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
     }
     
     func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){

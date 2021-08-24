@@ -1190,15 +1190,14 @@
                                     <constraint firstItem="OKO-hG-2Wo" firstAttribute="top" secondItem="iWc-S1-oB4" secondAttribute="top" id="hLa-E0-efk"/>
                                 </constraints>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WOW-Et-0sK">
-                                <rect key="frame" x="203" y="602" width="152" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WOW-Et-0sK">
+                                <rect key="frame" x="300" y="592" width="60" height="60"/>
                                 <color key="backgroundColor" name="ButtonBlueColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="152" id="5X7-xY-Y69"/>
-                                    <constraint firstAttribute="height" constant="40" id="FlZ-FB-X4W"/>
+                                    <constraint firstAttribute="width" constant="60" id="5X7-xY-Y69"/>
+                                    <constraint firstAttribute="height" constant="60" id="FlZ-FB-X4W"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
-                                <state key="normal" title="SAVE CHANGES">
+                                <state key="normal" image="SaveIcon">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -1214,11 +1213,11 @@
                             <constraint firstItem="n2H-0R-3ST" firstAttribute="trailing" secondItem="iWc-S1-oB4" secondAttribute="trailing" id="By5-VQ-T9N"/>
                             <constraint firstItem="p61-WO-cOG" firstAttribute="top" secondItem="n2H-0R-3ST" secondAttribute="top" id="JFd-cM-9xF"/>
                             <constraint firstItem="p61-WO-cOG" firstAttribute="leading" secondItem="n2H-0R-3ST" secondAttribute="leading" id="Ldh-vS-6wB"/>
-                            <constraint firstItem="n2H-0R-3ST" firstAttribute="trailing" secondItem="WOW-Et-0sK" secondAttribute="trailing" constant="20" id="LlB-hg-Mym"/>
+                            <constraint firstItem="n2H-0R-3ST" firstAttribute="trailing" secondItem="WOW-Et-0sK" secondAttribute="trailing" constant="15" id="LlB-hg-Mym"/>
                             <constraint firstItem="hbA-ZG-a62" firstAttribute="top" secondItem="p61-WO-cOG" secondAttribute="bottom" id="QxZ-ZC-GDT"/>
                             <constraint firstItem="iWc-S1-oB4" firstAttribute="leading" secondItem="n2H-0R-3ST" secondAttribute="leading" id="YDD-nt-ZQ0"/>
                             <constraint firstAttribute="trailing" secondItem="hbA-ZG-a62" secondAttribute="trailing" id="cvP-eK-o8J"/>
-                            <constraint firstItem="n2H-0R-3ST" firstAttribute="bottom" secondItem="WOW-Et-0sK" secondAttribute="bottom" constant="25" id="h8y-nK-G75"/>
+                            <constraint firstItem="n2H-0R-3ST" firstAttribute="bottom" secondItem="WOW-Et-0sK" secondAttribute="bottom" constant="15" id="h8y-nK-G75"/>
                             <constraint firstItem="iWc-S1-oB4" firstAttribute="top" secondItem="hbA-ZG-a62" secondAttribute="bottom" id="hHE-2b-gc7"/>
                             <constraint firstItem="p61-WO-cOG" firstAttribute="trailing" secondItem="n2H-0R-3ST" secondAttribute="trailing" id="o8i-cg-1Bq"/>
                         </constraints>
@@ -2636,15 +2635,14 @@
                                     <constraint firstAttribute="height" constant="165" id="6h6-G6-9Ea"/>
                                 </constraints>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oMo-8x-eLX">
-                                <rect key="frame" x="203" y="602" width="152" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oMo-8x-eLX">
+                                <rect key="frame" x="300" y="592" width="60" height="60"/>
                                 <color key="backgroundColor" name="ButtonBlueColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="152" id="G3Y-jQ-Id0"/>
-                                    <constraint firstAttribute="height" constant="40" id="bsn-PV-Ejd"/>
+                                    <constraint firstAttribute="width" constant="60" id="G3Y-jQ-Id0"/>
+                                    <constraint firstAttribute="height" constant="60" id="bsn-PV-Ejd"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
-                                <state key="normal" title="SAVE CHANGES">
+                                <state key="normal" image="SaveIcon">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -2657,7 +2655,7 @@
                         <constraints>
                             <constraint firstItem="CKT-GM-3bp" firstAttribute="top" secondItem="1D4-vz-KOI" secondAttribute="bottom" id="5u7-5w-SeN"/>
                             <constraint firstItem="15w-2V-Cwf" firstAttribute="leading" secondItem="f7G-6l-cXd" secondAttribute="leading" id="77D-7x-fWj"/>
-                            <constraint firstItem="f7G-6l-cXd" firstAttribute="trailing" secondItem="oMo-8x-eLX" secondAttribute="trailing" constant="20" id="7jX-HE-FbN"/>
+                            <constraint firstItem="f7G-6l-cXd" firstAttribute="trailing" secondItem="oMo-8x-eLX" secondAttribute="trailing" constant="15" id="7jX-HE-FbN"/>
                             <constraint firstAttribute="trailing" secondItem="CKT-GM-3bp" secondAttribute="trailing" id="8LH-tm-nH8"/>
                             <constraint firstItem="f7G-6l-cXd" firstAttribute="trailing" secondItem="bsw-Bh-Az2" secondAttribute="trailing" constant="20" id="97x-4D-7rG"/>
                             <constraint firstItem="1D4-vz-KOI" firstAttribute="trailing" secondItem="f7G-6l-cXd" secondAttribute="trailing" id="9Dh-A2-feN"/>
@@ -2665,7 +2663,7 @@
                             <constraint firstItem="f7G-6l-cXd" firstAttribute="bottom" secondItem="15w-2V-Cwf" secondAttribute="bottom" id="CUG-Nl-rX5"/>
                             <constraint firstItem="1D4-vz-KOI" firstAttribute="top" secondItem="f7G-6l-cXd" secondAttribute="top" id="E55-ff-fSF"/>
                             <constraint firstItem="bsw-Bh-Az2" firstAttribute="leading" secondItem="f7G-6l-cXd" secondAttribute="leading" constant="20" id="FPn-zp-gZN"/>
-                            <constraint firstItem="f7G-6l-cXd" firstAttribute="bottom" secondItem="oMo-8x-eLX" secondAttribute="bottom" constant="25" id="ISp-j6-OhY"/>
+                            <constraint firstItem="f7G-6l-cXd" firstAttribute="bottom" secondItem="oMo-8x-eLX" secondAttribute="bottom" constant="15" id="ISp-j6-OhY"/>
                             <constraint firstItem="1D4-vz-KOI" firstAttribute="leading" secondItem="f7G-6l-cXd" secondAttribute="leading" id="nkY-zm-dir"/>
                             <constraint firstItem="15w-2V-Cwf" firstAttribute="top" secondItem="CKT-GM-3bp" secondAttribute="bottom" id="rVq-tT-TJa"/>
                             <constraint firstItem="bsw-Bh-Az2" firstAttribute="top" secondItem="CKT-GM-3bp" secondAttribute="bottom" constant="69" id="tWI-aA-UeP"/>
@@ -3265,15 +3263,14 @@
                                     <constraint firstAttribute="height" constant="165" id="ug8-mq-9xT"/>
                                 </constraints>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gXg-yg-wbe">
-                                <rect key="frame" x="203" y="602" width="152" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gXg-yg-wbe">
+                                <rect key="frame" x="300" y="592" width="60" height="60"/>
                                 <color key="backgroundColor" name="ButtonBlueColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="g7t-nl-ole"/>
-                                    <constraint firstAttribute="width" constant="152" id="maP-6Z-aUk"/>
+                                    <constraint firstAttribute="height" constant="60" id="g7t-nl-ole"/>
+                                    <constraint firstAttribute="width" constant="60" id="maP-6Z-aUk"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
-                                <state key="normal" title="SAVE CHANGES">
+                                <state key="normal" image="SaveIcon">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -3292,10 +3289,10 @@
                             <constraint firstItem="e4H-4G-W8b" firstAttribute="trailing" secondItem="Yqv-f5-y1q" secondAttribute="trailing" id="NII-wy-9f2"/>
                             <constraint firstItem="e4H-4G-W8b" firstAttribute="leading" secondItem="Yqv-f5-y1q" secondAttribute="leading" id="Ovf-S6-YEk"/>
                             <constraint firstItem="47v-tD-NML" firstAttribute="leading" secondItem="Yqv-f5-y1q" secondAttribute="leading" constant="20" id="Qsw-kD-9tt"/>
-                            <constraint firstItem="Yqv-f5-y1q" firstAttribute="bottom" secondItem="gXg-yg-wbe" secondAttribute="bottom" constant="25" id="Z8t-bF-P8c"/>
+                            <constraint firstItem="Yqv-f5-y1q" firstAttribute="bottom" secondItem="gXg-yg-wbe" secondAttribute="bottom" constant="15" id="Z8t-bF-P8c"/>
                             <constraint firstItem="47v-tD-NML" firstAttribute="top" secondItem="rXK-om-kXg" secondAttribute="bottom" constant="69" id="Zwp-pp-8jk"/>
                             <constraint firstItem="rXK-om-kXg" firstAttribute="leading" secondItem="SiT-dE-GnJ" secondAttribute="leading" id="p6o-GK-OHt"/>
-                            <constraint firstItem="Yqv-f5-y1q" firstAttribute="trailing" secondItem="gXg-yg-wbe" secondAttribute="trailing" constant="20" id="pIt-b5-dY2"/>
+                            <constraint firstItem="Yqv-f5-y1q" firstAttribute="trailing" secondItem="gXg-yg-wbe" secondAttribute="trailing" constant="15" id="pIt-b5-dY2"/>
                             <constraint firstItem="Yqv-f5-y1q" firstAttribute="trailing" secondItem="47v-tD-NML" secondAttribute="trailing" constant="20" id="qx0-dW-O2C"/>
                             <constraint firstItem="e4H-4G-W8b" firstAttribute="top" secondItem="Yqv-f5-y1q" secondAttribute="top" id="r1M-rY-JPU"/>
                             <constraint firstItem="6h9-uE-9Da" firstAttribute="top" secondItem="rXK-om-kXg" secondAttribute="bottom" id="t6j-2h-xJt"/>
@@ -3594,15 +3591,14 @@
                                     <constraint firstAttribute="trailing" secondItem="f0J-jN-p75" secondAttribute="trailing" constant="20" id="yVJ-5u-Ttn"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3tU-z4-kuc">
-                                <rect key="frame" x="203" y="602" width="152" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3tU-z4-kuc">
+                                <rect key="frame" x="300" y="592" width="60" height="60"/>
                                 <color key="backgroundColor" name="ButtonBlueColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="152" id="UZw-1N-2LC"/>
-                                    <constraint firstAttribute="height" constant="40" id="dG1-c5-cDd"/>
+                                    <constraint firstAttribute="width" constant="60" id="UZw-1N-2LC"/>
+                                    <constraint firstAttribute="height" constant="60" id="dG1-c5-cDd"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
-                                <state key="normal" title="SAVE CHANGES">
+                                <state key="normal" image="SaveIcon">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -3617,13 +3613,13 @@
                             <constraint firstItem="3hc-9C-mZE" firstAttribute="top" secondItem="wGA-ui-GmA" secondAttribute="bottom" id="4Xv-FU-14z"/>
                             <constraint firstItem="l8d-eq-33B" firstAttribute="leading" secondItem="8Ep-Vv-jmt" secondAttribute="leading" id="BoS-YX-aSG"/>
                             <constraint firstItem="l8d-eq-33B" firstAttribute="top" secondItem="8Ep-Vv-jmt" secondAttribute="top" id="GKy-H8-waD"/>
-                            <constraint firstItem="8Ep-Vv-jmt" firstAttribute="trailing" secondItem="3tU-z4-kuc" secondAttribute="trailing" constant="20" id="aeY-vW-pKA"/>
+                            <constraint firstItem="8Ep-Vv-jmt" firstAttribute="trailing" secondItem="3tU-z4-kuc" secondAttribute="trailing" constant="15" id="aeY-vW-pKA"/>
                             <constraint firstItem="3hc-9C-mZE" firstAttribute="leading" secondItem="8Ep-Vv-jmt" secondAttribute="leading" id="bKv-wA-Uhl"/>
                             <constraint firstItem="8Ep-Vv-jmt" firstAttribute="trailing" secondItem="3hc-9C-mZE" secondAttribute="trailing" id="cCG-fE-KaA"/>
                             <constraint firstAttribute="trailing" secondItem="wGA-ui-GmA" secondAttribute="trailing" id="hKT-6F-btv"/>
                             <constraint firstItem="wGA-ui-GmA" firstAttribute="leading" secondItem="iUQ-Fe-Ul4" secondAttribute="leading" id="i3Z-zv-lSY"/>
                             <constraint firstItem="l8d-eq-33B" firstAttribute="trailing" secondItem="8Ep-Vv-jmt" secondAttribute="trailing" id="q1d-aD-tPt"/>
-                            <constraint firstItem="8Ep-Vv-jmt" firstAttribute="bottom" secondItem="3tU-z4-kuc" secondAttribute="bottom" constant="25" id="tVA-lD-f2x"/>
+                            <constraint firstItem="8Ep-Vv-jmt" firstAttribute="bottom" secondItem="3tU-z4-kuc" secondAttribute="bottom" constant="15" id="tVA-lD-f2x"/>
                         </constraints>
                     </view>
                     <connections>
@@ -3802,15 +3798,14 @@
                                     <constraint firstAttribute="trailing" secondItem="VcQ-rC-7QT" secondAttribute="trailing" constant="20" id="zm2-hc-1R8"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bTQ-Ta-8Ch">
-                                <rect key="frame" x="203" y="602" width="152" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bTQ-Ta-8Ch">
+                                <rect key="frame" x="300" y="592" width="60" height="60"/>
                                 <color key="backgroundColor" name="ButtonBlueColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="152" id="5KV-H6-o7B"/>
-                                    <constraint firstAttribute="height" constant="40" id="Ws7-e9-PC0"/>
+                                    <constraint firstAttribute="width" constant="60" id="5KV-H6-o7B"/>
+                                    <constraint firstAttribute="height" constant="60" id="Ws7-e9-PC0"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
-                                <state key="normal" title="SAVE CHANGES">
+                                <state key="normal" image="SaveIcon">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -3824,10 +3819,10 @@
                             <constraint firstItem="3VD-9V-u5x" firstAttribute="trailing" secondItem="GL7-Aq-huI" secondAttribute="trailing" id="D3Z-AR-cTJ"/>
                             <constraint firstItem="GL7-Aq-huI" firstAttribute="leading" secondItem="3VD-9V-u5x" secondAttribute="leading" id="L9F-Tp-woH"/>
                             <constraint firstItem="l8P-zq-6bW" firstAttribute="top" secondItem="3VD-9V-u5x" secondAttribute="top" id="MqU-Ho-dnf"/>
-                            <constraint firstItem="3VD-9V-u5x" firstAttribute="bottom" secondItem="bTQ-Ta-8Ch" secondAttribute="bottom" constant="25" id="b4O-Jp-IaF"/>
+                            <constraint firstItem="3VD-9V-u5x" firstAttribute="bottom" secondItem="bTQ-Ta-8Ch" secondAttribute="bottom" constant="15" id="b4O-Jp-IaF"/>
                             <constraint firstItem="l8P-zq-6bW" firstAttribute="trailing" secondItem="3VD-9V-u5x" secondAttribute="trailing" id="g11-Mh-MGf"/>
                             <constraint firstItem="GL7-Aq-huI" firstAttribute="top" secondItem="4f1-PG-U5l" secondAttribute="bottom" id="gWx-3A-BnB"/>
-                            <constraint firstItem="3VD-9V-u5x" firstAttribute="trailing" secondItem="bTQ-Ta-8Ch" secondAttribute="trailing" constant="20" id="huX-Tz-cXL"/>
+                            <constraint firstItem="3VD-9V-u5x" firstAttribute="trailing" secondItem="bTQ-Ta-8Ch" secondAttribute="trailing" constant="15" id="huX-Tz-cXL"/>
                             <constraint firstItem="l8P-zq-6bW" firstAttribute="leading" secondItem="3VD-9V-u5x" secondAttribute="leading" id="ii8-mm-VtA"/>
                             <constraint firstItem="4f1-PG-U5l" firstAttribute="leading" secondItem="E7X-dt-udC" secondAttribute="leading" id="te9-tz-ev6"/>
                             <constraint firstAttribute="trailing" secondItem="4f1-PG-U5l" secondAttribute="trailing" id="vWL-8c-A6S"/>
@@ -3954,15 +3949,14 @@
                                     <constraint firstItem="3JC-VJ-Bd5" firstAttribute="top" secondItem="Ai4-jL-2cb" secondAttribute="top" constant="34" id="vzt-UD-sKc"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F5X-RR-63B">
-                                <rect key="frame" x="203" y="602" width="152" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F5X-RR-63B">
+                                <rect key="frame" x="300" y="592" width="60" height="60"/>
                                 <color key="backgroundColor" name="ButtonBlueColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="152" id="6UO-S8-bta"/>
-                                    <constraint firstAttribute="height" constant="40" id="gQ6-Bx-SeZ"/>
+                                    <constraint firstAttribute="width" constant="60" id="6UO-S8-bta"/>
+                                    <constraint firstAttribute="height" constant="60" id="gQ6-Bx-SeZ"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
-                                <state key="normal" title="SAVE CHANGES">
+                                <state key="normal" image="SaveIcon">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -3978,9 +3972,9 @@
                             <constraint firstItem="K1Z-74-afn" firstAttribute="trailing" secondItem="Ai4-jL-2cb" secondAttribute="trailing" id="DoD-W9-d2D"/>
                             <constraint firstItem="Ai4-jL-2cb" firstAttribute="top" secondItem="RIs-wX-2tT" secondAttribute="bottom" id="Gsy-CK-riW"/>
                             <constraint firstItem="Ai4-jL-2cb" firstAttribute="leading" secondItem="K1Z-74-afn" secondAttribute="leading" id="K4B-s9-aCg"/>
-                            <constraint firstItem="K1Z-74-afn" firstAttribute="trailing" secondItem="F5X-RR-63B" secondAttribute="trailing" constant="20" id="NtI-7c-5WG"/>
+                            <constraint firstItem="K1Z-74-afn" firstAttribute="trailing" secondItem="F5X-RR-63B" secondAttribute="trailing" constant="15" id="NtI-7c-5WG"/>
                             <constraint firstAttribute="trailing" secondItem="RIs-wX-2tT" secondAttribute="trailing" id="ccB-LT-u3b"/>
-                            <constraint firstItem="K1Z-74-afn" firstAttribute="bottom" secondItem="F5X-RR-63B" secondAttribute="bottom" constant="25" id="cxZ-bu-0dE"/>
+                            <constraint firstItem="K1Z-74-afn" firstAttribute="bottom" secondItem="F5X-RR-63B" secondAttribute="bottom" constant="15" id="cxZ-bu-0dE"/>
                             <constraint firstItem="VEl-Fa-hwV" firstAttribute="top" secondItem="K1Z-74-afn" secondAttribute="top" id="fSb-PS-6vi"/>
                             <constraint firstItem="VEl-Fa-hwV" firstAttribute="trailing" secondItem="K1Z-74-afn" secondAttribute="trailing" id="ngK-iA-Qg8"/>
                             <constraint firstItem="RIs-wX-2tT" firstAttribute="leading" secondItem="kYN-ba-hel" secondAttribute="leading" id="tvV-S3-1Eb"/>
@@ -4111,15 +4105,14 @@
                                     <constraint firstAttribute="height" constant="200" id="xO5-bN-0PL"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ti-On-YYo">
-                                <rect key="frame" x="203" y="602" width="152" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ti-On-YYo">
+                                <rect key="frame" x="300" y="592" width="60" height="60"/>
                                 <color key="backgroundColor" name="ButtonBlueColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="152" id="3g7-qW-Il8"/>
-                                    <constraint firstAttribute="height" constant="40" id="maw-OG-4H5"/>
+                                    <constraint firstAttribute="width" constant="60" id="3g7-qW-Il8"/>
+                                    <constraint firstAttribute="height" constant="60" id="maw-OG-4H5"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
-                                <state key="normal" title="SAVE CHANGES">
+                                <state key="normal" image="SaveIcon">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -4135,11 +4128,11 @@
                             <constraint firstItem="XBx-8o-JYw" firstAttribute="top" secondItem="7Og-bt-lXD" secondAttribute="top" id="LKt-Oc-DzJ"/>
                             <constraint firstItem="aUq-mJ-UkM" firstAttribute="top" secondItem="XBx-8o-JYw" secondAttribute="bottom" id="Z6y-Jf-8Ka"/>
                             <constraint firstItem="XBx-8o-JYw" firstAttribute="trailing" secondItem="7Og-bt-lXD" secondAttribute="trailing" id="chf-lL-xE2"/>
-                            <constraint firstItem="7Og-bt-lXD" firstAttribute="bottom" secondItem="7ti-On-YYo" secondAttribute="bottom" constant="25" id="fA4-AL-nmm"/>
+                            <constraint firstItem="7Og-bt-lXD" firstAttribute="bottom" secondItem="7ti-On-YYo" secondAttribute="bottom" constant="15" id="fA4-AL-nmm"/>
                             <constraint firstAttribute="trailing" secondItem="aUq-mJ-UkM" secondAttribute="trailing" id="nlg-WW-k0a"/>
                             <constraint firstItem="aUq-mJ-UkM" firstAttribute="leading" secondItem="wUf-st-fgS" secondAttribute="leading" id="ueT-T1-tlf"/>
                             <constraint firstItem="Fph-wj-HzZ" firstAttribute="top" secondItem="aUq-mJ-UkM" secondAttribute="bottom" id="wED-iJ-EKX"/>
-                            <constraint firstItem="7Og-bt-lXD" firstAttribute="trailing" secondItem="7ti-On-YYo" secondAttribute="trailing" constant="20" id="wih-l7-gJ7"/>
+                            <constraint firstItem="7Og-bt-lXD" firstAttribute="trailing" secondItem="7ti-On-YYo" secondAttribute="trailing" constant="15" id="wih-l7-gJ7"/>
                             <constraint firstItem="XBx-8o-JYw" firstAttribute="leading" secondItem="7Og-bt-lXD" secondAttribute="leading" id="zbW-ql-fUQ"/>
                         </constraints>
                     </view>
@@ -4411,6 +4404,7 @@
         <image name="RadioButtonUnselected" width="18" height="18"/>
         <image name="Red-Dot" width="6" height="6"/>
         <image name="SaveAndContinue" width="20" height="20"/>
+        <image name="SaveIcon" width="20" height="20"/>
         <image name="Total-Assets" width="20" height="20"/>
         <image name="Total-Monthly-Income" width="20" height="20"/>
         <image name="Yellow-Dot" width="6" height="6"/>

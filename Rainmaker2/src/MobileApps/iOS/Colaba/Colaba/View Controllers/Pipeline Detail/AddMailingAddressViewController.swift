@@ -94,8 +94,9 @@ class AddMailingAddressViewController: UIViewController {
             textfield.detailVerticalOffset = 4
             textfield.placeholderVerticalOffset = 8
         }
-        btnSaveChanges.layer.cornerRadius = 5
-        btnSaveChanges.dropShadowToCollectionViewCell()
+        btnSaveChanges.layer.borderWidth = 1
+        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
         
         countryDropDown.dismissMode = .manual
         countryDropDown.anchorView = countryDropDownAnchorView

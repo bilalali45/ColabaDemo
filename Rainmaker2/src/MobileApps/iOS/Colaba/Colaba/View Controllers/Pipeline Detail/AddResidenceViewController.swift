@@ -156,8 +156,10 @@ class AddResidenceViewController: UIViewController {
         }
         
         addMailingAddressStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addMailingAddressStackViewTapped)))
-        btnSaveChanges.layer.cornerRadius = 5
-        btnSaveChanges.dropShadowToCollectionViewCell()
+        
+        btnSaveChanges.layer.borderWidth = 1
+        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
         
         moveInDateFormatter.dateStyle = .medium
         moveInDateFormatter.dateFormat = "MM/yyyy"

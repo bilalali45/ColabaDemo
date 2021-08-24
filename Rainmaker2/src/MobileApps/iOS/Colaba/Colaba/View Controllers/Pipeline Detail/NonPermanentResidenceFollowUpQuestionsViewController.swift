@@ -69,8 +69,9 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
         txtviewStatusDetail.layer.borderWidth = 1
         txtviewStatusDetail.delegate = self
         
-        btnSaveChanges.layer.cornerRadius = 5
-        btnSaveChanges.dropShadowToCollectionViewCell()
+        btnSaveChanges.layer.borderWidth = 1
+        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
         
         visaStatusDropDown.dismissMode = .manual
         visaStatusDropDown.anchorView = visaStatusDropDownAnchorView
