@@ -24,7 +24,7 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GXp-k0-RmJ" customClass="TextField" customModule="Material">
-                        <rect key="frame" x="20" y="30" width="237" height="39"/>
+                        <rect key="frame" x="20" y="8" width="237" height="39"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="39" id="PYC-OX-qfD"/>
                         </constraints>
@@ -52,7 +52,7 @@
                         </userDefinedRuntimeAttributes>
                     </textField>
                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wyk-Y4-M4T">
-                        <rect key="frame" x="217" y="26" width="40" height="40"/>
+                        <rect key="frame" x="217" y="4" width="40" height="40"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="40" id="4Wq-1L-nh8"/>
                             <constraint firstAttribute="height" constant="40" id="nRT-ij-X3q"/>
@@ -69,8 +69,8 @@
             <constraints>
                 <constraint firstItem="GXp-k0-RmJ" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="Npm-jd-J1c"/>
                 <constraint firstAttribute="trailing" secondItem="Wyk-Y4-M4T" secondAttribute="trailing" constant="20" id="a0V-T3-Yjg"/>
-                <constraint firstItem="Wyk-Y4-M4T" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="26" id="c1e-7u-bpP"/>
-                <constraint firstItem="GXp-k0-RmJ" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="30" id="dI6-jJ-hNX"/>
+                <constraint firstItem="Wyk-Y4-M4T" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="4" id="c1e-7u-bpP"/>
+                <constraint firstItem="GXp-k0-RmJ" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="dI6-jJ-hNX"/>
                 <constraint firstAttribute="trailing" secondItem="GXp-k0-RmJ" secondAttribute="trailing" constant="20" id="dau-zL-ISN"/>
             </constraints>
             <size key="customSize" width="277" height="74"/>

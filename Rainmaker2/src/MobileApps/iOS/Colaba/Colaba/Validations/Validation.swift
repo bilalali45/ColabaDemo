@@ -146,6 +146,12 @@ struct Validation {
         guard lastDateOfService.count > 0 else { throw ValidationError.requiredField }
         return lastDateOfService
     }
+    
+    func validateDependentAge(_ age: String?) throws -> String{
+        guard let age = age else { throw ValidationError.requiredField }
+        guard age.count > 0 else { throw ValidationError.requiredField }
+        return age
+    }
 }
 
 enum ValidationError: LocalizedError {

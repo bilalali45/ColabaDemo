@@ -229,7 +229,7 @@ class BorrowerInformationViewController: UIViewController {
     func setDependentCollectionViewLayout(){
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        layout.sectionInset = UIEdgeInsets(top: 22, left: 20, bottom: 0, right: 20)
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
         let itemWidth = UIScreen.main.bounds.width
@@ -515,8 +515,12 @@ class BorrowerInformationViewController: UIViewController {
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton){
         
+        var borrowerFirstName: String = "", borrowerLastName: String = "", borrowerEmail: String = "", borrowerHomeNumber: String = ""
+        var dependentAges = [String:String]()
+        
         do{
             let firstName = try validation.validateBorrowerFirstName(txtfieldLegalFirstName.text)
+            borrowerFirstName = firstName
             DispatchQueue.main.async {
                 self.txtfieldLegalFirstName.dividerColor = Theme.getSeparatorNormalColor()
                 self.txtfieldLegalFirstName.detail = ""
@@ -530,6 +534,7 @@ class BorrowerInformationViewController: UIViewController {
         
         do{
             let lastName = try validation.validateBorrowerLastName(txtfieldLegalLastName.text)
+            borrowerLastName = lastName
             DispatchQueue.main.async {
                 self.txtfieldLegalLastName.dividerColor = Theme.getSeparatorNormalColor()
                 self.txtfieldLegalLastName.detail = ""
@@ -543,6 +548,7 @@ class BorrowerInformationViewController: UIViewController {
         
         do{
             let email = try validation.validateBorrowerEmail(txtfieldEmail.text)
+            borrowerEmail = email
             DispatchQueue.main.async {
                 self.txtfieldEmail.dividerColor = Theme.getSeparatorNormalColor()
                 self.txtfieldEmail.detail = ""
@@ -556,6 +562,7 @@ class BorrowerInformationViewController: UIViewController {
         
         do{
             let homeNumber = try validation.validateBorrowrHomePhoneNumber(txtfieldHomeNumber.text)
+            borrowerHomeNumber = homeNumber
             DispatchQueue.main.async {
                 self.txtfieldHomeNumber.dividerColor = Theme.getSeparatorNormalColor()
                 self.txtfieldHomeNumber.detail = ""
@@ -565,6 +572,28 @@ class BorrowerInformationViewController: UIViewController {
         catch{
             self.txtfieldHomeNumber.dividerColor = .red
             self.txtfieldHomeNumber.detail = error.localizedDescription
+        }
+        
+        for i in 0..<noOfDependents{
+            let cell = dependentsCollectionView.cellForItem(at: IndexPath(row: i, section: 0)) as! DependentCollectionViewCell
+            do{
+                let age = try validation.validateDependentAge(cell.txtfieldAge.text)
+                let dictKey = (i + 1).ordinalNumber()
+                dependentAges[dictKey] = age
+                DispatchQueue.main.async {
+                    cell.txtfieldAge.dividerColor = Theme.getSeparatorNormalColor()
+                    cell.txtfieldAge.detail = ""
+                }
+                
+            }
+            catch{
+                cell.txtfieldAge.dividerColor = .red
+                cell.txtfieldAge.detail = error.localizedDescription
+            }
+        }
+        
+        if (borrowerFirstName != "" && borrowerLastName != "" && borrowerEmail != "" && borrowerHomeNumber != "" && dependentAges.keys.count == noOfDependents){
+            self.goBack()
         }
     }
 }
