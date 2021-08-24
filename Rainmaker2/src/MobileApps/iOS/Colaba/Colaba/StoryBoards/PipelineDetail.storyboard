@@ -2335,24 +2335,16 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wpN-N3-Sos">
-                                                <rect key="frame" x="22" y="34" width="25" height="25"/>
+                                                <rect key="frame" x="22" y="34" width="14" height="22"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="25" id="oPY-Ms-vmB"/>
-                                                    <constraint firstAttribute="width" constant="25" id="unm-Wp-kp6"/>
-                                                </constraints>
                                                 <state key="normal" image="search-textfield-icon"/>
                                                 <connections>
                                                     <action selector="btnSearchTapped:" destination="UpE-6e-w5X" eventType="touchUpInside" id="267-yX-KPq"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zW1-Wv-hVe">
-                                                <rect key="frame" x="328" y="32" width="25" height="25"/>
+                                                <rect key="frame" x="335.5" y="32" width="17.5" height="22"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="25" id="T6n-G4-UG3"/>
-                                                    <constraint firstAttribute="height" constant="25" id="iZO-4O-Hh1"/>
-                                                </constraints>
                                                 <state key="normal" image="textfield-dropdownIcon"/>
                                                 <connections>
                                                     <action selector="btnDropdownTapped:" destination="UpE-6e-w5X" eventType="touchUpInside" id="PAc-pH-t9v"/>
@@ -2687,6 +2679,7 @@
                         <outlet property="btnDropDown" destination="zW1-Wv-hVe" id="fM2-08-DZR"/>
                         <outlet property="btnSaveChanges" destination="oMo-8x-eLX" id="eZM-ZV-egR"/>
                         <outlet property="btnSearch" destination="wpN-N3-Sos" id="WBu-bl-TNw"/>
+                        <outlet property="btnSearchTopConstraint" destination="0sV-SA-sT4" id="gtP-Yj-I9l"/>
                         <outlet property="btnStateDropDown" destination="KtT-g4-AD1" id="7oM-Gs-mOu"/>
                         <outlet property="countryDropDownAnchorView" destination="AJw-Ta-meI" id="rIy-iN-HP6"/>
                         <outlet property="lblBorrowerName" destination="EPf-qy-dz4" id="QPp-K8-eVu"/>
@@ -2814,24 +2807,16 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hU7-jD-Rnc">
-                                                <rect key="frame" x="22" y="34" width="25" height="25"/>
+                                                <rect key="frame" x="22" y="34" width="14" height="22"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="25" id="mKN-3U-MP7"/>
-                                                    <constraint firstAttribute="height" constant="25" id="yop-Tt-M2I"/>
-                                                </constraints>
                                                 <state key="normal" image="search-textfield-icon"/>
                                                 <connections>
                                                     <action selector="btnSearchTapped:" destination="8Fu-Na-sgy" eventType="touchUpInside" id="7TZ-nl-qX5"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WDJ-An-HOI">
-                                                <rect key="frame" x="328" y="32" width="25" height="25"/>
+                                                <rect key="frame" x="335.5" y="32" width="17.5" height="22"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="25" id="EWw-nf-fJh"/>
-                                                    <constraint firstAttribute="width" constant="25" id="FhB-ST-DdP"/>
-                                                </constraints>
                                                 <state key="normal" image="textfield-dropdownIcon"/>
                                                 <connections>
                                                     <action selector="btnDropdownTapped:" destination="8Fu-Na-sgy" eventType="touchUpInside" id="c4x-IR-CvG"/>
@@ -3327,6 +3312,7 @@
                         <outlet property="btnHousingStatusDropDown" destination="G2L-en-NSr" id="KhC-f5-C6Y"/>
                         <outlet property="btnSaveChanges" destination="gXg-yg-wbe" id="Eb1-PR-L8j"/>
                         <outlet property="btnSearch" destination="hU7-jD-Rnc" id="7J9-lq-TGx"/>
+                        <outlet property="btnSearchTopConstraint" destination="qcr-iN-rVV" id="0pG-Mb-NPw"/>
                         <outlet property="btnStateDropDown" destination="Xoe-rx-6rT" id="AEM-hV-6dJ"/>
                         <outlet property="countryDropDownAnchorView" destination="M0H-QI-yrf" id="t00-VT-x2Z"/>
                         <outlet property="housingStatusDropDownAnchorView" destination="lp0-2S-uJW" id="JF9-XV-gWH"/>
