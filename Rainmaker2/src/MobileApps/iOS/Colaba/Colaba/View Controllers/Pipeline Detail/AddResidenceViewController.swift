@@ -558,7 +558,7 @@ extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if (tableView == tblViewPlaces){
-            let cell: UITableViewCell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier:"addCategoryCell")
+            let cell: UITableViewCell = UITableViewCell()
 
             cell.selectionStyle =  .default
             cell.backgroundColor = UIColor.white
@@ -620,6 +620,9 @@ extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (tableView == tblViewPlaces){
+            return 40
+        }
         return UITableView.automaticDimension
     }
     
@@ -694,7 +697,6 @@ extension AddResidenceViewController: UITextFieldDelegate{
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if (textField == txtfieldHomeAddress){
-            tblViewPlaces.isHidden = true
             btnDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             if (txtfieldHomeAddress.text == "       "){
                 txtfieldHomeAddress.text = ""

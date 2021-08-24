@@ -63,9 +63,11 @@ class BorrowerInformationViewController: UIViewController {
     @IBOutlet weak var btnCalendar: UIButton!
     @IBOutlet weak var txtfieldSecurityNo: TextField!
     @IBOutlet weak var btnEye: UIButton!
-    @IBOutlet weak var txtfieldNoOfDependent: TextField!
+//    @IBOutlet weak var txtfieldNoOfDependent: TextField!
+    @IBOutlet weak var lblNoOfDependent: UILabel!
     @IBOutlet weak var dependentsCollectionView: UICollectionView!
     @IBOutlet weak var dependentsCollectionViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var stackViewAddDependent: UIStackView!
     @IBOutlet weak var militaryView: UIView!
     @IBOutlet weak var militaryViewHeightConstraint: NSLayoutConstraint!// 470 or 340 or 370 or 250
     @IBOutlet weak var activeDutyStackView: UIStackView!
@@ -116,7 +118,7 @@ class BorrowerInformationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setMaterialTextFieldsAndViews(textfields: [txtfieldLegalFirstName, txtfieldMiddleName, txtfieldLegalLastName, txtfieldSuffix, txtfieldEmail, txtfieldHomeNumber, txtfieldWorkNumber, txtfieldExtensionNumber, txtfieldCellNumber, txtfieldDOB, txtfieldSecurityNo, txtfieldNoOfDependent])
+        setMaterialTextFieldsAndViews(textfields: [txtfieldLegalFirstName, txtfieldMiddleName, txtfieldLegalLastName, txtfieldSuffix, txtfieldEmail, txtfieldHomeNumber, txtfieldWorkNumber, txtfieldExtensionNumber, txtfieldCellNumber, txtfieldDOB, txtfieldSecurityNo /*txtfieldNoOfDependent*/])
         tblViewAddress.register(UINib(nibName: "BorrowerAddressInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerAddressInfoTableViewCell")
         dependentsCollectionView.register(UINib(nibName: "DependentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "DependentCollectionViewCell")
         
@@ -127,6 +129,8 @@ class BorrowerInformationViewController: UIViewController {
         usCitizenStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(usCitizenTapped)))
         permanentResidentStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(permanentResidentTapped)))
         nonPermanentStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nonPermanentResidentTapped)))
+        
+        stackViewAddDependent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addDependentTapped)))
         
         activeDutyStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(activeDutyTapped)))
         reserveNationalGuardStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(reserveNationalGuardTapped)))
@@ -149,7 +153,7 @@ class BorrowerInformationViewController: UIViewController {
         let citizenshipViewHeight = citizenshipView.frame.height
         let dependentsCollectionViewHeight = dependentsCollectionView.contentSize.height
         let militaryViewHeight = militaryView.frame.height
-        let totalHeight = addressTableViewHeight + maritalStatusViewHeight + citizenshipViewHeight + dependentsCollectionViewHeight + militaryViewHeight + 1000
+        let totalHeight = addressTableViewHeight + maritalStatusViewHeight + citizenshipViewHeight + dependentsCollectionViewHeight + militaryViewHeight + 1100
         tblViewHeightConstraint.constant = addressTableViewHeight
         dependentsCollectionViewHeightConstraint.constant = dependentsCollectionViewHeight
         self.mainViewHeightConstraint.constant = totalHeight
@@ -228,8 +232,8 @@ class BorrowerInformationViewController: UIViewController {
         layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
-        let itemWidth = UIScreen.main.bounds.width * 0.42
-        layout.itemSize = CGSize(width: itemWidth, height: 109)
+        let itemWidth = UIScreen.main.bounds.width
+        layout.itemSize = CGSize(width: itemWidth, height: 69)
         self.dependentsCollectionView.collectionViewLayout = layout
     }
     
@@ -361,6 +365,15 @@ class BorrowerInformationViewController: UIViewController {
     @objc func dateChanged() {
         if let  datePicker = self.txtfieldDOB.inputView as? UIDatePicker {
             self.txtfieldDOB.text = dobDateFormatter.string(from: datePicker.date)
+        }
+    }
+    
+    @objc func addDependentTapped(){
+        noOfDependents = noOfDependents + 1
+        lblNoOfDependent.text = "\(noOfDependents)"
+        self.dependentsCollectionView.reloadData()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.setScreenHeight()
         }
     }
     
@@ -636,10 +649,24 @@ extension BorrowerInformationViewController: UICollectionViewDataSource, UIColle
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DependentCollectionViewCell", for: indexPath) as! DependentCollectionViewCell
         let textFieldNo = indexPath.row + 1
-        cell.txtfieldAge.placeholder = "\(textFieldNo.ordinalNumber()) Dependent age"
+        cell.txtfieldAge.placeholder = "\(textFieldNo.ordinalNumber()) Dependent Age (Years)"
+        cell.indexPath = indexPath
+        cell.delegate = self
         return cell
     }
     
+}
+
+extension BorrowerInformationViewController: DependentCollectionViewCellDelegate{
+    func deleteDependent(indexPath: IndexPath) {
+        self.dependentsCollectionView.deleteItems(at: [indexPath])
+        self.noOfDependents = self.noOfDependents - 1
+        self.lblNoOfDependent.text = "\(noOfDependents)"
+        self.dependentsCollectionView.reloadData()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.setScreenHeight()
+        }
+    }
 }
 
 extension BorrowerInformationViewController: UITextFieldDelegate{
@@ -651,7 +678,7 @@ extension BorrowerInformationViewController: UITextFieldDelegate{
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldLegalFirstName, txtfieldMiddleName, txtfieldLegalLastName, txtfieldSuffix, txtfieldEmail, txtfieldHomeNumber, txtfieldWorkNumber, txtfieldExtensionNumber, txtfieldCellNumber, txtfieldDOB, txtfieldSecurityNo, txtfieldNoOfDependent])
+        setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldLegalFirstName, txtfieldMiddleName, txtfieldLegalLastName, txtfieldSuffix, txtfieldEmail, txtfieldHomeNumber, txtfieldWorkNumber, txtfieldExtensionNumber, txtfieldCellNumber, txtfieldDOB, txtfieldSecurityNo /*txtfieldNoOfDependent*/])
        
         if (textField == txtfieldLegalFirstName){
             do{
@@ -713,19 +740,6 @@ extension BorrowerInformationViewController: UITextFieldDelegate{
             }
         }
         
-        if (textField == txtfieldNoOfDependent){
-            if let noOfDependent = Int(txtfieldNoOfDependent.text!){
-                noOfDependents = noOfDependent
-            }
-            else{
-                noOfDependents = 0
-            }
-            self.dependentsCollectionView.reloadData()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                self.setScreenHeight()
-            }
-        }
-        
 //        for i in 0..<noOfDependents{
 //            let cell = dependentsCollectionView.cellForItem(at: IndexPath(row: i, section: 0)) as! DependentCollectionViewCell
 //            print("\((i + 1).ordinalNumber()) Dependent age is \(cell.txtfieldAge.text!)")
@@ -742,9 +756,6 @@ extension BorrowerInformationViewController: UITextFieldDelegate{
         }
         else if (textField == txtfieldExtensionNumber){
             return string == "" ? true : (txtfieldExtensionNumber.text!.count < 8)
-        }
-        else if (textField == txtfieldNoOfDependent){
-            return string == "" ? true : (txtfieldNoOfDependent.text!.count < 2)
         }
         else{
             return true
