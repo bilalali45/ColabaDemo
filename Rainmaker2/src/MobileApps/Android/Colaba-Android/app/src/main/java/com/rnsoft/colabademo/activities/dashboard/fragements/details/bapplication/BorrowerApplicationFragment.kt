@@ -88,8 +88,6 @@ class BorrowerApplicationFragment : Fragment() {
                     binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
                 }
 
-
-
                 appTabModel.borrowerAppData?.subjectProperty?.propertyTypeName?.let{
                     binding.bAppPropertyType.text = it
                 }
