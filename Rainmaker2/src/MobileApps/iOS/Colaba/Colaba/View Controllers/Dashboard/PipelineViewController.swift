@@ -106,6 +106,7 @@ class PipelineViewController: BaseViewController {
     func getPipelineData(){
         
         if (pageNumber == 1){
+            self.view.isUserInteractionEnabled = false
             self.loadingPlaceholderView.cover(self.tblView, animated: true)
         }
         
@@ -115,6 +116,7 @@ class PipelineViewController: BaseViewController {
             
             DispatchQueue.main.async {
                 self.loadingPlaceholderView.uncover(animated: true)
+                self.view.isUserInteractionEnabled = true
                 self.tblView.loadControl?.endLoading()
                 if (status == .success){
                     

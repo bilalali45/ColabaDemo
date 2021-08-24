@@ -133,6 +133,7 @@ class DocumentsViewController: BaseViewController {
     
     func getDocuments(){
         
+        self.view.isUserInteractionEnabled = false
         self.loadingPlaceholderView.cover(tblViewDocuments, animated: true)
         
         let extraData = "loanApplicationId=\(loanApplicationId)"
@@ -141,6 +142,7 @@ class DocumentsViewController: BaseViewController {
             
             DispatchQueue.main.async {
                 self.loadingPlaceholderView.uncover()
+                self.view.isUserInteractionEnabled = true
                 
                 if (status == .success){
                     
