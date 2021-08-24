@@ -369,11 +369,13 @@ class BorrowerInformationViewController: UIViewController {
     }
     
     @objc func addDependentTapped(){
-        noOfDependents = noOfDependents + 1
-        lblNoOfDependent.text = "\(noOfDependents)"
-        self.dependentsCollectionView.reloadData()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.setScreenHeight()
+        if (noOfDependents < 99){
+            noOfDependents = noOfDependents + 1
+            lblNoOfDependent.text = "\(noOfDependents)"
+            self.dependentsCollectionView.reloadData()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.setScreenHeight()
+            }
         }
     }
     
