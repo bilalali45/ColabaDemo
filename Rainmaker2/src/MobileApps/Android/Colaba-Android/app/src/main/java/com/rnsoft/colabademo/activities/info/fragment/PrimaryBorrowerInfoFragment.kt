@@ -3,11 +3,13 @@ package com.rnsoft.colabademo.activities.info
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
@@ -18,9 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
-import com.rnsoft.colabademo.MyCustomFocusListener
-import com.rnsoft.colabademo.PhoneTextFormatter
-import com.rnsoft.colabademo.R
+import com.rnsoft.colabademo.*
 import com.rnsoft.colabademo.activities.info.*
 import com.rnsoft.colabademo.activities.info.model.Address
 import com.rnsoft.colabademo.databinding.*
@@ -28,6 +28,12 @@ import com.rnsoft.colabademo.utils.RecyclerTouchListener
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.ArrayList
+import androidx.core.widget.doAfterTextChanged
+import com.rnsoft.colabademo.activities.info.fragment.SwipeToDeleteEvent
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+
 
 /**
  * Created by Anita Kiran on 8/23/2021.
@@ -42,7 +48,10 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
     lateinit var bindingDependents: DependentInputFieldBinding
     var list: ArrayList<Address> = ArrayList()
     private var touchListener: RecyclerTouchListener? = null
+    var count : Int = 0
+    var selectedPosition : Int?=null
 
+    lateinit var adapter:ResidenceAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,12 +62,15 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
         msBinding = bi.layoutMaritalStatus
         citizenshipBinding = bi.layoutCitizenship
         bindingMilitary = bi.layoutMilitaryService
-        bindingDependents = bi.layoutAddDependents
+        bindingDependents = bi.layoutDynamicDependents
 
         initViews()
         setSingleItemFocus()
         setEndIconClicks()
         setResidence()
+        addDynamicField()
+
+
 
 
         bi.backButton.setOnClickListener(this)
@@ -70,26 +82,33 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
         citizenshipBinding.rbUsCitizen.setOnClickListener(this)
         citizenshipBinding.rbNonPrOther.setOnClickListener(this)
         citizenshipBinding.rbPr.setOnClickListener(this)
-
         bindingMilitary.chbDutyPersonel.setOnClickListener(this)
         bindingMilitary.chbResNationalGuard.setOnClickListener(this)
         bindingMilitary.chbVeteran.setOnClickListener(this)
         bindingMilitary.chbSurvivingSpouse.setOnClickListener(this)
+        bi.addDependentClick.setOnClickListener(this)
 
-        // done button click of add dependents
-        bi.edDependents.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                addDependentField()
-                requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+
+        /*bindingDependents.edAge1.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                Log.e("Focus", "true")
+                setTextInputLayoutHintColor(bindingDependents.tilFirstAge, R.color.grey_color_two )
+                bindingDependents.tilFirstAge.setEndIconDrawable(R.drawable.ic_minus_delete)
             }
-            false
-        }
-
+            else {
+                Log.e("Focus", "false")
+                bindingDependents.tilFirstAge.setEndIconDrawable(null)
+                if (bindingDependents.edAge1.text?.length == 0) {
+                    setTextInputLayoutHintColor(bindingDependents.tilFirstAge,R.color.grey_color_three)
+                } else {
+                    setTextInputLayoutHintColor(bindingDependents.tilFirstAge,R.color.grey_color_two)
+                }
+            }
+        } */
 
         return bi.root
 
     }
-
 
     private fun initViews() {
 
@@ -103,9 +122,9 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
         bi.edExtNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edExtNum, bi.layoutExtNum, requireContext()))
         bi.edCellNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edCellNum, bi.layoutCellNum, requireContext()))
         bi.edSecurityNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edSecurityNum,bi.layoutSecurityNum, requireContext()))
-        bi.edDependents.setOnFocusChangeListener(MyCustomFocusListener(bi.edDependents, bi.layoutDependants, requireContext()))
+        bi.edDependentNo.setOnFocusChangeListener(MyCustomFocusListener(bi.edDependentNo, bi.layoutDependants, requireContext()))
         bi.edDateOfBirth.setOnFocusChangeListener(MyCustomFocusListener(bi.edDateOfBirth, bi.layoutDateOfBirth, requireContext()))
-
+/*
         bindingDependents.edDependent1.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent1, bindingDependents.layoutDependent1, requireContext()))
         bindingDependents.edDependent2.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent2, bindingDependents.layoutDependent2, requireContext()))
         bindingDependents.edDependent3.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent3, bindingDependents.layoutDependent3, requireContext()))
@@ -115,7 +134,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
         bindingDependents.edDependent7.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent7, bindingDependents.layoutDependent7, requireContext()))
         bindingDependents.edDependent8.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent8, bindingDependents.layoutDependent8, requireContext()))
         bindingDependents.edDependent9.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent9, bindingDependents.layoutDependent9, requireContext()))
-        bindingDependents.edDependent10.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent10, bindingDependents.layoutDependent10, requireContext()))
+        bindingDependents.edDependent10.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent10, bindingDependents.layoutDependent10, requireContext())) */
 
     }
 
@@ -133,6 +152,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
             R.id.chb_veteran -> militaryVeteran()
             R.id.chb_surviving_spouse -> militarySurvivingSpouse()
             R.id.btn_save_info -> checkValidations()
+            R.id.add_dependent_click -> addDependentCount()
             R.id.backButton -> requireActivity().finish()
         }
     }
@@ -178,6 +198,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
             }
         }
     }
+
     fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
         textInputlayout.helperText = errorMsg
         textInputlayout.setBoxStrokeColorStateList(
@@ -215,6 +236,38 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
                 bi.layoutSecurityNum.setEndIconDrawable(R.drawable.ic_eye_icon_svg)
             }
         })
+        // delete dependent age
+        bindingDependents.tilFirstAge.setEndIconOnClickListener(View.OnClickListener {
+            deleteDependentCount()
+        })
+        bindingDependents.tilSecAge.setEndIconOnClickListener(View.OnClickListener {
+            deleteDependentCount()
+        })
+        bindingDependents.tilThirdAge.setEndIconOnClickListener(View.OnClickListener {
+            deleteDependentCount()
+        })
+        bindingDependents.tilForthAge.setEndIconOnClickListener(View.OnClickListener {
+            deleteDependentCount()
+        })
+        bindingDependents.tilFifthAge.setEndIconOnClickListener(View.OnClickListener {
+            deleteDependentCount()
+        })
+        bindingDependents.tilSixAge.setEndIconOnClickListener(View.OnClickListener {
+            deleteDependentCount()
+        })
+        bindingDependents.tilSevenAge.setEndIconOnClickListener(View.OnClickListener {
+            deleteDependentCount()
+        })
+        bindingDependents.tilEightAge.setEndIconOnClickListener(View.OnClickListener {
+            deleteDependentCount()
+        })
+        bindingDependents.tilNinthAge.setEndIconOnClickListener(View.OnClickListener {
+            deleteDependentCount()
+        })
+        bindingDependents.tilTenthAge.setEndIconOnClickListener(View.OnClickListener {
+            deleteDependentCount()
+        })
+
     }
 
     private fun setResidence() {
@@ -224,7 +277,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
         bi.recyclerview.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         bi.recyclerview.hasFixedSize()
 
-        val adapter = ResidenceAdapter(requireActivity())
+        adapter = ResidenceAdapter(requireActivity())
         adapter.setTaskList(list)
         bi.recyclerview.setAdapter(adapter)
 
@@ -239,8 +292,8 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
                 RecyclerTouchListener.OnSwipeOptionsClickListener {
 
                 override fun onSwipeOptionClicked(viewID: Int, position: Int) {
-                    list.removeAt(position)
-                    adapter.setTaskList(list)
+                    selectedPosition = position
+                    DeleteCurrentResidenceDialogFragment.newInstance().show(childFragmentManager, DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
                 }
             })
         bi.recyclerview.addOnItemTouchListener(touchListener!!)
@@ -248,221 +301,11 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
 
         // disable touch from recyclerview
         bi.recyclerview.setOnTouchListener(object : View.OnTouchListener {
-            @SuppressLint("ClickableViewAccessibility")
             override fun onTouch(v: View, m: MotionEvent): Boolean {
                 bi.scrollPrimaryInfo.requestDisallowInterceptTouchEvent(true)
                 return false
             }
         })
-    }
-
-    private fun addDependentField() {
-        /* val til = TextInputLayout(this)
-         val et = EditText(this)
-         til.addView(et)
-         til.hint = "Dynamic View"
-         binding.layoutAddDependents.addView(til) */
-        // TextInputLayout textInputLayout = (TextInputLayout) LayoutInflator.from(this).inflate(R.layout.text_input_layout, null);
-        //val linearLayout = findViewById<View>(R.id.linearlayout) as LinearLayout
-        //linear.layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
-        //linear.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
-        /*linear = LayoutInflater.from(this).inflate(R.layout.dynamic_inputfield_two, null) as LinearLayout
-        binding.layoutAddDependents.addView(linear)*/
-        val count = Integer.parseInt(bi.edDependents.text.toString())
-        if (count > 0) {
-            bindingDependents.dynamicDependents.visibility = View.VISIBLE
-
-            if (count == 1) {
-                bindingDependents.row1.visibility = View.VISIBLE
-                bindingDependents.layoutDependent1.visibility = View.VISIBLE
-                bindingDependents.row2.visibility = View.GONE
-                bindingDependents.row3.visibility = View.GONE
-                bindingDependents.row4.visibility = View.GONE
-                bindingDependents.row5.visibility = View.GONE
-
-                bindingDependents.layoutDependent2.visibility = View.GONE
-                bindingDependents.layoutDependent3.visibility = View.GONE
-                bindingDependents.layoutDependent4.visibility = View.GONE
-                bindingDependents.layoutDependent5.visibility = View.GONE
-                bindingDependents.layoutDependent6.visibility = View.GONE
-                bindingDependents.layoutDependent7.visibility = View.GONE
-                bindingDependents.layoutDependent8.visibility = View.GONE
-                bindingDependents.layoutDependent9.visibility = View.GONE
-                bindingDependents.layoutDependent10.visibility = View.GONE
-
-
-            } else if (count == 2) {
-                bindingDependents.row1.visibility = View.VISIBLE
-                bindingDependents.row2.visibility = View.GONE
-                bindingDependents.row3.visibility = View.GONE
-                bindingDependents.row4.visibility = View.GONE
-                bindingDependents.row5.visibility = View.GONE
-
-                bindingDependents.layoutDependent1.visibility = View.VISIBLE
-                bindingDependents.layoutDependent2.visibility = View.VISIBLE
-                bindingDependents.layoutDependent3.visibility = View.GONE
-                bindingDependents.layoutDependent4.visibility = View.GONE
-                bindingDependents.layoutDependent5.visibility = View.GONE
-                bindingDependents.layoutDependent6.visibility = View.GONE
-                bindingDependents.layoutDependent7.visibility = View.GONE
-                bindingDependents.layoutDependent8.visibility = View.GONE
-                bindingDependents.layoutDependent9.visibility = View.GONE
-                bindingDependents.layoutDependent10.visibility = View.GONE
-
-            } else if (count == 3) {
-                bindingDependents.row1.visibility = View.VISIBLE
-                bindingDependents.row2.visibility = View.VISIBLE
-                bindingDependents.row3.visibility = View.GONE
-                bindingDependents.row4.visibility = View.GONE
-                bindingDependents.row5.visibility = View.GONE
-
-                bindingDependents.layoutDependent1.visibility = View.VISIBLE
-                bindingDependents.layoutDependent2.visibility = View.VISIBLE
-                bindingDependents.layoutDependent3.visibility = View.VISIBLE
-                bindingDependents.layoutDependent4.visibility = View.GONE
-                bindingDependents.layoutDependent5.visibility = View.GONE
-                bindingDependents.layoutDependent6.visibility = View.GONE
-                bindingDependents.layoutDependent7.visibility = View.GONE
-                bindingDependents.layoutDependent8.visibility = View.GONE
-                bindingDependents.layoutDependent9.visibility = View.GONE
-                bindingDependents.layoutDependent10.visibility = View.GONE
-
-            } else if (count == 4) {
-                bindingDependents.row1.visibility = View.VISIBLE
-                bindingDependents.row2.visibility = View.VISIBLE
-                bindingDependents.row3.visibility = View.GONE
-                bindingDependents.row4.visibility = View.GONE
-                bindingDependents.row5.visibility = View.GONE
-
-                bindingDependents.layoutDependent1.visibility = View.VISIBLE
-                bindingDependents.layoutDependent2.visibility = View.VISIBLE
-                bindingDependents.layoutDependent3.visibility = View.VISIBLE
-                bindingDependents.layoutDependent4.visibility = View.VISIBLE
-
-                bindingDependents.layoutDependent5.visibility = View.GONE
-                bindingDependents.layoutDependent6.visibility = View.GONE
-                bindingDependents.layoutDependent7.visibility = View.GONE
-                bindingDependents.layoutDependent8.visibility = View.GONE
-                bindingDependents.layoutDependent9.visibility = View.GONE
-                bindingDependents.layoutDependent10.visibility = View.GONE
-
-            } else if (count == 5) {
-                bindingDependents.row1.visibility = View.VISIBLE
-                bindingDependents.row2.visibility = View.VISIBLE
-                bindingDependents.row3.visibility = View.VISIBLE
-                bindingDependents.row4.visibility = View.GONE
-                bindingDependents.row5.visibility = View.GONE
-
-                bindingDependents.layoutDependent1.visibility = View.VISIBLE
-                bindingDependents.layoutDependent2.visibility = View.VISIBLE
-                bindingDependents.layoutDependent3.visibility = View.VISIBLE
-                bindingDependents.layoutDependent4.visibility = View.VISIBLE
-                bindingDependents.layoutDependent5.visibility = View.VISIBLE
-
-                bindingDependents.layoutDependent6.visibility = View.GONE
-                bindingDependents.layoutDependent7.visibility = View.GONE
-                bindingDependents.layoutDependent8.visibility = View.GONE
-                bindingDependents.layoutDependent9.visibility = View.GONE
-                bindingDependents.layoutDependent10.visibility = View.GONE
-
-            } else if (count == 6) {
-                bindingDependents.row1.visibility = View.VISIBLE
-                bindingDependents.row2.visibility = View.VISIBLE
-                bindingDependents.row3.visibility = View.VISIBLE
-                bindingDependents.row4.visibility = View.GONE
-                bindingDependents.row5.visibility = View.GONE
-
-                bindingDependents.layoutDependent1.visibility = View.VISIBLE
-                bindingDependents.layoutDependent2.visibility = View.VISIBLE
-                bindingDependents.layoutDependent3.visibility = View.VISIBLE
-                bindingDependents.layoutDependent4.visibility = View.VISIBLE
-                bindingDependents.layoutDependent5.visibility = View.VISIBLE
-                bindingDependents.layoutDependent6.visibility = View.VISIBLE
-
-                bindingDependents.layoutDependent7.visibility = View.GONE
-                bindingDependents.layoutDependent8.visibility = View.GONE
-                bindingDependents.layoutDependent9.visibility = View.GONE
-                bindingDependents.layoutDependent10.visibility = View.GONE
-
-            } else if (count == 7) {
-                bindingDependents.row1.visibility = View.VISIBLE
-                bindingDependents.row2.visibility = View.VISIBLE
-                bindingDependents.row3.visibility = View.VISIBLE
-                bindingDependents.row4.visibility = View.VISIBLE
-                bindingDependents.row5.visibility = View.GONE
-
-                bindingDependents.layoutDependent1.visibility = View.VISIBLE
-                bindingDependents.layoutDependent2.visibility = View.VISIBLE
-                bindingDependents.layoutDependent3.visibility = View.VISIBLE
-                bindingDependents.layoutDependent4.visibility = View.VISIBLE
-                bindingDependents.layoutDependent5.visibility = View.VISIBLE
-                bindingDependents.layoutDependent6.visibility = View.VISIBLE
-                bindingDependents.layoutDependent7.visibility = View.VISIBLE
-
-                bindingDependents.layoutDependent8.visibility = View.GONE
-                bindingDependents.layoutDependent9.visibility = View.GONE
-                bindingDependents.layoutDependent10.visibility = View.GONE
-
-            } else if (count == 8) {
-                bindingDependents.row1.visibility = View.VISIBLE
-                bindingDependents.row2.visibility = View.VISIBLE
-                bindingDependents.row3.visibility = View.VISIBLE
-                bindingDependents.row4.visibility = View.VISIBLE
-                bindingDependents.row5.visibility = View.GONE
-
-                bindingDependents.layoutDependent1.visibility = View.VISIBLE
-                bindingDependents.layoutDependent2.visibility = View.VISIBLE
-                bindingDependents.layoutDependent3.visibility = View.VISIBLE
-                bindingDependents.layoutDependent4.visibility = View.VISIBLE
-                bindingDependents.layoutDependent5.visibility = View.VISIBLE
-                bindingDependents.layoutDependent6.visibility = View.VISIBLE
-                bindingDependents.layoutDependent7.visibility = View.VISIBLE
-                bindingDependents.layoutDependent8.visibility = View.VISIBLE
-
-                bindingDependents.layoutDependent9.visibility = View.GONE
-                bindingDependents.layoutDependent10.visibility = View.GONE
-
-            } else if (count == 9) {
-                bindingDependents.row1.visibility = View.VISIBLE
-                bindingDependents.row2.visibility = View.VISIBLE
-                bindingDependents.row3.visibility = View.VISIBLE
-                bindingDependents.row4.visibility = View.VISIBLE
-                bindingDependents.row5.visibility = View.VISIBLE
-
-                bindingDependents.layoutDependent1.visibility = View.VISIBLE
-                bindingDependents.layoutDependent2.visibility = View.VISIBLE
-                bindingDependents.layoutDependent3.visibility = View.VISIBLE
-                bindingDependents.layoutDependent4.visibility = View.VISIBLE
-                bindingDependents.layoutDependent5.visibility = View.VISIBLE
-                bindingDependents.layoutDependent6.visibility = View.VISIBLE
-                bindingDependents.layoutDependent7.visibility = View.VISIBLE
-                bindingDependents.layoutDependent8.visibility = View.VISIBLE
-                bindingDependents.layoutDependent9.visibility = View.VISIBLE
-
-                bindingDependents.layoutDependent10.visibility = View.GONE
-
-            } else if (count == 10) {
-                bindingDependents.row1.visibility = View.VISIBLE
-                bindingDependents.row2.visibility = View.VISIBLE
-                bindingDependents.row3.visibility = View.VISIBLE
-                bindingDependents.row4.visibility = View.VISIBLE
-                bindingDependents.row5.visibility = View.VISIBLE
-
-                bindingDependents.layoutDependent1.visibility = View.VISIBLE
-                bindingDependents.layoutDependent2.visibility = View.VISIBLE
-                bindingDependents.layoutDependent3.visibility = View.VISIBLE
-                bindingDependents.layoutDependent4.visibility = View.VISIBLE
-                bindingDependents.layoutDependent5.visibility = View.VISIBLE
-                bindingDependents.layoutDependent6.visibility = View.VISIBLE
-                bindingDependents.layoutDependent7.visibility = View.VISIBLE
-                bindingDependents.layoutDependent8.visibility = View.VISIBLE
-                bindingDependents.layoutDependent9.visibility = View.VISIBLE
-                bindingDependents.layoutDependent10.visibility = View.VISIBLE
-
-            }
-        } else { // dependent 0
-            bindingDependents.dynamicDependents.visibility = View.GONE
-        }
     }
 
     private fun openCalendar(){
@@ -483,6 +326,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setSingleItemFocus(){
 
         // check first name
@@ -552,15 +396,15 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
         }
 
         // dependents
-        bi.edDependents.setOnFocusChangeListener { view, hasFocus ->
+        bi.edDependentNo.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 setTextInputLayoutHintColor(bi.layoutDependants, R.color.grey_color_two )
             } else {
-                if (bi.edDependents.text?.length == 0) {
+                if (bi.edDependentNo.text?.length == 0) {
                     setTextInputLayoutHintColor(bi.layoutDependants,R.color.grey_color_three)
                 } else {
                     setTextInputLayoutHintColor(bi.layoutDependants,R.color.grey_color_two)
-                    addDependentField()
+                    //addDependentField()
                 }
             }
         }
@@ -572,7 +416,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
                     MotionEvent.ACTION_DOWN -> openCalendar()
                 }
                 return false
-
             }
         })
 
@@ -677,5 +520,73 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
         super.onResume()
         touchListener?.let { bi.recyclerview.addOnItemTouchListener(it) }
     }
+
+    private fun addDependentCount() {
+            count++
+            bi.edDependentNo.setText(count.toString())
+    }
+
+    private fun deleteDependentCount() {
+        count--
+        bi.edDependentNo.setText(count.toString())
+    }
+
+    private fun addDynamicField() {
+
+        bi.edDependentNo.doAfterTextChanged {
+            val num = Integer.parseInt(bi.edDependentNo.text.toString())
+
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSwipeDeleteReceivedEvent(event: SwipeToDeleteEvent) {
+        if(event.boolean){
+            list.removeAt(selectedPosition!!)
+            adapter.setTaskList(list)
+        }
+    }
+
+
+    /* val til = TextInputLayout(this)
+         val et = EditText(this)
+         til.addView(et)
+         til.hint = "Dynamic View"
+         binding.layoutAddDependents.addView(til) */
+    // TextInputLayout textInputLayout = (TextInputLayout) LayoutInflator.from(this).inflate(R.layout.text_input_layout, null);
+    //val linearLayout = findViewById<View>(R.id.linearlayout) as LinearLayout
+    //linear.layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
+    //linear.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
+    /*linear = LayoutInflater.from(this).inflate(R.layout.dynamic_inputfield_two, null) as LinearLayout
+    binding.layoutAddDependents.addView(linear)*/
+
+    /*val count = Integer.parseInt(bi.edDependents.text.toString())
+    if (count > 0) {
+        bindingDependents.dynamicDependents.visibility = View.VISIBLE
+    } */
+
+
+
+    // done button click of add dependents
+    /*bi.edDependents.setOnEditorActionListener { _, actionId, _ ->
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            addDependentField()
+            requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+        }
+        false
+    } */
+
+
+
 
 }

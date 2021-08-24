@@ -6,6 +6,357 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+  <com.google.android.material.textfield.TextInputLayout
+      android:visibility="gone"
+      android:id="@+id/til_first_age"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="25dp"
+      android:layout_weight="1"
+      android:hint="First Dependent Age (Years)"
+      android:textColorHint="@color/primary_info_label_color"
+      app:boxCollapsedPaddingTop="1dp"
+      app:boxStrokeColor="@color/primary_info_line_color"
+      app:boxStrokeWidth="0.5dp"
+      app:boxStrokeWidthFocused="1dp"
+      app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+      app:endIconMode="custom">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/ed_age1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:digits="0123456789"
+        android:inputType="number"
+        android:ems="10"
+        android:fontFamily="@font/rubik_regular"
+        android:imeOptions="actionDone"
+        android:paddingStart="0dp"
+        android:singleLine="true"
+        android:textColor="@color/grey_color_one"
+        android:textSize="@dimen/ed_txt_size_primary_info" />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+      android:visibility="gone"
+      android:id="@+id/til_sec_age"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="25dp"
+      android:layout_weight="1"
+      android:hint="Second Dependent Age (Years)"
+      android:textColorHint="@color/primary_info_label_color"
+      app:boxCollapsedPaddingTop="1dp"
+      app:boxStrokeColor="@color/primary_info_line_color"
+      app:boxStrokeWidth="0.5dp"
+      app:boxStrokeWidthFocused="1dp"
+      app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+      app:endIconDrawable="@drawable/ic_minus_delete"
+      app:endIconMode="custom">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/ed_age2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:digits="0123456789"
+        android:inputType="number"
+        android:ems="10"
+        android:fontFamily="@font/rubik_regular"
+        android:imeOptions="actionDone"
+        android:paddingStart="0dp"
+        android:singleLine="true"
+        android:textColor="@color/grey_color_one"
+        android:textSize="@dimen/ed_txt_size_primary_info" />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- 3rd dependent age -->
+  <com.google.android.material.textfield.TextInputLayout
+      android:visibility="gone"
+      android:id="@+id/til_third_age"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="25dp"
+      android:layout_weight="1"
+      android:hint="Third Dependent Age (Years)"
+      android:textColorHint="@color/primary_info_label_color"
+      app:boxCollapsedPaddingTop="1dp"
+      app:boxStrokeColor="@color/primary_info_line_color"
+      app:boxStrokeWidth="0.5dp"
+      app:boxStrokeWidthFocused="1dp"
+      app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+      app:endIconDrawable="@drawable/ic_minus_delete"
+      app:endIconMode="custom">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/ed_age3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:digits="0123456789"
+        android:inputType="number"
+        android:ems="10"
+        android:fontFamily="@font/rubik_regular"
+        android:imeOptions="actionDone"
+        android:paddingStart="0dp"
+        android:singleLine="true"
+        android:textColor="@color/grey_color_one"
+        android:textSize="@dimen/ed_txt_size_primary_info" />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- 4th dependent age -->
+  <com.google.android.material.textfield.TextInputLayout
+      android:visibility="gone"
+      android:id="@+id/til_forth_age"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="25dp"
+      android:layout_weight="1"
+      android:hint="Fourth Dependent Age (Years)"
+      android:textColorHint="@color/primary_info_label_color"
+      app:boxCollapsedPaddingTop="1dp"
+      app:boxStrokeColor="@color/primary_info_line_color"
+      app:boxStrokeWidth="0.5dp"
+      app:boxStrokeWidthFocused="1dp"
+      app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+      app:endIconDrawable="@drawable/ic_minus_delete"
+      app:endIconMode="custom">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/ed_age4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:digits="0123456789"
+        android:inputType="number"
+        android:ems="10"
+        android:fontFamily="@font/rubik_regular"
+        android:imeOptions="actionDone"
+        android:paddingStart="0dp"
+        android:singleLine="true"
+        android:textColor="@color/grey_color_one"
+        android:textSize="@dimen/ed_txt_size_primary_info" />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- 5th dependent age -->
+  <com.google.android.material.textfield.TextInputLayout
+      android:visibility="gone"
+      android:id="@+id/til_fifth_age"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="25dp"
+      android:layout_weight="1"
+      android:hint="Fifth Dependent Age (Years)"
+      android:textColorHint="@color/primary_info_label_color"
+      app:boxCollapsedPaddingTop="1dp"
+      app:boxStrokeColor="@color/primary_info_line_color"
+      app:boxStrokeWidth="0.5dp"
+      app:boxStrokeWidthFocused="1dp"
+      app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+      app:endIconDrawable="@drawable/ic_minus_delete"
+      app:endIconMode="custom">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/ed_age5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:digits="0123456789"
+        android:inputType="number"
+        android:ems="10"
+        android:fontFamily="@font/rubik_regular"
+        android:imeOptions="actionDone"
+        android:paddingStart="0dp"
+        android:singleLine="true"
+        android:textColor="@color/grey_color_one"
+        android:textSize="@dimen/ed_txt_size_primary_info" />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- 6th dependent age -->
+  <com.google.android.material.textfield.TextInputLayout
+      android:visibility="gone"
+      android:id="@+id/til_six_age"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="25dp"
+      android:layout_weight="1"
+      android:hint="Sixth Dependent Age (Years)"
+      android:textColorHint="@color/primary_info_label_color"
+      app:boxCollapsedPaddingTop="1dp"
+      app:boxStrokeColor="@color/primary_info_line_color"
+      app:boxStrokeWidth="0.5dp"
+      app:boxStrokeWidthFocused="1dp"
+      app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+      app:endIconDrawable="@drawable/ic_minus_delete"
+      app:endIconMode="custom">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/ed_age6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:digits="0123456789"
+        android:inputType="number"
+        android:ems="10"
+        android:fontFamily="@font/rubik_regular"
+        android:imeOptions="actionDone"
+        android:paddingStart="0dp"
+        android:singleLine="true"
+        android:textColor="@color/grey_color_one"
+        android:textSize="@dimen/ed_txt_size_primary_info" />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- 7th dependent age -->
+  <com.google.android.material.textfield.TextInputLayout
+      android:visibility="gone"
+      android:id="@+id/til_seven_age"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="25dp"
+      android:layout_weight="1"
+      android:hint="Seventh Dependent Age (Years)"
+      android:textColorHint="@color/primary_info_label_color"
+      app:boxCollapsedPaddingTop="1dp"
+      app:boxStrokeColor="@color/primary_info_line_color"
+      app:boxStrokeWidth="0.5dp"
+      app:boxStrokeWidthFocused="1dp"
+      app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+      app:endIconDrawable="@drawable/ic_minus_delete"
+      app:endIconMode="custom">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/ed_age7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:digits="0123456789"
+        android:inputType="number"
+        android:ems="10"
+        android:fontFamily="@font/rubik_regular"
+        android:imeOptions="actionDone"
+        android:paddingStart="0dp"
+        android:singleLine="true"
+        android:textColor="@color/grey_color_one"
+        android:textSize="@dimen/ed_txt_size_primary_info" />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- 8th dependent age -->
+  <com.google.android.material.textfield.TextInputLayout
+      android:visibility="gone"
+      android:id="@+id/til_eight_age"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="25dp"
+      android:layout_weight="1"
+      android:hint="Eighth Dependent Age (Years)"
+      android:textColorHint="@color/primary_info_label_color"
+      app:boxCollapsedPaddingTop="1dp"
+      app:boxStrokeColor="@color/primary_info_line_color"
+      app:boxStrokeWidth="0.5dp"
+      app:boxStrokeWidthFocused="1dp"
+      app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+      app:endIconDrawable="@drawable/ic_minus_delete"
+      app:endIconMode="custom">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/ed_age8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:digits="0123456789"
+        android:inputType="number"
+        android:ems="10"
+        android:fontFamily="@font/rubik_regular"
+        android:imeOptions="actionDone"
+        android:paddingStart="0dp"
+        android:singleLine="true"
+        android:textColor="@color/grey_color_one"
+        android:textSize="@dimen/ed_txt_size_primary_info" />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- 9th dependent age -->
+  <com.google.android.material.textfield.TextInputLayout
+      android:visibility="gone"
+      android:id="@+id/til_ninth_age"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="25dp"
+      android:layout_weight="1"
+      android:hint="Nineth Dependent Age (Years)"
+      android:textColorHint="@color/primary_info_label_color"
+      app:boxCollapsedPaddingTop="1dp"
+      app:boxStrokeColor="@color/primary_info_line_color"
+      app:boxStrokeWidth="0.5dp"
+      app:boxStrokeWidthFocused="1dp"
+      app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+      app:endIconDrawable="@drawable/ic_minus_delete"
+      app:endIconMode="custom">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/ed_age9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:digits="0123456789"
+        android:inputType="number"
+        android:ems="10"
+        android:fontFamily="@font/rubik_regular"
+        android:imeOptions="actionDone"
+        android:paddingStart="0dp"
+        android:singleLine="true"
+        android:textColor="@color/grey_color_one"
+        android:textSize="@dimen/ed_txt_size_primary_info" />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- 10th dependent age -->
+  <com.google.android.material.textfield.TextInputLayout
+      android:visibility="gone"
+      android:id="@+id/til_tenth_age"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="25dp"
+      android:layout_weight="1"
+      android:hint="Tenth Dependent Age (Years)"
+      android:textColorHint="@color/primary_info_label_color"
+      app:boxCollapsedPaddingTop="1dp"
+      app:boxStrokeColor="@color/primary_info_line_color"
+      app:boxStrokeWidth="0.5dp"
+      app:boxStrokeWidthFocused="1dp"
+      app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+      app:endIconDrawable="@drawable/ic_minus_delete"
+      app:endIconMode="custom">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/ed_age10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:digits="0123456789"
+        android:inputType="number"
+        android:ems="10"
+        android:fontFamily="@font/rubik_regular"
+        android:imeOptions="actionDone"
+        android:paddingStart="0dp"
+        android:singleLine="true"
+        android:textColor="@color/grey_color_one"
+        android:textSize="@dimen/ed_txt_size_primary_info" />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>
+
+
+
 
 
   <!--  <LinearLayout
@@ -379,6 +730,3 @@
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout> -->
-
-
-</LinearLayout>
