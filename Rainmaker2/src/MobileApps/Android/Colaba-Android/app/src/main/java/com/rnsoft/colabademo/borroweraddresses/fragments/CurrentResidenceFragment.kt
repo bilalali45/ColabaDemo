@@ -25,16 +25,7 @@ class CurrentResidenceFragment : Fragment() {
     private var _binding: CurrentResidenceLayoutBinding? = null
     private val binding get() = _binding!!
 
-    val c = Calendar.getInstance()
-    val year = c.get(Calendar.YEAR)
-    val month = c.get(Calendar.MONTH)
-    val day = c.get(Calendar.DAY_OF_MONTH)
 
-
-    val dpd = DatePickerDialog( requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-        // Display Selected date in textbox
-        //lblDate.setText("" + dayOfMonth + " " + MONTHS[monthOfYear] + ", " + year)
-    }, year, month, day)
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences

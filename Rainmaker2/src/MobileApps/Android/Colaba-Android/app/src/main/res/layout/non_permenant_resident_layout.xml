@@ -74,23 +74,53 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="30dp"
         android:fontFamily="@font/rubik_regular"
-        android:text="@string/in_what_state"
+        android:text="@string/visa_status"
         android:textColor="@color/grey_color_two"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_profile_layout" />
 
-    <Spinner
-        android:id="@+id/stateSpinner"
-
+    <!--
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/stateSpinner2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+       android:visibility="gone"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:background="@android:drawable/btn_dropdown"
+        android:dropDownVerticalOffset="80dp"
         android:fontFamily="@font/rubik_regular"
+        android:gravity="center"
         android:spinnerMode="dropdown"
+        android:textAlignment="center"
+        android:textColor="@color/grey_color_one"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView15"
+        />
+        -->
+
+    <AutoCompleteTextView
+        android:id="@+id/visaStatusView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="@color/grey_color_three"
+        android:drawableEnd="@drawable/ic_down_arrow"
+        android:dropDownAnchor="@+id/visaStatusView"
+        android:focusable="true"
+        android:cursorVisible="false"
+        android:inputType="none"
+        android:focusableInTouchMode="true"
+        android:fontFamily="@font/rubik_regular"
+        android:gravity="start"
+        android:paddingTop="6dp"
+        android:paddingBottom="15dp"
+        android:spinnerMode="dropdown"
+        android:textAlignment="viewStart"
         android:textColor="@color/grey_color_one"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -107,24 +137,20 @@
 
         android:textColor="@color/grey_color_two"
         android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="@+id/stateSpinner"
-        app:layout_constraintTop_toBottomOf="@+id/stateSpinner" />
+        app:layout_constraintStart_toStartOf="@+id/textView15"
+        app:layout_constraintTop_toBottomOf="@+id/visaStatusView" />
 
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/relationshipEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:background="@color/white"
-
         android:fontFamily="@font/rubik_regular"
-        android:hint="@string/mailing_address"
         android:imeOptions="actionNext"
-        android:paddingStart="0dp"
         android:singleLine="false"
+        android:hint="Status Details"
         android:text="@string/ipsum_dolor"
         android:textColor="@color/grey_color_one"
         android:textSize="15sp"

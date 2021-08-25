@@ -20,6 +20,11 @@
         <item name="colorControlActivated">@color/colaba_apptheme_blue</item>
     </style>
 
+    <style name="Autocomplete">
+        <item name="colorControlNormal">@color/grey_color_three</item>
+        <item name="colorControlActivated">@color/colaba_primary_color</item>
+    </style>
+
     <!--
     <style name="checkBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="colorControlNormal">@drawable/checkbox_unchecked</item>

@@ -96,10 +96,10 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ed_email"
-            android:clickable="false"
             android:cursorVisible="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:inputType="none"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"

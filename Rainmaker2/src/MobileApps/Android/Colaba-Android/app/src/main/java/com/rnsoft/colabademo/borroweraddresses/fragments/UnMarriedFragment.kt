@@ -1,31 +1,26 @@
 package com.rnsoft.colabademo
 
-import android.app.DatePickerDialog
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.databinding.CurrentResidenceLayoutBinding
-import com.rnsoft.colabademo.databinding.DetailBorrowerLayoutTwoBinding
-import com.rnsoft.colabademo.databinding.MailingAddressLayoutBinding
 import com.rnsoft.colabademo.databinding.UnmarriedLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 import javax.inject.Inject
-import javax.xml.datatype.DatatypeConstants.MONTHS
-import kotlin.math.roundToInt
-
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemClickListener
+import android.widget.RadioGroup
 
 @AndroidEntryPoint
 class UnMarriedFragment : Fragment() {
 
     private var _binding: UnmarriedLayoutBinding? = null
     private val binding get() = _binding!!
+
+    private val relationshipTypes = listOf("Civil Unions", "Domestic Partners", "Registered Reciprocal", "Other")
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -39,8 +34,70 @@ class UnMarriedFragment : Fragment() {
         val root: View = binding.root
 
 
+        binding.radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.yesRadioBtn -> {
+                    binding.relationshipContainer.visibility = View.GONE
+                }
+                R.id.noRadioBtn -> {
+                    binding.relationshipContainer.visibility = View.VISIBLE
+                }
+                else -> {
+                }
+            }
+        })
+
+
+
+        val relationshipAdapter = ArrayAdapter(root.context, android.R.layout.simple_list_item_1,  relationshipTypes)
+
+        binding.relationshipSpinner.setAdapter(relationshipAdapter)
+        binding.relationshipSpinner.onItemSelectedListener = relationItemSelected
+        binding.relationshipSpinner.setOnFocusChangeListener { _, _ ->
+            binding.relationshipSpinner.showDropDown()
+        }
+        binding.relationshipSpinner.setOnClickListener{
+            binding.relationshipSpinner.showDropDown()
+        }
+        binding.relationshipSpinner.onItemClickListener = object: OnItemClickListener{
+            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                if(position == relationshipTypes.size-1){
+                    binding.relationshipLabel.visibility = View.VISIBLE
+                    binding.relationshipEditText.visibility = View.VISIBLE
+                }
+                else{
+                    binding.relationshipLabel.visibility = View.GONE
+                    binding.relationshipEditText.visibility = View.GONE
+                }
+            }
+
+        }
+
+
+
+        val stateNamesAdapter = ArrayAdapter(root.context, android.R.layout.simple_list_item_1,  AppSetting.states)
+        binding.stateCompleteTextView.setAdapter(stateNamesAdapter)
+        binding.stateCompleteTextView.setOnFocusChangeListener { _, _ ->
+            binding.stateCompleteTextView.showDropDown()
+        }
+
+
         return root
 
+    }
+
+    private  val relationItemSelected = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+            if (position == relationshipTypes.size-1) {
+                    binding.relationshipLabel.visibility = View.VISIBLE
+                    binding.relationshipEditText.visibility = View.VISIBLE
+            }
+            else {
+                binding.relationshipLabel.visibility = View.GONE
+                binding.relationshipEditText.visibility = View.GONE
+            }
+        }
+        override fun onNothingSelected(parentView: AdapterView<*>?) {}
     }
 
 }
