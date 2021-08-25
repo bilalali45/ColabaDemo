@@ -23,6 +23,7 @@ class AddResidenceViewController: UIViewController {
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint! //330 and 1050
     @IBOutlet weak var txtfieldHomeAddress: TextField!
     @IBOutlet weak var btnSearch: UIButton!
+    @IBOutlet weak var btnSearchTopConstraint: NSLayoutConstraint! //34 or 36
     @IBOutlet weak var btnDropDown: UIButton!
     @IBOutlet weak var txtfieldStreetAddress: TextField!
     @IBOutlet weak var txtfieldUnitNo: TextField!
@@ -155,8 +156,10 @@ class AddResidenceViewController: UIViewController {
         }
         
         addMailingAddressStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addMailingAddressStackViewTapped)))
-        btnSaveChanges.layer.cornerRadius = 5
-        btnSaveChanges.dropShadowToCollectionViewCell()
+        
+        btnSaveChanges.layer.borderWidth = 1
+        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
         
         moveInDateFormatter.dateStyle = .medium
         moveInDateFormatter.dateFormat = "MM/yyyy"
@@ -558,7 +561,7 @@ extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if (tableView == tblViewPlaces){
-            let cell: UITableViewCell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier:"addCategoryCell")
+            let cell: UITableViewCell = UITableViewCell()
 
             cell.selectionStyle =  .default
             cell.backgroundColor = UIColor.white
@@ -620,6 +623,9 @@ extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (tableView == tblViewPlaces){
+            return 40
+        }
         return UITableView.automaticDimension
     }
     
@@ -662,6 +668,8 @@ extension AddResidenceViewController: UITextFieldDelegate{
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if (textField == txtfieldHomeAddress){
             //showAutoCompletePlaces()
+            btnSearchTopConstraint.constant = 37
+            self.view.layoutSubviews()
             txtfieldHomeAddress.placeholder = "Search Home Address"
             if txtfieldHomeAddress.text == ""{
                 txtfieldHomeAddress.text = "       "
@@ -694,11 +702,12 @@ extension AddResidenceViewController: UITextFieldDelegate{
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if (textField == txtfieldHomeAddress){
-            tblViewPlaces.isHidden = true
             btnDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             if (txtfieldHomeAddress.text == "       "){
                 txtfieldHomeAddress.text = ""
                 txtfieldHomeAddress.placeholder = "       Search Home Address"
+                btnSearchTopConstraint.constant = 34
+                self.view.layoutSubviews()
             }
             
             do{

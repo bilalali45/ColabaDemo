@@ -71,6 +71,7 @@
     <string name="test_id">test1</string>
     <string name="ipsum_dolor">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum ultrices magna ornare eu.</string>
     <string name="in_what_state">In What State Was This Relationship Formed?</string>
+
     <string name="was_richard">Was Richard Glenn Randall ever activated during their tour of duty?</string>
     <string name="last_date_of_service">Last date of service / tour</string>
 
@@ -143,6 +144,9 @@
     <string name="state">State</string>
     <string name="zip_code">Zip Code</string>
     <string name="country">Country</string>
+    <string name="temp_address">4101  Oak Tree Avenue  LN # 222,\nChicago, MD 60605</string>
+
+
     <string name="housing_status">Housing Status</string>
     <string name="monthly_rent">Monthly Rent ($)</string>
     <string name="move_in_date">Move in Date</string>

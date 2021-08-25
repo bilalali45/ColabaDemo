@@ -39,7 +39,8 @@ extension Int{
     func ordinalNumber() -> String{
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .ordinal
-        return numberFormatter.string(from: NSNumber(value: self))!
+        let ordinalNumber = numberFormatter.string(from: NSNumber(value: self))!
+        return kOrdinalToSpellingDictionary[ordinalNumber]!
     }
 }
 

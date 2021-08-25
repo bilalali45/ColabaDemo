@@ -22,6 +22,7 @@ class AddMailingAddressViewController: UIViewController {
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint! //100 and 700
     @IBOutlet weak var txtfieldHomeAddress: TextField!
     @IBOutlet weak var btnSearch: UIButton!
+    @IBOutlet weak var btnSearchTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnDropDown: UIButton!
     @IBOutlet weak var txtfieldStreetAddress: TextField!
     @IBOutlet weak var txtfieldUnitNo: TextField!
@@ -93,8 +94,9 @@ class AddMailingAddressViewController: UIViewController {
             textfield.detailVerticalOffset = 4
             textfield.placeholderVerticalOffset = 8
         }
-        btnSaveChanges.layer.cornerRadius = 5
-        btnSaveChanges.dropShadowToCollectionViewCell()
+        btnSaveChanges.layer.borderWidth = 1
+        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
         
         countryDropDown.dismissMode = .manual
         countryDropDown.anchorView = countryDropDownAnchorView
@@ -436,7 +438,7 @@ extension AddMailingAddressViewController: UITableViewDataSource, UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        return 40
     }
     
 }
@@ -446,6 +448,8 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if (textField == txtfieldHomeAddress){
             //showAutoCompletePlaces()
+            btnSearchTopConstraint.constant = 37
+            self.view.layoutSubviews()
             txtfieldHomeAddress.placeholder = "Search Home Address"
             if txtfieldHomeAddress.text == ""{
                 txtfieldHomeAddress.text = "       "
@@ -473,6 +477,8 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
             if (txtfieldHomeAddress.text == "       "){
                 txtfieldHomeAddress.text = ""
                 txtfieldHomeAddress.placeholder = "       Search Home Address"
+                btnSearchTopConstraint.constant = 34
+                self.view.layoutSubviews()
             }
             
             do{

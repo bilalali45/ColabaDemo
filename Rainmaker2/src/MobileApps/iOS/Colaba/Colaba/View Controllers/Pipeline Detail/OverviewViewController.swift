@@ -44,6 +44,7 @@ class OverviewViewController: BaseViewController {
     
     func getLoanApplicationInfo(){
         
+        self.view.isUserInteractionEnabled = false
         loadingPlaceholderView.cover(tableViewOverView, animated: true)
         
         let extraData = "loanApplicationId=\(loanApplicationId)"
@@ -52,6 +53,7 @@ class OverviewViewController: BaseViewController {
             
             DispatchQueue.main.async {
                 self.loadingPlaceholderView.uncover(animated: true)
+                self.view.isUserInteractionEnabled = true
                 
                 if (status == .success){
                     let model = LoanInfoModel()

@@ -96,6 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="23dp"
         android:layout_marginEnd="23dp"
+        android:paddingBottom="80dp"
         app:layout_constraintEnd_toEndOf="parent"
 
         app:layout_constraintStart_toStartOf="parent"
@@ -110,12 +111,16 @@
             android:layout_marginEnd="16dp"
             android:background="@null"
             android:gravity="left"
+            android:textColorHint="@color/grey_color_three"
             android:hint="@string/richard"
             android:paddingStart="-17dp"
             android:theme="@style/InputText_Overlay"
             app:boxBackgroundColor="@android:color/transparent"
             app:boxStrokeColor="@null"
             app:boxStrokeWidth="0dp"
+            app:endIconDrawable="@drawable/ic_down_arrow"
+            app:endIconMode="custom"
+            app:endIconTint="@color/grey_color_three"
             app:boxStrokeWidthFocused="0dp"
             app:hintTextColor="@color/grey_color_two"
             app:layout_constraintEnd_toEndOf="parent"
@@ -151,256 +156,344 @@
             app:layout_constraintTop_toBottomOf="@+id/topSearchFieldTextInputLayout" />
 
 
+
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/streetAddressLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik_light"
+            android:hint="@string/street_address"
+            android:textColorHint="@color/primary_info_label_color"
+            app:boxCollapsedPaddingTop="1dp"
+            app:boxStrokeColor="@color/primary_info_line_color"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:helperTextEnabled="true"
+            app:helperTextTextAppearance="@style/inputError"
+            app:helperTextTextColor="@color/colaba_red_color"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+            app:hintTextColor="@color/grey_color_two"
+
+
             android:layout_marginStart="16dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
-            android:background="@null"
-
-            app:boxStrokeWidth="1dp"
-            app:errorEnabled="true"
-            android:defaultFocusHighlightEnabled="false"
-            app:boxCollapsedPaddingTop="1dp"
-            app:boxStrokeColor="@color/test_selector"
-            app:boxStrokeWidthFocused="1dp"
-            app:boxStrokeErrorColor="@color/colaba_red_color"
-            app:errorTextAppearance="@style/error_appearance"
-            app:errorIconDrawable="@null"
-            app:boxBackgroundColor="@android:color/transparent"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topSearchFieldTextInputLayout">
+            app:layout_constraintTop_toBottomOf="@+id/topSearchFieldTextInputLayout"
 
-            <EditText
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/streetAddressEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-
-                android:layout_centerInParent="true"
-                android:ellipsize="start"
-                android:gravity=""
-
-
-
-
-                android:paddingStart="0dp"
-                android:maxLines="1"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
-                android:lines="1"
-                android:textSize="15sp"
+                android:background="@android:color/transparent"
+                android:ems="10"
                 android:fontFamily="@font/rubik_regular"
+                android:imeOptions="actionNext"
+                android:paddingStart="0dp"
+                android:singleLine="true"
                 android:textColor="@color/grey_color_one"
-
-
-
-
-
-                android:background="@null"
-                android:cursorVisible="true"
-                android:inputType="textPostalAddress"
-                android:text=""
-                 />
-
+                android:textSize="@dimen/ed_txt_size_primary_info" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/unitAptInputLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik_light"
+            android:hint="@string/unit_or_apt"
+            android:textColorHint="@color/primary_info_label_color"
+            app:boxCollapsedPaddingTop="1dp"
+            app:boxStrokeColor="@color/primary_info_line_color"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:helperTextEnabled="true"
+            app:helperTextTextAppearance="@style/inputError"
+            app:helperTextTextColor="@color/colaba_red_color"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+            app:hintTextColor="@color/grey_color_two"
+
             android:layout_marginStart="16dp"
             android:layout_marginTop="53dp"
             android:layout_marginEnd="16dp"
-            android:background="@null"
-            android:hint="@string/unit_or_apt"
-            android:paddingStart="-17dp"
-            android:translationY="-10dp"
-            app:hintTextColor="@color/grey_color_two"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/streetAddressLayout">
+            app:layout_constraintTop_toBottomOf="@+id/streetAddressLayout"
 
-            <EditText
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/unitAptInputEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:translationY="10dp"
-                android:background="@drawable/bg_edit_text" />
-
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:fontFamily="@font/rubik_regular"
+                android:imeOptions="actionNext"
+                android:paddingStart="0dp"
+                android:singleLine="true"
+                android:textColor="@color/grey_color_one"
+                android:textSize="@dimen/ed_txt_size_primary_info" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+
+
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cityLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik_light"
+            android:hint="@string/city"
+            android:textColorHint="@color/primary_info_label_color"
+            app:boxCollapsedPaddingTop="1dp"
+            app:boxStrokeColor="@color/primary_info_line_color"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:helperTextEnabled="true"
+            app:helperTextTextAppearance="@style/inputError"
+            app:helperTextTextColor="@color/colaba_red_color"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+            app:hintTextColor="@color/grey_color_two"
+
             android:layout_marginStart="16dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
-            android:background="@null"
-            android:hint="@string/city"
-            android:paddingStart="-17dp"
-            app:boxBackgroundColor="@android:color/transparent"
-            app:hintTextColor="@color/grey_color_two"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/unitAptInputLayout">
+            app:layout_constraintTop_toBottomOf="@+id/unitAptInputLayout"
+
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/cityEditText"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:textSize="15sp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:imeOptions="actionNext"
+                android:paddingStart="0dp"
                 android:fontFamily="@font/rubik_regular"
                 android:textColor="@color/grey_color_one"
-                android:background="@null"
                 android:cursorVisible="true"
                 android:inputType="textPostalAddress"
-                android:text=""
-                 />
+                android:singleLine="true"
 
+                android:textSize="@dimen/ed_txt_size_primary_info" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+
+
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/countyLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik_light"
+            android:hint="@string/county"
+            android:textColorHint="@color/primary_info_label_color"
+            app:boxCollapsedPaddingTop="1dp"
+            app:boxStrokeColor="@color/primary_info_line_color"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:helperTextEnabled="true"
+            app:helperTextTextAppearance="@style/inputError"
+            app:helperTextTextColor="@color/colaba_red_color"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+            app:hintTextColor="@color/grey_color_two"
+
             android:layout_marginStart="16dp"
             android:layout_marginTop="53dp"
             android:layout_marginEnd="16dp"
-            android:background="@null"
-            android:hint="@string/county"
-            android:paddingStart="-17dp"
-            app:boxBackgroundColor="@android:color/transparent"
-            app:hintTextColor="@color/grey_color_two"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cityLayout">
+            app:layout_constraintTop_toBottomOf="@+id/cityLayout"
+
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/countyEditText"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@null"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:imeOptions="actionNext"
+                android:paddingStart="0dp"
+                android:fontFamily="@font/rubik_regular"
+                android:textColor="@color/grey_color_one"
                 android:cursorVisible="true"
                 android:inputType="textPostalAddress"
-                android:text=""
-                android:textSize="15sp"
-                android:fontFamily="@font/rubik_regular"
-                android:textColor="@color/grey_color_three" />
+                android:singleLine="true"
 
+                android:textSize="@dimen/ed_txt_size_primary_info" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/stateLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:id="@+id/stateCompleteTextInputLayout"
+
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginStart="16dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:background="@null"
+            android:gravity="left"
+            android:textColorHint="@color/grey_color_three"
             android:hint="@string/state"
             android:paddingStart="-17dp"
+            android:theme="@style/InputText_Overlay"
             app:boxBackgroundColor="@android:color/transparent"
+
+            app:boxStrokeColor="@null"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:hintTextColor="@color/grey_color_two"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/countyLayout">
+            app:endIconDrawable="@drawable/ic_down_arrow"
+            app:endIconMode="custom"
+            app:layout_constraintTop_toBottomOf="@+id/countyLayout"
+            app:endIconTint="@color/grey_color_three"
+           >
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/stateEditText"
+            <AutoCompleteTextView
+                android:id="@+id/stateCompleteTextView"
                 android:layout_width="match_parent"
+                android:drawableEnd="@drawable/ic_down_arrow"
+                android:textColorHint="@color/grey_color_three"
+                android:backgroundTint="@color/grey_color_three"
+                android:completionThreshold="1"
+
+                android:dropDownAnchor="@+id/stateCompleteTextView"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
+                android:spinnerMode="dropdown"
+                android:textAlignment="viewStart"
+
                 android:layout_height="50dp"
-                android:background="@null"
-                android:cursorVisible="true"
-                android:inputType="textPostalAddress"
-                android:text=""
+
                 android:textSize="15sp"
+                android:padding="0dp"
                 android:fontFamily="@font/rubik_regular"
-                android:textColor="@color/grey_color_one" />
+                android:textColor="@color/grey_color_one"
+                android:cursorVisible="false"
+
+
+                />
 
 
         </com.google.android.material.textfield.TextInputLayout>
+
+
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/zipcodeLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik_light"
+            android:hint="@string/zip_code"
+            android:textColorHint="@color/primary_info_label_color"
+            app:boxCollapsedPaddingTop="1dp"
+            app:boxStrokeColor="@color/primary_info_line_color"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:helperTextEnabled="true"
+            app:helperTextTextAppearance="@style/inputError"
+            app:helperTextTextColor="@color/colaba_red_color"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+            app:hintTextColor="@color/grey_color_two"
+
             android:layout_marginStart="16dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
-            android:background="@null"
-            android:hint="@string/zip_code"
-            android:paddingStart="-17dp"
-            app:boxBackgroundColor="@android:color/transparent"
-            app:hintTextColor="@color/grey_color_two"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/stateLayout">
+            app:layout_constraintTop_toBottomOf="@+id/stateCompleteTextInputLayout"
+
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/zipcodeEditText"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@null"
-                android:cursorVisible="true"
-                android:inputType="textPostalAddress"
-                android:text=""
-                android:textSize="15sp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:imeOptions="actionNext"
+                android:paddingStart="0dp"
                 android:fontFamily="@font/rubik_regular"
-                android:textColor="@color/grey_color_one" />
-
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/countryLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="16dp"
-            android:background="@null"
-            android:hint="@string/country"
-            android:paddingStart="-17dp"
-            app:boxBackgroundColor="@android:color/transparent"
-            app:hintTextColor="@color/grey_color_two"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/zipcodeLayout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/countryEditText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@null"
+                android:textColor="@color/grey_color_one"
                 android:cursorVisible="true"
                 android:inputType="textPostalAddress"
-                android:text=""
-                android:textColor="@color/grey_color_one" />
+                android:singleLine="true"
 
+                android:textSize="@dimen/ed_txt_size_primary_info" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+
+
+
+
+
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/countryCompleteTextView"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:drawableEnd="@drawable/ic_down_arrow"
+                android:textColorHint="@color/grey_color_three"
+                android:backgroundTint="@color/grey_color_three"
+                android:completionThreshold="1"
+
+                android:dropDownAnchor="@+id/stateCompleteTextView"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
+                android:spinnerMode="dropdown"
+                android:textAlignment="viewStart"
+                android:hint="@string/country"
+                android:layout_height="50dp"
+                android:background="@null"
+                android:textSize="15sp"
+                android:padding="0dp"
+                android:fontFamily="@font/rubik_regular"
+                android:textColor="@color/grey_color_one"
+                android:cursorVisible="false"
+
+
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/zipcodeLayout"
+
+                />
+
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

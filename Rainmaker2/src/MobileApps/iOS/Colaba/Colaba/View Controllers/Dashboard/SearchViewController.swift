@@ -74,6 +74,7 @@ class SearchViewController: BaseViewController {
             searchArray = [SearchModel(), SearchModel(), SearchModel(), SearchModel(), SearchModel(), SearchModel(), SearchModel()]
             self.tblViewSearchResult.reloadData()
             self.loadingPlaceholderView.cover(tblViewSearchResult, animated: true)
+            self.view.isUserInteractionEnabled = false
         }
         
         let extraData = "pageNumber=\(pageNumber)&pageSize=20&searchTerm=\(txtFieldSearch.text!)"
@@ -82,6 +83,7 @@ class SearchViewController: BaseViewController {
             
             DispatchQueue.main.async {
                 self.loadingPlaceholderView.uncover(animated: true)
+                self.view.isUserInteractionEnabled = true
                 self.tblViewSearchResult.loadControl?.endLoading()
                 if (status == .success){
                     

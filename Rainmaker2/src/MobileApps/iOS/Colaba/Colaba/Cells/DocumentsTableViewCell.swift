@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol DocumentsTableViewCellDelegate: AnyObject {
+    func attatchmentTapped(indexPath: IndexPath, fileIndex: Int)
+}
+
 class DocumentsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var mainView: UIView!
@@ -26,9 +30,16 @@ class DocumentsTableViewCell: UITableViewCell {
     @IBOutlet weak var lblNoAttatchment: UILabel!
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
     
+    var indexPath = IndexPath()
+    weak var delegate: DocumentsTableViewCellDelegate?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         setupAttachmentsView(attatchmentViews: [viewAttatchment1, viewAttatchment2, viewOtherAttatchment])
+        viewAttatchment1.isUserInteractionEnabled = true
+        viewAttatchment1.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(attatchment1Tapped)))
+        viewAttatchment2.isUserInteractionEnabled = true
+        viewAttatchment2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(attatchment2Tapped)))
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -45,4 +56,11 @@ class DocumentsTableViewCell: UITableViewCell {
         }
     }
     
+    @objc func attatchment1Tapped(){
+        self.delegate?.attatchmentTapped(indexPath: indexPath, fileIndex: 0)
+    }
+    
+    @objc func attatchment2Tapped(){
+        self.delegate?.attatchmentTapped(indexPath: indexPath, fileIndex: 1)
+    }
 }

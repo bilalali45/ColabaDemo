@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "AddDependent.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

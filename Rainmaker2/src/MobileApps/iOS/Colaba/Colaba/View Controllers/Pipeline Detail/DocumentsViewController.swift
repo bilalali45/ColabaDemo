@@ -7,6 +7,7 @@
 
 import UIKit
 import LoadingPlaceholderView
+import QuickLook
 
 class DocumentsViewController: BaseViewController {
 
@@ -29,6 +30,8 @@ class DocumentsViewController: BaseViewController {
     let loadingPlaceholderView = LoadingPlaceholderView()
     var isFiltersApplied = false
     var lastContentOffset: CGFloat = 0
+    
+    lazy var previewItem = NSURL()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -133,7 +136,11 @@ class DocumentsViewController: BaseViewController {
     
     func getDocuments(){
         
-        self.loadingPlaceholderView.cover(tblViewDocuments, animated: true)
+        if (documentsArray.count == 0){
+            self.view.isUserInteractionEnabled = false
+            self.loadingPlaceholderView.cover(tblViewDocuments, animated: true)
+            
+        }
         
         let extraData = "loanApplicationId=\(loanApplicationId)"
         
@@ -141,6 +148,7 @@ class DocumentsViewController: BaseViewController {
             
             DispatchQueue.main.async {
                 self.loadingPlaceholderView.uncover()
+                self.view.isUserInteractionEnabled = true
                 
                 if (status == .success){
                     
@@ -173,6 +181,45 @@ class DocumentsViewController: BaseViewController {
         }
     }
     
+    func showDocumentFile(documentId: String ,requestId: String, docId: String, fileName: String, fileId: String){
+        
+        let extraData = "id=\(documentId)&requestId=\(requestId)&docId=\(docId)&fileId=\(fileId)"
+        
+        APIRouter.sharedInstance.downloadFileFromRequest(type: .viewLoanDocument, method: .get, params: nil, extraData: extraData) { status, fileData, message in
+            
+            DispatchQueue.main.async {
+                
+                if (status == .success){
+                    if let downloadedFileData = fileData{
+                        
+                        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                        let fileURL = documentsURL.appendingPathComponent(fileName)
+                        do {
+                            try downloadedFileData.write(to: fileURL)
+
+                        } catch {
+                            print("Something went wrong!")
+                        }
+
+                        let downloadedFile = fileURL as NSURL
+                        self.previewItem = downloadedFile
+                        // Display file
+                        let previewController = QLPreviewController()
+                        previewController.dataSource = self
+                        self.presentVC(vc: previewController)
+                    }
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { reason in
+                        
+                    }
+                }
+            }
+            
+        }
+        
+    }
+    
 }
 
 extension DocumentsViewController: UITableViewDataSource, UITableViewDelegate{
@@ -199,6 +246,8 @@ extension DocumentsViewController: UITableViewDataSource, UITableViewDelegate{
         
         cell.mainView.layer.cornerRadius = 8
         cell.mainView.dropShadow()
+        cell.indexPath = indexPath
+        cell.delegate = self
         
         let files = document.files.sorted { file1, file2 in
             return file1.fileUploadedTimeStamp > file2.fileUploadedTimeStamp
@@ -273,5 +322,27 @@ extension DocumentsViewController: UITableViewDataSource, UITableViewDelegate{
             }
         }
         
+    }
+}
+
+extension DocumentsViewController: DocumentsTableViewCellDelegate{
+    func attatchmentTapped(indexPath: IndexPath, fileIndex: Int) {
+        
+        let document = isFiltersApplied ? filterDocumentsArray[indexPath.row] : documentsArray[indexPath.row]
+        let files = document.files.sorted { file1, file2 in
+            return file1.fileUploadedTimeStamp > file2.fileUploadedTimeStamp
+        }
+        showDocumentFile(documentId: document.id, requestId: document.requestId, docId: document.docId, fileName: files[fileIndex].clientName == "" ? files[fileIndex].mcuName : files[fileIndex].clientName, fileId: files[fileIndex].fileId)
+    }
+}
+
+extension DocumentsViewController: QLPreviewControllerDelegate, QLPreviewControllerDataSource{
+    
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return 1
+    }
+    
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return self.previewItem as QLPreviewItem
     }
 }
