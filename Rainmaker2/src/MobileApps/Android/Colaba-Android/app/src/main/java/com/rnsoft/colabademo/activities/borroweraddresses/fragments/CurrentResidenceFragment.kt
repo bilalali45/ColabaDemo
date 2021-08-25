@@ -69,6 +69,10 @@ class CurrentResidenceFragment : Fragment() {
             findNavController().navigate(R.id.navigation_mailing_address)
         }
 
+        binding.backButton.setOnClickListener{
+            findNavController().popBackStack()
+        }
+
         return root
 
     }
