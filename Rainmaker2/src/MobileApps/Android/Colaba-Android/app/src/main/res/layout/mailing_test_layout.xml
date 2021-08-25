@@ -138,13 +138,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_home_num"
+        android:hint="@string/home_number"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
         android:fontFamily="@font/rubik_light"
-        android:hint="@string/home_number"
         android:textColorHint="@color/primary_info_label_color"
         app:boxCollapsedPaddingTop="1dp"
         app:boxStrokeColor="@color/primary_info_line_color"
@@ -154,6 +152,10 @@
         app:helperTextTextAppearance="@style/inputError"
         app:helperTextTextColor="@color/colaba_red_color"
         app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

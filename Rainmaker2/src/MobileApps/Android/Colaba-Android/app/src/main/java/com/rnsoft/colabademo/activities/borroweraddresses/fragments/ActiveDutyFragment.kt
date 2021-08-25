@@ -14,6 +14,7 @@ import java.util.*
 import javax.inject.Inject
 import android.util.Log
 import android.widget.DatePicker
+import androidx.navigation.fragment.findNavController
 import java.lang.Exception
 
 
@@ -63,6 +64,10 @@ class ActiveDutyFragment : Fragment() {
 
         //binding.edEmail.setOnTouchListener(otl)
         binding.edEmail.showSoftInputOnFocus = false
+
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
 
         return root

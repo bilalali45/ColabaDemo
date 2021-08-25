@@ -13,6 +13,7 @@ import javax.inject.Inject
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.RadioGroup
+import androidx.navigation.fragment.findNavController
 
 @AndroidEntryPoint
 class UnMarriedFragment : Fragment() {
@@ -79,6 +80,10 @@ class UnMarriedFragment : Fragment() {
         binding.stateCompleteTextView.setAdapter(stateNamesAdapter)
         binding.stateCompleteTextView.setOnFocusChangeListener { _, _ ->
             binding.stateCompleteTextView.showDropDown()
+        }
+
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
         }
 
 

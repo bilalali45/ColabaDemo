@@ -22,8 +22,8 @@
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:padding="4dp"
+            android:layout_marginStart="8dp"
+            android:padding="8dp"
             app:layout_constraintBottom_toTopOf="@+id/tab_top_border"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -161,13 +161,11 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/streetAddressLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:hint="@string/street_address"
 
 
-            android:background="@color/half_white"
-
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/rubik_light"
             android:textColorHint="@color/primary_info_label_color"
             app:boxCollapsedPaddingTop="1dp"
@@ -192,9 +190,7 @@
                 android:id="@+id/streetAddressEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:background="@null"
-
+                android:background="@android:color/transparent"
                 android:ems="10"
                 android:fontFamily="@font/rubik_regular"
                 android:imeOptions="actionNext"
@@ -212,10 +208,11 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/unitAptInputLayout"
+            android:hint="@string/unit_or_apt"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/rubik_light"
-            android:hint="@string/unit_or_apt"
             android:textColorHint="@color/primary_info_label_color"
             app:boxCollapsedPaddingTop="1dp"
             app:boxStrokeColor="@color/primary_info_line_color"
@@ -225,6 +222,7 @@
             app:helperTextTextAppearance="@style/inputError"
             app:helperTextTextColor="@color/colaba_red_color"
             app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+
             app:hintTextColor="@color/grey_color_two"
             android:background="@android:color/transparent"
             android:layout_marginStart="16dp"
@@ -257,10 +255,11 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cityLayout"
+            android:hint="@string/city"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/rubik_light"
-            android:hint="@string/city"
             android:textColorHint="@color/primary_info_label_color"
             app:boxCollapsedPaddingTop="1dp"
             app:boxStrokeColor="@color/primary_info_line_color"
@@ -270,6 +269,8 @@
             app:helperTextTextAppearance="@style/inputError"
             app:helperTextTextColor="@color/colaba_red_color"
             app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+
+
             app:hintTextColor="@color/grey_color_two"
             android:background="@android:color/transparent"
             android:layout_marginStart="16dp"
@@ -306,10 +307,11 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/countyLayout"
+            android:hint="@string/county"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/rubik_light"
-            android:hint="@string/county"
             android:textColorHint="@color/primary_info_label_color"
             app:boxCollapsedPaddingTop="1dp"
             app:boxStrokeColor="@color/primary_info_line_color"
@@ -319,7 +321,7 @@
             app:helperTextTextAppearance="@style/inputError"
             app:helperTextTextColor="@color/colaba_red_color"
             app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-            app:hintTextColor="@color/grey_color_two"
+
 
             android:layout_marginStart="16dp"
             android:layout_marginTop="53dp"
@@ -412,10 +414,10 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/zipcodeLayout"
+            android:hint="@string/zip_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/rubik_light"
-            android:hint="@string/zip_code"
             android:textColorHint="@color/primary_info_label_color"
             app:boxCollapsedPaddingTop="1dp"
             app:boxStrokeColor="@color/primary_info_line_color"
@@ -425,7 +427,9 @@
             app:helperTextTextAppearance="@style/inputError"
             app:helperTextTextColor="@color/colaba_red_color"
             app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-            app:hintTextColor="@color/grey_color_two"
+
+
+
 
             android:layout_marginStart="16dp"
             android:layout_marginTop="30dp"

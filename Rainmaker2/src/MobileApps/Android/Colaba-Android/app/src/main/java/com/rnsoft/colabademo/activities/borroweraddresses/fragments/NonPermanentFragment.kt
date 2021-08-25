@@ -71,6 +71,10 @@ class NonPermanentFragment : Fragment() {
             binding.visaStatusView.showDropDown()
         }
 
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         return root
     }
 

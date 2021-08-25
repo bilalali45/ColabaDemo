@@ -17,37 +17,27 @@ import org.greenrobot.eventbus.EventBus
 class DeleteCurrentResidenceDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
-         lateinit var baseFragment:BaseFragment
-
-        fun newInstance(topFragment:BaseFragment): CustomFilterBottomSheetDialogFragment {
-            baseFragment    =   topFragment
-            return CustomFilterBottomSheetDialogFragment()
+        lateinit var deleteText:String
+        fun newInstance(text:String): DeleteCurrentResidenceDialogFragment {
+            deleteText = text
+            return DeleteCurrentResidenceDialogFragment()
         }
-
-        fun newInstance() = DeleteCurrentResidenceDialogFragment()
     }
   
     lateinit var binding: DialogFragmentDeleteCurrentResidenceBinding
 
-
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.roundedBottomSheetDialog)
-
-    }
-
-    private fun setInitialSelection(){
-
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogFragmentDeleteCurrentResidenceBinding.inflate(inflater, container, false)
         binding.crossImageView.setOnClickListener{
-            dismiss();
+            dismiss()
         }
         setStyle(DialogFragment.STYLE_NORMAL, R.style.roundedBottomSheetDialog)
-
+        binding.tvDeleteText.text= deleteText
 
         binding.yesBtn.setOnClickListener {
             dismiss()
@@ -56,11 +46,7 @@ class DeleteCurrentResidenceDialogFragment : BottomSheetDialogFragment() {
 
         binding.noBtn.setOnClickListener {
             dismiss()
-
-
         }
-
-        setInitialSelection()
 
         return binding.root
     }
@@ -74,6 +60,5 @@ class DeleteCurrentResidenceDialogFragment : BottomSheetDialogFragment() {
         requireDialog().window?.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         requireDialog().window?.statusBarColor = requireContext().getColor(android.R.color.transparent)
     }
-
 
 }
