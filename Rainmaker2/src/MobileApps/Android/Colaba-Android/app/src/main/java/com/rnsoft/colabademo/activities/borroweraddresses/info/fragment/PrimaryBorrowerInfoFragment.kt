@@ -13,6 +13,7 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.*
 import com.rnsoft.colabademo.activities.borroweraddresses.info.*
@@ -40,7 +41,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     lateinit var msBinding: SublayoutMaritalStatusBinding
     lateinit var citizenshipBinding: SublayoutCitizenshipBinding
     lateinit var bindingMilitary: SubLayoutMilitaryBinding
-    //lateinit var bindingDependents: DependentInputFieldBinding
     var list: ArrayList<Address> = ArrayList()
     private var touchListener: RecyclerTouchListener? = null
     var count : Int = 0
@@ -78,7 +78,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         bi.rvDependents.adapter = dependentAdapter
         dependentAdapter.notifyDataSetChanged()
 
-
        // for(item in bi.rvDependents.childCount.indices)
        // bi.rvDependents.childCount
 
@@ -100,6 +99,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         bindingMilitary.chbVeteran.setOnClickListener(this)
         bindingMilitary.chbSurvivingSpouse.setOnClickListener(this)
         bi.addDependentClick.setOnClickListener(this)
+        bi.addPrevAddress.setOnClickListener(this)
 
         bi.edHomeNumber.addTextChangedListener(PhoneTextFormatter(bi.edHomeNumber, "(###) ###-####"))
         bi.edWorkNum.addTextChangedListener(PhoneTextFormatter(bi.edWorkNum, "(###) ###-####"))
@@ -107,13 +107,15 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
 
 
     }
+
     override fun deleteItemClick(position: Int) {
-        Log.e("fragment", "delete pos" + position)
-        //listItems.removeAt()
-
-
-
-
+        listItems.removeAt(position)
+        count--
+        bi.tvDependentCount.setText(count.toString())
+        dependentAdapter = DependentAdapter(requireActivity(),listItems,this@PrimaryBorrowerInfoFragment)
+        bi.rvDependents.hasFixedSize()
+        bi.rvDependents.adapter = dependentAdapter
+        dependentAdapter.notifyDataSetChanged()
     }
 
     override fun onClick(view: View?) {
@@ -131,8 +133,14 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             R.id.chb_surviving_spouse -> militarySurvivingSpouse()
             R.id.btn_save_info -> checkValidations()
             R.id.add_dependent_click -> addDynamicField()
+            R.id.add_prev_address -> addPrevAddressClick()
             R.id.backButton -> requireActivity().finish()
         }
+    }
+
+    private fun addPrevAddressClick(){
+     findNavController().navigate(R.id.navigation_current_address)
+
     }
 
     private fun checkValidations() {
@@ -242,8 +250,9 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
                 RecyclerTouchListener.OnSwipeOptionsClickListener {
 
                 override fun onSwipeOptionClicked(viewID: Int, position: Int) {
+                    var text = if(position==0) getString(R.string.delete_current_address) else getString(R.string.delete_mailing_address)
                     selectedPosition = position
-                    DeleteCurrentResidenceDialogFragment.newInstance().show(childFragmentManager, DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
+                    DeleteCurrentResidenceDialogFragment.newInstance(text).show(childFragmentManager, DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
                 }
             })
         bi.recyclerview.addOnItemTouchListener(touchListener!!)
@@ -345,20 +354,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             }
         }
 
-        // dependents
-        /*bi.edDependentNo.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus) {
-                setTextInputLayoutHintColor(bi.layoutDependants, R.color.grey_color_two )
-            } else {
-                if (bi.edDependentNo.text?.length == 0) {
-                    setTextInputLayoutHintColor(bi.layoutDependants,R.color.grey_color_three)
-                } else {
-                    setTextInputLayoutHintColor(bi.layoutDependants,R.color.grey_color_two)
-                    //addDependentField()
-                }
-            }
-        } */
-
         // date of birth
         bi.edDateOfBirth.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View, m: MotionEvent): Boolean {
@@ -375,7 +370,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         bi.edExtNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edExtNum, bi.layoutExtNum, requireContext()))
         bi.edCellNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edCellNum, bi.layoutCellNum, requireContext()))
         bi.edSecurityNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edSecurityNum,bi.layoutSecurityNum, requireContext()))
-        //bi.edDependentNo.setOnFocusChangeListener(MyCustomFocusListener(bi.edDependentNo, bi.layoutDependants, requireContext()))
         bi.edDateOfBirth.setOnFocusChangeListener(MyCustomFocusListener(bi.edDateOfBirth, bi.layoutDateOfBirth, requireContext()))
 
     }
@@ -497,8 +491,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             adapter.setTaskList(list)
         }
     }
-
-
 
 
     /* val til = TextInputLayout(this)
