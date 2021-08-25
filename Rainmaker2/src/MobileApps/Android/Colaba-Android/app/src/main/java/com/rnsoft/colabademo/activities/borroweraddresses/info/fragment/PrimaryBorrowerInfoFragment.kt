@@ -139,8 +139,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     }
 
     private fun addPrevAddressClick(){
-     findNavController().navigate(R.id.navigation_current_address)
-
+       findNavController().navigate(R.id.navigation_current_address)
     }
 
     private fun checkValidations() {
@@ -385,6 +384,8 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
             msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbDivorced.setTypeface(null, Typeface.NORMAL)
+            findNavController().navigate(R.id.navigation_unmarried)
+
         }
         if (isMarried) {
             msBinding.unmarriedAddendum.visibility = View.GONE
@@ -418,6 +419,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
             citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
             citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.BOLD)
+            findNavController().navigate(R.id.navigation_non_permanent)
         }
     }
 
