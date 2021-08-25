@@ -7,8 +7,8 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.*
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.annotation.ColorRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
@@ -35,7 +35,7 @@ import kotlin.collections.ArrayList
  * Created by Anita Kiran on 8/23/2021.
  */
 
-class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
+class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.OnClickListener {
 
     lateinit var bi: PrimaryBorrowerInfoLayoutBinding
     lateinit var msBinding: SublayoutMaritalStatusBinding
@@ -60,14 +60,32 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
         msBinding = bi.layoutMaritalStatus
         citizenshipBinding = bi.layoutCitizenship
         bindingMilitary = bi.layoutMilitaryService
-        //bindingDependents = bi.layoutDynamicDependents
 
-
-
-        initViews()
+        setViews()
         setSingleItemFocus()
         setEndIconClicks()
         setResidence()
+
+        return bi.root
+    }
+
+    private fun addDynamicField() {
+
+        count++
+        bi.tvDependentCount.setText(count.toString())
+        listItems.add(count.toString())
+        dependentAdapter = DependentAdapter(requireActivity(),listItems,this@PrimaryBorrowerInfoFragment)
+        bi.rvDependents.hasFixedSize()
+        bi.rvDependents.adapter = dependentAdapter
+        dependentAdapter.notifyDataSetChanged()
+
+
+       // for(item in bi.rvDependents.childCount.indices)
+       // bi.rvDependents.childCount
+
+    }
+
+    private fun setViews() {
 
         bi.backButton.setOnClickListener(this)
         bi.btnSaveInfo.setOnClickListener(this)
@@ -84,37 +102,18 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
         bindingMilitary.chbSurvivingSpouse.setOnClickListener(this)
         bi.addDependentClick.setOnClickListener(this)
 
-
-        return bi.root
-
-    }
-
-    private fun addDynamicField() {
-
-        count++
-        bi.tvDependentCount.setText(count.toString())
-        listItems.add(count.toString())
-        dependentAdapter = DependentAdapter(listItems)
-        bi.rvDependents.hasFixedSize()
-        bi.rvDependents.adapter = dependentAdapter
-        dependentAdapter.notifyDataSetChanged()
-
-    }
-
-    private fun initViews() {
-
         bi.edHomeNumber.addTextChangedListener(PhoneTextFormatter(bi.edHomeNumber, "(###) ###-####"))
         bi.edWorkNum.addTextChangedListener(PhoneTextFormatter(bi.edWorkNum, "(###) ###-####"))
         bi.edCellNum.addTextChangedListener(PhoneTextFormatter(bi.edCellNum, "(###) ###-####"))
 
-        bi.edMiddleName.setOnFocusChangeListener(MyCustomFocusListener(bi.edMiddleName, bi.layoutMiddleName, requireContext()))
-        bi.edSuffix.setOnFocusChangeListener(MyCustomFocusListener(bi.edSuffix, bi.layoutSuffix, requireContext()))
-        bi.edWorkNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edWorkNum,bi.layoutWorkNum, requireContext()))
-        bi.edExtNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edExtNum, bi.layoutExtNum, requireContext()))
-        bi.edCellNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edCellNum, bi.layoutCellNum, requireContext()))
-        bi.edSecurityNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edSecurityNum,bi.layoutSecurityNum, requireContext()))
-        bi.edDependentNo.setOnFocusChangeListener(MyCustomFocusListener(bi.edDependentNo, bi.layoutDependants, requireContext()))
-        bi.edDateOfBirth.setOnFocusChangeListener(MyCustomFocusListener(bi.edDateOfBirth, bi.layoutDateOfBirth, requireContext()))
+
+    }
+    override fun deleteItemClick(position: Int) {
+        Log.e("fragment", "delete pos" + position)
+        //listItems.removeAt()
+
+
+
 
     }
 
@@ -199,7 +198,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setEndIconClicks() {
-
         bi.layoutDateOfBirth.setEndIconOnClickListener(View.OnClickListener {
             openCalendar()
         })
@@ -225,9 +223,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
 
     private fun setResidence() {
 
-        list.add(Address("5919 Trussvile Crossings Parkways, ZV Street, Birmingham AL 35235", "West Road"))
-        list.add(Address("5919 Trussvile Crossings Parkways, ZV Street, Birmingham AL 35235", "West Road"))
-        list.add(Address("5919 Trussvile Crossings Parkways, ZV Street, Birmingham AL 35235", "West Road"))
         list.add(Address("5919 Trussvile Crossings Parkways, ZV Street, Birmingham AL 35235", "West Road"))
         list.add(Address("5919 Trussvile Crossings Pkwy, Birmingham AL 35235", "West Road"))
         //bi.recyclerview.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -352,7 +347,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
         }
 
         // dependents
-        bi.edDependentNo.setOnFocusChangeListener { view, hasFocus ->
+        /*bi.edDependentNo.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 setTextInputLayoutHintColor(bi.layoutDependants, R.color.grey_color_two )
             } else {
@@ -363,7 +358,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
                     //addDependentField()
                 }
             }
-        }
+        } */
 
         // date of birth
         bi.edDateOfBirth.setOnTouchListener(object : View.OnTouchListener {
@@ -374,6 +369,15 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
                 return false
             }
         })
+
+        bi.edMiddleName.setOnFocusChangeListener(MyCustomFocusListener(bi.edMiddleName, bi.layoutMiddleName, requireContext()))
+        bi.edSuffix.setOnFocusChangeListener(MyCustomFocusListener(bi.edSuffix, bi.layoutSuffix, requireContext()))
+        bi.edWorkNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edWorkNum,bi.layoutWorkNum, requireContext()))
+        bi.edExtNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edExtNum, bi.layoutExtNum, requireContext()))
+        bi.edCellNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edCellNum, bi.layoutCellNum, requireContext()))
+        bi.edSecurityNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edSecurityNum,bi.layoutSecurityNum, requireContext()))
+        //bi.edDependentNo.setOnFocusChangeListener(MyCustomFocusListener(bi.edDependentNo, bi.layoutDependants, requireContext()))
+        bi.edDateOfBirth.setOnFocusChangeListener(MyCustomFocusListener(bi.edDateOfBirth, bi.layoutDateOfBirth, requireContext()))
 
     }
 
@@ -477,18 +481,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
         touchListener?.let { bi.recyclerview.addOnItemTouchListener(it) }
     }
 
-    private fun addDependentCount() {
-            count++
-            bi.edDependentNo.setText(count.toString())
-    }
-
-    private fun deleteDependentCount() {
-        count--
-        bi.edDependentNo.setText(count.toString())
-    }
-
-
-
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -506,6 +498,8 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
             adapter.setTaskList(list)
         }
     }
+
+
 
 
     /* val til = TextInputLayout(this)
@@ -537,41 +531,9 @@ class PrimaryBorrowerInfoFragment : Fragment(), View.OnClickListener {
     } */
 
 
-    /*bindingDependents.edAge1.setOnFocusChangeListener { view, hasFocus ->
-           if (hasFocus) {
-               Log.e("Focus", "true")
-               setTextInputLayoutHintColor(bindingDependents.tilFirstAge, R.color.grey_color_two )
-               bindingDependents.tilFirstAge.setEndIconDrawable(R.drawable.ic_minus_delete)
-           }
-           else {
-               Log.e("Focus", "false")
-               bindingDependents.tilFirstAge.setEndIconDrawable(null)
-               if (bindingDependents.edAge1.text?.length == 0) {
-                   setTextInputLayoutHintColor(bindingDependents.tilFirstAge,R.color.grey_color_three)
-               } else {
-                   setTextInputLayoutHintColor(bindingDependents.tilFirstAge,R.color.grey_color_two)
-               }
-           }
-       } */
-
     /*bi.edDependentNo.doAfterTextChanged {
                val num = Integer.parseInt(bi.edDependentNo.text.toString())
 
            } */
-
-    /*
-        bindingDependents.edDependent1.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent1, bindingDependents.layoutDependent1, requireContext()))
-        bindingDependents.edDependent2.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent2, bindingDependents.layoutDependent2, requireContext()))
-        bindingDependents.edDependent3.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent3, bindingDependents.layoutDependent3, requireContext()))
-        bindingDependents.edDependent4.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent4, bindingDependents.layoutDependent4, requireContext()))
-        bindingDependents.edDependent5.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent5, bindingDependents.layoutDependent5, requireContext()))
-        bindingDependents.edDependent6.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent6, bindingDependents.layoutDependent6, requireContext()))
-        bindingDependents.edDependent7.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent7, bindingDependents.layoutDependent7, requireContext()))
-        bindingDependents.edDependent8.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent8, bindingDependents.layoutDependent8, requireContext()))
-        bindingDependents.edDependent9.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent9, bindingDependents.layoutDependent9, requireContext()))
-        bindingDependents.edDependent10.setOnFocusChangeListener(MyCustomFocusListener(bindingDependents.edDependent10, bindingDependents.layoutDependent10, requireContext())) */
-
-
-
 
 }

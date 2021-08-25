@@ -19,6 +19,7 @@
 
 
     <color name="colaba_loan_background">#FFF8F8F8</color>
+    <color name="half_white">#80FFFFFF</color>
     <color name="layout_border_color">#E5E5E5</color>
 
     <color name="colaba_primary_color">#FF4484F4</color>

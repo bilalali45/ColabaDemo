@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#80FFFFFF"
+    android:background="@color/half_white"
     tools:context=".activities.info.BorrowerInfoActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -456,10 +456,9 @@
                     android:id="@+id/recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="visible"
                     android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    />
+                    android:visibility="visible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <LinearLayout
                     android:id="@+id/add_new_address"
@@ -506,7 +505,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="60dp"
-                    android:visibility="gone" />
+                    android:visibility="visible"
+                    android:background="@color/half_white"/>
 
                 <!--  citizenship -->
                 <include
@@ -515,7 +515,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
-                    android:visibility="gone" />
+                    android:visibility="visible"
+                    android:background="@color/half_white"/>
 
                 <!-- date of birth -->
 
@@ -581,38 +582,6 @@
                         android:fontFamily="@font/rubik_regular"
                         android:imeOptions="actionDone"
                         android:inputType="textPassword"
-                        android:paddingStart="0dp"
-                        android:singleLine="true"
-                        android:textColor="@color/grey_color_one"
-                        android:textSize="@dimen/ed_txt_size_primary_info" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:visibility="gone"
-                    android:id="@+id/layout_dependants"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="35dp"
-                    android:hint="@string/no_of_dependents"
-                    android:textColorHint="@color/primary_info_label_color"
-                    app:boxCollapsedPaddingTop="1dp"
-                    app:boxStrokeColor="@color/primary_info_line_color"
-                    app:boxStrokeWidth="0.5dp"
-                    app:boxStrokeWidthFocused="1dp"
-                    app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/ed_dependent_no"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:digits="0123456789"
-                        android:ems="10"
-                        android:fontFamily="@font/rubik_regular"
-                        android:imeActionLabel="Done"
-                        android:imeOptions="actionDone"
-                        android:inputType="number"
                         android:paddingStart="0dp"
                         android:singleLine="true"
                         android:textColor="@color/grey_color_one"
@@ -691,7 +660,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
-                    android:layout_marginBottom="300dp"
+                    android:layout_marginBottom="200dp"
+                    android:background="@color/half_white"
                     android:visibility="visible" />
 
             </LinearLayout>
@@ -700,7 +670,22 @@
 
     </ScrollView>
 
-    <Button
+    <ImageButton
+        android:id="@+id/btn_save_info"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/rubik_regular"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!--<Button
         android:id="@+id/btn_save_info"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
@@ -713,6 +698,6 @@
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" /> -->1
 
 </androidx.constraintlayout.widget.ConstraintLayout>
