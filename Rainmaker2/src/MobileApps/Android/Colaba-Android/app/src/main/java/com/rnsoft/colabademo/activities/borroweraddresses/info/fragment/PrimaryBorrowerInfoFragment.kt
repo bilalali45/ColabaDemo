@@ -380,11 +380,11 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     private fun setMaritalStatus(isUnmarried: Boolean, isMarried: Boolean, isDivorced: Boolean) {
 
         if (isUnmarried) {
+            findNavController().navigate(R.id.navigation_unmarried)
             msBinding.unmarriedAddendum.visibility = View.VISIBLE
             msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
             msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbDivorced.setTypeface(null, Typeface.NORMAL)
-            findNavController().navigate(R.id.navigation_unmarried)
 
         }
         if (isMarried) {
@@ -415,15 +415,16 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.NORMAL)
         }
         if (nonPR) {
+            findNavController().navigate(R.id.navigation_non_permanent)
             citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
             citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
             citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
             citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.BOLD)
-            findNavController().navigate(R.id.navigation_non_permanent)
         }
     }
 
     private fun militaryActivePersonel() {
+        findNavController().navigate(R.id.navigation_active_duty)
         if (bindingMilitary.chbDutyPersonel.isChecked) {
             bindingMilitary.layoutActivePersonnel.visibility = View.VISIBLE
             bindingMilitary.chbDutyPersonel.setTypeface(null, Typeface.BOLD)
@@ -435,6 +436,8 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     }
 
     private fun militaryNationalGuard() {
+        findNavController().navigate(R.id.navigation_reserve)
+
         if (bindingMilitary.chbResNationalGuard.isChecked) {
             bindingMilitary.layoutNationalGuard.visibility = View.VISIBLE
             bindingMilitary.chbResNationalGuard.setTypeface(null, Typeface.BOLD)

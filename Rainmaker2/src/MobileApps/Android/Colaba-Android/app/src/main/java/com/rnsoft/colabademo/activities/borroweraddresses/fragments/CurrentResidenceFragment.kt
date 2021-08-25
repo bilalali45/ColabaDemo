@@ -74,6 +74,10 @@ class CurrentResidenceFragment : Fragment() {
             binding.stateCompleteTextView.showDropDown()
         }
 
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         return root
 
     }
