@@ -122,6 +122,7 @@ class NotificationViewController: BaseViewController {
             notificationsArray = [NotificationModel(), NotificationModel(), NotificationModel(), NotificationModel(), NotificationModel(), NotificationModel(), NotificationModel()]
             self.tblViewNotification.reloadData()
             loadingPlaceholderView.cover(tblViewNotification, animated: true)
+            self.view.isUserInteractionEnabled = false
         }
         
         let extraData = "pageSize=20&lastId=\(lastNotificationId)&mediumId=1"
@@ -131,6 +132,7 @@ class NotificationViewController: BaseViewController {
             DispatchQueue.main.async {
                 
                 self.loadingPlaceholderView.uncover(animated: true)
+                self.view.isUserInteractionEnabled = true
                 self.tblViewNotification.loadControl?.endLoading()
                 
                 if (status == .success){

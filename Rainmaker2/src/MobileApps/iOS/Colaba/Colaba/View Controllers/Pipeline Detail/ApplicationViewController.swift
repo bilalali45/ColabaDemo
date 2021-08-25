@@ -129,6 +129,7 @@ class ApplicationViewController: BaseViewController {
     
     func getLoanApplicationDetail(){
         
+        self.view.isUserInteractionEnabled = false
         loadingPlaceholderView.cover(self.view, animated: true)
         let extraData = "loanApplicationId=\(loanApplicationId)"
         
@@ -136,6 +137,7 @@ class ApplicationViewController: BaseViewController {
             
             DispatchQueue.main.async {
                 self.loadingPlaceholderView.uncover(animated: true)
+                self.view.isUserInteractionEnabled = true
                 
                 if (status == .success){
                     self.mainView.isHidden = false

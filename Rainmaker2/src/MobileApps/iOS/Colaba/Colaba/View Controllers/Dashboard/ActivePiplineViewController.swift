@@ -106,6 +106,7 @@ class ActivePipelineViewController: BaseViewController {
         
         if (pageNumber == 1){
             self.loadingPlaceholderView.cover(self.tblView, animated: true)
+            self.view.isUserInteractionEnabled = false
         }
         
         let extraData = "dateTime=\(dateForPage1)&pageNumber=\(pageNumber)&pageSize=20&loanFilter=1&orderBy=\(sortingFilter)&assignedToMe=\(assignToMeSwitch.isOn ? true : false)"
@@ -114,6 +115,7 @@ class ActivePipelineViewController: BaseViewController {
             
             DispatchQueue.main.async {
                 self.loadingPlaceholderView.uncover(animated: true)
+                self.view.isUserInteractionEnabled = true
                 self.tblView.loadControl?.endLoading()
                 if (status == .success){
                     
