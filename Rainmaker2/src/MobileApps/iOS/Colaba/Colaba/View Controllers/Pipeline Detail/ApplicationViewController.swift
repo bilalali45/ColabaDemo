@@ -242,8 +242,23 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                 cell.lblQuestionHeading.text = question.questionHeader
                 cell.lblQuestion.text = question.questionText
                 
-                if (question.questionResponses.count == 0){
+                if (self.loanApplicationDetail.borrowersInformation.count == 0){
                     cell.mainViewHeightConstraint.constant = 90
+                }
+                else if (self.loanApplicationDetail.borrowersInformation.count == 1){
+                    cell.mainViewHeightConstraint.constant = 120
+                }
+                else if (self.loanApplicationDetail.borrowersInformation.count == 2){
+                    cell.mainViewHeightConstraint.constant = 147
+                }
+                else if (self.loanApplicationDetail.borrowersInformation.count == 3){
+                    cell.mainViewHeightConstraint.constant = 174
+                }
+                else{
+                    cell.mainViewHeightConstraint.constant = 202
+                }
+                
+                if (question.questionResponses.count == 0){
                     
                     cell.iconAns1.isHidden = true
                     cell.lblAns1.isHidden = true
@@ -262,7 +277,6 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                     cell.lblUser4.isHidden = true
                 }
                 else if (question.questionResponses.count == 1){
-                    cell.mainViewHeightConstraint.constant = 120
                     
                     let questionResponse1 = question.questionResponses[0]
                     
@@ -300,7 +314,6 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                     cell.lblUser4.isHidden = true
                 }
                 else if (question.questionResponses.count == 2){
-                    cell.mainViewHeightConstraint.constant = 147
                     
                     let questionResponse1 = question.questionResponses[0]
                     let questionResponse2 = question.questionResponses[1]
@@ -358,7 +371,6 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                     
                 }
                 else if (question.questionResponses.count == 3){
-                    cell.mainViewHeightConstraint.constant = 174
                     
                     let questionResponse1 = question.questionResponses[0]
                     let questionResponse2 = question.questionResponses[1]
@@ -432,7 +444,6 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                     cell.lblUser4.isHidden = true
                 }
                 else{
-                    cell.mainViewHeightConstraint.constant = 202
                     
                     let questionResponse1 = question.questionResponses[0]
                     let questionResponse2 = question.questionResponses[1]
