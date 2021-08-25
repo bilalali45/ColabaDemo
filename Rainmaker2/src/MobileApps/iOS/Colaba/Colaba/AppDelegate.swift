@@ -29,6 +29,64 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        if (UserModel.getCurrentUser() != nil && (self.window?.rootViewController is MainTabBarViewController)){
+            
+            if (self.window?.rootViewController?.presentedViewController == nil){
+                isAppOpenFromBackground = true
+                self.window?.rootViewController?.present(getBioMetricOrLoginController(), animated: false, completion: nil)
+            }
+            else{
+                if (!(self.window?.rootViewController?.presentedViewController is FaceRecognitionViewController) && !(self.window?.rootViewController?.presentedViewController is FingerPrintViewController) && !(self.window?.rootViewController?.presentedViewController is LoginNavigationViewController)) {
+                    
+                    let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+
+                    if var topController = keyWindow?.rootViewController {
+                        while let presentedViewController = topController.presentedViewController {
+                            topController = presentedViewController
+                        }
+                        if (!(topController is FaceRecognitionViewController) && !(topController is FingerPrintViewController) && !(topController is LoginNavigationViewController)){
+                            isAppOpenFromBackground = true
+                            topController.present(getBioMetricOrLoginController(), animated: false, completion: nil)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func getBioMetricOrLoginController() -> UIViewController{
+        let faceVC = Utility.getFaceRecognitionVC()
+        faceVC.modalPresentationStyle = .overFullScreen
+        
+        let fingerVC = Utility.getFingerPrintVC()
+        fingerVC.modalPresentationStyle = .overFullScreen
+        
+        let loginNav = Utility.getLoginNavigationVC()
+        loginNav.modalPresentationStyle = .overFullScreen
+        
+        var isAlreadyRegisteredWithBiometric = ""
+        if let isBiometricRegistered = UserDefaults.standard.value(forKey: kIsUserRegisteredWithBiometric){
+            isAlreadyRegisteredWithBiometric = isBiometricRegistered as! String
+        }
+
+        if (isAlreadyRegisteredWithBiometric == kYes && UserModel.getCurrentUser() != nil){
+            if (Utility.checkDeviceAuthType() == kTouchID){
+                return fingerVC
+            }
+            else if (Utility.checkDeviceAuthType() == kFaceID){
+                return faceVC
+            }
+            else{
+                return loginNav
+            }
+        }
+        else{
+            return loginNav
+        }
+        
+    }
 
     func showInitialViewController(){
             

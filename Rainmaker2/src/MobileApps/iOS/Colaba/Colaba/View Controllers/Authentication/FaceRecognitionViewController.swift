@@ -81,6 +81,7 @@ class FaceRecognitionViewController: UIViewController {
     }
     
     func showLogin(){
+        isAppOpenFromBackground = false
         isBiometricAllow = false
         UserDefaults.standard.set(kNo, forKey: kIsUserRegisteredWithBiometric)
         let vc = Utility.getLoginVC()

@@ -19,8 +19,8 @@ struct Utility {
     static private var loanApplicationDateFormatter: DateFormatter?
     static private var documentDateFormatter: DateFormatter?
     
-    static func getLoginNavigationVC() -> UINavigationController{
-        return authStoryboard.instantiateViewController(withIdentifier: "LoginNavigation")  as! UINavigationController
+    static func getLoginNavigationVC() -> LoginNavigationViewController{
+        return authStoryboard.instantiateViewController(withIdentifier: "LoginNavigationViewController")  as! LoginNavigationViewController
     }
     
     static func getFaceRecognitionVC() -> FaceRecognitionViewController{
