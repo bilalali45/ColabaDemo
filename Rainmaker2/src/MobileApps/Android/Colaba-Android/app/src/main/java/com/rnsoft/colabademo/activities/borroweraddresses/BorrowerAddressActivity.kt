@@ -16,10 +16,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class BorrowerAddressActivity : AppCompatActivity() {
-<<<<<<< HEAD
-=======
-
->>>>>>> c6f86471f52c43b9fbf28a883435e0fd369e014f
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: BorrowerAddressLayoutBinding

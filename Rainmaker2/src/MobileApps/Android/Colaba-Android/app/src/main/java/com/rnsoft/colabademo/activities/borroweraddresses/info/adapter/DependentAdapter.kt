@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.info.adapter
+package com.rnsoft.colabademo.activities.borroweraddresses.info.adapter
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.rnsoft.colabademo.DocsViewClickListener
 import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.RecyclerviewClickListener
 import kotlinx.android.synthetic.main.dependent_input_field.view.*

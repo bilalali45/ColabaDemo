@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo
+package com.rnsoft.colabademo.activities.borroweraddresses.info.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +8,9 @@ import android.view.WindowManager
 import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.rnsoft.colabademo.CustomFilterBottomSheetDialogFragment
+import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
-import com.rnsoft.colabademo.activities.info.fragment.SwipeToDeleteEvent
 import com.rnsoft.colabademo.databinding.DialogFragmentDeleteCurrentResidenceBinding
 import org.greenrobot.eventbus.EventBus
 

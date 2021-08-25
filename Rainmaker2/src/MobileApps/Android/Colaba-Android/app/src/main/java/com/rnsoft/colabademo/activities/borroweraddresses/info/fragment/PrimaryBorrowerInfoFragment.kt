@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.info
+package com.rnsoft.colabademo.activities.borroweraddresses.info
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -13,14 +13,13 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.*
-import com.rnsoft.colabademo.activities.info.*
-import com.rnsoft.colabademo.activities.info.adapter.DependentAdapter
-import com.rnsoft.colabademo.activities.info.fragment.SwipeToDeleteEvent
-import com.rnsoft.colabademo.activities.info.model.Address
+import com.rnsoft.colabademo.activities.borroweraddresses.info.*
+import com.rnsoft.colabademo.activities.borroweraddresses.info.adapter.DependentAdapter
+import com.rnsoft.colabademo.activities.borroweraddresses.info.fragment.DeleteCurrentResidenceDialogFragment
+import com.rnsoft.colabademo.activities.borroweraddresses.info.fragment.SwipeToDeleteEvent
+import com.rnsoft.colabademo.activities.borroweraddresses.info.model.Address
 import com.rnsoft.colabademo.databinding.*
 import com.rnsoft.colabademo.utils.RecyclerTouchListener
 import org.greenrobot.eventbus.EventBus

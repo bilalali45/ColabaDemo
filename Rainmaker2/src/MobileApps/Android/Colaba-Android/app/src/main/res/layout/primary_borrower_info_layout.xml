@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/half_white"
-    tools:context=".activities.info.BorrowerInfoActivity">
+    tools:context=".activities.borroweraddresses.info.BorrowerInfoActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_info_screen"
