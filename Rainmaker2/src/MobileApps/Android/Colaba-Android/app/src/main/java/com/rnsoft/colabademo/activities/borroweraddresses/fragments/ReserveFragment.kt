@@ -1,19 +1,21 @@
 package com.rnsoft.colabademo
 
+
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.rnsoft.colabademo.databinding.ActiveDutyLayoutBinding
+import com.rnsoft.colabademo.databinding.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@AndroidEntryPoint
-class ActiveDutyFragment : Fragment() {
 
-    private var _binding: ActiveDutyLayoutBinding? = null
+@AndroidEntryPoint
+class ReserveFragment : Fragment() {
+
+    private var _binding: ReserveLayoutBinding? = null
     private val binding get() = _binding!!
 
     @Inject
@@ -24,7 +26,7 @@ class ActiveDutyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = ActiveDutyLayoutBinding.inflate(inflater, container, false)
+        _binding = ReserveLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
 

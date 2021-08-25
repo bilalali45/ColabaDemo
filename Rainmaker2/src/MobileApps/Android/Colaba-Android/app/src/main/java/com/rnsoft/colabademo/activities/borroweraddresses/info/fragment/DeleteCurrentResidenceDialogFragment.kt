@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo
+package com.rnsoft.colabademo.activities.borroweraddresses.info.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +8,11 @@ import android.view.WindowManager
 import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.rnsoft.colabademo.CustomFilterBottomSheetDialogFragment
+import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.DialogFragmentDeleteCurrentResidenceBinding
+import org.greenrobot.eventbus.EventBus
 
 class DeleteCurrentResidenceDialogFragment : BottomSheetDialogFragment() {
 
@@ -21,7 +24,7 @@ class DeleteCurrentResidenceDialogFragment : BottomSheetDialogFragment() {
             return CustomFilterBottomSheetDialogFragment()
         }
 
-        //fun newInstance() = CustomFilterBottomSheetDialogFragment()
+        fun newInstance() = DeleteCurrentResidenceDialogFragment()
     }
   
     lateinit var binding: DialogFragmentDeleteCurrentResidenceBinding
@@ -48,8 +51,7 @@ class DeleteCurrentResidenceDialogFragment : BottomSheetDialogFragment() {
 
         binding.yesBtn.setOnClickListener {
             dismiss()
-
-
+            EventBus.getDefault().post(SwipeToDeleteEvent(true))
         }
 
         binding.noBtn.setOnClickListener {
@@ -72,4 +74,6 @@ class DeleteCurrentResidenceDialogFragment : BottomSheetDialogFragment() {
         requireDialog().window?.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         requireDialog().window?.statusBarColor = requireContext().getColor(android.R.color.transparent)
     }
+
+
 }

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#80FFFFFF"
-    tools:context=".activities.info.BorrowerInfoActivity">
+    android:background="@color/half_white"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_info_screen"
@@ -58,10 +58,10 @@
             android:id="@+id/tab_top_border"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#E5E5E5"
             android:layout_marginTop="12sp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:background="#E5E5E5"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/borrower_purpose" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -292,8 +292,9 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="20dp"
-                android:fontFamily="@font/rubik_light"
                 android:hint="@string/home_number"
+
+                android:fontFamily="@font/rubik_light"
                 android:textColorHint="@color/primary_info_label_color"
                 app:boxCollapsedPaddingTop="1dp"
                 app:boxStrokeColor="@color/primary_info_line_color"
@@ -309,13 +310,14 @@
                     android:id="@+id/ed_home_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
                     android:digits="1234567890-()"
                     android:ems="10"
-                    android:fontFamily="@font/rubik_regular"
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:maxLength="14"
+
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/rubik_regular"
                     android:paddingStart="0dp"
                     android:singleLine="true"
                     android:textColor="@color/grey_color_one"
@@ -406,7 +408,6 @@
             <!--   Cell Number -->
 
             <com.google.android.material.textfield.TextInputLayout
-                android:visibility="visible"
                 android:id="@+id/layout_cell_num"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -415,6 +416,7 @@
                 android:layout_marginEnd="20dp"
                 android:hint="@string/cell_number"
                 android:textColorHint="@color/primary_info_label_color"
+                android:visibility="visible"
                 app:boxCollapsedPaddingTop="1dp"
                 app:boxStrokeColor="@color/primary_info_line_color"
                 app:boxStrokeWidth="0.5dp"
@@ -455,7 +457,10 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <LinearLayout
                     android:id="@+id/add_new_address"
@@ -488,11 +493,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_residence">
 
                 <!--  marital status -->
@@ -502,7 +507,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="60dp"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    android:background="@color/half_white"/>
 
                 <!--  citizenship -->
                 <include
@@ -511,18 +517,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    android:background="@color/half_white"/>
 
                 <!-- date of birth -->
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:visibility="visible"
                     android:id="@+id/layout_date_of_birth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="70dp"
                     android:hint="@string/dob"
                     android:textColorHint="@color/primary_info_label_color"
+                    android:visibility="visible"
                     app:boxCollapsedPaddingTop="1dp"
                     app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="0.5dp"
@@ -537,28 +544,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
+                        android:editable="false"
                         android:ems="10"
                         android:fontFamily="@font/rubik_regular"
                         android:imeOptions="actionDone"
                         android:paddingStart="0dp"
-                        android:editable="false"
                         android:singleLine="true"
                         android:textColor="@color/grey_color_one"
                         android:textSize="@dimen/ed_txt_size_primary_info" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-
                 <!--  Security num -->
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:visibility="visible"
                     android:id="@+id/layout_security_num"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
                     android:hint="@string/social_security_num"
                     android:textColorHint="@color/primary_info_label_color"
+                    android:visibility="visible"
                     app:boxCollapsedPaddingTop="1dp"
                     app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="0.5dp"
@@ -585,42 +591,69 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_dependants"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="35dp"
-                    android:hint="@string/no_of_dependents"
-                    android:textColorHint="@color/primary_info_label_color"
-                    app:boxCollapsedPaddingTop="1dp"
-                    app:boxStrokeColor="@color/primary_info_line_color"
-                    app:boxStrokeWidth="0.5dp"
-                    app:boxStrokeWidthFocused="1dp"
-                    app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+                    android:text="@string/add_dependents"
+                    android:layout_marginTop="25dp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textColor="@color/grey_color_two"
+                    android:fontFamily="@font/rubik_medium"
+                    android:textSize="13sp" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/ed_dependents"
+                <TextView
+                    android:id="@+id/tv_dependent_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:layout_marginTop="8dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/grey_color_one"
+                    android:fontFamily="@font/rubik_regular"
+                    android:textSize="15sp" />
+
+                <!-- add more dependents -->
+                <RelativeLayout
+                    android:id="@+id/layout_add_dependents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_dependents"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:inputType="number"
-                        android:digits="0123456789"
-                        android:ems="10"
-                        android:fontFamily="@font/rubik_regular"
-                        android:paddingStart="0dp"
-                        android:imeOptions="actionDone"
-                        android:singleLine="true"
-                        android:imeActionLabel="Done"
-                        android:textColor="@color/grey_color_one"
-                        android:textSize="@dimen/ed_txt_size_primary_info" />
+                        android:visibility="visible"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-                </com.google.android.material.textfield.TextInputLayout>
+                </RelativeLayout>
 
-                <include
-                    android:id="@+id/layout_add_dependents"
-                    layout="@layout/dependent_input_field"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:id="@+id/add_dependent_click"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:clickable="true"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_add_icon_light" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/rubik_medium"
+                        android:text="Add Dependent"
+                        android:textAlignment="center"
+                        android:textColor="@color/colaba_apptheme_blue"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
 
                 <!-- military service-->
                 <include
@@ -629,7 +662,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
-                    android:layout_marginBottom="300dp"
+                    android:layout_marginBottom="200dp"
+                    android:background="@color/half_white"
                     android:visibility="visible" />
 
             </LinearLayout>
@@ -638,8 +672,22 @@
 
     </ScrollView>
 
-    <Button
-        android:visibility="visible"
+    <ImageButton
+        android:id="@+id/btn_save_info"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/rubik_regular"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!--<Button
         android:id="@+id/btn_save_info"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
@@ -650,7 +698,8 @@
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" /> -->1
 
 </androidx.constraintlayout.widget.ConstraintLayout>

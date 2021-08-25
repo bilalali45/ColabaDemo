@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#80FFFFFF">
+    android:background="@color/half_white">
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,7 +20,8 @@
         android:id="@+id/rg_marital_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:background="@color/half_white">
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_us_citizen"

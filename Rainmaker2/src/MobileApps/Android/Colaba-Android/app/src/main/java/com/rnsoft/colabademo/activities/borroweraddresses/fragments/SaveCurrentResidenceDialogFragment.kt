@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo
+package com.rnsoft.colabademo.activities.borroweraddresses.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.view.WindowManager
 import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.DialogFragmentCurrentResidenceBinding
 
@@ -35,23 +36,23 @@ class SaveCurrentResidenceDialogFragment : BottomSheetDialogFragment() {
 
     private fun setInitialSelection(){
 
-        binding.pendingIcon.setColorFilter(resources.getColor(R.color.grey_color_two , activity?.theme))
+        binding.pendingIcon.setColorFilter(resources.getColor(R.color.grey_color_two, activity?.theme))
         binding.pendingTextView.setTextColor(resources.getColor(R.color.grey_color_two, activity?.theme))
 
-        binding.recentIcon.setColorFilter(resources.getColor(R.color.grey_color_two , activity?.theme))
-        binding.recentTextView.setTextColor(resources.getColor(R.color.grey_color_two , activity?.theme))
+        binding.recentIcon.setColorFilter(resources.getColor(R.color.grey_color_two, activity?.theme))
+        binding.recentTextView.setTextColor(resources.getColor(R.color.grey_color_two, activity?.theme))
 
         when(BaseFragment.globalOrderBy){
             0->{
 
                 binding.pendingIcon.setColorFilter(resources.getColor(R.color.colaba_apptheme_blue, activity?.theme))
-                binding.pendingTextView.setTextColor(resources.getColor(R.color.colaba_apptheme_blue , activity?.theme))
+                binding.pendingTextView.setTextColor(resources.getColor(R.color.colaba_apptheme_blue, activity?.theme))
 
             }
             1->{
 
                 binding.recentIcon.setColorFilter(resources.getColor(R.color.colaba_apptheme_blue, activity?.theme))
-                binding.recentTextView.setTextColor(resources.getColor(R.color.colaba_apptheme_blue , activity?.theme))
+                binding.recentTextView.setTextColor(resources.getColor(R.color.colaba_apptheme_blue, activity?.theme))
 
 
             }

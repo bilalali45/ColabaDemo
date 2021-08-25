@@ -84,22 +84,25 @@
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
 
-        app:layout_constraintStart_toStartOf="@+id/textView9"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9">
 
+
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/yesRadioBtn"
             android:layout_width="match_parent"
             android:layout_height="22dp"
-            android:fontFamily="@font/rubik_regular"
+             android:fontFamily="@font/rubik_regular"
             android:text="Yes"
             android:textColor="@color/grey_color_one"
             android:textSize="15sp" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+
+            android:id="@+id/noRadioBtn"
             android:layout_width="match_parent"
             android:layout_height="22dp"
             android:layout_marginTop="16dp"
@@ -109,117 +112,152 @@
             android:textSize="15sp" />
     </RadioGroup>
 
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:fontFamily="@font/rubik_regular"
-        android:text="Types of Relationship"
-        android:textColor="@color/grey_color_two"
-        android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="@+id/radioGroup"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
-
-
-    <Spinner
-        android:id="@+id/spinner1"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/relationship_container"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:background="@android:drawable/btn_dropdown"
-        android:fontFamily="@font/rubik_regular"
-        android:spinnerMode="dropdown"
-        android:textColor="@color/grey_color_one"
-        android:textSize="15sp"
+        android:backgroundTint="@color/biometric_error_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-    <TextView
-        android:id="@+id/textView15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:fontFamily="@font/rubik_regular"
-        android:text="In What State Was This Relationship Formed?"
-        android:textColor="@color/grey_color_two"
-        android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="@+id/spinner1"
-        app:layout_constraintTop_toBottomOf="@+id/spinner1" />
-
-    <Spinner
-        android:id="@+id/spinner2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:background="@android:drawable/btn_dropdown"
-        android:fontFamily="@font/rubik_regular"
-        android:spinnerMode="dropdown"
-        android:textColor="@color/grey_color_one"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
-
-    <TextView
-        android:id="@+id/relationship_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:fontFamily="@font/rubik_regular"
-        android:text="Relationship Details"
-
-        android:textColor="@color/grey_color_two"
-        android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="@+id/spinner2"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup">
 
 
-    <EditText
-        android:id="@+id/relationshipEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:background="@color/white"
-
-        android:fontFamily="@font/rubik_regular"
-        android:hint="@string/mailing_address"
-        android:imeOptions="actionNext"
-        android:paddingStart="0dp"
-        android:singleLine="false"
-        android:text="@string/ipsum_dolor"
-        android:textColor="@color/grey_color_one"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relationship_label" />
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik_regular"
+            android:text="Types of Relationship"
+            android:textColor="@color/grey_color_two"
+            android:textSize="13sp"
+            android:layout_marginStart="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    <androidx.appcompat.widget.AppCompatButton
+        <AutoCompleteTextView
+            android:id="@+id/relationshipSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:layout_marginEnd="24dp"
+            android:cursorVisible="false"
+            android:inputType="none"
+            android:backgroundTint="@color/grey_color_three"
+            android:drawableEnd="@drawable/ic_down_arrow"
+            android:dropDownAnchor="@+id/relationshipSpinner"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/rubik_regular"
+            android:gravity="start"
+            android:paddingTop="6dp"
+            android:paddingBottom="15dp"
+            android:spinnerMode="dropdown"
+            android:textAlignment="viewStart"
+            android:textColor="@color/grey_color_one"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="In What State Was This Relationship Formed?"
+            android:textColor="@color/grey_color_two"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="@+id/textView13"
+            app:layout_constraintTop_toBottomOf="@+id/relationshipSpinner" />
+
+
+        <AutoCompleteTextView
+            android:id="@+id/stateCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:layout_marginEnd="24dp"
+            android:backgroundTint="@color/grey_color_three"
+            android:completionThreshold="1"
+            android:drawableEnd="@drawable/ic_down_arrow"
+            android:dropDownAnchor="@+id/stateCompleteTextView"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/rubik_regular"
+            android:gravity="start"
+            android:paddingTop="6dp"
+            android:paddingBottom="15dp"
+            android:spinnerMode="dropdown"
+            android:textAlignment="viewStart"
+            android:textColor="@color/grey_color_one"
+            android:textSize="15sp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+        <EditText
+            android:id="@+id/relationshipEditText"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/edit_text_border"
+            android:fontFamily="@font/rubik_regular"
+            android:imeOptions="actionNext"
+            android:gravity="start"
+            android:textAlignment="viewStart"
+            android:singleLine="false"
+
+            android:text="@string/ipsum_dolor"
+            android:textColor="@color/grey_color_one"
+            android:textSize="15sp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relationship_label" />
+
+        <TextView
+            android:id="@+id/relationship_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="Relationship Details"
+            android:textColor="@color/grey_color_two"
+
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/textView15"
+            app:layout_constraintTop_toBottomOf="@+id/stateCompleteTextView" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ImageView
         android:id="@+id/phone_fab"
-        android:layout_width="152dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="23dp"
-        android:layout_marginBottom="25dp"
-        android:background="@drawable/app_button_style"
-        android:fontFamily="@font/rubik_medium"
-        android:text="@string/save_changes"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_save_icon"
         app:elevation="3dp"
+        android:translationX="18dp"
+        android:translationY="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
         />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,8 +26,33 @@
                   <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
         -->
         <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+        <item name="colorSurface">#FFFFFF</item>
+
+
+        <!-- For the resting Spinner style -->
+        <item name="android:spinnerItemStyle">
+            @style/spinnerItemStyle
+        </item>
+
+        <!-- For each individual Spinner list item once clicked on -->
+        <item name="android:spinnerDropDownItemStyle">
+            @style/spinnerDropDownItemStyle
+        </item>
 
         </style>
+
+
+    <style name="spinnerItemStyle">
+
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/grey_color_one</item>
+    </style>
+
+    <style name="spinnerDropDownItemStyle">
+
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/grey_color_one</item>
+    </style>
 
 
     <style name="Base.Widget.Design.TabLayout" parent="android:Widget">

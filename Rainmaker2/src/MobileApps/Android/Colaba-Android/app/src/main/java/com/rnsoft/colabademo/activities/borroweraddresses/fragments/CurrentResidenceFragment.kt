@@ -12,7 +12,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.CurrentResidenceLayoutBinding
 import com.rnsoft.colabademo.databinding.DetailBorrowerLayoutTwoBinding
-import com.rnsoft.colabademo.databinding.MailingAddressLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
@@ -21,10 +20,12 @@ import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
-class MailingAddressFragment : Fragment() {
+class CurrentResidenceFragment : Fragment() {
 
-    private var _binding: MailingAddressLayoutBinding? = null
+    private var _binding: CurrentResidenceLayoutBinding? = null
     private val binding get() = _binding!!
+
+
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -34,7 +35,7 @@ class MailingAddressFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = MailingAddressLayoutBinding.inflate(inflater, container, false)
+        _binding = CurrentResidenceLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
 

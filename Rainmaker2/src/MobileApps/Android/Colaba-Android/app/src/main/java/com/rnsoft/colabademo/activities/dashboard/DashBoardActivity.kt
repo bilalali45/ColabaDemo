@@ -102,8 +102,6 @@ class DashBoardActivity : AppCompatActivity() {
                  */
             }
         }
-
-
     }
 
 

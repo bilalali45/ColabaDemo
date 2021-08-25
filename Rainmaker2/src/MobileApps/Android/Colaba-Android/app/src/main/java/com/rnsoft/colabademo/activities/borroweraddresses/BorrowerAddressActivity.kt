@@ -6,8 +6,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rnsoft.colabademo.databinding.BorrowerAddressLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -18,20 +16,14 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class BorrowerAddressActivity : AppCompatActivity() {
-
-
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-
     private lateinit var binding: BorrowerAddressLayoutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = BorrowerAddressLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         val navController = findNavController(R.id.nav_host_borrower_address_main)
         val appBarConfiguration = AppBarConfiguration(
@@ -45,11 +37,7 @@ class BorrowerAddressActivity : AppCompatActivity() {
                 R.id.navigation_non_permanent,
             )
         )
-
-
-
     }
-
 
     override fun onStart() {
         super.onStart()

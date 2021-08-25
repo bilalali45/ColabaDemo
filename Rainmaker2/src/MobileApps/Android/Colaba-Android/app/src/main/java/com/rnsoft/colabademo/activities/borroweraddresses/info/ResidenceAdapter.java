@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.info;
+package com.rnsoft.colabademo.activities.borroweraddresses.info;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,9 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rnsoft.colabademo.R;
-import com.rnsoft.colabademo.activities.info.model.Address;
-
-import org.w3c.dom.Text;
+import com.rnsoft.colabademo.activities.borroweraddresses.info.model.Address;
 
 import java.util.ArrayList;
 import java.util.List;
