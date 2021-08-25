@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.MailingAddressLayoutBinding
 import com.rnsoft.colabademo.databinding.MailingTestLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,6 +60,9 @@ class MailingAddressFragment : Fragment() {
         }
 
 
+        binding.backButton.setOnClickListener{
+            findNavController().popBackStack()
+        }
 
         return root
 
