@@ -8,16 +8,17 @@
 import UIKit
 import RealmSwift
 import SwiftyJSON
+import Material
 
 class LoginViewController: UIViewController {
 
     //MARK:- Outlets and Properties
     
     @IBOutlet weak var loginView: UIView!
-    @IBOutlet weak var txtFieldEmail: UITextField!
+    @IBOutlet weak var txtFieldEmail: TextField!
     @IBOutlet weak var emailSeparator: UIView!
     @IBOutlet weak var lblEmailError: UILabel!
-    @IBOutlet weak var txtFieldPassword: UITextField!
+    @IBOutlet weak var txtFieldPassword: TextField!
     @IBOutlet weak var passwordSeparator: UIView!
     @IBOutlet weak var lblPasswordError: UILabel!
     @IBOutlet weak var btnEye: UIButton!
@@ -56,6 +57,33 @@ class LoginViewController: UIViewController {
         txtFieldEmail.delegate = self
         txtFieldPassword.delegate = self
         
+        setMaterialTextFieldsAndViews(textfields: [txtFieldEmail, txtFieldPassword])
+    }
+    
+    func setMaterialTextFieldsAndViews(textfields: [TextField]){
+        for textfield in textfields{
+            textfield.dividerActiveColor = Theme.getButtonBlueColor()
+            textfield.dividerColor = Theme.getSeparatorNormalColor()
+            textfield.placeholderActiveColor = Theme.getAppGreyColor()
+            textfield.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+            textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
+            textfield.detailColor = .red
+            textfield.detailVerticalOffset = 4
+            textfield.placeholderVerticalOffset = 8
+        }
+    }
+    
+    func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){
+        for allTextField in allTextFields{
+            if (allTextField == selectedTextField){
+                if (allTextField.text == ""){
+                    allTextField.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+                }
+                else{
+                    allTextField.placeholderLabel.textColor = Theme.getAppGreyColor()
+                }
+            }
+        }
     }
     
     func completeLoginWithBiometric(){
@@ -98,10 +126,14 @@ class LoginViewController: UIViewController {
             let email = try validation.validateEmail(txtFieldEmail.text)
             let password = try validation.validatePassword(txtFieldPassword.text)
             DispatchQueue.main.async {
-                self.lblEmailError.isHidden = true
-                self.emailSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-                self.lblPasswordError.isHidden = true
-                self.passwordSeparator.backgroundColor = Theme.getSeparatorNormalColor()
+//                self.lblEmailError.isHidden = true
+//                self.emailSeparator.backgroundColor = Theme.getSeparatorNormalColor()
+//                self.lblPasswordError.isHidden = true
+//                self.passwordSeparator.backgroundColor = Theme.getSeparatorNormalColor()
+                self.txtFieldEmail.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtFieldEmail.detail = ""
+                self.txtFieldPassword.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtFieldPassword.detail = ""
                 
                 if (!self.isAPIInProgress){
                     self.loginUserWithRequest(email: email, password: password)
@@ -113,18 +145,26 @@ class LoginViewController: UIViewController {
         catch{
             if (error.localizedDescription == ValidationError.invalidEmail.localizedDescription || error.localizedDescription == ValidationError.noEmail.localizedDescription){
                 
-                self.lblEmailError.text = error.localizedDescription
-                self.lblEmailError.isHidden = false
-                self.emailSeparator.backgroundColor = Theme.getSeparatorErrorColor()
-                self.lblPasswordError.isHidden = true
-                self.passwordSeparator.backgroundColor = Theme.getSeparatorNormalColor()
+//                self.lblEmailError.text = error.localizedDescription
+//                self.lblEmailError.isHidden = false
+//                self.emailSeparator.backgroundColor = Theme.getSeparatorErrorColor()
+                self.txtFieldEmail.dividerColor = .red
+                self.txtFieldEmail.detail = error.localizedDescription
+                self.txtFieldPassword.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtFieldPassword.detail = ""
+//                self.lblPasswordError.isHidden = true
+//                self.passwordSeparator.backgroundColor = Theme.getSeparatorNormalColor()
             }
             else{
-                self.lblPasswordError.text = error.localizedDescription
-                self.lblPasswordError.isHidden = false
-                self.passwordSeparator.backgroundColor = Theme.getSeparatorErrorColor()
-                self.lblEmailError.isHidden = true
-                self.emailSeparator.backgroundColor = Theme.getSeparatorNormalColor()
+//                self.lblPasswordError.text = error.localizedDescription
+//                self.lblPasswordError.isHidden = false
+//                self.passwordSeparator.backgroundColor = Theme.getSeparatorErrorColor()
+                self.txtFieldPassword.dividerColor = .red
+                self.txtFieldPassword.detail = error.localizedDescription
+                self.txtFieldEmail.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtFieldEmail.detail = ""
+//                self.lblEmailError.isHidden = true
+//                self.emailSeparator.backgroundColor = Theme.getSeparatorNormalColor()
             }
         }
         
@@ -288,6 +328,10 @@ extension LoginViewController: UIGestureRecognizerDelegate{
 }
 
 extension LoginViewController: UITextFieldDelegate{
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtFieldEmail, txtFieldPassword])
+    }
     
 //    func textFieldDidEndEditing(_ textField: UITextField) {
 //        if (textField == txtFieldEmail){
