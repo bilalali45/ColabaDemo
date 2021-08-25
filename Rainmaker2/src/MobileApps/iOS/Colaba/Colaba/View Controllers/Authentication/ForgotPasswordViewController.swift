@@ -6,13 +6,14 @@
 //
 
 import UIKit
+import Material
 
 class ForgotPasswordViewController: UIViewController {
 
     //MARK:- Outlets and Properties
     
     @IBOutlet weak var emailView: UIView!
-    @IBOutlet weak var txtFieldEmail: UITextField!
+    @IBOutlet weak var txtFieldEmail: TextField!
     @IBOutlet weak var emailSeparator: UIView!
     @IBOutlet weak var lblEmailError: UILabel!
     @IBOutlet weak var btnReset: UIButton!
@@ -45,6 +46,14 @@ class ForgotPasswordViewController: UIViewController {
         emailView.addShadow()
         btnReset.layer.cornerRadius = 5
         txtFieldEmail.delegate = self
+        txtFieldEmail.dividerActiveColor = Theme.getButtonBlueColor()
+        txtFieldEmail.dividerColor = Theme.getSeparatorNormalColor()
+        txtFieldEmail.placeholderActiveColor = Theme.getAppGreyColor()
+        txtFieldEmail.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+        txtFieldEmail.detailLabel.font = Theme.getRubikRegularFont(size: 12)
+        txtFieldEmail.detailColor = .red
+        txtFieldEmail.detailVerticalOffset = 4
+        txtFieldEmail.placeholderVerticalOffset = 8
     }
     
     func forgotPasswordWithRequest(email: String){
@@ -83,16 +92,20 @@ class ForgotPasswordViewController: UIViewController {
             let email = try validation.validateEmail(txtFieldEmail.text)
             
             DispatchQueue.main.async {
-                self.lblEmailError.isHidden = true
-                self.emailSeparator.backgroundColor = Theme.getSeparatorNormalColor()
+//                self.lblEmailError.isHidden = true
+//                self.emailSeparator.backgroundColor = Theme.getSeparatorNormalColor()
+                self.txtFieldEmail.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtFieldEmail.detail = ""
                 self.forgotPasswordWithRequest(email: email)
             }
             
         }
         catch{
-            self.lblEmailError.text = error.localizedDescription
-            self.lblEmailError.isHidden = false
-            self.emailSeparator.backgroundColor = Theme.getSeparatorErrorColor()
+//            self.lblEmailError.text = error.localizedDescription
+//            self.lblEmailError.isHidden = false
+//            self.emailSeparator.backgroundColor = Theme.getSeparatorErrorColor()
+            self.txtFieldEmail.dividerColor = .red
+            self.txtFieldEmail.detail = error.localizedDescription
         }
         
     }
@@ -100,7 +113,13 @@ class ForgotPasswordViewController: UIViewController {
 
 extension ForgotPasswordViewController: UITextFieldDelegate{
     
-//    func textFieldDidEndEditing(_ textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if (txtFieldEmail.text == ""){
+            txtFieldEmail.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+        }
+        else{
+            txtFieldEmail.placeholderLabel.textColor = Theme.getAppGreyColor()
+        }
 //        do{
 //            let email = try validation.validateEmail(txtFieldEmail.text)
 //            self.lblEmailError.isHidden = true
@@ -111,6 +130,6 @@ extension ForgotPasswordViewController: UITextFieldDelegate{
 //            self.lblEmailError.isHidden = false
 //            self.emailSeparator.backgroundColor = Theme.getSeparatorErrorColor()
 //        }
-//    }
+    }
     
 }

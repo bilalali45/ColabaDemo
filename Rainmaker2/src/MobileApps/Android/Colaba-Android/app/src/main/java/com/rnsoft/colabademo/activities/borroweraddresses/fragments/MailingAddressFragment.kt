@@ -17,7 +17,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MailingAddressFragment : Fragment() {
 
-    private var _binding: MailingTestLayoutBinding? = null
+    private var _binding: MailingAddressLayoutBinding? = null
     private val binding get() = _binding!!
 
     @Inject
@@ -28,20 +28,16 @@ class MailingAddressFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = MailingTestLayoutBinding.inflate(inflater, container, false)
+        _binding = MailingAddressLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        binding.cityEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.cityEditText, binding.cityLayout, requireContext()))
+        binding.streetAddressEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.streetAddressEditText, binding.streetAddressLayout, requireContext()))
+        binding.unitAptInputEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.unitAptInputEditText, binding.unitAptInputLayout, requireContext()))
+        binding.countyEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.countyEditText, binding.countyLayout, requireContext()))
+        binding.zipcodeEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.zipcodeEditText, binding.zipcodeLayout, requireContext()))
 
-
-        binding.edHomeNumber.setOnFocusChangeListener(MyCustomFocusListener(binding.edHomeNumber, binding.layoutHomeNum, requireContext()))
-
-
-
-
-
-        /*
-
-        val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,  AppSetting.states)
+        val stateAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line,  AppSetting.states)
         binding.countryCompleteTextView.setAdapter(stateAdapter)
 
         binding.countryCompleteTextView.setOnFocusChangeListener { _, _ ->
@@ -62,7 +58,7 @@ class MailingAddressFragment : Fragment() {
             binding.stateCompleteTextView.showDropDown()
         }
 
-         */
+
 
         return root
 

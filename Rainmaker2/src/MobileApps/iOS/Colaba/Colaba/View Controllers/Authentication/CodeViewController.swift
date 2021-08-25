@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift
+import Material
 
 class CodeViewController: UIViewController {
 
@@ -16,7 +17,7 @@ class CodeViewController: UIViewController {
     @IBOutlet weak var codeView: UIView!
     @IBOutlet weak var codeViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var lblPhoneNumber: UILabel!
-    @IBOutlet weak var txtFieldCode: UITextField!
+    @IBOutlet weak var txtFieldCode: TextField!
     @IBOutlet weak var checkIcon: UIImageView!
     @IBOutlet weak var btnCheckTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var lblDescription: UILabel!
@@ -58,6 +59,14 @@ class CodeViewController: UIViewController {
         btnVerify.layer.cornerRadius = 5
         txtFieldCode.addTarget(self, action: #selector(textFieldCodeChanged), for: .editingChanged)
         txtFieldCode.delegate = self
+        txtFieldCode.dividerActiveColor = Theme.getButtonBlueColor()
+        txtFieldCode.dividerColor = Theme.getSeparatorNormalColor()
+        txtFieldCode.placeholderActiveColor = Theme.getAppGreyColor()
+        txtFieldCode.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+        txtFieldCode.detailLabel.font = Theme.getRubikRegularFont(size: 12)
+        txtFieldCode.detailColor = .red
+        txtFieldCode.detailVerticalOffset = 4
+        txtFieldCode.placeholderVerticalOffset = 8
         btnVerify.isEnabled = false
         let last4Digits = String(phoneNumber.suffix(4))
         lblPhoneNumber.text = "Enter the code sent to (***) ***-\(last4Digits)"
@@ -109,7 +118,7 @@ class CodeViewController: UIViewController {
             self.lblDescription.text = message == "" ? "Max resend attempts reached. Please try again after few minutes" : message
             self.btnResendCode.isHidden = true
             self.codeLimit = totalCodeLimit - self.totalAttemptsCount
-            self.codeViewHeightConstraint.constant = 356
+            self.codeViewHeightConstraint.constant = 338
             self.btnCheckTopConstraint.constant = 50
             self.lblDescriptionTopConstraint.constant = 20
             self.timerView.isHidden = false
@@ -123,7 +132,7 @@ class CodeViewController: UIViewController {
             self.btnResendCode.isHidden = false
             self.btnResendCode.setTitle("Resend code (\(self.codeLimit) left)", for: .normal)
             self.lblDescription.text = "Didn't receive the code?"
-            self.codeViewHeightConstraint.constant = 343
+            self.codeViewHeightConstraint.constant = 325
             self.btnCheckTopConstraint.constant = 30
             self.lblDescriptionTopConstraint.constant = 30
             self.timerView.isHidden = true
@@ -165,7 +174,7 @@ class CodeViewController: UIViewController {
                 self.btnResendCode.setTitle("Resend code (\(self.codeLimit) left)", for: .normal)
                 self.btnResendCode.setTitleColor(Theme.getButtonBlueColor(), for: .normal)
                 self.lblDescription.text = "Didn't receive the code?"
-                self.codeViewHeightConstraint.constant = 343
+                self.codeViewHeightConstraint.constant = 325
                 self.btnCheckTopConstraint.constant = 30
                 self.lblDescriptionTopConstraint.constant = 30
                 self.timerView.isHidden = true
@@ -381,6 +390,15 @@ class CodeViewController: UIViewController {
 }
 
 extension CodeViewController: UITextFieldDelegate{
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if (txtFieldCode.text == ""){
+            txtFieldCode.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+        }
+        else{
+            txtFieldCode.placeholderLabel.textColor = Theme.getAppGreyColor()
+        }
+    }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if (string == "" || textField.text!.count < 6){

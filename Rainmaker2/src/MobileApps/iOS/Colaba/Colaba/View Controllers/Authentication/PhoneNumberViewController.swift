@@ -7,13 +7,14 @@
 
 import UIKit
 import RealmSwift
+import Material
 
 class PhoneNumberViewController: UIViewController {
 
     //MARK:- Outlets and Properties
     
     @IBOutlet weak var phoneView: UIView!
-    @IBOutlet weak var txtFieldPhone: UITextField!
+    @IBOutlet weak var txtFieldPhone: TextField!
     @IBOutlet weak var phoneSeparator: UIView!
     @IBOutlet weak var lblPhoneError: UILabel!
     @IBOutlet weak var btnContinue: UIButton!
@@ -47,6 +48,14 @@ class PhoneNumberViewController: UIViewController {
         phoneView.addShadow()
         btnContinue.layer.cornerRadius = 5
         txtFieldPhone.delegate = self
+        txtFieldPhone.dividerActiveColor = Theme.getButtonBlueColor()
+        txtFieldPhone.dividerColor = Theme.getSeparatorNormalColor()
+        txtFieldPhone.placeholderActiveColor = Theme.getAppGreyColor()
+        txtFieldPhone.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+        txtFieldPhone.detailLabel.font = Theme.getRubikRegularFont(size: 12)
+        txtFieldPhone.detailColor = .red
+        txtFieldPhone.detailVerticalOffset = 4
+        txtFieldPhone.placeholderVerticalOffset = 8
         btnSkipThisStep.isHidden = !shouldShowSkipButton
     }
     
@@ -66,16 +75,20 @@ class PhoneNumberViewController: UIViewController {
             let phoneNumber = try validation.validatePhoneNumber(txtFieldPhone.text)
             
             DispatchQueue.main.async {
-                self.lblPhoneError.isHidden = true
-                self.phoneSeparator.backgroundColor = Theme.getSeparatorNormalColor()
+//                self.lblPhoneError.isHidden = true
+//                self.phoneSeparator.backgroundColor = Theme.getSeparatorNormalColor()
+                self.txtFieldPhone.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtFieldPhone.detail = ""
                 self.send2FAtoPhoneNumberWithRequest(phoneNumber: phoneNumber.replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: ""))
             }
             
         }
         catch{
-            self.lblPhoneError.text = error.localizedDescription
-            self.lblPhoneError.isHidden = false
-            self.phoneSeparator.backgroundColor = Theme.getSeparatorErrorColor()
+//            self.lblPhoneError.text = error.localizedDescription
+//            self.lblPhoneError.isHidden = false
+//            self.phoneSeparator.backgroundColor = Theme.getSeparatorErrorColor()
+            self.txtFieldPhone.dividerColor = .red
+            self.txtFieldPhone.detail = error.localizedDescription
         }
         
     }
@@ -157,7 +170,13 @@ class PhoneNumberViewController: UIViewController {
 
 extension PhoneNumberViewController: UITextFieldDelegate{
     
-//    func textFieldDidEndEditing(_ textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if (txtFieldPhone.text == ""){
+            txtFieldPhone.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+        }
+        else{
+            txtFieldPhone.placeholderLabel.textColor = Theme.getAppGreyColor()
+        }
 //        do{
 //            let phoneNumber = try validation.validatePhoneNumber(txtFieldPhone.text)
 //            self.lblPhoneError.isHidden = true
@@ -168,7 +187,7 @@ extension PhoneNumberViewController: UITextFieldDelegate{
 //            self.lblPhoneError.isHidden = false
 //            self.phoneSeparator.backgroundColor = Theme.getSeparatorErrorColor()
 //        }
-//    }
+    }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
