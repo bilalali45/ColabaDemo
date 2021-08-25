@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import com.rnsoft.colabademo.databinding.MailingAddressLayoutBinding
+import com.rnsoft.colabademo.databinding.MailingTestLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MailingAddressFragment : Fragment() {
 
-    private var _binding: MailingAddressLayoutBinding? = null
+    private var _binding: MailingTestLayoutBinding? = null
     private val binding get() = _binding!!
 
     @Inject
@@ -28,9 +28,18 @@ class MailingAddressFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = MailingAddressLayoutBinding.inflate(inflater, container, false)
+        _binding = MailingTestLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+
+
+        binding.edHomeNumber.setOnFocusChangeListener(MyCustomFocusListener(binding.edHomeNumber, binding.layoutHomeNum, requireContext()))
+
+
+
+
+
+        /*
 
         val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,  AppSetting.states)
         binding.countryCompleteTextView.setAdapter(stateAdapter)
@@ -52,6 +61,8 @@ class MailingAddressFragment : Fragment() {
         binding.stateCompleteTextView.setOnClickListener{
             binding.stateCompleteTextView.showDropDown()
         }
+
+         */
 
         return root
 
