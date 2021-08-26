@@ -1,9 +1,12 @@
 package com.rnsoft.colabademo
 
+import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import com.rnsoft.colabademo.databinding.BorrowerAddressLayoutBinding
@@ -34,6 +37,7 @@ class BorrowerAddressActivity : AppCompatActivity() {
                 R.id.navigation_active_duty,
                 R.id.navigation_reserve,
                 R.id.navigation_unmarried,
+                R.id.navigation_test_fields,
                 R.id.navigation_non_permanent,
             )
         )
@@ -53,5 +57,9 @@ class BorrowerAddressActivity : AppCompatActivity() {
     fun onLogoutEventReceived(event: LogoutEvent) {
         startActivity(Intent(this@BorrowerAddressActivity, SignUpFlowActivity::class.java))
         finish()
+    }
+
+    fun Activity.hideSoftKeyboard() {
+
     }
 }

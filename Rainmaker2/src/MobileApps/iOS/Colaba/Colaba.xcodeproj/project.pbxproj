@@ -34,6 +34,9 @@
 		236B59D1266504060001F416 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B59D0266504050001F416 /* UserModel.swift */; };
 		236EA1AC26789EAC00C2F8B5 /* PipelineMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236EA1AB26789EAC00C2F8B5 /* PipelineMoreViewController.swift */; };
 		236EA1AE2678CE1B00C2F8B5 /* DummyDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236EA1AD2678CE1B00C2F8B5 /* DummyDashboardViewController.swift */; };
+		237DF98726D772A1000CAA8E /* FaceLockNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237DF98626D772A1000CAA8E /* FaceLockNavigationViewController.swift */; };
+		237DF98926D7753A000CAA8E /* FingerPrintNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237DF98826D7753A000CAA8E /* FingerPrintNavigationViewController.swift */; };
+		237DF98B26D77B98000CAA8E /* AddPreviousResidenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237DF98A26D77B98000CAA8E /* AddPreviousResidenceViewController.swift */; };
 		238D70772678E8C80067687C /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238D70762678E8C80067687C /* FiltersViewController.swift */; };
 		23908F9E26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23908F9C26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift */; };
 		23908F9F26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23908F9D26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib */; };
@@ -62,6 +65,7 @@
 		23A56C5D2685B017005CE6F4 /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A56C572685B017005CE6F4 /* Icons.swift */; };
 		23A56C5E2685B017005CE6F4 /* Loaf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A56C582685B017005CE6F4 /* Loaf.swift */; };
 		23A56C602686152A005CE6F4 /* Rubik-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23A56C5F2686152A005CE6F4 /* Rubik-LightItalic.ttf */; };
+		23A6578826D65B610013A37B /* LoginNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6578726D65B610013A37B /* LoginNavigationViewController.swift */; };
 		23B238B82679D38900508449 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B238B72679D38900508449 /* SearchViewController.swift */; };
 		23B238BB2679E05200508449 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B238B92679E05200508449 /* SearchResultTableViewCell.swift */; };
 		23B238BC2679E05200508449 /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */; };
@@ -178,6 +182,9 @@
 		236B59D0266504050001F416 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		236EA1AB26789EAC00C2F8B5 /* PipelineMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineMoreViewController.swift; sourceTree = "<group>"; };
 		236EA1AD2678CE1B00C2F8B5 /* DummyDashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDashboardViewController.swift; sourceTree = "<group>"; };
+		237DF98626D772A1000CAA8E /* FaceLockNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceLockNavigationViewController.swift; sourceTree = "<group>"; };
+		237DF98826D7753A000CAA8E /* FingerPrintNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPrintNavigationViewController.swift; sourceTree = "<group>"; };
+		237DF98A26D77B98000CAA8E /* AddPreviousResidenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPreviousResidenceViewController.swift; sourceTree = "<group>"; };
 		238D70762678E8C80067687C /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		23908F9C26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerAddressAndLoanInfoTableViewCell.swift; sourceTree = "<group>"; };
 		23908F9D26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerAddressAndLoanInfoTableViewCell.xib; sourceTree = "<group>"; };
@@ -206,6 +213,7 @@
 		23A56C572685B017005CE6F4 /* Icons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 		23A56C582685B017005CE6F4 /* Loaf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loaf.swift; sourceTree = "<group>"; };
 		23A56C5F2686152A005CE6F4 /* Rubik-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-LightItalic.ttf"; sourceTree = "<group>"; };
+		23A6578726D65B610013A37B /* LoginNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNavigationViewController.swift; sourceTree = "<group>"; };
 		23B238B72679D38900508449 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		23B238B92679E05200508449 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
@@ -469,6 +477,7 @@
 				23F23B4026CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift */,
 				23F23B4226CA591400AEF33E /* SaveAddressPopupViewController.swift */,
 				23F23B4426CA592800AEF33E /* DeleteAddressPopupViewController.swift */,
+				237DF98A26D77B98000CAA8E /* AddPreviousResidenceViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -633,6 +642,9 @@
 				7186AD732653FBB500E740D3 /* ResetPasswordSuccessfullViewController.swift */,
 				7186AD7826540CCC00E740D3 /* PhoneNumberViewController.swift */,
 				7186AD7D26540CEB00E740D3 /* CodeViewController.swift */,
+				23A6578726D65B610013A37B /* LoginNavigationViewController.swift */,
+				237DF98626D772A1000CAA8E /* FaceLockNavigationViewController.swift */,
+				237DF98826D7753A000CAA8E /* FingerPrintNavigationViewController.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -984,6 +996,7 @@
 				23DBAD26269714A800119680 /* ApplicationViewController.swift in Sources */,
 				23B238BF2679F44000508449 /* NotificationsTableViewCell.swift in Sources */,
 				7160CA8D26733B8C0061ACD5 /* MainTabBarViewController.swift in Sources */,
+				237DF98926D7753A000CAA8E /* FingerPrintNavigationViewController.swift in Sources */,
 				2368D6572667DA6700D5C1C5 /* DashboardViewController.swift in Sources */,
 				7186AD742653FBB500E740D3 /* ResetPasswordSuccessfullViewController.swift in Sources */,
 				71B19458265CF9C80017955B /* APIRouter.swift in Sources */,
@@ -991,6 +1004,7 @@
 				2397AF63267782E6007A1A45 /* PipelineTableViewCell.swift in Sources */,
 				710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */,
 				23E9C754269C5F100066C978 /* DocumentsDetailViewController.swift in Sources */,
+				237DF98B26D77B98000CAA8E /* AddPreviousResidenceViewController.swift in Sources */,
 				23A56C5E2685B017005CE6F4 /* Loaf.swift in Sources */,
 				23F23B3F26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift in Sources */,
 				23E9C757269C6C140066C978 /* DocumentsDetailTableViewCell.swift in Sources */,
@@ -1021,6 +1035,7 @@
 				2397AF5F26776241007A1A45 /* PipelineViewController.swift in Sources */,
 				23C2448C2689E53F00EED1D0 /* ActivePiplineViewController.swift in Sources */,
 				23F23B4126CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift in Sources */,
+				23A6578826D65B610013A37B /* LoginNavigationViewController.swift in Sources */,
 				7186AD7926540CCC00E740D3 /* PhoneNumberViewController.swift in Sources */,
 				2390FEE126A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.swift in Sources */,
 				239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */,
@@ -1045,6 +1060,7 @@
 				23A56C5C2685B017005CE6F4 /* Extensions.swift in Sources */,
 				23C9130626982A120067920E /* BorrowerOverviewTableViewCell.swift in Sources */,
 				7160CA88267339060061ACD5 /* ProfileViewController.swift in Sources */,
+				237DF98726D772A1000CAA8E /* FaceLockNavigationViewController.swift in Sources */,
 				2368799C26BC173E0045D294 /* BorrowerInformationViewController.swift in Sources */,
 				236EA1AE2678CE1B00C2F8B5 /* DummyDashboardViewController.swift in Sources */,
 				23F23B4326CA591400AEF33E /* SaveAddressPopupViewController.swift in Sources */,
@@ -1233,7 +1249,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 2HX8AP6426;
 				INFOPLIST_FILE = Colaba/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1257,7 +1273,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 2HX8AP6426;
 				INFOPLIST_FILE = Colaba/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

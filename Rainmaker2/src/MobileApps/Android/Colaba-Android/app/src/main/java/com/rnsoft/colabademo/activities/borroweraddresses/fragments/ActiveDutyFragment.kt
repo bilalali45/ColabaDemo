@@ -25,15 +25,9 @@ class ActiveDutyFragment : Fragment() {
     private var _binding: ActiveDutyLayoutBinding? = null
     private val binding get() = _binding!!
 
-    val c = Calendar.getInstance()
-    val year = c.get(Calendar.YEAR)
-    val month = c.get(Calendar.MONTH)
-    val day = c.get(Calendar.DAY_OF_MONTH)
-
-    private lateinit var dpd:DatePickerDialog
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,27 +37,13 @@ class ActiveDutyFragment : Fragment() {
         _binding = ActiveDutyLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        dpd = DatePickerDialog( requireContext(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-            // Display Selected date in textbox
-            //lblDate.setText("" + dayOfMonth + " " + MONTHS[monthOfYear] + ", " + year)
-            var stringMonth = monthOfYear.toString()
-            if(monthOfYear<10)
-                stringMonth = "0$monthOfYear"
-            binding.edEmail.setText(stringMonth + " / " + year)
-        }, year, month, day)
-
-        binding.edEmail.setOnClickListener{
-            //createDialogWithoutDateField().show()
-            dpd.show()
-        }
-        binding.edEmail.setOnFocusChangeListener{ _ , _ ->
-            //createDialogWithoutDateField().show()
-            dpd.show()
-        }
+        binding.edEmail.showSoftInputOnFocus = false
+        binding.edEmail.setOnClickListener { openCalendar() }
+        binding.edEmail.setOnFocusChangeListener{ _ , _ ->  openCalendar() }
 
 
         //binding.edEmail.setOnTouchListener(otl)
-        binding.edEmail.showSoftInputOnFocus = false
+
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
@@ -71,6 +51,27 @@ class ActiveDutyFragment : Fragment() {
 
 
         return root
+
+    }
+
+    private fun openCalendar(){
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        val dpd = DatePickerDialog(
+            requireActivity(), { view, year, monthOfYear, dayOfMonth ->
+                var stringMonth = monthOfYear.toString()
+                if(monthOfYear<10)
+                    stringMonth = "0$monthOfYear"
+                binding.edEmail.setText(stringMonth + " / " + year)
+            },
+            year,
+            month,
+            day
+        )
+        dpd.show()
 
     }
 

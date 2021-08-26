@@ -41,8 +41,12 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setMaterialTextFieldsAndViews(textfields: [txtfieldVisaStatus])
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        txtfieldVisaStatus.becomeFirstResponder()
     }
     
     //MARK:- Methods and Actions
@@ -59,6 +63,7 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
             textfield.detailVerticalOffset = 4
             textfield.placeholderVerticalOffset = 8
         }
+        txtfieldVisaStatus.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 25)
 //        txtviewStatusDetail.dividerThickness = 1
 //        txtviewStatusDetail.isDividerHidden = false
 //        txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
@@ -73,9 +78,12 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
         
-        visaStatusDropDown.dismissMode = .manual
+        visaStatusDropDown.dismissMode = .onTap
         visaStatusDropDown.anchorView = visaStatusDropDownAnchorView
         visaStatusDropDown.dataSource = kVisaStatusArray
+        visaStatusDropDown.cancelAction = .some({
+            self.btnVisaStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        })
         visaStatusDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnVisaStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldVisaStatus.placeholderLabel.textColor = Theme.getAppGreyColor()

@@ -3,14 +3,12 @@ package com.rnsoft.colabademo
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ArrayAdapter
+import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.MailingAddressLayoutBinding
-import com.rnsoft.colabademo.databinding.MailingTestLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
@@ -32,14 +30,32 @@ class MailingAddressFragment : Fragment() {
         _binding = MailingAddressLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+
+        binding.topSearchAutoTextView.onFocusChangeListener = object:View.OnFocusChangeListener{
+            override fun onFocusChange(p0: View?, p1: Boolean) {
+                if(p1) {
+                    binding.topSearchTextInputLine.minimumHeight = 1
+                    binding.topSearchTextInputLine.setBackgroundColor(resources.getColor( R.color.colaba_primary_color , requireActivity().theme))
+                }
+                else{
+                    binding.topSearchTextInputLine.minimumHeight = 1
+                    binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
+                }
+            }
+        }
+
         binding.cityEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.cityEditText, binding.cityLayout, requireContext()))
         binding.streetAddressEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.streetAddressEditText, binding.streetAddressLayout, requireContext()))
         binding.unitAptInputEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.unitAptInputEditText, binding.unitAptInputLayout, requireContext()))
         binding.countyEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.countyEditText, binding.countyLayout, requireContext()))
         binding.zipcodeEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.zipcodeEditText, binding.zipcodeLayout, requireContext()))
 
-        val stateAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line,  AppSetting.states)
-        binding.countryCompleteTextView.setAdapter(stateAdapter)
+
+
+
+        val countryAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,  AppSetting.countries)
+        binding.countryCompleteTextView.setAdapter(countryAdapter)
 
         binding.countryCompleteTextView.setOnFocusChangeListener { _, _ ->
             binding.countryCompleteTextView.showDropDown()
@@ -49,14 +65,20 @@ class MailingAddressFragment : Fragment() {
         }
 
 
-        val countryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line ,  AppSetting.countries)
-        binding.stateCompleteTextView.setAdapter(countryAdapter)
+        val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,  AppSetting.states)
+        binding.stateCompleteTextView.setAdapter(stateAdapter)
 
         binding.stateCompleteTextView.setOnFocusChangeListener { _, _ ->
             binding.stateCompleteTextView.showDropDown()
+            //if(binding.stateCompleteTextView.text.equals(" "))
+                //binding.stateCompleteTextView.setText("")
         }
+
+
+
         binding.stateCompleteTextView.setOnClickListener{
             binding.stateCompleteTextView.showDropDown()
+
         }
 
 

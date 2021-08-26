@@ -143,6 +143,8 @@
     <string name="city">City</string>
     <string name="county">County</string>
     <string name="state">State</string>
+    <string name="search_home_address">Search Home Address</string>
+
     <string name="zip_code">Zip Code</string>
     <string name="country">Country</string>
     <string name="temp_address">4101  Oak Tree Avenue  LN # 222,\nChicago, MD 60605</string>

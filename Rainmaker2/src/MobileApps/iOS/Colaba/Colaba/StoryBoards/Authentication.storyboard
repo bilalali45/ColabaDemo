@@ -95,10 +95,10 @@
             </objects>
             <point key="canvasLocation" x="1524" y="-271"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Login Navigation View Controller-->
         <scene sceneID="SGg-5a-Fbw">
             <objects>
-                <navigationController storyboardIdentifier="LoginNavigation" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="7yB-7A-uHA" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="LoginNavigationViewController" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="7yB-7A-uHA" customClass="LoginNavigationViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="z79-oT-d2i">
                         <autoresizingMask key="autoresizingMask"/>
@@ -351,6 +351,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mPm-HU-pQf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="191" y="-271"/>
+        </scene>
+        <!--Face Lock Navigation View Controller-->
+        <scene sceneID="sPN-O0-b67">
+            <objects>
+                <navigationController storyboardIdentifier="FaceLockNavigationViewController" modalPresentationStyle="overFullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" navigationBarHidden="YES" id="w0h-kl-fME" customClass="FaceLockNavigationViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="7od-hb-c08">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="okt-1P-eyg" kind="relationship" relationship="rootViewController" id="76W-Gc-eI1"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mwl-F5-KTW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-487" y="397"/>
+        </scene>
+        <!--Finger Print Navigation View Controller-->
+        <scene sceneID="Y8D-sR-JHg">
+            <objects>
+                <navigationController storyboardIdentifier="FingerPrintNavigationViewController" modalPresentationStyle="overFullScreen" navigationBarHidden="YES" id="nmb-K9-A3g" customClass="FingerPrintNavigationViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="o57-u7-euN">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="zMC-Qr-zfG" kind="relationship" relationship="rootViewController" id="Ppo-2J-hm0"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1WW-c0-2eX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="190" y="396"/>
         </scene>
         <!--Finger Print View Controller-->
         <scene sceneID="grW-n2-yBJ">
