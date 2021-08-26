@@ -83,7 +83,8 @@ class UnMarriedFragment : Fragment() {
         }
 
         binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
+            //findNavController().popBackStack()
+            requireActivity().onBackPressed()
         }
 
 

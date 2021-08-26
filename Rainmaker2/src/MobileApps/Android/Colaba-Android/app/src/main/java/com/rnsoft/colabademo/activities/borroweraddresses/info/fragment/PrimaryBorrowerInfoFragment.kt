@@ -2,6 +2,7 @@ package com.rnsoft.colabademo.activities.borroweraddresses.info
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ColorRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
@@ -21,6 +23,7 @@ import com.rnsoft.colabademo.activities.borroweraddresses.info.adapter.Dependent
 import com.rnsoft.colabademo.activities.borroweraddresses.info.fragment.DeleteCurrentResidenceDialogFragment
 import com.rnsoft.colabademo.activities.borroweraddresses.info.fragment.SwipeToDeleteEvent
 import com.rnsoft.colabademo.activities.borroweraddresses.info.model.Address
+import com.rnsoft.colabademo.activities.borroweraddresses.info.model.Dependent
 import com.rnsoft.colabademo.databinding.*
 import com.rnsoft.colabademo.utils.RecyclerTouchListener
 import org.greenrobot.eventbus.EventBus
@@ -45,8 +48,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     private var touchListener: RecyclerTouchListener? = null
     var count : Int = 0
     var selectedPosition : Int?=null
-    val listItems = arrayListOf<String>()
-
+    val listItems = ArrayList<Dependent>()
     lateinit var adapter:ResidenceAdapter
     lateinit var dependentAdapter: DependentAdapter
 
@@ -61,26 +63,9 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         bindingMilitary = bi.layoutMilitaryService
 
         setViews()
-        setSingleItemFocus()
-        setEndIconClicks()
         setResidence()
 
         return bi.root
-    }
-
-    private fun addDynamicField() {
-
-        count++
-        bi.tvDependentCount.setText(count.toString())
-        listItems.add(count.toString())
-        dependentAdapter = DependentAdapter(requireActivity(),listItems,this@PrimaryBorrowerInfoFragment)
-        bi.rvDependents.hasFixedSize()
-        bi.rvDependents.adapter = dependentAdapter
-        dependentAdapter.notifyDataSetChanged()
-
-       // for(item in bi.rvDependents.childCount.indices)
-       // bi.rvDependents.childCount
-
     }
 
     private fun setViews() {
@@ -100,22 +85,53 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         bindingMilitary.chbSurvivingSpouse.setOnClickListener(this)
         bi.addDependentClick.setOnClickListener(this)
         bi.addPrevAddress.setOnClickListener(this)
+        bi.edDateOfBirth.setOnClickListener(this)
 
         bi.edHomeNumber.addTextChangedListener(PhoneTextFormatter(bi.edHomeNumber, "(###) ###-####"))
         bi.edWorkNum.addTextChangedListener(PhoneTextFormatter(bi.edWorkNum, "(###) ###-####"))
         bi.edCellNum.addTextChangedListener(PhoneTextFormatter(bi.edCellNum, "(###) ###-####"))
 
+        // initialize recyclerview
+        dependentAdapter = DependentAdapter(requireActivity(),listItems,this@PrimaryBorrowerInfoFragment)
+        bi.rvDependents.adapter = dependentAdapter
+
+        setSingleItemFocus()
+        setEndIconClicks()
+    }
+
+    private fun addEmptyDependentField() {
+        if(listItems.size < 99) {
+            if (listItems.size > 0) {
+                var ordinal = getOrdinal(listItems.size + 1)
+                listItems.add(Dependent(ordinal.plus(" Dependent Age (Years)"), 0))
+
+            } else {
+                listItems.clear()
+                var ordinal = getOrdinal(1)
+                listItems.add(Dependent(ordinal.plus(" Dependent Age (Years)"), 0))
+            }
+            bi.rvDependents.adapter = dependentAdapter
+            dependentAdapter.notifyDataSetChanged()
+            bi.tvDependentCount.setText(listItems.size.toString())
+        }
 
     }
 
-    override fun deleteItemClick(position: Int) {
+    override fun deleteDependentClick(position: Int) {
         listItems.removeAt(position)
-        count--
-        bi.tvDependentCount.setText(count.toString())
-        dependentAdapter = DependentAdapter(requireActivity(),listItems,this@PrimaryBorrowerInfoFragment)
-        bi.rvDependents.hasFixedSize()
+        //update list/ recreate again
+        for(i in 0 until listItems.size){
+            if (i + 1 <= listItems.size) {
+                var ordinal = getOrdinal(i + 1)
+                var age = listItems.get(i).age
+                listItems[i]= Dependent((ordinal.plus(" Dependent Age (Years)")),age )
+            }
+        }
         bi.rvDependents.adapter = dependentAdapter
         dependentAdapter.notifyDataSetChanged()
+        bi.tvDependentCount.setText(listItems.size.toString())
+        hideSoftKeyboard()
+
     }
 
     override fun onClick(view: View?) {
@@ -132,14 +148,11 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             R.id.chb_veteran -> militaryVeteran()
             R.id.chb_surviving_spouse -> militarySurvivingSpouse()
             R.id.btn_save_info -> checkValidations()
-            R.id.add_dependent_click -> addDynamicField()
-            R.id.add_prev_address -> addPrevAddressClick()
+            R.id.add_dependent_click -> addEmptyDependentField()
+            R.id.add_prev_address -> findNavController().navigate(R.id.navigation_current_address)
             R.id.backButton -> requireActivity().finish()
+            R.id.ed_dateOfBirth -> openCalendar()
         }
-    }
-
-    private fun addPrevAddressClick(){
-       findNavController().navigate(R.id.navigation_current_address)
     }
 
     private fun checkValidations() {
@@ -160,11 +173,9 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         if (homeNum.isEmpty() || homeNum.length == 0) {
             setError(bi.layoutHomeNum, getString(R.string.error_field_required))
         }
-
         if (firstName.isNotEmpty() && firstName.length > 0) {
             clearError(bi.layoutFirstName)
         }
-
         if (lastName.isNotEmpty() && lastName.length > 0) {
             clearError(bi.layoutLastName)
         }
@@ -182,14 +193,16 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
                 clearError(bi.layoutHomeNum)
             }
         }
+        if(!bi.tvDependentCount.text.equals("0")){
+            checkDependentData()
+        }
+
     }
 
     fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
         textInputlayout.helperText = errorMsg
         textInputlayout.setBoxStrokeColorStateList(
-            AppCompatResources.getColorStateList(requireContext(), R.color.primary_info_stroke_error_color
-            )
-        )
+            AppCompatResources.getColorStateList(requireContext(), R.color.primary_info_stroke_error_color))
         //binding.layoutLastName.boxStrokeColor = ContextCompat.getColor(this, R.color.colaba_red_color)
     }
 
@@ -204,6 +217,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     }
 
     private fun setEndIconClicks() {
+
         bi.layoutDateOfBirth.setEndIconOnClickListener(View.OnClickListener {
             openCalendar()
         })
@@ -220,15 +234,11 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
                 bi.layoutSecurityNum.setEndIconDrawable(R.drawable.ic_eye_icon_svg)
             }
         })
-        // delete dependent age
-        /*bindingDependents.tilFirstAge.setEndIconOnClickListener(View.OnClickListener {
-            deleteDependentCount()
-        }) */
 
     }
 
     private fun setResidence() {
-
+        list.clear()
         list.add(Address("5919 Trussvile Crossings Parkways, ZV Street, Birmingham AL 35235", "West Road"))
         list.add(Address("5919 Trussvile Crossings Pkwy, Birmingham AL 35235", "West Road"))
         //bi.recyclerview.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -264,24 +274,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
                 return false
             }
         })
-    }
-
-    private fun openCalendar(){
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
-        val newMonth = month + 1
-        val dpd = DatePickerDialog(
-            requireActivity(), { view, year, monthOfYear, dayOfMonth ->
-                bi.edDateOfBirth.setText("" + dayOfMonth + "/" + newMonth + "/" + year)
-            },
-            year,
-            month,
-            day
-        )
-        dpd.show()
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -354,14 +346,14 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         }
 
         // date of birth
-        bi.edDateOfBirth.setOnTouchListener(object : View.OnTouchListener {
+        /*bi.edDateOfBirth.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View, m: MotionEvent): Boolean {
                 when (m.getAction()) {
                     MotionEvent.ACTION_DOWN -> openCalendar()
                 }
                 return false
             }
-        })
+        }) */
 
         bi.edMiddleName.setOnFocusChangeListener(MyCustomFocusListener(bi.edMiddleName, bi.layoutMiddleName, requireContext()))
         bi.edSuffix.setOnFocusChangeListener(MyCustomFocusListener(bi.edSuffix, bi.layoutSuffix, requireContext()))
@@ -373,27 +365,46 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
 
     }
 
+    private fun checkDependentData(){
+
+        var textInputLayout : TextInputLayout
+        for(item in 0 until bi.rvDependents.childCount){
+
+            textInputLayout = bi.rvDependents.layoutManager?.findViewByPosition(item)?.findViewById<TextInputLayout>(R.id.til_dependent)!!
+            var text =  textInputLayout.editText?.text.toString()
+            if(text.isEmpty() || text.isBlank()){
+                textInputLayout.helperText = getString(R.string.error_field_required)
+                textInputLayout.setBoxStrokeColorStateList(AppCompatResources.getColorStateList(requireContext(), R.color.primary_info_stroke_error_color))
+
+            } else if(text.length>0){
+                clearError(textInputLayout)
+            }
+        }
+    }
+
     private fun setTextInputLayoutHintColor(textInputLayout: TextInputLayout, @ColorRes colorIdRes: Int) {
         textInputLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), colorIdRes))
     }
 
     private fun setMaritalStatus(isUnmarried: Boolean, isMarried: Boolean, isDivorced: Boolean) {
-
         if (isUnmarried) {
-            findNavController().navigate(R.id.navigation_unmarried)
+            Log.e("Unmarried","true")
             msBinding.unmarriedAddendum.visibility = View.VISIBLE
             msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
             msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbDivorced.setTypeface(null, Typeface.NORMAL)
+            findNavController().navigate(R.id.navigation_unmarried)
 
         }
         if (isMarried) {
+            Log.e("Married","true")
             msBinding.unmarriedAddendum.visibility = View.GONE
             msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbMarried.setTypeface(null, Typeface.BOLD)
             msBinding.rbDivorced.setTypeface(null, Typeface.NORMAL)
         }
         if (isDivorced) {
+            Log.e("Separated","true")
             msBinding.unmarriedAddendum.visibility = View.GONE
             msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
@@ -474,6 +485,24 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         return m.matches()
     }
 
+    private fun openCalendar(){
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        val newMonth = month + 1
+        val dpd = DatePickerDialog(
+            requireActivity(), { view, year, monthOfYear, dayOfMonth ->
+                bi.edDateOfBirth.setText("" + dayOfMonth + "/" + newMonth + "/" + year)
+            },
+            year,
+            month,
+            day
+        )
+        dpd.show()
+
+    }
+
     override fun onResume() {
         super.onResume()
         touchListener?.let { bi.recyclerview.addOnItemTouchListener(it) }
@@ -497,23 +526,25 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         }
     }
 
+    fun getOrdinal(i: Int): String? {
+        val mod100 = i % 100
+        val mod10 = i % 10
+        if (mod10 == 1 && mod100 != 11) {
+            return i.toString() + "st"
+        } else if (mod10 == 2 && mod100 != 12) {
+            return i.toString() + "nd"
+        } else if (mod10 == 3 && mod100 != 13) {
+            return i.toString() + "rd"
+        } else {
+            return  i.toString() + "th"
+        }
+    }
 
-    /* val til = TextInputLayout(this)
-         val et = EditText(this)
-         til.addView(et)
-         til.hint = "Dynamic View"
-         binding.layoutAddDependents.addView(til) */
-    // TextInputLayout textInputLayout = (TextInputLayout) LayoutInflator.from(this).inflate(R.layout.text_input_layout, null);
-    //val linearLayout = findViewById<View>(R.id.linearlayout) as LinearLayout
-    //linear.layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
-    //linear.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
-    /*linear = LayoutInflater.from(this).inflate(R.layout.dynamic_inputfield_two, null) as LinearLayout
-    binding.layoutAddDependents.addView(linear)*/
+    private fun hideSoftKeyboard(){
+        val imm = view?.let { ContextCompat.getSystemService(it.context, InputMethodManager::class.java) }
+        imm?.hideSoftInputFromWindow(view?.windowToken, 0)
+    }
 
-    /*val count = Integer.parseInt(bi.edDependents.text.toString())
-    if (count > 0) {
-        bindingDependents.dynamicDependents.visibility = View.VISIBLE
-    } */
 
 
 
@@ -525,11 +556,5 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         }
         false
     } */
-
-
-    /*bi.edDependentNo.doAfterTextChanged {
-               val num = Integer.parseInt(bi.edDependentNo.text.toString())
-
-           } */
 
 }

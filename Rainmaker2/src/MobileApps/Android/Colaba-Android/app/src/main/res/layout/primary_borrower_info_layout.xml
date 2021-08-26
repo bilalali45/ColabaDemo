@@ -541,14 +541,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:editable="false"
                         android:ems="10"
                         android:fontFamily="@font/rubik_regular"
                         android:imeOptions="actionNext"
                         android:paddingStart="0dp"
                         android:singleLine="true"
                         android:textColor="@color/grey_color_one"
-                        android:textSize="@dimen/ed_txt_size_primary_info" />
+                        android:textSize="@dimen/ed_txt_size_primary_info"
+                        android:editable="false"
+                        android:clickable="true"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -558,7 +559,7 @@
                     android:id="@+id/layout_security_num"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="60dp"
                     android:hint="@string/social_security_num"
                     android:textColorHint="@color/primary_info_label_color"
                     android:visibility="visible"
@@ -591,7 +592,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/add_dependents"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="37dp"
                     android:textStyle="bold"
                     android:textAlignment="center"
                     android:textColor="@color/grey_color_two"
@@ -621,6 +622,9 @@
                         android:layout_height="wrap_content"
                         android:visibility="visible"
                         android:orientation="vertical"
+                        android:descendantFocusability="afterDescendants"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 </RelativeLayout>
@@ -682,20 +686,5 @@
         android:src="@drawable/ic_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <!--<Button
-        android:id="@+id/btn_save_info"
-        android:layout_width="wrap_content"
-        android:layout_height="55dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:fontFamily="@font/rubik_regular"
-        android:text="SAVE CHANGES"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" /> -->1
 
 </androidx.constraintlayout.widget.ConstraintLayout>
