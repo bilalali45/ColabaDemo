@@ -431,7 +431,7 @@ extension AddMailingAddressViewController: UITableViewDataSource, UITableViewDel
         GMSPlacesClient.shared().fetchPlace(fromPlaceID: placesData[indexPath.row].placeID, placeFields: .all, sessionToken: nil) { place, error in
             if let formattedAddress = place?.formattedAddress{
                 self.txtfieldHomeAddress.text = "       \(formattedAddress)"
-                self.txtfieldHomeAddress.placeholder = "Search Home Address"
+                self.txtfieldHomeAddress.placeholder = "Search Mailing Address"
                 self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
                 self.txtfieldHomeAddress.detail = ""
             }
@@ -457,7 +457,7 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
             //showAutoCompletePlaces()
             btnSearchTopConstraint.constant = 37
             self.view.layoutSubviews()
-            txtfieldHomeAddress.placeholder = "Search Home Address"
+            txtfieldHomeAddress.placeholder = "Search Mailing Address"
             if txtfieldHomeAddress.text == ""{
                 txtfieldHomeAddress.text = "       "
             }
@@ -483,7 +483,7 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
             btnDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             if (txtfieldHomeAddress.text == "       "){
                 txtfieldHomeAddress.text = ""
-                txtfieldHomeAddress.placeholder = "       Search Home Address"
+                txtfieldHomeAddress.placeholder = "       Search Mailing Address"
                 btnSearchTopConstraint.constant = 34
                 self.view.layoutSubviews()
             }
@@ -619,7 +619,7 @@ extension AddMailingAddressViewController: GMSAutocompleteViewControllerDelegate
   func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
     if let formattedAddress = place.formattedAddress{
         txtfieldHomeAddress.text = "       \(formattedAddress)"
-        txtfieldHomeAddress.placeholder = "Search Home Address"
+        txtfieldHomeAddress.placeholder = "Search Mailing Address"
         txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
         txtfieldHomeAddress.detail = ""
     }
