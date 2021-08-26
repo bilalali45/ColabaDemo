@@ -27,10 +27,6 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener, 
     final Handler handler = new Handler();
     Activity act;
     List<Integer> unSwipeableRows;
-    /*
-     * independentViews are views on the foreground layer which when clicked, act "independent" from the foreground
-     * ie, they are treated separately from the "row click" action
-     */
     List<Integer> independentViews;
     List<Integer> unClickableRows;
     List<Integer> optionViews;
@@ -43,7 +39,6 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener, 
     private long ANIMATION_CLOSE = 150;
     // Fixed properties
     private RecyclerView rView;
-    // private SwipeListener mSwipeListener;
     private int bgWidth = 1, bgWidthLeft = 1; // 1 and not 0 to prevent dividing by zero
     // Transient properties
     private int mDismissAnimationRefCount = 0;
