@@ -99,11 +99,13 @@ class AddMailingAddressViewController: UIViewController {
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
         
-        countryDropDown.dismissMode = .manual
+        countryDropDown.dismissMode = .onTap
         countryDropDown.anchorView = countryDropDownAnchorView
         countryDropDown.direction = .top
         countryDropDown.dataSource = kCountryListArray
-        
+        countryDropDown.cancelAction = .some({
+            self.btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        })
         countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             changedDeleteButton()
             btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
@@ -114,11 +116,13 @@ class AddMailingAddressViewController: UIViewController {
             countryDropDown.hide()
         }
         
-        stateDropDown.dismissMode = .manual
+        stateDropDown.dismissMode = .onTap
         stateDropDown.anchorView = stateDropDownAnchorView
         stateDropDown.direction = .top
         stateDropDown.dataSource = kUSAStatesArray
-        
+        stateDropDown.cancelAction = .some({
+            self.btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        })
         stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             changedDeleteButton()
             btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)

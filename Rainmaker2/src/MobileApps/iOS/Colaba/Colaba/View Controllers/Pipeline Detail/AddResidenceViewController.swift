@@ -108,9 +108,12 @@ class AddResidenceViewController: UIViewController {
             textfield.placeholderVerticalOffset = 8
         }
         txtfieldHomeAddress.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 25)
-        housingStatusDropDown.dismissMode = .manual
+        housingStatusDropDown.dismissMode = .onTap
         housingStatusDropDown.anchorView = housingStatusDropDownAnchorView
         housingStatusDropDown.dataSource = kHousingStatusArray
+        housingStatusDropDown.cancelAction = .some({
+            self.btnHousingStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        })
         housingStatusDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             changedDeleteButton()
             btnHousingStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
@@ -128,11 +131,13 @@ class AddResidenceViewController: UIViewController {
             }
         }
         
-        countryDropDown.dismissMode = .manual
+        countryDropDown.dismissMode = .onTap
         countryDropDown.anchorView = countryDropDownAnchorView
         countryDropDown.direction = .top
         countryDropDown.dataSource = kCountryListArray
-        
+        countryDropDown.cancelAction = .some({
+            self.btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        })
         countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             changedDeleteButton()
             btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
@@ -143,11 +148,13 @@ class AddResidenceViewController: UIViewController {
             countryDropDown.hide()
         }
         
-        stateDropDown.dismissMode = .manual
+        stateDropDown.dismissMode = .onTap
         stateDropDown.anchorView = stateDropDownAnchorView
         stateDropDown.direction = .top
         stateDropDown.dataSource = kUSAStatesArray
-        
+        stateDropDown.cancelAction = .some({
+            self.btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        })
         stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             changedDeleteButton()
             btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)

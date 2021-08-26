@@ -78,9 +78,12 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
         
-        visaStatusDropDown.dismissMode = .manual
+        visaStatusDropDown.dismissMode = .onTap
         visaStatusDropDown.anchorView = visaStatusDropDownAnchorView
         visaStatusDropDown.dataSource = kVisaStatusArray
+        visaStatusDropDown.cancelAction = .some({
+            self.btnVisaStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        })
         visaStatusDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnVisaStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldVisaStatus.placeholderLabel.textColor = Theme.getAppGreyColor()
