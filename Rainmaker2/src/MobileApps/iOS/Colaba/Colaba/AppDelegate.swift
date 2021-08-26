@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         while let presentedViewController = topController.presentedViewController {
                             topController = presentedViewController
                         }
-                        if (!(topController is FaceRecognitionViewController) && !(topController is FingerPrintViewController) && !(topController is LoginNavigationViewController)){
+                        if (!(topController is FaceLockNavigationViewController) && !(topController is FingerPrintNavigationViewController) && !(topController is LoginNavigationViewController)){
                             isAppOpenFromBackground = true
                             topController.present(getBioMetricOrLoginController(), animated: false, completion: nil)
                         }
@@ -57,14 +57,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func getBioMetricOrLoginController() -> UIViewController{
-        let faceVC = Utility.getFaceRecognitionVC()
-        faceVC.modalPresentationStyle = .overFullScreen
+        let faceNavVC = Utility.getFaceLockNavigationVC()
+        faceNavVC.modalPresentationStyle = .overFullScreen
         
-        let fingerVC = Utility.getFingerPrintVC()
-        fingerVC.modalPresentationStyle = .overFullScreen
+        let fingerNavVC = Utility.getFingerPrintNavigationVC()
+        fingerNavVC.modalPresentationStyle = .overFullScreen
         
-        let loginNav = Utility.getLoginNavigationVC()
-        loginNav.modalPresentationStyle = .overFullScreen
+        let loginNavVC = Utility.getLoginNavigationVC()
+        loginNavVC.modalPresentationStyle = .overFullScreen
         
         var isAlreadyRegisteredWithBiometric = ""
         if let isBiometricRegistered = UserDefaults.standard.value(forKey: kIsUserRegisteredWithBiometric){
@@ -73,17 +73,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         if (isAlreadyRegisteredWithBiometric == kYes && UserModel.getCurrentUser() != nil){
             if (Utility.checkDeviceAuthType() == kTouchID){
-                return fingerVC
+                return fingerNavVC
             }
             else if (Utility.checkDeviceAuthType() == kFaceID){
-                return faceVC
+                return faceNavVC
             }
             else{
-                return loginNav
+                return loginNavVC
             }
         }
         else{
-            return loginNav
+            return loginNavVC
         }
         
     }
@@ -130,17 +130,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func loadFingerPrintViewController(){
-        let vc = Utility.getFingerPrintVC()
-        let navVC = UINavigationController(rootViewController: vc)
-        navVC.navigationBar.isHidden = true
-        self.window?.rootViewController = navVC
+        let vc = Utility.getFingerPrintNavigationVC()
+        self.window?.rootViewController = vc
     }
     
     func loadFaceLockViewController(){
-        let vc = Utility.getFaceRecognitionVC()
-        let navVC = UINavigationController(rootViewController: vc)
-        navVC.navigationBar.isHidden = true
-        self.window?.rootViewController = navVC
+        let vc = Utility.getFaceLockNavigationVC()
+        self.window?.rootViewController = vc
     }
 }
 

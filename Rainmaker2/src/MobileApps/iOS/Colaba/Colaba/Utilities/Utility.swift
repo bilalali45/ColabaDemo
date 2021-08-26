@@ -23,6 +23,14 @@ struct Utility {
         return authStoryboard.instantiateViewController(withIdentifier: "LoginNavigationViewController")  as! LoginNavigationViewController
     }
     
+    static func getFaceLockNavigationVC() -> FaceLockNavigationViewController{
+        return authStoryboard.instantiateViewController(withIdentifier: "FaceLockNavigationViewController")  as! FaceLockNavigationViewController
+    }
+    
+    static func getFingerPrintNavigationVC() -> FingerPrintNavigationViewController{
+        return authStoryboard.instantiateViewController(withIdentifier: "FingerPrintNavigationViewController")  as! FingerPrintNavigationViewController
+    }
+    
     static func getFaceRecognitionVC() -> FaceRecognitionViewController{
         return authStoryboard.instantiateViewController(withIdentifier: "FaceRecognitionViewController") as! FaceRecognitionViewController
     }

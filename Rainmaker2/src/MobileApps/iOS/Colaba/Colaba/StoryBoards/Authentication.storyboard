@@ -352,6 +352,36 @@
             </objects>
             <point key="canvasLocation" x="191" y="-271"/>
         </scene>
+        <!--Face Lock Navigation View Controller-->
+        <scene sceneID="sPN-O0-b67">
+            <objects>
+                <navigationController storyboardIdentifier="FaceLockNavigationViewController" modalPresentationStyle="overFullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" navigationBarHidden="YES" id="w0h-kl-fME" customClass="FaceLockNavigationViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="7od-hb-c08">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="okt-1P-eyg" kind="relationship" relationship="rootViewController" id="76W-Gc-eI1"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mwl-F5-KTW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-487" y="397"/>
+        </scene>
+        <!--Finger Print Navigation View Controller-->
+        <scene sceneID="Y8D-sR-JHg">
+            <objects>
+                <navigationController storyboardIdentifier="FingerPrintNavigationViewController" modalPresentationStyle="overFullScreen" navigationBarHidden="YES" id="nmb-K9-A3g" customClass="FingerPrintNavigationViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="o57-u7-euN">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="zMC-Qr-zfG" kind="relationship" relationship="rootViewController" id="Ppo-2J-hm0"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1WW-c0-2eX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="190" y="396"/>
+        </scene>
         <!--Finger Print View Controller-->
         <scene sceneID="grW-n2-yBJ">
             <objects>
@@ -672,13 +702,13 @@ to create a new password</string>
                                 <rect key="frame" x="280.5" y="34" width="146" height="113"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Number Verification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fsu-KM-ltd">
-                                <rect key="frame" x="68" y="161" width="239" height="24"/>
+                                <rect key="frame" x="58.5" y="161" width="258" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PhB-nq-dWC">
-                                <rect key="frame" x="37.5" y="200" width="300" height="33"/>
+                                <rect key="frame" x="37.5" y="200" width="300" height="33.5"/>
                                 <string key="text">Enter your phone number below and we'll
 send you a verification code.</string>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
@@ -686,16 +716,16 @@ send you a verification code.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PhoneImage" translatesAutoresizingMaskIntoConstraints="NO" id="MW4-o2-RSR">
-                                <rect key="frame" x="-40" y="361" width="254" height="285"/>
+                                <rect key="frame" x="-40" y="361.5" width="254" height="285"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QIa-M9-ods">
-                                <rect key="frame" x="30" y="263" width="315" height="268"/>
+                                <rect key="frame" x="30" y="263.5" width="315" height="268"/>
                                 <subviews>
                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PhoneIcon" translatesAutoresizingMaskIntoConstraints="NO" id="3mR-IS-m92">
                                         <rect key="frame" x="27" y="40" width="14" height="23"/>
                                     </imageView>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mobile Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6As-XB-ecf">
-                                        <rect key="frame" x="56" y="43" width="96.5" height="17"/>
+                                        <rect key="frame" x="56" y="43" width="97.5" height="17"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <color key="textColor" red="0.4941176471" green="0.50980392159999999" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -726,7 +756,7 @@ send you a verification code.</string>
                                         </constraints>
                                     </view>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invalid phone number, please try again." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ei-GV-Aky">
-                                        <rect key="frame" x="27" y="86" width="261" height="14"/>
+                                        <rect key="frame" x="27" y="86" width="261" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
                                         <color key="textColor" name="Separator rErrorColor"/>
                                         <nil key="highlightedColor"/>
@@ -746,7 +776,7 @@ send you a verification code.</string>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rP6-hZ-1RV">
-                                        <rect key="frame" x="114.5" y="199" width="86" height="29"/>
+                                        <rect key="frame" x="113.5" y="199" width="88" height="29"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <state key="normal" title="Skip this step">
                                             <color key="titleColor" name="AppBlackColor"/>

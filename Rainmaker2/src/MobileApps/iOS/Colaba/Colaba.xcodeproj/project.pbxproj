@@ -34,6 +34,8 @@
 		236B59D1266504060001F416 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B59D0266504050001F416 /* UserModel.swift */; };
 		236EA1AC26789EAC00C2F8B5 /* PipelineMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236EA1AB26789EAC00C2F8B5 /* PipelineMoreViewController.swift */; };
 		236EA1AE2678CE1B00C2F8B5 /* DummyDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236EA1AD2678CE1B00C2F8B5 /* DummyDashboardViewController.swift */; };
+		237DF98726D772A1000CAA8E /* FaceLockNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237DF98626D772A1000CAA8E /* FaceLockNavigationViewController.swift */; };
+		237DF98926D7753A000CAA8E /* FingerPrintNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237DF98826D7753A000CAA8E /* FingerPrintNavigationViewController.swift */; };
 		238D70772678E8C80067687C /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238D70762678E8C80067687C /* FiltersViewController.swift */; };
 		23908F9E26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23908F9C26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift */; };
 		23908F9F26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23908F9D26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib */; };
@@ -179,6 +181,8 @@
 		236B59D0266504050001F416 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		236EA1AB26789EAC00C2F8B5 /* PipelineMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineMoreViewController.swift; sourceTree = "<group>"; };
 		236EA1AD2678CE1B00C2F8B5 /* DummyDashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDashboardViewController.swift; sourceTree = "<group>"; };
+		237DF98626D772A1000CAA8E /* FaceLockNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceLockNavigationViewController.swift; sourceTree = "<group>"; };
+		237DF98826D7753A000CAA8E /* FingerPrintNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPrintNavigationViewController.swift; sourceTree = "<group>"; };
 		238D70762678E8C80067687C /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		23908F9C26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerAddressAndLoanInfoTableViewCell.swift; sourceTree = "<group>"; };
 		23908F9D26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerAddressAndLoanInfoTableViewCell.xib; sourceTree = "<group>"; };
@@ -636,6 +640,8 @@
 				7186AD7826540CCC00E740D3 /* PhoneNumberViewController.swift */,
 				7186AD7D26540CEB00E740D3 /* CodeViewController.swift */,
 				23A6578726D65B610013A37B /* LoginNavigationViewController.swift */,
+				237DF98626D772A1000CAA8E /* FaceLockNavigationViewController.swift */,
+				237DF98826D7753A000CAA8E /* FingerPrintNavigationViewController.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -987,6 +993,7 @@
 				23DBAD26269714A800119680 /* ApplicationViewController.swift in Sources */,
 				23B238BF2679F44000508449 /* NotificationsTableViewCell.swift in Sources */,
 				7160CA8D26733B8C0061ACD5 /* MainTabBarViewController.swift in Sources */,
+				237DF98926D7753A000CAA8E /* FingerPrintNavigationViewController.swift in Sources */,
 				2368D6572667DA6700D5C1C5 /* DashboardViewController.swift in Sources */,
 				7186AD742653FBB500E740D3 /* ResetPasswordSuccessfullViewController.swift in Sources */,
 				71B19458265CF9C80017955B /* APIRouter.swift in Sources */,
@@ -1049,6 +1056,7 @@
 				23A56C5C2685B017005CE6F4 /* Extensions.swift in Sources */,
 				23C9130626982A120067920E /* BorrowerOverviewTableViewCell.swift in Sources */,
 				7160CA88267339060061ACD5 /* ProfileViewController.swift in Sources */,
+				237DF98726D772A1000CAA8E /* FaceLockNavigationViewController.swift in Sources */,
 				2368799C26BC173E0045D294 /* BorrowerInformationViewController.swift in Sources */,
 				236EA1AE2678CE1B00C2F8B5 /* DummyDashboardViewController.swift in Sources */,
 				23F23B4326CA591400AEF33E /* SaveAddressPopupViewController.swift in Sources */,
@@ -1237,7 +1245,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 2HX8AP6426;
 				INFOPLIST_FILE = Colaba/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1261,7 +1269,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 2HX8AP6426;
 				INFOPLIST_FILE = Colaba/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
