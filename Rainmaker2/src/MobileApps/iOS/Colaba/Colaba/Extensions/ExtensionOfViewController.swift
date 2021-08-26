@@ -38,9 +38,15 @@ extension UIViewController{
     
     func goToDashboard(){
         //let vc = Utility.getDummyDashboardVC()
-        let vc = Utility.getMainTabBarVC()
-        UIApplication.shared.windows.first?.rootViewController = vc
-        UIApplication.shared.windows.first?.makeKeyAndVisible()
+        if (isAppOpenFromBackground){
+            self.dismissVC()
+        }
+        else{
+            let vc = Utility.getMainTabBarVC()
+            UIApplication.shared.windows.first?.rootViewController = vc
+            UIApplication.shared.windows.first?.makeKeyAndVisible()
+        }
+        
     }
     
     func presentPopup(message: String){

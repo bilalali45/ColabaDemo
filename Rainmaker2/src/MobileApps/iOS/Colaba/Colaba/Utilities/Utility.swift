@@ -19,8 +19,16 @@ struct Utility {
     static private var loanApplicationDateFormatter: DateFormatter?
     static private var documentDateFormatter: DateFormatter?
     
-    static func getLoginNavigationVC() -> UINavigationController{
-        return authStoryboard.instantiateViewController(withIdentifier: "LoginNavigation")  as! UINavigationController
+    static func getLoginNavigationVC() -> LoginNavigationViewController{
+        return authStoryboard.instantiateViewController(withIdentifier: "LoginNavigationViewController")  as! LoginNavigationViewController
+    }
+    
+    static func getFaceLockNavigationVC() -> FaceLockNavigationViewController{
+        return authStoryboard.instantiateViewController(withIdentifier: "FaceLockNavigationViewController")  as! FaceLockNavigationViewController
+    }
+    
+    static func getFingerPrintNavigationVC() -> FingerPrintNavigationViewController{
+        return authStoryboard.instantiateViewController(withIdentifier: "FingerPrintNavigationViewController")  as! FingerPrintNavigationViewController
     }
     
     static func getFaceRecognitionVC() -> FaceRecognitionViewController{
@@ -125,6 +133,10 @@ struct Utility {
     
     static func getAddResidenceVC() -> AddResidenceViewController{
         return loanDetailStoryboard.instantiateViewController(withIdentifier: "AddResidenceViewController") as! AddResidenceViewController
+    }
+    
+    static func getAddPreviousResidenceVC() -> AddPreviousResidenceViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "AddPreviousResidenceViewController") as! AddPreviousResidenceViewController
     }
     
     static func getAddMailingAddressVC() -> AddMailingAddressViewController{
@@ -254,6 +266,13 @@ struct Utility {
     static func getUserFullName() -> String{
         if let user = UserModel.getCurrentUser(){
             return "\(user.firstName) \(user.lastName)"
+        }
+        return ""
+    }
+    
+    static func getUserEmail() -> String{
+        if let user = UserModel.getCurrentUser(){
+            return user.userName
         }
         return ""
     }

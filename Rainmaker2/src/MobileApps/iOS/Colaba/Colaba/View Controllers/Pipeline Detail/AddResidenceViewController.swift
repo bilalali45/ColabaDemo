@@ -294,7 +294,7 @@ class AddResidenceViewController: UIViewController {
     }
     
     @objc func txtfieldCountryTextChanged(){
-        
+        btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
         if (txtfieldCountry.text == ""){
             countryDropDown.dataSource = kCountryListArray
             countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
@@ -321,6 +321,7 @@ class AddResidenceViewController: UIViewController {
     }
     
     @objc func txtfieldStateTextChanged(){
+        btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
         if (txtfieldState.text == ""){
             stateDropDown.dataSource = kUSAStatesArray
             stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
@@ -597,15 +598,13 @@ extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate
         if (tableView == tblViewPlaces){
             tblViewPlaces.isHidden = true
             btnDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            self.txtfieldStreetAddress.text = placesData[indexPath.row].attributedPrimaryText.string
             GMSPlacesClient.shared().fetchPlace(fromPlaceID: placesData[indexPath.row].placeID, placeFields: .all, sessionToken: nil) { place, error in
                 if let formattedAddress = place?.formattedAddress{
                     self.txtfieldHomeAddress.text = "       \(formattedAddress)"
                     self.txtfieldHomeAddress.placeholder = "Search Home Address"
                     self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
                     self.txtfieldHomeAddress.detail = ""
-                }
-                if let shortName = place?.addressComponents?.first?.shortName{
-                    self.txtfieldStreetAddress.text = shortName
                 }
                 self.showAllFields()
                 if let latitude = place?.coordinate.latitude, let longitude = place?.coordinate.longitude{
@@ -688,14 +687,14 @@ extension AddResidenceViewController: UITextFieldDelegate{
         
         if (textField == txtfieldCountry){
             //textField.endEditing(true)
-            btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-            countryDropDown.show()
+            //btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+           // countryDropDown.show()
         }
         
         if (textField == txtfieldState){
             //textField.endEditing(true)
-            btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-            stateDropDown.show()
+            //btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+            //stateDropDown.show()
         }
     }
     

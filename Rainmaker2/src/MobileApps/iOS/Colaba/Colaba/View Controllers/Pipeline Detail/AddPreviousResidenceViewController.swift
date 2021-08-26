@@ -1,16 +1,17 @@
 //
-//  AddMailingAddressViewController.swift
+//  AddPreviousResidenceViewController.swift
 //  Colaba
 //
-//  Created by Muhammad Murtaza on 12/08/2021.
+//  Created by Muhammad Murtaza on 26/08/2021.
 //
 
 import UIKit
 import Material
+import MonthYearPicker
 import DropDown
 import GooglePlaces
 
-class AddMailingAddressViewController: UIViewController {
+class AddPreviousResidenceViewController: UIViewController {
 
     //MARK:- Outlets and Properties
     @IBOutlet weak var btnBack: UIButton!
@@ -19,10 +20,10 @@ class AddMailingAddressViewController: UIViewController {
     @IBOutlet weak var btnDelete: UIButton!
     @IBOutlet weak var seperatorView: UIView!
     @IBOutlet weak var mainView: UIView!
-    @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint! //100 and 700
+    @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint! //330 and 1050
     @IBOutlet weak var txtfieldHomeAddress: TextField!
     @IBOutlet weak var btnSearch: UIButton!
-    @IBOutlet weak var btnSearchTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var btnSearchTopConstraint: NSLayoutConstraint! //34 or 36
     @IBOutlet weak var btnDropDown: UIButton!
     @IBOutlet weak var txtfieldStreetAddress: TextField!
     @IBOutlet weak var txtfieldUnitNo: TextField!
@@ -35,6 +36,17 @@ class AddMailingAddressViewController: UIViewController {
     @IBOutlet weak var txtfieldCountry: TextField!
     @IBOutlet weak var countryDropDownAnchorView: UIView!
     @IBOutlet weak var btnCountryDropDown: UIButton!
+    @IBOutlet weak var txtfieldMoveInDate: TextField!
+    @IBOutlet weak var txtfieldMoveInDateTopConstraint: NSLayoutConstraint! //513 and 30
+    @IBOutlet weak var btnCalendar: UIButton!
+    @IBOutlet weak var btnCalendarTopConstraint: NSLayoutConstraint! //589 and 36
+    @IBOutlet weak var txtfieldMoveOutDate: TextField!
+    @IBOutlet weak var txtfieldHousingStatus: TextField!
+    @IBOutlet weak var housingStatusDropDownAnchorView: UIView!
+    @IBOutlet weak var btnHousingStatusDropDown: UIButton!
+    @IBOutlet weak var txtfieldMonthlyRent: TextField!
+    @IBOutlet weak var txtfieldMonthlyRentTopConstraint: NSLayoutConstraint! //30 or 0
+    @IBOutlet weak var txtfieldMonthlyRentHeightConstraint: NSLayoutConstraint! //39 or 0
     @IBOutlet weak var btnSaveChanges: UIButton!
     
     @IBOutlet weak var tblViewPlaces: UITableView!
@@ -42,8 +54,10 @@ class AddMailingAddressViewController: UIViewController {
     var fetcher: GMSAutocompleteFetcher?
     
     let moveInDateFormatter = DateFormatter()
+    let housingStatusDropDown = DropDown()
     let countryDropDown = DropDown()
     let stateDropDown = DropDown()
+    var numberOfMailingAddress = 1
     private let validation: Validation
     
     init(validation: Validation) {
@@ -58,10 +72,8 @@ class AddMailingAddressViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setMaterialTextFieldsAndViews(textfields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry])
-        NotificationCenter.default.addObserver(self, selector: #selector(goBackAfterDelete), name: NSNotification.Name(rawValue: kNotificationDeleteMailingAddressAndDismiss), object: nil)
-        txtfieldCountry.addTarget(self, action: #selector(txtfieldCountryTextChanged), for: .editingChanged)
-        txtfieldState.addTarget(self, action: #selector(txtfieldStateTextChanged), for: .editingChanged)
+        setMaterialTextFieldsAndViews(textfields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry, txtfieldMoveInDate, txtfieldMoveOutDate, txtfieldHousingStatus, txtfieldMonthlyRent])
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissAddressVC), name: NSNotification.Name(rawValue: kNotificationSaveAddressAndDismiss), object: nil)
         
         let filter = GMSAutocompleteFilter()
         filter.type = .address
@@ -77,7 +89,6 @@ class AddMailingAddressViewController: UIViewController {
 
         tblViewPlaces.reloadData()
         tblViewPlaces.dropShadowToCollectionViewCell()
-        
     }
 
     //MARK:- Methods and Actions
@@ -94,9 +105,25 @@ class AddMailingAddressViewController: UIViewController {
             textfield.detailVerticalOffset = 4
             textfield.placeholderVerticalOffset = 8
         }
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+        
+        housingStatusDropDown.dismissMode = .manual
+        housingStatusDropDown.anchorView = housingStatusDropDownAnchorView
+        housingStatusDropDown.dataSource = kHousingStatusArray
+        housingStatusDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            btnHousingStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldHousingStatus.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldHousingStatus.detail = ""
+            txtfieldHousingStatus.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldHousingStatus.placeholderLabel.textColor = Theme.getAppGreyColor()
+            txtfieldHousingStatus.text = item
+            housingStatusDropDown.hide()
+            txtfieldMonthlyRent.isHidden = item != "Rent"
+            txtfieldMonthlyRentTopConstraint.constant = item == "Rent" ? 30 : 0
+            txtfieldMonthlyRentHeightConstraint.constant = item == "Rent" ? 39 : 0
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutSubviews()
+            }
+        }
         
         countryDropDown.dismissMode = .manual
         countryDropDown.anchorView = countryDropDownAnchorView
@@ -125,6 +152,20 @@ class AddMailingAddressViewController: UIViewController {
             txtfieldState.text = item
             stateDropDown.hide()
         }
+        
+        btnSaveChanges.layer.borderWidth = 1
+        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+        
+        moveInDateFormatter.dateStyle = .medium
+        moveInDateFormatter.dateFormat = "MM/yyyy"
+        txtfieldMoveInDate.addInputViewMonthYearDatePicker(target: self, selector: #selector(dateChanged))
+        txtfieldMoveOutDate.addInputViewMonthYearDatePicker(target: self, selector: #selector(moveOutDateChanged))
+        
+        txtfieldCountry.addTarget(self, action: #selector(txtfieldCountryTextChanged), for: .editingChanged)
+        txtfieldState.addTarget(self, action: #selector(txtfieldStateTextChanged), for: .editingChanged)
+        
+        
     }
     
     func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){
@@ -165,7 +206,9 @@ class AddMailingAddressViewController: UIViewController {
     }
     
     func showAllFields(){
-        mainViewHeightConstraint.constant = 640
+        mainViewHeightConstraint.constant = 950
+        txtfieldMoveInDateTopConstraint.constant = 513
+        btnCalendarTopConstraint.constant = 517
         txtfieldStreetAddress.isHidden = false
         txtfieldUnitNo.isHidden = false
         txtfieldCity.isHidden = false
@@ -221,15 +264,36 @@ class AddMailingAddressViewController: UIViewController {
         })
     }
     
+    @objc func addMailingAddressStackViewTapped(){
+        let vc = Utility.getAddMailingAddressVC()
+        self.pushToVC(vc: vc)
+    }
+    
+    @objc func dateChanged() {
+        if let  datePicker = self.txtfieldMoveInDate.inputView as? MonthYearPickerView {
+            self.txtfieldMoveInDate.text = moveInDateFormatter.string(from: datePicker.date)
+        }
+    }
+    
+    @objc func moveOutDateChanged() {
+        if let  datePicker = self.txtfieldMoveOutDate.inputView as? MonthYearPickerView {
+            self.txtfieldMoveOutDate.text = moveInDateFormatter.string(from: datePicker.date)
+        }
+    }
+    
+    @objc func dismissAddressVC(){
+        self.dismissVC()
+    }
+    
     @objc func txtfieldCountryTextChanged(){
         btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
         if (txtfieldCountry.text == ""){
             countryDropDown.dataSource = kCountryListArray
             countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-                txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
                 txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
                 txtfieldCountry.detail = ""
                 txtfieldCountry.text = item
+                txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
                 btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }
         }
@@ -239,8 +303,8 @@ class AddMailingAddressViewController: UIViewController {
             countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
                 txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
                 txtfieldCountry.detail = ""
-                txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
                 txtfieldCountry.text = item
+                txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
                 btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }
         }
@@ -255,8 +319,8 @@ class AddMailingAddressViewController: UIViewController {
             stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
                 txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
                 txtfieldState.detail = ""
-                txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
                 txtfieldState.text = item
+                txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
                 btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }
         }
@@ -266,8 +330,8 @@ class AddMailingAddressViewController: UIViewController {
             stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
                 txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
                 txtfieldState.detail = ""
-                txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
                 txtfieldState.text = item
+                txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
                 btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             }
         }
@@ -275,27 +339,56 @@ class AddMailingAddressViewController: UIViewController {
         stateDropDown.show()
     }
     
-    @objc func goBackAfterDelete(){
-        self.goBack()
-    }
-    
     @IBAction func btnBackTapped(_ sender: UIButton) {
-        self.goBack()
+        let vc = Utility.getSaveAddressPopupVC()
+        vc.isForPrevAddress = true
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnDeleteTapped(_ sender: UIButton) {
         let vc = Utility.getDeleteAddressPopupVC()
-        vc.popupTitle = "Are you sure you want to delete Richard's Mailing Address?"
-        vc.screenType = 3
+        vc.popupTitle = "Are you sure you want to delete Richard's Current Residence?"
+        vc.screenType = 2
         self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnSearchTapped(_ sender: UIButton){
-        showAllFields()
+        //showAllFields()
+        //getAddressFromLatLon(pdblLatitude: "21.228124", withLongitude: "72.833770")
+//        let autocompleteController = GMSAutocompleteViewController()
+//            autocompleteController.delegate = self
+//
+//            // Specify the place data types to return.
+//            let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.name.rawValue) |
+//                                                        UInt(GMSPlaceField.placeID.rawValue))
+//            autocompleteController.placeFields = fields
+//
+//            // Specify a filter.
+//            let filter = GMSAutocompleteFilter()
+//            filter.type = .address
+//            autocompleteController.autocompleteFilter = filter
+//
+//            // Display the autocomplete view controller.
+//        self.present(autocompleteController, animated: true, completion: nil)
     }
     
     @IBAction func btnDropdownTapped(_ sender: UIButton){
-        showAllFields()
+       // showAllFields()
+//        let autocompleteController = GMSAutocompleteViewController()
+//            autocompleteController.delegate = self
+//
+//            // Specify the place data types to return.
+//            let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.name.rawValue) |
+//                                                        UInt(GMSPlaceField.placeID.rawValue))
+//            autocompleteController.placeFields = fields
+//
+//            // Specify a filter.
+//            let filter = GMSAutocompleteFilter()
+//            filter.type = .address
+//            autocompleteController.autocompleteFilter = filter
+//
+//            // Display the autocomplete view controller.
+//            present(autocompleteController, animated: true, completion: nil)
     }
     
     @IBAction func btnStateDropDownTapped(_ sender: UIButton) {
@@ -303,6 +396,14 @@ class AddMailingAddressViewController: UIViewController {
     }
     
     @IBAction func btnCountryDropDownTapped(_ sender: UIButton) {
+    }
+    
+    @IBAction func btnCalendarTapped(_ sender: UIButton) {
+        
+    }
+    
+    @IBAction func btnHousingDropDownTapped(_ sender: UIButton) {
+        
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
@@ -385,45 +486,115 @@ class AddMailingAddressViewController: UIViewController {
             self.txtfieldCountry.detail = error.localizedDescription
         }
         
+        do{
+            let moveInDate = try validation.validateMoveInDate(txtfieldMoveInDate.text)
+            DispatchQueue.main.async {
+                self.txtfieldMoveInDate.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldMoveInDate.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldMoveInDate.dividerColor = .red
+            self.txtfieldMoveInDate.detail = error.localizedDescription
+        }
         
-        if (self.txtfieldHomeAddress.text != "" && txtfieldStreetAddress.text != "" && txtfieldCity.text != "" && txtfieldState.text != "" && txtfieldZipCode.text != "" && txtfieldCountry.text != ""){
-            self.goBack()
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowMailingAddress), object: nil)
+        do{
+            let housingStatus = try validation.validateHousingStatus(txtfieldHousingStatus.text)
+            DispatchQueue.main.async {
+                self.txtfieldHousingStatus.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldHousingStatus.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldHousingStatus.dividerColor = .red
+            self.txtfieldHousingStatus.detail = error.localizedDescription
+        }
+        
+        if (txtfieldHousingStatus.text == "Rent"){
+            do{
+                let rent = try validation.validateMonthlyRent(txtfieldMonthlyRent.text)
+                DispatchQueue.main.async {
+                    self.txtfieldMonthlyRent.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldMonthlyRent.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldMonthlyRent.dividerColor = .red
+                self.txtfieldMonthlyRent.detail = error.localizedDescription
+            }
+        }
+        
+        if (self.txtfieldHomeAddress.text != "" && txtfieldStreetAddress.text != "" && txtfieldCity.text != "" && txtfieldState.text != "" && txtfieldZipCode.text != "" && txtfieldCountry.text != "" && txtfieldMoveInDate.text != "" && txtfieldHousingStatus.text != ""){
+            if (txtfieldHousingStatus.text == "Rent" && txtfieldMonthlyRent.text != ""){
+                self.dismissVC()
+            }
+            else if (txtfieldHousingStatus.text != "Rent"){
+                self.dismissVC()
+            }
         }
         
     }
     
 }
 
-extension AddMailingAddressViewController: UITableViewDataSource, UITableViewDelegate{
+extension AddPreviousResidenceViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return placesData.count
+        if (tableView == tblViewPlaces){
+            return placesData.count
+        }
+        else{
+            return numberOfMailingAddress
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell: UITableViewCell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier:"addCategoryCell")
+        if (tableView == tblViewPlaces){
+            let cell: UITableViewCell = UITableViewCell()
 
-        cell.selectionStyle =  .default
-        cell.backgroundColor = UIColor.white
-        cell.contentView.backgroundColor = UIColor.clear
-        cell.textLabel?.textAlignment = NSTextAlignment.left
-        cell.textLabel?.textColor = Theme.getAppBlackColor()
-        cell.textLabel?.font = Theme.getRubikMediumFont(size: 14)
-        cell.textLabel?.text = placesData[indexPath.row].attributedFullText.string
-        return cell
+            cell.selectionStyle =  .default
+            cell.backgroundColor = UIColor.white
+            cell.contentView.backgroundColor = UIColor.clear
+            cell.textLabel?.textAlignment = NSTextAlignment.left
+            cell.textLabel?.textColor = Theme.getAppBlackColor()
+            cell.textLabel?.font = Theme.getRubikMediumFont(size: 14)
+            cell.textLabel?.text = placesData[indexPath.row].attributedFullText.string
+            return cell
+            
+        }
+        else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerAddressInfoTableViewCell", for: indexPath) as! BorrowerAddressInfoTableViewCell
+            cell.addressIcon.isHidden = true
+            cell.lblHeading.isHidden = true
+            cell.lblRent.isHidden = true
+            cell.lblAddressTopConstraint.constant = 15
+            cell.lblAddress.text = "4101  Oak Tree Avenue  LN # 222, Chicago, MD 60605"
+            cell.lblDate.text = "Mailing Address"
+            cell.mainView.layer.cornerRadius = 6
+            cell.mainView.layer.borderWidth = 1
+            cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            cell.mainView.dropShadowToCollectionViewCell()
+            cell.mainView.updateConstraintsIfNeeded()
+            cell.mainView.layoutSubviews()
+            return cell
+        }
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         tblViewPlaces.isHidden = true
         btnDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
         self.txtfieldStreetAddress.text = placesData[indexPath.row].attributedPrimaryText.string
         GMSPlacesClient.shared().fetchPlace(fromPlaceID: placesData[indexPath.row].placeID, placeFields: .all, sessionToken: nil) { place, error in
             if let formattedAddress = place?.formattedAddress{
                 self.txtfieldHomeAddress.text = "       \(formattedAddress)"
-                self.txtfieldHomeAddress.placeholder = "Search Home Address"
+                self.txtfieldHomeAddress.placeholder = "Search Previous Home Address"
                 self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
                 self.txtfieldHomeAddress.detail = ""
             }
@@ -442,17 +613,30 @@ extension AddMailingAddressViewController: UITableViewDataSource, UITableViewDel
     
 }
 
-extension AddMailingAddressViewController: UITextFieldDelegate{
+extension AddPreviousResidenceViewController: UITextFieldDelegate{
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if (textField == txtfieldHomeAddress){
             //showAutoCompletePlaces()
             btnSearchTopConstraint.constant = 37
             self.view.layoutSubviews()
-            txtfieldHomeAddress.placeholder = "Search Home Address"
+            txtfieldHomeAddress.placeholder = "Search Previous Home Address"
             if txtfieldHomeAddress.text == ""{
                 txtfieldHomeAddress.text = "       "
             }
+            
+        }
+        if (textField == txtfieldMoveInDate){
+            dateChanged()
+        }
+        if (textField == txtfieldMoveOutDate){
+            moveOutDateChanged()
+        }
+        if (textField == txtfieldHousingStatus){
+            textField.endEditing(true)
+            txtfieldHousingStatus.dividerColor = Theme.getButtonBlueColor()
+            btnHousingStatusDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+            housingStatusDropDown.show()
         }
         
         if (textField == txtfieldCountry){
@@ -466,7 +650,6 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
             //btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
             //stateDropDown.show()
         }
-        
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -475,7 +658,7 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
             btnDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             if (txtfieldHomeAddress.text == "       "){
                 txtfieldHomeAddress.text = ""
-                txtfieldHomeAddress.placeholder = "       Search Home Address"
+                txtfieldHomeAddress.placeholder = "       Search Previous Home Address"
                 btnSearchTopConstraint.constant = 34
                 self.view.layoutSubviews()
             }
@@ -540,6 +723,23 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
             }
         }
         
+        if (textField == txtfieldHousingStatus){
+            btnHousingStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldHousingStatus.dividerColor = Theme.getSeparatorNormalColor()
+            do{
+                let housingStatus = try validation.validateHousingStatus(txtfieldHousingStatus.text)
+                DispatchQueue.main.async {
+                    self.txtfieldHousingStatus.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldHousingStatus.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldHousingStatus.dividerColor = .red
+                self.txtfieldHousingStatus.detail = error.localizedDescription
+            }
+        }
+        
         if (textField == txtfieldStreetAddress){
             do{
                 let streetAddress = try validation.validateStreetAddressHomeAddress(txtfieldStreetAddress.text)
@@ -585,7 +785,39 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
             }
         }
         
-        setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry])
+        if (textField == txtfieldMoveInDate){
+            do{
+                let moveInDate = try validation.validateMoveInDate(txtfieldMoveInDate.text)
+                DispatchQueue.main.async {
+                    self.txtfieldMoveInDate.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldMoveInDate.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldMoveInDate.dividerColor = .red
+                self.txtfieldMoveInDate.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldMonthlyRent){
+            if (txtfieldHousingStatus.text == "Rent"){
+                do{
+                    let rent = try validation.validateMonthlyRent(txtfieldMonthlyRent.text)
+                    DispatchQueue.main.async {
+                        self.txtfieldMonthlyRent.dividerColor = Theme.getSeparatorNormalColor()
+                        self.txtfieldMonthlyRent.detail = ""
+                    }
+                    
+                }
+                catch{
+                    self.txtfieldMonthlyRent.dividerColor = .red
+                    self.txtfieldMonthlyRent.detail = error.localizedDescription
+                }
+            }
+        }
+        
+        setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry, txtfieldMoveInDate, txtfieldMoveOutDate, txtfieldHousingStatus, txtfieldMonthlyRent])
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -604,13 +836,13 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
     }
 }
 
-extension AddMailingAddressViewController: GMSAutocompleteViewControllerDelegate {
+extension AddPreviousResidenceViewController: GMSAutocompleteViewControllerDelegate {
 
   // Handle the user's selection.
   func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
     if let formattedAddress = place.formattedAddress{
         txtfieldHomeAddress.text = "       \(formattedAddress)"
-        txtfieldHomeAddress.placeholder = "Search Home Address"
+        txtfieldHomeAddress.placeholder = "Search Previous Home Address"
         txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
         txtfieldHomeAddress.detail = ""
     }
@@ -643,7 +875,7 @@ extension AddMailingAddressViewController: GMSAutocompleteViewControllerDelegate
 
 }
 
-extension AddMailingAddressViewController: GMSAutocompleteFetcherDelegate {
+extension AddPreviousResidenceViewController: GMSAutocompleteFetcherDelegate {
     
     func didAutocomplete(with predictions: [GMSAutocompletePrediction]) {
         placesData.removeAll()

@@ -31,6 +31,7 @@ class BorrowerInformationViewController: UIViewController {
     @IBOutlet weak var tblViewAddress: UITableView!
     @IBOutlet weak var tblViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var addAddressView: UIView!
+    @IBOutlet weak var lblAddAddress: UILabel!
     @IBOutlet weak var maritalStatusView: UIView!
     @IBOutlet weak var maritalStatusViewHeightConstraint: NSLayoutConstraint! //290 or 140
     @IBOutlet weak var unMarriedStackView: UIStackView!
@@ -239,11 +240,22 @@ class BorrowerInformationViewController: UIViewController {
     }
     
     @objc func addAddressViewTapped(){
-        let vc = Utility.getAddResidenceVC()
-        let navVC = UINavigationController(rootViewController: vc)
-        navVC.modalPresentationStyle = .fullScreen
-        navVC.navigationBar.isHidden = true
-        self.presentVC(vc: navVC)
+        
+        if (totalAddresses == 0){
+            let vc = Utility.getAddResidenceVC()
+            let navVC = UINavigationController(rootViewController: vc)
+            navVC.modalPresentationStyle = .fullScreen
+            navVC.navigationBar.isHidden = true
+            self.presentVC(vc: navVC)
+        }
+        else{
+            let vc = Utility.getAddPreviousResidenceVC()
+            let navVC = UINavigationController(rootViewController: vc)
+            navVC.modalPresentationStyle = .fullScreen
+            navVC.navigationBar.isHidden = true
+            self.presentVC(vc: navVC)
+        }
+        
     }
     
     @objc func unmarriedTapped(){
@@ -623,11 +635,21 @@ extension BorrowerInformationViewController: UITableViewDataSource, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = Utility.getAddResidenceVC()
-        let navVC = UINavigationController(rootViewController: vc)
-        navVC.modalPresentationStyle = .fullScreen
-        navVC.navigationBar.isHidden = true
-        self.presentVC(vc: navVC)
+        
+        if (indexPath.row == 0){
+            let vc = Utility.getAddResidenceVC()
+            let navVC = UINavigationController(rootViewController: vc)
+            navVC.modalPresentationStyle = .fullScreen
+            navVC.navigationBar.isHidden = true
+            self.presentVC(vc: navVC)
+        }
+        else{
+            let vc = Utility.getAddPreviousResidenceVC()
+            let navVC = UINavigationController(rootViewController: vc)
+            navVC.modalPresentationStyle = .fullScreen
+            navVC.navigationBar.isHidden = true
+            self.presentVC(vc: navVC)
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -664,6 +686,7 @@ extension BorrowerInformationViewController: UITableViewDataSource, UITableViewD
 extension BorrowerInformationViewController: DeleteAddressPopupViewControllerDelegate{
     func deleteAddress(indexPath: IndexPath) {
         totalAddresses = totalAddresses - 1
+        self.lblAddAddress.text = totalAddresses == 0 ? "Add Current Residence" : "Add Previous Residence"
         self.tblViewAddress.deleteRows(at: [indexPath], with: .left)
         self.tblViewAddress.reloadData()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -784,6 +807,12 @@ extension BorrowerInformationViewController: UITextFieldDelegate{
             guard let text = textField.text else { return false }
             let newString = (text as NSString).replacingCharacters(in: range, with: string)
             textField.text = self.formatPhoneNumber(with: "(XXX) XXX-XXXX", phone: newString)
+            return false
+        }
+        else if (textField == txtfieldSecurityNo){
+            guard let text = textField.text else { return false }
+            let newString = (text as NSString).replacingCharacters(in: range, with: string)
+            textField.text = self.formatPhoneNumber(with: "XXX-XX-XXXX", phone: newString)
             return false
         }
         else if (textField == txtfieldExtensionNumber){

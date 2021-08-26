@@ -29,6 +29,64 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        if (UserModel.getCurrentUser() != nil && (self.window?.rootViewController is MainTabBarViewController)){
+            
+            if (self.window?.rootViewController?.presentedViewController == nil){
+                isAppOpenFromBackground = true
+                self.window?.rootViewController?.present(getBioMetricOrLoginController(), animated: false, completion: nil)
+            }
+            else{
+                if (!(self.window?.rootViewController?.presentedViewController is FaceRecognitionViewController) && !(self.window?.rootViewController?.presentedViewController is FingerPrintViewController) && !(self.window?.rootViewController?.presentedViewController is LoginNavigationViewController)) {
+                    
+                    let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+
+                    if var topController = keyWindow?.rootViewController {
+                        while let presentedViewController = topController.presentedViewController {
+                            topController = presentedViewController
+                        }
+                        if (!(topController is FaceLockNavigationViewController) && !(topController is FingerPrintNavigationViewController) && !(topController is LoginNavigationViewController)){
+                            isAppOpenFromBackground = true
+                            topController.present(getBioMetricOrLoginController(), animated: false, completion: nil)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func getBioMetricOrLoginController() -> UIViewController{
+        let faceNavVC = Utility.getFaceLockNavigationVC()
+        faceNavVC.modalPresentationStyle = .overFullScreen
+        
+        let fingerNavVC = Utility.getFingerPrintNavigationVC()
+        fingerNavVC.modalPresentationStyle = .overFullScreen
+        
+        let loginNavVC = Utility.getLoginNavigationVC()
+        loginNavVC.modalPresentationStyle = .overFullScreen
+        
+        var isAlreadyRegisteredWithBiometric = ""
+        if let isBiometricRegistered = UserDefaults.standard.value(forKey: kIsUserRegisteredWithBiometric){
+            isAlreadyRegisteredWithBiometric = isBiometricRegistered as! String
+        }
+
+        if (isAlreadyRegisteredWithBiometric == kYes && UserModel.getCurrentUser() != nil){
+            if (Utility.checkDeviceAuthType() == kTouchID){
+                return fingerNavVC
+            }
+            else if (Utility.checkDeviceAuthType() == kFaceID){
+                return faceNavVC
+            }
+            else{
+                return loginNavVC
+            }
+        }
+        else{
+            return loginNavVC
+        }
+        
+    }
 
     func showInitialViewController(){
             
@@ -72,17 +130,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func loadFingerPrintViewController(){
-        let vc = Utility.getFingerPrintVC()
-        let navVC = UINavigationController(rootViewController: vc)
-        navVC.navigationBar.isHidden = true
-        self.window?.rootViewController = navVC
+        let vc = Utility.getFingerPrintNavigationVC()
+        self.window?.rootViewController = vc
     }
     
     func loadFaceLockViewController(){
-        let vc = Utility.getFaceRecognitionVC()
-        let navVC = UINavigationController(rootViewController: vc)
-        navVC.navigationBar.isHidden = true
-        self.window?.rootViewController = navVC
+        let vc = Utility.getFaceLockNavigationVC()
+        self.window?.rootViewController = vc
     }
 }
 

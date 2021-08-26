@@ -41,8 +41,12 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setMaterialTextFieldsAndViews(textfields: [txtfieldVisaStatus])
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        txtfieldVisaStatus.becomeFirstResponder()
     }
     
     //MARK:- Methods and Actions

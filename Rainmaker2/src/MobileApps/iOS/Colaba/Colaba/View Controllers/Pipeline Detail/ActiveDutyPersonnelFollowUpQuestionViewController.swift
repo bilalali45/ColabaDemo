@@ -41,6 +41,7 @@ class ActiveDutyPersonnelFollowUpQuestionViewController: UIViewController {
         lastDateOfServiceDateFormatter.dateStyle = .medium
         lastDateOfServiceDateFormatter.dateFormat = "MM/yyyy"
         txtfieldLastDate.addInputViewMonthYearDatePicker(target: self, selector: #selector(dateChanged))
+        txtfieldLastDate.becomeFirstResponder()
     }
     
     //MARK:- Methods and Actions
