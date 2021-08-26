@@ -110,6 +110,7 @@ class AddPreviousResidenceViewController: UIViewController {
         housingStatusDropDown.anchorView = housingStatusDropDownAnchorView
         housingStatusDropDown.dataSource = kHousingStatusArray
         housingStatusDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            changedDeleteButton()
             btnHousingStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldHousingStatus.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldHousingStatus.detail = ""
@@ -131,6 +132,7 @@ class AddPreviousResidenceViewController: UIViewController {
         countryDropDown.dataSource = kCountryListArray
         
         countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            changedDeleteButton()
             btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldCountry.detail = ""
@@ -145,6 +147,7 @@ class AddPreviousResidenceViewController: UIViewController {
         stateDropDown.dataSource = kUSAStatesArray
         
         stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            changedDeleteButton()
             btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldState.detail = ""
@@ -224,6 +227,12 @@ class AddPreviousResidenceViewController: UIViewController {
         }
     }
     
+    func changedDeleteButton(){
+        let deleteIcon = UIImage(named: "AddressDeleteIcon")?.withRenderingMode(.alwaysTemplate)
+        btnDelete.setImage(deleteIcon, for: .normal)
+        btnDelete.tintColor = .red
+    }
+    
     func getAddressFromLatLon(pdblLatitude: String, withLongitude pdblLongitude: String) {
             var center : CLLocationCoordinate2D = CLLocationCoordinate2D()
             let lat: Double = Double("\(pdblLatitude)")!
@@ -270,12 +279,14 @@ class AddPreviousResidenceViewController: UIViewController {
     }
     
     @objc func dateChanged() {
+        changedDeleteButton()
         if let  datePicker = self.txtfieldMoveInDate.inputView as? MonthYearPickerView {
             self.txtfieldMoveInDate.text = moveInDateFormatter.string(from: datePicker.date)
         }
     }
     
     @objc func moveOutDateChanged() {
+        changedDeleteButton()
         if let  datePicker = self.txtfieldMoveOutDate.inputView as? MonthYearPickerView {
             self.txtfieldMoveOutDate.text = moveInDateFormatter.string(from: datePicker.date)
         }
@@ -821,6 +832,7 @@ extension AddPreviousResidenceViewController: UITextFieldDelegate{
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        changedDeleteButton()
         if (textField == txtfieldHomeAddress){
             if (txtfieldHomeAddress.text == "       " && string == ""){
                 return false

@@ -104,6 +104,7 @@ class AddMailingAddressViewController: UIViewController {
         countryDropDown.dataSource = kCountryListArray
         
         countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            changedDeleteButton()
             btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldCountry.detail = ""
@@ -118,6 +119,7 @@ class AddMailingAddressViewController: UIViewController {
         stateDropDown.dataSource = kUSAStatesArray
         
         stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            changedDeleteButton()
             btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldState.detail = ""
@@ -179,6 +181,12 @@ class AddMailingAddressViewController: UIViewController {
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
         }
+    }
+    
+    func changedDeleteButton(){
+        let deleteIcon = UIImage(named: "AddressDeleteIcon")?.withRenderingMode(.alwaysTemplate)
+        btnDelete.setImage(deleteIcon, for: .normal)
+        btnDelete.tintColor = .red
     }
     
     func getAddressFromLatLon(pdblLatitude: String, withLongitude pdblLongitude: String) {
@@ -589,6 +597,7 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        changedDeleteButton()
         if (textField == txtfieldHomeAddress){
             if (txtfieldHomeAddress.text == "       " && string == ""){
                 return false
