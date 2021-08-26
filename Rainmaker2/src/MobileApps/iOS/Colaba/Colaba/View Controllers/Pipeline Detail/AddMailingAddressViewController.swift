@@ -94,6 +94,7 @@ class AddMailingAddressViewController: UIViewController {
             textfield.detailVerticalOffset = 4
             textfield.placeholderVerticalOffset = 8
         }
+        txtfieldHomeAddress.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 25)
         btnSaveChanges.layer.borderWidth = 1
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)

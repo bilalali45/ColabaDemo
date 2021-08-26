@@ -107,7 +107,7 @@ class AddResidenceViewController: UIViewController {
             textfield.detailVerticalOffset = 4
             textfield.placeholderVerticalOffset = 8
         }
-        
+        txtfieldHomeAddress.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 25)
         housingStatusDropDown.dismissMode = .manual
         housingStatusDropDown.anchorView = housingStatusDropDownAnchorView
         housingStatusDropDown.dataSource = kHousingStatusArray

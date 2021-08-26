@@ -63,6 +63,7 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
             textfield.detailVerticalOffset = 4
             textfield.placeholderVerticalOffset = 8
         }
+        txtfieldVisaStatus.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 25)
 //        txtviewStatusDetail.dividerThickness = 1
 //        txtviewStatusDetail.isDividerHidden = false
 //        txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
