@@ -901,7 +901,7 @@
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" secureTextEntry="YES"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="phonePad"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Social Security Number"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">

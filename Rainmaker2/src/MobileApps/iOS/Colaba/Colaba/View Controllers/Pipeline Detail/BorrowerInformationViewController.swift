@@ -809,6 +809,12 @@ extension BorrowerInformationViewController: UITextFieldDelegate{
             textField.text = self.formatPhoneNumber(with: "(XXX) XXX-XXXX", phone: newString)
             return false
         }
+        else if (textField == txtfieldSecurityNo){
+            guard let text = textField.text else { return false }
+            let newString = (text as NSString).replacingCharacters(in: range, with: string)
+            textField.text = self.formatPhoneNumber(with: "XXX-XX-XXXX", phone: newString)
+            return false
+        }
         else if (textField == txtfieldExtensionNumber){
             return string == "" ? true : (txtfieldExtensionNumber.text!.count < 8)
         }
