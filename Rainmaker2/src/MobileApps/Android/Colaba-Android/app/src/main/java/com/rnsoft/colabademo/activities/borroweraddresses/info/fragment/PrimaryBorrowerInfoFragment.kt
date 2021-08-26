@@ -51,6 +51,10 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     val listItems = ArrayList<Dependent>()
     lateinit var adapter:ResidenceAdapter
     lateinit var dependentAdapter: DependentAdapter
+    var isMaritalStatusVisible : Boolean = false
+    var isResActiveDuty : Boolean = false
+    var isNationalGuard : Boolean = false
+    var isVisaOther : Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,6 +68,24 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
 
         setViews()
         setResidence()
+
+        if(isMaritalStatusVisible){
+            msBinding.unmarriedAddendum.visibility = View.VISIBLE
+        }
+
+        if(isResActiveDuty) {
+            bindingMilitary.layoutActivePersonnel.visibility = View.VISIBLE
+        }
+
+        if(isNationalGuard){
+            bindingMilitary.layoutNationalGuard.visibility = View.VISIBLE
+        }
+        if(isVisaOther){
+            citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
+        }
+
+
+
 
         return bi.root
     }
@@ -388,23 +410,23 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
 
     private fun setMaritalStatus(isUnmarried: Boolean, isMarried: Boolean, isDivorced: Boolean) {
         if (isUnmarried) {
-            Log.e("Unmarried","true")
+            findNavController().navigate(R.id.navigation_unmarried)
             msBinding.unmarriedAddendum.visibility = View.VISIBLE
+            isMaritalStatusVisible = true
             msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
             msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbDivorced.setTypeface(null, Typeface.NORMAL)
-            findNavController().navigate(R.id.navigation_unmarried)
 
         }
         if (isMarried) {
-            Log.e("Married","true")
+            isMaritalStatusVisible=false
             msBinding.unmarriedAddendum.visibility = View.GONE
             msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbMarried.setTypeface(null, Typeface.BOLD)
             msBinding.rbDivorced.setTypeface(null, Typeface.NORMAL)
         }
         if (isDivorced) {
-            Log.e("Separated","true")
+            isMaritalStatusVisible=false
             msBinding.unmarriedAddendum.visibility = View.GONE
             msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
@@ -414,12 +436,14 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
 
     private fun setCitizenship(usCitizen: Boolean, PR: Boolean, nonPR: Boolean) {
         if (usCitizen) {
+            isVisaOther = false
             citizenshipBinding.layoutVisaStatusOther.visibility = View.GONE
             citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.BOLD)
             citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
             citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.NORMAL)
         }
         if (PR) {
+            isVisaOther = false
             citizenshipBinding.layoutVisaStatusOther.visibility = View.GONE
             citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
             citizenshipBinding.rbPr.setTypeface(null, Typeface.BOLD)
@@ -427,6 +451,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         }
         if (nonPR) {
             findNavController().navigate(R.id.navigation_non_permanent)
+            isVisaOther = true
             citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
             citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
             citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
@@ -435,25 +460,30 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     }
 
     private fun militaryActivePersonel() {
-        findNavController().navigate(R.id.navigation_active_duty)
+
         if (bindingMilitary.chbDutyPersonel.isChecked) {
+            findNavController().navigate(R.id.navigation_active_duty)
+            isResActiveDuty = true
             bindingMilitary.layoutActivePersonnel.visibility = View.VISIBLE
             bindingMilitary.chbDutyPersonel.setTypeface(null, Typeface.BOLD)
 
         } else {
+            isResActiveDuty = false
             bindingMilitary.layoutActivePersonnel.visibility = View.GONE
             bindingMilitary.chbDutyPersonel.setTypeface(null, Typeface.NORMAL)
         }
     }
 
     private fun militaryNationalGuard() {
-        findNavController().navigate(R.id.navigation_reserve)
 
         if (bindingMilitary.chbResNationalGuard.isChecked) {
+            findNavController().navigate(R.id.navigation_reserve)
+            isNationalGuard = true
             bindingMilitary.layoutNationalGuard.visibility = View.VISIBLE
             bindingMilitary.chbResNationalGuard.setTypeface(null, Typeface.BOLD)
 
         } else {
+            isNationalGuard= false
             bindingMilitary.layoutNationalGuard.visibility = View.GONE
             bindingMilitary.chbResNationalGuard.setTypeface(null, Typeface.NORMAL)
         }
