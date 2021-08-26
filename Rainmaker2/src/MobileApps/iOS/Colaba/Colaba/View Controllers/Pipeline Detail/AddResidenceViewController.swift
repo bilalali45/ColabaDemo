@@ -107,11 +107,15 @@ class AddResidenceViewController: UIViewController {
             textfield.detailVerticalOffset = 4
             textfield.placeholderVerticalOffset = 8
         }
-        
-        housingStatusDropDown.dismissMode = .manual
+        txtfieldHomeAddress.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 25)
+        housingStatusDropDown.dismissMode = .onTap
         housingStatusDropDown.anchorView = housingStatusDropDownAnchorView
         housingStatusDropDown.dataSource = kHousingStatusArray
+        housingStatusDropDown.cancelAction = .some({
+            self.btnHousingStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        })
         housingStatusDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            changedDeleteButton()
             btnHousingStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldHousingStatus.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldHousingStatus.detail = ""
@@ -127,12 +131,15 @@ class AddResidenceViewController: UIViewController {
             }
         }
         
-        countryDropDown.dismissMode = .manual
+        countryDropDown.dismissMode = .onTap
         countryDropDown.anchorView = countryDropDownAnchorView
         countryDropDown.direction = .top
         countryDropDown.dataSource = kCountryListArray
-        
+        countryDropDown.cancelAction = .some({
+            self.btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        })
         countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            changedDeleteButton()
             btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldCountry.detail = ""
@@ -141,12 +148,15 @@ class AddResidenceViewController: UIViewController {
             countryDropDown.hide()
         }
         
-        stateDropDown.dismissMode = .manual
+        stateDropDown.dismissMode = .onTap
         stateDropDown.anchorView = stateDropDownAnchorView
         stateDropDown.direction = .top
         stateDropDown.dataSource = kUSAStatesArray
-        
+        stateDropDown.cancelAction = .some({
+            self.btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        })
         stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            changedDeleteButton()
             btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldState.detail = ""
@@ -230,6 +240,12 @@ class AddResidenceViewController: UIViewController {
         }
     }
     
+    func changedDeleteButton(){
+        let deleteIcon = UIImage(named: "AddressDeleteIcon")?.withRenderingMode(.alwaysTemplate)
+        btnDelete.setImage(deleteIcon, for: .normal)
+        btnDelete.tintColor = .red
+    }
+    
     func getAddressFromLatLon(pdblLatitude: String, withLongitude pdblLongitude: String) {
             var center : CLLocationCoordinate2D = CLLocationCoordinate2D()
             let lat: Double = Double("\(pdblLatitude)")!
@@ -284,6 +300,7 @@ class AddResidenceViewController: UIViewController {
     }
     
     @objc func dateChanged() {
+        changedDeleteButton()
         if let  datePicker = self.txtfieldMoveInDate.inputView as? MonthYearPickerView {
             self.txtfieldMoveInDate.text = moveInDateFormatter.string(from: datePicker.date)
         }
@@ -867,6 +884,7 @@ extension AddResidenceViewController: UITextFieldDelegate{
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        changedDeleteButton()
         if (textField == txtfieldHomeAddress){
             if (txtfieldHomeAddress.text == "       " && string == ""){
                 return false

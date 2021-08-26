@@ -40,7 +40,8 @@ extension Int{
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .ordinal
         let ordinalNumber = numberFormatter.string(from: NSNumber(value: self))!
-        return kOrdinalToSpellingDictionary[ordinalNumber]!
+        return ordinalNumber
+        //return kOrdinalToSpellingDictionary[ordinalNumber]!
     }
 }
 

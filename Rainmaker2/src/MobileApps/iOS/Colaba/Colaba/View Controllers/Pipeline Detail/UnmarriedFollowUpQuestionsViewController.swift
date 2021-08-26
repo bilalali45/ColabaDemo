@@ -87,9 +87,12 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
         
-        relationshipTypeDropDown.dismissMode = .manual
+        relationshipTypeDropDown.dismissMode = .onTap
         relationshipTypeDropDown.anchorView = relationshipTypeDropDownAnchorView
         relationshipTypeDropDown.dataSource = kRelationshipTypeArray
+        relationshipTypeDropDown.cancelAction = .some({
+            self.btnTypeOfRelationDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        })
         relationshipTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnTypeOfRelationDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldTypeOfRelation.dividerColor = Theme.getSeparatorNormalColor()
@@ -102,11 +105,13 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
             lblRelationshipDetailError.isHidden = item != "Other"
         }
         
-        stateDropDown.dismissMode = .manual
+        stateDropDown.dismissMode = .onTap
         stateDropDown.anchorView = stateDropDownAnchorView
         stateDropDown.direction = .top
         stateDropDown.dataSource = kUSAStatesArray
-        
+        stateDropDown.cancelAction = .some({
+            self.btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        })
         stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()

@@ -94,16 +94,20 @@ class AddMailingAddressViewController: UIViewController {
             textfield.detailVerticalOffset = 4
             textfield.placeholderVerticalOffset = 8
         }
+        txtfieldHomeAddress.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 25)
         btnSaveChanges.layer.borderWidth = 1
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
         
-        countryDropDown.dismissMode = .manual
+        countryDropDown.dismissMode = .onTap
         countryDropDown.anchorView = countryDropDownAnchorView
         countryDropDown.direction = .top
         countryDropDown.dataSource = kCountryListArray
-        
+        countryDropDown.cancelAction = .some({
+            self.btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        })
         countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            changedDeleteButton()
             btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldCountry.detail = ""
@@ -112,12 +116,15 @@ class AddMailingAddressViewController: UIViewController {
             countryDropDown.hide()
         }
         
-        stateDropDown.dismissMode = .manual
+        stateDropDown.dismissMode = .onTap
         stateDropDown.anchorView = stateDropDownAnchorView
         stateDropDown.direction = .top
         stateDropDown.dataSource = kUSAStatesArray
-        
+        stateDropDown.cancelAction = .some({
+            self.btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        })
         stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            changedDeleteButton()
             btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldState.detail = ""
@@ -179,6 +186,12 @@ class AddMailingAddressViewController: UIViewController {
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
         }
+    }
+    
+    func changedDeleteButton(){
+        let deleteIcon = UIImage(named: "AddressDeleteIcon")?.withRenderingMode(.alwaysTemplate)
+        btnDelete.setImage(deleteIcon, for: .normal)
+        btnDelete.tintColor = .red
     }
     
     func getAddressFromLatLon(pdblLatitude: String, withLongitude pdblLongitude: String) {
@@ -423,7 +436,7 @@ extension AddMailingAddressViewController: UITableViewDataSource, UITableViewDel
         GMSPlacesClient.shared().fetchPlace(fromPlaceID: placesData[indexPath.row].placeID, placeFields: .all, sessionToken: nil) { place, error in
             if let formattedAddress = place?.formattedAddress{
                 self.txtfieldHomeAddress.text = "       \(formattedAddress)"
-                self.txtfieldHomeAddress.placeholder = "Search Home Address"
+                self.txtfieldHomeAddress.placeholder = "Search Mailing Address"
                 self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
                 self.txtfieldHomeAddress.detail = ""
             }
@@ -449,7 +462,7 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
             //showAutoCompletePlaces()
             btnSearchTopConstraint.constant = 37
             self.view.layoutSubviews()
-            txtfieldHomeAddress.placeholder = "Search Home Address"
+            txtfieldHomeAddress.placeholder = "Search Mailing Address"
             if txtfieldHomeAddress.text == ""{
                 txtfieldHomeAddress.text = "       "
             }
@@ -475,7 +488,7 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
             btnDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             if (txtfieldHomeAddress.text == "       "){
                 txtfieldHomeAddress.text = ""
-                txtfieldHomeAddress.placeholder = "       Search Home Address"
+                txtfieldHomeAddress.placeholder = "       Search Mailing Address"
                 btnSearchTopConstraint.constant = 34
                 self.view.layoutSubviews()
             }
@@ -589,6 +602,7 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        changedDeleteButton()
         if (textField == txtfieldHomeAddress){
             if (txtfieldHomeAddress.text == "       " && string == ""){
                 return false
@@ -610,7 +624,7 @@ extension AddMailingAddressViewController: GMSAutocompleteViewControllerDelegate
   func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
     if let formattedAddress = place.formattedAddress{
         txtfieldHomeAddress.text = "       \(formattedAddress)"
-        txtfieldHomeAddress.placeholder = "Search Home Address"
+        txtfieldHomeAddress.placeholder = "Search Mailing Address"
         txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
         txtfieldHomeAddress.detail = ""
     }
