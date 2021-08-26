@@ -418,15 +418,13 @@ extension AddMailingAddressViewController: UITableViewDataSource, UITableViewDel
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tblViewPlaces.isHidden = true
         btnDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+        self.txtfieldStreetAddress.text = placesData[indexPath.row].attributedPrimaryText.string
         GMSPlacesClient.shared().fetchPlace(fromPlaceID: placesData[indexPath.row].placeID, placeFields: .all, sessionToken: nil) { place, error in
             if let formattedAddress = place?.formattedAddress{
                 self.txtfieldHomeAddress.text = "       \(formattedAddress)"
                 self.txtfieldHomeAddress.placeholder = "Search Home Address"
                 self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
                 self.txtfieldHomeAddress.detail = ""
-            }
-            if let shortName = place?.addressComponents?.first?.shortName{
-                self.txtfieldStreetAddress.text = shortName
             }
             self.showAllFields()
             if let latitude = place?.coordinate.latitude, let longitude = place?.coordinate.longitude{
