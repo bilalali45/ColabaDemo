@@ -160,6 +160,7 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
     }
     
     @objc func txtfieldStateTextChanged(){
+        btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
         if (txtfieldState.text == ""){
             stateDropDown.dataSource = kUSAStatesArray
             stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
@@ -269,8 +270,8 @@ extension UnmarriedFollowUpQuestionsViewController: UITextFieldDelegate{
         
         if (textField == txtfieldState){
             //textField.endEditing(true)
-            btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-            stateDropDown.show()
+            //btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+            //stateDropDown.show()
         }
     }
     

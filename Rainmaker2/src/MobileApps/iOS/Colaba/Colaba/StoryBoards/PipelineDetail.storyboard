@@ -3398,14 +3398,21 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3hc-9C-mZE">
                                 <rect key="frame" x="0.0" y="65" width="375" height="480"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Is there a person who is not your legal spouse but who currently has real property rights similar to those of a legal spouse?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iy8-HM-Fu0">
-                                        <rect key="frame" x="20" y="30" width="335" height="46.5"/>
-                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
-                                        <color key="textColor" name="AppGreyColor"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iy8-HM-Fu0">
+                                        <rect key="frame" x="20" y="25" width="335" height="69.5"/>
+                                        <attributedString key="attributedText">
+                                            <fragment content="Is there a person who is not your legal spouse but who currently has real property rights similar to those of a legal spouse?">
+                                                <attributes>
+                                                    <color key="NSColor" name="AppGreyColor"/>
+                                                    <font key="NSFont" size="13" name="Rubik-Regular"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="tPl-Hs-yd9">
-                                        <rect key="frame" x="20" y="96.5" width="57" height="22"/>
+                                        <rect key="frame" x="20" y="114.5" width="57" height="22"/>
                                         <subviews>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YO1-Sx-s0q">
                                                 <rect key="frame" x="0.0" y="0.0" width="18" height="22"/>
@@ -3423,7 +3430,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="tfI-9v-bVw">
-                                        <rect key="frame" x="20" y="136.5" width="52.5" height="22"/>
+                                        <rect key="frame" x="20" y="154.5" width="52.5" height="22"/>
                                         <subviews>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="abX-BR-YxH">
                                                 <rect key="frame" x="0.0" y="0.0" width="18" height="22"/>
@@ -3441,7 +3448,7 @@
                                         </subviews>
                                     </stackView>
                                     <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="riK-2Y-Ltx" customClass="TextField" customModule="Material">
-                                        <rect key="frame" x="20" y="198.5" width="335" height="39"/>
+                                        <rect key="frame" x="20" y="216.5" width="335" height="39"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="39" id="xE0-HE-bof"/>
                                         </constraints>
@@ -3469,14 +3476,14 @@
                                         </userDefinedRuntimeAttributes>
                                     </textField>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mfm-XY-0el">
-                                        <rect key="frame" x="20" y="237.5" width="335" height="2"/>
+                                        <rect key="frame" x="20" y="255.5" width="335" height="2"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="2" id="rRz-ZJ-IaS"/>
                                         </constraints>
                                     </view>
                                     <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2hR-9r-fcq">
-                                        <rect key="frame" x="335.5" y="191.5" width="17.5" height="22"/>
+                                        <rect key="frame" x="335.5" y="209.5" width="17.5" height="22"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="textfield-dropdownIcon"/>
                                         <connections>
@@ -3484,14 +3491,14 @@
                                         </connections>
                                     </button>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yuV-Ip-o6t">
-                                        <rect key="frame" x="20" y="269.5" width="335" height="2"/>
+                                        <rect key="frame" x="20" y="287.5" width="335" height="2"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="2" id="aHp-ds-zBG"/>
                                         </constraints>
                                     </view>
                                     <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FVr-SW-7Mm" customClass="TextField" customModule="Material">
-                                        <rect key="frame" x="20" y="277.5" width="335" height="39"/>
+                                        <rect key="frame" x="20" y="295.5" width="335" height="39"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="39" id="mhb-52-qeh"/>
                                         </constraints>
@@ -3519,7 +3526,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </textField>
                                     <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b02-Qp-tyn">
-                                        <rect key="frame" x="335.5" y="270.5" width="17.5" height="22"/>
+                                        <rect key="frame" x="335.5" y="288.5" width="17.5" height="22"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="textfield-dropdownIcon"/>
                                         <connections>
@@ -3527,13 +3534,13 @@
                                         </connections>
                                     </button>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Relationship Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4nv-ej-WmW">
-                                        <rect key="frame" x="22" y="346.5" width="110" height="14.5"/>
+                                        <rect key="frame" x="22" y="364.5" width="110" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
                                         <color key="textColor" name="AppGreyColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f0J-jN-p75">
-                                        <rect key="frame" x="20" y="372" width="335" height="77"/>
+                                        <rect key="frame" x="20" y="390" width="335" height="77"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="77" id="irn-Yv-xTV"/>
@@ -3551,7 +3558,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </textView>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0w8-50-57b">
-                                        <rect key="frame" x="20" y="453" width="0.0" height="0.0"/>
+                                        <rect key="frame" x="20" y="471" width="0.0" height="0.0"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
                                         <color key="textColor" name="SeparatorErrorColor"/>
                                         <nil key="highlightedColor"/>
@@ -3560,7 +3567,7 @@
                                 <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="Iy8-HM-Fu0" secondAttribute="trailing" constant="20" id="2I8-pU-Xpt"/>
-                                    <constraint firstItem="Iy8-HM-Fu0" firstAttribute="top" secondItem="3hc-9C-mZE" secondAttribute="top" constant="30" id="3nn-TJ-uDD"/>
+                                    <constraint firstItem="Iy8-HM-Fu0" firstAttribute="top" secondItem="3hc-9C-mZE" secondAttribute="top" constant="25" id="3nn-TJ-uDD"/>
                                     <constraint firstItem="riK-2Y-Ltx" firstAttribute="leading" secondItem="3hc-9C-mZE" secondAttribute="leading" constant="20" id="5RI-7w-77c"/>
                                     <constraint firstItem="tfI-9v-bVw" firstAttribute="leading" secondItem="3hc-9C-mZE" secondAttribute="leading" constant="20" id="7s0-tO-sRV"/>
                                     <constraint firstItem="riK-2Y-Ltx" firstAttribute="top" secondItem="tfI-9v-bVw" secondAttribute="bottom" constant="40" id="8a4-gr-aFt"/>
@@ -4051,14 +4058,21 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fph-wj-HzZ">
                                 <rect key="frame" x="0.0" y="65" width="375" height="200"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Was Richard Glenn Randall ever activated during their tour of duty?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tdS-XN-ffD">
-                                        <rect key="frame" x="20" y="30" width="335" height="31"/>
-                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
-                                        <color key="textColor" name="AppGreyColor"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tdS-XN-ffD">
+                                        <rect key="frame" x="20" y="25" width="335" height="46.5"/>
+                                        <attributedString key="attributedText">
+                                            <fragment content="Was Richard Glenn Randall ever activated during their tour of duty?">
+                                                <attributes>
+                                                    <color key="NSColor" name="AppGreyColor"/>
+                                                    <font key="NSFont" size="13" name="Rubik-Regular"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Gnz-c0-8Vm">
-                                        <rect key="frame" x="20" y="79" width="58" height="22"/>
+                                        <rect key="frame" x="20" y="89.5" width="58" height="22"/>
                                         <subviews>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n68-fc-XYk">
                                                 <rect key="frame" x="0.0" y="0.0" width="18" height="22"/>
@@ -4076,7 +4090,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="s68-1D-YDq">
-                                        <rect key="frame" x="20" y="119" width="52" height="22"/>
+                                        <rect key="frame" x="20" y="129.5" width="52" height="22"/>
                                         <subviews>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="crS-6e-zva">
                                                 <rect key="frame" x="0.0" y="0.0" width="18" height="22"/>
@@ -4098,7 +4112,7 @@
                                 <constraints>
                                     <constraint firstItem="Gnz-c0-8Vm" firstAttribute="leading" secondItem="Fph-wj-HzZ" secondAttribute="leading" constant="20" id="1Nh-Nw-Lr8"/>
                                     <constraint firstItem="s68-1D-YDq" firstAttribute="top" secondItem="Gnz-c0-8Vm" secondAttribute="bottom" constant="18" id="5qq-6i-gBI"/>
-                                    <constraint firstItem="tdS-XN-ffD" firstAttribute="top" secondItem="Fph-wj-HzZ" secondAttribute="top" constant="30" id="6xg-Ae-PXN"/>
+                                    <constraint firstItem="tdS-XN-ffD" firstAttribute="top" secondItem="Fph-wj-HzZ" secondAttribute="top" constant="25" id="6xg-Ae-PXN"/>
                                     <constraint firstAttribute="trailing" secondItem="tdS-XN-ffD" secondAttribute="trailing" constant="20" id="9TH-CQ-E7W"/>
                                     <constraint firstItem="tdS-XN-ffD" firstAttribute="leading" secondItem="Fph-wj-HzZ" secondAttribute="leading" constant="20" id="hVH-fs-Tol"/>
                                     <constraint firstItem="s68-1D-YDq" firstAttribute="leading" secondItem="Fph-wj-HzZ" secondAttribute="leading" constant="20" id="jFr-of-dOH"/>

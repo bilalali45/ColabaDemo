@@ -294,7 +294,7 @@ class AddResidenceViewController: UIViewController {
     }
     
     @objc func txtfieldCountryTextChanged(){
-        
+        btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
         if (txtfieldCountry.text == ""){
             countryDropDown.dataSource = kCountryListArray
             countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
@@ -321,6 +321,7 @@ class AddResidenceViewController: UIViewController {
     }
     
     @objc func txtfieldStateTextChanged(){
+        btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
         if (txtfieldState.text == ""){
             stateDropDown.dataSource = kUSAStatesArray
             stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
@@ -686,14 +687,14 @@ extension AddResidenceViewController: UITextFieldDelegate{
         
         if (textField == txtfieldCountry){
             //textField.endEditing(true)
-            btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-            countryDropDown.show()
+            //btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+           // countryDropDown.show()
         }
         
         if (textField == txtfieldState){
             //textField.endEditing(true)
-            btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-            stateDropDown.show()
+            //btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+            //stateDropDown.show()
         }
     }
     
