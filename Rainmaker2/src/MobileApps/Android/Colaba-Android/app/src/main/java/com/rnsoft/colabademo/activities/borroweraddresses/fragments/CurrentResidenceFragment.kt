@@ -66,8 +66,9 @@ class CurrentResidenceFragment : Fragment() {
         //binding.housingEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.housingEditText, binding.housingLayout, requireContext()))
         //binding.moveInEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.moveInEditText, binding.moveInLayout, requireContext()))
 
-        val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,  AppSetting.states)
-        binding.countryCompleteTextView.setAdapter(stateAdapter)
+
+        val countryAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view ,  AppSetting.countries)
+        binding.countryCompleteTextView.setAdapter(countryAdapter)
 
         binding.countryCompleteTextView.setOnFocusChangeListener { _, _ ->
             binding.countryCompleteTextView.showDropDown()
@@ -83,8 +84,8 @@ class CurrentResidenceFragment : Fragment() {
         }
 
 
-        val countryAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view ,  AppSetting.countries)
-        binding.stateCompleteTextView.setAdapter(countryAdapter)
+        val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,  AppSetting.states)
+        binding.stateCompleteTextView.setAdapter(stateAdapter)
 
         binding.stateCompleteTextView.setOnFocusChangeListener { _, _ ->
             binding.stateCompleteTextView.showDropDown()

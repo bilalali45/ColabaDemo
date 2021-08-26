@@ -143,6 +143,8 @@
     <string name="street_address">Street Address</string>
     <string name="unit_or_apt">Unit Or Apt. Number (Optional)</string>
     <string name="city">City</string>
+    <string name="relationship_details"> Relationship Details</string>
+
     <string name="county">County</string>
     <string name="state">State</string>
     <string name="search_home_address">Search Home Address</string>
