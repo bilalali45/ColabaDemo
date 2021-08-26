@@ -1,11 +1,16 @@
 package com.rnsoft.colabademo
 
+import android.app.DatePickerDialog
+import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.TempResidenceLayoutBinding
@@ -20,18 +25,36 @@ class CurrentResidenceFragment : Fragment() {
     private var _binding: TempResidenceLayoutBinding? = null
     private val binding get() = _binding!!
 
-
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         _binding = TempResidenceLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+
+
+        binding.moveInEditText.setOnClickListener { openCalendar() }
+        binding.moveInEditText.setOnFocusChangeListener{ _ , p1 ->
+            if(p1)
+            openCalendar()
+        }
+        binding.moveInEditText.showSoftInputOnFocus = false
+
+
+        binding.topSearchAutoTextView.onFocusChangeListener = object:View.OnFocusChangeListener{
+            override fun onFocusChange(p0: View?, p1: Boolean) {
+                if(p1) {
+                    binding.topSearchTextInputLine.minimumHeight = 1
+                    binding.topSearchTextInputLine.setBackgroundColor(resources.getColor( R.color.colaba_primary_color , requireActivity().theme))
+                }
+                else{
+                    binding.topSearchTextInputLine.minimumHeight = 1
+                    binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
+                }
+            }
+        }
 
 
         binding.cityEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.cityEditText, binding.cityLayout, requireContext()))
@@ -42,9 +65,9 @@ class CurrentResidenceFragment : Fragment() {
 
         binding.monthlyRentEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.monthlyRentEditText, binding.monthlyRentLayout, requireContext()))
         binding.housingEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.housingEditText, binding.housingLayout, requireContext()))
-        binding.moveInEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.moveInEditText, binding.moveInLayout, requireContext()))
+        //binding.moveInEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.moveInEditText, binding.moveInLayout, requireContext()))
 
-        val stateAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line,  AppSetting.states)
+        val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,  AppSetting.states)
         binding.countryCompleteTextView.setAdapter(stateAdapter)
 
         binding.countryCompleteTextView.setOnFocusChangeListener { _, _ ->
@@ -55,7 +78,7 @@ class CurrentResidenceFragment : Fragment() {
         }
 
 
-        val countryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line ,  AppSetting.countries)
+        val countryAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view ,  AppSetting.countries)
         binding.stateCompleteTextView.setAdapter(countryAdapter)
 
         binding.stateCompleteTextView.setOnFocusChangeListener { _, _ ->
@@ -73,7 +96,40 @@ class CurrentResidenceFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+
+
         return root
+
+    }
+
+    private fun openCalendar(){
+
+        hideKeyBoard()
+
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        val dpd = DatePickerDialog(
+            requireActivity(), { view, year, monthOfYear, dayOfMonth ->
+                var stringMonth = monthOfYear.toString()
+                if(monthOfYear<10)
+                    stringMonth = "0$monthOfYear"
+                binding.moveInEditText.setText(stringMonth + " / " + year)
+
+                binding.moveInLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(),  R.color.grey_color_two))
+            },
+            year,
+            month,
+            day
+        )
+        dpd.show()
+
+    }
+
+    private fun hideKeyBoard() {
+            val inputMethodManager = ContextCompat.getSystemService(requireContext(), InputMethodManager::class.java)!!
+            inputMethodManager.hideSoftInputFromWindow(binding.moveInEditText.windowToken, 0)
 
     }
 
