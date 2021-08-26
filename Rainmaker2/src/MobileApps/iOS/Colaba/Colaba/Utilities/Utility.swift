@@ -266,6 +266,13 @@ struct Utility {
         return ""
     }
     
+    static func getUserEmail() -> String{
+        if let user = UserModel.getCurrentUser(){
+            return user.userName
+        }
+        return ""
+    }
+    
     static func getTokenValidityDate() -> String{
         if let user = UserModel.getCurrentUser(){
             return user.validTo
