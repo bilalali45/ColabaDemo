@@ -36,6 +36,7 @@
 		236EA1AE2678CE1B00C2F8B5 /* DummyDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236EA1AD2678CE1B00C2F8B5 /* DummyDashboardViewController.swift */; };
 		237DF98726D772A1000CAA8E /* FaceLockNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237DF98626D772A1000CAA8E /* FaceLockNavigationViewController.swift */; };
 		237DF98926D7753A000CAA8E /* FingerPrintNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237DF98826D7753A000CAA8E /* FingerPrintNavigationViewController.swift */; };
+		237DF98B26D77B98000CAA8E /* AddPreviousResidenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237DF98A26D77B98000CAA8E /* AddPreviousResidenceViewController.swift */; };
 		238D70772678E8C80067687C /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238D70762678E8C80067687C /* FiltersViewController.swift */; };
 		23908F9E26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23908F9C26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift */; };
 		23908F9F26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23908F9D26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib */; };
@@ -183,6 +184,7 @@
 		236EA1AD2678CE1B00C2F8B5 /* DummyDashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDashboardViewController.swift; sourceTree = "<group>"; };
 		237DF98626D772A1000CAA8E /* FaceLockNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceLockNavigationViewController.swift; sourceTree = "<group>"; };
 		237DF98826D7753A000CAA8E /* FingerPrintNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPrintNavigationViewController.swift; sourceTree = "<group>"; };
+		237DF98A26D77B98000CAA8E /* AddPreviousResidenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPreviousResidenceViewController.swift; sourceTree = "<group>"; };
 		238D70762678E8C80067687C /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		23908F9C26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerAddressAndLoanInfoTableViewCell.swift; sourceTree = "<group>"; };
 		23908F9D26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerAddressAndLoanInfoTableViewCell.xib; sourceTree = "<group>"; };
@@ -475,6 +477,7 @@
 				23F23B4026CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift */,
 				23F23B4226CA591400AEF33E /* SaveAddressPopupViewController.swift */,
 				23F23B4426CA592800AEF33E /* DeleteAddressPopupViewController.swift */,
+				237DF98A26D77B98000CAA8E /* AddPreviousResidenceViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -1001,6 +1004,7 @@
 				2397AF63267782E6007A1A45 /* PipelineTableViewCell.swift in Sources */,
 				710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */,
 				23E9C754269C5F100066C978 /* DocumentsDetailViewController.swift in Sources */,
+				237DF98B26D77B98000CAA8E /* AddPreviousResidenceViewController.swift in Sources */,
 				23A56C5E2685B017005CE6F4 /* Loaf.swift in Sources */,
 				23F23B3F26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift in Sources */,
 				23E9C757269C6C140066C978 /* DocumentsDetailTableViewCell.swift in Sources */,

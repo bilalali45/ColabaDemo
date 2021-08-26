@@ -45,6 +45,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         if (isAppOpenFromBackground){
             txtFieldEmail.text = Utility.getUserEmail()
+            txtFieldEmail.isUserInteractionEnabled = false
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.10) {
             self.setupViews()

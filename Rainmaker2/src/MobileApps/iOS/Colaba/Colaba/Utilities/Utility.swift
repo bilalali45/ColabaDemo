@@ -135,6 +135,10 @@ struct Utility {
         return loanDetailStoryboard.instantiateViewController(withIdentifier: "AddResidenceViewController") as! AddResidenceViewController
     }
     
+    static func getAddPreviousResidenceVC() -> AddPreviousResidenceViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "AddPreviousResidenceViewController") as! AddPreviousResidenceViewController
+    }
+    
     static func getAddMailingAddressVC() -> AddMailingAddressViewController{
         return loanDetailStoryboard.instantiateViewController(withIdentifier: "AddMailingAddressViewController") as! AddMailingAddressViewController
     }

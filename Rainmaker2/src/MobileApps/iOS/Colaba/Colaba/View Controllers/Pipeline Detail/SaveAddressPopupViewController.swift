@@ -17,6 +17,7 @@ class SaveAddressPopupViewController: UIViewController {
     @IBOutlet weak var btnClose: UIButton!
     @IBOutlet weak var stackViewSave: UIStackView!
     @IBOutlet weak var stackViewDiscard: UIStackView!
+    var isForPrevAddress = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +25,7 @@ class SaveAddressPopupViewController: UIViewController {
         mainView.roundOnlyTopCorners(radius: 20)
         stackViewSave.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(saveTapped)))
         stackViewDiscard.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(discardTapped)))
-        
+        lblTitle.text = isForPrevAddress ? "Save Previous Residence?" : "Save Current Residence?"
     }
     
     override func viewDidAppear(_ animated: Bool) {
