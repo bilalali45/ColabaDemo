@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -59,13 +60,15 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/ic_plus_white"
+
         android:clickable="true"
-        android:src="@drawable/plus_icon"
+        android:src="@drawable/ic_plusbutton"
         android:translationY="5dp"
         android:translationZ="135dp"
-        app:backgroundTint="@color/colaba_primary_color"
+
         app:borderWidth="0dp"
+        app:backgroundTint="@color/colaba_primary_color"
+
         app:elevation="135dp"
         app:fabSize="normal"
         app:layout_anchorGravity="bottom|center_horizontal"

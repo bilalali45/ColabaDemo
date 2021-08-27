@@ -50,25 +50,35 @@ class QuestionAdapter internal constructor(private var questionsModel: ArrayList
                 }
 
                 if(answer1.isNullOrEmpty() || answer1.isNullOrBlank()){
-                    answer1Icon.visibility = View.GONE
-                    answer1Name.visibility = View.GONE
-                    answer1Yes.visibility = View.GONE
+                    /*
+                    if(totalBorrowers<=1) {
+                        answer1Icon.visibility = View.INVISIBLE
+                        answer1Name.visibility = View.INVISIBLE
+                        answer1Yes.visibility = View.INVISIBLE
+                    } */
+                        answer1Icon.visibility = View.GONE
+                        answer1Name.visibility = View.GONE
+                        answer1Yes.visibility = View.GONE
+
                 }
                 else
                     answer1Name.text = answer1
 
                 if(answer2.isNullOrEmpty() || answer2.isNullOrBlank()){
-                    answer2Icon.visibility = View.GONE
-                    answer2Name.visibility = View.GONE
-                    answer2No.visibility = View.GONE
+
+                        answer2Icon.visibility = View.GONE
+                        answer2Name.visibility = View.GONE
+                        answer2No.visibility = View.GONE
+
                 }
                 else
                     answer2Name.text = answer2
 
                 if(answer3.isNullOrEmpty() || answer3.isNullOrBlank()){
-                    answer3Icon.visibility = View.GONE
-                    answer3Name.visibility = View.GONE
-                    answer3Na.visibility = View.GONE
+                        answer3Icon.visibility = View.GONE
+                        answer3Name.visibility = View.GONE
+                        answer3Na.visibility = View.GONE
+
                 }
                 else
                     answer3Name.text = answer3
