@@ -1,3 +1,3 @@
-package com.rnsoft.colabademo.activities.borroweraddresses.info.fragment
+package com.rnsoft.colabademo
 
-class SwipeToDeleteEvent(val boolean: Boolean)
+class NotSavingAddressEvent(val boolean: Boolean)

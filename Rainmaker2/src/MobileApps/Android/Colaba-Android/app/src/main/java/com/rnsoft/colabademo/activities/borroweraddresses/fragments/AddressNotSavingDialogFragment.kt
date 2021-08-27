@@ -8,17 +8,16 @@ import android.view.WindowManager
 import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.rnsoft.colabademo.activities.borroweraddresses.info.fragment.SwipeToDeleteEvent
 import com.rnsoft.colabademo.databinding.DialogFragmentCurrentResidenceBinding
 import org.greenrobot.eventbus.EventBus
 
-class SaveCurrentResidenceDialogFragment : BottomSheetDialogFragment() {
+class AddressNotSavingDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
         lateinit var userMessage:String
-        fun newInstance(message:String): SaveCurrentResidenceDialogFragment {
+        fun newInstance(message:String): AddressNotSavingDialogFragment {
             userMessage    =   message
-            return SaveCurrentResidenceDialogFragment()
+            return AddressNotSavingDialogFragment()
         }
 
 
