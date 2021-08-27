@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
@@ -26,6 +27,7 @@ import com.rnsoft.colabademo.activities.borroweraddresses.info.model.Address
 import com.rnsoft.colabademo.activities.borroweraddresses.info.model.Dependent
 import com.rnsoft.colabademo.databinding.*
 import com.rnsoft.colabademo.utils.RecyclerTouchListener
+import com.rnsoft.colabademo.utils.SecurityNumFormat
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -84,9 +86,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
         }
 
-
-
-
         return bi.root
     }
 
@@ -109,9 +108,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         bi.addPrevAddress.setOnClickListener(this)
         bi.edDateOfBirth.setOnClickListener(this)
 
-        bi.edHomeNumber.addTextChangedListener(PhoneTextFormatter(bi.edHomeNumber, "(###) ###-####"))
-        bi.edWorkNum.addTextChangedListener(PhoneTextFormatter(bi.edWorkNum, "(###) ###-####"))
-        bi.edCellNum.addTextChangedListener(PhoneTextFormatter(bi.edCellNum, "(###) ###-####"))
 
         // initialize recyclerview
         dependentAdapter = DependentAdapter(requireActivity(),listItems,this@PrimaryBorrowerInfoFragment)
@@ -119,6 +115,19 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
 
         setSingleItemFocus()
         setEndIconClicks()
+        setNumberFormts()
+
+        bi.mainConstraintLayout.setOnClickListener { hideSoftKeyboard() }
+        msBinding.unmarriedAddendum.setOnClickListener { findNavController().navigate(R.id.navigation_unmarried) }
+        bindingMilitary.layoutActivePersonnel.setOnClickListener { findNavController().navigate(R.id.navigation_active_duty)}
+        bindingMilitary.layoutNationalGuard.setOnClickListener { findNavController().navigate(R.id.navigation_reserve) }
+        citizenshipBinding.layoutVisaStatusOther.setOnClickListener { findNavController().navigate(R.id.navigation_non_permanent) }
+
+
+
+
+
+
     }
 
     private fun addEmptyDependentField() {
@@ -173,7 +182,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             R.id.add_dependent_click -> addEmptyDependentField()
             R.id.add_prev_address -> findNavController().navigate(R.id.navigation_current_address)
             R.id.backButton -> requireActivity().finish()
-            R.id.ed_dateOfBirth -> openCalendar()
+           // R.id.ed_dateOfBirth -> openCalendar()
         }
     }
 
@@ -298,6 +307,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         })
     }
 
+
     @SuppressLint("ClickableViewAccessibility")
     private fun setSingleItemFocus(){
 
@@ -376,6 +386,10 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
                 return false
             }
         }) */
+
+        bi.edDateOfBirth.showSoftInputOnFocus = false
+        bi.edDateOfBirth.setOnClickListener { openCalendar() }
+        bi.edDateOfBirth.setOnFocusChangeListener{ _ , _ ->  openCalendar() }
 
         bi.edMiddleName.setOnFocusChangeListener(MyCustomFocusListener(bi.edMiddleName, bi.layoutMiddleName, requireContext()))
         bi.edSuffix.setOnFocusChangeListener(MyCustomFocusListener(bi.edSuffix, bi.layoutSuffix, requireContext()))
@@ -505,6 +519,14 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         } else {
             bindingMilitary.chbSurvivingSpouse.setTypeface(null, Typeface.NORMAL)
         }
+    }
+
+    private fun setNumberFormts(){
+        bi.edHomeNumber.addTextChangedListener(PhoneTextFormatter(bi.edHomeNumber, "(###) ###-####"))
+        bi.edWorkNum.addTextChangedListener(PhoneTextFormatter(bi.edWorkNum, "(###) ###-####"))
+        bi.edCellNum.addTextChangedListener(PhoneTextFormatter(bi.edCellNum, "(###) ###-####"))
+        bi.edSecurityNum.addTextChangedListener(SecurityNumFormat(bi.edSecurityNum, "(###) ###-####"))
+
     }
 
     private fun isValidEmailAddress(email: String?): Boolean {

@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.borroweraddresses.fragments
+package com.rnsoft.colabademo
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,22 +8,19 @@ import android.view.WindowManager
 import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.rnsoft.colabademo.R
-import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.DialogFragmentCurrentResidenceBinding
+import org.greenrobot.eventbus.EventBus
 
-class SaveCurrentResidenceDialogFragment : BottomSheetDialogFragment() {
+class AddressNotSavingDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
-        lateinit var baseFragment:BaseFragment
-        /*fun newInstance(topFragment:BaseFragment): CustomFilterBottomSheetDialogFragment {
-            baseFragment    =   topFragment
-            return CustomFilterBottomSheetDialogFragment()
-        } */
-
-        fun newInstance(): SaveCurrentResidenceDialogFragment {
-            return SaveCurrentResidenceDialogFragment()
+        lateinit var userMessage:String
+        fun newInstance(message:String): AddressNotSavingDialogFragment {
+            userMessage    =   message
+            return AddressNotSavingDialogFragment()
         }
+
+
     }
 
     lateinit var binding: DialogFragmentCurrentResidenceBinding
@@ -42,42 +39,25 @@ class SaveCurrentResidenceDialogFragment : BottomSheetDialogFragment() {
         binding.recentIcon.setColorFilter(resources.getColor(R.color.grey_color_two, activity?.theme))
         binding.recentTextView.setTextColor(resources.getColor(R.color.grey_color_two, activity?.theme))
 
-        when(BaseFragment.globalOrderBy){
-            0->{
 
-                binding.pendingIcon.setColorFilter(resources.getColor(R.color.colaba_apptheme_blue, activity?.theme))
-                binding.pendingTextView.setTextColor(resources.getColor(R.color.colaba_apptheme_blue, activity?.theme))
-
-            }
-            1->{
-
-                binding.recentIcon.setColorFilter(resources.getColor(R.color.colaba_apptheme_blue, activity?.theme))
-                binding.recentTextView.setTextColor(resources.getColor(R.color.colaba_apptheme_blue, activity?.theme))
-
-
-            }
-
-            else-> {
-
-            }
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogFragmentCurrentResidenceBinding.inflate(inflater, container, false)
-        binding.crossImageView.setOnClickListener{
-            dismiss();
-        }
         setStyle(DialogFragment.STYLE_NORMAL, R.style.roundedBottomSheetDialog)
 
-
+        binding.crossImageView.setOnClickListener{
+            dismiss()
+        }
         binding.saveContinuelayout.setOnClickListener {
             dismiss()
+            EventBus.getDefault().post(NotSavingAddressEvent(true))
             //baseFragment.setOrderId(orderBy = 1)
         }
 
         binding.discardChangesLayout.setOnClickListener {
             dismiss()
+            EventBus.getDefault().post(NotSavingAddressEvent(true))
         }
 
         setInitialSelection()

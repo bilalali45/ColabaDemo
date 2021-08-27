@@ -34,6 +34,7 @@
         android:orientation="vertical"
         android:background="@drawable/search_view_holder_style"
         android:layout_marginTop="20dp"
+        android:clickable="true"
         android:visibility="gone">
 
         <TextView
