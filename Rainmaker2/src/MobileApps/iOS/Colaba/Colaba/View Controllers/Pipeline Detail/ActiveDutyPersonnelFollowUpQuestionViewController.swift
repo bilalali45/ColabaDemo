@@ -57,6 +57,7 @@ class ActiveDutyPersonnelFollowUpQuestionViewController: UIViewController {
             textfield.detailColor = .red
             textfield.detailVerticalOffset = 4
             textfield.placeholderVerticalOffset = 8
+            textfield.textColor = Theme.getAppBlackColor()
         }
         
         btnSaveChanges.layer.borderWidth = 1

@@ -8,6 +8,7 @@
 import UIKit
 import Material
 import DropDown
+import MaterialComponents
 
 class UnmarriedFollowUpQuestionsViewController: UIViewController {
 
@@ -31,14 +32,13 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
     @IBOutlet weak var txtfieldState: TextField!
     @IBOutlet weak var stateDropDownAnchorView: UIView!
     @IBOutlet weak var btnStateDropDown: UIButton!
-    @IBOutlet weak var lblRelationshipDetail: UILabel!
-    @IBOutlet weak var txtviewRelationshipDetail: UITextView!
-    @IBOutlet weak var lblRelationshipDetailError: UILabel!
+    @IBOutlet weak var relationshipDetailTextViewContainer: UIView!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
     var isNonLegalSpouse = 2 // 1 for yes 2 for no
     let relationshipTypeDropDown = DropDown()
     let stateDropDown = DropDown()
+    var txtViewRelationshipDetail = MDCFilledTextArea()
     private let validation: Validation
     
     init(validation: Validation) {
@@ -58,6 +58,11 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
         txtfieldState.addTarget(self, action: #selector(txtfieldStateTextChanged), for: .editingChanged)
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+    }
 
     //MARK:- Methods and Actions
     
@@ -72,16 +77,40 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
             textfield.detailColor = .red
             textfield.detailVerticalOffset = 4
             textfield.placeholderVerticalOffset = 8
+            textfield.textColor = Theme.getAppBlackColor()
         }
-//        txtviewRelationshipDetail.dividerThickness = 1
-//        txtviewRelationshipDetail.isDividerHidden = false
-//        txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
-//        txtviewRelationshipDetail.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-//        txtviewRelationshipDetail.delegate = self
-        txtviewRelationshipDetail.layer.cornerRadius = 5
-        txtviewRelationshipDetail.layer.borderColor = Theme.getButtonGreyColor().cgColor
-        txtviewRelationshipDetail.layer.borderWidth = 1
-        txtviewRelationshipDetail.delegate = self
+        
+        let estimatedFrame = relationshipDetailTextViewContainer.frame
+        txtViewRelationshipDetail = MDCFilledTextArea(frame: estimatedFrame)
+        txtViewRelationshipDetail.isHidden = true
+        txtViewRelationshipDetail.label.text = "Relationship Details"
+        txtViewRelationshipDetail.textView.text = ""
+        txtViewRelationshipDetail.leadingAssistiveLabel.text = ""
+        txtViewRelationshipDetail.setFilledBackgroundColor(.clear, for: .normal)
+        txtViewRelationshipDetail.setFilledBackgroundColor(.clear, for: .disabled)
+        txtViewRelationshipDetail.setFilledBackgroundColor(.clear, for: .editing)
+        txtViewRelationshipDetail.setUnderlineColor(Theme.getSeparatorNormalColor(), for: .normal)
+        txtViewRelationshipDetail.setUnderlineColor(Theme.getSeparatorNormalColor(), for: .disabled)
+        txtViewRelationshipDetail.setUnderlineColor(Theme.getButtonBlueColor(), for: .editing)
+        txtViewRelationshipDetail.leadingEdgePaddingOverride = 0
+        txtViewRelationshipDetail.setFloatingLabel(Theme.getAppGreyColor(), for: .normal)
+        txtViewRelationshipDetail.setFloatingLabel(Theme.getAppGreyColor(), for: .disabled)
+        txtViewRelationshipDetail.setFloatingLabel(Theme.getAppGreyColor(), for: .editing)
+        txtViewRelationshipDetail.label.font = Theme.getRubikRegularFont(size: 13)
+        txtViewRelationshipDetail.setNormalLabel(Theme.getButtonGreyTextColor(), for: .normal)
+        txtViewRelationshipDetail.setNormalLabel(Theme.getButtonGreyTextColor(), for: .editing)
+        txtViewRelationshipDetail.setNormalLabel(Theme.getButtonGreyTextColor(), for: .disabled)
+        txtViewRelationshipDetail.setTextColor(Theme.getAppBlackColor(), for: .normal)
+        txtViewRelationshipDetail.setTextColor(Theme.getAppBlackColor(), for: .editing)
+        txtViewRelationshipDetail.setTextColor(Theme.getAppBlackColor(), for: .disabled)
+        txtViewRelationshipDetail.textView.font = Theme.getRubikRegularFont(size: 15)
+        txtViewRelationshipDetail.leadingAssistiveLabel.font = Theme.getRubikRegularFont(size: 12)
+        txtViewRelationshipDetail.setLeadingAssistiveLabel(.red, for: .normal)
+        txtViewRelationshipDetail.setLeadingAssistiveLabel(.red, for: .editing)
+        txtViewRelationshipDetail.setLeadingAssistiveLabel(.red, for: .disabled)
+        txtViewRelationshipDetail.textView.textColor = .black
+        txtViewRelationshipDetail.textView.delegate = self
+        mainView.addSubview(txtViewRelationshipDetail)
         
         btnSaveChanges.layer.borderWidth = 1
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
@@ -100,9 +129,9 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
             txtfieldTypeOfRelation.text = item
             txtfieldTypeOfRelation.detail = ""
             relationshipTypeDropDown.hide()
-            txtviewRelationshipDetail.isHidden = item != "Other"
-            lblRelationshipDetail.isHidden = item != "Other"
-            lblRelationshipDetailError.isHidden = item != "Other"
+            relationshipDetailTextViewContainer.isHidden = item != "Other"
+            txtViewRelationshipDetail.isHidden = item != "Other"
+
         }
         
         stateDropDown.dismissMode = .onTap
@@ -155,12 +184,16 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
         txtfieldState.isHidden = isNonLegalSpouse != 1
         btnStateDropDown.isHidden = isNonLegalSpouse != 1
         if (isNonLegalSpouse == 1){
-            txtviewRelationshipDetail.isHidden = txtfieldTypeOfRelation.text != "Other"
-            lblRelationshipDetail.isHidden = txtfieldTypeOfRelation.text != "Other"
+//            txtviewRelationshipDetail.isHidden = txtfieldTypeOfRelation.text != "Other"
+//            lblRelationshipDetail.isHidden = txtfieldTypeOfRelation.text != "Other"
+            relationshipDetailTextViewContainer.isHidden = txtfieldTypeOfRelation.text != "Other"
+            txtViewRelationshipDetail.isHidden = txtfieldTypeOfRelation.text != "Other"
         }
         else{
-            txtviewRelationshipDetail.isHidden = true
-            lblRelationshipDetail.isHidden = true
+//            txtviewRelationshipDetail.isHidden = true
+//            lblRelationshipDetail.isHidden = true
+            relationshipDetailTextViewContainer.isHidden = true
+            txtViewRelationshipDetail.isHidden = true
         }
     }
     
@@ -234,22 +267,26 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
             
             if (txtfieldTypeOfRelation.text == "Other"){
                 do{
-                    let relationshipDetail = try validation.validateRelationshipDetail(txtviewRelationshipDetail.text)
+                    let relationshipDetail = try validation.validateRelationshipDetail(txtViewRelationshipDetail.textView.text)
                     DispatchQueue.main.async {
-                        self.lblRelationshipDetailError.isHidden = true
-                        self.txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
+//                        self.lblRelationshipDetailError.isHidden = true
+//                        self.txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
+                        self.txtViewRelationshipDetail.setUnderlineColor(Theme.getSeparatorNormalColor(), for: .normal)
+                        self.txtViewRelationshipDetail.leadingAssistiveLabel.text = ""
                     }
-                    
+
                 }
                 catch{
-                    self.lblRelationshipDetailError.isHidden = false
-                    self.lblRelationshipDetailError.text = error.localizedDescription
-                    self.txtviewRelationshipDetail.dividerColor = Theme.getSeparatorErrorColor()
+//                    self.lblRelationshipDetailError.isHidden = false
+//                    self.lblRelationshipDetailError.text = error.localizedDescription
+//                    self.txtviewRelationshipDetail.dividerColor = Theme.getSeparatorErrorColor()
+                    self.txtViewRelationshipDetail.setUnderlineColor(Theme.getSeparatorErrorColor(), for: .normal)
+                    self.txtViewRelationshipDetail.leadingAssistiveLabel.text = error.localizedDescription
                 }
             }
-            
+
             if (txtfieldTypeOfRelation.text != "" && txtfieldState.text != ""){
-                if (txtfieldTypeOfRelation.text == "Other" && txtviewRelationshipDetail.text != ""){
+                if (txtfieldTypeOfRelation.text == "Other" && txtViewRelationshipDetail.textView.text != ""){
                     self.dismissVC()
                 }
                 else if (txtfieldTypeOfRelation.text != "Other"){
@@ -341,17 +378,21 @@ extension UnmarriedFollowUpQuestionsViewController: UITextViewDelegate{
         //txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
         
         do{
-            let relationshipDetail = try validation.validateRelationshipDetail(txtviewRelationshipDetail.text)
+            let relationshipDetail = try validation.validateRelationshipDetail(txtViewRelationshipDetail.textView.text)
             DispatchQueue.main.async {
-                self.lblRelationshipDetailError.isHidden = true
+                //self.lblRelationshipDetailError.isHidden = true
                 //self.txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtViewRelationshipDetail.setUnderlineColor(Theme.getSeparatorNormalColor(), for: .normal)
+                self.txtViewRelationshipDetail.leadingAssistiveLabel.text = ""
             }
-            
+
         }
         catch{
-            self.lblRelationshipDetailError.isHidden = false
-            self.lblRelationshipDetailError.text = error.localizedDescription
+//            self.lblRelationshipDetailError.isHidden = false
+//            self.lblRelationshipDetailError.text = error.localizedDescription
            // self.txtviewRelationshipDetail.dividerColor = Theme.getSeparatorErrorColor()
+            self.txtViewRelationshipDetail.setUnderlineColor(Theme.getSeparatorErrorColor(), for: .normal)
+            self.txtViewRelationshipDetail.leadingAssistiveLabel.text = error.localizedDescription
         }
         
     }

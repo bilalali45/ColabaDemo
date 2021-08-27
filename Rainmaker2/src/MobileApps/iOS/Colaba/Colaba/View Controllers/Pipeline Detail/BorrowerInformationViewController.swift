@@ -175,6 +175,7 @@ class BorrowerInformationViewController: UIViewController {
             textfield.detailColor = .red
             textfield.detailVerticalOffset = 4
             textfield.placeholderVerticalOffset = 8
+            textfield.textColor = Theme.getAppBlackColor()
         }
         
         addAddressView.layer.cornerRadius = 6
