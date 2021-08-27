@@ -290,7 +290,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
                 RecyclerTouchListener.OnSwipeOptionsClickListener {
 
                 override fun onSwipeOptionClicked(viewID: Int, position: Int) {
-                    var text = if(position==0) getString(R.string.delete_current_address) else getString(R.string.delete_mailing_address)
+                    var text = if(position==0) getString(R.string.delete_current_address) else getString(R.string.delete_prev_address)
                     selectedPosition = position
                     DeleteCurrentResidenceDialogFragment.newInstance(text).show(childFragmentManager, DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
                 }
@@ -525,7 +525,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         bi.edHomeNumber.addTextChangedListener(PhoneTextFormatter(bi.edHomeNumber, "(###) ###-####"))
         bi.edWorkNum.addTextChangedListener(PhoneTextFormatter(bi.edWorkNum, "(###) ###-####"))
         bi.edCellNum.addTextChangedListener(PhoneTextFormatter(bi.edCellNum, "(###) ###-####"))
-        bi.edSecurityNum.addTextChangedListener(SecurityNumFormat(bi.edSecurityNum, "(###) ###-####"))
+        //bi.edSecurityNum.addTextChangedListener(SecurityNumFormat(bi.edSecurityNum, "###-##-####"))
 
     }
 

@@ -35,7 +35,7 @@
     <string name="no_doc_uploaded">No documents uploaded yet</string>
     <string name="no_doc_found">No documents found</string>
 
-    <string name="delete_mailing_address">Are you sure you want to delete Richard\'s Mailing Address?</string>
+    <string name="delete_prev_address">Are you sure you want to delete Richard\'s Previous Address?</string>
     <string name="delete_current_address">Are you sure you want to delete Richard\'s Current Address?</string>
 
 
