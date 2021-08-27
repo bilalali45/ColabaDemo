@@ -106,6 +106,7 @@ class AddResidenceViewController: UIViewController {
             textfield.detailColor = .red
             textfield.detailVerticalOffset = 4
             textfield.placeholderVerticalOffset = 8
+            textfield.textColor = Theme.getAppBlackColor()
         }
         txtfieldHomeAddress.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 25)
         housingStatusDropDown.dismissMode = .onTap
