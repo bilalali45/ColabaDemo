@@ -38,10 +38,10 @@ class UnMarriedFragment : Fragment() {
         binding.radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.yesRadioBtn -> {
-                    binding.relationshipContainer.visibility = View.GONE
+                    binding.relationshipContainer.visibility = View.VISIBLE
                 }
                 R.id.noRadioBtn -> {
-                    binding.relationshipContainer.visibility = View.VISIBLE
+                    binding.relationshipContainer.visibility = View.GONE
                 }
                 else -> {
                 }

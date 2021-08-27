@@ -10,6 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.MailingAddressLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 import javax.inject.Inject
 
@@ -81,6 +84,17 @@ class MailingAddressFragment : Fragment() {
 
         }
 
+        binding.backButton.setOnClickListener{
+            val message = "Are you sure you want to delete Richard's Mailing Address?"
+            AddressNotSavingDialogFragment.newInstance(message).show(childFragmentManager, AddressNotSavingDialogFragment::class.java.canonicalName)
+            //findNavController().popBackStack()
+        }
+
+        binding.delImageview.setOnClickListener {
+            val message = "Are you sure you want to delete Richard's Mailing Address?"
+            AddressNotSavingDialogFragment.newInstance(message).show(childFragmentManager, AddressNotSavingDialogFragment::class.java.canonicalName)
+        }
+
 
         binding.backButton.setOnClickListener{
             findNavController().popBackStack()
@@ -88,6 +102,23 @@ class MailingAddressFragment : Fragment() {
 
         return root
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onNotSavingAddressEvent(event: NotSavingAddressEvent) {
+        if(event.boolean){
+            findNavController().popBackStack()
+        }
     }
 
 }
