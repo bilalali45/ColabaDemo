@@ -69,6 +69,9 @@ class LoginFragment : Fragment() {
         passwordHideImageView = root.findViewById<AppCompatImageView>(R.id.passwordHideImageShow)
         biometricSwitch = root.findViewById<SwitchCompat>(R.id.switch1)
 
+        userEmailField.setText("mobileuser1@mailinator.com")
+        passwordField.setText("test123")
+
 
         imageView5 =  root.findViewById<ImageView>(R.id.imageView5)
         imageView5.setOnClickListener{
