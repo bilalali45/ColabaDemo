@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
@@ -15,7 +16,7 @@ import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
-class BorrowerApplicationFragment : Fragment() {
+class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
 
     private var _binding: DetailApplicationTabBinding? = null
     private val binding get() = _binding!!
@@ -30,7 +31,7 @@ class BorrowerApplicationFragment : Fragment() {
     private var realStateList: ArrayList<RealStateOwn> = ArrayList()
     private var questionList: ArrayList<BorrowerQuestionsModel> = ArrayList()
 
-    private var borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList)
+    private var borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList , this)
     private var realStateAdapter  = RealStateAdapter(realStateList)
     private var questionAdapter  = QuestionAdapter(questionList)
 
@@ -161,7 +162,7 @@ class BorrowerApplicationFragment : Fragment() {
                 //////////////////////////////////////////////////////////////////////////////////////////////////
                 // add add-more last cell to the adapters
                 borrowerInfoList.add(BorrowersInformation(0,"",0,"","", "",0,null, null, true))
-                borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList)
+                borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList , this@BorrowerApplicationFragment )
                 horizontalRecyclerView.adapter = borrowerInfoAdapter
                 borrowerInfoAdapter.notifyDataSetChanged()
 
@@ -223,6 +224,14 @@ class BorrowerApplicationFragment : Fragment() {
 
         return root
 
+    }
+
+    override fun getCardIndex(position: Int) {
+
+    }
+
+    override fun navigateTo(position: Int) {
+        startActivity(Intent(requireActivity(), BorrowerAddressActivity::class.java))
     }
 
     /*

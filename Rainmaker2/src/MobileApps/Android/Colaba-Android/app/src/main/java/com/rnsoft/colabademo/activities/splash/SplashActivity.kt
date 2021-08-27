@@ -20,10 +20,11 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.splash_layout)
         activityScope.launch {
 
-
             //startActivity(Intent(this@SplashActivity, BorrowerAddressActivity::class.java))
 
             //startActivity(Intent(this@SplashActivity, BorrowerInfoActivity::class.java))
+
+
 
             if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
                 && sharedPreferences.getBoolean(AppConstant.isbiometricEnabled, false)
@@ -39,7 +40,7 @@ class SplashActivity : AppCompatActivity() {
             }
             finish()
 
-        }
 
+        }
     }
 }
