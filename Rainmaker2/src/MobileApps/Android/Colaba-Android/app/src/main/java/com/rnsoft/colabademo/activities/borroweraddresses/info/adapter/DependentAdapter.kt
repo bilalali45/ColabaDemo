@@ -6,16 +6,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.RecyclerviewClickListener
+import com.rnsoft.colabademo.activities.borroweraddresses.info.model.Dependent
 import kotlinx.android.synthetic.main.dependent_input_field.view.*
+import java.util.*
+
 
 /**
  * Created by Anita Kiran on 8/24/2021.
  */
-class DependentAdapter (val mContext : Context, private val items: ArrayList<String> , clickListner: RecyclerviewClickListener) : RecyclerView.Adapter<DependentAdapter.DataViewHolder>() {
+class DependentAdapter (val mContext : Context, private val items: ArrayList<Dependent>, clickListner: RecyclerviewClickListener) : RecyclerView.Adapter<DependentAdapter.DataViewHolder>() {
 
     private var deleteClick: RecyclerviewClickListener = clickListner
 
@@ -23,9 +28,13 @@ class DependentAdapter (val mContext : Context, private val items: ArrayList<Str
         this.deleteClick = clickListner
     }
 
-    class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: String) {
-            itemView.til_dependent.setHint(item.plus( " Dependent Age (Years)"))
+   inner class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(model: Dependent, position: Int) {
+
+            if(model.age > 0){
+                itemView.ed_age.setText(model.age.toString())
+            }
+            itemView.til_dependent.setHint(model.dependent)
 
             itemView.ed_age.setOnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
@@ -38,39 +47,51 @@ class DependentAdapter (val mContext : Context, private val items: ArrayList<Str
                         itemView.til_dependent.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(itemView.context,R.color.grey_color_three))
                     } else {
                         itemView.til_dependent.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(itemView.context,R.color.grey_color_two))
+                        itemView.til_dependent.helperText = ""
+                        itemView.til_dependent.setBoxStrokeColorStateList(AppCompatResources.getColorStateList(itemView.context, R.color.primary_info_line_color))
                     }
                 }
             }
-
-
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-
-        DataViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = DataViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.dependent_input_field, parent,
                 false
             )
         )
 
-
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
-        holder.bind(items[position])
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
 
+    override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
+        holder.bind(items.get(position), position)
 
         holder.itemView.til_dependent.setEndIconOnClickListener {
-            Log.e("icon", "click")
-            deleteClick.deleteItemClick(position)
+            deleteClick.deleteDependentClick(position)
+        }
 
-        //items.removeAt(position)
-            //notifyItemRemoved(position)
-            //notifyDataSetChanged()
+        holder.itemView.ed_age.doAfterTextChanged {
+            val age = Integer.parseInt(holder.itemView.ed_age.text.toString())
+            if(age >0 ){
+                items.set(position, Dependent(items.get(position).dependent, age))
+            }
         }
     }
 
+
+
+
+    /*
+      var ordinalWord= ns.toWords(item.toInt(),true)
+            val upperString: String =
+                ordinalWord.substring(0, 1).uppercase(Locale.getDefault()) + ordinalWord.substring(1)
+                    .lowercase(Locale.getDefault())
+
+     */
 
 }

@@ -17,9 +17,12 @@
         app:boxStrokeWidth="0.5dp"
         app:boxStrokeWidthFocused="1dp"
         app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-        app:endIconMode="custom">
+        app:endIconMode="custom"
+        app:helperTextEnabled="true"
+        app:helperTextTextAppearance="@style/inputError"
+        app:helperTextTextColor="@color/colaba_red_color">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ed_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

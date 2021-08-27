@@ -53,26 +53,27 @@ class UnMarriedFragment : Fragment() {
         val relationshipAdapter = ArrayAdapter(root.context, android.R.layout.simple_list_item_1,  relationshipTypes)
 
         binding.relationshipSpinner.setAdapter(relationshipAdapter)
-        binding.relationshipSpinner.onItemSelectedListener = relationItemSelected
+        //binding.relationshipSpinner.onItemSelectedListener = relationItemSelected
         binding.relationshipSpinner.setOnFocusChangeListener { _, _ ->
             binding.relationshipSpinner.showDropDown()
         }
         binding.relationshipSpinner.setOnClickListener{
             binding.relationshipSpinner.showDropDown()
         }
+
         binding.relationshipSpinner.onItemClickListener = object: OnItemClickListener{
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                 if(position == relationshipTypes.size-1){
-                    binding.relationshipLabel.visibility = View.VISIBLE
-                    binding.relationshipEditText.visibility = View.VISIBLE
+                    binding.relationshipLayout.visibility = View.VISIBLE
+
                 }
                 else{
-                    binding.relationshipLabel.visibility = View.GONE
-                    binding.relationshipEditText.visibility = View.GONE
+                    binding.relationshipLayout.visibility = View.GONE
                 }
             }
-
         }
+
+
 
 
 
@@ -83,7 +84,8 @@ class UnMarriedFragment : Fragment() {
         }
 
         binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
+            //findNavController().popBackStack()
+            requireActivity().onBackPressed()
         }
 
 
@@ -93,14 +95,12 @@ class UnMarriedFragment : Fragment() {
 
     private  val relationItemSelected = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-            if (position == relationshipTypes.size-1) {
-                    binding.relationshipLabel.visibility = View.VISIBLE
-                    binding.relationshipEditText.visibility = View.VISIBLE
-            }
-            else {
-                binding.relationshipLabel.visibility = View.GONE
-                binding.relationshipEditText.visibility = View.GONE
-            }
+            if (position == relationshipTypes.size-1)
+                    binding.relationshipLayout.visibility = View.VISIBLE
+            else
+                binding.relationshipLayout.visibility = View.GONE
+
+
         }
         override fun onNothingSelected(parentView: AdapterView<*>?) {}
     }

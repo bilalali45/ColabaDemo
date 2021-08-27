@@ -67,6 +67,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+
+
+    <!--
+
+
     <TextView
         android:id="@+id/textView15"
         android:layout_width="wrap_content"
@@ -80,7 +85,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_profile_layout" />
 
-    <!--
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/stateSpinner2"
         android:layout_width="match_parent"
@@ -100,14 +104,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15"
         />
-        -->
+
 
     <AutoCompleteTextView
         android:id="@+id/visaStatusView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:layout_marginEnd="24dp"
+
         android:backgroundTint="@color/grey_color_three"
         android:drawableEnd="@drawable/ic_down_arrow"
         android:dropDownAnchor="@+id/visaStatusView"
@@ -123,10 +126,143 @@
         android:textAlignment="viewStart"
         android:textColor="@color/grey_color_one"
         android:textSize="15sp"
+
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
+        -->
+
+<!--
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/visaStatusViewLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        android:background="@android:color/transparent"
+        android:hint="@string/visa_status"
+        android:textColorHint="@color/primary_info_label_color"
+        app:boxCollapsedPaddingTop="1dp"
+        app:boxStrokeColor="@color/primary_info_line_color"
+        app:boxStrokeWidth="0.5dp"
+        app:boxStrokeWidthFocused="1dp"
+        app:endIconDrawable="@drawable/ic_down_arrow"
+        app:endIconMode="custom"
+        app:endIconTint="@color/grey_color_three"
+        app:helperTextEnabled="true"
+        app:helperTextTextAppearance="@style/inputError"
+
+        app:helperTextTextColor="@color/colaba_red_color"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+
+        app:hintTextColor="@color/grey_color_two"
+
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_profile_layout" >
+
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/visaStatusCompleteView"
+            style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent"
+            android:completionThreshold="1"
+            android:cursorVisible="true"
+
+            android:focusable="true"
+
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/rubik_regular"
+            android:gravity="bottom"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:spinnerMode="dropdown"
+
+            android:textAlignment="gravity"
+            android:textColor="@color/grey_color_one"
+            android:textColorHint="@color/grey_color_three"
+            android:textSize="15sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+        -->
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/visaStatusViewLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        android:background="@android:color/transparent"
+        android:hint="@string/visa_status"
+        android:textColorHint="@color/primary_info_label_color"
+        app:boxCollapsedPaddingTop="1dp"
+        app:boxStrokeColor="@color/primary_info_line_color"
+        app:boxStrokeWidth="0.5dp"
+        app:boxStrokeWidthFocused="1dp"
+        app:endIconDrawable="@drawable/ic_down_arrow"
+        app:endIconMode="custom"
+        app:endIconTint="@color/grey_color_three"
+        app:helperTextEnabled="true"
+        app:helperTextTextAppearance="@style/inputError"
+
+        app:helperTextTextColor="@color/colaba_red_color"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+
+        app:hintTextColor="@color/grey_color_two"
+
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_profile_layout">
+
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/visaStatusCompleteView"
+            style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@android:color/transparent"
+            android:completionThreshold="1"
+            android:cursorVisible="true"
+
+            android:focusable="true"
+
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/rubik_regular"
+            android:gravity="bottom"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:spinnerMode="dropdown"
+
+            android:textAlignment="gravity"
+            android:textColor="@color/grey_color_one"
+            android:textColorHint="@color/grey_color_three"
+            android:textSize="15sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <!--
     <TextView
         android:id="@+id/relationship_label"
         android:layout_width="wrap_content"
@@ -138,7 +274,7 @@
         android:textColor="@color/grey_color_two"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@+id/textView15"
-        app:layout_constraintTop_toBottomOf="@+id/visaStatusView" />
+        app:layout_constraintTop_toBottomOf="@+id/visaStatusViewLayout" />
 
 
     <com.google.android.material.textfield.TextInputEditText
@@ -157,6 +293,68 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relationship_label" />
+        -->
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/relationshipLayout"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="22dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/rubik_light"
+        android:hint="@string/status_details"
+        android:textColorHint="@color/primary_info_label_color"
+        app:boxCollapsedPaddingTop="1dp"
+        app:boxStrokeColor="@color/primary_info_line_color"
+        app:boxStrokeWidth="0.5dp"
+        app:boxStrokeWidthFocused="1dp"
+        android:visibility="gone"
+
+        app:helperTextEnabled="true"
+        app:helperTextTextAppearance="@style/inputError"
+        app:helperTextTextColor="@color/colaba_red_color"
+
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+        app:hintTextColor="@color/grey_color_two"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/visaStatusViewLayout"
+
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/relationship_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:cursorVisible="true"
+
+            android:ems="10"
+            android:fontFamily="@font/rubik_regular"
+
+            android:inputType="textMultiLine"
+            android:paddingStart="0dp"
+            android:singleLine="false"
+
+            android:imeOptions="actionNone"
+
+            android:lines="10"
+            android:minLines="1"
+            android:scrollHorizontally="false"
+            android:maxLines="10"
+            android:gravity="top|start"
+
+
+            android:textColor="@color/grey_color_one"
+
+            android:textSize="@dimen/ed_txt_size_primary_info" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 
     <ImageView

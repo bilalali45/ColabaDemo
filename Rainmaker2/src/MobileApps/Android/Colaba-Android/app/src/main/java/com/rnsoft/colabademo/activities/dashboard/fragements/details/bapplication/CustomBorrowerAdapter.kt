@@ -5,17 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomBorrowerAdapter internal constructor(private var tabBorrowerDataList: ArrayList<BorrowersInformation>) :
+class CustomBorrowerAdapter internal constructor(private var tabBorrowerDataList: ArrayList<BorrowersInformation> , onAdapterClickListener: AdapterClickListener) :
     RecyclerView.Adapter<CustomBorrowerAdapter.BaseViewHolder>(){
 
-    abstract class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) { abstract fun bind(
+    private var classScopedItemClickListener: AdapterClickListener = onAdapterClickListener
+
+    init {
+        this.classScopedItemClickListener = onAdapterClickListener
+    }
+
+    abstract class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)  { abstract fun bind(
         item: BorrowersInformation
     ) }
     //abstract class BaseViewHolder<TabBorrowerList>(itemView: View) : RecyclerView.ViewHolder(itemView) { abstract fun bind(item: TabBorrowerList) }
 
-    inner class BorrowerItemViewHolder(itemView: View) : BaseViewHolder(itemView) {
+    inner class BorrowerItemViewHolder(itemView: View) : BaseViewHolder(itemView)  {
         private val coBorrowerNames : TextView = itemView.findViewById(R.id.co_borrower_test)
         private val mainBorrowerName:TextView = itemView.findViewById(R.id.main_borrower_test)
         override fun bind(item: BorrowersInformation) {
@@ -29,11 +36,25 @@ class CustomBorrowerAdapter internal constructor(private var tabBorrowerDataList
             }
 
         }
+
+
     }
 
-    inner class BorrowerFooterViewHolder(itemView: View) : BaseViewHolder(itemView) {
+    inner class BorrowerFooterViewHolder(itemView: View) : BaseViewHolder(itemView){
+
+        var addBorrowerLayout: ConstraintLayout = itemView.findViewById(R.id.addBorrowerLayout)
+
+        init {
+            addBorrowerLayout.setOnClickListener {
+                classScopedItemClickListener.navigateTo(adapterPosition)
+            }
+        }
+
         override fun bind(item: BorrowersInformation) {}
+
     }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val holder: BaseViewHolder?

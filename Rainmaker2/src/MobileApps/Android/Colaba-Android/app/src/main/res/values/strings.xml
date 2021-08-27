@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name">Colaba</string>
 
+    <string name="api_key"> AIzaSyBzPEiQOTReBzy6W1UcIyHApPu7_5Die6w </string>
+
     <string name="colaba">Colaba</string>
     <string name="email">Email</string>
     <string name="call">Call</string>
@@ -141,6 +143,8 @@
     <string name="street_address">Street Address</string>
     <string name="unit_or_apt">Unit Or Apt. Number (Optional)</string>
     <string name="city">City</string>
+    <string name="relationship_details"> Relationship Details</string>
+
     <string name="county">County</string>
     <string name="state">State</string>
     <string name="search_home_address">Search Home Address</string>
@@ -258,6 +262,7 @@
     <string name="pr_green_card">Permanent Resident Alien (Green Card)</string>
     <string name="non_pr">Non Permantent Resident Alien</string>
     <string name="visa_status">Visa Status</string>
+    <string name="status_details">Status Details</string>
     <string name="others">Others</string>
     <string name="dob">Date of Birth</string>
     <string name="social_security_num">Social Security Number</string>
