@@ -107,7 +107,7 @@ class UnmarriedFollowUpQuestionsViewController: UIViewController {
         
         stateDropDown.dismissMode = .onTap
         stateDropDown.anchorView = stateDropDownAnchorView
-        stateDropDown.direction = .top
+        stateDropDown.direction = .any
         stateDropDown.dataSource = kUSAStatesArray
         stateDropDown.cancelAction = .some({
             self.btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)

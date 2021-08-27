@@ -133,7 +133,7 @@ class AddResidenceViewController: UIViewController {
         
         countryDropDown.dismissMode = .onTap
         countryDropDown.anchorView = countryDropDownAnchorView
-        countryDropDown.direction = .top
+        countryDropDown.direction = .any
         countryDropDown.dataSource = kCountryListArray
         countryDropDown.cancelAction = .some({
             self.btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
@@ -150,7 +150,7 @@ class AddResidenceViewController: UIViewController {
         
         stateDropDown.dismissMode = .onTap
         stateDropDown.anchorView = stateDropDownAnchorView
-        stateDropDown.direction = .top
+        stateDropDown.direction = .any
         stateDropDown.dataSource = kUSAStatesArray
         stateDropDown.cancelAction = .some({
             self.btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
