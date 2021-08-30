@@ -69,7 +69,7 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
         let estimatedFrame = statusDetailTextViewContainer.frame
         txtViewStatusDetail = MDCFilledTextArea(frame: estimatedFrame)
         txtViewStatusDetail.isHidden = true
-        txtViewStatusDetail.label.text = "Relationship Details"
+        txtViewStatusDetail.label.text = "Status Details"
         txtViewStatusDetail.textView.text = ""
         txtViewStatusDetail.leadingAssistiveLabel.text = ""
         txtViewStatusDetail.setFilledBackgroundColor(.clear, for: .normal)
