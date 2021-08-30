@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_marginTop="10dp">
+    android:layout_marginTop="5dp">
 
     <LinearLayout
         android:id="@+id/rowBG"
@@ -33,31 +33,8 @@
                 android:src="@drawable/ic_swipe_delete" />
         </LinearLayout>
 
-        <!-- <RelativeLayout
-               android:id="@+id/delete_task"
-               android:layout_width="wrap_content"
-               android:layout_height="match_parent"
-               android:clickable="true"
-               android:focusable="true">
-
-               <LinearLayout
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:layout_centerInParent="true"
-                   android:clickable="true"
-                   android:focusable="true"
-                   android:gravity="center">
-
-                   <ImageView
-                       android:id="@+id/img_delete"
-                       android:layout_width="60dp"
-                       android:layout_height="60dp"
-                       android:layout_gravity="center"
-                       android:src="@drawable/ic_swipe_delete" />
-               </LinearLayout>
-           </RelativeLayout> -->
-
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/rowFG"
@@ -65,11 +42,24 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
-        android:orientation="vertical"
         android:visibility="visible"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:background="@drawable/search_view_holder_style">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="3dp"
+            app:cardUseCompatPadding="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+           >
+
 
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -135,6 +125,8 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 
