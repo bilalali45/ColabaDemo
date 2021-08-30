@@ -30,7 +30,6 @@ import javax.inject.Inject
 class LoginFragment : Fragment() {
 
     private lateinit var root: View
-
     private val loginViewModel: LoginViewModel by activityViewModels()
 
     private lateinit var emailError: AppCompatTextView
@@ -56,7 +55,6 @@ class LoginFragment : Fragment() {
         root = inflater.inflate(R.layout.login_layout, container, false)
         setupFragment()
 
-        //registerBroadcastReceiver()
         return root
     }
 
@@ -69,7 +67,8 @@ class LoginFragment : Fragment() {
         passwordHideImageView = root.findViewById<AppCompatImageView>(R.id.passwordHideImageShow)
         biometricSwitch = root.findViewById<SwitchCompat>(R.id.switch1)
 
-        userEmailField.setText("mobileuser1@mailinator.com")
+        //userEmailField.setText("mobileuser1@mailinator.com")
+        userEmailField.setText("mubashir.mcu@mailinator.com")
         passwordField.setText("test123")
 
 
@@ -101,6 +100,7 @@ class LoginFragment : Fragment() {
         }
 
         passwordHideImageView.setOnClickListener {
+
             passwordField.transformationMethod = PasswordTransformationMethod()
             passwordField.setSelection(passwordField.length());
             passwordHideImageView.visibility = View.INVISIBLE
@@ -114,7 +114,6 @@ class LoginFragment : Fragment() {
         biometricSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 if (goldfinger.canAuthenticate()) {
-                    Log.e("Yes", "Let Toggle On...")
 
                 }
                 else {

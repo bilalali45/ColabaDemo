@@ -1,9 +1,12 @@
 package com.rnsoft.colabademo.activities.borroweraddresses.info.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
@@ -39,6 +42,7 @@ class DependentAdapter (val mContext : Context, private val items: ArrayList<Dep
                 if (hasFocus) {
                     itemView.til_dependent.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(itemView.context,R.color.grey_color_two))
                     itemView.til_dependent.setEndIconDrawable(R.drawable.ic_minus_delete)
+                    //itemView.til_dependent.ed_age.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_delete_dependent,0)
                 }
                 else {
                     itemView.til_dependent.setEndIconDrawable(null)
@@ -67,12 +71,16 @@ class DependentAdapter (val mContext : Context, private val items: ArrayList<Dep
         return position
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
         holder.bind(items.get(position), position)
 
         holder.itemView.til_dependent.setEndIconOnClickListener {
             deleteClick.deleteDependentClick(position)
         }
+
+
+
 
         holder.itemView.ed_age.doAfterTextChanged {
             val age = Integer.parseInt(holder.itemView.ed_age.text.toString())

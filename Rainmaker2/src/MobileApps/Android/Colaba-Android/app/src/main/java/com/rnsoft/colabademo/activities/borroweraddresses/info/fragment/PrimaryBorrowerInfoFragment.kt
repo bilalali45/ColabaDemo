@@ -543,14 +543,19 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
         val newMonth = month + 1
-        val dpd = DatePickerDialog(
-            requireActivity(), { view, year, monthOfYear, dayOfMonth ->
-                bi.edDateOfBirth.setText("" + dayOfMonth + "/" + newMonth + "/" + year)
-            },
+      //  datePicker.findViewById(Resources.getSystem().getIdentifier("day", "id", "android")).setVisibility(View.GONE);
+
+        val dpd = DatePickerDialog(requireActivity(), { view, year, monthOfYear, dayOfMonth -> bi.edDateOfBirth.setText("" + dayOfMonth + "/" + newMonth + "/" + year) },
             year,
             month,
             day
         )
+
+
+
+
+
+
         dpd.show()
 
     }
