@@ -11,9 +11,18 @@ class AppLifecycleObserver(val appContext: Context) : LifecycleObserver {
         fun onEnterForeground() {
             //run the code we need
             if(AppSetting.userHasLoggedIn) {
-                val intent = Intent(appContext, SignUpFlowActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                appContext.startActivity(intent)
+                if(AppSetting.biometricEnabled) {
+                    val intent = Intent(appContext, WelcomeActivity::class.java)
+                    intent.putExtra(AppSetting.lockAppState, true)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    appContext.startActivity(intent)
+                }
+                else {
+                    val intent = Intent(appContext, SignUpFlowActivity::class.java)
+                    intent.putExtra(AppSetting.lockAppState, true)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    appContext.startActivity(intent)
+                }
             }
         }
 

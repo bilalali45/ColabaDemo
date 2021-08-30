@@ -23,11 +23,17 @@ class SignUpFlowActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration : AppBarConfiguration
 
+    var  resumeState =  false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.signupflow_navigation_layout)
 
+        intent.extras?.let {
+            resumeState = it.getBoolean(AppSetting.lockAppState)
+            Log.e("resumeState = ",resumeState.toString())
+        }
 
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.signup_nav_host_fragment) as NavHostFragment? ?: return

@@ -24,6 +24,8 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
+import android.widget.EditText
+import androidx.compose.ui.graphics.Color
 
 
 @AndroidEntryPoint
@@ -43,6 +45,7 @@ class LoginFragment : Fragment() {
     private lateinit var imageView5: ImageView
 
 
+
     private lateinit var passwordImageView: AppCompatImageView
     private lateinit var passwordHideImageView: AppCompatImageView
 
@@ -58,6 +61,14 @@ class LoginFragment : Fragment() {
         return root
     }
 
+    private fun disableEditText(editText: EditText) {
+        editText.isFocusable = false
+        editText.isEnabled = false
+        editText.isCursorVisible = false
+        editText.keyListener = null
+        //editText.setBackgroundColor()
+    }
+
     private fun setupFragment() {
         userEmailField = root.findViewById<AppCompatEditText>(R.id.editTextEmail)
         passwordField = root.findViewById<AppCompatEditText>(R.id.editTextPassword)
@@ -67,7 +78,16 @@ class LoginFragment : Fragment() {
         passwordHideImageView = root.findViewById<AppCompatImageView>(R.id.passwordHideImageShow)
         biometricSwitch = root.findViewById<SwitchCompat>(R.id.switch1)
 
-        //userEmailField.setText("mobileuser1@mailinator.com")
+
+        if (activity is SignUpFlowActivity) {
+            Log.e("resumeState= ","= "+(activity as SignUpFlowActivity).resumeState)
+            if ((activity as SignUpFlowActivity).resumeState)
+                disableEditText(userEmailField)
+        }
+        else{
+            Log.e("Some Other= ","activity---")
+        }
+
         userEmailField.setText("mubashir.mcu@mailinator.com")
         passwordField.setText("test123")
 
@@ -199,7 +219,18 @@ class LoginFragment : Fragment() {
                     1 -> {
                         if(biometricSwitch.isChecked)
                             sharedPreferences.edit().putBoolean(AppConstant.isbiometricEnabled, true).apply()
-                        navigateToDashBoard(it.success)
+
+                        if (activity is SignUpFlowActivity) {
+                            if ((activity as SignUpFlowActivity).resumeState)
+                                requireActivity().finish()
+                            else
+                                navigateToDashBoard(it.success)
+                        }
+                        else
+                            navigateToDashBoard(it.success)
+
+
+
 
                     }
                     2 -> navigateToPhoneScreen()
