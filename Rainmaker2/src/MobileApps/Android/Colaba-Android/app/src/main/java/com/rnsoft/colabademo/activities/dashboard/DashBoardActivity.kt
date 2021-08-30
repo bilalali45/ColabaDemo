@@ -41,6 +41,7 @@ class DashBoardActivity : AppCompatActivity() {
         binding = DashboardLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        AppSetting.userHasLoggedIn = true
 
         val navView: BottomNavigationView = binding.navView
 

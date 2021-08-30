@@ -21,6 +21,8 @@ import kotlin.math.roundToInt
 
 object AppSetting {
 
+    var userHasLoggedIn:Boolean = false
+
     var biometricEnabled: Boolean = false
     var loanApiDateTime: String = ""
     var activeloanApiDateTime: String = ""
