@@ -88,7 +88,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="21dp"
-
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15">
@@ -110,7 +109,8 @@
             android:fontFamily="@font/rubik_regular"
             android:text="No"
             android:textColor="@color/grey_color_one"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:checked="true"/>
     </RadioGroup>
 
 

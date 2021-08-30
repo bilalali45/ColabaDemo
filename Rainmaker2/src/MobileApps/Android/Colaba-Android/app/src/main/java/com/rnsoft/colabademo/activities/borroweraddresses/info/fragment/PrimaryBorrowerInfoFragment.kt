@@ -1,15 +1,13 @@
 package com.rnsoft.colabademo.activities.borroweraddresses.info
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.content.Context
 import android.content.res.ColorStateList
-import android.content.res.Resources
 import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ColorRes
@@ -27,7 +25,6 @@ import com.rnsoft.colabademo.activities.borroweraddresses.info.model.Address
 import com.rnsoft.colabademo.activities.borroweraddresses.info.model.Dependent
 import com.rnsoft.colabademo.databinding.*
 import com.rnsoft.colabademo.utils.RecyclerTouchListener
-import com.rnsoft.colabademo.utils.SecurityNumFormat
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -85,6 +82,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         if(isVisaOther){
             citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
         }
+
 
         return bi.root
     }
@@ -307,8 +305,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         })
     }
 
-
-    @SuppressLint("ClickableViewAccessibility")
     private fun setSingleItemFocus(){
 
         // check first name
@@ -525,7 +521,23 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         bi.edHomeNumber.addTextChangedListener(PhoneTextFormatter(bi.edHomeNumber, "(###) ###-####"))
         bi.edWorkNum.addTextChangedListener(PhoneTextFormatter(bi.edWorkNum, "(###) ###-####"))
         bi.edCellNum.addTextChangedListener(PhoneTextFormatter(bi.edCellNum, "(###) ###-####"))
-        //bi.edSecurityNum.addTextChangedListener(SecurityNumFormat(bi.edSecurityNum, "###-##-####"))
+
+        // security number format
+        bi.edSecurityNum.addTextChangedListener(object : TextWatcher {
+            var beforeLength = 0
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                beforeLength = bi.edSecurityNum.length()
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                val digits: Int = bi.edSecurityNum.getText().toString().length
+                if (beforeLength < digits && (digits == 3 || digits == 6)) {
+                    bi.edSecurityNum.append("-")
+                }
+            }
+
+            override fun afterTextChanged(s: Editable) {}
+        })
 
     }
 
@@ -550,11 +562,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             month,
             day
         )
-
-
-
-
-
 
         dpd.show()
 
