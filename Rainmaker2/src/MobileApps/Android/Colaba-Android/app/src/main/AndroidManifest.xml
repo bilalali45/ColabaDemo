@@ -47,7 +47,7 @@
         <activity
             android:name=".SignUpFlowActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait" />
         <activity
             android:name=".DashBoardActivity"
@@ -65,9 +65,6 @@
             android:name=".LeftActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-
-
-
 
         <activity android:name=".BorrowerAddressActivity"
             android:windowSoftInputMode="adjustPan"
