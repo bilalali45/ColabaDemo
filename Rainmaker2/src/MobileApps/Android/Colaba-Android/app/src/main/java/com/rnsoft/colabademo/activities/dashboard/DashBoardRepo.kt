@@ -20,10 +20,10 @@ class DashBoardRepo  @Inject constructor(
     private fun clearUserRecords(){
             //user = null
             spEditor.clear().commit()
+            AppSetting.userHasLoggedIn = false
             //spEditor.clear().apply()
 
             //spEditor.putString(ColabaConstant.token, "").apply()
-            //dataSource.logout()
 
     }
 

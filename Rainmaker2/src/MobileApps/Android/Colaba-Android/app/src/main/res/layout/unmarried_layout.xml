@@ -85,7 +85,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9">
@@ -95,10 +94,11 @@
             android:id="@+id/yesRadioBtn"
             android:layout_width="match_parent"
             android:layout_height="22dp"
-             android:fontFamily="@font/rubik_regular"
+            android:fontFamily="@font/rubik_regular"
             android:text="Yes"
             android:textColor="@color/grey_color_one"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            />
 
         <RadioButton
 
@@ -109,7 +109,9 @@
             android:fontFamily="@font/rubik_regular"
             android:text="No"
             android:textColor="@color/grey_color_one"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:checked="true"
+           />
     </RadioGroup>
 
     <androidx.constraintlayout.widget.ConstraintLayout

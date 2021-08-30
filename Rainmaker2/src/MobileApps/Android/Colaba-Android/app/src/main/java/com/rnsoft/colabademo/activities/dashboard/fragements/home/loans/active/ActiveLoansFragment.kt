@@ -63,7 +63,7 @@ class ActiveLoansFragment : BaseFragment() , AdapterClickListener  ,  LoanFilter
 
         activeRecycler = view.findViewById(R.id.active_recycler)
 
-        val linearLayoutManager = LinearLayoutManager(activity)
+        val linearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         activeAdapter = LoansAdapter(activeLoansList, this@ActiveLoansFragment)
         activeRecycler.apply {
             this.layoutManager = linearLayoutManager

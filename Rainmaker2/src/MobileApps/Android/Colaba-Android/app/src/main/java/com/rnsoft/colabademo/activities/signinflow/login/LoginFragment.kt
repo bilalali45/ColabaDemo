@@ -24,13 +24,14 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
+import android.widget.EditText
+import androidx.compose.ui.graphics.Color
 
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
 
     private lateinit var root: View
-
     private val loginViewModel: LoginViewModel by activityViewModels()
 
     private lateinit var emailError: AppCompatTextView
@@ -42,6 +43,7 @@ class LoginFragment : Fragment() {
     private lateinit var forgotPasswordLink: AppCompatTextView
     private lateinit var loginButton: AppCompatButton
     private lateinit var imageView5: ImageView
+
 
 
     private lateinit var passwordImageView: AppCompatImageView
@@ -56,8 +58,15 @@ class LoginFragment : Fragment() {
         root = inflater.inflate(R.layout.login_layout, container, false)
         setupFragment()
 
-        //registerBroadcastReceiver()
         return root
+    }
+
+    private fun disableEditText(editText: EditText) {
+        editText.isFocusable = false
+        editText.isEnabled = false
+        editText.isCursorVisible = false
+        editText.keyListener = null
+        //editText.setBackgroundColor()
     }
 
     private fun setupFragment() {
@@ -69,7 +78,17 @@ class LoginFragment : Fragment() {
         passwordHideImageView = root.findViewById<AppCompatImageView>(R.id.passwordHideImageShow)
         biometricSwitch = root.findViewById<SwitchCompat>(R.id.switch1)
 
-        userEmailField.setText("mobileuser1@mailinator.com")
+
+        if (activity is SignUpFlowActivity) {
+            Log.e("resumeState= ","= "+(activity as SignUpFlowActivity).resumeState)
+            if ((activity as SignUpFlowActivity).resumeState)
+                disableEditText(userEmailField)
+        }
+        else{
+            Log.e("Some Other= ","activity---")
+        }
+
+        userEmailField.setText("mubashir.mcu@mailinator.com")
         passwordField.setText("test123")
 
 
@@ -101,6 +120,7 @@ class LoginFragment : Fragment() {
         }
 
         passwordHideImageView.setOnClickListener {
+
             passwordField.transformationMethod = PasswordTransformationMethod()
             passwordField.setSelection(passwordField.length());
             passwordHideImageView.visibility = View.INVISIBLE
@@ -114,7 +134,6 @@ class LoginFragment : Fragment() {
         biometricSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 if (goldfinger.canAuthenticate()) {
-                    Log.e("Yes", "Let Toggle On...")
 
                 }
                 else {
@@ -200,7 +219,18 @@ class LoginFragment : Fragment() {
                     1 -> {
                         if(biometricSwitch.isChecked)
                             sharedPreferences.edit().putBoolean(AppConstant.isbiometricEnabled, true).apply()
-                        navigateToDashBoard(it.success)
+
+                        if (activity is SignUpFlowActivity) {
+                            if ((activity as SignUpFlowActivity).resumeState)
+                                requireActivity().finish()
+                            else
+                                navigateToDashBoard(it.success)
+                        }
+                        else
+                            navigateToDashBoard(it.success)
+
+
+
 
                     }
                     2 -> navigateToPhoneScreen()

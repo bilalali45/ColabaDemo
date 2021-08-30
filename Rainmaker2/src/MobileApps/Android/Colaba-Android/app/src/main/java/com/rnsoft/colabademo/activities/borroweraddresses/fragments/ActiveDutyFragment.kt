@@ -41,10 +41,6 @@ class ActiveDutyFragment : Fragment() {
         binding.edEmail.setOnClickListener { openCalendar() }
         binding.edEmail.setOnFocusChangeListener{ _ , _ ->  openCalendar() }
 
-
-        //binding.edEmail.setOnTouchListener(otl)
-
-
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }

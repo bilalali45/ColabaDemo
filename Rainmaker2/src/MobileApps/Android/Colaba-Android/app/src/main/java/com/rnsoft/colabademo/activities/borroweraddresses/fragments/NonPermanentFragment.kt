@@ -37,7 +37,7 @@ class NonPermanentFragment : Fragment() {
         _binding = NonPermenantResidentLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
+        binding.visaStatusCompleteView.requestFocus()
         val visaStatusArray:ArrayList<String> = arrayListOf("I am a temporary worker (H-2A, etc.)", "I hold a valid work visa (H1, L1, etc.)", "Other")
         val stateNamesAdapter = ArrayAdapter(root.context, android.R.layout.simple_list_item_1,  visaStatusArray)
         binding.visaStatusCompleteView.setAdapter(stateNamesAdapter)

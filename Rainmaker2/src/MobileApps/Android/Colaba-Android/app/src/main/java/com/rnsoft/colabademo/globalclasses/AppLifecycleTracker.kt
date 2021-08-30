@@ -1,13 +1,18 @@
-package com.rnsoft.colabademo.globalclasses
+package com.rnsoft.colabademo
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 
-class AppLifecycleTracker : Application.ActivityLifecycleCallbacks  {
+class AppLifecycleTracker(val appContext:Context) : Application.ActivityLifecycleCallbacks  {
 
         private var numStarted = 0
+
+
+
         companion object {
             var isApplicationGoneToBackground = false
             var isApplicationInForeground = 0
@@ -18,6 +23,7 @@ class AppLifecycleTracker : Application.ActivityLifecycleCallbacks  {
                 Log.e("App Foreground ", "Running$numStarted")
             numStarted++
             isApplicationInForeground = 0
+
         }
 
         override fun onActivityStopped(activity: Activity) {
@@ -26,10 +32,15 @@ class AppLifecycleTracker : Application.ActivityLifecycleCallbacks  {
             if (numStarted == 0) {
                 // app went to background
                 Log.e("App background ", "Running$numStarted")
+
             }
         }
 
-        override fun onActivityResumed(activity: Activity) {}
+        override fun onActivityResumed(activity: Activity) {
+
+
+
+        }
         override fun onActivityPaused(activity: Activity) {}
         override fun onActivityDestroyed(activity: Activity) {}
         override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}

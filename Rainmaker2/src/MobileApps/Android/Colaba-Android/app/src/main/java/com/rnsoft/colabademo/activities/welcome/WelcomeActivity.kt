@@ -24,6 +24,8 @@ class WelcomeActivity : AppCompatActivity() {
     private lateinit var goldfinger: Goldfinger
     private lateinit var params: PromptParams
 
+    private var  resumeState =  false
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
@@ -35,6 +37,11 @@ class WelcomeActivity : AppCompatActivity() {
         loginWithTextView       =   findViewById(R.id.loginWithTextView)
         withPasswordTextView    =   findViewById(R.id.withPasswordTextView)
         fingerPrintImageView    =   findViewById(R.id.fingerPrintImage)
+
+
+         intent.extras?.let {
+            resumeState = it.getBoolean(AppSetting.lockAppState)
+        }
 
         sharedPreferences.getString(AppConstant.userName, "Default User")?.let {
             username.text = it
@@ -90,7 +97,12 @@ class WelcomeActivity : AppCompatActivity() {
                     String.format("%s - %s", result.type().toString(), result.reason().toString())
 
                 //showToast(formattedResult)
-                startActivity(Intent(this@WelcomeActivity, DashBoardActivity::class.java))
+                if(resumeState)
+                    finish()
+                else {
+                    startActivity(Intent(this@WelcomeActivity, DashBoardActivity::class.java))
+                    finish()
+                }
 
             }
         }

@@ -92,7 +92,9 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
                 if(oldListDisplaying){
                     oldListDisplaying = false
                     allLoansArrayList.clear()
+                    Log.e("oldListDisplaying = ", "set to false")
                     //loansAdapter.notifyDataSetChanged()
+                    loanRecycleView?.removeOnScrollListener(scrollListener)
                 }
                 //loanRecycleView?.adapter = loansAdapter
                 val lastSize = allLoansArrayList.size
@@ -187,6 +189,7 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
                     allLoansArrayList.clear()
                     allLoansArrayList.addAll(oldJsonList)
                     loansAdapter.notifyDataSetChanged()
+                    loanRecycleView?.removeOnScrollListener(scrollListener)
                 }
             }
         }
@@ -195,8 +198,10 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
     override fun onResume() {
         super.onResume()
         rowLoading?.visibility = View.INVISIBLE
+
+        Log.e("on Resume oldListDisplaying = ", "$oldListDisplaying")
         allLoansArrayList.clear()
-        loansAdapter.notifyDataSetChanged()
+        //loansAdapter.notifyDataSetChanged()
         pageNumber = 1
         loadDataFromCache()
         loadLoanApplications()
