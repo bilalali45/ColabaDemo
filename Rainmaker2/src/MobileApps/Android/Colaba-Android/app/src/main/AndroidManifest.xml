@@ -67,7 +67,7 @@
             android:screenOrientation="portrait" />
 
         <activity android:name=".BorrowerAddressActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait">
         </activity>
 

@@ -149,6 +149,7 @@ internal constructor(
                 } else
                     holder.docThreeLayout.visibility = View.INVISIBLE
 
+                // set time
                 var fileUploadOn = doc.subFiles[0].fileUploadedOn
                 var time = AppSetting.getDocumentUploadedDate(fileUploadOn)
                 holder.tvDocUploadedTime.text = time
