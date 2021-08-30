@@ -196,7 +196,7 @@ class BorrowerInformationViewController: UIViewController {
         nonPermanentResidentMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nonPermanentResidentMainViewTapped)))
         
         dobDateFormatter.dateStyle = .medium
-        dobDateFormatter.dateFormat = "dd/MM/yyyy"
+        dobDateFormatter.dateFormat = "MM/dd/yyyy"
         txtfieldDOB.addInputViewDatePicker(target: self, selector: #selector(dateChanged), maximumDate: Date())
         
         lastDateOfServiceMainView.layer.cornerRadius = 6
