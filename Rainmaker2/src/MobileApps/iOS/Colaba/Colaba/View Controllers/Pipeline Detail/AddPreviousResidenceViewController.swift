@@ -106,7 +106,7 @@ class AddPreviousResidenceViewController: UIViewController {
             textfield.placeholderVerticalOffset = 8
             textfield.textColor = Theme.getAppBlackColor()
         }
-        txtfieldHomeAddress.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 25)
+        txtfieldHomeAddress.textInsetsPreset = .horizontally5
         housingStatusDropDown.dismissMode = .onTap
         housingStatusDropDown.anchorView = housingStatusDropDownAnchorView
         housingStatusDropDown.dataSource = kHousingStatusArray
@@ -612,8 +612,7 @@ extension AddPreviousResidenceViewController: UITableViewDataSource, UITableView
         self.txtfieldStreetAddress.text = placesData[indexPath.row].attributedPrimaryText.string
         GMSPlacesClient.shared().fetchPlace(fromPlaceID: placesData[indexPath.row].placeID, placeFields: .all, sessionToken: nil) { place, error in
             if let formattedAddress = place?.formattedAddress{
-                self.txtfieldHomeAddress.text = "       \(formattedAddress)"
-                self.txtfieldHomeAddress.placeholder = "Search Previous Home Address"
+                self.txtfieldHomeAddress.text = "\(formattedAddress)"
                 self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
                 self.txtfieldHomeAddress.detail = ""
             }
@@ -639,10 +638,7 @@ extension AddPreviousResidenceViewController: UITextFieldDelegate{
             //showAutoCompletePlaces()
             btnSearchTopConstraint.constant = 37
             self.view.layoutSubviews()
-            txtfieldHomeAddress.placeholder = "Search Previous Home Address"
-            if txtfieldHomeAddress.text == ""{
-                txtfieldHomeAddress.text = "       "
-            }
+            txtfieldHomeAddress.placeholderHorizontalOffset = -24
             
         }
         if (textField == txtfieldMoveInDate){
@@ -675,9 +671,8 @@ extension AddPreviousResidenceViewController: UITextFieldDelegate{
         
         if (textField == txtfieldHomeAddress){
             btnDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            if (txtfieldHomeAddress.text == "       "){
-                txtfieldHomeAddress.text = ""
-                txtfieldHomeAddress.placeholder = "       Search Previous Home Address"
+            if (txtfieldHomeAddress.text == ""){
+                txtfieldHomeAddress.placeholderHorizontalOffset = 0
                 btnSearchTopConstraint.constant = 34
                 self.view.layoutSubviews()
             }
