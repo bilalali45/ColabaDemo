@@ -18,6 +18,38 @@ PODS:
     - Material/Core (= 3.1.8)
   - Material/Core (3.1.8):
     - Motion (~> 3.1.1)
+  - MaterialComponents/AnimationTiming (124.2.0)
+  - MaterialComponents/Availability (124.2.0)
+  - MaterialComponents/private/Math (124.2.0)
+  - "MaterialComponents/private/TextControlsPrivate+BaseStyle (124.2.0)":
+    - MaterialComponents/AnimationTiming
+    - MaterialComponents/private/Math
+    - "MaterialComponents/private/TextControlsPrivate+Shared"
+  - "MaterialComponents/private/TextControlsPrivate+FilledStyle (124.2.0)":
+    - MaterialComponents/AnimationTiming
+    - MaterialComponents/Availability
+    - MaterialComponents/private/Math
+    - "MaterialComponents/private/TextControlsPrivate+Shared"
+    - "MaterialComponents/private/TextControlsPrivate+UnderlinedStyle"
+  - "MaterialComponents/private/TextControlsPrivate+Shared (124.2.0)":
+    - MaterialComponents/AnimationTiming
+    - MaterialComponents/private/Math
+    - "MaterialComponents/TextControls+Enums"
+  - "MaterialComponents/private/TextControlsPrivate+UnderlinedStyle (124.2.0)":
+    - MaterialComponents/AnimationTiming
+    - MaterialComponents/Availability
+    - MaterialComponents/private/Math
+    - "MaterialComponents/private/TextControlsPrivate+Shared"
+  - "MaterialComponents/TextControls+BaseTextAreas (124.2.0)":
+    - "MaterialComponents/private/TextControlsPrivate+BaseStyle"
+    - "MaterialComponents/private/TextControlsPrivate+Shared"
+    - MDFInternationalization
+  - "MaterialComponents/TextControls+Enums (124.2.0)"
+  - "MaterialComponents/TextControls+FilledTextAreas (124.2.0)":
+    - MaterialComponents/Availability
+    - "MaterialComponents/private/TextControlsPrivate+FilledStyle"
+    - "MaterialComponents/TextControls+BaseTextAreas"
+  - MDFInternationalization (3.0.0)
   - MonthYearPicker (4.0.2)
   - Motion (3.1.3):
     - Motion/Core (= 3.1.3)
@@ -44,6 +76,7 @@ DEPENDENCIES:
   - LoadingPlaceholderView
   - MarqueeLabel
   - Material
+  - "MaterialComponents/TextControls+FilledTextAreas"
   - MonthYearPicker
   - NVActivityIndicatorView (= 4.8.0)
   - RealmSwift
@@ -62,6 +95,8 @@ SPEC REPOS:
     - LoadingPlaceholderView
     - MarqueeLabel
     - Material
+    - MaterialComponents
+    - MDFInternationalization
     - MonthYearPicker
     - Motion
     - NVActivityIndicatorView
@@ -81,6 +116,8 @@ SPEC CHECKSUMS:
   LoadingPlaceholderView: e913f5ae2673612d405ce395acca7cedb1bfaa81
   MarqueeLabel: f4117d82a55209171e8f66bd4859fa11ade335a1
   Material: a2a3f400a3b549d53ef89e56c58c4535b29db387
+  MaterialComponents: 1a9b2d9d45b1601ae544de85089adc4c464306d4
+  MDFInternationalization: d697c55307816222a55685c4ccb1044ffb030c12
   MonthYearPicker: 91f77106e6806d8c93c69e943ab0795fd420657f
   Motion: cf1e060e489f6661126374d5c60dbd2ed991605c
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
@@ -89,6 +126,6 @@ SPEC CHECKSUMS:
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 39758f78bb940ed9f83ed29ae8c9dedd307cfc11
+PODFILE CHECKSUM: 3948172f18782f3df87766d8ffd5492b076a2942
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.10.2

@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +14,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.databinding.DetailListLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.detail_list_layout.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -62,6 +65,16 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
         layoutNoDocUploaded = view.findViewById(R.id.layout_no_doc_upload)
         downloadLoader = view.findViewById(R.id.doc_download_loader)
 
+        val layoutManager = LinearLayoutManager(activity , LinearLayoutManager.VERTICAL, false)
+        documentListAdapter =
+            DocumentListAdapter(docsArrayList, this@DocumentListFragment)
+        docsRecycler.apply {
+            this.layoutManager = layoutManager
+            this.setHasFixedSize(true)
+            this.adapter = documentListAdapter
+            documentListAdapter.notifyDataSetChanged()
+        }
+
         lifecycleScope.launchWhenStarted {
 
             doc_name = arguments?.getString(AppConstant.docName)
@@ -82,18 +95,18 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
                 doc_msg_layout.visibility = View.GONE
             }
 
+
+            observeDownloadProgress()
+
              // populate recyclerview
             if (docsArrayList.size > 0) {
                 docsRecycler.visibility = View.VISIBLE
                 layoutNoDocUploaded.visibility = View.GONE
-
                 documentListAdapter =
                     DocumentListAdapter(docsArrayList, this@DocumentListFragment)
-                docsRecycler.apply {
-                    this.setHasFixedSize(true)
-                    this.adapter = documentListAdapter
-                    documentListAdapter.notifyDataSetChanged()
-                }
+                docsRecycler.adapter = documentListAdapter
+                documentListAdapter.notifyDataSetChanged()
+
             } else {
                 docsRecycler.visibility = View.GONE
                 layoutNoDocUploaded.visibility = View.VISIBLE
@@ -109,6 +122,21 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
         return view
     }
 
+
+    private fun observeDownloadProgress(){
+        detailViewModel.progressGlobal.observe(viewLifecycleOwner, {
+
+                if (it != null && it.size > 0) {
+
+
+                    var percentage = ((it[0]* 100) / it[1]).toInt()
+                    Log.e("Ui-percentage--", ""+percentage)
+                    loader_percentage.text = "$percentage%"
+                }
+
+        })
+    }
+
     override fun navigateTo(position: Int, docName:String) {
         //Log.e("param", " downloadId: " + download_id + " downRequeId: " + download_requestId + " downDocId: " + download_docId)
         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -116,7 +144,9 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
             selectedFile.clientName
             if (download_docId != null && download_requestId != null && download_id != null) {
                 downloadLoader?.visibility = View.VISIBLE
-                //tvPercentage.visibility = View.VISIBLE
+                loader_percentage.text = "0%"
+                loader_percentage.visibility = View.VISIBLE
+
                 detailViewModel.downloadFile(
                     token = authToken,
                     id = download_id!!,
@@ -130,6 +160,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
                 SandbarUtils.showRegular(requireActivity(), "File can not be downloaded...")
         }
     }
+
 
     override fun getCardIndex(position: Int) {
 
@@ -149,6 +180,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onErrorReceived(event: WebServiceErrorEvent) {
         downloadLoader?.visibility = View.GONE
+        loader_percentage.visibility = View.GONE
         //tvPercentage.visibility = View.GONE
 
         if(event.isInternetError)

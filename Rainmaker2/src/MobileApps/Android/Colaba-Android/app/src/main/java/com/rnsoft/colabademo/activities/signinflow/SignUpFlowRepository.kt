@@ -36,17 +36,6 @@ constructor(
         }
     }
 
-    /*
 
-    suspend fun logout() {
-        user = null
-        spEditor.clear()
-        spEditor.putBoolean(MyAppConfigConstant.IS_LOGGED_IN, false).apply()
-        spEditor.putString(MyAppConfigConstant.TOKEN, "").apply()
-        //ProductsDatabase.getDatabase(applicationContext) .clearAllTables()
-        //dataSource.logout()
-    }
-
-     */
 
 }

@@ -17,7 +17,7 @@
         android:layout_weight="1"
         android:maxLines="1"
         android:singleLine="true"
-        android:text="Add More Borrowers"
+        android:text="Add Borrower"
         android:textSize="12sp"
         android:fontFamily="@font/rubik_regular"
         android:textColor="@color/colaba_apptheme_blue"

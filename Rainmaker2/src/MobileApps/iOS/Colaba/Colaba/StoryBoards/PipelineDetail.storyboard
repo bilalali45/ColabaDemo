@@ -901,7 +901,7 @@
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
-                                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="phonePad"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="phonePad" secureTextEntry="YES"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Social Security Number"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
@@ -3533,6 +3533,13 @@
                                             <action selector="btnStateDropDownTapped:" destination="JNi-kh-Wqc" eventType="touchUpInside" id="DlI-HO-hSW"/>
                                         </connections>
                                     </button>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hIH-kJ-ooO">
+                                        <rect key="frame" x="20" y="354.5" width="335" height="71"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="71" id="qWq-Ee-YBc"/>
+                                        </constraints>
+                                    </view>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Relationship Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4nv-ej-WmW">
                                         <rect key="frame" x="22" y="364.5" width="110" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
@@ -3566,9 +3573,11 @@
                                 </subviews>
                                 <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                 <constraints>
+                                    <constraint firstItem="hIH-kJ-ooO" firstAttribute="top" secondItem="FVr-SW-7Mm" secondAttribute="bottom" constant="20" id="0Gb-70-w7W"/>
                                     <constraint firstAttribute="trailing" secondItem="Iy8-HM-Fu0" secondAttribute="trailing" constant="20" id="2I8-pU-Xpt"/>
                                     <constraint firstItem="Iy8-HM-Fu0" firstAttribute="top" secondItem="3hc-9C-mZE" secondAttribute="top" constant="25" id="3nn-TJ-uDD"/>
                                     <constraint firstItem="riK-2Y-Ltx" firstAttribute="leading" secondItem="3hc-9C-mZE" secondAttribute="leading" constant="20" id="5RI-7w-77c"/>
+                                    <constraint firstAttribute="trailing" secondItem="hIH-kJ-ooO" secondAttribute="trailing" constant="20" id="5T9-sw-SJw"/>
                                     <constraint firstItem="tfI-9v-bVw" firstAttribute="leading" secondItem="3hc-9C-mZE" secondAttribute="leading" constant="20" id="7s0-tO-sRV"/>
                                     <constraint firstItem="riK-2Y-Ltx" firstAttribute="top" secondItem="tfI-9v-bVw" secondAttribute="bottom" constant="40" id="8a4-gr-aFt"/>
                                     <constraint firstItem="mfm-XY-0el" firstAttribute="leading" secondItem="3hc-9C-mZE" secondAttribute="leading" constant="20" id="9Iz-ee-yA5"/>
@@ -3578,6 +3587,7 @@
                                     <constraint firstItem="tfI-9v-bVw" firstAttribute="top" secondItem="tPl-Hs-yd9" secondAttribute="bottom" constant="18" id="INW-Tq-85V"/>
                                     <constraint firstItem="tPl-Hs-yd9" firstAttribute="leading" secondItem="3hc-9C-mZE" secondAttribute="leading" constant="20" id="JbP-La-5Ka"/>
                                     <constraint firstAttribute="trailing" secondItem="yuV-Ip-o6t" secondAttribute="trailing" constant="20" id="KnJ-sr-5UZ"/>
+                                    <constraint firstItem="hIH-kJ-ooO" firstAttribute="leading" secondItem="3hc-9C-mZE" secondAttribute="leading" constant="20" id="Mzj-LO-DbY"/>
                                     <constraint firstAttribute="trailing" secondItem="b02-Qp-tyn" secondAttribute="trailing" constant="22" id="PJ0-d6-Ej6"/>
                                     <constraint firstItem="mfm-XY-0el" firstAttribute="top" secondItem="riK-2Y-Ltx" secondAttribute="bottom" id="Qir-EU-Xdy"/>
                                     <constraint firstAttribute="height" constant="480" id="SNl-Yz-9nK"/>
@@ -3640,18 +3650,16 @@
                         <outlet property="lblBorrowerName" destination="Gto-6M-4dT" id="1dp-Qa-0Yp"/>
                         <outlet property="lblNo" destination="Rb0-ct-e3Q" id="Bt2-Xc-m8d"/>
                         <outlet property="lblQuestion" destination="Iy8-HM-Fu0" id="4Qg-gd-6ZX"/>
-                        <outlet property="lblRelationshipDetail" destination="4nv-ej-WmW" id="yLs-qa-Fqp"/>
-                        <outlet property="lblRelationshipDetailError" destination="0w8-50-57b" id="89Z-wf-89V"/>
                         <outlet property="lblTopHeading" destination="FpZ-T3-2Bx" id="xXQ-Fo-iG3"/>
                         <outlet property="lblYes" destination="LP7-6f-Ylu" id="vAh-pv-t56"/>
                         <outlet property="mainView" destination="3hc-9C-mZE" id="fHV-AG-dxb"/>
                         <outlet property="noStackView" destination="tfI-9v-bVw" id="MsB-NV-McU"/>
+                        <outlet property="relationshipDetailTextViewContainer" destination="hIH-kJ-ooO" id="qIT-o8-Hgu"/>
                         <outlet property="relationshipTypeDropDownAnchorView" destination="mfm-XY-0el" id="r7B-3M-s0z"/>
                         <outlet property="seperatorView" destination="wGA-ui-GmA" id="Gve-rX-qkp"/>
                         <outlet property="stateDropDownAnchorView" destination="yuV-Ip-o6t" id="aeR-Ax-CWN"/>
                         <outlet property="txtfieldState" destination="FVr-SW-7Mm" id="1Bj-iU-nhq"/>
                         <outlet property="txtfieldTypeOfRelation" destination="riK-2Y-Ltx" id="3lq-Fr-Wfl"/>
-                        <outlet property="txtviewRelationshipDetail" destination="f0J-jN-p75" id="u7Q-2o-dgL"/>
                         <outlet property="yesStackView" destination="tPl-Hs-yd9" id="Dbc-Xa-cEy"/>
                     </connections>
                 </viewController>
@@ -3755,6 +3763,13 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="textfield-dropdownIcon"/>
                                     </button>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w7W-H0-Nb0">
+                                        <rect key="frame" x="20" y="89" width="335" height="71"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="71" id="Loo-b3-bV3"/>
+                                        </constraints>
+                                    </view>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XJS-IV-0D6">
                                         <rect key="frame" x="22" y="99" width="78" height="14"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
@@ -3794,6 +3809,7 @@
                                     <constraint firstItem="1t2-Qm-2kK" firstAttribute="top" secondItem="VcQ-rC-7QT" secondAttribute="bottom" constant="4" id="F6N-SO-biJ"/>
                                     <constraint firstAttribute="trailing" secondItem="CEC-fl-5KQ" secondAttribute="trailing" constant="22" id="Fz6-aX-TP3"/>
                                     <constraint firstItem="XJS-IV-0D6" firstAttribute="leading" secondItem="GL7-Aq-huI" secondAttribute="leading" constant="22" id="INF-Wq-BgQ"/>
+                                    <constraint firstItem="w7W-H0-Nb0" firstAttribute="top" secondItem="gBB-d5-sta" secondAttribute="bottom" constant="20" id="Kjc-zJ-UNK"/>
                                     <constraint firstItem="VcQ-rC-7QT" firstAttribute="top" secondItem="XJS-IV-0D6" secondAttribute="bottom" constant="11" id="LrC-JS-EjP"/>
                                     <constraint firstAttribute="height" constant="240" id="M2N-u5-qqK"/>
                                     <constraint firstItem="gBB-d5-sta" firstAttribute="top" secondItem="GL7-Aq-huI" secondAttribute="top" constant="30" id="Mx8-a7-VYE"/>
@@ -3802,6 +3818,8 @@
                                     <constraint firstItem="2wD-fT-cOq" firstAttribute="leading" secondItem="GL7-Aq-huI" secondAttribute="leading" constant="20" id="gz1-dl-VlG"/>
                                     <constraint firstItem="CEC-fl-5KQ" firstAttribute="top" secondItem="GL7-Aq-huI" secondAttribute="top" constant="33" id="hKd-KO-Ohv"/>
                                     <constraint firstItem="gBB-d5-sta" firstAttribute="leading" secondItem="GL7-Aq-huI" secondAttribute="leading" constant="20" id="itL-EY-Dr4"/>
+                                    <constraint firstAttribute="trailing" secondItem="w7W-H0-Nb0" secondAttribute="trailing" constant="20" id="mKT-ib-x5z"/>
+                                    <constraint firstItem="w7W-H0-Nb0" firstAttribute="leading" secondItem="GL7-Aq-huI" secondAttribute="leading" constant="20" id="qZW-of-tjn"/>
                                     <constraint firstItem="VcQ-rC-7QT" firstAttribute="leading" secondItem="GL7-Aq-huI" secondAttribute="leading" constant="20" id="ruY-vH-bqH"/>
                                     <constraint firstAttribute="trailing" secondItem="VcQ-rC-7QT" secondAttribute="trailing" constant="20" id="zm2-hc-1R8"/>
                                 </constraints>
@@ -3842,13 +3860,11 @@
                         <outlet property="btnSaveChanges" destination="bTQ-Ta-8Ch" id="Dbi-de-XTj"/>
                         <outlet property="btnVisaStatusDropDown" destination="CEC-fl-5KQ" id="G10-WQ-ChI"/>
                         <outlet property="lblBorrowerName" destination="aq5-jN-aUZ" id="GXQ-Al-eis"/>
-                        <outlet property="lblStatusDetail" destination="XJS-IV-0D6" id="tET-R4-1Kv"/>
-                        <outlet property="lblStatusDetailError" destination="1t2-Qm-2kK" id="l9R-mS-tlD"/>
                         <outlet property="lblTopHeading" destination="B90-12-lY9" id="tWL-xM-q4D"/>
                         <outlet property="mainView" destination="GL7-Aq-huI" id="eQ4-fw-Kze"/>
                         <outlet property="separatorView" destination="4f1-PG-U5l" id="5dV-Ct-R0V"/>
+                        <outlet property="statusDetailTextViewContainer" destination="w7W-H0-Nb0" id="m54-IE-IjH"/>
                         <outlet property="txtfieldVisaStatus" destination="gBB-d5-sta" id="PHX-dE-dGw"/>
-                        <outlet property="txtviewStatusDetail" destination="VcQ-rC-7QT" id="bpc-S2-Wka"/>
                         <outlet property="visaStatusDropDownAnchorView" destination="2wD-fT-cOq" id="bY0-za-W0p"/>
                     </connections>
                 </viewController>
@@ -4314,29 +4330,30 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="stp-gg-V8I">
                                         <rect key="frame" x="40" y="141" width="142.5" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="fBt-SV-CQ9"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="14"/>
-                                        <state key="normal" title="YES">
-                                            <color key="titleColor" name="ButtonBlueColor"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="btnYesTapped:" destination="T5B-5G-sbo" eventType="touchUpInside" id="sPK-kK-9xJ"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lNw-WR-1fv">
-                                        <rect key="frame" x="192.5" y="141" width="142.5" height="50"/>
                                         <color key="backgroundColor" name="ButtonBlueColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="sDG-3Q-Srx"/>
+                                            <constraint firstAttribute="height" constant="50" id="fBt-SV-CQ9"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="14"/>
                                         <state key="normal" title="NO">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <action selector="btnNoTapped:" destination="T5B-5G-sbo" eventType="touchUpInside" id="pVu-mh-s60"/>
+                                            <action selector="btnNoTapped:" destination="T5B-5G-sbo" eventType="touchUpInside" id="EGS-FF-S8w"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lNw-WR-1fv">
+                                        <rect key="frame" x="192.5" y="141" width="142.5" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="sDG-3Q-Srx"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="14"/>
+                                        <state key="normal" title="YES">
+                                            <color key="titleColor" name="ButtonBlueColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="btnYesTapped:" destination="T5B-5G-sbo" eventType="touchUpInside" id="Opn-P9-Qlu"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -4369,8 +4386,8 @@
                     </view>
                     <connections>
                         <outlet property="btnClose" destination="6VI-qI-HXs" id="Eoy-N7-Wbv"/>
-                        <outlet property="btnNo" destination="lNw-WR-1fv" id="dPr-Rb-Ubl"/>
-                        <outlet property="btnYes" destination="stp-gg-V8I" id="gfp-3u-Nlx"/>
+                        <outlet property="btnNo" destination="stp-gg-V8I" id="FvJ-RX-dFg"/>
+                        <outlet property="btnYes" destination="lNw-WR-1fv" id="0jw-C1-YIE"/>
                         <outlet property="lblTitle" destination="xcg-21-PTh" id="VtQ-BR-QhM"/>
                         <outlet property="mainView" destination="9nY-wm-cqz" id="mVg-m9-WKd"/>
                         <outlet property="mainViewBottomConstraint" destination="Umm-cM-FUf" id="4vI-xe-3gd"/>

@@ -20,6 +20,7 @@ pod 'MonthYearPicker'
 pod 'DropDown'
 pod 'GooglePlaces'
 pod 'GoogleMaps'
+pod 'MaterialComponents/TextControls+FilledTextAreas'
 
   target 'ColabaTests' do
     inherit! :search_paths

@@ -8,6 +8,7 @@
 import UIKit
 import Material
 import DropDown
+import MaterialComponents
 
 class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
     
@@ -21,12 +22,11 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
     @IBOutlet weak var txtfieldVisaStatus: TextField!
     @IBOutlet weak var visaStatusDropDownAnchorView: UIView!
     @IBOutlet weak var btnVisaStatusDropDown: UIButton!
-    @IBOutlet weak var lblStatusDetail: UILabel!
-    @IBOutlet weak var txtviewStatusDetail: UITextView!
-    @IBOutlet weak var lblStatusDetailError: UILabel!
+    @IBOutlet weak var statusDetailTextViewContainer: UIView!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
     let visaStatusDropDown = DropDown()
+    var txtViewStatusDetail = MDCFilledTextArea()
     private let validation: Validation
     
     init(validation: Validation) {
@@ -62,17 +62,41 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
             textfield.detailColor = .red
             textfield.detailVerticalOffset = 4
             textfield.placeholderVerticalOffset = 8
+            textfield.textColor = Theme.getAppBlackColor()
         }
         txtfieldVisaStatus.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 25)
-//        txtviewStatusDetail.dividerThickness = 1
-//        txtviewStatusDetail.isDividerHidden = false
-//        txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
-//        txtviewStatusDetail.delegate = self
-//        txtviewStatusDetail.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-        txtviewStatusDetail.layer.cornerRadius = 5
-        txtviewStatusDetail.layer.borderColor = Theme.getButtonGreyColor().cgColor
-        txtviewStatusDetail.layer.borderWidth = 1
-        txtviewStatusDetail.delegate = self
+        
+        let estimatedFrame = statusDetailTextViewContainer.frame
+        txtViewStatusDetail = MDCFilledTextArea(frame: estimatedFrame)
+        txtViewStatusDetail.isHidden = true
+        txtViewStatusDetail.label.text = "Status Details"
+        txtViewStatusDetail.textView.text = ""
+        txtViewStatusDetail.leadingAssistiveLabel.text = ""
+        txtViewStatusDetail.setFilledBackgroundColor(.clear, for: .normal)
+        txtViewStatusDetail.setFilledBackgroundColor(.clear, for: .disabled)
+        txtViewStatusDetail.setFilledBackgroundColor(.clear, for: .editing)
+        txtViewStatusDetail.setUnderlineColor(Theme.getSeparatorNormalColor(), for: .normal)
+        txtViewStatusDetail.setUnderlineColor(Theme.getSeparatorNormalColor(), for: .disabled)
+        txtViewStatusDetail.setUnderlineColor(Theme.getButtonBlueColor(), for: .editing)
+        txtViewStatusDetail.leadingEdgePaddingOverride = 0
+        txtViewStatusDetail.setFloatingLabel(Theme.getAppGreyColor(), for: .normal)
+        txtViewStatusDetail.setFloatingLabel(Theme.getAppGreyColor(), for: .disabled)
+        txtViewStatusDetail.setFloatingLabel(Theme.getAppGreyColor(), for: .editing)
+        txtViewStatusDetail.label.font = Theme.getRubikRegularFont(size: 13)
+        txtViewStatusDetail.setNormalLabel(Theme.getButtonGreyTextColor(), for: .normal)
+        txtViewStatusDetail.setNormalLabel(Theme.getButtonGreyTextColor(), for: .editing)
+        txtViewStatusDetail.setNormalLabel(Theme.getButtonGreyTextColor(), for: .disabled)
+        txtViewStatusDetail.setTextColor(Theme.getAppBlackColor(), for: .normal)
+        txtViewStatusDetail.setTextColor(Theme.getAppBlackColor(), for: .editing)
+        txtViewStatusDetail.setTextColor(Theme.getAppBlackColor(), for: .disabled)
+        txtViewStatusDetail.textView.font = Theme.getRubikRegularFont(size: 15)
+        txtViewStatusDetail.leadingAssistiveLabel.font = Theme.getRubikRegularFont(size: 12)
+        txtViewStatusDetail.setLeadingAssistiveLabel(.red, for: .normal)
+        txtViewStatusDetail.setLeadingAssistiveLabel(.red, for: .editing)
+        txtViewStatusDetail.setLeadingAssistiveLabel(.red, for: .disabled)
+        txtViewStatusDetail.textView.textColor = .black
+        txtViewStatusDetail.textView.delegate = self
+        mainView.addSubview(txtViewStatusDetail)
         
         btnSaveChanges.layer.borderWidth = 1
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
@@ -89,9 +113,8 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
             txtfieldVisaStatus.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldVisaStatus.text = item
             visaStatusDropDown.hide()
-            txtviewStatusDetail.isHidden = item != "Other"
-            lblStatusDetail.isHidden = item != "Other"
-            lblStatusDetailError.isHidden = item != "Other"
+            statusDetailTextViewContainer.isHidden = item != "Other"
+            txtViewStatusDetail.isHidden = item != "Other"
             txtfieldVisaStatus.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldVisaStatus.detail = ""
         }
@@ -131,22 +154,21 @@ class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
         
         if (txtfieldVisaStatus.text == "Other"){
             do{
-                let visaStatusDetail = try validation.validateVisaStatusDetail(txtviewStatusDetail.text)
+                let visaStatusDetail = try validation.validateVisaStatusDetail(txtViewStatusDetail.textView.text)
                 DispatchQueue.main.async {
-                    self.lblStatusDetailError.isHidden = true
-                    self.txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtViewStatusDetail.setUnderlineColor(Theme.getSeparatorNormalColor(), for: .normal)
+                    self.txtViewStatusDetail.leadingAssistiveLabel.text = ""
                 }
-                
+
             }
             catch{
-                self.lblStatusDetailError.isHidden = false
-                self.lblStatusDetailError.text = error.localizedDescription
-                self.txtviewStatusDetail.dividerColor = Theme.getSeparatorErrorColor()
+                self.txtViewStatusDetail.setUnderlineColor(Theme.getSeparatorErrorColor(), for: .normal)
+                self.txtViewStatusDetail.leadingAssistiveLabel.text = error.localizedDescription
             }
         }
         
         if (txtfieldVisaStatus.text != ""){
-            if (txtfieldVisaStatus.text == "Other" && txtviewStatusDetail.text != ""){
+            if (txtfieldVisaStatus.text == "Other" && txtViewStatusDetail.textView.text != ""){
                 self.dismissVC()
             }
             else if (txtfieldVisaStatus.text != "Other"){
@@ -210,17 +232,16 @@ extension NonPermanentResidenceFollowUpQuestionsViewController: UITextViewDelega
         //txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
         
         do{
-            let visaStatusDetail = try validation.validateVisaStatusDetail(txtviewStatusDetail.text)
+            let relationshipDetail = try validation.validateRelationshipDetail(txtViewStatusDetail.textView.text)
             DispatchQueue.main.async {
-                self.lblStatusDetailError.isHidden = true
-                //self.txtviewStatusDetail.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtViewStatusDetail.setUnderlineColor(Theme.getSeparatorNormalColor(), for: .normal)
+                self.txtViewStatusDetail.leadingAssistiveLabel.text = ""
             }
-            
+
         }
         catch{
-            self.lblStatusDetailError.isHidden = false
-            self.lblStatusDetailError.text = error.localizedDescription
-            //self.txtviewStatusDetail.dividerColor = Theme.getSeparatorErrorColor()
+            self.txtViewStatusDetail.setUnderlineColor(Theme.getSeparatorErrorColor(), for: .normal)
+            self.txtViewStatusDetail.leadingAssistiveLabel.text = error.localizedDescription
         }
         
     }
