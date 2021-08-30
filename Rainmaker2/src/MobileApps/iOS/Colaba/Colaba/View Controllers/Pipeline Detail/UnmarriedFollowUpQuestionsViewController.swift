@@ -380,17 +380,12 @@ extension UnmarriedFollowUpQuestionsViewController: UITextViewDelegate{
         do{
             let relationshipDetail = try validation.validateRelationshipDetail(txtViewRelationshipDetail.textView.text)
             DispatchQueue.main.async {
-                //self.lblRelationshipDetailError.isHidden = true
-                //self.txtviewRelationshipDetail.dividerColor = Theme.getSeparatorNormalColor()
                 self.txtViewRelationshipDetail.setUnderlineColor(Theme.getSeparatorNormalColor(), for: .normal)
                 self.txtViewRelationshipDetail.leadingAssistiveLabel.text = ""
             }
 
         }
         catch{
-//            self.lblRelationshipDetailError.isHidden = false
-//            self.lblRelationshipDetailError.text = error.localizedDescription
-           // self.txtviewRelationshipDetail.dividerColor = Theme.getSeparatorErrorColor()
             self.txtViewRelationshipDetail.setUnderlineColor(Theme.getSeparatorErrorColor(), for: .normal)
             self.txtViewRelationshipDetail.leadingAssistiveLabel.text = error.localizedDescription
         }

@@ -79,7 +79,7 @@ class AddResidenceViewController: UIViewController {
         
         let filter = GMSAutocompleteFilter()
         filter.type = .address
-
+        
         // Create the fetcher.
         fetcher = GMSAutocompleteFetcher(filter: filter)
         fetcher?.delegate = self as GMSAutocompleteFetcherDelegate

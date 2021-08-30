@@ -3763,6 +3763,13 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="textfield-dropdownIcon"/>
                                     </button>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w7W-H0-Nb0">
+                                        <rect key="frame" x="20" y="89" width="335" height="71"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="71" id="Loo-b3-bV3"/>
+                                        </constraints>
+                                    </view>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XJS-IV-0D6">
                                         <rect key="frame" x="22" y="99" width="78" height="14"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
@@ -3802,6 +3809,7 @@
                                     <constraint firstItem="1t2-Qm-2kK" firstAttribute="top" secondItem="VcQ-rC-7QT" secondAttribute="bottom" constant="4" id="F6N-SO-biJ"/>
                                     <constraint firstAttribute="trailing" secondItem="CEC-fl-5KQ" secondAttribute="trailing" constant="22" id="Fz6-aX-TP3"/>
                                     <constraint firstItem="XJS-IV-0D6" firstAttribute="leading" secondItem="GL7-Aq-huI" secondAttribute="leading" constant="22" id="INF-Wq-BgQ"/>
+                                    <constraint firstItem="w7W-H0-Nb0" firstAttribute="top" secondItem="gBB-d5-sta" secondAttribute="bottom" constant="20" id="Kjc-zJ-UNK"/>
                                     <constraint firstItem="VcQ-rC-7QT" firstAttribute="top" secondItem="XJS-IV-0D6" secondAttribute="bottom" constant="11" id="LrC-JS-EjP"/>
                                     <constraint firstAttribute="height" constant="240" id="M2N-u5-qqK"/>
                                     <constraint firstItem="gBB-d5-sta" firstAttribute="top" secondItem="GL7-Aq-huI" secondAttribute="top" constant="30" id="Mx8-a7-VYE"/>
@@ -3810,6 +3818,8 @@
                                     <constraint firstItem="2wD-fT-cOq" firstAttribute="leading" secondItem="GL7-Aq-huI" secondAttribute="leading" constant="20" id="gz1-dl-VlG"/>
                                     <constraint firstItem="CEC-fl-5KQ" firstAttribute="top" secondItem="GL7-Aq-huI" secondAttribute="top" constant="33" id="hKd-KO-Ohv"/>
                                     <constraint firstItem="gBB-d5-sta" firstAttribute="leading" secondItem="GL7-Aq-huI" secondAttribute="leading" constant="20" id="itL-EY-Dr4"/>
+                                    <constraint firstAttribute="trailing" secondItem="w7W-H0-Nb0" secondAttribute="trailing" constant="20" id="mKT-ib-x5z"/>
+                                    <constraint firstItem="w7W-H0-Nb0" firstAttribute="leading" secondItem="GL7-Aq-huI" secondAttribute="leading" constant="20" id="qZW-of-tjn"/>
                                     <constraint firstItem="VcQ-rC-7QT" firstAttribute="leading" secondItem="GL7-Aq-huI" secondAttribute="leading" constant="20" id="ruY-vH-bqH"/>
                                     <constraint firstAttribute="trailing" secondItem="VcQ-rC-7QT" secondAttribute="trailing" constant="20" id="zm2-hc-1R8"/>
                                 </constraints>
@@ -3850,13 +3860,11 @@
                         <outlet property="btnSaveChanges" destination="bTQ-Ta-8Ch" id="Dbi-de-XTj"/>
                         <outlet property="btnVisaStatusDropDown" destination="CEC-fl-5KQ" id="G10-WQ-ChI"/>
                         <outlet property="lblBorrowerName" destination="aq5-jN-aUZ" id="GXQ-Al-eis"/>
-                        <outlet property="lblStatusDetail" destination="XJS-IV-0D6" id="tET-R4-1Kv"/>
-                        <outlet property="lblStatusDetailError" destination="1t2-Qm-2kK" id="l9R-mS-tlD"/>
                         <outlet property="lblTopHeading" destination="B90-12-lY9" id="tWL-xM-q4D"/>
                         <outlet property="mainView" destination="GL7-Aq-huI" id="eQ4-fw-Kze"/>
                         <outlet property="separatorView" destination="4f1-PG-U5l" id="5dV-Ct-R0V"/>
+                        <outlet property="statusDetailTextViewContainer" destination="w7W-H0-Nb0" id="m54-IE-IjH"/>
                         <outlet property="txtfieldVisaStatus" destination="gBB-d5-sta" id="PHX-dE-dGw"/>
-                        <outlet property="txtviewStatusDetail" destination="VcQ-rC-7QT" id="bpc-S2-Wka"/>
                         <outlet property="visaStatusDropDownAnchorView" destination="2wD-fT-cOq" id="bY0-za-W0p"/>
                     </connections>
                 </viewController>
