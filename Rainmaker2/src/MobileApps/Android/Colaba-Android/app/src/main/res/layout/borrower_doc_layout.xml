@@ -33,9 +33,10 @@
             android:layout_marginTop="15dp"
             android:background="@color/colaba_loan_background"
             android:orientation="vertical"
-            android:paddingBottom="80dp"
+            android:paddingBottom="90dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
