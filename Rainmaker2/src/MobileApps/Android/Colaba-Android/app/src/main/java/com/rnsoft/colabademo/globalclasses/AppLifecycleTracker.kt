@@ -38,11 +38,7 @@ class AppLifecycleTracker(val appContext:Context) : Application.ActivityLifecycl
 
         override fun onActivityResumed(activity: Activity) {
 
-            if(AppSetting.userHasLoggedIn) {
-                val intent = Intent(appContext, SignUpFlowActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                appContext.startActivity(intent)
-            }
+
 
         }
         override fun onActivityPaused(activity: Activity) {}
