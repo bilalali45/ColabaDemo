@@ -23,7 +23,11 @@ object AppSetting {
 
     var userHasLoggedIn:Boolean = false
 
-    const val lockAppState:String = "lockAppState"
+    //const val lockAppState:String = "lockAppState"
+
+     const val lockAppState:String = "lockAppState"
+
+    var initialScreenLoaded:Boolean = false
 
     var biometricEnabled: Boolean = false
     var loanApiDateTime: String = ""

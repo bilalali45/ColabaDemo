@@ -80,13 +80,11 @@ class LoginFragment : Fragment() {
 
 
         if (activity is SignUpFlowActivity) {
-            Log.e("resumeState= ","= "+(activity as SignUpFlowActivity).resumeState)
-            if ((activity as SignUpFlowActivity).resumeState)
+            Log.e("resumeState= ","LoginFragment -userEmailField ="+(activity as SignUpFlowActivity).resumeState)
+            if (AppSetting.initialScreenLoaded)
                 disableEditText(userEmailField)
         }
-        else{
-            Log.e("Some Other= ","activity---")
-        }
+
 
         userEmailField.setText("mubashir.mcu@mailinator.com")
         passwordField.setText("test123")
@@ -221,8 +219,10 @@ class LoginFragment : Fragment() {
                             sharedPreferences.edit().putBoolean(AppConstant.isbiometricEnabled, true).apply()
 
                         if (activity is SignUpFlowActivity) {
-                            if ((activity as SignUpFlowActivity).resumeState)
+                            if ((activity as SignUpFlowActivity).resumeState) {
+                                AppSetting.initialScreenLoaded = false
                                 requireActivity().finish()
+                            }
                             else
                                 navigateToDashBoard(it.success)
                         }
