@@ -54,6 +54,10 @@ class PurchaseLoanInfoViewController: UIViewController {
             textfield.textColor = Theme.getAppBlackColor()
         }
         
+        txtfieldPurchasePrice.addTarget(self, action: #selector(txtfieldPurchasePriceChanged), for: .editingChanged)
+        txtfieldLoanAmount.addTarget(self, action: #selector(txtfieldLoanAmountChanged), for: .editingChanged)
+        txtfieldDownPayment.addTarget(self, action: #selector(txtfieldDownPaymentChanged), for: .editingChanged)
+        
         btnSaveChanges.layer.borderWidth = 1
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
@@ -79,6 +83,24 @@ class PurchaseLoanInfoViewController: UIViewController {
     @objc func dateChanged() {
         if let  datePicker = self.txtfieldClosingDate.inputView as? MonthYearPickerView {
             self.txtfieldClosingDate.text = closingDateFormatter.string(from: datePicker.date)
+        }
+    }
+    
+    @objc func txtfieldPurchasePriceChanged(){
+        if let amount = Int(txtfieldPurchasePrice.text!.replacingOccurrences(of: ",", with: "")){
+            txtfieldPurchasePrice.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
+        }
+    }
+    
+    @objc func txtfieldLoanAmountChanged(){
+        if let amount = Int(txtfieldLoanAmount.text!.replacingOccurrences(of: ",", with: "")){
+            txtfieldLoanAmount.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
+        }
+    }
+    
+    @objc func txtfieldDownPaymentChanged(){
+        if let amount = Int(txtfieldDownPayment.text!.replacingOccurrences(of: ",", with: "")){
+            txtfieldDownPayment.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
         }
     }
     

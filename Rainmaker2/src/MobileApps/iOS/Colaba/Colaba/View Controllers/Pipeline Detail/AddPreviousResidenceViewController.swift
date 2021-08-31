@@ -45,6 +45,7 @@ class AddPreviousResidenceViewController: UIViewController {
     @IBOutlet weak var housingStatusDropDownAnchorView: UIView!
     @IBOutlet weak var btnHousingStatusDropDown: UIButton!
     @IBOutlet weak var txtfieldMonthlyRent: TextField!
+    @IBOutlet weak var monthlyRentDollarView: UIView!
     @IBOutlet weak var txtfieldMonthlyRentTopConstraint: NSLayoutConstraint! //30 or 0
     @IBOutlet weak var txtfieldMonthlyRentHeightConstraint: NSLayoutConstraint! //39 or 0
     @IBOutlet weak var btnSaveChanges: UIButton!
@@ -83,6 +84,7 @@ class AddPreviousResidenceViewController: UIViewController {
         fetcher?.delegate = self as GMSAutocompleteFetcherDelegate
 
         txtfieldHomeAddress.addTarget(self, action: #selector(txtfieldHomeAddressTextChanged), for: UIControl.Event.editingChanged)
+        txtfieldMonthlyRent.addTarget(self, action: #selector(txtfieldRentChanged), for: .editingChanged)
 
         tblViewPlaces.delegate = self
         tblViewPlaces.dataSource = self
@@ -356,6 +358,12 @@ class AddPreviousResidenceViewController: UIViewController {
         }
         
         stateDropDown.show()
+    }
+    
+    @objc func txtfieldRentChanged(){
+        if let amount = Int(txtfieldMonthlyRent.text!.replacingOccurrences(of: ",", with: "")){
+            txtfieldMonthlyRent.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
+        }
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
@@ -665,6 +673,12 @@ extension AddPreviousResidenceViewController: UITextFieldDelegate{
             //btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
             //stateDropDown.show()
         }
+        
+        if (textField == txtfieldMonthlyRent){
+            txtfieldMonthlyRent.textInsetsPreset = .horizontally5
+            txtfieldMonthlyRent.placeholderHorizontalOffset = -24
+            monthlyRentDollarView.isHidden = false
+        }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -829,6 +843,12 @@ extension AddPreviousResidenceViewController: UITextFieldDelegate{
                     self.txtfieldMonthlyRent.detail = error.localizedDescription
                 }
             }
+        }
+        
+        if (textField == txtfieldMonthlyRent && txtfieldMonthlyRent.text == ""){
+            txtfieldMonthlyRent.textInsetsPreset = .none
+            txtfieldMonthlyRent.placeholderHorizontalOffset = 0
+            monthlyRentDollarView.isHidden = true
         }
         
         setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry, txtfieldMoveInDate, txtfieldMoveOutDate, txtfieldHousingStatus, txtfieldMonthlyRent])

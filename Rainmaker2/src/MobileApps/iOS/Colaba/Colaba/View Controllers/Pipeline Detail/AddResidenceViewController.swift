@@ -44,6 +44,7 @@ class AddResidenceViewController: UIViewController {
     @IBOutlet weak var housingStatusDropDownAnchorView: UIView!
     @IBOutlet weak var btnHousingStatusDropDown: UIButton!
     @IBOutlet weak var txtfieldMonthlyRent: TextField!
+    @IBOutlet weak var monthlyRentDollarView: UIView!
     @IBOutlet weak var txtfieldMonthlyRentTopConstraint: NSLayoutConstraint! //30 or 0
     @IBOutlet weak var txtfieldMonthlyRentHeightConstraint: NSLayoutConstraint! //39 or 0
     @IBOutlet weak var addMailingAddressStackView: UIStackView!
@@ -178,6 +179,7 @@ class AddResidenceViewController: UIViewController {
         
         txtfieldCountry.addTarget(self, action: #selector(txtfieldCountryTextChanged), for: .editingChanged)
         txtfieldState.addTarget(self, action: #selector(txtfieldStateTextChanged), for: .editingChanged)
+        txtfieldMonthlyRent.addTarget(self, action: #selector(txtfieldRentChanged), for: .editingChanged)
         
         tblViewMailingAddress.register(UINib(nibName: "BorrowerAddressInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerAddressInfoTableViewCell")
         
@@ -363,6 +365,12 @@ class AddResidenceViewController: UIViewController {
         }
         
         stateDropDown.show()
+    }
+    
+    @objc func txtfieldRentChanged(){
+        if let amount = Int(txtfieldMonthlyRent.text!.replacingOccurrences(of: ",", with: "")){
+            txtfieldMonthlyRent.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
+        }
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
@@ -710,6 +718,12 @@ extension AddResidenceViewController: UITextFieldDelegate{
             //btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
             //stateDropDown.show()
         }
+        
+        if (textField == txtfieldMonthlyRent){
+            txtfieldMonthlyRent.textInsetsPreset = .horizontally5
+            txtfieldMonthlyRent.placeholderHorizontalOffset = -24
+            monthlyRentDollarView.isHidden = false
+        }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -874,6 +888,12 @@ extension AddResidenceViewController: UITextFieldDelegate{
                     self.txtfieldMonthlyRent.detail = error.localizedDescription
                 }
             }
+        }
+        
+        if (textField == txtfieldMonthlyRent && txtfieldMonthlyRent.text == ""){
+            txtfieldMonthlyRent.textInsetsPreset = .none
+            txtfieldMonthlyRent.placeholderHorizontalOffset = 0
+            monthlyRentDollarView.isHidden = true
         }
         
         setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry, txtfieldMoveInDate, txtfieldHousingStatus, txtfieldMonthlyRent])

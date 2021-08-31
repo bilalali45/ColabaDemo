@@ -3139,7 +3139,7 @@
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardType="numberPad"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Monthly Rent ($)"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Monthly Rent"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
                                                         <real key="value" value="1"/>
                                                     </userDefinedRuntimeAttribute>
@@ -3158,6 +3158,34 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dyO-DZ-T2H">
+                                                <rect key="frame" x="20" y="237" width="24" height="39"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fVb-hx-EIk">
+                                                        <rect key="frame" x="0.0" y="11" width="10" height="18"/>
+                                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
+                                                        <color key="textColor" name="AppGreyColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VeJ-tZ-g6x">
+                                                        <rect key="frame" x="17" y="12.5" width="1" height="15"/>
+                                                        <color key="backgroundColor" name="SeparatorNormalColor"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="1" id="ImU-TA-n5B"/>
+                                                        </constraints>
+                                                    </view>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="24" id="LIf-Es-qPf"/>
+                                                    <constraint firstItem="VeJ-tZ-g6x" firstAttribute="height" secondItem="fVb-hx-EIk" secondAttribute="height" multiplier="0.833333" id="Rzn-wc-ZgJ"/>
+                                                    <constraint firstItem="VeJ-tZ-g6x" firstAttribute="leading" secondItem="fVb-hx-EIk" secondAttribute="trailing" constant="7" id="SXd-vT-EdT"/>
+                                                    <constraint firstItem="fVb-hx-EIk" firstAttribute="leading" secondItem="dyO-DZ-T2H" secondAttribute="leading" id="WgP-zb-U9O"/>
+                                                    <constraint firstAttribute="bottom" secondItem="fVb-hx-EIk" secondAttribute="bottom" constant="10" id="g0i-iu-gfu"/>
+                                                    <constraint firstAttribute="height" constant="39" id="yS4-2u-5rA"/>
+                                                    <constraint firstItem="VeJ-tZ-g6x" firstAttribute="centerY" secondItem="fVb-hx-EIk" secondAttribute="centerY" id="zsv-R1-3Y8"/>
+                                                </constraints>
+                                            </view>
                                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="3EI-hs-uPr">
                                                 <rect key="frame" x="20" y="237" width="235.5" height="28"/>
                                                 <subviews>
@@ -3193,7 +3221,9 @@
                                             <constraint firstItem="28G-17-6tf" firstAttribute="top" secondItem="M0H-QI-yrf" secondAttribute="bottom" constant="6" id="5bg-aC-TIF"/>
                                             <constraint firstItem="Vio-JK-MC0" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="6iC-C7-NwY"/>
                                             <constraint firstItem="3EI-hs-uPr" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="8An-3m-a3g"/>
+                                            <constraint firstItem="dyO-DZ-T2H" firstAttribute="top" secondItem="MSm-Ao-wCk" secondAttribute="bottom" constant="30" id="8q5-A7-zyo"/>
                                             <constraint firstAttribute="trailing" secondItem="CnP-gC-rJM" secondAttribute="trailing" constant="20" id="AEW-Aq-GfU"/>
+                                            <constraint firstItem="dyO-DZ-T2H" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="BIH-bb-pSm"/>
                                             <constraint firstAttribute="trailing" secondItem="28G-17-6tf" secondAttribute="trailing" constant="20" id="BZL-2P-FnO"/>
                                             <constraint firstItem="MSm-Ao-wCk" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="CHR-1V-AkR"/>
                                             <constraint firstItem="vye-dt-KpN" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="DhT-A1-PJt"/>
@@ -3318,6 +3348,7 @@
                         <outlet property="lblTopHeading" destination="cLM-pr-PBw" id="cpX-TJ-oW2"/>
                         <outlet property="mainView" destination="eNx-3q-TmC" id="cog-Jf-L0m"/>
                         <outlet property="mainViewHeightConstraint" destination="Gai-cT-61w" id="tjp-mq-OmZ"/>
+                        <outlet property="monthlyRentDollarView" destination="dyO-DZ-T2H" id="pNE-ZD-Fez"/>
                         <outlet property="seperatorView" destination="rXK-om-kXg" id="JuI-iJ-0yL"/>
                         <outlet property="stateDropDownAnchorView" destination="vye-dt-KpN" id="D7N-KU-HVj"/>
                         <outlet property="tblViewMailingAddress" destination="4jW-pU-rUi" id="m2F-j2-reC"/>
@@ -4874,7 +4905,7 @@
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardType="numberPad"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Monthly Rent ($)"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Monthly Rent"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
                                                         <real key="value" value="1"/>
                                                     </userDefinedRuntimeAttribute>
@@ -4893,6 +4924,34 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fmf-H5-eyG">
+                                                <rect key="frame" x="20" y="306" width="24" height="39"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gY7-hi-6EJ">
+                                                        <rect key="frame" x="0.0" y="11" width="10" height="18"/>
+                                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
+                                                        <color key="textColor" name="AppGreyColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Kb-xC-Sk3">
+                                                        <rect key="frame" x="17" y="12.5" width="1" height="15"/>
+                                                        <color key="backgroundColor" name="SeparatorNormalColor"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="1" id="KDZ-g0-czQ"/>
+                                                        </constraints>
+                                                    </view>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="7Kb-xC-Sk3" firstAttribute="height" secondItem="gY7-hi-6EJ" secondAttribute="height" multiplier="0.833333" id="EWj-t6-MI8"/>
+                                                    <constraint firstItem="gY7-hi-6EJ" firstAttribute="leading" secondItem="fmf-H5-eyG" secondAttribute="leading" id="Fyo-bC-E9Y"/>
+                                                    <constraint firstAttribute="width" constant="24" id="K2S-cM-hqf"/>
+                                                    <constraint firstItem="7Kb-xC-Sk3" firstAttribute="leading" secondItem="gY7-hi-6EJ" secondAttribute="trailing" constant="7" id="ZAU-4i-aEb"/>
+                                                    <constraint firstItem="7Kb-xC-Sk3" firstAttribute="centerY" secondItem="gY7-hi-6EJ" secondAttribute="centerY" id="nU9-ee-4uM"/>
+                                                    <constraint firstAttribute="bottom" secondItem="gY7-hi-6EJ" secondAttribute="bottom" constant="10" id="niT-Yo-Vdc"/>
+                                                    <constraint firstAttribute="height" constant="39" id="nkA-33-zDc"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                         <constraints>
@@ -4912,6 +4971,7 @@
                                             <constraint firstItem="xSh-ts-zW8" firstAttribute="top" secondItem="1jx-KN-FgJ" secondAttribute="top" constant="34" id="Czz-Ik-UH7"/>
                                             <constraint firstItem="w5u-Yb-h4v" firstAttribute="top" secondItem="4MD-LZ-bqM" secondAttribute="bottom" constant="30" id="Fgn-ld-mkn"/>
                                             <constraint firstAttribute="trailing" secondItem="HKT-tR-jJ9" secondAttribute="trailing" constant="20" id="HaT-nq-NdO"/>
+                                            <constraint firstItem="fmf-H5-eyG" firstAttribute="leading" secondItem="1jx-KN-FgJ" secondAttribute="leading" constant="20" id="IKA-7f-XJH"/>
                                             <constraint firstItem="XgX-u9-7gJ" firstAttribute="top" secondItem="dul-nH-sVd" secondAttribute="bottom" constant="33" id="IPc-eQ-IIt"/>
                                             <constraint firstAttribute="trailing" secondItem="ZsY-FG-kYb" secondAttribute="trailing" constant="20" id="JWo-1g-Jk6"/>
                                             <constraint firstAttribute="trailing" secondItem="gs4-1k-hsM" secondAttribute="trailing" constant="20" id="Jya-qH-8wz"/>
@@ -4931,6 +4991,7 @@
                                             <constraint firstItem="6TK-La-g77" firstAttribute="top" secondItem="ktv-QC-2eC" secondAttribute="bottom" constant="33" id="YsJ-zw-KNd"/>
                                             <constraint firstItem="dul-nH-sVd" firstAttribute="leading" secondItem="1jx-KN-FgJ" secondAttribute="leading" constant="20" id="Z6T-CA-X8C"/>
                                             <constraint firstAttribute="trailing" secondItem="17e-gh-RZm" secondAttribute="trailing" constant="20" id="ZW4-g2-h9N"/>
+                                            <constraint firstItem="fmf-H5-eyG" firstAttribute="top" secondItem="vcN-fn-zvF" secondAttribute="bottom" constant="30" id="aDs-eH-d8f"/>
                                             <constraint firstAttribute="trailing" secondItem="4MD-LZ-bqM" secondAttribute="trailing" constant="20" id="b7V-kc-Euk"/>
                                             <constraint firstItem="aC2-38-iWx" firstAttribute="leading" secondItem="1jx-KN-FgJ" secondAttribute="leading" constant="20" id="cg5-N6-a7Q"/>
                                             <constraint firstItem="HWx-sb-OXD" firstAttribute="leading" secondItem="1jx-KN-FgJ" secondAttribute="leading" constant="20" id="dTM-xd-Idn"/>
@@ -5027,6 +5088,7 @@
                         <outlet property="lblTopHeading" destination="X8x-n8-h61" id="QFa-Qy-Eg5"/>
                         <outlet property="mainView" destination="1jx-KN-FgJ" id="0ZF-M0-FyT"/>
                         <outlet property="mainViewHeightConstraint" destination="Pyk-4q-J3K" id="CBb-UB-5Oz"/>
+                        <outlet property="monthlyRentDollarView" destination="fmf-H5-eyG" id="MmI-J4-B9W"/>
                         <outlet property="seperatorView" destination="ldT-Lj-Woq" id="NlE-HP-dAo"/>
                         <outlet property="stateDropDownAnchorView" destination="ZsY-FG-kYb" id="hAB-Dn-Nix"/>
                         <outlet property="tblViewPlaces" destination="tt5-G2-ZYV" id="NwX-m8-T6W"/>
@@ -5165,6 +5227,34 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yab-fV-opJ">
+                                                <rect key="frame" x="20" y="99" width="24" height="39"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5kO-NX-qwV">
+                                                        <rect key="frame" x="0.0" y="11" width="10" height="18"/>
+                                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
+                                                        <color key="textColor" name="AppGreyColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OnD-w6-aqr">
+                                                        <rect key="frame" x="17" y="12.5" width="1" height="15"/>
+                                                        <color key="backgroundColor" name="SeparatorNormalColor"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="1" id="KGR-9G-nG0"/>
+                                                        </constraints>
+                                                    </view>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="5kO-NX-qwV" secondAttribute="bottom" constant="10" id="HeY-hp-tZk"/>
+                                                    <constraint firstItem="5kO-NX-qwV" firstAttribute="leading" secondItem="Yab-fV-opJ" secondAttribute="leading" id="IfE-rk-kFK"/>
+                                                    <constraint firstItem="OnD-w6-aqr" firstAttribute="centerY" secondItem="5kO-NX-qwV" secondAttribute="centerY" id="UXy-v4-C0l"/>
+                                                    <constraint firstAttribute="width" constant="24" id="abx-JC-fUB"/>
+                                                    <constraint firstItem="OnD-w6-aqr" firstAttribute="height" secondItem="5kO-NX-qwV" secondAttribute="height" multiplier="0.833333" id="dZZ-aE-cbd"/>
+                                                    <constraint firstItem="OnD-w6-aqr" firstAttribute="leading" secondItem="5kO-NX-qwV" secondAttribute="trailing" constant="7" id="xIS-av-9eq"/>
+                                                    <constraint firstAttribute="height" constant="39" id="xai-zg-CZ8"/>
+                                                </constraints>
+                                            </view>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cho-Bj-geQ" customClass="TextField" customModule="Material">
                                                 <rect key="frame" x="20" y="168" width="335" height="39"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -5192,6 +5282,34 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QTi-en-cdq">
+                                                <rect key="frame" x="20" y="168" width="24" height="39"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aGR-t5-EF7">
+                                                        <rect key="frame" x="0.0" y="11" width="10" height="18"/>
+                                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
+                                                        <color key="textColor" name="AppGreyColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bk5-lf-8WR">
+                                                        <rect key="frame" x="17" y="12.5" width="1" height="15"/>
+                                                        <color key="backgroundColor" name="SeparatorNormalColor"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="1" id="2jl-FE-gN4"/>
+                                                        </constraints>
+                                                    </view>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="Bk5-lf-8WR" firstAttribute="height" secondItem="aGR-t5-EF7" secondAttribute="height" multiplier="0.833333" id="0lV-GO-Z1Z"/>
+                                                    <constraint firstItem="aGR-t5-EF7" firstAttribute="leading" secondItem="QTi-en-cdq" secondAttribute="leading" id="3bf-k6-VFu"/>
+                                                    <constraint firstAttribute="width" constant="24" id="XS6-Ad-tLF"/>
+                                                    <constraint firstItem="Bk5-lf-8WR" firstAttribute="centerY" secondItem="aGR-t5-EF7" secondAttribute="centerY" id="clg-bg-HhX"/>
+                                                    <constraint firstItem="Bk5-lf-8WR" firstAttribute="leading" secondItem="aGR-t5-EF7" secondAttribute="trailing" constant="7" id="l2W-bM-Jr3"/>
+                                                    <constraint firstAttribute="height" constant="39" id="lBe-wK-YUx"/>
+                                                    <constraint firstAttribute="bottom" secondItem="aGR-t5-EF7" secondAttribute="bottom" constant="10" id="mlY-iU-DeM"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                         <constraints>
@@ -5205,10 +5323,14 @@
                                             <constraint firstItem="CgX-Dh-pCg" firstAttribute="height" secondItem="vJs-yN-LTG" secondAttribute="height" id="RRK-B7-8sN"/>
                                             <constraint firstItem="VWZ-1s-hGA" firstAttribute="top" secondItem="tVm-7H-7LX" secondAttribute="top" constant="32" id="TMx-Ab-Fq0"/>
                                             <constraint firstItem="cho-Bj-geQ" firstAttribute="leading" secondItem="tVm-7H-7LX" secondAttribute="leading" constant="20" id="Wuy-tY-zYA"/>
+                                            <constraint firstItem="Yab-fV-opJ" firstAttribute="top" secondItem="vJs-yN-LTG" secondAttribute="bottom" constant="30" id="cjx-k3-6X1"/>
                                             <constraint firstItem="cho-Bj-geQ" firstAttribute="top" secondItem="CgX-Dh-pCg" secondAttribute="bottom" constant="30" id="gP8-49-R42"/>
                                             <constraint firstItem="vJs-yN-LTG" firstAttribute="leading" secondItem="tVm-7H-7LX" secondAttribute="leading" constant="20" id="kwR-UE-qYG"/>
                                             <constraint firstAttribute="trailing" secondItem="CgX-Dh-pCg" secondAttribute="trailing" constant="20" id="mtF-zk-HAx"/>
                                             <constraint firstItem="vJs-yN-LTG" firstAttribute="top" secondItem="tVm-7H-7LX" secondAttribute="top" constant="30" id="oh8-n7-xsu"/>
+                                            <constraint firstItem="QTi-en-cdq" firstAttribute="leading" secondItem="tVm-7H-7LX" secondAttribute="leading" constant="20" id="p1s-MD-TyD"/>
+                                            <constraint firstItem="QTi-en-cdq" firstAttribute="top" secondItem="CgX-Dh-pCg" secondAttribute="bottom" constant="30" id="uHU-Fb-qqa"/>
+                                            <constraint firstItem="Yab-fV-opJ" firstAttribute="leading" secondItem="tVm-7H-7LX" secondAttribute="leading" constant="20" id="zzU-gN-Xhe"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -5254,9 +5376,11 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="additionalCashAmountDollarView" destination="Yab-fV-opJ" id="LIr-to-H8C"/>
                         <outlet property="btnBack" destination="Jgm-Li-Qbu" id="nAo-XY-j54"/>
                         <outlet property="btnSaveChanges" destination="yky-PF-bsx" id="TSS-hf-ABW"/>
                         <outlet property="lblNavTitle" destination="nVP-5L-GIo" id="EkQ-03-WaM"/>
+                        <outlet property="loanAmountDollarView" destination="QTi-en-cdq" id="h66-Kz-zDI"/>
                         <outlet property="mainScrollView" destination="hpG-CO-dEo" id="ggI-pv-9i1"/>
                         <outlet property="mainView" destination="tVm-7H-7LX" id="bRQ-8c-TMp"/>
                         <outlet property="seperatorView" destination="tTK-DJ-HiZ" id="97G-Wu-Cui"/>
