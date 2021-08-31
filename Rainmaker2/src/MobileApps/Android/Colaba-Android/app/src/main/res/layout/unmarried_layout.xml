@@ -117,7 +117,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relationship_container"
         android:visibility="gone"
-        
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/biometric_error_color"

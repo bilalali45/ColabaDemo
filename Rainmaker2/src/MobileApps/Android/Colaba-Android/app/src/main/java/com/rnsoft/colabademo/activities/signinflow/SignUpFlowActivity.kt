@@ -56,8 +56,9 @@ class SignUpFlowActivity : AppCompatActivity() {
         }
 
 
-    }
 
+
+    }
 
     private fun setupActionBar(navController: NavController,
                                appBarConfig : AppBarConfiguration

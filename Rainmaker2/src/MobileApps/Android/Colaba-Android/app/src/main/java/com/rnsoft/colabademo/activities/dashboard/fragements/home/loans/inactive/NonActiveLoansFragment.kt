@@ -40,6 +40,7 @@ class NonActiveLoansFragment : BaseFragment() , AdapterClickListener , LoanFilte
     private lateinit var nonActiveAdapter: LoansAdapter
     private var shimmerContainer: ShimmerFrameLayout?=null
     //private lateinit var loading: ProgressBar
+    private val linearLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.VERTICAL, false)
     ////////////////////////////////////////////////////////////////////////////
     //private var stringDateTime: String = ""
 
@@ -56,94 +57,108 @@ class NonActiveLoansFragment : BaseFragment() , AdapterClickListener , LoanFilte
     ): View {
         _binding = NonActiveFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
-        shimmerContainer = view.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
         shimmerContainer?.startShimmer()
-        //loading = view.findViewById(R.id.non_active_loan_loader)
 
+        shimmerContainer = view.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
         rowLoading = view.findViewById(R.id.non_active_row_loader)
-
         nonActiveRecycler = view.findViewById(R.id.inactive_loan_recycler_view)
-        val linearLayoutManager = LinearLayoutManager(activity)
         nonActiveAdapter = LoansAdapter(nonActiveLoansList, this@NonActiveLoansFragment)
+
         nonActiveRecycler.apply {
             this.layoutManager = linearLayoutManager
             this.setHasFixedSize(true)
             this.adapter =nonActiveAdapter
         }
 
-
-
-        val token: TypeToken<ArrayList<LoanItem>> = object : TypeToken<ArrayList<LoanItem>>() {}
-        val gson = Gson()
-        if(sharedPreferences.contains(AppConstant.oldNonActiveLoans)) {
-            sharedPreferences.getString(AppConstant.oldNonActiveLoans, "")?.let { oldLoans ->
-                //val list: List<LoanItem> = gson.fromJson(oldLoans, ceptype)
-                //Log.e("convered-", list.toString())
-                val oldJsonList: ArrayList<LoanItem> = gson.fromJson(oldLoans, token.type)
-                Log.e("oldJsonList-", oldJsonList.toString())
-                val oldAdapter = LoansAdapter(oldJsonList , this@NonActiveLoansFragment)
-                nonActiveRecycler.adapter = oldAdapter
-                oldAdapter.notifyDataSetChanged()
-                shimmerContainer?.stopShimmer()
-                shimmerContainer?.isVisible = false
-            }
-        }
-
-
-
-        //loading.visibility = View.VISIBLE
         loanViewModel.nonActiveLoansArrayList.observe(viewLifecycleOwner, {
             rowLoading?.visibility = View.INVISIBLE
             if(it.size>0) {
                 shimmerContainer?.stopShimmer()
                 shimmerContainer?.isVisible = false
-
-                nonActiveLoansList.size
-                nonActiveRecycler.adapter = nonActiveAdapter
+                if(oldListDisplaying){
+                    oldListDisplaying = false
+                    nonActiveLoansList.clear()
+                }
                 nonActiveLoansList.addAll(it)
                 nonActiveAdapter.notifyDataSetChanged()
-                // loansAdapter.notifyItemRangeInserted(lastSize,lastSize+allLoansArrayList.size-1 )
             }
-            else
-                Log.e("should-stop"," here....")
+            else{
+                Log.e("no-record", " found....")
+                shimmerContainer?.stopShimmer()
+                shimmerContainer?.isVisible = false
+            }
+
         })
 
-        val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
-                rowLoading?.visibility = View.VISIBLE
-                pageNumber++
-                loadNonActiveApplications()
-            }
-        }
         nonActiveRecycler.addOnScrollListener(scrollListener)
-
-
-        loadDataFromDatabase(loanFilter)
-
-        //loadNonActiveApplications()
 
         return view
     }
 
-    private fun loadNonActiveApplications(){
-        //loading.visibility = View.VISIBLE
-        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-            if(AppSetting.nonActiveloanApiDateTime.isEmpty())
-                AppSetting.nonActiveloanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
-
-
-            loanViewModel.getNonActiveLoans(
-                token = authToken,
-                dateTime = AppSetting.nonActiveloanApiDateTime, pageNumber = pageNumber,
-                pageSize = pageSize, loanFilter = loanFilter,
-                orderBy = globalOrderBy, assignedToMe = globalAssignToMe
-            )
+    private val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
+        override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+            // Triggered only when new data needs to be appended to the list
+            // Add whatever code is needed to append new items to the bottom of the list
+            Log.e("calling--", "scroller--")
+            rowLoading?.visibility = View.VISIBLE
+            pageNumber++
+            loadNonActiveApplications()
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    override fun onResume() {
+        super.onResume()
+        rowLoading?.visibility = View.INVISIBLE
+        nonActiveLoansList.clear()
+        pageNumber = 1
+        loadDataFromCache()
+        loadNonActiveApplications()
+    }
 
+    private var oldListDisplaying:Boolean = false
+
+    private fun loadDataFromCache(){
+        // load data from cache first...
+        if(!NetworkSetting.isNetworkAvailable(requireContext())) {
+            val token: TypeToken<ArrayList<LoanItem>> = object : TypeToken<ArrayList<LoanItem>>() {}
+            if (sharedPreferences.contains(AppConstant.oldNonActiveLoans)) {
+                sharedPreferences.getString(AppConstant.oldNonActiveLoans, "")?.let { oldNonActiveLoans ->
+                    val oldJsonList: ArrayList<LoanItem> = Gson().fromJson(oldNonActiveLoans, token.type)
+                    shimmerContainer?.stopShimmer()
+                    shimmerContainer?.isVisible = false
+                        if(oldJsonList.size>1) oldJsonList.removeAt(oldJsonList.size-1)
+                        if(oldJsonList.size>1) oldJsonList.removeAt(oldJsonList.size-1)
+                        if(oldJsonList.size>1) oldJsonList.removeAt(oldJsonList.size-1)
+                        oldListDisplaying = true
+                        nonActiveLoansList.clear()
+                        nonActiveLoansList.addAll(oldJsonList)
+                        nonActiveAdapter.notifyDataSetChanged()
+                }
+            }
+        }
+    }
+
+    private fun loadNonActiveApplications(){
+        if(NetworkSetting.isNetworkAvailable(requireContext())) {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if (AppSetting.nonActiveloanApiDateTime.isEmpty())
+                    AppSetting.nonActiveloanApiDateTime =
+                        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
+                loanViewModel.getNonActiveLoans(
+                    token = authToken,
+                    dateTime = AppSetting.nonActiveloanApiDateTime, pageNumber = pageNumber,
+                    pageSize = pageSize, loanFilter = loanFilter,
+                    orderBy = globalOrderBy, assignedToMe = globalAssignToMe
+                )
+            }
+        }
+        else {
+            rowLoading?.visibility = View.INVISIBLE
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun getCardIndex(position: Int) {
         val borrowerBottomSheet = SheetBottomBorrowerCardFragment.newInstance()
@@ -158,18 +173,7 @@ class NonActiveLoansFragment : BaseFragment() , AdapterClickListener , LoanFilte
         //requireActivity().finish()
     }
 
-
-    override fun onResume() {
-        super.onResume()
-        rowLoading?.visibility = View.INVISIBLE
-        nonActiveLoansList.clear()
-        nonActiveAdapter.notifyDataSetChanged()
-        pageNumber = 1
-        loadNonActiveApplications()
-    }
-
-
-    override fun onStart() {
+   override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
     }
