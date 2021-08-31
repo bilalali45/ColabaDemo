@@ -122,11 +122,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         bindingMilitary.layoutNationalGuard.setOnClickListener { findNavController().navigate(R.id.navigation_reserve) }
         citizenshipBinding.layoutVisaStatusOther.setOnClickListener { findNavController().navigate(R.id.navigation_non_permanent) }
 
-
-
-
-
-
     }
 
     private fun addEmptyDependentField() {

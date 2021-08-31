@@ -33,7 +33,7 @@ public class ResidenceAdapter extends RecyclerView.Adapter<ResidenceAdapter.MyVi
         Address address = taskList.get(position);
         holder.tvTaskName.setText(address.getAddressDesc());
 
-        if(position ==0){
+        if(address.isCurrentAddress()){
             holder.tvHeading.setVisibility(View.VISIBLE);
             holder.tvRent.setVisibility(View.VISIBLE);
         } else {
