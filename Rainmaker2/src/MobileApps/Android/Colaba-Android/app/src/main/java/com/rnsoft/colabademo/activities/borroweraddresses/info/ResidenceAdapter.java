@@ -31,7 +31,7 @@ public class ResidenceAdapter extends RecyclerView.Adapter<ResidenceAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Address address = taskList.get(position);
-        holder.tvTaskName.setText(address.getName());
+        holder.tvTaskName.setText(address.getAddressDesc());
 
         if(position ==0){
             holder.tvHeading.setVisibility(View.VISIBLE);

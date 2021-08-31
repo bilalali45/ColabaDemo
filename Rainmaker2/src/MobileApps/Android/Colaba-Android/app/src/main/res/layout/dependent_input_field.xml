@@ -18,7 +18,7 @@
         app:boxStrokeWidth="0.5dp"
         app:boxStrokeWidthFocused="1dp"
         app:endIconMode="custom"
-        app:endIconDrawable="@drawable/ic_minus_delete"
+        app:passwordToggleEnabled="true"
         app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
         app:helperTextEnabled="true"
         app:helperTextTextAppearance="@style/inputError"

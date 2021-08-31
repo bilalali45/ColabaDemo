@@ -277,6 +277,8 @@
     <string name="error_field_required">This field is required.</string>
     <string name="invalid_email">Please enter a valid email address.</string>
     <string name="invalid_phone_num">Your phone number is not valid. Please try again.</string>
+    <string name="previous_address">Add Previous Address</string>
+    <string name="current_address">Add Current Address</string>
 
 
 
