@@ -19,7 +19,6 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.non_permenant_resident_layout.*
 
-
 @AndroidEntryPoint
 class NonPermanentFragment : Fragment() {
 
@@ -72,6 +71,8 @@ class NonPermanentFragment : Fragment() {
 
         return root
     }
+
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

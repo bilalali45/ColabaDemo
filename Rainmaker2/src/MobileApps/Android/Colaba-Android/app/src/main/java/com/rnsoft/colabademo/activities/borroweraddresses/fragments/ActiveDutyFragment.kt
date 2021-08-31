@@ -2,7 +2,6 @@ package com.rnsoft.colabademo
 
 import android.app.DatePickerDialog
 import android.content.SharedPreferences
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,12 +14,11 @@ import javax.inject.Inject
 import android.util.Log
 import android.widget.DatePicker
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import java.lang.Exception
 
-
-
 @AndroidEntryPoint
-class ActiveDutyFragment : Fragment() {
+class ActiveDutyFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private var _binding: ActiveDutyLayoutBinding? = null
     private val binding get() = _binding!!
@@ -38,8 +36,8 @@ class ActiveDutyFragment : Fragment() {
         val root: View = binding.root
 
         binding.edEmail.showSoftInputOnFocus = false
-        binding.edEmail.setOnClickListener { openCalendar() }
-        binding.edEmail.setOnFocusChangeListener{ _ , _ ->  openCalendar() }
+        binding.edEmail.setOnClickListener { createCustomDialog() }
+        binding.edEmail.setOnFocusChangeListener{ _ , _ ->  createCustomDialog() }
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
@@ -69,6 +67,21 @@ class ActiveDutyFragment : Fragment() {
         )
         dpd.show()
 
+    }
+
+    private fun createCustomDialog(){
+        val pd = MonthYearPickerDialog()
+        pd.setListener(this)
+        pd.show(requireActivity().supportFragmentManager, "MonthYearPickerDialog")
+    }
+
+    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
+        var stringMonth = p2.toString()
+        if(p2<10)
+            stringMonth = "0$p2"
+
+        val sampleDate = "$stringMonth / $p1"
+        binding.edEmail.setText(sampleDate)
     }
 
 
