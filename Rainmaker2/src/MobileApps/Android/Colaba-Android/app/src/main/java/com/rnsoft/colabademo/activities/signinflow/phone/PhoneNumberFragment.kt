@@ -14,9 +14,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.activities.signinflow.phone.events.OtpSentEvent
 import com.rnsoft.colabademo.activities.signinflow.phone.events.SkipEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,11 +40,12 @@ class PhoneNumberFragment : Fragment() {
     private val phoneNumberViewModel: PhoneNumberViewModel by activityViewModels()
     private val signUpFlowViewModel: SignUpFlowViewModel by activityViewModels() // Shared Repo.....
     private lateinit var continueButton:Button
-    private lateinit var phoneNumber:EditText
-    private lateinit var phoneNumberError:TextView
+    private lateinit var phoneNumber : TextInputEditText
+    lateinit var phoneNumLayout : TextInputLayout
     private var len = 0
     private lateinit var loading:ProgressBar
     private lateinit var skipLink:AppCompatTextView
+    lateinit var parentLayout : ConstraintLayout
 
 
     override fun onCreateView(
@@ -50,21 +54,26 @@ class PhoneNumberFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         setHasOptionsMenu(true)
-        root = inflater.inflate(R.layout.phone_number, container, false)
+        root = inflater.inflate(R.layout.phone_number_layout, container, false)
 
+        parentLayout = root.findViewById(R.id.layout_phone_num_verification)
         continueButton = root.findViewById<Button>(R.id.continueBtn)
         skipLink = root.findViewById<AppCompatTextView>(R.id.skipTextLink)
-        loading = root.findViewById<ProgressBar>(R.id.loader_phone_screen)
-        phoneNumberError = root.findViewById<TextView>(R.id.phoneErrorTextView)
-        phoneNumber = root.findViewById<EditText>(R.id.editTextPhoneNumber)
+        phoneNumber = root.findViewById(R.id.editTextPhoneNumber)
+        phoneNumLayout = root.findViewById(R.id.layout_mobilenum)
+        phoneNumber.hideKeyboard()
 
-        val locale = requireContext().resources.configuration.locale.country
-        Log.e("get-country", locale)
 
+        //val locale = requireContext().resources.configuration.locale.country
+        //Log.e("get-country", locale)
+
+        phoneNumber.setOnFocusChangeListener(MyCustomFocusListener(phoneNumber,phoneNumLayout, requireContext()))
         phoneNumber.addTextChangedListener(PhoneTextFormatter(phoneNumber, "(###) ###-####"))
-        //phoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher("US"))
 
-
+        parentLayout.setOnClickListener {
+            phoneNumber.clearFocus()
+            parentLayout.hideKeyboard()
+        }
 
         phoneNumber.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
@@ -112,20 +121,19 @@ class PhoneNumberFragment : Fragment() {
             skipLink.visibility = View.VISIBLE
 
         skipLink.setOnClickListener {
-            phoneNumberError.text =""
+            //phoneNumberError.text =""
             loading.visibility = View.VISIBLE
             toggleButtonState(false)
             phoneNumberViewModel.skipTwoFactor()
         }
 
         continueButton.setOnClickListener {
-            phoneNumberError.text =""
+            //phoneNumberError.text =""
             sharedPreferences.getString(AppConstant.token, "")?.let {
                 loading.visibility = View.VISIBLE
                 toggleButtonState(false)
                 signUpFlowViewModel.sendOtpToPhone(intermediateToken = it, phoneNumber = phoneNumber.text.toString())
             }
-            //findNavController().navigate(R.id.otp_verification_id, null)
         }
 
 
