@@ -24,6 +24,18 @@ class RefinanceLoanInfoViewController: UIViewController {
     @IBOutlet weak var loanAmountDollarView: UIView!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
+    private let validation: Validation
+    
+    init(validation: Validation) {
+        self.validation = validation
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        self.validation = Validation()
+        super.init(coder: coder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setMaterialTextFieldsAndViews(textfields: [txtfieldLoanStage, txtfieldAdditionalCashoutAmount, txtfieldLoanAmount])
@@ -82,7 +94,37 @@ class RefinanceLoanInfoViewController: UIViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        self.goBack()
+        
+        do{
+            let loanStage = try validation.validateLoanStage(txtfieldLoanStage.text)
+            DispatchQueue.main.async {
+                self.txtfieldLoanStage.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldLoanStage.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldLoanStage.dividerColor = .red
+            self.txtfieldLoanStage.detail = error.localizedDescription
+        }
+        
+        do{
+            let loanAmount = try validation.validateLoanAmount(txtfieldLoanAmount.text)
+            DispatchQueue.main.async {
+                self.txtfieldLoanAmount.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldLoanAmount.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldLoanAmount.dividerColor = .red
+            self.txtfieldLoanAmount.detail = error.localizedDescription
+        }
+        
+        if (txtfieldLoanStage.text != "" && txtfieldLoanAmount.text != ""){
+            self.goBack()
+        }
+        
     }
     
 }
@@ -105,6 +147,36 @@ extension RefinanceLoanInfoViewController: UITextFieldDelegate{
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        if (textField == txtfieldLoanStage){
+            do{
+                let loanStage = try validation.validateLoanStage(txtfieldLoanStage.text)
+                DispatchQueue.main.async {
+                    self.txtfieldLoanStage.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldLoanStage.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldLoanStage.dividerColor = .red
+                self.txtfieldLoanStage.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldLoanAmount){
+            do{
+                let loanAmount = try validation.validateLoanAmount(txtfieldLoanAmount.text)
+                DispatchQueue.main.async {
+                    self.txtfieldLoanAmount.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldLoanAmount.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldLoanAmount.dividerColor = .red
+                self.txtfieldLoanAmount.detail = error.localizedDescription
+            }
+        }
         
         if (textField == txtfieldAdditionalCashoutAmount && txtfieldAdditionalCashoutAmount.text == ""){
             txtfieldAdditionalCashoutAmount.textInsetsPreset = .none

@@ -152,6 +152,41 @@ struct Validation {
         guard age.count > 0 else { throw ValidationError.requiredField }
         return age
     }
+    
+    func validateLoanStage(_ loanStage: String?) throws -> String{
+        guard let loanStage = loanStage else { throw ValidationError.requiredField }
+        guard loanStage.count > 0 else { throw ValidationError.requiredField }
+        return loanStage
+    }
+    
+    func validatePurchasePrice(_ purchasePrice: String?) throws -> String{
+        guard let purchasePrice = purchasePrice else { throw ValidationError.requiredField }
+        if let price = Int(purchasePrice.replacingOccurrences(of: ",", with: "")){
+            if (price >= 50000 && price <= 100000000){
+                return purchasePrice
+            }
+            throw ValidationError.invalidPurchasePrice
+        }
+        throw ValidationError.invalidPurchasePrice
+    }
+    
+    func validateLoanAmount(_ loanAmount: String?) throws -> String{
+        guard let loanAmount = loanAmount else { throw ValidationError.requiredField }
+        guard loanAmount.count > 0 else { throw ValidationError.requiredField }
+        return loanAmount
+    }
+    
+    func validateDownPayment(_ downPayment: String?) throws -> String{
+        guard let downPayment = downPayment else { throw ValidationError.requiredField }
+        guard downPayment.count > 0 else { throw ValidationError.requiredField }
+        return downPayment
+    }
+    
+    func validateDownPaymentPercentage(_ downPaymentPercentage: String?) throws -> String{
+        guard let downPaymentPercentage = downPaymentPercentage else { throw ValidationError.requiredField }
+        guard downPaymentPercentage.count > 0 else { throw ValidationError.requiredField }
+        return downPaymentPercentage
+    }
 }
 
 enum ValidationError: LocalizedError {
@@ -165,6 +200,7 @@ enum ValidationError: LocalizedError {
     case invalidPhoneNumber
     case requiredField
     case invalidBorrowerEmail
+    case invalidPurchasePrice
     
     var errorDescription: String? {
         switch self {
@@ -188,6 +224,8 @@ enum ValidationError: LocalizedError {
             return "This field is required."
         case .invalidBorrowerEmail:
             return "Please enter a valid email address"
+        case .invalidPurchasePrice:
+            return "Purchase price should be between $50,000 and $100,000,000"
         }
         
         

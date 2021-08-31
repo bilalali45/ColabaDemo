@@ -532,60 +532,63 @@ class BorrowerInformationViewController: UIViewController {
         var borrowerFirstName: String = "", borrowerLastName: String = "", borrowerEmail: String = "", borrowerHomeNumber: String = ""
         var dependentAges = [String:String]()
         
-        do{
-            let firstName = try validation.validateBorrowerFirstName(txtfieldLegalFirstName.text)
-            borrowerFirstName = firstName
-            DispatchQueue.main.async {
-                self.txtfieldLegalFirstName.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtfieldLegalFirstName.detail = ""
+//        do{
+//            let firstName = try validation.validateBorrowerFirstName(txtfieldLegalFirstName.text)
+//            borrowerFirstName = firstName
+//            DispatchQueue.main.async {
+//                self.txtfieldLegalFirstName.dividerColor = Theme.getSeparatorNormalColor()
+//                self.txtfieldLegalFirstName.detail = ""
+//            }
+//
+//        }
+//        catch{
+//            self.txtfieldLegalFirstName.dividerColor = .red
+//            self.txtfieldLegalFirstName.detail = error.localizedDescription
+//        }
+//
+//        do{
+//            let lastName = try validation.validateBorrowerLastName(txtfieldLegalLastName.text)
+//            borrowerLastName = lastName
+//            DispatchQueue.main.async {
+//                self.txtfieldLegalLastName.dividerColor = Theme.getSeparatorNormalColor()
+//                self.txtfieldLegalLastName.detail = ""
+//            }
+//
+//        }
+//        catch{
+//            self.txtfieldLegalLastName.dividerColor = .red
+//            self.txtfieldLegalLastName.detail = error.localizedDescription
+//        }
+        if (txtfieldEmail.text != ""){
+            do{
+                let email = try validation.validateBorrowerEmail(txtfieldEmail.text)
+                borrowerEmail = email
+                DispatchQueue.main.async {
+                    self.txtfieldEmail.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldEmail.detail = ""
+                }
+                
             }
-            
-        }
-        catch{
-            self.txtfieldLegalFirstName.dividerColor = .red
-            self.txtfieldLegalFirstName.detail = error.localizedDescription
+            catch{
+                self.txtfieldEmail.dividerColor = .red
+                self.txtfieldEmail.detail = error.localizedDescription
+            }
         }
         
-        do{
-            let lastName = try validation.validateBorrowerLastName(txtfieldLegalLastName.text)
-            borrowerLastName = lastName
-            DispatchQueue.main.async {
-                self.txtfieldLegalLastName.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtfieldLegalLastName.detail = ""
+        if (txtfieldHomeNumber.text != ""){
+            do{
+                let homeNumber = try validation.validateBorrowrHomePhoneNumber(txtfieldHomeNumber.text)
+                borrowerHomeNumber = homeNumber
+                DispatchQueue.main.async {
+                    self.txtfieldHomeNumber.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldHomeNumber.detail = ""
+                }
+                
             }
-            
-        }
-        catch{
-            self.txtfieldLegalLastName.dividerColor = .red
-            self.txtfieldLegalLastName.detail = error.localizedDescription
-        }
-        
-        do{
-            let email = try validation.validateBorrowerEmail(txtfieldEmail.text)
-            borrowerEmail = email
-            DispatchQueue.main.async {
-                self.txtfieldEmail.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtfieldEmail.detail = ""
+            catch{
+                self.txtfieldHomeNumber.dividerColor = .red
+                self.txtfieldHomeNumber.detail = error.localizedDescription
             }
-            
-        }
-        catch{
-            self.txtfieldEmail.dividerColor = .red
-            self.txtfieldEmail.detail = error.localizedDescription
-        }
-        
-        do{
-            let homeNumber = try validation.validateBorrowrHomePhoneNumber(txtfieldHomeNumber.text)
-            borrowerHomeNumber = homeNumber
-            DispatchQueue.main.async {
-                self.txtfieldHomeNumber.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtfieldHomeNumber.detail = ""
-            }
-            
-        }
-        catch{
-            self.txtfieldHomeNumber.dividerColor = .red
-            self.txtfieldHomeNumber.detail = error.localizedDescription
         }
         
         for i in 0..<noOfDependents{
@@ -605,10 +608,23 @@ class BorrowerInformationViewController: UIViewController {
                 cell.txtfieldAge.detail = error.localizedDescription
             }
         }
-        
-        if (borrowerFirstName != "" && borrowerLastName != "" && borrowerEmail != "" && borrowerHomeNumber != "" && dependentAges.keys.count == noOfDependents){
+        if (txtfieldEmail.text != "" && txtfieldHomeNumber.text != ""){
+            if (txtfieldEmail.text!.isValidEmail() && txtfieldHomeNumber.text?.count == 14){
+                self.goBack()
+            }
+        }
+        else if (txtfieldEmail.text != "" && txtfieldEmail.text!.isValidEmail() && txtfieldHomeNumber.text == ""){
             self.goBack()
         }
+        else if (txtfieldEmail.text == "" && txtfieldHomeNumber.text?.count == 14){
+            self.goBack()
+        }
+        else if (txtfieldEmail.text == "" && txtfieldHomeNumber.text == ""){
+            self.goBack()
+        }
+//        if (borrowerFirstName != "" && borrowerLastName != "" && borrowerEmail != "" && borrowerHomeNumber != "" && dependentAges.keys.count == noOfDependents){
+//            self.goBack()
+//        }
     }
 }
 
@@ -736,35 +752,35 @@ extension BorrowerInformationViewController: UITextFieldDelegate{
     func textFieldDidEndEditing(_ textField: UITextField) {
         setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldLegalFirstName, txtfieldMiddleName, txtfieldLegalLastName, txtfieldSuffix, txtfieldEmail, txtfieldHomeNumber, txtfieldWorkNumber, txtfieldExtensionNumber, txtfieldCellNumber, txtfieldDOB, txtfieldSecurityNo /*txtfieldNoOfDependent*/])
        
-        if (textField == txtfieldLegalFirstName){
-            do{
-                let firstName = try validation.validateBorrowerFirstName(txtfieldLegalFirstName.text)
-                DispatchQueue.main.async {
-                    self.txtfieldLegalFirstName.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldLegalFirstName.detail = ""
-                }
-                
-            }
-            catch{
-                self.txtfieldLegalFirstName.dividerColor = .red
-                self.txtfieldLegalFirstName.detail = error.localizedDescription
-            }
-        }
-        
-        if (textField == txtfieldLegalLastName){
-            do{
-                let lastName = try validation.validateBorrowerLastName(txtfieldLegalLastName.text)
-                DispatchQueue.main.async {
-                    self.txtfieldLegalLastName.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldLegalLastName.detail = ""
-                }
-                
-            }
-            catch{
-                self.txtfieldLegalLastName.dividerColor = .red
-                self.txtfieldLegalLastName.detail = error.localizedDescription
-            }
-        }
+//        if (textField == txtfieldLegalFirstName){
+//            do{
+//                let firstName = try validation.validateBorrowerFirstName(txtfieldLegalFirstName.text)
+//                DispatchQueue.main.async {
+//                    self.txtfieldLegalFirstName.dividerColor = Theme.getSeparatorNormalColor()
+//                    self.txtfieldLegalFirstName.detail = ""
+//                }
+//
+//            }
+//            catch{
+//                self.txtfieldLegalFirstName.dividerColor = .red
+//                self.txtfieldLegalFirstName.detail = error.localizedDescription
+//            }
+//        }
+//
+//        if (textField == txtfieldLegalLastName){
+//            do{
+//                let lastName = try validation.validateBorrowerLastName(txtfieldLegalLastName.text)
+//                DispatchQueue.main.async {
+//                    self.txtfieldLegalLastName.dividerColor = Theme.getSeparatorNormalColor()
+//                    self.txtfieldLegalLastName.detail = ""
+//                }
+//
+//            }
+//            catch{
+//                self.txtfieldLegalLastName.dividerColor = .red
+//                self.txtfieldLegalLastName.detail = error.localizedDescription
+//            }
+//        }
         
         if (textField == txtfieldEmail){
             do{
@@ -776,8 +792,15 @@ extension BorrowerInformationViewController: UITextFieldDelegate{
                 
             }
             catch{
-                self.txtfieldEmail.dividerColor = .red
-                self.txtfieldEmail.detail = error.localizedDescription
+                if (error.localizedDescription == ValidationError.requiredField.localizedDescription){
+                    self.txtfieldEmail.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldEmail.detail = ""
+                }
+                else{
+                    self.txtfieldEmail.dividerColor = .red
+                    self.txtfieldEmail.detail = error.localizedDescription
+                }
+                
             }
         }
         
@@ -791,15 +814,18 @@ extension BorrowerInformationViewController: UITextFieldDelegate{
                 
             }
             catch{
-                self.txtfieldHomeNumber.dividerColor = .red
-                self.txtfieldHomeNumber.detail = error.localizedDescription
+                if (error.localizedDescription == ValidationError.requiredField.localizedDescription){
+                    self.txtfieldHomeNumber.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldHomeNumber.detail = ""
+                }
+                else{
+                    self.txtfieldHomeNumber.dividerColor = .red
+                    self.txtfieldHomeNumber.detail = error.localizedDescription
+                }
+                
             }
         }
-        
-//        for i in 0..<noOfDependents{
-//            let cell = dependentsCollectionView.cellForItem(at: IndexPath(row: i, section: 0)) as! DependentCollectionViewCell
-//            print("\((i + 1).ordinalNumber()) Dependent age is \(cell.txtfieldAge.text!)")
-//        }
+
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

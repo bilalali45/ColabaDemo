@@ -14,6 +14,7 @@ import android.widget.DatePicker
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.databinding.PreviousResidenceLayoutBinding
 import com.rnsoft.colabademo.databinding.TempResidenceLayoutBinding
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,27 +26,48 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+class PreviousResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
-    private var _binding: TempResidenceLayoutBinding? = null
+    private var _binding: PreviousResidenceLayoutBinding? = null
     private val binding get() = _binding!!
+
+    private var outInSelection:Boolean = false
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
-        _binding = TempResidenceLayoutBinding.inflate(inflater, container, false)
+        _binding = PreviousResidenceLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
 
 
-        binding.moveInEditText.setOnClickListener { createCustomDialog() }
-        binding.moveInEditText.setOnFocusChangeListener{ _ , p1 ->
-            if(p1)
+        binding.moveInEditText.showSoftInputOnFocus = false
+        binding.moveInEditText.setOnClickListener {
+            outInSelection = false
             createCustomDialog()
         }
-        binding.moveInEditText.showSoftInputOnFocus = false
+        binding.moveInEditText.setOnFocusChangeListener{ _ , p1 ->
+            if(p1) {
+                outInSelection = false
+                createCustomDialog()
+            }
+        }
+
+
+        binding.moveOutEditText.showSoftInputOnFocus = false
+        binding.moveOutEditText.setOnClickListener {
+            outInSelection = true
+            createCustomDialog()
+        }
+        binding.moveOutEditText.setOnFocusChangeListener{ _ , p1 ->
+            if(p1) {
+                outInSelection = true
+                createCustomDialog()
+            }
+        }
+
 
         binding.topSearchAutoTextView.onFocusChangeListener = object:View.OnFocusChangeListener{
             override fun onFocusChange(p0: View?, p1: Boolean) {
@@ -193,7 +215,10 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener 
             stringMonth = "0$p2"
 
         val sampleDate = "$stringMonth / $p1"
-        binding.moveInEditText.setText(sampleDate)
+        if(outInSelection)
+            binding.moveOutEditText.setText(sampleDate)
+        else
+            binding.moveInEditText.setText(sampleDate)
     }
 
 }

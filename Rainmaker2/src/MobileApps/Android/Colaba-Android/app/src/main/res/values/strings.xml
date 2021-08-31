@@ -90,11 +90,16 @@
 
     <string name="good_evening_james">James</string>
     <string name="current_residence">Current Residence</string>
+    <string name="previous_residence">Previous Residence</string>
     <string name="mailing_address">Mailing Address</string>
 
 
     <string name="purchase">Purchase</string>
     <string name="user_data_does_not_exit">  User does not exist</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
 
     <string name="min">min</string>
     <string name="sec">sec</string>
@@ -157,6 +162,7 @@
     <string name="housing_status">Housing Status</string>
     <string name="monthly_rent">Monthly Rent ($)</string>
     <string name="move_in_date">Move in Date</string>
+    <string name="move_out_date">Move out Date</string>
     <string name="save_changes">SAVE CHANGES</string>
 
 
