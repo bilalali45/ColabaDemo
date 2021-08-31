@@ -9,6 +9,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ColorRes
@@ -38,7 +39,7 @@ import kotlin.collections.ArrayList
  * Created by Anita Kiran on 8/23/2021.
  */
 
-class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.OnClickListener {
+class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.OnClickListener, AddressClickListener {
 
     lateinit var bi: PrimaryBorrowerInfoLayoutBinding
     lateinit var msBinding: SublayoutMaritalStatusBinding
@@ -273,7 +274,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         //bi.recyclerview.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         //bi.recyclerview.hasFixedSize()
 
-        adapter = ResidenceAdapter(requireActivity())
+        adapter = ResidenceAdapter(requireActivity(), this)
         adapter.setTaskList(list)
         bi.recyclerview.setAdapter(adapter)
 
@@ -557,7 +558,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         val newMonth = month + 1
         //  datePicker.findViewById(Resources.getSystem().getIdentifier("day", "id", "android")).setVisibility(View.GONE);
 
-        val dpd = DatePickerDialog(requireActivity(), { view, year, monthOfYear, dayOfMonth -> bi.edDateOfBirth.setText("" + dayOfMonth + "/" + newMonth + "/" + year) },
+        val dpd = DatePickerDialog(requireActivity(), { view, year, monthOfYear, dayOfMonth -> bi.edDateOfBirth.setText("" + newMonth + "-" + dayOfMonth + "-" + year) },
             year,
             month,
             day
@@ -622,7 +623,12 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         imm?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
+    override fun onAddressClick(position: Int) {
+        Log.e("callback", "here")
 
+
+
+    }
 
 
     // done button click of add dependents
