@@ -8,6 +8,15 @@
       <item name="colorControlActivated">@color/txt_primary_info</item>
   </style> -->
 
+
+    <style name="TextAppearence.Unmarried.TextInputLayout"  parent="@android:style/TextAppearance">
+        <!--<item name="android:textColorHint">@color/colaba_red_color</item>-->
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/rubik_regular</item>
+        <item name="android:font">@font/rubik_regular</item>
+    </style>
+
+
     <style name="TextAppearence.App.TextInputLayout"  parent="@android:style/TextAppearance">
         <!--<item name="android:textColorHint">@color/colaba_red_color</item>-->
         <item name="android:textSize">13sp</item>

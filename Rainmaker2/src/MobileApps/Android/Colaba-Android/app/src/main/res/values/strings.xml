@@ -152,6 +152,9 @@
 
     <string name="county">County</string>
     <string name="state">State</string>
+
+    <string name="type_of_relations">Types of Relationship</string>
+
     <string name="search_home_address">Search Mailing Address</string>
 
     <string name="zip_code">Zip Code</string>

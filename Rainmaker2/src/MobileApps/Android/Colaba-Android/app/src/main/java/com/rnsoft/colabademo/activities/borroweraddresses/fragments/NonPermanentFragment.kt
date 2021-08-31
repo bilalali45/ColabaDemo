@@ -50,15 +50,15 @@ class NonPermanentFragment : Fragment() {
                 visaStatusViewLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two ))
 
                 if(position == visaStatusArray.size-1) {
-                    binding.relationshipLayout.visibility = View.VISIBLE
+                    binding.relationshipDetailLayout.visibility = View.VISIBLE
                 }
                else
-                    binding.relationshipLayout.visibility = View.GONE
+                    binding.relationshipDetailLayout.visibility = View.GONE
             }
         }
 
 
-        binding.relationshipEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.relationshipEditText, binding.relationshipLayout, requireContext()))
+        binding.relationshipEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.relationshipEditText, binding.relationshipDetailLayout, requireContext()))
 
 
         binding.visaStatusCompleteView.setOnClickListener{
