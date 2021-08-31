@@ -10,13 +10,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import com.rnsoft.colabademo.activities.signinflow.phone.events.OtpSentEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,18 +36,15 @@ class OtpFragment: Fragment() {
     private lateinit var root:View
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-
     @Inject
     lateinit var spEditor: SharedPreferences.Editor
-
     private val signUpFlowActivity: SignUpFlowViewModel by activityViewModels() // Shared Repo.....
-
     private val otpViewModel: OtpViewModel by activityViewModels() // Shared Repo.....
-
     private lateinit var resendLink:TextView
     private lateinit var nearToResetTextView:TextView
     private lateinit var verifyButton:Button
-    private lateinit var otpEditText:EditText
+    private lateinit var otpEditText:TextInputEditText
+    private lateinit var textInputLayout : TextInputLayout
     private var cTimer:CountDownTimer? = null
     private lateinit var insideTimerLayout:ConstraintLayout
     private lateinit var otpLoader:ProgressBar
@@ -53,16 +54,12 @@ class OtpFragment: Fragment() {
     private lateinit var notAskChekBox:CheckBox
     private lateinit var tickImage:ImageView
     private lateinit var crossImage:ImageView
-
-
-
     private var minutes:Int = 0
     private var seconds:Int = 0
-
     private var attemptLeft:Int = 0
-
     private var restoreBtnState:Boolean = false
     private var otpTextFieldState:Boolean = false
+    lateinit var parentLayout : ConstraintLayout
 
 
     override fun onCreateView(
@@ -71,7 +68,7 @@ class OtpFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         setHasOptionsMenu(true)
-        root = inflater.inflate(R.layout.otp_screen_layout, container, false)
+        root = inflater.inflate(R.layout.otp_screen_material, container, false)
         verifyButton = root.findViewById<Button>(R.id.verifyBtn)
         resendLink = root.findViewById(R.id.resendTextView)
         nearToResetTextView = root.findViewById(R.id.nearToResetTextView)
@@ -84,8 +81,13 @@ class OtpFragment: Fragment() {
         notAskChekBox = root.findViewById(R.id.permission_checkbox)
         tickImage = root.findViewById<ImageView>(R.id.tick_image)
         crossImage= root.findViewById<ImageView>(R.id.cross_image)
+        textInputLayout=root.findViewById(R.id.til_otp_verify)
+        parentLayout=root.findViewById(R.id.layout_otp_verify)
 
         //////////////////////////////////////////////////////////////////////////////////////////////
+
+        otpEditText.setOnFocusChangeListener(MyCustomFocusListener(otpEditText, textInputLayout, requireContext()))
+
         otpEditText.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -129,6 +131,10 @@ class OtpFragment: Fragment() {
 
         checkForTimer()
         updateResendCount()
+
+
+        parentLayout.setOnClickListener { hideSoftKeyboard() }
+
 
         return root
     }
@@ -381,6 +387,11 @@ class OtpFragment: Fragment() {
         cTimer?.let {
             it.cancel()
         }
+    }
+
+    private fun hideSoftKeyboard(){
+        val imm = view?.let { ContextCompat.getSystemService(it.context, InputMethodManager::class.java) }
+        imm?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
 
