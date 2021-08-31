@@ -22,7 +22,9 @@ class WelcomeActivity : AppCompatActivity() {
     private lateinit var fingerPrintImageView: ImageView
 
     private lateinit var goldfinger: Goldfinger
+
     private lateinit var params: PromptParams
+
 
     private var  resumeState =  false
 
@@ -38,8 +40,7 @@ class WelcomeActivity : AppCompatActivity() {
         withPasswordTextView    =   findViewById(R.id.withPasswordTextView)
         fingerPrintImageView    =   findViewById(R.id.fingerPrintImage)
 
-
-         intent.extras?.let {
+        intent.extras?.let {
             resumeState = it.getBoolean(AppSetting.lockAppState)
         }
 
@@ -82,7 +83,6 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
-
     private val fingerPrintCallBack:Goldfinger.Callback = object : Goldfinger.Callback {
         override fun onError(e: Exception) {
            /* Critical error happened */
@@ -97,8 +97,10 @@ class WelcomeActivity : AppCompatActivity() {
                     String.format("%s - %s", result.type().toString(), result.reason().toString())
 
                 //showToast(formattedResult)
-                if(resumeState)
+                if(resumeState) {
+                    AppSetting.initialScreenLoaded = false
                     finish()
+                }
                 else {
                     startActivity(Intent(this@WelcomeActivity, DashBoardActivity::class.java))
                     finish()
