@@ -34,8 +34,8 @@ class LoginFragment : Fragment() {
     private lateinit var root: View
     private val loginViewModel: LoginViewModel by activityViewModels()
 
-    private lateinit var emailError: AppCompatTextView
-    private lateinit var passwordError: AppCompatTextView
+    //private lateinit var emailError: AppCompatTextView
+    //private lateinit var passwordError: AppCompatTextView
     private lateinit var userEmailField: AppCompatEditText
     private lateinit var passwordField: AppCompatEditText
     private lateinit var loading: ProgressBar
@@ -43,11 +43,8 @@ class LoginFragment : Fragment() {
     private lateinit var forgotPasswordLink: AppCompatTextView
     private lateinit var loginButton: AppCompatButton
     private lateinit var imageView5: ImageView
-
-
-
-    private lateinit var passwordImageView: AppCompatImageView
-    private lateinit var passwordHideImageView: AppCompatImageView
+    //private lateinit var passwordImageView: AppCompatImageView
+    //private lateinit var passwordHideImageView: AppCompatImageView
 
 
     override fun onCreateView(
@@ -72,10 +69,10 @@ class LoginFragment : Fragment() {
     private fun setupFragment() {
         userEmailField = root.findViewById<AppCompatEditText>(R.id.editTextEmail)
         passwordField = root.findViewById<AppCompatEditText>(R.id.editTextPassword)
-        emailError = root.findViewById<AppCompatTextView>(R.id.emailErrorTextView)
-        passwordError = root.findViewById<AppCompatTextView>(R.id.passwordErrorTextView)
-        passwordImageView = root.findViewById<AppCompatImageView>(R.id.passwordImageShow)
-        passwordHideImageView = root.findViewById<AppCompatImageView>(R.id.passwordHideImageShow)
+        //emailError = root.findViewById<AppCompatTextView>(R.id.emailErrorTextView)
+        //passwordError = root.findViewById<AppCompatTextView>(R.id.passwordErrorTextView)
+        //passwordImageView = root.findViewById<AppCompatImageView>(R.id.passwordImageShow)
+        //passwordHideImageView = root.findViewById<AppCompatImageView>(R.id.passwordHideImageShow)
         biometricSwitch = root.findViewById<SwitchCompat>(R.id.switch1)
 
 
@@ -110,7 +107,7 @@ class LoginFragment : Fragment() {
             Navigation.findNavController(it).navigate(R.id.forgot_password_id, null)
         }
 
-        passwordImageView.setOnClickListener {
+        /*passwordImageView.setOnClickListener {
             passwordField.transformationMethod = null
             passwordField.setSelection(passwordField.length());
             passwordImageView.visibility = View.INVISIBLE
@@ -123,7 +120,7 @@ class LoginFragment : Fragment() {
             passwordField.setSelection(passwordField.length());
             passwordHideImageView.visibility = View.INVISIBLE
             passwordImageView.visibility = View.VISIBLE
-        }
+        } */
 
         goldfinger = Goldfinger.Builder(requireActivity())
             .logEnabled(true)
@@ -155,10 +152,10 @@ class LoginFragment : Fragment() {
     private lateinit var goldfinger: Goldfinger
 
     private fun resetToInitialPosition() {
-        emailError.text = ""
-        passwordError.text = ""
-        passwordError.visibility = View.GONE
-        emailError.visibility = View.GONE
+//        emailError.text = ""
+//        passwordError.text = ""
+//        passwordError.visibility = View.GONE
+//        emailError.visibility = View.GONE
     }
 
     private fun navigateToDashBoard(model: LoginResponse?) {
@@ -199,11 +196,11 @@ class LoginFragment : Fragment() {
             loading.visibility = View.INVISIBLE
 
             if (it.emailError != null) {
-                emailError.visibility = View.VISIBLE
-                emailError.text = it.emailError
+                //emailError.visibility = View.VISIBLE
+                //emailError.text = it.emailError
             } else if (it.passwordError != null) {
-                passwordError.visibility = View.VISIBLE
-                passwordError.text = it.passwordError
+                //passwordError.visibility = View.VISIBLE
+                //passwordError.text = it.passwordError
             } else if (it.responseError != null) {
                 //showToast(it.responseError)
                 if(it.responseError == AppConstant.INTERNET_ERR_MSG)
@@ -211,8 +208,8 @@ class LoginFragment : Fragment() {
                  else
                     SandbarUtils.showError(requireActivity(), it.responseError )
             } else if (it.success != null) {
-                emailError.visibility = View.GONE
-                passwordError.visibility = View.GONE
+                //emailError.visibility = View.GONE
+                //passwordError.visibility = View.GONE
                 when (it.screenNumber) {
                     1 -> {
                         if(biometricSwitch.isChecked)
