@@ -37,6 +37,8 @@
 		237DF98726D772A1000CAA8E /* FaceLockNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237DF98626D772A1000CAA8E /* FaceLockNavigationViewController.swift */; };
 		237DF98926D7753A000CAA8E /* FingerPrintNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237DF98826D7753A000CAA8E /* FingerPrintNavigationViewController.swift */; };
 		237DF98B26D77B98000CAA8E /* AddPreviousResidenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237DF98A26D77B98000CAA8E /* AddPreviousResidenceViewController.swift */; };
+		238A076926DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238A076826DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift */; };
+		238A076B26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238A076A26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift */; };
 		238D70772678E8C80067687C /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238D70762678E8C80067687C /* FiltersViewController.swift */; };
 		23908F9E26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23908F9C26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift */; };
 		23908F9F26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23908F9D26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib */; };
@@ -185,6 +187,8 @@
 		237DF98626D772A1000CAA8E /* FaceLockNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceLockNavigationViewController.swift; sourceTree = "<group>"; };
 		237DF98826D7753A000CAA8E /* FingerPrintNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPrintNavigationViewController.swift; sourceTree = "<group>"; };
 		237DF98A26D77B98000CAA8E /* AddPreviousResidenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPreviousResidenceViewController.swift; sourceTree = "<group>"; };
+		238A076826DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseLoanInfoViewController.swift; sourceTree = "<group>"; };
+		238A076A26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinanceLoanInfoViewController.swift; sourceTree = "<group>"; };
 		238D70762678E8C80067687C /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		23908F9C26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerAddressAndLoanInfoTableViewCell.swift; sourceTree = "<group>"; };
 		23908F9D26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerAddressAndLoanInfoTableViewCell.xib; sourceTree = "<group>"; };
@@ -478,6 +482,8 @@
 				23F23B4226CA591400AEF33E /* SaveAddressPopupViewController.swift */,
 				23F23B4426CA592800AEF33E /* DeleteAddressPopupViewController.swift */,
 				237DF98A26D77B98000CAA8E /* AddPreviousResidenceViewController.swift */,
+				238A076826DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift */,
+				238A076A26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -994,6 +1000,7 @@
 				23F23B4526CA592800AEF33E /* DeleteAddressPopupViewController.swift in Sources */,
 				23DF0CF0269F022B00F29B70 /* LoanDocumentModel.swift in Sources */,
 				23DBAD26269714A800119680 /* ApplicationViewController.swift in Sources */,
+				238A076B26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift in Sources */,
 				23B238BF2679F44000508449 /* NotificationsTableViewCell.swift in Sources */,
 				7160CA8D26733B8C0061ACD5 /* MainTabBarViewController.swift in Sources */,
 				237DF98926D7753A000CAA8E /* FingerPrintNavigationViewController.swift in Sources */,
@@ -1059,6 +1066,7 @@
 				23C2448E2689E55E00EED1D0 /* InActivePipelineViewController.swift in Sources */,
 				23A56C5C2685B017005CE6F4 /* Extensions.swift in Sources */,
 				23C9130626982A120067920E /* BorrowerOverviewTableViewCell.swift in Sources */,
+				238A076926DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift in Sources */,
 				7160CA88267339060061ACD5 /* ProfileViewController.swift in Sources */,
 				237DF98726D772A1000CAA8E /* FaceLockNavigationViewController.swift in Sources */,
 				2368799C26BC173E0045D294 /* BorrowerInformationViewController.swift in Sources */,

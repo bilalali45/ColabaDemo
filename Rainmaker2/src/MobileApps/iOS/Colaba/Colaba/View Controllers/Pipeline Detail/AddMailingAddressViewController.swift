@@ -95,7 +95,7 @@ class AddMailingAddressViewController: UIViewController {
             textfield.placeholderVerticalOffset = 8
             textfield.textColor = Theme.getAppBlackColor()
         }
-        txtfieldHomeAddress.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 25)
+        txtfieldHomeAddress.textInsetsPreset = .horizontally5
         btnSaveChanges.layer.borderWidth = 1
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
@@ -436,8 +436,7 @@ extension AddMailingAddressViewController: UITableViewDataSource, UITableViewDel
         self.txtfieldStreetAddress.text = placesData[indexPath.row].attributedPrimaryText.string
         GMSPlacesClient.shared().fetchPlace(fromPlaceID: placesData[indexPath.row].placeID, placeFields: .all, sessionToken: nil) { place, error in
             if let formattedAddress = place?.formattedAddress{
-                self.txtfieldHomeAddress.text = "       \(formattedAddress)"
-                self.txtfieldHomeAddress.placeholder = "Search Mailing Address"
+                self.txtfieldHomeAddress.text = "\(formattedAddress)"
                 self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
                 self.txtfieldHomeAddress.detail = ""
             }
@@ -463,10 +462,7 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
             //showAutoCompletePlaces()
             btnSearchTopConstraint.constant = 37
             self.view.layoutSubviews()
-            txtfieldHomeAddress.placeholder = "Search Mailing Address"
-            if txtfieldHomeAddress.text == ""{
-                txtfieldHomeAddress.text = "       "
-            }
+            txtfieldHomeAddress.placeholderHorizontalOffset = -24
         }
         
         if (textField == txtfieldCountry){
@@ -487,9 +483,8 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
         
         if (textField == txtfieldHomeAddress){
             btnDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            if (txtfieldHomeAddress.text == "       "){
-                txtfieldHomeAddress.text = ""
-                txtfieldHomeAddress.placeholder = "       Search Mailing Address"
+            if (txtfieldHomeAddress.text == ""){
+                txtfieldHomeAddress.placeholderHorizontalOffset = 0
                 btnSearchTopConstraint.constant = 34
                 self.view.layoutSubviews()
             }
