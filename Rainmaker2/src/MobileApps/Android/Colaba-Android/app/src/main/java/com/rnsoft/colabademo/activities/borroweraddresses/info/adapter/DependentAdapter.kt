@@ -30,7 +30,7 @@ class DependentAdapter (val mContext : Context, private val items: ArrayList<Dep
         this.deleteClick = clickListner
     }
 
-   inner class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(model: Dependent, position: Int) {
 
             if(model.age > 0){
@@ -41,7 +41,7 @@ class DependentAdapter (val mContext : Context, private val items: ArrayList<Dep
             itemView.ed_age.setOnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
                     itemView.til_dependent.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(itemView.context,R.color.grey_color_two))
-                    itemView.til_dependent.setEndIconDrawable(R.drawable.ic_minus_delete)
+                    itemView.til_dependent.setEndIconDrawable(R.drawable.ic_delete_dependent)
                     //itemView.til_dependent.ed_age.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_delete_dependent,0)
                 }
                 else {
@@ -59,11 +59,11 @@ class DependentAdapter (val mContext : Context, private val items: ArrayList<Dep
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = DataViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.dependent_input_field, parent,
-                false
-            )
+        LayoutInflater.from(parent.context).inflate(
+            R.layout.dependent_input_field, parent,
+            false
         )
+    )
 
     override fun getItemCount(): Int = items.size
 
@@ -76,7 +76,9 @@ class DependentAdapter (val mContext : Context, private val items: ArrayList<Dep
         holder.bind(items.get(position), position)
 
         holder.itemView.til_dependent.setEndIconOnClickListener {
-            deleteClick.deleteDependentClick(position)
+
+            if(holder.itemView.til_dependent.endIconDrawable?.isVisible == true)
+                deleteClick.deleteDependentClick(position)
         }
 
 
@@ -100,5 +102,6 @@ class DependentAdapter (val mContext : Context, private val items: ArrayList<Dep
                     .lowercase(Locale.getDefault())
 
      */
+
 
 }
