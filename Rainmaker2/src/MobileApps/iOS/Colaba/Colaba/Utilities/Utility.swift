@@ -167,6 +167,14 @@ struct Utility {
         return loanDetailStoryboard.instantiateViewController(withIdentifier: "DeleteAddressPopupViewController") as! DeleteAddressPopupViewController
     }
     
+    static func getPurchaseLoanInfoVC() -> PurchaseLoanInfoViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: PurchaseLoanInfoViewController.self)) as! PurchaseLoanInfoViewController
+    }
+    
+    static func getRefinanceLoanInfoVC() -> RefinanceLoanInfoViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: RefinanceLoanInfoViewController.self)) as! RefinanceLoanInfoViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){

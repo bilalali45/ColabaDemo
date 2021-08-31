@@ -45,6 +45,7 @@ class AddPreviousResidenceViewController: UIViewController {
     @IBOutlet weak var housingStatusDropDownAnchorView: UIView!
     @IBOutlet weak var btnHousingStatusDropDown: UIButton!
     @IBOutlet weak var txtfieldMonthlyRent: TextField!
+    @IBOutlet weak var monthlyRentDollarView: UIView!
     @IBOutlet weak var txtfieldMonthlyRentTopConstraint: NSLayoutConstraint! //30 or 0
     @IBOutlet weak var txtfieldMonthlyRentHeightConstraint: NSLayoutConstraint! //39 or 0
     @IBOutlet weak var btnSaveChanges: UIButton!
@@ -83,6 +84,7 @@ class AddPreviousResidenceViewController: UIViewController {
         fetcher?.delegate = self as GMSAutocompleteFetcherDelegate
 
         txtfieldHomeAddress.addTarget(self, action: #selector(txtfieldHomeAddressTextChanged), for: UIControl.Event.editingChanged)
+        txtfieldMonthlyRent.addTarget(self, action: #selector(txtfieldRentChanged), for: .editingChanged)
 
         tblViewPlaces.delegate = self
         tblViewPlaces.dataSource = self
@@ -106,7 +108,7 @@ class AddPreviousResidenceViewController: UIViewController {
             textfield.placeholderVerticalOffset = 8
             textfield.textColor = Theme.getAppBlackColor()
         }
-        txtfieldHomeAddress.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 25)
+        txtfieldHomeAddress.textInsetsPreset = .horizontally5
         housingStatusDropDown.dismissMode = .onTap
         housingStatusDropDown.anchorView = housingStatusDropDownAnchorView
         housingStatusDropDown.dataSource = kHousingStatusArray
@@ -356,6 +358,12 @@ class AddPreviousResidenceViewController: UIViewController {
         }
         
         stateDropDown.show()
+    }
+    
+    @objc func txtfieldRentChanged(){
+        if let amount = Int(txtfieldMonthlyRent.text!.replacingOccurrences(of: ",", with: "")){
+            txtfieldMonthlyRent.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
+        }
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
@@ -612,8 +620,7 @@ extension AddPreviousResidenceViewController: UITableViewDataSource, UITableView
         self.txtfieldStreetAddress.text = placesData[indexPath.row].attributedPrimaryText.string
         GMSPlacesClient.shared().fetchPlace(fromPlaceID: placesData[indexPath.row].placeID, placeFields: .all, sessionToken: nil) { place, error in
             if let formattedAddress = place?.formattedAddress{
-                self.txtfieldHomeAddress.text = "       \(formattedAddress)"
-                self.txtfieldHomeAddress.placeholder = "Search Previous Home Address"
+                self.txtfieldHomeAddress.text = "\(formattedAddress)"
                 self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
                 self.txtfieldHomeAddress.detail = ""
             }
@@ -639,10 +646,7 @@ extension AddPreviousResidenceViewController: UITextFieldDelegate{
             //showAutoCompletePlaces()
             btnSearchTopConstraint.constant = 37
             self.view.layoutSubviews()
-            txtfieldHomeAddress.placeholder = "Search Previous Home Address"
-            if txtfieldHomeAddress.text == ""{
-                txtfieldHomeAddress.text = "       "
-            }
+            txtfieldHomeAddress.placeholderHorizontalOffset = -24
             
         }
         if (textField == txtfieldMoveInDate){
@@ -669,15 +673,20 @@ extension AddPreviousResidenceViewController: UITextFieldDelegate{
             //btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
             //stateDropDown.show()
         }
+        
+        if (textField == txtfieldMonthlyRent){
+            txtfieldMonthlyRent.textInsetsPreset = .horizontally5
+            txtfieldMonthlyRent.placeholderHorizontalOffset = -24
+            monthlyRentDollarView.isHidden = false
+        }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if (textField == txtfieldHomeAddress){
             btnDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            if (txtfieldHomeAddress.text == "       "){
-                txtfieldHomeAddress.text = ""
-                txtfieldHomeAddress.placeholder = "       Search Previous Home Address"
+            if (txtfieldHomeAddress.text == ""){
+                txtfieldHomeAddress.placeholderHorizontalOffset = 0
                 btnSearchTopConstraint.constant = 34
                 self.view.layoutSubviews()
             }
@@ -834,6 +843,12 @@ extension AddPreviousResidenceViewController: UITextFieldDelegate{
                     self.txtfieldMonthlyRent.detail = error.localizedDescription
                 }
             }
+        }
+        
+        if (textField == txtfieldMonthlyRent && txtfieldMonthlyRent.text == ""){
+            txtfieldMonthlyRent.textInsetsPreset = .none
+            txtfieldMonthlyRent.placeholderHorizontalOffset = 0
+            monthlyRentDollarView.isHidden = true
         }
         
         setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry, txtfieldMoveInDate, txtfieldMoveOutDate, txtfieldHousingStatus, txtfieldMonthlyRent])

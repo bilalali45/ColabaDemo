@@ -75,6 +75,9 @@ class ApplicationViewController: BaseViewController {
         monthlyIncomeView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         monthlyIncomeView.dropShadowToCollectionViewCell()
         mainScrollView.delegate = self
+        
+        LoanInfoMainView.isUserInteractionEnabled = true
+        LoanInfoMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(loanInfoViewTapped)))
     }
     
     func setApplicationData(){
@@ -123,6 +126,20 @@ class ApplicationViewController: BaseViewController {
 //            self.questionsCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: true)
 //        }
         
+    }
+    
+    @objc func loanInfoViewTapped(){
+        if (self.loanApplicationDetail.loanPurposeDescription == "Purchase"){
+            let vc = Utility.getPurchaseLoanInfoVC()
+            self.pushToVC(vc: vc)
+        }
+        else{
+            let vc = Utility.getRefinanceLoanInfoVC()
+            self.pushToVC(vc: vc)
+        }
+        let vc = Utility.getRefinanceLoanInfoVC()
+//        let vc = Utility.getPurchaseLoanInfoVC()
+//        self.pushToVC(vc: vc)
     }
     
     //MARK:- API's
