@@ -5652,7 +5652,6 @@
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardType="numberPad"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Percentage"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
                                                         <real key="value" value="1"/>
                                                     </userDefinedRuntimeAttribute>
