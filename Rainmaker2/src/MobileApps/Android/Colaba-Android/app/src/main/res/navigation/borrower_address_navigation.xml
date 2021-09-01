@@ -24,6 +24,13 @@
         tools:layout="@layout/mailing_address_layout" />
 
     <fragment
+        android:id="@+id/navigation_previous_address"
+        android:name="com.rnsoft.colabademo.PreviousResidenceFragment"
+        android:label="@string/previous_residence"
+        tools:layout="@layout/previous_residence_layout" />
+
+
+    <fragment
         android:id="@+id/navigation_non_permanent"
         android:name="com.rnsoft.colabademo.NonPermanentFragment"
         android:label="@string/non_pr"

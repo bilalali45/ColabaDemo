@@ -41,8 +41,6 @@ class PreviousResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener
         _binding = PreviousResidenceLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
-
         binding.moveInEditText.showSoftInputOnFocus = false
         binding.moveInEditText.setOnClickListener {
             outInSelection = false
