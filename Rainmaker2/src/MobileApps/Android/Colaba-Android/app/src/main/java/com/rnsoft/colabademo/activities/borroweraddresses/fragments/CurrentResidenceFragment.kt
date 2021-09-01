@@ -134,7 +134,7 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener 
 
 
         binding.addAddressLayout.setOnClickListener{
-            findNavController().navigate(R.id.navigation_mailing_address)
+            findNavController().navigate(R.id.navigation_previous_address)
         }
 
         binding.backButton.setOnClickListener{
