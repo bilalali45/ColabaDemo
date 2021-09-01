@@ -35,6 +35,8 @@ class ActiveDutyFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         _binding = ActiveDutyLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        createCustomDialog()
+
         binding.edEmail.showSoftInputOnFocus = false
         binding.edEmail.setOnClickListener { createCustomDialog() }
         binding.edEmail.setOnFocusChangeListener{ _ , _ ->  createCustomDialog() }
