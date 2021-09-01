@@ -1,10 +1,12 @@
 package com.rnsoft.colabademo
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -102,6 +104,8 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
 
         })
 
+
+
         binding.searchEditTextField.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 binding.searchEditTextField.clearFocus()
@@ -126,6 +130,8 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
                     binding.searchcrossImageView.visibility = View.INVISIBLE
             }
         })
+
+        setFocusToSearchField()
 
         binding.searchcrossImageView.setOnClickListener{
             binding.searchEditTextField.setText("")
@@ -162,6 +168,25 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
         searchRecyclerView?.addOnScrollListener(scrollListener)
 
         return root
+    }
+
+    private fun setFocusToSearchField(){
+        binding.searchEditTextField.setFocusableInTouchMode(true);
+        binding.searchEditTextField.requestFocus();
+        //val inputMethodManager =  binding.searchEditTextField.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        //inputMethodManager.showSoftInput(binding.searchEditTextField, InputMethodManager.SHOW_IMPLICIT)
+        showSoftKeyboard(binding.searchEditTextField)
+    }
+
+    private fun showSoftKeyboard(view: View) {
+        if (view.requestFocus()) {
+            val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+
+            // here is one more tricky issue
+            // imm.showSoftInputMethod doesn't work well
+            // and imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0) doesn't work well for all cases too
+            imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+        }
     }
 
     private var hasPerformedSearchOnce = false
@@ -217,6 +242,20 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
         else
         if(event.errorResult!=null)
             SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
+    }
+
+    override fun navigateToBorrowerScreen(position: Int) {
+        val borrowerDetailIntent= Intent(requireActivity(), DetailActivity::class.java)
+        val test = searchArrayList[position]
+        Log.e("Before" , test.id.toString())
+        //borrowerDetailIntent.putExtra(AppConstant.borrowerParcelObject, allLoansArrayList[position])
+        borrowerDetailIntent.putExtra(AppConstant.loanApplicationId,  test.id)
+        //borrowerDetailIntent.putExtra(AppConstant.loanPurpose,  test.loanPurpose)
+        borrowerDetailIntent.putExtra(AppConstant.firstName,  test.firstName)
+        borrowerDetailIntent.putExtra(AppConstant.lastName,  test.lastName)
+        //borrowerDetailIntent.putExtra(AppConstant.bPhoneNumber,  test.cellNumber)
+        //borrowerDetailIntent.putExtra(AppConstant.bEmail,  test.email)
+        startActivity(borrowerDetailIntent)
     }
 
 }

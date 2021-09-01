@@ -6,7 +6,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import com.rnsoft.colabademo.databinding.DetailTopLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -26,6 +28,7 @@ class DetailActivity : AppCompatActivity() {
     var borrowerCellNumber:String? = null
     var borrowerEmail:String? = null
 
+    private val detailViewModel: DetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +73,22 @@ class DetailActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
+        observeForCallEmailMessage()
+    }
+
+
+
+    private fun observeForCallEmailMessage(){
+        detailViewModel.borrowerOverviewModel.observe(this@DetailActivity, {  overviewModel->
+            if(overviewModel!=null) {
+                borrowerCellNumber = overviewModel.cellPhone
+                borrowerEmail  = overviewModel.email
+            }
+            else
+                Log.e("should-stop"," here....")
+
+        })
     }
 
     fun hideFabIcons(){

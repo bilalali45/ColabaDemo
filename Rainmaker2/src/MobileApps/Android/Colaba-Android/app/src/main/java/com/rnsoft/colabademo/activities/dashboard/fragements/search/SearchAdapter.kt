@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 
 
@@ -45,6 +46,9 @@ internal constructor(
         if( tenant.zipCode!=null ) tenantAddress += tenant.zipCode
         holder.borrowerAddress.text = tenantAddress
 
+        holder.searchContainer.setOnClickListener {
+            clickListener.navigateToBorrowerScreen(position)
+        }
 
         //holder.notificationTime.text = singleNotification.notificationTime
         /*
@@ -75,6 +79,7 @@ internal constructor(
     }
 
     inner class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val searchContainer: ConstraintLayout = itemView.findViewById(R.id.search_view_holder_container)
         var borrowerName: TextView = itemView.findViewById(R.id.searchBorrowerName)
         var borrowerAddress: TextView = itemView.findViewById(R.id.searchBorrowerAddress)
         var borrowerId: TextView = itemView.findViewById(R.id.searchBorrowerId)
@@ -89,6 +94,7 @@ internal constructor(
 
     interface SearchClickListener {
         fun onSearchItemClick( view:View)
+        fun navigateToBorrowerScreen(position: Int)
     }
 
 

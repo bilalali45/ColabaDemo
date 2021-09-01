@@ -9,12 +9,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rnsoft.colabademo.databinding.DetailTabLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 val detailTabArray = arrayOf(
     "Overview",
@@ -121,6 +123,19 @@ class DetailTabFragment : Fragment() {
                 }
             }
         }
+
+        observeInSearchCase()
+    }
+
+    private fun observeInSearchCase(){
+        detailViewModel.borrowerOverviewModel.observe(viewLifecycleOwner, {  overviewModel->
+            if(overviewModel!=null) {
+                binding.borrowerPurpose.text = overviewModel.loanPurpose
+            }
+            else
+                Log.e("should-stop"," here....")
+
+        })
     }
 
     private fun fillHeaderValues(){
