@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -38,6 +40,7 @@ class DetailTabFragment : Fragment() {
 
     private val detailViewModel: DetailViewModel by activityViewModels()
 
+    private lateinit var viewPager: ViewPager2
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,15 +53,26 @@ class DetailTabFragment : Fragment() {
         val root: View = binding.root
 
 
-        val viewPager = binding.detailViewPager
+        viewPager = binding.detailViewPager
         val tabLayout = binding.detailTabLayout
 
         pageAdapter = DetailPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
         viewPager.adapter = pageAdapter
 
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = detailTabArray[position]
-        }.attach()
+        val detailActivity = (activity as? DetailActivity)
+        detailActivity?.let { detailActivity->
+            detailActivity.innerScreenName?.let {
+                viewPager.visibility = View.INVISIBLE
+                Log.e("tabFrag = ", it)
+                if (it == AppConstant.borrowerAppScreen)
+                    viewPager.currentItem = 1
+                if (it == AppConstant.borrowerDocScreen)
+                    viewPager.currentItem = 2
+            }
+            detailActivity.innerScreenName = null
+        }
+
+        viewPager.setPageTransformer(null)
 
         viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageScrolled(
@@ -96,13 +110,25 @@ class DetailTabFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
+
+
+
+
+
+
         binding.backButton.setOnClickListener{
             requireActivity().finish()
         }
 
         loadDetailWebservices()
 
-
+        if(viewPager.visibility == View.INVISIBLE)
+            viewPager.postDelayed({
+                viewPager.visibility = View.VISIBLE
+                TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = detailTabArray[position] }.attach()
+            }, 600)
+        else
+            TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = detailTabArray[position] }.attach()
 
         return root
     }
@@ -146,6 +172,11 @@ class DetailTabFragment : Fragment() {
         binding.borrowerNameGreeting.text = borrowerCompleteName
         binding.borrowerPurpose.text = getParentActivity.borrowerLoanPurpose
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
 
     }
 

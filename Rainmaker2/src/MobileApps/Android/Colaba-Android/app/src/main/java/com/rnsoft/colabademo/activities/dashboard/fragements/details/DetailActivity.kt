@@ -28,12 +28,12 @@ class DetailActivity : AppCompatActivity() {
     var borrowerCellNumber:String? = null
     var borrowerEmail:String? = null
 
+    var innerScreenName:String? = null
+
     private val detailViewModel: DetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DetailTopLayoutBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
         val extras = intent.extras
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
@@ -42,8 +42,14 @@ class DetailActivity : AppCompatActivity() {
             borrowerLoanPurpose = it.getString(AppConstant.loanPurpose)
             borrowerCellNumber = it.getString(AppConstant.bPhoneNumber)
             borrowerEmail = it.getString(AppConstant.bEmail)
+            innerScreenName = it.getString(AppConstant.innerScreenName)
             Log.e("Names- ", "$borrowerFirstName $borrowerLastName")
         }
+
+
+        super.onCreate(savedInstanceState)
+        binding = DetailTopLayoutBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         binding.emailFab.setOnClickListener{
             borrowerEmail?.let {

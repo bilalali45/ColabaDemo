@@ -191,6 +191,8 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
 
 
 
+
+
     override fun onResume() {
         super.onResume()
         rowLoading?.visibility = View.INVISIBLE
