@@ -5195,6 +5195,13 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0bJ-3p-3ag">
+                                                <rect key="frame" x="20" y="69" width="335" height="2"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="2" id="q3G-hu-bfh"/>
+                                                </constraints>
+                                            </view>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VWZ-1s-hGA">
                                                 <rect key="frame" x="335.5" y="32" width="17.5" height="22"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -5324,8 +5331,11 @@
                                             <constraint firstItem="VWZ-1s-hGA" firstAttribute="top" secondItem="tVm-7H-7LX" secondAttribute="top" constant="32" id="TMx-Ab-Fq0"/>
                                             <constraint firstItem="cho-Bj-geQ" firstAttribute="leading" secondItem="tVm-7H-7LX" secondAttribute="leading" constant="20" id="Wuy-tY-zYA"/>
                                             <constraint firstItem="Yab-fV-opJ" firstAttribute="top" secondItem="vJs-yN-LTG" secondAttribute="bottom" constant="30" id="cjx-k3-6X1"/>
+                                            <constraint firstItem="0bJ-3p-3ag" firstAttribute="top" secondItem="vJs-yN-LTG" secondAttribute="bottom" id="cyY-Bn-sub"/>
                                             <constraint firstItem="cho-Bj-geQ" firstAttribute="top" secondItem="CgX-Dh-pCg" secondAttribute="bottom" constant="30" id="gP8-49-R42"/>
+                                            <constraint firstAttribute="trailing" secondItem="0bJ-3p-3ag" secondAttribute="trailing" constant="20" id="jAu-It-ejt"/>
                                             <constraint firstItem="vJs-yN-LTG" firstAttribute="leading" secondItem="tVm-7H-7LX" secondAttribute="leading" constant="20" id="kwR-UE-qYG"/>
+                                            <constraint firstItem="0bJ-3p-3ag" firstAttribute="leading" secondItem="tVm-7H-7LX" secondAttribute="leading" constant="20" id="m06-Ch-NiV"/>
                                             <constraint firstAttribute="trailing" secondItem="CgX-Dh-pCg" secondAttribute="trailing" constant="20" id="mtF-zk-HAx"/>
                                             <constraint firstItem="vJs-yN-LTG" firstAttribute="top" secondItem="tVm-7H-7LX" secondAttribute="top" constant="30" id="oh8-n7-xsu"/>
                                             <constraint firstItem="QTi-en-cdq" firstAttribute="leading" secondItem="tVm-7H-7LX" secondAttribute="leading" constant="20" id="p1s-MD-TyD"/>
@@ -5378,9 +5388,11 @@
                     <connections>
                         <outlet property="additionalCashAmountDollarView" destination="Yab-fV-opJ" id="LIr-to-H8C"/>
                         <outlet property="btnBack" destination="Jgm-Li-Qbu" id="nAo-XY-j54"/>
+                        <outlet property="btnLoanStageDropDown" destination="VWZ-1s-hGA" id="77J-sc-C9s"/>
                         <outlet property="btnSaveChanges" destination="yky-PF-bsx" id="TSS-hf-ABW"/>
                         <outlet property="lblNavTitle" destination="nVP-5L-GIo" id="EkQ-03-WaM"/>
                         <outlet property="loanAmountDollarView" destination="QTi-en-cdq" id="h66-Kz-zDI"/>
+                        <outlet property="loanStageDropDownAnchorView" destination="0bJ-3p-3ag" id="Bpo-jU-KBj"/>
                         <outlet property="mainScrollView" destination="hpG-CO-dEo" id="ggI-pv-9i1"/>
                         <outlet property="mainView" destination="tVm-7H-7LX" id="bRQ-8c-TMp"/>
                         <outlet property="seperatorView" destination="tTK-DJ-HiZ" id="97G-Wu-Cui"/>
@@ -5475,6 +5487,13 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Jn-Yc-33b">
+                                                <rect key="frame" x="20" y="69" width="335" height="2"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="2" id="N1Y-wg-gTO"/>
+                                                </constraints>
+                                            </view>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zk2-Db-8Dm">
                                                 <rect key="frame" x="335.5" y="32" width="17.5" height="22"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -5753,6 +5772,7 @@
                                             <constraint firstItem="JAJ-av-sN5" firstAttribute="top" secondItem="fHS-5W-DwC" secondAttribute="bottom" constant="30" id="I62-DW-9vD"/>
                                             <constraint firstItem="JAJ-av-sN5" firstAttribute="leading" secondItem="yoJ-8H-0qH" secondAttribute="leading" constant="20" id="IJl-en-DzH"/>
                                             <constraint firstAttribute="height" constant="400" id="PPS-i5-9Xm"/>
+                                            <constraint firstItem="0Jn-Yc-33b" firstAttribute="leading" secondItem="yoJ-8H-0qH" secondAttribute="leading" constant="20" id="PmW-nV-MFN"/>
                                             <constraint firstItem="XVU-a7-W4m" firstAttribute="leading" secondItem="yoJ-8H-0qH" secondAttribute="leading" constant="20" id="QQf-qu-HBi"/>
                                             <constraint firstItem="QeR-oq-qRg" firstAttribute="leading" secondItem="yoJ-8H-0qH" secondAttribute="leading" constant="20" id="RAs-vh-eIA"/>
                                             <constraint firstItem="OmC-d9-6IS" firstAttribute="top" secondItem="U5C-nW-HS2" secondAttribute="bottom" constant="31" id="RBc-He-aoN"/>
@@ -5765,10 +5785,12 @@
                                             <constraint firstAttribute="trailing" secondItem="OmC-d9-6IS" secondAttribute="trailing" constant="22" id="cW2-3O-MQS"/>
                                             <constraint firstItem="XVU-a7-W4m" firstAttribute="top" secondItem="n2p-yU-3fm" secondAttribute="bottom" constant="30" id="cmj-qU-08a"/>
                                             <constraint firstItem="U5C-nW-HS2" firstAttribute="top" secondItem="fHS-5W-DwC" secondAttribute="bottom" constant="30" id="czX-ve-jhV"/>
+                                            <constraint firstAttribute="trailing" secondItem="0Jn-Yc-33b" secondAttribute="trailing" constant="20" id="dV8-VZ-kb9"/>
                                             <constraint firstItem="U5C-nW-HS2" firstAttribute="width" secondItem="JAJ-av-sN5" secondAttribute="width" id="hYu-D4-jiM"/>
                                             <constraint firstItem="fHS-5W-DwC" firstAttribute="leading" secondItem="yoJ-8H-0qH" secondAttribute="leading" constant="20" id="jlL-kP-ViR"/>
                                             <constraint firstAttribute="trailing" secondItem="U5C-nW-HS2" secondAttribute="trailing" constant="20" id="kEo-Ib-Ngk"/>
                                             <constraint firstItem="PDY-F3-Qro" firstAttribute="leading" secondItem="U5C-nW-HS2" secondAttribute="leading" id="niv-xN-gOW"/>
+                                            <constraint firstItem="0Jn-Yc-33b" firstAttribute="top" secondItem="n2p-yU-3fm" secondAttribute="bottom" id="o1e-HN-gcv"/>
                                             <constraint firstItem="HU3-ul-uBB" firstAttribute="height" secondItem="U5C-nW-HS2" secondAttribute="height" id="pRP-Ih-iF1"/>
                                             <constraint firstItem="QeR-oq-qRg" firstAttribute="top" secondItem="n2p-yU-3fm" secondAttribute="bottom" constant="30" id="qT0-3i-hmp"/>
                                             <constraint firstItem="uoh-eG-HcM" firstAttribute="top" secondItem="fHS-5W-DwC" secondAttribute="bottom" constant="30" id="vJe-eY-EIz"/>
@@ -5823,10 +5845,12 @@
                     </view>
                     <connections>
                         <outlet property="btnBack" destination="NmR-qT-foV" id="9kt-HZ-orJ"/>
+                        <outlet property="btnLoanStageDropDown" destination="Zk2-Db-8Dm" id="amB-uw-HYE"/>
                         <outlet property="btnSaveChanges" destination="Yl0-An-oeh" id="pkz-LD-zJ9"/>
                         <outlet property="downPaymentDollarView" destination="uoh-eG-HcM" id="R4K-la-7AB"/>
                         <outlet property="lblNavTitle" destination="w98-a6-lpe" id="oBo-xQ-XIi"/>
                         <outlet property="loanAmountDollarView" destination="cXU-zH-V8V" id="mrm-td-VuQ"/>
+                        <outlet property="loanStageDropDownAnchorView" destination="0Jn-Yc-33b" id="pzN-oO-NWm"/>
                         <outlet property="mainScrollView" destination="JjD-vT-ay2" id="0ok-z3-pWW"/>
                         <outlet property="mainView" destination="yoJ-8H-0qH" id="7Vv-Ef-Rzs"/>
                         <outlet property="percentageView" destination="PDY-F3-Qro" id="Vxe-zT-rGr"/>

@@ -187,6 +187,12 @@ struct Validation {
         guard downPaymentPercentage.count > 0 else { throw ValidationError.requiredField }
         return downPaymentPercentage
     }
+    
+    func validateClosingDate(_ closingDate: String?) throws -> String{
+        guard let closingDate = closingDate else { throw ValidationError.requiredField }
+        guard closingDate.count > 0 else { throw ValidationError.requiredField }
+        return closingDate
+    }
 }
 
 enum ValidationError: LocalizedError {
