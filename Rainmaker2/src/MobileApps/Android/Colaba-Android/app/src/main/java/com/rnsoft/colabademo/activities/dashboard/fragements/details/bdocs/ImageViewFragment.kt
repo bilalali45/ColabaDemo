@@ -56,7 +56,7 @@ class ImageViewFragment : Fragment(), AdapterClickListener {
     override fun navigateTo(position: Int) {
 
     }
-    override fun getCardIndex(position: Int) {
+    override fun getSingleItemIndex(position: Int) {
 
     }
 
