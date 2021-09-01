@@ -8,6 +8,7 @@
 import UIKit
 import Material
 import MonthYearPicker
+import DropDown
 
 class PurchaseLoanInfoViewController: UIViewController {
 
@@ -19,6 +20,8 @@ class PurchaseLoanInfoViewController: UIViewController {
     @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var txtfieldLoanStage: TextField!
+    @IBOutlet weak var btnLoanStageDropDown: UIButton!
+    @IBOutlet weak var loanStageDropDownAnchorView: UIView!
     @IBOutlet weak var txtfieldPurchasePrice: TextField!
     @IBOutlet weak var purchasePriceDollarView: UIView!
     @IBOutlet weak var txtfieldLoanAmount: TextField!
@@ -30,7 +33,19 @@ class PurchaseLoanInfoViewController: UIViewController {
     @IBOutlet weak var txtfieldClosingDate: TextField!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
+    let loanStageDropDown = DropDown()
     let closingDateFormatter = DateFormatter()
+    private let validation: Validation
+    
+    init(validation: Validation) {
+        self.validation = validation
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        self.validation = Validation()
+        super.init(coder: coder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +72,7 @@ class PurchaseLoanInfoViewController: UIViewController {
         txtfieldPurchasePrice.addTarget(self, action: #selector(txtfieldPurchasePriceChanged), for: .editingChanged)
         txtfieldLoanAmount.addTarget(self, action: #selector(txtfieldLoanAmountChanged), for: .editingChanged)
         txtfieldDownPayment.addTarget(self, action: #selector(txtfieldDownPaymentChanged), for: .editingChanged)
+        txtfieldPercentage.addTarget(self, action: #selector(txtfieldPercentageChanged), for: .editingChanged)
         
         btnSaveChanges.layer.borderWidth = 1
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
@@ -65,6 +81,22 @@ class PurchaseLoanInfoViewController: UIViewController {
         closingDateFormatter.dateStyle = .medium
         closingDateFormatter.dateFormat = "MM/yyyy"
         txtfieldClosingDate.addInputViewMonthYearDatePicker(target: self, selector: #selector(dateChanged))
+        
+        loanStageDropDown.dismissMode = .onTap
+        loanStageDropDown.anchorView = loanStageDropDownAnchorView
+        loanStageDropDown.dataSource = kLoanStageArray
+        loanStageDropDown.cancelAction = .some({
+            self.btnLoanStageDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            self.txtfieldLoanStage.dividerColor = self.txtfieldLoanStage.text == "" ? Theme.getSeparatorErrorColor() : Theme.getSeparatorNormalColor()
+        })
+        loanStageDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            btnLoanStageDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldLoanStage.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldLoanStage.detail = ""
+            txtfieldLoanStage.placeholderLabel.textColor = Theme.getAppGreyColor()
+            txtfieldLoanStage.text = item
+            loanStageDropDown.hide()
+        }
     }
     
     func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){
@@ -89,6 +121,21 @@ class PurchaseLoanInfoViewController: UIViewController {
     @objc func txtfieldPurchasePriceChanged(){
         if let amount = Int(txtfieldPurchasePrice.text!.replacingOccurrences(of: ",", with: "")){
             txtfieldPurchasePrice.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
+            let purchaseAmount = Double(amount)
+            let downPayment = Int(purchaseAmount * 0.2)
+            self.txtfieldDownPayment.textInsetsPreset = .horizontally5
+            self.txtfieldDownPayment.placeholderHorizontalOffset = -24
+            self.txtfieldDownPayment.dividerColor = Theme.getSeparatorNormalColor()
+            self.txtfieldDownPayment.detail = ""
+            downPaymentDollarView.isHidden = false
+            
+            self.txtfieldDownPayment.text = downPayment.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
+            self.txtfieldPercentage.text = "20"
+            self.txtfieldPercentage.textInsetsPreset = .horizontally5
+            self.txtfieldPercentage.placeholderHorizontalOffset = -24
+            self.txtfieldPercentage.dividerColor = Theme.getSeparatorNormalColor()
+            self.txtfieldPercentage.detail = ""
+            percentageView.isHidden = false
         }
     }
     
@@ -99,8 +146,42 @@ class PurchaseLoanInfoViewController: UIViewController {
     }
     
     @objc func txtfieldDownPaymentChanged(){
-        if let amount = Int(txtfieldDownPayment.text!.replacingOccurrences(of: ",", with: "")){
-            txtfieldDownPayment.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
+        if (txtfieldPurchasePrice.text == ""){
+            txtfieldDownPayment.text = "\(0)"
+        }
+        else{
+            if let amount = Int(txtfieldDownPayment.text!.replacingOccurrences(of: ",", with: "")){
+                txtfieldDownPayment.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
+                if let purchaseAmount = Int(txtfieldPurchasePrice.text!.replacingOccurrences(of: ",", with: "")){
+                    let doubleAmount = Double(amount)
+                    let doublePuchaseAmount = Double(purchaseAmount)
+                    var downPaymentPercentage = doubleAmount / doublePuchaseAmount
+                    downPaymentPercentage = downPaymentPercentage * 100.0
+                    self.txtfieldPercentage.text = "\(Int(downPaymentPercentage.rounded()))"
+                    self.txtfieldPercentage.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldPercentage.detail = ""
+                }
+            }
+        }
+        
+    }
+    
+    @objc func txtfieldPercentageChanged(){
+        if (txtfieldPurchasePrice.text == ""){
+            txtfieldPercentage.text = "0"
+        }
+        else{
+            if let percentage = Double(txtfieldPercentage.text!), let purchaseAmount = Double(txtfieldPurchasePrice.text!.replacingOccurrences(of: ",", with: "")){
+                let downPaymentPercentage = percentage / 100
+                let downPayment = Int(purchaseAmount * downPaymentPercentage)
+                self.txtfieldDownPayment.text = downPayment.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
+                self.txtfieldDownPayment.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldDownPayment.detail = ""
+            }
+            else{
+                txtfieldPercentage.text = ""
+                txtfieldDownPayment.text = "0"
+            }
         }
     }
     
@@ -109,7 +190,89 @@ class PurchaseLoanInfoViewController: UIViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        self.goBack()
+        
+        do{
+            let loanStage = try validation.validateLoanStage(txtfieldLoanStage.text)
+            DispatchQueue.main.async {
+                self.txtfieldLoanStage.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldLoanStage.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldLoanStage.dividerColor = .red
+            self.txtfieldLoanStage.detail = error.localizedDescription
+        }
+        
+        do{
+            let purchasePrice = try validation.validatePurchasePrice(txtfieldPurchasePrice.text)
+            DispatchQueue.main.async {
+                self.txtfieldPurchasePrice.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldPurchasePrice.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldPurchasePrice.dividerColor = .red
+            self.txtfieldPurchasePrice.detail = error.localizedDescription
+        }
+        
+        do{
+            let loanAmount = try validation.validateLoanAmount(txtfieldLoanAmount.text)
+            DispatchQueue.main.async {
+                self.txtfieldLoanAmount.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldLoanAmount.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldLoanAmount.dividerColor = .red
+            self.txtfieldLoanAmount.detail = error.localizedDescription
+        }
+        
+        do{
+            let downPayment = try validation.validateDownPayment(txtfieldDownPayment.text)
+            DispatchQueue.main.async {
+                self.txtfieldDownPayment.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldDownPayment.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldDownPayment.dividerColor = .red
+            self.txtfieldDownPayment.detail = error.localizedDescription
+        }
+        
+        do{
+            let downPaymentPercentage = try validation.validateDownPaymentPercentage(txtfieldPercentage.text)
+            DispatchQueue.main.async {
+                self.txtfieldPercentage.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldPercentage.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldPercentage.dividerColor = .red
+            self.txtfieldPercentage.detail = error.localizedDescription
+        }
+        
+        do{
+            let closingDate = try validation.validateClosingDate(txtfieldClosingDate.text)
+            DispatchQueue.main.async {
+                self.txtfieldClosingDate.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldClosingDate.detail = ""
+            }
+            
+        }
+        catch{
+            self.txtfieldClosingDate.dividerColor = .red
+            self.txtfieldClosingDate.detail = error.localizedDescription
+        }
+        
+        if (txtfieldLoanStage.text != "" && txtfieldPurchasePrice.text != "" && txtfieldLoanAmount.text != "" && txtfieldDownPayment.text != "" && txtfieldPercentage.text != "" && txtfieldClosingDate.text != ""){
+            self.goBack()
+        }
+        
     }
     
 }
@@ -117,6 +280,15 @@ class PurchaseLoanInfoViewController: UIViewController {
 extension PurchaseLoanInfoViewController: UITextFieldDelegate{
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        if (textField == txtfieldLoanStage){
+            textField.endEditing(true)
+            btnLoanStageDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+            loanStageDropDown.show()
+            txtfieldLoanStage.dividerColor = Theme.getButtonBlueColor()
+            
+        }
+        
         if (textField == txtfieldPurchasePrice){
             txtfieldPurchasePrice.textInsetsPreset = .horizontally5
             txtfieldPurchasePrice.placeholderHorizontalOffset = -24
@@ -171,6 +343,97 @@ extension PurchaseLoanInfoViewController: UITextFieldDelegate{
             txtfieldPercentage.textInsetsPreset = .none
             txtfieldPercentage.placeholderHorizontalOffset = 0
             percentageView.isHidden = true
+        }
+        
+        if (textField == txtfieldLoanStage){
+            btnLoanStageDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            do{
+                let loanStage = try validation.validateLoanStage(txtfieldLoanStage.text)
+                DispatchQueue.main.async {
+                    self.txtfieldLoanStage.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldLoanStage.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldLoanStage.dividerColor = .red
+                self.txtfieldLoanStage.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldPurchasePrice){
+            do{
+                let purchasePrice = try validation.validatePurchasePrice(txtfieldPurchasePrice.text)
+                DispatchQueue.main.async {
+                    self.txtfieldPurchasePrice.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldPurchasePrice.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldPurchasePrice.dividerColor = .red
+                self.txtfieldPurchasePrice.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldLoanAmount){
+            do{
+                let loanAmount = try validation.validateLoanAmount(txtfieldLoanAmount.text)
+                DispatchQueue.main.async {
+                    self.txtfieldLoanAmount.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldLoanAmount.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldLoanAmount.dividerColor = .red
+                self.txtfieldLoanAmount.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldDownPayment){
+            do{
+                let downPayment = try validation.validateDownPayment(txtfieldDownPayment.text)
+                DispatchQueue.main.async {
+                    self.txtfieldDownPayment.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldDownPayment.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldDownPayment.dividerColor = .red
+                self.txtfieldDownPayment.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldPercentage){
+            do{
+                let downPaymentPercentage = try validation.validateDownPaymentPercentage(txtfieldPercentage.text)
+                DispatchQueue.main.async {
+                    self.txtfieldPercentage.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldPercentage.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldPercentage.dividerColor = .red
+                self.txtfieldPercentage.detail = error.localizedDescription
+            }
+        }
+        
+        if (textField == txtfieldClosingDate){
+            do{
+                let closingDate = try validation.validateClosingDate(txtfieldClosingDate.text)
+                DispatchQueue.main.async {
+                    self.txtfieldClosingDate.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldClosingDate.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldClosingDate.dividerColor = .red
+                self.txtfieldClosingDate.detail = error.localizedDescription
+            }
         }
         
         setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldLoanStage, txtfieldPurchasePrice, txtfieldLoanAmount, txtfieldDownPayment, txtfieldPercentage, txtfieldClosingDate])
