@@ -4,14 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -21,12 +28,11 @@ class ForgotPasswordFragment : Fragment() {
     private lateinit var root: View
 
     private val forgotPasswordViewModel: ForgotPasswordViewModel by activityViewModels()
-
     private lateinit var loading:ProgressBar
-
-    private lateinit var errorTextView:AppCompatTextView
-
     private lateinit var resetButton:Button
+    lateinit var emailLayout : TextInputLayout
+    lateinit var userEmailField : TextInputEditText
+    private lateinit var parentLayout : ConstraintLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,17 +43,44 @@ class ForgotPasswordFragment : Fragment() {
         root = inflater.inflate(R.layout.password_forgot, container, false)
 
         resetButton  = root.findViewById<Button>(R.id.resetPasswordBtn)
-        val userEmailField = root.findViewById<AppCompatEditText>(R.id.editTextEmail)
-        errorTextView = root.findViewById(R.id.emailErrorTextView)
+        userEmailField = root.findViewById<TextInputEditText>(R.id.editTextEmail)
+        emailLayout = root.findViewById<TextInputLayout>(R.id.til_pswrd_email)
+        parentLayout= root.findViewById(R.id.layout_forgot_password)
+        //errorTextView = root.findViewById(R.id.emailErrorTextView)
         loading = root.findViewById(R.id.loader_forgot_screen)
 
         resetButton.setOnClickListener {
             it.isEnabled = false
-            errorTextView.text =""
+            //errorTextView.text =""
+            clearError()
             loading.visibility = View.VISIBLE
             forgotPasswordViewModel.forgotPassword(userEmailField.text.toString())
         }
+
+        userEmailField.setOnFocusChangeListener(MyCustomFocusListener(userEmailField,emailLayout, requireContext()))
+
+        parentLayout.setOnClickListener {
+            hideSoftKeyboard()
+        }
+
+
         return root
+    }
+
+    fun setError(errorMsg: String) {
+        emailLayout.helperText = errorMsg
+        emailLayout.setBoxStrokeColorStateList(
+            AppCompatResources.getColorStateList(requireContext(), R.color.primary_info_stroke_error_color))
+    }
+
+    fun clearError() {
+        emailLayout.helperText = ""
+        emailLayout.setBoxStrokeColorStateList(
+            AppCompatResources.getColorStateList(
+                requireContext(),
+                R.color.primary_info_line_color
+            )
+        )
     }
 
 
@@ -69,9 +102,9 @@ class ForgotPasswordFragment : Fragment() {
         val forgotPasswordResponse = event.forgotPasswordResponse
         when(event.forgotPasswordResponse.code)
         {
-            "400" ->errorTextView.text = forgotPasswordResponse.message
-            "300" ->errorTextView.text = forgotPasswordResponse.message
-            "600" ->errorTextView.text = forgotPasswordResponse.message
+            "400" -> forgotPasswordResponse.message?.let { setError(it) }
+            "300" ->forgotPasswordResponse.message?.let { setError(it) }
+            "600" ->forgotPasswordResponse.message?.let { setError(it) }
             "200" -> {
                 SandbarUtils.showSuccess(requireActivity(), "success")
                 findNavController().navigate(R.id.back_to_login_id, null)
@@ -81,6 +114,12 @@ class ForgotPasswordFragment : Fragment() {
             }
         }
     }
+
+    private fun hideSoftKeyboard(){
+        val imm = view?.let { ContextCompat.getSystemService(it.context, InputMethodManager::class.java) }
+        imm?.hideSoftInputFromWindow(view?.windowToken, 0)
+    }
+
 
 
     /*

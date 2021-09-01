@@ -26,6 +26,7 @@ class SplashActivity : AppCompatActivity() {
 
 
 
+
             if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
                 && sharedPreferences.getBoolean(AppConstant.isbiometricEnabled, false)
             ) {
@@ -40,6 +41,8 @@ class SplashActivity : AppCompatActivity() {
             }
 
             finish()
+
+            
 
 
         }

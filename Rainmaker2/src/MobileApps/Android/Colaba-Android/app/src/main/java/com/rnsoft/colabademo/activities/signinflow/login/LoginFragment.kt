@@ -1,16 +1,14 @@
 package com.rnsoft.colabademo
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.util.DisplayMetrics
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.appcompat.widget.*
@@ -25,7 +23,12 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 import android.widget.EditText
-import androidx.compose.ui.graphics.Color
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.login_layout.*
 
 
 @AndroidEntryPoint
@@ -33,21 +36,16 @@ class LoginFragment : Fragment() {
 
     private lateinit var root: View
     private val loginViewModel: LoginViewModel by activityViewModels()
-
-    private lateinit var emailError: AppCompatTextView
-    private lateinit var passwordError: AppCompatTextView
-    private lateinit var userEmailField: AppCompatEditText
-    private lateinit var passwordField: AppCompatEditText
+    private lateinit var userEmailField: TextInputEditText
+    private lateinit var passwordField: TextInputEditText
     private lateinit var loading: ProgressBar
     private lateinit var biometricSwitch: SwitchCompat
     private lateinit var forgotPasswordLink: AppCompatTextView
     private lateinit var loginButton: AppCompatButton
     private lateinit var imageView5: ImageView
-
-
-
-    private lateinit var passwordImageView: AppCompatImageView
-    private lateinit var passwordHideImageView: AppCompatImageView
+    private lateinit var emailLayout:TextInputLayout
+    private lateinit var passwordLayout:TextInputLayout
+    lateinit var parentLayout : ConstraintLayout
 
 
     override fun onCreateView(
@@ -56,7 +54,21 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         root = inflater.inflate(R.layout.login_layout, container, false)
+
         setupFragment()
+        hideSoftKeyboard()
+
+        passwordLayout.setEndIconOnClickListener(View.OnClickListener {
+            if (editTextPassword.getTransformationMethod()
+                    .equals(PasswordTransformationMethod.getInstance())
+            ) { //  hide password
+                editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
+                emailLayout.setEndIconDrawable(R.drawable.ic_eye_hide)
+            } else {
+                editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance())
+                emailLayout.setEndIconDrawable(R.drawable.ic_eye_icon_svg)
+            }
+        })
 
         return root
     }
@@ -70,24 +82,23 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupFragment() {
-        userEmailField = root.findViewById<AppCompatEditText>(R.id.editTextEmail)
-        passwordField = root.findViewById<AppCompatEditText>(R.id.editTextPassword)
-        emailError = root.findViewById<AppCompatTextView>(R.id.emailErrorTextView)
-        passwordError = root.findViewById<AppCompatTextView>(R.id.passwordErrorTextView)
-        passwordImageView = root.findViewById<AppCompatImageView>(R.id.passwordImageShow)
-        passwordHideImageView = root.findViewById<AppCompatImageView>(R.id.passwordHideImageShow)
+        userEmailField = root.findViewById(R.id.editTextEmail)
+        passwordField = root.findViewById(R.id.editTextPassword)
+        emailLayout = root.findViewById(R.id.til_login_email)
+        passwordLayout = root.findViewById(R.id.til_login_password)
+        parentLayout = root.findViewById(R.id.layout_login)
         biometricSwitch = root.findViewById<SwitchCompat>(R.id.switch1)
 
+        setLableFocus()
 
         if (activity is SignUpFlowActivity) {
-            Log.e("resumeState= ","LoginFragment -userEmailField ="+(activity as SignUpFlowActivity).resumeState)
+            //Log.e("resumeState= ","LoginFragment -userEmailField ="+(activity as SignUpFlowActivity).resumeState)
             if (AppSetting.initialScreenLoaded)
                 disableEditText(userEmailField)
         }
 
-
-        userEmailField.setText("mubashir.mcu@mailinator.com")
-        passwordField.setText("test123")
+//        userEmailField.setText("mubashir.mcu@mailinator.com")
+ //       passwordField.setText("test123")
 
 
         imageView5 =  root.findViewById<ImageView>(R.id.imageView5)
@@ -98,7 +109,7 @@ class LoginFragment : Fragment() {
         forgotPasswordLink = root.findViewById<AppCompatTextView>(R.id.forgotPasswordLink)
         loginButton = root.findViewById<AppCompatButton>(R.id.loginBtn)
         loading = root.findViewById<ProgressBar>(R.id.loader_login_screen)
-        //resetToInitialPosition()
+        resetToInitialPosition()
         loginButton.setOnClickListener {
             loading.visibility = View.VISIBLE
             toggleButtonState(false)
@@ -108,21 +119,6 @@ class LoginFragment : Fragment() {
 
         forgotPasswordLink.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.forgot_password_id, null)
-        }
-
-        passwordImageView.setOnClickListener {
-            passwordField.transformationMethod = null
-            passwordField.setSelection(passwordField.length());
-            passwordImageView.visibility = View.INVISIBLE
-            passwordHideImageView.visibility = View.VISIBLE
-        }
-
-        passwordHideImageView.setOnClickListener {
-
-            passwordField.transformationMethod = PasswordTransformationMethod()
-            passwordField.setSelection(passwordField.length());
-            passwordHideImageView.visibility = View.INVISIBLE
-            passwordImageView.visibility = View.VISIBLE
         }
 
         goldfinger = Goldfinger.Builder(requireActivity())
@@ -148,21 +144,19 @@ class LoginFragment : Fragment() {
             }
             AppSetting.biometricEnabled = biometricSwitch.isChecked
         }
-
+        parentLayout.setOnClickListener {
+            hideSoftKeyboard() }
 
     }
 
     private lateinit var goldfinger: Goldfinger
 
     private fun resetToInitialPosition() {
-        emailError.text = ""
-        passwordError.text = ""
-        passwordError.visibility = View.GONE
-        emailError.visibility = View.GONE
+        clearError(emailLayout)
+        clearError(passwordLayout)
     }
 
     private fun navigateToDashBoard(model: LoginResponse?) {
-        //val displayName = model.token
         val intent = Intent(requireActivity(), DashBoardActivity::class.java)
         startActivity(intent)
         requireActivity().finish()
@@ -175,8 +169,6 @@ class LoginFragment : Fragment() {
         findNavController().navigate(R.id.phone_number_id, null)
 
 
-
-
    override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -184,7 +176,6 @@ class LoginFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        //unregisterReceiver()
         EventBus.getDefault().unregister(this)
     }
 
@@ -199,11 +190,17 @@ class LoginFragment : Fragment() {
             loading.visibility = View.INVISIBLE
 
             if (it.emailError != null) {
-                emailError.visibility = View.VISIBLE
-                emailError.text = it.emailError
+                //emailError.visibility = View.VISIBLE
+                //emailError.text = it.emailError
+                setError(emailLayout,it.emailError)
+
+
+
+
             } else if (it.passwordError != null) {
-                passwordError.visibility = View.VISIBLE
-                passwordError.text = it.passwordError
+                //passwordError.visibility = View.VISIBLE
+                //passwordError.text = it.passwordError
+                setError(passwordLayout,it.passwordError)
             } else if (it.responseError != null) {
                 //showToast(it.responseError)
                 if(it.responseError == AppConstant.INTERNET_ERR_MSG)
@@ -211,8 +208,11 @@ class LoginFragment : Fragment() {
                  else
                     SandbarUtils.showError(requireActivity(), it.responseError )
             } else if (it.success != null) {
-                emailError.visibility = View.GONE
-                passwordError.visibility = View.GONE
+                //emailError.visibility = View.GONE
+                //passwordError.visibility = View.GONE
+                    clearError(emailLayout)
+                    clearError(passwordLayout)
+
                 when (it.screenNumber) {
                     1 -> {
                         if(biometricSwitch.isChecked)
@@ -245,12 +245,36 @@ class LoginFragment : Fragment() {
         }
     }
 
+    fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
+        textInputlayout.helperText = errorMsg
+        textInputlayout.setBoxStrokeColorStateList(
+            AppCompatResources.getColorStateList(requireContext(), R.color.primary_info_stroke_error_color))
+    }
+
+    fun clearError(textInputlayout: TextInputLayout) {
+        textInputlayout.helperText = ""
+        textInputlayout.setBoxStrokeColorStateList(
+            AppCompatResources.getColorStateList(
+                requireContext(),
+                R.color.primary_info_line_color
+            )
+        )
+    }
+
     private fun toggleButtonState(bool: Boolean) {
         forgotPasswordLink.isEnabled = bool
         loginButton.isEnabled = bool
     }
 
+    private fun setLableFocus(){
+        userEmailField.setOnFocusChangeListener(MyCustomFocusListener(userEmailField,emailLayout, requireContext()))
+        passwordField.setOnFocusChangeListener(MyCustomFocusListener(passwordField,passwordLayout, requireContext()))
+    }
 
+    private fun hideSoftKeyboard(){
+        val imm = view?.let { ContextCompat.getSystemService(it.context, InputMethodManager::class.java) }
+        imm?.hideSoftInputFromWindow(view?.windowToken, 0)
+    }
 }
 
 
