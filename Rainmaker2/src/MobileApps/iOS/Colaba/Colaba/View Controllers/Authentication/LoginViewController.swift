@@ -76,6 +76,9 @@ class LoginViewController: UIViewController {
             textfield.placeholderVerticalOffset = 8
             textfield.textColor = Theme.getAppBlackColor()
         }
+        if (isAppOpenFromBackground){
+            txtFieldEmail.textColor = Theme.getAppGreyColor()
+        }
     }
     
     func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){

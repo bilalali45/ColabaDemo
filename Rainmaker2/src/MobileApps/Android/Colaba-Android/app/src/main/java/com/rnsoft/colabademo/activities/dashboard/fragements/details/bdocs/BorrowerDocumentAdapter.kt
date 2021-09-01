@@ -2,7 +2,6 @@ package com.rnsoft.colabademo
 
 import android.content.Context
 import android.graphics.Typeface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,7 @@ import kotlin.collections.ArrayList
 
 class BorrowerDocumentAdapter
 internal constructor(
-    passedDocsList: ArrayList<BorrowerDocsModel>, onAdapterClickListener: AdapterClickListener
+    passedDocsList: ArrayList<BorrowerDocsModel>, onAdapterClickListener: AdapterClickListener , downloadClickListener:DownloadClickListener
 ) : RecyclerView.Adapter<BorrowerDocumentAdapter.DocsViewHolder>() {
 
     private lateinit var context : Context
@@ -27,9 +26,12 @@ internal constructor(
     private var docsList = ArrayList<BorrowerDocsModel>()
     private var classScopedItemClickListener: AdapterClickListener = onAdapterClickListener
 
+    private var classScopedDownloadClickListener: DownloadClickListener = downloadClickListener
+
     init {
         this.docsList = passedDocsList
         this.classScopedItemClickListener = onAdapterClickListener
+        this.classScopedDownloadClickListener = downloadClickListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocsViewHolder {
@@ -68,6 +70,9 @@ internal constructor(
             docCardView.setOnClickListener {
                 classScopedItemClickListener.navigateTo(adapterPosition)
             }
+
+
+
         }
     }
 
@@ -113,6 +118,12 @@ internal constructor(
                     val docType = getDocType(fileOne.clientName)
                     setDocImage(docType,holder.docOneImage)
 
+                    holder.docOneLayout.setOnClickListener {
+                        classScopedDownloadClickListener.fileClicked(fileOne.clientName, fileOne.id, position)
+                    }
+
+
+
                 } else {
                     holder.docOneName.text = fileOne.mcuName
                     holder.docOneImage.visibility = View.VISIBLE
@@ -130,15 +141,12 @@ internal constructor(
                         holder.docTwoName.text = fileTwo.clientName
                         holder.docTwoImage.visibility = View.VISIBLE
                         val docType = getDocType(fileTwo.clientName)
-                        setDocImage(docType,holder.docTwoImage)
-
-                    } else if (fileTwo.mcuName.isNotEmpty() && fileTwo.mcuName.isNotBlank()) {
-                        holder.docTwoLayout.visibility = View.VISIBLE
-                        holder.docTwoName.text = fileTwo.mcuName
-                        holder.docTwoImage.visibility = View.VISIBLE
-                        val docType = getDocType(fileTwo.mcuName)
-                        setDocImage(docType,holder.docTwoImage)
-                    } else {
+                        setDocImage(docType, holder.docTwoImage)
+                        holder.docTwoLayout.setOnClickListener {
+                            classScopedDownloadClickListener.fileClicked(fileTwo.clientName, fileTwo.id, position)
+                        }
+                    }
+                    else {
                         holder.docTwoLayout.visibility = View.INVISIBLE
                     }
                 }

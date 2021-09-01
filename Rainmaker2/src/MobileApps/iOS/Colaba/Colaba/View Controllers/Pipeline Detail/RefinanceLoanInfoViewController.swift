@@ -7,6 +7,7 @@
 
 import UIKit
 import Material
+import DropDown
 
 class RefinanceLoanInfoViewController: UIViewController {
 
@@ -18,12 +19,15 @@ class RefinanceLoanInfoViewController: UIViewController {
     @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var txtfieldLoanStage: TextField!
+    @IBOutlet weak var btnLoanStageDropDown: UIButton!
+    @IBOutlet weak var loanStageDropDownAnchorView: UIView!
     @IBOutlet weak var txtfieldAdditionalCashoutAmount: TextField!
     @IBOutlet weak var additionalCashAmountDollarView: UIView!
     @IBOutlet weak var txtfieldLoanAmount: TextField!
     @IBOutlet weak var loanAmountDollarView: UIView!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
+    let loanStageDropDown = DropDown()
     private let validation: Validation
     
     init(validation: Validation) {
@@ -61,6 +65,22 @@ class RefinanceLoanInfoViewController: UIViewController {
         btnSaveChanges.layer.borderWidth = 1
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+        
+        loanStageDropDown.dismissMode = .onTap
+        loanStageDropDown.anchorView = loanStageDropDownAnchorView
+        loanStageDropDown.dataSource = kLoanStageArray
+        loanStageDropDown.cancelAction = .some({
+            self.btnLoanStageDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            self.txtfieldLoanStage.dividerColor = self.txtfieldLoanStage.text == "" ? Theme.getSeparatorErrorColor() : Theme.getSeparatorNormalColor()
+        })
+        loanStageDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            btnLoanStageDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldLoanStage.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldLoanStage.detail = ""
+            txtfieldLoanStage.placeholderLabel.textColor = Theme.getAppGreyColor()
+            txtfieldLoanStage.text = item
+            loanStageDropDown.hide()
+        }
         
     }
     
@@ -133,6 +153,14 @@ extension RefinanceLoanInfoViewController: UITextFieldDelegate{
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
+        if (textField == txtfieldLoanStage){
+            textField.endEditing(true)
+            btnLoanStageDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+            loanStageDropDown.show()
+            txtfieldLoanStage.dividerColor = Theme.getButtonBlueColor()
+            
+        }
+        
         if (textField == txtfieldAdditionalCashoutAmount){
             txtfieldAdditionalCashoutAmount.textInsetsPreset = .horizontally5
             txtfieldAdditionalCashoutAmount.placeholderHorizontalOffset = -24
@@ -149,6 +177,7 @@ extension RefinanceLoanInfoViewController: UITextFieldDelegate{
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if (textField == txtfieldLoanStage){
+            btnLoanStageDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             do{
                 let loanStage = try validation.validateLoanStage(txtfieldLoanStage.text)
                 DispatchQueue.main.async {

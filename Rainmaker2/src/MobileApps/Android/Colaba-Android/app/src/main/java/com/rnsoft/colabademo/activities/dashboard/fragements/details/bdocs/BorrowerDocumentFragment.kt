@@ -8,8 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.appcompat.widget.AppCompatButton
+import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -21,11 +20,15 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.gson.Gson
 import com.rnsoft.colabademo.databinding.BorrowerDocLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.detail_list_layout.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickListener {
+class BorrowerDocumentFragment : Fragment(), AdapterClickListener, DownloadClickListener, View.OnClickListener {
 
     private var _binding: BorrowerDocLayoutBinding? = null
     private val binding get() = _binding!!
@@ -71,9 +74,10 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
         layout_docData = view.findViewById(R.id.layout_doc_data)
         layout_noDocUplaoded = view.findViewById(R.id.layout_no_doc_uploaded)
         val linearLayoutManager = LinearLayoutManager(activity)
+        downloadLoader = view.findViewById(R.id.doc_download_loader)
 
         borrowerDocumentAdapter =
-            BorrowerDocumentAdapter(docsArrayList, this@BorrowerDocumentFragment)
+            BorrowerDocumentAdapter(docsArrayList, this@BorrowerDocumentFragment , this@BorrowerDocumentFragment)
 
         docsRecycler.apply {
             this.layoutManager = linearLayoutManager
@@ -121,13 +125,15 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
 
         (activity as DetailActivity).showFabIcons()
 
+        observeDownloadProgress()
+
         return view
 
     }
 
     private fun populateRecyclerview(arrayList: ArrayList<BorrowerDocsModel>) {
         borrowerDocumentAdapter =
-            BorrowerDocumentAdapter(arrayList, this@BorrowerDocumentFragment)
+            BorrowerDocumentAdapter(arrayList, this@BorrowerDocumentFragment , this@BorrowerDocumentFragment )
         docsRecycler.adapter = borrowerDocumentAdapter
         borrowerDocumentAdapter.notifyDataSetChanged()
     }
@@ -209,6 +215,119 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
             }
         }
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////\\
+    private  var downloadLoader: ProgressBar? = null
+
+    private fun observeDownloadProgress(){
+        detailViewModel.progressGlobal.observe(viewLifecycleOwner, {
+            if (it != null && it.size > 0) {
+                var percentage = ((it[0]* 100) / it[1]).toInt()
+                Log.e("Ui-percentage--", ""+percentage)
+                loader_percentage.text = "$percentage%"
+            }
+        })
+    }
+
+    override fun fileClicked(fileName: String , fileId:String, position: Int) {
+        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+            val selected = docsArrayList[position]
+
+            if (selected.docId != null && selected.requestId != null &&  selected.id != null) {
+                downloadLoader?.visibility = View.VISIBLE
+                loader_percentage.text = "0%"
+                loader_percentage.visibility = View.VISIBLE
+
+                detailViewModel.downloadFile(
+                    token = authToken,
+                    id = selected.id,
+                    requestId = selected.requestId,
+                    docId = selected.docId,
+                    fileId = fileId,
+                    fileName = fileName
+                )
+            }
+            else
+                SandbarUtils.showRegular(requireActivity(), "File can not be downloaded...")
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onErrorReceived(event: WebServiceErrorEvent) {
+        downloadLoader?.visibility = View.GONE
+        loader_percentage.visibility = View.GONE
+        //tvPercentage.visibility = View.GONE
+
+        if(event.isInternetError)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+        else
+            if(event.errorResult!=null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onFileDownloadCompleted(event: FileDownloadEvent) {
+        downloadLoader?.visibility = View.GONE
+        loader_percentage.visibility = View.GONE
+        //tvPercentage.visibility = View.GONE
+        event.docFileName?.let {
+            if (!it.isNullOrBlank() && it.isNotEmpty()) {
+                if(it.contains(".pdf"))
+                    goToPdfFragment(it)
+                else
+                    goToImageViewFragment(it)
+            }
+        }
+    }
+
+    private fun goToPdfFragment(pdfFileName:String){
+        val pdfViewFragment = PdfViewFragment()
+        val bundle = Bundle()
+        bundle.putString(AppConstant.downloadedFileName, pdfFileName)
+        pdfViewFragment.arguments = bundle
+        findNavController().navigate(R.id.pdf_view_fragment_id, pdfViewFragment.arguments)
+    }
+
+    private fun goToImageViewFragment(imageFileName:String){
+        val imageViewFragment = ImageViewFragment()
+        val bundle = Bundle()
+        bundle.putString(AppConstant.downloadedFileName, imageFileName)
+        imageViewFragment.arguments = bundle
+        findNavController().navigate(R.id.image_view_fragment_id, imageViewFragment.arguments)
+    }
+
+    override fun navigateTo(position: Int) {
+        val selectedDocumentType = if(filter.equals(AppConstant.filter_all)) docsArrayList[position] else filterDocsList[position]
+        val listFragment = DocumentListFragment()
+        val bundle = Bundle()
+        val fileNames = Gson().toJson(selectedDocumentType.subFiles)
+        bundle.putString(AppConstant.docName, selectedDocumentType.docName)
+        bundle.putString(AppConstant.docMessage, selectedDocumentType.message)
+        bundle.putParcelableArrayList(AppConstant.docObject,selectedDocumentType.subFiles)
+        bundle.putString(AppConstant.innerFilesName, fileNames)
+        bundle.putString(AppConstant.download_id, selectedDocumentType.id)
+        bundle.putString(AppConstant.download_requestId, selectedDocumentType.requestId)
+        bundle.putString(AppConstant.download_docId, selectedDocumentType.docId)
+        listFragment.arguments = bundle
+        findNavController().navigate(R.id.docs_list_inner_fragment, listFragment.arguments)
+
+    }
+
+
+
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private fun selectStatusFilter(
         statusAll: Boolean,
@@ -328,23 +447,10 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, View.OnClickL
         }
     }
 
-    override fun getCardIndex(position: Int) {
+    override fun getSingleItemIndex(position: Int) {
     }
 
-    override fun navigateTo(position: Int) {
-        val selectedDocumentType = if(filter.equals(AppConstant.filter_all)) docsArrayList[position] else filterDocsList[position]
-        val listFragment = DocumentListFragment()
-        val bundle = Bundle()
-        val fileNames = Gson().toJson(selectedDocumentType.subFiles)
-        bundle.putString(AppConstant.docName, selectedDocumentType.docName)
-        bundle.putString(AppConstant.docMessage, selectedDocumentType.message)
-        bundle.putParcelableArrayList(AppConstant.docObject,selectedDocumentType.subFiles)
-        bundle.putString(AppConstant.innerFilesName, fileNames)
-        bundle.putString(AppConstant.download_id, selectedDocumentType.id)
-        bundle.putString(AppConstant.download_requestId, selectedDocumentType.requestId)
-        bundle.putString(AppConstant.download_docId, selectedDocumentType.docId)
-        listFragment.arguments = bundle
-        findNavController().navigate(R.id.docs_list_inner_fragment, listFragment.arguments)
 
-    }
+
+
 }

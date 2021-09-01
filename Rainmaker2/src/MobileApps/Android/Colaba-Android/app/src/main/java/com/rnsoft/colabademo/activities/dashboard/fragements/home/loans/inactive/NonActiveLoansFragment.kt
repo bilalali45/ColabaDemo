@@ -160,7 +160,7 @@ class NonActiveLoansFragment : BaseFragment() , AdapterClickListener , LoanFilte
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun getCardIndex(position: Int) {
+    override fun getSingleItemIndex(position: Int) {
         val borrowerBottomSheet = SheetBottomBorrowerCardFragment.newInstance()
         val bundle = Bundle()
         bundle.putParcelable(AppConstant.borrowerParcelObject, nonActiveLoansList[position])
