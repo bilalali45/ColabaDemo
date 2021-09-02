@@ -37,7 +37,6 @@ class CustomBorrowerAdapter internal constructor(private var tabBorrowerDataList
 
         }
 
-
     }
 
     inner class BorrowerFooterViewHolder(itemView: View) : BaseViewHolder(itemView){
