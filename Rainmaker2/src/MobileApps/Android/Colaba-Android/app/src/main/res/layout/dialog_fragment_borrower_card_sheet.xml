@@ -9,31 +9,9 @@
     android:layout_height="wrap_content">
 
 
-    <TextView
-        android:id="@+id/borrowerztoa"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:fontFamily="@font/rubik_medium"
-        android:text="@string/archive"
-        android:textColor="@color/grey_color_two"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/borrowerIconReverse"
-        app:layout_constraintStart_toEndOf="@+id/borrowerIconReverse"
-        app:layout_constraintTop_toTopOf="@+id/borrowerIconReverse" />
 
-    <TextView
-        android:id="@+id/borroweratoz"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:fontFamily="@font/rubik_medium"
-        android:text="@string/conversation"
-        android:textColor="@color/grey_color_two"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/borrowerIcon"
-        app:layout_constraintStart_toEndOf="@+id/borrowerIcon"
-        app:layout_constraintTop_toTopOf="@+id/borrowerIcon" />
+
+
 
     <ImageView
         android:id="@+id/crossImageView"
@@ -46,14 +24,42 @@
         app:layout_constraintTop_toTopOf="@+id/borrowerName"
         app:srcCompat="@drawable/search_cross" />
 
-    <ImageView
-        android:id="@+id/pending_icon"
-        android:layout_width="wrap_content"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
+        android:id="@+id/appLayout"
+
         app:layout_constraintStart_toStartOf="@+id/borrowerName"
         app:layout_constraintTop_toBottomOf="@+id/sortBySepartor"
-        app:srcCompat="@drawable/application_icon" />
+        >
+
+        <ImageView
+            android:id="@+id/pending_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/application_icon" />
+
+        <TextView
+            android:id="@+id/pendingTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/application"
+            android:fontFamily="@font/rubik_medium"
+            android:textSize="14sp"
+            android:textColor="@color/grey_color_two"
+            app:layout_constraintBottom_toBottomOf="@+id/pending_icon"
+            app:layout_constraintStart_toEndOf="@+id/pending_icon"
+            app:layout_constraintTop_toTopOf="@+id/pending_icon" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <TextView
         android:id="@+id/borrowerName"
@@ -83,46 +89,98 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
-    <ImageView
-        android:id="@+id/recentIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        app:layout_constraintStart_toStartOf="@+id/borrowerName"
-        app:layout_constraintTop_toBottomOf="@+id/pending_icon"
-        app:srcCompat="@drawable/docs_icon" />
 
-    <ImageView
-        android:id="@+id/borrowerIcon"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        app:layout_constraintStart_toStartOf="@+id/recentIcon"
-        app:layout_constraintTop_toBottomOf="@+id/recentIcon"
-        app:srcCompat="@drawable/convo_icon" />
+        android:layout_marginTop="20dp"
+        android:id="@+id/convoLayout"
 
-    <ImageView
-        android:id="@+id/borrowerIconReverse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        app:layout_constraintStart_toStartOf="@+id/borrowerIcon"
-        app:layout_constraintTop_toBottomOf="@+id/borrowerIcon"
-        app:srcCompat="@drawable/archive_icon" />
+        app:layout_constraintStart_toStartOf="@+id/docLayout"
+        app:layout_constraintTop_toBottomOf="@+id/docLayout"
+        >
+
+
+        <ImageView
+            android:id="@+id/borrowerIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/convo_icon" />
 
     <TextView
-        android:id="@+id/pendingTextView"
+        android:id="@+id/borroweratoz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:text="@string/application"
         android:fontFamily="@font/rubik_medium"
-        android:textSize="14sp"
+        android:text="@string/conversation"
         android:textColor="@color/grey_color_two"
-        app:layout_constraintBottom_toBottomOf="@+id/pending_icon"
-        app:layout_constraintStart_toEndOf="@+id/pending_icon"
-        app:layout_constraintTop_toTopOf="@+id/pending_icon" />
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/borrowerIcon"
+        app:layout_constraintStart_toEndOf="@+id/borrowerIcon"
+        app:layout_constraintTop_toTopOf="@+id/borrowerIcon" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/archiveLayout"
+
+        app:layout_constraintStart_toStartOf="@+id/convoLayout"
+        app:layout_constraintTop_toBottomOf="@+id/convoLayout"
+        >
+
+        <ImageView
+            android:id="@+id/borrowerIconReverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/archive_icon" />
+
+    <TextView
+        android:id="@+id/borrowerztoa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/rubik_medium"
+        android:text="@string/archive"
+        android:textColor="@color/grey_color_two"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/borrowerIconReverse"
+        app:layout_constraintStart_toEndOf="@+id/borrowerIconReverse"
+        app:layout_constraintTop_toTopOf="@+id/borrowerIconReverse" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/docLayout"
+
+        app:layout_constraintStart_toStartOf="@+id/borrowerName"
+        app:layout_constraintTop_toBottomOf="@+id/appLayout"
+        >
+
+        <ImageView
+            android:id="@+id/recentIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="35dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/docs_icon" />
 
     <TextView
         android:id="@+id/recentTextView"
@@ -136,6 +194,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/recentIcon"
         app:layout_constraintStart_toEndOf="@+id/recentIcon"
         app:layout_constraintTop_toTopOf="@+id/recentIcon" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/textView34"

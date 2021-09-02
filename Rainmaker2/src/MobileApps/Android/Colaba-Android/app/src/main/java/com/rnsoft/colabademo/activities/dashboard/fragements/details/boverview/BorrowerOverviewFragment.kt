@@ -66,7 +66,7 @@ class BorrowerOverviewFragment : Fragment()  {
 
                  if(overviewModel.loanNumber!=null && !overviewModel.loanNumber.equals("null", true)  && overviewModel.loanNumber.isNotEmpty()) {
                      binding.loanId.visibility = View.VISIBLE
-                     binding.loanId.text = "Loan#" + overviewModel.loanNumber
+                     binding.loanId.text = "Loan No." + overviewModel.loanNumber
                  }
                 else
                      binding.loanId.visibility = View.GONE

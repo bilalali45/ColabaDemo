@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_unmarried">
+    app:startDestination="@+id/navigation_primary_borrower_info">
 
     <fragment
         android:id="@+id/navigation_primary_borrower_info"
@@ -22,6 +22,13 @@
         android:name="com.rnsoft.colabademo.MailingAddressFragment"
         android:label="@string/mailing_address"
         tools:layout="@layout/mailing_address_layout" />
+
+    <fragment
+        android:id="@+id/navigation_previous_address"
+        android:name="com.rnsoft.colabademo.PreviousResidenceFragment"
+        android:label="@string/previous_residence"
+        tools:layout="@layout/previous_residence_layout" />
+
 
     <fragment
         android:id="@+id/navigation_non_permanent"

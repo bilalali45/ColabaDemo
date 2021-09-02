@@ -56,6 +56,9 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     var isResActiveDuty : Boolean = false
     var isNationalGuard : Boolean = false
     var isVisaOther : Boolean = false
+    var isAddressLoaded :Boolean = false
+    var addressBtnText : String = "Add Previous Address"
+    var isBtnSet : Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,6 +88,17 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
         }
 
+        if(!isAddressLoaded){
+            list.clear()
+            list.add(Address(true,"5919 Trussvile Crossings Parkways, ZV Street, Birmingham AL 35235"))
+            list.add(Address(false,"5919 Trussvile Crossings Pkwy, Birmingham AL 35235"))
+        }
+
+        bi.tvResidence.setText(addressBtnText)
+
+//        if(!isBtnSet){
+//            bi.tvResidence.setText(getString(R.string.previous_address))
+//        }
 
         return bi.root
     }
@@ -175,7 +189,14 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             R.id.chb_surviving_spouse -> militarySurvivingSpouse()
             R.id.btn_save_info -> checkValidations()
             R.id.add_dependent_click -> addEmptyDependentField()
-            R.id.add_prev_address ->  if(bi.tvResidence.text.equals(getString(R.string.current_address))) findNavController().navigate(R.id.navigation_current_address) else findNavController().navigate(R.id.navigation_mailing_address)
+            R.id.add_prev_address ->  if(bi.tvResidence.text.equals(getString(R.string.current_address))){
+
+                findNavController().navigate(R.id.navigation_current_address)
+            } else {
+                findNavController().navigate(R.id.navigation_mailing_address)
+            }
+
+
             R.id.backButton -> requireActivity().finish()
             // R.id.ed_dateOfBirth -> openCalendar()
         }
@@ -266,11 +287,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     @SuppressLint("ClickableViewAccessibility")
     private fun setResidence() {
         // set btn text
-        bi.tvResidence.text = getString(R.string.previous_address)
 
-        list.clear()
-        list.add(Address(true,"5919 Trussvile Crossings Parkways, ZV Street, Birmingham AL 35235"))
-        list.add(Address(false,"5919 Trussvile Crossings Pkwy, Birmingham AL 35235"))
         //bi.recyclerview.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         //bi.recyclerview.hasFixedSize()
 
@@ -281,7 +298,21 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         touchListener = RecyclerTouchListener(requireActivity(), bi.recyclerview)
         touchListener!!
             .setClickable(object : RecyclerTouchListener.OnRowClickListener {
-                override fun onRowClicked(position: Int) { }
+                override fun onRowClicked(position: Int) {
+
+                    if(list.get(position).isCurrentAddress){
+                        addressBtnText = getString(R.string.previous_address)
+                        findNavController().navigate(R.id.navigation_current_address)
+                    }
+                    else {
+                        if(list.get(0).isCurrentAddress) {
+                            addressBtnText = getString(R.string.previous_address)
+                        } else {
+                            addressBtnText = getString(R.string.current_address)
+                        }
+                        findNavController().navigate(R.id.navigation_mailing_address)
+                    }
+                }
                 override fun onIndependentViewClicked(independentViewID: Int, position: Int) {}
             })
             .setSwipeOptionViews(R.id.delete_task)
@@ -586,7 +617,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSwipeDeleteReceivedEvent(event: SwipeToDeleteEvent) {
         if(event.boolean){
-
+            isAddressLoaded = true
             selectedPosition?.let {
                 if (list.get(selectedPosition!!).isCurrentAddress) {
                     bi.tvResidence.setText(getString(R.string.current_address))

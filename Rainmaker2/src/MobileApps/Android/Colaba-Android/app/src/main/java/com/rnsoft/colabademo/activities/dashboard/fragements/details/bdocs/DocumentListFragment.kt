@@ -40,11 +40,9 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
     private var doc_message: String? = null
     lateinit var tvDocName: TextView
     lateinit var tvDocMsg: TextView
-    //lateinit var tvPercentage: TextView
     lateinit var doc_msg_layout: ConstraintLayout
     lateinit var layoutNoDocUploaded: ConstraintLayout
     private  var downloadLoader: ProgressBar? = null
-    val handler= Handler()
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -125,15 +123,11 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
 
     private fun observeDownloadProgress(){
         detailViewModel.progressGlobal.observe(viewLifecycleOwner, {
-
                 if (it != null && it.size > 0) {
-
-
                     var percentage = ((it[0]* 100) / it[1]).toInt()
                     Log.e("Ui-percentage--", ""+percentage)
                     loader_percentage.text = "$percentage%"
                 }
-
         })
     }
 
@@ -141,7 +135,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
         //Log.e("param", " downloadId: " + download_id + " downRequeId: " + download_requestId + " downDocId: " + download_docId)
         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
             val selectedFile = docsArrayList[position]
-            selectedFile.clientName
+
             if (download_docId != null && download_requestId != null && download_id != null) {
                 downloadLoader?.visibility = View.VISIBLE
                 loader_percentage.text = "0%"
@@ -193,9 +187,10 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onFileDownloadCompleted(event: FileDownloadEvent) {
         downloadLoader?.visibility = View.GONE
+        loader_percentage.visibility = View.GONE
         //tvPercentage.visibility = View.GONE
         event.docFileName?.let {
-            if (!it.isNullOrBlank() && !it.isNullOrEmpty()) {
+            if (!it.isNullOrBlank() && it.isNotEmpty()) {
                 if(it.contains(".pdf"))
                     goToPdfFragment(it)
                 else

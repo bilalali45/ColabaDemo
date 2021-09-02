@@ -226,7 +226,7 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
 
     }
 
-    override fun getCardIndex(position: Int) {
+    override fun getSingleItemIndex(position: Int) {
 
     }
 
