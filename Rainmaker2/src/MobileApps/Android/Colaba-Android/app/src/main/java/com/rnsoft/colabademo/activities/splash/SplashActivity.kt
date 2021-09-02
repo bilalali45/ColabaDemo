@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -20,7 +21,6 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.splash_layout)
         activityScope.launch {
 
-          //startActivity(Intent(this@SplashActivity, BorrowerAddressActivity::class.java))
 
             //startActivity(Intent(this@SplashActivity, BorrowerInfoActivity::class.java))
 
@@ -39,6 +39,8 @@ class SplashActivity : AppCompatActivity() {
             }
 
             finish()
+
+
 
             
 

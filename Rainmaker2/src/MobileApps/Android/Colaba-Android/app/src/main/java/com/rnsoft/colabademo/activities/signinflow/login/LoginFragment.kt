@@ -63,10 +63,10 @@ class LoginFragment : Fragment() {
                     .equals(PasswordTransformationMethod.getInstance())
             ) { //  hide password
                 editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
-                emailLayout.setEndIconDrawable(R.drawable.ic_eye_hide)
+                passwordLayout.setEndIconDrawable(R.drawable.ic_eye_hide)
             } else {
                 editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance())
-                emailLayout.setEndIconDrawable(R.drawable.ic_eye_icon_svg)
+                passwordLayout.setEndIconDrawable(R.drawable.ic_eye_icon_svg)
             }
         })
 
