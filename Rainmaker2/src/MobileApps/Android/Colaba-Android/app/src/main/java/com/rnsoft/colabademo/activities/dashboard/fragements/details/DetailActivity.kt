@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : BaseActivity() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences

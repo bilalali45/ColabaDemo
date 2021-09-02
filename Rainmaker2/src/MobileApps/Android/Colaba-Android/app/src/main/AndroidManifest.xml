@@ -19,10 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ColabaDemo">
-        <activity
-            android:name=".activities.dashboard.DocViewerActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -44,28 +41,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
         <activity
             android:name=".SignUpFlowActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".DashBoardActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait" />
         <activity
             android:name=".WelcomeActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".DashBoardActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".DetailActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".LeftActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+
 
         <activity android:name=".BorrowerAddressActivity"
             android:windowSoftInputMode="adjustResize"
@@ -75,7 +73,11 @@
         <activity android:name=".activities.borroweraddresses.PlacePredictionProgrammatically"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
+
+
         </activity>
+
+
 
     </application>
 

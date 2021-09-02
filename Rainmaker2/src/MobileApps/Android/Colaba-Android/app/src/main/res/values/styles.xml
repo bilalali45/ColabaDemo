@@ -40,6 +40,11 @@
         <item name="colorControlActivated">@color/colaba_primary_color</item>
     </style>
 
+    <style name="animation">
+        <item name="android:windowEnterAnimation">@anim/in_animation</item>
+        <item name="android:windowExitAnimation">@anim/out_animation</item>
+    </style>
+
     <!--
     <style name="checkBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="colorControlNormal">@drawable/checkbox_unchecked</item>

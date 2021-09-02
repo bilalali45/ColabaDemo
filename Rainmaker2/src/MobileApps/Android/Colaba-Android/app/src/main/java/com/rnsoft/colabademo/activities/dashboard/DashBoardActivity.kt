@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class DashBoardActivity : AppCompatActivity() {
+class DashBoardActivity : BaseActivity() {
 
     private val dashBoardViewModel: DashBoardViewModel by viewModels()
 

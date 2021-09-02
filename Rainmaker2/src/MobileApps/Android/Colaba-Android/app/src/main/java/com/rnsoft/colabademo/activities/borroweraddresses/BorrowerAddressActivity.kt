@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class BorrowerAddressActivity : AppCompatActivity() {
+class BorrowerAddressActivity : BaseActivity() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: BorrowerAddressLayoutBinding
