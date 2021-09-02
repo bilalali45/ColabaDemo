@@ -37,6 +37,8 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
     private var rowLoading: ProgressBar?=null
     private var loanRecycleView: RecyclerView? = null
     private val linearLayoutManager = LinearLayoutManager(activity)
+
+    //private val linearLayoutManager = NpaLinearLayoutManager(requireContext())
     private  var allLoansArrayList: ArrayList<LoanItem> = ArrayList()
     private var oldListDisplaying:Boolean = false
     ////////////////////////////////////////////////////////////////////////////
@@ -67,9 +69,7 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
             this.layoutManager =linearLayoutManager
             //(this.layoutManager as LinearLayoutManager).isMeasurementCacheEnabled = false
             this.setHasFixedSize(true)
-            //linearLayoutManager.reverseLayout = true;
-            //linearLayoutManager.stackFromEnd = true;
-            // set the custom adapter to the RecyclerView
+             // set the custom adapter to the RecyclerView
             //borrowList = Borrower.customersList(requireContext())
             loansAdapter = LoansAdapter(allLoansArrayList , this@AllLoansFragment)
             this.adapter = loansAdapter
@@ -93,14 +93,17 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
                     oldListDisplaying = false
                     allLoansArrayList.clear()
                     Log.e("oldListDisplaying = ", "set to false")
+
+                    //scrollListener.resetState()
+                    //loanRecycleView?.removeOnScrollListener(scrollListener)
                     //loansAdapter.notifyDataSetChanged()
-                    loanRecycleView?.removeOnScrollListener(scrollListener)
                 }
                 //loanRecycleView?.adapter = loansAdapter
                 val lastSize = allLoansArrayList.size
                 allLoansArrayList.addAll(it)
-                loansAdapter.notifyDataSetChanged()
+
                 loanRecycleView?.addOnScrollListener(scrollListener)
+                loansAdapter.notifyDataSetChanged()
                 //loansAdapter.notifyItemRangeInserted(lastSize,lastSize+allLoansArrayList.size-1 )
             }
             else {
@@ -116,20 +119,55 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
         // Adds the scroll listener to RecyclerView
         loanRecycleView?.addOnScrollListener(scrollListener)
 
+
+
         return view
     }
 
+
+
+    /*
+    private var loading = true
+    private  var pastVisiblesItems:Int = 0
+    private  var visibleItemCount :Int = 0
+    private  var totalItemCount:Int = 0
+    val scrollListenerSecond = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            if (dy > 0) { //check for scroll down
+                visibleItemCount = linearLayoutManager.getChildCount()
+                totalItemCount = linearLayoutManager.getItemCount()
+                pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
+                if (loading) {
+                    if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                        loading = false;
+                        Log.e("keep-loading--", "Last Item Wow !");
+                        // Do pagination.. i.e. fetch new data
+                        loading = true;
+                    }
+                }
+            }
+        }
+    }
+    */
+
+
+
+    //private val scrollLinearLayout = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
     val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
         override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
             // Triggered only when new data needs to be appended to the list
             // Add whatever code is needed to append new items to the bottom of the list
+            Log.e("calling--", "scroller--")
             rowLoading?.visibility = View.VISIBLE
             pageNumber++
             loadLoanApplications()
         }
     }
 
-    override fun getCardIndex(position: Int) {
+
+
+
+    override fun getSingleItemIndex(position: Int) {
         val borrowerBottomSheet = SheetBottomBorrowerCardFragment.newInstance()
         val bundle = Bundle()
         bundle.putParcelable(AppConstant.borrowerParcelObject, allLoansArrayList[position])
@@ -149,7 +187,21 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
         borrowerDetailIntent.putExtra(AppConstant.bPhoneNumber,  test.cellNumber)
         borrowerDetailIntent.putExtra(AppConstant.bEmail,  test.email)
         startActivity(borrowerDetailIntent)
+    }
 
+
+
+
+
+    override fun onResume() {
+        super.onResume()
+        rowLoading?.visibility = View.INVISIBLE
+        Log.e("on Resume oldListDisplaying = ", "$oldListDisplaying")
+        allLoansArrayList.clear()
+        //loansAdapter.notifyDataSetChanged()
+        pageNumber = 1
+        loadDataFromCache()
+        loadLoanApplications()
     }
 
     private fun loadLoanApplications() {
@@ -182,6 +234,9 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
             if (sharedPreferences.contains(AppConstant.oldLoans)) {
                 sharedPreferences.getString(AppConstant.oldLoans, "")?.let { oldLoans ->
                     val oldJsonList: ArrayList<LoanItem> = Gson().fromJson(oldLoans, token.type)
+                    if(oldJsonList.size>1) oldJsonList.removeAt(oldJsonList.size-1)
+                    if(oldJsonList.size>1) oldJsonList.removeAt(oldJsonList.size-1)
+                    if(oldJsonList.size>1) oldJsonList.removeAt(oldJsonList.size-1)
                     //Log.e("oldJsonList-", oldJsonList.toString())
                     shimmerContainer?.stopShimmer()
                     shimmerContainer?.isVisible = false
@@ -189,23 +244,13 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
                     allLoansArrayList.clear()
                     allLoansArrayList.addAll(oldJsonList)
                     loansAdapter.notifyDataSetChanged()
-                    loanRecycleView?.removeOnScrollListener(scrollListener)
+                    //loanRecycleView?.removeOnScrollListener(scrollListener)
                 }
             }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        rowLoading?.visibility = View.INVISIBLE
 
-        Log.e("on Resume oldListDisplaying = ", "$oldListDisplaying")
-        allLoansArrayList.clear()
-        //loansAdapter.notifyDataSetChanged()
-        pageNumber = 1
-        loadDataFromCache()
-        loadLoanApplications()
-    }
 
     override fun onStart() {
         super.onStart()

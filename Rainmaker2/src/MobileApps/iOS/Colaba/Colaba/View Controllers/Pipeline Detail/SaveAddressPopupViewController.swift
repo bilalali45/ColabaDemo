@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SaveAddressPopupViewController: UIViewController {
+class SaveAddressPopupViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     

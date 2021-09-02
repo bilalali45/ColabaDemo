@@ -32,7 +32,7 @@ class SignUpFlowActivity : AppCompatActivity() {
 
         intent.extras?.let {
             resumeState = it.getBoolean(AppSetting.lockAppState)
-            Log.e("resumeState = ",resumeState.toString())
+            //Log.e("resumeState = ","SignUpFlowActivity = "+resumeState.toString())
         }
 
         val host: NavHostFragment = supportFragmentManager
@@ -54,6 +54,8 @@ class SignUpFlowActivity : AppCompatActivity() {
 
             //Log.d("NavigationActivity", "Navigated to $dest")
         }
+
+
 
 
     }

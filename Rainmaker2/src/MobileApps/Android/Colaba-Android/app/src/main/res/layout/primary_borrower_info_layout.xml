@@ -452,10 +452,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_cell_num">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Address"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textColor="@color/grey_color_two"
+                    android:fontFamily="@font/rubik_medium"
+                    android:textSize="13sp"
+                    android:layout_marginStart="20dp"/>
+
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:orientation="vertical"
                     android:visibility="visible"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
@@ -477,6 +490,7 @@
                         android:src="@drawable/ic_add_icon_light" />
 
                     <TextView
+                        android:id="@+id/tv_residence"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"

@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,16 +25,18 @@ class SheetBottomBorrowerCardFragment : BottomSheetDialogFragment() {
   
     lateinit var binding: DialogFragmentBorrowerCardSheetBinding
 
+    private var borrowerParcelObject:LoanItem? =null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogFragmentBorrowerCardSheetBinding.inflate(inflater, container, false)
-        val borrowerParcelObject =  arguments?.getParcelable<LoanItem>(AppConstant.borrowerParcelObject)
+        borrowerParcelObject =  arguments?.getParcelable<LoanItem>(AppConstant.borrowerParcelObject)
         borrowerParcelObject?.let {
             binding.borrowerName.text = it.firstName
 
         }
 
         binding.crossImageView.setOnClickListener{
-            dismiss();
+            dismiss()
         }
 
         binding.bottomEmailConstraintLayout.setOnClickListener {
@@ -71,6 +74,16 @@ class SheetBottomBorrowerCardFragment : BottomSheetDialogFragment() {
             }
         }
 
+        binding.docLayout.setOnClickListener{
+            dismiss()
+            navigateToBorrowerScreen(AppConstant.borrowerDocScreen)
+        }
+
+        binding.appLayout.setOnClickListener{
+            dismiss()
+            navigateToBorrowerScreen(AppConstant.borrowerAppScreen)
+        }
+
         return binding.root
     }
 
@@ -82,5 +95,20 @@ class SheetBottomBorrowerCardFragment : BottomSheetDialogFragment() {
     private fun initDialog() {
         requireDialog().window?.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         requireDialog().window?.statusBarColor = requireContext().getColor(android.R.color.transparent)
+    }
+
+
+    private fun navigateToBorrowerScreen(innerScreenName:String) {
+        borrowerParcelObject?.let { loanItem->
+            val borrowerDetailIntent = Intent(requireActivity(), DetailActivity::class.java)
+            borrowerDetailIntent.putExtra(AppConstant.loanApplicationId, loanItem.loanApplicationId)
+            borrowerDetailIntent.putExtra(AppConstant.loanPurpose,  loanItem.loanPurpose)
+            borrowerDetailIntent.putExtra(AppConstant.firstName, loanItem.firstName)
+            borrowerDetailIntent.putExtra(AppConstant.lastName, loanItem.lastName)
+            borrowerDetailIntent.putExtra(AppConstant.bPhoneNumber,  loanItem.cellNumber)
+            borrowerDetailIntent.putExtra(AppConstant.bEmail,  loanItem.email)
+            borrowerDetailIntent.putExtra(AppConstant.innerScreenName,  innerScreenName)
+            startActivity(borrowerDetailIntent)
+        }
     }
 }

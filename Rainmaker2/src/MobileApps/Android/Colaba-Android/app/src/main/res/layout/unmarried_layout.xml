@@ -117,6 +117,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relationship_container"
         android:visibility="gone"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/biometric_error_color"
@@ -126,132 +127,141 @@
         app:layout_constraintTop_toBottomOf="@+id/radioGroup">
 
 
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/rubik_regular"
-            android:text="Types of Relationship"
-            android:textColor="@color/grey_color_two"
-            android:textSize="13sp"
-            android:layout_marginStart="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <AutoCompleteTextView
-            android:id="@+id/relationshipSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
-            android:layout_marginEnd="24dp"
-            android:cursorVisible="false"
-            android:inputType="none"
-            android:backgroundTint="@color/grey_color_three"
-            android:drawableEnd="@drawable/ic_down_arrow"
-            android:dropDownAnchor="@+id/relationshipSpinner"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:fontFamily="@font/rubik_regular"
-            android:gravity="start"
-            android:paddingTop="6dp"
-            android:paddingBottom="15dp"
-            android:spinnerMode="dropdown"
-            android:textAlignment="viewStart"
-            android:textColor="@color/grey_color_one"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/rubik_regular"
-            android:text="In What State Was This Relationship Formed?"
-            android:textColor="@color/grey_color_two"
-            android:textSize="13sp"
-            app:layout_constraintStart_toStartOf="@+id/textView13"
-            app:layout_constraintTop_toBottomOf="@+id/relationshipSpinner" />
-
-
-        <AutoCompleteTextView
-            android:id="@+id/stateCompleteTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
-            android:layout_marginEnd="24dp"
-            android:backgroundTint="@color/grey_color_three"
-            android:completionThreshold="1"
-            android:drawableEnd="@drawable/ic_down_arrow"
-            android:dropDownAnchor="@+id/stateCompleteTextView"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:fontFamily="@font/rubik_regular"
-            android:gravity="start"
-            android:paddingTop="6dp"
-            android:paddingBottom="15dp"
-            android:spinnerMode="dropdown"
-            android:textAlignment="viewStart"
-            android:textColor="@color/grey_color_one"
-            android:textSize="15sp"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
 
 
-        <!--
 
-        <EditText
-            android:id="@+id/relationshipEditText"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingEnd="8dp"
-            android:paddingStart="8dp"
 
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/edit_text_border"
-            android:fontFamily="@font/rubik_regular"
-            android:imeOptions="actionNext"
-            android:gravity="start"
-            android:textAlignment="viewStart"
-            android:singleLine="false"
-
-            android:text="@string/ipsum_dolor"
-            android:textColor="@color/grey_color_one"
-            android:textSize="15sp"
-
-            app:layout_constraintEnd_toEndOf="parent"
-
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relationship_label" />
-
-        <TextView
-            android:id="@+id/relationship_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:fontFamily="@font/rubik_regular"
-            android:text="Relationship Details"
-            android:textColor="@color/grey_color_two"
-
-            android:textSize="13sp"
-
-            app:layout_constraintStart_toStartOf="@+id/textView15"
-            app:layout_constraintTop_toBottomOf="@+id/stateCompleteTextView" />
-            -->
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/relationshipLayout"
+            android:id="@+id/relationTypeLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/transparent"
+            android:hint="@string/type_of_relations"
+            android:textColorHint="@color/primary_info_label_color"
+            app:boxCollapsedPaddingTop="1dp"
+            app:boxStrokeColor="@color/primary_info_line_color"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:endIconDrawable="@drawable/ic_down_arrow"
+            app:endIconMode="custom"
+            app:endIconTint="@color/grey_color_three"
+            app:helperTextEnabled="true"
+            app:helperTextTextAppearance="@style/inputError"
+
+            app:helperTextTextColor="@color/colaba_red_color"
+            app:hintTextAppearance="@style/TextAppearence.Unmarried.TextInputLayout"
+
+            app:hintTextColor="@color/grey_color_two"
+
+
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toTopOf="parent" >
+
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/relationshipTypeCompleteView"
+                style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:backgroundTint="@android:color/transparent"
+                android:completionThreshold="1"
+                android:cursorVisible="true"
+
+                android:focusable="true"
+
+                android:focusableInTouchMode="true"
+                android:fontFamily="@font/rubik_regular"
+                android:gravity="bottom"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:spinnerMode="dropdown"
+
+                android:textAlignment="gravity"
+                android:textColor="@color/grey_color_one"
+                android:textColorHint="@color/grey_color_three"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/stateCompleteTextInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/transparent"
+            android:hint="@string/in_what_state"
+            android:textColorHint="@color/primary_info_label_color"
+            app:boxCollapsedPaddingTop="1dp"
+            app:boxStrokeColor="@color/primary_info_line_color"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:endIconDrawable="@drawable/ic_down_arrow"
+            app:endIconMode="custom"
+            app:endIconTint="@color/grey_color_three"
+            app:helperTextEnabled="true"
+            app:helperTextTextAppearance="@style/inputError"
+
+            app:helperTextTextColor="@color/colaba_red_color"
+            app:hintTextAppearance="@style/TextAppearence.Unmarried.TextInputLayout"
+
+
+            app:hintTextColor="@color/grey_color_two"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relationTypeLayout">
+
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/stateCompleteTextView"
+                style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:backgroundTint="@android:color/transparent"
+                android:completionThreshold="1"
+                android:cursorVisible="true"
+
+                android:focusable="true"
+
+                android:focusableInTouchMode="true"
+                android:fontFamily="@font/rubik_regular"
+                android:gravity="bottom"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:spinnerMode="dropdown"
+                android:textAlignment="gravity"
+                android:textColor="@color/grey_color_one"
+                android:textColorHint="@color/grey_color_three"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/relationshipDetailLayout"
             android:layout_width="match_parent"
 
 
@@ -280,12 +290,12 @@
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/stateCompleteTextView"
+            app:layout_constraintTop_toBottomOf="@+id/stateCompleteTextInputLayout"
 
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/relationshipEditText"
+                android:id="@+id/relationshipDetailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"

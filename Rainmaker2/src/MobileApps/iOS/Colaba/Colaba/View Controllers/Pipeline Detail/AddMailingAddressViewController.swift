@@ -10,7 +10,7 @@ import Material
 import DropDown
 import GooglePlaces
 
-class AddMailingAddressViewController: UIViewController {
+class AddMailingAddressViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     @IBOutlet weak var btnBack: UIButton!

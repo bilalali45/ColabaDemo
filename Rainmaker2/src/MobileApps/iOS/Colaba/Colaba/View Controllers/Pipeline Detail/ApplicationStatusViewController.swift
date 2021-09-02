@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ApplicationStatusViewController: UIViewController {
+class ApplicationStatusViewController: BaseViewController {
 
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var tblViewStatus: UITableView!

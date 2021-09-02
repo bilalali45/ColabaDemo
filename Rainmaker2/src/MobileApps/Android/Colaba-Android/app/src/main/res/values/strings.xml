@@ -90,11 +90,16 @@
 
     <string name="good_evening_james">James</string>
     <string name="current_residence">Current Residence</string>
+    <string name="previous_residence">Previous Residence</string>
     <string name="mailing_address">Mailing Address</string>
 
 
     <string name="purchase">Purchase</string>
     <string name="user_data_does_not_exit">  User does not exist</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
 
     <string name="min">min</string>
     <string name="sec">sec</string>
@@ -147,7 +152,10 @@
 
     <string name="county">County</string>
     <string name="state">State</string>
-    <string name="search_home_address">Search Home Address</string>
+
+    <string name="type_of_relations">Types of Relationship</string>
+
+    <string name="search_home_address">Search Mailing Address</string>
 
     <string name="zip_code">Zip Code</string>
     <string name="country">Country</string>
@@ -157,6 +165,7 @@
     <string name="housing_status">Housing Status</string>
     <string name="monthly_rent">Monthly Rent ($)</string>
     <string name="move_in_date">Move in Date</string>
+    <string name="move_out_date">Move out Date</string>
     <string name="save_changes">SAVE CHANGES</string>
 
 
@@ -277,6 +286,8 @@
     <string name="error_field_required">This field is required.</string>
     <string name="invalid_email">Please enter a valid email address.</string>
     <string name="invalid_phone_num">Your phone number is not valid. Please try again.</string>
+    <string name="previous_address">Add Previous Address</string>
+    <string name="current_address">Add Current Address</string>
 
 
 

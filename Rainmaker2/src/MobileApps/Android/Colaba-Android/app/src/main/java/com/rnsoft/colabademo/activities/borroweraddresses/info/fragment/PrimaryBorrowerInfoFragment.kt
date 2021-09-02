@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo.activities.borroweraddresses.info
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.res.ColorStateList
 import android.graphics.Typeface
@@ -8,6 +9,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ColorRes
@@ -37,7 +39,7 @@ import kotlin.collections.ArrayList
  * Created by Anita Kiran on 8/23/2021.
  */
 
-class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.OnClickListener {
+class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.OnClickListener, AddressClickListener {
 
     lateinit var bi: PrimaryBorrowerInfoLayoutBinding
     lateinit var msBinding: SublayoutMaritalStatusBinding
@@ -54,6 +56,9 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     var isResActiveDuty : Boolean = false
     var isNationalGuard : Boolean = false
     var isVisaOther : Boolean = false
+    var isAddressLoaded :Boolean = false
+    var addressBtnText : String = "Add Previous Address"
+    var isBtnSet : Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,6 +88,17 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
         }
 
+        if(!isAddressLoaded){
+            list.clear()
+            list.add(Address(true,"5919 Trussvile Crossings Parkways, ZV Street, Birmingham AL 35235"))
+            list.add(Address(false,"5919 Trussvile Crossings Pkwy, Birmingham AL 35235"))
+        }
+
+        bi.tvResidence.setText(addressBtnText)
+
+//        if(!isBtnSet){
+//            bi.tvResidence.setText(getString(R.string.previous_address))
+//        }
 
         return bi.root
     }
@@ -121,11 +137,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         bindingMilitary.layoutNationalGuard.setOnClickListener { findNavController().navigate(R.id.navigation_reserve) }
         citizenshipBinding.layoutVisaStatusOther.setOnClickListener { findNavController().navigate(R.id.navigation_non_permanent) }
 
-
-
-
-
-
     }
 
     private fun addEmptyDependentField() {
@@ -153,7 +164,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             if (i + 1 <= listItems.size) {
                 var ordinal = getOrdinal(i + 1)
                 var age = listItems.get(i).age
-                listItems[i]= Dependent((ordinal.plus(" Dependent Age (Years)")),age )
+                listItems[i]= Dependent((ordinal.plus(" Dependent Age (Years)")),age)
             }
         }
         bi.rvDependents.adapter = dependentAdapter
@@ -178,9 +189,16 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             R.id.chb_surviving_spouse -> militarySurvivingSpouse()
             R.id.btn_save_info -> checkValidations()
             R.id.add_dependent_click -> addEmptyDependentField()
-            R.id.add_prev_address -> findNavController().navigate(R.id.navigation_current_address)
+            R.id.add_prev_address ->  if(bi.tvResidence.text.equals(getString(R.string.current_address))){
+
+                findNavController().navigate(R.id.navigation_current_address)
+            } else {
+                findNavController().navigate(R.id.navigation_mailing_address)
+            }
+
+
             R.id.backButton -> requireActivity().finish()
-           // R.id.ed_dateOfBirth -> openCalendar()
+            // R.id.ed_dateOfBirth -> openCalendar()
         }
     }
 
@@ -266,21 +284,35 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setResidence() {
-        list.clear()
-        list.add(Address("5919 Trussvile Crossings Parkways, ZV Street, Birmingham AL 35235", "West Road"))
-        list.add(Address("5919 Trussvile Crossings Pkwy, Birmingham AL 35235", "West Road"))
+        // set btn text
+
         //bi.recyclerview.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         //bi.recyclerview.hasFixedSize()
 
-        adapter = ResidenceAdapter(requireActivity())
+        adapter = ResidenceAdapter(requireActivity(), this)
         adapter.setTaskList(list)
         bi.recyclerview.setAdapter(adapter)
 
         touchListener = RecyclerTouchListener(requireActivity(), bi.recyclerview)
         touchListener!!
             .setClickable(object : RecyclerTouchListener.OnRowClickListener {
-                override fun onRowClicked(position: Int) { }
+                override fun onRowClicked(position: Int) {
+
+                    if(list.get(position).isCurrentAddress){
+                        addressBtnText = getString(R.string.previous_address)
+                        findNavController().navigate(R.id.navigation_current_address)
+                    }
+                    else {
+                        if(list.get(0).isCurrentAddress) {
+                            addressBtnText = getString(R.string.previous_address)
+                        } else {
+                            addressBtnText = getString(R.string.current_address)
+                        }
+                        findNavController().navigate(R.id.navigation_mailing_address)
+                    }
+                }
                 override fun onIndependentViewClicked(independentViewID: Int, position: Int) {}
             })
             .setSwipeOptionViews(R.id.delete_task)
@@ -288,7 +320,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
                 RecyclerTouchListener.OnSwipeOptionsClickListener {
 
                 override fun onSwipeOptionClicked(viewID: Int, position: Int) {
-                    var text = if(position==0) getString(R.string.delete_current_address) else getString(R.string.delete_prev_address)
+                    var text = if(list[position].isCurrentAddress) getString(R.string.delete_current_address) else getString(R.string.delete_prev_address)
                     selectedPosition = position
                     DeleteCurrentResidenceDialogFragment.newInstance(text).show(childFragmentManager, DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
                 }
@@ -555,9 +587,9 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
         val newMonth = month + 1
-      //  datePicker.findViewById(Resources.getSystem().getIdentifier("day", "id", "android")).setVisibility(View.GONE);
+        //  datePicker.findViewById(Resources.getSystem().getIdentifier("day", "id", "android")).setVisibility(View.GONE);
 
-        val dpd = DatePickerDialog(requireActivity(), { view, year, monthOfYear, dayOfMonth -> bi.edDateOfBirth.setText("" + dayOfMonth + "/" + newMonth + "/" + year) },
+        val dpd = DatePickerDialog(requireActivity(), { view, year, monthOfYear, dayOfMonth -> bi.edDateOfBirth.setText("" + newMonth + "-" + dayOfMonth + "-" + year) },
             year,
             month,
             day
@@ -585,8 +617,21 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSwipeDeleteReceivedEvent(event: SwipeToDeleteEvent) {
         if(event.boolean){
+            isAddressLoaded = true
+            selectedPosition?.let {
+                if (list.get(selectedPosition!!).isCurrentAddress) {
+                    bi.tvResidence.setText(getString(R.string.current_address))
+                } else {
+                    if (list.get(0).isCurrentAddress) {
+                        bi.tvResidence.setText(getString(R.string.previous_address))
+                    } else {
+                        bi.tvResidence.setText(getString(R.string.current_address))
+                    }
+                }
+            }
             list.removeAt(selectedPosition!!)
             adapter.setTaskList(list)
+
         }
     }
 
@@ -609,7 +654,12 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         imm?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
+    override fun onAddressClick(position: Int) {
+        Log.e("callback", "here")
 
+
+
+    }
 
 
     // done button click of add dependents
@@ -620,5 +670,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         }
         false
     } */
+
 
 }

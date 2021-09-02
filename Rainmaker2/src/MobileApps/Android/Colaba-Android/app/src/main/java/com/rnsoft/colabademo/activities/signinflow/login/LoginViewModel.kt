@@ -32,8 +32,6 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
 
 
 
-
-
     fun login(userEmail: String, password: String) {
 
         var dontAskTwoFaIdentifier = ""

@@ -38,6 +38,7 @@ class ActiveLoansFragment : BaseFragment() , AdapterClickListener  ,  LoanFilter
     private lateinit var activeAdapter: LoansAdapter
     //private lateinit var loading: ProgressBar
     private var shimmerContainer: ShimmerFrameLayout?=null
+    private val linearLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.VERTICAL, false)
     ////////////////////////////////////////////////////////////////////////////
     private val pageSize: Int = 20
     private val loanFilter: Int = 1
@@ -55,15 +56,11 @@ class ActiveLoansFragment : BaseFragment() , AdapterClickListener  ,  LoanFilter
     ): View {
         _binding = ActiveLoanFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
-
         shimmerContainer = view.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
         shimmerContainer?.startShimmer()
-
         rowLoading = view.findViewById(R.id.active_row_loader)
-
         activeRecycler = view.findViewById(R.id.active_recycler)
 
-        val linearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         activeAdapter = LoansAdapter(activeLoansList, this@ActiveLoansFragment)
         activeRecycler.apply {
             this.layoutManager = linearLayoutManager
@@ -72,82 +69,99 @@ class ActiveLoansFragment : BaseFragment() , AdapterClickListener  ,  LoanFilter
             this.adapter = activeAdapter
         }
 
-
-        val token: TypeToken<ArrayList<LoanItem>> = object : TypeToken<ArrayList<LoanItem>>() {}
-        val gson = Gson()
-        if(sharedPreferences.contains(AppConstant.oldActiveLoans)) {
-            sharedPreferences.getString(AppConstant.oldActiveLoans, "")?.let { oldLoans ->
-                //val list: List<LoanItem> = gson.fromJson(oldLoans, ceptype)
-                //Log.e("convered-", list.toString())
-                val oldJsonList: ArrayList<LoanItem> = gson.fromJson(oldLoans, token.type)
-                Log.e("oldJsonList-", oldJsonList.toString())
-                val oldAdapter = LoansAdapter(oldJsonList , this@ActiveLoansFragment)
-                activeRecycler.adapter = oldAdapter
-                oldAdapter.notifyDataSetChanged()
-                shimmerContainer?.stopShimmer()
-                shimmerContainer?.isVisible = false
-            }
-        }
-
-
-
-        val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
-                rowLoading?.visibility = View.VISIBLE
-                pageNumber++
-                loadActiveApplications()
-            }
-        }
-        activeRecycler.addOnScrollListener(scrollListener)
-
-
-
-
-        //loading.visibility = View.VISIBLE
         loanViewModel.activeLoansArrayList.observe(viewLifecycleOwner, Observer {
-            //val result = it ?: return@Observer
             rowLoading?.visibility = View.INVISIBLE
             if(it.size>0) {
-                //activeLoansList = it
-                //val lastSize = activeLoansList.size
                 shimmerContainer?.stopShimmer()
                 shimmerContainer?.isVisible = false
-                activeRecycler.adapter = activeAdapter
+                if(oldListDisplaying){
+                    oldListDisplaying = false
+                    activeLoansList.clear()
+                }
                 activeLoansList.addAll(it)
                 activeAdapter.notifyDataSetChanged()
             }
-            else
-                Log.e("should-stop"," here....")
+            else {
+                Log.e("no-record", " found....")
+                shimmerContainer?.stopShimmer()
+                shimmerContainer?.isVisible = false
+            }
+
         })
 
-        loadDataFromDatabase(loanFilter)
-
-
+        activeRecycler.addOnScrollListener(scrollListener)
 
         return view
     }
 
-
-
-    private fun loadActiveApplications() {
-        //loading.visibility = View.VISIBLE
-        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-            if(AppSetting.activeloanApiDateTime.isEmpty())
-                AppSetting.activeloanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())
-
-
-            loanViewModel.getActiveLoans(
-                token = authToken,
-                dateTime = AppSetting.activeloanApiDateTime, pageNumber = pageNumber,
-                pageSize = pageSize, loanFilter = loanFilter,
-                orderBy = globalOrderBy, assignedToMe = globalAssignToMe
-            )
+    private val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
+        override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+            // Triggered only when new data needs to be appended to the list
+            // Add whatever code is needed to append new items to the bottom of the list
+            Log.e("calling--", "scroller--")
+            rowLoading?.visibility = View.VISIBLE
+            pageNumber++
+            loadActiveApplications()
         }
     }
 
-    override fun getCardIndex(position: Int) {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    override fun onResume() {
+        super.onResume()
+        rowLoading?.visibility = View.INVISIBLE
+        activeLoansList.clear()
+        pageNumber = 1
+        loadDataFromCache()
+        loadActiveApplications()
+    }
+
+    private var oldListDisplaying:Boolean = false
+
+    private fun loadDataFromCache(){
+        // load data from cache first...
+        if(!NetworkSetting.isNetworkAvailable(requireContext())) {
+            val token: TypeToken<ArrayList<LoanItem>> = object : TypeToken<ArrayList<LoanItem>>() {}
+            if (sharedPreferences.contains(AppConstant.oldActiveLoans)) {
+                sharedPreferences.getString(AppConstant.oldActiveLoans, "")?.let { oldActiveLoans ->
+                    val oldJsonList: ArrayList<LoanItem> = Gson().fromJson(oldActiveLoans, token.type)
+                    if(oldJsonList.size>1) oldJsonList.removeAt(oldJsonList.size-1)
+                    if(oldJsonList.size>1) oldJsonList.removeAt(oldJsonList.size-1)
+                    if(oldJsonList.size>1) oldJsonList.removeAt(oldJsonList.size-1)
+                    shimmerContainer?.stopShimmer()
+                    shimmerContainer?.isVisible = false
+                    oldListDisplaying = true
+                    activeLoansList.clear()
+                    activeLoansList.addAll(oldJsonList)
+                    activeAdapter.notifyDataSetChanged()
+                    //loanRecycleView?.removeOnScrollListener(scrollListener)
+                }
+            }
+        }
+    }
+
+    private fun loadActiveApplications() {
+        if(NetworkSetting.isNetworkAvailable(requireContext())) {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if (AppSetting.activeloanApiDateTime.isEmpty())
+                    AppSetting.activeloanApiDateTime =
+                        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(
+                            Date()
+                        )
+                loanViewModel.getActiveLoans(
+                    token = authToken,
+                    dateTime = AppSetting.activeloanApiDateTime, pageNumber = pageNumber,
+                    pageSize = pageSize, loanFilter = loanFilter,
+                    orderBy = globalOrderBy, assignedToMe = globalAssignToMe
+                )
+            }
+        }
+        else{
+            rowLoading?.visibility = View.INVISIBLE
+        }
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun getSingleItemIndex(position: Int) {
         val borrowerBottomSheet = SheetBottomBorrowerCardFragment.newInstance()
         val bundle = Bundle()
         bundle.putParcelable(AppConstant.borrowerParcelObject, activeLoansList[position])
@@ -158,16 +172,6 @@ class ActiveLoansFragment : BaseFragment() , AdapterClickListener  ,  LoanFilter
     override fun navigateTo(position: Int) {
         startActivity(Intent(requireActivity(), DetailActivity::class.java))
         //requireActivity().finish()
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        rowLoading?.visibility = View.INVISIBLE
-        activeLoansList.clear()
-        activeAdapter.notifyDataSetChanged()
-        pageNumber = 1
-        loadActiveApplications()
     }
 
     override fun onStart() {

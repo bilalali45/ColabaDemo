@@ -10,10 +10,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.DatePicker
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.TempResidenceLayoutBinding
+import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -23,7 +25,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class CurrentResidenceFragment : Fragment() {
+class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private var _binding: TempResidenceLayoutBinding? = null
     private val binding get() = _binding!!
@@ -38,10 +40,10 @@ class CurrentResidenceFragment : Fragment() {
 
 
 
-        binding.moveInEditText.setOnClickListener { openCalendar() }
+        binding.moveInEditText.setOnClickListener { createCustomDialog() }
         binding.moveInEditText.setOnFocusChangeListener{ _ , p1 ->
             if(p1)
-            openCalendar()
+            createCustomDialog()
         }
         binding.moveInEditText.showSoftInputOnFocus = false
 
@@ -132,7 +134,7 @@ class CurrentResidenceFragment : Fragment() {
 
 
         binding.addAddressLayout.setOnClickListener{
-            findNavController().navigate(R.id.navigation_mailing_address)
+            findNavController().navigate(R.id.navigation_previous_address)
         }
 
         binding.backButton.setOnClickListener{
@@ -152,6 +154,9 @@ class CurrentResidenceFragment : Fragment() {
 
     }
 
+
+
+
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -169,35 +174,26 @@ class CurrentResidenceFragment : Fragment() {
         }
     }
 
-    private fun openCalendar(){
-
-        hideKeyBoard()
-
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
-        val dpd = DatePickerDialog(
-            requireActivity(), { view, year, monthOfYear, dayOfMonth ->
-                var stringMonth = monthOfYear.toString()
-                if(monthOfYear<10)
-                    stringMonth = "0$monthOfYear"
-                binding.moveInEditText.setText(stringMonth + " / " + year)
-
-                binding.moveInLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(),  R.color.grey_color_two))
-            },
-            year,
-            month,
-            day
-        )
-        dpd.show()
-
-    }
 
     private fun hideKeyBoard() {
             val inputMethodManager = ContextCompat.getSystemService(requireContext(), InputMethodManager::class.java)!!
             inputMethodManager.hideSoftInputFromWindow(binding.moveInEditText.windowToken, 0)
 
+    }
+
+    private fun createCustomDialog(){
+        val pd = MonthYearPickerDialog()
+        pd.setListener(this)
+        pd.show(requireActivity().supportFragmentManager, "MonthYearPickerDialog")
+    }
+
+    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
+        var stringMonth = p2.toString()
+        if(p2<10)
+            stringMonth = "0$p2"
+
+        val sampleDate = "$stringMonth / $p1"
+        binding.moveInEditText.setText(sampleDate)
     }
 
 }
