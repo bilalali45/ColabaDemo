@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1684B186A82DC0DA7659AF00 /* Pods_Colaba_ColabaUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75F148EE0E75561316105F49 /* Pods_Colaba_ColabaUITests.framework */; };
 		1E33FD0E116F4CD11CE532FC /* Pods_Colaba.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2935F442F6A697341170A45 /* Pods_Colaba.framework */; };
+		2319224626E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2319224526E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift */; };
 		2320138D2698324800F500E2 /* BorrowerAddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2320138B2698324800F500E2 /* BorrowerAddressTableViewCell.swift */; };
 		2320138E2698324800F500E2 /* BorrowerAddressTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2320138C2698324800F500E2 /* BorrowerAddressTableViewCell.xib */; };
 		232013912698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2320138F2698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift */; };
@@ -75,6 +76,7 @@
 		23B238BC2679E05200508449 /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */; };
 		23B238BF2679F44000508449 /* NotificationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B238BD2679F44000508449 /* NotificationsTableViewCell.swift */; };
 		23B238C02679F44000508449 /* NotificationsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B238BE2679F44000508449 /* NotificationsTableViewCell.xib */; };
+		23C1039026E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C1038F26E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift */; };
 		23C244862689B6A500EED1D0 /* AllLoanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C244852689B6A500EED1D0 /* AllLoanModel.swift */; };
 		23C244882689E3E400EED1D0 /* ActiveLoanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C244872689E3E400EED1D0 /* ActiveLoanModel.swift */; };
 		23C2448A2689E3F800EED1D0 /* InActiveLoanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C244892689E3F800EED1D0 /* InActiveLoanModel.swift */; };
@@ -106,6 +108,8 @@
 		23F23B4126CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B4026CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift */; };
 		23F23B4326CA591400AEF33E /* SaveAddressPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B4226CA591400AEF33E /* SaveAddressPopupViewController.swift */; };
 		23F23B4526CA592800AEF33E /* DeleteAddressPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B4426CA592800AEF33E /* DeleteAddressPopupViewController.swift */; };
+		3937F87E26DE0BFB00B85585 /* ColabaTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3937F87D26DE0BFB00B85585 /* ColabaTextField.swift */; };
+		3937F88026DE140D00B85585 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3937F87F26DE140D00B85585 /* BaseView.swift */; };
 		710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D032E268DC56500A13E63 /* NotificationModel.swift */; };
 		7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */; };
 		7113F51F26568E3B0066E179 /* Home.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7113F51E26568E3B0066E179 /* Home.svg */; };
@@ -161,6 +165,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2319224526E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectPropertyAddressViewController.swift; sourceTree = "<group>"; };
 		2320138B2698324800F500E2 /* BorrowerAddressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerAddressTableViewCell.swift; sourceTree = "<group>"; };
 		2320138C2698324800F500E2 /* BorrowerAddressTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerAddressTableViewCell.xib; sourceTree = "<group>"; };
 		2320138F2698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerLoanInfoTableViewCell.swift; sourceTree = "<group>"; };
@@ -227,6 +232,7 @@
 		23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
 		23B238BD2679F44000508449 /* NotificationsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableViewCell.swift; sourceTree = "<group>"; };
 		23B238BE2679F44000508449 /* NotificationsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationsTableViewCell.xib; sourceTree = "<group>"; };
+		23C1038F26E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixPropertyDetailFollowUpViewController.swift; sourceTree = "<group>"; };
 		23C244852689B6A500EED1D0 /* AllLoanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllLoanModel.swift; sourceTree = "<group>"; };
 		23C244872689E3E400EED1D0 /* ActiveLoanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveLoanModel.swift; sourceTree = "<group>"; };
 		23C244892689E3F800EED1D0 /* InActiveLoanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InActiveLoanModel.swift; sourceTree = "<group>"; };
@@ -259,6 +265,8 @@
 		23F23B4226CA591400AEF33E /* SaveAddressPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveAddressPopupViewController.swift; sourceTree = "<group>"; };
 		23F23B4426CA592800AEF33E /* DeleteAddressPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAddressPopupViewController.swift; sourceTree = "<group>"; };
 		25C6C1D772F13896700CDB1C /* Pods-Colaba.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Colaba.release.xcconfig"; path = "Target Support Files/Pods-Colaba/Pods-Colaba.release.xcconfig"; sourceTree = "<group>"; };
+		3937F87D26DE0BFB00B85585 /* ColabaTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColabaTextField.swift; sourceTree = "<group>"; };
+		3937F87F26DE140D00B85585 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		3D986CBDBB7995778F877F6F /* Pods-ColabaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ColabaTests.debug.xcconfig"; path = "Target Support Files/Pods-ColabaTests/Pods-ColabaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		710D032E268DC56500A13E63 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionOfSVGKImage.swift; sourceTree = "<group>"; };
@@ -490,8 +498,19 @@
 				238A076A26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift */,
 				2380E25926DF71EA00B66C61 /* PurchaseSubjectPropertyViewController.swift */,
 				2380E25B26DF721100B66C61 /* RefinanceSubjectPropertyViewController.swift */,
+				23C1038F26E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift */,
+				2319224526E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift */,
 			);
 			path = "Pipeline Detail";
+			sourceTree = "<group>";
+		};
+		3937F87C26DE0BDC00B85585 /* ColabaTextField */ = {
+			isa = PBXGroup;
+			children = (
+				3937F87D26DE0BFB00B85585 /* ColabaTextField.swift */,
+				3937F87F26DE140D00B85585 /* BaseView.swift */,
+			);
+			path = ColabaTextField;
 			sourceTree = "<group>";
 		};
 		3FAC853161B2A86A8004F35B /* Pods */ = {
@@ -549,6 +568,7 @@
 		7186ACAE2653B25A00E740D3 /* Colaba */ = {
 			isa = PBXGroup;
 			children = (
+				3937F87C26DE0BDC00B85585 /* ColabaTextField */,
 				23A0D5CA26958DBC002B4BCE /* View Xib */,
 				23A56C4E2685AFEE005CE6F4 /* Third Party Libraries */,
 				2397AF602677821D007A1A45 /* Cells */,
@@ -1053,6 +1073,7 @@
 				23A6578826D65B610013A37B /* LoginNavigationViewController.swift in Sources */,
 				7186AD7926540CCC00E740D3 /* PhoneNumberViewController.swift in Sources */,
 				2390FEE126A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.swift in Sources */,
+				2319224626E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift in Sources */,
 				239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */,
 				23A56C592685B017005CE6F4 /* Manager.swift in Sources */,
 				23F23B3D26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift in Sources */,
@@ -1064,6 +1085,7 @@
 				7148C6B92655500B00E1C216 /* ExtensionOfString.swift in Sources */,
 				23DBAD28269714B300119680 /* DocumentsViewController.swift in Sources */,
 				7186AD012653C6AB00E740D3 /* LoginViewController.swift in Sources */,
+				3937F87E26DE0BFB00B85585 /* ColabaTextField.swift in Sources */,
 				7186ACF42653C66100E740D3 /* FaceRecognitionViewController.swift in Sources */,
 				7148C6B126554ADE00E1C216 /* Validation.swift in Sources */,
 				71B1944F265CF9780017955B /* OTPTimerManager.swift in Sources */,
@@ -1077,6 +1099,7 @@
 				238A076926DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift in Sources */,
 				7160CA88267339060061ACD5 /* ProfileViewController.swift in Sources */,
 				237DF98726D772A1000CAA8E /* FaceLockNavigationViewController.swift in Sources */,
+				23C1039026E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift in Sources */,
 				2368799C26BC173E0045D294 /* BorrowerInformationViewController.swift in Sources */,
 				236EA1AE2678CE1B00C2F8B5 /* DummyDashboardViewController.swift in Sources */,
 				23F23B4326CA591400AEF33E /* SaveAddressPopupViewController.swift in Sources */,
@@ -1084,6 +1107,7 @@
 				23A1CA6C268C4B8400D93DC4 /* UILoadControl.swift in Sources */,
 				7186AD562653CD5C00E740D3 /* Theme.swift in Sources */,
 				7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */,
+				3937F88026DE140D00B85585 /* BaseView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

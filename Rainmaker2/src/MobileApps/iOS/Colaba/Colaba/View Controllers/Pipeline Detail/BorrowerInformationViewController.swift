@@ -8,7 +8,7 @@
 import UIKit
 import Material
 
-class BorrowerInformationViewController: UIViewController {
+class BorrowerInformationViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     @IBOutlet weak var btnBack: UIButton!

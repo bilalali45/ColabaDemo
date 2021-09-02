@@ -9,7 +9,7 @@ import UIKit
 import Material
 import DropDown
 
-class RefinanceLoanInfoViewController: UIViewController {
+class RefinanceLoanInfoViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     

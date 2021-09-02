@@ -183,6 +183,14 @@ struct Utility {
         return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: RefinanceSubjectPropertyViewController.self)) as! RefinanceSubjectPropertyViewController
     }
     
+    static func getMixPropertyDetailFollowUpVC() -> MixPropertyDetailFollowUpViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: MixPropertyDetailFollowUpViewController.self)) as! MixPropertyDetailFollowUpViewController
+    }
+    
+    static func getSubjectPropertyAddressVC() -> SubjectPropertyAddressViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: SubjectPropertyAddressViewController.self)) as! SubjectPropertyAddressViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){

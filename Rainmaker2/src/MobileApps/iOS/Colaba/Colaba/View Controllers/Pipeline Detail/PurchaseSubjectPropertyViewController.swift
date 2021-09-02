@@ -8,7 +8,7 @@
 import UIKit
 import Material
 
-class PurchaseSubjectPropertyViewController: UIViewController {
+class PurchaseSubjectPropertyViewController: BaseViewController {
     
     //MARK:- Outlets and Properties
     
@@ -96,6 +96,7 @@ class PurchaseSubjectPropertyViewController: UIViewController {
         propertyDetailView.layer.cornerRadius = 6
         propertyDetailView.layer.borderWidth = 1
         propertyDetailView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        propertyDetailView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(propertyDetailViewTapped)))
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
         
@@ -138,6 +139,8 @@ class PurchaseSubjectPropertyViewController: UIViewController {
     }
     
     @objc func addressViewTapped(){
+        let vc = Utility.getSubjectPropertyAddressVC()
+        self.presentVC(vc: vc)
         isTBDProperty = false
         changedSubjectPropertyType()
     }
@@ -153,6 +156,8 @@ class PurchaseSubjectPropertyViewController: UIViewController {
     }
     
     @objc func yesStackViewTapped(){
+        let vc = Utility.getMixPropertyDetailFollowUpVC()
+        self.presentVC(vc: vc)
         isMixedUseProperty = true
         changeMixedUseProperty()
     }
@@ -170,6 +175,11 @@ class PurchaseSubjectPropertyViewController: UIViewController {
         propertyDetailView.isHidden = !isMixedUseProperty
         propertyViewHeightConstraint.constant = isMixedUseProperty ? 347 : 203
         setScreenHeight()
+    }
+    
+    @objc func propertyDetailViewTapped(){
+        let vc = Utility.getMixPropertyDetailFollowUpVC()
+        self.presentVC(vc: vc)
     }
     
     @objc func occupyingStackViewTapped(){

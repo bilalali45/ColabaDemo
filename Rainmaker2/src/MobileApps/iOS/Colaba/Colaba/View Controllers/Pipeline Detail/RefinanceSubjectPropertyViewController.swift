@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RefinanceSubjectPropertyViewController: UIViewController {
+class RefinanceSubjectPropertyViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

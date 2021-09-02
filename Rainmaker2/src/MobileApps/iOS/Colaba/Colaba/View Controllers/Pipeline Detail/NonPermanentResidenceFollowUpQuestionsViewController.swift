@@ -10,7 +10,7 @@ import Material
 import DropDown
 import MaterialComponents
 
-class NonPermanentResidenceFollowUpQuestionsViewController: UIViewController {
+class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
     
     //MARK:- Outlets and Properties
 
