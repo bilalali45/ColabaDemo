@@ -118,7 +118,7 @@ class HomeFragment : Fragment() {
 
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                Log.e("Selected_Page", position.toString())
+                //Log.e("Selected_Page", position.toString())
                 selectedText = tabArray[position]
                 selectedPosition = position
                 val test2:Fragment? = requireActivity().supportFragmentManager.findFragmentByTag("f${position}")
@@ -140,6 +140,7 @@ class HomeFragment : Fragment() {
                     selectedText = it.text as String
                     viewPager.adapter
                     viewPager.currentItem
+                    binding.appbarDashboard.setExpanded(true, true)
                 }
             }
 

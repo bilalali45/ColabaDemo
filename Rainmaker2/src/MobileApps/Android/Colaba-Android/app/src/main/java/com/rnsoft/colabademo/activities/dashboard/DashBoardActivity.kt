@@ -33,7 +33,7 @@ class DashBoardActivity : AppCompatActivity() {
     private val lastId = -1
     private val mediumId = 1
 
-    private var notificationArrayList: ArrayList<NotificationItem> = ArrayList()
+    //private var notificationArrayList: ArrayList<NotificationItem> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +84,6 @@ class DashBoardActivity : AppCompatActivity() {
                         "Webservice count not responding..."
                     )
                 }
-
             }
         })
 
