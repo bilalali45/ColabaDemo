@@ -35,24 +35,114 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/rowFG"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="visible"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/sample_shadow">
 
-    <!--  <LinearLayout
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/search_view_holder_style"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_currentAddress_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15sp"
+                    android:drawableLeft="@drawable/ic_location_svg"
+                    android:drawablePadding="5dp"
+                    android:fontFamily="@font/rubik_medium"
+                    android:text="@string/current_home_address"
+                    android:textColor="@color/txt_color_app_headings"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="17sp"
+                    android:layout_marginEnd="15dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/rubik_regular"
+                    android:maxLines="2"
+                    android:text="5915 Trussvile aefewfffvfvffvsfvdffvvfvfvfvfvfvfvfvfvf"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="15sp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="17sp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_residence_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="From December 2020"
+                        android:textColor="@color/grey_color_two"
+                        android:textSize="13sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_homerent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="Rental $6,000"
+                        android:textColor="@color/grey_color_two"
+                        android:textSize="13sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+    </LinearLayout>
+
+
+   <!--   shadow using card view
+   <LinearLayout
           android:id="@+id/rowFG"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:clickable="true"
           android:focusable="true"
           android:visibility="visible"
-          android:layout_marginStart="20dp"
-          android:layout_marginEnd="20dp"
-          android:background="@drawable/mycustomshadow">
+          android:layout_marginStart="10dp"
+          android:layout_marginEnd="10dp">
+
+          <androidx.cardview.widget.CardView
+              android:id="@+id/login_box"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              app:cardCornerRadius="8dp"
+              app:cardElevation="5dp"
+              app:cardUseCompatPadding="true">
 
               <LinearLayout
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:background="@drawable/search_view_holder_style"
                   android:orientation="vertical">
-
 
                   <androidx.appcompat.widget.AppCompatTextView
                       android:id="@+id/tv_currentAddress_heading"
@@ -121,7 +211,9 @@
           </androidx.cardview.widget.CardView>
       </LinearLayout> -->
 
-    <LinearLayout
+  <!--
+
+   <LinearLayout
         android:id="@+id/rowFG"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -129,22 +221,16 @@
         android:layout_marginEnd="10dp"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:background="@drawable/mycustomshadow">
 
-        <com.blure.complexview.ComplexView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:radius="8dp"
-            app:shadow="true"
-            app:shadowAlpha="100"
-            app:shadowColor="#CCCCCC"
-            app:shadowSpread="2">
 
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/search_view_holder_style"
-                android:orientation="vertical">
+                android:orientation="vertical"
+            android:padding="10dp">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_currentAddress_heading"
@@ -210,9 +296,8 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
-        </com.blure.complexview.ComplexView>
 
-    </LinearLayout>
+    </LinearLayout> -->
 
 </RelativeLayout>
 
