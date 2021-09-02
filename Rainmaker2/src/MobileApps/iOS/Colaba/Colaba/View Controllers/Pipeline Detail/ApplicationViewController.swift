@@ -76,6 +76,8 @@ class ApplicationViewController: BaseViewController {
         monthlyIncomeView.dropShadowToCollectionViewCell()
         mainScrollView.delegate = self
         
+        subjectPropertyView.isUserInteractionEnabled = true
+        subjectPropertyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(subjectPropertyTapped)))
         LoanInfoMainView.isUserInteractionEnabled = true
         LoanInfoMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(loanInfoViewTapped)))
     }
@@ -128,6 +130,19 @@ class ApplicationViewController: BaseViewController {
         
     }
     
+    @objc func subjectPropertyTapped(){
+//        if (self.loanApplicationDetail.loanPurposeDescription == "Purchase"){
+//            let vc = Utility.getPurchaseSubjectPropertyVC()
+//            self.pushToVC(vc: vc)
+//        }
+//        else{
+//            let vc = Utility.getRefinanceSubjectPropertyVC()
+//            self.pushToVC(vc: vc)
+//        }
+        let vc = Utility.getPurchaseSubjectPropertyVC()
+        self.pushToVC(vc: vc)
+    }
+    
     @objc func loanInfoViewTapped(){
         if (self.loanApplicationDetail.loanPurposeDescription == "Purchase"){
             let vc = Utility.getPurchaseLoanInfoVC()
@@ -137,7 +152,7 @@ class ApplicationViewController: BaseViewController {
             let vc = Utility.getRefinanceLoanInfoVC()
             self.pushToVC(vc: vc)
         }
-        let vc = Utility.getRefinanceLoanInfoVC()
+//        let vc = Utility.getRefinanceLoanInfoVC()
 //        let vc = Utility.getPurchaseLoanInfoVC()
 //        self.pushToVC(vc: vc)
     }

@@ -98,6 +98,12 @@ object AppConstant {
 
         const val bEmail:String = "bEmail"
 
+        const val innerScreenName:String = "innerScreenName"
+
+        const val borrowerAppScreen:String = "borrowerAppScreen"
+
+        const val borrowerDocScreen:String = "borrowerDocScreen"
+
 
         const val  downloadedFileName:String = "pdfFileName"
 

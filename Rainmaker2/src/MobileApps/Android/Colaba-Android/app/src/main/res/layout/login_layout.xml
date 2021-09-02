@@ -119,7 +119,7 @@
                             android:inputType="textEmailAddress"
                             android:singleLine="true"
                             android:textSize="14sp"
-                            android:text="mobileuser1@mailinator.com"
+                            android:text="mubashir.mcu@mailinator.com"
                             app:fontFamily="@font/rubik_regular"
                             android:textColor="@color/grey_color_one" />
                     </com.google.android.material.textfield.TextInputLayout>

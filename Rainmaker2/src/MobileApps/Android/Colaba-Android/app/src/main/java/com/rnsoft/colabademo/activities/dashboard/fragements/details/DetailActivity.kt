@@ -6,7 +6,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import com.rnsoft.colabademo.databinding.DetailTopLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -26,11 +28,12 @@ class DetailActivity : AppCompatActivity() {
     var borrowerCellNumber:String? = null
     var borrowerEmail:String? = null
 
+    var innerScreenName:String? = null
+
+    private val detailViewModel: DetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DetailTopLayoutBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
         val extras = intent.extras
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
@@ -39,8 +42,14 @@ class DetailActivity : AppCompatActivity() {
             borrowerLoanPurpose = it.getString(AppConstant.loanPurpose)
             borrowerCellNumber = it.getString(AppConstant.bPhoneNumber)
             borrowerEmail = it.getString(AppConstant.bEmail)
+            innerScreenName = it.getString(AppConstant.innerScreenName)
             Log.e("Names- ", "$borrowerFirstName $borrowerLastName")
         }
+
+
+        super.onCreate(savedInstanceState)
+        binding = DetailTopLayoutBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         binding.emailFab.setOnClickListener{
             borrowerEmail?.let {
@@ -70,6 +79,22 @@ class DetailActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
+        observeForCallEmailMessage()
+    }
+
+
+
+    private fun observeForCallEmailMessage(){
+        detailViewModel.borrowerOverviewModel.observe(this@DetailActivity, {  overviewModel->
+            if(overviewModel!=null) {
+                borrowerCellNumber = overviewModel.cellPhone
+                borrowerEmail  = overviewModel.email
+            }
+            else
+                Log.e("should-stop"," here....")
+
+        })
     }
 
     fun hideFabIcons(){

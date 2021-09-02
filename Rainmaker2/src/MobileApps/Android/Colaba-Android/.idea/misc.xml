@@ -52,11 +52,14 @@
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/detail_list_layout.xml" value="0.33" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/detail_tab_layout.xml" value="0.17831813576494426" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/detail_top_layout.xml" value="0.17831813576494426" />
+        <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/dialog_fragment_borrower_card_sheet.xml" value="0.36666666666666664" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/dialog_fragment_current_residence.xml" value="0.22" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/dialog_fragment_delete_current_residence.xml" value="0.22" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/dialog_fragment_modal_bottom_sheet.xml" value="0.17831813576494426" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/doc_view_holder_layout.xml" value="0.34814814814814815" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/fragment_home.xml" value="0.36102564102564105" />
+        <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/fragment_loan.xml" value="0.34814814814814815" />
+        <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/fragment_search.xml" value="0.34814814814814815" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/image_view_layout.xml" value="0.17831813576494426" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/layout_active_duty.xml" value="0.33605072463768115" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/layout_non_permenant_resident.xml" value="0.33605072463768115" />
@@ -86,6 +89,7 @@
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/primary_borrower_info_layout.xml" value="0.33106884057971014" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/realstate_footer_horizontal.xml" value="0.36666666666666664" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/reserve_layout.xml" value="0.33605072463768115" />
+        <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/search_view_holder.xml" value="0.34814814814814815" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/sub_layout_military.xml" value="0.33605072463768115" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/temp_residence_layout.xml" value="0.32563405797101447" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/test_fields_layout.xml" value="0.17831813576494426" />
@@ -97,4 +101,11 @@
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.378125" />
+      </ProjectState>
+    </option>
+  </component>
 </project>
