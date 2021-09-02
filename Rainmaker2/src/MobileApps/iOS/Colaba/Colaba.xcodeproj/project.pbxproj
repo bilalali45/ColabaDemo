@@ -104,6 +104,8 @@
 		23F23B4126CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B4026CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift */; };
 		23F23B4326CA591400AEF33E /* SaveAddressPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B4226CA591400AEF33E /* SaveAddressPopupViewController.swift */; };
 		23F23B4526CA592800AEF33E /* DeleteAddressPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B4426CA592800AEF33E /* DeleteAddressPopupViewController.swift */; };
+		3937F87E26DE0BFB00B85585 /* ColabaTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3937F87D26DE0BFB00B85585 /* ColabaTextField.swift */; };
+		3937F88026DE140D00B85585 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3937F87F26DE140D00B85585 /* BaseView.swift */; };
 		710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D032E268DC56500A13E63 /* NotificationModel.swift */; };
 		7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */; };
 		7113F51F26568E3B0066E179 /* Home.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7113F51E26568E3B0066E179 /* Home.svg */; };
@@ -255,6 +257,8 @@
 		23F23B4226CA591400AEF33E /* SaveAddressPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveAddressPopupViewController.swift; sourceTree = "<group>"; };
 		23F23B4426CA592800AEF33E /* DeleteAddressPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAddressPopupViewController.swift; sourceTree = "<group>"; };
 		25C6C1D772F13896700CDB1C /* Pods-Colaba.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Colaba.release.xcconfig"; path = "Target Support Files/Pods-Colaba/Pods-Colaba.release.xcconfig"; sourceTree = "<group>"; };
+		3937F87D26DE0BFB00B85585 /* ColabaTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColabaTextField.swift; sourceTree = "<group>"; };
+		3937F87F26DE140D00B85585 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		3D986CBDBB7995778F877F6F /* Pods-ColabaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ColabaTests.debug.xcconfig"; path = "Target Support Files/Pods-ColabaTests/Pods-ColabaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		710D032E268DC56500A13E63 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionOfSVGKImage.swift; sourceTree = "<group>"; };
@@ -488,6 +492,15 @@
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
 		};
+		3937F87C26DE0BDC00B85585 /* ColabaTextField */ = {
+			isa = PBXGroup;
+			children = (
+				3937F87D26DE0BFB00B85585 /* ColabaTextField.swift */,
+				3937F87F26DE140D00B85585 /* BaseView.swift */,
+			);
+			path = ColabaTextField;
+			sourceTree = "<group>";
+		};
 		3FAC853161B2A86A8004F35B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -543,6 +556,7 @@
 		7186ACAE2653B25A00E740D3 /* Colaba */ = {
 			isa = PBXGroup;
 			children = (
+				3937F87C26DE0BDC00B85585 /* ColabaTextField */,
 				23A0D5CA26958DBC002B4BCE /* View Xib */,
 				23A56C4E2685AFEE005CE6F4 /* Third Party Libraries */,
 				2397AF602677821D007A1A45 /* Cells */,
@@ -1056,6 +1070,7 @@
 				7148C6B92655500B00E1C216 /* ExtensionOfString.swift in Sources */,
 				23DBAD28269714B300119680 /* DocumentsViewController.swift in Sources */,
 				7186AD012653C6AB00E740D3 /* LoginViewController.swift in Sources */,
+				3937F87E26DE0BFB00B85585 /* ColabaTextField.swift in Sources */,
 				7186ACF42653C66100E740D3 /* FaceRecognitionViewController.swift in Sources */,
 				7148C6B126554ADE00E1C216 /* Validation.swift in Sources */,
 				71B1944F265CF9780017955B /* OTPTimerManager.swift in Sources */,
@@ -1076,6 +1091,7 @@
 				23A1CA6C268C4B8400D93DC4 /* UILoadControl.swift in Sources */,
 				7186AD562653CD5C00E740D3 /* Theme.swift in Sources */,
 				7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */,
+				3937F88026DE140D00B85585 /* BaseView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
