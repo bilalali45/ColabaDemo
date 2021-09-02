@@ -9,7 +9,7 @@ import UIKit
 import QuickLook
 import Alamofire
 
-class DocumentsDetailViewController: UIViewController {
+class DocumentsDetailViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     

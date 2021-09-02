@@ -75,6 +75,7 @@
 		23B238BC2679E05200508449 /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */; };
 		23B238BF2679F44000508449 /* NotificationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B238BD2679F44000508449 /* NotificationsTableViewCell.swift */; };
 		23B238C02679F44000508449 /* NotificationsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B238BE2679F44000508449 /* NotificationsTableViewCell.xib */; };
+		23C1039026E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C1038F26E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift */; };
 		23C244862689B6A500EED1D0 /* AllLoanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C244852689B6A500EED1D0 /* AllLoanModel.swift */; };
 		23C244882689E3E400EED1D0 /* ActiveLoanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C244872689E3E400EED1D0 /* ActiveLoanModel.swift */; };
 		23C2448A2689E3F800EED1D0 /* InActiveLoanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C244892689E3F800EED1D0 /* InActiveLoanModel.swift */; };
@@ -227,6 +228,7 @@
 		23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
 		23B238BD2679F44000508449 /* NotificationsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableViewCell.swift; sourceTree = "<group>"; };
 		23B238BE2679F44000508449 /* NotificationsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationsTableViewCell.xib; sourceTree = "<group>"; };
+		23C1038F26E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixPropertyDetailFollowUpViewController.swift; sourceTree = "<group>"; };
 		23C244852689B6A500EED1D0 /* AllLoanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllLoanModel.swift; sourceTree = "<group>"; };
 		23C244872689E3E400EED1D0 /* ActiveLoanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveLoanModel.swift; sourceTree = "<group>"; };
 		23C244892689E3F800EED1D0 /* InActiveLoanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InActiveLoanModel.swift; sourceTree = "<group>"; };
@@ -490,6 +492,7 @@
 				238A076A26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift */,
 				2380E25926DF71EA00B66C61 /* PurchaseSubjectPropertyViewController.swift */,
 				2380E25B26DF721100B66C61 /* RefinanceSubjectPropertyViewController.swift */,
+				23C1038F26E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -1077,6 +1080,7 @@
 				238A076926DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift in Sources */,
 				7160CA88267339060061ACD5 /* ProfileViewController.swift in Sources */,
 				237DF98726D772A1000CAA8E /* FaceLockNavigationViewController.swift in Sources */,
+				23C1039026E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift in Sources */,
 				2368799C26BC173E0045D294 /* BorrowerInformationViewController.swift in Sources */,
 				236EA1AE2678CE1B00C2F8B5 /* DummyDashboardViewController.swift in Sources */,
 				23F23B4326CA591400AEF33E /* SaveAddressPopupViewController.swift in Sources */,

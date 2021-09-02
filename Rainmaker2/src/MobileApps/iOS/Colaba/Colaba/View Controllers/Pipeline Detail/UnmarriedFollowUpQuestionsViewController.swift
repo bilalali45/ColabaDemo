@@ -10,7 +10,7 @@ import Material
 import DropDown
 import MaterialComponents
 
-class UnmarriedFollowUpQuestionsViewController: UIViewController {
+class UnmarriedFollowUpQuestionsViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     

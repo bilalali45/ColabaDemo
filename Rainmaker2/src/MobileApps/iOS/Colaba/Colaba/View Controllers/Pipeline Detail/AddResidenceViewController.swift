@@ -11,7 +11,7 @@ import MonthYearPicker
 import DropDown
 import GooglePlaces
 
-class AddResidenceViewController: UIViewController {
+class AddResidenceViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     @IBOutlet weak var btnBack: UIButton!
