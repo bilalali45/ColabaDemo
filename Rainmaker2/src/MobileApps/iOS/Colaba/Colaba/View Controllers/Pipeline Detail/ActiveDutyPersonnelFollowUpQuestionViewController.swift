@@ -9,7 +9,7 @@ import UIKit
 import Material
 import MonthYearPicker
 
-class ActiveDutyPersonnelFollowUpQuestionViewController: UIViewController {
+class ActiveDutyPersonnelFollowUpQuestionViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
 

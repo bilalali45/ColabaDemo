@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ReserveFollowUpQuestionsViewController: UIViewController {
+class ReserveFollowUpQuestionsViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
 

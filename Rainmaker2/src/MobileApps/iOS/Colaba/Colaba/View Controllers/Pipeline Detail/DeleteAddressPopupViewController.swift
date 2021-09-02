@@ -11,7 +11,7 @@ protocol DeleteAddressPopupViewControllerDelegate: AnyObject {
     func deleteAddress(indexPath: IndexPath)
 }
 
-class DeleteAddressPopupViewController: UIViewController {
+class DeleteAddressPopupViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     

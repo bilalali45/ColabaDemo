@@ -10,7 +10,7 @@ import Material
 import MonthYearPicker
 import DropDown
 
-class PurchaseLoanInfoViewController: UIViewController {
+class PurchaseLoanInfoViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     

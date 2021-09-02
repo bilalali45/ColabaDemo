@@ -193,6 +193,12 @@ struct Validation {
         guard closingDate.count > 0 else { throw ValidationError.requiredField }
         return closingDate
     }
+    
+    func validatePropertyDetail(_ propertyDetail: String?) throws -> String{
+        guard let propertyDetail = propertyDetail else { throw ValidationError.requiredField }
+        guard propertyDetail.count > 0 else { throw ValidationError.requiredField }
+        return propertyDetail
+    }
 }
 
 enum ValidationError: LocalizedError {

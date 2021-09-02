@@ -50,6 +50,11 @@ class LoginViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.10) {
             self.setupViews()
         }
+        
+        #if DEBUG
+        txtFieldEmail.text = "rainmaker.rainsoft@gmail.com"
+        txtFieldPassword.text = "Rainsoft!"
+        #endif
     }
     
     //MARK:- Methods and Actions
