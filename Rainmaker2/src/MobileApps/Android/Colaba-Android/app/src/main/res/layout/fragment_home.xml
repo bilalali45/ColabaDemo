@@ -9,16 +9,10 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar_dashboard"
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp"
-        app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
+        app:elevation="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/home_profile_layout"
@@ -27,7 +21,8 @@
             android:background="@color/colaba_loan_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_scrollFlags="scroll|enterAlways|snap">
 
             <ImageView
                 android:id="@+id/imageView18"
@@ -63,8 +58,6 @@
                 app:srcCompat="@drawable/seach_icon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -178,4 +171,5 @@
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 

@@ -101,7 +101,6 @@ class DetailTabFragment : Fragment() {
                 tab?.let {
                     viewPager.adapter
                     viewPager.currentItem
-                    binding.appbarDetails.setExpanded(true, false)
                 }
             }
 
