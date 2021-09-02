@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1684B186A82DC0DA7659AF00 /* Pods_Colaba_ColabaUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75F148EE0E75561316105F49 /* Pods_Colaba_ColabaUITests.framework */; };
 		1E33FD0E116F4CD11CE532FC /* Pods_Colaba.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2935F442F6A697341170A45 /* Pods_Colaba.framework */; };
+		2319224626E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2319224526E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift */; };
 		2320138D2698324800F500E2 /* BorrowerAddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2320138B2698324800F500E2 /* BorrowerAddressTableViewCell.swift */; };
 		2320138E2698324800F500E2 /* BorrowerAddressTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2320138C2698324800F500E2 /* BorrowerAddressTableViewCell.xib */; };
 		232013912698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2320138F2698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift */; };
@@ -162,6 +163,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2319224526E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectPropertyAddressViewController.swift; sourceTree = "<group>"; };
 		2320138B2698324800F500E2 /* BorrowerAddressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerAddressTableViewCell.swift; sourceTree = "<group>"; };
 		2320138C2698324800F500E2 /* BorrowerAddressTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerAddressTableViewCell.xib; sourceTree = "<group>"; };
 		2320138F2698549F00F500E2 /* BorrowerLoanInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerLoanInfoTableViewCell.swift; sourceTree = "<group>"; };
@@ -493,6 +495,7 @@
 				2380E25926DF71EA00B66C61 /* PurchaseSubjectPropertyViewController.swift */,
 				2380E25B26DF721100B66C61 /* RefinanceSubjectPropertyViewController.swift */,
 				23C1038F26E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift */,
+				2319224526E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -1056,6 +1059,7 @@
 				23A6578826D65B610013A37B /* LoginNavigationViewController.swift in Sources */,
 				7186AD7926540CCC00E740D3 /* PhoneNumberViewController.swift in Sources */,
 				2390FEE126A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.swift in Sources */,
+				2319224626E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift in Sources */,
 				239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */,
 				23A56C592685B017005CE6F4 /* Manager.swift in Sources */,
 				23F23B3D26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift in Sources */,

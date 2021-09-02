@@ -139,6 +139,8 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     }
     
     @objc func addressViewTapped(){
+        let vc = Utility.getSubjectPropertyAddressVC()
+        self.presentVC(vc: vc)
         isTBDProperty = false
         changedSubjectPropertyType()
     }
