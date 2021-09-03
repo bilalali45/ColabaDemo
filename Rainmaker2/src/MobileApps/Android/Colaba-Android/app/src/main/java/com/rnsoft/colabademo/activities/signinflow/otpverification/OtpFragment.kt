@@ -50,6 +50,7 @@ class OtpFragment: Fragment() {
     private lateinit var otpLoader:ProgressBar
     private lateinit var minuteTextView:TextView
     private lateinit var secondTextView:TextView
+    private lateinit var phoneMessageText:TextView
     private lateinit var otpMessageTextView:TextView
     private lateinit var notAskChekBox:CheckBox
     private lateinit var tickImage:ImageView
@@ -83,8 +84,13 @@ class OtpFragment: Fragment() {
         crossImage= root.findViewById<ImageView>(R.id.cross_image)
         textInputLayout=root.findViewById(R.id.til_otp_verify)
         parentLayout=root.findViewById(R.id.layout_otp_verify)
-
+        phoneMessageText=root.findViewById(R.id.phoneMessageTextView)
         //////////////////////////////////////////////////////////////////////////////////////////////
+
+        sharedPreferences.getString(AppConstant.phoneNumber,"")?.let { phoneNumber ->
+            val lastFour = phoneNumber.substring(phoneNumber.length - 4, phoneNumber.length)
+            phoneMessageText.text = "Enter the code sent to (***) ***-"+lastFour
+        }
 
         otpEditText.setOnFocusChangeListener(MyCustomFocusListener(otpEditText, textInputLayout, requireContext()))
 
@@ -271,16 +277,12 @@ class OtpFragment: Fragment() {
                 }
                 else {
                    toggleTimerView(false)
-                   cTimer?.let {
-                       it.cancel()
-                   }
+                   cTimer?.cancel()
                }
             }
             else {
                 toggleTimerView(false)
-                cTimer?.let {
-                    it.cancel()
-                }
+                cTimer?.cancel()
             }
         }
     }
@@ -324,7 +326,7 @@ class OtpFragment: Fragment() {
             seconds = (remainingSeconds - (minutes * 60))
             if(seconds<0)
                 seconds = 0
-            var totalSeconds:Long = (remainingSeconds * 1000).toLong()
+            val totalSeconds:Long = (remainingSeconds * 1000).toLong()
             Log.e("all - ", "$remainingSeconds becomes $minutes min $seconds seconds")
             setTimeMessageAsPerDesign(minutes)
             startTimer(totalSeconds)
@@ -384,9 +386,7 @@ class OtpFragment: Fragment() {
     }
 
     private fun cancelTimer() {
-        cTimer?.let {
-            it.cancel()
-        }
+        cTimer?.cancel()
     }
 
     private fun hideSoftKeyboard(){

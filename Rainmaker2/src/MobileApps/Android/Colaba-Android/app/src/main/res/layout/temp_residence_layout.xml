@@ -163,6 +163,7 @@
 
 
 
+
             <View
                 android:id="@+id/topSearchTextInputLine"
                 android:layout_width="match_parent"

@@ -2,7 +2,13 @@
 <resources>
     <string name="app_name">Colaba</string>
 
-    <string name="api_key"> AIzaSyBzPEiQOTReBzy6W1UcIyHApPu7_5Die6w </string>
+    <string name="api_key">AIzaSyBzPEiQOTReBzy6W1UcIyHApPu7_5Die6w</string>
+
+
+    <string name="google_places_key"
+        translatable="false"
+        templateMergeStrategy="preserve">AIzaSyBzPEiQOTReBzy6W1UcIyHApPu7_5Die6w</string>
+
 
     <string name="colaba">Colaba</string>
     <string name="email">Email</string>
@@ -10,7 +16,7 @@
     <string name="text">Text</string>
     <string name="wrong_credential">Wrong Credential</string>
     <string name="mobile_number">Mobile Number</string>
-    <string name="mobile_verification_code">Mobile Veification Code</string>
+    <string name="mobile_verification_code">Mobile Verification Code</string>
     <string name="password">Password</string>
     <string name="face_id">Face ID Login</string>
     <string name="biometric_login">Biometric Login</string>
@@ -95,7 +101,7 @@
 
 
     <string name="purchase">Purchase</string>
-    <string name="user_data_does_not_exit">  User does not exist</string>
+    <string name="user_data_does_not_exit">Invalid email or password</string>
 
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
