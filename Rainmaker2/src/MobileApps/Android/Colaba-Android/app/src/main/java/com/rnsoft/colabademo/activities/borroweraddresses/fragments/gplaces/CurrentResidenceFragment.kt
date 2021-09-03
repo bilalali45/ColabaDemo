@@ -23,6 +23,7 @@ import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 import javax.inject.Inject
 
+import com.android.adapters.PlaceAutocompleteAdapter.PlaceAutoCompleteInterface;
 
 @AndroidEntryPoint
 class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener {
