@@ -159,7 +159,7 @@ internal constructor(
         var openLoanImageView: ImageView = itemView.findViewById(R.id.open_inside_view)
         var closeLoanImageView: ImageView = itemView.findViewById(R.id.close_inside_view)
         var dotsImageView: ImageView = itemView.findViewById(R.id.loandotsImageView)
-        var cardBox:CardView = itemView.findViewById(R.id.docCardView)
+        var cardBox: ConstraintLayout = itemView.findViewById(R.id.docCardView)
         var loanDetailLayout: ConstraintLayout = itemView.findViewById(R.id.inside_Loan_layout)
 
        init {

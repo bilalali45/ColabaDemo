@@ -9,8 +9,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:paddingBottom="11dp"
-        android:background="@drawable/search_view_holder_style"
+        android:paddingBottom="20dp"
+        android:background="@drawable/content_bg_with_drop_shadow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
