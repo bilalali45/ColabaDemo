@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:paddingBottom="20dp"
-        android:background="@drawable/content_background_with_shadow"
+        android:background="@drawable/content_bg_with_drop_shadow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

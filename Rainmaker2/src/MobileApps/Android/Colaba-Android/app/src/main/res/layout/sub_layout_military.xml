@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/content_background_with_shadow"
+        android:background="@drawable/content_bg_with_drop_shadow"
         android:layout_marginTop="20dp"
         android:clickable="true"
         android:visibility="visible">
@@ -79,7 +79,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/content_background_with_shadow"
+        android:background="@drawable/content_bg_with_drop_shadow"
         android:visibility="visible"
         android:layout_marginTop="20dp">
 

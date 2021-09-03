@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/content_background_with_shadow">
+        android:background="@drawable/content_bg_with_drop_shadow">
 
     <ImageView
         android:id="@+id/imageView32"

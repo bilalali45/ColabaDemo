@@ -31,27 +31,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="@string/heading_borrower_info"
+            android:text="@string/subject_property"
             android:textColor="@color/grey_color_one"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/borrower_purpose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/rubik_light"
-            android:text="Richard Glenn Randell"
-            android:textAllCaps="true"
-            android:textColor="@color/grey_color_three"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
         <View
             android:id="@+id/tab_top_border"
@@ -61,7 +47,7 @@
             android:background="#E5E5E5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/borrower_purpose" />
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -75,8 +61,434 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_info_screen">
 
+        <LinearLayout
+            android:id="@+id/subject_property_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:clickable="true"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/rb_sub_property"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="@string/subject_property"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/rubik_regular"
+                    android:paddingStart="15dp"
+                    android:drawablePadding="15dp"
+                    android:clickable="true"
+                    android:button="@null"
+                    android:drawableStart="@drawable/radiodraw"
+                    android:background="@drawable/style_btn_add_residence" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/rb_married"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="@string/martial_status_married"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp"
+                    tools:ignore="RtlSymmetry"
+                    android:clickable="true"
+                    android:paddingStart="15dp"
+                    android:drawablePadding="15dp"
+                    android:button="@null"
+                    android:drawableStart="@drawable/radiodraw"
+                    android:background="@drawable/style_btn_add_residence" />
+
+            </RadioGroup>
 
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_property_type"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:hint="Property Type"
+                android:textColorHint="@color/primary_info_label_color"
+                app:boxCollapsedPaddingTop="1dp"
+                app:boxStrokeColor="@color/primary_info_line_color"
+                app:boxStrokeWidth="0.5dp"
+                app:boxStrokeWidthFocused="1dp"
+                app:endIconDrawable="@drawable/ic_down_arrow"
+                app:endIconMode="custom"
+                app:endIconTint="@color/grey_color_three"
+                app:helperTextEnabled="true"
+                app:helperTextTextAppearance="@style/inputError"
+                app:helperTextTextColor="@color/colaba_red_color"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+                app:hintTextColor="@color/grey_color_two">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/tv_property_type"
+                    style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:backgroundTint="@android:color/transparent"
+                    android:completionThreshold="1"
+                    android:focusableInTouchMode="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:gravity="bottom"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:spinnerMode="dropdown"
+                    android:textAlignment="gravity"
+                    android:textColor="@color/grey_color_one"
+                    android:textColorHint="@color/grey_color_three"
+                    android:textSize="15sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_occupancy_type"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:hint="Occupancy Type"
+                android:textColorHint="@color/primary_info_label_color"
+                app:boxCollapsedPaddingTop="1dp"
+                app:boxStrokeColor="@color/primary_info_line_color"
+                app:boxStrokeWidth="0.5dp"
+                app:boxStrokeWidthFocused="1dp"
+                app:endIconDrawable="@drawable/ic_down_arrow"
+                app:endIconMode="custom"
+                app:endIconTint="@color/grey_color_three"
+                app:helperTextEnabled="true"
+                app:helperTextTextAppearance="@style/inputError"
+                app:helperTextTextColor="@color/colaba_red_color"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+                app:hintTextColor="@color/grey_color_two">
+
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/tv_occupancy_type"
+                    style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:backgroundTint="@android:color/transparent"
+                    android:completionThreshold="1"
+                    android:focusableInTouchMode="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:gravity="bottom"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:spinnerMode="dropdown"
+                    android:textAlignment="gravity"
+                    android:textColor="@color/grey_color_one"
+                    android:textColorHint="@color/grey_color_three"
+                    android:textSize="15sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Mixed Use Property"
+                android:textAlignment="center"
+                android:textColor="@color/grey_color_two"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mixed_use_property_ques"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/grey_color_two"
+                android:fontFamily="@font/rubik_regular"
+                android:textSize="13sp"
+                android:lineSpacingExtra="10dp" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/rb_mixed_property_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="22dp"
+                    android:text="Yes"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/rubik_regular"
+                    android:button="@drawable/radiodraw"
+                    android:paddingStart="15dp"
+                    android:clickable="true" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/rb_mixed_property_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="22dp"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="No"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="14sp"
+                    android:paddingStart="15dp"
+                    android:button="@drawable/radiodraw"
+                    android:layout_marginTop="18dp"
+                    android:clickable="true" />
+
+            </RadioGroup>
+
+
+            <LinearLayout
+                android:id="@+id/tv_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/search_view_holder_style"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Details"
+                    android:textStyle="bold"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/txt_color_app_headings"
+                    android:fontFamily="@font/rubik_medium"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="@string/lorem_ipsum"
+                    android:textColor="@color/grey_color_two"
+                    android:textSize="13sp"
+                    android:lineSpacingExtra="10dp" />
+
+            </LinearLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_property_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/rubik_light"
+                android:hint="@string/appraised_property_value"
+                android:textColorHint="@color/primary_info_label_color"
+                app:boxCollapsedPaddingTop="1dp"
+                app:boxStrokeColor="@color/primary_info_line_color"
+                app:boxStrokeWidth="0.5dp"
+                app:boxStrokeWidthFocused="1dp"
+                app:helperTextEnabled="true"
+                app:helperTextTextAppearance="@style/inputError"
+                app:helperTextTextColor="@color/colaba_red_color"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_property_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:fontFamily="@font/rubik_regular"
+                    android:imeOptions="actionNext"
+                    android:paddingStart="0dp"
+                    android:singleLine="true"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="@dimen/ed_txt_size_primary_info" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_property_taxes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/rubik_light"
+                android:hint="@string/annual_property_taxes"
+                android:textColorHint="@color/primary_info_label_color"
+                app:boxCollapsedPaddingTop="1dp"
+                app:boxStrokeColor="@color/primary_info_line_color"
+                app:boxStrokeWidth="0.5dp"
+                app:boxStrokeWidthFocused="1dp"
+                app:helperTextEnabled="true"
+                app:helperTextTextAppearance="@style/inputError"
+                app:helperTextTextColor="@color/colaba_red_color"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_property_taxes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:fontFamily="@font/rubik_regular"
+                    android:imeOptions="actionNext"
+                    android:paddingStart="0dp"
+                    android:singleLine="true"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="@dimen/ed_txt_size_primary_info" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_homeowner_insurance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/rubik_light"
+                android:hint="@string/first_name"
+                android:textColorHint="@color/primary_info_label_color"
+                app:boxCollapsedPaddingTop="1dp"
+                app:boxStrokeColor="@color/primary_info_line_color"
+                app:boxStrokeWidth="1dp"
+                app:boxStrokeWidthFocused="1dp"
+                app:helperTextEnabled="true"
+                app:helperTextTextAppearance="@style/inputError"
+                app:helperTextTextColor="@color/colaba_red_color"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_homeowner_insurance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:fontFamily="@font/rubik_regular"
+                    android:imeOptions="actionNext"
+                    android:paddingStart="0dp"
+                    android:singleLine="true"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="@dimen/ed_txt_size_primary_info" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_flood_insurance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/rubik_light"
+                android:hint="@string/flood_insurance"
+                android:textColorHint="@color/primary_info_label_color"
+                app:boxCollapsedPaddingTop="1dp"
+                app:boxStrokeColor="@color/primary_info_line_color"
+                app:boxStrokeWidth="1dp"
+                app:boxStrokeWidthFocused="1dp"
+                app:helperTextEnabled="true"
+                app:helperTextTextAppearance="@style/inputError"
+                app:helperTextTextColor="@color/colaba_red_color"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_flood_insurance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:fontFamily="@font/rubik_regular"
+                    android:imeOptions="actionNext"
+                    android:paddingStart="0dp"
+                    android:singleLine="true"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="@dimen/ed_txt_size_primary_info" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:fontFamily="@font/rubik_medium"
+                android:text="@string/occupancy_status"
+                android:textAlignment="center"
+                android:textColor="@color/grey_color_two"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Maria Randel"
+                android:textAlignment="center"
+                android:textColor="@color/grey_color_four"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp">
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/rb_occupying"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:text="@string/occupying"
+                android:textColor="@color/grey_color_one"
+                android:textSize="14sp"
+                android:fontFamily="@font/rubik_regular"
+                android:button="@drawable/radiodraw"
+                android:paddingStart="15dp"
+                android:clickable="true" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/rb_non_occupying"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:fontFamily="@font/rubik_regular"
+                android:text="@string/non_occupying"
+                android:textColor="@color/grey_color_one"
+                android:textSize="14sp"
+                android:paddingStart="15dp"
+                android:button="@drawable/radiodraw"
+                android:layout_marginTop="18dp"
+                tools:ignore="RtlSymmetry"
+                android:clickable="true"/>
+            </RadioGroup>
+
+
+        </LinearLayout>
 
     </ScrollView>
 

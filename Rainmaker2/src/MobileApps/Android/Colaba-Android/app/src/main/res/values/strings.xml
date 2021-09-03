@@ -296,6 +296,18 @@
     <string name="cash_out_amount">Additional Cash Out Amount</string>
 
 
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="mixed_use_property_ques">If Borrower will occupy the property, will Borrower set aside space within the property to operate his/her own business?</string>
+    <string name="appraised_property_value">Apprasied Property Value</string>
+    <string name="annual_property_taxes">Annual Property Taxes($)</string>
+    <string name="homeowner_insurances">Annual Homeowner"\'\"s Insurance($)</string>
+    <string name="flood_insurance">Annual Flood Insurance($)</string>
+    <string name="occupancy_status">Co-Borrower Occupancy Status</string>
+    <string name="occupying">Occupying</string>
+    <string name="non_occupying">Non-Occupying</string>
+    <string name="subject_property">Subject Property</string>
+
+
 
 
 </resources>
