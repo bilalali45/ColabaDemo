@@ -22,9 +22,30 @@ class CustomMaterialFields() {
             )
         }
 
-        fun setPrefix(mTextInputLayout:TextInputLayout, context: Context){
+        fun setDollarPrefix(mTextInputLayout:TextInputLayout, context: Context){
 
             val text = SpannableString("$").apply {
+                setSpan(
+                    ForegroundColorSpan(ContextCompat.getColor(context,
+                        R.color.grey_color_two)), 0, length, 0)
+            }
+
+            val text2 = SpannableString("  |  ").apply {
+                setSpan(
+                    ForegroundColorSpan(ContextCompat.getColor(context,
+                        R.color.colaba_app_border_color)), 0, length, 0)
+            }
+
+            val spannable: Spannable = SpannableStringBuilder().apply {
+                append(text)
+                append(text2)
+            }
+            mTextInputLayout.prefixText= spannable
+        }
+
+        fun setPercentagePrefix(mTextInputLayout:TextInputLayout, context: Context){
+
+            val text = SpannableString("%").apply {
                 setSpan(
                     ForegroundColorSpan(ContextCompat.getColor(context,
                         R.color.grey_color_two)), 0, length, 0)

@@ -60,8 +60,8 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
         bindingToolbar.headerTitle.setText(getString(com.rnsoft.colabademo.R.string.loan_info_purchase))
 
         // set field prefixes
-        CustomMaterialFields.setPrefix(binding.layoutDownPayment,requireContext())
-        CustomMaterialFields.setPrefix(binding.layoutPercent,requireContext())
+        CustomMaterialFields.setDollarPrefix(binding.layoutDownPayment,requireContext())
+        CustomMaterialFields.setPercentagePrefix(binding.layoutPercent,requireContext())
 
         binding.edClosingDate.setOnClickListener {
             createCalendarDialog()
