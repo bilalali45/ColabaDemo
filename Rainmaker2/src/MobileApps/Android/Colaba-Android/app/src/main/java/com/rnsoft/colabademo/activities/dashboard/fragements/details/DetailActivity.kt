@@ -9,6 +9,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.databinding.DetailTopLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -52,7 +53,7 @@ class DetailActivity : BaseActivity() {
         setContentView(binding.root)
 
         binding.emailFab.setOnClickListener{
-            borrowerEmail?.let {
+            if(borrowerEmail!=null) {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "plain/text"
                 intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(it))
@@ -60,24 +61,31 @@ class DetailActivity : BaseActivity() {
                 intent.putExtra(Intent.EXTRA_TEXT, "mail body")
                 startActivity(Intent.createChooser(intent, ""))
             }
+            else
+                SandbarUtils.showRegular(this@DetailActivity, "Email not found...")
         }
 
         binding.messageFab.setOnClickListener{
-            borrowerCellNumber?.let {
+           if(borrowerCellNumber!=null) {
                 val smsIntent = Intent(Intent.ACTION_VIEW)
-                smsIntent.type = "vnd.android-dir/mms-sms"
+                smsIntent.data = Uri.parse("sms:")
+                //smsIntent.type = "vnd.android-dir/mms-sms"
                 smsIntent.putExtra("address", borrowerCellNumber)
                 //smsIntent.putExtra("sms_body", "Colaba info message")
                 startActivity(smsIntent)
             }
+            else
+               SandbarUtils.showRegular(this@DetailActivity, "Phone number not found...")
         }
 
         binding.phoneFab.setOnClickListener{
-            borrowerCellNumber?.let {
+            if(borrowerCellNumber!=null) {
                 val intent = Intent(Intent.ACTION_DIAL)
                 intent.data = Uri.parse("tel:$it")
                 startActivity(intent)
             }
+            else
+                SandbarUtils.showRegular(this@DetailActivity, "Phone number not found...")
         }
 
         observeForCallEmailMessage()
@@ -108,4 +116,15 @@ class DetailActivity : BaseActivity() {
         binding.messageFab.visibility = View.VISIBLE
         binding.phoneFab.visibility = View.VISIBLE
     }
+
+    fun checkIfUnreadFileOpened(){
+        lifecycleScope.launchWhenStarted {
+            loanApplicationId?.let { loanId->
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    detailViewModel.getBorrowerDocuments(token = authToken, loanApplicationId = loanId)
+                }
+            }
+        }
+    }
+
 }
