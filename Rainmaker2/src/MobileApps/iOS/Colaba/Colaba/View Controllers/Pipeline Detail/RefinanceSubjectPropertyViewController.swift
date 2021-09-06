@@ -344,6 +344,8 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     }
     
     @objc func secondMortgageYesStackViewTapped(){
+        let vc = Utility.getSecondMortgageFollowupQuestionsVC()
+        self.presentVC(vc: vc)
         isSecondMortgage = true
         changeMortgageStatus()
     }
@@ -354,7 +356,8 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     }
     
     @objc func secondMortgageViewTapped(){
-        
+        let vc = Utility.getSecondMortgageFollowupQuestionsVC()
+        self.presentVC(vc: vc)
     }
     
     func changeMortgageStatus(){
