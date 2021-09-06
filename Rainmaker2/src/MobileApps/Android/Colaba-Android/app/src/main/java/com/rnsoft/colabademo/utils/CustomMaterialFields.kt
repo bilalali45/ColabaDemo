@@ -25,16 +25,10 @@ class CustomMaterialFields() {
         fun setDollarPrefix(mTextInputLayout:TextInputLayout, context: Context){
 
             val text = SpannableString("$").apply {
-                setSpan(
-                    ForegroundColorSpan(ContextCompat.getColor(context,
-                        R.color.grey_color_two)), 0, length, 0)
-            }
+                setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.grey_color_two)), 0, length, 0) }
 
             val text2 = SpannableString("  |  ").apply {
-                setSpan(
-                    ForegroundColorSpan(ContextCompat.getColor(context,
-                        R.color.colaba_app_border_color)), 0, length, 0)
-            }
+                setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.colaba_app_border_color)), 0, length, 0) }
 
             val spannable: Spannable = SpannableStringBuilder().apply {
                 append(text)
@@ -76,12 +70,8 @@ class CustomMaterialFields() {
             textInputlayout.setBoxStrokeColorStateList(
                 AppCompatResources.getColorStateList(
                     context,
-                    R.color.primary_info_line_color
-                )
-            )
+                    R.color.primary_info_line_color))
+
         }
-
-
     }
-
 }
