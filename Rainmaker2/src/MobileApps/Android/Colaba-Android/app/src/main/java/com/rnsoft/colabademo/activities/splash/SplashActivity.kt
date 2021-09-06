@@ -23,7 +23,6 @@ class SplashActivity : AppCompatActivity() {
     activityScope.launch {
 
           //startActivity(Intent(this@SplashActivity, BorrowerAddressActivity::class.java))
-
             //startActivity(Intent(this@SplashActivity, BorrowerInfoActivity::class.java))
 
             if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)

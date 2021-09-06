@@ -84,8 +84,15 @@
             app:launchSingleTop="true"
             app:popUpTo="@+id/signup_nav_host_fragment"
             app:popUpToInclusive="true" />
-
     </fragment>
+
+
+    <fragment
+        android:id="@+id/borrower_app_loan_purchase"
+        android:name="com.rnsoft.colabademo.activities.dashboard.fragements.details.bapplication.fragment.LoanPurchaseInfo"
+        android:label="@string/loan_info_purchase"
+        tools:layout="@layout/loan_purchase_info" />
+
 
 
 </navigation>

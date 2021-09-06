@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Colaba</string>
-
     <string name="api_key"> AIzaSyBzPEiQOTReBzy6W1UcIyHApPu7_5Die6w </string>
-
     <string name="colaba">Colaba</string>
     <string name="email">Email</string>
     <string name="call">Call</string>
@@ -23,6 +21,11 @@
     <string name="one_minute_ago">1 minute ago</string>
     <string name="login_with_another_account">Login with another account</string>
     <string name="sign_in_with_password">Sign in with Password</string>
+
+
+    <string-array name="array_loan_stage">
+        <item>Pre-Approval</item>
+    </string-array>
 
     <string name="doc_filter_all">All</string>
     <string name="doc_filter_in_draft">In Draft</string>
@@ -292,6 +295,8 @@
     <string name="down_payment">Down Payment</string>
     <string name="estimated_closing_date">Estimated Closing Date</string>
     <string name="cash_out_amount">Additional Cash Out Amount</string>
+
+    <string name="invalid_purchase_price">Purchase price should be between $50,000 and $100,000,000</string>
 
 
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>

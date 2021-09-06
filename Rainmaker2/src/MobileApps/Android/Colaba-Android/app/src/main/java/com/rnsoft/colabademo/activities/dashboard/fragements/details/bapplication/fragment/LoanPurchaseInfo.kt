@@ -4,27 +4,22 @@ import android.R
 import android.app.DatePickerDialog
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
-import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.MyCustomFocusListener
-import com.rnsoft.colabademo.activities.borroweraddresses.info.model.Dependent
+import com.rnsoft.colabademo.databinding.AppToolbarHeadingBinding
 import com.rnsoft.colabademo.databinding.LoanPurchaseInfoBinding
-import com.rnsoft.colabademo.databinding.PrimaryBorrowerInfoLayoutBinding
-import com.rnsoft.colabademo.utils.CustomLableColor
-import com.rnsoft.colabademo.utils.MaterialTextviewFocusListener
+import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
-import kotlinx.android.synthetic.main.dependent_input_field.view.*
-import java.util.*
-import kotlin.collections.ArrayList
+
 
 /**
  * Created by Anita Kiran on 9/3/2021.
@@ -32,6 +27,8 @@ import kotlin.collections.ArrayList
 class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: LoanPurchaseInfoBinding
+    private lateinit var bindingToolbar : AppToolbarHeadingBinding
+
     private val loanStageArray = listOf("Pre-Approval")
 
 
@@ -41,16 +38,24 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = LoanPurchaseInfoBinding.inflate(inflater, container, false)
+        bindingToolbar = binding.headerLoanPurchase
 
         setLoanStageSpinner()
-        setFocusAndClicks()
+        initViews()
 
         return binding.root
 
     }
 
 
-    private fun setFocusAndClicks() {
+    private fun initViews() {
+
+        // set Header title
+        bindingToolbar.headerTitle.setText(getString(com.rnsoft.colabademo.R.string.loan_info_purchase))
+
+        // set field prefixes
+        CustomMaterialFields.setPrefix(binding.layoutDownPayment,requireContext())
+        CustomMaterialFields.setPrefix(binding.layoutPercent,requireContext())
 
         binding.edClosingDate.setOnClickListener {
             createCalendarDialog()
@@ -66,24 +71,12 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
 
         binding.edPurchasePrice.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                CustomLableColor.setColor(
-                    binding.layoutPurchasePrice,
-                    com.rnsoft.colabademo.R.color.grey_color_two,
-                    requireContext()
-                )
+                CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
             } else {
                 if (binding.edPurchasePrice.text?.length == 0) {
-                    CustomLableColor.setColor(
-                        binding.layoutPurchasePrice,
-                        com.rnsoft.colabademo.R.color.grey_color_three,
-                        requireContext()
-                    )
+                    CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_three, requireContext())
                 } else {
-                    CustomLableColor.setColor(
-                        binding.layoutPurchasePrice,
-                        com.rnsoft.colabademo.R.color.grey_color_two,
-                        requireContext()
-                    )
+                    CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
                     val value = binding.edPurchasePrice.text.toString()
                     value.let {
                         calculatePercentage(value)
@@ -114,80 +107,81 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
             )
         )
 
-        binding.edDownPayment.getText()
-            ?.insert(binding.edDownPayment.getSelectionStart(), "fizzbuzz")
+        /*bindingToolbar.backButton.setOnClickListener {
+            requireActivity().finish()
+        } */
 
-        holder.itemView.ed_age.doAfterTextChanged {
+
+        /*holder.itemView.ed_age.doAfterTextChanged {
             val age = Integer.parseInt(holder.itemView.ed_age.text.toString())
             if(age >0 ){
                 items.set(position, Dependent(items.get(position).dependent, age))
             }
-        }
+        } */
 
     }
 
-
-
-
-
-
-
-
-
-    }
-
-    private fun calculatePercentage(purchasePrice : String ){
+    private fun calculatePercentage(purchasePrice: String) {
         purchasePrice.let {
             if (purchasePrice.length > 0) {
                 val amount: Long = purchasePrice.toLong()
                 val result = (amount * 20) / 100
                 binding.edDownPayment.setText(result.toString())
                 binding.edPercent.setText("20")
+
+                if (amount < 50000 || amount > 100000000){
+                    CustomMaterialFields.setError(binding.layoutPurchasePrice,getString(com.rnsoft.colabademo.R.string.invalid_purchase_price),requireContext())
+                } else {
+                    CustomMaterialFields.clearError(binding.layoutPurchasePrice, requireContext())
+                }
             }
         }
     }
 
 
-private fun setLoanStageSpinner() {
-    val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, loanStageArray)
-    binding.tvLoanStage.setAdapter(adapter)
-    binding.tvLoanStage.setOnFocusChangeListener { _, _ ->
-        binding.tvLoanStage.showDropDown()
-    }
-    binding.tvLoanStage.setOnClickListener {
-        binding.tvLoanStage.showDropDown()
-    }
-    binding.tvLoanStage.onItemClickListener = object :
-        AdapterView.OnItemClickListener {
-        override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-            binding.layoutLoanStage.defaultHintTextColor = ColorStateList.valueOf(
-                ContextCompat.getColor(
-                    requireContext(),
-                    com.rnsoft.colabademo.R.color.grey_color_two
+    private fun setLoanStageSpinner() {
+        val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, loanStageArray)
+        binding.tvLoanStage.setAdapter(adapter)
+        binding.tvLoanStage.setOnFocusChangeListener { _, _ ->
+            binding.tvLoanStage.showDropDown()
+        }
+        binding.tvLoanStage.setOnClickListener {
+            binding.tvLoanStage.showDropDown()
+        }
+        binding.tvLoanStage.onItemClickListener = object :
+            AdapterView.OnItemClickListener {
+            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                binding.layoutLoanStage.defaultHintTextColor = ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        com.rnsoft.colabademo.R.color.grey_color_two
+                    )
                 )
-            )
-            if (position == loanStageArray.size - 1)
-                binding.layoutLoanStage.visibility = View.VISIBLE
-            else
-                binding.layoutLoanStage.visibility = View.GONE
+                if (position == loanStageArray.size - 1)
+                    binding.layoutLoanStage.visibility = View.VISIBLE
+                else
+                    binding.layoutLoanStage.visibility = View.GONE
+            }
         }
     }
-}
 
-private fun createCalendarDialog() {
-    val pd = MonthYearPickerDialog()
-    pd.setListener(this)
-    pd.show(requireActivity().supportFragmentManager, "MonthYearPickerDialog")
-}
+    private fun createCalendarDialog() {
+        val pd = MonthYearPickerDialog()
+        pd.setListener(this)
+        pd.show(requireActivity().supportFragmentManager, "MonthYearPickerDialog")
+    }
 
-override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-    var stringMonth = p2.toString()
-    if (p2 < 10)
-        stringMonth = "0$p2"
+    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
+        var stringMonth = p2.toString()
+        if (p2 < 10)
+            stringMonth = "0$p2"
 
-    val sampleDate = "$stringMonth / $p1"
-    binding.edClosingDate.setText(sampleDate)
-}
+        val sampleDate = "$stringMonth / $p1"
+        binding.edClosingDate.setText(sampleDate)
+    }
 
+    private fun onBackClicked(view:View){
+        requireActivity().finish()
+    }
 
 }
