@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.dashboard.fragements.details.bapplication.fragment
+package com.rnsoft.colabademo.activities.borrowerloan.fragment
 
 import android.R
 import android.app.DatePickerDialog
@@ -6,26 +6,22 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.MyCustomFocusListener
-import com.rnsoft.colabademo.PhoneTextFormatter
 import com.rnsoft.colabademo.databinding.AppToolbarHeadingBinding
 import com.rnsoft.colabademo.databinding.LoanPurchaseInfoBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import java.text.DecimalFormat
 
 
 /**
@@ -35,6 +31,7 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: LoanPurchaseInfoBinding
     private lateinit var bindingToolbar : AppToolbarHeadingBinding
+    var isStart : Boolean = true
 
     private val loanStageArray = listOf("Pre-Approval")
 
@@ -51,31 +48,76 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
         initViews()
         setNumberFormats()
 
+        binding.edDownPayment.isEnabled = false
+        binding.edPercent.isEnabled = false
+
 
         binding.edPurchasePrice.addTextChangedListener(object : TextWatcher {
 
-            override fun afterTextChanged(s: Editable) {}
+            override fun afterTextChanged(s: Editable) {
+                var value = binding.edPurchasePrice.text
+                value.let {
+                    binding.edDownPayment.isEnabled = true
+                    binding.edPercent.isEnabled = true
+                }
 
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
+                if(value?.length == 0){
+                    binding.edDownPayment.isEnabled = false
+                    binding.edPercent.isEnabled = false
+                    binding.edPercent.setText("0")
+                    binding.edDownPayment.setText("0")
+                }
+
+
             }
-
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
-
-
-
-
-
-
-                
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                try {
+                    isStart = true
+                    var input = s.toString();
+                    if(!input.isEmpty()) {
+                        input = input.replace(",", "")
+                        val format =  DecimalFormat("#,###,###")
+                        val newPrice = format.format(input.toLong())
+                        binding.edPurchasePrice.removeTextChangedListener(this) //To Prevent from Infinite Loop
+                        binding.edPurchasePrice.setText(newPrice)
+                        binding.edPurchasePrice.setSelection(newPrice.length)
+                        binding.edPurchasePrice.addTextChangedListener(this)
+                        calculateInitialDownPayment(newPrice)
+                    }
+                } catch (nfe: NumberFormatException) {
+                    nfe.printStackTrace()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         })
 
+        binding.edPercent.addTextChangedListener(object : TextWatcher {
 
-
-
-
+            override fun afterTextChanged(s: Editable) { }
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                try {
+                    val purchasePrice = binding.edPurchasePrice.text.toString().length
+                    if (purchasePrice > 0) {
+                        if (!isStart) {
+                            val edValue = binding.edPercent.text.toString()
+                            val purchaseValue = binding.edPurchasePrice.text.toString()
+                            edValue.let {
+                                val result = (Integer.parseInt(purchaseValue) * Integer.parseInt(edValue)) / 100
+                                binding.edDownPayment.setText(result.toString())
+                            }
+                        }
+                    } else {
+                    }
+                } catch (nfe: NumberFormatException) {
+                    nfe.printStackTrace()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        })
 
         return binding.root
 
@@ -107,17 +149,38 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
             if (hasFocus) {
                 CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
             } else {
+                isStart = false
                 if (binding.edPurchasePrice.text?.length == 0) {
                     CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_three, requireContext())
                 } else {
                     CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
+
                     val value = binding.edPurchasePrice.text.toString()
                     value.let {
-                        calculatePercentage(value)
+                        var purchasePrice = value.replace(",", "");
+                        if (purchasePrice.toInt() < 50000 || purchasePrice.toInt() > 100000000){
+                            CustomMaterialFields.setError(binding.layoutPurchasePrice,getString(com.rnsoft.colabademo.R.string.invalid_purchase_price),requireContext())
+                        } else {
+                            CustomMaterialFields.clearError(binding.layoutPurchasePrice, requireContext())
+                        }
                     }
                 }
             }
         }
+
+        binding.edDownPayment.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
+            } else {
+                if (binding.edPurchasePrice.text?.length == 0) {
+                    CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_three, requireContext())
+                } else {
+                    CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
+                }
+
+            }
+        }
+
 
         binding.edDownPayment.setOnFocusChangeListener(
             MyCustomFocusListener(
@@ -126,13 +189,13 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
                 requireContext()
             )
         )
-        binding.edPercent.setOnFocusChangeListener(
+        /*binding.edPercent.setOnFocusChangeListener(
             MyCustomFocusListener(
                 binding.edPercent,
                 binding.layoutPercent,
                 requireContext()
             )
-        )
+        ) */
         binding.edLoanAmount.setOnFocusChangeListener(
             MyCustomFocusListener(
                 binding.edLoanAmount,
@@ -148,20 +211,16 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
 
     }
 
-    private fun calculatePercentage(value: String) {
+    private fun calculateInitialDownPayment(value: String) {
         value.let {
             if (value.length > 0) {
                 var purchasePrice = value.replace(",", "");
                 val amount: Long = purchasePrice.toLong()
                 val result = (amount * 20) / 100
+                Log.e("result", result.toString())
                 binding.edDownPayment.setText(result.toString())
                 binding.edPercent.setText("20")
 
-                if (amount < 50000 || amount > 100000000){
-                    CustomMaterialFields.setError(binding.layoutPurchasePrice,getString(com.rnsoft.colabademo.R.string.invalid_purchase_price),requireContext())
-                } else {
-                    CustomMaterialFields.clearError(binding.layoutPurchasePrice, requireContext())
-                }
             }
         }
     }
@@ -214,8 +273,8 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private fun setNumberFormats(){
         //binding.edPurchasePrice.addTextChangedListener(NumberTextFormat(binding.edPurchasePrice))
-        binding.edLoanAmount.addTextChangedListener(NumberTextFormat(binding.edLoanAmount))
-        binding.edDownPayment.addTextChangedListener(NumberTextFormat(binding.edDownPayment))
+        //binding.edLoanAmount.addTextChangedListener(NumberTextFormat(binding.edLoanAmount))
+        //binding.edDownPayment.addTextChangedListener(NumberTextFormat(binding.edDownPayment))
     }
 
 }
