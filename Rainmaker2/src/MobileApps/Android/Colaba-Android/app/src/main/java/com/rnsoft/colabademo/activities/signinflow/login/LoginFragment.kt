@@ -23,6 +23,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 import android.widget.EditText
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -58,6 +59,8 @@ class LoginFragment : Fragment() {
         setupFragment()
         hideSoftKeyboard()
 
+
+
         passwordLayout.setEndIconOnClickListener(View.OnClickListener {
             if (editTextPassword.getTransformationMethod()
                     .equals(PasswordTransformationMethod.getInstance())
@@ -70,7 +73,14 @@ class LoginFragment : Fragment() {
             }
         })
 
+
+
         return root
+    }
+
+    private val testCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+        }
     }
 
     private fun disableEditText(editText: EditText) {
@@ -93,8 +103,10 @@ class LoginFragment : Fragment() {
 
         if (activity is SignUpFlowActivity) {
             //Log.e("resumeState= ","LoginFragment -userEmailField ="+(activity as SignUpFlowActivity).resumeState)
-            if (AppSetting.initialScreenLoaded)
+            if (AppSetting.initialScreenLoaded) {
                 disableEditText(userEmailField)
+                activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, testCallback )
+            }
         }
 
 //        userEmailField.setText("mubashir.mcu@mailinator.com")
@@ -275,6 +287,8 @@ class LoginFragment : Fragment() {
         val imm = view?.let { ContextCompat.getSystemService(it.context, InputMethodManager::class.java) }
         imm?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
+
+
 }
 
 
