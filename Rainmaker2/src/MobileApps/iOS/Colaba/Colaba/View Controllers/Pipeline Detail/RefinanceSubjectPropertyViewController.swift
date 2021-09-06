@@ -263,17 +263,20 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
             txtfieldRentalIncomeTopConstraint.constant = 30
             txtfieldRentalIncomeHeightConstraint.constant = 39
             txtfieldRentalIncome.isHidden = false
+            txtfieldRentalIncome.resignFirstResponder()
         }
         else if ( (txtfieldOccupancyType.text == "Primary Residence") && (txtfieldPropertyType.text == "Duplex (2 Unit)" || txtfieldPropertyType.text == "Triplex (3 Unit)" || txtfieldPropertyType.text == "Quadplex (4 Unit)") ){
             txtfieldRentalIncomeTopConstraint.constant = 30
             txtfieldRentalIncomeHeightConstraint.constant = 39
             txtfieldRentalIncome.isHidden = false
+            txtfieldRentalIncome.resignFirstResponder()
         }
         else{
             txtfieldRentalIncomeTopConstraint.constant = 0
             txtfieldRentalIncomeHeightConstraint.constant = 0
             rentalIncomeDollarView.isHidden = true
             txtfieldRentalIncome.isHidden = true
+            txtfieldRentalIncome.resignFirstResponder()
             txtfieldRentalIncome.text = ""
             txtfieldRentalIncome.textInsetsPreset = .none
             txtfieldRentalIncome.placeholderHorizontalOffset = 0
