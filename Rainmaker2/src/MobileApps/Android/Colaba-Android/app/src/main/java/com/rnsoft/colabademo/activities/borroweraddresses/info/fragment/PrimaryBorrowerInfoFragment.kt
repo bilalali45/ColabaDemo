@@ -381,7 +381,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
                     } else {
                         clearError(bi.layoutHomeNum)
                     }
-
                 }
             }
         }

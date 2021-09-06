@@ -15,10 +15,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.MyCustomFocusListener
+import com.rnsoft.colabademo.PhoneTextFormatter
 import com.rnsoft.colabademo.databinding.AppToolbarHeadingBinding
 import com.rnsoft.colabademo.databinding.LoanPurchaseInfoBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
+import com.rnsoft.colabademo.utils.NumberTextFormat
 
 
 /**
@@ -42,6 +44,10 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
 
         setLoanStageSpinner()
         initViews()
+        setNumberFormats()
+
+
+
 
         return binding.root
 
@@ -121,9 +127,10 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
 
     }
 
-    private fun calculatePercentage(purchasePrice: String) {
-        purchasePrice.let {
-            if (purchasePrice.length > 0) {
+    private fun calculatePercentage(value: String) {
+        value.let {
+            if (value.length > 0) {
+                var purchasePrice = value.replace(",", "");
                 val amount: Long = purchasePrice.toLong()
                 val result = (amount * 20) / 100
                 binding.edDownPayment.setText(result.toString())
@@ -182,6 +189,12 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private fun onBackClicked(view:View){
         requireActivity().finish()
+    }
+
+    private fun setNumberFormats(){
+        binding.edPurchasePrice.addTextChangedListener(NumberTextFormat(binding.edPurchasePrice))
+        binding.edLoanAmount.addTextChangedListener(NumberTextFormat(binding.edLoanAmount))
+        binding.edDownPayment.addTextChangedListener(NumberTextFormat(binding.edDownPayment))
     }
 
 }

@@ -97,7 +97,8 @@
                 app:helperTextEnabled="true"
                 app:helperTextTextAppearance="@style/inputError"
                 app:helperTextTextColor="@color/colaba_red_color"
-                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+                app:prefixTextAppearance="@style/PrefixTextAppearance.TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_purchase_price"
@@ -213,14 +214,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
+                        android:digits="1234567890"
+                        android:cursorVisible="false"
+                        android:focusableInTouchMode="false"
                         android:ems="10"
                         android:fontFamily="@font/rubik_regular"
                         android:imeOptions="actionNext"
+                        android:inputType="number"
                         android:paddingStart="0dp"
                         android:singleLine="true"
-                        android:digits="1234567890"
-                        android:inputType="number"
-                        android:editable="false"
                         android:textColor="@color/grey_color_one"
                         android:textSize="@dimen/ed_txt_size_primary_info" />
 
