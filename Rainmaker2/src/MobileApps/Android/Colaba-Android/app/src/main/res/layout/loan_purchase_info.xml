@@ -215,8 +215,6 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:digits="1234567890"
-                        android:cursorVisible="false"
-                        android:focusableInTouchMode="false"
                         android:ems="10"
                         android:fontFamily="@font/rubik_regular"
                         android:imeOptions="actionNext"
