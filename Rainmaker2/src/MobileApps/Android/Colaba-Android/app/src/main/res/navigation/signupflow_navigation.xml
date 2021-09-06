@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@+id/phone_number_id">
+    app:startDestination="@+id/login_fragment_id">
 
     <fragment
         android:id="@+id/login_fragment_id"
