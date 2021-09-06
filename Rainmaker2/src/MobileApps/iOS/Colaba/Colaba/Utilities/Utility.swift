@@ -191,11 +191,19 @@ struct Utility {
         return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: SubjectPropertyAddressViewController.self)) as! SubjectPropertyAddressViewController
     }
     
+    static func getFirstMortgageFollowupQuestionsVC() -> FirstMortgageFollowupQuestionsViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: FirstMortgageFollowupQuestionsViewController.self)) as! FirstMortgageFollowupQuestionsViewController
+    }
+    
+    static func getSecondMortgageFollowupQuestionsVC() -> SecondMortgageFollowupQuestionsViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: SecondMortgageFollowupQuestionsViewController.self)) as! SecondMortgageFollowupQuestionsViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
                 pipelineDateFormatter = DateFormatter()
-                pipelineDateFormatter?.timeZone = TimeZone(abbreviation: "UTC")
+                //pipelineDateFormatter?.timeZone = TimeZone(abbreviation: "UTC")
                 pipelineDateFormatter?.locale = .current
                 pipelineDateFormatter?.dateFormat = "yyyy-MM-dd HH:mm:ss"
             }
