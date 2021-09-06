@@ -86,16 +86,19 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
         subjectPropertyTBDView.layer.cornerRadius = 8
         subjectPropertyTBDView.layer.borderWidth = 1
         subjectPropertyTBDView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        subjectPropertyTBDView.dropShadowToCollectionViewCell()
         subjectPropertyTBDView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tbdViewTapped)))
         
         subjectPropertyAddressView.layer.cornerRadius = 8
         subjectPropertyAddressView.layer.borderWidth = 1
         subjectPropertyAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        subjectPropertyAddressView.dropShadowToCollectionViewCell()
         subjectPropertyAddressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
         
         propertyDetailView.layer.cornerRadius = 6
         propertyDetailView.layer.borderWidth = 1
         propertyDetailView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        propertyDetailView.dropShadowToCollectionViewCell()
         propertyDetailView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(propertyDetailViewTapped)))
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))

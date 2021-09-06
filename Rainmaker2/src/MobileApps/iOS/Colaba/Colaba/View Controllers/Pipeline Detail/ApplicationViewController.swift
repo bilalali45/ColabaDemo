@@ -131,16 +131,16 @@ class ApplicationViewController: BaseViewController {
     }
     
     @objc func subjectPropertyTapped(){
-//        if (self.loanApplicationDetail.loanPurposeDescription == "Purchase"){
-//            let vc = Utility.getPurchaseSubjectPropertyVC()
-//            self.pushToVC(vc: vc)
-//        }
-//        else{
-//            let vc = Utility.getRefinanceSubjectPropertyVC()
-//            self.pushToVC(vc: vc)
-//        }
-        let vc = Utility.getPurchaseSubjectPropertyVC()
-        self.pushToVC(vc: vc)
+        if (self.loanApplicationDetail.loanPurposeDescription == "Purchase"){
+            let vc = Utility.getPurchaseSubjectPropertyVC()
+            self.pushToVC(vc: vc)
+        }
+        else{
+            let vc = Utility.getRefinanceSubjectPropertyVC()
+            self.pushToVC(vc: vc)
+        }
+//        let vc = Utility.getPurchaseSubjectPropertyVC()
+//        self.pushToVC(vc: vc)
     }
     
     @objc func loanInfoViewTapped(){

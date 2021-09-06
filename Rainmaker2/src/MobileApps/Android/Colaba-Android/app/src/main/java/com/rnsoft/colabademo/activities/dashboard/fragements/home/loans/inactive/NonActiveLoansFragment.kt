@@ -141,6 +141,7 @@ class NonActiveLoansFragment : BaseFragment() , AdapterClickListener , LoanFilte
 
     private fun loadNonActiveApplications(){
         if(NetworkSetting.isNetworkAvailable(requireContext())) {
+            Log.e("NON-ACTIVE-LOAN--", "globalAssignToMe = $globalAssignToMe")
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 if (AppSetting.nonActiveloanApiDateTime.isEmpty())
                     AppSetting.nonActiveloanApiDateTime =
