@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = "1.5.10"
-    ext.hilt_version = '2.35.1'
+    ext.kotlin_version = "1.5.30"
+    ext.hilt_version = '2.38.1'
     repositories {
         google()
         mavenCentral()
@@ -22,8 +22,11 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://jitpack.io" }
-        //jcenter() // Warning: this repository is going to shut down soon
+        maven {
+            url "https://jitpack.io"
+        }
+
+
     }
 }
 

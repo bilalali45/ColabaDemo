@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rnsoft.colabademo.databinding.DetailTabLayoutBinding
@@ -52,10 +53,8 @@ class DetailTabFragment : Fragment() {
         _binding = DetailTabLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
         viewPager = binding.detailViewPager
         val tabLayout = binding.detailTabLayout
-
         pageAdapter = DetailPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
         viewPager.adapter = pageAdapter
 

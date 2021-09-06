@@ -18,9 +18,11 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_layout)
-        activityScope.launch {
 
-          //startActivity(Intent(this@SplashActivity, BorrowerAddressActivity::class.java))
+
+    activityScope.launch {
+
+            //startActivity(Intent(this@SplashActivity, TestSearchActivity::class.java))
 
             //startActivity(Intent(this@SplashActivity, BorrowerInfoActivity::class.java))
 
@@ -39,10 +41,9 @@ class SplashActivity : AppCompatActivity() {
             }
 
             finish()
-
-            
-
-
+        
         }
+
+
     }
 }
