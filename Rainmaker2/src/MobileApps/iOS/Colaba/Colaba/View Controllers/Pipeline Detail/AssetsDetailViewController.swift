@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AssetsDetailViewController: UIViewController {
+class AssetsDetailViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     
@@ -318,6 +318,20 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
                 
             }
             
+        }
+        else{
+            if (tableView == tableViewBankAccount && (indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3)){
+                let vc = Utility.getAddBankAccountVC()
+                self.presentVC(vc: vc)
+            }
+            else if (tableView == tableViewRetirementAccount && (indexPath.row == 1 || indexPath.row == 2)){
+                let vc = Utility.getAddRetirementAccountVC()
+                self.presentVC(vc: vc)
+            }
+            else if (tableView == tableViewStockBonds && (indexPath.row == 1 || indexPath.row == 2)){
+                let vc = Utility.getAddStockBondVC()
+                self.presentVC(vc: vc)
+            }
         }
     }
     

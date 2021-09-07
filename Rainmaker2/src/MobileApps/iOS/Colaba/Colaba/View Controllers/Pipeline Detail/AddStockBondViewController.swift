@@ -1,5 +1,5 @@
 //
-//  AddBankAccountViewController.swift
+//  AddStockBondViewController.swift
 //  Colaba
 //
 //  Created by Muhammad Murtaza on 07/09/2021.
@@ -9,7 +9,7 @@ import UIKit
 import Material
 import DropDown
 
-class AddBankAccountViewController: BaseViewController {
+class AddStockBondViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     
@@ -25,8 +25,8 @@ class AddBankAccountViewController: BaseViewController {
     @IBOutlet weak var txtfieldFinancialInstitution: TextField!
     @IBOutlet weak var txtfieldAccountNumber: TextField!
     @IBOutlet weak var btnEye: UIButton!
-    @IBOutlet weak var txtfieldAnnualBaseSalary: TextField!
-    @IBOutlet weak var annualBaseSalaryDollarView: UIView!
+    @IBOutlet weak var txtfieldCurrentMarketValue: TextField!
+    @IBOutlet weak var currentMarketValueDollarView: UIView!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
     var isShowAccountNumber = false
@@ -45,7 +45,7 @@ class AddBankAccountViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setMaterialTextFieldsAndViews(textfields: [txtfieldAccountType, txtfieldFinancialInstitution, txtfieldAccountNumber, txtfieldAnnualBaseSalary])
+        setMaterialTextFieldsAndViews(textfields: [txtfieldAccountType, txtfieldFinancialInstitution, txtfieldAccountNumber, txtfieldCurrentMarketValue])
     }
     
     //MARK:- Methods and Actions
@@ -66,7 +66,7 @@ class AddBankAccountViewController: BaseViewController {
         
         accountTypeDropDown.dismissMode = .onTap
         accountTypeDropDown.anchorView = accountTypeDropDownAnchorView
-        accountTypeDropDown.dataSource = kAccountTypeArray
+        accountTypeDropDown.dataSource = kFinancialsAccountTypeArray
         accountTypeDropDown.cancelAction = .some({
             self.btnAccountTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             self.txtfieldAccountType.dividerColor = Theme.getSeparatorNormalColor()
@@ -80,7 +80,7 @@ class AddBankAccountViewController: BaseViewController {
             accountTypeDropDown.hide()
         }
         
-        txtfieldAnnualBaseSalary.addTarget(self, action: #selector(textfieldAnnualBaseSalaryChanged), for: .editingChanged)
+        txtfieldCurrentMarketValue.addTarget(self, action: #selector(textfieldAnnualBaseSalaryChanged), for: .editingChanged)
         
         btnSaveChanges.layer.borderWidth = 1
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
@@ -102,8 +102,8 @@ class AddBankAccountViewController: BaseViewController {
     }
     
     @objc func textfieldAnnualBaseSalaryChanged(){
-        if let amount = Int(txtfieldAnnualBaseSalary.text!.replacingOccurrences(of: ",", with: "")){
-            txtfieldAnnualBaseSalary.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
+        if let amount = Int(txtfieldCurrentMarketValue.text!.replacingOccurrences(of: ",", with: "")){
+            txtfieldCurrentMarketValue.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
         }
     }
     
@@ -162,25 +162,25 @@ class AddBankAccountViewController: BaseViewController {
         }
     
         do{
-            let baseSalary = try validation.validateAnnualBaseSalary(txtfieldAnnualBaseSalary.text)
+            let currentMarketValue = try validation.validateCurrentMarketValue(txtfieldCurrentMarketValue.text)
             DispatchQueue.main.async {
-                self.txtfieldAnnualBaseSalary.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtfieldAnnualBaseSalary.detail = ""
+                self.txtfieldCurrentMarketValue.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldCurrentMarketValue.detail = ""
             }
             
         }
         catch{
-            self.txtfieldAnnualBaseSalary.dividerColor = .red
-            self.txtfieldAnnualBaseSalary.detail = error.localizedDescription
+            self.txtfieldCurrentMarketValue.dividerColor = .red
+            self.txtfieldCurrentMarketValue.detail = error.localizedDescription
         }
         
-        if (txtfieldAccountType.text != "" && txtfieldFinancialInstitution.text != "" && txtfieldAccountNumber.text != "" && txtfieldAnnualBaseSalary.text != ""){
+        if (txtfieldAccountType.text != "" && txtfieldFinancialInstitution.text != "" && txtfieldAccountNumber.text != "" && txtfieldCurrentMarketValue.text != ""){
             self.dismissVC()
         }
     }
 }
 
-extension AddBankAccountViewController: UITextFieldDelegate{
+extension AddStockBondViewController: UITextFieldDelegate{
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
@@ -191,10 +191,10 @@ extension AddBankAccountViewController: UITextFieldDelegate{
             accountTypeDropDown.show()
         }
         
-        if (textField == txtfieldAnnualBaseSalary){
-            txtfieldAnnualBaseSalary.textInsetsPreset = .horizontally5
-            txtfieldAnnualBaseSalary.placeholderHorizontalOffset = -24
-            annualBaseSalaryDollarView.isHidden = false
+        if (textField == txtfieldCurrentMarketValue){
+            txtfieldCurrentMarketValue.textInsetsPreset = .horizontally5
+            txtfieldCurrentMarketValue.placeholderHorizontalOffset = -24
+            currentMarketValueDollarView.isHidden = false
         }
         
     }
@@ -202,7 +202,7 @@ extension AddBankAccountViewController: UITextFieldDelegate{
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if (textField == txtfieldAccountType){
-            if !(kAccountTypeArray.contains(txtfieldAccountType.text!)){
+            if !(kFinancialsAccountTypeArray.contains(txtfieldAccountType.text!)){
                 txtfieldAccountType.text = ""
                 txtfieldAccountType.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
                 accountTypeDropDown.hide()
@@ -254,28 +254,29 @@ extension AddBankAccountViewController: UITextFieldDelegate{
             }
         }
         
-        if (textField == txtfieldAnnualBaseSalary){
+        if (textField == txtfieldCurrentMarketValue){
             do{
-                let baseSalary = try validation.validateAnnualBaseSalary(txtfieldAnnualBaseSalary.text)
+                let currentMarketValue = try validation.validateCurrentMarketValue(txtfieldCurrentMarketValue.text)
                 DispatchQueue.main.async {
-                    self.txtfieldAnnualBaseSalary.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldAnnualBaseSalary.detail = ""
+                    self.txtfieldCurrentMarketValue.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldCurrentMarketValue.detail = ""
                 }
                 
             }
             catch{
-                self.txtfieldAnnualBaseSalary.dividerColor = .red
-                self.txtfieldAnnualBaseSalary.detail = error.localizedDescription
+                self.txtfieldCurrentMarketValue.dividerColor = .red
+                self.txtfieldCurrentMarketValue.detail = error.localizedDescription
             }
         }
         
-        if (textField == txtfieldAnnualBaseSalary && txtfieldAnnualBaseSalary.text == ""){
-            txtfieldAnnualBaseSalary.textInsetsPreset = .none
-            txtfieldAnnualBaseSalary.placeholderHorizontalOffset = 0
-            annualBaseSalaryDollarView.isHidden = true
+        if (textField == txtfieldCurrentMarketValue && txtfieldCurrentMarketValue.text == ""){
+            txtfieldCurrentMarketValue.textInsetsPreset = .none
+            txtfieldCurrentMarketValue.placeholderHorizontalOffset = 0
+            currentMarketValueDollarView.isHidden = true
         }
         
-        setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldAccountType, txtfieldFinancialInstitution, txtfieldAccountNumber, txtfieldAnnualBaseSalary])
+        setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldAccountType, txtfieldFinancialInstitution, txtfieldAccountNumber, txtfieldCurrentMarketValue])
     }
     
 }
+
