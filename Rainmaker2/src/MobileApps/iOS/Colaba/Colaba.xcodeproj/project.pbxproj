@@ -16,6 +16,8 @@
 		230B94D226E74C03004CBC83 /* AssetsAddNewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B94D026E74C03004CBC83 /* AssetsAddNewTableViewCell.swift */; };
 		230B94D326E74C03004CBC83 /* AssetsAddNewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 230B94D126E74C03004CBC83 /* AssetsAddNewTableViewCell.xib */; };
 		230B94D526E77AAA004CBC83 /* AddBankAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B94D426E77AAA004CBC83 /* AddBankAccountViewController.swift */; };
+		230B94D726E7A060004CBC83 /* AddRetirementAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B94D626E7A060004CBC83 /* AddRetirementAccountViewController.swift */; };
+		230B94D926E7A436004CBC83 /* AddStockBondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B94D826E7A436004CBC83 /* AddStockBondViewController.swift */; };
 		2319224626E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2319224526E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift */; };
 		2320138D2698324800F500E2 /* BorrowerAddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2320138B2698324800F500E2 /* BorrowerAddressTableViewCell.swift */; };
 		2320138E2698324800F500E2 /* BorrowerAddressTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2320138C2698324800F500E2 /* BorrowerAddressTableViewCell.xib */; };
@@ -183,6 +185,8 @@
 		230B94D026E74C03004CBC83 /* AssetsAddNewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsAddNewTableViewCell.swift; sourceTree = "<group>"; };
 		230B94D126E74C03004CBC83 /* AssetsAddNewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssetsAddNewTableViewCell.xib; sourceTree = "<group>"; };
 		230B94D426E77AAA004CBC83 /* AddBankAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBankAccountViewController.swift; sourceTree = "<group>"; };
+		230B94D626E7A060004CBC83 /* AddRetirementAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRetirementAccountViewController.swift; sourceTree = "<group>"; };
+		230B94D826E7A436004CBC83 /* AddStockBondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStockBondViewController.swift; sourceTree = "<group>"; };
 		2319224526E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectPropertyAddressViewController.swift; sourceTree = "<group>"; };
 		2320138B2698324800F500E2 /* BorrowerAddressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerAddressTableViewCell.swift; sourceTree = "<group>"; };
 		2320138C2698324800F500E2 /* BorrowerAddressTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerAddressTableViewCell.xib; sourceTree = "<group>"; };
@@ -533,6 +537,8 @@
 				23932C3326E64A5D00D02FEA /* AssetsViewController.swift */,
 				23932C3526E64A7500D02FEA /* AssetsDetailViewController.swift */,
 				230B94D426E77AAA004CBC83 /* AddBankAccountViewController.swift */,
+				230B94D626E7A060004CBC83 /* AddRetirementAccountViewController.swift */,
+				230B94D826E7A436004CBC83 /* AddStockBondViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -1114,6 +1120,7 @@
 				23A6578826D65B610013A37B /* LoginNavigationViewController.swift in Sources */,
 				7186AD7926540CCC00E740D3 /* PhoneNumberViewController.swift in Sources */,
 				2390FEE126A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.swift in Sources */,
+				230B94D926E7A436004CBC83 /* AddStockBondViewController.swift in Sources */,
 				2319224626E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift in Sources */,
 				239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */,
 				23A56C592685B017005CE6F4 /* Manager.swift in Sources */,
@@ -1133,6 +1140,7 @@
 				7148C6B126554ADE00E1C216 /* Validation.swift in Sources */,
 				71B1944F265CF9780017955B /* OTPTimerManager.swift in Sources */,
 				23A56C5B2685B017005CE6F4 /* Animator.swift in Sources */,
+				230B94D726E7A060004CBC83 /* AddRetirementAccountViewController.swift in Sources */,
 				23EB790226A6ED980071BC13 /* RealEstateCollectionViewCell.swift in Sources */,
 				23DF0CEE269ED82000F29B70 /* LoanInfoModel.swift in Sources */,
 				23A56C5A2685B017005CE6F4 /* Controller.swift in Sources */,

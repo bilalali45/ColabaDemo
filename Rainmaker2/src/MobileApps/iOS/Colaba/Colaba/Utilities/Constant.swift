@@ -54,3 +54,5 @@ let kOrdinalToSpellingDictionary = ["1st": "First", "2nd": "Second", "3rd": "Thi
 let kLoanStageArray = ["Pre-Approval"]
 let kPropertyTypeArray = ["Single Family Property", "Condominium", "Townhouse", "Cooperative", "Manufactured Home", "Duplex (2 Unit)", "Triplex (3 Unit)", "Quadplex (4 Unit)"]
 let kOccupancyTypeArray = ["Primary Residence", "Second Home", "Investment Property"]
+let kAccountTypeArray = ["Checking Account", "Saving Account"]
+let kFinancialsAccountTypeArray = ["Mutual Funds", "Stocks", "Money Market", "Stock Options", "Certificate Of Deposit", "Bonds"]

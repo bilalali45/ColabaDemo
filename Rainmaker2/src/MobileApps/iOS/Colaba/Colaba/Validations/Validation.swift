@@ -199,6 +199,36 @@ struct Validation {
         guard propertyDetail.count > 0 else { throw ValidationError.requiredField }
         return propertyDetail
     }
+    
+    func validateAccountType(_ accountType: String?) throws -> String{
+        guard let accountType = accountType else { throw ValidationError.requiredField }
+        guard accountType.count > 0 else { throw ValidationError.requiredField }
+        return accountType
+    }
+    
+    func validateFinancialInstitution(_ financialInstitution: String?) throws -> String{
+        guard let financialInstitution = financialInstitution else { throw ValidationError.requiredField }
+        guard financialInstitution.count > 0 else { throw ValidationError.requiredField }
+        return financialInstitution
+    }
+    
+    func validateAccountNumber(_ accountNumber: String?) throws -> String{
+        guard let accountNumber = accountNumber else { throw ValidationError.requiredField }
+        guard accountNumber.count > 0 else { throw ValidationError.requiredField }
+        return accountNumber
+    }
+    
+    func validateAnnualBaseSalary(_ annualBaseSalary: String?) throws -> String{
+        guard let annualBaseSalary = annualBaseSalary else { throw ValidationError.requiredField }
+        guard annualBaseSalary.count > 0 else { throw ValidationError.requiredField }
+        return annualBaseSalary
+    }
+    
+    func validateCurrentMarketValue(_ marketValue: String?) throws -> String{
+        guard let marketValue = marketValue else { throw ValidationError.requiredField }
+        guard marketValue.count > 0 else { throw ValidationError.requiredField }
+        return marketValue
+    }
 }
 
 enum ValidationError: LocalizedError {
