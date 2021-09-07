@@ -58,8 +58,20 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
 
 
         loanLayout.setOnClickListener {
-            val intent = Intent(activity, BorrowerLoanActivity::class.java)
-            requireActivity().startActivity(intent)
+
+
+            val detailActivity = (activity as? DetailActivity)
+
+            detailActivity?.let {
+                val borrowerLoanActivity = Intent(requireActivity(), BorrowerLoanActivity::class.java)
+                it.loanApplicationId?.let { loanId ->
+                    borrowerLoanActivity.putExtra(AppConstant.loanApplicationId, loanId)
+                }
+                it.borrowerLoanPurpose?.let{ loanPurpose->
+                    borrowerLoanActivity.putExtra(AppConstant.loanPurpose, loanPurpose)
+                }
+                startActivity(borrowerLoanActivity)
+            }
         }
 
         val linearLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
