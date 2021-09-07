@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.app.DatePickerDialog
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
+import android.location.Address
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -35,10 +36,16 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 import kotlin.collections.ArrayList
+import android.location.Geocoder
+import com.google.android.gms.common.api.ResultCallback
+import java.io.IOException
+import java.util.*
+import com.google.android.gms.location.places.PlaceBuffer
+import com.google.android.gms.location.places.Places.GeoDataApi
 
 
 @AndroidEntryPoint
-class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener, PlacePredictionAdapter.OnPlaceClickListener {
+class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener, PlacePredictionAdapter.OnPlaceClickListener, View.OnClickListener {
 
     private var _binding: TempResidenceLayoutBinding? = null
     private val binding get() = _binding!!
@@ -235,7 +242,22 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                 searchForGooglePlaces(str)
             }
             else
-                binding.fakePlaceSearchRecyclerView.visibility = View.INVISIBLE
+            if(str.length in 0..2)
+            {
+                binding.fakePlaceSearchRecyclerView.visibility = View.GONE
+                predictAdapter.setPredictions(null)
+            }
+
+            else if(str.isEmpty()){
+                binding.fakePlaceSearchRecyclerView.visibility = View.GONE
+                predictAdapter.setPredictions(null)
+                //binding.topSearchAutoTextView.clearFocus()
+                hideKeyBoard()
+                binding.topSearchAutoTextView.removeTextChangedListener(this)
+                //binding.topSearchAutoTextView.clearFocus()
+            }
+
+
         }
     })
 
@@ -264,13 +286,19 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
 
 
+
+
         placesClient.findAutocompletePredictions(request)
             .addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
                 for (prediction in response.autocompletePredictions) {
                     Log.e(TAG, prediction.placeId)
 
+                    response.autocompletePredictions
+
                     predicationList.add(prediction.getFullText(null).toString())
                     Log.e(TAG, prediction.getFullText(null).toString())
+
+                    
 
                 }
                 predictAdapter.setPredictions(response.autocompletePredictions)
@@ -375,9 +403,39 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         predictAdapter.setPredictions(null)
         binding.fakePlaceSearchRecyclerView.visibility = View.GONE
         val placeSelected = place.getFullText(null).toString()
+        binding.topSearchAutoTextView.clearFocus()
+        hideKeyBoard()
         binding.topSearchAutoTextView.removeTextChangedListener(placeTextWatcher)
-        binding.topSearchAutoTextView.setText(placeSelected)
 
+
+
+
+
+        //val latLng: LatLng = place
+        //val MyLat = latLng.latitude
+        //val MyLong = latLng.longitude
+        val geocoder = Geocoder(requireContext(), Locale.getDefault())
+        try {
+            val addresses: List<Address>? = geocoder.getFromLocationName(place.getFullText(null)
+                .toString(), 1)
+            val stateName: String? = addresses?.get(0)?.countryName
+            val cityName: String? = addresses?.get(0)?.locality
+            val postalCode: String? = addresses?.get(0)?.postalCode
+            Log.e("Bingo ", " = "+stateName+ " "+cityName+"  "+postalCode)
+            //edit_profile_city_editText.setText(place.getName().toString() + "," + stateName)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+
+        binding.topSearchAutoTextView.setText(placeSelected)
+        binding.topSearchAutoTextView.clearFocus()
+
+
+    }
+
+    override fun onClick(p0: View) {
+        val googleSearchField = binding.topSearchAutoTextView
 
     }
 
