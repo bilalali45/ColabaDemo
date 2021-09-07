@@ -23,8 +23,8 @@ class BorrowerLoanActivity : BaseActivity() {
         val navController = findNavController(R.id.nav_host_borrower_loan)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_primary_borrower_info,
-                R.id.navigation_current_address
+                R.id.navigation_loan_purchase,
+                R.id.navigation_loan_refinance
             )
         )
     }

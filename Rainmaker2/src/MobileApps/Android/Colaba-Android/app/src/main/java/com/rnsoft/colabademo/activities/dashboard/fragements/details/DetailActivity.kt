@@ -27,7 +27,6 @@ class DetailActivity : BaseActivity() {
     var borrowerLoanPurpose:String? = null
     var borrowerCellNumber:String? = null
     var borrowerEmail:String? = null
-
     var innerScreenName:String? = null
 
     private val detailViewModel: DetailViewModel by viewModels()

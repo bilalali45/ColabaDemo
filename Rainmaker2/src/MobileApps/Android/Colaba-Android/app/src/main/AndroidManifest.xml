@@ -70,6 +70,11 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".BorrowerLoanActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait">
+        </activity>
+
 
 
         <activity android:name=".activities.borroweraddresses.PlacePredictionProgrammatically"

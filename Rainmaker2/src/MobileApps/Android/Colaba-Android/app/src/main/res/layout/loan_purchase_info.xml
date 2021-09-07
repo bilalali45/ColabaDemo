@@ -207,6 +207,9 @@
                     app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="0.5dp"
                     app:boxStrokeWidthFocused="1dp"
+                    app:helperTextEnabled="true"
+                    app:helperTextTextAppearance="@style/inputError"
+                    app:helperTextTextColor="@color/colaba_red_color"
                     app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -245,6 +248,9 @@
                 app:endIconDrawable="@drawable/ic_calendar"
                 app:endIconMode="custom"
                 app:endIconTint="@color/grey_color_three"
+                app:helperTextEnabled="true"
+                app:helperTextTextAppearance="@style/inputError"
+                app:helperTextTextColor="@color/colaba_red_color"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -269,7 +275,7 @@
     </ScrollView>
 
     <ImageButton
-        android:id="@+id/btn_save_info"
+        android:id="@+id/btn_save_change"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginEnd="20dp"

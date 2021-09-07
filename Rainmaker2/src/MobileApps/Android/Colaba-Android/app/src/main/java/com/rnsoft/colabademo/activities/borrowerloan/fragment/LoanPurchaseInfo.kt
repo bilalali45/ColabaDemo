@@ -13,8 +13,10 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.MyCustomFocusListener
 import com.rnsoft.colabademo.databinding.AppToolbarHeadingBinding
 import com.rnsoft.colabademo.databinding.LoanPurchaseInfoBinding
@@ -32,6 +34,8 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
     private lateinit var binding: LoanPurchaseInfoBinding
     private lateinit var bindingToolbar : AppToolbarHeadingBinding
     var isStart : Boolean = true
+    var isCalculatePercentage= false
+    var isCalculateDownPayment = false
 
     private val loanStageArray = listOf("Pre-Approval")
 
@@ -47,28 +51,23 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
         setLoanStageSpinner()
         initViews()
         setNumberFormats()
-
         binding.edDownPayment.isEnabled = false
         binding.edPercent.isEnabled = false
 
 
         binding.edPurchasePrice.addTextChangedListener(object : TextWatcher {
-
             override fun afterTextChanged(s: Editable) {
-                var value = binding.edPurchasePrice.text
+                val value = binding.edPurchasePrice.text
                 value.let {
                     binding.edDownPayment.isEnabled = true
                     binding.edPercent.isEnabled = true
                 }
-
-                if(value?.length == 0){
+                if(value?.length == 0) {
                     binding.edDownPayment.isEnabled = false
                     binding.edPercent.isEnabled = false
                     binding.edPercent.setText("0")
                     binding.edDownPayment.setText("0")
                 }
-
-
             }
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -93,20 +92,19 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
             }
         })
 
-        binding.edPercent.addTextChangedListener(object : TextWatcher {
-
-            override fun afterTextChanged(s: Editable) { }
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        binding.edDownPayment.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {
                 try {
-                    val purchasePrice = binding.edPurchasePrice.text.toString().length
-                    if (purchasePrice > 0) {
-                        if (!isStart) {
-                            val edValue = binding.edPercent.text.toString()
-                            val purchaseValue = binding.edPurchasePrice.text.toString()
-                            edValue.let {
-                                val result = (Integer.parseInt(purchaseValue) * Integer.parseInt(edValue)) / 100
-                                binding.edDownPayment.setText(result.toString())
+                    val purchasePrice = Integer.parseInt(binding.edPurchasePrice.text.toString())
+                    if (purchasePrice > 0 ) {
+                        if (!isStart && isCalculateDownPayment) {
+                            val downPayment = binding.edDownPayment.text.toString()
+                            downPayment.let {
+                                val result : Float = (downPayment.toFloat() / purchasePrice.toFloat())*100
+                                val convertResult : Int =  Math.round(result)
+                                //Log.e(""+ purchasePrice, " Downpayment " + downPayment  +" Result " + result)
+                                //Log.e("ConvertResult", ""+ convertResult)
+                                binding.edPercent.setText(convertResult.toString())
                             }
                         }
                     } else {
@@ -117,12 +115,115 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
                     e.printStackTrace()
                 }
             }
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            }
         })
 
+
+        binding.edPercent.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {
+                //val edValue = binding.edPercent.text.toString().length
+                //if(edValue==0){
+                // binding.edDownPayment.setText("0")
+                //}
+                try {
+                    val purchasePrice = binding.edPurchasePrice.text.toString().length
+                    if (purchasePrice > 0) {
+                        if (!isStart && isCalculatePercentage) {
+                            val edValue = binding.edPercent.text.toString()
+                            val purchaseValue = binding.edPurchasePrice.text.toString()
+                            edValue.let {
+                                val result = (Integer.parseInt(purchaseValue) * Integer.parseInt(edValue)) / 100
+                                binding.edDownPayment.setText(result.toString())
+                            }
+                        }
+                    }
+                } catch (nfe: NumberFormatException) {
+                    nfe.printStackTrace()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+            }
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+        })
+
+        binding.btnSaveChange.setOnClickListener {
+            checkValidations()
+        }
+
         return binding.root
+    }
+
+    private fun checkValidations(){
+
+        val loanStage: String = binding.tvLoanStage.text.toString()
+        val purchasePrice: String = binding.edPurchasePrice.text.toString()
+        val loanAmount: String = binding.edLoanAmount.text.toString()
+        val downPayment: String = binding.edDownPayment.text.toString()
+        val percentage: String = binding.edPercent.text.toString()
+        val closingDate: String = binding.edClosingDate.text.toString()
+
+        if (loanStage.isEmpty() || loanStage.length == 0) {
+            setError(binding.layoutLoanStage, getString(com.rnsoft.colabademo.R.string.error_field_required))
+        }
+        if (purchasePrice.isEmpty() || purchasePrice.length == 0) {
+            setError(binding.layoutPurchasePrice, getString(com.rnsoft.colabademo.R.string.invalid_purchase_price))
+        }
+        if (loanAmount.isEmpty() || loanAmount.length == 0) {
+            setError(binding.layoutLoanAmount, getString(com.rnsoft.colabademo.R.string.error_field_required))
+        }
+        if (closingDate.isEmpty() || closingDate.length == 0) {
+            setError(binding.layoutClosingDate, getString(com.rnsoft.colabademo.R.string.error_field_required))
+        }
+        if (downPayment.isEmpty() || downPayment.length == 0) {
+            setError(binding.layoutDownPayment, getString(com.rnsoft.colabademo.R.string.error_field_required))
+        }
+        if (percentage.isEmpty() || percentage.length == 0) {
+            setError(binding.layoutPercent, getString(com.rnsoft.colabademo.R.string.error_field_required))
+        }
+        // clear error
+        if (loanStage.isNotEmpty() || loanStage.length > 0) {
+            clearError(binding.layoutLoanStage)
+        }
+        if (purchasePrice.isNotEmpty() || purchasePrice.length > 0) {
+            clearError(binding.layoutPurchasePrice)
+            clearError(binding.layoutDownPayment)
+            clearError(binding.layoutPercent)
+        }
+        if (loanAmount.isNotEmpty() || loanAmount.length > 0) {
+            clearError(binding.layoutLoanAmount)
+        }
+        if (downPayment.isNotEmpty() || downPayment.length > 0) {
+            clearError(binding.layoutDownPayment)
+        }
+        if (percentage.isNotEmpty() || percentage.length > 0) {
+            clearError(binding.layoutPercent)
+        }
+        if (closingDate.isNotEmpty() || closingDate.length > 0) {
+            clearError(binding.layoutClosingDate)
+        }
 
     }
 
+
+    fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
+        textInputlayout.helperText = errorMsg
+        textInputlayout.setBoxStrokeColorStateList(
+            AppCompatResources.getColorStateList(requireContext(), com.rnsoft.colabademo.R.color.primary_info_stroke_error_color))
+    }
+
+    fun clearError(textInputlayout: TextInputLayout) {
+        textInputlayout.helperText = ""
+        textInputlayout.setBoxStrokeColorStateList(
+            AppCompatResources.getColorStateList(
+                requireContext(),
+                com.rnsoft.colabademo.R.color.primary_info_line_color
+            )
+        )
+    }
 
     private fun initViews() {
 
@@ -153,6 +254,9 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
                 if (binding.edPurchasePrice.text?.length == 0) {
                     CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_three, requireContext())
                 } else {
+                    clearError(binding.layoutPurchasePrice)
+                    clearError(binding.layoutDownPayment)
+                    clearError(binding.layoutPercent)
                     CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
 
                     val value = binding.edPurchasePrice.text.toString()
@@ -170,44 +274,38 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
 
         binding.edDownPayment.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
+                isCalculateDownPayment = true
+                isCalculatePercentage = false
+                CustomMaterialFields.setColor(binding.layoutDownPayment, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
             } else {
-                if (binding.edPurchasePrice.text?.length == 0) {
-                    CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_three, requireContext())
+                if (binding.edDownPayment.text?.length == 0) {
+                    CustomMaterialFields.setColor(binding.layoutDownPayment, com.rnsoft.colabademo.R.color.grey_color_three, requireContext())
                 } else {
-                    CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
+                    clearError(binding.layoutDownPayment)
+                    CustomMaterialFields.setColor(binding.layoutDownPayment, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
                 }
-
             }
         }
 
+        binding.edPercent.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                isCalculateDownPayment = false
+                isCalculatePercentage = true
+            }
+        }
 
-        binding.edDownPayment.setOnFocusChangeListener(
-            MyCustomFocusListener(
-                binding.edDownPayment,
-                binding.layoutDownPayment,
-                requireContext()
-            )
-        )
-        /*binding.edPercent.setOnFocusChangeListener(
-            MyCustomFocusListener(
-                binding.edPercent,
-                binding.layoutPercent,
-                requireContext()
-            )
-        ) */
-        binding.edLoanAmount.setOnFocusChangeListener(
-            MyCustomFocusListener(
-                binding.edLoanAmount,
-                binding.layoutLoanAmount,
-                requireContext()
-            )
-        )
-
-        /*bindingToolbar.backButton.setOnClickListener {
-            requireActivity().finish()
-        } */
-
+        binding.edLoanAmount.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                CustomMaterialFields.setColor(binding.layoutLoanAmount, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
+            } else {
+                if (binding.edLoanAmount.text?.length == 0) {
+                    CustomMaterialFields.setColor(binding.layoutLoanAmount, com.rnsoft.colabademo.R.color.grey_color_three, requireContext())
+                } else {
+                    clearError(binding.layoutLoanAmount)
+                    CustomMaterialFields.setColor(binding.layoutLoanAmount, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
+                }
+            }
+        }
 
     }
 
@@ -217,14 +315,12 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
                 var purchasePrice = value.replace(",", "");
                 val amount: Long = purchasePrice.toLong()
                 val result = (amount * 20) / 100
-                Log.e("result", result.toString())
                 binding.edDownPayment.setText(result.toString())
                 binding.edPercent.setText("20")
 
             }
         }
     }
-
 
     private fun setLoanStageSpinner() {
         val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, loanStageArray)
@@ -239,11 +335,11 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
             AdapterView.OnItemClickListener {
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                 binding.layoutLoanStage.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        com.rnsoft.colabademo.R.color.grey_color_two
-                    )
-                )
+                    ContextCompat.getColor(requireContext(), com.rnsoft.colabademo.R.color.grey_color_two))
+
+                if(binding.tvLoanStage.text.isNotEmpty() && binding.tvLoanStage.text.isNotBlank()) {
+                    clearError(binding.layoutLoanStage)
+                }
                 if (position == loanStageArray.size - 1)
                     binding.layoutLoanStage.visibility = View.VISIBLE
                 else
@@ -265,6 +361,7 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
 
         val sampleDate = "$stringMonth / $p1"
         binding.edClosingDate.setText(sampleDate)
+        clearError(binding.layoutClosingDate)
     }
 
     private fun onBackClicked(view:View){
@@ -276,5 +373,6 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
         //binding.edLoanAmount.addTextChangedListener(NumberTextFormat(binding.edLoanAmount))
         //binding.edDownPayment.addTextChangedListener(NumberTextFormat(binding.edDownPayment))
     }
+
 
 }
