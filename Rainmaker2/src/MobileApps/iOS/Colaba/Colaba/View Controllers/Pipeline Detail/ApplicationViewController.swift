@@ -70,6 +70,7 @@ class ApplicationViewController: BaseViewController {
         assetsView.layer.borderWidth = 1
         assetsView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         assetsView.dropShadowToCollectionViewCell()
+        assetsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(assetsViewTapped)))
         monthlyIncomeView.layer.cornerRadius = 6
         monthlyIncomeView.layer.borderWidth = 1
         monthlyIncomeView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
@@ -139,8 +140,6 @@ class ApplicationViewController: BaseViewController {
             let vc = Utility.getRefinanceSubjectPropertyVC()
             self.pushToVC(vc: vc)
         }
-//        let vc = Utility.getPurchaseSubjectPropertyVC()
-//        self.pushToVC(vc: vc)
     }
     
     @objc func loanInfoViewTapped(){
@@ -152,9 +151,11 @@ class ApplicationViewController: BaseViewController {
             let vc = Utility.getRefinanceLoanInfoVC()
             self.pushToVC(vc: vc)
         }
-//        let vc = Utility.getRefinanceLoanInfoVC()
-//        let vc = Utility.getPurchaseLoanInfoVC()
-//        self.pushToVC(vc: vc)
+    }
+    
+    @objc func assetsViewTapped(){
+        let vc = Utility.getAssetsVC()
+        self.pushToVC(vc: vc)
     }
     
     //MARK:- API's

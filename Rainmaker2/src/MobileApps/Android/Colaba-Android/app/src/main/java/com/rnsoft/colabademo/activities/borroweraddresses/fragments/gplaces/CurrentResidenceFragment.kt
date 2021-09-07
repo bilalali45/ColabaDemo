@@ -4,6 +4,8 @@ import android.app.DatePickerDialog
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,27 +17,28 @@ import android.widget.DatePicker
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.AutocompleteSessionToken
-import com.google.android.libraries.places.api.model.RectangularBounds
-import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.api.model.*
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
+
 import com.rnsoft.colabademo.databinding.TempResidenceLayoutBinding
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import dagger.hilt.android.AndroidEntryPoint
+
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
-class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener, PlacePredictionAdapter.OnPlaceClickListener {
 
     private var _binding: TempResidenceLayoutBinding? = null
     private val binding get() = _binding!!
@@ -156,56 +159,176 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener 
             AddressNotSavingDialogFragment.newInstance(message).show(childFragmentManager, AddressNotSavingDialogFragment::class.java.canonicalName)
         }
 
-
+        setUpCompleteViewForPlaces()
 
         return root
 
     }
 
-    private fun initGooglePlaceSetup(){
-        val TAG = "OTHER_WAY-"
-        Places.initialize(requireContext(), "AIzaSyBzPEiQOTReBzy6W1UcIyHApPu7_5Die6w")
-        // Create a new Places client instance.
-        val placesClient: PlacesClient = Places.createClient(requireContext())
+
+
+
+
+    // Create a RectangularBounds object.
+    private val bounds = RectangularBounds.newInstance(
+        LatLng(24.7433195, -124.7844079),
+        LatLng(49.3457868, -66.9513812)
+    )
+
+    private val bias: LocationBias = RectangularBounds.newInstance(
+        LatLng(37.7576948, -122.4727051), // SW lat, lng
+        LatLng(37.808300, -122.391338) // NE lat, lng
+    )
+
+    private lateinit var token:AutocompleteSessionToken
+    private lateinit var placesClient: PlacesClient
+
+    private lateinit var predictAdapter: PlacePredictionAdapter
+
+    private fun setUpCompleteViewForPlaces(){
+
+        val linearLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.VERTICAL, false)
+        predictAdapter = PlacePredictionAdapter(this@CurrentResidenceFragment)
+        binding.fakePlaceSearchRecyclerView.apply {
+            this.layoutManager = linearLayoutManager
+            this.setHasFixedSize(true)
+            predictAdapter = PlacePredictionAdapter(this@CurrentResidenceFragment)
+            this.adapter = predictAdapter
+        }
 
         // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
         // and once again when the user makes a selection (for example when calling fetchPlace()).
-        val token = AutocompleteSessionToken.newInstance()
+        token = AutocompleteSessionToken.newInstance()
 
-        // Create a RectangularBounds object.
-        val bounds = RectangularBounds.newInstance(
-            LatLng(-33.880490, 151.184363),
-            LatLng(-33.858754, 151.229596)
-        )
+        Places.initialize(requireContext(), "AIzaSyBzPEiQOTReBzy6W1UcIyHApPu7_5Die6w")
+        // Create a new Places client instance.
+        placesClient = Places.createClient(requireContext())
+
+
+        //autoCompleteAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,  predicationList)
+        //binding.topSearchAutoTextView.freezesText = false
+        //binding.topSearchAutoTextView.threshold = 4
+        //binding.topSearchAutoTextView.setAdapter(autoCompleteAdapter)
+
+
+        binding.topSearchAutoTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean->
+            if (hasFocus)
+                binding.topSearchAutoTextView.addTextChangedListener(placeTextWatcher)
+            else
+                binding.topSearchAutoTextView.removeTextChangedListener(placeTextWatcher)
+        }
+
+
+        binding.topSearchAutoTextView.setOnClickListener{
+            //binding.topSearchAutoTextView.addTextChangedListener(placeTextWatcher)
+        }
+
+
+    }
+
+    private val placeTextWatcher = (object : TextWatcher {
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+        override fun afterTextChanged(s: Editable) {
+            val str: String = binding.topSearchAutoTextView.text.toString()
+            if(str.length>=3){
+                searchForGooglePlaces(str)
+            }
+            else
+                binding.fakePlaceSearchRecyclerView.visibility = View.INVISIBLE
+        }
+    })
+
+
+    private var predicationList:ArrayList<String> = ArrayList()
+    //private lateinit var autoCompleteAdapter:ArrayAdapter<String>    //= ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,  predicationList)
+
+    private fun searchForGooglePlaces(queryPlace:String){
+
+        val TAG = "OTHER_WAY-"
+
+        binding.fakePlaceSearchRecyclerView.visibility = View.VISIBLE
+
         // Use the builder to create a FindAutocompletePredictionsRequest.
         val request =
             FindAutocompletePredictionsRequest.builder()
                 // Call either setLocationBias() OR setLocationRestriction().
                 .setLocationBias(bounds)
                 //.setLocationRestriction(bounds)
-                .setOrigin(LatLng(-33.8749937, 151.2041382))
-                .setCountries("AU", "NZ")
+                .setOrigin(LatLng(37.0902, 95.7129))
+                //s.setCountries("USA")
                 .setTypeFilter(TypeFilter.ADDRESS)
                 .setSessionToken(token)
-                .setQuery("Queenstown")
+                .setQuery(queryPlace)
                 .build()
+
+
+
         placesClient.findAutocompletePredictions(request)
             .addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
                 for (prediction in response.autocompletePredictions) {
                     Log.e(TAG, prediction.placeId)
 
+                    predicationList.add(prediction.getFullText(null).toString())
                     Log.e(TAG, prediction.getFullText(null).toString())
-                    Log.e(TAG, prediction.getSecondaryText(null).toString())
-                    Log.e(TAG, prediction.getPrimaryText(null).toString())
+
                 }
+                predictAdapter.setPredictions(response.autocompletePredictions)
+
             }.addOnFailureListener { exception: Exception? ->
                 if (exception is ApiException) {
                     Log.e(TAG, "Place not found: " + exception.statusCode)
                 }
             }
+
+        Log.e("predicationList" , predicationList.size.toString())
+
+
+
+        //var al2: ArrayList<String> = ArrayList<String>(predicationList.subList(1, 4))
+
+        //if(predicationList.size>20)
+            //predicationList = ArrayList(predicationList.subList(0,predicationList.size/2)
+
+
+       // predictAdapterModified.notifyDataSetChanged()
+
+
+        //predicationList.add("irfan")
+
+        //this.autoCompleteAdapter.notifyDataSetChanged()
+        //binding.topSearchAutoTextView.postDelayed({
+            //(binding.topSearchAutoTextView as AutoCompleteTextView).showDropDown()
+
+        //}, 200)
     }
 
 
+
+
+    /*
+    private var listAutocompletePrediction:List<AutocompletePrediction> = listOf()
+
+    private val activityScope = CoroutineScope(Dispatchers.IO)
+
+    private suspend fun searchGooglePlacesUsingExperimentalApi(queryPlace:String){
+
+        activityScope.launch {
+            val response = placesClient.awaitFindAutocompletePredictions {
+                locationBias = bias
+                typeFilter = TypeFilter.ESTABLISHMENT
+                this.query = query
+                countries = listOf("US")
+            }
+
+            listAutocompletePrediction = response.autocompletePredictions
+
+            withContext(Dispatchers.Main){
+                predictAdapter.setPredictions(listAutocompletePrediction)
+            }
+    }
+
+     */
 
 
     override fun onStart() {
@@ -245,6 +368,17 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener 
 
         val sampleDate = "$stringMonth / $p1"
         binding.moveInEditText.setText(sampleDate)
+    }
+
+    override fun onPlaceClicked(place: AutocompletePrediction) {
+        Log.e("which-place", "desc = "+place.getFullText(null).toString())
+        predictAdapter.setPredictions(null)
+        binding.fakePlaceSearchRecyclerView.visibility = View.GONE
+        val placeSelected = place.getFullText(null).toString()
+        binding.topSearchAutoTextView.removeTextChangedListener(placeTextWatcher)
+        binding.topSearchAutoTextView.setText(placeSelected)
+
+
     }
 
 }
