@@ -19,23 +19,38 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:padding="16dp"
+  android:padding="8dp"
+  android:id="@+id/placeHolder"
+  android:background="@color/white"
+
   android:orientation="vertical">
 
   <TextView
     android:id="@+id/text_view_title"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+      android:gravity="start"
     android:textStyle="bold"
-    android:textSize="18sp"
+    android:textSize="15sp"
+    android:fontFamily="@font/rubik_regular"
+    android:textColor="@color/grey_color_one"
     tools:text="Place Name" />
 
+  <!--
   <TextView
     android:id="@+id/text_view_address"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+      android:gravity="center"
     android:textSize="16sp"
     android:layout_marginTop="2dp"
     tools:text="123 Main Street, San Francisco, CA USA" />
+    -->
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginTop="6dp"
+      android:background="@color/loan_view_holder_separator"
+    />
 
 </LinearLayout>
