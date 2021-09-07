@@ -47,6 +47,8 @@ object AppConstant {
 
         const val refinance:String = "Refinance"
 
+        const val subjectProperty:String = "subjectPropertyPurpose"
+
         const val maxOtpSendAllowed:String = "maxOtpSendAllowed"
 
         const val twoFaResendCoolTimeInMinutes:String = "twoFaResendCoolTimeInMinutes"

@@ -27,6 +27,7 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
     private lateinit var realStateRecyclerView: RecyclerView
     private lateinit var questionsRecyclerView: RecyclerView
     private lateinit var loanLayout : ConstraintLayout
+    private lateinit var subjectPropertyLayout : ConstraintLayout
     //private lateinit var applicationTopContainer: ConstraintLayout
 
     private val detailViewModel: DetailViewModel by activityViewModels()
@@ -54,11 +55,11 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
         realStateRecyclerView = root.findViewById(R.id.realStateHorizontalRecyclerView)
         questionsRecyclerView = root.findViewById(R.id.govtQuestionHorizontalRecyclerView)
         loanLayout = root.findViewById(R.id.constraintLayout6)
+        subjectPropertyLayout = root.findViewById(R.id.constraintLayout5)
         //applicationTopContainer = root.findViewById(R.id.application_top_container)
 
 
         loanLayout.setOnClickListener {
-
 
             val detailActivity = (activity as? DetailActivity)
 
@@ -72,6 +73,21 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
                 }
                 startActivity(borrowerLoanActivity)
             }
+        }
+
+        subjectPropertyLayout.setOnClickListener {
+            val detailActivity = (activity as? BorrowerSubjectProperty)
+
+            detailActivity?.let {
+                val intent = Intent(requireActivity(), BorrowerSubjectProperty::class.java)
+
+                 /*it.borrowerLoanPurpose?.let{ loanPurpose->
+                    intent.putExtra(AppConstant.subjectProperty, loanPurpose)
+                } */
+                startActivity(intent)
+            }
+
+
         }
 
         val linearLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
