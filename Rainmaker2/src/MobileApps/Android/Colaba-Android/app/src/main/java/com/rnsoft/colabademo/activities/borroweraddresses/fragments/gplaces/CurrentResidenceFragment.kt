@@ -4,6 +4,8 @@ import android.app.DatePickerDialog
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.DatePicker
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -19,6 +22,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
+import com.google.android.libraries.places.api.model.LocationBias
 import com.google.android.libraries.places.api.model.RectangularBounds
 import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
@@ -32,6 +36,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -156,44 +161,94 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener 
             AddressNotSavingDialogFragment.newInstance(message).show(childFragmentManager, AddressNotSavingDialogFragment::class.java.canonicalName)
         }
 
-
+        setUpCompleteViewForPlaces()
 
         return root
 
     }
 
-    private fun initGooglePlaceSetup(){
-        val TAG = "OTHER_WAY-"
-        Places.initialize(requireContext(), "AIzaSyBzPEiQOTReBzy6W1UcIyHApPu7_5Die6w")
-        // Create a new Places client instance.
-        val placesClient: PlacesClient = Places.createClient(requireContext())
+    // Create a RectangularBounds object.
+    private val bounds = RectangularBounds.newInstance(
+        LatLng(24.7433195, -124.7844079),
+        LatLng(49.3457868, -66.9513812)
+    )
+
+    private val bias: LocationBias = RectangularBounds.newInstance(
+        LatLng(37.7576948, -122.4727051), // SW lat, lng
+        LatLng(37.808300, -122.391338) // NE lat, lng
+    )
+
+    private lateinit var token:AutocompleteSessionToken
+    private lateinit var placesClient: PlacesClient
+    private fun setUpCompleteViewForPlaces(){
 
         // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
         // and once again when the user makes a selection (for example when calling fetchPlace()).
-        val token = AutocompleteSessionToken.newInstance()
+        token = AutocompleteSessionToken.newInstance()
 
-        // Create a RectangularBounds object.
-        val bounds = RectangularBounds.newInstance(
-            LatLng(-33.880490, 151.184363),
-            LatLng(-33.858754, 151.229596)
-        )
+        Places.initialize(requireContext(), "AIzaSyBzPEiQOTReBzy6W1UcIyHApPu7_5Die6w")
+        // Create a new Places client instance.
+        placesClient = Places.createClient(requireContext())
+
+
+        autoCompleteAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,  predicationList)
+        //binding.topSearchAutoTextView.freezesText = false
+        binding.topSearchAutoTextView.threshold = 4
+        binding.topSearchAutoTextView.setAdapter(autoCompleteAdapter)
+
+        binding.topSearchAutoTextView.setOnFocusChangeListener { _, _ ->
+            binding.topSearchAutoTextView.showDropDown()
+        }
+        binding.topSearchAutoTextView.setOnClickListener{
+            binding.topSearchAutoTextView.showDropDown()
+        }
+
+
+        binding.topSearchAutoTextView.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                val str: String =   binding.topSearchAutoTextView.text.toString()
+                //len = str.length
+            }
+            override fun afterTextChanged(s: Editable) {
+                val str: String =   binding.topSearchAutoTextView.text.toString()
+                if(str.length >= 3){
+                    searchForGooglePlaces(str)
+                }
+                else{
+
+                }
+
+            }
+        })
+    }
+
+    private var predicationList:ArrayList<String> = ArrayList()
+    private lateinit var autoCompleteAdapter:ArrayAdapter<String>    //= ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,  predicationList)
+
+    private fun searchForGooglePlaces(queryPlace:String){
+
+        val TAG = "OTHER_WAY-"
+
         // Use the builder to create a FindAutocompletePredictionsRequest.
         val request =
             FindAutocompletePredictionsRequest.builder()
                 // Call either setLocationBias() OR setLocationRestriction().
                 .setLocationBias(bounds)
                 //.setLocationRestriction(bounds)
-                .setOrigin(LatLng(-33.8749937, 151.2041382))
-                .setCountries("AU", "NZ")
+                .setOrigin(LatLng(37.0902, 95.7129))
+                .setCountries("USA")
                 .setTypeFilter(TypeFilter.ADDRESS)
                 .setSessionToken(token)
-                .setQuery("Queenstown")
+                .setQuery(queryPlace)
                 .build()
+
         placesClient.findAutocompletePredictions(request)
             .addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
                 for (prediction in response.autocompletePredictions) {
                     Log.e(TAG, prediction.placeId)
 
+                    //predicationList.add(prediction.getFullText(null).toString())
                     Log.e(TAG, prediction.getFullText(null).toString())
                     Log.e(TAG, prediction.getSecondaryText(null).toString())
                     Log.e(TAG, prediction.getPrimaryText(null).toString())
@@ -203,6 +258,23 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener 
                     Log.e(TAG, "Place not found: " + exception.statusCode)
                 }
             }
+
+        Log.e("predicationList" , predicationList.size.toString())
+
+
+
+        //var al2: ArrayList<String> = ArrayList<String>(predicationList.subList(1, 4))
+
+        //if(predicationList.size>20)
+            //predicationList = ArrayList(predicationList.subList(0,predicationList.size/2))
+
+        predicationList.add("irfan")
+
+        this.autoCompleteAdapter.notifyDataSetChanged()
+        binding.topSearchAutoTextView.postDelayed({
+            //(binding.topSearchAutoTextView as AutoCompleteTextView).showDropDown()
+
+        }, 200)
     }
 
 

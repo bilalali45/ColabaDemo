@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.places.android.ktx.demo
+package com.rnsoft.colabademo
 
 import android.view.LayoutInflater
 import android.view.View
