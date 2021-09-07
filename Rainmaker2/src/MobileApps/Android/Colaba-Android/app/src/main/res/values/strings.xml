@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Colaba</string>
 
-    <string name="api_key"> AIzaSyBzPEiQOTReBzy6W1UcIyHApPu7_5Die6w </string>
+    <string name="api_key">AIzaSyBzPEiQOTReBzy6W1UcIyHApPu7_5Die6w </string>
 
     <string name="colaba">Colaba</string>
     <string name="email">Email</string>
@@ -182,6 +182,18 @@
 
 
     <!--       dummy data   -->
+
+    <string name="app_name">Android Places KTX Demo</string>
+    <string name="programmatic_place_predictions_instructions">This activity demonstrates as-you-type programmatic place predictions. Tap on the search icon on the toolbar and search for a place.</string>
+    <string name="search">Search</string>
+    <string name="search_a_place">Search a Place</string>
+
+    <string name="places_demo_title">Places Search Demo</string>
+    <string name="places_demo_description">Demonstrates usages of Places KTX coroutines and DSL builder features.</string>
+
+    <string name="autocomplete_fragment_demo_title">Autocomplete Fragment Demo</string>
+    <string name="autocomplete_fragment_demo_description">Demonstrates using AutocompleteSupportFragment and placeSelectionEvents() to use Kotlin Flow.</string>
+
     <string name="title_rugby">Rugby</string>
     <string name="title_cricket">Cricket</string>
     <string name="title_basketball">Basketball</string>
@@ -312,6 +324,8 @@
     <string name="occupying">Occupying</string>
     <string name="non_occupying">Non-Occupying</string>
     <string name="subject_property">Subject Property</string>
+
+
 
 
 

@@ -2,7 +2,19 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@+id/login_fragment_id">
+    app:startDestination="@+id/navigation_current_address">
+
+
+
+
+    <fragment
+        android:id="@+id/navigation_current_address"
+        android:name="com.rnsoft.colabademo.CurrentResidenceFragment"
+        android:label="@string/current_residence"
+        tools:layout="@layout/current_residence_layout" />
+
+
+
 
     <fragment
         android:id="@+id/login_fragment_id"
@@ -17,6 +29,9 @@
             android:id="@+id/action_login_to_phone_number"
             app:destination="@id/phone_number_id" />
     </fragment>
+
+
+
 
 
     <fragment
@@ -87,11 +102,11 @@
 
     </fragment>
 
-    <!--<fragment
+    <fragment
         android:id="@+id/borrower_app_loan_purchase"
-        android:name="com.rnsoft.colabademo.activities.borrowerloan.fragment.LoanPurchaseInfo"
+        android:name="com.rnsoft.colabademo.LoanPurchaseInfo"
         android:label="@string/loan_info_purchase"
-        tools:layout="@layout/loan_purchase_info" /> -->
+        tools:layout="@layout/loan_purchase_info" />
 
 
 </navigation>

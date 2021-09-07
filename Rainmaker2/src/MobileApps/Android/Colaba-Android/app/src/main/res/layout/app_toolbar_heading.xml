@@ -13,8 +13,7 @@
             app:layout_constraintBottom_toTopOf="@+id/tab_top_border"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/search_back"
-            android:onClick="onBackClicked"/>
+            app:srcCompat="@drawable/search_back" />
 
         <TextView
             android:id="@+id/header_title"
