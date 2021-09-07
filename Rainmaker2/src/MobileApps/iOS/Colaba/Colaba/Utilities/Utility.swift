@@ -199,6 +199,18 @@ struct Utility {
         return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: SecondMortgageFollowupQuestionsViewController.self)) as! SecondMortgageFollowupQuestionsViewController
     }
     
+    static func getAssetsVC() -> AssetsViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: AssetsViewController.self)) as! AssetsViewController
+    }
+    
+    static func getAssetsDetailVC() -> AssetsDetailViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: AssetsDetailViewController.self)) as! AssetsDetailViewController
+    }
+    
+    static func getAddBankAccountVC() -> AddBankAccountViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: AddBankAccountViewController.self)) as! AddBankAccountViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
