@@ -58,9 +58,6 @@ class LoginFragment : Fragment() {
 
         setupFragment()
         hideSoftKeyboard()
-
-
-
         passwordLayout.setEndIconOnClickListener(View.OnClickListener {
             if (editTextPassword.getTransformationMethod()
                     .equals(PasswordTransformationMethod.getInstance())
@@ -72,8 +69,6 @@ class LoginFragment : Fragment() {
                 passwordLayout.setEndIconDrawable(R.drawable.ic_eye_icon_svg)
             }
         })
-
-
 
         return root
     }

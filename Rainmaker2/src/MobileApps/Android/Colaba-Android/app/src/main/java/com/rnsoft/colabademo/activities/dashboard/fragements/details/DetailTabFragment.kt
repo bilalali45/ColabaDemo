@@ -6,20 +6,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rnsoft.colabademo.databinding.DetailTabLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlin.math.roundToInt
+import com.google.android.material.badge.BadgeDrawable
+
+
+
 
 val detailTabArray = arrayOf(
     "Overview",
@@ -43,6 +44,10 @@ class DetailTabFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager2
 
+    private lateinit var tabLayout:TabLayout
+
+    private var displayBadge = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,7 +59,7 @@ class DetailTabFragment : Fragment() {
         val root: View = binding.root
 
         viewPager = binding.detailViewPager
-        val tabLayout = binding.detailTabLayout
+        tabLayout = binding.detailTabLayout
         pageAdapter = DetailPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
         viewPager.adapter = pageAdapter
 
@@ -104,6 +109,8 @@ class DetailTabFragment : Fragment() {
                 }
             }
 
+
+
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
             override fun onTabReselected(tab: TabLayout.Tab?) {}
@@ -129,9 +136,25 @@ class DetailTabFragment : Fragment() {
         else
             TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = detailTabArray[position] }.attach()
 
+        observeFileReadChanges()
+
         return root
     }
 
+
+    private fun observeFileReadChanges(){
+        detailViewModel.borrowerDocsModelList.observe(viewLifecycleOwner, { docsArrayList ->
+            for (doc in docsArrayList) {
+                if (doc.subFiles.size > 0) {
+                    for (subFile in doc.subFiles) {
+                        if (!subFile.isRead)
+                            displayBadge = true
+                    }
+                }
+            }
+            addBadgeForUnreadFile()
+        })
+    }
 
     private fun loadDetailWebservices(){
         lifecycleScope.launchWhenStarted {
@@ -179,11 +202,30 @@ class DetailTabFragment : Fragment() {
 
     }
 
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
 
+
+    private fun addBadgeForUnreadFile(){
+        val testBadge = tabLayout.getTabAt(2)?.orCreateBadge
+        testBadge?.let {
+            if (displayBadge) {
+                testBadge.isVisible = true
+                //testBadge.number = 1
+                testBadge.verticalOffset = -16
+                testBadge.backgroundColor = getColor(requireContext(), R.color.colaba_red_color)
+                //testBadge.badgeTextColor = getColor(requireContext(), R.color.white)
+            }
+            else
+                testBadge.isVisible = false
+        }
     }
+
+
+}
 

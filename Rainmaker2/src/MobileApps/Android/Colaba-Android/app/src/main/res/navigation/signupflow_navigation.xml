@@ -87,5 +87,11 @@
 
     </fragment>
 
+    <!--<fragment
+        android:id="@+id/borrower_app_loan_purchase"
+        android:name="com.rnsoft.colabademo.activities.borrowerloan.fragment.LoanPurchaseInfo"
+        android:label="@string/loan_info_purchase"
+        tools:layout="@layout/loan_purchase_info" /> -->
+
 
 </navigation>
