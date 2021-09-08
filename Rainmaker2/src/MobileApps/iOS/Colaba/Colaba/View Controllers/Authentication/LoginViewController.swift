@@ -15,13 +15,8 @@ class LoginViewController: UIViewController {
     //MARK:- Outlets and Properties
     
     @IBOutlet weak var loginView: UIView!
-    @IBOutlet weak var txtFieldEmail: TextField!
-    @IBOutlet weak var emailSeparator: UIView!
-    @IBOutlet weak var lblEmailError: UILabel!
-    @IBOutlet weak var txtFieldPassword: TextField!
-    @IBOutlet weak var passwordSeparator: UIView!
-    @IBOutlet weak var lblPasswordError: UILabel!
-    @IBOutlet weak var btnEye: UIButton!
+    @IBOutlet weak var txtFieldEmail: ColabaTextField!
+    @IBOutlet weak var txtFieldPassword: ColabaTextField!
     @IBOutlet weak var faceIdSwitch: UISwitch!
     @IBOutlet weak var btnLogin: UIButton!
     
@@ -63,27 +58,24 @@ class LoginViewController: UIViewController {
         loginView.layer.cornerRadius = 8
         loginView.addShadow()
         btnLogin.layer.cornerRadius = 5
-        txtFieldEmail.delegate = self
-        txtFieldPassword.delegate = self
-        
-        setMaterialTextFieldsAndViews(textfields: [txtFieldEmail, txtFieldPassword])
+        setTextFields()
     }
     
-    func setMaterialTextFieldsAndViews(textfields: [TextField]){
-        for textfield in textfields{
-            textfield.dividerActiveColor = Theme.getButtonBlueColor()
-            textfield.dividerColor = Theme.getSeparatorNormalColor()
-            textfield.placeholderActiveColor = Theme.getAppGreyColor()
-            textfield.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-            textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
-            textfield.detailColor = .red
-            textfield.detailVerticalOffset = 4
-            textfield.placeholderVerticalOffset = 8
-            textfield.textColor = Theme.getAppBlackColor()
-        }
+    func setTextFields() {
+        ///Email Text Field
+        txtFieldEmail.setTextField(placeholder: "Email")
+        txtFieldEmail.setDelegates(controller: self)
+        txtFieldEmail.setValidation(validationType: .email)
         if (isAppOpenFromBackground){
-            txtFieldEmail.textColor = Theme.getAppGreyColor()
+            txtFieldEmail.setTextField(textColor: Theme.getAppGreyColor())
         }
+        
+        ///Password Text Field
+        txtFieldPassword.setTextField(placeholder: "Password")
+        txtFieldPassword.setDelegates(controller: self)
+        txtFieldPassword.type = .password
+        txtFieldPassword.setValidation(validationType: .password)
+        
     }
     
     func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){
@@ -103,12 +95,6 @@ class LoginViewController: UIViewController {
             
         UserDefaults.standard.set(isBiometricAllow ? kYes : kNo, forKey: kIsUserRegisteredWithBiometric)
         self.goToDashboard()
-    }
-    
-    @IBAction func btnEyeTapped(_ sender: UIButton) {
-        shouldShowPassword = !shouldShowPassword
-        btnEye.setImage(UIImage(named: shouldShowPassword ? "hide" : "eyeIcon"), for: .normal)
-        txtFieldPassword.isSecureTextEntry = !shouldShowPassword
     }
     
     @IBAction func faceIdSwitchChanged(_ sender: UISwitch) {
@@ -134,53 +120,18 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func btnLoginTapped(_ sender: UIButton) {
-        
-        do{
-            let email = try validation.validateEmail(txtFieldEmail.text)
-            let password = try validation.validatePassword(txtFieldPassword.text)
-            DispatchQueue.main.async {
-//                self.lblEmailError.isHidden = true
-//                self.emailSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-//                self.lblPasswordError.isHidden = true
-//                self.passwordSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-                self.txtFieldEmail.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtFieldEmail.detail = ""
-                self.txtFieldPassword.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtFieldPassword.detail = ""
-                
-                if (!self.isAPIInProgress){
-                    self.loginUserWithRequest(email: email, password: password)
-                }
-                
-            }
-            
+        if validate() && !self.isAPIInProgress {
+            self.loginUserWithRequest(email: txtFieldEmail.text!, password: txtFieldPassword.text!)
         }
-        catch{
-            if (error.localizedDescription == ValidationError.invalidEmail.localizedDescription || error.localizedDescription == ValidationError.noEmail.localizedDescription){
-                
-//                self.lblEmailError.text = error.localizedDescription
-//                self.lblEmailError.isHidden = false
-//                self.emailSeparator.backgroundColor = Theme.getSeparatorErrorColor()
-                self.txtFieldEmail.dividerColor = .red
-                self.txtFieldEmail.detail = error.localizedDescription
-                self.txtFieldPassword.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtFieldPassword.detail = ""
-//                self.lblPasswordError.isHidden = true
-//                self.passwordSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-            }
-            else{
-//                self.lblPasswordError.text = error.localizedDescription
-//                self.lblPasswordError.isHidden = false
-//                self.passwordSeparator.backgroundColor = Theme.getSeparatorErrorColor()
-                self.txtFieldPassword.dividerColor = .red
-                self.txtFieldPassword.detail = error.localizedDescription
-                self.txtFieldEmail.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtFieldEmail.detail = ""
-//                self.lblEmailError.isHidden = true
-//                self.emailSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-            }
-        }
+    }
         
+    func validate() -> Bool {
+        if !txtFieldEmail.validate() {
+            return false
+        } else if !txtFieldPassword.validate() {
+            return false
+        }
+        return true
     }
     
     //MARK:- API's
@@ -338,41 +289,4 @@ extension LoginViewController: UIGestureRecognizerDelegate{
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-}
-
-extension LoginViewController: UITextFieldDelegate{
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtFieldEmail, txtFieldPassword])
-    }
-    
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        if (textField == txtFieldEmail){
-//            do{
-//                let email = try validation.validateEmail(txtFieldEmail.text)
-//                self.lblEmailError.isHidden = true
-//                self.emailSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-//            }
-//            catch{
-//                self.lblEmailError.text = error.localizedDescription
-//                self.lblEmailError.isHidden = false
-//                self.emailSeparator.backgroundColor = Theme.getSeparatorErrorColor()
-//            }
-//        }
-//        else{
-//            do{
-//                let password = try validation.validatePassword(txtFieldPassword.text)
-//                self.lblPasswordError.isHidden = true
-//                self.passwordSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-//            }
-//            catch{
-//                self.lblPasswordError.text = error.localizedDescription
-//                self.lblPasswordError.isHidden = false
-//                self.passwordSeparator.backgroundColor = Theme.getSeparatorErrorColor()
-//                
-//            }
-//        }
-//            
-//    }
-    
 }

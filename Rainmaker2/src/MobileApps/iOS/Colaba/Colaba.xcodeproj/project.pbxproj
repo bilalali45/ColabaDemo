@@ -110,6 +110,7 @@
 		23F23B4526CA592800AEF33E /* DeleteAddressPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B4426CA592800AEF33E /* DeleteAddressPopupViewController.swift */; };
 		3937F87E26DE0BFB00B85585 /* ColabaTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3937F87D26DE0BFB00B85585 /* ColabaTextField.swift */; };
 		3937F88026DE140D00B85585 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3937F87F26DE140D00B85585 /* BaseView.swift */; };
+		39957C8326E12071006B2556 /* ColabaTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 39957C8226E12071006B2556 /* ColabaTextField.xib */; };
 		710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D032E268DC56500A13E63 /* NotificationModel.swift */; };
 		7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */; };
 		7113F51F26568E3B0066E179 /* Home.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7113F51E26568E3B0066E179 /* Home.svg */; };
@@ -267,6 +268,7 @@
 		25C6C1D772F13896700CDB1C /* Pods-Colaba.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Colaba.release.xcconfig"; path = "Target Support Files/Pods-Colaba/Pods-Colaba.release.xcconfig"; sourceTree = "<group>"; };
 		3937F87D26DE0BFB00B85585 /* ColabaTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColabaTextField.swift; sourceTree = "<group>"; };
 		3937F87F26DE140D00B85585 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
+		39957C8226E12071006B2556 /* ColabaTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ColabaTextField.xib; sourceTree = "<group>"; };
 		3D986CBDBB7995778F877F6F /* Pods-ColabaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ColabaTests.debug.xcconfig"; path = "Target Support Files/Pods-ColabaTests/Pods-ColabaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		710D032E268DC56500A13E63 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionOfSVGKImage.swift; sourceTree = "<group>"; };
@@ -509,6 +511,7 @@
 			children = (
 				3937F87D26DE0BFB00B85585 /* ColabaTextField.swift */,
 				3937F87F26DE140D00B85585 /* BaseView.swift */,
+				39957C8226E12071006B2556 /* ColabaTextField.xib */,
 			);
 			path = ColabaTextField;
 			sourceTree = "<group>";
@@ -827,6 +830,7 @@
 				7186ACBC2653B25B00E740D3 /* LaunchScreen.storyboard in Resources */,
 				7186ACB92653B25B00E740D3 /* Assets.xcassets in Resources */,
 				7186AD082653C77B00E740D3 /* Rubik-Regular.ttf in Resources */,
+				39957C8326E12071006B2556 /* ColabaTextField.xib in Resources */,
 				2330CD2626B000ED00FF3C43 /* DocumentMessageTableViewCell.xib in Resources */,
 				2390FEE226A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.xib in Resources */,
 				2330CD2226AFEBDF00FF3C43 /* rubik_bold.ttf in Resources */,
