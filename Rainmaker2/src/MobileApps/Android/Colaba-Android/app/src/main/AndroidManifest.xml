@@ -80,7 +80,7 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name=".activities.borroweraddresses.PlacePredictionProgrammatically"
+        <activity android:name=".activities.baddresses.PlacePredictionProgrammatically"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
         </activity>
