@@ -22,20 +22,8 @@ class LoginViewController: UIViewController {
     
     var shouldShowPassword = false
     var isAPIInProgress = false
-    private let validation: Validation
     
     //MARK:- View Controller Life Cycle
-    
-    init(validation: Validation) {
-        self.validation = validation
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        self.validation = Validation()
-        super.init(coder: coder)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         if (isAppOpenFromBackground){
@@ -66,6 +54,7 @@ class LoginViewController: UIViewController {
         txtFieldEmail.setTextField(placeholder: "Email")
         txtFieldEmail.setDelegates(controller: self)
         txtFieldEmail.setValidation(validationType: .email)
+        txtFieldEmail.setTextField(keyboardType: .emailAddress)
         if (isAppOpenFromBackground){
             txtFieldEmail.setTextField(textColor: Theme.getAppGreyColor())
         }
@@ -75,7 +64,6 @@ class LoginViewController: UIViewController {
         txtFieldPassword.setDelegates(controller: self)
         txtFieldPassword.type = .password
         txtFieldPassword.setValidation(validationType: .password)
-        
     }
     
     func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){
