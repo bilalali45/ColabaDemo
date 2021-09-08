@@ -64,6 +64,9 @@
 		2392A4CE26C55FEE0083EFE4 /* AddMailingAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392A4CD26C55FEE0083EFE4 /* AddMailingAddressViewController.swift */; };
 		23932C3426E64A5D00D02FEA /* AssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23932C3326E64A5D00D02FEA /* AssetsViewController.swift */; };
 		23932C3626E64A7500D02FEA /* AssetsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23932C3526E64A7500D02FEA /* AssetsDetailViewController.swift */; };
+		239570E426E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239570E326E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift */; };
+		239570E626E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239570E526E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift */; };
+		239570E826E8E78700B2B0A7 /* Test.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 239570E726E8E78700B2B0A7 /* Test.storyboard */; };
 		2397AF5F26776241007A1A45 /* PipelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397AF5E26776241007A1A45 /* PipelineViewController.swift */; };
 		2397AF63267782E6007A1A45 /* PipelineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397AF61267782E6007A1A45 /* PipelineTableViewCell.swift */; };
 		2397AF64267782E6007A1A45 /* PipelineTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2397AF62267782E6007A1A45 /* PipelineTableViewCell.xib */; };
@@ -235,6 +238,9 @@
 		2392A4CD26C55FEE0083EFE4 /* AddMailingAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMailingAddressViewController.swift; sourceTree = "<group>"; };
 		23932C3326E64A5D00D02FEA /* AssetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsViewController.swift; sourceTree = "<group>"; };
 		23932C3526E64A7500D02FEA /* AssetsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsDetailViewController.swift; sourceTree = "<group>"; };
+		239570E326E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGiftFundsViewController.swift; sourceTree = "<group>"; };
+		239570E526E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOtherAssetsViewController.swift; sourceTree = "<group>"; };
+		239570E726E8E78700B2B0A7 /* Test.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Test.storyboard; sourceTree = "<group>"; };
 		2397AF5E26776241007A1A45 /* PipelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineViewController.swift; sourceTree = "<group>"; };
 		2397AF61267782E6007A1A45 /* PipelineTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineTableViewCell.swift; sourceTree = "<group>"; };
 		2397AF62267782E6007A1A45 /* PipelineTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PipelineTableViewCell.xib; sourceTree = "<group>"; };
@@ -544,6 +550,8 @@
 				230B94D626E7A060004CBC83 /* AddRetirementAccountViewController.swift */,
 				230B94D826E7A436004CBC83 /* AddStockBondViewController.swift */,
 				2315E18426E8921B00377764 /* AddProceedsFromTransactionViewController.swift */,
+				239570E326E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift */,
+				239570E526E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -662,6 +670,7 @@
 				7186ACB52653B25A00E740D3 /* Main.storyboard */,
 				7186ACED2653C5CE00E740D3 /* Authentication.storyboard */,
 				23DBAD1F2696EB2D00119680 /* PipelineDetail.storyboard */,
+				239570E726E8E78700B2B0A7 /* Test.storyboard */,
 			);
 			path = StoryBoards;
 			sourceTree = "<group>";
@@ -868,6 +877,7 @@
 				23EB790326A6ED980071BC13 /* RealEstateCollectionViewCell.xib in Resources */,
 				23A0D5CE26958E58002B4BCE /* DashboardHeaderView.xib in Resources */,
 				235BBD7226988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.xib in Resources */,
+				239570E826E8E78700B2B0A7 /* Test.storyboard in Resources */,
 				2320138E2698324800F500E2 /* BorrowerAddressTableViewCell.xib in Resources */,
 				7186ACBC2653B25B00E740D3 /* LaunchScreen.storyboard in Resources */,
 				7186ACB92653B25B00E740D3 /* Assets.xcassets in Resources */,
@@ -1101,6 +1111,7 @@
 				2330CD2526B000ED00FF3C43 /* DocumentMessageTableViewCell.swift in Sources */,
 				23A56C5D2685B017005CE6F4 /* Icons.swift in Sources */,
 				2392A4CB26C4F9700083EFE4 /* DependentCollectionViewCell.swift in Sources */,
+				239570E626E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift in Sources */,
 				23E9C751269C3F980066C978 /* DocumentsTableViewCell.swift in Sources */,
 				2392A4CE26C55FEE0083EFE4 /* AddMailingAddressViewController.swift in Sources */,
 				7186AD602653DE8600E740D3 /* ExtensionOfView.swift in Sources */,
@@ -1161,6 +1172,7 @@
 				23C1039026E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift in Sources */,
 				23CD143226E259C000627127 /* FirstMortgageFollowupQuestionsViewController.swift in Sources */,
 				2368799C26BC173E0045D294 /* BorrowerInformationViewController.swift in Sources */,
+				239570E426E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift in Sources */,
 				236EA1AE2678CE1B00C2F8B5 /* DummyDashboardViewController.swift in Sources */,
 				23F23B4326CA591400AEF33E /* SaveAddressPopupViewController.swift in Sources */,
 				23C244862689B6A500EED1D0 /* AllLoanModel.swift in Sources */,

@@ -14,6 +14,7 @@ struct Utility {
     static let authStoryboard = UIStoryboard.init(name: "Authentication", bundle: nil)
     static let mainStoryboard = UIStoryboard.init(name: "Main", bundle: nil)
     static let loanDetailStoryboard = UIStoryboard.init(name: "PipelineDetail", bundle: nil)
+    static let testStoryboard = UIStoryboard.init(name: "Test", bundle: nil)
     
     static private var pipelineDateFormatter: DateFormatter?
     static private var loanApplicationDateFormatter: DateFormatter?
@@ -221,6 +222,14 @@ struct Utility {
     
     static func getAddProceedsFromTransactionVC() -> AddProceedsFromTransactionViewController{
         return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: AddProceedsFromTransactionViewController.self)) as! AddProceedsFromTransactionViewController
+    }
+    
+    static func getAddGiftFundsVC() -> AddGiftFundsViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: AddGiftFundsViewController.self)) as! AddGiftFundsViewController
+    }
+    
+    static func getAddOtherAssetsVC() -> AddOtherAssetsViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: AddOtherAssetsViewController.self)) as! AddOtherAssetsViewController
     }
     
     static var localPiplineDateFormatter: DateFormatter{
