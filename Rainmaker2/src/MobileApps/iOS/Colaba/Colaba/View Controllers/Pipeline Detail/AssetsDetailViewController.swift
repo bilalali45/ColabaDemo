@@ -332,6 +332,10 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
                 let vc = Utility.getAddStockBondVC()
                 self.presentVC(vc: vc)
             }
+            else if (tableView == tableViewTransaction && (indexPath.row == 1 || indexPath.row == 2)){
+                let vc = Utility.getAddProceedsFromTransactionVC()
+                self.presentVC(vc: vc)
+            }
         }
     }
     

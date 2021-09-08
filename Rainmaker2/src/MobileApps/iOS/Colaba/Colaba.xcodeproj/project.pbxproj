@@ -18,6 +18,7 @@
 		230B94D526E77AAA004CBC83 /* AddBankAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B94D426E77AAA004CBC83 /* AddBankAccountViewController.swift */; };
 		230B94D726E7A060004CBC83 /* AddRetirementAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B94D626E7A060004CBC83 /* AddRetirementAccountViewController.swift */; };
 		230B94D926E7A436004CBC83 /* AddStockBondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B94D826E7A436004CBC83 /* AddStockBondViewController.swift */; };
+		2315E18526E8921B00377764 /* AddProceedsFromTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2315E18426E8921B00377764 /* AddProceedsFromTransactionViewController.swift */; };
 		2319224626E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2319224526E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift */; };
 		2320138D2698324800F500E2 /* BorrowerAddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2320138B2698324800F500E2 /* BorrowerAddressTableViewCell.swift */; };
 		2320138E2698324800F500E2 /* BorrowerAddressTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2320138C2698324800F500E2 /* BorrowerAddressTableViewCell.xib */; };
@@ -187,6 +188,7 @@
 		230B94D426E77AAA004CBC83 /* AddBankAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBankAccountViewController.swift; sourceTree = "<group>"; };
 		230B94D626E7A060004CBC83 /* AddRetirementAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRetirementAccountViewController.swift; sourceTree = "<group>"; };
 		230B94D826E7A436004CBC83 /* AddStockBondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStockBondViewController.swift; sourceTree = "<group>"; };
+		2315E18426E8921B00377764 /* AddProceedsFromTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProceedsFromTransactionViewController.swift; sourceTree = "<group>"; };
 		2319224526E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectPropertyAddressViewController.swift; sourceTree = "<group>"; };
 		2320138B2698324800F500E2 /* BorrowerAddressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerAddressTableViewCell.swift; sourceTree = "<group>"; };
 		2320138C2698324800F500E2 /* BorrowerAddressTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerAddressTableViewCell.xib; sourceTree = "<group>"; };
@@ -539,6 +541,7 @@
 				230B94D426E77AAA004CBC83 /* AddBankAccountViewController.swift */,
 				230B94D626E7A060004CBC83 /* AddRetirementAccountViewController.swift */,
 				230B94D826E7A436004CBC83 /* AddStockBondViewController.swift */,
+				2315E18426E8921B00377764 /* AddProceedsFromTransactionViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -1119,6 +1122,7 @@
 				23F23B4126CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift in Sources */,
 				23A6578826D65B610013A37B /* LoginNavigationViewController.swift in Sources */,
 				7186AD7926540CCC00E740D3 /* PhoneNumberViewController.swift in Sources */,
+				2315E18526E8921B00377764 /* AddProceedsFromTransactionViewController.swift in Sources */,
 				2390FEE126A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.swift in Sources */,
 				230B94D926E7A436004CBC83 /* AddStockBondViewController.swift in Sources */,
 				2319224626E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift in Sources */,

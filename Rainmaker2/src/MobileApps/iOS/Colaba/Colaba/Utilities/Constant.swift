@@ -56,3 +56,5 @@ let kPropertyTypeArray = ["Single Family Property", "Condominium", "Townhouse", 
 let kOccupancyTypeArray = ["Primary Residence", "Second Home", "Investment Property"]
 let kAccountTypeArray = ["Checking Account", "Saving Account"]
 let kFinancialsAccountTypeArray = ["Mutual Funds", "Stocks", "Money Market", "Stock Options", "Certificate Of Deposit", "Bonds"]
+let kTransactionTypeArray = ["Proceeds From A Loan", "Proceeds From Selling Non-Real Estate Assets", "Proceeds From Selling Real Estate Assets"]
+let kAssetsTypeArray = ["House", "Automobile", "Financial Account", "Other"]

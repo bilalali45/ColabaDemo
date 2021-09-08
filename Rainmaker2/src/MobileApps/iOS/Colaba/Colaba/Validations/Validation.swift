@@ -229,6 +229,30 @@ struct Validation {
         guard marketValue.count > 0 else { throw ValidationError.requiredField }
         return marketValue
     }
+    
+    func validateTransactionType(_ transactionType: String?) throws -> String{
+        guard let transactionType = transactionType else { throw ValidationError.requiredField }
+        guard transactionType.count > 0 else { throw ValidationError.requiredField }
+        return transactionType
+    }
+    
+    func validateExpectedProceeds(_ expectedProceeds: String?) throws -> String{
+        guard let expectedProceeds = expectedProceeds else { throw ValidationError.requiredField }
+        guard expectedProceeds.count > 0 else { throw ValidationError.requiredField }
+        return expectedProceeds
+    }
+    
+    func validateAssetsType(_ assetsType: String?) throws -> String{
+        guard let assetsType = assetsType else { throw ValidationError.requiredField }
+        guard assetsType.count > 0 else { throw ValidationError.requiredField }
+        return assetsType
+    }
+    
+    func validateAssetDescription(_ assetDescription: String?) throws -> String{
+        guard let assetDescription = assetDescription else { throw ValidationError.requiredField }
+        guard assetDescription.count > 0 else { throw ValidationError.requiredField }
+        return assetDescription
+    }
 }
 
 enum ValidationError: LocalizedError {
