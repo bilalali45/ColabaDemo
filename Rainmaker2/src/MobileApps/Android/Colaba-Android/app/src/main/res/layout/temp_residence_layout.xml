@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/current_residence_parent_layout"
     android:background="@color/half_white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -56,7 +57,7 @@
             app:layout_constraintTop_toBottomOf="@+id/borrower_name_greeting" />
 
         <ImageView
-            android:id="@+id/del_imageview"
+            android:id="@+id/top_del_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -163,7 +164,6 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
 
-                    android:spinnerMode="dropdown"
 
 
 
@@ -189,6 +189,24 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/topSearchFieldTextInputLayout" />
 
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fakePlaceSearchRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="1dp"
+                android:elevation="2dp"
+                android:visibility="gone"
+                android:layout_marginStart="22dp"
+                android:layout_marginEnd="22dp"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+
+                app:layout_constraintTop_toBottomOf="@+id/topSearchTextInputLine"
+                />
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -866,7 +884,7 @@
     </ScrollView>
 
     <ImageView
-        android:id="@+id/phone_fab"
+        android:id="@+id/save_current_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_save_icon"
