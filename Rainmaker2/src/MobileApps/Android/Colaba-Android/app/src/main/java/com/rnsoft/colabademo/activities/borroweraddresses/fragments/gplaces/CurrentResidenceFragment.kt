@@ -37,15 +37,18 @@ import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 import android.location.Geocoder
+import androidx.compose.ui.text.capitalize
 import com.google.android.gms.common.api.ResultCallback
 import java.io.IOException
 import java.util.*
 import com.google.android.gms.location.places.PlaceBuffer
 import com.google.android.gms.location.places.Places.GeoDataApi
+import kotlinx.android.synthetic.main.temp_residence_layout.*
 
 
 @AndroidEntryPoint
-class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener, PlacePredictionAdapter.OnPlaceClickListener, View.OnClickListener {
+class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
+    PlacePredictionAdapter.OnPlaceClickListener {
 
     private var _binding: TempResidenceLayoutBinding? = null
     private val binding get() = _binding!!
@@ -53,126 +56,218 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         _binding = TempResidenceLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.moveInEditText.setOnClickListener { createCustomDialog() }
-        binding.moveInEditText.setOnFocusChangeListener{ _ , p1 ->
-            if(p1)
+        binding.moveInEditText.setOnClickListener {
             createCustomDialog()
+            binding.topSearchAutoTextView.clearFocus()
+        }
+        binding.moveInEditText.setOnFocusChangeListener { _, p1 ->
+            if (p1)
+                createCustomDialog()
         }
         binding.moveInEditText.showSoftInputOnFocus = false
 
-        binding.topSearchAutoTextView.onFocusChangeListener = object:View.OnFocusChangeListener{
+        binding.topSearchAutoTextView.onFocusChangeListener = object : View.OnFocusChangeListener {
             override fun onFocusChange(p0: View?, p1: Boolean) {
-                if(p1) {
+                if (p1) {
                     binding.topSearchTextInputLine.minimumHeight = 1
-                    binding.topSearchTextInputLine.setBackgroundColor(resources.getColor( R.color.colaba_primary_color , requireActivity().theme))
-                }
-                else{
+                    binding.topSearchTextInputLine.setBackgroundColor(
+                        resources.getColor(
+                            R.color.colaba_primary_color,
+                            requireActivity().theme
+                        )
+                    )
+                } else {
                     binding.topSearchTextInputLine.minimumHeight = 1
-                    binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
+                    binding.topSearchTextInputLine.setBackgroundColor(
+                        resources.getColor(
+                            R.color.grey_color_four,
+                            requireActivity().theme
+                        )
+                    )
+                    binding.topSearchAutoTextView.clearFocus()
                 }
             }
         }
 
 
-        binding.cityEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.cityEditText, binding.cityLayout, requireContext()))
-        binding.streetAddressEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.streetAddressEditText, binding.streetAddressLayout, requireContext()))
-        binding.unitAptInputEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.unitAptInputEditText, binding.unitAptInputLayout, requireContext()))
-        binding.countyEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.countyEditText, binding.countyLayout, requireContext()))
-        binding.zipcodeEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.zipcodeEditText, binding.zipcodeLayout, requireContext()))
+        binding.cityEditText.setOnFocusChangeListener(
+            MyCustomFocusListener(
+                binding.cityEditText,
+                binding.cityLayout,
+                requireContext()
+            )
+        )
+        binding.streetAddressEditText.setOnFocusChangeListener(
+            MyCustomFocusListener(
+                binding.streetAddressEditText,
+                binding.streetAddressLayout,
+                requireContext()
+            )
+        )
+        binding.unitAptInputEditText.setOnFocusChangeListener(
+            MyCustomFocusListener(
+                binding.unitAptInputEditText,
+                binding.unitAptInputLayout,
+                requireContext()
+            )
+        )
+        binding.countyEditText.setOnFocusChangeListener(
+            MyCustomFocusListener(
+                binding.countyEditText,
+                binding.countyLayout,
+                requireContext()
+            )
+        )
+        binding.zipcodeEditText.setOnFocusChangeListener(
+            MyCustomFocusListener(
+                binding.zipcodeEditText,
+                binding.zipcodeLayout,
+                requireContext()
+            )
+        )
 
-        binding.monthlyRentEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.monthlyRentEditText, binding.monthlyRentLayout, requireContext()))
+        binding.monthlyRentEditText.setOnFocusChangeListener(
+            MyCustomFocusListener(
+                binding.monthlyRentEditText,
+                binding.monthlyRentLayout,
+                requireContext()
+            )
+        )
         //binding.housingEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.housingEditText, binding.housingLayout, requireContext()))
         //binding.moveInEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.moveInEditText, binding.moveInLayout, requireContext()))
 
 
-        val countryAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view ,  AppSetting.countries)
+        val countryAdapter =
+            ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.countries)
         binding.countryCompleteTextView.setAdapter(countryAdapter)
 
         binding.countryCompleteTextView.setOnFocusChangeListener { _, _ ->
             binding.countryCompleteTextView.showDropDown()
         }
-        binding.countryCompleteTextView.setOnClickListener{
+        binding.countryCompleteTextView.setOnClickListener {
             binding.countryCompleteTextView.showDropDown()
         }
 
-        binding.countryCompleteTextView.onItemClickListener = object: AdapterView.OnItemClickListener {
-            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                binding.countryCompleteLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(),  R.color.grey_color_two))
+        binding.countryCompleteTextView.onItemClickListener =
+            object : AdapterView.OnItemClickListener {
+                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                    binding.countryCompleteLayout.defaultHintTextColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.grey_color_two
+                        )
+                    )
+                }
             }
-        }
 
 
-        val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,  AppSetting.states)
+        val stateAdapter =
+            ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.states)
         binding.stateCompleteTextView.setAdapter(stateAdapter)
 
         binding.stateCompleteTextView.setOnFocusChangeListener { _, _ ->
             binding.stateCompleteTextView.showDropDown()
         }
-        binding.stateCompleteTextView.setOnClickListener{
+        binding.stateCompleteTextView.setOnClickListener {
             binding.stateCompleteTextView.showDropDown()
         }
 
-        binding.stateCompleteTextView.onItemClickListener = object: AdapterView.OnItemClickListener {
-            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                binding.stateCompleteTextInputLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(),  R.color.grey_color_two))
+        binding.stateCompleteTextView.onItemClickListener =
+            object : AdapterView.OnItemClickListener {
+                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                    binding.stateCompleteTextInputLayout.defaultHintTextColor =
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.grey_color_two
+                            )
+                        )
+                }
             }
-        }
 
 
-
-
-        val houseLivingTypeArray:ArrayList<String> = arrayListOf("Own", "Rent", "No Primary Housing Expense")
-        val houseTypeAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view , houseLivingTypeArray)
+        val houseLivingTypeArray: ArrayList<String> =
+            arrayListOf("Own", "Rent", "No Primary Housing Expense")
+        val houseTypeAdapter =
+            ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, houseLivingTypeArray)
         binding.housingCompleteTextView.setAdapter(houseTypeAdapter)
 
         binding.housingCompleteTextView.setOnFocusChangeListener { _, _ ->
             binding.housingCompleteTextView.showDropDown()
+
         }
-        binding.housingCompleteTextView.setOnClickListener{
+        binding.housingCompleteTextView.setOnClickListener {
             binding.housingCompleteTextView.showDropDown()
+            binding.topSearchAutoTextView.clearFocus()
         }
 
-        binding.housingCompleteTextView.onItemClickListener = object: AdapterView.OnItemClickListener {
-            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                if(position == houseLivingTypeArray.size-2) {
-                    binding.monthlyRentLayout.visibility = View.VISIBLE
-                    binding.housingLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(),  R.color.grey_color_two))
+        binding.housingCompleteTextView.onItemClickListener =
+            object : AdapterView.OnItemClickListener {
+                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                    if (position == houseLivingTypeArray.size - 2) {
+                        binding.monthlyRentLayout.visibility = View.VISIBLE
+                        binding.housingLayout.defaultHintTextColor = ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.grey_color_two
+                            )
+                        )
+                    } else
+                        binding.monthlyRentLayout.visibility = View.GONE
                 }
-               else
-                    binding.monthlyRentLayout.visibility = View.GONE
             }
-        }
 
 
 
 
-        binding.addAddressLayout.setOnClickListener{
+        binding.addAddressLayout.setOnClickListener {
             findNavController().navigate(R.id.navigation_previous_address)
         }
 
-        binding.backButton.setOnClickListener{
+        binding.backButton.setOnClickListener {
             val message = "Are you sure you want to delete Richard's Current Residence?"
-            AddressNotSavingDialogFragment.newInstance(message).show(childFragmentManager, AddressNotSavingDialogFragment::class.java.canonicalName)
+            //binding.topDelImageview.setColorFilter(resources.getColor(R.color.biometric_error_color, activity?.theme))
+            AddressNotSavingDialogFragment.newInstance(message).show(
+                childFragmentManager,
+                AddressNotSavingDialogFragment::class.java.canonicalName
+            )
             //findNavController().popBackStack()
         }
 
-        binding.delImageview.setOnClickListener {
+        binding.topDelImageview.setOnClickListener {
             val message = "Are you sure you want to delete Richard's Current Residence?"
-            AddressNotSavingDialogFragment.newInstance(message).show(childFragmentManager, AddressNotSavingDialogFragment::class.java.canonicalName)
+            binding.topDelImageview.setColorFilter(resources.getColor(R.color.biometric_error_color, activity?.theme))
+            AddressNotSavingDialogFragment.newInstance(message).show(
+                childFragmentManager,
+                AddressNotSavingDialogFragment::class.java.canonicalName
+            )
+        }
+
+        binding.saveCurrentAddress.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.currentResidenceParentLayout.setOnClickListener{
+            binding.topDelImageview.setColorFilter(resources.getColor(R.color.grey_color_three, activity?.theme))
+            binding.topSearchAutoTextView.clearFocus()
         }
 
         setUpCompleteViewForPlaces()
 
+        initializeUSAstates()
+
         return root
 
     }
-
-
 
 
 
@@ -187,14 +282,14 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         LatLng(37.808300, -122.391338) // NE lat, lng
     )
 
-    private lateinit var token:AutocompleteSessionToken
+    private lateinit var token: AutocompleteSessionToken
     private lateinit var placesClient: PlacesClient
 
     private lateinit var predictAdapter: PlacePredictionAdapter
 
-    private fun setUpCompleteViewForPlaces(){
+    private fun setUpCompleteViewForPlaces() {
 
-        val linearLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.VERTICAL, false)
+        val linearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         predictAdapter = PlacePredictionAdapter(this@CurrentResidenceFragment)
         binding.fakePlaceSearchRecyclerView.apply {
             this.layoutManager = linearLayoutManager
@@ -216,9 +311,9 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         //binding.topSearchAutoTextView.freezesText = false
         //binding.topSearchAutoTextView.threshold = 4
         //binding.topSearchAutoTextView.setAdapter(autoCompleteAdapter)
+        binding.topSearchAutoTextView.dropDownHeight = 0
 
-
-        binding.topSearchAutoTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean->
+        binding.topSearchAutoTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus)
                 binding.topSearchAutoTextView.addTextChangedListener(placeTextWatcher)
             else
@@ -226,9 +321,11 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         }
 
 
-        binding.topSearchAutoTextView.setOnClickListener{
+        binding.topSearchAutoTextView.setOnClickListener {
             //binding.topSearchAutoTextView.addTextChangedListener(placeTextWatcher)
         }
+
+
 
 
     }
@@ -238,34 +335,30 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
         override fun afterTextChanged(s: Editable) {
             val str: String = binding.topSearchAutoTextView.text.toString()
-            if(str.length>=3){
+            if (str.length >= 3) {
                 searchForGooglePlaces(str)
-            }
-            else
-            if(str.length in 0..2)
-            {
-                binding.fakePlaceSearchRecyclerView.visibility = View.GONE
-                predictAdapter.setPredictions(null)
-            }
-
-            else if(str.isEmpty()){
-                binding.fakePlaceSearchRecyclerView.visibility = View.GONE
-                predictAdapter.setPredictions(null)
-                //binding.topSearchAutoTextView.clearFocus()
-                hideKeyBoard()
-                binding.topSearchAutoTextView.removeTextChangedListener(this)
-                //binding.topSearchAutoTextView.clearFocus()
-            }
+            } else
+                if (str.length in 0..2) {
+                    binding.fakePlaceSearchRecyclerView.visibility = View.GONE
+                    predictAdapter.setPredictions(null)
+                } else if (str.isEmpty()) {
+                    binding.fakePlaceSearchRecyclerView.visibility = View.GONE
+                    predictAdapter.setPredictions(null)
+                    //binding.topSearchAutoTextView.clearFocus()
+                    //hideKeyBoard()
+                    //binding.topSearchAutoTextView.removeTextChangedListener(this)
+                    //binding.topSearchAutoTextView.clearFocus()
+                }
 
 
         }
     })
 
 
-    private var predicationList:ArrayList<String> = ArrayList()
+    private var predicationList: ArrayList<String> = ArrayList()
     //private lateinit var autoCompleteAdapter:ArrayAdapter<String>    //= ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,  predicationList)
 
-    private fun searchForGooglePlaces(queryPlace:String){
+    private fun searchForGooglePlaces(queryPlace: String) {
 
         val TAG = "OTHER_WAY-"
 
@@ -298,7 +391,6 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                     predicationList.add(prediction.getFullText(null).toString())
                     Log.e(TAG, prediction.getFullText(null).toString())
 
-                    
 
                 }
                 predictAdapter.setPredictions(response.autocompletePredictions)
@@ -309,29 +401,26 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                 }
             }
 
-        Log.e("predicationList" , predicationList.size.toString())
-
+        Log.e("predicationList", predicationList.size.toString())
 
 
         //var al2: ArrayList<String> = ArrayList<String>(predicationList.subList(1, 4))
 
         //if(predicationList.size>20)
-            //predicationList = ArrayList(predicationList.subList(0,predicationList.size/2)
+        //predicationList = ArrayList(predicationList.subList(0,predicationList.size/2)
 
 
-       // predictAdapterModified.notifyDataSetChanged()
+        // predictAdapterModified.notifyDataSetChanged()
 
 
         //predicationList.add("irfan")
 
         //this.autoCompleteAdapter.notifyDataSetChanged()
         //binding.topSearchAutoTextView.postDelayed({
-            //(binding.topSearchAutoTextView as AutoCompleteTextView).showDropDown()
+        //(binding.topSearchAutoTextView as AutoCompleteTextView).showDropDown()
 
         //}, 200)
     }
-
-
 
 
     /*
@@ -371,19 +460,22 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onNotSavingAddressEvent(event: NotSavingAddressEvent) {
-        if(event.boolean){
+        binding.topDelImageview.setColorFilter(resources.getColor(R.color.grey_color_three, activity?.theme))
+
+        if (event.boolean) {
             findNavController().popBackStack()
         }
     }
 
 
     private fun hideKeyBoard() {
-            val inputMethodManager = ContextCompat.getSystemService(requireContext(), InputMethodManager::class.java)!!
-            inputMethodManager.hideSoftInputFromWindow(binding.moveInEditText.windowToken, 0)
+        val inputMethodManager =
+            ContextCompat.getSystemService(requireContext(), InputMethodManager::class.java)!!
+        inputMethodManager.hideSoftInputFromWindow(binding.moveInEditText.windowToken, 0)
 
     }
 
-    private fun createCustomDialog(){
+    private fun createCustomDialog() {
         val pd = MonthYearPickerDialog()
         pd.setListener(this)
         pd.show(requireActivity().supportFragmentManager, "MonthYearPickerDialog")
@@ -391,23 +483,81 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
         var stringMonth = p2.toString()
-        if(p2<10)
+        if (p2 < 10)
             stringMonth = "0$p2"
 
         val sampleDate = "$stringMonth / $p1"
         binding.moveInEditText.setText(sampleDate)
     }
 
+
+    private var map: HashMap<String, String> = HashMap()
+
+    private fun initializeUSAstates() {
+        map.put("AL" , "Alabama")
+        map.put("AK", "Alaska")
+        map.put("AZ", "Arizona")
+        map.put("AR", "Arkansas")
+        map.put("CA", "California")
+        map.put("CO", "Colorado")
+        map.put("CT", "Connecticut")
+        map.put("DE", "Delaware")
+        map.put("DC", "District of Columbia")
+        map.put("FL", "Florida")
+        map.put("GA", "Georgia")
+        map.put("HI", "Hawaii")
+        map.put("ID", "Idaho")
+        map.put("IL", "Illinois")
+        map.put("IN", "Indiana")
+        map.put("IA", "Iowa")
+        map.put("KS", "Kansas")
+        map.put("KY", "Kentucky")
+        map.put("LA", "Louisiana")
+        map.put("ME", "Maine")
+        map.put("MD", "Maryland")
+        map.put("MA", "Massachusetts")
+        map.put("MI", "Michigan")
+        map.put("MN", "Minnesota")
+        map.put("MS", "Mississippi")
+        map.put("MO", "Missouri")
+        map.put("MT", "Montana")
+        map.put("NE", "Nebraska")
+        map.put("NV", "Nevada")
+        map.put("NH", "New Hampshire")
+        map.put("NJ", "New Jersey")
+        map.put("NM", "New Mexico")
+        map.put("NY", "New York")
+        map.put("NC", "North Carolina")
+        map.put("ND", "North Dakota")
+        map.put("OH", "Ohio")
+        map.put("OK", "Oklahoma")
+        map.put("OR", "Oregon")
+        map.put("PA", "Pennsylvania")
+        map.put("RI", "Rhode Island")
+        map.put("SC", "South Carolina")
+        map.put("SD", "South Dakota")
+        map.put("TN", "Tennessee")
+        map.put("TX", "Texas")
+        map.put("UT", "Utah")
+        map.put("VT", "Vermont")
+        map.put("VA", "Virginia")
+        map.put("WA", "Washington")
+        map.put("WV", "West Virginia")
+        map.put("WI", "Wisconsin")
+        map.put("WY", "Wyoming")
+    }
+
+
     override fun onPlaceClicked(place: AutocompletePrediction) {
-        Log.e("which-place", "desc = "+place.getFullText(null).toString())
+        Log.e("which-place", "desc = " + place.getFullText(null).toString())
         predictAdapter.setPredictions(null)
         binding.fakePlaceSearchRecyclerView.visibility = View.GONE
         val placeSelected = place.getFullText(null).toString()
         binding.topSearchAutoTextView.clearFocus()
         hideKeyBoard()
         binding.topSearchAutoTextView.removeTextChangedListener(placeTextWatcher)
-
-
+        binding.topSearchAutoTextView.setText(placeSelected)
+        binding.topSearchAutoTextView.clearFocus()
 
 
 
@@ -416,27 +566,80 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         //val MyLong = latLng.longitude
         val geocoder = Geocoder(requireContext(), Locale.getDefault())
         try {
-            val addresses: List<Address>? = geocoder.getFromLocationName(place.getFullText(null)
-                .toString(), 1)
-            val stateName: String? = addresses?.get(0)?.countryName
-            val cityName: String? = addresses?.get(0)?.locality
+            val addresses: List<Address>? =
+                geocoder.getFromLocationName(place.getFullText(null).toString(), 1)
+            val countryName: String? = addresses?.get(0)?.countryName
+            //val stateName: String? = addresses?.get(0)?.locale
+            val locality: String? = addresses?.get(0)?.locality
+            val subLocality: String? = addresses?.get(0)?.subLocality
             val postalCode: String? = addresses?.get(0)?.postalCode
-            Log.e("Bingo ", " = "+stateName+ " "+cityName+"  "+postalCode)
+            val featureName: String? = addresses?.get(0)?.featureName
+            val addressLine: String? = addresses?.get(0)?.getAddressLine(0)
+            val premises: String? = addresses?.get(0)?.premises
+            val countryCode: String? = addresses?.get(0)?.countryCode
+
+
+
+            locality?.let { binding.cityEditText.setText(it) }
+            //stateName?.let {  binding.stateCompleteTextView.setText(it) }
+            subLocality?.let { binding.countyEditText.setText(it) }
+            postalCode?.let { binding.zipcodeEditText.setText(it) }
+            countryName?.let { binding.countryCompleteTextView.setText(it) }
+            //addressLine?.let {  binding.streetAddressEditText.setText(it) }
+
+            binding.streetAddressEditText.setText(place.getPrimaryText(null))
+
+            premises?.let { binding.unitAptInputEditText.setText(it) }
+            //unitAptInputEditText.setText(place.getSecondaryText(null))
+
+            //featureName?.let {  binding.cityEditText.setText(it) }
+            //countryCode?.let {  binding.cityEditText.setText(it) }
+
+            //cityName?.let {  binding.cityEditText.setText(it) }
+
+
+            Log.e("Bingo ", " = " + subLocality + " " + locality + "  " + postalCode)
             //edit_profile_city_editText.setText(place.getName().toString() + "," + stateName)
         } catch (e: IOException) {
             e.printStackTrace()
         }
 
 
-        binding.topSearchAutoTextView.setText(placeSelected)
-        binding.topSearchAutoTextView.clearFocus()
+        val extractState = place.getFullText(null)
+        var stateCode =  extractState.substring(extractState.lastIndexOf(",")-2,extractState.lastIndexOf(","))
+
+        stateCode = stateCode.capitalize()
+        Log.e("stateCode ", " = $stateCode")
+
+        Log.e("Test State - ", " = " +map.get("LA") +"  "+map.get(stateCode))
+
+        if(map.get(stateCode)!=null)
+            stateCompleteTextView.setText(map.get(stateCode))
+        else
+            stateCompleteTextView.setText("")
+
+
+
+        visibleAllFields()
+    }
+
+    private fun visibleAllFields() {
+        binding.cityLayout.visibility = View.VISIBLE
+        binding.countyLayout.visibility = View.VISIBLE
+        binding.countryCompleteLayout.visibility = View.VISIBLE
+        binding.zipcodeLayout.visibility = View.VISIBLE
+        binding.unitAptInputLayout.visibility = View.VISIBLE
+        binding.streetAddressLayout.visibility = View.VISIBLE
+        binding.stateCompleteTextInputLayout.visibility = View.VISIBLE
+
+
+        binding.addAddressLayout.visibility = View.VISIBLE
+        //binding.showAddressLayout.visibility = View.VISIBLE  // condition visibility
+        //binding.monthlyRentLayout.visibility = View.VISIBLE
 
 
     }
 
-    override fun onClick(p0: View) {
-        val googleSearchField = binding.topSearchAutoTextView
 
-    }
 
 }
