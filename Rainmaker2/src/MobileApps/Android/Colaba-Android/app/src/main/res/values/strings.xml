@@ -186,6 +186,7 @@
     <string name="programmatic_place_predictions_instructions">This activity demonstrates as-you-type programmatic place predictions. Tap on the search icon on the toolbar and search for a place.</string>
     <string name="search">Search</string>
     <string name="search_a_place">Search a Place</string>
+    <string name="choose_email_client">Choose Email Client...</string>
 
     <string name="places_demo_title">Places Search Demo</string>
     <string name="places_demo_description">Demonstrates usages of Places KTX coroutines and DSL builder features.</string>
@@ -317,12 +318,14 @@
     <string name="mixed_use_property_ques">If Borrower will occupy the property, will Borrower set aside space within the property to operate his/her own business?</string>
     <string name="appraised_property_value">Apprasied Property Value</string>
     <string name="annual_property_taxes">Annual Property Taxes($)</string>
-    <string name="homeowner_insurances">Annual Homeowner"\'\"s Insurance($)</string>
-    <string name="flood_insurance">Annual Flood Insurance($)</string>
+    <string name="homeowner_insurances">Annual Homeowner"\'\s Insurance ($)</string>
+    <string name="flood_insurance">Annual Flood Insurance ($)</string>
     <string name="occupancy_status">Co-Borrower Occupancy Status</string>
     <string name="occupying">Occupying</string>
     <string name="non_occupying">Non-Occupying</string>
     <string name="subject_property">Subject Property</string>
+    <string name="subject_property_address">Subject Property Address</string>
+    <string name="mixed_use_property">Mixed Use Property Property</string>
 
 
 

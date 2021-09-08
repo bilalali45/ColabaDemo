@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.dashboard.fragements.details.model
+package com.rnsoft.colabademo.activities.bdetails.model
 
 data class File(
     val byteProStatus: String,

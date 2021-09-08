@@ -52,7 +52,6 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
     private var _binding: TempResidenceLayoutBinding? = null
     private val binding get() = _binding!!
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 

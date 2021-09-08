@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.borroweraddresses.info
+package com.rnsoft.colabademo.activities.baddresses.info
 
 /**
  * Created by Anita Kiran on 8/31/2021.

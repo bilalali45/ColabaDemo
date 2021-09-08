@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_primary_borrower_info"
-        android:name="com.rnsoft.colabademo.activities.borroweraddresses.info.PrimaryBorrowerInfoFragment"
+        android:name="com.rnsoft.colabademo.activities.baddresses.info.PrimaryBorrowerInfoFragment"
         android:label="@string/primary_borrower_info"
         tools:layout="@layout/primary_borrower_info_layout" />
 

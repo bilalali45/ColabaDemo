@@ -10,7 +10,6 @@ import LocalAuthentication
 import Material
 
 enum ColabaTextFieldButtonType {
-    case biometric
     case password
     case dropdown
     case datePicker
@@ -37,20 +36,21 @@ extension ColabaTextFieldDelegate {
     func dismiss(){}
 }
 
-class ColabaTextField: BaseView {
+class ColabaTextField: TextField {
     
     //MARK: Outlets and Private Properties
-    @IBOutlet private weak var textField: TextField!
-    @IBOutlet private weak var button: UIButton!
+//    @IBOutlet private weak var textField: TextField!
+    private var button: UIButton!
     
     private var selectionList : [String]?
     private var alert: UIAlertController?
     private var imagePicker: UIImagePickerController?
     private var maximumDate:Date?
     private var minimumDate:Date?
+    private var validationType: ValidationType!
     
     //MARK: Public Properties
-    public var delegate: ColabaTextFieldDelegate?
+    public var colabaDelegate: ColabaTextFieldDelegate?
     
     private var fieldMinLength = 0
     private var fieldMaxLength = 20
@@ -61,46 +61,22 @@ class ColabaTextField: BaseView {
     public var type: ColabaTextFieldButtonType = .none {
         didSet {
             switch type {
-            case .biometric:
-                self.isButtonHidden(false)
-                isSecureText(false)
-                
-//                let biometric = BiometricAuth()
-//                biometric.canEvaluate { canEvaluate, _, _ in
-//                    guard canEvaluate else {return}
-//                }
-//                if Defaults.isBiometricEnabled ?? false{
-//                    let imageIcon = LAContext().biometryType == .faceID ? "faceid" : "thumb"
-//                    self.setButton(image: UIImage(named: imageIcon)!)
-//                }else{
-//                    self.setButton(image: nil)
-//                }
             case .password:
+                self.isButtonHidden(false)
                 isSecureText(true)
                 toggleButtonImage()
             case .dropdown:
-                self.isButtonHidden(false)
-                self.textField.isUserInteractionEnabled = false
+                isButtonHidden(false)
+                self.isUserInteractionEnabled = false
                 self.setButton(image: UIImage(named: "dropdown")!)
             case .datePicker:
-                self.isButtonHidden(false)
-                self.textField.isUserInteractionEnabled = false
-                self.textField.tintColor = .clear
-                self.setButton(image: UIImage(named: "calender")!)
-                
+                isButtonHidden(false)
+                self.isUserInteractionEnabled = false
+                self.tintColor = .clear
+                setButton(image: UIImage(named: "calender")!)
             case .none:
                 self.setButton(image: nil)
-                print("None")
             }
-        }
-    }
-    
-    public var text: String? {
-        set {
-            textField.text = newValue
-        }
-        get {
-            return textField.text
         }
     }
     
@@ -108,47 +84,59 @@ class ColabaTextField: BaseView {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        setupFromNib()
+        self.setupView()
     }
     
     //initWithCode to init view from xib or storyboard
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setupFromNib()
-    }
-
-    public override func awakeFromNib() {
-        super.awakeFromNib()
         self.setupView()
-    }
-    
-    func setupFromNib() {
-        super.nibName = String(describing: Self.self)
-        super.setupFromNib()
     }
 
     private func setupView() {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         self.addGestureRecognizer(tap)
-        
         setTextField(textColor: Theme.getAppBlackColor())
         setTextField(font: Theme.getRubikRegularFont(size: 15))
         setTextField(dividerActiveColor: Theme.getButtonBlueColor())
         setTextField(dividerColor: Theme.getSeparatorNormalColor())
+        setTextField(dividerNormalHeight: 1.0)
+        setTextField(dividerThickness: 1.0)
         setTextField(placeholderActiveColor: Theme.getAppGreyColor())
         setTextField(placeholderLabelColor: Theme.getButtonGreyTextColor())
         setTextField(placeholderVerticalOffset: 8)
         setTextField(detailLabelFont: Theme.getRubikRegularFont(size: 12))
         setTextField(detailLabelColor: .red)
         setTextField(detailLabelVerticalOffset: 4)
+        self.backgroundColor = .clear
+        addButton()
+    }
+    
+    func addButton() {
+
+        button = UIButton()
+        button.contentHorizontalAlignment = .trailing
+        button.addTarget(self, action: #selector(colabaTextFieldButtonClicked(_:)), for: .touchUpInside)
+        self.addSubview(button)
         
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let horizontalConstraint = button.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+        let verticalConstraint = button.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        let widthConstraint = button.widthAnchor.constraint(equalToConstant: 32)
+        let heightConstraint = button.heightAnchor.constraint(equalToConstant: 32)
+        self.addConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint])
+        button.isHidden = true
+    }
+    
+    @objc func testClick() {
+        print("Test Click")
     }
         
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
         self.endEditing(true)
         if type == .datePicker {
-            if textField.isUserInteractionEnabled {
+            if self.isUserInteractionEnabled {
                 datePickerButtonClicked()
             }
             return
@@ -161,15 +149,13 @@ class ColabaTextField: BaseView {
     }
     
     //MARK: Button Action
-    @IBAction func ColabaTextFieldButtonClicked(_ sender: UIButton) {
+    @objc func colabaTextFieldButtonClicked(_ sender: UIButton) {
         self.endEditing(true)
         switch type {
-        case .biometric:
-            delegate?.biometricClicked()
         case .password:
-            textField.isSecureTextEntry = !textField.isSecureTextEntry
+            self.isSecureTextEntry = !self.isSecureTextEntry
             toggleButtonImage()
-            delegate?.passwordClicked()
+            colabaDelegate?.passwordClicked()
         case .dropdown:
             dropDownButtonClicked()
         case .datePicker:
@@ -180,7 +166,7 @@ class ColabaTextField: BaseView {
     }
     
     private func dropDownButtonClicked() {
-        delegate?.dropDownClicked(alert: alert ?? UIAlertController(title: "", message: "", preferredStyle: .actionSheet), withTag: self.tag)
+        colabaDelegate?.dropDownClicked(alert: alert ?? UIAlertController(title: "", message: "", preferredStyle: .actionSheet), withTag: self.tag)
     }
     
     private func datePickerButtonClicked() {
@@ -195,15 +181,15 @@ extension ColabaTextField {
 
     
     public func setUserInteractionDisabled(){
-//        self.textField.isUserInteractionEnabled = false
+//        self.self.isUserInteractionEnabled = false
 //        self.button.isHidden = true
 //        setTextField( textColor: UIColor.Palette.formLabel)
     }
     
     public func setDatePickerDisabled() {
-        self.textField.isUserInteractionEnabled = false
-        self.button.isHidden = false
-        self.button.isUserInteractionEnabled = false
+        self.isUserInteractionEnabled = false
+        button.isHidden = false
+        button.isUserInteractionEnabled = false
 //        setTextField( textColor: UIColor.Palette.formLabel)
     }
 }
@@ -213,48 +199,64 @@ extension ColabaTextField {
     
     //MARK: Textfield
     public func setTextField(textColor: UIColor) {
-        textField.tintColor = textColor
-        textField.textColor = textColor
+        self.tintColor = textColor
+        self.textColor = textColor
+    }
+    
+    public func setTextField(placeholder: String) {
+        self.placeholder = placeholder
     }
     
     public func setTextField(keyboardType: UIKeyboardType) {
-        textField.keyboardType = keyboardType
+        self.keyboardType = keyboardType
     }
     
     public func setTextField(font: UIFont) {
-        textField.font = font
+        self.font = font
     }
     
     public func setTextField(dividerActiveColor: UIColor) {
-        textField.dividerActiveColor = dividerActiveColor
+        self.dividerActiveColor = dividerActiveColor
     }
     
     public func setTextField(dividerColor: UIColor) {
-        textField.dividerColor = dividerColor
+        self.dividerColor = dividerColor
+    }
+    
+    public func setTextField(dividerNormalHeight : CGFloat) {
+        self.dividerNormalHeight = dividerNormalHeight
+    }
+    
+    public func setTextField(dividerThickness : CGFloat) {
+        self.dividerThickness = dividerThickness
     }
     
     public func setTextField(placeholderActiveColor: UIColor) {
-        textField.placeholderActiveColor = placeholderActiveColor
+        self.placeholderActiveColor = placeholderActiveColor
     }
     
     public func setTextField(placeholderLabelColor: UIColor) {
-        textField.placeholderLabel.textColor = placeholderLabelColor
+        self.placeholderLabel.textColor = placeholderLabelColor
     }
     
     public func setTextField(placeholderVerticalOffset: CGFloat) {
-        textField.detailVerticalOffset = placeholderVerticalOffset
+        self.placeholderVerticalOffset = placeholderVerticalOffset
+    }
+    
+    public func setTextField(detail: String) {
+        self.detail = detail
     }
     
     public func setTextField(detailLabelFont: UIFont) {
-        textField.detailLabel.font = detailLabelFont
+        self.detailLabel.font = detailLabelFont
     }
     
     public func setTextField(detailLabelColor: UIColor) {
-        textField.detailColor = detailLabelColor
+        self.detailColor = detailLabelColor
     }
     
     public func setTextField(detailLabelVerticalOffset: CGFloat) {
-        textField.detailVerticalOffset = detailLabelVerticalOffset
+        self.detailVerticalOffset = detailLabelVerticalOffset
     }
     
     public func setTextField(minLength: Int) {
@@ -270,15 +272,35 @@ extension ColabaTextField {
     }
     
     public func isSecureText(_ secure: Bool = false) {
-        textField.isSecureTextEntry = secure
+        self.isSecureTextEntry = secure
     }
     
-    public func getTextField() -> UITextField{
-        self.textField
+    public func setValidation(validationType : ValidationType) {
+        self.validationType = validationType
+    }
+    
+    public func getTextField() -> TextField{
+        return self
+    }
+    
+    public func validate() -> Bool {
+        do {
+            let response = try self.text?.validate(type: validationType)
+            DispatchQueue.main.async {
+                self.setTextField(dividerColor: Theme.getSeparatorNormalColor())
+                self.setTextField(detail: "")
+            }
+            return response ?? false
+        }
+        catch{
+            self.setTextField(dividerColor: .red)
+            self.setTextField(detail: error.localizedDescription)
+            return false
+        }
     }
     
     public override func becomeFirstResponder() -> Bool {
-        textField.becomeFirstResponder()
+        super.becomeFirstResponder()
     }
     
     public func setTag(tag: Int){
@@ -293,13 +315,13 @@ extension ColabaTextField {
                 if showText {
                     self?.text = actionTitle
                 }
-                self?.delegate?.selectedOption(option: actionTitle, alert: (self?.alert!)!)
+                self?.colabaDelegate?.selectedOption(option: actionTitle, alert: (self?.alert!)!)
             }
             
             alert?.addAction(action)
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
-            self?.delegate?.selectedOption(option: "cancelled", alert: (self?.alert!)!)
+            self?.colabaDelegate?.selectedOption(option: "cancelled", alert: (self?.alert!)!)
         }
         alert?.addAction(cancel)
     }
@@ -314,21 +336,15 @@ extension ColabaTextField {
     }
     
     private func toggleButtonTitle() {
-        if textField.isSecureTextEntry {
-            setButton("Show")
-        } else {
-            setButton("Hide")
-        }
+        setButton(self.isSecureTextEntry ? "Show" : "Hide")
     }
+    
     private func toggleButtonImage() {
-        if textField.isSecureTextEntry{
-            setButton(image: UIImage(named: "hide"))
-        } else {
-            setButton(image: UIImage(named: "show"))
-        }
+        setButton(image: UIImage(named: self.isSecureTextEntry ? "eyeIcon" : "hide"))
     }
     
     public func isButtonHidden(_ hidden: Bool = true) {
+        self.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 36)
         button.isHidden = hidden
     }
     
@@ -344,8 +360,8 @@ extension ColabaTextField {
 //MARK: Delegates
 extension ColabaTextField: UITextFieldDelegate {
     public func setDelegates(controller: UIViewController) {
-        self.textField.delegate = self
-        self.delegate = controller as? ColabaTextFieldDelegate
+        self.self.delegate = self
+        self.colabaDelegate = controller as? ColabaTextFieldDelegate
     }
 
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -359,13 +375,13 @@ extension ColabaTextField: UITextFieldDelegate {
     }
     
     public func textFieldDidEndEditing(_ textField: UITextField) {
-        if (self.textField.text == ""){
-            self.textField.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+        if (self.text == ""){
+            self.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
         }
         else{
-            self.textField.placeholderLabel.textColor = Theme.getAppGreyColor()
+            self.placeholderLabel.textColor = Theme.getAppGreyColor()
         }
-        delegate?.textFieldEndEditing(textField)
+        colabaDelegate?.textFieldEndEditing(textField)
     }
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -391,7 +407,7 @@ extension ColabaTextField{
         }
         
         datePicker.addTarget(self, action: #selector(datePickerValueChanged(datePicker:)), for: .valueChanged)
-        textField.inputView = datePicker
+        self.inputView = datePicker
         
         //Tool Bar
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 44))
@@ -399,27 +415,27 @@ extension ColabaTextField{
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneDatePicker))
         toolbar.items = [cancelButton,spacer, doneButton]
-        self.textField.isUserInteractionEnabled = true
-        textField.inputAccessoryView = toolbar
-        textField.becomeFirstResponder()
+        self.isUserInteractionEnabled = true
+        self.inputAccessoryView = toolbar
+        self.becomeFirstResponder()
     }
     
     @objc func cancelDatePicker(){
-        self.textField.isUserInteractionEnabled = false
-        textField.text = nil
+        self.isUserInteractionEnabled = false
+        self.text = nil
     }
     
     @objc func doneDatePicker(datePicker: UIDatePicker){
-        if let datePicker = textField.inputView as? UIDatePicker{
-            self.delegate?.selectedDate(date: datePicker.date)
+        if let datePicker = self.inputView as? UIDatePicker{
+            self.colabaDelegate?.selectedDate(date: datePicker.date)
             self.text = getFormattedDate(datePicker: datePicker)
         }
-        self.textField.isUserInteractionEnabled = false
+        self.isUserInteractionEnabled = false
     }
     
     @objc func datePickerValueChanged(datePicker: UIDatePicker){
         self.text = getFormattedDate(datePicker: datePicker)
-        self.delegate?.selectedDate(date: datePicker.date)
+        self.colabaDelegate?.selectedDate(date: datePicker.date)
     }
     
     func getFormattedDate(datePicker: UIDatePicker) -> String{

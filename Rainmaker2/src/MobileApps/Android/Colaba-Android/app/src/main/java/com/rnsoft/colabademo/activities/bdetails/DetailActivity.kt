@@ -12,7 +12,6 @@ import com.rnsoft.colabademo.databinding.DetailTopLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
 class DetailActivity : BaseActivity() {
 
@@ -51,12 +50,21 @@ class DetailActivity : BaseActivity() {
 
         binding.emailFab.setOnClickListener{
             if(borrowerEmail!=null) {
+
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "plain/text"
-                intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(it))
-                intent.putExtra(Intent.EXTRA_SUBJECT, "subject")
-                intent.putExtra(Intent.EXTRA_TEXT, "mail body")
+                intent.putExtra(Intent.EXTRA_EMAIL, borrowerEmail)
+                //intent.putExtra(Intent.EXTRA_SUBJECT, "subject")
+                //intent.putExtra(Intent.EXTRA_TEXT, "mail body")
                 startActivity(Intent.createChooser(intent, ""))
+
+
+
+
+                //val intent = Intent(Intent.ACTION_MAIN)
+                //intent.addCategory(Intent.CATEGORY_APP_EMAIL)
+                //startActivity(intent)
+                //startActivity(Intent.createChooser(intent, resources.getString(R.string.choose_email_client)))
             }
             else
                 SandbarUtils.showRegular(this@DetailActivity, "Email not found...")
@@ -78,7 +86,7 @@ class DetailActivity : BaseActivity() {
         binding.phoneFab.setOnClickListener{
             if(borrowerCellNumber!=null) {
                 val intent = Intent(Intent.ACTION_DIAL)
-                intent.data = Uri.parse("tel:$it")
+                intent.data = Uri.parse("tel:$borrowerCellNumber")
                 startActivity(intent)
             }
             else

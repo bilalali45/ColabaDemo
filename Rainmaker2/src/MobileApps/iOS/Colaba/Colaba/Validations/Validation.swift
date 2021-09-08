@@ -7,7 +7,49 @@
 
 import Foundation
 
+enum ValidationType {
+    case required
+    case email
+    case password
+}
+
+extension String {
+    func validate(type: ValidationType) throws -> Bool {
+        switch type {
+        case .required:
+            return try Validation.validateRequired(self)
+        case .email:
+            return try Validation.validateEmail(self)
+        case .password:
+            return try Validation.validatePassword(self)
+        }
+    }
+}
+
 struct Validation {
+    
+    fileprivate static func validateRequired(_ text: String) throws -> Bool {
+        if text.isEmpty {
+            throw ValidationError.requiredField
+        }
+        return true
+    }
+    
+    fileprivate static func validateEmail(_ text: String) throws -> Bool {
+        if text.isEmpty {
+            throw ValidationError.noEmail
+        } else if !text.isValidEmail() {
+            throw ValidationError.invalidEmail
+        }
+        return true
+    }
+    
+    fileprivate static func validatePassword(_ text: String) throws -> Bool {
+        if text.isEmpty {
+            throw ValidationError.invalidPassword
+        }
+        return true
+    }
     
     func validateEmail(_ email: String?) throws -> String{
         guard let email = email else { throw ValidationError.noEmail }
@@ -293,8 +335,12 @@ enum ValidationError: LocalizedError {
         case .invalidPurchasePrice:
             return "Purchase price should be between $50,000 and $100,000,000"
         }
-        
-        
     }
     
+}
+
+
+struct CharacterLength{
+     static let empty                = 0
+     static let max_PhoneNumber      = 14
 }

@@ -109,6 +109,7 @@ class NonActiveLoansFragment : BaseFragment() , AdapterClickListener , LoanFilte
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     override fun onResume() {
         super.onResume()
+        Log.e("onResume - NON ACTIVE ", " "+oldListDisplaying)
         rowLoading?.visibility = View.INVISIBLE
         nonActiveLoansList.clear()
         pageNumber = 1

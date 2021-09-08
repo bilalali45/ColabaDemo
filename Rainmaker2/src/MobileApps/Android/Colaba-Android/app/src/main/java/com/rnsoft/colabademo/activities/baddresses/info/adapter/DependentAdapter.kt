@@ -1,12 +1,10 @@
-package com.rnsoft.colabademo.activities.borroweraddresses.info.adapter
+package com.rnsoft.colabademo.activities.baddresses.info.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
@@ -14,7 +12,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.RecyclerviewClickListener
-import com.rnsoft.colabademo.activities.borroweraddresses.info.model.Dependent
+import com.rnsoft.colabademo.activities.baddresses.info.model.Dependent
 import kotlinx.android.synthetic.main.dependent_input_field.view.*
 import java.util.*
 

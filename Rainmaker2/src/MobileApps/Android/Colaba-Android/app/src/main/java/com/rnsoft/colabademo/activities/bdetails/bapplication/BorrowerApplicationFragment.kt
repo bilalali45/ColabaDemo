@@ -76,16 +76,10 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
         }
 
         subjectPropertyLayout.setOnClickListener {
-            val detailActivity = (activity as? BorrowerSubjectProperty)
+            //val detailActivity = (activity as? SubjectPropertyActivity)
 
-            detailActivity?.let {
-                val intent = Intent(requireActivity(), BorrowerSubjectProperty::class.java)
-
-                 /*it.borrowerLoanPurpose?.let{ loanPurpose->
-                    intent.putExtra(AppConstant.subjectProperty, loanPurpose)
-                } */
-                startActivity(intent)
-            }
+            val intent = Intent(requireActivity(), SubjectPropertyActivity::class.java)
+            startActivity(intent)
 
 
         }
