@@ -2,14 +2,25 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_primary_borrower_info">
+    android:id="@+id/subject_property_navigation"
+    app:startDestination="@+id/nav_sub_property">
 
     <fragment
-        android:id="@+id/navigation_primary_borrower_info"
-        android:name="com.rnsoft.colabademo.activities.borroweraddresses.info.PrimaryBorrowerInfoFragment"
-        android:label="@string/primary_borrower_info"
-        tools:layout="@layout/primary_borrower_info_layout" />
+        android:id="@+id/nav_sub_property"
+        android:name="com.rnsoft.colabademo.SubjectPropertyFragment"
+        android:label="@string/subject_property"
+        tools:layout="@layout/subject_property" />
 
+    <fragment
+        android:id="@+id/nav_sub_property_address"
+        android:name="com.rnsoft.colabademo.SubPropertyAddressFragment"
+        android:label="@string/subject_property_address"
+        tools:layout="@layout/subject_property_address" />
+
+    <fragment
+        android:id="@+id/nav_mixed_use_property"
+        android:name="com.rnsoft.colabademo.MixedUsePropertyFragment"
+        android:label="@string/mixed_use_property"
+        tools:layout="@layout/mixed_use_property" />
 
 </navigation>

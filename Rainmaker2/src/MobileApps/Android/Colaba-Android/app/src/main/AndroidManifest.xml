@@ -75,16 +75,15 @@
             android:screenOrientation="portrait">
         </activity>
 
-
+        <activity android:name=".SubjectPropertyActivity"
+            android:windowSoftInputMode="adjustPan|adjustResize"
+            android:screenOrientation="portrait">
+        </activity>
 
         <activity android:name=".activities.borroweraddresses.PlacePredictionProgrammatically"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
-
-
         </activity>
-
-
 
     </application>
 

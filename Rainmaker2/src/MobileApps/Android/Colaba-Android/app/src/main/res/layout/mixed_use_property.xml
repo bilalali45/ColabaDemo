@@ -29,7 +29,7 @@
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/rubik_medium"
             android:text="Mixed Use Property"
             android:textColor="@color/grey_color_one"
