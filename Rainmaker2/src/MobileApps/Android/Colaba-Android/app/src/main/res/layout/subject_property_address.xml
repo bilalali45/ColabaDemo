@@ -97,7 +97,7 @@
                 android:theme="@style/InputText_Overlay"
                 app:startIconDrawable="@drawable/ic_grey_search">
 
-                <AutoCompleteTextView
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/ed_searched_address"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -112,6 +112,12 @@
                     android:inputType="textAutoComplete" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <View
+                android:id="@+id/search_separator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/grey_color_four" />
 
 
             <com.google.android.material.textfield.TextInputLayout
