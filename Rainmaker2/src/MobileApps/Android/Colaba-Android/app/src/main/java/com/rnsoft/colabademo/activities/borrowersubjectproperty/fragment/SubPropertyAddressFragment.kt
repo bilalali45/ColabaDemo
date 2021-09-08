@@ -23,6 +23,11 @@ class SubPropertyAddressFragment : Fragment() {
     ): View? {
         binding = SubjectPropertyAddressBinding.inflate(inflater, container, false)
 
+
+
+
+
+
         binding.backButton.setOnClickListener {
             requireActivity().onBackPressed()
         }
