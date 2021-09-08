@@ -108,6 +108,7 @@ class ActiveLoansFragment : BaseFragment() , AdapterClickListener  ,  LoanFilter
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     override fun onResume() {
         super.onResume()
+        Log.e("onResume - ACTIVE ", "$oldListDisplaying")
         rowLoading?.visibility = View.INVISIBLE
         activeLoansList.clear()
         pageNumber = 1

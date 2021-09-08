@@ -116,7 +116,7 @@ class HomeFragment : Fragment() {
 
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                Log.e("Selected_Page", position.toString())
+                Log.e("onPageSelected -", position.toString())
                 selectedText = tabArray[position]
                 selectedPosition = position
                 val test2: Fragment? =
@@ -136,6 +136,7 @@ class HomeFragment : Fragment() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
+                    Log.e("onTabSelected -", viewPager.currentItem.toString())
                     selectedText = it.text as String
                     viewPager.adapter
                     viewPager.currentItem

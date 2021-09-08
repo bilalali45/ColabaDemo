@@ -59,8 +59,8 @@ android {
         }
 
         debug {
-            buildConfigField "String", "BASE_URL", '"https://devmobilegateway.rainsoftfn.com:5002/"'
-            //buildConfigField "String", "BASE_URL", '"https://qamobilegateway.rainsoftfn.com/"'
+            //buildConfigField "String", "BASE_URL", '"https://devmobilegateway.rainsoftfn.com:5002/"'
+            buildConfigField "String", "BASE_URL", '"https://qamobilegateway.rainsoftfn.com/"'
         }
 
     }
@@ -99,7 +99,7 @@ dependencies {
     // Optional -- Robolectric environment
     testImplementation "androidx.test:core:1.4.0"
     // Optional -- Mockito framework
-    testImplementation "org.mockito:mockito-core:2.28.2"
+    testImplementation "org.mockito:mockito-core:3.12.4"
 
     testImplementation "com.google.truth:truth:1.1.2"
     androidTestImplementation "com.google.truth:truth:1.1.2"
