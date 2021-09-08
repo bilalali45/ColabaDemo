@@ -54,9 +54,18 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
         horizontalRecyclerView = root.findViewById(R.id.horizontalRecycleView)
         realStateRecyclerView = root.findViewById(R.id.realStateHorizontalRecyclerView)
         questionsRecyclerView = root.findViewById(R.id.govtQuestionHorizontalRecyclerView)
-        loanLayout = root.findViewById(R.id.constraintLayout6)
+        loanLayout = root.findViewById(R.id.loanInfoLayout)
         subjectPropertyLayout = root.findViewById(R.id.constraintLayout5)
+
         //applicationTopContainer = root.findViewById(R.id.application_top_container)
+
+        binding.assetsConstraintLayout.setOnClickListener{
+            navigateToAssetActivity()
+        }
+
+        binding.incomeConstraintLayout.setOnClickListener{
+            navigateToAssetActivity()
+        }
 
 
         loanLayout.setOnClickListener {
@@ -112,7 +121,7 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
         questionAdapter.notifyDataSetChanged()
 
 
-       detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, { appTabModel->
+        detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, { appTabModel->
             if (appTabModel != null) {
                 binding.applicationTopContainer.visibility = View.VISIBLE
                 binding.applicationTabLayout.visibility = View.VISIBLE
@@ -256,6 +265,21 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
 
         return root
 
+    }
+
+
+    private fun navigateToAssetActivity(){
+        val detailActivity = (activity as? DetailActivity)
+        detailActivity?.let {
+            val assetsActivity = Intent(requireActivity(), AssetsActivity::class.java)
+            it.loanApplicationId?.let { loanId ->
+                assetsActivity.putExtra(AppConstant.loanApplicationId, loanId)
+            }
+            it.borrowerLoanPurpose?.let{ loanPurpose->
+                assetsActivity.putExtra(AppConstant.loanPurpose, loanPurpose)
+            }
+            startActivity(assetsActivity)
+        }
     }
 
     override fun getSingleItemIndex(position: Int) {
