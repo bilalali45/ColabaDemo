@@ -98,7 +98,7 @@
                 app:startIconDrawable="@drawable/ic_grey_search">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/ed_searched_address"
+                    android:id="@+id/tv_search"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:cursorVisible="true"
@@ -118,6 +118,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/grey_color_four" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_places"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="1dp"
+                android:elevation="2dp"
+                android:visibility="gone"
+                android:background="@color/white"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 
             <com.google.android.material.textfield.TextInputLayout
