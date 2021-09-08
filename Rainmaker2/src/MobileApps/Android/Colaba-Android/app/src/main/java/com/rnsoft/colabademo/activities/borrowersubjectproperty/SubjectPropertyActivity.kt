@@ -9,7 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BorrowerSubjectProperty : BaseActivity() {
+class SubjectPropertyActivity : BaseActivity() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: BorrowerSubjectPropertyLayoutBinding
@@ -22,10 +22,10 @@ class BorrowerSubjectProperty : BaseActivity() {
         val navController = findNavController(R.id.nav_host_borrower_subject_property)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_primary_borrower_info,
-                R.id.navigation_current_address
+                R.id.nav_sub_property,
+                R.id.nav_sub_property_address,
+                R.id.nav_mixed_use_property
             )
         )
     }
-
-    }
+ }

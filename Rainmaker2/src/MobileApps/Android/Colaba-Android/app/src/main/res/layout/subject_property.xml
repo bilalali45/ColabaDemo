@@ -29,7 +29,7 @@
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/rubik_medium"
             android:text="@string/subject_property"
             android:textColor="@color/grey_color_one"
@@ -37,7 +37,8 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"/>
 
         <View
             android:id="@+id/tab_top_border"
@@ -47,7 +48,7 @@
             android:background="#E5E5E5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -56,8 +57,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_info_screen">
 
@@ -65,63 +67,97 @@
             android:id="@+id/subject_property_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
+            android:paddingBottom="200dp"
             android:clickable="true"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="vertical">
 
-            <RadioGroup
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+                android:background="@drawable/content_bg_with_drop_shadow">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_sub_property"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:text="@string/subject_property"
-                    android:textColor="@color/grey_color_one"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:paddingStart="15dp"
-                    android:drawablePadding="15dp"
-                    android:clickable="true"
                     android:button="@null"
                     android:drawableStart="@drawable/radiodraw"
-                    android:background="@drawable/style_btn_add_residence" />
-
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/rb_married"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:drawablePadding="15dp"
                     android:fontFamily="@font/rubik_regular"
-                    android:text="@string/martial_status_married"
+                    android:paddingStart="15dp"
+                    android:text="Subject Property TBD"
                     android:textColor="@color/grey_color_one"
-                    android:textSize="14sp"
-                    android:layout_marginTop="20dp"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/content_bg_with_drop_shadow">
+
+                <RadioButton
+                    android:id="@+id/rb_sub_property_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:button="@null"
+                    android:drawableStart="@drawable/radiodraw"
                     tools:ignore="RtlSymmetry"
-                    android:clickable="true"
                     android:paddingStart="15dp"
-                    android:drawablePadding="15dp"
-                    android:button="@null"
-                    android:drawableStart="@drawable/radiodraw"
-                    android:background="@drawable/style_btn_add_residence" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
-            </RadioGroup>
+                <TextView
+                    android:id="@+id/radio_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik_regular"
+                    android:lineSpacingExtra="8dp"
+                    android:text="@string/subject_property_address"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="15sp"
+                    app:layout_constraintTop_toTopOf="@+id/rb_sub_property_address"
+                    app:layout_constraintStart_toEndOf="@+id/rb_sub_property_address"
+                    app:layout_constraintBottom_toBottomOf="@+id/rb_sub_property_address"
+                 />
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/tv_sub_property_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="17dp"
+                    android:layout_marginEnd="10dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/rubik_regular"
+                    android:textSize="15sp"
+                    android:lineSpacingExtra="8dp"
+                    android:maxLines="2"
+                    android:text="5915 Trussville Crossings Pkwy, Birmingham AL 35235"
+                    android:textColor="@color/grey_color_one"
+                    app:layout_constraintStart_toStartOf="@+id/radio_txt"
+                    app:layout_constraintTop_toBottomOf="@+id/radio_txt"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_property_type"
+                android:id="@+id/layout_property_type"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="70dp"
                 android:background="@android:color/transparent"
                 android:hint="Property Type"
                 android:textColorHint="@color/primary_info_label_color"
@@ -161,12 +197,12 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_occupancy_type"
+                android:id="@+id/layout_occupancy_type"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="25dp"
                 android:background="@android:color/transparent"
                 android:hint="Occupancy Type"
                 android:textColorHint="@color/primary_info_label_color"
@@ -208,7 +244,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="50dp"
                 android:fontFamily="@font/rubik_medium"
                 android:text="Mixed Use Property"
                 android:textAlignment="center"
@@ -219,12 +255,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/mixed_use_property_ques"
                 android:layout_marginTop="20dp"
-                android:textColor="@color/grey_color_two"
                 android:fontFamily="@font/rubik_regular"
-                android:textSize="13sp"
-                android:lineSpacingExtra="10dp" />
+                android:lineSpacingExtra="10dp"
+                android:text="@string/mixed_use_property_ques"
+                android:textColor="@color/grey_color_two"
+                android:textSize="13sp" />
 
             <RadioGroup
                 android:layout_width="wrap_content"
@@ -235,72 +271,72 @@
                     android:id="@+id/rb_mixed_property_yes"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
+                    android:button="@drawable/radiodraw"
+                    android:clickable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:paddingStart="15dp"
                     android:text="Yes"
                     android:textColor="@color/grey_color_one"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:button="@drawable/radiodraw"
-                    android:paddingStart="15dp"
-                    android:clickable="true" />
+                    android:textSize="14sp" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_mixed_property_no"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
+                    android:layout_marginTop="18dp"
+                    android:button="@drawable/radiodraw"
+                    android:clickable="true"
                     android:fontFamily="@font/rubik_regular"
+                    android:paddingStart="15dp"
                     android:text="No"
                     android:textColor="@color/grey_color_one"
-                    android:textSize="14sp"
-                    android:paddingStart="15dp"
-                    android:button="@drawable/radiodraw"
-                    android:layout_marginTop="18dp"
-                    android:clickable="true" />
+                    android:textSize="14sp" />
 
             </RadioGroup>
 
 
             <LinearLayout
-                android:id="@+id/tv_details"
+                android:id="@+id/layout_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/search_view_holder_style"
                 android:layout_marginTop="20dp"
+                android:background="@drawable/search_view_holder_style"
                 android:clickable="true"
-                android:visibility="visible">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Details"
-                    android:textStyle="bold"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
-                    android:textColor="@color/txt_color_app_headings"
+                    android:layout_marginEnd="20dp"
                     android:fontFamily="@font/rubik_medium"
+                    android:text="Details"
+                    android:textColor="@color/txt_color_app_headings"
                     android:textSize="14sp"
-                    android:layout_marginEnd="20dp" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginBottom="20dp"
                     android:ellipsize="end"
-                    android:maxLines="2"
                     android:fontFamily="@font/rubik_regular"
+                    android:lineSpacingExtra="10dp"
+                    android:maxLines="2"
                     android:text="@string/lorem_ipsum"
                     android:textColor="@color/grey_color_two"
-                    android:textSize="13sp"
-                    android:lineSpacingExtra="10dp" />
+                    android:textSize="13sp" />
 
             </LinearLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_property_value"
+                android:id="@+id/layout_appraised_property"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
@@ -318,7 +354,7 @@
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_property_value"
+                    android:id="@+id/ed_appraised_property_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -326,15 +362,17 @@
                     android:fontFamily="@font/rubik_regular"
                     android:imeOptions="actionNext"
                     android:paddingStart="0dp"
-                    android:singleLine="true"
                     android:textColor="@color/grey_color_one"
-                    android:textSize="@dimen/ed_txt_size_primary_info" />
+                    android:textSize="@dimen/ed_txt_size_primary_info"
+                    android:singleLine="true"
+                    android:digits="1234567890"
+                    android:inputType="number"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_property_taxes"
+                android:id="@+id/layout_property_taxes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -354,26 +392,27 @@
                     android:id="@+id/ed_property_taxes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
                     android:background="@android:color/transparent"
                     android:ems="10"
                     android:fontFamily="@font/rubik_regular"
                     android:imeOptions="actionNext"
                     android:paddingStart="0dp"
-                    android:singleLine="true"
                     android:textColor="@color/grey_color_one"
-                    android:textSize="@dimen/ed_txt_size_primary_info" />
+                    android:textSize="@dimen/ed_txt_size_primary_info"
+                    android:singleLine="true"
+                    android:digits="1234567890"
+                    android:inputType="number"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_homeowner_insurance"
+                android:id="@+id/layout_homeowner_insurance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_light"
-                android:hint="@string/first_name"
+                android:hint="@string/homeowner_insurances"
                 android:textColorHint="@color/primary_info_label_color"
                 app:boxCollapsedPaddingTop="1dp"
                 app:boxStrokeColor="@color/primary_info_line_color"
@@ -393,15 +432,17 @@
                     android:fontFamily="@font/rubik_regular"
                     android:imeOptions="actionNext"
                     android:paddingStart="0dp"
-                    android:singleLine="true"
                     android:textColor="@color/grey_color_one"
-                    android:textSize="@dimen/ed_txt_size_primary_info" />
+                    android:textSize="@dimen/ed_txt_size_primary_info"
+                    android:singleLine="true"
+                    android:digits="1234567890"
+                    android:inputType="number"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_flood_insurance"
+                android:id="@+id/layout_flood_insurance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -427,9 +468,11 @@
                     android:fontFamily="@font/rubik_regular"
                     android:imeOptions="actionNext"
                     android:paddingStart="0dp"
-                    android:singleLine="true"
                     android:textColor="@color/grey_color_one"
-                    android:textSize="@dimen/ed_txt_size_primary_info" />
+                    android:textSize="@dimen/ed_txt_size_primary_info"
+                    android:singleLine="true"
+                    android:digits="1234567890"
+                    android:inputType="number"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -460,50 +503,49 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp">
 
-            <androidx.appcompat.widget.AppCompatRadioButton
-                android:id="@+id/rb_occupying"
-                android:layout_width="wrap_content"
-                android:layout_height="22dp"
-                android:text="@string/occupying"
-                android:textColor="@color/grey_color_one"
-                android:textSize="14sp"
-                android:fontFamily="@font/rubik_regular"
-                android:button="@drawable/radiodraw"
-                android:paddingStart="15dp"
-                android:clickable="true" />
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/rb_occupying"
+                    android:layout_width="wrap_content"
+                    android:layout_height="22dp"
+                    android:button="@drawable/radiodraw"
+                    android:clickable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:paddingStart="15dp"
+                    android:text="@string/occupying"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="14sp" />
 
-            <androidx.appcompat.widget.AppCompatRadioButton
-                android:id="@+id/rb_non_occupying"
-                android:layout_width="wrap_content"
-                android:layout_height="22dp"
-                android:fontFamily="@font/rubik_regular"
-                android:text="@string/non_occupying"
-                android:textColor="@color/grey_color_one"
-                android:textSize="14sp"
-                android:paddingStart="15dp"
-                android:button="@drawable/radiodraw"
-                android:layout_marginTop="18dp"
-                tools:ignore="RtlSymmetry"
-                android:clickable="true"/>
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/rb_non_occupying"
+                    android:layout_width="wrap_content"
+                    android:layout_height="22dp"
+                    android:layout_marginTop="18dp"
+                    android:button="@drawable/radiodraw"
+                    android:clickable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:paddingStart="15dp"
+                    android:text="@string/non_occupying"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="14sp"
+                    tools:ignore="RtlSymmetry" />
             </RadioGroup>
-
 
         </LinearLayout>
 
     </ScrollView>
 
     <ImageButton
-        android:id="@+id/btn_save_info"
+        android:id="@+id/btn_save"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="20dp"
+        android:background="@android:color/transparent"
         android:fontFamily="@font/rubik_regular"
+        android:src="@drawable/ic_save"
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
