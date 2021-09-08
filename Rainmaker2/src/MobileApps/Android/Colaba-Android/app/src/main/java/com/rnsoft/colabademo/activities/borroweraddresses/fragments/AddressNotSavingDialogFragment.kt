@@ -33,8 +33,8 @@ class AddressNotSavingDialogFragment : BottomSheetDialogFragment() {
 
     private fun setInitialSelection(){
 
-        binding.pendingIcon.setColorFilter(resources.getColor(R.color.grey_color_two, activity?.theme))
-        binding.pendingTextView.setTextColor(resources.getColor(R.color.grey_color_two, activity?.theme))
+        //binding.pendingIcon.setColorFilter(resources.getColor(R.color.biometric_error_color, activity?.theme))
+        //binding.pendingTextView.setTextColor(resources.getColor(R.color.biometric_error_color, activity?.theme))
 
         binding.recentIcon.setColorFilter(resources.getColor(R.color.grey_color_two, activity?.theme))
         binding.recentTextView.setTextColor(resources.getColor(R.color.grey_color_two, activity?.theme))
@@ -48,6 +48,7 @@ class AddressNotSavingDialogFragment : BottomSheetDialogFragment() {
 
         binding.crossImageView.setOnClickListener{
             dismiss()
+            EventBus.getDefault().post(NotSavingAddressEvent(true))
         }
         binding.saveContinuelayout.setOnClickListener {
             dismiss()
