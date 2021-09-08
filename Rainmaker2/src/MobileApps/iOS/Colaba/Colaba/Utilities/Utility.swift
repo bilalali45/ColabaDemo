@@ -219,6 +219,10 @@ struct Utility {
         return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: AddStockBondViewController.self)) as! AddStockBondViewController
     }
     
+    static func getAddProceedsFromTransactionVC() -> AddProceedsFromTransactionViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: AddProceedsFromTransactionViewController.self)) as! AddProceedsFromTransactionViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
