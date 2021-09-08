@@ -131,5 +131,4 @@ extension ForgotPasswordViewController: UITextFieldDelegate{
 //            self.emailSeparator.backgroundColor = Theme.getSeparatorErrorColor()
 //        }
     }
-    
 }
