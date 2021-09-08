@@ -46,18 +46,17 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
 
 
+    private lateinit var searchImageView: ImageView
+    private lateinit var filterImageView: ImageView
+    private lateinit var greetingMessage: TextView
+    private lateinit var assignToMeSwitch: SwitchCompat
 
-    private lateinit  var searchImageView: ImageView
-    private lateinit  var filterImageView: ImageView
-    private lateinit  var greetingMessage: TextView
-    private lateinit var assignToMeSwitch:SwitchCompat
-
-    private var selectedText:String = tabArray[0]
-    private var selectedPosition:Int = 0
-    private lateinit var pageAdapter:ViewPagerAdapter
+    private var selectedText: String = tabArray[0]
+    private var selectedPosition: Int = 0
+    private lateinit var pageAdapter: ViewPagerAdapter
     //private  lateinit var selectedTab:TabLayout.Tab
 
-    private lateinit var  homeProfileLayout:ConstraintLayout
+    private lateinit var homeProfileLayout: ConstraintLayout
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -81,19 +80,18 @@ class HomeFragment : Fragment() {
         filterImageView = root.findViewById(R.id.filter_imageview)
         searchImageView = root.findViewById(R.id.searchIconImageView)
         assignToMeSwitch = root.findViewById(R.id.assignToMeSwitch)
-        searchImageView.setOnClickListener{
+        searchImageView.setOnClickListener {
             findNavController().navigate(R.id.navigation_search, null)
             // NavHostFragment.findNavController(context).navigate(R.id.navigation_search)
             //Navigation.findNavController(context,R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_search)
         }
 
 
-        if(sharedPreferences.contains(AppConstant.ASSIGN_TO_ME)){
-            assignToMeSwitch.isChecked =  sharedPreferences.getBoolean(AppConstant.ASSIGN_TO_ME, false)
+        if (sharedPreferences.contains(AppConstant.ASSIGN_TO_ME)) {
+            assignToMeSwitch.isChecked =
+                sharedPreferences.getBoolean(AppConstant.ASSIGN_TO_ME, false)
             BaseFragment.globalAssignToMe = assignToMeSwitch.isChecked
         }
-
-
 
         val viewPager = binding.viewPager
         val tabLayout = binding.tabLayout
@@ -118,11 +116,12 @@ class HomeFragment : Fragment() {
 
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                Log.e("Selected_Page", position.toString())
+                Log.e("onPageSelected -", position.toString())
                 selectedText = tabArray[position]
                 selectedPosition = position
-                val test2:Fragment? = requireActivity().supportFragmentManager.findFragmentByTag("f${position}")
-                if(test2!=null){
+                val test2: Fragment? =
+                    requireActivity().supportFragmentManager.findFragmentByTag("f${position}")
+                if (test2 != null) {
                     baseFragment = test2 as BaseFragment
                 }
             }
@@ -137,6 +136,7 @@ class HomeFragment : Fragment() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
+                    Log.e("onTabSelected -", viewPager.currentItem.toString())
                     selectedText = it.text as String
                     viewPager.adapter
                     viewPager.currentItem
@@ -152,9 +152,12 @@ class HomeFragment : Fragment() {
 
 
 
-        filterImageView.setOnClickListener{
+        filterImageView.setOnClickListener {
             baseFragment?.let {
-                CustomFilterBottomSheetDialogFragment.newInstance(it).show(childFragmentManager, CustomFilterBottomSheetDialogFragment::class.java.canonicalName)
+                CustomFilterBottomSheetDialogFragment.newInstance(it).show(
+                    childFragmentManager,
+                    CustomFilterBottomSheetDialogFragment::class.java.canonicalName
+                )
             }
 
             //FilterBottomSheetDialogFragment.newInstance().show(childFragmentManager, FilterBottomSheetDialogFragment::class.java.canonicalName)
@@ -175,11 +178,11 @@ class HomeFragment : Fragment() {
         }
 
     //private var loanFilterInterface:LoanFilterInterface?=null
-    private var baseFragment:BaseFragment? = null
+    private var baseFragment: BaseFragment? = null
 
-    private fun setGreetingMessageOnTop(){
+    private fun setGreetingMessageOnTop() {
         var greetingString = AppSetting.returnGreetingString()
-        sharedPreferences.getString(AppConstant.firstName,"")?.let {
+        sharedPreferences.getString(AppConstant.firstName, "")?.let {
             greetingString = "$greetingString $it"
         }
         greetingMessage.text = greetingString
@@ -190,6 +193,6 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
+}
 
-    }
 

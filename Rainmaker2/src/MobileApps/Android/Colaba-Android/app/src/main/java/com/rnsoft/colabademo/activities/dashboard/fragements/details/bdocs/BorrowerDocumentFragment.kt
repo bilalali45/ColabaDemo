@@ -277,6 +277,9 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, DownloadClick
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onFileDownloadCompleted(event: FileDownloadEvent) {
+        if (activity is DetailActivity) {
+            (activity as DetailActivity).checkIfUnreadFileOpened()
+        }
         downloadLoader?.visibility = View.GONE
         loader_percentage.visibility = View.GONE
         //tvPercentage.visibility = View.GONE

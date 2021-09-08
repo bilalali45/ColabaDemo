@@ -119,8 +119,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func loadBorrowerInfoController(){
-        let vc = Utility.getBorrowerInformationVC()
-        //let vc = Utility.getPurchaseSubjectPropertyVC()
+        //let vc = Utility.getBorrowerInformationVC()
+        let vc = Utility.getAssetsVC()
         self.window?.rootViewController = vc
     }
     

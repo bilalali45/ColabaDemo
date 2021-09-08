@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/current_residence_parent_layout"
     android:background="@color/half_white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -56,7 +57,7 @@
             app:layout_constraintTop_toBottomOf="@+id/borrower_name_greeting" />
 
         <ImageView
-            android:id="@+id/del_imageview"
+            android:id="@+id/top_del_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -107,6 +108,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/topSearchFieldTextInputLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -127,14 +129,13 @@
                 app:endIconTint="@color/grey_color_three"
 
 
+
+
+
+
                 android:layout_marginStart="20dp"
-
                 android:layout_marginEnd="20dp"
-
-
                 android:gravity="start"
-
-
                 android:paddingStart="-17dp"
                 android:theme="@style/InputText_Overlay"
 
@@ -143,23 +144,35 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:startIconDrawable="@drawable/ic_grey_search">
 
-                <AutoCompleteTextView
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/topSearchAutoTextView"
+                    style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:cursorVisible="true"
                     android:background="@android:color/transparent"
-                    android:backgroundTint="@color/colaba_primary_color"
+                    android:completionThreshold="4"
                     android:textSize="15sp"
                     android:padding="0dp"
                     android:fontFamily="@font/rubik_regular"
                     android:textColor="@color/grey_color_one"
+
+
+                    android:backgroundTint="@android:color/transparent"
+
+
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+
+
+
 
                     android:drawablePadding="-12dp"
                     android:inputType="textAutoComplete"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
+
 
 
 
@@ -176,6 +189,24 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/topSearchFieldTextInputLayout" />
 
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fakePlaceSearchRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="1dp"
+                android:elevation="2dp"
+                android:visibility="gone"
+                android:layout_marginStart="22dp"
+                android:layout_marginEnd="22dp"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+
+                app:layout_constraintTop_toBottomOf="@+id/topSearchTextInputLine"
+                />
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -196,6 +227,8 @@
                 app:boxStrokeWidthFocused="1dp"
                 app:helperTextEnabled="true"
 
+                android:visibility="gone"
+
                 app:helperTextTextAppearance="@style/inputError"
 
                 app:helperTextTextColor="@color/colaba_red_color"
@@ -212,6 +245,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
+
                     android:ems="10"
                     android:inputType="textPostalAddress"
                     android:fontFamily="@font/rubik_regular"
@@ -227,6 +261,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/unitAptInputLayout"
                 android:layout_width="match_parent"
+
+                android:visibility="gone"
 
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
@@ -289,6 +325,8 @@
                 app:boxStrokeWidthFocused="1dp"
 
 
+                android:visibility="gone"
+
                 app:helperTextEnabled="true"
                 app:helperTextTextAppearance="@style/inputError"
                 app:helperTextTextColor="@color/colaba_red_color"
@@ -339,6 +377,8 @@
                 app:boxStrokeWidthFocused="1dp"
                 app:helperTextEnabled="true"
 
+
+                android:visibility="gone"
 
                 app:helperTextTextAppearance="@style/inputError"
 
@@ -393,6 +433,8 @@
                 app:helperTextEnabled="true"
                 app:helperTextTextAppearance="@style/inputError"
 
+                android:visibility="gone"
+
                 app:helperTextTextColor="@color/colaba_red_color"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
 
@@ -408,20 +450,22 @@
                     style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="bottom"
-                    android:backgroundTint="@android:color/transparent"
+
+
                     android:completionThreshold="1"
-                    android:cursorVisible="true"
-
-                    android:focusable="true"
-
-                    android:focusableInTouchMode="true"
                     android:fontFamily="@font/rubik_regular"
-                    android:gravity="bottom"
+
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"
-                    android:spinnerMode="dropdown"
+                    android:backgroundTint="@android:color/transparent"
 
+                    android:cursorVisible="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+
+                    android:spinnerMode="dropdown"
+                    android:layout_gravity="bottom"
+                    android:gravity="bottom"
                     android:textAlignment="gravity"
                     android:textColor="@color/grey_color_one"
                     android:textColorHint="@color/grey_color_three"
@@ -446,6 +490,7 @@
                 app:boxStrokeWidthFocused="1dp"
                 app:helperTextEnabled="true"
 
+                android:visibility="gone"
 
                 app:helperTextTextAppearance="@style/inputError"
 
@@ -481,6 +526,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/countryCompleteLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+
+                android:visibility="gone"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -743,6 +790,9 @@
                 android:id="@+id/addAddressLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:visibility="gone"
+
                 android:layout_marginTop="31dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
@@ -834,7 +884,7 @@
     </ScrollView>
 
     <ImageView
-        android:id="@+id/phone_fab"
+        android:id="@+id/save_current_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_save_icon"

@@ -106,7 +106,8 @@ class ForgotPasswordFragment : Fragment() {
             "300" ->forgotPasswordResponse.message?.let { setError(it) }
             "600" ->forgotPasswordResponse.message?.let { setError(it) }
             "200" -> {
-                SandbarUtils.showSuccess(requireActivity(), "success")
+                //SandbarUtils.showSuccess(requireActivity(), "Email with password reset instructions has been sent")
+                //-- the navigated screen is sufficient for the user...
                 findNavController().navigate(R.id.back_to_login_id, null)
             }
             else -> {

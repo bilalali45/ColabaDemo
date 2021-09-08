@@ -23,6 +23,7 @@ class CustomBorrowerAdapter internal constructor(private var tabBorrowerDataList
     //abstract class BaseViewHolder<TabBorrowerList>(itemView: View) : RecyclerView.ViewHolder(itemView) { abstract fun bind(item: TabBorrowerList) }
 
     inner class BorrowerItemViewHolder(itemView: View) : BaseViewHolder(itemView)  {
+        private val borrowerDataCell: ConstraintLayout = itemView.findViewById(R.id.data_cell)
         private val coBorrowerNames : TextView = itemView.findViewById(R.id.co_borrower_test)
         private val mainBorrowerName:TextView = itemView.findViewById(R.id.main_borrower_test)
         override fun bind(item: BorrowersInformation) {
@@ -37,12 +38,17 @@ class CustomBorrowerAdapter internal constructor(private var tabBorrowerDataList
 
         }
 
+        init {
+            borrowerDataCell.setOnClickListener {
+                classScopedItemClickListener.navigateTo(adapterPosition)
+            }
+        }
 
     }
 
     inner class BorrowerFooterViewHolder(itemView: View) : BaseViewHolder(itemView){
 
-        var addBorrowerLayout: ConstraintLayout = itemView.findViewById(R.id.addBorrowerLayout)
+        val addBorrowerLayout: ConstraintLayout = itemView.findViewById(R.id.addBorrowerLayout)
 
         init {
             addBorrowerLayout.setOnClickListener {

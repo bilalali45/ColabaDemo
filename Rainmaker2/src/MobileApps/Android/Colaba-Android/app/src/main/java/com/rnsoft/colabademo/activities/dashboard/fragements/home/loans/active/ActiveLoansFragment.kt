@@ -108,6 +108,7 @@ class ActiveLoansFragment : BaseFragment() , AdapterClickListener  ,  LoanFilter
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     override fun onResume() {
         super.onResume()
+        Log.e("onResume - ACTIVE ", "$oldListDisplaying")
         rowLoading?.visibility = View.INVISIBLE
         activeLoansList.clear()
         pageNumber = 1
@@ -141,6 +142,7 @@ class ActiveLoansFragment : BaseFragment() , AdapterClickListener  ,  LoanFilter
 
     private fun loadActiveApplications() {
         if(NetworkSetting.isNetworkAvailable(requireContext())) {
+            Log.e("ActiveLoan--", "globalAssignToMe = $globalAssignToMe")
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 if (AppSetting.activeloanApiDateTime.isEmpty())
                     AppSetting.activeloanApiDateTime =

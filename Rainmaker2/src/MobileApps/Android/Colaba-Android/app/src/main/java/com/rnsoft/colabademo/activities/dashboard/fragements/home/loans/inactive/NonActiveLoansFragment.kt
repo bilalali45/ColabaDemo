@@ -109,6 +109,7 @@ class NonActiveLoansFragment : BaseFragment() , AdapterClickListener , LoanFilte
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     override fun onResume() {
         super.onResume()
+        Log.e("onResume - NON ACTIVE ", " "+oldListDisplaying)
         rowLoading?.visibility = View.INVISIBLE
         nonActiveLoansList.clear()
         pageNumber = 1
@@ -141,6 +142,7 @@ class NonActiveLoansFragment : BaseFragment() , AdapterClickListener , LoanFilte
 
     private fun loadNonActiveApplications(){
         if(NetworkSetting.isNetworkAvailable(requireContext())) {
+            Log.e("NON-ACTIVE-LOAN--", "globalAssignToMe = $globalAssignToMe")
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 if (AppSetting.nonActiveloanApiDateTime.isEmpty())
                     AppSetting.nonActiveloanApiDateTime =

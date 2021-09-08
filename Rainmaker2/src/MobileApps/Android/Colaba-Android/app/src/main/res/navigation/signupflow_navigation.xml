@@ -5,6 +5,12 @@
     app:startDestination="@+id/login_fragment_id">
 
     <fragment
+        android:id="@+id/navigation_current_address"
+        android:name="com.rnsoft.colabademo.CurrentResidenceFragment"
+        android:label="@string/current_residence"
+        tools:layout="@layout/current_residence_layout" />
+
+    <fragment
         android:id="@+id/login_fragment_id"
         android:name="com.rnsoft.colabademo.LoginFragment"
         android:label="@string/login"
@@ -17,7 +23,6 @@
             android:id="@+id/action_login_to_phone_number"
             app:destination="@id/phone_number_id" />
     </fragment>
-
 
     <fragment
         android:id="@+id/forgot_password_id"
@@ -68,7 +73,6 @@
 
     </fragment>
 
-
     <fragment
         android:id="@+id/back_to_login_id"
         android:name="com.rnsoft.colabademo.BackToLoginFragment"
@@ -87,5 +91,17 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_sub_property"
+        android:name="com.rnsoft.colabademo.SubjectPropertyFragment"
+        android:label="@string/subject_property"
+        tools:layout="@layout/subject_property" />
+
+
+    <!--<fragment
+        android:id="@+id/borrower_app_loan_purchase"
+        android:name="com.rnsoft.colabademo.LoanPurchaseInfo"
+        android:label="@string/loan_info_purchase"
+        tools:layout="@layout/loan_purchase_info" /> -->
 
 </navigation>

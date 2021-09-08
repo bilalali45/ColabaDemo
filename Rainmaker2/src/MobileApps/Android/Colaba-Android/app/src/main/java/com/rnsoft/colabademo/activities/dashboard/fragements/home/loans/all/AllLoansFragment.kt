@@ -196,7 +196,7 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
     override fun onResume() {
         super.onResume()
         rowLoading?.visibility = View.INVISIBLE
-        Log.e("on Resume oldListDisplaying = ", "$oldListDisplaying")
+        Log.e("onResume - ALL LOAN ", "$oldListDisplaying")
         allLoansArrayList.clear()
         //loansAdapter.notifyDataSetChanged()
         pageNumber = 1
@@ -207,6 +207,7 @@ class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInter
     private fun loadLoanApplications() {
         // now load data from internet if connected...
         if(NetworkSetting.isNetworkAvailable(requireContext())){
+            Log.e("ALL-LOAN--", "globalAssignToMe = $globalAssignToMe")
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 if(AppSetting.loanApiDateTime.isEmpty())
                     AppSetting.loanApiDateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(Date())

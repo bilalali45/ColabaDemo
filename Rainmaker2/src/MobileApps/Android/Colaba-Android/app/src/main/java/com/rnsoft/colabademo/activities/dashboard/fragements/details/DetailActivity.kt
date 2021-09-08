@@ -7,15 +7,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.databinding.DetailTopLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : BaseActivity() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -27,7 +25,6 @@ class DetailActivity : AppCompatActivity() {
     var borrowerLoanPurpose:String? = null
     var borrowerCellNumber:String? = null
     var borrowerEmail:String? = null
-
     var innerScreenName:String? = null
 
     private val detailViewModel: DetailViewModel by viewModels()
@@ -52,32 +49,48 @@ class DetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.emailFab.setOnClickListener{
-            borrowerEmail?.let {
+            if(borrowerEmail!=null) {
+
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "plain/text"
-                intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(it))
-                intent.putExtra(Intent.EXTRA_SUBJECT, "subject")
-                intent.putExtra(Intent.EXTRA_TEXT, "mail body")
+                intent.putExtra(Intent.EXTRA_EMAIL, borrowerEmail)
+                //intent.putExtra(Intent.EXTRA_SUBJECT, "subject")
+                //intent.putExtra(Intent.EXTRA_TEXT, "mail body")
                 startActivity(Intent.createChooser(intent, ""))
+
+
+
+
+                //val intent = Intent(Intent.ACTION_MAIN)
+                //intent.addCategory(Intent.CATEGORY_APP_EMAIL)
+                //startActivity(intent)
+                //startActivity(Intent.createChooser(intent, resources.getString(R.string.choose_email_client)))
             }
+            else
+                SandbarUtils.showRegular(this@DetailActivity, "Email not found...")
         }
 
         binding.messageFab.setOnClickListener{
-            borrowerCellNumber?.let {
+           if(borrowerCellNumber!=null) {
                 val smsIntent = Intent(Intent.ACTION_VIEW)
-                smsIntent.type = "vnd.android-dir/mms-sms"
+                smsIntent.data = Uri.parse("sms:")
+                //smsIntent.type = "vnd.android-dir/mms-sms"
                 smsIntent.putExtra("address", borrowerCellNumber)
                 //smsIntent.putExtra("sms_body", "Colaba info message")
                 startActivity(smsIntent)
             }
+            else
+               SandbarUtils.showRegular(this@DetailActivity, "Phone number not found...")
         }
 
         binding.phoneFab.setOnClickListener{
-            borrowerCellNumber?.let {
+            if(borrowerCellNumber!=null) {
                 val intent = Intent(Intent.ACTION_DIAL)
-                intent.data = Uri.parse("tel:$it")
+                intent.data = Uri.parse("tel:$borrowerCellNumber")
                 startActivity(intent)
             }
+            else
+                SandbarUtils.showRegular(this@DetailActivity, "Phone number not found...")
         }
 
         observeForCallEmailMessage()
@@ -108,4 +121,15 @@ class DetailActivity : AppCompatActivity() {
         binding.messageFab.visibility = View.VISIBLE
         binding.phoneFab.visibility = View.VISIBLE
     }
+
+    fun checkIfUnreadFileOpened(){
+        lifecycleScope.launchWhenStarted {
+            loanApplicationId?.let { loanId->
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    detailViewModel.getBorrowerDocuments(token = authToken, loanApplicationId = loanId)
+                }
+            }
+        }
+    }
+
 }

@@ -24,6 +24,13 @@
         <item name="android:font">@font/rubik_regular</item>
     </style>
 
+    <style name="PrefixTextAppearance.TextInputLayout"  parent="@android:style/TextAppearance">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/rubik_regular</item>
+        <item name="android:font">@font/rubik_regular</item>
+    </style>
+
     <style name="TextAppearence.App.Login"  parent="@android:style/TextAppearance">
         <item name="android:textSize">15sp</item>
         <item name="android:fontFamily">@font/rubik_regular</item>
@@ -38,6 +45,11 @@
     <style name="Autocomplete">
         <item name="colorControlNormal">@color/grey_color_three</item>
         <item name="colorControlActivated">@color/colaba_primary_color</item>
+    </style>
+
+    <style name="animation">
+        <item name="android:windowEnterAnimation">@anim/in_animation</item>
+        <item name="android:windowExitAnimation">@anim/out_animation</item>
     </style>
 
     <!--

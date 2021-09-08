@@ -452,7 +452,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_cell_num">
 
-                <TextView
+              <!--  <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Address"
@@ -461,14 +461,13 @@
                     android:textColor="@color/grey_color_two"
                     android:fontFamily="@font/rubik_medium"
                     android:textSize="13sp"
-                    android:layout_marginStart="20dp"/>
+                    android:layout_marginStart="20dp"/> -->
 
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:orientation="vertical"
                     android:visibility="visible"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

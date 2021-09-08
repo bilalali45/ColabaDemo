@@ -8,8 +8,7 @@ import android.util.Log
 import android.widget.EditText
 
 
-class PhoneTextFormatter(private val mEditText: EditText, private val mPattern: String) :
-    TextWatcher {
+class PhoneTextFormatter(private val mEditText: EditText, private val mPattern: String) : TextWatcher {
     private val TAG = this.javaClass.simpleName
     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {

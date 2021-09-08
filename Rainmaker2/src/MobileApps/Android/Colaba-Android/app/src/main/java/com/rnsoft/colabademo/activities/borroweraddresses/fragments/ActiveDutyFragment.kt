@@ -35,6 +35,8 @@ class ActiveDutyFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         _binding = ActiveDutyLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        createCustomDialog()
+
         binding.edEmail.showSoftInputOnFocus = false
         binding.edEmail.setOnClickListener { createCustomDialog() }
         binding.edEmail.setOnFocusChangeListener{ _ , _ ->  createCustomDialog() }
@@ -45,27 +47,6 @@ class ActiveDutyFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
 
         return root
-
-    }
-
-    private fun openCalendar(){
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
-
-        val dpd = DatePickerDialog(
-            requireActivity(), { view, year, monthOfYear, dayOfMonth ->
-                var stringMonth = monthOfYear.toString()
-                if(monthOfYear<10)
-                    stringMonth = "0$monthOfYear"
-                binding.edEmail.setText(stringMonth + " / " + year)
-            },
-            year,
-            month,
-            day
-        )
-        dpd.show()
 
     }
 

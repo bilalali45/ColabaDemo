@@ -191,11 +191,43 @@ struct Utility {
         return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: SubjectPropertyAddressViewController.self)) as! SubjectPropertyAddressViewController
     }
     
+    static func getFirstMortgageFollowupQuestionsVC() -> FirstMortgageFollowupQuestionsViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: FirstMortgageFollowupQuestionsViewController.self)) as! FirstMortgageFollowupQuestionsViewController
+    }
+    
+    static func getSecondMortgageFollowupQuestionsVC() -> SecondMortgageFollowupQuestionsViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: SecondMortgageFollowupQuestionsViewController.self)) as! SecondMortgageFollowupQuestionsViewController
+    }
+    
+    static func getAssetsVC() -> AssetsViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: AssetsViewController.self)) as! AssetsViewController
+    }
+    
+    static func getAssetsDetailVC() -> AssetsDetailViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: AssetsDetailViewController.self)) as! AssetsDetailViewController
+    }
+    
+    static func getAddBankAccountVC() -> AddBankAccountViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: AddBankAccountViewController.self)) as! AddBankAccountViewController
+    }
+    
+    static func getAddRetirementAccountVC() -> AddRetirementAccountViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: AddRetirementAccountViewController.self)) as! AddRetirementAccountViewController
+    }
+    
+    static func getAddStockBondVC() -> AddStockBondViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: AddStockBondViewController.self)) as! AddStockBondViewController
+    }
+    
+    static func getAddProceedsFromTransactionVC() -> AddProceedsFromTransactionViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: AddProceedsFromTransactionViewController.self)) as! AddProceedsFromTransactionViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
                 pipelineDateFormatter = DateFormatter()
-                pipelineDateFormatter?.timeZone = TimeZone(abbreviation: "UTC")
+                //pipelineDateFormatter?.timeZone = TimeZone(abbreviation: "UTC")
                 pipelineDateFormatter?.locale = .current
                 pipelineDateFormatter?.dateFormat = "yyyy-MM-dd HH:mm:ss"
             }
