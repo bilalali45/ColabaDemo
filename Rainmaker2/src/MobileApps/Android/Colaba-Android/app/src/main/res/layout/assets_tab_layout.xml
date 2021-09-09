@@ -111,15 +111,15 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:tabGravity="fill"
                 app:tabIconTint="@color/colaba_red_color"
-                app:tabMaxWidth="220dp"
-                app:tabMinWidth="200dp"
 
+                app:tabMinWidth="180dp"
 
+                app:tabMode="scrollable"
                 app:tabPaddingEnd="10dp"
                 app:tabPaddingStart="10dp"
 
                 android:background="@color/colaba_loan_background"
-                app:tabIndicator="@drawable/tab_indicator"
+                app:tabIndicator="@drawable/assets_tab_indicator"
                 app:tabIndicatorColor="@color/colaba_apptheme_blue"
 
                 app:tabIndicatorHeight="4dp"
@@ -132,8 +132,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:background="@color/colaba_app_border_color"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

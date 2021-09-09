@@ -19,7 +19,9 @@ import com.rnsoft.colabademo.databinding.AssetsTabLayoutBinding
 
 private val assetsTabArray = arrayOf(
     "Richard Glenn",
-    "Maria Randall"
+    "Maria Randall",
+    "UnderTaker",
+    "Adam Gilchrist"
 )
 
 @AndroidEntryPoint

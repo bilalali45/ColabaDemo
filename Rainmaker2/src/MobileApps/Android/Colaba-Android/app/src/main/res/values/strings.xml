@@ -88,6 +88,7 @@
     <string name="last_date_of_service">Last date of service / tour</string>
 
     <string name="test_password">123</string>
+    <string name="test_cell">test_cell</string>
 
     <string name="good_morning"> Good Morning </string>
     <string name="dashboard"> DashBoard Screen </string>
