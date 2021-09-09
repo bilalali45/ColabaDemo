@@ -12,6 +12,7 @@ enum ValidationType {
     case email
     case password
     case phoneNumber
+    case verificationCode
 }
 
 extension String {
@@ -25,6 +26,8 @@ extension String {
             return try Validation.validatePassword(self)
         case .phoneNumber:
             return try Validation.validatePhoneNumber(self)
+        case .verificationCode:
+            return try Validation.validateVerificationCode(self)
         }
     }
 }
@@ -54,8 +57,15 @@ struct Validation {
         return true
     }
     
-    fileprivate static func validatePhoneNumber(_ phoneNumber: String) throws -> Bool {
-        if phoneNumber.count < CharacterLength.min_PhoneNumber {
+    fileprivate static func validatePhoneNumber(_ text: String) throws -> Bool {
+        if text.count < CharacterLength.min_PhoneNumber {
+            throw ValidationError.invalidPhoneNumber
+        }
+        return true
+    }
+    
+    fileprivate static func validateVerificationCode(_ text: String) throws -> Bool {
+        if text.count < CharacterLength.min_VerificationCode {
             throw ValidationError.invalidPhoneNumber
         }
         return true
@@ -334,6 +344,7 @@ enum ValidationError: LocalizedError {
     case noEmail
     case invalidEmail
     case invalidPhoneNumber
+    case invalidVerificationCode
     case requiredField
     case invalidBorrowerEmail
     case invalidPurchasePrice
@@ -356,6 +367,8 @@ enum ValidationError: LocalizedError {
             return "Your email is not valid. Please try again."
         case .invalidPhoneNumber:
             return "Your phone number is not valid. Please try again."
+        case .invalidVerificationCode:
+            return "Your verification code is not valid. Please try again."
         case .requiredField:
             return "This field is required."
         case .invalidBorrowerEmail:
@@ -369,6 +382,7 @@ enum ValidationError: LocalizedError {
 
 
 struct CharacterLength{
-     static let empty                = 0
-     static let min_PhoneNumber      = 14
+    static let empty                    = 0
+    static let min_PhoneNumber          = 14
+    static let min_VerificationCode     = 14
 }
