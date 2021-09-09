@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.content.res.ColorStateList
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,16 +12,16 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.databinding.SubjectPropertyBinding
+import com.rnsoft.colabademo.databinding.SubjectPropertyPurchaseBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 
 /**
  * Created by Anita Kiran on 9/8/2021.
  */
-class SubjectPropertyFragment : Fragment(), View.OnClickListener {
+class SubjectPropertyPurchase : Fragment(), View.OnClickListener {
 
-    lateinit var binding: SubjectPropertyBinding
+    lateinit var binding: SubjectPropertyPurchaseBinding
     private val propertyTypeArray = listOf("Single Family Property","Condominium","Townhouse", "Cooperative", "Manufactured Home", "Duplex (2 Unit)", "Triplex (3 Unit)", "Quadplex (4 Unit)")
     private val occupancyTypeArray = listOf("Primary Residence", "Second Home", "Investment Property")
     var isPropertyAddress : Boolean = false
@@ -32,8 +33,7 @@ class SubjectPropertyFragment : Fragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = SubjectPropertyBinding.inflate(inflater, container, false)
-
+        binding = SubjectPropertyPurchaseBinding.inflate(inflater, container, false)
 
         binding.rbSubProperty.isChecked = false
         binding.rbSubPropertyAddress.isChecked = false
@@ -43,6 +43,11 @@ class SubjectPropertyFragment : Fragment(), View.OnClickListener {
         binding.rbMixedPropertyYes.setOnClickListener(this)
         binding.layoutDetails.setOnClickListener(this)
         binding.backButton.setOnClickListener(this)
+        binding.layoutAddress.setOnClickListener(this)
+        binding.rbOccupying.setOnClickListener(this)
+        binding.rbNonOccupying.setOnClickListener(this)
+        binding.rbMixedPropertyYes.setOnClickListener(this)
+        binding.rbMixedPropertyNo.setOnClickListener(this)
 
         setSpinnerData()
         setInputFields()
@@ -53,8 +58,8 @@ class SubjectPropertyFragment : Fragment(), View.OnClickListener {
 
         if(isMixedProperty){
             binding.layoutDetails.visibility = View.VISIBLE
+            binding.rbOccupying.setTypeface(null, Typeface.BOLD)
         }
-
 
 
         return binding.root
@@ -64,11 +69,34 @@ class SubjectPropertyFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.getId()) {
             R.id.rb_sub_property -> radioSubPropertyClick()
-            R.id.rb_sub_property_address -> radioSubPropertyAddressClick()
+            R.id.rb_sub_property_address -> setAddressClick()
             R.id.rb_mixed_property_yes -> mixedPropertyDetail()
-            R.id.rb_mixed_property_no -> binding.layoutDetails.visibility = View.GONE
             R.id.layout_details -> mixedPropertyDetail()
+            R.id.layout_address -> setAddressClick()
             R.id.backButton -> requireActivity().onBackPressed()
+            R.id.rb_mixed_property_no ->
+                if (binding.rbMixedPropertyNo.isChecked) {
+                    binding.layoutDetails.visibility = View.GONE
+                    binding.rbMixedPropertyNo.setTypeface(null, Typeface.BOLD)
+                    binding.rbMixedPropertyYes.setTypeface(null, Typeface.NORMAL)
+                }else{
+                    binding.rbMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
+                }
+            R.id.rb_occupying ->
+                if (binding.rbOccupying.isChecked) {
+                    binding.rbOccupying.setTypeface(null, Typeface.BOLD)
+                    binding.rbNonOccupying.setTypeface(null, Typeface.NORMAL)
+                }else{
+                    binding.rbOccupying.setTypeface(null, Typeface.NORMAL)
+                }
+
+            R.id.rb_non_occupying ->
+                if (binding.rbNonOccupying.isChecked) {
+                    binding.rbNonOccupying.setTypeface(null, Typeface.BOLD)
+                    binding.rbOccupying.setTypeface(null, Typeface.NORMAL)
+                }else{
+                    binding.rbNonOccupying.setTypeface(null, Typeface.NORMAL)
+                }
 
 
         }
@@ -103,7 +131,7 @@ class SubjectPropertyFragment : Fragment(), View.OnClickListener {
 
     }
 
-    private fun radioSubPropertyAddressClick(){
+    private fun setAddressClick(){
 
         binding.rbSubProperty.isChecked = false
         binding.rbSubPropertyAddress.isChecked = true
@@ -116,6 +144,8 @@ class SubjectPropertyFragment : Fragment(), View.OnClickListener {
         isMixedProperty = true
         findNavController().navigate(R.id.nav_mixed_use_property)
         binding.layoutDetails.visibility = View.VISIBLE
+        binding.rbMixedPropertyYes.setTypeface(null, Typeface.BOLD)
+        binding.rbMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
     }
 
      private fun checkValidations(){

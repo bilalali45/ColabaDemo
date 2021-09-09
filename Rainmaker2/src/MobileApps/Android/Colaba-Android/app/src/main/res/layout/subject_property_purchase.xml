@@ -95,8 +95,10 @@
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:background="@drawable/content_bg_with_drop_shadow">
 
                 <RadioButton
@@ -448,7 +450,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/rubik_light"
-                android:hint="@string/flood_insurance"
+                android:hint="@string/annual_flood_insurance"
                 android:textColorHint="@color/primary_info_label_color"
                 app:boxCollapsedPaddingTop="1dp"
                 app:boxStrokeColor="@color/primary_info_line_color"
@@ -492,7 +494,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/rubik_medium"
-                android:text="Maria Randel"
+                android:text="Maria Rendall"
                 android:textAlignment="center"
                 android:textColor="@color/grey_color_four"
                 android:textSize="13sp"
