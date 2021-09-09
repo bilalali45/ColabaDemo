@@ -55,6 +55,8 @@
 
     <color name="plus_circle_inside_color_with_ten_alpha">#1A4484F4</color>
 
+    <color name="asset_cell_separator">#1A4484F4</color>
+
     <color name="colaba_holder_background">#0D7E829E</color>
     <color name="bg_row_background">#fa315b</color>
     <color name="item_name">#535353</color>
@@ -72,5 +74,7 @@
     <color name="colaba_app_border_color">#E5E5E5</color>
     <color name="border_grey_light">#CCCCCC</color>
     <color name="borrower_overview_background">#FBFBFB</color>
+
+   <color name="asset_bottom_bar"> #FFF6F6F6</color>
 
 </resources>
