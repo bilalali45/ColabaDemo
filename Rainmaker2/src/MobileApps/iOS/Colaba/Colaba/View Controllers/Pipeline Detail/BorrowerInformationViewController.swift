@@ -833,13 +833,13 @@ extension BorrowerInformationViewController: UITextFieldDelegate{
         if (textField == txtfieldHomeNumber || textField == txtfieldWorkNumber || textField == txtfieldCellNumber){
             guard let text = textField.text else { return false }
             let newString = (text as NSString).replacingCharacters(in: range, with: string)
-            textField.text = self.formatPhoneNumber(with: "(XXX) XXX-XXXX", phone: newString)
+            textField.text = formatNumber(with: "(XXX) XXX-XXXX", number: newString)
             return false
         }
         else if (textField == txtfieldSecurityNo){
             guard let text = textField.text else { return false }
             let newString = (text as NSString).replacingCharacters(in: range, with: string)
-            textField.text = self.formatPhoneNumber(with: "XXX-XX-XXXX", phone: newString)
+            textField.text = formatNumber(with: "XXX-XX-XXXX", number: newString)
             return false
         }
         else if (textField == txtfieldExtensionNumber){

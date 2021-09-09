@@ -55,6 +55,7 @@ class LoginViewController: UIViewController {
         txtFieldEmail.setDelegates(controller: self)
         txtFieldEmail.setValidation(validationType: .email)
         txtFieldEmail.setTextField(keyboardType: .emailAddress)
+        txtFieldEmail.setIsValidateOnEndEditing(validate: false)
         if (isAppOpenFromBackground){
             txtFieldEmail.setTextField(textColor: Theme.getAppGreyColor())
         }
@@ -64,19 +65,7 @@ class LoginViewController: UIViewController {
         txtFieldPassword.setDelegates(controller: self)
         txtFieldPassword.type = .password
         txtFieldPassword.setValidation(validationType: .password)
-    }
-    
-    func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){
-        for allTextField in allTextFields{
-            if (allTextField == selectedTextField){
-                if (allTextField.text == ""){
-                    allTextField.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-                }
-                else{
-                    allTextField.placeholderLabel.textColor = Theme.getAppGreyColor()
-                }
-            }
-        }
+        txtFieldPassword.setIsValidateOnEndEditing(validate: false)
     }
     
     func completeLoginWithBiometric(){

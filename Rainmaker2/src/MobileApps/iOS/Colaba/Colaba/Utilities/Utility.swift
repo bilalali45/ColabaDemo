@@ -566,3 +566,32 @@ struct Utility {
     }
     
 }
+
+func formatNumber(with mask: String, number: String) -> String {
+    let numbers = number.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
+    var result = ""
+    var index = numbers.startIndex // numbers iterator
+
+    // iterate over the mask characters until the iterator of numbers ends
+    for ch in mask where index < numbers.endIndex {
+        if ch == "X" {
+            // mask requires a number in this place, so take the next one
+            result.append(numbers[index])
+
+            // move numbers iterator to the next index
+            index = numbers.index(after: index)
+
+        } else {
+            result.append(ch) // just append a mask character
+        }
+    }
+    return result
+}
+
+func cleanString(string: String, replaceCharacters: [String], replaceWith: String) -> String {
+    var replaceString = string
+    for character in replaceCharacters {
+        replaceString = replaceString.replacingOccurrences(of: character, with: replaceWith)
+    }
+    return replaceString
+}

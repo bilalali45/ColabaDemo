@@ -11,6 +11,7 @@ enum ValidationType {
     case required
     case email
     case password
+    case phoneNumber
 }
 
 extension String {
@@ -22,6 +23,8 @@ extension String {
             return try Validation.validateEmail(self)
         case .password:
             return try Validation.validatePassword(self)
+        case .phoneNumber:
+            return try Validation.validatePhoneNumber(self)
         }
     }
 }
@@ -47,6 +50,13 @@ struct Validation {
     fileprivate static func validatePassword(_ text: String) throws -> Bool {
         if text.isEmpty {
             throw ValidationError.invalidPassword
+        }
+        return true
+    }
+    
+    fileprivate static func validatePhoneNumber(_ phoneNumber: String) throws -> Bool {
+        if phoneNumber.count < CharacterLength.min_PhoneNumber {
+            throw ValidationError.invalidPhoneNumber
         }
         return true
     }
@@ -360,5 +370,5 @@ enum ValidationError: LocalizedError {
 
 struct CharacterLength{
      static let empty                = 0
-     static let max_PhoneNumber      = 14
+     static let min_PhoneNumber      = 14
 }
