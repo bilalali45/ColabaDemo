@@ -44,6 +44,10 @@
     <string name="delete_current_address">Are you sure you want to delete Richard\'s Current Address?</string>
 
 
+    <string name="asset_top_cell">asset_top_cell</string>
+    <string name="asset_middle_cell">asset_middle_cell</string>
+    <string name="asset_bottom_cell">asset_bottom_cell</string>
+
     <string name="plus_three">+3</string>
     <string name="actions_pending">Most Actions Pending</string>
     <string name="recent_activity">Most Recent Activity (Default)</string>
