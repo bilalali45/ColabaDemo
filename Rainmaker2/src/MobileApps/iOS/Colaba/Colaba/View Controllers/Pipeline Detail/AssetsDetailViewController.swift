@@ -340,6 +340,10 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
                 let vc = Utility.getAddGiftFundsVC()
                 self.presentVC(vc: vc)
             }
+            else if (tableView == tableViewOther && (indexPath.row == 1 || indexPath.row == 2)){
+                let vc = Utility.getAddOtherAssetsVC()
+                self.presentVC(vc: vc)
+            }
         }
     }
     

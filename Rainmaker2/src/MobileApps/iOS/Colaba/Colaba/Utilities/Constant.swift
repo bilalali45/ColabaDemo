@@ -59,3 +59,4 @@ let kFinancialsAccountTypeArray = ["Mutual Funds", "Stocks", "Money Market", "St
 let kTransactionTypeArray = ["Proceeds From A Loan", "Proceeds From Selling Non-Real Estate Assets", "Proceeds From Selling Real Estate Assets"]
 let kAssetsTypeArray = ["House", "Automobile", "Financial Account", "Other"]
 let kGiftSourceArray = ["Relative", "Unmarried Partner", "Federal Agency", "State Agency", "Local Agency", "Community Non Profit", "Employer", "Religious Non Profit", "Lender"]
+let kOtherAssetsTypeArray = ["Trust Account", "Bridge Loan Proceeds", "Individual Development Account (IDA)", "Cash Value of Life Insurance", "Employer Assistance", "Relocation Funds", "Rent Credit", "Lot Equity", "Sweat Equity", "Trade Equity", "Other"]

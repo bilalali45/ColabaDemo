@@ -20,6 +20,7 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     @IBOutlet weak var txtfieldMortgageBalance: TextField!
     @IBOutlet weak var mortgageBalanceDollarView: UIView!
     @IBOutlet weak var accountPaymentsView: UIView!
+    @IBOutlet weak var accountPaymentViewHeightConstraint: NSLayoutConstraint! // 337 or 248
     @IBOutlet weak var lblAccountPaymentQuestion: UILabel!
     @IBOutlet weak var annualFloodInsuranceStackView: UIStackView!
     @IBOutlet weak var btnAnnualFloodInsurance: UIButton!
@@ -160,6 +161,16 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     
     @IBAction func switchHomeEquityChanged(_ sender: UISwitch) {
         lblHomeEquity.font = sender.isOn ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        
+        txtfieldCreditLimit.text = ""
+        txtfieldCreditLimit.textInsetsPreset = .none
+        txtfieldCreditLimit.placeholderHorizontalOffset = 0
+        creditLimitDollarView.isHidden = true
+        txtfieldCreditLimit.isHidden = !sender.isOn
+        accountPaymentViewHeightConstraint.constant = sender.isOn ? 337 : 248
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutSubviews()
+        }
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
