@@ -17,7 +17,7 @@ class CodeViewController: UIViewController {
     @IBOutlet weak var codeView: UIView!
     @IBOutlet weak var codeViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var lblPhoneNumber: UILabel!
-    @IBOutlet weak var txtFieldCode: TextField!
+    @IBOutlet weak var txtFieldCode: ColabaTextField!
     @IBOutlet weak var checkIcon: UIImageView!
     @IBOutlet weak var btnCheckTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var lblDescription: UILabel!
@@ -57,16 +57,8 @@ class CodeViewController: UIViewController {
         codeView.layer.cornerRadius = 8
         codeView.addShadow()
         btnVerify.layer.cornerRadius = 5
-        txtFieldCode.addTarget(self, action: #selector(textFieldCodeChanged), for: .editingChanged)
-        txtFieldCode.delegate = self
-        txtFieldCode.dividerActiveColor = Theme.getButtonBlueColor()
-        txtFieldCode.dividerColor = Theme.getSeparatorNormalColor()
-        txtFieldCode.placeholderActiveColor = Theme.getAppGreyColor()
-        txtFieldCode.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-        txtFieldCode.detailLabel.font = Theme.getRubikRegularFont(size: 12)
-        txtFieldCode.detailColor = .red
-        txtFieldCode.detailVerticalOffset = 4
-        txtFieldCode.placeholderVerticalOffset = 8
+
+        setTextFields()
         btnVerify.isEnabled = false
         let last4Digits = String(phoneNumber.suffix(4))
         lblPhoneNumber.text = "Enter the code sent to (***) ***-\(last4Digits)"
@@ -76,6 +68,16 @@ class CodeViewController: UIViewController {
             self.codeLimit = 0
             self.changeUIAfterResendCode(message: resendTimeMessage)
         }
+    }
+
+    func setTextFields() {
+        ///Mobile Text Field
+        txtFieldCode.setTextField(placeholder: "Mobile Verification Code")
+        txtFieldCode.setDelegates(controller: self)
+        txtFieldCode.setValidation(validationType: .verificationCode)
+        txtFieldCode.setTextField(keyboardType: .numberPad)
+        txtFieldCode.setIsValidateOnEndEditing(validate: false)
+        txtFieldCode.addTarget(self, action: #selector(textFieldCodeChanged), for: .editingChanged)
     }
     
     @objc func applicationDidBecomeActive(){
@@ -386,27 +388,4 @@ class CodeViewController: UIViewController {
         }
         
     }
-    
-}
-
-extension CodeViewController: UITextFieldDelegate{
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if (txtFieldCode.text == ""){
-            txtFieldCode.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-        }
-        else{
-            txtFieldCode.placeholderLabel.textColor = Theme.getAppGreyColor()
-        }
-    }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if (string == "" || textField.text!.count < 6){
-            return true
-        }
-        else{
-            return false
-        }
-    }
-    
 }

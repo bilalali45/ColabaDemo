@@ -378,6 +378,14 @@ extension ColabaTextField: UITextFieldDelegate {
             textField.text = formatNumber(with: "(XXX) XXX-XXXX", number: newString)
             return false
         }
+        if validationType == .verificationCode {
+            if (string == "" || textField.text!.count < 6){
+                return true
+            }
+            else{
+                return false
+            }
+        }
         
         return true
     }
