@@ -262,6 +262,7 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
         setUpCompleteViewForPlaces()
 
+
         initializeUSAstates()
 
         return root

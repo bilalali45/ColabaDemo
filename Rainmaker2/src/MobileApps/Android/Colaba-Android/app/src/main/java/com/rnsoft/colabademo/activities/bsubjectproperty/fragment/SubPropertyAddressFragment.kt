@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.content.res.ColorStateList
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
@@ -10,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,7 +27,6 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.rnsoft.colabademo.databinding.SubjectPropertyAddressBinding
-import com.rnsoft.colabademo.databinding.SubjectPropertyBinding
 import kotlinx.android.synthetic.main.temp_residence_layout.*
 import java.io.IOException
 import java.util.*
@@ -52,10 +54,85 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
             requireActivity().onBackPressed()
         }
 
+        setInputFields()
+        setStateAndCountyDropDown()
         setUpCompleteViewForPlaces()
         initializeUSAstates()
 
         return binding.root
+
+    }
+
+    private fun setInputFields(){
+
+        binding.tvSearch.onFocusChangeListener = object : View.OnFocusChangeListener {
+            override fun onFocusChange(p0: View?, p1: Boolean) {
+                if (p1) {
+                    binding.searchSeparator.minimumHeight = 1
+                    binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_primary_color, requireActivity().theme))
+
+                } else {
+                    binding.searchSeparator.minimumHeight = 1
+                    binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
+                    binding.searchSeparator.clearFocus()
+                }
+            }
+        }
+
+
+        // set lable focus
+        binding.edUnitAtpNo.setOnFocusChangeListener(MyCustomFocusListener(binding.edUnitAtpNo, binding.layoutUnitAptNo, requireContext()))
+        binding.edStreetAddress.setOnFocusChangeListener(MyCustomFocusListener(binding.edStreetAddress, binding.layoutStreetAddress, requireContext()))
+        binding.edCity.setOnFocusChangeListener(MyCustomFocusListener(binding.edCity, binding.layoutCity, requireContext()))
+        binding.edCounty.setOnFocusChangeListener(MyCustomFocusListener(binding.edCounty, binding.layoutCounty, requireContext()))
+        // binding.tvCountrySpinner.setOnFocusChangeListener(MyCustomFocusListener(binding.tvCountrySpinner, binding.layoutCountry, requireContext()))
+        //binding.tvStateSpinner.setOnFocusChangeListener(MyCustomFocusListener(binding.tvStateSpinner, binding.layoutState, requireContext()))
+
+    }
+
+    private fun setStateAndCountyDropDown(){
+
+        val countryAdapter =
+            ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.countries)
+        binding.tvCountrySpinner.setAdapter(countryAdapter)
+
+        binding.tvCountrySpinner.setOnFocusChangeListener { _, _ ->
+            binding.tvCountrySpinner.showDropDown()
+        }
+        binding.tvCountrySpinner.setOnClickListener {
+            binding.tvCountrySpinner.showDropDown()
+        }
+
+        binding.tvCountrySpinner.onItemClickListener =
+            object : AdapterView.OnItemClickListener {
+                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                    binding.layoutCountry.defaultHintTextColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.grey_color_two
+                        )
+                    )
+                }
+            }
+
+
+        val stateAdapter =
+            ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.states)
+        binding.tvStateSpinner.setAdapter(stateAdapter)
+
+        binding.tvStateSpinner.setOnFocusChangeListener { _, _ ->
+            binding.tvStateSpinner.showDropDown()
+        }
+        binding.tvStateSpinner.setOnClickListener {
+            binding.tvStateSpinner.showDropDown()
+        }
+
+        binding.tvStateSpinner.onItemClickListener =
+            object : AdapterView.OnItemClickListener {
+                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                    binding.layoutState.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+                }
+            }
 
     }
 
@@ -175,12 +252,12 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
             val countryCode: String? = addresses?.get(0)?.countryCode
 
 
-            /*locality?.let { binding.cityEditText.setText(it) }
-            subLocality?.let { binding.countyEditText.setText(it) }
-            postalCode?.let { binding.zipcodeEditText.setText(it) }
-            countryName?.let { binding.countryCompleteTextView.setText(it) }
-            binding.streetAddressEditText.setText(place.getPrimaryText(null))
-            premises?.let { binding.unitAptInputEditText.setText(it) } */
+            locality?.let { binding.edCity.setText(it) }
+            subLocality?.let { binding.edCounty.setText(it) }
+            postalCode?.let { binding.edZipcode.setText(it) }
+            countryName?.let { binding.tvCountrySpinner.setText(it) }
+            binding.edStreetAddress.setText(place.getPrimaryText(null))
+            premises?.let { binding.edUnitAtpNo.setText(it) }
 
             Log.e("Bingo ", " = " + subLocality + " " + locality + "  " + postalCode)
         } catch (e: IOException) {
@@ -195,24 +272,21 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
         Log.e("Test State - ", " = " +map.get("LA") +"  "+map.get(stateCode))
 
         if(map.get(stateCode)!=null)
-            stateCompleteTextView.setText(map.get(stateCode))
+            binding.tvStateSpinner.setText(map.get(stateCode))
         else
-            stateCompleteTextView.setText("")
-
-      //  visibleAllFields()
+            binding.tvStateSpinner.setText("")
+        visibleAllFields()
     }
 
-    /*private fun visibleAllFields() {
-        binding.cityLayout.visibility = View.VISIBLE
-        binding.countyLayout.visibility = View.VISIBLE
-        binding.countryCompleteLayout.visibility = View.VISIBLE
-        binding.zipcodeLayout.visibility = View.VISIBLE
-        binding.unitAptInputLayout.visibility = View.VISIBLE
-        binding.streetAddressLayout.visibility = View.VISIBLE
-        binding.stateCompleteTextInputLayout.visibility = View.VISIBLE
-        binding.addAddressLayout.visibility = View.VISIBLE
-
-    } */
+    private fun visibleAllFields() {
+        binding.layoutCity.visibility = View.VISIBLE
+        binding.layoutCounty.visibility = View.VISIBLE
+        binding.layoutCountry.visibility = View.VISIBLE
+        binding.layoutZipCode.visibility = View.VISIBLE
+        binding.layoutUnitAptNo.visibility = View.VISIBLE
+        binding.layoutStreetAddress.visibility = View.VISIBLE
+        binding.layoutState.visibility = View.VISIBLE
+    }
 
     private fun hideKeyBoard() {
 

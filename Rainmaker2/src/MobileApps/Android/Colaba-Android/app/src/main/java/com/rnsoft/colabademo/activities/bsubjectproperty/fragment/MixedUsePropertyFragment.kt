@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.rnsoft.colabademo.databinding.MixedUsePropertyBinding
-import com.rnsoft.colabademo.databinding.SubjectPropertyBinding
 
 /**
  * Created by Anita Kiran on 9/8/2021.
