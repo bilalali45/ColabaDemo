@@ -2,8 +2,6 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +11,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -75,7 +72,7 @@ class HomeFragment : Fragment() {
 
         val root: View = binding.root
 
-        homeProfileLayout = root.findViewById(R.id.home_profile_layout)
+        homeProfileLayout = root.findViewById(R.id.assets_top_container)
         greetingMessage = root.findViewById(R.id.greetingMessage)
         filterImageView = root.findViewById(R.id.filter_imageview)
         searchImageView = root.findViewById(R.id.searchIconImageView)

@@ -22,7 +22,7 @@ class AssetsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = AssetsActivityLayoutBinding.inflate(layoutInflater)
-      setContentView(binding.root)
+        setContentView(binding.root)
         val extras = intent.extras
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
@@ -30,6 +30,7 @@ class AssetsActivity : BaseActivity() {
         }
 
 
+        /*
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_asset) as NavHostFragment? ?: return
         // Set up Action Bar
@@ -43,6 +44,7 @@ class AssetsActivity : BaseActivity() {
             }
             //Log.d("NavigationActivity", "Navigated to $dest")
         }
+        */
 
 
     }

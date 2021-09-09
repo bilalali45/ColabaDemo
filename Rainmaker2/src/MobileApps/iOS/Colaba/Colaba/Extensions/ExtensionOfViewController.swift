@@ -56,27 +56,6 @@ extension UIViewController{
         self.presentVC(vc: alert)
     }
     
-    func formatPhoneNumber(with mask: String, phone: String) -> String {
-        let numbers = phone.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
-        var result = ""
-        var index = numbers.startIndex // numbers iterator
-
-        // iterate over the mask characters until the iterator of numbers ends
-        for ch in mask where index < numbers.endIndex {
-            if ch == "X" {
-                // mask requires a number in this place, so take the next one
-                result.append(numbers[index])
-
-                // move numbers iterator to the next index
-                index = numbers.index(after: index)
-
-            } else {
-                result.append(ch) // just append a mask character
-            }
-        }
-        return result
-    }
-    
     func showPopup(message: String, popupState: Loaf.State, popupDuration: Loaf.Duration, completionHandler: Loaf.LoafCompletionHandler){
         Loaf(message, state: popupState, location: .bottom, presentingDirection: .vertical, dismissingDirection: .vertical, sender: self).show(popupDuration, completionHandler: completionHandler)
         

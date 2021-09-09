@@ -14,26 +14,11 @@ class PhoneNumberViewController: UIViewController {
     //MARK:- Outlets and Properties
     
     @IBOutlet weak var phoneView: UIView!
-    @IBOutlet weak var txtFieldPhone: TextField!
-    @IBOutlet weak var phoneSeparator: UIView!
-    @IBOutlet weak var lblPhoneError: UILabel!
+    @IBOutlet weak var txtFieldPhone: ColabaTextField!
     @IBOutlet weak var btnContinue: UIButton!
     @IBOutlet weak var btnSkipThisStep: UIButton!
     
-    private let validation: Validation
-    
     //MARK:- View Controller Life Cycle
-    
-    init(validation: Validation) {
-        self.validation = validation
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        self.validation = Validation()
-        super.init(coder: coder)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.10) {
@@ -47,16 +32,17 @@ class PhoneNumberViewController: UIViewController {
         phoneView.layer.cornerRadius = 8
         phoneView.addShadow()
         btnContinue.layer.cornerRadius = 5
-        txtFieldPhone.delegate = self
-        txtFieldPhone.dividerActiveColor = Theme.getButtonBlueColor()
-        txtFieldPhone.dividerColor = Theme.getSeparatorNormalColor()
-        txtFieldPhone.placeholderActiveColor = Theme.getAppGreyColor()
-        txtFieldPhone.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-        txtFieldPhone.detailLabel.font = Theme.getRubikRegularFont(size: 12)
-        txtFieldPhone.detailColor = .red
-        txtFieldPhone.detailVerticalOffset = 4
-        txtFieldPhone.placeholderVerticalOffset = 8
         btnSkipThisStep.isHidden = !shouldShowSkipButton
+        setTextFields()
+    }
+    
+    func setTextFields() {
+        ///Mobile Text Field
+        txtFieldPhone.setTextField(placeholder: "Mobile Number")
+        txtFieldPhone.setDelegates(controller: self)
+        txtFieldPhone.setValidation(validationType: .phoneNumber)
+        txtFieldPhone.setTextField(keyboardType: .phonePad)
+        txtFieldPhone.setIsValidateOnEndEditing(validate: false)
     }
     
     func completeLoginWithBiometric(){
@@ -71,26 +57,16 @@ class PhoneNumberViewController: UIViewController {
     
     @IBAction func btnContinueTapped(_ sender: UIButton) {
         
-        do{
-            let phoneNumber = try validation.validatePhoneNumber(txtFieldPhone.text)
-            
-            DispatchQueue.main.async {
-//                self.lblPhoneError.isHidden = true
-//                self.phoneSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-                self.txtFieldPhone.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtFieldPhone.detail = ""
-                self.send2FAtoPhoneNumberWithRequest(phoneNumber: phoneNumber.replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: ""))
-            }
-            
+        if validate() {
+            self.send2FAtoPhoneNumberWithRequest(phoneNumber: cleanString(string: txtFieldPhone.text!, replaceCharacters: ["(",")"," ","-"], replaceWith: ""))
         }
-        catch{
-//            self.lblPhoneError.text = error.localizedDescription
-//            self.lblPhoneError.isHidden = false
-//            self.phoneSeparator.backgroundColor = Theme.getSeparatorErrorColor()
-            self.txtFieldPhone.dividerColor = .red
-            self.txtFieldPhone.detail = error.localizedDescription
+    }
+
+    func validate() -> Bool {
+        if !txtFieldPhone.validate() {
+            return false
         }
-        
+        return true
     }
     
     @IBAction func btnSkipTapped(_ sender: UIButton) {
@@ -166,45 +142,4 @@ class PhoneNumberViewController: UIViewController {
         }
         
     }
-}
-
-extension PhoneNumberViewController: UITextFieldDelegate{
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if (txtFieldPhone.text == ""){
-            txtFieldPhone.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-        }
-        else{
-            txtFieldPhone.placeholderLabel.textColor = Theme.getAppGreyColor()
-        }
-//        do{
-//            let phoneNumber = try validation.validatePhoneNumber(txtFieldPhone.text)
-//            self.lblPhoneError.isHidden = true
-//            self.phoneSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-//        }
-//        catch{
-//            self.lblPhoneError.text = error.localizedDescription
-//            self.lblPhoneError.isHidden = false
-//            self.phoneSeparator.backgroundColor = Theme.getSeparatorErrorColor()
-//        }
-    }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        guard let text = textField.text else { return false }
-        let newString = (text as NSString).replacingCharacters(in: range, with: string)
-        textField.text = self.formatPhoneNumber(with: "(XXX) XXX-XXXX", phone: newString)
-        do{
-            let phoneNumber = try validation.validatePhoneNumber(txtFieldPhone.text)
-            self.lblPhoneError.isHidden = true
-            self.phoneSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-        }
-        catch{
-//            self.lblPhoneError.text = error.localizedDescription
-//            self.lblPhoneError.isHidden = false
-//            self.phoneSeparator.backgroundColor = Theme.getSeparatorErrorColor()
-        }
-        return false
-    }
-    
 }

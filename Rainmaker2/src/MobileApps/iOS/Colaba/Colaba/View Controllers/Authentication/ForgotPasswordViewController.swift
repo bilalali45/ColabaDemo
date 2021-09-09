@@ -39,6 +39,7 @@ class ForgotPasswordViewController: UIViewController {
         txtFieldEmail.setDelegates(controller: self)
         txtFieldEmail.setValidation(validationType: .email)
         txtFieldEmail.setTextField(keyboardType: .emailAddress)
+        txtFieldEmail.setIsValidateOnEndEditing(validate: false)
     }
     
     func forgotPasswordWithRequest(email: String){

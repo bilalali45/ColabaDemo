@@ -47,6 +47,7 @@ class ColabaTextField: TextField {
     private var imagePicker: UIImagePickerController?
     private var maximumDate:Date?
     private var minimumDate:Date?
+    private var isValidateOnEndEditing: Bool!
     private var validationType: ValidationType!
     
     //MARK: Public Properties
@@ -109,6 +110,7 @@ class ColabaTextField: TextField {
         setTextField(detailLabelFont: Theme.getRubikRegularFont(size: 12))
         setTextField(detailLabelColor: .red)
         setTextField(detailLabelVerticalOffset: 4)
+        setIsValidateOnEndEditing(validate: true)
         self.backgroundColor = .clear
         addButton()
     }
@@ -279,6 +281,10 @@ extension ColabaTextField {
         self.validationType = validationType
     }
     
+    public func setIsValidateOnEndEditing(validate: Bool) {
+        isValidateOnEndEditing = validate
+    }
+    
     public func getTextField() -> TextField{
         return self
     }
@@ -365,8 +371,23 @@ extension ColabaTextField: UITextFieldDelegate {
     }
 
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        if validationType == .phoneNumber {
+            guard let text = textField.text else { return false }
+            let newString = (text as NSString).replacingCharacters(in: range, with: string)
+            textField.text = formatNumber(with: "(XXX) XXX-XXXX", number: newString)
+            return false
+        }
+        if validationType == .verificationCode {
+            if (string == "" || textField.text!.count < 6){
+                return true
+            }
+            else{
+                return false
+            }
+        }
+        
         return true
-//        return InputValidation.getAcceptablecharacters(type: allowedCharacters, inputString: string, range: range, maxLenght: fieldMaxLength) ? true : false
     }
 
     //To hide error text when textField begin editing
@@ -380,6 +401,9 @@ extension ColabaTextField: UITextFieldDelegate {
         }
         else{
             self.placeholderLabel.textColor = Theme.getAppGreyColor()
+        }
+        if isValidateOnEndEditing {
+            _ = validate()
         }
         colabaDelegate?.textFieldEndEditing(textField)
     }

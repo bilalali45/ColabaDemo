@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
@@ -16,7 +17,7 @@ import javax.inject.Inject
 import com.rnsoft.colabademo.databinding.AssetsTabLayoutBinding
 
 
-val assetsTabArray = arrayOf(
+private val assetsTabArray = arrayOf(
     "Richard Glenn",
     "Maria Randall"
 )
@@ -71,15 +72,13 @@ class AssetsTabFragment : Fragment() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
+        TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = assetsTabArray[position] }.attach()
 
-        if(viewPager.visibility == View.INVISIBLE)
-            viewPager.postDelayed({
-                viewPager.visibility = View.VISIBLE
-                TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = detailTabArray[position] }.attach()
-            }, 600)
-        else
-            TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = detailTabArray[position] }.attach()
 
+
+        binding.backButton.setOnClickListener {
+            requireActivity().finish()
+        }
 
 
         return root
