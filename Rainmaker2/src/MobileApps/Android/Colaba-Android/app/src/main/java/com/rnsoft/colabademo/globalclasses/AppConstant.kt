@@ -43,6 +43,8 @@ object AppConstant {
 
         const val loanPurpose:String = "loanPurpose"
 
+        const val borrowerPurpose:String = "purpose"
+
         const val purchase:String = "Purchase"
 
         const val refinance:String = "Refinance"

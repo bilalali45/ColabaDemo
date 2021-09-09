@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/subject_property_navigation"
-    app:startDestination="@+id/nav_sub_property">
+    app:startDestination="@+id/nav_sub_property_refinance">
 
     <fragment
         android:id="@+id/nav_sub_property"
-        android:name="com.rnsoft.colabademo.SubjectPropertyFragment"
+        android:name="com.rnsoft.colabademo.SubjectPropertyPurchase"
         android:label="@string/subject_property"
-        tools:layout="@layout/subject_property" />
+        tools:layout="@layout/subject_property_purchase" />
 
     <fragment
         android:id="@+id/nav_sub_property_address"
@@ -22,5 +22,23 @@
         android:name="com.rnsoft.colabademo.MixedUsePropertyFragment"
         android:label="@string/mixed_use_property"
         tools:layout="@layout/mixed_use_property" />
+
+    <fragment
+        android:id="@+id/nav_sub_property_refinance"
+        android:name="com.rnsoft.colabademo.SubjectPropertyRefinance"
+        android:label="@string/subject_property"
+        tools:layout="@layout/sub_property_refinance" />
+
+    <fragment
+        android:id="@+id/nav_first_mortage"
+        android:name="com.rnsoft.colabademo.FirstMortgageFragment"
+        android:label="@string/first_mortgage"
+        tools:layout="@layout/sub_property_first_mortgage" />
+
+    <fragment
+        android:id="@+id/nav_sec_mortage"
+        android:name="com.rnsoft.colabademo.SecondMortgageFragment"
+        android:label="@string/sec_mortgage"
+        tools:layout="@layout/sub_property_second_mortgage" />
 
 </navigation>

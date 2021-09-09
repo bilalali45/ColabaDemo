@@ -196,7 +196,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
                 findNavController().navigate(R.id.navigation_mailing_address)
             }
 
-
             R.id.backButton -> requireActivity().finish()
             // R.id.ed_dateOfBirth -> openCalendar()
         }
