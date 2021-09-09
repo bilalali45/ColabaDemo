@@ -397,6 +397,12 @@ extension AddProceedsFromTransactionViewController: UITextFieldDelegate{
             }
         }
         
+        if (textField == txtfieldExpectedProceeds && txtfieldExpectedProceeds.text == ""){
+            txtfieldExpectedProceeds.textInsetsPreset = .none
+            txtfieldExpectedProceeds.placeholderHorizontalOffset = 0
+            expectedProceedsDollarView.isHidden = true
+        }
+        
         if (textField == txtfieldAssetsType){
             if !(kAssetsTypeArray.contains(txtfieldAssetsType.text!)){
                 txtfieldAssetsType.text = ""
