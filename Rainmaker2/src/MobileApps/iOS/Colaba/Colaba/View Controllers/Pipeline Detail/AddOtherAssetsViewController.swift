@@ -126,7 +126,14 @@ class AddOtherAssetsViewController: BaseViewController {
                 txtfieldFinancialInsitutionHeightConstraint.constant = 39
                 txtfieldAccountNumberTopConstraint.constant = 30
                 txtfieldAccountNumberHeightConstraint.constant = 39
-                
+                txtfieldFinancialInstitution.isHidden = false
+                txtfieldAccountNumber.isHidden = false
+                btnEye.isHidden = false
+                txtfieldCashValue.isHidden = false
+                txtfieldCashValue.text = ""
+                txtfieldCashValue.textInsetsPreset = .none
+                txtfieldCashValue.placeholderHorizontalOffset = 0
+                cashValueDollarView.isHidden = true
                 txtfieldCashValue.placeholder = item == "Cash Value of Life Insurance" ? "Market Value" : "Cash or Market Value"
                 assetsDescriptionTextViewContainer.isHidden = true
                 txtViewAssetsDescription.isHidden = true
@@ -134,11 +141,18 @@ class AddOtherAssetsViewController: BaseViewController {
             }
             else if (item == "Employer Assistance" || item == "Relocation Funds" || item == "Rent Credit" || item == "Lot Equity" || item == "Sweat Equity" || item == "Trade Equity"){
                 
-                txtfieldFinancialInstitutionTopConstraint.constant = 30
-                txtfieldFinancialInsitutionHeightConstraint.constant = 39
-                txtfieldAccountNumberTopConstraint.constant = 30
-                txtfieldAccountNumberHeightConstraint.constant = 39
-                
+                txtfieldFinancialInstitutionTopConstraint.constant = 0
+                txtfieldFinancialInsitutionHeightConstraint.constant = 0
+                txtfieldAccountNumberTopConstraint.constant = 0
+                txtfieldAccountNumberHeightConstraint.constant = 0
+                txtfieldFinancialInstitution.isHidden = true
+                txtfieldAccountNumber.isHidden = true
+                btnEye.isHidden = true
+                txtfieldCashValue.isHidden = false
+                txtfieldCashValue.text = ""
+                txtfieldCashValue.textInsetsPreset = .none
+                txtfieldCashValue.placeholderHorizontalOffset = 0
+                cashValueDollarView.isHidden = true
                 txtfieldCashValue.placeholder = (item == "Rent Credit" || item == "Lot Equity" || item == "Sweat Equity" || item == "Trade Equity") ? "Market Value of Equity" : "Cash Value"
                 assetsDescriptionTextViewContainer.isHidden = true
                 txtViewAssetsDescription.isHidden = true
@@ -214,8 +228,9 @@ class AddOtherAssetsViewController: BaseViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
+        
         do{
-            let accountType = try validation.validateAccountType(txtfieldAssetType.text)
+            let assetType = try validation.validateAccountType(txtfieldAssetType.text)
             DispatchQueue.main.async {
                 self.txtfieldAssetType.dividerColor = Theme.getSeparatorNormalColor()
                 self.txtfieldAssetType.detail = ""
@@ -226,47 +241,71 @@ class AddOtherAssetsViewController: BaseViewController {
             self.txtfieldAssetType.dividerColor = .red
             self.txtfieldAssetType.detail = error.localizedDescription
         }
-  
-        do{
-            let financialInstitution = try validation.validateFinancialInstitution(txtfieldFinancialInstitution.text)
-            DispatchQueue.main.async {
-                self.txtfieldFinancialInstitution.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtfieldFinancialInstitution.detail = ""
+        
+        if (!txtfieldFinancialInstitution.isHidden){
+            do{
+                let financialInstitution = try validation.validateFinancialInstitution(txtfieldFinancialInstitution.text)
+                DispatchQueue.main.async {
+                    self.txtfieldFinancialInstitution.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldFinancialInstitution.detail = ""
+                }
+                
             }
-            
-        }
-        catch{
-            self.txtfieldFinancialInstitution.dividerColor = .red
-            self.txtfieldFinancialInstitution.detail = error.localizedDescription
-        }
-    
-        do{
-            let accountNumber = try validation.validateAccountNumber(txtfieldAccountNumber.text)
-            DispatchQueue.main.async {
-                self.txtfieldAccountNumber.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtfieldAccountNumber.detail = ""
+            catch{
+                self.txtfieldFinancialInstitution.dividerColor = .red
+                self.txtfieldFinancialInstitution.detail = error.localizedDescription
             }
-            
         }
-        catch{
-            self.txtfieldAccountNumber.dividerColor = .red
-            self.txtfieldAccountNumber.detail = error.localizedDescription
-        }
-    
-        do{
-            let baseSalary = try validation.validateAnnualBaseSalary(txtfieldCashValue.text)
-            DispatchQueue.main.async {
-                self.txtfieldCashValue.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtfieldCashValue.detail = ""
+        if (!txtfieldAccountNumber.isHidden){
+            do{
+                let accountNumber = try validation.validateAccountNumber(txtfieldAccountNumber.text)
+                DispatchQueue.main.async {
+                    self.txtfieldAccountNumber.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldAccountNumber.detail = ""
+                }
+                
             }
-            
+            catch{
+                self.txtfieldAccountNumber.dividerColor = .red
+                self.txtfieldAccountNumber.detail = error.localizedDescription
+            }
         }
-        catch{
-            self.txtfieldCashValue.dividerColor = .red
-            self.txtfieldCashValue.detail = error.localizedDescription
+        if (!txtfieldCashValue.isHidden){
+            do{
+                let cashValue = try validation.validateCashValue(txtfieldCashValue.text)
+                DispatchQueue.main.async {
+                    self.txtfieldCashValue.dividerColor = Theme.getSeparatorNormalColor()
+                    self.txtfieldCashValue.detail = ""
+                }
+                
+            }
+            catch{
+                self.txtfieldCashValue.dividerColor = .red
+                self.txtfieldCashValue.detail = error.localizedDescription
+            }
+        }
+        if (!txtViewAssetsDescription.isHidden){
+            do{
+                let assetDescription = try validation.validateAssetDescription(txtViewAssetsDescription.textView.text)
+                DispatchQueue.main.async {
+                    self.txtViewAssetsDescription.setUnderlineColor(Theme.getSeparatorNormalColor(), for: .normal)
+                    self.txtViewAssetsDescription.leadingAssistiveLabel.text = ""
+                }
+
+            }
+            catch{
+                self.txtViewAssetsDescription.setUnderlineColor(Theme.getSeparatorErrorColor(), for: .normal)
+                self.txtViewAssetsDescription.leadingAssistiveLabel.text = error.localizedDescription
+            }
         }
         
-        if (txtfieldAssetType.text != "" && txtfieldFinancialInstitution.text != "" && txtfieldAccountNumber.text != "" && txtfieldCashValue.text != ""){
+        if (txtfieldAssetType.text != "" && !txtfieldFinancialInstitution.isHidden && txtfieldFinancialInstitution.text != "" && !txtfieldAccountNumber.isHidden && txtfieldAccountNumber.text != "" && txtfieldCashValue.text != ""){
+            self.dismissVC()
+        }
+        else if (txtfieldAssetType.text != "" && txtfieldFinancialInstitution.isHidden && txtfieldAccountNumber.isHidden && txtfieldCashValue.text != "" && txtViewAssetsDescription.isHidden){
+            self.dismissVC()
+        }
+        else if (txtfieldAssetType.text != "" && txtfieldFinancialInstitution.isHidden && txtfieldAccountNumber.isHidden && txtfieldCashValue.text != "" && !txtViewAssetsDescription.isHidden && txtViewAssetsDescription.textView.text != ""){
             self.dismissVC()
         }
     }
@@ -302,7 +341,7 @@ extension AddOtherAssetsViewController: UITextFieldDelegate{
             
             btnassetTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             do{
-                let accountType = try validation.validateAccountType(txtfieldAssetType.text)
+                let assetType = try validation.validateAccountType(txtfieldAssetType.text)
                 DispatchQueue.main.async {
                     self.txtfieldAssetType.dividerColor = Theme.getSeparatorNormalColor()
                     self.txtfieldAssetType.detail = ""
@@ -348,7 +387,7 @@ extension AddOtherAssetsViewController: UITextFieldDelegate{
         
         if (textField == txtfieldCashValue){
             do{
-                let baseSalary = try validation.validateAnnualBaseSalary(txtfieldCashValue.text)
+                let cashValue = try validation.validateCashValue(txtfieldCashValue.text)
                 DispatchQueue.main.async {
                     self.txtfieldCashValue.dividerColor = Theme.getSeparatorNormalColor()
                     self.txtfieldCashValue.detail = ""
