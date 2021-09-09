@@ -19,7 +19,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:navGraph="@navigation/borrower_subject_property_navigation" />
+        app:navGraph="@navigation/subject_property_navigation" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

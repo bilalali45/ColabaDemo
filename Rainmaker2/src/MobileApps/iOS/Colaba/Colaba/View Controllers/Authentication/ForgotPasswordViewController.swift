@@ -13,25 +13,10 @@ class ForgotPasswordViewController: UIViewController {
     //MARK:- Outlets and Properties
     
     @IBOutlet weak var emailView: UIView!
-    @IBOutlet weak var txtFieldEmail: TextField!
-    @IBOutlet weak var emailSeparator: UIView!
-    @IBOutlet weak var lblEmailError: UILabel!
+    @IBOutlet weak var txtFieldEmail: ColabaTextField!
     @IBOutlet weak var btnReset: UIButton!
     
-    var validation: Validation
-    
     //MARK:- View Controller Life Cycle
-    
-    init(validation: Validation) {
-        self.validation = validation
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        self.validation = Validation()
-        super.init(coder: coder)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.10) {
@@ -45,15 +30,15 @@ class ForgotPasswordViewController: UIViewController {
         emailView.layer.cornerRadius = 8
         emailView.addShadow()
         btnReset.layer.cornerRadius = 5
-        txtFieldEmail.delegate = self
-        txtFieldEmail.dividerActiveColor = Theme.getButtonBlueColor()
-        txtFieldEmail.dividerColor = Theme.getSeparatorNormalColor()
-        txtFieldEmail.placeholderActiveColor = Theme.getAppGreyColor()
-        txtFieldEmail.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-        txtFieldEmail.detailLabel.font = Theme.getRubikRegularFont(size: 12)
-        txtFieldEmail.detailColor = .red
-        txtFieldEmail.detailVerticalOffset = 4
-        txtFieldEmail.placeholderVerticalOffset = 8
+        setTextFields()
+    }
+    
+    func setTextFields() {
+        ///Email Text Field
+        txtFieldEmail.setTextField(placeholder: "Email")
+        txtFieldEmail.setDelegates(controller: self)
+        txtFieldEmail.setValidation(validationType: .email)
+        txtFieldEmail.setTextField(keyboardType: .emailAddress)
     }
     
     func forgotPasswordWithRequest(email: String){
@@ -87,48 +72,15 @@ class ForgotPasswordViewController: UIViewController {
     }
     
     @IBAction func btnResetPasswordTapped(_ sender: UIButton) {
-        
-        do{
-            let email = try validation.validateEmail(txtFieldEmail.text)
-            
-            DispatchQueue.main.async {
-//                self.lblEmailError.isHidden = true
-//                self.emailSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-                self.txtFieldEmail.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtFieldEmail.detail = ""
-                self.forgotPasswordWithRequest(email: email)
-            }
-            
+        if validate() {
+            self.forgotPasswordWithRequest(email: txtFieldEmail.text!)
         }
-        catch{
-//            self.lblEmailError.text = error.localizedDescription
-//            self.lblEmailError.isHidden = false
-//            self.emailSeparator.backgroundColor = Theme.getSeparatorErrorColor()
-            self.txtFieldEmail.dividerColor = .red
-            self.txtFieldEmail.detail = error.localizedDescription
-        }
-        
     }
-}
-
-extension ForgotPasswordViewController: UITextFieldDelegate{
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if (txtFieldEmail.text == ""){
-            txtFieldEmail.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+    func validate() -> Bool {
+        if !txtFieldEmail.validate() {
+            return false
         }
-        else{
-            txtFieldEmail.placeholderLabel.textColor = Theme.getAppGreyColor()
-        }
-//        do{
-//            let email = try validation.validateEmail(txtFieldEmail.text)
-//            self.lblEmailError.isHidden = true
-//            self.emailSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-//        }
-//        catch{
-//            self.lblEmailError.text = error.localizedDescription
-//            self.lblEmailError.isHidden = false
-//            self.emailSeparator.backgroundColor = Theme.getSeparatorErrorColor()
-//        }
+        return true
     }
 }
