@@ -15,7 +15,7 @@
         app:elevation="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/home_profile_layout"
+            android:id="@+id/assets_top_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colaba_loan_background"

@@ -22,7 +22,7 @@ import com.google.android.material.badge.BadgeDrawable
 
 
 
-val detailTabArray = arrayOf(
+private val detailTabArray = arrayOf(
     "Overview",
     "Application",
     "Documents"
