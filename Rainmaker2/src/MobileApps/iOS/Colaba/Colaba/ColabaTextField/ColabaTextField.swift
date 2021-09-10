@@ -9,12 +9,13 @@ import UIKit
 import LocalAuthentication
 import Material
 
-enum ColabaTextFieldButtonType {
+enum ColabaTextFieldType {
     case password
     case dropdown
     case datePicker
     case delete
-    case none
+    case amount
+    case defaultType
 }
 
 protocol ColabaTextFieldDelegate {
@@ -42,7 +43,7 @@ extension ColabaTextFieldDelegate {
 class ColabaTextField: TextField {
     
     //MARK: Outlets and Private Properties
-//    @IBOutlet private weak var textField: TextField!
+    //    @IBOutlet private weak var textField: TextField!
     private var button: UIButton!
     
     private var selectionList : [String]?
@@ -56,13 +57,15 @@ class ColabaTextField: TextField {
     //MARK: Public Properties
     public var colabaDelegate: ColabaTextFieldDelegate?
     
+    private var prefix: String?
+    private var attributedPrefix: NSMutableAttributedString? // "$│ "
     private var fieldMinLength = 0
     private var fieldMaxLength = 20
     private var selectedCountryCallingCode = ""
     private var allowedCharacters : CharacterSet = .alphanumerics
     internal var regex: String?
     
-    public var type: ColabaTextFieldButtonType = .none {
+    public var type: ColabaTextFieldType = .defaultType {
         didSet {
             switch type {
             case .password:
@@ -74,14 +77,17 @@ class ColabaTextField: TextField {
                 self.isUserInteractionEnabled = false
                 self.setButton(image: UIImage(named: "dropdown")!)
             case .delete:
-//                button.contentHorizontalAlignment = .center
+                button.contentHorizontalAlignment = .center
                 self.setButton(image: UIImage(named: "DeleteDependent"))
+            case .amount:
+                prefix = "$  |  "
+                attributedPrefix = createAttributedText(prefix: prefix!)
             case .datePicker:
                 isButtonHidden(false)
                 self.isUserInteractionEnabled = false
                 self.tintColor = .clear
                 setButton(image: UIImage(named: "calender")!)
-            case .none:
+            case .defaultType:
                 self.setButton(image: nil)
             }
         }
@@ -99,7 +105,7 @@ class ColabaTextField: TextField {
         super.init(coder: aDecoder)
         self.setupView()
     }
-
+    
     private func setupView() {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
@@ -117,12 +123,13 @@ class ColabaTextField: TextField {
         setTextField(detailLabelColor: .red)
         setTextField(detailLabelVerticalOffset: 4)
         setIsValidateOnEndEditing(validate: true)
+        self.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         self.backgroundColor = .clear
         addButton()
     }
     
     func addButton() {
-
+        
         button = UIButton()
         button.contentHorizontalAlignment = .trailing
         button.addTarget(self, action: #selector(colabaTextFieldButtonClicked(_:)), for: .touchUpInside)
@@ -136,9 +143,9 @@ class ColabaTextField: TextField {
         self.addConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint])
         isButtonHidden(true)
     }
-        
+    
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
-//        self.endEditing(true)
+        //        self.endEditing(true)
         if type == .datePicker {
             if self.isUserInteractionEnabled {
                 datePickerButtonClicked()
@@ -154,7 +161,7 @@ class ColabaTextField: TextField {
     
     //MARK: Button Action
     @objc func colabaTextFieldButtonClicked(_ sender: UIButton) {
-//        self.endEditing(true)
+        //        self.endEditing(true)
         switch type {
         case .password:
             self.isSecureTextEntry = !self.isSecureTextEntry
@@ -166,9 +173,10 @@ class ColabaTextField: TextField {
             datePickerButtonClicked()
         case .delete:
             colabaDelegate?.deleteButtonClicked()
-        case .none:
-            print("None")
-        
+        case .amount:
+            print("button not available in amount type")
+        case .defaultType:
+            print("button not available in default type")
         }
     }
     
@@ -185,19 +193,19 @@ class ColabaTextField: TextField {
 
 //MARK: Public Functions -- ColabaTextField Values
 extension ColabaTextField {
-
+    
     
     public func setUserInteractionDisabled(){
-//        self.self.isUserInteractionEnabled = false
-//        isButtonHidden(false)
-//        setTextField( textColor: UIColor.Palette.formLabel)
+        //        self.self.isUserInteractionEnabled = false
+        //        isButtonHidden(false)
+        //        setTextField( textColor: UIColor.Palette.formLabel)
     }
     
     public func setDatePickerDisabled() {
         self.isUserInteractionEnabled = false
         isButtonHidden(false)
         button.isUserInteractionEnabled = false
-//        setTextField( textColor: UIColor.Palette.formLabel)
+        //        setTextField( textColor: UIColor.Palette.formLabel)
     }
 }
 
@@ -354,6 +362,13 @@ extension ColabaTextField {
         setButton(image: UIImage(named: self.isSecureTextEntry ? "eyeIcon" : "hide"))
     }
     
+    private func createAttributedText(prefix : String) -> NSMutableAttributedString {
+        //TODO: Create new attributed string function with basic strings attributes and target strings attributes
+        var attributedString =  createAttributedString(baseString: prefix, string: prefix, fontColor: Theme.getAppGreyColor(), font: Theme.getRubikMediumFont(size: 15.0))
+        attributedString =  updateAttributedString(baseString: attributedString, string: "|", fontColor: Theme.getSeparatorNormalColor(), font: Theme.getRubikRegularFont(size: 14.0))
+        return attributedString
+    }
+    
     public func isButtonHidden(_ hidden: Bool = true) {
         self.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 36)
         button.isHidden = hidden
@@ -379,7 +394,7 @@ extension ColabaTextField: UITextFieldDelegate {
         self.self.delegate = self
         self.colabaDelegate = collectionViewCell as? ColabaTextFieldDelegate
     }
-
+    
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         if validationType == .phoneNumber {
@@ -396,13 +411,35 @@ extension ColabaTextField: UITextFieldDelegate {
                 return false
             }
         }
+        if type == .amount {
+            if (self.text == prefix && range.location == prefix!.count - 1 && range.length == 1) {
+                return false
+            } else {
+                return true
+            }
+        }
         return true
     }
-
+    
+    //MARK: Textfield Did Change
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        if type == .amount {
+            //First Remove , from Amount like 10,000 to 10000 and convert to integer
+            if let amount = Int(cleanString(string: self.attributedText!.string, replaceCharacters: [prefix!,",", " "], replaceWith: "")){
+                //With Commas function create String like $10,000.00, now remove $ and 0.00 from string and return to field
+                let amountWithComma = cleanString(string: amount.withCommas(), replaceCharacters: ["$",".00"], replaceWith: "")
+                self.attributedText = appendAttributedString(baseString: createAttributedText(prefix: prefix!), string: amountWithComma, fontColor: Theme.getAppBlackColor(), font: Theme.getRubikRegularFont(size: 15))
+            }
+        }
+    }
+    
     //To hide error text when textField begin editing
     public func textFieldDidBeginEditing(_ textField: UITextField) {
         if type == .delete {
             isButtonHidden(false)
+        }
+        if type == .amount && attributedText != attributedPrefix {
+            self.attributedText = attributedPrefix
         }
     }
     
@@ -413,12 +450,18 @@ extension ColabaTextField: UITextFieldDelegate {
         else{
             self.placeholderLabel.textColor = Theme.getAppGreyColor()
         }
-        if isValidateOnEndEditing {
-            _ = validate()
-        }
         if type == .delete {
             isButtonHidden(true)
         }
+        if type == .amount && self.text == prefix {
+            self.text = ""
+        }
+        
+        
+        if isValidateOnEndEditing {
+            _ = validate()
+        }
+        
         colabaDelegate?.textFieldEndEditing(textField)
     }
     

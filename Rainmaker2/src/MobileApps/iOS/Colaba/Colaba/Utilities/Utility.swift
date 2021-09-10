@@ -595,3 +595,42 @@ func cleanString(string: String, replaceCharacters: [String], replaceWith: Strin
     }
     return replaceString
 }
+
+func createAttributedString(baseString: String, string: String, fontColor: UIColor, font: UIFont) -> NSMutableAttributedString {
+    
+    //        Base String would remain same. String attributes would change
+    let textAttributes = [
+        NSAttributedString.Key.foregroundColor : fontColor,
+        NSAttributedString.Key.font : font,
+        ] as [NSAttributedString.Key : Any]
+    let attributedString = NSMutableAttributedString(string: baseString, attributes: nil)
+    let range = (attributedString.string as NSString).range(of: string)
+    attributedString.setAttributes(textAttributes, range: range)
+    
+    return attributedString
+}
+
+func updateAttributedString(baseString: NSMutableAttributedString, string: String, fontColor: UIColor, font: UIFont) -> NSMutableAttributedString {
+    
+    //        Base String would remain same. String attributes would change
+    let textAttributes = [
+        NSAttributedString.Key.foregroundColor : fontColor,
+        NSAttributedString.Key.font : font,
+        ] as [NSAttributedString.Key : Any]
+    let range = (baseString.string as NSString).range(of: string)
+    baseString.setAttributes(textAttributes, range: range)
+    
+    return baseString
+}
+
+func appendAttributedString(baseString: NSMutableAttributedString, string: String, fontColor: UIColor, font: UIFont) -> NSMutableAttributedString {
+    
+    //        Base String would remain same. String attributes would change
+    let textAttributes = [
+        NSAttributedString.Key.foregroundColor : fontColor,
+        NSAttributedString.Key.font : font,
+        ] as [NSAttributedString.Key : Any]
+    let attributedString = NSMutableAttributedString(string: string, attributes: textAttributes)
+    baseString.append(attributedString)
+    return baseString
+}
