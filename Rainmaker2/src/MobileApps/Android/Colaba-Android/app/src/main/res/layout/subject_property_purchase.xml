@@ -18,8 +18,8 @@
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:padding="4dp"
+            android:layout_marginStart="8dp"
+            android:padding="8dp"
             app:layout_constraintBottom_toTopOf="@+id/tab_top_border"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -64,7 +64,7 @@
         app:layout_constraintTop_toBottomOf="@+id/header_info_screen">
 
         <LinearLayout
-            android:id="@+id/subject_property_layout"
+            android:id="@+id/parentLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -91,7 +91,6 @@
                     android:text="Subject Property TBD"
                     android:textColor="@color/grey_color_one"
                     android:textSize="14sp" />
-
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -113,7 +112,7 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
-                    android:id="@+id/radio_txt"
+                    android:id="@+id/radio_txt_property_add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/rubik_regular"
@@ -123,8 +122,7 @@
                     android:textSize="15sp"
                     app:layout_constraintTop_toTopOf="@+id/rb_sub_property_address"
                     app:layout_constraintStart_toEndOf="@+id/rb_sub_property_address"
-                    app:layout_constraintBottom_toBottomOf="@+id/rb_sub_property_address"
-                 />
+                    app:layout_constraintBottom_toBottomOf="@+id/rb_sub_property_address" />
 
                 <TextView
                     android:visibility="gone"
@@ -141,16 +139,12 @@
                     android:maxLines="2"
                     android:text="5915 Trussville Crossings Pkwy, Birmingham AL 35235"
                     android:textColor="@color/grey_color_one"
-                    app:layout_constraintStart_toStartOf="@+id/radio_txt"
-                    app:layout_constraintTop_toBottomOf="@+id/radio_txt"
+                    app:layout_constraintStart_toStartOf="@+id/radio_txt_property_add"
+                    app:layout_constraintTop_toBottomOf="@+id/radio_txt_property_add"
                     app:layout_constraintBottom_toBottomOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -159,7 +153,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="60dp"
                 android:background="@android:color/transparent"
                 android:hint="Property Type"
                 android:textColorHint="@color/primary_info_label_color"
@@ -176,6 +170,7 @@
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
                 app:hintTextColor="@color/grey_color_two">
 
+
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/tv_property_type"
                     style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
@@ -184,8 +179,11 @@
                     android:layout_gravity="bottom"
                     android:backgroundTint="@android:color/transparent"
                     android:completionThreshold="1"
-                    android:focusableInTouchMode="true"
                     android:fontFamily="@font/rubik_regular"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:focusableInTouchMode="true"
+                    android:cursorVisible="false"
                     android:gravity="bottom"
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"
@@ -204,7 +202,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="40dp"
                 android:background="@android:color/transparent"
                 android:hint="Occupancy Type"
                 android:textColorHint="@color/primary_info_label_color"
@@ -230,7 +228,9 @@
                     android:layout_gravity="bottom"
                     android:backgroundTint="@android:color/transparent"
                     android:completionThreshold="1"
+                    android:focusable="false"
                     android:focusableInTouchMode="true"
+                    android:cursorVisible="false"
                     android:fontFamily="@font/rubik_regular"
                     android:gravity="bottom"
                     android:paddingStart="0dp"
@@ -377,7 +377,7 @@
                 android:id="@+id/layout_property_taxes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/annual_property_taxes"
                 android:textColorHint="@color/primary_info_label_color"
@@ -412,7 +412,7 @@
                 android:id="@+id/layout_homeowner_insurance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/homeowner_insurances"
                 android:textColorHint="@color/primary_info_label_color"
@@ -447,7 +447,7 @@
                 android:id="@+id/layout_flood_insurance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="40dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/annual_flood_insurance"
@@ -497,8 +497,7 @@
                 android:text="Maria Rendall"
                 android:textAlignment="center"
                 android:textColor="@color/grey_color_four"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:textSize="13sp" />
 
             <RadioGroup
                 android:layout_width="wrap_content"

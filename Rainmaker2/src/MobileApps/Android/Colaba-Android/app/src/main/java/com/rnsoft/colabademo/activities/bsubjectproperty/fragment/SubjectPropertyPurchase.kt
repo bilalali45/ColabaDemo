@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.SubjectPropertyPurchaseBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.utils.HideSoftkeyboard
 import com.rnsoft.colabademo.utils.NumberTextFormat
 
 /**
@@ -48,19 +49,22 @@ class SubjectPropertyPurchase : Fragment(), View.OnClickListener {
         binding.rbNonOccupying.setOnClickListener(this)
         binding.rbMixedPropertyYes.setOnClickListener(this)
         binding.rbMixedPropertyNo.setOnClickListener(this)
+        binding.parentLayout.setOnClickListener(this)
+        binding.btnSave.setOnClickListener(this)
 
         setSpinnerData()
         setInputFields()
 
         if(isPropertyAddress){
             binding.tvSubPropertyAddress.visibility = View.VISIBLE
+            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
+
         }
 
         if(isMixedProperty){
             binding.layoutDetails.visibility = View.VISIBLE
             binding.rbOccupying.setTypeface(null, Typeface.BOLD)
         }
-
 
         return binding.root
 
@@ -73,7 +77,10 @@ class SubjectPropertyPurchase : Fragment(), View.OnClickListener {
             R.id.rb_mixed_property_yes -> mixedPropertyDetail()
             R.id.layout_details -> mixedPropertyDetail()
             R.id.layout_address -> setAddressClick()
-            R.id.backButton -> requireActivity().onBackPressed()
+            R.id.backButton -> requireActivity().finish()
+            R.id.btn_save -> requireActivity().finish()
+            R.id.parentLayout -> HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
+
             R.id.rb_mixed_property_no ->
                 if (binding.rbMixedPropertyNo.isChecked) {
                     binding.layoutDetails.visibility = View.GONE
@@ -128,14 +135,20 @@ class SubjectPropertyPurchase : Fragment(), View.OnClickListener {
         binding.rbSubProperty.isChecked = true
         binding.rbSubPropertyAddress.isChecked = false
         binding.tvSubPropertyAddress.visibility = View.GONE
+        //bold text
+        binding.rbSubProperty.setTypeface(null,Typeface.BOLD)
+        binding.radioTxtPropertyAdd.setTypeface(null,Typeface.NORMAL)
 
     }
 
     private fun setAddressClick(){
-
         binding.rbSubProperty.isChecked = false
         binding.rbSubPropertyAddress.isChecked = true
         binding.tvSubPropertyAddress.visibility = View.VISIBLE
+        //bold text
+        binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
+        binding.rbSubProperty.setTypeface(null,Typeface.NORMAL)
+
         isPropertyAddress = true
         findNavController().navigate(R.id.nav_sub_property_address)
     }

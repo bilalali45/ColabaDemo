@@ -81,8 +81,10 @@ class SecondMortgageFragment : Fragment(), View.OnClickListener {
             R.id.switch_credit_limit ->
                 if(binding.switchCreditLimit.isChecked) {
                     binding.layoutCreditLimit.visibility = View.VISIBLE
+                    binding.tvHeloc.setTypeface(null, Typeface.BOLD)
                 } else {
                     binding.layoutCreditLimit.visibility = View.GONE
+                    binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
                 }
         }
     }
@@ -108,7 +110,7 @@ class SecondMortgageFragment : Fragment(), View.OnClickListener {
 
 
     private fun checkValidations(){
-
+        requireActivity().onBackPressed()
     }
 
 

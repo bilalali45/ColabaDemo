@@ -16,6 +16,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.databinding.AppToolbarHeadingBinding
 import com.rnsoft.colabademo.databinding.LoanRefinanceInfoBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.utils.HideSoftkeyboard
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import java.text.DecimalFormat
 
@@ -50,6 +51,13 @@ class LoanRefinance : Fragment() {
 
         bindingToolbar.backButton.setOnClickListener {
             requireActivity().finish()
+        }
+
+        binding.loanRefinanceLayout.setOnClickListener{
+            HideSoftkeyboard.hide(requireActivity(),binding.loanRefinanceLayout)
+        }
+        binding.parentLayout.setOnClickListener{
+            HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
         }
 
        return binding.root
