@@ -28,6 +28,7 @@
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/assets_test_cell.xml" value="0.55" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/assets_top_cell.xml" value="0.55" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/back_to_login.xml" value="0.33" />
+        <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/bank_account_layout.xml" value="0.55" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/borrower_address_layout.xml" value="0.5374045801526718" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/borrower_loan_layout.xml" value="0.55" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/borrower_loans_layout.xml" value="0.55" />
@@ -39,16 +40,26 @@
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/fragment_home.xml" value="0.55" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/fragment_profile.xml" value="0.55" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/fragment_search.xml" value="0.325" />
+        <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/gifts_fund_layout.xml" value="0.55" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/list_borrower_horizontal.xml" value="0.5374045801526718" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/loan_purchase_info.xml" value="0.55" />
+        <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/loan_refinance_info.xml" value="0.55" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/loan_view_holder.xml" value="0.55" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/login_layout.xml" value="0.5374045801526718" />
+        <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/mailing_address_layout.xml" value="0.55" />
+        <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/non_permenant_resident_layout.xml" value="0.55" />
+        <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/other_assets_layout.xml" value="0.55" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/otp_screen_layout.xml" value="0.33" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/otp_screen_material.xml" value="0.36666666666666664" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/phone_number_layout.xml" value="0.36666666666666664" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/place_prediction_item.xml" value="0.55" />
+        <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/previous_residence_layout.xml" value="0.55" />
+        <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/proceedFromTrans.xml" value="0.55" />
+        <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/retirement_layout.xml" value="0.55" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/shimmer_placeholder_layout.xml" value="0.5222222222222223" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/shimmer_placeholder_layout_backup.xml" value="0.5" />
+        <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/stock_bonds_layout.xml" value="0.55" />
+        <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/stocks_bond_layout.xml" value="0.55" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/temp_residence_layout.xml" value="0.33" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/toast_notify_layout.xml" value="0.3314814814814815" />
       </map>

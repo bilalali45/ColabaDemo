@@ -76,13 +76,12 @@ class MailingAddressFragment : Fragment() {
             //if(binding.stateCompleteTextView.text.equals(" "))
                 //binding.stateCompleteTextView.setText("")
         }
-
-
-
         binding.stateCompleteTextView.setOnClickListener{
             binding.stateCompleteTextView.showDropDown()
 
         }
+
+
 
         binding.backButton.setOnClickListener{
             val message = "Are you sure you want to delete Richard's Mailing Address?"

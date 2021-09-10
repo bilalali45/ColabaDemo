@@ -27,7 +27,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/textView32"
+            android:id="@+id/header_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Bank Account"
@@ -39,7 +39,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView33"
+            android:id="@+id/header_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="36dp"
@@ -57,9 +57,9 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
 
-            app:layout_constraintBottom_toBottomOf="@+id/textView33"
+            app:layout_constraintBottom_toBottomOf="@+id/header_amount"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView33"
+            app:layout_constraintTop_toTopOf="@+id/header_amount"
             app:srcCompat="@drawable/ic_down_arrow"
             app:tint="@color/grey_color_two" />
 
@@ -69,9 +69,9 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/textView33"
+            app:layout_constraintBottom_toBottomOf="@+id/header_amount"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView33"
+            app:layout_constraintTop_toTopOf="@+id/header_amount"
             app:srcCompat="@drawable/ic_up_arrow"
              />
 

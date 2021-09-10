@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import com.rnsoft.colabademo.databinding.*
+import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
+import kotlinx.android.synthetic.main.assets_middle_cell.view.*
 import kotlinx.android.synthetic.main.assets_top_cell.view.*
 
 class BorrowerOneAssets : Fragment() {
@@ -27,34 +30,89 @@ class BorrowerOneAssets : Fragment() {
         return binding.root
     }
 
+    private fun getSampleAssets():ArrayList<AssetsModelClass>{
+        val assetModelCell = AssetsModelClass( headerTitle = "Bank Account", headerAmount = "$26,000" , footerTitle = "Add Bank Account",
+            contentCell = arrayListOf(
+                ContentCell("Chase", "Checking" ,"$20,000"), ContentCell("Ally Bank", "Saving", "$6,000")
+        ))
+
+        val assetModelCell2 = AssetsModelClass( headerTitle = "Retirement Account", headerAmount = "$10,000" , footerTitle = "Add Retirement Account",
+            contentCell = arrayListOf(
+                ContentCell("401K", "Retirement Account" ,"$10,000")
+            ))
+
+        val assetModelCell3 = AssetsModelClass( headerTitle = "Stocks, Bonds, or Other\n" +
+                "        Financial Assets", headerAmount = "$800" , footerTitle = "Add Financial Assets",
+            contentCell = arrayListOf(
+                ContentCell("AHC", "Mutual Funds" ,"$200")
+            ))
+
+
+        val assetModelCell4 = AssetsModelClass( headerTitle = "Proceeds From Transaction", headerAmount = "$1,200" , footerTitle = "Add Proceeds From Transaction",
+            contentCell = arrayListOf(
+                ContentCell("Proceeds From Selling Non-Real Es...", "Proceeds From Transaction" ,"$1,200")
+            ))
+
+
+        val assetModelCell5 = AssetsModelClass( headerTitle = "Gift Funds", headerAmount = "$2000" , footerTitle = "Add Gifts Account",
+            contentCell = arrayListOf(
+                ContentCell("Relative", "Cash Gifts" ,"$2000")
+            ))
+
+
+        val assetModelCell6 = AssetsModelClass( headerTitle = "Other", headerAmount = "$600" , footerTitle = "Add Other Assets",
+            contentCell = arrayListOf(
+                ContentCell("Individual Development Account", "Other" ,"$600")
+            ))
+
+
+        val modelArrayList:ArrayList<AssetsModelClass> = arrayListOf()
+        modelArrayList.add(assetModelCell)
+        modelArrayList.add(assetModelCell2)
+        modelArrayList.add(assetModelCell3)
+        modelArrayList.add(assetModelCell4)
+        //modelArrayList.add(assetModelCell5)
+        //modelArrayList.add(assetModelCell6)
+
+
+        return modelArrayList
+
+    }
+
     private fun setupLayout(){
-        for (i in 1..5) {
+
+        val sampleAssets = getSampleAssets()
+
+        for (i in 0 until sampleAssets.size) {
+
+            val modelData = sampleAssets[0]
+            Log.e("header",modelData.headerTitle )
+            Log.e("h-amount",modelData.headerAmount )
+
             val mainCell: LinearLayoutCompat =
                 layoutInflater.inflate(R.layout.assets_main_cell, null) as LinearLayoutCompat
             val topCell: View = layoutInflater.inflate(R.layout.assets_top_cell, null)
+            topCell.header_title.text =  modelData.headerTitle
 
-            val bottomCell: View = layoutInflater.inflate(R.layout.assets_bottom_cell, null)
+            topCell.header_amount.setText(modelData.headerAmount)
 
             topCell.tag = R.string.asset_top_cell
             mainCell.addView(topCell)
 
-            if(i == 1) {
-                for (j in 1..2) {
-                    val contentCell: View = layoutInflater.inflate(R.layout.assets_middle_cell, null)
-                    //contentCell.tag = R.string.asset_middle_cell
-                    contentCell.visibility = View.GONE
-                    mainCell.addView(contentCell)
-                }
-            }
-            else {
-                val contentCell: View = layoutInflater.inflate(R.layout.assets_middle_cell, null)
+
+            for (j in 0 until modelData.contentCell.size) {
+                val contentCell: View =
+                    layoutInflater.inflate(R.layout.assets_middle_cell, null)
+                val contentData = modelData.contentCell[j]
+                contentCell.content_title.text = contentData.title
+                contentCell.content_desc.text = contentData.description
+                contentCell.content_amount.text = contentData.contentAmount
                 contentCell.visibility = View.GONE
-                mainCell.addView(contentCell)
             }
 
 
-
-
+            val bottomCell: View = layoutInflater.inflate(R.layout.assets_bottom_cell, null)
+            bottomCell.footer_title.text =  modelData.footerTitle
             //bottomCell.tag = R.string.asset_bottom_cell
             bottomCell.visibility = View.GONE
             mainCell.addView(bottomCell)
