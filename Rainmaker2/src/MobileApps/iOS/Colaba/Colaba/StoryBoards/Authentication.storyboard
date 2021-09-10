@@ -30,13 +30,13 @@
                                 <rect key="frame" x="124.5" y="75" width="126" height="41"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good Morning" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aUp-mp-CYp">
-                                <rect key="frame" x="120.5" y="181" width="134" height="24"/>
+                                <rect key="frame" x="122.5" y="181" width="130" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Johey Leo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="etj-OJ-fbP">
-                                <rect key="frame" x="144.5" y="210" width="86.5" height="21"/>
+                                <rect key="frame" x="146" y="210" width="83.5" height="21"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="18"/>
                                 <color key="textColor" red="0.26666666666666666" green="0.51764705882352935" blue="0.95686274509803915" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -45,7 +45,7 @@
                                 <rect key="frame" x="99.5" y="293" width="176.5" height="176.5"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6La-iu-5ex">
-                                <rect key="frame" x="106" y="509.5" width="163" height="31"/>
+                                <rect key="frame" x="108" y="509.5" width="159" height="31"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="16"/>
                                 <state key="normal" title="Sign in with Password">
                                     <color key="titleColor" red="0.49411764705882355" green="0.50980392156862742" blue="0.61960784313725492" alpha="1" colorSpace="calibratedRGB"/>
@@ -55,7 +55,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IGd-wt-QyP">
-                                <rect key="frame" x="104.5" y="579" width="166" height="28"/>
+                                <rect key="frame" x="108" y="579" width="159" height="28"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <state key="normal" title="Login with another account">
                                     <color key="titleColor" red="0.65490196078431373" green="0.65490196078431373" blue="0.65490196078431373" alpha="1" colorSpace="calibratedRGB"/>
@@ -131,7 +131,7 @@
                                 <rect key="frame" x="280.5" y="19.5" width="161" height="160"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login To Lender’s Portal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wLJ-rJ-T9I">
-                                <rect key="frame" x="72.5" y="131" width="230.5" height="24"/>
+                                <rect key="frame" x="79.5" y="131" width="216" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
@@ -160,7 +160,7 @@
                                         <rect key="frame" x="27" y="193" width="17" height="17"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Biometric Login" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JXl-cc-3WZ">
-                                        <rect key="frame" x="56.5" y="193" width="102" height="17"/>
+                                        <rect key="frame" x="56.5" y="193" width="99" height="17"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <color key="textColor" red="0.4941176471" green="0.50980392159999999" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -173,7 +173,7 @@
                                         </connections>
                                     </switch>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qlG-Ck-dwb">
-                                        <rect key="frame" x="27" y="235" width="148" height="29"/>
+                                        <rect key="frame" x="27" y="235" width="146" height="29"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <state key="normal" title="Forgot your password?">
                                             <color key="titleColor" red="0.26666666666666666" green="0.51764705882352935" blue="0.95686274509803915" alpha="1" colorSpace="calibratedRGB"/>
@@ -291,13 +291,13 @@
                                 <rect key="frame" x="124.5" y="75" width="126" height="41"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good Morning" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IOa-5V-LBu">
-                                <rect key="frame" x="120.5" y="181" width="134" height="24"/>
+                                <rect key="frame" x="122.5" y="181" width="130" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Johey Leo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0FJ-me-YxA">
-                                <rect key="frame" x="144.5" y="210" width="86.5" height="21"/>
+                                <rect key="frame" x="146" y="210" width="83.5" height="21"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="18"/>
                                 <color key="textColor" red="0.2666666667" green="0.51764705879999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -306,7 +306,7 @@
                                 <rect key="frame" x="62.5" y="256" width="250" height="250"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JkE-Gz-5xq">
-                                <rect key="frame" x="106" y="511" width="163" height="31"/>
+                                <rect key="frame" x="108" y="511" width="159" height="31"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="16"/>
                                 <state key="normal" title="Sign in with Password">
                                     <color key="titleColor" red="0.4941176471" green="0.50980392159999999" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
@@ -316,7 +316,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sKS-4R-RN0">
-                                <rect key="frame" x="104.5" y="579" width="166" height="28"/>
+                                <rect key="frame" x="108" y="579" width="159" height="28"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                 <state key="normal" title="Login with another account">
                                     <color key="titleColor" red="0.65490196078431373" green="0.65490196078431373" blue="0.65490196078431373" alpha="1" colorSpace="calibratedRGB"/>
@@ -372,13 +372,13 @@
                                 <rect key="frame" x="261.5" y="3" width="173" height="185"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password Assistance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zQP-6T-d81">
-                                <rect key="frame" x="85" y="182" width="205" height="24"/>
+                                <rect key="frame" x="92" y="182" width="191.5" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your email to reset your password." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JzX-d5-SAC">
-                                <rect key="frame" x="57.5" y="221" width="260" height="17"/>
+                                <rect key="frame" x="61" y="221" width="253" height="17"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
@@ -483,13 +483,13 @@
                                 <rect key="frame" x="261.5" y="3" width="173" height="185"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Almost Finished" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sma-a0-cwT">
-                                <rect key="frame" x="110" y="271.5" width="155.5" height="24"/>
+                                <rect key="frame" x="116" y="271.5" width="143" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HkG-cr-Mid">
-                                <rect key="frame" x="37.5" y="320.5" width="300" height="33.5"/>
+                                <rect key="frame" x="37.5" y="320.5" width="300" height="33"/>
                                 <string key="text">We've sent you an email with instructions
 to create a new password</string>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
@@ -497,10 +497,10 @@ to create a new password</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="forgotpasswordbottomIcon" translatesAutoresizingMaskIntoConstraints="NO" id="cpk-PA-EmV">
-                                <rect key="frame" x="-60" y="434" width="182" height="179"/>
+                                <rect key="frame" x="-60" y="433.5" width="182" height="179"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kbs-Iy-bGa">
-                                <rect key="frame" x="57" y="384" width="261" height="50"/>
+                                <rect key="frame" x="57" y="383.5" width="261" height="50"/>
                                 <color key="backgroundColor" red="0.2666666667" green="0.51764705879999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="4Vf-Uw-AIp"/>
@@ -557,13 +557,13 @@ to create a new password</string>
                                 <rect key="frame" x="280.5" y="34" width="146" height="113"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Number Verification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fsu-KM-ltd">
-                                <rect key="frame" x="58.5" y="161" width="258" height="24"/>
+                                <rect key="frame" x="68" y="161" width="239" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PhB-nq-dWC">
-                                <rect key="frame" x="37.5" y="200" width="300" height="33.5"/>
+                                <rect key="frame" x="37.5" y="200" width="300" height="33"/>
                                 <string key="text">Enter your phone number below and we'll
 send you a verification code.</string>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
@@ -571,10 +571,10 @@ send you a verification code.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PhoneImage" translatesAutoresizingMaskIntoConstraints="NO" id="MW4-o2-RSR">
-                                <rect key="frame" x="-40" y="361.5" width="254" height="285"/>
+                                <rect key="frame" x="-40" y="361" width="254" height="285"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QIa-M9-ods">
-                                <rect key="frame" x="30" y="263.5" width="315" height="268"/>
+                                <rect key="frame" x="30" y="263" width="315" height="268"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BaI-eR-HPM" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                         <rect key="frame" x="27" y="40" width="261" height="39"/>
@@ -601,7 +601,7 @@ send you a verification code.</string>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rP6-hZ-1RV">
-                                        <rect key="frame" x="113.5" y="199" width="88" height="29"/>
+                                        <rect key="frame" x="114.5" y="199" width="86" height="29"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <state key="normal" title="Skip this step">
                                             <color key="titleColor" name="AppBlackColor"/>
@@ -684,25 +684,26 @@ send you a verification code.</string>
                                 <rect key="frame" x="280.5" y="34" width="146" height="113"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Number Verification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tWq-u2-cgc">
-                                <rect key="frame" x="58.5" y="161" width="258" height="24"/>
+                                <rect key="frame" x="68" y="161" width="239" height="24"/>
                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="20"/>
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter the code sent to (***) ***-7787" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tLz-de-jxc">
-                                <rect key="frame" x="37.5" y="200" width="300" height="17"/>
+                                <rect key="frame" x="37.5" y="200" width="300" height="16.5"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PhoneImage" translatesAutoresizingMaskIntoConstraints="NO" id="aMh-ap-hrs">
-                                <rect key="frame" x="-40" y="402" width="254" height="285"/>
+                                <rect key="frame" x="-40" y="401.5" width="254" height="285"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="POU-Kn-w5K">
-                                <rect key="frame" x="30" y="247" width="315" height="325"/>
+                                <rect key="frame" x="30" y="246.5" width="315" height="325"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w1N-5d-dQ2" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                         <rect key="frame" x="27" y="40" width="261" height="35"/>
+                                        <color key="backgroundColor" systemColor="systemGray5Color"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="bKi-fh-JaT"/>
                                         </constraints>
@@ -721,13 +722,13 @@ send you a verification code.</string>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Didn't receive the code?" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xnf-Pz-uQb">
-                                        <rect key="frame" x="27" y="111" width="261" height="17"/>
+                                        <rect key="frame" x="27" y="111" width="261" height="16.5"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yXp-Nu-yQb">
-                                        <rect key="frame" x="27" y="128" width="130" height="29"/>
+                                        <rect key="frame" x="27" y="127.5" width="125" height="29"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <state key="normal" title="Resend code (4 left)">
                                             <color key="titleColor" red="0.2666666667" green="0.51764705879999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -737,7 +738,7 @@ send you a verification code.</string>
                                         </connections>
                                     </button>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4I5-3h-cao">
-                                        <rect key="frame" x="27" y="138" width="261" height="33"/>
+                                        <rect key="frame" x="27" y="137.5" width="261" height="33"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cb4-gX-AFg">
                                                 <rect key="frame" x="0.0" y="0.0" width="40" height="0.0"/>
@@ -749,19 +750,19 @@ send you a verification code.</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="min" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GCa-wb-XWQ">
-                                                <rect key="frame" x="41" y="-8.5" width="24.5" height="17"/>
+                                                <rect key="frame" x="41" y="-8" width="23" height="16.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                                 <color key="textColor" red="0.65490196078431373" green="0.65490196078431373" blue="0.65490196078431373" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=":" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YNg-gN-xtD">
-                                                <rect key="frame" x="72.5" y="-16.5" width="8" height="33"/>
+                                                <rect key="frame" x="71" y="-16.5" width="8" height="33"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="28"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G7t-iJ-2EB">
-                                                <rect key="frame" x="83.5" y="0.0" width="40" height="0.0"/>
+                                                <rect key="frame" x="82" y="0.0" width="40" height="0.0"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="tQx-cO-oA3"/>
                                                 </constraints>
@@ -770,13 +771,13 @@ send you a verification code.</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sec" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XO8-ck-4VF">
-                                                <rect key="frame" x="124.5" y="-8.5" width="23" height="17"/>
+                                                <rect key="frame" x="123" y="-8" width="22.5" height="16.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                                 <color key="textColor" red="0.65490196078431373" green="0.65490196078431373" blue="0.65490196078431373" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="timerImage" translatesAutoresizingMaskIntoConstraints="NO" id="Yka-iq-YKH">
-                                                <rect key="frame" x="157.5" y="3.5" width="19.5" height="26"/>
+                                                <rect key="frame" x="155.5" y="3.5" width="19.5" height="26"/>
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -797,7 +798,7 @@ send you a verification code.</string>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RVX-qa-Y32">
-                                        <rect key="frame" x="27" y="187" width="18" height="18"/>
+                                        <rect key="frame" x="27" y="186.5" width="18" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="18" id="L2U-6k-ug5"/>
                                             <constraint firstAttribute="height" constant="18" id="pyb-gl-hCf"/>
@@ -808,13 +809,13 @@ send you a verification code.</string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't ask again on this device." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rTd-ZF-nME">
-                                        <rect key="frame" x="55" y="187.5" width="195.5" height="17"/>
+                                        <rect key="frame" x="55" y="187.5" width="192.5" height="16.5"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Efw-8e-LmG">
-                                        <rect key="frame" x="27" y="235" width="261" height="50"/>
+                                        <rect key="frame" x="27" y="234.5" width="261" height="50"/>
                                         <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="SCa-WN-cP9"/>

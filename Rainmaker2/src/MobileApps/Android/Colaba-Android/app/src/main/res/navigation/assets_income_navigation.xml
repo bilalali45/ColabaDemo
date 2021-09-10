@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/navigation_asset"
-        android:name="com.rnsoft.colabademo.AssetsMainFragment"
+        android:name="com.rnsoft.colabademo.BorrowerOneAssets"
         android:label="@string/assets"
         tools:layout="@layout/asset_fragment_layout" />
 

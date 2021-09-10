@@ -13,10 +13,12 @@ enum ColabaTextFieldButtonType {
     case password
     case dropdown
     case datePicker
+    case delete
     case none
 }
 
 protocol ColabaTextFieldDelegate {
+    func deleteButtonClicked()
     func dropDownClicked(alert: UIAlertController)
     func dropDownClicked(alert: UIAlertController, withTag: Int)
     func selectedOption(option: String, alert: UIAlertController)
@@ -26,6 +28,7 @@ protocol ColabaTextFieldDelegate {
 }
 
 extension ColabaTextFieldDelegate {
+    func deleteButtonClicked(){}
     func dropDownClicked(alert: UIAlertController){}
     func dropDownClicked(alert: UIAlertController, withTag: Int){}
     func selectedOption(option: String, alert: UIAlertController){}
@@ -70,6 +73,9 @@ class ColabaTextField: TextField {
                 isButtonHidden(false)
                 self.isUserInteractionEnabled = false
                 self.setButton(image: UIImage(named: "dropdown")!)
+            case .delete:
+//                button.contentHorizontalAlignment = .center
+                self.setButton(image: UIImage(named: "DeleteDependent"))
             case .datePicker:
                 isButtonHidden(false)
                 self.isUserInteractionEnabled = false
@@ -128,15 +134,11 @@ class ColabaTextField: TextField {
         let widthConstraint = button.widthAnchor.constraint(equalToConstant: 32)
         let heightConstraint = button.heightAnchor.constraint(equalToConstant: 32)
         self.addConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint])
-        button.isHidden = true
-    }
-    
-    @objc func testClick() {
-        print("Test Click")
+        isButtonHidden(true)
     }
         
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
-        self.endEditing(true)
+//        self.endEditing(true)
         if type == .datePicker {
             if self.isUserInteractionEnabled {
                 datePickerButtonClicked()
@@ -152,7 +154,7 @@ class ColabaTextField: TextField {
     
     //MARK: Button Action
     @objc func colabaTextFieldButtonClicked(_ sender: UIButton) {
-        self.endEditing(true)
+//        self.endEditing(true)
         switch type {
         case .password:
             self.isSecureTextEntry = !self.isSecureTextEntry
@@ -162,8 +164,11 @@ class ColabaTextField: TextField {
             dropDownButtonClicked()
         case .datePicker:
             datePickerButtonClicked()
+        case .delete:
+            colabaDelegate?.deleteButtonClicked()
         case .none:
             print("None")
+        
         }
     }
     
@@ -184,13 +189,13 @@ extension ColabaTextField {
     
     public func setUserInteractionDisabled(){
 //        self.self.isUserInteractionEnabled = false
-//        self.button.isHidden = true
+//        isButtonHidden(false)
 //        setTextField( textColor: UIColor.Palette.formLabel)
     }
     
     public func setDatePickerDisabled() {
         self.isUserInteractionEnabled = false
-        button.isHidden = false
+        isButtonHidden(false)
         button.isUserInteractionEnabled = false
 //        setTextField( textColor: UIColor.Palette.formLabel)
     }
@@ -369,6 +374,11 @@ extension ColabaTextField: UITextFieldDelegate {
         self.self.delegate = self
         self.colabaDelegate = controller as? ColabaTextFieldDelegate
     }
+    
+    public func setDelegates(collectionViewCell: UICollectionViewCell) {
+        self.self.delegate = self
+        self.colabaDelegate = collectionViewCell as? ColabaTextFieldDelegate
+    }
 
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
@@ -386,13 +396,14 @@ extension ColabaTextField: UITextFieldDelegate {
                 return false
             }
         }
-        
         return true
     }
 
     //To hide error text when textField begin editing
     public func textFieldDidBeginEditing(_ textField: UITextField) {
-        
+        if type == .delete {
+            isButtonHidden(false)
+        }
     }
     
     public func textFieldDidEndEditing(_ textField: UITextField) {
@@ -404,6 +415,9 @@ extension ColabaTextField: UITextFieldDelegate {
         }
         if isValidateOnEndEditing {
             _ = validate()
+        }
+        if type == .delete {
+            isButtonHidden(true)
         }
         colabaDelegate?.textFieldEndEditing(textField)
     }
