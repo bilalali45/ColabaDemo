@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/half_white">
+    android:background="@color/half_white"
+    android:id="@+id/parentLayout">
 
     <include
         android:id="@+id/header_loan_purchase"
@@ -26,10 +27,10 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
+            android:id="@+id/loan_refinance_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="30dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp">
 
@@ -38,6 +39,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
                 android:hint="@string/loan_stage"
@@ -66,8 +68,8 @@
                     android:layout_gravity="bottom"
                     android:backgroundTint="@android:color/transparent"
                     android:completionThreshold="1"
-                    android:cursorVisible="true"
-                    android:focusable="true"
+                    android:focusable="false"
+                    android:cursorVisible="false"
                     android:focusableInTouchMode="true"
                     android:fontFamily="@font/rubik_regular"
                     android:gravity="bottom"
@@ -86,7 +88,7 @@
                 android:id="@+id/layout_cashout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/cash_out_amount"
                 android:textColorHint="@color/primary_info_label_color"
@@ -120,7 +122,7 @@
                 android:id="@+id/layout_loan_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/loan_amount"
                 android:textColorHint="@color/primary_info_label_color"
@@ -158,10 +160,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginEnd="15dp"
-        android:fontFamily="@font/rubik_regular"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:textStyle="bold"
+        android:layout_marginBottom="20dp"
         android:layout_gravity="end"
         android:layout_marginTop="80dp"
         android:background="@android:color/transparent"

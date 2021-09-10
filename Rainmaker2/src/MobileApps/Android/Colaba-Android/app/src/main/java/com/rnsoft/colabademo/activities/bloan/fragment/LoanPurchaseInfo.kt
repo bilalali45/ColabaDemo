@@ -22,6 +22,7 @@ import com.rnsoft.colabademo.MyCustomFocusListener
 import com.rnsoft.colabademo.databinding.AppToolbarHeadingBinding
 import com.rnsoft.colabademo.databinding.LoanPurchaseInfoBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.utils.HideSoftkeyboard
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import java.text.DecimalFormat
@@ -50,7 +51,7 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
         setLoanStageSpinner()
         initViews()
         setNumberFormats()
-        setTextWatcher()
+        setCalulations()
 
         bindingToolbar.backButton.setOnClickListener {
             requireActivity().finish()
@@ -58,7 +59,9 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.btnSaveChange.setOnClickListener {
             checkValidations()
         }
-
+        binding.loanPurchaseLayout.setOnClickListener{
+            HideSoftkeyboard.hide(requireActivity(),binding.loanPurchaseLayout)
+        }
 
         return binding.root
     }
@@ -143,8 +146,7 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
         }
     }
 
-
-    private fun setTextWatcher(){
+    private fun setCalulations(){
 
 
         mTextWatcher  = object : TextWatcher {
@@ -249,8 +251,6 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.edPercent.addTextChangedListener(mTextWatcher)
 
     }
-
-
 
     private fun validatePurchasePrice(value:String){
         var purchasePrice = value.replace(",", "");
@@ -382,7 +382,6 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
             )
         )
     }
-
 
     private fun setNumberFormats(){
         binding.edLoanAmount.addTextChangedListener(NumberTextFormat(binding.edLoanAmount))

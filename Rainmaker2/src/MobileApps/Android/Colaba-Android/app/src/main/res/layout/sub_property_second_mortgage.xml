@@ -18,8 +18,8 @@
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:padding="4dp"
+            android:layout_marginStart="8dp"
+            android:padding="8dp"
             app:layout_constraintBottom_toTopOf="@+id/tab_top_border"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -89,7 +89,7 @@
                 android:id="@+id/layout_sec_payment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/sec_mortgage_payment"
                 android:textColorHint="@color/primary_info_label_color"
@@ -172,6 +172,7 @@
                     android:theme="@style/Color1SwitchStyle"/>
 
                 <TextView
+                    android:id="@+id/tv_heloc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
