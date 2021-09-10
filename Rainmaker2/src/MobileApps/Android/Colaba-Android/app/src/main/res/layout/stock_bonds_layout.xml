@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colaba_loan_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,6 +11,7 @@
         android:id="@+id/assets_top_container"
         android:layout_width="match_parent"
         android:layout_height="54dp"
+        android:layout_marginTop="8dp"
         android:background="@color/colaba_loan_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,13 +30,17 @@
 
         <TextView
             android:id="@+id/borrower_name_greeting"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="Bank Account"
+            android:text="Stocks, Bonds, or Other Fin. Assets"
             android:textColor="@color/grey_color_one"
             android:textSize="18sp"
+            android:layout_marginStart="46dp"
+            android:layout_marginEnd="46dp"
+            android:singleLine="true"
+            android:lines="1"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -226,6 +232,11 @@
         app:boxStrokeWidth="0.5dp"
         app:boxStrokeWidthFocused="1dp"
 
+
+        app:endIconDrawable="@drawable/ic_eye_hide"
+        app:endIconMode="custom"
+        app:endIconTint="@color/grey_color_three"
+        app:passwordToggleEnabled="true"
 
         app:helperTextEnabled="true"
         app:helperTextTextAppearance="@style/inputError"

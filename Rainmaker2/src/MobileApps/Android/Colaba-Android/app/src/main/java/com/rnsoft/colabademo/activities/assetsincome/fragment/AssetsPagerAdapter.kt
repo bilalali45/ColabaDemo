@@ -24,7 +24,7 @@ class AssetsPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
                 return BorrowerOneAssets()
             }
             1 -> {
-                return BorrowerTwoAssets()
+                return BorrowerOneAssets()
             }
 
             2 -> {
