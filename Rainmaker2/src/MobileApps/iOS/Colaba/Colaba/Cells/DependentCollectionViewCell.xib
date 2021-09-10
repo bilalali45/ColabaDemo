@@ -23,7 +23,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="277" height="74"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GXp-k0-RmJ" customClass="TextField" customModule="Material">
+                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GXp-k0-RmJ" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                         <rect key="frame" x="20" y="8" width="237" height="39"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="39" id="PYC-OX-qfD"/>
@@ -31,58 +31,24 @@
                         <color key="textColor" name="AppBlackColor"/>
                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                         <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad"/>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="1st Dependent age"/>
-                            <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                <real key="value" value="1"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                <real key="value" value="11"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                <real key="value" value="10"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                <real key="value" value="1"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                            <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                <real key="value" value="0.0"/>
-                            </userDefinedRuntimeAttribute>
-                        </userDefinedRuntimeAttributes>
                     </textField>
-                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wyk-Y4-M4T">
-                        <rect key="frame" x="217" y="4" width="40" height="40"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="40" id="4Wq-1L-nh8"/>
-                            <constraint firstAttribute="height" constant="40" id="nRT-ij-X3q"/>
-                        </constraints>
-                        <state key="normal" image="DeleteDependent"/>
-                        <connections>
-                            <action selector="btnDeleteTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="DBZ-QP-DN2"/>
-                        </connections>
-                    </button>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="GXp-k0-RmJ" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="Npm-jd-J1c"/>
-                <constraint firstAttribute="trailing" secondItem="Wyk-Y4-M4T" secondAttribute="trailing" constant="20" id="a0V-T3-Yjg"/>
-                <constraint firstItem="Wyk-Y4-M4T" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="4" id="c1e-7u-bpP"/>
                 <constraint firstItem="GXp-k0-RmJ" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="dI6-jJ-hNX"/>
                 <constraint firstAttribute="trailing" secondItem="GXp-k0-RmJ" secondAttribute="trailing" constant="20" id="dau-zL-ISN"/>
             </constraints>
             <size key="customSize" width="277" height="74"/>
             <connections>
-                <outlet property="btnDelete" destination="Wyk-Y4-M4T" id="5OM-zH-Wds"/>
-                <outlet property="txtfieldAge" destination="GXp-k0-RmJ" id="E35-6M-qbp"/>
+                <outlet property="txtfieldAge" destination="GXp-k0-RmJ" id="Zpp-mx-GUZ"/>
             </connections>
             <point key="canvasLocation" x="296.37681159420293" y="87.723214285714278"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="DeleteDependent" width="22" height="22"/>
         <namedColor name="AppBlackColor">
             <color red="0.30588235294117649" green="0.30588235294117649" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
