@@ -162,7 +162,7 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
         txtfieldCreditLimit.isHidden = !sender.isOn
         mortgageCombinedViewTopConstraint.constant = sender.isOn ? 140 : 50
         UIView.animate(withDuration: 0.5) {
-            self.view.layoutSubviews()
+            self.view.layoutIfNeeded()
         }
     }
     

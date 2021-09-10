@@ -76,8 +76,8 @@ class AssetsDetailViewController: BaseViewController {
         
         self.mainViewHeightConstraint.constant = CGFloat(totalHeight)
         
-        UIView.animate(withDuration: 1) {
-            self.view.layoutSubviews()
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
         }
     }
   

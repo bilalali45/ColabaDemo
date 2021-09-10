@@ -169,7 +169,7 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
         txtfieldCreditLimit.isHidden = !sender.isOn
         accountPaymentViewHeightConstraint.constant = sender.isOn ? 337 : 248
         UIView.animate(withDuration: 0.5) {
-            self.view.layoutSubviews()
+            self.view.layoutIfNeeded()
         }
     }
     
