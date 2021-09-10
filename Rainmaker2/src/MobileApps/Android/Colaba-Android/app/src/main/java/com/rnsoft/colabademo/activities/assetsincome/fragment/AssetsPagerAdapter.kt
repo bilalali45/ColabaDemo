@@ -10,7 +10,7 @@ class AssetsPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
         FragmentStateAdapter(fragmentManager, lifecycle) {
 
     companion object{
-        const val BORROWER_ASSET_TABS = 4 // this number will decide, how many tabs and fragments will be displayed...
+        const val BORROWER_ASSET_TABS = 2 // this number will decide, how many tabs and fragments will be displayed...
     }
 
     override fun getItemCount(): Int {
@@ -24,7 +24,7 @@ class AssetsPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
                 return BorrowerOneAssets()
             }
             1 -> {
-                return BorrowerTwoAssets()
+                return BorrowerOneAssets()
             }
 
             2 -> {

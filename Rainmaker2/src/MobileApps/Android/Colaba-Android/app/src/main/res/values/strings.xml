@@ -294,6 +294,14 @@
     <string name="non_pr">Non Permantent Resident Alien</string>
     <string name="visa_status">Visa Status</string>
     <string name="status_details">Status Details</string>
+    <string name="current_market_value">Current Market Value</string>
+    <string name="annual_base_salary">Annual Base Salary</string>
+    <string name="account_number">Account Number</string>
+    <string name="financial_institution">Financial Institution</string>
+    <string name="account_type">Account Type</string>
+    <string name="asset_type">Asset Type</string>
+    <string name="proceeds_from_transaction">Proceeds From Transaction</string>
+
     <string name="others">Others</string>
     <string name="dob">Date of Birth</string>
     <string name="social_security_num">Social Security Number</string>

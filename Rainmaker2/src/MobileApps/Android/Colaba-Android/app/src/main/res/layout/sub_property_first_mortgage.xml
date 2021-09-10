@@ -18,8 +18,8 @@
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="12dp"
-            android:padding="4dp"
+            android:layout_marginStart="8dp"
+            android:padding="8dp"
             app:layout_constraintBottom_toTopOf="@+id/tab_top_border"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -90,7 +90,7 @@
                 android:id="@+id/layout_first_payment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="First Mortgage Payment"
                 android:textColorHint="@color/primary_info_label_color"
@@ -124,7 +124,7 @@
                 android:id="@+id/layout_unpaid_balance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="40dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/rubik_light"
                 android:hint="Unpaid First Mortgage Balance"
@@ -221,6 +221,7 @@
                     app:layout_constraintTop_toTopOf="@+id/textView"/>
 
                 <TextView
+                    android:id="@id/tv_heloc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"

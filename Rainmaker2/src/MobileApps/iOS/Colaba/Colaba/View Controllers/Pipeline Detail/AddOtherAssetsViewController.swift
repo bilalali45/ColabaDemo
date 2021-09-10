@@ -131,6 +131,7 @@ class AddOtherAssetsViewController: BaseViewController {
                 btnEye.isHidden = false
                 txtfieldCashValue.isHidden = false
                 txtfieldCashValue.text = ""
+                txtfieldCashValue.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
                 txtfieldCashValue.textInsetsPreset = .none
                 txtfieldCashValue.placeholderHorizontalOffset = 0
                 cashValueDollarView.isHidden = true
@@ -150,6 +151,7 @@ class AddOtherAssetsViewController: BaseViewController {
                 btnEye.isHidden = true
                 txtfieldCashValue.isHidden = false
                 txtfieldCashValue.text = ""
+                txtfieldCashValue.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
                 txtfieldCashValue.textInsetsPreset = .none
                 txtfieldCashValue.placeholderHorizontalOffset = 0
                 cashValueDollarView.isHidden = true

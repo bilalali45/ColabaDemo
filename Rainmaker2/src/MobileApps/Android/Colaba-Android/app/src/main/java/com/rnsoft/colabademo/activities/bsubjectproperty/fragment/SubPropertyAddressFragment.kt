@@ -27,6 +27,8 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.rnsoft.colabademo.databinding.SubjectPropertyAddressBinding
+import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.utils.HideSoftkeyboard
 import kotlinx.android.synthetic.main.temp_residence_layout.*
 import java.io.IOException
 import java.util.*
@@ -59,22 +61,56 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
         setUpCompleteViewForPlaces()
         initializeUSAstates()
 
+        binding.parentLayout.setOnClickListener{
+            HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
+        }
+
+        binding.subPropertyAddressLayout.setOnClickListener {
+            HideSoftkeyboard.hide(requireActivity(),binding.subPropertyAddressLayout)
+        }
+
+        binding.btnSave.setOnClickListener{
+            checkValidations()
+        }
+
         return binding.root
 
     }
 
     private fun setInputFields(){
 
-        binding.tvSearch.onFocusChangeListener = object : View.OnFocusChangeListener {
+        /*binding.tvSearch.onFocusChangeListener = object : View.OnFocusChangeListener {
             override fun onFocusChange(p0: View?, p1: Boolean) {
                 if (p1) {
+                    Log.e("has Focus", "true")
                     binding.searchSeparator.minimumHeight = 1
                     binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_primary_color, requireActivity().theme))
 
                 } else {
+                    Log.e("has Focus", "removed")
+
                     binding.searchSeparator.minimumHeight = 1
                     binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
                     binding.searchSeparator.clearFocus()
+
+                    if(binding.tvSearch.text.toString().isNotEmpty()){
+                        CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_two, requireContext())
+                    }
+                }
+           }
+        } */
+
+        binding.layoutSearchAddress.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                //setTextInputLayoutHintColor(bi.layoutLastName, R.color.grey_color_two )
+                CustomMaterialFields.setColor(binding.layoutSearchAddress,R.color.grey_color_two, requireActivity())
+            } else {
+                val search: String = binding.tvSearch.text.toString()
+                if (search.length == 0) {
+                    CustomMaterialFields.setColor(binding.layoutSearchAddress,R.color.grey_color_three, requireActivity())
+                } else {
+                    CustomMaterialFields.setColor(binding.layoutSearchAddress,R.color.grey_color_three, requireActivity())
+                    CustomMaterialFields.clearError(binding.layoutSearchAddress, requireActivity())
                 }
             }
         }
@@ -82,14 +118,39 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
 
         // set lable focus
         binding.edUnitAtpNo.setOnFocusChangeListener(MyCustomFocusListener(binding.edUnitAtpNo, binding.layoutUnitAptNo, requireContext()))
-        binding.edStreetAddress.setOnFocusChangeListener(MyCustomFocusListener(binding.edStreetAddress, binding.layoutStreetAddress, requireContext()))
+        binding.edStreetAddress.setOnFocusChangeListener(MyCustomFocusListener(binding.edStreetAddress, binding.layoutStreetAddress , requireContext()))
         binding.edCity.setOnFocusChangeListener(MyCustomFocusListener(binding.edCity, binding.layoutCity, requireContext()))
         binding.edCounty.setOnFocusChangeListener(MyCustomFocusListener(binding.edCounty, binding.layoutCounty, requireContext()))
-        // binding.tvCountrySpinner.setOnFocusChangeListener(MyCustomFocusListener(binding.tvCountrySpinner, binding.layoutCountry, requireContext()))
+        binding.edZipcode.setOnFocusChangeListener(MyCustomFocusListener(binding.edZipcode, binding.layoutZipCode, requireContext()))
+         //binding.tvCountrySpinner.setOnFocusChangeListener(MyCustomFocusListener(binding.tvCountrySpinner, binding.layoutCountry, requireContext()))
         //binding.tvStateSpinner.setOnFocusChangeListener(MyCustomFocusListener(binding.tvStateSpinner, binding.layoutState, requireContext()))
+
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edUnitAtpNo, binding.layoutUnitAptNo)
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edStreetAddress, binding.layoutStreetAddress)
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edCity, binding.layoutCity)
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edCounty, binding.layoutCounty)
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edZipcode, binding.layoutZipCode)
 
     }
 
+    private fun checkValidations() {
+
+        val searchBar: String = binding.tvSearch.text.toString()
+//        val purchasePrice: String = binding.edPurchasePrice.text.toString()
+//        val loanAmount: String = binding.edLoanAmount.text.toString()
+//        val downPayment: String = binding.edDownPayment.text.toString()
+//        val percentage: String = binding.edPercent.text.toString()
+//        val closingDate: String = binding.edClosingDate.text.toString()
+
+        if(searchBar.isEmpty() || searchBar.length == 0) {
+                CustomMaterialFields.setError(binding.layoutSearchAddress, getString(R.string.error_field_required),requireActivity())
+        }
+
+        if (searchBar.isNotEmpty() || searchBar.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutSearchAddress,requireActivity())
+        }
+
+    }
     private fun setStateAndCountyDropDown(){
 
         val countryAdapter =
@@ -135,7 +196,6 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
             }
 
     }
-
 
     private fun setUpCompleteViewForPlaces() {
 
@@ -217,22 +277,22 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
 
             }.addOnFailureListener { exception: Exception? ->
                 if (exception is ApiException) {
-                    Log.e(TAG, "Place not found: " + exception.statusCode)
+                    //Log.e(TAG, "Place not found: " + exception.statusCode)
                 }
             }
 
-        Log.e("predicationList", predicationList.size.toString())
+        //Log.e("predicationList", predicationList.size.toString())
 
     }
 
 
     override fun onPlaceClicked(place: AutocompletePrediction) {
-        Log.e("which-place", "desc = " + place.getFullText(null).toString())
+        //Log.e("which-place", "desc = " + place.getFullText(null).toString())
         predictAdapter.setPredictions(null)
-        binding.searchSeparator.visibility = View.GONE
+        //binding.searchSeparator.visibility = View.GONE
         val placeSelected = place.getFullText(null).toString()
         binding.tvSearch.clearFocus()
-        hideKeyBoard()
+        HideSoftkeyboard.hide(requireActivity(),binding.tvSearch)
         binding.tvSearch.removeTextChangedListener(placeTextWatcher)
         binding.tvSearch.setText(placeSelected)
         binding.tvSearch.clearFocus()
@@ -259,7 +319,7 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
             binding.edStreetAddress.setText(place.getPrimaryText(null))
             premises?.let { binding.edUnitAtpNo.setText(it) }
 
-            Log.e("Bingo ", " = " + subLocality + " " + locality + "  " + postalCode)
+            //Log.e("Bingo ", " = " + subLocality + " " + locality + "  " + postalCode)
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -268,13 +328,14 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
         var stateCode =  extractState.substring(extractState.lastIndexOf(",")-2,extractState.lastIndexOf(","))
 
         stateCode = stateCode.capitalize()
-        Log.e("stateCode ", " = $stateCode")
-        Log.e("Test State - ", " = " +map.get("LA") +"  "+map.get(stateCode))
+        //Log.e("stateCode ", " = $stateCode")
+        //Log.e("Test State - ", " = " +map.get("LA") +"  "+map.get(stateCode))
 
         if(map.get(stateCode)!=null)
             binding.tvStateSpinner.setText(map.get(stateCode))
         else
             binding.tvStateSpinner.setText("")
+
         visibleAllFields()
     }
 
@@ -286,10 +347,6 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
         binding.layoutUnitAptNo.visibility = View.VISIBLE
         binding.layoutStreetAddress.visibility = View.VISIBLE
         binding.layoutState.visibility = View.VISIBLE
-    }
-
-    private fun hideKeyBoard() {
-
     }
 
     private var map: HashMap<String, String> = HashMap()
@@ -347,9 +404,6 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
         map.put("WI", "Wisconsin")
         map.put("WY", "Wyoming")
     }
-
-
-
 
 
 

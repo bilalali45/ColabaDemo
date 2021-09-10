@@ -18,8 +18,8 @@
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:padding="4dp"
+            android:layout_marginStart="8dp"
+            android:padding="8dp"
             app:layout_constraintBottom_toTopOf="@+id/tab_top_border"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -64,7 +64,7 @@
         app:layout_constraintTop_toBottomOf="@+id/header_info_screen">
 
         <LinearLayout
-            android:id="@+id/subject_property_layout"
+            android:id="@+id/refinance_parent_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -95,8 +95,10 @@
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:background="@drawable/content_bg_with_drop_shadow">
 
                 <RadioButton
@@ -111,7 +113,7 @@
                     tools:ignore="RtlSymmetry" />
 
                 <TextView
-                    android:id="@+id/radio_txt"
+                    android:id="@+id/radio_txt_property_add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/rubik_regular"
@@ -139,8 +141,8 @@
                     android:textSize="15sp"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/radio_txt"
-                    app:layout_constraintTop_toBottomOf="@+id/radio_txt" />
+                    app:layout_constraintStart_toStartOf="@+id/radio_txt_property_add"
+                    app:layout_constraintTop_toBottomOf="@+id/radio_txt_property_add" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -152,7 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="60dp"
                 android:background="@android:color/transparent"
                 android:hint="Property Type"
                 android:textColorHint="@color/primary_info_label_color"
@@ -177,7 +179,9 @@
                     android:layout_gravity="bottom"
                     android:backgroundTint="@android:color/transparent"
                     android:completionThreshold="1"
+                    android:focusable="false"
                     android:focusableInTouchMode="true"
+                    android:cursorVisible="false"
                     android:fontFamily="@font/rubik_regular"
                     android:gravity="bottom"
                     android:paddingStart="0dp"
@@ -197,7 +201,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="40dp"
                 android:background="@android:color/transparent"
                 android:hint="Occupancy Type"
                 android:textColorHint="@color/primary_info_label_color"
@@ -223,7 +227,9 @@
                     android:layout_gravity="bottom"
                     android:backgroundTint="@android:color/transparent"
                     android:completionThreshold="1"
+                    android:focusable="false"
                     android:focusableInTouchMode="true"
+                    android:cursorVisible="false"
                     android:fontFamily="@font/rubik_regular"
                     android:gravity="bottom"
                     android:paddingStart="0dp"
@@ -385,7 +391,7 @@
                 app:helperTextTextColor="@color/colaba_red_color"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
-                <com.google.android.material.textfield.TextInputEditText
+                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_property_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -408,7 +414,7 @@
                 android:id="@+id/layout_date_of_homepurchase"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="40dp"
                 android:hint="Date of Home Purchase (MM/YYYY)"
                 android:textColorHint="@color/primary_info_label_color"
                 app:boxCollapsedPaddingTop="1dp"
@@ -443,7 +449,7 @@
                 android:id="@+id/layout_association_dues"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="Annual Homeowner's Association Dues"
                 android:textColorHint="@color/primary_info_label_color"
@@ -478,7 +484,7 @@
                 android:id="@+id/layout_property_taxes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="Annual Property Taxes"
                 android:textColorHint="@color/primary_info_label_color"
@@ -513,7 +519,7 @@
                 android:id="@+id/layout_homeowner_insurance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="Annual Homeowner's Insurance"
                 android:textColorHint="@color/primary_info_label_color"
@@ -598,8 +604,7 @@
                 android:text="Maria Rendall"
                 android:textAlignment="center"
                 android:textColor="@color/grey_color_four"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:textSize="13sp" />
 
             <RadioGroup
                 android:layout_width="wrap_content"
@@ -638,12 +643,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
-                android:fontFamily="@font/rubik_medium"
+                android:fontFamily="@font/rubik_regular"
                 android:text="@string/sub_property_refinance_ques1"
-                android:textAlignment="center"
                 android:textColor="@color/grey_color_two"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:textSize="15sp" />
 
             <RadioGroup
                 android:layout_width="wrap_content"
@@ -695,16 +698,16 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/rubik_medium"
-                    android:text="First Mortgage"
-                    android:textColor="@color/txt_color_app_headings"
-                    android:textSize="14sp"
+                    android:text="@string/first_mortgage"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="14dp"
                     android:fontFamily="@font/rubik_regular"
                     android:text="Mortgage Payment"
                     android:textColor="@color/grey_color_two"
@@ -714,17 +717,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/rubik_regular"
                     android:text="$150,000"
-                    android:textColor="@color/grey_color_two"
+                    android:textColor="@color/grey_color_one"
                     android:textSize="13sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="30dp"
                     android:fontFamily="@font/rubik_regular"
                     android:text="Mortgage Balance"
                     android:textColor="@color/grey_color_two"
@@ -734,11 +737,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="20dp"
                     android:fontFamily="@font/rubik_regular"
                     android:text="$250,000"
-                    android:textColor="@color/grey_color_two"
+                    android:textColor="@color/grey_color_one"
                     android:textSize="13sp" />
 
             </LinearLayout>
@@ -754,12 +757,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/rubik_medium"
+                    android:fontFamily="@font/rubik_regular"
                     android:text="@string/sub_property_refinance_ques2"
-                    android:textAlignment="center"
                     android:textColor="@color/grey_color_two"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp"
+                    />
 
                 <RadioGroup
                     android:layout_width="wrap_content"
@@ -767,7 +769,7 @@
                     android:layout_marginTop="30dp">
 
                     <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/rb_sec_mortage_yes"
+                        android:id="@+id/rb_sec_mortgage_yes"
                         android:layout_width="wrap_content"
                         android:layout_height="22dp"
                         android:button="@drawable/radiodraw"
@@ -779,7 +781,7 @@
                         android:textSize="14sp" />
 
                     <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/rb_sec_mortage_no"
+                        android:id="@+id/rb_sec_mortgage_no"
                         android:layout_width="wrap_content"
                         android:layout_height="22dp"
                         android:layout_marginTop="18dp"
@@ -819,7 +821,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:fontFamily="@font/rubik_regular"
                         android:text="Mortgage Payment"
                         android:textColor="@color/grey_color_two"
@@ -832,14 +834,14 @@
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/rubik_regular"
                         android:text="$150,000"
-                        android:textColor="@color/grey_color_two"
+                        android:textColor="@color/grey_color_one"
                         android:textSize="13sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="30dp"
                         android:fontFamily="@font/rubik_regular"
                         android:text="Mortgage Balance"
                         android:textColor="@color/grey_color_two"
@@ -849,17 +851,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginBottom="20dp"
                         android:fontFamily="@font/rubik_regular"
                         android:text="$250,000"
-                        android:textColor="@color/grey_color_two"
+                        android:textColor="@color/grey_color_one"
                         android:textSize="13sp" />
 
                 </LinearLayout>
             </LinearLayout>
-
-
         </LinearLayout>
     </ScrollView>
 
@@ -870,11 +870,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="20dp"
         android:background="@android:color/transparent"
-        android:fontFamily="@font/rubik_regular"
         android:src="@drawable/ic_save"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

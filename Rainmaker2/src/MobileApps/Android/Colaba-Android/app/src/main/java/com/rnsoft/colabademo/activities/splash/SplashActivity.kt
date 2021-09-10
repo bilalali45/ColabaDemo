@@ -43,7 +43,7 @@ class SplashActivity : AppCompatActivity() {
             finish()
 
              */
-        
+
         }
 
 

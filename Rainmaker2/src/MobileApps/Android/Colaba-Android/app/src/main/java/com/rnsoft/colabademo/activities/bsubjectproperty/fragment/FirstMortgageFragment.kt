@@ -77,8 +77,10 @@ class FirstMortgageFragment : Fragment(),View.OnClickListener {
             R.id.switch_credit_limit ->
                 if(binding.switchCreditLimit.isChecked) {
                     binding.layoutCreditLimit.visibility = View.VISIBLE
+                    binding.tvHeloc.setTypeface(null, Typeface.BOLD)
                 } else {
                     binding.layoutCreditLimit.visibility = View.GONE
+                    binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
                 }
 
             R.id.rb_ques_yes ->
@@ -119,7 +121,8 @@ class FirstMortgageFragment : Fragment(),View.OnClickListener {
     }
 
     private fun checkValidations() {
-        val firstMortgagePayment: String = binding.edFirstMortgagePayment.text.toString()
+        requireActivity().onBackPressed()
+        /*val firstMortgagePayment: String = binding.edFirstMortgagePayment.text.toString()
         val unpaidBalance: String = binding.edUnpaidBalance.text.toString()
         val creditLimit: String = binding.edCreditLimit.text.toString()
 
@@ -140,7 +143,7 @@ class FirstMortgageFragment : Fragment(),View.OnClickListener {
         }
         if (creditLimit.isNotEmpty() && creditLimit.length > 0) {
             clearError(binding.layoutCreditLimit)
-        }
+        } */
     }
 
 

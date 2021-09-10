@@ -46,9 +46,7 @@ class NonPermanentFragment : Fragment() {
 
         binding.visaStatusCompleteView.onItemClickListener = object: AdapterView.OnItemClickListener {
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-
                 visaStatusViewLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two ))
-
                 if(position == visaStatusArray.size-1) {
                     binding.relationshipDetailLayout.visibility = View.VISIBLE
                 }

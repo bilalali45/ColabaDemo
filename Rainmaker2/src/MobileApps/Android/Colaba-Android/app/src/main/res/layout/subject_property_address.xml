@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/half_white">
@@ -18,8 +19,8 @@
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:padding="4dp"
+            android:layout_marginStart="8dp"
+            android:padding="8dp"
             app:layout_constraintBottom_toTopOf="@+id/tab_top_border"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -52,7 +53,6 @@
 
 
     <ScrollView
-        android:id="@+id/scroll_primary_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none"
@@ -61,26 +61,27 @@
         app:layout_constraintTop_toBottomOf="@+id/app_header">
 
         <LinearLayout
-            android:id="@+id/subject_property_layout"
+            android:id="@+id/subProperty_address_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:paddingBottom="100dp"
+            android:paddingBottom="200dp"
             android:clickable="true"
             android:orientation="vertical">
 
+            <!--style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu" -->
+
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_search_address"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:id="@+id/layout_search_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:hint="Search Home Address"
+                android:layout_marginTop="30dp"
                 android:background="@android:color/transparent"
                 android:textColorHint="@color/primary_info_label_color"
-                app:boxCollapsedPaddingTop="1dp"
+                app:boxCollapsedPaddingTop="-3dp"
                 app:boxStrokeColor="@color/primary_info_line_color"
                 app:boxStrokeWidth="0.5dp"
                 app:boxStrokeWidthFocused="1dp"
@@ -102,6 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:cursorVisible="true"
+                    android:focusable="true"
                     android:background="@android:color/transparent"
                     android:backgroundTint="@color/colaba_primary_color"
                     android:textSize="15sp"
@@ -113,11 +115,11 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <View
+            <!--<View
                 android:id="@+id/search_separator"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="@color/grey_color_four" />
+                android:background="@color/grey_color_four" /> -->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_places"
@@ -148,6 +150,7 @@
                 app:helperTextTextAppearance="@style/inputError"
                 app:helperTextTextColor="@color/colaba_red_color"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_street_address"
@@ -412,7 +415,7 @@
 
 
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/phone_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -421,6 +424,17 @@
         android:translationY="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        /> -->
+
+    <ImageButton
+        android:id="@+id/btn_save"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="20dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -114,7 +114,7 @@
 
                 app:tabMinWidth="180dp"
 
-                app:tabMode="scrollable"
+                app:tabMode="fixed"
                 app:tabPaddingEnd="10dp"
                 app:tabPaddingStart="10dp"
 

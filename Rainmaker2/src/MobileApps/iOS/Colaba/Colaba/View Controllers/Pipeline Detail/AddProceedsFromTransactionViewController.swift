@@ -140,7 +140,9 @@ class AddProceedsFromTransactionViewController: BaseViewController {
                 txtFieldAssetsTypeHeightConstraint.constant = 0
                 assetsDescriptionTextViewContainer.isHidden = true
                 txtViewAssetsDescription.isHidden = true
-                txtViewAssetsDescription.frame = assetsDescriptionTextViewContainer.frame
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    txtViewAssetsDescription.frame = assetsDescriptionTextViewContainer.frame
+                }
             }
             else{
                 loanSecureView.isHidden = true
@@ -152,7 +154,9 @@ class AddProceedsFromTransactionViewController: BaseViewController {
                 txtFieldAssetsTypeHeightConstraint.constant = 0
                 assetsDescriptionTextViewContainer.isHidden = false
                 txtViewAssetsDescription.isHidden = false
-                txtViewAssetsDescription.frame = assetsDescriptionTextViewContainer.frame
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    txtViewAssetsDescription.frame = assetsDescriptionTextViewContainer.frame
+                }
             }
             
             setScreenHeight()

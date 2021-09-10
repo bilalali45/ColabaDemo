@@ -27,7 +27,6 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
 
-import com.rnsoft.colabademo.databinding.TempResidenceLayoutBinding
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,6 +42,7 @@ import java.io.IOException
 import java.util.*
 import com.google.android.gms.location.places.PlaceBuffer
 import com.google.android.gms.location.places.Places.GeoDataApi
+import com.rnsoft.colabademo.databinding.TempResidenceLayoutBinding
 import kotlinx.android.synthetic.main.temp_residence_layout.*
 
 
