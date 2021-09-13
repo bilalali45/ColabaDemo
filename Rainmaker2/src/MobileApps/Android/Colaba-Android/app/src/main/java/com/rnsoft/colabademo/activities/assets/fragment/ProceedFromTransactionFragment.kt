@@ -59,6 +59,9 @@ import javax.inject.Inject
                     binding.transactionTextInputLayout.defaultHintTextColor = ColorStateList.valueOf(
                         ContextCompat.getColor(requireContext(), R.color.grey_color_two ))
 
+                    removeErrorFromFields()
+                    clearFocusFromFields()
+
                     if(position ==0) {
                         binding.whichAssetInputLayout.visibility = View.GONE
                         binding.layoutDetail.visibility = View.GONE
@@ -183,6 +186,13 @@ import javax.inject.Inject
                 CustomMaterialFields.clearError(binding.whichAssetInputLayout,  requireContext())
 
             return bool
+        }
+
+        private fun removeErrorFromFields(){
+            CustomMaterialFields.clearError(binding.annualBaseLayout,  requireContext())
+            CustomMaterialFields.clearError(binding.layoutDetail,  requireContext())
+            CustomMaterialFields.clearError(binding.transactionTextInputLayout,  requireContext())
+            CustomMaterialFields.clearError(binding.whichAssetInputLayout,  requireContext())
         }
 
         private  fun addFocusOutListenerToFields() {
