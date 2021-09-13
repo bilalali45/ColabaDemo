@@ -9,6 +9,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.*
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
 import kotlinx.android.synthetic.main.assets_middle_cell.view.*
@@ -42,7 +43,7 @@ class BorrowerOneAssets : Fragment() {
             ))
 
         val assetModelCell3 = AssetsModelClass( headerTitle = "Stocks, Bonds, or Other\n" +
-                "        Financial Assets", headerAmount = "$800" , footerTitle = "Add Financial Assets",
+                "Financial Assets", headerAmount = "$800" , footerTitle = "Add Financial Assets",
             contentCell = arrayListOf(
                 ContentCell("AHC", "Mutual Funds" ,"$200")
             ))
@@ -66,13 +67,14 @@ class BorrowerOneAssets : Fragment() {
             ))
 
 
+
         val modelArrayList:ArrayList<AssetsModelClass> = arrayListOf()
         modelArrayList.add(assetModelCell)
         modelArrayList.add(assetModelCell2)
         modelArrayList.add(assetModelCell3)
         modelArrayList.add(assetModelCell4)
-        //modelArrayList.add(assetModelCell5)
-        //modelArrayList.add(assetModelCell6)
+        modelArrayList.add(assetModelCell5)
+        modelArrayList.add(assetModelCell6)
 
 
         return modelArrayList
@@ -85,7 +87,7 @@ class BorrowerOneAssets : Fragment() {
 
         for (i in 0 until sampleAssets.size) {
 
-            val modelData = sampleAssets[0]
+            val modelData = sampleAssets[i]
             Log.e("header",modelData.headerTitle )
             Log.e("h-amount",modelData.headerAmount )
 
@@ -108,6 +110,7 @@ class BorrowerOneAssets : Fragment() {
                 contentCell.content_desc.text = contentData.description
                 contentCell.content_amount.text = contentData.contentAmount
                 contentCell.visibility = View.GONE
+                mainCell.addView(contentCell)
             }
 
 
@@ -115,6 +118,21 @@ class BorrowerOneAssets : Fragment() {
             bottomCell.footer_title.text =  modelData.footerTitle
             //bottomCell.tag = R.string.asset_bottom_cell
             bottomCell.visibility = View.GONE
+
+            if(i == 0)
+            bottomCell.setOnClickListener{
+                findNavController().navigate(R.id.navigation_bank_account)
+            }
+            else
+            if(i == 1)
+            bottomCell.setOnClickListener{
+                findNavController().navigate(R.id.navigation_retirement_fragment)
+            }
+            else
+            if(i == 2)
+            bottomCell.setOnClickListener{
+                findNavController().navigate(R.id.navigation_stock_bonds)
+            }
             mainCell.addView(bottomCell)
 
 

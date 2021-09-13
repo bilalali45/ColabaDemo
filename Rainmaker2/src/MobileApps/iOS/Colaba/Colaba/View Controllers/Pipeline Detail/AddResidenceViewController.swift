@@ -85,8 +85,6 @@ class AddResidenceViewController: BaseViewController {
         fetcher = GMSAutocompleteFetcher(filter: filter)
         fetcher?.delegate = self as GMSAutocompleteFetcherDelegate
 
-        txtfieldHomeAddress.addTarget(self, action: #selector(txtfieldHomeAddressTextChanged), for: UIControl.Event.editingChanged)
-
         tblViewPlaces.delegate = self
         tblViewPlaces.dataSource = self
 
@@ -196,12 +194,6 @@ class AddResidenceViewController: BaseViewController {
                 }
             }
         }
-    }
-    
-    @objc func txtfieldHomeAddressTextChanged(){
-        btnDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-        tblViewPlaces.isHidden = txtfieldHomeAddress.text == "       "
-        fetcher?.sourceTextHasChanged(txtfieldHomeAddress.text!.replacingOccurrences(of: "       ", with: ""))
     }
     
     func showAutoCompletePlaces(){

@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colaba_loan_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,6 +11,7 @@
         android:id="@+id/assets_top_container"
         android:layout_width="match_parent"
         android:layout_height="54dp"
+        android:layout_marginTop="8dp"
         android:background="@color/colaba_loan_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -227,6 +229,11 @@
         app:boxStrokeWidthFocused="1dp"
 
 
+        app:endIconDrawable="@drawable/ic_eye_hide"
+        app:endIconMode="custom"
+        app:endIconTint="@color/grey_color_three"
+        app:passwordToggleEnabled="true"
+
         app:helperTextEnabled="true"
         app:helperTextTextAppearance="@style/inputError"
         app:helperTextTextColor="@color/colaba_red_color"
@@ -265,6 +272,8 @@
             android:scrollHorizontally="false"
             android:maxLines="10"
             android:gravity="top|start"
+
+
 
 
             android:textColor="@color/grey_color_one"
