@@ -3,7 +3,6 @@ package com.rnsoft.colabademo
 import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -112,10 +111,10 @@ class SubjectPropertyPurchase : Fragment(), View.OnClickListener {
     private fun setInputFields(){
 
         // set lable focus
-        binding.edAppraisedPropertyValue.setOnFocusChangeListener(MyCustomFocusListener(binding.edAppraisedPropertyValue, binding.layoutAppraisedProperty, requireContext()))
-        binding.edPropertyTaxes.setOnFocusChangeListener(MyCustomFocusListener(binding.edPropertyTaxes, binding.layoutPropertyTaxes, requireContext()))
-        binding.edHomeownerInsurance.setOnFocusChangeListener(MyCustomFocusListener(binding.edHomeownerInsurance, binding.layoutHomeownerInsurance, requireContext()))
-        binding.edFloodInsurance.setOnFocusChangeListener(MyCustomFocusListener(binding.edFloodInsurance, binding.layoutFloodInsurance, requireContext()))
+        binding.edAppraisedPropertyValue.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edAppraisedPropertyValue, binding.layoutAppraisedProperty, requireContext()))
+        binding.edPropertyTaxes.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edPropertyTaxes, binding.layoutPropertyTaxes, requireContext()))
+        binding.edHomeownerInsurance.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edHomeownerInsurance, binding.layoutHomeownerInsurance, requireContext()))
+        binding.edFloodInsurance.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edFloodInsurance, binding.layoutFloodInsurance, requireContext()))
 
         // set input format
         binding.edAppraisedPropertyValue.addTextChangedListener(NumberTextFormat(binding.edAppraisedPropertyValue))

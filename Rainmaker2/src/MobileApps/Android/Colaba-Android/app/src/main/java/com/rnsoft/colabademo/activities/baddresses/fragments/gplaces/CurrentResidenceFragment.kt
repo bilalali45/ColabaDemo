@@ -36,12 +36,8 @@ import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 import android.location.Geocoder
-import androidx.compose.ui.text.capitalize
-import com.google.android.gms.common.api.ResultCallback
 import java.io.IOException
 import java.util.*
-import com.google.android.gms.location.places.PlaceBuffer
-import com.google.android.gms.location.places.Places.GeoDataApi
 import com.rnsoft.colabademo.databinding.TempResidenceLayoutBinding
 import kotlinx.android.synthetic.main.temp_residence_layout.*
 
@@ -99,35 +95,35 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
 
         binding.cityEditText.setOnFocusChangeListener(
-            MyCustomFocusListener(
+            CustomFocusListenerForEditText(
                 binding.cityEditText,
                 binding.cityLayout,
                 requireContext()
             )
         )
         binding.streetAddressEditText.setOnFocusChangeListener(
-            MyCustomFocusListener(
+            CustomFocusListenerForEditText(
                 binding.streetAddressEditText,
                 binding.streetAddressLayout,
                 requireContext()
             )
         )
         binding.unitAptInputEditText.setOnFocusChangeListener(
-            MyCustomFocusListener(
+            CustomFocusListenerForEditText(
                 binding.unitAptInputEditText,
                 binding.unitAptInputLayout,
                 requireContext()
             )
         )
         binding.countyEditText.setOnFocusChangeListener(
-            MyCustomFocusListener(
+            CustomFocusListenerForEditText(
                 binding.countyEditText,
                 binding.countyLayout,
                 requireContext()
             )
         )
         binding.zipcodeEditText.setOnFocusChangeListener(
-            MyCustomFocusListener(
+            CustomFocusListenerForEditText(
                 binding.zipcodeEditText,
                 binding.zipcodeLayout,
                 requireContext()
@@ -135,7 +131,7 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         )
 
         binding.monthlyRentEditText.setOnFocusChangeListener(
-            MyCustomFocusListener(
+            CustomFocusListenerForEditText(
                 binding.monthlyRentEditText,
                 binding.monthlyRentLayout,
                 requireContext()

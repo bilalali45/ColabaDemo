@@ -67,7 +67,7 @@ class PhoneNumberFragment : Fragment() {
         //val locale = requireContext().resources.configuration.locale.country
         //Log.e("get-country", locale)
 
-        phoneNumber.setOnFocusChangeListener(MyCustomFocusListener(phoneNumber,phoneNumLayout, requireContext()))
+        phoneNumber.setOnFocusChangeListener(CustomFocusListenerForEditText(phoneNumber,phoneNumLayout, requireContext()))
         phoneNumber.addTextChangedListener(PhoneTextFormatter(phoneNumber, "(###) ###-####"))
 
         parentLayout.setOnClickListener {

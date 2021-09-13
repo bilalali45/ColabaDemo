@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -97,12 +96,12 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
     private fun setInputFields(){
 
         // set lable focus
-        binding.edRentalIncome.setOnFocusChangeListener(MyCustomFocusListener(binding.edRentalIncome, binding.layoutRentalIncome, requireContext()))
-        binding.edPropertyValue.setOnFocusChangeListener(MyCustomFocusListener(binding.edPropertyValue, binding.layoutPropertyValue, requireContext()))
-        binding.edAssociation.setOnFocusChangeListener(MyCustomFocusListener(binding.edAssociation, binding.layoutAssociationDues, requireContext()))
-        binding.edPropertyTaxes.setOnFocusChangeListener(MyCustomFocusListener(binding.edPropertyTaxes, binding.layoutPropertyTaxes, requireContext()))
-        binding.edHomeownerInsurance.setOnFocusChangeListener(MyCustomFocusListener(binding.edHomeownerInsurance, binding.layoutHomeownerInsurance, requireContext()))
-        binding.edFloodInsurance.setOnFocusChangeListener(MyCustomFocusListener(binding.edFloodInsurance, binding.layoutFloodInsurance, requireContext()))
+        binding.edRentalIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edRentalIncome, binding.layoutRentalIncome, requireContext()))
+        binding.edPropertyValue.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edPropertyValue, binding.layoutPropertyValue, requireContext()))
+        binding.edAssociation.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edAssociation, binding.layoutAssociationDues, requireContext()))
+        binding.edPropertyTaxes.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edPropertyTaxes, binding.layoutPropertyTaxes, requireContext()))
+        binding.edHomeownerInsurance.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edHomeownerInsurance, binding.layoutHomeownerInsurance, requireContext()))
+        binding.edFloodInsurance.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edFloodInsurance, binding.layoutFloodInsurance, requireContext()))
 
         // set input format
         binding.edRentalIncome.addTextChangedListener(NumberTextFormat(binding.edRentalIncome))

@@ -317,7 +317,7 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/annual_base_edittext"
+            android:id="@+id/annual_base_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
