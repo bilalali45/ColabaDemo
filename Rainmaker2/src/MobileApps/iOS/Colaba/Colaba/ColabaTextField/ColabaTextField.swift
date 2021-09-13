@@ -15,6 +15,7 @@ enum ColabaTextFieldType {
     case datePicker
     case delete
     case amount
+    case percentage
     case defaultType
 }
 
@@ -81,6 +82,9 @@ class ColabaTextField: TextField {
                 self.setButton(image: UIImage(named: "DeleteDependent"))
             case .amount:
                 prefix = "$  |  "
+                attributedPrefix = createAttributedText(prefix: prefix!)
+            case .percentage:
+                prefix = "%  |  "
                 attributedPrefix = createAttributedText(prefix: prefix!)
             case .datePicker:
                 isButtonHidden(false)
@@ -174,6 +178,8 @@ class ColabaTextField: TextField {
         case .delete:
             colabaDelegate?.deleteButtonClicked()
         case .amount:
+            print("button not available in amount type")
+        case .percentage:
             print("button not available in amount type")
         case .defaultType:
             print("button not available in default type")
@@ -412,11 +418,10 @@ extension ColabaTextField: UITextFieldDelegate {
             }
         }
         if type == .amount {
-            if (self.text == prefix && range.location == prefix!.count - 1 && range.length == 1) {
-                return false
-            } else {
-                return true
-            }
+            return (self.text == prefix && range.location == prefix!.count - 1 && range.length == 1) ? false : true
+        }
+        if type == .percentage {
+            return (self.text == prefix && range.location == prefix!.count - 1 && range.length == 1) ? false : true
         }
         return true
     }
@@ -431,6 +436,10 @@ extension ColabaTextField: UITextFieldDelegate {
                 self.attributedText = appendAttributedString(baseString: createAttributedText(prefix: prefix!), string: amountWithComma, fontColor: Theme.getAppBlackColor(), font: Theme.getRubikRegularFont(size: 15))
             }
         }
+        if type == .percentage {
+            let string = cleanString(string: self.attributedText!.string, replaceCharacters: [prefix!], replaceWith: "")
+            self.attributedText = appendAttributedString(baseString: createAttributedText(prefix: prefix!), string: string, fontColor: Theme.getAppBlackColor(), font: Theme.getRubikRegularFont(size: 15))
+        }
     }
     
     //To hide error text when textField begin editing
@@ -439,6 +448,9 @@ extension ColabaTextField: UITextFieldDelegate {
             isButtonHidden(false)
         }
         if type == .amount && attributedText != attributedPrefix {
+            self.attributedText = attributedPrefix
+        }
+        if type == .percentage && attributedText != attributedPrefix {
             self.attributedText = attributedPrefix
         }
     }
@@ -456,7 +468,9 @@ extension ColabaTextField: UITextFieldDelegate {
         if type == .amount && self.text == prefix {
             self.text = ""
         }
-        
+        if type == .percentage && self.text == prefix {
+            self.text = ""
+        }
         
         if isValidateOnEndEditing {
             _ = validate()
