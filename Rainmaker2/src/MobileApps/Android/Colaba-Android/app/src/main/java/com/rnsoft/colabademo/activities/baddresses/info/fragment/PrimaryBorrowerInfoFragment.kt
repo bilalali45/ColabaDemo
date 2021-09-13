@@ -417,13 +417,13 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         bi.edDateOfBirth.setOnClickListener { openCalendar() }
         bi.edDateOfBirth.setOnFocusChangeListener{ _ , _ ->  openCalendar() }
 
-        bi.edMiddleName.setOnFocusChangeListener(MyCustomFocusListener(bi.edMiddleName, bi.layoutMiddleName, requireContext()))
-        bi.edSuffix.setOnFocusChangeListener(MyCustomFocusListener(bi.edSuffix, bi.layoutSuffix, requireContext()))
-        bi.edWorkNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edWorkNum,bi.layoutWorkNum, requireContext()))
-        bi.edExtNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edExtNum, bi.layoutExtNum, requireContext()))
-        bi.edCellNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edCellNum, bi.layoutCellNum, requireContext()))
-        bi.edSecurityNum.setOnFocusChangeListener(MyCustomFocusListener(bi.edSecurityNum,bi.layoutSecurityNum, requireContext()))
-        bi.edDateOfBirth.setOnFocusChangeListener(MyCustomFocusListener(bi.edDateOfBirth, bi.layoutDateOfBirth, requireContext()))
+        bi.edMiddleName.setOnFocusChangeListener(CustomFocusListenerForEditText(bi.edMiddleName, bi.layoutMiddleName, requireContext()))
+        bi.edSuffix.setOnFocusChangeListener(CustomFocusListenerForEditText(bi.edSuffix, bi.layoutSuffix, requireContext()))
+        bi.edWorkNum.setOnFocusChangeListener(CustomFocusListenerForEditText(bi.edWorkNum,bi.layoutWorkNum, requireContext()))
+        bi.edExtNum.setOnFocusChangeListener(CustomFocusListenerForEditText(bi.edExtNum, bi.layoutExtNum, requireContext()))
+        bi.edCellNum.setOnFocusChangeListener(CustomFocusListenerForEditText(bi.edCellNum, bi.layoutCellNum, requireContext()))
+        bi.edSecurityNum.setOnFocusChangeListener(CustomFocusListenerForEditText(bi.edSecurityNum,bi.layoutSecurityNum, requireContext()))
+        bi.edDateOfBirth.setOnFocusChangeListener(CustomFocusListenerForEditText(bi.edDateOfBirth, bi.layoutDateOfBirth, requireContext()))
 
     }
 

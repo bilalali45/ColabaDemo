@@ -64,8 +64,9 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
         }
 
         binding.incomeConstraintLayout.setOnClickListener{
-            navigateToAssetActivity()
+            navigateToIncomeActivity()
         }
+
 
 
         loanLayout.setOnClickListener {
@@ -285,6 +286,21 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
             startActivity(assetsActivity)
         }
     }
+
+    private fun navigateToIncomeActivity(){
+        val detailActivity = (activity as? DetailActivity)
+        detailActivity?.let {
+            val incomeActivity = Intent(requireActivity(), IncomeActivity::class.java)
+            it.loanApplicationId?.let { loanId ->
+                incomeActivity.putExtra(AppConstant.loanApplicationId, loanId)
+            }
+            it.borrowerLoanPurpose?.let{ loanPurpose->
+                incomeActivity.putExtra(AppConstant.loanPurpose, loanPurpose)
+            }
+            startActivity(incomeActivity)
+        }
+    }
+
 
     override fun getSingleItemIndex(position: Int) {
 

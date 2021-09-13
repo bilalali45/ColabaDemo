@@ -2,7 +2,38 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@+id/login_fragment_id">
+    app:startDestination="@+id/navigation_bank_account">
+
+
+
+
+    <fragment
+        android:id="@+id/navigation_bank_account"
+        android:name="com.rnsoft.colabademo.BankAccountFragment"
+        android:label="@string/assets"
+        tools:layout="@layout/bank_account_layout" />
+
+    <fragment
+        android:id="@+id/navigation_retirement_fragment"
+        android:name="com.rnsoft.colabademo.RetirementFragment"
+        android:label="@string/assets"
+        tools:layout="@layout/retirement_layout" />
+
+
+    <fragment
+        android:id="@+id/navigation_stock_bonds"
+        android:name="com.rnsoft.colabademo.StockBondsFragment"
+        android:label="@string/assets"
+        tools:layout="@layout/stock_bonds_layout" />
+
+
+
+
+
+
+
+
+
 
     <fragment
         android:id="@+id/login_fragment_id"

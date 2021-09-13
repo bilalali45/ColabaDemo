@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_income_tab">
+
+
+   <fragment
+        android:id="@+id/navigation_income_tab"
+        android:name="com.rnsoft.colabademo.IncomeTabFragment"
+        android:label="@string/income"
+        tools:layout="@layout/income_fragment_layout" />
+
+
+   <fragment
+       android:id="@+id/navigation_b_income_one"
+       android:name="com.rnsoft.colabademo.BorrowerOneIncome"
+       android:label="@string/income"
+       tools:layout="@layout/income_fragment_layout" />
+
+   <fragment
+       android:id="@+id/navigation_b_income_two"
+       android:name="com.rnsoft.colabademo.BorrowerTwoIncome"
+       android:label="@string/income"
+       tools:layout="@layout/income_fragment_layout" />
+
+   <fragment
+       android:id="@+id/navigation_b_income_three"
+       android:name="com.rnsoft.colabademo.BorrowerThreeIncome"
+       android:label="@string/income"
+       tools:layout="@layout/income_fragment_layout" />
+
+   <fragment
+       android:id="@+id/navigation_b_income_four"
+       android:name="com.rnsoft.colabademo.BorrowerFourIncome"
+       android:label="@string/income"
+       tools:layout="@layout/income_fragment_layout" />
+
+
+</navigation>

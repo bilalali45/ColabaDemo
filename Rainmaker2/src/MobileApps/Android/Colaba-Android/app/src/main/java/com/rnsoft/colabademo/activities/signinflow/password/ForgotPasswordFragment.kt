@@ -6,23 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.*
 
 class ForgotPasswordFragment : Fragment() {
     private lateinit var root: View
@@ -57,7 +52,7 @@ class ForgotPasswordFragment : Fragment() {
             forgotPasswordViewModel.forgotPassword(userEmailField.text.toString())
         }
 
-        userEmailField.setOnFocusChangeListener(MyCustomFocusListener(userEmailField,emailLayout, requireContext()))
+        userEmailField.setOnFocusChangeListener(CustomFocusListenerForEditText(userEmailField,emailLayout, requireContext()))
 
         parentLayout.setOnClickListener {
             hideSoftKeyboard()

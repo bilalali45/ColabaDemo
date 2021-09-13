@@ -9,7 +9,22 @@
         android:id="@+id/nav_sub_property"
         android:name="com.rnsoft.colabademo.SubjectPropertyPurchase"
         android:label="@string/subject_property"
-        tools:layout="@layout/subject_property_purchase" />
+        tools:layout="@layout/subject_property_purchase" >
+
+        <action
+            android:id="@+id/action_mixed_property"
+            app:destination="@id/nav_mixed_use_property"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down"
+            app:popExitAnim="@anim/slide_down"/>
+
+        <action
+            android:id="@+id/action_address"
+            app:destination="@id/nav_sub_property_address"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down"
+            app:popExitAnim="@anim/slide_down"/>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_sub_property_address"
