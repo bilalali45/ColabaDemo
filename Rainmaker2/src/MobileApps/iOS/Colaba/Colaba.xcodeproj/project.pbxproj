@@ -91,6 +91,9 @@
 		23B238BC2679E05200508449 /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */; };
 		23B238BF2679F44000508449 /* NotificationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B238BD2679F44000508449 /* NotificationsTableViewCell.swift */; };
 		23B238C02679F44000508449 /* NotificationsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B238BE2679F44000508449 /* NotificationsTableViewCell.xib */; };
+		23BBADCC26EF2A5400813F04 /* IncomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCB26EF2A5400813F04 /* IncomeViewController.swift */; };
+		23BBADCE26EF2A6200813F04 /* IncomeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCD26EF2A6200813F04 /* IncomeDetailViewController.swift */; };
+		23BBADD026EF3F1D00813F04 /* AddEmployementPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCF26EF3F1D00813F04 /* AddEmployementPopupViewController.swift */; };
 		23C1039026E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C1038F26E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift */; };
 		23C244862689B6A500EED1D0 /* AllLoanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C244852689B6A500EED1D0 /* AllLoanModel.swift */; };
 		23C244882689E3E400EED1D0 /* ActiveLoanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C244872689E3E400EED1D0 /* ActiveLoanModel.swift */; };
@@ -265,6 +268,9 @@
 		23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
 		23B238BD2679F44000508449 /* NotificationsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableViewCell.swift; sourceTree = "<group>"; };
 		23B238BE2679F44000508449 /* NotificationsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationsTableViewCell.xib; sourceTree = "<group>"; };
+		23BBADCB26EF2A5400813F04 /* IncomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeViewController.swift; sourceTree = "<group>"; };
+		23BBADCD26EF2A6200813F04 /* IncomeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeDetailViewController.swift; sourceTree = "<group>"; };
+		23BBADCF26EF3F1D00813F04 /* AddEmployementPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEmployementPopupViewController.swift; sourceTree = "<group>"; };
 		23C1038F26E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixPropertyDetailFollowUpViewController.swift; sourceTree = "<group>"; };
 		23C244852689B6A500EED1D0 /* AllLoanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllLoanModel.swift; sourceTree = "<group>"; };
 		23C244872689E3E400EED1D0 /* ActiveLoanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveLoanModel.swift; sourceTree = "<group>"; };
@@ -552,6 +558,9 @@
 				2315E18426E8921B00377764 /* AddProceedsFromTransactionViewController.swift */,
 				239570E326E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift */,
 				239570E526E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift */,
+				23BBADCB26EF2A5400813F04 /* IncomeViewController.swift */,
+				23BBADCD26EF2A6200813F04 /* IncomeDetailViewController.swift */,
+				23BBADCF26EF3F1D00813F04 /* AddEmployementPopupViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -1106,6 +1115,7 @@
 				23F23B3F26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift in Sources */,
 				23E9C757269C6C140066C978 /* DocumentsDetailTableViewCell.swift in Sources */,
 				234DB4F226A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.swift in Sources */,
+				23BBADCE26EF2A6200813F04 /* IncomeDetailViewController.swift in Sources */,
 				23B238B82679D38900508449 /* SearchViewController.swift in Sources */,
 				23CD143426E25B4400627127 /* SecondMortgageFollowupQuestionsViewController.swift in Sources */,
 				2330CD2526B000ED00FF3C43 /* DocumentMessageTableViewCell.swift in Sources */,
@@ -1125,6 +1135,7 @@
 				7113F52526569D310066E179 /* LocalAuthManager.swift in Sources */,
 				236EA1AC26789EAC00C2F8B5 /* PipelineMoreViewController.swift in Sources */,
 				236B59D1266504060001F416 /* UserModel.swift in Sources */,
+				23BBADD026EF3F1D00813F04 /* AddEmployementPopupViewController.swift in Sources */,
 				711D33282654F1710091BC18 /* Constant.swift in Sources */,
 				23DBAD242697149300119680 /* OverviewViewController.swift in Sources */,
 				23B238BB2679E05200508449 /* SearchResultTableViewCell.swift in Sources */,
@@ -1164,6 +1175,7 @@
 				23DF0CEE269ED82000F29B70 /* LoanInfoModel.swift in Sources */,
 				23A56C5A2685B017005CE6F4 /* Controller.swift in Sources */,
 				23C2448E2689E55E00EED1D0 /* InActivePipelineViewController.swift in Sources */,
+				23BBADCC26EF2A5400813F04 /* IncomeViewController.swift in Sources */,
 				23A56C5C2685B017005CE6F4 /* Extensions.swift in Sources */,
 				23C9130626982A120067920E /* BorrowerOverviewTableViewCell.swift in Sources */,
 				238A076926DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift in Sources */,

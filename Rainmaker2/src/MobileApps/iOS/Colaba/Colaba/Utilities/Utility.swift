@@ -232,6 +232,18 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: AddOtherAssetsViewController.self)) as! AddOtherAssetsViewController
     }
     
+    static func getIncomeVC() -> IncomeViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: IncomeViewController.self)) as! IncomeViewController
+    }
+    
+    static func getIncomeDetailVC() -> IncomeDetailViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: IncomeDetailViewController.self)) as! IncomeDetailViewController
+    }
+    
+    static func getAddEmployementPopupVC() -> AddEmployementPopupViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: AddEmployementPopupViewController.self)) as! AddEmployementPopupViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
