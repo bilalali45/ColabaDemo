@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo
+package com.rnsoft.colabademo.activities.income.model
 
 
 
@@ -8,6 +8,6 @@ data class AssetsModelClass(
     val footerTitle: String  = "Footer Title",
     val contentCell:ArrayList<ContentCell>)
 
-data class ContentCell(val title:String="Title", val description:String="detail", val contentAmount:String="0$" , val tenure:String= "")
+data class ContentCell(val title:String="Title", val description:String="detail", val contentAmount:String="0$")
 
 

@@ -150,12 +150,12 @@ class SubjectPropertyPurchase : Fragment(), View.OnClickListener {
         binding.rbSubProperty.setTypeface(null,Typeface.NORMAL)
 
         isPropertyAddress = true
-        findNavController().navigate(R.id.nav_sub_property_address)
+        findNavController().navigate(R.id.action_address)
     }
 
     private fun mixedPropertyDetail(){
         isMixedProperty = true
-        findNavController().navigate(R.id.nav_mixed_use_property)
+        findNavController().navigate(R.id.action_mixed_property)
         binding.layoutDetails.visibility = View.VISIBLE
         binding.rbMixedPropertyYes.setTypeface(null, Typeface.BOLD)
         binding.rbMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
