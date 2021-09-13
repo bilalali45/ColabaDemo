@@ -244,6 +244,10 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: AddEmployementPopupViewController.self)) as! AddEmployementPopupViewController
     }
     
+    static func getAddCurrentEmployementVC() -> AddCurrentEmployementViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: AddCurrentEmployementViewController.self)) as! AddCurrentEmployementViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
