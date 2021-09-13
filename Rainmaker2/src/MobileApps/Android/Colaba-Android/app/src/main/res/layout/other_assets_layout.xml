@@ -98,7 +98,7 @@
         android:layout_gravity="center"
 
         android:background="@android:color/transparent"
-        android:hint="@string/account_type"
+        android:hint="Asset Type"
         android:textColorHint="@color/primary_info_label_color"
         app:boxCollapsedPaddingTop="1dp"
         app:boxStrokeColor="@color/primary_info_line_color"

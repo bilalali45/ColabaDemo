@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +33,8 @@ class SubjectPropertyPurchase : Fragment(), View.OnClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        Log.e("onCreateView","onCreateView" )
         binding = SubjectPropertyPurchaseBinding.inflate(inflater, container, false)
 
         binding.rbSubProperty.isChecked = false

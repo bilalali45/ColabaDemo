@@ -6,6 +6,7 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
-import com.rnsoft.colabademo.databinding.AppToolbarHeadingBinding
+import com.rnsoft.colabademo.databinding.AppHeaderWithBackNavBinding
 import com.rnsoft.colabademo.databinding.LoanPurchaseInfoBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.HideSoftkeyboard
@@ -31,7 +32,7 @@ import java.text.DecimalFormat
 class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: LoanPurchaseInfoBinding
-    private lateinit var bindingToolbar : AppToolbarHeadingBinding
+    private lateinit var bindingToolbar : AppHeaderWithBackNavBinding
     val format =  DecimalFormat("#,###,###")
     private val loanStageArray = listOf("Pre-Approval")
     lateinit var mTextWatcher : TextWatcher
@@ -211,7 +212,7 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
                         binding.edDownPayment.removeTextChangedListener(this)
                         try{
                             val edValue = binding.edPurchasePrice.text.toString()
-                            var purchasePrice = edValue.replace(",", "").toInt()
+                            val purchasePrice = edValue.replace(",", "").toInt()
                             if (purchasePrice > 0) {
                                 val percent = binding.edPercent.text.toString()
                                 edValue.let {
@@ -364,7 +365,7 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
 
     }
 
-    fun setError(textInputlayout: TextInputLayout, errorMsg: String ) {
+    fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
         textInputlayout.helperText = errorMsg
         textInputlayout.setBoxStrokeColorStateList(
             AppCompatResources.getColorStateList(requireContext(), com.rnsoft.colabademo.R.color.primary_info_stroke_error_color))

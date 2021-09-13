@@ -37,5 +37,17 @@
        android:label="@string/income"
        tools:layout="@layout/income_fragment_layout" />
 
+   <fragment
+       android:id="@+id/navigation_income_current_employment"
+       android:name="com.rnsoft.colabademo.IncomeCurrentEmployment"
+       android:label="@string/income"
+       tools:layout="@layout/income_current_employment" />
+
+   <fragment
+       android:id="@+id/navigation_income_prev_emplyoyment"
+       android:name="com.rnsoft.colabademo.IncomePreviousEmployment"
+       android:label="@string/income"
+       tools:layout="@layout/income_previous_employment" />
+
 
 </navigation>
