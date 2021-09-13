@@ -75,6 +75,7 @@ class ApplicationViewController: BaseViewController {
         monthlyIncomeView.layer.borderWidth = 1
         monthlyIncomeView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         monthlyIncomeView.dropShadowToCollectionViewCell()
+        monthlyIncomeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(incomeViewTapped)))
         mainScrollView.delegate = self
         
         subjectPropertyView.isUserInteractionEnabled = true
@@ -155,6 +156,11 @@ class ApplicationViewController: BaseViewController {
     
     @objc func assetsViewTapped(){
         let vc = Utility.getAssetsVC()
+        self.pushToVC(vc: vc)
+    }
+    
+    @objc func incomeViewTapped(){
+        let vc = Utility.getIncomeVC()
         self.pushToVC(vc: vc)
     }
     

@@ -7,6 +7,7 @@
 
 import UIKit
 import Material
+import DropDown
 
 class PurchaseSubjectPropertyViewController: BaseViewController {
     
@@ -27,8 +28,10 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var btnSubjectPropertyAddress: UIButton!
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var txtfieldPropertyType: TextField!
+    @IBOutlet weak var propertyTypeDropDownAnchorView: UIView!
     @IBOutlet weak var btnPropertyTypeDropDown: UIButton!
     @IBOutlet weak var txtfieldOccupancyType: TextField!
+    @IBOutlet weak var occupancyTypeDropDownAnchorView: UIView!
     @IBOutlet weak var btnOccupancyTypeDropDown: UIButton!
     @IBOutlet weak var propertyView: UIView!
     @IBOutlet weak var propertyViewHeightConstraint: NSLayoutConstraint! //203 or 347
@@ -58,6 +61,8 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var btnNonOccupying: UIButton!
     @IBOutlet weak var lblNonOccupying: UILabel!
     
+    let propertyTypeDropDown = DropDown()
+    let occupancyTypeDropDown = DropDown()
     var isTBDProperty = true
     var isMixedUseProperty = true
     var isOccupying = true
@@ -81,6 +86,39 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
             textfield.detailVerticalOffset = 4
             textfield.placeholderVerticalOffset = 8
             textfield.textColor = Theme.getAppBlackColor()
+        }
+        
+        propertyTypeDropDown.dismissMode = .onTap
+        propertyTypeDropDown.anchorView = propertyTypeDropDownAnchorView
+        propertyTypeDropDown.dataSource = kPropertyTypeArray
+        propertyTypeDropDown.cancelAction = .some({
+            self.btnPropertyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            self.txtfieldPropertyType.dividerColor = Theme.getSeparatorNormalColor()
+        })
+        propertyTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            btnPropertyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldPropertyType.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldPropertyType.placeholderLabel.textColor = Theme.getAppGreyColor()
+            txtfieldPropertyType.text = item
+            txtfieldPropertyType.detail = ""
+            propertyTypeDropDown.hide()
+            
+        }
+        
+        occupancyTypeDropDown.dismissMode = .onTap
+        occupancyTypeDropDown.anchorView = occupancyTypeDropDownAnchorView
+        occupancyTypeDropDown.dataSource = kOccupancyTypeArray
+        occupancyTypeDropDown.cancelAction = .some({
+            self.btnOccupancyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            self.txtfieldOccupancyType.dividerColor = Theme.getSeparatorNormalColor()
+        })
+        occupancyTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            btnOccupancyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldOccupancyType.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldOccupancyType.placeholderLabel.textColor = Theme.getAppGreyColor()
+            txtfieldOccupancyType.text = item
+            txtfieldOccupancyType.detail = ""
+            occupancyTypeDropDown.hide()
         }
         
         subjectPropertyTBDView.layer.cornerRadius = 8
@@ -238,6 +276,21 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
 extension PurchaseSubjectPropertyViewController: UITextFieldDelegate{
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        if (textField == txtfieldPropertyType){
+            textField.endEditing(true)
+            txtfieldPropertyType.dividerColor = Theme.getButtonBlueColor()
+            btnPropertyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+            propertyTypeDropDown.show()
+        }
+        
+        if (textField == txtfieldOccupancyType){
+            textField.endEditing(true)
+            txtfieldOccupancyType.dividerColor = Theme.getButtonBlueColor()
+            btnOccupancyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+            occupancyTypeDropDown.show()
+        }
+        
         if (textField == txtfieldAppraisedPropertyValue){
             txtfieldAppraisedPropertyValue.textInsetsPreset = .horizontally5
             txtfieldAppraisedPropertyValue.placeholderHorizontalOffset = -24

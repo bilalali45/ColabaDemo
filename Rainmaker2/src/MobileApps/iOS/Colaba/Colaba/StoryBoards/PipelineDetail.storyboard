@@ -6024,6 +6024,13 @@ Birmingham AL 35235</string>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="textfield-dropdownIcon"/>
                                             </button>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SJu-Ap-Ppj">
+                                                <rect key="frame" x="20" y="244" width="335" height="2"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="2" id="4pY-eE-vrp"/>
+                                                </constraints>
+                                            </view>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1h0-gr-qtU" customClass="TextField" customModule="Material">
                                                 <rect key="frame" x="20" y="274" width="335" height="39"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -6059,6 +6066,13 @@ Birmingham AL 35235</string>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="textfield-dropdownIcon"/>
                                             </button>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bc8-MG-al6">
+                                                <rect key="frame" x="20" y="313" width="335" height="2"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="2" id="nHf-CF-58z"/>
+                                                </constraints>
+                                            </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y6M-VE-TWf">
                                                 <rect key="frame" x="0.0" y="363" width="375" height="347"/>
                                                 <subviews>
@@ -6477,8 +6491,11 @@ Birmingham AL 35235</string>
                                             <constraint firstAttribute="trailing" secondItem="Cwh-xL-fxJ" secondAttribute="trailing" constant="22" id="83x-le-mXX"/>
                                             <constraint firstAttribute="trailing" secondItem="oVV-eu-VNr" secondAttribute="trailing" constant="20" id="9yN-3K-Ucw"/>
                                             <constraint firstAttribute="height" constant="1350" id="Ah9-hX-t8z"/>
+                                            <constraint firstItem="SJu-Ap-Ppj" firstAttribute="leading" secondItem="Ddm-7e-LpO" secondAttribute="leading" constant="20" id="BaY-Wp-AUu"/>
                                             <constraint firstAttribute="trailing" secondItem="Y6M-VE-TWf" secondAttribute="trailing" id="Coj-eg-vvK"/>
+                                            <constraint firstAttribute="trailing" secondItem="bc8-MG-al6" secondAttribute="trailing" constant="20" id="D1R-At-TaE"/>
                                             <constraint firstItem="1h0-gr-qtU" firstAttribute="top" secondItem="oVV-eu-VNr" secondAttribute="bottom" constant="30" id="Dqn-se-rhw"/>
+                                            <constraint firstAttribute="trailing" secondItem="SJu-Ap-Ppj" secondAttribute="trailing" constant="20" id="EGh-2H-nGc"/>
                                             <constraint firstAttribute="trailing" secondItem="YEE-KR-6dJ" secondAttribute="trailing" constant="20" id="Ia1-1G-21W"/>
                                             <constraint firstItem="2rb-mk-Bhw" firstAttribute="top" secondItem="Aac-kA-SlB" secondAttribute="bottom" constant="30" id="IjT-tN-9ht"/>
                                             <constraint firstAttribute="trailing" secondItem="2rb-mk-Bhw" secondAttribute="trailing" constant="20" id="J8R-BS-Iws"/>
@@ -6500,6 +6517,7 @@ Birmingham AL 35235</string>
                                             <constraint firstItem="Aac-kA-SlB" firstAttribute="top" secondItem="eHF-7T-nx1" secondAttribute="bottom" constant="30" id="Z7K-vc-5ru"/>
                                             <constraint firstItem="ERd-64-dxx" firstAttribute="leading" secondItem="Ddm-7e-LpO" secondAttribute="leading" constant="20" id="a9B-4U-Rpf"/>
                                             <constraint firstAttribute="trailing" secondItem="9ab-bp-gOn" secondAttribute="trailing" constant="20" id="avW-uQ-9Sm"/>
+                                            <constraint firstItem="SJu-Ap-Ppj" firstAttribute="top" secondItem="oVV-eu-VNr" secondAttribute="bottom" id="cIr-3e-MEQ"/>
                                             <constraint firstItem="ERd-64-dxx" firstAttribute="top" secondItem="Ddm-7e-LpO" secondAttribute="top" constant="20" id="cQ8-ij-udj"/>
                                             <constraint firstItem="Aac-kA-SlB" firstAttribute="leading" secondItem="Ddm-7e-LpO" secondAttribute="leading" constant="20" id="eN9-SC-gOo"/>
                                             <constraint firstItem="kWl-FJ-9ua" firstAttribute="leading" secondItem="Ddm-7e-LpO" secondAttribute="leading" constant="22" id="ft6-10-rkC"/>
@@ -6508,8 +6526,10 @@ Birmingham AL 35235</string>
                                             <constraint firstItem="YEE-KR-6dJ" firstAttribute="leading" secondItem="Ddm-7e-LpO" secondAttribute="leading" constant="20" id="mRJ-JF-TbN"/>
                                             <constraint firstAttribute="trailing" secondItem="ERd-64-dxx" secondAttribute="trailing" constant="20" id="o8N-Hy-HOc"/>
                                             <constraint firstItem="2rb-mk-Bhw" firstAttribute="leading" secondItem="Ddm-7e-LpO" secondAttribute="leading" constant="20" id="oja-LW-y0I"/>
+                                            <constraint firstItem="bc8-MG-al6" firstAttribute="leading" secondItem="Ddm-7e-LpO" secondAttribute="leading" constant="20" id="tCD-nm-4om"/>
                                             <constraint firstAttribute="trailing" secondItem="eHF-7T-nx1" secondAttribute="trailing" constant="20" id="vOg-xN-HPp"/>
                                             <constraint firstItem="udN-1T-NrH" firstAttribute="leading" secondItem="Ddm-7e-LpO" secondAttribute="leading" constant="20" id="xH9-u5-eed"/>
+                                            <constraint firstItem="bc8-MG-al6" firstAttribute="top" secondItem="1h0-gr-qtU" secondAttribute="bottom" id="yAf-vm-dNi"/>
                                             <constraint firstItem="bDM-ZP-cmJ" firstAttribute="top" secondItem="eHF-7T-nx1" secondAttribute="bottom" constant="30" id="yNX-di-0y5"/>
                                             <constraint firstItem="Cwh-xL-fxJ" firstAttribute="top" secondItem="YEE-KR-6dJ" secondAttribute="bottom" constant="72" id="yxv-Lp-jvt"/>
                                         </constraints>
@@ -6587,8 +6607,10 @@ Birmingham AL 35235</string>
                         <outlet property="noStackView" destination="qyV-yd-cPp" id="chT-hv-1kJ"/>
                         <outlet property="nonOccupyingStackView" destination="9q9-Xz-qXP" id="VFo-0i-u30"/>
                         <outlet property="occupancyStatusView" destination="LFP-38-LC7" id="mnd-Qg-vHQ"/>
+                        <outlet property="occupancyTypeDropDownAnchorView" destination="bc8-MG-al6" id="adR-uA-meE"/>
                         <outlet property="occupyingStackView" destination="1sk-IY-mJm" id="do2-d5-gXo"/>
                         <outlet property="propertyDetailView" destination="bju-oY-kdf" id="DV7-ne-L2F"/>
+                        <outlet property="propertyTypeDropDownAnchorView" destination="SJu-Ap-Ppj" id="cNb-Gs-EmS"/>
                         <outlet property="propertyView" destination="Y6M-VE-TWf" id="BI0-og-h4g"/>
                         <outlet property="propertyViewHeightConstraint" destination="aJx-d9-rfB" id="Vy9-tP-NcK"/>
                         <outlet property="seperatorView" destination="OXg-tt-MbG" id="j3I-W7-2wy"/>
@@ -8305,8 +8327,8 @@ Birmingham AL 35235</string>
                             <constraint firstItem="UMt-xr-s46" firstAttribute="top" secondItem="f6v-Ai-97M" secondAttribute="top" id="aGW-4i-N55"/>
                             <constraint firstItem="UMt-xr-s46" firstAttribute="leading" secondItem="f6v-Ai-97M" secondAttribute="leading" id="cOr-cD-8Qv"/>
                             <constraint firstItem="f6v-Ai-97M" firstAttribute="trailing" secondItem="By6-FS-4yD" secondAttribute="trailing" constant="15" id="dAD-6y-wK0"/>
-                            <constraint firstItem="f6v-Ai-97M" firstAttribute="bottom" secondItem="Cre-WH-7bi" secondAttribute="bottom" id="diu-HU-Oku"/>
                             <constraint firstItem="UMt-xr-s46" firstAttribute="trailing" secondItem="f6v-Ai-97M" secondAttribute="trailing" id="fpF-Hj-tEJ"/>
+                            <constraint firstAttribute="bottom" secondItem="Cre-WH-7bi" secondAttribute="bottom" id="ir0-8Z-fIR"/>
                             <constraint firstItem="Cre-WH-7bi" firstAttribute="leading" secondItem="f6v-Ai-97M" secondAttribute="leading" id="ySO-FV-3VM"/>
                         </constraints>
                     </view>
