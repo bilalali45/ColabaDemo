@@ -17,6 +17,7 @@ import com.rnsoft.colabademo.R
 
 class CustomMaterialFields() {
     companion object {
+
         fun setColor(mTextInputLayout:TextInputLayout, color:Int, context: Context) {
             mTextInputLayout.defaultHintTextColor = ColorStateList.valueOf(
                 ContextCompat.getColor(
@@ -79,5 +80,7 @@ class CustomMaterialFields() {
                 }
             }
         }
+
+
     }
 }

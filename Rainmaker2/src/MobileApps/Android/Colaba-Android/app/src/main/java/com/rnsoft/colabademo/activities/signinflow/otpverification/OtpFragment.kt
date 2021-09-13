@@ -92,7 +92,7 @@ class OtpFragment: Fragment() {
             phoneMessageText.text = "Enter the code sent to (***) ***-"+lastFour
         }
 
-        otpEditText.setOnFocusChangeListener(MyCustomFocusListener(otpEditText, textInputLayout, requireContext()))
+        otpEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(otpEditText, textInputLayout, requireContext()))
 
         otpEditText.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}

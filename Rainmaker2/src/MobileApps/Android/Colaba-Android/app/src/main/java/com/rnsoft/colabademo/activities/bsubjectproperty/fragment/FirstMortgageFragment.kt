@@ -2,16 +2,13 @@ package com.rnsoft.colabademo
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.databinding.SubPropertyFirstMortgageBinding
-import com.rnsoft.colabademo.databinding.SubPropertyRefinanceBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.HideSoftkeyboard
 import com.rnsoft.colabademo.utils.NumberTextFormat
@@ -105,9 +102,9 @@ class FirstMortgageFragment : Fragment(),View.OnClickListener {
     private fun setInputFields(){
 
         // set lable focus
-        binding.edFirstMortgagePayment.setOnFocusChangeListener(MyCustomFocusListener(binding.edFirstMortgagePayment, binding.layoutFirstPayment, requireContext()))
-        binding.edUnpaidBalance.setOnFocusChangeListener(MyCustomFocusListener(binding.edUnpaidBalance, binding.layoutUnpaidBalance, requireContext()))
-        binding.edCreditLimit.setOnFocusChangeListener(MyCustomFocusListener(binding.edCreditLimit, binding.layoutCreditLimit, requireContext()))
+        binding.edFirstMortgagePayment.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edFirstMortgagePayment, binding.layoutFirstPayment, requireContext()))
+        binding.edUnpaidBalance.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edUnpaidBalance, binding.layoutUnpaidBalance, requireContext()))
+        binding.edCreditLimit.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCreditLimit, binding.layoutCreditLimit, requireContext()))
 
         // set Dollar prifix
         CustomMaterialFields.setDollarPrefix(binding.layoutFirstPayment,requireContext())

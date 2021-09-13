@@ -274,8 +274,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun setLableFocus(){
-        userEmailField.setOnFocusChangeListener(MyCustomFocusListener(userEmailField,emailLayout, requireContext()))
-        passwordField.setOnFocusChangeListener(MyCustomFocusListener(passwordField,passwordLayout, requireContext()))
+        userEmailField.setOnFocusChangeListener(CustomFocusListenerForEditText(userEmailField,emailLayout, requireContext()))
+        passwordField.setOnFocusChangeListener(CustomFocusListenerForEditText(passwordField,passwordLayout, requireContext()))
     }
 
     private fun hideSoftKeyboard(){

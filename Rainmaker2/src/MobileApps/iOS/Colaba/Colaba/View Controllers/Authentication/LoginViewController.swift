@@ -35,7 +35,7 @@ class LoginViewController: UIViewController {
         }
         
         #if DEBUG
-        txtFieldEmail.text = "rainmaker.rainsoft@gmail.com"
+//        txtFieldEmail.text = "rainmaker.rainsoft@gmail.com"
         txtFieldPassword.text = "Rainsoft!"
         #endif
     }
@@ -53,9 +53,10 @@ class LoginViewController: UIViewController {
         ///Email Text Field
         txtFieldEmail.setTextField(placeholder: "Email")
         txtFieldEmail.setDelegates(controller: self)
-        txtFieldEmail.setValidation(validationType: .email)
-        txtFieldEmail.setTextField(keyboardType: .emailAddress)
+        txtFieldEmail.setValidation(validationType: .required)
+        txtFieldEmail.setTextField(keyboardType: .numberPad)
         txtFieldEmail.setIsValidateOnEndEditing(validate: false)
+        txtFieldEmail.type = .percentage
         if (isAppOpenFromBackground){
             txtFieldEmail.setTextField(textColor: Theme.getAppGreyColor())
         }

@@ -10,12 +10,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
@@ -117,11 +115,11 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
 
 
         // set lable focus
-        binding.edUnitAtpNo.setOnFocusChangeListener(MyCustomFocusListener(binding.edUnitAtpNo, binding.layoutUnitAptNo, requireContext()))
-        binding.edStreetAddress.setOnFocusChangeListener(MyCustomFocusListener(binding.edStreetAddress, binding.layoutStreetAddress , requireContext()))
-        binding.edCity.setOnFocusChangeListener(MyCustomFocusListener(binding.edCity, binding.layoutCity, requireContext()))
-        binding.edCounty.setOnFocusChangeListener(MyCustomFocusListener(binding.edCounty, binding.layoutCounty, requireContext()))
-        binding.edZipcode.setOnFocusChangeListener(MyCustomFocusListener(binding.edZipcode, binding.layoutZipCode, requireContext()))
+        binding.edUnitAtpNo.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edUnitAtpNo, binding.layoutUnitAptNo, requireContext()))
+        binding.edStreetAddress.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edStreetAddress, binding.layoutStreetAddress , requireContext()))
+        binding.edCity.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCity, binding.layoutCity, requireContext()))
+        binding.edCounty.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCounty, binding.layoutCounty, requireContext()))
+        binding.edZipcode.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edZipcode, binding.layoutZipCode, requireContext()))
          //binding.tvCountrySpinner.setOnFocusChangeListener(MyCustomFocusListener(binding.tvCountrySpinner, binding.layoutCountry, requireContext()))
         //binding.tvStateSpinner.setOnFocusChangeListener(MyCustomFocusListener(binding.tvStateSpinner, binding.layoutState, requireContext()))
 
