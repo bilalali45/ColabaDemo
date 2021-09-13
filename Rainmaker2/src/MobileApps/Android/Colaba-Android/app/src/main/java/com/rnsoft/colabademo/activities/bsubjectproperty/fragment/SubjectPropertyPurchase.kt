@@ -34,6 +34,7 @@ class SubjectPropertyPurchase : Fragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.e("onCreateView","onCreateView" )
         binding = SubjectPropertyPurchaseBinding.inflate(inflater, container, false)
 
         binding.rbSubProperty.isChecked = false

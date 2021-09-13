@@ -16,10 +16,8 @@ import android.widget.DatePicker
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
-import com.rnsoft.colabademo.MyCustomFocusListener
-import com.rnsoft.colabademo.databinding.AppToolbarHeadingBinding
+import com.rnsoft.colabademo.databinding.AppHeaderWithBackNavBinding
 import com.rnsoft.colabademo.databinding.LoanPurchaseInfoBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.HideSoftkeyboard
@@ -34,7 +32,7 @@ import java.text.DecimalFormat
 class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: LoanPurchaseInfoBinding
-    private lateinit var bindingToolbar : AppToolbarHeadingBinding
+    private lateinit var bindingToolbar : AppHeaderWithBackNavBinding
     val format =  DecimalFormat("#,###,###")
     private val loanStageArray = listOf("Pre-Approval")
     lateinit var mTextWatcher : TextWatcher
