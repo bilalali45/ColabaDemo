@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="Bank Account"
+            android:text="Proceeds From Transaction"
             android:textColor="@color/grey_color_one"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -84,7 +84,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/visaStatusViewLayout"
+        android:id="@+id/transactionTextInputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
 
         android:layout_width="match_parent"
@@ -92,7 +92,191 @@
         android:layout_gravity="center"
 
         android:background="@android:color/transparent"
-        android:hint="@string/account_type"
+        android:hint="Gift Source"
+        android:textColorHint="@color/primary_info_label_color"
+        app:boxCollapsedPaddingTop="1dp"
+        app:boxStrokeColor="@color/primary_info_line_color"
+        app:boxStrokeWidth="0.5dp"
+        app:boxStrokeWidthFocused="1dp"
+        app:endIconDrawable="@drawable/ic_down_arrow"
+        app:endIconMode="custom"
+        app:endIconTint="@color/grey_color_three"
+        app:helperTextEnabled="true"
+        app:helperTextTextAppearance="@style/inputError"
+
+        app:helperTextTextColor="@color/colaba_red_color"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+
+        app:hintTextColor="@color/grey_color_two"
+        android:layout_marginTop="26dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assets_top_container">
+
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/transaction_auto_complete_text_view"
+            style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@android:color/transparent"
+            android:completionThreshold="1"
+            android:cursorVisible="false"
+
+            android:focusable="true"
+
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/rubik_regular"
+            android:gravity="bottom"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:spinnerMode="dropdown"
+
+            android:textAlignment="gravity"
+            android:textColor="@color/grey_color_one"
+            android:textColorHint="@color/grey_color_three"
+            android:textSize="15sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/annual_base_layout"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="22dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/rubik_light"
+        android:hint="Cash Value"
+        android:textColorHint="@color/primary_info_label_color"
+        app:boxCollapsedPaddingTop="1dp"
+        app:boxStrokeColor="@color/primary_info_line_color"
+        app:boxStrokeWidth="0.5dp"
+
+
+        app:boxStrokeWidthFocused="1dp"
+        app:helperTextEnabled="true"
+        app:helperTextTextAppearance="@style/inputError"
+
+        app:helperTextTextColor="@color/colaba_red_color"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+
+        app:hintTextColor="@color/grey_color_two"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/annual_base_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:cursorVisible="true"
+
+            android:ems="10"
+            android:fontFamily="@font/rubik_regular"
+
+            android:gravity="top|start"
+            android:imeOptions="actionNone"
+            android:inputType="textMultiLine"
+
+            android:lines="10"
+
+            android:maxLines="10"
+            android:minLines="1"
+            android:paddingStart="0dp"
+            android:scrollHorizontally="false"
+            android:singleLine="false"
+
+
+            android:textColor="@color/grey_color_one"
+
+            android:textSize="@dimen/ed_txt_size_primary_info" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+    <ImageView
+        android:id="@+id/phone_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_save_icon"
+        app:elevation="3dp"
+        android:translationX="18dp"
+        android:translationY="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/radio_label_text_view"
+        android:layout_width="0dp"
+
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="22dp"
+        android:fontFamily="@font/rubik_regular"
+        android:text="Gift Type"
+        android:textColor="@color/grey_color_two"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/transactionTextInputLayout" />
+
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radio_label_text_view">
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="Cash Gift"
+            android:textColor="@color/grey_color_one"
+            android:textSize="15sp" />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="Gift Of Equity"
+            android:textColor="@color/grey_color_one"
+            android:textSize="15sp" />
+    </RadioGroup>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/whichAssetInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        android:background="@android:color/transparent"
+        android:hint="Transaction Type"
         android:textColorHint="@color/primary_info_label_color"
         app:boxCollapsedPaddingTop="1dp"
         app:boxStrokeColor="@color/primary_info_line_color"
@@ -110,15 +294,15 @@
         app:hintTextColor="@color/grey_color_two"
 
         android:layout_marginStart="20dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assets_top_container">
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup">
 
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
-            android:id="@+id/visaStatusCompleteView"
+            android:id="@+id/which_assets_complete_view"
             style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -145,206 +329,99 @@
 
 
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/relationshipDetailLayout"
-        android:layout_width="match_parent"
-
-        android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="22dp"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/rubik_light"
-        android:hint="@string/financial_institution"
-        android:textColorHint="@color/primary_info_label_color"
-        app:boxCollapsedPaddingTop="1dp"
-        app:boxStrokeColor="@color/primary_info_line_color"
-        app:boxStrokeWidth="0.5dp"
-        app:boxStrokeWidthFocused="1dp"
-
-
-        app:helperTextEnabled="true"
-        app:helperTextTextAppearance="@style/inputError"
-        app:helperTextTextColor="@color/colaba_red_color"
-
-        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-        app:hintTextColor="@color/grey_color_two"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/visaStatusViewLayout"
-
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/relationship_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:cursorVisible="true"
-
-            android:ems="10"
-            android:fontFamily="@font/rubik_regular"
-
-            android:inputType="text"
-            android:paddingStart="0dp"
-            android:singleLine="true"
-            android:imeOptions="actionNext"
-
-
-
-            android:lines="1"
-
-            android:scrollHorizontally="false"
-            android:maxLines="10"
-            android:gravity="top|start"
-
-
-            android:textColor="@color/grey_color_one"
-
-            android:textSize="@dimen/ed_txt_size_primary_info" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/account_number_layout"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/gift_deposit_text_view"
+        android:layout_width="0dp"
 
         android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="22dp"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/rubik_light"
-        android:hint="@string/account_number"
-        android:textColorHint="@color/primary_info_label_color"
-        app:boxCollapsedPaddingTop="1dp"
-        app:boxStrokeColor="@color/primary_info_line_color"
-        app:boxStrokeWidth="0.5dp"
-        app:boxStrokeWidthFocused="1dp"
-
-
-        app:helperTextEnabled="true"
-        app:helperTextTextAppearance="@style/inputError"
-        app:helperTextTextColor="@color/colaba_red_color"
-
-        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-        app:hintTextColor="@color/grey_color_two"
-
+        android:fontFamily="@font/rubik_regular"
+        android:text="Has this gift been deposited already?"
+        android:textColor="@color/grey_color_two"
+        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relationshipDetailLayout"
-
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/account_number_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:cursorVisible="true"
+        app:layout_constraintTop_toBottomOf="@+id/annual_base_layout" />
 
 
+    <RadioGroup
+        android:id="@+id/gift_deposit_group"
 
-            android:inputType="textPassword"
-            android:singleLine="true"
-            android:ems="10"
-            android:fontFamily="@font/rubik_regular"
-
-
-            android:paddingStart="0dp"
-
-
-            android:imeOptions="actionNext"
-
-            android:lines="10"
-            android:minLines="1"
-            android:scrollHorizontally="false"
-            android:maxLines="10"
-            android:gravity="top|start"
-
-
-            android:textColor="@color/grey_color_one"
-
-            android:textSize="@dimen/ed_txt_size_primary_info" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/annual_base_layout"
-        android:layout_width="match_parent"
-
-        android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="22dp"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/rubik_light"
-        android:hint="@string/annual_base_salary"
-        android:textColorHint="@color/primary_info_label_color"
-        app:boxCollapsedPaddingTop="1dp"
-        app:boxStrokeColor="@color/primary_info_line_color"
-        app:boxStrokeWidth="0.5dp"
-        app:boxStrokeWidthFocused="1dp"
-
-
-        app:helperTextEnabled="true"
-        app:helperTextTextAppearance="@style/inputError"
-        app:helperTextTextColor="@color/colaba_red_color"
-
-        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-        app:hintTextColor="@color/grey_color_two"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/account_number_layout"
-
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/annual_base_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:cursorVisible="true"
-
-            android:ems="10"
-            android:fontFamily="@font/rubik_regular"
-
-            android:inputType="textMultiLine"
-            android:paddingStart="0dp"
-            android:singleLine="false"
-
-            android:imeOptions="actionNone"
-
-            android:lines="10"
-            android:minLines="1"
-            android:scrollHorizontally="false"
-            android:maxLines="10"
-            android:gravity="top|start"
-
-
-            android:textColor="@color/grey_color_one"
-
-            android:textSize="@dimen/ed_txt_size_primary_info" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <ImageView
-        android:id="@+id/phone_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_save_icon"
-        app:elevation="3dp"
-        android:translationX="18dp"
-        android:translationY="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gift_deposit_text_view">
 
+        <RadioButton
+            android:id="@+id/yes_deposited"
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="Yes"
+            android:textColor="@color/grey_color_one"
+            android:textSize="15sp" />
+
+        <RadioButton
+            android:id="@+id/no_deposited"
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="No"
+            android:textColor="@color/grey_color_one"
+            android:textSize="15sp"
+            />
+    </RadioGroup>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/rubik_light"
+        android:hint="Date of Transfer (MM/DD/YYYY)"
+
+        android:textColorHint="@color/primary_info_label_color"
+        app:boxCollapsedPaddingTop="1dp"
+        app:boxStrokeColor="@color/primary_info_line_color"
+        app:boxStrokeWidth="0.5dp"
+        app:boxStrokeWidthFocused="1dp"
+        app:endIconDrawable="@drawable/ic_move_to_icon"
+        app:endIconMode="custom"
+        app:helperTextEnabled="true"
+        app:helperTextTextAppearance="@style/inputError"
+        app:helperTextTextColor="@color/colaba_red_color"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+        app:hintTextColor="@color/grey_color_two"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gift_deposit_group">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/date_of_transfer_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:cursorVisible="false"
+            android:ems="10"
+            android:focusable="true"
+            android:focusableInTouchMode="false"
+            android:fontFamily="@font/rubik_regular"
+            android:imeOptions="actionDone"
+            android:inputType="none"
+            android:paddingStart="0dp"
+            android:singleLine="true"
+            android:textColor="@color/grey_color_one"
+            android:textSize="@dimen/ed_txt_size_primary_info"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

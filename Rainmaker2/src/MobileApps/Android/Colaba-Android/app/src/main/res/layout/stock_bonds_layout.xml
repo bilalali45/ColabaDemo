@@ -35,12 +35,12 @@
             android:layout_marginTop="6dp"
             android:fontFamily="@font/rubik_medium"
             android:text="Stocks, Bonds, or Other Fin. Assets"
-            android:textColor="@color/grey_color_one"
-            android:textSize="18sp"
-            android:layout_marginStart="46dp"
-            android:layout_marginEnd="46dp"
             android:singleLine="true"
             android:lines="1"
+            android:textColor="@color/grey_color_one"
+            android:textSize="18sp"
+            android:layout_marginStart="42dp"
+            android:layout_marginEnd="42dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +90,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/visaStatusViewLayout"
+        android:id="@+id/accountTypeInputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
 
         android:layout_width="match_parent"
@@ -124,7 +124,7 @@
 
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
-            android:id="@+id/visaStatusCompleteView"
+            android:id="@+id/accountTypeCompleteView"
             style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -132,9 +132,8 @@
             android:backgroundTint="@android:color/transparent"
             android:completionThreshold="1"
             android:cursorVisible="false"
-
+            android:inputType="none"
             android:focusable="true"
-
             android:focusableInTouchMode="true"
             android:fontFamily="@font/rubik_regular"
             android:gravity="bottom"
@@ -153,7 +152,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/relationshipDetailLayout"
+        android:id="@+id/financialLayout"
         android:layout_width="match_parent"
 
         android:layout_height="wrap_content"
@@ -179,12 +178,12 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/visaStatusViewLayout"
+        app:layout_constraintTop_toBottomOf="@+id/accountTypeInputLayout"
 
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/relationship_edit_text"
+            android:id="@+id/financial_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -223,6 +222,12 @@
         android:layout_marginStart="22dp"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="22dp"
+
+
+
+
+
+
         android:background="@android:color/transparent"
         android:fontFamily="@font/rubik_light"
         android:hint="@string/account_number"
@@ -233,7 +238,7 @@
         app:boxStrokeWidthFocused="1dp"
 
 
-        app:endIconDrawable="@drawable/ic_eye_hide"
+        app:endIconDrawable="@drawable/ic_eye_icon_svg"
         app:endIconMode="custom"
         app:endIconTint="@color/grey_color_three"
         app:passwordToggleEnabled="true"
@@ -247,7 +252,7 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relationshipDetailLayout"
+        app:layout_constraintTop_toBottomOf="@+id/financialLayout"
 
         >
 
@@ -257,15 +262,11 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:cursorVisible="true"
-
-
-
             android:inputType="textPassword"
+
             android:singleLine="true"
             android:ems="10"
             android:fontFamily="@font/rubik_regular"
-
-
             android:paddingStart="0dp"
 
 
@@ -276,6 +277,8 @@
             android:scrollHorizontally="false"
             android:maxLines="10"
             android:gravity="top|start"
+
+
 
 
             android:textColor="@color/grey_color_one"
@@ -295,7 +298,7 @@
         android:layout_marginEnd="22dp"
         android:background="@android:color/transparent"
         android:fontFamily="@font/rubik_light"
-        android:hint="@string/annual_base_salary"
+        android:hint="@string/current_market_value"
         android:textColorHint="@color/primary_info_label_color"
         app:boxCollapsedPaddingTop="1dp"
         app:boxStrokeColor="@color/primary_info_line_color"
@@ -327,8 +330,9 @@
             android:fontFamily="@font/rubik_regular"
 
             android:gravity="top|start"
-            android:imeOptions="actionNone"
-            android:inputType="textMultiLine"
+
+            android:imeOptions="actionDone"
+            android:inputType="numberDecimal"
 
             android:lines="10"
 

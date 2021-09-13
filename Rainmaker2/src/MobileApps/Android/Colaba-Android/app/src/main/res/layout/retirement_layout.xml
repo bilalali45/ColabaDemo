@@ -81,8 +81,17 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+
+
+
+
+
+
+
+
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/relationshipDetailLayout"
+        android:id="@+id/financialLayout"
         android:layout_width="match_parent"
 
         android:layout_height="wrap_content"
@@ -96,23 +105,24 @@
         app:boxCollapsedPaddingTop="1dp"
         app:boxStrokeColor="@color/primary_info_line_color"
         app:boxStrokeWidth="0.5dp"
-
-
         app:boxStrokeWidthFocused="1dp"
+
+
         app:helperTextEnabled="true"
         app:helperTextTextAppearance="@style/inputError"
-
         app:helperTextTextColor="@color/colaba_red_color"
+
         app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-
         app:hintTextColor="@color/grey_color_two"
-        app:layout_constraintEnd_toEndOf="parent"
 
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assets_top_container">
+        app:layout_constraintTop_toBottomOf="@+id/assets_top_container"
+
+        >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/relationship_edit_text"
+            android:id="@+id/financial_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -121,17 +131,18 @@
             android:ems="10"
             android:fontFamily="@font/rubik_regular"
 
-            android:gravity="top|start"
-            android:imeOptions="actionNext"
             android:inputType="text"
+            android:paddingStart="0dp"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+
+
+
             android:lines="1"
 
-
-            android:maxLines="10"
-
-            android:paddingStart="0dp"
             android:scrollHorizontally="false"
-            android:singleLine="true"
+            android:maxLines="10"
+            android:gravity="top|start"
 
 
             android:textColor="@color/grey_color_one"
@@ -150,6 +161,12 @@
         android:layout_marginStart="22dp"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="22dp"
+
+
+
+
+
+
         android:background="@android:color/transparent"
         android:fontFamily="@font/rubik_light"
         android:hint="@string/account_number"
@@ -174,7 +191,7 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relationshipDetailLayout"
+        app:layout_constraintTop_toBottomOf="@+id/financialLayout"
 
         >
 
@@ -184,15 +201,11 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:cursorVisible="true"
+            android:inputType="number"
 
-
-
-            android:inputType="textPassword"
             android:singleLine="true"
             android:ems="10"
             android:fontFamily="@font/rubik_regular"
-
-
             android:paddingStart="0dp"
 
 
@@ -203,6 +216,8 @@
             android:scrollHorizontally="false"
             android:maxLines="10"
             android:gravity="top|start"
+
+
 
 
             android:textColor="@color/grey_color_one"
@@ -253,17 +268,18 @@
             android:ems="10"
             android:fontFamily="@font/rubik_regular"
 
-            android:inputType="textMultiLine"
-            android:paddingStart="0dp"
-            android:singleLine="false"
+            android:gravity="top|start"
 
-            android:imeOptions="actionNone"
+            android:imeOptions="actionDone"
+            android:inputType="numberDecimal"
 
             android:lines="10"
-            android:minLines="1"
-            android:scrollHorizontally="false"
+
             android:maxLines="10"
-            android:gravity="top|start"
+            android:minLines="1"
+            android:paddingStart="0dp"
+            android:scrollHorizontally="false"
+            android:singleLine="false"
 
 
             android:textColor="@color/grey_color_one"

@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.rnsoft.colabademo.databinding.GiftsFundLayoutBinding
+import com.rnsoft.colabademo.databinding.GiftsAssetLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class GiftsFundFragment:Fragment() {
+class GiftsAssetsFragment:Fragment() {
 
-    private var _binding: GiftsFundLayoutBinding? = null
+    private var _binding: GiftsAssetLayoutBinding? = null
     private val binding get() = _binding!!
 
     @Inject
@@ -24,7 +24,7 @@ class GiftsFundFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = GiftsFundLayoutBinding.inflate(inflater, container, false)
+        _binding = GiftsAssetLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         return root
