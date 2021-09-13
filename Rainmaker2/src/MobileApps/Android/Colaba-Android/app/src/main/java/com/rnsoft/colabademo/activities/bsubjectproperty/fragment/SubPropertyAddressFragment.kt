@@ -61,7 +61,7 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
         setUpCompleteViewForPlaces()
         initializeUSAstates()
 
-        binding.parentLayout.setOnClickListener{
+        binding.parentLayout.setOnClickListener {
             HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
         }
 

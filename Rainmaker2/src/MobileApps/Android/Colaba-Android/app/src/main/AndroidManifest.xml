@@ -85,6 +85,11 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".IncomeActivity"
+            android:windowSoftInputMode="adjustResize|stateVisible"
+            android:screenOrientation="portrait">
+        </activity>
+
         <activity android:name=".activities.baddresses.PlacePredictionProgrammatically"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
