@@ -339,8 +339,8 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
         else{
             if (tableView == tableViewEmployement){
                 if ((indexPath.row == 1 || indexPath.row == 2)){
-//                    let vc = Utility.getAddBankAccountVC()
-//                    self.presentVC(vc: vc)
+                    let vc = Utility.getAddCurrentEmployementVC()
+                    self.presentVC(vc: vc)
                 }
                 else if (indexPath.row == 3){
                     let vc = Utility.getAddEmployementPopupVC()
