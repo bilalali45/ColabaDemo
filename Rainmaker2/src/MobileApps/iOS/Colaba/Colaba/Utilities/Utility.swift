@@ -256,6 +256,10 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: AddPreviousEmploymentViewController.self)) as! AddPreviousEmploymentViewController
     }
     
+    static func getAddSelfEmploymentVC() -> AddSelfEmploymentViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: AddSelfEmploymentViewController.self)) as! AddSelfEmploymentViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
