@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,46 +10,60 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import com.rnsoft.colabademo.databinding.*
+import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
+import kotlinx.android.synthetic.main.assets_middle_cell.view.*
 import kotlinx.android.synthetic.main.assets_top_cell.view.*
 
-class BorrowerThreeAssets : Fragment() {
+class BorrowerThreeAssets : AssetBaseFragment() {
 
     private lateinit var binding: DynamicAssetFragmentLayoutBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DynamicAssetFragmentLayoutBinding.inflate(inflater, container, false)
-
         setupLayout()
-
         return binding.root
     }
 
     private fun setupLayout(){
-        for (i in 1..3) {
+
+        val sampleAssets = getSampleAssets()
+
+        for (i in 0 until sampleAssets.size) {
+
+            val modelData = sampleAssets[i]
+            Log.e("header",modelData.headerTitle )
+            Log.e("h-amount",modelData.headerAmount )
+
             val mainCell: LinearLayoutCompat =
                 layoutInflater.inflate(R.layout.assets_main_cell, null) as LinearLayoutCompat
             val topCell: View = layoutInflater.inflate(R.layout.assets_top_cell, null)
+            topCell.header_title.text =  modelData.headerTitle
 
-            val bottomCell: View = layoutInflater.inflate(R.layout.assets_bottom_cell, null)
+            topCell.header_amount.setText(modelData.headerAmount)
 
             topCell.tag = R.string.asset_top_cell
             mainCell.addView(topCell)
 
 
-            val contentCell: View = layoutInflater.inflate(R.layout.assets_middle_cell, null)
-            contentCell.visibility = View.GONE
-            mainCell.addView(contentCell)
+            for (j in 0 until modelData.contentCell.size) {
+                val contentCell: View =
+                    layoutInflater.inflate(R.layout.assets_middle_cell, null)
+                val contentData = modelData.contentCell[j]
+                contentCell.content_title.text = contentData.title
+                contentCell.content_desc.text = contentData.description
+                contentCell.content_amount.text = contentData.contentAmount
+                contentCell.visibility = View.GONE
+                contentCell.setOnClickListener(modelData.listenerAttached)
+                mainCell.addView(contentCell)
+            }
 
 
-
-
-
+            val bottomCell: View = layoutInflater.inflate(R.layout.assets_bottom_cell, null)
+            bottomCell.footer_title.text =  modelData.footerTitle
             //bottomCell.tag = R.string.asset_bottom_cell
             bottomCell.visibility = View.GONE
+            bottomCell.setOnClickListener(modelData.listenerAttached)
+
             mainCell.addView(bottomCell)
 
 
@@ -56,7 +71,7 @@ class BorrowerThreeAssets : Fragment() {
 
             binding.assetParentContainer.addView(mainCell)
 
-            topCell.arrow_down.setOnClickListener {
+            topCell.setOnClickListener {
                 hideOtherBoxes() // if you want to hide other boxes....
                 topCell.arrow_up.visibility = View.VISIBLE
                 topCell.arrow_down.visibility = View.GONE

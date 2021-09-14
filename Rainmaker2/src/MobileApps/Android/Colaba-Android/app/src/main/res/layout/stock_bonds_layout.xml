@@ -262,9 +262,13 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:cursorVisible="true"
-            android:inputType="textPassword"
-
+            android:inputType="numberPassword"
             android:singleLine="true"
+            android:lines="10"
+            android:minLines="1"
+            android:scrollHorizontally="false"
+            android:maxLines="1"
+
             android:ems="10"
             android:fontFamily="@font/rubik_regular"
             android:paddingStart="0dp"
@@ -272,10 +276,7 @@
 
             android:imeOptions="actionNext"
 
-            android:lines="10"
-            android:minLines="1"
-            android:scrollHorizontally="false"
-            android:maxLines="10"
+
             android:gravity="top|start"
 
 

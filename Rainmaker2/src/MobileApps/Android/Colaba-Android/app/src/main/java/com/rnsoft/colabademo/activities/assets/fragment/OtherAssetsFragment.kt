@@ -60,10 +60,34 @@ class OtherAssetsFragment:Fragment() {
                     if(it.isNotEmpty())
                         CustomMaterialFields.clearError(binding.accountTypeInputLayout, requireContext())
                 }
-                if(position ==3) {
+                binding.accountNumberLayout.visibility = View.GONE
+                binding.financialLayout.visibility = View.GONE
+                binding.annualBaseLayout.visibility = View.GONE
+                binding.layoutDetail.visibility = View.GONE
 
+                if(position<4) {
+                    binding.accountNumberLayout.visibility = View.VISIBLE
+                    binding.financialLayout.visibility = View.VISIBLE
+                    binding.annualBaseLayout.visibility = View.VISIBLE
+                    binding.layoutDetail.visibility = View.GONE
                 }
-                else{}
+                else
+                if(position == 4 || position == 5) {
+                    binding.annualBaseLayout.hint = "Cash Value"
+                    binding.annualBaseLayout.visibility = View.VISIBLE
+                    binding.layoutDetail.visibility = View.GONE
+                }
+                else
+                if(position > 5 && position < dataArray.size-1) {
+                    binding.annualBaseLayout.hint = "Market Value of Equity"
+                    binding.annualBaseLayout.visibility = View.VISIBLE
+                    binding.layoutDetail.visibility = View.GONE
+                }
+                else{
+                    binding.annualBaseLayout.hint = "Cash or Market Value"
+                    binding.annualBaseLayout.visibility = View.VISIBLE
+                    binding.layoutDetail.visibility = View.VISIBLE
+                }
             }
         }
 
