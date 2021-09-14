@@ -19,7 +19,7 @@
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="16dp"
             android:padding="4dp"
             app:layout_constraintBottom_toTopOf="@+id/tab_top_border"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="Proceeds From Transaction"
+            android:text="Gift Funds"
             android:textColor="@color/grey_color_one"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -68,7 +68,7 @@
             android:id="@+id/top_del_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="12dp"
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -104,8 +104,8 @@
 
         app:hintTextColor="@color/grey_color_two"
         android:layout_marginTop="26dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="22dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/assets_top_container">
@@ -142,7 +142,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/gift_type_constraintlayout"
         android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -169,8 +169,9 @@
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:padding="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radio_label_text_view">
 
@@ -178,6 +179,7 @@
             android:id="@+id/cash_gift"
             android:layout_width="match_parent"
             android:layout_height="22dp"
+
             android:fontFamily="@font/rubik_regular"
             android:text="Cash Gift"
             android:textColor="@color/grey_color_one"
@@ -263,7 +265,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/gift_transfer_constraintlayout"
         android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -293,7 +295,7 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="21dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/gift_deposit_text_view">
@@ -328,10 +330,10 @@
         android:id="@+id/layout_transfer_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_marginStart="24dp"
+        android:visibility="visible"
+        android:layout_marginStart="22dp"
         android:layout_marginTop="55dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="22dp"
         android:fontFamily="@font/rubik_light"
         android:hint="Date of Transfer (MM/DD/YYYY)"
 

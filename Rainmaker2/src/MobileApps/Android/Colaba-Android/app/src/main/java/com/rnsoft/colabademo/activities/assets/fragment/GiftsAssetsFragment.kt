@@ -68,8 +68,12 @@ class GiftsAssetsFragment:Fragment() {
                 removeErrorFromFields()
                 clearFocusFromFields()
 
-                if(position ==0) { }
-                else{ }
+                if(position <=1) {
+                    binding.giftOfEquity.text = "Grant"
+                }
+                else{
+                    binding.giftOfEquity.text = "Gift Of Equity"
+                }
             }
         }
 
@@ -81,7 +85,9 @@ class GiftsAssetsFragment:Fragment() {
                     HideSoftkeyboard.hide(requireContext(),binding.radioGroup)
                     clearFocusFromFields()
                     binding.layoutTransferDate.visibility = View.GONE
+                    binding.giftDepositGroup.setOnCheckedChangeListener (null);
                     binding.giftDepositGroup.clearCheck()
+                    binding.giftDepositGroup.setOnCheckedChangeListener(onGiftDateCheckListener)
                     binding.giftTransferConstraintlayout.visibility = View.VISIBLE
                     binding.annualBaseLayout.hint = "Cash Value"
                 }
@@ -89,7 +95,9 @@ class GiftsAssetsFragment:Fragment() {
                     HideSoftkeyboard.hide(requireContext(),binding.radioGroup)
                     clearFocusFromFields()
                     binding.layoutTransferDate.visibility = View.GONE
+                    binding.giftDepositGroup.setOnCheckedChangeListener (null);
                     binding.giftDepositGroup.clearCheck()
+                    binding.giftDepositGroup.setOnCheckedChangeListener(onGiftDateCheckListener)
                     binding.giftTransferConstraintlayout.visibility = View.GONE
                     binding.annualBaseLayout.hint = "Market Value"
                 }
@@ -98,24 +106,7 @@ class GiftsAssetsFragment:Fragment() {
             }
         })
 
-        binding.giftDepositGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.yes_deposited -> {
-                    HideSoftkeyboard.hide(requireContext(),binding.radioGroup)
-                    clearFocusFromFields()
-                    binding.layoutTransferDate.visibility = View.VISIBLE
-                    binding.layoutTransferDate.hint = resources.getString(R.string.date_of_transfer)
-                }
-                R.id.no_deposited -> {
-                    HideSoftkeyboard.hide(requireContext(),binding.radioGroup)
-                    clearFocusFromFields()
-                    binding.layoutTransferDate.visibility = View.VISIBLE
-                    binding.layoutTransferDate.hint = resources.getString(R.string.expected_date_of_transfer)
-                }
-                else -> {
-                }
-            }
-        })
+
 
 
         binding.dateOfTransferEditText.showSoftInputOnFocus = false
@@ -140,7 +131,25 @@ class GiftsAssetsFragment:Fragment() {
 
     }
 
-
+    private val onGiftDateCheckListener =
+        RadioGroup.OnCheckedChangeListener { p0, checkedId ->
+            when (checkedId) {
+                R.id.yes_deposited -> {
+                    HideSoftkeyboard.hide(requireContext(),binding.radioGroup)
+                    clearFocusFromFields()
+                    binding.layoutTransferDate.visibility = View.VISIBLE
+                    binding.layoutTransferDate.hint = resources.getString(R.string.date_of_transfer)
+                }
+                R.id.no_deposited -> {
+                    HideSoftkeyboard.hide(requireContext(),binding.radioGroup)
+                    clearFocusFromFields()
+                    binding.layoutTransferDate.visibility = View.VISIBLE
+                    binding.layoutTransferDate.hint = resources.getString(R.string.expected_date_of_transfer)
+                }
+                else -> {
+                }
+            }
+        }
 
     private fun clearFocusFromFields(){
         binding.giftSourceInputLayout.clearFocus()
