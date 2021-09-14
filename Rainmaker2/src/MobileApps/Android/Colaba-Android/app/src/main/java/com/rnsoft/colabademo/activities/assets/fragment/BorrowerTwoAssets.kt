@@ -13,14 +13,14 @@ import kotlinx.android.synthetic.main.assets_top_cell.view.*
 
 class BorrowerTwoAssets : Fragment() {
 
-    private lateinit var binding: AssetFragmentLayoutBinding
+    private lateinit var binding: DynamicAssetFragmentLayoutBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = AssetFragmentLayoutBinding.inflate(inflater, container, false)
+        binding = DynamicAssetFragmentLayoutBinding.inflate(inflater, container, false)
 
         setupLayout()
 

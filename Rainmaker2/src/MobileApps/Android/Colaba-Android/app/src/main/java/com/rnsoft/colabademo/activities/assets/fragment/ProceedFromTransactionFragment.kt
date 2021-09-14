@@ -59,6 +59,11 @@ import javax.inject.Inject
                     binding.transactionTextInputLayout.defaultHintTextColor = ColorStateList.valueOf(
                         ContextCompat.getColor(requireContext(), R.color.grey_color_two ))
 
+                    binding.transactionTextInputLayout.helperText?.let{
+                        if(it.isNotEmpty())
+                            CustomMaterialFields.clearError(binding.transactionTextInputLayout, requireContext())
+                    }
+
                     removeErrorFromFields()
                     clearFocusFromFields()
 
@@ -114,6 +119,11 @@ import javax.inject.Inject
                 override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                     binding.whichAssetInputLayout.defaultHintTextColor = ColorStateList.valueOf(
                         ContextCompat.getColor(requireContext(), R.color.grey_color_two ))
+
+                    binding.whichAssetInputLayout.helperText?.let{
+                        if(it.isNotEmpty())
+                            CustomMaterialFields.clearError(binding.whichAssetInputLayout, requireContext())
+                    }
                     if(position==dataArray2.size-1) {
                         binding.layoutDetail.visibility = View.VISIBLE
                     }
