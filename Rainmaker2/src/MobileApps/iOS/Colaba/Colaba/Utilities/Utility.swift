@@ -268,6 +268,10 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: AddMilitaryPayViewController.self)) as! AddMilitaryPayViewController
     }
     
+    static func getAddRetirementIncomeVC() -> AddRetirementIncomeViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: AddRetirementIncomeViewController.self)) as! AddRetirementIncomeViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
