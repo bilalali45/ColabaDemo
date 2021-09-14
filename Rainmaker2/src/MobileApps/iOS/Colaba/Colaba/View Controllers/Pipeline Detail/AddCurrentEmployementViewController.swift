@@ -190,6 +190,8 @@ class AddCurrentEmployementViewController: BaseViewController {
     
     @objc func addressViewTapped(){
         let vc = Utility.getCurrentEmployerAddressVC()
+        vc.topTitle = "Current Employer Address"
+        vc.searchTextFieldPlaceholder = "Search Main Address"
         self.pushToVC(vc: vc)
     }
     

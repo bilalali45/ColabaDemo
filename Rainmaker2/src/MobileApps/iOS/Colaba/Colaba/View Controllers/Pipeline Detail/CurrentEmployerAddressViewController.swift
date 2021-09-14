@@ -45,6 +45,9 @@ class CurrentEmployerAddressViewController: BaseViewController {
     let stateDropDown = DropDown()
     private let validation: Validation
     
+    var topTitle = ""
+    var searchTextFieldPlaceholder = ""
+    
     init(validation: Validation) {
         self.validation = validation
         super.init(nibName: nil, bundle: nil)
@@ -57,6 +60,10 @@ class CurrentEmployerAddressViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        lblTopHeading.text = topTitle
+        txtfieldHomeAddress.placeholder = searchTextFieldPlaceholder
+        
         setMaterialTextFieldsAndViews(textfields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry])
         txtfieldCountry.addTarget(self, action: #selector(txtfieldCountryTextChanged), for: .editingChanged)
         txtfieldState.addTarget(self, action: #selector(txtfieldStateTextChanged), for: .editingChanged)

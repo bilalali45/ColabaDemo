@@ -76,7 +76,7 @@ class ColabaTextField: TextField {
             case .dropdown:
                 isButtonHidden(false)
                 self.isUserInteractionEnabled = false
-                self.setButton(image: UIImage(named: "dropdown")!)
+                self.setButton(image: UIImage(named: "textfield-dropdownIcon")!)
             case .delete:
                 button.contentHorizontalAlignment = .center
                 self.setButton(image: UIImage(named: "DeleteDependent"))

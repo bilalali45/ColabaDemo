@@ -1,5 +1,5 @@
 //
-//  AddSelfEmploymentViewController.swift
+//  AddBusinessViewController.swift
 //  Colaba
 //
 //  Created by Muhammad Murtaza on 14/09/2021.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddSelfEmploymentViewController: BaseViewController {
+class AddBusinessViewController: BaseViewController {
 
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblUsername: UILabel!
@@ -15,13 +15,14 @@ class AddSelfEmploymentViewController: BaseViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var txtfieldBusinessType: ColabaTextField!
     @IBOutlet weak var txtfieldBusinessName: ColabaTextField!
     @IBOutlet weak var txtfieldBusinessPhoneNumber: ColabaTextField!
+    @IBOutlet weak var txtfieldBusinessStartDate: ColabaTextField!
     @IBOutlet weak var addressView: UIView!
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var txtfieldJobTitle: ColabaTextField!
-    @IBOutlet weak var txtfieldBusinessStartDate: ColabaTextField!
-    
+    @IBOutlet weak var txtfieldOwnershipPercentage: ColabaTextField!
     @IBOutlet weak var txtfieldNetAnnualIncome: ColabaTextField!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
@@ -33,6 +34,14 @@ class AddSelfEmploymentViewController: BaseViewController {
     //MARK:- Methods and Actions
     
     func setupTextFields(){
+        
+        txtfieldBusinessType.setTextField(placeholder: "Select Your Business Type")
+        txtfieldBusinessType.setDelegates(controller: self)
+        txtfieldBusinessType.setValidation(validationType: .required)
+        txtfieldBusinessType.setTextField(keyboardType: .asciiCapable)
+        txtfieldBusinessType.setIsValidateOnEndEditing(validate: true)
+        txtfieldBusinessType.type = .dropdown
+        
         txtfieldBusinessName.setTextField(placeholder: "Business Name")
         txtfieldBusinessName.setDelegates(controller: self)
         txtfieldBusinessName.setValidation(validationType: .required)
@@ -45,17 +54,24 @@ class AddSelfEmploymentViewController: BaseViewController {
         txtfieldBusinessPhoneNumber.setIsValidateOnEndEditing(validate: true)
         txtfieldBusinessPhoneNumber.setValidation(validationType: .phoneNumber)
         
-        txtfieldJobTitle.setTextField(placeholder: "Job Title")
-        txtfieldJobTitle.setDelegates(controller: self)
-        txtfieldJobTitle.setTextField(keyboardType: .asciiCapable)
-        txtfieldJobTitle.setIsValidateOnEndEditing(validate: false)
-        
         txtfieldBusinessStartDate.setTextField(placeholder: "Business Start Date (MM/DD/YYYY)")
         txtfieldBusinessStartDate.setDelegates(controller: self)
         txtfieldBusinessStartDate.setValidation(validationType: .required)
         txtfieldBusinessStartDate.setTextField(keyboardType: .asciiCapable)
         txtfieldBusinessStartDate.setIsValidateOnEndEditing(validate: true)
         txtfieldBusinessStartDate.type = .datePicker
+        
+        txtfieldJobTitle.setTextField(placeholder: "Job Title")
+        txtfieldJobTitle.setDelegates(controller: self)
+        txtfieldJobTitle.setTextField(keyboardType: .asciiCapable)
+        txtfieldJobTitle.setIsValidateOnEndEditing(validate: false)
+        
+        txtfieldOwnershipPercentage.setTextField(placeholder: "Ownership Percentage")
+        txtfieldOwnershipPercentage.setDelegates(controller: self)
+        txtfieldOwnershipPercentage.setTextField(keyboardType: .numberPad)
+        txtfieldOwnershipPercentage.setIsValidateOnEndEditing(validate: true)
+        txtfieldOwnershipPercentage.setValidation(validationType: .required)
+        txtfieldOwnershipPercentage.type = .percentage
         
         txtfieldNetAnnualIncome.setTextField(placeholder: "Net Annual Income")
         txtfieldNetAnnualIncome.setDelegates(controller: self)
@@ -84,6 +100,9 @@ class AddSelfEmploymentViewController: BaseViewController {
     }
     
     func validate() -> Bool {
+//        if (!txtfieldBusinessType.validate()){
+//            return false
+//        }
         if (!txtfieldBusinessName.validate()) {
             return false
         }
@@ -109,6 +128,7 @@ class AddSelfEmploymentViewController: BaseViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
+        txtfieldBusinessType.validate()
         txtfieldBusinessName.validate()
         txtfieldBusinessStartDate.validate()
         txtfieldNetAnnualIncome.validate()

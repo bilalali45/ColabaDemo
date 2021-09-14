@@ -125,6 +125,8 @@ class AddPreviousEmploymentViewController: BaseViewController {
     
     @objc func addressViewTapped(){
         let vc = Utility.getCurrentEmployerAddressVC()
+        vc.topTitle = "Previous Employer Address"
+        vc.searchTextFieldPlaceholder = "Search Main Address"
         self.pushToVC(vc: vc)
     }
     
