@@ -91,7 +91,7 @@ class AddCurrentEmployementViewController: BaseViewController {
         txtfieldEmployerPhoneNumber.setTextField(placeholder: "Employer Phone Number")
         txtfieldEmployerPhoneNumber.setDelegates(controller: self)
         txtfieldEmployerPhoneNumber.setTextField(keyboardType: .numberPad)
-        txtfieldEmployerPhoneNumber.setIsValidateOnEndEditing(validate: false)
+        txtfieldEmployerPhoneNumber.setIsValidateOnEndEditing(validate: true)
         txtfieldEmployerPhoneNumber.setValidation(validationType: .phoneNumber)
         
         txtfieldJobTitle.setTextField(placeholder: "Job Title")
@@ -291,6 +291,9 @@ class AddCurrentEmployementViewController: BaseViewController {
         if (!txtfieldEmployerName.validate()) {
             return false
         }
+        else if (txtfieldEmployerPhoneNumber.text != "" && !txtfieldEmployerPhoneNumber.validate()){
+            return false
+        }
 //        else if (!txtfieldStartDate.validate()) {
 //            return false
 //        }
@@ -326,6 +329,9 @@ class AddCurrentEmployementViewController: BaseViewController {
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         txtfieldEmployerName.validate()
         txtfieldStartDate.validate()
+        if (txtfieldEmployerPhoneNumber.text != ""){
+            txtfieldEmployerPhoneNumber.validate()
+        }
         if (hasOwnershipInterest){
             txtfieldOwnershipPercentage.validate()
         }

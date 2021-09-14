@@ -36,12 +36,7 @@ class AddPreviousEmploymentViewController: BaseViewController {
     @IBOutlet weak var txtfieldNetAnnualIncome: ColabaTextField!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
-    var hasEmployed = true
     var hasOwnershipInterest = true
-    var hasSalaryPayType = true
-    var hasBonusIncome = false
-    var hasOvertimeIncome = false
-    var hasCommissionIncome = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,7 +55,7 @@ class AddPreviousEmploymentViewController: BaseViewController {
         txtfieldEmployerPhoneNumber.setTextField(placeholder: "Employer Phone Number")
         txtfieldEmployerPhoneNumber.setDelegates(controller: self)
         txtfieldEmployerPhoneNumber.setTextField(keyboardType: .numberPad)
-        txtfieldEmployerPhoneNumber.setIsValidateOnEndEditing(validate: false)
+        txtfieldEmployerPhoneNumber.setIsValidateOnEndEditing(validate: true)
         txtfieldEmployerPhoneNumber.setValidation(validationType: .phoneNumber)
         
         txtfieldJobTitle.setTextField(placeholder: "Job Title")
@@ -98,7 +93,7 @@ class AddPreviousEmploymentViewController: BaseViewController {
         txtfieldNetAnnualIncome.setDelegates(controller: self)
         txtfieldNetAnnualIncome.setTextField(keyboardType: .numberPad)
         txtfieldNetAnnualIncome.setIsValidateOnEndEditing(validate: true)
-        txtfieldNetAnnualIncome.setValidation(validationType: .required)
+        txtfieldNetAnnualIncome.setValidation(validationType: .netAnnualIncome)
         txtfieldNetAnnualIncome.type = .amount
         
         addressView.layer.cornerRadius = 6
@@ -159,6 +154,9 @@ class AddPreviousEmploymentViewController: BaseViewController {
         if (!txtfieldEmployerName.validate()) {
             return false
         }
+        else if (txtfieldEmployerPhoneNumber.text != "" && !txtfieldEmployerPhoneNumber.validate()){
+            return false
+        }
 //        else if (!txtfieldStartDate.validate()) {
 //            return false
 //        }
@@ -186,6 +184,9 @@ class AddPreviousEmploymentViewController: BaseViewController {
         txtfieldEmployerName.validate()
         txtfieldStartDate.validate()
         txtfieldEndDate.validate()
+        if (txtfieldEmployerPhoneNumber.text != ""){
+            txtfieldEmployerPhoneNumber.validate()
+        }
         txtfieldNetAnnualIncome.validate()
         if (hasOwnershipInterest){
             txtfieldOwnershipPercentage.validate()

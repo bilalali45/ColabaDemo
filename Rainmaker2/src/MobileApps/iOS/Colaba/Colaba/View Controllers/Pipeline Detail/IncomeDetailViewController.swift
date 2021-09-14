@@ -377,8 +377,11 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
                 
             }
             else if (tableView == tableViewSelfEmployement && (indexPath.row == 1 || indexPath.row == 2)){
-//                let vc = Utility.getAddRetirementAccountVC()
-//                self.presentVC(vc: vc)
+                let vc = Utility.getAddSelfEmploymentVC()
+                let navVC = UINavigationController(rootViewController: vc)
+                navVC.navigationBar.isHidden = true
+                navVC.modalPresentationStyle = .fullScreen
+                self.presentVC(vc: navVC)
             }
             else if (tableView == tableViewBusiness && (indexPath.row == 1 || indexPath.row == 2)){
 //                let vc = Utility.getAddStockBondVC()
