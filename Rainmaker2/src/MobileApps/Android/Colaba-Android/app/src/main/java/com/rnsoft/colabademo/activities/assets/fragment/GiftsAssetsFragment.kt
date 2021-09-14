@@ -58,49 +58,65 @@ class GiftsAssetsFragment:Fragment() {
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                 binding.giftSourceInputLayout.defaultHintTextColor = ColorStateList.valueOf(
                     ContextCompat.getColor(requireContext(), R.color.grey_color_two ))
+                binding.giftSourceInputLayout.helperText?.let{
+                    if(it.isNotEmpty())
+                        CustomMaterialFields.clearError(binding.giftSourceInputLayout, requireContext())
+                }
+
+                binding.giftTypeConstraintlayout.visibility = View.VISIBLE
 
                 removeErrorFromFields()
                 clearFocusFromFields()
 
-                if(position ==0) {
-                    //binding.whichAssetInputLayout.visibility = View.GONE
-
-
-                    //binding.whichAssetsCompleteView.setText("")
-                    binding.annualBaseLayout.visibility = View.VISIBLE
-                    binding.radioGroup.clearCheck()
-                    binding.radioLabelTextView.visibility = View.VISIBLE
-                    binding.radioGroup.visibility = View.VISIBLE
-
-                }
-                else{
-                    //binding.whichAssetsCompleteView.setText("")
-                    //binding.whichAssetInputLayout.visibility = View.GONE
-                    binding.radioLabelTextView.visibility = View.GONE
-                    binding.radioGroup.visibility = View.GONE
-                    binding.annualBaseLayout.visibility = View.VISIBLE
-
-                }
+                if(position ==0) { }
+                else{ }
             }
         }
 
+        CustomMaterialFields.setDollarPrefix(binding.annualBaseLayout, requireActivity())
 
         binding.radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.radioButton -> {
-                    //binding.whichAssetInputLayout.visibility = View.VISIBLE
+                R.id.cash_gift -> {
+                    HideSoftkeyboard.hide(requireContext(),binding.radioGroup)
+                    clearFocusFromFields()
+                    binding.layoutTransferDate.visibility = View.GONE
+                    binding.giftDepositGroup.clearCheck()
+                    binding.giftTransferConstraintlayout.visibility = View.VISIBLE
+                    binding.annualBaseLayout.hint = "Cash Value"
                 }
-                R.id.radioButton2 -> {
-                    //binding.whichAssetInputLayout.visibility = View.GONE
+                R.id.gift_of_equity -> {
+                    HideSoftkeyboard.hide(requireContext(),binding.radioGroup)
+                    clearFocusFromFields()
+                    binding.layoutTransferDate.visibility = View.GONE
+                    binding.giftDepositGroup.clearCheck()
+                    binding.giftTransferConstraintlayout.visibility = View.GONE
+                    binding.annualBaseLayout.hint = "Market Value"
                 }
                 else -> {
                 }
             }
         })
 
+        binding.giftDepositGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.yes_deposited -> {
+                    HideSoftkeyboard.hide(requireContext(),binding.radioGroup)
+                    clearFocusFromFields()
+                    binding.layoutTransferDate.visibility = View.VISIBLE
+                    binding.layoutTransferDate.hint = resources.getString(R.string.date_of_transfer)
+                }
+                R.id.no_deposited -> {
+                    HideSoftkeyboard.hide(requireContext(),binding.radioGroup)
+                    clearFocusFromFields()
+                    binding.layoutTransferDate.visibility = View.VISIBLE
+                    binding.layoutTransferDate.hint = resources.getString(R.string.expected_date_of_transfer)
+                }
+                else -> {
+                }
+            }
+        })
 
-
-        CustomMaterialFields.setDollarPrefix(binding.annualBaseLayout, requireActivity())
 
         binding.dateOfTransferEditText.showSoftInputOnFocus = false
         binding.dateOfTransferEditText.setOnClickListener { openCalendar() }
@@ -127,10 +143,9 @@ class GiftsAssetsFragment:Fragment() {
 
 
     private fun clearFocusFromFields(){
-        binding.annualBaseLayout.clearFocus()
-        //binding.whichAssetInputLayout.clearFocus()
         binding.giftSourceInputLayout.clearFocus()
         binding.radioGroup.clearFocus()
+        binding.annualBaseLayout.clearFocus()
         binding.giftDepositGroup.clearFocus()
         binding.dateOfTransferEditText.clearFocus()
     }

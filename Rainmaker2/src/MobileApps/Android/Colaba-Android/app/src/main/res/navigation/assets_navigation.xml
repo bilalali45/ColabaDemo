@@ -10,31 +10,31 @@
         android:id="@+id/navigation_asset_tab"
         android:name="com.rnsoft.colabademo.AssetsTabFragment"
         android:label="@string/assets"
-        tools:layout="@layout/asset_fragment_layout" />
+        tools:layout="@layout/dynamic_asset_fragment_layout" />
 
     <fragment
         android:id="@+id/navigation_b_assets_one"
         android:name="com.rnsoft.colabademo.BorrowerOneAssets"
         android:label="@string/assets"
-        tools:layout="@layout/asset_fragment_layout" />
+        tools:layout="@layout/dynamic_asset_fragment_layout" />
 
     <fragment
         android:id="@+id/navigation_b_assets_two"
         android:name="com.rnsoft.colabademo.BorrowerTwoAssets"
         android:label="@string/assets"
-        tools:layout="@layout/asset_fragment_layout" />
+        tools:layout="@layout/dynamic_asset_fragment_layout" />
 
     <fragment
         android:id="@+id/navigation_b_assets_three"
         android:name="com.rnsoft.colabademo.BorrowerThreeAssets"
         android:label="@string/assets"
-        tools:layout="@layout/asset_fragment_layout" />
+        tools:layout="@layout/dynamic_asset_fragment_layout" />
 
     <fragment
         android:id="@+id/navigation_b_assets_four"
         android:name="com.rnsoft.colabademo.BorrowerFourAssets"
         android:label="@string/assets"
-        tools:layout="@layout/asset_fragment_layout" />
+        tools:layout="@layout/dynamic_asset_fragment_layout" />
 
 
     <fragment

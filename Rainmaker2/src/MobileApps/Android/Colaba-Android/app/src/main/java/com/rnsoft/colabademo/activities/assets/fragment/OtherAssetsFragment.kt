@@ -56,6 +56,10 @@ class OtherAssetsFragment:Fragment() {
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                 binding.accountTypeInputLayout.defaultHintTextColor = ColorStateList.valueOf(
                     ContextCompat.getColor(requireContext(), R.color.grey_color_two ))
+                binding.accountNumberLayout.helperText?.let{
+                    if(it.isNotEmpty())
+                        CustomMaterialFields.clearError(binding.accountTypeInputLayout, requireContext())
+                }
                 if(position ==3) {
 
                 }
