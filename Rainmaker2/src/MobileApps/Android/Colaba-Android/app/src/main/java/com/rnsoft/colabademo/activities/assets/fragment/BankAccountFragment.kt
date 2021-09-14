@@ -18,6 +18,7 @@ import com.rnsoft.colabademo.databinding.BankAccountLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.HideSoftkeyboard
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.ArrayList
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -33,11 +34,15 @@ class BankAccountFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = BankAccountLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        setUpUI()
+        return root
+    }
 
-        val stateNamesAdapter = ArrayAdapter(root.context, android.R.layout.simple_list_item_1,  AppSetting.bankAccounts)
+    private fun setUpUI(){
+        val bankAccounts: ArrayList<String> = arrayListOf("Checking Account", "Saving Account")
+        val stateNamesAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  bankAccounts)
         binding.accountTypeCompleteView.setAdapter(stateNamesAdapter)
         binding.accountTypeCompleteView.setOnFocusChangeListener { _, _ ->
             HideSoftkeyboard.hide(requireContext(),  binding.accountTypeCompleteView)
@@ -50,23 +55,12 @@ class BankAccountFragment : Fragment() {
         binding.accountTypeCompleteView.onItemClickListener = object: AdapterView.OnItemClickListener {
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                 binding.accountTypeInputLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two ))
-                if(position ==AppSetting.bankAccounts.size-1) { }
+                if(position ==bankAccounts.size-1) { }
                 else{}
             }
         }
 
-
-        binding.accountNumberLayout.setEndIconOnClickListener(View.OnClickListener {
-            if (binding.accountNumberEdittext.getTransformationMethod()
-                    .equals(PasswordTransformationMethod.getInstance())
-            ) { //  hide password
-                binding.accountNumberEdittext.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
-                binding.accountNumberLayout.setEndIconDrawable(R.drawable.ic_eye_hide)
-            } else {
-                binding.accountNumberEdittext.setTransformationMethod(PasswordTransformationMethod.getInstance())
-                binding.accountNumberLayout.setEndIconDrawable(R.drawable.ic_eye_icon_svg)
-            }
-        })
+        CustomMaterialFields.setDollarPrefix(binding.annualBaseLayout, requireActivity())
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
@@ -82,7 +76,21 @@ class BankAccountFragment : Fragment() {
 
         addFocusOutListenerToFields()
 
-        return root
+        setUpEndIcon()
+    }
+
+    private fun setUpEndIcon(){
+        binding.accountNumberLayout.setEndIconOnClickListener(View.OnClickListener {
+            if (binding.accountNumberEdittext.getTransformationMethod()
+                    .equals(PasswordTransformationMethod.getInstance())
+            ) { //  hide password
+                binding.accountNumberEdittext.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
+                binding.accountNumberLayout.setEndIconDrawable(R.drawable.ic_eye_hide)
+            } else {
+                binding.accountNumberEdittext.setTransformationMethod(PasswordTransformationMethod.getInstance())
+                binding.accountNumberLayout.setEndIconDrawable(R.drawable.ic_eye_icon_svg)
+            }
+        })
     }
 
     private fun clearFocusFromFields(){
@@ -125,7 +133,6 @@ class BankAccountFragment : Fragment() {
         return bool
     }
 
-
     private  fun addFocusOutListenerToFields(){
         binding.accountNumberEdittext.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.accountNumberEdittext , binding.accountNumberLayout , requireContext()))
         //binding.accountTypeCompleteView.setOnFocusChangeListener(CustomFocusListenerForAutoCompleteTextView( binding.accountTypeCompleteView , binding.accountTypeInputLayout , requireContext()))
@@ -134,14 +141,5 @@ class BankAccountFragment : Fragment() {
     }
 
 
-    private val onTestFocusChangeListener:View.OnFocusChangeListener =
-        View.OnFocusChangeListener { p0, p1 ->
-            if(!p1){
-                if(p0 is TextInputLayout) {
-                    val textInputLayout  = p0 as TextInputLayout
-                        CustomMaterialFields.clearError(textInputLayout, requireContext())
-                }
-            }
-        }
 
 }

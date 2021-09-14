@@ -11,7 +11,7 @@
         android:id="@+id/header_loan_purchase"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        layout="@layout/app_toolbar_heading"
+        layout="@layout/app_header_with_back_nav"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">

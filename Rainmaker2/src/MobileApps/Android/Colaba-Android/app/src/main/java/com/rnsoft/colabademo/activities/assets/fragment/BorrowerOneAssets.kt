@@ -133,6 +133,21 @@ class BorrowerOneAssets : Fragment() {
             bottomCell.setOnClickListener{
                 findNavController().navigate(R.id.navigation_stock_bonds)
             }
+            else
+            if(i == 3)
+            bottomCell.setOnClickListener{
+                findNavController().navigate(R.id.navigation_proceed_from_transaction)
+            }
+            else
+            if(i == 4)
+            bottomCell.setOnClickListener{
+                findNavController().navigate(R.id.navigation_gift_assets)
+            }
+            else
+            if(i == 5)
+            bottomCell.setOnClickListener{
+                findNavController().navigate(R.id.navigation_other_asset)
+            }
             mainCell.addView(bottomCell)
 
 

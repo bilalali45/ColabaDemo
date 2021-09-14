@@ -53,7 +53,7 @@ class IncomeTabFragment : Fragment() {
             }
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                Log.e("Selected_Page", position.toString())
+                //Log.e("Selected_Page", position.toString())
                 selectedPosition = position
             }
             override fun onPageScrollStateChanged(state: Int) {

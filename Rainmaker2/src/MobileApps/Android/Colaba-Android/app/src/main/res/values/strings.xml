@@ -282,6 +282,7 @@
     <string name="work_number">Work Number</string>
     <string name="ext_number">Extension Number</string>
     <string name="cell_number">Cell Number</string>
+    <string name="emp_phone_number">Employer Phone Number</string>
     <string name="current_home_address">Current Home Address</string>
     <string name="martial_status">Marital Status</string>
     <string name="martial_status_married">Married</string>
@@ -333,7 +334,6 @@
 
 
 
-
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
     <string name="mixed_use_property_ques">If Borrower will occupy the property, will Borrower set aside space within the property to operate his/her own business?</string>
     <string name="appraised_property_value">Apprasied Property Value</string>
@@ -352,6 +352,28 @@
     <string name="credit_limit_switch">Home Equity Line of Credit (HELOC)</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="add_employment">Add Employment</string>
+    <string name="add_prev_employment">Add Previous Employment</string>
+    <string name="employer_name">Employer Name</string>
+    <string name="job_title">Job Title</string>
+    <string name="start_date">Start Date (MM/DD/YYYY)</string>
+    <string name="years_profession">Years in Profession</string>
+    <string name="income_ques1">Are you employed by a family member, property seller, real estate agent, or other party to the transaction?</string>
+    <string name="income_ques2">Do you have an ownership interest in this business?</string>
+    <string name="ownership_percentage">Ownership Percentage</string>
+    <string name="pay_type">Pay Type</string>
+    <string name="additional_income">Additional Income</string>
+    <string name="salary">Salary</string>
+    <string name="hourly">Hourly</string>
+    <string name="bonus">Bonus</string>
+    <string name="overtime">Overtime</string>
+    <string name="commission">Commission</string>
+    <string name="overtime_income">Annual Overtime Income</string>
+    <string name="commission_income">Annual Commission Income</string>
+
+
+
+
 
 
 

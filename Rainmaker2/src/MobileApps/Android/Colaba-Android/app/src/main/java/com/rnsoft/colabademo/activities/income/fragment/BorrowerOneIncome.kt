@@ -10,14 +10,18 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.income.fragment.EventAddEmployment
+import com.rnsoft.colabademo.activities.income.fragment.DailogAddEmpolyment
 import com.rnsoft.colabademo.databinding.*
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
-import kotlinx.android.synthetic.main.assets_middle_cell.view.*
 import kotlinx.android.synthetic.main.assets_middle_cell.view.content_amount
 import kotlinx.android.synthetic.main.assets_middle_cell.view.content_desc
 import kotlinx.android.synthetic.main.assets_middle_cell.view.content_title
 import kotlinx.android.synthetic.main.assets_top_cell.view.*
 import kotlinx.android.synthetic.main.income_middle_cell.view.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class BorrowerOneIncome : Fragment() {
 
@@ -42,33 +46,32 @@ class BorrowerOneIncome : Fragment() {
                 ContentCell("Disrupt", "Admin Manager", "$4,000" , "Dec 2019 to May 2020")
         ))
 
-        val assetModelCell2 = AssetsModelClass( headerTitle = "Retirement Account", headerAmount = "$10,000" , footerTitle = "Add Retirement Account",
+        val assetModelCell2 = AssetsModelClass( headerTitle = "Self Employment / Independent Contractor", headerAmount = "$3,000/mo" , footerTitle = "Add Self Employment",
             contentCell = arrayListOf(
-                ContentCell("401K", "Retirement Account" ,"$10,000")
+                ContentCell("Freelance", "Content Writer" ,"$3,000","From Dec 2020")
             ))
 
-        val assetModelCell3 = AssetsModelClass( headerTitle = "Stocks, Bonds, or Other\n" +
-                "Financial Assets", headerAmount = "$800" , footerTitle = "Add Financial Assets",
+        val assetModelCell3 = AssetsModelClass( headerTitle = "Business" ,headerAmount = "$6,000/mo" , footerTitle = "Add Business",
             contentCell = arrayListOf(
-                ContentCell("AHC", "Mutual Funds" ,"$200")
-            ))
-
-
-        val assetModelCell4 = AssetsModelClass( headerTitle = "Proceeds From Transaction", headerAmount = "$1,200" , footerTitle = "Add Proceeds From Transaction",
-            contentCell = arrayListOf(
-                ContentCell("Proceeds From Selling Non-Real Es...", "Proceeds From Transaction" ,"$1,200")
+                ContentCell("OPTP", "Director" ,"$6,000","From Jun 2020")
             ))
 
 
-        val assetModelCell5 = AssetsModelClass( headerTitle = "Gift Funds", headerAmount = "$2000" , footerTitle = "Add Gifts Account",
+        val assetModelCell4 = AssetsModelClass( headerTitle = "Military Pay", headerAmount = "$2,000" , footerTitle = "Add Military Service",
             contentCell = arrayListOf(
-                ContentCell("Relative", "Cash Gifts" ,"$2000")
+                ContentCell("US Army", "Field 15 — Aviation" ,"$2,000","From Jun 2020")
             ))
 
 
-        val assetModelCell6 = AssetsModelClass( headerTitle = "Other", headerAmount = "$600" , footerTitle = "Add Other Assets",
+        val assetModelCell5 = AssetsModelClass( headerTitle = "Retirement", headerAmount = "$1,200/mo" , footerTitle = "Add Retirement",
             contentCell = arrayListOf(
-                ContentCell("Individual Development Account", "Other" ,"$600")
+                ContentCell("Google LLC", "Pension" ,"$1,200")
+            ))
+
+
+        val assetModelCell6 = AssetsModelClass( headerTitle = "Other", headerAmount = "$4,125/mo" , footerTitle = "Add Other Income",
+            contentCell = arrayListOf(
+                ContentCell("Alimony", "Family" ,"$4,125")
             ))
 
 
@@ -93,8 +96,8 @@ class BorrowerOneIncome : Fragment() {
         for (i in 0 until sampleAssets.size) {
 
             val modelData = sampleAssets[i]
-            Log.e("header",modelData.headerTitle )
-            Log.e("h-amount",modelData.headerAmount )
+            //Log.e("header",modelData.headerTitle )
+            //Log.e("h-amount",modelData.headerAmount )
 
             val mainCell: LinearLayoutCompat =
                 layoutInflater.inflate(R.layout.income_main_cell, null) as LinearLayoutCompat
@@ -127,7 +130,8 @@ class BorrowerOneIncome : Fragment() {
 
             if(i == 0)
             bottomCell.setOnClickListener{
-                findNavController().navigate(R.id.navigation_bank_account)
+                DailogAddEmpolyment.newInstance().show(childFragmentManager, DailogAddEmpolyment::class.java.canonicalName)
+
             }
             else
             if(i == 1)
@@ -199,7 +203,24 @@ class BorrowerOneIncome : Fragment() {
     }
 
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
 
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onAddEmploymentEvent(event: EventAddEmployment) {
+        if(event.boolean)
+            // go to current employment
+            findNavController().navigate(R.id.navigation_income_current_employment)
+        else
+            findNavController().navigate(R.id.navigation_income_prev_emplyoyment)
+    }
 
 
 }
