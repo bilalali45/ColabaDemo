@@ -110,6 +110,7 @@ class AddCurrentEmployementViewController: BaseViewController {
         txtfieldProfessionYears.setDelegates(controller: self)
         txtfieldProfessionYears.setTextField(keyboardType: .numberPad)
         txtfieldProfessionYears.setIsValidateOnEndEditing(validate: false)
+        txtfieldProfessionYears.setTextField(maxLength: 2)
         
         txtfieldOwnershipPercentage.setTextField(placeholder: "Ownership Percentage")
         txtfieldOwnershipPercentage.setDelegates(controller: self)

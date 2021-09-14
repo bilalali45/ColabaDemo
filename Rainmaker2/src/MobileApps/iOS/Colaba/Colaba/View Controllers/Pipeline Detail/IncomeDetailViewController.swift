@@ -391,8 +391,11 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
                 self.presentVC(vc: vc)
             }
             else if (tableView == tableViewMilitaryPay && (indexPath.row == 1 || indexPath.row == 2)){
-//                let vc = Utility.getAddProceedsFromTransactionVC()
-//                self.presentVC(vc: vc)
+                let vc = Utility.getAddMilitaryPayVC()
+                let navVC = UINavigationController(rootViewController: vc)
+                navVC.navigationBar.isHidden = true
+                navVC.modalPresentationStyle = .fullScreen
+                self.presentVC(vc: navVC)
             }
             else if (tableView == tableViewRetitrement && (indexPath.row == 1 || indexPath.row == 2)){
 //                let vc = Utility.getAddGiftFundsVC()

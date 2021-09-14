@@ -264,6 +264,10 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: AddBusinessViewController.self)) as! AddBusinessViewController
     }
     
+    static func getAddMilitaryPayVC() -> AddMilitaryPayViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: AddMilitaryPayViewController.self)) as! AddMilitaryPayViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){

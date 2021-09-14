@@ -67,6 +67,7 @@ class AddPreviousEmploymentViewController: BaseViewController {
         txtfieldProfessionYears.setDelegates(controller: self)
         txtfieldProfessionYears.setTextField(keyboardType: .numberPad)
         txtfieldProfessionYears.setIsValidateOnEndEditing(validate: false)
+        txtfieldProfessionYears.setTextField(maxLength: 2)
         
         txtfieldStartDate.setTextField(placeholder: "Start Date (MM/DD/YYYY)")
         txtfieldStartDate.setDelegates(controller: self)
