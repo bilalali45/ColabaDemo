@@ -40,6 +40,7 @@ let kNotificationDeleteMailingAddressAndDismiss = "notificationDeleteMailingAddr
 let kNotificationAddCurrentEmployement = "notificationAddCurrentEmployement"
 let kNotificationAddPreviousEmployement = "notificationAddPreviousEmployement"
 let kHousingStatusArray = ["Own", "Rent", "No Primary Housing Expense"]
+let kBusinessTypeArray = ["Partnership (e.g. LLC, LP, or GP)", "Corporation (e.g. C-Corp, S-Corp, or LLC)"]
 
 var sortingFilter = 1
 var isAppOpenFromBackground = false
