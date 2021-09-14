@@ -37,6 +37,8 @@ let kNotificationShowHomeNavigationBar = "notificationShowHomeNavigationBar"
 let kNotificationShowMailingAddress = "notificationShowMailingAddress"
 let kNotificationSaveAddressAndDismiss = "notificationSaveAddressAndDismiss"
 let kNotificationDeleteMailingAddressAndDismiss = "notificationDeleteMailingAddressAndDismiss"
+let kNotificationAddCurrentEmployement = "notificationAddCurrentEmployement"
+let kNotificationAddPreviousEmployement = "notificationAddPreviousEmployement"
 let kHousingStatusArray = ["Own", "Rent", "No Primary Housing Expense"]
 
 var sortingFilter = 1
