@@ -1576,7 +1576,7 @@ Houston, TX 77027, USA</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qEB-Yg-XNE">
-                                                <rect key="frame" x="0.0" y="970" width="375" height="275"/>
+                                                <rect key="frame" x="0.0" y="986" width="375" height="230"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lq4-um-oTs">
                                                         <rect key="frame" x="20" y="0.0" width="335" height="23.5"/>
@@ -1639,7 +1639,7 @@ Houston, TX 77027, USA</string>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
                                                         <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Annual Base Salary"/>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Annual Bonus Income"/>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
                                                                 <real key="value" value="1"/>
                                                             </userDefinedRuntimeAttribute>
@@ -1659,7 +1659,7 @@ Houston, TX 77027, USA</string>
                                                             <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mdg-fb-yrO" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
+                                                    <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mdg-fb-yrO" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                         <rect key="frame" x="20" y="242.5" width="335" height="39"/>
                                                         <color key="backgroundColor" red="0.60392156860000001" green="0.602715373" blue="0.602715373" alpha="0.5" colorSpace="calibratedRGB"/>
                                                         <constraints>
@@ -1704,13 +1704,13 @@ Houston, TX 77027, USA</string>
                                                     <constraint firstItem="mdg-fb-yrO" firstAttribute="top" secondItem="bc6-ac-4pD" secondAttribute="bottom" constant="30" id="VwE-Un-Ez8"/>
                                                     <constraint firstAttribute="trailing" secondItem="KP1-2k-dJO" secondAttribute="trailing" constant="20" id="kFk-nh-DGJ"/>
                                                     <constraint firstAttribute="trailing" secondItem="mdg-fb-yrO" secondAttribute="trailing" constant="20" id="mg8-yZ-qwO"/>
-                                                    <constraint firstAttribute="height" constant="275" id="mk0-Zq-AdR"/>
+                                                    <constraint firstAttribute="height" constant="230" id="mk0-Zq-AdR"/>
                                                     <constraint firstItem="bc6-ac-4pD" firstAttribute="top" secondItem="LBL-Ug-Gz9" secondAttribute="bottom" constant="50" id="nRt-RV-p1A"/>
                                                     <constraint firstAttribute="trailing" secondItem="Lq4-um-oTs" secondAttribute="trailing" constant="20" id="wBB-QN-Ksi"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vdY-fb-VqZ">
-                                                <rect key="frame" x="0.0" y="1285" width="375" height="400"/>
+                                                <rect key="frame" x="0.0" y="1248" width="375" height="460"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ul1-oJ-Ffg">
                                                         <rect key="frame" x="20" y="0.0" width="335" height="23.5"/>
@@ -1744,8 +1744,8 @@ Houston, TX 77027, USA</string>
                                                             </label>
                                                         </subviews>
                                                     </stackView>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hCF-2n-H37" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="95.5" width="335" height="39"/>
+                                                    <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hCF-2n-H37" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
+                                                        <rect key="frame" x="20" y="113.5" width="335" height="39"/>
                                                         <color key="backgroundColor" red="0.60392156860000001" green="0.602715373" blue="0.602715373" alpha="0.5" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="39" id="t1E-58-7p0"/>
@@ -1775,7 +1775,7 @@ Houston, TX 77027, USA</string>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="hat-s7-BnN">
-                                                        <rect key="frame" x="20" y="165.5" width="335" height="40"/>
+                                                        <rect key="frame" x="20" y="83.5" width="335" height="40"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tsZ-Gg-ZRL">
                                                                 <rect key="frame" x="0.0" y="0.0" width="18" height="40"/>
@@ -1793,8 +1793,8 @@ Houston, TX 77027, USA</string>
                                                             </label>
                                                         </subviews>
                                                     </stackView>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Uem-bo-5kz" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="217.5" width="335" height="39"/>
+                                                    <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Uem-bo-5kz" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
+                                                        <rect key="frame" x="20" y="153.5" width="335" height="39"/>
                                                         <color key="backgroundColor" red="0.60392156860000001" green="0.602715373" blue="0.602715373" alpha="0.5" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="39" id="eCb-VP-ejK"/>
@@ -1824,7 +1824,7 @@ Houston, TX 77027, USA</string>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="khH-vN-lG9">
-                                                        <rect key="frame" x="20" y="286.5" width="114" height="40"/>
+                                                        <rect key="frame" x="20" y="123.5" width="114" height="40"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cev-tK-dda">
                                                                 <rect key="frame" x="0.0" y="0.0" width="18" height="40"/>
@@ -1842,8 +1842,8 @@ Houston, TX 77027, USA</string>
                                                             </label>
                                                         </subviews>
                                                     </stackView>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="c8J-VU-kuv" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="338.5" width="335" height="39"/>
+                                                    <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="c8J-VU-kuv" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
+                                                        <rect key="frame" x="20" y="193.5" width="335" height="39"/>
                                                         <color key="backgroundColor" red="0.60392156860000001" green="0.602715373" blue="0.602715373" alpha="0.5" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="39" id="X3a-xC-vN3"/>
@@ -1877,11 +1877,10 @@ Houston, TX 77027, USA</string>
                                                 <constraints>
                                                     <constraint firstItem="khH-vN-lG9" firstAttribute="leading" secondItem="vdY-fb-VqZ" secondAttribute="leading" constant="20" id="11v-5Q-AEY"/>
                                                     <constraint firstAttribute="trailing" secondItem="hat-s7-BnN" secondAttribute="trailing" constant="20" id="784-dT-bbR"/>
-                                                    <constraint firstItem="hat-s7-BnN" firstAttribute="top" secondItem="gjb-bj-oXW" secondAttribute="bottom" constant="82" id="7YJ-HM-AQT"/>
-                                                    <constraint firstItem="khH-vN-lG9" firstAttribute="top" secondItem="gjb-bj-oXW" secondAttribute="bottom" constant="203" id="9Fc-RO-vaa"/>
-                                                    <constraint firstAttribute="height" constant="400" id="ASY-fv-08t"/>
-                                                    <constraint firstItem="Uem-bo-5kz" firstAttribute="top" secondItem="hat-s7-BnN" secondAttribute="bottom" constant="12" id="Bcj-Ph-UMy"/>
-                                                    <constraint firstItem="c8J-VU-kuv" firstAttribute="top" secondItem="khH-vN-lG9" secondAttribute="bottom" constant="12" id="I9q-bK-BdR"/>
+                                                    <constraint firstItem="hat-s7-BnN" firstAttribute="top" secondItem="gjb-bj-oXW" secondAttribute="bottom" id="7YJ-HM-AQT"/>
+                                                    <constraint firstAttribute="height" constant="460" id="ASY-fv-08t"/>
+                                                    <constraint firstItem="Uem-bo-5kz" firstAttribute="top" secondItem="hat-s7-BnN" secondAttribute="bottom" constant="30" id="Bcj-Ph-UMy"/>
+                                                    <constraint firstItem="c8J-VU-kuv" firstAttribute="top" secondItem="khH-vN-lG9" secondAttribute="bottom" constant="30" id="I9q-bK-BdR"/>
                                                     <constraint firstAttribute="trailing" secondItem="hCF-2n-H37" secondAttribute="trailing" constant="20" id="PPJ-sM-KnT"/>
                                                     <constraint firstItem="hCF-2n-H37" firstAttribute="leading" secondItem="vdY-fb-VqZ" secondAttribute="leading" constant="20" id="Rd2-mt-xY6"/>
                                                     <constraint firstItem="Uem-bo-5kz" firstAttribute="leading" secondItem="vdY-fb-VqZ" secondAttribute="leading" constant="20" id="SBB-dK-l8X"/>
@@ -1889,10 +1888,11 @@ Houston, TX 77027, USA</string>
                                                     <constraint firstAttribute="trailing" secondItem="Uem-bo-5kz" secondAttribute="trailing" constant="20" id="axs-Fe-idn"/>
                                                     <constraint firstItem="hat-s7-BnN" firstAttribute="leading" secondItem="vdY-fb-VqZ" secondAttribute="leading" constant="20" id="b9s-jY-SUE"/>
                                                     <constraint firstItem="gjb-bj-oXW" firstAttribute="top" secondItem="ul1-oJ-Ffg" secondAttribute="bottom" constant="20" id="dS7-3Z-VIc"/>
-                                                    <constraint firstItem="hCF-2n-H37" firstAttribute="top" secondItem="gjb-bj-oXW" secondAttribute="bottom" constant="12" id="eCL-Ti-TN6"/>
+                                                    <constraint firstItem="hCF-2n-H37" firstAttribute="top" secondItem="gjb-bj-oXW" secondAttribute="bottom" constant="30" id="eCL-Ti-TN6"/>
                                                     <constraint firstItem="c8J-VU-kuv" firstAttribute="leading" secondItem="vdY-fb-VqZ" secondAttribute="leading" constant="20" id="et2-YO-6ht"/>
                                                     <constraint firstItem="gjb-bj-oXW" firstAttribute="leading" secondItem="vdY-fb-VqZ" secondAttribute="leading" constant="20" id="fSr-KF-dZV"/>
                                                     <constraint firstAttribute="trailing" secondItem="ul1-oJ-Ffg" secondAttribute="trailing" constant="20" id="hKa-jq-BLo"/>
+                                                    <constraint firstItem="khH-vN-lG9" firstAttribute="top" secondItem="hat-s7-BnN" secondAttribute="bottom" id="iiT-tG-OFc"/>
                                                     <constraint firstAttribute="trailing" secondItem="gjb-bj-oXW" secondAttribute="trailing" constant="20" id="p84-6h-Htt"/>
                                                     <constraint firstItem="ul1-oJ-Ffg" firstAttribute="leading" secondItem="vdY-fb-VqZ" secondAttribute="leading" constant="20" id="qnp-eZ-m93"/>
                                                     <constraint firstAttribute="trailing" secondItem="c8J-VU-kuv" secondAttribute="trailing" constant="20" id="uIV-sa-HAa"/>
@@ -1906,7 +1906,7 @@ Houston, TX 77027, USA</string>
                                             <constraint firstItem="dss-yH-hVa" firstAttribute="top" secondItem="jkO-gR-wga" secondAttribute="bottom" constant="50" id="6mo-5x-GO8"/>
                                             <constraint firstItem="UmS-Lp-d9Q" firstAttribute="leading" secondItem="BL2-KG-MDJ" secondAttribute="leading" constant="20" id="ASH-Kk-ygq"/>
                                             <constraint firstItem="pFN-Cj-ljL" firstAttribute="top" secondItem="Mpn-wK-9OH" secondAttribute="bottom" constant="30" id="AkM-12-lW0"/>
-                                            <constraint firstItem="qEB-Yg-XNE" firstAttribute="top" secondItem="SjQ-sN-hPt" secondAttribute="bottom" constant="30" id="Hla-6a-M1E"/>
+                                            <constraint firstItem="qEB-Yg-XNE" firstAttribute="top" secondItem="SjQ-sN-hPt" secondAttribute="bottom" constant="46" id="Hla-6a-M1E"/>
                                             <constraint firstItem="Mpn-wK-9OH" firstAttribute="leading" secondItem="BL2-KG-MDJ" secondAttribute="leading" constant="20" id="Joa-bU-aGC"/>
                                             <constraint firstAttribute="trailing" secondItem="vdY-fb-VqZ" secondAttribute="trailing" id="Q5v-6t-O7I"/>
                                             <constraint firstItem="34r-SH-P5y" firstAttribute="leading" secondItem="BL2-KG-MDJ" secondAttribute="leading" constant="20" id="VyK-88-OcO"/>
@@ -1921,7 +1921,7 @@ Houston, TX 77027, USA</string>
                                             <constraint firstItem="UmS-Lp-d9Q" firstAttribute="top" secondItem="34r-SH-P5y" secondAttribute="bottom" constant="30" id="fOL-B5-DOR"/>
                                             <constraint firstItem="SjQ-sN-hPt" firstAttribute="top" secondItem="dss-yH-hVa" secondAttribute="bottom" constant="40" id="gEH-ET-cHb"/>
                                             <constraint firstAttribute="height" constant="1900" id="heg-ok-Xbl"/>
-                                            <constraint firstItem="vdY-fb-VqZ" firstAttribute="top" secondItem="qEB-Yg-XNE" secondAttribute="bottom" constant="40" id="kKf-QR-thR"/>
+                                            <constraint firstItem="vdY-fb-VqZ" firstAttribute="top" secondItem="qEB-Yg-XNE" secondAttribute="bottom" constant="32" id="kKf-QR-thR"/>
                                             <constraint firstItem="pFN-Cj-ljL" firstAttribute="leading" secondItem="BL2-KG-MDJ" secondAttribute="leading" constant="20" id="mTX-Zj-yee"/>
                                             <constraint firstAttribute="trailing" secondItem="SjQ-sN-hPt" secondAttribute="trailing" id="pwR-xi-NRf"/>
                                             <constraint firstAttribute="trailing" secondItem="wJR-82-tJW" secondAttribute="trailing" constant="20" id="stj-06-TqD"/>
@@ -1978,17 +1978,61 @@ Houston, TX 77027, USA</string>
                     </view>
                     <size key="freeformSize" width="375" height="1900"/>
                     <connections>
+                        <outlet property="additionalIncomeView" destination="vdY-fb-VqZ" id="SKX-Xw-HJQ"/>
                         <outlet property="addressView" destination="wJR-82-tJW" id="Qze-2O-Weh"/>
+                        <outlet property="bonusStackView" destination="gjb-bj-oXW" id="eJT-n7-q4j"/>
                         <outlet property="btnBack" destination="4qY-ai-Sc4" id="MVR-gL-EDM"/>
+                        <outlet property="btnBonus" destination="KWA-uA-oGu" id="Ort-Ph-TOf"/>
+                        <outlet property="btnCommision" destination="cev-tK-dda" id="ZKE-hs-zRG"/>
                         <outlet property="btnDelete" destination="mnO-gB-A5c" id="3VK-vZ-0DK"/>
+                        <outlet property="btnEmployedNo" destination="Hng-vo-gej" id="hcc-v6-n8v"/>
+                        <outlet property="btnEmployedYes" destination="gxe-hY-9Z0" id="0W9-dJ-Zje"/>
+                        <outlet property="btnHourly" destination="a1W-OS-cS8" id="DF1-Se-5IC"/>
+                        <outlet property="btnOvertime" destination="tsZ-Gg-ZRL" id="30r-BA-Ge6"/>
+                        <outlet property="btnOwnershipNo" destination="0o4-Hd-6yP" id="eN8-P0-oUd"/>
+                        <outlet property="btnOwnershipYes" destination="5Pq-hs-tfw" id="nZ4-H1-R67"/>
+                        <outlet property="btnSalary" destination="gnu-IP-a1E" id="GW8-kz-IAQ"/>
                         <outlet property="btnSaveChanges" destination="fOv-pw-XN9" id="wpN-sN-gbi"/>
+                        <outlet property="commissionStackView" destination="khH-vN-lG9" id="mRW-q4-Bdn"/>
+                        <outlet property="commissionStackViewTopConstraint" destination="iiT-tG-OFc" id="WkX-m8-DIZ"/>
+                        <outlet property="employedView" destination="dss-yH-hVa" id="rhG-ox-0Cu"/>
+                        <outlet property="employedViewNoStackView" destination="QMG-HM-TRd" id="jZm-de-Xh3"/>
+                        <outlet property="employedViewYesStackView" destination="ma5-M6-j90" id="afW-3J-d0A"/>
+                        <outlet property="hourlyStackView" destination="LBL-Ug-Gz9" id="CGv-nJ-1rc"/>
                         <outlet property="lblAddress" destination="Xz8-fu-6aZ" id="cSJ-Rh-gIH"/>
+                        <outlet property="lblBonus" destination="2d6-9S-hZw" id="Mo9-fW-HVb"/>
+                        <outlet property="lblCommission" destination="7i4-8d-t3k" id="CxX-bT-dwb"/>
+                        <outlet property="lblEmployedNo" destination="uCb-8f-OL6" id="whx-Il-dOL"/>
+                        <outlet property="lblEmployedViewQuestion" destination="7GS-LG-f2S" id="E3v-y9-ZPC"/>
+                        <outlet property="lblEmployedYes" destination="CF5-lo-g1h" id="MzV-hH-kfN"/>
+                        <outlet property="lblHourly" destination="bOK-rf-Piu" id="dEs-gh-Mko"/>
+                        <outlet property="lblOvertime" destination="imS-rn-Dtk" id="Fp1-tg-ToU"/>
+                        <outlet property="lblOwnershipNo" destination="0fj-so-Jjo" id="Ah0-mJ-hXM"/>
+                        <outlet property="lblOwnershipQuestion" destination="a9O-nU-VPG" id="8tJ-ia-kwe"/>
+                        <outlet property="lblOwnershipYes" destination="mCq-3F-hHI" id="VHM-7V-eRB"/>
+                        <outlet property="lblSalary" destination="APd-Rh-Yid" id="JJM-07-4OA"/>
                         <outlet property="lblUsername" destination="ysZ-Kq-8VF" id="mMK-aT-IOh"/>
                         <outlet property="mainView" destination="BL2-KG-MDJ" id="0Wj-d5-yc3"/>
+                        <outlet property="mainViewHeightConstraint" destination="heg-ok-Xbl" id="cf7-dB-3nA"/>
+                        <outlet property="overtimeStackView" destination="hat-s7-BnN" id="iua-jB-AKG"/>
+                        <outlet property="overtimeStackViewTopConstraint" destination="7YJ-HM-AQT" id="0aR-0I-bXQ"/>
+                        <outlet property="ownershipNoStackView" destination="May-J6-UtC" id="SGL-KR-Z0o"/>
+                        <outlet property="ownershipView" destination="SjQ-sN-hPt" id="zCv-P0-7dx"/>
+                        <outlet property="ownershipViewHeightConstraint" destination="EPt-XB-Mvc" id="rpw-SG-GZH"/>
+                        <outlet property="ownershipYesStackView" destination="28w-YM-gjt" id="FoS-UN-4lz"/>
+                        <outlet property="payTypeView" destination="qEB-Yg-XNE" id="lEf-h3-wjV"/>
+                        <outlet property="payTypeViewHeightConstraint" destination="mk0-Zq-AdR" id="kBr-5l-HEn"/>
+                        <outlet property="salaryStackView" destination="KP1-2k-dJO" id="Q4M-oI-hoT"/>
                         <outlet property="scrollView" destination="tPI-lS-56f" id="MXH-Aw-uCq"/>
+                        <outlet property="txtfieldAnnualBaseSalary" destination="bc6-ac-4pD" id="iIj-Gv-lBx"/>
+                        <outlet property="txtfieldAnnualBonusIncome" destination="hCF-2n-H37" id="c7C-Pi-X7x"/>
+                        <outlet property="txtfieldAnnualCommision" destination="c8J-VU-kuv" id="UrX-wQ-2Va"/>
+                        <outlet property="txtfieldAnnualOvertime" destination="Uem-bo-5kz" id="y7U-Qh-80V"/>
                         <outlet property="txtfieldEmployerName" destination="Mpn-wK-9OH" id="OSg-Yq-pvt"/>
                         <outlet property="txtfieldEmployerPhoneNumber" destination="pFN-Cj-ljL" id="zVg-jd-meO"/>
+                        <outlet property="txtfieldHoursPerWeek" destination="mdg-fb-yrO" id="Ndy-iF-AeJ"/>
                         <outlet property="txtfieldJobTitle" destination="34r-SH-P5y" id="btr-wd-1pK"/>
+                        <outlet property="txtfieldOwnershipPercentage" destination="cvN-gV-tOB" id="0Co-Lp-kXF"/>
                         <outlet property="txtfieldProfessionYears" destination="jkO-gR-wga" id="oYl-tX-BkP"/>
                         <outlet property="txtfieldStartDate" destination="UmS-Lp-d9Q" id="IKh-XC-Vl1"/>
                     </connections>

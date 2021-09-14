@@ -90,7 +90,7 @@ class ColabaTextField: TextField {
                 isButtonHidden(false)
                 self.isUserInteractionEnabled = false
                 self.tintColor = .clear
-                setButton(image: UIImage(named: "calender")!)
+                setButton(image: UIImage(named: "CalendarIcon")!)
             case .defaultType:
                 self.setButton(image: nil)
             }
@@ -447,11 +447,14 @@ extension ColabaTextField: UITextFieldDelegate {
         if type == .delete {
             isButtonHidden(false)
         }
-        if type == .amount && attributedText != attributedPrefix {
+        if type == .amount && !attributedText!.string.contains("$  |  ") {
             self.attributedText = attributedPrefix
         }
-        if type == .percentage && attributedText != attributedPrefix {
+        if type == .percentage && !attributedText!.string.contains("%  |  ") {
             self.attributedText = attributedPrefix
+        }
+        if (type == .datePicker){
+            setDatePicker()
         }
     }
     

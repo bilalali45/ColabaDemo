@@ -57,11 +57,17 @@ class AddEmployementPopupViewController: UIViewController {
     }
     
     @objc func currentEmployementTapped(){
-        
+        dismissPopup()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.31) {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationAddCurrentEmployement), object: nil)
+        }
     }
     
     @objc func previousEmployementTapped(){
-        
+        dismissPopup()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.31) {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationAddPreviousEmployement), object: nil)
+        }
     }
     
     @IBAction func btnCloseTapped(_ sender: UIButton) {
