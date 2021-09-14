@@ -1,5 +1,5 @@
 //
-//  AddRetirementIncomeViewController.swift
+//  AddOtherIncomeViewController.swift
 //  Colaba
 //
 //  Created by Muhammad Murtaza on 14/09/2021.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddRetirementIncomeViewController: BaseViewController {
+class AddOtherIncomeViewController: BaseViewController {
 
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblUsername: UILabel!
@@ -15,8 +15,10 @@ class AddRetirementIncomeViewController: BaseViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var txtfieldRetirementIncomeType: ColabaTextField!
-    @IBOutlet weak var txtfieldEmployerName: ColabaTextField!
+    @IBOutlet weak var txtfieldIncomeType: ColabaTextField!
+    @IBOutlet weak var txtfieldDescription: ColabaTextField!
+    @IBOutlet weak var txtfieldDescriptionTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var txtfieldDescriptionHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var txtfieldMonthlyIncome: ColabaTextField!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
@@ -29,18 +31,18 @@ class AddRetirementIncomeViewController: BaseViewController {
     
     func setupTextFields(){
         
-        txtfieldRetirementIncomeType.setTextField(placeholder: "Retirement Income Type")
-        txtfieldRetirementIncomeType.setDelegates(controller: self)
-        txtfieldRetirementIncomeType.setValidation(validationType: .required)
-        txtfieldRetirementIncomeType.setTextField(keyboardType: .asciiCapable)
-        txtfieldRetirementIncomeType.setIsValidateOnEndEditing(validate: true)
-        txtfieldRetirementIncomeType.type = .dropdown
+        txtfieldIncomeType.setTextField(placeholder: "Income Type")
+        txtfieldIncomeType.setDelegates(controller: self)
+        txtfieldIncomeType.setValidation(validationType: .required)
+        txtfieldIncomeType.setTextField(keyboardType: .asciiCapable)
+        txtfieldIncomeType.setIsValidateOnEndEditing(validate: true)
+        txtfieldIncomeType.type = .dropdown
         
-        txtfieldEmployerName.setTextField(placeholder: "Employer Name")
-        txtfieldEmployerName.setDelegates(controller: self)
-        txtfieldEmployerName.setValidation(validationType: .required)
-        txtfieldEmployerName.setTextField(keyboardType: .asciiCapable)
-        txtfieldEmployerName.setIsValidateOnEndEditing(validate: true)
+        txtfieldDescription.setTextField(placeholder: "Description")
+        txtfieldDescription.setDelegates(controller: self)
+        txtfieldDescription.setValidation(validationType: .required)
+        txtfieldDescription.setTextField(keyboardType: .asciiCapable)
+        txtfieldDescription.setIsValidateOnEndEditing(validate: true)
         
         txtfieldMonthlyIncome.setTextField(placeholder: "Monthly Income")
         txtfieldMonthlyIncome.setDelegates(controller: self)
@@ -57,13 +59,13 @@ class AddRetirementIncomeViewController: BaseViewController {
     
     func validate() -> Bool {
 
-//        if (!txtfieldRetirementIncomeType.validate()) {
+//        if (!txtfieldIncomeType.validate()) {
 //            return false
 //        }
-        if (!txtfieldEmployerName.validate()){
-            return false
-        }
-        else if (!txtfieldMonthlyIncome.validate()){
+//        if (!txtfieldDescription.validate()){
+//            return false
+//        }
+        if (!txtfieldMonthlyIncome.validate()){
             return false
         }
 
@@ -79,8 +81,8 @@ class AddRetirementIncomeViewController: BaseViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        txtfieldRetirementIncomeType.validate()
-        txtfieldEmployerName.validate()
+        txtfieldIncomeType.validate()
+        txtfieldDescription.validate()
         txtfieldMonthlyIncome.validate()
         
         if validate(){

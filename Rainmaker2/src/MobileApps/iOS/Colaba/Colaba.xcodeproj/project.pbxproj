@@ -101,6 +101,7 @@
 		23BE064F26F0D2E800F9B4B8 /* AddBusinessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE064E26F0D2E800F9B4B8 /* AddBusinessViewController.swift */; };
 		23BE065126F0D7E300F9B4B8 /* AddMilitaryPayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE065026F0D7E300F9B4B8 /* AddMilitaryPayViewController.swift */; };
 		23BE065526F0E54C00F9B4B8 /* AddRetirementIncomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE065426F0E54C00F9B4B8 /* AddRetirementIncomeViewController.swift */; };
+		23BE065726F0E86200F9B4B8 /* AddOtherIncomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE065626F0E86200F9B4B8 /* AddOtherIncomeViewController.swift */; };
 		23C1039026E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C1038F26E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift */; };
 		23C244862689B6A500EED1D0 /* AllLoanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C244852689B6A500EED1D0 /* AllLoanModel.swift */; };
 		23C244882689E3E400EED1D0 /* ActiveLoanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C244872689E3E400EED1D0 /* ActiveLoanModel.swift */; };
@@ -285,6 +286,7 @@
 		23BE064E26F0D2E800F9B4B8 /* AddBusinessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBusinessViewController.swift; sourceTree = "<group>"; };
 		23BE065026F0D7E300F9B4B8 /* AddMilitaryPayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMilitaryPayViewController.swift; sourceTree = "<group>"; };
 		23BE065426F0E54C00F9B4B8 /* AddRetirementIncomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRetirementIncomeViewController.swift; sourceTree = "<group>"; };
+		23BE065626F0E86200F9B4B8 /* AddOtherIncomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOtherIncomeViewController.swift; sourceTree = "<group>"; };
 		23C1038F26E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixPropertyDetailFollowUpViewController.swift; sourceTree = "<group>"; };
 		23C244852689B6A500EED1D0 /* AllLoanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllLoanModel.swift; sourceTree = "<group>"; };
 		23C244872689E3E400EED1D0 /* ActiveLoanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveLoanModel.swift; sourceTree = "<group>"; };
@@ -582,6 +584,7 @@
 				23BE064E26F0D2E800F9B4B8 /* AddBusinessViewController.swift */,
 				23BE065026F0D7E300F9B4B8 /* AddMilitaryPayViewController.swift */,
 				23BE065426F0E54C00F9B4B8 /* AddRetirementIncomeViewController.swift */,
+				23BE065626F0E86200F9B4B8 /* AddOtherIncomeViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -1189,6 +1192,7 @@
 				23BE065526F0E54C00F9B4B8 /* AddRetirementIncomeViewController.swift in Sources */,
 				7148C6B92655500B00E1C216 /* ExtensionOfString.swift in Sources */,
 				23DBAD28269714B300119680 /* DocumentsViewController.swift in Sources */,
+				23BE065726F0E86200F9B4B8 /* AddOtherIncomeViewController.swift in Sources */,
 				230B94D226E74C03004CBC83 /* AssetsAddNewTableViewCell.swift in Sources */,
 				7186AD012653C6AB00E740D3 /* LoginViewController.swift in Sources */,
 				3937F87E26DE0BFB00B85585 /* ColabaTextField.swift in Sources */,
