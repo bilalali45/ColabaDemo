@@ -156,6 +156,7 @@ class AddCurrentEmployementViewController: BaseViewController {
         addressView.layer.borderWidth = 1
         addressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         addressView.dropShadowToCollectionViewCell()
+        addressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
         
         btnSaveChanges.layer.borderWidth = 1
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
@@ -185,6 +186,11 @@ class AddCurrentEmployementViewController: BaseViewController {
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
+    }
+    
+    @objc func addressViewTapped(){
+        let vc = Utility.getCurrentEmployerAddressVC()
+        self.pushToVC(vc: vc)
     }
     
     @objc func employedYesStackViewTapped(){

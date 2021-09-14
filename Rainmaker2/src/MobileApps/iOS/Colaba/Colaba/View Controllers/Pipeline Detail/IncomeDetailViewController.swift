@@ -85,7 +85,10 @@ class IncomeDetailViewController: BaseViewController {
     
     @objc func addCurrentEmployement(){
         let vc = Utility.getAddCurrentEmployementVC()
-        self.presentVC(vc: vc)
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.navigationBar.isHidden = true
+        navVC.modalPresentationStyle = .fullScreen
+        self.presentVC(vc: navVC)
     }
     
     @objc func addPreviousEmployement(){
@@ -352,7 +355,10 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (tableView == tableViewEmployement){
                 if ((indexPath.row == 1 || indexPath.row == 2)){
                     let vc = Utility.getAddCurrentEmployementVC()
-                    self.presentVC(vc: vc)
+                    let navVC = UINavigationController(rootViewController: vc)
+                    navVC.navigationBar.isHidden = true
+                    navVC.modalPresentationStyle = .fullScreen
+                    self.presentVC(vc: navVC)
                 }
                 else if (indexPath.row == 3){
                     let vc = Utility.getAddEmployementPopupVC()
