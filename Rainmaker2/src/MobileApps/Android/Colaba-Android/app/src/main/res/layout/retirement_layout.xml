@@ -201,9 +201,8 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:cursorVisible="true"
-            android:inputType="number"
 
-            android:singleLine="true"
+
             android:ems="10"
             android:fontFamily="@font/rubik_regular"
             android:paddingStart="0dp"
@@ -211,11 +210,12 @@
 
             android:imeOptions="actionNext"
 
+            android:inputType="numberPassword"
+            android:singleLine="true"
             android:lines="10"
             android:minLines="1"
             android:scrollHorizontally="false"
-            android:maxLines="10"
-            android:gravity="top|start"
+            android:maxLines="1"
 
 
 

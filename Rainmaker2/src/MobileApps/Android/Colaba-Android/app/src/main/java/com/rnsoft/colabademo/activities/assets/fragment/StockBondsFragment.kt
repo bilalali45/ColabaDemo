@@ -35,16 +35,9 @@ class StockBondsFragment:Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = StockBondsLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-
-
         setUpUI()
-
-
-
         return root
     }
 
