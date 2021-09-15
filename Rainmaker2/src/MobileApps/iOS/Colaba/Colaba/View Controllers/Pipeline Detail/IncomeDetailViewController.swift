@@ -80,6 +80,12 @@ class IncomeDetailViewController: BaseViewController {
         
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
+            self.tableViewEmployement.reloadData()
+            self.tableViewSelfEmployement.reloadData()
+            self.tableViewBusiness.reloadData()
+            self.tableViewMilitaryPay.reloadData()
+            self.tableViewRetitrement.reloadData()
+            self.tableViewOther.reloadData()
         }
     }
     
@@ -339,20 +345,9 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
             else{
                 selectedTableView = tableView
             }
-            
-            DispatchQueue.main.async {
-                self.tableViewEmployement.reloadData()
-                self.tableViewSelfEmployement.reloadData()
-                self.tableViewBusiness.reloadData()
-                self.tableViewMilitaryPay.reloadData()
-                self.tableViewRetitrement.reloadData()
-                self.tableViewOther.reloadData()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                    self.setScreenHeight()
-                }
-                
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                self.setScreenHeight()
             }
-            
         }
         else{
             if (tableView == tableViewEmployement){

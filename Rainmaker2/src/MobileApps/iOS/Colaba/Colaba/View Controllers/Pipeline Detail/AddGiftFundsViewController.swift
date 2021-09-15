@@ -92,12 +92,14 @@ class AddGiftFundsViewController: UIViewController {
         giftSourceDropDown.cancelAction = .some({
             self.btnGiftSourceDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             self.txtfieldGiftSource.dividerColor = Theme.getSeparatorNormalColor()
+            self.txtfieldGiftSource.resignFirstResponder()
         })
         giftSourceDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnGiftSourceDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldGiftSource.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldGiftSource.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldGiftSource.text = item
+            txtfieldGiftSource.resignFirstResponder()
             txtfieldGiftSource.detail = ""
             giftSourceDropDown.hide()
             giftTypeView.isHidden = false

@@ -146,8 +146,8 @@ class SubjectPropertyAddressViewController: BaseViewController {
     
     @objc func txtfieldHomeAddressTextChanged(){
         btnDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-        tblViewPlaces.isHidden = txtfieldHomeAddress.text == "       "
-        fetcher?.sourceTextHasChanged(txtfieldHomeAddress.text!.replacingOccurrences(of: "       ", with: ""))
+        tblViewPlaces.isHidden = txtfieldHomeAddress.text == ""
+        fetcher?.sourceTextHasChanged(txtfieldHomeAddress.text!)
     }
     
     func showAutoCompletePlaces(){

@@ -6,6 +6,10 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.libraries.places.api.Places
+import timber.log.Timber
+
+
+
 
 
 @HiltAndroidApp
@@ -17,7 +21,9 @@ open class ApplicationClass : Application()
         //registerActivityLifecycleCallbacks(AppLifecycleTracker(applicationContext))
         val appLifecycleObserver = AppLifecycleObserver(applicationContext)
         ProcessLifecycleOwner.get().lifecycle.addObserver(appLifecycleObserver)
-
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
 
         // Initialize the Places SDK. Note that the string value of `maps_api_key` will be generated
         // at build-time (see app/build.gradle). The technique used here allows you to provide your

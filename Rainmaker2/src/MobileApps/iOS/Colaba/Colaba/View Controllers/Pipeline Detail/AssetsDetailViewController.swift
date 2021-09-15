@@ -78,6 +78,12 @@ class AssetsDetailViewController: BaseViewController {
         
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
+            self.tableViewBankAccount.reloadData()
+            self.tableViewRetirementAccount.reloadData()
+            self.tableViewStockBonds.reloadData()
+            self.tableViewTransaction.reloadData()
+            self.tableViewGiftFunds.reloadData()
+            self.tableViewOther.reloadData()
         }
     }
   
@@ -304,20 +310,9 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
             else{
                 selectedTableView = tableView
             }
-            
-            DispatchQueue.main.async {
-                self.tableViewBankAccount.reloadData()
-                self.tableViewRetirementAccount.reloadData()
-                self.tableViewStockBonds.reloadData()
-                self.tableViewTransaction.reloadData()
-                self.tableViewGiftFunds.reloadData()
-                self.tableViewOther.reloadData()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                    self.setScreenHeight()
-                }
-                
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                self.setScreenHeight()
             }
-            
         }
         else{
             if (tableView == tableViewBankAccount && (indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3)){
