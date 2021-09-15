@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.databinding.AppHeaderWithBackNavBinding
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.IncomeCurrentEmploymentBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -77,16 +76,16 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
     private fun setInputFields() {
 
         // set lable focus
-        binding.edEmpName.setOnFocusChangeListener(MyCustomFocusListener(binding.edEmpName, binding.layoutEmpName, requireContext()))
-        binding.edEmpPhnum.setOnFocusChangeListener(MyCustomFocusListener(binding.edEmpPhnum, binding.layoutEmpPhnum,requireContext()))
-        binding.edJobTitle.setOnFocusChangeListener(MyCustomFocusListener(binding.edJobTitle, binding.layoutJobTitle, requireContext()))
-        binding.edStartDate.setOnFocusChangeListener(MyCustomFocusListener(binding.edStartDate, binding.layoutStartDate, requireContext()))
-        binding.edProfYears.setOnFocusChangeListener(MyCustomFocusListener(binding.edProfYears, binding.layoutYearsProfession, requireContext()))
-        binding.edOwnershipPercent.setOnFocusChangeListener(MyCustomFocusListener(binding.edOwnershipPercent, binding.layoutOwnershipPercentage, requireContext()))
-        binding.edBaseSalary.setOnFocusChangeListener(MyCustomFocusListener(binding.edBaseSalary, binding.layoutBaseSalary, requireContext()))
-        binding.edBonusIncome.setOnFocusChangeListener(MyCustomFocusListener(binding.edBonusIncome, binding.layoutBonusIncome, requireContext()))
-        binding.edOvertimeIncome.setOnFocusChangeListener(MyCustomFocusListener(binding.edOvertimeIncome, binding.layoutOvertimeIncome, requireContext()))
-        binding.edCommIncome.setOnFocusChangeListener(MyCustomFocusListener(binding.edCommIncome, binding.layoutCommIncome, requireContext()))
+        binding.edEmpName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edEmpName, binding.layoutEmpName, requireContext()))
+        binding.edEmpPhnum.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edEmpPhnum, binding.layoutEmpPhnum,requireContext()))
+        binding.edJobTitle.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edJobTitle, binding.layoutJobTitle, requireContext()))
+        binding.edStartDate.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edStartDate, binding.layoutStartDate, requireContext()))
+        binding.edProfYears.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edProfYears, binding.layoutYearsProfession, requireContext()))
+        binding.edOwnershipPercent.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edOwnershipPercent, binding.layoutOwnershipPercentage, requireContext()))
+        binding.edBaseSalary.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edBaseSalary, binding.layoutBaseSalary, requireContext()))
+        binding.edBonusIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edBonusIncome, binding.layoutBonusIncome, requireContext()))
+        binding.edOvertimeIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edOvertimeIncome, binding.layoutOvertimeIncome, requireContext()))
+        binding.edCommIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCommIncome, binding.layoutCommIncome, requireContext()))
 
         // set input format
         binding.edBaseSalary.addTextChangedListener(NumberTextFormat(binding.edBaseSalary))
@@ -118,7 +117,7 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
             R.id.cb_commission -> commissionClicked()
             R.id.layout_address -> findNavController().navigate(R.id.action_address)
             R.id.btn_close -> findNavController().popBackStack()
-            R.id.mainBorrowerName -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutCurrEmployment)
+            R.id.mainLayout_curr_employment -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutCurrEmployment)
 
         }
     }

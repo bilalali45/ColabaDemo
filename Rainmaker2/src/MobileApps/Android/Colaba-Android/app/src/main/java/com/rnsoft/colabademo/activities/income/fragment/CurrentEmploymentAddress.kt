@@ -139,35 +139,35 @@ class CurrentEmploymentAddress : Fragment() , PlacePredictionAdapter.OnPlaceClic
 
         // set lable focus
         binding.edUnitAtpNo.setOnFocusChangeListener(
-            MyCustomFocusListener(
+            CustomFocusListenerForEditText(
                 binding.edUnitAtpNo,
                 binding.layoutUnitAptNo,
                 requireContext()
             )
         )
         binding.edStreetAddress.setOnFocusChangeListener(
-            MyCustomFocusListener(
+            CustomFocusListenerForEditText(
                 binding.edStreetAddress,
                 binding.layoutStreetAddress,
                 requireContext()
             )
         )
         binding.edCity.setOnFocusChangeListener(
-            MyCustomFocusListener(
+            CustomFocusListenerForEditText(
                 binding.edCity,
                 binding.layoutCity,
                 requireContext()
             )
         )
         binding.edCounty.setOnFocusChangeListener(
-            MyCustomFocusListener(
+            CustomFocusListenerForEditText(
                 binding.edCounty,
                 binding.layoutCounty,
                 requireContext()
             )
         )
         binding.edZipcode.setOnFocusChangeListener(
-            MyCustomFocusListener(
+            CustomFocusListenerForEditText(
                 binding.edZipcode,
                 binding.layoutZipCode,
                 requireContext()
