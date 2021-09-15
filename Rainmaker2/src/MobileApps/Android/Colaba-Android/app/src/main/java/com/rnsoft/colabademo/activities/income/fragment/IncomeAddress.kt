@@ -52,9 +52,9 @@ class IncomeAddress : Fragment() , PlacePredictionAdapter.OnPlaceClickListener {
 
 
 
-        if (arguments != null) {
-            val title: String = .fromBundle(arguments).getPrivacyPolicyLink()
-        }
+//        if (arguments != null) {
+//            val title: String = .fromBundle(arguments).getPrivacyPolicyLink()
+//        }
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()

@@ -121,7 +121,7 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
             R.id.cb_bonus -> bonusClicked()
             R.id.cb_overtime -> overtimeClicked()
             R.id.cb_commission -> commissionClicked()
-            R.id.layout_address -> findNavController().navigate(R.id.action_address)
+            R.id.layout_address -> findNavController().navigate(R.id.action_address,)
             R.id.btn_close -> findNavController().popBackStack()
             R.id.mainLayout_curr_employment -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutCurrEmployment)
 
