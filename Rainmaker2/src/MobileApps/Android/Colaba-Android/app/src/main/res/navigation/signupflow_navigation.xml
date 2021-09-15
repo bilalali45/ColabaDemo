@@ -2,7 +2,50 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@+id/login_fragment_id">
+    app:startDestination="@+id/navigation_income_current_employment">
+
+    <fragment
+        android:id="@+id/navigation_income_tab"
+        android:name="com.rnsoft.colabademo.IncomeTabFragment"
+        android:label="@string/income"
+        tools:layout="@layout/income_fragment_layout" />
+
+
+    <fragment
+        android:id="@+id/navigation_b_income_one"
+        android:name="com.rnsoft.colabademo.BorrowerOneIncome"
+        android:label="@string/income"
+        tools:layout="@layout/income_fragment_layout" />
+
+    <fragment
+        android:id="@+id/navigation_b_income_two"
+        android:name="com.rnsoft.colabademo.BorrowerTwoIncome"
+        android:label="@string/income"
+        tools:layout="@layout/income_fragment_layout" />
+
+
+    <fragment
+        android:id="@+id/navigation_income_current_employment"
+        android:name="com.rnsoft.colabademo.IncomeCurrentEmployment"
+        android:label="@string/income"
+        tools:layout="@layout/income_current_employment">
+
+        <action
+            android:id="@+id/action_address"
+            app:destination="@id/navigation_current_employment_address"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_current_employment_address"
+        android:name="com.rnsoft.colabademo.CurrentEmploymentAddress"
+        android:label="@string/income"
+        tools:layout="@layout/subject_property_address">
+    </fragment>
+
+
 
     <fragment
         android:id="@+id/login_fragment_id"

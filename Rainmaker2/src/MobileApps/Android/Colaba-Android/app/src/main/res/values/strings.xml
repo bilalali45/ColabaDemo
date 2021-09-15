@@ -352,9 +352,12 @@
     <string name="credit_limit_switch">Home Equity Line of Credit (HELOC)</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="current_employment">Current Employment</string>
+    <string name="previous_employment">Previous Employment</string>
     <string name="add_employment">Add Employment</string>
     <string name="add_prev_employment">Add Previous Employment</string>
     <string name="employer_name">Employer Name</string>
+    <string name="employer_address">Employer Address</string>
     <string name="job_title">Job Title</string>
     <string name="start_date">Start Date (MM/DD/YYYY)</string>
     <string name="years_profession">Years in Profession</string>
@@ -368,6 +371,7 @@
     <string name="bonus">Bonus</string>
     <string name="overtime">Overtime</string>
     <string name="commission">Commission</string>
+    <string name="bonus_income">Annual Bonus Income</string>
     <string name="overtime_income">Annual Overtime Income</string>
     <string name="commission_income">Annual Commission Income</string>
 

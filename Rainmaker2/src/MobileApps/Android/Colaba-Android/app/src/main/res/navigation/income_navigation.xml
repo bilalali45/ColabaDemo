@@ -41,7 +41,27 @@
        android:id="@+id/navigation_income_current_employment"
        android:name="com.rnsoft.colabademo.IncomeCurrentEmployment"
        android:label="@string/income"
-       tools:layout="@layout/income_current_employment" />
+       tools:layout="@layout/income_current_employment">
+
+      <action
+          android:id="@+id/action_address"
+          app:destination="@id/navigation_current_employment_address"
+          app:enterAnim="@anim/slide_up"
+          app:exitAnim="@anim/slide_down"/>
+
+   </fragment>
+
+   <fragment
+       android:id="@+id/navigation_current_employment_address"
+       android:name="com.rnsoft.colabademo.CurrentEmploymentAddress"
+       android:label="@string/income"
+       tools:layout="@layout/subject_property_address">
+      <!--sli<action
+          android:id="@+id/action_exit_address"
+          app:destination="@id/navigation_income_current_employment"
+          app:exitAnim="@anim/slide_down"/> -->
+
+   </fragment>
 
    <fragment
        android:id="@+id/navigation_income_prev_emplyoyment"
