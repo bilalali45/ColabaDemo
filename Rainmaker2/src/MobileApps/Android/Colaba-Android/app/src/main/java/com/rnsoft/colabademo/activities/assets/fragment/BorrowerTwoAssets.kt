@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,55 +9,62 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.*
+import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
+import kotlinx.android.synthetic.main.assets_middle_cell.view.*
 import kotlinx.android.synthetic.main.assets_top_cell.view.*
 
-class BorrowerFourAssets : Fragment() {
+class BorrowerTwoAssets : AssetBaseFragment() {
 
-    private lateinit var binding: AssetFragmentLayoutBinding
+    private lateinit var binding: DynamicAssetFragmentLayoutBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = AssetFragmentLayoutBinding.inflate(inflater, container, false)
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = DynamicAssetFragmentLayoutBinding.inflate(inflater, container, false)
         setupLayout()
-
         return binding.root
     }
 
     private fun setupLayout(){
-        for (i in 1..5) {
+
+        val sampleAssets = getSampleAssets()
+
+        for (i in 0 until sampleAssets.size) {
+
+            val modelData = sampleAssets[i]
+            Log.e("header",modelData.headerTitle )
+            Log.e("h-amount",modelData.headerAmount )
+
             val mainCell: LinearLayoutCompat =
                 layoutInflater.inflate(R.layout.assets_main_cell, null) as LinearLayoutCompat
             val topCell: View = layoutInflater.inflate(R.layout.assets_top_cell, null)
+            topCell.header_title.text =  modelData.headerTitle
 
-            val bottomCell: View = layoutInflater.inflate(R.layout.assets_bottom_cell, null)
+            topCell.header_amount.setText(modelData.headerAmount)
 
             topCell.tag = R.string.asset_top_cell
             mainCell.addView(topCell)
 
-            if(i == 1) {
-                for (j in 1..2) {
-                    val contentCell: View = layoutInflater.inflate(R.layout.assets_middle_cell, null)
-                    //contentCell.tag = R.string.asset_middle_cell
-                    contentCell.visibility = View.GONE
-                    mainCell.addView(contentCell)
-                }
-            }
-            else {
-                val contentCell: View = layoutInflater.inflate(R.layout.assets_middle_cell, null)
+
+            for (j in 0 until modelData.contentCell.size) {
+                val contentCell: View =
+                    layoutInflater.inflate(R.layout.assets_middle_cell, null)
+                val contentData = modelData.contentCell[j]
+                contentCell.content_title.text = contentData.title
+                contentCell.content_desc.text = contentData.description
+                contentCell.content_amount.text = contentData.contentAmount
                 contentCell.visibility = View.GONE
+                contentCell.setOnClickListener(modelData.listenerAttached)
                 mainCell.addView(contentCell)
             }
 
 
-
-
+            val bottomCell: View = layoutInflater.inflate(R.layout.assets_bottom_cell, null)
+            bottomCell.footer_title.text =  modelData.footerTitle
             //bottomCell.tag = R.string.asset_bottom_cell
             bottomCell.visibility = View.GONE
+            bottomCell.setOnClickListener(modelData.listenerAttached)
+
             mainCell.addView(bottomCell)
 
 
@@ -64,7 +72,7 @@ class BorrowerFourAssets : Fragment() {
 
             binding.assetParentContainer.addView(mainCell)
 
-            topCell.arrow_down.setOnClickListener {
+            topCell.setOnClickListener {
                 hideOtherBoxes() // if you want to hide other boxes....
                 topCell.arrow_up.visibility = View.VISIBLE
                 topCell.arrow_down.visibility = View.GONE
@@ -82,7 +90,7 @@ class BorrowerFourAssets : Fragment() {
         }
     }
 
-    private fun toggleContentCells(mainCell: LinearLayoutCompat , display:Int){
+   private fun toggleContentCells(mainCell: LinearLayoutCompat , display:Int){
         for (j in 0 until mainCell.childCount){
             if(mainCell[j].tag != R.string.asset_top_cell)
                 mainCell[j].visibility = display

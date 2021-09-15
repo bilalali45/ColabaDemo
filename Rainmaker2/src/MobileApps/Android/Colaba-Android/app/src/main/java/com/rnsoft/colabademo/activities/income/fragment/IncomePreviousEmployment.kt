@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
-import com.rnsoft.colabademo.databinding.AssetFragmentLayoutBinding
-import com.rnsoft.colabademo.databinding.IncomeCurrentEmploymentBinding
 import com.rnsoft.colabademo.databinding.IncomePreviousEmploymentBinding
 
 /**

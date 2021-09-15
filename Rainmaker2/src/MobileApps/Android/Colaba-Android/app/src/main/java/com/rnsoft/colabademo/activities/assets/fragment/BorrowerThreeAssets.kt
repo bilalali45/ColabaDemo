@@ -9,76 +9,19 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.*
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
 import kotlinx.android.synthetic.main.assets_middle_cell.view.*
 import kotlinx.android.synthetic.main.assets_top_cell.view.*
 
-class BorrowerOneAssets : Fragment() {
+class BorrowerThreeAssets : AssetBaseFragment() {
 
-    private lateinit var binding: AssetFragmentLayoutBinding
+    private lateinit var binding: DynamicAssetFragmentLayoutBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = AssetFragmentLayoutBinding.inflate(inflater, container, false)
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = DynamicAssetFragmentLayoutBinding.inflate(inflater, container, false)
         setupLayout()
-
         return binding.root
-    }
-
-    private fun getSampleAssets():ArrayList<AssetsModelClass>{
-        val assetModelCell = AssetsModelClass( headerTitle = "Bank Account", headerAmount = "$26,000" , footerTitle = "Add Bank Account",
-            contentCell = arrayListOf(
-                ContentCell("Chase", "Checking" ,"$20,000"), ContentCell("Ally Bank", "Saving", "$6,000")
-        ))
-
-        val assetModelCell2 = AssetsModelClass( headerTitle = "Retirement Account", headerAmount = "$10,000" , footerTitle = "Add Retirement Account",
-            contentCell = arrayListOf(
-                ContentCell("401K", "Retirement Account" ,"$10,000")
-            ))
-
-        val assetModelCell3 = AssetsModelClass( headerTitle = "Stocks, Bonds, or Other\n" +
-                "Financial Assets", headerAmount = "$800" , footerTitle = "Add Financial Assets",
-            contentCell = arrayListOf(
-                ContentCell("AHC", "Mutual Funds" ,"$200")
-            ))
-
-
-        val assetModelCell4 = AssetsModelClass( headerTitle = "Proceeds From Transaction", headerAmount = "$1,200" , footerTitle = "Add Proceeds From Transaction",
-            contentCell = arrayListOf(
-                ContentCell("Proceeds From Selling Non-Real Es...", "Proceeds From Transaction" ,"$1,200")
-            ))
-
-
-        val assetModelCell5 = AssetsModelClass( headerTitle = "Gift Funds", headerAmount = "$2000" , footerTitle = "Add Gifts Account",
-            contentCell = arrayListOf(
-                ContentCell("Relative", "Cash Gifts" ,"$2000")
-            ))
-
-
-        val assetModelCell6 = AssetsModelClass( headerTitle = "Other", headerAmount = "$600" , footerTitle = "Add Other Assets",
-            contentCell = arrayListOf(
-                ContentCell("Individual Development Account", "Other" ,"$600")
-            ))
-
-
-
-        val modelArrayList:ArrayList<AssetsModelClass> = arrayListOf()
-        modelArrayList.add(assetModelCell)
-        modelArrayList.add(assetModelCell2)
-        modelArrayList.add(assetModelCell3)
-        modelArrayList.add(assetModelCell4)
-        modelArrayList.add(assetModelCell5)
-        modelArrayList.add(assetModelCell6)
-
-
-        return modelArrayList
-
     }
 
     private fun setupLayout(){
@@ -110,6 +53,7 @@ class BorrowerOneAssets : Fragment() {
                 contentCell.content_desc.text = contentData.description
                 contentCell.content_amount.text = contentData.contentAmount
                 contentCell.visibility = View.GONE
+                contentCell.setOnClickListener(modelData.listenerAttached)
                 mainCell.addView(contentCell)
             }
 
@@ -118,21 +62,8 @@ class BorrowerOneAssets : Fragment() {
             bottomCell.footer_title.text =  modelData.footerTitle
             //bottomCell.tag = R.string.asset_bottom_cell
             bottomCell.visibility = View.GONE
+            bottomCell.setOnClickListener(modelData.listenerAttached)
 
-            if(i == 0)
-            bottomCell.setOnClickListener{
-                findNavController().navigate(R.id.navigation_bank_account)
-            }
-            else
-            if(i == 1)
-            bottomCell.setOnClickListener{
-                findNavController().navigate(R.id.navigation_retirement_fragment)
-            }
-            else
-            if(i == 2)
-            bottomCell.setOnClickListener{
-                findNavController().navigate(R.id.navigation_stock_bonds)
-            }
             mainCell.addView(bottomCell)
 
 
@@ -140,7 +71,7 @@ class BorrowerOneAssets : Fragment() {
 
             binding.assetParentContainer.addView(mainCell)
 
-            topCell.arrow_down.setOnClickListener {
+            topCell.setOnClickListener {
                 hideOtherBoxes() // if you want to hide other boxes....
                 topCell.arrow_up.visibility = View.VISIBLE
                 topCell.arrow_down.visibility = View.GONE

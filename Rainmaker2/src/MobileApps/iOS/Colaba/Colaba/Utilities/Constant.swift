@@ -37,7 +37,11 @@ let kNotificationShowHomeNavigationBar = "notificationShowHomeNavigationBar"
 let kNotificationShowMailingAddress = "notificationShowMailingAddress"
 let kNotificationSaveAddressAndDismiss = "notificationSaveAddressAndDismiss"
 let kNotificationDeleteMailingAddressAndDismiss = "notificationDeleteMailingAddressAndDismiss"
+let kNotificationAddCurrentEmployement = "notificationAddCurrentEmployement"
+let kNotificationAddPreviousEmployement = "notificationAddPreviousEmployement"
 let kHousingStatusArray = ["Own", "Rent", "No Primary Housing Expense"]
+let kBusinessTypeArray = ["Partnership (e.g. LLC, LP, or GP)", "Corporation (e.g. C-Corp, S-Corp, or LLC)"]
+let kRetirementIncomeType = ["Social Security", "Pension", "IRA / 401K", "Other Retirement Source"]
 
 var sortingFilter = 1
 var isAppOpenFromBackground = false

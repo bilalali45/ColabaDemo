@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colaba_loan_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,6 +11,7 @@
         android:id="@+id/assets_top_container"
         android:layout_width="match_parent"
         android:layout_height="54dp"
+        android:layout_marginTop="8dp"
         android:background="@color/colaba_loan_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:padding="4dp"
+            android:padding="8dp"
             app:layout_constraintBottom_toTopOf="@+id/tab_top_border"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -32,7 +34,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="Bank Account"
+            android:text="Other"
+            android:singleLine="true"
+            android:lines="1"
             android:textColor="@color/grey_color_one"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -68,7 +72,7 @@
             android:id="@+id/top_del_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="12dp"
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +88,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/visaStatusViewLayout"
+        android:id="@+id/accountTypeInputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
 
         android:layout_width="match_parent"
@@ -92,7 +96,7 @@
         android:layout_gravity="center"
 
         android:background="@android:color/transparent"
-        android:hint="@string/account_type"
+        android:hint="Asset Type"
         android:textColorHint="@color/primary_info_label_color"
         app:boxCollapsedPaddingTop="1dp"
         app:boxStrokeColor="@color/primary_info_line_color"
@@ -118,7 +122,7 @@
 
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
-            android:id="@+id/visaStatusCompleteView"
+            android:id="@+id/accountTypeCompleteView"
             style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -126,9 +130,8 @@
             android:backgroundTint="@android:color/transparent"
             android:completionThreshold="1"
             android:cursorVisible="false"
-
+            android:inputType="none"
             android:focusable="true"
-
             android:focusableInTouchMode="true"
             android:fontFamily="@font/rubik_regular"
             android:gravity="bottom"
@@ -147,7 +150,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/relationshipDetailLayout"
+        android:id="@+id/financialLayout"
         android:layout_width="match_parent"
 
         android:layout_height="wrap_content"
@@ -173,93 +176,37 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/visaStatusViewLayout"
+        app:layout_constraintTop_toBottomOf="@+id/accountTypeInputLayout"
+
+        android:visibility="gone"
 
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/relationship_edit_text"
+            android:id="@+id/financial_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+
+
             android:background="@android:color/transparent"
             android:cursorVisible="true"
 
             android:ems="10"
             android:fontFamily="@font/rubik_regular"
 
-            android:gravity="top|start"
-            android:imeOptions="actionNext"
             android:inputType="text"
+            android:paddingStart="0dp"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+
+
+
             android:lines="1"
 
-
-            android:maxLines="10"
-
-            android:paddingStart="0dp"
             android:scrollHorizontally="false"
-            android:singleLine="true"
-
-
-            android:textColor="@color/grey_color_one"
-
-            android:textSize="@dimen/ed_txt_size_primary_info" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/cashValueLayout"
-        android:layout_width="match_parent"
-
-        android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="22dp"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/rubik_light"
-        android:hint="@string/financial_institution"
-        android:textColorHint="@color/primary_info_label_color"
-        app:boxCollapsedPaddingTop="1dp"
-        app:boxStrokeColor="@color/primary_info_line_color"
-        app:boxStrokeWidth="0.5dp"
-        app:boxStrokeWidthFocused="1dp"
-
-
-        app:helperTextEnabled="true"
-        app:helperTextTextAppearance="@style/inputError"
-        app:helperTextTextColor="@color/colaba_red_color"
-
-        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-        app:hintTextColor="@color/grey_color_two"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/visaStatusViewLayout"
-
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/cash_value_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:cursorVisible="true"
-
-            android:ems="10"
-            android:fontFamily="@font/rubik_regular"
-
+            android:maxLines="10"
             android:gravity="top|start"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:lines="1"
-
-
-            android:maxLines="10"
-
-            android:paddingStart="0dp"
-            android:scrollHorizontally="false"
-            android:singleLine="true"
 
 
             android:textColor="@color/grey_color_one"
@@ -278,6 +225,12 @@
         android:layout_marginStart="22dp"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="22dp"
+
+        android:visibility="gone"
+
+
+
+
         android:background="@android:color/transparent"
         android:fontFamily="@font/rubik_light"
         android:hint="@string/account_number"
@@ -288,6 +241,11 @@
         app:boxStrokeWidthFocused="1dp"
 
 
+        app:endIconDrawable="@drawable/ic_eye_icon_svg"
+        app:endIconMode="custom"
+        app:endIconTint="@color/grey_color_three"
+        app:passwordToggleEnabled="true"
+
         app:helperTextEnabled="true"
         app:helperTextTextAppearance="@style/inputError"
         app:helperTextTextColor="@color/colaba_red_color"
@@ -297,7 +255,7 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relationshipDetailLayout"
+        app:layout_constraintTop_toBottomOf="@+id/financialLayout"
 
         >
 
@@ -310,22 +268,23 @@
 
 
 
-            android:inputType="textPassword"
-            android:singleLine="true"
             android:ems="10"
             android:fontFamily="@font/rubik_regular"
-
-
             android:paddingStart="0dp"
 
 
             android:imeOptions="actionNext"
 
+            android:inputType="numberPassword"
+            android:singleLine="true"
             android:lines="10"
             android:minLines="1"
             android:scrollHorizontally="false"
             android:maxLines="10"
+
             android:gravity="top|start"
+
+
 
 
             android:textColor="@color/grey_color_one"
@@ -364,10 +323,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/account_number_layout"
 
+        android:visibility="gone"
+
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/annual_base_edittext"
+            android:id="@+id/annual_base_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -376,17 +337,18 @@
             android:ems="10"
             android:fontFamily="@font/rubik_regular"
 
-            android:inputType="textMultiLine"
-            android:paddingStart="0dp"
-            android:singleLine="false"
+            android:gravity="top|start"
 
-            android:imeOptions="actionNone"
+            android:imeOptions="actionDone"
+            android:inputType="numberDecimal"
 
             android:lines="10"
-            android:minLines="1"
-            android:scrollHorizontally="false"
+
             android:maxLines="10"
-            android:gravity="top|start"
+            android:minLines="1"
+            android:paddingStart="0dp"
+            android:scrollHorizontally="false"
+            android:singleLine="false"
 
 
             android:textColor="@color/grey_color_one"
@@ -394,6 +356,59 @@
             android:textSize="@dimen/ed_txt_size_primary_info" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginTop="26dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/rubik_light"
+        android:hint="Asset Description"
+        android:textColorHint="@color/primary_info_label_color"
+        app:boxCollapsedPaddingTop="1dp"
+        android:visibility="gone"
+
+        app:boxStrokeColor="@color/primary_info_line_color"
+        app:boxStrokeWidth="0.5dp"
+        app:boxStrokeWidthFocused="1dp"
+        app:helperTextEnabled="true"
+        app:helperTextTextAppearance="@style/inputError"
+        app:helperTextTextColor="@color/colaba_red_color"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+        app:hintTextColor="@color/grey_color_two"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/annual_base_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ed_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:cursorVisible="true"
+            android:ems="10"
+            android:fontFamily="@font/rubik_regular"
+            android:gravity="top|start"
+            android:imeOptions="actionNone"
+            android:inputType="textMultiLine"
+            android:lines="10"
+            android:maxLines="10"
+            android:minLines="1"
+            android:paddingStart="0dp"
+            android:scrollHorizontally="false"
+            android:singleLine="false"
+            android:textColor="@color/grey_color_one"
+            android:textSize="@dimen/ed_txt_size_primary_info" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
 
     <ImageView
         android:id="@+id/phone_fab"

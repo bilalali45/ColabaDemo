@@ -93,9 +93,9 @@ class SecondMortgageFragment : Fragment(), View.OnClickListener {
     private fun setInputFields(){
 
         // set lable focus
-        binding.edSecMortgagePayment.setOnFocusChangeListener(MyCustomFocusListener(binding.edSecMortgagePayment, binding.layoutSecPayment, requireContext()))
-        binding.edUnpaidBalance.setOnFocusChangeListener(MyCustomFocusListener(binding.edUnpaidBalance, binding.layoutUnpaidBalance, requireContext()))
-        binding.edCreditLimit.setOnFocusChangeListener(MyCustomFocusListener(binding.edCreditLimit, binding.layoutCreditLimit, requireContext()))
+        binding.edSecMortgagePayment.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edSecMortgagePayment, binding.layoutSecPayment, requireContext()))
+        binding.edUnpaidBalance.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edUnpaidBalance, binding.layoutUnpaidBalance, requireContext()))
+        binding.edCreditLimit.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCreditLimit, binding.layoutCreditLimit, requireContext()))
 
         // set Dollar prifix
         CustomMaterialFields.setDollarPrefix(binding.layoutSecPayment,requireContext())

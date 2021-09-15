@@ -47,6 +47,12 @@
 
 
 
+
+
+
+
+
+
     <fragment
         android:id="@+id/login_fragment_id"
         android:name="com.rnsoft.colabademo.LoginFragment"

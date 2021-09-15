@@ -271,6 +271,9 @@
 
     <string name="heading_borrower_info">Primary Borrower</string>
 
+    <string name="expected_date_of_transfer">Expected Date of Transfer</string>
+    <string name="date_of_transfer">Date of Transfer</string>
+
 
     <!-- primary info labels-->
     <string name="first_name">Legal First Name</string>

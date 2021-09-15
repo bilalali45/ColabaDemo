@@ -25,58 +25,58 @@ import org.greenrobot.eventbus.ThreadMode
 
 class BorrowerOneIncome : Fragment() {
 
-    private lateinit var binding: AssetFragmentLayoutBinding
+    private lateinit var binding: DynamicIncomeFragmentLayoutBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = AssetFragmentLayoutBinding.inflate(inflater, container, false)
+        binding = DynamicIncomeFragmentLayoutBinding.inflate(inflater, container, false)
 
         setupLayout()
 
         return binding.root
     }
 
-    private fun getSampleAssets():ArrayList<AssetsModelClass>{
-        val assetModelCell = AssetsModelClass( headerTitle = "Employment", headerAmount = "$5,000/mo" , footerTitle = "Add Employment",
-            contentCell = arrayListOf(
-                ContentCell("Google LLC", "Chief Executive Officer" ,"$5,000" ,"From Jun 2020"),
-                ContentCell("Disrupt", "Admin Manager", "$4,000" , "Dec 2019 to May 2020")
+    private fun getSampleIncome():ArrayList<IncomeModelClass>{
+        val assetModelCell = IncomeModelClass( headerTitle = "Employment", headerAmount = "$5,000/mo" , footerTitle = "Add Employment",
+            incomeContentCell = arrayListOf(
+                IncomeContentCell("Google LLC", "Chief Executive Officer" ,"$5,000" ,"From Jun 2020"),
+                IncomeContentCell("Disrupt", "Admin Manager", "$4,000" , "Dec 2019 to May 2020")
         ))
 
-        val assetModelCell2 = AssetsModelClass( headerTitle = "Self Employment / Independent Contractor", headerAmount = "$3,000/mo" , footerTitle = "Add Self Employment",
-            contentCell = arrayListOf(
-                ContentCell("Freelance", "Content Writer" ,"$3,000","From Dec 2020")
+        val assetModelCell2 = IncomeModelClass( headerTitle = "Self Employment / Independent Contractor", headerAmount = "$3,000/mo" , footerTitle = "Add Self Employment",
+            incomeContentCell = arrayListOf(
+                IncomeContentCell("Freelance", "Content Writer" ,"$3,000","From Dec 2020")
             ))
 
-        val assetModelCell3 = AssetsModelClass( headerTitle = "Business" ,headerAmount = "$6,000/mo" , footerTitle = "Add Business",
-            contentCell = arrayListOf(
-                ContentCell("OPTP", "Director" ,"$6,000","From Jun 2020")
-            ))
-
-
-        val assetModelCell4 = AssetsModelClass( headerTitle = "Military Pay", headerAmount = "$2,000" , footerTitle = "Add Military Service",
-            contentCell = arrayListOf(
-                ContentCell("US Army", "Field 15 — Aviation" ,"$2,000","From Jun 2020")
+        val assetModelCell3 = IncomeModelClass( headerTitle = "Business" ,headerAmount = "$6,000/mo" , footerTitle = "Add Business",
+            incomeContentCell = arrayListOf(
+                IncomeContentCell("OPTP", "Director" ,"$6,000","From Jun 2020")
             ))
 
 
-        val assetModelCell5 = AssetsModelClass( headerTitle = "Retirement", headerAmount = "$1,200/mo" , footerTitle = "Add Retirement",
-            contentCell = arrayListOf(
-                ContentCell("Google LLC", "Pension" ,"$1,200")
+        val assetModelCell4 = IncomeModelClass( headerTitle = "Military Pay", headerAmount = "$2,000" , footerTitle = "Add Military Service",
+            incomeContentCell = arrayListOf(
+                IncomeContentCell("US Army", "Field 15 — Aviation" ,"$2,000","From Jun 2020")
             ))
 
 
-        val assetModelCell6 = AssetsModelClass( headerTitle = "Other", headerAmount = "$4,125/mo" , footerTitle = "Add Other Income",
-            contentCell = arrayListOf(
-                ContentCell("Alimony", "Family" ,"$4,125")
+        val assetModelCell5 = IncomeModelClass( headerTitle = "Retirement", headerAmount = "$1,200/mo" , footerTitle = "Add Retirement",
+            incomeContentCell = arrayListOf(
+                IncomeContentCell("Google LLC", "Pension" ,"$1,200")
+            ))
+
+
+        val assetModelCell6 = IncomeModelClass( headerTitle = "Other", headerAmount = "$4,125/mo" , footerTitle = "Add Other Income",
+            incomeContentCell = arrayListOf(
+                IncomeContentCell("Alimony", "Family" ,"$4,125")
             ))
 
 
 
-        val modelArrayList:ArrayList<AssetsModelClass> = arrayListOf()
+        val modelArrayList:ArrayList<IncomeModelClass> = arrayListOf()
         modelArrayList.add(assetModelCell)
         modelArrayList.add(assetModelCell2)
         modelArrayList.add(assetModelCell3)
@@ -91,7 +91,7 @@ class BorrowerOneIncome : Fragment() {
 
     private fun setupLayout(){
 
-        val sampleAssets = getSampleAssets()
+        val sampleAssets = getSampleIncome()
 
         for (i in 0 until sampleAssets.size) {
 
@@ -110,10 +110,10 @@ class BorrowerOneIncome : Fragment() {
             mainCell.addView(topCell)
 
 
-            for (j in 0 until modelData.contentCell.size) {
+            for (j in 0 until modelData.incomeContentCell.size) {
                 val contentCell: View =
                     layoutInflater.inflate(R.layout.income_middle_cell, null)
-                val contentData = modelData.contentCell[j]
+                val contentData = modelData.incomeContentCell[j]
                 contentCell.content_title.text = contentData.title
                 contentCell.content_desc.text = contentData.description
                 contentCell.content_amount.text = contentData.contentAmount

@@ -15,6 +15,7 @@ enum ColabaTextFieldType {
     case datePicker
     case delete
     case amount
+    case percentage
     case defaultType
 }
 
@@ -74,19 +75,22 @@ class ColabaTextField: TextField {
                 toggleButtonImage()
             case .dropdown:
                 isButtonHidden(false)
-                self.isUserInteractionEnabled = false
-                self.setButton(image: UIImage(named: "dropdown")!)
+                self.isUserInteractionEnabled = true
+                self.setButton(image: UIImage(named: "textfield-dropdownIcon")!)
             case .delete:
                 button.contentHorizontalAlignment = .center
                 self.setButton(image: UIImage(named: "DeleteDependent"))
             case .amount:
                 prefix = "$  |  "
                 attributedPrefix = createAttributedText(prefix: prefix!)
+            case .percentage:
+                prefix = "%  |  "
+                attributedPrefix = createAttributedText(prefix: prefix!)
             case .datePicker:
                 isButtonHidden(false)
-                self.isUserInteractionEnabled = false
+                self.isUserInteractionEnabled = true
                 self.tintColor = .clear
-                setButton(image: UIImage(named: "calender")!)
+                setButton(image: UIImage(named: "CalendarIcon")!)
             case .defaultType:
                 self.setButton(image: nil)
             }
@@ -136,11 +140,11 @@ class ColabaTextField: TextField {
         self.addSubview(button)
         
         button.translatesAutoresizingMaskIntoConstraints = false
-        let horizontalConstraint = button.trailingAnchor.constraint(equalTo: self.trailingAnchor)
-        let verticalConstraint = button.centerYAnchor.constraint(equalTo: self.centerYAnchor)
-        let widthConstraint = button.widthAnchor.constraint(equalToConstant: 32)
-        let heightConstraint = button.heightAnchor.constraint(equalToConstant: 32)
-        self.addConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint])
+        let horizontalConstraint = button.trailingAnchor.constraint(greaterThanOrEqualTo: self.trailingAnchor, constant: -2)
+        let verticalConstraint = button.topAnchor.constraint(greaterThanOrEqualTo: self.topAnchor, constant: 5)
+//        let widthConstraint = button.widthAnchor.constraint(equalToConstant: 32)
+//        let heightConstraint = button.heightAnchor.constraint(equalToConstant: 32)
+        self.addConstraints([horizontalConstraint, verticalConstraint])
         isButtonHidden(true)
     }
     
@@ -153,8 +157,8 @@ class ColabaTextField: TextField {
             return
         }
         if type == .dropdown {
-            dropDownButtonClicked()
-            return
+            //dropDownButtonClicked()
+            //return
         }
         _ = self.becomeFirstResponder()
     }
@@ -175,13 +179,15 @@ class ColabaTextField: TextField {
             colabaDelegate?.deleteButtonClicked()
         case .amount:
             print("button not available in amount type")
+        case .percentage:
+            print("button not available in amount type")
         case .defaultType:
             print("button not available in default type")
         }
     }
     
     private func dropDownButtonClicked() {
-        colabaDelegate?.dropDownClicked(alert: alert ?? UIAlertController(title: "", message: "", preferredStyle: .actionSheet), withTag: self.tag)
+        //colabaDelegate?.dropDownClicked(alert: alert ?? UIAlertController(title: "", message: "", preferredStyle: .actionSheet), withTag: self.tag)
     }
     
     private func datePickerButtonClicked() {
@@ -412,11 +418,10 @@ extension ColabaTextField: UITextFieldDelegate {
             }
         }
         if type == .amount {
-            if (self.text == prefix && range.location == prefix!.count - 1 && range.length == 1) {
-                return false
-            } else {
-                return true
-            }
+            return (self.text == prefix && range.location == prefix!.count - 1 && range.length == 1) ? false : true
+        }
+        if type == .percentage {
+            return (self.text == prefix && range.location == prefix!.count - 1 && range.length == 1) ? false : true
         }
         return true
     }
@@ -431,6 +436,10 @@ extension ColabaTextField: UITextFieldDelegate {
                 self.attributedText = appendAttributedString(baseString: createAttributedText(prefix: prefix!), string: amountWithComma, fontColor: Theme.getAppBlackColor(), font: Theme.getRubikRegularFont(size: 15))
             }
         }
+        if type == .percentage {
+            let string = cleanString(string: self.attributedText!.string, replaceCharacters: [prefix!], replaceWith: "")
+            self.attributedText = appendAttributedString(baseString: createAttributedText(prefix: prefix!), string: string, fontColor: Theme.getAppBlackColor(), font: Theme.getRubikRegularFont(size: 15))
+        }
     }
     
     //To hide error text when textField begin editing
@@ -438,8 +447,18 @@ extension ColabaTextField: UITextFieldDelegate {
         if type == .delete {
             isButtonHidden(false)
         }
-        if type == .amount && attributedText != attributedPrefix {
+        if type == .amount && !attributedText!.string.contains("$  |  ") {
             self.attributedText = attributedPrefix
+        }
+        if type == .percentage && !attributedText!.string.contains("%  |  ") {
+            self.attributedText = attributedPrefix
+        }
+        if (type == .datePicker){
+            if let datePicker = self.inputView as? UIDatePicker{
+                self.colabaDelegate?.selectedDate(date: datePicker.date)
+                self.text = getFormattedDate(datePicker: datePicker)
+            }
+            setDatePicker()
         }
     }
     
@@ -456,7 +475,9 @@ extension ColabaTextField: UITextFieldDelegate {
         if type == .amount && self.text == prefix {
             self.text = ""
         }
-        
+        if type == .percentage && self.text == prefix {
+            self.text = ""
+        }
         
         if isValidateOnEndEditing {
             _ = validate()
@@ -502,8 +523,8 @@ extension ColabaTextField{
     }
     
     @objc func cancelDatePicker(){
-        self.isUserInteractionEnabled = false
-        self.text = nil
+        self.isUserInteractionEnabled = true
+        self.resignFirstResponder()
     }
     
     @objc func doneDatePicker(datePicker: UIDatePicker){
@@ -511,7 +532,8 @@ extension ColabaTextField{
             self.colabaDelegate?.selectedDate(date: datePicker.date)
             self.text = getFormattedDate(datePicker: datePicker)
         }
-        self.isUserInteractionEnabled = false
+        self.resignFirstResponder()
+        self.isUserInteractionEnabled = true
     }
     
     @objc func datePickerValueChanged(datePicker: UIDatePicker){

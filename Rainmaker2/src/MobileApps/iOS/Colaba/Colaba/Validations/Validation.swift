@@ -13,6 +13,7 @@ enum ValidationType {
     case password
     case phoneNumber
     case verificationCode
+    case netAnnualIncome
 }
 
 extension String {
@@ -28,6 +29,8 @@ extension String {
             return try Validation.validatePhoneNumber(self)
         case .verificationCode:
             return try Validation.validateVerificationCode(self)
+        case .netAnnualIncome:
+            return try Validation.validateNetAnnualIncome(self)
         }
     }
 }
@@ -70,6 +73,13 @@ struct Validation {
         }
         return true
     }
+    fileprivate static func validateNetAnnualIncome(_ text: String) throws -> Bool {
+        if text.isEmpty {
+            throw ValidationError.requiredNetAnnualIncome
+        }
+        return true
+    }
+    
     
     func validateEmail(_ email: String?) throws -> String{
         guard let email = email else { throw ValidationError.noEmail }
@@ -348,6 +358,7 @@ enum ValidationError: LocalizedError {
     case requiredField
     case invalidBorrowerEmail
     case invalidPurchasePrice
+    case requiredNetAnnualIncome
     
     var errorDescription: String? {
         switch self {
@@ -375,6 +386,8 @@ enum ValidationError: LocalizedError {
             return "Please enter a valid email address"
         case .invalidPurchasePrice:
             return "Purchase price should be between $50,000 and $100,000,000"
+        case .requiredNetAnnualIncome:
+            return "Net Annual Income is required."
         }
     }
     

@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.NonPermenantResidentLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 import android.widget.ArrayAdapter
@@ -56,7 +55,7 @@ class NonPermanentFragment : Fragment() {
         }
 
 
-        binding.relationshipEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.relationshipEditText, binding.relationshipDetailLayout, requireContext()))
+        binding.relationshipEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.relationshipEditText, binding.relationshipDetailLayout, requireContext()))
 
 
         binding.visaStatusCompleteView.setOnClickListener{

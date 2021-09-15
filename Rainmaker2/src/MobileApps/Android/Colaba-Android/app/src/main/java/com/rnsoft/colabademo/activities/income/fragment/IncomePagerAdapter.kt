@@ -28,11 +28,11 @@ class IncomePagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
             }
 
             2 -> {
-                return BorrowerThreeIncome()
+                return Fragment()
             }
 
             3 -> {
-                return BorrowerFourIncome()
+                return Fragment()
             }
         }
 

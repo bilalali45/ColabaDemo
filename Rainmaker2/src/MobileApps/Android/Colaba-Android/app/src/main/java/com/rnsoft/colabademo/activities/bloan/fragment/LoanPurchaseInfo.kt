@@ -80,7 +80,7 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
         }
 
         binding.edClosingDate.setOnFocusChangeListener(
-            MyCustomFocusListener(
+            CustomFocusListenerForEditText(
                 binding.edClosingDate,
                 binding.layoutClosingDate,
                 requireContext()
@@ -212,7 +212,7 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
                         binding.edDownPayment.removeTextChangedListener(this)
                         try{
                             val edValue = binding.edPurchasePrice.text.toString()
-                            var purchasePrice = edValue.replace(",", "").toInt()
+                            val purchasePrice = edValue.replace(",", "").toInt()
                             if (purchasePrice > 0) {
                                 val percent = binding.edPercent.text.toString()
                                 edValue.let {
