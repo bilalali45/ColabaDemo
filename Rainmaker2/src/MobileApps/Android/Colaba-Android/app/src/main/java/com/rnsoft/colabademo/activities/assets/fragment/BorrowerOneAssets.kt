@@ -7,11 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.*
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonSizeSpec
+import com.skydoves.balloon.balloon
+import com.skydoves.balloon.createBalloon
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
 import kotlinx.android.synthetic.main.assets_middle_cell.view.*
 import kotlinx.android.synthetic.main.assets_top_cell.view.*
@@ -79,7 +84,11 @@ class BorrowerOneAssets : AssetBaseFragment() {
 
             binding.assetParentContainer.addView(mainCell)
 
+            val drawable = R.drawable.toast_err
+
             topCell.setOnClickListener {
+
+
                 hideOtherBoxes() // if you want to hide other boxes....
                 topCell.arrow_up.visibility = View.VISIBLE
                 topCell.arrow_down.visibility = View.GONE
