@@ -33,8 +33,7 @@ class SubjectPropertyPurchase : Fragment(), View.OnClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        Log.e("onCreateView","onCreateView" )
+    ): View? {
         binding = SubjectPropertyPurchaseBinding.inflate(inflater, container, false)
 
         binding.rbSubProperty.isChecked = false
@@ -56,7 +55,7 @@ class SubjectPropertyPurchase : Fragment(), View.OnClickListener {
         setSpinnerData()
         setInputFields()
 
-        if(isPropertyAddress){
+        /*if(isPropertyAddress){
             binding.tvSubPropertyAddress.visibility = View.VISIBLE
             binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
 
@@ -65,7 +64,7 @@ class SubjectPropertyPurchase : Fragment(), View.OnClickListener {
         if(isMixedProperty){
             binding.layoutDetails.visibility = View.VISIBLE
             binding.rbOccupying.setTypeface(null, Typeface.BOLD)
-        }
+        } */
 
         return binding.root
 

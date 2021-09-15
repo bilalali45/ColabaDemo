@@ -1,19 +1,19 @@
 package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
-import android.content.res.Resources
+
 import android.os.Bundle
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import com.rnsoft.colabademo.databinding.AssetsActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class AssetsActivity : BaseActivity() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    private lateinit var binding: AssetsActivityLayoutBinding
+    lateinit var binding: AssetsActivityLayoutBinding
     private lateinit var appBarConfiguration : AppBarConfiguration
 
     var loanApplicationId:Int? = null
@@ -28,6 +28,9 @@ class AssetsActivity : BaseActivity() {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             loanPurpose = it.getString(AppConstant.loanPurpose)
         }
+
+        Timber.d("Running on create function")
+        Timber.e("Running on create function")
 
 
         /*
@@ -47,5 +50,10 @@ class AssetsActivity : BaseActivity() {
         */
 
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Timber.e("onStop from Activity called....")
     }
 }

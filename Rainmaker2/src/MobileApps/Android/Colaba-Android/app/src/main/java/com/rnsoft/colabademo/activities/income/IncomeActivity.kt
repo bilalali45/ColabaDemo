@@ -21,11 +21,13 @@ class IncomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = IncomeActivityLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val extras = intent.extras
+        /*val extras = intent.extras
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             loanPurpose = it.getString(AppConstant.loanPurpose)
-        }
+        } */
+
+
 
 
         /*

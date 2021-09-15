@@ -9,7 +9,7 @@
     app:layout_constraintTop_toTopOf="parent">
 
     <ImageView
-        android:id="@+id/backButton"
+        android:id="@+id/btn_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -20,15 +20,17 @@
         app:srcCompat="@drawable/ic_grey_cross" />
 
     <TextView
-        android:id="@+id/borrower_name_greeting"
+        android:id="@+id/toolbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:fontFamily="@font/rubik_medium"
-        android:text="@string/current_residence"
+        android:text="Title"
         android:textColor="@color/grey_color_one"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:singleLine="true"
+        android:ellipsize="end"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -45,7 +47,7 @@
         android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/borrower_name_greeting" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_title" />
 
     <ImageView
         android:id="@+id/top_del_imageview"
@@ -67,6 +69,6 @@
         android:layout_marginTop="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/borrower_purpose" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
