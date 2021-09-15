@@ -4536,11 +4536,23 @@ Houston, TX 77027, USA</string>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
+                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qLz-D8-02g">
+                                                <rect key="frame" x="335.5" y="32" width="17.5" height="22"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" image="textfield-dropdownIcon"/>
+                                            </button>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gGm-1d-V00">
+                                                <rect key="frame" x="20" y="69" width="335" height="2"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="2" id="853-ml-r1w"/>
+                                                </constraints>
+                                            </view>
                                             <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="l2r-Fu-QkD" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="69" width="335" height="0.0"/>
+                                                <rect key="frame" x="20" y="99" width="335" height="39"/>
                                                 <color key="backgroundColor" red="0.60392156860000001" green="0.602715373" blue="0.602715373" alpha="0.5" colorSpace="calibratedRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" id="y1t-gP-Wxv"/>
+                                                    <constraint firstAttribute="height" constant="39" id="y1t-gP-Wxv"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
@@ -4566,8 +4578,8 @@ Houston, TX 77027, USA</string>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="k8O-Uu-cTS" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="99" width="335" height="39"/>
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="k8O-Uu-cTS" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
+                                                <rect key="frame" x="20" y="168" width="335" height="39"/>
                                                 <color key="backgroundColor" red="0.60392156860000001" green="0.602715373" blue="0.602715373" alpha="0.5" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="8Tl-Gv-K1Y"/>
@@ -4600,15 +4612,20 @@ Houston, TX 77027, USA</string>
                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="ADr-7c-lT1" firstAttribute="leading" secondItem="YGO-SP-m6y" secondAttribute="leading" constant="20" id="0WS-uC-JxG"/>
+                                            <constraint firstAttribute="trailing" secondItem="qLz-D8-02g" secondAttribute="trailing" constant="22" id="0dC-UJ-QNH"/>
                                             <constraint firstItem="l2r-Fu-QkD" firstAttribute="leading" secondItem="YGO-SP-m6y" secondAttribute="leading" constant="20" id="8RM-6l-6sZ"/>
+                                            <constraint firstItem="gGm-1d-V00" firstAttribute="leading" secondItem="YGO-SP-m6y" secondAttribute="leading" constant="20" id="8sU-hU-EM1"/>
                                             <constraint firstItem="k8O-Uu-cTS" firstAttribute="leading" secondItem="YGO-SP-m6y" secondAttribute="leading" constant="20" id="9Oj-tX-QaN"/>
                                             <constraint firstAttribute="trailing" secondItem="ADr-7c-lT1" secondAttribute="trailing" constant="20" id="FfV-QC-xDt"/>
+                                            <constraint firstAttribute="trailing" secondItem="gGm-1d-V00" secondAttribute="trailing" constant="20" id="JXv-lf-KXD"/>
                                             <constraint firstAttribute="height" constant="300" id="TtJ-EC-rAK"/>
                                             <constraint firstItem="k8O-Uu-cTS" firstAttribute="top" secondItem="l2r-Fu-QkD" secondAttribute="bottom" constant="30" id="V5N-hA-8u0"/>
+                                            <constraint firstItem="gGm-1d-V00" firstAttribute="top" secondItem="ADr-7c-lT1" secondAttribute="bottom" id="Xbk-Rg-cMg"/>
                                             <constraint firstItem="ADr-7c-lT1" firstAttribute="top" secondItem="YGO-SP-m6y" secondAttribute="top" constant="30" id="YBX-Rh-2pa"/>
                                             <constraint firstAttribute="trailing" secondItem="k8O-Uu-cTS" secondAttribute="trailing" constant="20" id="evI-St-QHU"/>
                                             <constraint firstAttribute="trailing" secondItem="l2r-Fu-QkD" secondAttribute="trailing" constant="20" id="je4-BF-SCd"/>
-                                            <constraint firstItem="l2r-Fu-QkD" firstAttribute="top" secondItem="ADr-7c-lT1" secondAttribute="bottom" id="s5U-e3-Ofw"/>
+                                            <constraint firstItem="qLz-D8-02g" firstAttribute="top" secondItem="YGO-SP-m6y" secondAttribute="top" constant="32" id="o55-JJ-9ti"/>
+                                            <constraint firstItem="l2r-Fu-QkD" firstAttribute="top" secondItem="ADr-7c-lT1" secondAttribute="bottom" constant="30" id="s5U-e3-Ofw"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -4655,7 +4672,9 @@ Houston, TX 77027, USA</string>
                     <connections>
                         <outlet property="btnBack" destination="cXK-u1-JFV" id="Npg-Tl-Qco"/>
                         <outlet property="btnDelete" destination="MCY-fh-0eJ" id="xJH-U4-wDg"/>
+                        <outlet property="btnIncomeTypeDropDown" destination="qLz-D8-02g" id="frV-iB-5ha"/>
                         <outlet property="btnSaveChanges" destination="Exh-ia-N0T" id="i1q-Ht-u4a"/>
+                        <outlet property="incomeTypeDropDownAnchorView" destination="gGm-1d-V00" id="feV-MY-4b1"/>
                         <outlet property="lblUsername" destination="LwL-F7-CR6" id="DP5-pL-kEd"/>
                         <outlet property="mainView" destination="YGO-SP-m6y" id="BW5-bS-T9l"/>
                         <outlet property="mainViewHeightConstraint" destination="TtJ-EC-rAK" id="QaW-tn-BQc"/>
