@@ -43,11 +43,11 @@ class BorrowerOneIncome : IncomeBaseFragment() {
 
     private fun setupLayout(){
 
-        val sampleAssets = getSampleIncome()
+        val sampleIncomeData = getSampleIncome()
 
-        for (i in 0 until sampleAssets.size) {
+        for (i in 0 until sampleIncomeData.size) {
 
-            val modelData = sampleAssets[i]
+            val modelData = sampleIncomeData[i]
             //Log.e("header",modelData.headerTitle )
             //Log.e("h-amount",modelData.headerAmount )
 
@@ -71,52 +71,20 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                 contentCell.content_amount.text = contentData.contentAmount
                 contentCell.tenureTextView.text = contentData.tenure
                 contentCell.visibility = View.GONE
+                contentCell.setOnClickListener(modelData.listenerAttached)
                 mainCell.addView(contentCell)
             }
 
 
             val bottomCell: View = layoutInflater.inflate(R.layout.income_bottom_cell, null)
             bottomCell.footer_title.text =  modelData.footerTitle
-            //bottomCell.tag = R.string.asset_bottom_cell
             bottomCell.visibility = View.GONE
-
-            if(i == 0)
-            bottomCell.setOnClickListener{
-                DailogAddEmpolyment.newInstance().show(childFragmentManager, DailogAddEmpolyment::class.java.canonicalName)
-
-            }
-            else
-            if(i == 1)
-            bottomCell.setOnClickListener{
-                findNavController().navigate(R.id.navigation_selfEmployment)
-            }
-            else if(i == 2)
-            bottomCell.setOnClickListener{
-                findNavController().navigate(R.id.navigation_business)
-            }
-            else if(i == 3)
-                bottomCell.setOnClickListener{
-                    findNavController().navigate(R.id.navigation_military_pay)
-                }
-
-            else if(i == 4)
-                bottomCell.setOnClickListener{
-                    findNavController().navigate(R.id.navigation_retirement)
-                }
-
-            else if(i == 5)
-                bottomCell.setOnClickListener{
-                    findNavController().navigate(R.id.navigation_other)
-                }
-
+            bottomCell.setOnClickListener(modelData.listenerAttached)
             mainCell.addView(bottomCell)
-
-
-
 
             binding.assetParentContainer.addView(mainCell)
 
-            topCell.arrow_down.setOnClickListener {
+            topCell.setOnClickListener {
                 hideOtherBoxes() // if you want to hide other boxes....
                 topCell.arrow_up.visibility = View.VISIBLE
                 topCell.arrow_down.visibility = View.GONE

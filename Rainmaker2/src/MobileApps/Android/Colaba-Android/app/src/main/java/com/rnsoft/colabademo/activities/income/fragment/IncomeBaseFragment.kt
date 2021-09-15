@@ -10,35 +10,35 @@ open class IncomeBaseFragment:Fragment() {
             incomeContentCell = arrayListOf(
                 IncomeContentCell("Google LLC", "Chief Executive Officer" ,"$5,000" ,"From Jun 2020"),
                 IncomeContentCell("Disrupt", "Admin Manager", "$4,000" , "Dec 2019 to May 2020")
-            ))
+            ), navigateToEmployment)
 
         val assetModelCell2 = IncomeModelClass( headerTitle = "Self Employment / Independent Contractor", headerAmount = "$3,000/mo" , footerTitle = "Add Self Employment",
             incomeContentCell = arrayListOf(
                 IncomeContentCell("Freelance", "Content Writer" ,"$3,000","From Dec 2020")
-            ))
+            ), navigateToSelfEmployment)
 
         val assetModelCell3 = IncomeModelClass( headerTitle = "Business" ,headerAmount = "$6,000/mo" , footerTitle = "Add Business",
             incomeContentCell = arrayListOf(
                 IncomeContentCell("OPTP", "Director" ,"$6,000","From Jun 2020")
-            ))
+            ), navigateToBusinessIncome)
 
 
         val assetModelCell4 = IncomeModelClass( headerTitle = "Military Pay", headerAmount = "$2,000" , footerTitle = "Add Military Service",
             incomeContentCell = arrayListOf(
                 IncomeContentCell("US Army", "Field 15 — Aviation" ,"$2,000","From Jun 2020")
-            ))
+            ),navigateToMilitaryPay)
 
 
         val assetModelCell5 = IncomeModelClass( headerTitle = "Retirement", headerAmount = "$1,200/mo" , footerTitle = "Add Retirement",
             incomeContentCell = arrayListOf(
                 IncomeContentCell("Google LLC", "Pension" ,"$1,200")
-            ))
+            ) , navigateToRetirementIncome)
 
 
         val assetModelCell6 = IncomeModelClass( headerTitle = "Other", headerAmount = "$4,125/mo" , footerTitle = "Add Other Income",
             incomeContentCell = arrayListOf(
                 IncomeContentCell("Alimony", "Family" ,"$4,125")
-            ))
+            ), navigateToOtherIncome)
 
 
 
@@ -55,10 +55,13 @@ open class IncomeBaseFragment:Fragment() {
 
     }
 
-    private val navigateToBank = View.OnClickListener { findNavController().navigate(R.id.navigation_bank_account) }
-    private val navigateToRetirement = View.OnClickListener { findNavController().navigate(R.id.navigation_retirement_fragment) }
-    private val navigateToStockBonds = View.OnClickListener { findNavController().navigate(R.id.navigation_stock_bonds) }
-    private val navigateToTransactionAsset = View.OnClickListener { findNavController().navigate(R.id.navigation_proceed_from_transaction) }
-    private val navigateToGiftAsset = View.OnClickListener { findNavController().navigate(R.id.navigation_gift_assets) }
-    private val navigateToOtherAsset = View.OnClickListener { findNavController().navigate(R.id.navigation_other_asset) }
+    private val navigateToEmployment = View.OnClickListener { findNavController().navigate(R.id.navigation_income_current_employment) }
+    private val navigateToSelfEmployment = View.OnClickListener { findNavController().navigate(R.id.navigation_selfEmployment) }
+    private val navigateToBusinessIncome = View.OnClickListener { findNavController().navigate(R.id.navigation_business) }
+    private val navigateToMilitaryPay = View.OnClickListener { findNavController().navigate(R.id.navigation_military_pay) }
+    private val navigateToRetirementIncome = View.OnClickListener { findNavController().navigate(R.id.navigation_retirement) }
+    private val navigateToOtherIncome = View.OnClickListener { findNavController().navigate(R.id.navigation_other) }
+
+
+
 }
