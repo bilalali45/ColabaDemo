@@ -105,10 +105,9 @@ class AddMilitaryPayViewController: BaseViewController {
         else if (!txtfieldProfessionYears.validate()){
             return false
         }
-//        else if (!txtfieldStartDate.validate()) {
-//            return false
-//        }
-//
+        else if (!txtfieldStartDate.validate()) {
+            return false
+        }
         else if (!txtfieldMonthlyBaseSalary.validate()){
             return false
         }

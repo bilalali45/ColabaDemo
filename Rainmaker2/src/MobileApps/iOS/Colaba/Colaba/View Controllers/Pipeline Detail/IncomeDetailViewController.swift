@@ -388,7 +388,7 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
                 let navVC = UINavigationController(rootViewController: vc)
                 navVC.navigationBar.isHidden = true
                 navVC.modalPresentationStyle = .fullScreen
-                self.presentVC(vc: vc)
+                self.presentVC(vc: navVC)
             }
             else if (tableView == tableViewMilitaryPay && (indexPath.row == 1 || indexPath.row == 2)){
                 let vc = Utility.getAddMilitaryPayVC()

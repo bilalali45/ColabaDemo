@@ -109,10 +109,9 @@ class AddBusinessViewController: BaseViewController {
         else if (txtfieldBusinessPhoneNumber.text != "" && !txtfieldBusinessPhoneNumber.validate()){
             return false
         }
-//        else if (!txtfieldBusinessStartDate.validate()) {
-//            return false
-//        }
-//
+        else if (!txtfieldBusinessStartDate.validate()) {
+            return false
+        }
         else if (!txtfieldNetAnnualIncome.validate()){
             return false
         }

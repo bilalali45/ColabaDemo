@@ -75,7 +75,7 @@ class ColabaTextField: TextField {
                 toggleButtonImage()
             case .dropdown:
                 isButtonHidden(false)
-                self.isUserInteractionEnabled = false
+                self.isUserInteractionEnabled = true
                 self.setButton(image: UIImage(named: "textfield-dropdownIcon")!)
             case .delete:
                 button.contentHorizontalAlignment = .center
@@ -88,7 +88,7 @@ class ColabaTextField: TextField {
                 attributedPrefix = createAttributedText(prefix: prefix!)
             case .datePicker:
                 isButtonHidden(false)
-                self.isUserInteractionEnabled = false
+                self.isUserInteractionEnabled = true
                 self.tintColor = .clear
                 setButton(image: UIImage(named: "CalendarIcon")!)
             case .defaultType:
@@ -140,11 +140,11 @@ class ColabaTextField: TextField {
         self.addSubview(button)
         
         button.translatesAutoresizingMaskIntoConstraints = false
-        let horizontalConstraint = button.trailingAnchor.constraint(equalTo: self.trailingAnchor)
-        let verticalConstraint = button.centerYAnchor.constraint(equalTo: self.centerYAnchor)
-        let widthConstraint = button.widthAnchor.constraint(equalToConstant: 32)
-        let heightConstraint = button.heightAnchor.constraint(equalToConstant: 32)
-        self.addConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint])
+        let horizontalConstraint = button.trailingAnchor.constraint(greaterThanOrEqualTo: self.trailingAnchor, constant: -2)
+        let verticalConstraint = button.topAnchor.constraint(greaterThanOrEqualTo: self.topAnchor, constant: 5)
+//        let widthConstraint = button.widthAnchor.constraint(equalToConstant: 32)
+//        let heightConstraint = button.heightAnchor.constraint(equalToConstant: 32)
+        self.addConstraints([horizontalConstraint, verticalConstraint])
         isButtonHidden(true)
     }
     
@@ -454,6 +454,10 @@ extension ColabaTextField: UITextFieldDelegate {
             self.attributedText = attributedPrefix
         }
         if (type == .datePicker){
+            if let datePicker = self.inputView as? UIDatePicker{
+                self.colabaDelegate?.selectedDate(date: datePicker.date)
+                self.text = getFormattedDate(datePicker: datePicker)
+            }
             setDatePicker()
         }
     }
@@ -519,8 +523,8 @@ extension ColabaTextField{
     }
     
     @objc func cancelDatePicker(){
-        self.isUserInteractionEnabled = false
-        self.text = nil
+        self.isUserInteractionEnabled = true
+        self.resignFirstResponder()
     }
     
     @objc func doneDatePicker(datePicker: UIDatePicker){
@@ -528,7 +532,8 @@ extension ColabaTextField{
             self.colabaDelegate?.selectedDate(date: datePicker.date)
             self.text = getFormattedDate(datePicker: datePicker)
         }
-        self.isUserInteractionEnabled = false
+        self.resignFirstResponder()
+        self.isUserInteractionEnabled = true
     }
     
     @objc func datePickerValueChanged(datePicker: UIDatePicker){

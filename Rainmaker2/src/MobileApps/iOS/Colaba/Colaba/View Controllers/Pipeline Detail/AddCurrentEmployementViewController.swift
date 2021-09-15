@@ -297,9 +297,9 @@ class AddCurrentEmployementViewController: BaseViewController {
         else if (txtfieldEmployerPhoneNumber.text != "" && !txtfieldEmployerPhoneNumber.validate()){
             return false
         }
-//        else if (!txtfieldStartDate.validate()) {
-//            return false
-//        }
+        else if (!txtfieldStartDate.validate()) {
+            return false
+        }
         else if (hasOwnershipInterest && !txtfieldOwnershipPercentage.validate()){
             return false
         }
