@@ -64,6 +64,7 @@ class IncomePreviousEmployment : Fragment(),View.OnClickListener {
 
         binding.layoutAddress.setOnClickListener(this)
         toolbar.btnClose.setOnClickListener(this)
+        binding.btnSaveChange.setOnClickListener(this)
 
 
         setInputFields()
@@ -73,6 +74,7 @@ class IncomePreviousEmployment : Fragment(),View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
+            R.id.btn_save_change -> findNavController().popBackStack()
             R.id.rb_ownership_yes -> ownershipInterest()
             R.id.rb_ownership_no -> ownershipInterest()
             R.id.layout_address -> openAddressFragment() //findNavController().navigate(R.id.action_address)

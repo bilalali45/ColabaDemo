@@ -70,6 +70,7 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
         binding.btnSaveChange.setOnClickListener(this)
 
 
+
         setInputFields()
 
     }
@@ -113,6 +114,7 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
+            R.id.btn_save_change -> findNavController().popBackStack()
             R.id.rb_ques1_yes -> quesOneClicked()
             R.id.rb_ques1_no -> quesOneClicked()
             R.id.rb_ownership_yes -> quesTwoClicked()
