@@ -4279,7 +4279,19 @@ Houston, TX 77027, USA</string>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wp6-67-eaX" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hkz-R2-ggD">
+                                                <rect key="frame" x="20" y="69" width="335" height="2"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="2" id="rxm-QU-gK3"/>
+                                                </constraints>
+                                            </view>
+                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LWV-5v-a6r">
+                                                <rect key="frame" x="335.5" y="32" width="17.5" height="22"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" image="textfield-dropdownIcon"/>
+                                            </button>
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wp6-67-eaX" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="99" width="335" height="39"/>
                                                 <color key="backgroundColor" red="0.60392156860000001" green="0.602715373" blue="0.602715373" alpha="0.5" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -4309,7 +4321,7 @@ Houston, TX 77027, USA</string>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gZ9-6Y-Jau" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gZ9-6Y-Jau" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="168" width="335" height="39"/>
                                                 <color key="backgroundColor" red="0.60392156860000001" green="0.602715373" blue="0.602715373" alpha="0.5" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -4344,12 +4356,17 @@ Houston, TX 77027, USA</string>
                                         <constraints>
                                             <constraint firstItem="Wp6-67-eaX" firstAttribute="leading" secondItem="8gy-eg-6Zx" secondAttribute="leading" constant="20" id="1ax-N3-Z6e"/>
                                             <constraint firstItem="gZ9-6Y-Jau" firstAttribute="leading" secondItem="8gy-eg-6Zx" secondAttribute="leading" constant="20" id="3hI-0d-75J"/>
+                                            <constraint firstItem="hkz-R2-ggD" firstAttribute="top" secondItem="MAY-ed-lc5" secondAttribute="bottom" id="3oJ-vd-9F7"/>
                                             <constraint firstItem="MAY-ed-lc5" firstAttribute="top" secondItem="8gy-eg-6Zx" secondAttribute="top" constant="30" id="9u9-Ya-Cnh"/>
                                             <constraint firstAttribute="trailing" secondItem="gZ9-6Y-Jau" secondAttribute="trailing" constant="20" id="DAE-Mv-yuk"/>
                                             <constraint firstAttribute="height" constant="300" id="EN3-yl-Bxn"/>
                                             <constraint firstItem="MAY-ed-lc5" firstAttribute="leading" secondItem="8gy-eg-6Zx" secondAttribute="leading" constant="20" id="Hz1-YP-1ds"/>
+                                            <constraint firstAttribute="trailing" secondItem="LWV-5v-a6r" secondAttribute="trailing" constant="22" id="Tr2-As-9AE"/>
+                                            <constraint firstAttribute="trailing" secondItem="hkz-R2-ggD" secondAttribute="trailing" constant="20" id="aEK-Fw-h4N"/>
                                             <constraint firstItem="gZ9-6Y-Jau" firstAttribute="top" secondItem="Wp6-67-eaX" secondAttribute="bottom" constant="30" id="jcV-nB-qbn"/>
                                             <constraint firstAttribute="trailing" secondItem="MAY-ed-lc5" secondAttribute="trailing" constant="20" id="jpv-pt-LTe"/>
+                                            <constraint firstItem="LWV-5v-a6r" firstAttribute="top" secondItem="8gy-eg-6Zx" secondAttribute="top" constant="32" id="oev-jP-cKy"/>
+                                            <constraint firstItem="hkz-R2-ggD" firstAttribute="leading" secondItem="8gy-eg-6Zx" secondAttribute="leading" constant="20" id="qbf-NH-Nz3"/>
                                             <constraint firstItem="Wp6-67-eaX" firstAttribute="top" secondItem="MAY-ed-lc5" secondAttribute="bottom" constant="30" id="sQA-wj-oXp"/>
                                             <constraint firstAttribute="trailing" secondItem="Wp6-67-eaX" secondAttribute="trailing" constant="20" id="wPS-PB-fzE"/>
                                         </constraints>
@@ -4398,12 +4415,16 @@ Houston, TX 77027, USA</string>
                     <connections>
                         <outlet property="btnBack" destination="QDv-Yx-1E5" id="95m-iN-bwb"/>
                         <outlet property="btnDelete" destination="cUe-bq-nhg" id="P1t-tX-jBd"/>
+                        <outlet property="btnRetirementIncomeTypeDropDown" destination="LWV-5v-a6r" id="aOw-xs-cbj"/>
                         <outlet property="btnSaveChanges" destination="VzW-l7-F2k" id="Pap-wz-Ock"/>
                         <outlet property="lblUsername" destination="Upq-Br-4oc" id="UJj-Yv-4tk"/>
                         <outlet property="mainView" destination="8gy-eg-6Zx" id="XRK-MS-n4V"/>
                         <outlet property="mainViewHeightConstraint" destination="EN3-yl-Bxn" id="K8M-XD-2VF"/>
+                        <outlet property="retirementIncomeTypeDropDownAnchorView" destination="hkz-R2-ggD" id="Qh8-QO-S4v"/>
                         <outlet property="scrollView" destination="QFx-US-LYF" id="NAV-HW-ebF"/>
                         <outlet property="txtfieldEmployerName" destination="Wp6-67-eaX" id="yuX-1j-bgj"/>
+                        <outlet property="txtfieldEmployerNameHeightConstraint" destination="7iR-p0-doC" id="nv8-oq-7vQ"/>
+                        <outlet property="txtfieldEmployerNameTopConstraint" destination="sQA-wj-oXp" id="R10-Vu-lk0"/>
                         <outlet property="txtfieldMonthlyIncome" destination="gZ9-6Y-Jau" id="ubI-FH-wl6"/>
                         <outlet property="txtfieldRetirementIncomeType" destination="MAY-ed-lc5" id="01c-VU-V5J"/>
                     </connections>
