@@ -77,7 +77,8 @@ class IncomeAddress : Fragment() , PlacePredictionAdapter.OnPlaceClickListener {
         }
 
         binding.btnSave.setOnClickListener {
-            checkValidations()
+            //checkValidations()
+            findNavController().popBackStack()
         }
 
         return binding.root
