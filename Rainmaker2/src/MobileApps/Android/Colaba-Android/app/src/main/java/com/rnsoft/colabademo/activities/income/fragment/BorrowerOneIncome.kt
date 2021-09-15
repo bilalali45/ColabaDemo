@@ -88,13 +88,27 @@ class BorrowerOneIncome : IncomeBaseFragment() {
             else
             if(i == 1)
             bottomCell.setOnClickListener{
-                findNavController().navigate(R.id.navigation_retirement_fragment)
+                findNavController().navigate(R.id.navigation_selfEmployment)
             }
-            else
-            if(i == 2)
+            else if(i == 2)
             bottomCell.setOnClickListener{
-                findNavController().navigate(R.id.navigation_stock_bonds)
+                findNavController().navigate(R.id.navigation_business)
             }
+            else if(i == 3)
+                bottomCell.setOnClickListener{
+                    findNavController().navigate(R.id.navigation_military_pay)
+                }
+
+            else if(i == 4)
+                bottomCell.setOnClickListener{
+                    findNavController().navigate(R.id.navigation_retirement)
+                }
+
+            else if(i == 5)
+                bottomCell.setOnClickListener{
+                    findNavController().navigate(R.id.navigation_other)
+                }
+
             mainCell.addView(bottomCell)
 
 

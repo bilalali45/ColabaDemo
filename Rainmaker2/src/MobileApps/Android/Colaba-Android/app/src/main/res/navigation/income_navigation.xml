@@ -30,13 +30,104 @@
        android:id="@+id/navigation_income_current_employment"
        android:name="com.rnsoft.colabademo.IncomeCurrentEmployment"
        android:label="@string/income"
-       tools:layout="@layout/income_current_employment" />
+       tools:layout="@layout/income_current_employment">
+
+      <action
+          android:id="@+id/action_address"
+          app:destination="@id/navigation_current_employment_address"
+          app:enterAnim="@anim/slide_up"
+          app:exitAnim="@anim/slide_down"/>
+
+   </fragment>
+
+   <fragment
+       android:id="@+id/navigation_current_employment_address"
+       android:name="com.rnsoft.colabademo.IncomeAddress"
+       android:label="@string/income"
+       tools:layout="@layout/subject_property_address">
+      <!--sli<action
+          android:id="@+id/action_exit_address"
+          app:destination="@id/navigation_income_current_employment"
+          app:exitAnim="@anim/slide_down"/> -->
+
+   </fragment>
 
    <fragment
        android:id="@+id/navigation_income_prev_emplyoyment"
        android:name="com.rnsoft.colabademo.IncomePreviousEmployment"
        android:label="@string/income"
        tools:layout="@layout/income_previous_employment" />
+
+   <fragment
+       android:id="@+id/navigation_selfEmployment"
+       android:name="com.rnsoft.colabademo.SelfEmploymentContractor"
+       android:label="@string/income"
+       tools:layout="@layout/self_empolyment_cont_layout">
+
+      <action
+          android:id="@+id/action_address"
+          app:destination="@id/navigation_current_employment_address"
+          app:enterAnim="@anim/slide_up"
+          app:exitAnim="@anim/slide_down"/>
+
+   </fragment>
+
+   <fragment
+       android:id="@+id/navigation_business"
+       android:name="com.rnsoft.colabademo.BusinessFragment"
+       android:label="@string/income"
+       tools:layout="@layout/income_business_layout">
+
+      <action
+          android:id="@+id/action_address"
+          app:destination="@id/navigation_current_employment_address"
+          app:enterAnim="@anim/slide_up"
+          app:exitAnim="@anim/slide_down"/>
+
+   </fragment>
+
+   <fragment
+       android:id="@+id/navigation_military_pay"
+       android:name="com.rnsoft.colabademo.MilitaryPay"
+       android:label="@string/income"
+       tools:layout="@layout/income_military_pay">
+
+      <action
+          android:id="@+id/action_address"
+          app:destination="@id/navigation_current_employment_address"
+          app:enterAnim="@anim/slide_up"
+          app:exitAnim="@anim/slide_down"/>
+
+   </fragment>
+
+   <fragment
+       android:id="@+id/navigation_retirement"
+       android:name="com.rnsoft.colabademo.Retirement"
+       android:label="@string/income"
+       tools:layout="@layout/income_retirement_layout">
+
+      <action
+          android:id="@+id/action_address"
+          app:destination="@id/navigation_current_employment_address"
+          app:enterAnim="@anim/slide_up"
+          app:exitAnim="@anim/slide_down"/>
+
+   </fragment>
+
+   <fragment
+       android:id="@+id/navigation_other"
+       android:name="com.rnsoft.colabademo.IncomeOther"
+       android:label="@string/income"
+       tools:layout="@layout/income_other_layout">
+
+      <action
+          android:id="@+id/action_address"
+          app:destination="@id/navigation_current_employment_address"
+          app:enterAnim="@anim/slide_up"
+          app:exitAnim="@anim/slide_down"/>
+
+   </fragment>
+
 
 
 </navigation>
