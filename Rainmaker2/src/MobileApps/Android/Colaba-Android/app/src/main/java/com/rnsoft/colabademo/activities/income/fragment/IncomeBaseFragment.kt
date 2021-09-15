@@ -4,45 +4,45 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
-open class AssetBaseFragment:Fragment() {
-    protected fun getSampleAssets():ArrayList<AssetsModelClass>{
-        val assetModelCell = AssetsModelClass( headerTitle = "Bank Account", headerAmount = "$26,000" , footerTitle = "Add Bank Account",
-            contentCell = arrayListOf(
-                ContentCell("Chase", "Checking" ,"$20,000"), ContentCell("Ally Bank", "Saving", "$6,000")
-            ), navigateToBank)
+open class IncomeBaseFragment:Fragment() {
+    fun getSampleIncome():ArrayList<IncomeModelClass>{
+        val assetModelCell = IncomeModelClass( headerTitle = "Employment", headerAmount = "$5,000/mo" , footerTitle = "Add Employment",
+            incomeContentCell = arrayListOf(
+                IncomeContentCell("Google LLC", "Chief Executive Officer" ,"$5,000" ,"From Jun 2020"),
+                IncomeContentCell("Disrupt", "Admin Manager", "$4,000" , "Dec 2019 to May 2020")
+            ))
 
-        val assetModelCell2 = AssetsModelClass( headerTitle = "Retirement Account", headerAmount = "$10,000" , footerTitle = "Add Retirement Account",
-            contentCell = arrayListOf(
-                ContentCell("401K", "Retirement Account" ,"$10,000" )
-            ), navigateToRetirement)
+        val assetModelCell2 = IncomeModelClass( headerTitle = "Self Employment / Independent Contractor", headerAmount = "$3,000/mo" , footerTitle = "Add Self Employment",
+            incomeContentCell = arrayListOf(
+                IncomeContentCell("Freelance", "Content Writer" ,"$3,000","From Dec 2020")
+            ))
 
-        val assetModelCell3 = AssetsModelClass( headerTitle = "Stocks, Bonds, or Other\n" +
-                "Financial Assets", headerAmount = "$800" , footerTitle = "Add Financial Assets",
-            contentCell = arrayListOf(
-                ContentCell("AHC", "Mutual Funds" ,"$200"  )
-            ), navigateToStockBonds)
-
-
-        val assetModelCell4 = AssetsModelClass( headerTitle = "Proceeds From Transaction", headerAmount = "$1,200" , footerTitle = "Add Proceeds From Transaction",
-            contentCell = arrayListOf(
-                ContentCell("Proceeds From Selling Non-Real Es...", "Proceeds From Transaction" ,"$1,200" )
-            ), navigateToTransactionAsset)
+        val assetModelCell3 = IncomeModelClass( headerTitle = "Business" ,headerAmount = "$6,000/mo" , footerTitle = "Add Business",
+            incomeContentCell = arrayListOf(
+                IncomeContentCell("OPTP", "Director" ,"$6,000","From Jun 2020")
+            ))
 
 
-        val assetModelCell5 = AssetsModelClass( headerTitle = "Gift Funds", headerAmount = "$2000" , footerTitle = "Add Gifts Account",
-            contentCell = arrayListOf(
-                ContentCell("Relative", "Cash Gifts" ,"$2000" )
-            ), navigateToGiftAsset)
+        val assetModelCell4 = IncomeModelClass( headerTitle = "Military Pay", headerAmount = "$2,000" , footerTitle = "Add Military Service",
+            incomeContentCell = arrayListOf(
+                IncomeContentCell("US Army", "Field 15 — Aviation" ,"$2,000","From Jun 2020")
+            ))
 
 
-        val assetModelCell6 = AssetsModelClass( headerTitle = "Other", headerAmount = "$600" , footerTitle = "Add Other Assets",
-            contentCell = arrayListOf(
-                ContentCell("Individual Development Account", "Other" ,"$600" )
-            ) , navigateToOtherAsset)
+        val assetModelCell5 = IncomeModelClass( headerTitle = "Retirement", headerAmount = "$1,200/mo" , footerTitle = "Add Retirement",
+            incomeContentCell = arrayListOf(
+                IncomeContentCell("Google LLC", "Pension" ,"$1,200")
+            ))
+
+
+        val assetModelCell6 = IncomeModelClass( headerTitle = "Other", headerAmount = "$4,125/mo" , footerTitle = "Add Other Income",
+            incomeContentCell = arrayListOf(
+                IncomeContentCell("Alimony", "Family" ,"$4,125")
+            ))
 
 
 
-        val modelArrayList:ArrayList<AssetsModelClass> = arrayListOf()
+        val modelArrayList:ArrayList<IncomeModelClass> = arrayListOf()
         modelArrayList.add(assetModelCell)
         modelArrayList.add(assetModelCell2)
         modelArrayList.add(assetModelCell3)

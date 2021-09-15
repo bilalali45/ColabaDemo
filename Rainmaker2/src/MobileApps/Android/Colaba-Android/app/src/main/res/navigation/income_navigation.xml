@@ -25,17 +25,6 @@
        android:label="@string/income"
        tools:layout="@layout/income_fragment_layout" />
 
-   <fragment
-       android:id="@+id/navigation_b_income_three"
-       android:name="com.rnsoft.colabademo.BorrowerThreeIncome"
-       android:label="@string/income"
-       tools:layout="@layout/income_fragment_layout" />
-
-   <fragment
-       android:id="@+id/navigation_b_income_four"
-       android:name="com.rnsoft.colabademo.BorrowerFourIncome"
-       android:label="@string/income"
-       tools:layout="@layout/income_fragment_layout" />
 
    <fragment
        android:id="@+id/navigation_income_current_employment"
