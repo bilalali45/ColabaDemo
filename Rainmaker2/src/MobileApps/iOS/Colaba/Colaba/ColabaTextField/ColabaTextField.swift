@@ -157,8 +157,8 @@ class ColabaTextField: TextField {
             return
         }
         if type == .dropdown {
-            dropDownButtonClicked()
-            return
+            //dropDownButtonClicked()
+            //return
         }
         _ = self.becomeFirstResponder()
     }
@@ -187,7 +187,7 @@ class ColabaTextField: TextField {
     }
     
     private func dropDownButtonClicked() {
-        colabaDelegate?.dropDownClicked(alert: alert ?? UIAlertController(title: "", message: "", preferredStyle: .actionSheet), withTag: self.tag)
+        //colabaDelegate?.dropDownClicked(alert: alert ?? UIAlertController(title: "", message: "", preferredStyle: .actionSheet), withTag: self.tag)
     }
     
     private func datePickerButtonClicked() {

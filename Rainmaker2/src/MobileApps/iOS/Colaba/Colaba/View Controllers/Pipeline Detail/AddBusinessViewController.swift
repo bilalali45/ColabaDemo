@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import DropDown
 
 class AddBusinessViewController: BaseViewController {
 
@@ -16,6 +17,8 @@ class AddBusinessViewController: BaseViewController {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var txtfieldBusinessType: ColabaTextField!
+    @IBOutlet weak var businessTypeDropDownAnchorView: UIView!
+    @IBOutlet weak var btnBusinessTypeDropDown: UIButton!
     @IBOutlet weak var txtfieldBusinessName: ColabaTextField!
     @IBOutlet weak var txtfieldBusinessPhoneNumber: ColabaTextField!
     @IBOutlet weak var txtfieldBusinessStartDate: ColabaTextField!
@@ -25,6 +28,8 @@ class AddBusinessViewController: BaseViewController {
     @IBOutlet weak var txtfieldOwnershipPercentage: ColabaTextField!
     @IBOutlet weak var txtfieldNetAnnualIncome: ColabaTextField!
     @IBOutlet weak var btnSaveChanges: UIButton!
+    
+    let businessTypeDropDown = DropDown()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +45,8 @@ class AddBusinessViewController: BaseViewController {
         txtfieldBusinessType.setValidation(validationType: .required)
         txtfieldBusinessType.setTextField(keyboardType: .asciiCapable)
         txtfieldBusinessType.setIsValidateOnEndEditing(validate: true)
-        txtfieldBusinessType.type = .dropdown
+        //txtfieldBusinessType.type = .dropdown
+        txtfieldBusinessType.addTarget(self, action: #selector(txtfieldBusinessTypeStartEditing), for: .editingDidBegin)
         
         txtfieldBusinessName.setTextField(placeholder: "Business Name")
         txtfieldBusinessName.setDelegates(controller: self)
@@ -86,10 +92,33 @@ class AddBusinessViewController: BaseViewController {
         addressView.dropShadowToCollectionViewCell()
         addressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
         
+        businessTypeDropDown.dismissMode = .automatic
+        businessTypeDropDown.anchorView = businessTypeDropDownAnchorView
+        businessTypeDropDown.dataSource = kBusinessTypeArray
+        businessTypeDropDown.cancelAction = .some({
+            self.btnBusinessTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            self.txtfieldBusinessType.dividerColor = Theme.getSeparatorNormalColor()
+        })
+        businessTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            btnBusinessTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldBusinessType.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldBusinessType.placeholderLabel.textColor = Theme.getAppGreyColor()
+            txtfieldBusinessType.text = item
+            txtfieldBusinessType.detail = ""
+            businessTypeDropDown.hide()
+        }
+        
         btnSaveChanges.layer.borderWidth = 1
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
         
+    }
+    
+    @objc func txtfieldBusinessTypeStartEditing(){
+        txtfieldBusinessType.resignFirstResponder()
+        txtfieldBusinessType.dividerColor = Theme.getButtonBlueColor()
+        btnBusinessTypeDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+        businessTypeDropDown.show()
     }
     
     @objc func addressViewTapped(){
@@ -100,10 +129,10 @@ class AddBusinessViewController: BaseViewController {
     }
     
     func validate() -> Bool {
-//        if (!txtfieldBusinessType.validate()){
-//            return false
-//        }
-        if (!txtfieldBusinessName.validate()) {
+        if (!txtfieldBusinessType.validate()){
+            return false
+        }
+        else if (!txtfieldBusinessName.validate()) {
             return false
         }
         else if (txtfieldBusinessPhoneNumber.text != "" && !txtfieldBusinessPhoneNumber.validate()){

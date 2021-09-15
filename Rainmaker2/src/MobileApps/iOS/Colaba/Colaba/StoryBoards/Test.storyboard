@@ -3472,6 +3472,18 @@ Houston, TX 77027, USA</string>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O0i-T4-SMH">
+                                                <rect key="frame" x="20" y="69" width="335" height="2"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="2" id="mfb-bT-ay9"/>
+                                                </constraints>
+                                            </view>
+                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E69-6L-odB">
+                                                <rect key="frame" x="335.5" y="32" width="17.5" height="22"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" image="textfield-dropdownIcon"/>
+                                            </button>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ueU-Y0-Kx5" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="99" width="335" height="39"/>
                                                 <color key="backgroundColor" red="0.60392156860000001" green="0.602715373" blue="0.602715373" alpha="0.5" colorSpace="calibratedRGB"/>
@@ -3689,7 +3701,9 @@ Houston, TX 77027, USA</string>
                                             <constraint firstItem="LsN-uy-uRk" firstAttribute="leading" secondItem="x0d-VE-MZI" secondAttribute="leading" constant="20" id="17x-gr-zQ6"/>
                                             <constraint firstItem="Vc7-SZ-a02" firstAttribute="top" secondItem="yXp-yo-Axo" secondAttribute="bottom" constant="30" id="1Jj-w9-6lE"/>
                                             <constraint firstAttribute="trailing" secondItem="STi-l0-bRV" secondAttribute="trailing" constant="20" id="35s-UR-bFC"/>
+                                            <constraint firstItem="O0i-T4-SMH" firstAttribute="leading" secondItem="x0d-VE-MZI" secondAttribute="leading" constant="20" id="41H-UY-YVW"/>
                                             <constraint firstAttribute="trailing" secondItem="ueU-Y0-Kx5" secondAttribute="trailing" constant="20" id="4s6-Df-Wp2"/>
+                                            <constraint firstItem="E69-6L-odB" firstAttribute="top" secondItem="x0d-VE-MZI" secondAttribute="top" constant="32" id="5Fa-02-24T"/>
                                             <constraint firstAttribute="trailing" secondItem="zCa-SY-mgC" secondAttribute="trailing" constant="20" id="6Zb-3E-ZkK"/>
                                             <constraint firstItem="ueU-Y0-Kx5" firstAttribute="top" secondItem="zCa-SY-mgC" secondAttribute="bottom" constant="30" id="7fH-2I-9Rf"/>
                                             <constraint firstItem="nBr-iZ-c3C" firstAttribute="top" secondItem="ueU-Y0-Kx5" secondAttribute="bottom" constant="30" id="9UA-9L-DD5"/>
@@ -3697,6 +3711,7 @@ Houston, TX 77027, USA</string>
                                             <constraint firstItem="zCa-SY-mgC" firstAttribute="top" secondItem="x0d-VE-MZI" secondAttribute="top" constant="30" id="HOt-hL-DqP"/>
                                             <constraint firstAttribute="trailing" secondItem="ueU-Y0-Kx5" secondAttribute="trailing" constant="20" id="HfB-nC-bGv"/>
                                             <constraint firstAttribute="trailing" secondItem="nBr-iZ-c3C" secondAttribute="trailing" constant="20" id="Iqa-IF-gQk"/>
+                                            <constraint firstAttribute="trailing" secondItem="O0i-T4-SMH" secondAttribute="trailing" constant="20" id="JQc-gj-PEk"/>
                                             <constraint firstItem="yXp-yo-Axo" firstAttribute="top" secondItem="M4o-N0-eEy" secondAttribute="bottom" constant="30" id="KAT-MS-EAf"/>
                                             <constraint firstItem="STi-l0-bRV" firstAttribute="leading" secondItem="x0d-VE-MZI" secondAttribute="leading" constant="20" id="OQM-TU-moa"/>
                                             <constraint firstItem="LsN-uy-uRk" firstAttribute="top" secondItem="nBr-iZ-c3C" secondAttribute="bottom" constant="30" id="PBT-Sc-cyP"/>
@@ -3713,6 +3728,8 @@ Houston, TX 77027, USA</string>
                                             <constraint firstAttribute="trailing" secondItem="M4o-N0-eEy" secondAttribute="trailing" constant="20" id="izT-YZ-TA0"/>
                                             <constraint firstAttribute="trailing" secondItem="yXp-yo-Axo" secondAttribute="trailing" constant="20" id="kg7-pG-yTO"/>
                                             <constraint firstAttribute="trailing" secondItem="Vc7-SZ-a02" secondAttribute="trailing" constant="20" id="mi4-Gl-7Nj"/>
+                                            <constraint firstAttribute="trailing" secondItem="E69-6L-odB" secondAttribute="trailing" constant="22" id="tL2-np-Orw"/>
+                                            <constraint firstItem="O0i-T4-SMH" firstAttribute="top" secondItem="zCa-SY-mgC" secondAttribute="bottom" id="ujV-NN-hEh"/>
                                             <constraint firstItem="zCa-SY-mgC" firstAttribute="leading" secondItem="x0d-VE-MZI" secondAttribute="leading" constant="20" id="xDI-dp-Ro7"/>
                                             <constraint firstItem="ueU-Y0-Kx5" firstAttribute="leading" secondItem="x0d-VE-MZI" secondAttribute="leading" constant="20" id="zAJ-8G-aWm"/>
                                         </constraints>
@@ -3762,8 +3779,10 @@ Houston, TX 77027, USA</string>
                     <connections>
                         <outlet property="addressView" destination="STi-l0-bRV" id="pGm-AL-V5P"/>
                         <outlet property="btnBack" destination="IYW-sH-hKB" id="x00-BY-xCk"/>
+                        <outlet property="btnBusinessTypeDropDown" destination="E69-6L-odB" id="MpS-NU-NLR"/>
                         <outlet property="btnDelete" destination="miY-VQ-xVW" id="REp-Xb-kQo"/>
                         <outlet property="btnSaveChanges" destination="4WQ-R0-NQK" id="ViO-3K-LYj"/>
+                        <outlet property="businessTypeDropDownAnchorView" destination="O0i-T4-SMH" id="6kU-AB-iAL"/>
                         <outlet property="lblAddress" destination="dg7-hd-cR8" id="QoK-zO-pWt"/>
                         <outlet property="lblUsername" destination="c2l-BL-IgU" id="CiN-Qr-gy5"/>
                         <outlet property="mainView" destination="x0d-VE-MZI" id="SUt-jt-Gut"/>
