@@ -7,19 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.get
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.*
-import com.skydoves.balloon.BalloonAnimation
-import com.skydoves.balloon.BalloonSizeSpec
-import com.skydoves.balloon.balloon
-import com.skydoves.balloon.createBalloon
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
 import kotlinx.android.synthetic.main.assets_middle_cell.view.*
 import kotlinx.android.synthetic.main.assets_top_cell.view.*
+import timber.log.Timber
 
 class BorrowerOneAssets : AssetBaseFragment() {
 
@@ -38,6 +31,9 @@ class BorrowerOneAssets : AssetBaseFragment() {
     }
 
     private fun setupLayout(){
+
+        Timber.d("setupLayout onCreateView function")
+        Timber.e("setupLayout onCreateView function")
 
         val sampleAssets = getSampleAssets()
 
@@ -141,7 +137,10 @@ class BorrowerOneAssets : AssetBaseFragment() {
     }
 
 
-
+    override fun onStop() {
+        super.onStop()
+        Timber.e("onStop from Fragment called....")
+    }
 
 
 }

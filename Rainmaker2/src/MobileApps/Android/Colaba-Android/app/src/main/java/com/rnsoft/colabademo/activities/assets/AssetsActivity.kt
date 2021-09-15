@@ -1,16 +1,12 @@
 package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
-import android.content.res.Resources
+
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import com.rnsoft.colabademo.databinding.AssetsActivityLayoutBinding
-import com.skydoves.balloon.BalloonAnimation
-import com.skydoves.balloon.BalloonSizeSpec
-import com.skydoves.balloon.createBalloon
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -33,8 +29,8 @@ class AssetsActivity : BaseActivity() {
             loanPurpose = it.getString(AppConstant.loanPurpose)
         }
 
-
-
+        Timber.d("Running on create function")
+        Timber.e("Running on create function")
 
 
         /*
@@ -54,5 +50,10 @@ class AssetsActivity : BaseActivity() {
         */
 
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Timber.e("onStop from Activity called....")
     }
 }

@@ -61,10 +61,10 @@ android {
         }
 
         debug {
-            //buildConfigField "String", "BASE_URL", '"https://devmobilegateway.rainsoftfn.com:5002/"'
-            buildConfigField "String", "BASE_URL", '"https://qamobilegateway.rainsoftfn.com/"'
-            buildConfigField "String", "TEST_USER" , '"rainmaker.rainsoft@gmail.com"'
-            buildConfigField "String", "TEST_PASSWORD" , '"Rainsoft!"'
+            buildConfigField "String", "BASE_URL", '"https://devmobilegateway.rainsoftfn.com:5002/"'
+            //buildConfigField "String", "BASE_URL", '"https://qamobilegateway.rainsoftfn.com/"'
+            //buildConfigField "String", "TEST_USER" , '"rainmaker.rainsoft@gmail.com"'
+            //buildConfigField "String", "TEST_PASSWORD" , '"Rainsoft!"'
         }
 
     }
@@ -285,6 +285,9 @@ dependencies {
 
     //implementation 'com.google.maps.android:places-v3-ktx:1.0.0'
     //api name:'places-maps-sdk-3.1.0-beta', ext:'aar'
+
+    // Instead of use default Log library. use Timber
+    implementation 'com.jakewharton.timber:timber:5.0.1'
 }
 
 kapt {

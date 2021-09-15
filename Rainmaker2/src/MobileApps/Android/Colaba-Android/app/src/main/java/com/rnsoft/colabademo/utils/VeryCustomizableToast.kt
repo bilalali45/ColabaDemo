@@ -3,12 +3,10 @@ package com.rnsoft.colabademo
 import android.content.Context
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.skydoves.balloon.BalloonAnimation
-import com.skydoves.balloon.BalloonSizeSpec
-import com.skydoves.balloon.createBalloon
 
 object VeryCustomizableToast {
 
+    /*
     fun showBalloon(context:Context , anchorView:View , toastText:String){
         val balloon = createBalloon(context) {
             setArrowSize(0)
@@ -34,4 +32,6 @@ object VeryCustomizableToast {
         balloon.showAlignBottom( anchorView )
         balloon.dismissWithDelay(2000L)
     }
+
+     */
 }
