@@ -25,10 +25,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:fontFamily="@font/rubik_medium"
-        android:text="@string/current_residence"
+        android:text="Title"
         android:textColor="@color/grey_color_one"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:singleLine="true"
+        android:ellipsize="end"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@+id/navigation_selfEmployment">
+    app:startDestination="@+id/login_fragment_id">
 
     <fragment
         android:id="@+id/navigation_income_tab"
@@ -40,9 +40,15 @@
 
     <fragment
         android:id="@+id/navigation_current_employment_address"
-        android:name="com.rnsoft.colabademo.CurrentEmploymentAddress"
+        android:name="com.rnsoft.colabademo.IncomeAddress"
         android:label="@string/income"
         tools:layout="@layout/subject_property_address">
+
+        <argument
+            android:name="address_heading"
+            app:argType="string"
+            android:defaultValue="Address"/>
+
     </fragment>
 
 

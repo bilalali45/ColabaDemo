@@ -42,7 +42,7 @@
 
    <fragment
        android:id="@+id/navigation_current_employment_address"
-       android:name="com.rnsoft.colabademo.CurrentEmploymentAddress"
+       android:name="com.rnsoft.colabademo.IncomeAddress"
        android:label="@string/income"
        tools:layout="@layout/subject_property_address">
       <!--sli<action

@@ -58,8 +58,8 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
 
         binding.rbQues1Yes.setOnClickListener(this)
         binding.rbQues1No.setOnClickListener(this)
-        binding.rbQues2Yes.setOnClickListener(this)
-        binding.rbQues2No.setOnClickListener(this)
+        binding.rbOwnershipYes.setOnClickListener(this)
+        binding.rbOwnershipNo.setOnClickListener(this)
         binding.paytypeHourly.setOnClickListener(this)
         binding.paytypeSalary.setOnClickListener(this)
         binding.cbBonus.setOnClickListener(this)
@@ -86,6 +86,11 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
         binding.edBonusIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edBonusIncome, binding.layoutBonusIncome, requireContext()))
         binding.edOvertimeIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edOvertimeIncome, binding.layoutOvertimeIncome, requireContext()))
         binding.edCommIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCommIncome, binding.layoutCommIncome, requireContext()))
+        binding.edHourlyRate.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edHourlyRate, binding.layoutHourlyRate, requireContext()))
+        binding.edAvgHours.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edAvgHours, binding.layoutAvgHours, requireContext()))
+
+
+
 
         // set input format
         binding.edBaseSalary.addTextChangedListener(NumberTextFormat(binding.edBaseSalary))
@@ -101,6 +106,7 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
         CustomMaterialFields.setDollarPrefix(binding.layoutCommIncome, requireContext())
         CustomMaterialFields.setDollarPrefix(binding.layoutOvertimeIncome, requireContext())
         CustomMaterialFields.setDollarPrefix(binding.layoutBonusIncome, requireContext())
+        CustomMaterialFields.setDollarPrefix(binding.layoutHourlyRate, requireContext())
 
     }
 
@@ -108,8 +114,8 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
         when (view?.getId()) {
             R.id.rb_ques1_yes -> quesOneClicked()
             R.id.rb_ques1_no -> quesOneClicked()
-            R.id.rb_ques2_yes -> quesTwoClicked()
-            R.id.rb_ques2_no -> quesTwoClicked()
+            R.id.rb_ownership_yes -> quesTwoClicked()
+            R.id.rb_ownership_no -> quesTwoClicked()
             R.id.paytype_hourly -> payTypeClicked()
             R.id.paytype_salary ->payTypeClicked()
             R.id.cb_bonus -> bonusClicked()
@@ -134,13 +140,16 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
     }
 
     private fun quesTwoClicked(){
-        if(binding.rbQues2Yes.isChecked) {
-            binding.rbQues2Yes.setTypeface(null, Typeface.BOLD)
-            binding.rbQues2No.setTypeface(null, Typeface.NORMAL)
+        if(binding.rbOwnershipYes.isChecked) {
+            binding.rbOwnershipYes.setTypeface(null, Typeface.BOLD)
+            binding.rbOwnershipNo.setTypeface(null, Typeface.NORMAL)
+            binding.layoutOwnershipPercentage.visibility = View.VISIBLE
         }
         else {
-            binding.rbQues2No.setTypeface(null, Typeface.BOLD)
-            binding.rbQues2Yes.setTypeface(null, Typeface.NORMAL)
+            binding.rbOwnershipNo.setTypeface(null, Typeface.BOLD)
+            binding.rbOwnershipYes.setTypeface(null, Typeface.NORMAL)
+            binding.layoutOwnershipPercentage.visibility = View.GONE
+
         }
     }
 
@@ -148,10 +157,17 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
         if(binding.paytypeSalary.isChecked) {
             binding.paytypeSalary.setTypeface(null, Typeface.BOLD)
             binding.paytypeHourly.setTypeface(null, Typeface.NORMAL)
+            binding.layoutHourlyRate.visibility= View.GONE
+            binding.layoutAvgHours.visibility = View.GONE
+            binding.layoutBaseSalary.visibility = View.VISIBLE
         }
         else {
             binding.paytypeSalary.setTypeface(null, Typeface.BOLD)
             binding.paytypeHourly.setTypeface(null, Typeface.NORMAL)
+            binding.layoutHourlyRate.visibility= View.VISIBLE
+            binding.layoutAvgHours.visibility = View.VISIBLE
+            binding.layoutBaseSalary.visibility = View.GONE
+
         }
     }
 
@@ -201,7 +217,7 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
 
         val dpd = DatePickerDialog(
             requireActivity(),
-            { view, year, monthOfYear, dayOfMonth -> binding.edStartDate.setText("" + newMonth + "-" + dayOfMonth + "-" + year) },
+            { view, year, monthOfYear, dayOfMonth -> binding.edStartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year) },
             year,
             month,
             day

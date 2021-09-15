@@ -26,7 +26,7 @@ class BusinessFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: IncomeBusinessLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
     private var savedViewInstance: View? = null
-    private val businessTypeArray = listOf("Business")
+    private val businessTypeArray = listOf("Partnership (e.g. LLC, LP, or GP","Corporation (e.g. C-Corp, S-Corp, or LLC")
 
 
     override fun onCreateView(
@@ -131,8 +131,6 @@ class BusinessFragment : Fragment(), View.OnClickListener {
     }
 
 
-
-
     private fun openCalendar() {
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
@@ -142,7 +140,7 @@ class BusinessFragment : Fragment(), View.OnClickListener {
 
         val dpd = DatePickerDialog(
             requireActivity(),
-            { view, year, monthOfYear, dayOfMonth -> binding.edBstartDate.setText("" + newMonth + "-" + dayOfMonth + "-" + year) },
+            { view, year, monthOfYear, dayOfMonth -> binding.edBstartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year) },
             year,
             month,
             day

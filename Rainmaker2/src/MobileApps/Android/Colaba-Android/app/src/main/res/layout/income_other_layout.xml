@@ -44,7 +44,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
                 android:background="@android:color/transparent"
-                android:hint="@string/income_retirement_type"
+                android:hint="@string/other_income_type"
                 android:textColorHint="@color/primary_info_label_color"
                 app:boxCollapsedPaddingTop="1dp"
                 app:boxStrokeColor="@color/primary_info_line_color"
@@ -84,6 +84,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:visibility="gone"
                 android:id="@+id/layout_monthly_income"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -117,7 +118,6 @@
                     android:textSize="@dimen/ed_txt_size_primary_info" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
 
         </LinearLayout>
     </ScrollView>

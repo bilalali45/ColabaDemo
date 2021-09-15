@@ -8,13 +8,12 @@
 
     <include
         android:id="@+id/header_income"
+        layout="@layout/app_header_with_cross_delete"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        layout="@layout/app_header_with_cross_delete"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-    </include>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ScrollView
         android:id="@+id/scrollview_busines"

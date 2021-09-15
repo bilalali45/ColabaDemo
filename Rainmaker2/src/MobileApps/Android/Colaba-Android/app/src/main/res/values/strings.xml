@@ -358,8 +358,8 @@
     <string name="current_employment">Current Employment</string>
     <string name="previous_employment">Previous Employment</string>
     <string name="self_employment_contractor">Self Employment / Ind. Contractor</string>
-    <string name="add_employment">Add Employment</string>
-    <string name="add_prev_employment">Add Previous Employment</string>
+    <string name="add_employment">Current Employment</string>
+    <string name="add_prev_employment">Previous Employment</string>
     <string name="employer_name">Employer Name</string>
     <string name="employer_address">Employer Address</string>
     <string name="job_title">Job Title</string>
@@ -388,6 +388,7 @@
     <string name="retirement">Retirement</string>
     <string name="income_other">Other</string>
     <string name="income_retirement_type">Retirement Income Type</string>
+    <string name="other_income_type">Income Type</string>
     <string name="monthly_income">Monthly Income</string>
 
 

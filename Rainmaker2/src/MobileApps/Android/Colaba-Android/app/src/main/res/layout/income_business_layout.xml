@@ -162,7 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
-                android:hint="@string/start_date"
+                android:hint="@string/business_start_date"
                 android:textColorHint="@color/primary_info_label_color"
                 android:fontFamily="@font/rubik_light"
                 app:boxCollapsedPaddingTop="1dp"

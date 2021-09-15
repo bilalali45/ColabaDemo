@@ -59,8 +59,8 @@ class IncomePreviousEmployment : Fragment(),View.OnClickListener {
         binding.edEndDate.setOnClickListener { openCalendar() }
         binding.edEndDate.setOnFocusChangeListener { _, _ -> openCalendar() }
 
-        binding.rbQuesYes.setOnClickListener(this)
-        binding.rbQuesNo.setOnClickListener(this)
+        binding.rbOwnershipYes.setOnClickListener(this)
+        binding.rbOwnershipNo.setOnClickListener(this)
 
         binding.layoutAddress.setOnClickListener(this)
         toolbar.btnClose.setOnClickListener(this)
@@ -73,8 +73,8 @@ class IncomePreviousEmployment : Fragment(),View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
-            R.id.rb_ques_yes -> ownershipInterest()
-            R.id.rb_ques_no -> ownershipInterest()
+            R.id.rb_ownership_yes -> ownershipInterest()
+            R.id.rb_ownership_no -> ownershipInterest()
             R.id.layout_address -> findNavController().navigate(R.id.action_address)
             R.id.btn_close -> findNavController().popBackStack()
             R.id.mainLayout_prev_employment -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutPrevEmployment)
@@ -108,13 +108,17 @@ class IncomePreviousEmployment : Fragment(),View.OnClickListener {
     }
 
     private fun ownershipInterest(){
-        if(binding.rbQuesYes.isChecked) {
-            binding.rbQuesYes.setTypeface(null, Typeface.BOLD)
-            binding.rbQuesNo.setTypeface(null, Typeface.NORMAL)
+        if(binding.rbOwnershipYes.isChecked) {
+            binding.rbOwnershipYes.setTypeface(null, Typeface.BOLD)
+            binding.rbOwnershipNo.setTypeface(null, Typeface.NORMAL)
+            binding.layoutOwnershipPercentage.visibility = View.VISIBLE
+
         }
         else {
-            binding.rbQuesNo.setTypeface(null, Typeface.BOLD)
-            binding.rbQuesYes.setTypeface(null, Typeface.NORMAL)
+            binding.rbOwnershipNo.setTypeface(null, Typeface.BOLD)
+            binding.rbOwnershipYes.setTypeface(null, Typeface.NORMAL)
+            binding.layoutOwnershipPercentage.visibility = View.GONE
+
         }
     }
 
@@ -127,7 +131,7 @@ class IncomePreviousEmployment : Fragment(),View.OnClickListener {
 
         val dpd = DatePickerDialog(
             requireActivity(),
-            { view, year, monthOfYear, dayOfMonth -> binding.edStartDate.setText("" + newMonth + "-" + dayOfMonth + "-" + year) },
+            { view, year, monthOfYear, dayOfMonth -> binding.edStartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year) },
             year,
             month,
             day

@@ -101,7 +101,7 @@ class MilitaryPay : Fragment(), View.OnClickListener {
 
         val dpd = DatePickerDialog(
             requireActivity(),
-            { view, year, monthOfYear, dayOfMonth -> binding.edStartDate.setText("" + newMonth + "-" + dayOfMonth + "-" + year) },
+            { view, year, monthOfYear, dayOfMonth -> binding.edStartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year) },
             year,
             month,
             day

@@ -10,8 +10,6 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.CustomFocusListenerForEditText
-import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.IncomeOtherLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -26,7 +24,9 @@ class IncomeOther : Fragment(), View.OnClickListener {
     private lateinit var binding: IncomeOtherLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
     private var savedViewInstance: View? = null
-    private val retirementArray = listOf("Pension","Alimony")
+    private val retirementArray = listOf("Alimony", "Child Support", "Separate Maintenance", "Foster Care", "Annuity", "Capital Gains", "Interest / Dividends", "Notes Receivable",
+        "Trust", "Housing Or Parsonage", "Mortgage Credit Certificate", "Mortgage Differential Payments", "Public Assistance", "Unemployment Benefits", "VA Compensation", "Automobile" +
+                " Allowance", "Boarder Income", "Royalty Payments", "Disability", "Other Income Source")
 
 
     override fun onCreateView(

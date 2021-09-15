@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.ApiException
@@ -36,7 +35,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
-class CurrentEmploymentAddress : Fragment() , PlacePredictionAdapter.OnPlaceClickListener {
+class IncomeAddress : Fragment() , PlacePredictionAdapter.OnPlaceClickListener {
 
     lateinit var binding: SubjectPropertyAddressBinding
     private lateinit var predictAdapter: PlacePredictionAdapter
@@ -50,6 +49,12 @@ class CurrentEmploymentAddress : Fragment() , PlacePredictionAdapter.OnPlaceClic
         savedInstanceState: Bundle?
     ): View? {
         binding = SubjectPropertyAddressBinding.inflate(inflater, container, false)
+
+
+
+        if (arguments != null) {
+            val title: String = .fromBundle(arguments).getPrivacyPolicyLink()
+        }
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
@@ -293,7 +298,7 @@ class CurrentEmploymentAddress : Fragment() , PlacePredictionAdapter.OnPlaceClic
 
         binding.recyclerviewPlaces.apply {
             this.setHasFixedSize(true)
-            predictAdapter = PlacePredictionAdapter(this@CurrentEmploymentAddress)
+            predictAdapter = PlacePredictionAdapter(this@IncomeAddress)
             this.adapter = predictAdapter
         }
         // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,

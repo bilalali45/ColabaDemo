@@ -10,14 +10,11 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.CustomFocusListenerForEditText
-import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.IncomeRetirementLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.HideSoftkeyboard
 import com.rnsoft.colabademo.utils.NumberTextFormat
-import java.util.*
 
 /**
  * Created by Anita Kiran on 9/15/2021.
@@ -27,7 +24,7 @@ class Retirement : Fragment(), View.OnClickListener {
     private lateinit var binding: IncomeRetirementLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
     private var savedViewInstance: View? = null
-    private val retirementArray = listOf("Pension")
+    private val retirementArray = listOf("Social Security", "Pension","IRA / 401K" , "Other Retirement Source")
 
 
     override fun onCreateView(

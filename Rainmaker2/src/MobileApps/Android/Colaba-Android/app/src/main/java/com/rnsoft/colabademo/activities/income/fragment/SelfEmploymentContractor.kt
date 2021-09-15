@@ -100,7 +100,7 @@ class SelfEmploymentContractor : Fragment(),View.OnClickListener {
 
         val dpd = DatePickerDialog(
             requireActivity(),
-            { view, year, monthOfYear, dayOfMonth -> binding.edBstartDate.setText("" + newMonth + "-" + dayOfMonth + "-" + year) },
+            { view, year, monthOfYear, dayOfMonth -> binding.edBstartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year) },
             year,
             month,
             day
