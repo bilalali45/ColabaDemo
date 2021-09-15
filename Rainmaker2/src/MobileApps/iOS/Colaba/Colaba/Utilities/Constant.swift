@@ -41,6 +41,8 @@ let kNotificationAddCurrentEmployement = "notificationAddCurrentEmployement"
 let kNotificationAddPreviousEmployement = "notificationAddPreviousEmployement"
 let kHousingStatusArray = ["Own", "Rent", "No Primary Housing Expense"]
 let kBusinessTypeArray = ["Partnership (e.g. LLC, LP, or GP)", "Corporation (e.g. C-Corp, S-Corp, or LLC)"]
+let kRetirementIncomeTypeArray = ["Social Security", "Pension", "IRA / 401K", "Other Retirement Source"]
+let kOtherIncomeTypeArray = ["Alimony", "Child Support", "Separate Maintenance", "Foster Care", "Annuity", "Capital Gains", "Interest / Dividends", "Notes Receivable", "Trust", "Housing Or Parsonage", "Mortgage Credit Certificate", "Mortgage Differential Payments", "Public Assistance", "Unemployment Benefits", "VA Compensation", "Automobile Allowance", "Boarder Income", "Royalty Payments", "Disability", "Other Income Source"]
 
 var sortingFilter = 1
 var isAppOpenFromBackground = false

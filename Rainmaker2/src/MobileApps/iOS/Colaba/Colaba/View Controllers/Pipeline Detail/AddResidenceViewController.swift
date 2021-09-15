@@ -85,6 +85,8 @@ class AddResidenceViewController: BaseViewController {
         fetcher = GMSAutocompleteFetcher(filter: filter)
         fetcher?.delegate = self as GMSAutocompleteFetcherDelegate
 
+        txtfieldHomeAddress.addTarget(self, action: #selector(txtfieldHomeAddressTextChanged), for: UIControl.Event.editingChanged)
+        
         tblViewPlaces.delegate = self
         tblViewPlaces.dataSource = self
 
@@ -113,6 +115,7 @@ class AddResidenceViewController: BaseViewController {
         housingStatusDropDown.dataSource = kHousingStatusArray
         housingStatusDropDown.cancelAction = .some({
             self.btnHousingStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            self.txtfieldHousingStatus.resignFirstResponder()
         })
         housingStatusDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             changedDeleteButton()
@@ -122,6 +125,7 @@ class AddResidenceViewController: BaseViewController {
             txtfieldHousingStatus.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldHousingStatus.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldHousingStatus.text = item
+            txtfieldHousingStatus.resignFirstResponder()
             housingStatusDropDown.hide()
             txtfieldMonthlyRent.isHidden = item != "Rent"
             txtfieldMonthlyRentTopConstraint.constant = item == "Rent" ? 30 : 0
@@ -194,6 +198,12 @@ class AddResidenceViewController: BaseViewController {
                 }
             }
         }
+    }
+    
+    @objc func txtfieldHomeAddressTextChanged(){
+        btnDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+        tblViewPlaces.isHidden = txtfieldHomeAddress.text == ""
+        fetcher?.sourceTextHasChanged(txtfieldHomeAddress.text!)
     }
     
     func showAutoCompletePlaces(){

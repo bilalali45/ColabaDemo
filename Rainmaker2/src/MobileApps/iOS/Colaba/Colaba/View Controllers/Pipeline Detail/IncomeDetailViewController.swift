@@ -80,6 +80,12 @@ class IncomeDetailViewController: BaseViewController {
         
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
+            self.tableViewEmployement.reloadData()
+            self.tableViewSelfEmployement.reloadData()
+            self.tableViewBusiness.reloadData()
+            self.tableViewMilitaryPay.reloadData()
+            self.tableViewRetitrement.reloadData()
+            self.tableViewOther.reloadData()
         }
     }
     
@@ -339,20 +345,9 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
             else{
                 selectedTableView = tableView
             }
-            
-            DispatchQueue.main.async {
-                self.tableViewEmployement.reloadData()
-                self.tableViewSelfEmployement.reloadData()
-                self.tableViewBusiness.reloadData()
-                self.tableViewMilitaryPay.reloadData()
-                self.tableViewRetitrement.reloadData()
-                self.tableViewOther.reloadData()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                    self.setScreenHeight()
-                }
-                
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                self.setScreenHeight()
             }
-            
         }
         else{
             if (tableView == tableViewEmployement){
@@ -388,19 +383,28 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
                 let navVC = UINavigationController(rootViewController: vc)
                 navVC.navigationBar.isHidden = true
                 navVC.modalPresentationStyle = .fullScreen
-                self.presentVC(vc: vc)
+                self.presentVC(vc: navVC)
             }
             else if (tableView == tableViewMilitaryPay && (indexPath.row == 1 || indexPath.row == 2)){
-//                let vc = Utility.getAddProceedsFromTransactionVC()
-//                self.presentVC(vc: vc)
+                let vc = Utility.getAddMilitaryPayVC()
+                let navVC = UINavigationController(rootViewController: vc)
+                navVC.navigationBar.isHidden = true
+                navVC.modalPresentationStyle = .fullScreen
+                self.presentVC(vc: navVC)
             }
             else if (tableView == tableViewRetitrement && (indexPath.row == 1 || indexPath.row == 2)){
-//                let vc = Utility.getAddGiftFundsVC()
-//                self.presentVC(vc: vc)
+                let vc = Utility.getAddRetirementIncomeVC()
+                let navVC = UINavigationController(rootViewController: vc)
+                navVC.navigationBar.isHidden = true
+                navVC.modalPresentationStyle = .fullScreen
+                self.presentVC(vc: navVC)
             }
             else if (tableView == tableViewOther && (indexPath.row == 1 || indexPath.row == 2)){
-//                let vc = Utility.getAddOtherAssetsVC()
-//                self.presentVC(vc: vc)
+                let vc = Utility.getAddOtherIncomeVC()
+                let navVC = UINavigationController(rootViewController: vc)
+                navVC.navigationBar.isHidden = true
+                navVC.modalPresentationStyle = .fullScreen
+                self.presentVC(vc: navVC)
             }
         }
     }

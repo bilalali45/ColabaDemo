@@ -67,6 +67,7 @@ class AddPreviousEmploymentViewController: BaseViewController {
         txtfieldProfessionYears.setDelegates(controller: self)
         txtfieldProfessionYears.setTextField(keyboardType: .numberPad)
         txtfieldProfessionYears.setIsValidateOnEndEditing(validate: false)
+        txtfieldProfessionYears.setTextField(maxLength: 2)
         
         txtfieldStartDate.setTextField(placeholder: "Start Date (MM/DD/YYYY)")
         txtfieldStartDate.setDelegates(controller: self)
@@ -159,12 +160,12 @@ class AddPreviousEmploymentViewController: BaseViewController {
         else if (txtfieldEmployerPhoneNumber.text != "" && !txtfieldEmployerPhoneNumber.validate()){
             return false
         }
-//        else if (!txtfieldStartDate.validate()) {
-//            return false
-//        }
-//        else if (!txtfieldEndDate.validate()) {
-//            return false
-//        }
+        else if (!txtfieldStartDate.validate()) {
+            return false
+        }
+        else if (!txtfieldEndDate.validate()) {
+            return false
+        }
         else if (hasOwnershipInterest && !txtfieldOwnershipPercentage.validate()){
             return false
         }

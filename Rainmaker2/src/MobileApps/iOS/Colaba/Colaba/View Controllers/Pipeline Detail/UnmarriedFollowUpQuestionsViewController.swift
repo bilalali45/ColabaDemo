@@ -121,12 +121,14 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
         relationshipTypeDropDown.dataSource = kRelationshipTypeArray
         relationshipTypeDropDown.cancelAction = .some({
             self.btnTypeOfRelationDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            self.txtfieldTypeOfRelation.resignFirstResponder()
         })
         relationshipTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnTypeOfRelationDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldTypeOfRelation.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldTypeOfRelation.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldTypeOfRelation.text = item
+            txtfieldTypeOfRelation.resignFirstResponder()
             txtfieldTypeOfRelation.detail = ""
             relationshipTypeDropDown.hide()
             relationshipDetailTextViewContainer.isHidden = item != "Other"

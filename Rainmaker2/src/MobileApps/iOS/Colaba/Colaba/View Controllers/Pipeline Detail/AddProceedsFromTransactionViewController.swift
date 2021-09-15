@@ -121,12 +121,14 @@ class AddProceedsFromTransactionViewController: BaseViewController {
         transactionTypeDropDown.cancelAction = .some({
             self.btnTransactionTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             self.txtfieldTransactionType.dividerColor = Theme.getSeparatorNormalColor()
+            self.txtfieldTransactionType.resignFirstResponder()
         })
         transactionTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnTransactionTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldTransactionType.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldTransactionType.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldTransactionType.text = item
+            txtfieldTransactionType.resignFirstResponder()
             txtfieldTransactionType.detail = ""
             transactionTypeDropDown.hide()
             txtfieldExpectedProceeds.isHidden = false
@@ -168,12 +170,14 @@ class AddProceedsFromTransactionViewController: BaseViewController {
         assetsTypeDropDown.cancelAction = .some({
             self.btnAssetsTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             self.txtfieldAssetsType.dividerColor = Theme.getSeparatorNormalColor()
+            self.txtfieldAssetsType.resignFirstResponder()
         })
         assetsTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnAssetsTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldAssetsType.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldAssetsType.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldAssetsType.text = item
+            txtfieldAssetsType.resignFirstResponder()
             txtfieldAssetsType.detail = ""
             assetsTypeDropDown.hide()
             assetsDescriptionTextViewContainer.isHidden = item != "Other"

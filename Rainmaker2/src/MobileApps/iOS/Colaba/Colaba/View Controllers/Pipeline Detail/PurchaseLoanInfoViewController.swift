@@ -88,6 +88,7 @@ class PurchaseLoanInfoViewController: BaseViewController {
         loanStageDropDown.cancelAction = .some({
             self.btnLoanStageDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             self.txtfieldLoanStage.dividerColor = self.txtfieldLoanStage.text == "" ? Theme.getSeparatorErrorColor() : Theme.getSeparatorNormalColor()
+            self.txtfieldLoanStage.resignFirstResponder()
         })
         loanStageDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnLoanStageDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
@@ -95,6 +96,7 @@ class PurchaseLoanInfoViewController: BaseViewController {
             txtfieldLoanStage.detail = ""
             txtfieldLoanStage.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldLoanStage.text = item
+            txtfieldLoanStage.resignFirstResponder()
             loanStageDropDown.hide()
         }
     }
