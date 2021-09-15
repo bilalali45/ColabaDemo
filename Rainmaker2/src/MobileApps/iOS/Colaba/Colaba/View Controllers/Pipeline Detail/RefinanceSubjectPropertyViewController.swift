@@ -182,12 +182,14 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         propertyTypeDropDown.cancelAction = .some({
             self.btnPropertyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             self.txtfieldPropertyType.dividerColor = Theme.getSeparatorNormalColor()
+            self.txtfieldPropertyType.resignFirstResponder()
         })
         propertyTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnPropertyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldPropertyType.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldPropertyType.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldPropertyType.text = item
+            txtfieldPropertyType.resignFirstResponder()
             txtfieldPropertyType.detail = ""
             propertyTypeDropDown.hide()
             showHideRentalIncome()
@@ -199,12 +201,14 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         occupancyTypeDropDown.cancelAction = .some({
             self.btnOccupancyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             self.txtfieldOccupancyType.dividerColor = Theme.getSeparatorNormalColor()
+            self.txtfieldOccupancyType.resignFirstResponder()
         })
         occupancyTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnOccupancyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldOccupancyType.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldOccupancyType.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldOccupancyType.text = item
+            txtfieldOccupancyType.resignFirstResponder()
             txtfieldOccupancyType.detail = ""
             occupancyTypeDropDown.hide()
             showHideRentalIncome()

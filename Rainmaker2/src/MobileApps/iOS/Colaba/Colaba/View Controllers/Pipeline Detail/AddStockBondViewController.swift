@@ -70,12 +70,14 @@ class AddStockBondViewController: BaseViewController {
         accountTypeDropDown.cancelAction = .some({
             self.btnAccountTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             self.txtfieldAccountType.dividerColor = Theme.getSeparatorNormalColor()
+            self.txtfieldAccountType.resignFirstResponder()
         })
         accountTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnAccountTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldAccountType.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldAccountType.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldAccountType.text = item
+            txtfieldAccountType.resignFirstResponder()
             txtfieldAccountType.detail = ""
             accountTypeDropDown.hide()
         }

@@ -111,12 +111,14 @@ class AddOtherAssetsViewController: BaseViewController {
         assetTypeDropDown.cancelAction = .some({
             self.btnassetTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             self.txtfieldAssetType.dividerColor = Theme.getSeparatorNormalColor()
+            self.txtfieldAssetType.resignFirstResponder()
         })
         assetTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnassetTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldAssetType.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldAssetType.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldAssetType.text = item
+            txtfieldAssetType.resignFirstResponder()
             txtfieldAssetType.detail = ""
             assetTypeDropDown.hide()
             

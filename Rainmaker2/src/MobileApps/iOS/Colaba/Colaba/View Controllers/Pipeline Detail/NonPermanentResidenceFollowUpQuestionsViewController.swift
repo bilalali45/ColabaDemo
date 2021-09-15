@@ -107,11 +107,13 @@ class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
         visaStatusDropDown.dataSource = kVisaStatusArray
         visaStatusDropDown.cancelAction = .some({
             self.btnVisaStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            self.txtfieldVisaStatus.resignFirstResponder()
         })
         visaStatusDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnVisaStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldVisaStatus.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldVisaStatus.text = item
+            txtfieldVisaStatus.resignFirstResponder()
             visaStatusDropDown.hide()
             statusDetailTextViewContainer.isHidden = item != "Other"
             txtViewStatusDetail.isHidden = item != "Other"

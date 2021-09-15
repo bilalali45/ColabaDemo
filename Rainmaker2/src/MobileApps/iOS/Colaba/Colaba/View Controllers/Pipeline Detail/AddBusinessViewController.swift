@@ -98,12 +98,14 @@ class AddBusinessViewController: BaseViewController {
         businessTypeDropDown.cancelAction = .some({
             self.btnBusinessTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             self.txtfieldBusinessType.dividerColor = Theme.getSeparatorNormalColor()
+            self.txtfieldBusinessType.resignFirstResponder()
         })
         businessTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnBusinessTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldBusinessType.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldBusinessType.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldBusinessType.text = item
+            txtfieldBusinessType.resignFirstResponder()
             txtfieldBusinessType.detail = ""
             businessTypeDropDown.hide()
         }

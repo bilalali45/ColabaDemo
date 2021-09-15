@@ -63,12 +63,14 @@ class AddOtherIncomeViewController: BaseViewController {
         incomeTypeDropDown.cancelAction = .some({
             self.btnIncomeTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             self.txtfieldIncomeType.dividerColor = Theme.getSeparatorNormalColor()
+            self.txtfieldIncomeType.resignFirstResponder()
         })
         incomeTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnIncomeTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldIncomeType.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldIncomeType.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldIncomeType.text = item
+            txtfieldIncomeType.resignFirstResponder()
             txtfieldIncomeType.detail = ""
             incomeTypeDropDown.hide()
             

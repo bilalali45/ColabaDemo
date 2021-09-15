@@ -63,12 +63,14 @@ class AddRetirementIncomeViewController: BaseViewController {
         retirementIncomeTypeDropDown.cancelAction = .some({
             self.btnRetirementIncomeTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             self.txtfieldRetirementIncomeType.dividerColor = Theme.getSeparatorNormalColor()
+            self.txtfieldRetirementIncomeType.resignFirstResponder()
         })
         retirementIncomeTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             btnRetirementIncomeTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             txtfieldRetirementIncomeType.dividerColor = Theme.getSeparatorNormalColor()
             txtfieldRetirementIncomeType.placeholderLabel.textColor = Theme.getAppGreyColor()
             txtfieldRetirementIncomeType.text = item
+            txtfieldRetirementIncomeType.resignFirstResponder()
             txtfieldRetirementIncomeType.detail = ""
             retirementIncomeTypeDropDown.hide()
             if (index == 0 || index == 2){
