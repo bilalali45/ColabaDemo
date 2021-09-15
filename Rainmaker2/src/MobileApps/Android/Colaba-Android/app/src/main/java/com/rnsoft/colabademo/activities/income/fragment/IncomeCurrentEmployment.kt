@@ -67,6 +67,7 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
         binding.cbCommission.setOnClickListener(this)
         binding.layoutAddress.setOnClickListener(this)
         toolbar.btnClose.setOnClickListener(this)
+        binding.btnSaveChange.setOnClickListener(this)
 
 
         setInputFields()
@@ -121,11 +122,19 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
             R.id.cb_bonus -> bonusClicked()
             R.id.cb_overtime -> overtimeClicked()
             R.id.cb_commission -> commissionClicked()
-            R.id.layout_address -> findNavController().navigate(R.id.action_address,)
+            R.id.layout_address -> openAddressFragment() //findNavController().navigate(R.id.action_address)
             R.id.btn_close -> findNavController().popBackStack()
             R.id.mainLayout_curr_employment -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutCurrEmployment)
 
         }
+    }
+
+    private fun openAddressFragment(){
+        val addressFragment = IncomeAddress()
+        val bundle = Bundle()
+        bundle.putString("address", "Current Employer Address")
+        addressFragment.arguments = bundle
+        findNavController().navigate(R.id.action_current_employment_address, addressFragment.arguments)
     }
 
     private fun quesOneClicked(){

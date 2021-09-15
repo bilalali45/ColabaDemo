@@ -70,11 +70,19 @@ class BusinessFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
-            R.id.layout_address -> findNavController().navigate(R.id.action_address)
+            R.id.layout_address -> openAddressFragment()
             R.id.btn_close -> findNavController().popBackStack()
             R.id.mainLayout_business -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutBusiness)
 
         }
+    }
+
+    private fun openAddressFragment(){
+        val addressFragment = IncomeAddress()
+        val bundle = Bundle()
+        bundle.putString("address", "Business Main Address")
+        addressFragment.arguments = bundle
+        findNavController().navigate(R.id.action_address, addressFragment.arguments)
     }
 
     private fun setInputFields() {

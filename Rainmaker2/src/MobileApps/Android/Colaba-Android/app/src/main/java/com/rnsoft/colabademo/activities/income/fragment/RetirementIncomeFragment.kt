@@ -19,7 +19,7 @@ import com.rnsoft.colabademo.utils.NumberTextFormat
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
-class Retirement : Fragment(), View.OnClickListener {
+class RetirementIncomeFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: IncomeRetirementLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
@@ -72,6 +72,10 @@ class Retirement : Fragment(), View.OnClickListener {
         // set lable focus
         binding.edEmpName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edEmpName, binding.layoutEmpName, requireContext()))
         binding.edMonthlyIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edMonthlyIncome, binding.layoutMonthlyIncome, requireContext()))
+        binding.edMonthlyWithdrawl.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edMonthlyWithdrawl, binding.layoutMonthlyWithdrawal, requireContext()))
+        binding.edDesc.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edDesc, binding.layoutDesc, requireContext()))
+
+
 
         // set input format
         binding.edMonthlyIncome.addTextChangedListener(NumberTextFormat(binding.edMonthlyIncome))
@@ -95,10 +99,42 @@ class Retirement : Fragment(), View.OnClickListener {
             AdapterView.OnItemClickListener {
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                 binding.layoutRetirement.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.grey_color_two
-                    )
-                )
+                    ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+
+                var type = binding.tvRetirementType.text.toString()
+                if (type.equals("Pension")) {
+                    binding.layoutEmpName.visibility = View.VISIBLE
+                    binding.layoutMonthlyIncome.visibility = View.VISIBLE
+                    binding.layoutMonthlyWithdrawal.visibility = View.GONE
+                    binding.layoutDesc.visibility = View.GONE
+                }
+
+                else if (type.equals("Social Security")) {
+                    binding.layoutEmpName.visibility = View.GONE
+                    binding.layoutMonthlyIncome.visibility = View.VISIBLE
+
+                    binding.layoutMonthlyWithdrawal.visibility = View.GONE
+                    binding.layoutDesc.visibility = View.GONE
+                }
+
+                else if (type.equals("IRA / 401K")) {
+                    binding.layoutEmpName.visibility = View.GONE
+                    binding.layoutMonthlyIncome.visibility = View.GONE
+                    binding.layoutDesc.visibility = View.GONE
+                    binding.layoutMonthlyWithdrawal.visibility = View.VISIBLE
+                }
+
+                else if (type.equals("Other Retirement Source")) {
+                    binding.layoutEmpName.visibility = View.GONE
+                    binding.layoutMonthlyWithdrawal.visibility = View.GONE
+                    binding.layoutDesc.visibility = View.VISIBLE
+                    binding.layoutMonthlyIncome.visibility = View.VISIBLE
+                }
+
+
+
+
+
 
                 if (binding.tvRetirementType.text.isNotEmpty() && binding.tvRetirementType.text.isNotBlank()) {
                     //clearError(binding.layoutLoanStage)

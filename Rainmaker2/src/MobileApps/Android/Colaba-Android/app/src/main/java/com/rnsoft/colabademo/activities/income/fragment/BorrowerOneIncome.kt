@@ -149,11 +149,17 @@ class BorrowerOneIncome : IncomeBaseFragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onAddEmploymentEvent(event: EventAddEmployment) {
-        if(event.boolean)
-            // go to current employment
+        val addressFragment = IncomeAddress()
+        val bundle = Bundle()
+
+        if(event.boolean) {
+            //bundle.putString("address", "Current Employer Address")
+            //addressFragment.arguments = bundle
             findNavController().navigate(R.id.navigation_income_current_employment)
-        else
+        }
+        else {
             findNavController().navigate(R.id.navigation_income_prev_emplyoyment)
+        }
     }
 
 

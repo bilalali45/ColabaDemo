@@ -33,7 +33,7 @@
        tools:layout="@layout/income_current_employment">
 
       <action
-          android:id="@+id/action_address"
+          android:id="@+id/action_current_employment_address"
           app:destination="@id/navigation_current_employment_address"
           app:enterAnim="@anim/slide_up"
           app:exitAnim="@anim/slide_down"/>
@@ -56,7 +56,14 @@
        android:id="@+id/navigation_income_prev_emplyoyment"
        android:name="com.rnsoft.colabademo.IncomePreviousEmployment"
        android:label="@string/income"
-       tools:layout="@layout/income_previous_employment" />
+       tools:layout="@layout/income_previous_employment">
+
+      <action
+          android:id="@+id/action_prev_employment_address"
+          app:destination="@id/navigation_current_employment_address"
+          app:enterAnim="@anim/slide_up"
+          app:exitAnim="@anim/slide_down"/>
+   </fragment>
 
    <fragment
        android:id="@+id/navigation_selfEmployment"
@@ -102,21 +109,15 @@
 
    <fragment
        android:id="@+id/navigation_retirement"
-       android:name="com.rnsoft.colabademo.Retirement"
+       android:name="com.rnsoft.colabademo.RetirementIncomeFragment"
        android:label="@string/income"
        tools:layout="@layout/income_retirement_layout">
-
-      <action
-          android:id="@+id/action_address"
-          app:destination="@id/navigation_current_employment_address"
-          app:enterAnim="@anim/slide_up"
-          app:exitAnim="@anim/slide_down"/>
 
    </fragment>
 
    <fragment
        android:id="@+id/navigation_other"
-       android:name="com.rnsoft.colabademo.IncomeOther"
+       android:name="com.rnsoft.colabademo.IncomeOtherFragment"
        android:label="@string/income"
        tools:layout="@layout/income_other_layout">
 

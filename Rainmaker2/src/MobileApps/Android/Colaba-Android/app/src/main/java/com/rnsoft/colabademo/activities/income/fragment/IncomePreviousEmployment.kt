@@ -75,7 +75,7 @@ class IncomePreviousEmployment : Fragment(),View.OnClickListener {
         when (view?.getId()) {
             R.id.rb_ownership_yes -> ownershipInterest()
             R.id.rb_ownership_no -> ownershipInterest()
-            R.id.layout_address -> findNavController().navigate(R.id.action_address)
+            R.id.layout_address -> openAddressFragment() //findNavController().navigate(R.id.action_address)
             R.id.btn_close -> findNavController().popBackStack()
             R.id.mainLayout_prev_employment -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutPrevEmployment)
 
@@ -120,6 +120,14 @@ class IncomePreviousEmployment : Fragment(),View.OnClickListener {
             binding.layoutOwnershipPercentage.visibility = View.GONE
 
         }
+    }
+
+    private fun openAddressFragment(){
+        val addressFragment = IncomeAddress()
+        val bundle = Bundle()
+        bundle.putString("address", "Employer Address")
+        addressFragment.arguments = bundle
+        findNavController().navigate(R.id.action_prev_employment_address, addressFragment.arguments)
     }
 
     private fun openCalendar() {
