@@ -43,6 +43,8 @@ class IncomeAddress : Fragment() , PlacePredictionAdapter.OnPlaceClickListener {
     private lateinit var placesClient: PlacesClient
     private var predicationList: ArrayList<String> = ArrayList()
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,10 +53,9 @@ class IncomeAddress : Fragment() , PlacePredictionAdapter.OnPlaceClickListener {
         binding = SubjectPropertyAddressBinding.inflate(inflater, container, false)
 
 
-
-//        if (arguments != null) {
-//            val title: String = .fromBundle(arguments).getPrivacyPolicyLink()
-//        }
+        val title = arguments?.getString("address").toString()
+        //Log.e("title", title)
+        binding.titleTextView.setText(title)
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()

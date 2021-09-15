@@ -19,7 +19,7 @@ import com.rnsoft.colabademo.utils.NumberTextFormat
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
-class IncomeOther : Fragment(), View.OnClickListener {
+class IncomeOtherFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: IncomeOtherLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
@@ -96,14 +96,17 @@ class IncomeOther : Fragment(), View.OnClickListener {
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                 binding.layoutRetirement.defaultHintTextColor = ColorStateList.valueOf(
                     ContextCompat.getColor(
-                        requireContext(), R.color.grey_color_two
-                    )
-                )
+                        requireContext(), R.color.grey_color_two))
 
-                if (binding.tvRetirementType.text.isNotEmpty() && binding.tvRetirementType.text.isNotBlank()) {
+                var type = binding.tvRetirementType.text.toString()
+                if (type.equals("Pension")) {
+                    //binding.layoutMonthlyIncome.visibility = View.VISIBLE
+                }
+
+                /*if (binding.tvRetirementType.text.isNotEmpty() && binding.tvRetirementType.text.isNotBlank()) {
                     //clearError(binding.layoutLoanStage)
                 }
-                /*
+
                 if (position == occupancyTypeArray.size - 1)
                     binding.layoutOccupancyType.visibility = View.VISIBLE
                 else
