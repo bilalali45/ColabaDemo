@@ -80,8 +80,6 @@ class DependentAdapter (val mContext : Context, private val items: ArrayList<Dep
         }
 
 
-
-
         holder.itemView.ed_age.doAfterTextChanged {
             val age = Integer.parseInt(holder.itemView.ed_age.text.toString())
             if(age >0 ){

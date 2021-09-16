@@ -56,13 +56,12 @@ class RetirementIncomeFragment : Fragment(), View.OnClickListener {
         setInputFields()
         setRetirementType()
 
-
     }
 
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
-            R.id.btn_save_change -> findNavController().popBackStack()
+            R.id.btn_save_change -> checkValidations()
             R.id.btn_close -> findNavController().popBackStack()
             R.id.mainLayout_retirement -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutRetirement)
 
@@ -76,8 +75,6 @@ class RetirementIncomeFragment : Fragment(), View.OnClickListener {
         binding.edMonthlyIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edMonthlyIncome, binding.layoutMonthlyIncome, requireContext()))
         binding.edMonthlyWithdrawl.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edMonthlyWithdrawl, binding.layoutMonthlyWithdrawal, requireContext()))
         binding.edDesc.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edDesc, binding.layoutDesc, requireContext()))
-
-
 
         // set input format
         binding.edMonthlyIncome.addTextChangedListener(NumberTextFormat(binding.edMonthlyIncome))
@@ -103,7 +100,7 @@ class RetirementIncomeFragment : Fragment(), View.OnClickListener {
                 binding.layoutRetirement.defaultHintTextColor = ColorStateList.valueOf(
                     ContextCompat.getColor(requireContext(), R.color.grey_color_two))
 
-                var type = binding.tvRetirementType.text.toString()
+                val type = binding.tvRetirementType.text.toString()
                 if (type.equals("Pension")) {
                     binding.layoutEmpName.visibility = View.VISIBLE
                     binding.layoutMonthlyIncome.visibility = View.VISIBLE
@@ -133,20 +130,51 @@ class RetirementIncomeFragment : Fragment(), View.OnClickListener {
                     binding.layoutMonthlyIncome.visibility = View.VISIBLE
                 }
 
-
-
-
-
-
                 if (binding.tvRetirementType.text.isNotEmpty() && binding.tvRetirementType.text.isNotBlank()) {
-                    //clearError(binding.layoutLoanStage)
+                    CustomMaterialFields.clearError(binding.layoutRetirement,requireActivity())
                 }
-                /*
-                if (position == occupancyTypeArray.size - 1)
-                    binding.layoutOccupancyType.visibility = View.VISIBLE
-                else
-                    binding.layoutOccupancyType.visibility = View.GONE */
             }
         }
+    }
+
+    private fun checkValidations(){
+
+        val retirementType: String = binding.tvRetirementType.text.toString()
+        val empName: String = binding.edEmpName.text.toString()
+        val desc: String = binding.edDesc.text.toString()
+        val monthlyIncome: String = binding.edMonthlyIncome.text.toString()
+        val mWithdrawal: String = binding.edMonthlyWithdrawl.text.toString()
+
+        if (retirementType.isEmpty() || retirementType.length == 0) {
+            CustomMaterialFields.setError(binding.layoutRetirement, getString(R.string.error_field_required),requireActivity())
+        }
+        if (empName.isEmpty() || empName.length == 0) {
+            CustomMaterialFields.setError(binding.layoutEmpName, getString(R.string.error_field_required),requireActivity())
+        }
+        if (desc.isEmpty() || desc.length == 0) {
+            CustomMaterialFields.setError(binding.layoutDesc, getString(R.string.error_field_required),requireActivity())
+        }
+        if (monthlyIncome.isEmpty() || monthlyIncome.length == 0) {
+            CustomMaterialFields.setError(binding.layoutMonthlyIncome, getString(R.string.error_field_required),requireActivity())
+        }
+        if (mWithdrawal.isEmpty() || mWithdrawal.length == 0) {
+            CustomMaterialFields.setError(binding.layoutMonthlyWithdrawal, getString(R.string.error_field_required),requireActivity())
+        }
+        if (retirementType.isNotEmpty() || retirementType.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutRetirement,requireActivity())
+        }
+        if (empName.isNotEmpty() || empName.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutEmpName,requireActivity())
+        }
+        if (desc.isNotEmpty() || desc.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutDesc,requireActivity())
+        }
+        if (monthlyIncome.isNotEmpty() || monthlyIncome.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutMonthlyIncome,requireActivity())
+        }
+        if (mWithdrawal.isNotEmpty() || mWithdrawal.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutMonthlyWithdrawal,requireActivity())
+        }
+
     }
 }
