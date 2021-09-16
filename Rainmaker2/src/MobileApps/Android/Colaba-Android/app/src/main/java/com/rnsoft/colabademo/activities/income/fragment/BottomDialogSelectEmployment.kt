@@ -15,13 +15,13 @@ import org.greenrobot.eventbus.EventBus
 /**
  * Created by Anita Kiran on 9/13/2021.
  */
-class DailogAddEmpolyment : BottomSheetDialogFragment() {
+class BottomDialogSelectEmployment : BottomSheetDialogFragment() {
 
     companion object {
         //lateinit var userMessage:String
-        fun newInstance(): DailogAddEmpolyment {
+        fun newInstance(): BottomDialogSelectEmployment {
             //userMessage    =   message
-            return DailogAddEmpolyment()
+            return BottomDialogSelectEmployment()
         }
     }
 

@@ -1,17 +1,14 @@
 package com.rnsoft.colabademo
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.activities.income.fragment.EventAddEmployment
-import com.rnsoft.colabademo.activities.income.fragment.DailogAddEmpolyment
 import com.rnsoft.colabademo.databinding.*
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
 import kotlinx.android.synthetic.main.assets_middle_cell.view.content_amount
@@ -65,13 +62,20 @@ class BorrowerOneIncome : IncomeBaseFragment() {
             for (j in 0 until modelData.incomeContentCell.size) {
                 val contentCell: View =
                     layoutInflater.inflate(R.layout.income_middle_cell, null)
+
+
+
+
                 val contentData = modelData.incomeContentCell[j]
                 contentCell.content_title.text = contentData.title
                 contentCell.content_desc.text = contentData.description
                 contentCell.content_amount.text = contentData.contentAmount
                 contentCell.tenureTextView.text = contentData.tenure
                 contentCell.visibility = View.GONE
-                contentCell.setOnClickListener(modelData.listenerAttached)
+                if(contentData.contentListenerAttached!=null)
+                    contentCell.setOnClickListener(contentData.contentListenerAttached)
+                else
+                    contentCell.setOnClickListener(modelData.listenerAttached)
                 mainCell.addView(contentCell)
             }
 
@@ -137,6 +141,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
     }
 
 
+
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -149,18 +154,14 @@ class BorrowerOneIncome : IncomeBaseFragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onAddEmploymentEvent(event: EventAddEmployment) {
-        val addressFragment = IncomeAddress()
-        val bundle = Bundle()
-
         if(event.boolean) {
-            //bundle.putString("address", "Current Employer Address")
-            //addressFragment.arguments = bundle
             findNavController().navigate(R.id.navigation_income_current_employment)
         }
         else {
             findNavController().navigate(R.id.navigation_income_prev_emplyoyment)
         }
     }
+
 
 
 }

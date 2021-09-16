@@ -3,14 +3,16 @@ package com.rnsoft.colabademo
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.baddresses.info.fragment.DeleteCurrentResidenceDialogFragment
+import com.rnsoft.colabademo.activities.income.fragment.BottomDialogSelectEmployment
 
 open class IncomeBaseFragment:Fragment() {
     fun getSampleIncome():ArrayList<IncomeModelClass>{
         val assetModelCell = IncomeModelClass( headerTitle = "Employment", headerAmount = "$5,000/mo" , footerTitle = "Add Employment",
             incomeContentCell = arrayListOf(
-                IncomeContentCell("Google LLC", "Chief Executive Officer" ,"$5,000" ,"From Jun 2020"),
-                IncomeContentCell("Disrupt", "Admin Manager", "$4,000" , "Dec 2019 to May 2020")
-            ), navigateToEmployment)
+                IncomeContentCell("Google LLC", "Chief Executive Officer" ,"$5,000" ,"From Jun 2020",navigateToCurrentEmployment),
+                IncomeContentCell("Disrupt", "Admin Manager", "$4,000" , "Dec 2019 to May 2020",navigateToPreviousEmployment)
+            ), openBottomFragment)
 
         val assetModelCell2 = IncomeModelClass( headerTitle = "Self Employment / Independent Contractor", headerAmount = "$3,000/mo" , footerTitle = "Add Self Employment",
             incomeContentCell = arrayListOf(
@@ -41,7 +43,6 @@ open class IncomeBaseFragment:Fragment() {
             ), navigateToOtherIncome)
 
 
-
         val modelArrayList:ArrayList<IncomeModelClass> = arrayListOf()
         modelArrayList.add(assetModelCell)
         modelArrayList.add(assetModelCell2)
@@ -55,13 +56,17 @@ open class IncomeBaseFragment:Fragment() {
 
     }
 
-    private val navigateToEmployment = View.OnClickListener { findNavController().navigate(R.id.navigation_income_current_employment) }
+    private val navigateToCurrentEmployment = View.OnClickListener { findNavController().navigate(R.id.navigation_income_current_employment) }
+    private val navigateToPreviousEmployment = View.OnClickListener { findNavController().navigate(R.id.navigation_income_prev_emplyoyment) }
     private val navigateToSelfEmployment = View.OnClickListener { findNavController().navigate(R.id.navigation_selfEmployment) }
     private val navigateToBusinessIncome = View.OnClickListener { findNavController().navigate(R.id.navigation_business) }
     private val navigateToMilitaryPay = View.OnClickListener { findNavController().navigate(R.id.navigation_military_pay) }
     private val navigateToRetirementIncome = View.OnClickListener { findNavController().navigate(R.id.navigation_retirement) }
     private val navigateToOtherIncome = View.OnClickListener { findNavController().navigate(R.id.navigation_other) }
 
+    private val openBottomFragment = View.OnClickListener {
+        BottomDialogSelectEmployment.newInstance().show(childFragmentManager, BottomDialogSelectEmployment::class.java.canonicalName)
+    }
 
 
 }
