@@ -323,7 +323,7 @@
         -->
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/asset_parent_container"
+            android:id="@+id/parent_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="22dp"
@@ -338,6 +338,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:id="@+id/undisclosed_container"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -347,28 +348,136 @@
                 >
 
 
+                    <TextView
+                        android:id="@+id/textView32"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rubik_regular"
+                        android:textSize="15sp"
+                        android:textColor="@color/grey_color_two"
+                        android:text="@string/undisclosed_question_one"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <RadioGroup
+                        android:id="@+id/undisclosed_radio_group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:background="@color/half_white"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView32">
+
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                            android:id="@+id/yes_radio_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:button="@drawable/radiodraw"
+                            android:clickable="true"
+                            android:fontFamily="@font/rubik_regular"
+                            android:paddingStart="15dp"
+                            android:text="@string/yes"
+                            android:textColor="@color/txt_color_app_headings"
+                            android:textSize="14sp" />
+
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                            android:id="@+id/no_radio_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:layout_marginTop="18dp"
+                            android:button="@drawable/radiodraw"
+                            android:clickable="true"
+                            android:fontFamily="@font/rubik_regular"
+                            android:paddingStart="15dp"
+                            android:text="@string/no"
+                            android:textColor="@color/txt_color_app_headings"
+                            android:textSize="14sp"
+                            tools:ignore="RtlSymmetry" />
+
+
+                    </RadioGroup>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/content_bg_with_drop_shadow"
+                        android:paddingStart="30dp"
+                        android:paddingTop="21dp"
+                        android:paddingEnd="21dp"
+                        android:paddingBottom="30dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/undisclosed_radio_group"
+                        app:layout_constraintVertical_bias="0.0">
+
+
+                        <TextView
+                            android:id="@+id/textView33"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/rubik_regular"
+                            android:textSize="13sp"
+                            android:textColor="@color/grey_color_two"
+                            android:text="What is the amount of money you’ve borrowed or intend to borrow?"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView34"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/rubik_regular"
+                            android:layout_marginTop="14dp"
+                            android:textSize="15sp"
+                            android:textColor="@color/grey_color_one"
+                            android:text="$12,000"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView33"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:id="@+id/ownership_interest_container"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@color/content_background_color"
+                >
+
+
                 <TextView
-                    android:id="@+id/textView32"
+                    android:id="@+id/textView42"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/rubik_regular"
                     android:textSize="15sp"
                     android:textColor="@color/grey_color_two"
-                    android:text="@string/undisclosed_question_one"
+                    android:text="@string/have_you_had_an_ownership_interest"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <RadioGroup
-                    android:id="@+id/rg_marital_status"
+                    android:id="@+id/ownership_interest_radio_group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
                     android:background="@color/half_white"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView32">
+                    app:layout_constraintTop_toBottomOf="@+id/textView42">
 
                     <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/rb_us_citizen"
+                        android:id="@+id/ownership_interest_yes"
                         android:layout_width="wrap_content"
                         android:layout_height="22dp"
                         android:button="@drawable/radiodraw"
@@ -380,7 +489,7 @@
                         android:textSize="14sp" />
 
                     <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/rb_pr"
+                        android:id="@+id/ownership_interest_no"
                         android:layout_width="wrap_content"
                         android:layout_height="22dp"
                         android:layout_marginTop="18dp"
@@ -409,32 +518,143 @@
                     app:layout_constraintEnd_toEndOf="parent"
 
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rg_marital_status"
+                    app:layout_constraintTop_toBottomOf="@+id/ownership_interest_radio_group"
                     app:layout_constraintVertical_bias="0.0">
 
 
                     <TextView
-                        android:id="@+id/textView33"
+                        android:id="@+id/textView43"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/rubik_regular"
                         android:textSize="13sp"
                         android:textColor="@color/grey_color_two"
-                        android:text="What is the amount of money you’ve borrowed or intend to borrow?"
+                        android:text="What type of property did you own?"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView34"
+                        android:id="@+id/textView44"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/rubik_regular"
                         android:layout_marginTop="14dp"
                         android:textSize="15sp"
                         android:textColor="@color/grey_color_one"
-                        android:text="$12,000"
+                        android:textStyle="bold"
+                        android:text="Single Family Property"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView33"/>
+                        app:layout_constraintTop_toBottomOf="@+id/textView43"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/priority_liens_container"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@color/content_background_color"
+                >
+
+
+                <TextView
+                    android:id="@+id/textView52"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik_regular"
+                    android:textSize="15sp"
+                    android:textColor="@color/grey_color_two"
+                    android:text="@string/will_this_property_be_subject_to_a_lien"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <RadioGroup
+                    android:id="@+id/priority_liens_radio_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:background="@color/half_white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView52">
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/priority_liens_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:button="@drawable/radiodraw"
+                        android:clickable="true"
+                        android:fontFamily="@font/rubik_regular"
+                        android:paddingStart="15dp"
+                        android:text="@string/yes"
+                        android:textColor="@color/txt_color_app_headings"
+                        android:textSize="14sp" />
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/priority_liens_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:layout_marginTop="18dp"
+                        android:button="@drawable/radiodraw"
+                        android:clickable="true"
+                        android:fontFamily="@font/rubik_regular"
+                        android:paddingStart="15dp"
+                        android:text="@string/no"
+                        android:textColor="@color/txt_color_app_headings"
+                        android:textSize="14sp"
+                        tools:ignore="RtlSymmetry" />
+
+
+                </RadioGroup>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/content_bg_with_drop_shadow"
+                    android:paddingStart="30dp"
+                    android:paddingTop="21dp"
+                    android:paddingEnd="21dp"
+                    android:paddingBottom="30dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/priority_liens_radio_group"
+                    app:layout_constraintVertical_bias="0.0">
+
+                    <TextView
+                        android:id="@+id/textView54"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="Details"
+                        android:textColor="@color/grey_color_one"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView53"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum..."
+                        android:textColor="@color/grey_color_two"
+                        android:textSize="13sp"
+                        android:layout_marginTop="12dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView54"
+
+                        />
+
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

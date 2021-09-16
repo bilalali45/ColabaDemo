@@ -5,13 +5,11 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_income_tab">
 
-
    <fragment
         android:id="@+id/navigation_income_tab"
         android:name="com.rnsoft.colabademo.IncomeTabFragment"
         android:label="@string/income"
         tools:layout="@layout/income_fragment_layout" />
-
 
    <fragment
        android:id="@+id/navigation_b_income_one"
