@@ -53,6 +53,7 @@ class IncomeOtherFragment : Fragment(), View.OnClickListener {
     private fun initViews() {
         toolbarBinding.btnClose.setOnClickListener(this)
         binding.mainLayoutOther.setOnClickListener(this)
+        binding.btnSaveChange.setOnClickListener(this)
 
         setInputFields()
         setRetirementType()
@@ -62,6 +63,7 @@ class IncomeOtherFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
+            R.id.btn_save_change -> findNavController().popBackStack()
             R.id.btn_close -> findNavController().popBackStack()
             R.id.mainLayout_other -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutOther)
 
@@ -72,12 +74,16 @@ class IncomeOtherFragment : Fragment(), View.OnClickListener {
 
         // set lable focus
         binding.edMonthlyIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edMonthlyIncome, binding.layoutMonthlyIncome, requireContext()))
+        binding.edAnnualIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edAnnualIncome, binding.layoutAnnualIncome, requireContext()))
+
 
         // set input format
         binding.edMonthlyIncome.addTextChangedListener(NumberTextFormat(binding.edMonthlyIncome))
+        binding.edAnnualIncome.addTextChangedListener(NumberTextFormat(binding.edAnnualIncome))
 
         // set Dollar prifix
         CustomMaterialFields.setDollarPrefix(binding.layoutMonthlyIncome, requireContext())
+        CustomMaterialFields.setDollarPrefix(binding.layoutAnnualIncome, requireContext())
 
     }
 
@@ -98,10 +104,16 @@ class IncomeOtherFragment : Fragment(), View.OnClickListener {
                     ContextCompat.getColor(
                         requireContext(), R.color.grey_color_two))
 
-                var type = binding.tvRetirementType.text.toString()
-                if (type.equals("Pension")) {
-                    //binding.layoutMonthlyIncome.visibility = View.VISIBLE
+                var item = binding.tvRetirementType.text.toString()
+                if (item == "Capital Gains" || item == "Interest / Dividends" || item == "Other Income Source") {
+                    binding.layoutAnnualIncome.visibility = View.VISIBLE
+                    binding.layoutMonthlyIncome.visibility = View.VISIBLE
+                } else {
+                    binding.layoutAnnualIncome.visibility = View.GONE
+                    binding.layoutMonthlyIncome.visibility = View.VISIBLE
                 }
+
+
 
                 /*if (binding.tvRetirementType.text.isNotEmpty() && binding.tvRetirementType.text.isNotBlank()) {
                     //clearError(binding.layoutLoanStage)

@@ -70,6 +70,7 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
         binding.btnSaveChange.setOnClickListener(this)
 
 
+
         setInputFields()
 
     }
@@ -113,6 +114,7 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
+            R.id.btn_save_change -> findNavController().popBackStack()
             R.id.rb_ques1_yes -> quesOneClicked()
             R.id.rb_ques1_no -> quesOneClicked()
             R.id.rb_ownership_yes -> quesTwoClicked()
@@ -171,8 +173,8 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
             binding.layoutBaseSalary.visibility = View.VISIBLE
         }
         else {
-            binding.paytypeSalary.setTypeface(null, Typeface.BOLD)
-            binding.paytypeHourly.setTypeface(null, Typeface.NORMAL)
+            binding.paytypeSalary.setTypeface(null, Typeface.NORMAL)
+            binding.paytypeHourly.setTypeface(null, Typeface.BOLD)
             binding.layoutHourlyRate.visibility= View.VISIBLE
             binding.layoutAvgHours.visibility = View.VISIBLE
             binding.layoutBaseSalary.visibility = View.GONE

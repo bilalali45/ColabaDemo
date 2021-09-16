@@ -51,6 +51,7 @@ class RetirementIncomeFragment : Fragment(), View.OnClickListener {
     private fun initViews() {
         toolbarBinding.btnClose.setOnClickListener(this)
         binding.mainLayoutRetirement.setOnClickListener(this)
+        binding.btnSaveChange.setOnClickListener(this)
 
         setInputFields()
         setRetirementType()
@@ -61,6 +62,7 @@ class RetirementIncomeFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
+            R.id.btn_save_change -> findNavController().popBackStack()
             R.id.btn_close -> findNavController().popBackStack()
             R.id.mainLayout_retirement -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutRetirement)
 
@@ -82,7 +84,7 @@ class RetirementIncomeFragment : Fragment(), View.OnClickListener {
 
         // set Dollar prifix
         CustomMaterialFields.setDollarPrefix(binding.layoutMonthlyIncome, requireContext())
-
+        CustomMaterialFields.setDollarPrefix(binding.layoutMonthlyWithdrawal, requireContext())
     }
 
     private fun setRetirementType(){

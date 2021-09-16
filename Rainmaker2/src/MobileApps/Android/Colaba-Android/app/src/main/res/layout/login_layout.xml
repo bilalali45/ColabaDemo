@@ -117,7 +117,7 @@
                             android:inputType="textEmailAddress"
                             android:singleLine="true"
                             android:textSize="14sp"
-                            android:text="mubashir.mcu@mailinator.com"
+                            android:text="rainmaker.rainsoft@gmail.com"
                             app:fontFamily="@font/rubik_regular"
                             android:textColor="@color/grey_color_one" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -152,7 +152,7 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:ems="10"
-                            android:text="test123"
+                            android:text="R@insoft"
                             android:paddingStart="0dp"
                             android:imeOptions="actionDone"
                             android:inputType="textPassword"
