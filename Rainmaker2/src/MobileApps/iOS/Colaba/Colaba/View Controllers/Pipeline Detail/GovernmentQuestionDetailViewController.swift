@@ -28,10 +28,15 @@ class GovernmentQuestionDetailViewController: BaseViewController {
     @IBOutlet weak var bankruptcyView: UIView!
     @IBOutlet weak var childSupportView: UIView!
     @IBOutlet weak var demographicView: UIView!
+    @IBOutlet weak var containerView: UIView!
+    
+    var undisclosedVC: UndisclosedBorrowerFundsViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        undisclosedVC = Utility.getUndisclosedBorrowerFundsVC()
+        
         roundAllFilterViews(filterViews: [unDisclosedView, ownershipInterestView, priorityLiensView, undisclosedMortgageApplicationsView, undisclosedCreditApplicationView, debtCoSignerView, outstandingJudgementsView, fedralDebtView, partyToLawsuitView, titleConveyanceView, preForceClosureView, foreClosuredPropertyView, bankruptcyView, childSupportView, demographicView])
         filterViewTapped(selectedFilterView: unDisclosedView, filterViews: [unDisclosedView, ownershipInterestView, priorityLiensView, undisclosedMortgageApplicationsView, undisclosedCreditApplicationView, debtCoSignerView, outstandingJudgementsView, fedralDebtView, partyToLawsuitView, titleConveyanceView, preForceClosureView, foreClosuredPropertyView, bankruptcyView, childSupportView, demographicView])
         
@@ -82,7 +87,25 @@ class GovernmentQuestionDetailViewController: BaseViewController {
                 }
             }
         }
-        
+        if (selectedFilterView == unDisclosedView){
+            add(viewController: undisclosedVC)
+        }
+    }
+    
+    func add(viewController: UIViewController){
+        addChild(viewController)
+        containerView.addSubview(viewController.view)
+        viewController.view.frame = containerView.bounds
+        viewController.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        viewController.didMove(toParent: self)
+    }
+    
+    func remove(viewControllers: [UIViewController]){
+        for viewController in viewControllers{
+            viewController.willMove(toParent: nil)
+            viewController.view.removeFromSuperview()
+            viewController.removeFromParent()
+        }
     }
     
     @objc func unDisclosedViewTapped(){
