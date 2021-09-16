@@ -276,6 +276,10 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: AddOtherIncomeViewController.self)) as! AddOtherIncomeViewController
     }
     
+    static func getRealEstateVC() -> RealEstateViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: RealEstateViewController.self)) as! RealEstateViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){

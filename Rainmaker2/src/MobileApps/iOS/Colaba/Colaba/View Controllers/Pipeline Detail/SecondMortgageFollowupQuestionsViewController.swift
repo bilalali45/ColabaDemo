@@ -13,6 +13,8 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
     //MARK:- Outlets and Properties
     
     @IBOutlet weak var btnBack: UIButton!
+    @IBOutlet weak var lblTopHeading: UILabel!
+    @IBOutlet weak var lblUsername: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var txtfieldMortgagePayment: TextField!
@@ -26,6 +28,7 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
     @IBOutlet weak var creditLimitDollarView: UIView!
     @IBOutlet weak var mortgageCombinedView: UIView!
     @IBOutlet weak var mortgageCombinedViewTopConstraint: NSLayoutConstraint! //140 or 50
+    @IBOutlet weak var mortgageCombinedViewHeightConstarint: NSLayoutConstraint!
     @IBOutlet weak var lblMortgageCombinedQuestion: UILabel!
     @IBOutlet weak var yesStackView: UIStackView!
     @IBOutlet weak var btnYes: UIButton!
@@ -34,6 +37,7 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
     @IBOutlet weak var btnNo: UIButton!
     @IBOutlet weak var lblNo: UILabel!
     @IBOutlet weak var propertyPurchaseView: UIView!
+    @IBOutlet weak var propertyPurchaseViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var lblPropertyPurchaseQuestion: UILabel!
     @IBOutlet weak var yesStackView2: UIStackView!
     @IBOutlet weak var btnYes2: UIButton!
@@ -46,9 +50,17 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
     var isMortgageCombine = true
     var isMortgageTakenWhenPropertyPurchase = true
     
+    var isForRealEstate = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setMaterialTextFieldsAndViews(textfields: [txtfieldMortgagePayment, txtfieldMortgageBalance, txtfieldCreditLimit])
+        if (isForRealEstate){
+            lblUsername.text = "5919 TRUSSVILLE CROSSINGS PKWY"
+            mortgageCombinedView.isHidden = true
+            mortgageCombinedViewHeightConstarint.constant = 0
+            propertyPurchaseViewTopConstraint.constant = 0
+        }
     }
     
     //MARK:- Methods and Actions

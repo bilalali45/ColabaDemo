@@ -13,6 +13,8 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     //MARK:- Outlets and Properties
     
     @IBOutlet weak var btnBack: UIButton!
+    @IBOutlet weak var lblTopHeading: UILabel!
+    @IBOutlet weak var lblUsername: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var txtfieldMortgagePayment: TextField!
@@ -51,9 +53,14 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     var isAnnualHomeownerInsurance = false
     var isMortgagePaidOff = true
     
+    var isForRealEstate = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setMaterialTextFieldsAndViews(textfields: [txtfieldMortgagePayment, txtfieldMortgageBalance, txtfieldCreditLimit])
+        if (isForRealEstate){
+            lblUsername.text = "5919 TRUSSVILLE CROSSINGS PKWY"
+        }
     }
     
     //MARK:- Methods and Actions

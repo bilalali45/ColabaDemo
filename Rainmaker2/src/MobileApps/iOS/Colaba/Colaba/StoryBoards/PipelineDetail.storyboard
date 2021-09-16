@@ -8996,6 +8996,8 @@ Birmingham AL 35235</string>
                         <outlet property="lblHomeEquity" destination="PUh-Uy-ehS" id="yrt-wV-sf9"/>
                         <outlet property="lblMortgagePaidOffQuestion" destination="Nx2-8g-3hJ" id="t5g-12-Wjy"/>
                         <outlet property="lblNo" destination="qUT-MX-um0" id="XCr-0b-oW6"/>
+                        <outlet property="lblTopHeading" destination="mCe-ko-V03" id="KJc-Ip-egJ"/>
+                        <outlet property="lblUsername" destination="MaA-vf-w36" id="Yf7-GI-QSC"/>
                         <outlet property="lblYes" destination="Ztm-37-t6L" id="uT8-gE-xBp"/>
                         <outlet property="mainView" destination="upa-zc-agM" id="cF2-oc-XTf"/>
                         <outlet property="mortgageBalanceDollarView" destination="3s5-ob-2wX" id="ZQh-C2-2o6"/>
@@ -9476,16 +9478,20 @@ Birmingham AL 35235</string>
                         <outlet property="lblNo" destination="E1M-Ey-yvx" id="YTO-Bh-hjK"/>
                         <outlet property="lblNo2" destination="ETC-fd-qXE" id="Cso-wu-vap"/>
                         <outlet property="lblPropertyPurchaseQuestion" destination="eGl-Wd-Sj3" id="CFS-k2-RvS"/>
+                        <outlet property="lblTopHeading" destination="vbj-e7-hTW" id="ave-Wa-JCh"/>
+                        <outlet property="lblUsername" destination="GtJ-ES-trI" id="skU-DH-SxY"/>
                         <outlet property="lblYes" destination="9T2-n9-We0" id="uoi-hg-rmO"/>
                         <outlet property="lblYes2" destination="1G0-mB-fjP" id="joh-GN-1GC"/>
                         <outlet property="mainView" destination="GJJ-gO-JfX" id="xq5-oI-24s"/>
                         <outlet property="mortgageBalanceDollarView" destination="cPR-sr-m4l" id="RT8-2i-hTn"/>
                         <outlet property="mortgageCombinedView" destination="q5G-OD-CLW" id="Tce-dR-8Ez"/>
-                        <outlet property="mortgageCombinedViewTopConstraint" destination="83q-0L-gej" id="dbp-Fc-Mv1"/>
+                        <outlet property="mortgageCombinedViewHeightConstarint" destination="CDb-89-leK" id="wjR-HI-wLu"/>
+                        <outlet property="mortgageCombinedViewTopConstraint" destination="83q-0L-gej" id="Mgo-08-lhU"/>
                         <outlet property="mortgagePaymentDollarView" destination="MUd-YZ-1ey" id="NgQ-Jl-eG5"/>
                         <outlet property="noStackView" destination="QKk-ho-b4j" id="nlz-VV-O9z"/>
                         <outlet property="noStackView2" destination="6en-4I-48b" id="Ip6-ST-szm"/>
                         <outlet property="propertyPurchaseView" destination="XvH-7J-MzA" id="njW-Ly-jFL"/>
+                        <outlet property="propertyPurchaseViewTopConstraint" destination="g6u-Lh-mZw" id="L4I-oF-7Jw"/>
                         <outlet property="scrollView" destination="2ee-b2-c5f" id="nWl-Ig-4VI"/>
                         <outlet property="switchHomeEquity" destination="XC9-RO-tH2" id="sQ1-qY-x7Z"/>
                         <outlet property="txtfieldCreditLimit" destination="wV6-PG-xjz" id="9oJ-ch-dM0"/>

@@ -53,6 +53,7 @@
 		238A076926DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238A076826DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift */; };
 		238A076B26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238A076A26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift */; };
 		238D70772678E8C80067687C /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238D70762678E8C80067687C /* FiltersViewController.swift */; };
+		238E0F8726F31A870025FF06 /* RealEstateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238E0F8626F31A870025FF06 /* RealEstateViewController.swift */; };
 		23908F9E26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23908F9C26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift */; };
 		23908F9F26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23908F9D26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib */; };
 		2390FED426A6B624007A5A52 /* ApplicationTabHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2390FED326A6B624007A5A52 /* ApplicationTabHeaderView.xib */; };
@@ -238,6 +239,7 @@
 		238A076826DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseLoanInfoViewController.swift; sourceTree = "<group>"; };
 		238A076A26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinanceLoanInfoViewController.swift; sourceTree = "<group>"; };
 		238D70762678E8C80067687C /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
+		238E0F8626F31A870025FF06 /* RealEstateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealEstateViewController.swift; sourceTree = "<group>"; };
 		23908F9C26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerAddressAndLoanInfoTableViewCell.swift; sourceTree = "<group>"; };
 		23908F9D26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerAddressAndLoanInfoTableViewCell.xib; sourceTree = "<group>"; };
 		2390FED326A6B624007A5A52 /* ApplicationTabHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApplicationTabHeaderView.xib; sourceTree = "<group>"; };
@@ -585,6 +587,7 @@
 				23BE065026F0D7E300F9B4B8 /* AddMilitaryPayViewController.swift */,
 				23BE065426F0E54C00F9B4B8 /* AddRetirementIncomeViewController.swift */,
 				23BE065626F0E86200F9B4B8 /* AddOtherIncomeViewController.swift */,
+				238E0F8626F31A870025FF06 /* RealEstateViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -1158,6 +1161,7 @@
 				238D70772678E8C80067687C /* FiltersViewController.swift in Sources */,
 				23E9C74D269C23070066C978 /* ApplicationStatusTableViewCell.swift in Sources */,
 				2380E25C26DF721100B66C61 /* RefinanceSubjectPropertyViewController.swift in Sources */,
+				238E0F8726F31A870025FF06 /* RealEstateViewController.swift in Sources */,
 				7113F52526569D310066E179 /* LocalAuthManager.swift in Sources */,
 				236EA1AC26789EAC00C2F8B5 /* PipelineMoreViewController.swift in Sources */,
 				236B59D1266504060001F416 /* UserModel.swift in Sources */,
