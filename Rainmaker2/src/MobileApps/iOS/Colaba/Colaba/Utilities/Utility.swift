@@ -280,6 +280,14 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: RealEstateViewController.self)) as! RealEstateViewController
     }
     
+    static func getGovernmentQuestionsVC() -> GovernmentQuestionsViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: GovernmentQuestionsViewController.self)) as! GovernmentQuestionsViewController
+    }
+    
+    static func getGovernmentQuestionDetailVC() -> GovernmentQuestionDetailViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: GovernmentQuestionDetailViewController.self)) as! GovernmentQuestionDetailViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
