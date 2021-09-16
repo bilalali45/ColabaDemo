@@ -296,6 +296,22 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: UndisclosedBorrowerFundsFollowupQuestionsViewController.self)) as! UndisclosedBorrowerFundsFollowupQuestionsViewController
     }
     
+    static func getOwnershipInterestInPropertyVC() -> OwnershipInterestInPropertyViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: OwnershipInterestInPropertyViewController.self)) as! OwnershipInterestInPropertyViewController
+    }
+    
+    static func getOwnershipInterestInPropertyFollowupQuestionVC() -> OwnershipInterestInPropertyFollowupQuestionViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: OwnershipInterestInPropertyFollowupQuestionViewController.self)) as! OwnershipInterestInPropertyFollowupQuestionViewController
+    }
+    
+    static func getPriorityLiensViewController() -> PriorityLiensViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: PriorityLiensViewController.self)) as! PriorityLiensViewController
+    }
+    
+    static func getPriorityLiensFollowupQuestionViewController() -> PriorityLiensFollowupQuestionViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: PriorityLiensFollowupQuestionViewController.self)) as! PriorityLiensFollowupQuestionViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
