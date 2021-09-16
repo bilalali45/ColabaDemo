@@ -44,7 +44,6 @@ extension ColabaTextFieldDelegate {
 class ColabaTextField: TextField {
     
     //MARK: Outlets and Private Properties
-    //    @IBOutlet private weak var textField: TextField!
     private var button: UIButton!
     
     private var selectionList : [String]?
@@ -304,7 +303,7 @@ extension ColabaTextField {
         isValidateOnEndEditing = validate
     }
     
-    public func getTextField() -> TextField{
+    public func getTextField() -> TextField {
         return self
     }
     
@@ -317,7 +316,7 @@ extension ColabaTextField {
             }
             return response ?? false
         }
-        catch{
+        catch {
             self.setTextField(dividerColor: .red)
             self.setTextField(detail: error.localizedDescription)
             return false
@@ -328,7 +327,7 @@ extension ColabaTextField {
         super.becomeFirstResponder()
     }
     
-    public func setTag(tag: Int){
+    public func setTag(tag: Int) {
         self.tag = tag
     }
     
@@ -380,11 +379,11 @@ extension ColabaTextField {
         button.isHidden = hidden
     }
     
-    public func setMaxDate(date:Date){
+    public func setMaxDate(date:Date) {
         self.maximumDate = date
     }
     
-    public func setMinDate(date:Date){
+    public func setMinDate(date:Date) {
         self.minimumDate = date
     }
 }
@@ -493,7 +492,7 @@ extension ColabaTextField: UITextFieldDelegate {
 }
 
 //MARK: Date Picker
-extension ColabaTextField{
+extension ColabaTextField {
     
     func setDatePicker(){
         let datePicker = UIDatePicker()
@@ -522,12 +521,12 @@ extension ColabaTextField{
         self.becomeFirstResponder()
     }
     
-    @objc func cancelDatePicker(){
+    @objc func cancelDatePicker() {
         self.isUserInteractionEnabled = true
         self.resignFirstResponder()
     }
     
-    @objc func doneDatePicker(datePicker: UIDatePicker){
+    @objc func doneDatePicker(datePicker: UIDatePicker) {
         if let datePicker = self.inputView as? UIDatePicker{
             self.colabaDelegate?.selectedDate(date: datePicker.date)
             self.text = getFormattedDate(datePicker: datePicker)
@@ -536,12 +535,12 @@ extension ColabaTextField{
         self.isUserInteractionEnabled = true
     }
     
-    @objc func datePickerValueChanged(datePicker: UIDatePicker){
+    @objc func datePickerValueChanged(datePicker: UIDatePicker) {
         self.text = getFormattedDate(datePicker: datePicker)
         self.colabaDelegate?.selectedDate(date: datePicker.date)
     }
     
-    func getFormattedDate(datePicker: UIDatePicker) -> String{
+    func getFormattedDate(datePicker: UIDatePicker) -> String {
         let dateFormater = DateFormatter()
         dateFormater.dateStyle = .medium
         dateFormater.dateFormat = "MM/dd/yyyy"

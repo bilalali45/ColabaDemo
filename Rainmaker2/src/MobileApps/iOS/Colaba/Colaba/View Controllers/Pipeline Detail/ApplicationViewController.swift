@@ -733,6 +733,17 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
             let vc = Utility.getBorrowerInformationVC()
             self.pushToVC(vc: vc)
         }
+        else if (collectionView == realEstateCollectionView){
+            let vc = Utility.getRealEstateVC()
+            let navVC = UINavigationController(rootViewController: vc)
+            navVC.navigationBar.isHidden = true
+            navVC.modalPresentationStyle = .fullScreen
+            self.presentVC(vc: navVC)
+        }
+        else if (collectionView == questionsCollectionView){
+            let vc = Utility.getGovernmentQuestionsVC()
+            self.pushToVC(vc: vc)
+        }
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
