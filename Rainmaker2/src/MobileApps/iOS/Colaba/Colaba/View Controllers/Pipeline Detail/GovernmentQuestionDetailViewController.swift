@@ -31,11 +31,15 @@ class GovernmentQuestionDetailViewController: BaseViewController {
     @IBOutlet weak var containerView: UIView!
     
     var undisclosedVC: UndisclosedBorrowerFundsViewController!
+    var ownershipInterestVC: OwnershipInterestInPropertyViewController!
+    var priorityLiensVC: PriorityLiensViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         undisclosedVC = Utility.getUndisclosedBorrowerFundsVC()
+        ownershipInterestVC = Utility.getOwnershipInterestInPropertyVC()
+        priorityLiensVC = Utility.getPriorityLiensViewController()
         
         roundAllFilterViews(filterViews: [unDisclosedView, ownershipInterestView, priorityLiensView, undisclosedMortgageApplicationsView, undisclosedCreditApplicationView, debtCoSignerView, outstandingJudgementsView, fedralDebtView, partyToLawsuitView, titleConveyanceView, preForceClosureView, foreClosuredPropertyView, bankruptcyView, childSupportView, demographicView])
         filterViewTapped(selectedFilterView: unDisclosedView, filterViews: [unDisclosedView, ownershipInterestView, priorityLiensView, undisclosedMortgageApplicationsView, undisclosedCreditApplicationView, debtCoSignerView, outstandingJudgementsView, fedralDebtView, partyToLawsuitView, titleConveyanceView, preForceClosureView, foreClosuredPropertyView, bankruptcyView, childSupportView, demographicView])
@@ -88,7 +92,16 @@ class GovernmentQuestionDetailViewController: BaseViewController {
             }
         }
         if (selectedFilterView == unDisclosedView){
+            remove(viewControllers: [ownershipInterestVC, priorityLiensVC])
             add(viewController: undisclosedVC)
+        }
+        else if (selectedFilterView == ownershipInterestView){
+            remove(viewControllers: [undisclosedVC, priorityLiensVC])
+            add(viewController: ownershipInterestVC)
+        }
+        else if (selectedFilterView == priorityLiensView){
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC])
+            add(viewController: priorityLiensVC)
         }
     }
     
