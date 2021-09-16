@@ -90,10 +90,11 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name=".activities.baddresses.PlacePredictionProgrammatically"
-            android:windowSoftInputMode="adjustPan"
+        <activity android:name=".GovtQuestionActivity"
+            android:windowSoftInputMode="adjustResize|stateVisible"
             android:screenOrientation="portrait">
         </activity>
+
 
     </application>
 

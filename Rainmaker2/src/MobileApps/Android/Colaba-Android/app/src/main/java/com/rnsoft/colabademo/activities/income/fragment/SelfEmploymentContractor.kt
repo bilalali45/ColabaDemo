@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.R
@@ -36,7 +37,6 @@ class SelfEmploymentContractor : Fragment(),View.OnClickListener {
             toolbarBinding = binding.headerIncome
             savedViewInstance = binding.root
 
-
             // set Header title
             toolbarBinding.toolbarTitle.setText(getString(R.string.self_employment_contractor))
 
@@ -48,16 +48,11 @@ class SelfEmploymentContractor : Fragment(),View.OnClickListener {
 
 
     private fun initViews() {
-        binding.edBstartDate.setOnClickListener(this)
-        binding.edBstartDate.showSoftInputOnFocus = false
-        binding.edBstartDate.setOnClickListener { openCalendar() }
-        binding.edBstartDate.setOnFocusChangeListener { _, _ -> openCalendar() }
 
         binding.layoutAddress.setOnClickListener(this)
         toolbarBinding.btnClose.setOnClickListener(this)
         binding.mainLayoutBusinessCont.setOnClickListener(this)
         binding.btnSaveChange.setOnClickListener(this)
-
 
         setInputFields()
 
@@ -74,8 +69,8 @@ class SelfEmploymentContractor : Fragment(),View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
-            R.id.btn_save_change -> findNavController().popBackStack()
-            R.id.layout_address -> openAddressFragment()//findNavController().navigate(R.id.action_address)
+            R.id.btn_save_change -> checkValidations()
+            R.id.layout_address -> openAddressFragment()
             R.id.btn_close -> findNavController().popBackStack()
             R.id.mainLayout_businessCont -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutBusinessCont)
 
@@ -86,7 +81,7 @@ class SelfEmploymentContractor : Fragment(),View.OnClickListener {
 
         // set lable focus
         binding.edBusinessName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edBusinessName, binding.layoutBusinessName, requireContext()))
-        binding.edBusPhnum.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edBusPhnum, binding.layoutBusPhnum,requireContext()))
+        binding.edBusPhnum.setOnFocusChangeListener(FocusListenerForPhoneNumber(binding.edBusPhnum, binding.layoutBusPhnum,requireContext()))
         binding.edJobTitle.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edJobTitle, binding.layoutJobTitle, requireContext()))
         binding.edBstartDate.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edBstartDate, binding.layoutBStartDate, requireContext()))
         binding.edNetIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edNetIncome, binding.layoutNetIncome, requireContext()))
@@ -99,7 +94,54 @@ class SelfEmploymentContractor : Fragment(),View.OnClickListener {
         // set Dollar prifix
         CustomMaterialFields.setDollarPrefix(binding.layoutNetIncome, requireContext())
 
+        binding.edBstartDate.showSoftInputOnFocus = false
+        binding.edBstartDate.setOnClickListener { openCalendar() }
+        binding.edBstartDate.doAfterTextChanged {
+            if (binding.edBstartDate.text?.length == 0) {
+                CustomMaterialFields.setColor(binding.layoutBStartDate,R.color.grey_color_three,requireActivity())
+            } else {
+                CustomMaterialFields.setColor(binding.layoutBStartDate,R.color.grey_color_two,requireActivity())
+                CustomMaterialFields.clearError(binding.layoutBStartDate,requireActivity())
+            }
+        }
     }
+
+    private fun checkValidations(){
+
+        val businessName: String = binding.edBusinessName.text.toString()
+        val jobTitle: String = binding.edJobTitle.text.toString()
+        val startDate: String = binding.edBstartDate.text.toString()
+        val netIncome: String = binding.edNetIncome.text.toString()
+
+        if (businessName.isEmpty() || businessName.length == 0) {
+            CustomMaterialFields.setError(binding.layoutBusinessName, getString(R.string.error_field_required),requireActivity())
+        }
+        if (jobTitle.isEmpty() || jobTitle.length == 0) {
+            CustomMaterialFields.setError(binding.layoutJobTitle, getString(R.string.error_field_required),requireActivity())
+        }
+        if (startDate.isEmpty() || startDate.length == 0) {
+            CustomMaterialFields.setError(binding.layoutBStartDate, getString(R.string.error_field_required),requireActivity())
+        }
+        if (netIncome.isEmpty() || netIncome.length == 0) {
+            CustomMaterialFields.setError(binding.layoutNetIncome, getString(R.string.error_field_required),requireActivity())
+        }
+        if (businessName.isNotEmpty() || businessName.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutBusinessName,requireActivity())
+        }
+        if (jobTitle.isNotEmpty() || jobTitle.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutJobTitle,requireActivity())
+        }
+        if (startDate.isNotEmpty() || startDate.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutBStartDate,requireActivity())
+        }
+        if (netIncome.isNotEmpty() || netIncome.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutNetIncome,requireActivity())
+        }
+        if (businessName.length > 0 && jobTitle.length > 0 &&  startDate.length > 0 && netIncome.length > 0 ){
+            findNavController().popBackStack()
+        }
+    }
+
 
     private fun openCalendar() {
         val c = Calendar.getInstance()

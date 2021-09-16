@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.baddresses.info.fragment
+package com.rnsoft.colabademo.activities.income.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,42 +9,55 @@ import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.rnsoft.colabademo.R
-import com.rnsoft.colabademo.databinding.DialogFragmentDeleteCurrentResidenceBinding
+import com.rnsoft.colabademo.databinding.DialogAddEmplymentBinding
 import org.greenrobot.eventbus.EventBus
 
-class DeleteCurrentResidenceDialogFragment : BottomSheetDialogFragment() {
+/**
+ * Created by Anita Kiran on 9/13/2021.
+ */
+class BottomDialogSelectEmployment : BottomSheetDialogFragment() {
 
     companion object {
-        lateinit var deleteText:String
-        fun newInstance(text:String): DeleteCurrentResidenceDialogFragment {
-            deleteText = text
-            return DeleteCurrentResidenceDialogFragment()
+        //lateinit var userMessage:String
+        fun newInstance(): BottomDialogSelectEmployment {
+            //userMessage    =   message
+            return BottomDialogSelectEmployment()
         }
     }
-  
-    lateinit var binding: DialogFragmentDeleteCurrentResidenceBinding
+
+    lateinit var binding: DialogAddEmplymentBinding
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.roundedBottomSheetDialog)
+
+    }
+
+    private fun setInitialSelection(){
+
+        binding.recentIcon.setColorFilter(resources.getColor(R.color.grey_color_two, activity?.theme))
+        binding.recentTextView.setTextColor(resources.getColor(R.color.grey_color_two, activity?.theme))
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DialogFragmentDeleteCurrentResidenceBinding.inflate(inflater, container, false)
+        binding = DialogAddEmplymentBinding.inflate(inflater, container, false)
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.roundedBottomSheetDialog)
+
         binding.crossImageView.setOnClickListener{
             dismiss()
         }
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.roundedBottomSheetDialog)
-        binding.tvDeleteText.text= deleteText
-
-        binding.yesBtn.setOnClickListener {
-            dismiss()
-            EventBus.getDefault().post(SwipeToDeleteEvent(true))
-        }
-
-        binding.noBtn.setOnClickListener {
+        binding.addCurrentEmployment.setOnClickListener {
+            EventBus.getDefault().post(EventAddEmployment(true))
             dismiss()
         }
+
+        binding.addPrevEmplyment.setOnClickListener {
+            EventBus.getDefault().post(EventAddEmployment(false))
+            dismiss()
+        }
+
+        setInitialSelection()
 
         return binding.root
     }

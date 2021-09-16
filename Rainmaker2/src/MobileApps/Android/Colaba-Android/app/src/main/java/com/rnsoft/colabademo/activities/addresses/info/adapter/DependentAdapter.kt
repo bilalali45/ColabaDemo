@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.baddresses.info.adapter
+package com.rnsoft.colabademo.activities.addresses.info.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,7 +12,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.RecyclerviewClickListener
-import com.rnsoft.colabademo.activities.baddresses.info.model.Dependent
+import com.rnsoft.colabademo.activities.addresses.info.model.Dependent
 import kotlinx.android.synthetic.main.dependent_input_field.view.*
 import java.util.*
 
@@ -78,8 +78,6 @@ class DependentAdapter (val mContext : Context, private val items: ArrayList<Dep
             if(holder.itemView.til_dependent.endIconDrawable?.isVisible == true)
                 deleteClick.deleteDependentClick(position)
         }
-
-
 
 
         holder.itemView.ed_age.doAfterTextChanged {
