@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +24,15 @@ class RealStateAdapter internal constructor(private var realStateDataList: Array
                 propertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
             }
             propertyType.text = item.propertyTypeName
+
+
+            itemView.setOnClickListener {
+
+                   //itemView.context.startActivity(Intent(itemView.context, RealEstateActivity::class.java))
+
+            }
         }
+
     }
 
     inner class RealStateFooterViewHolder(itemView: View) : BaseViewHolder(itemView) {

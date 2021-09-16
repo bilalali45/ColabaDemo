@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< HEAD
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/drawable-xxxhdpi/blue_white_style_filter.xml" value="0.3828125" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/drawable/assets_tab_indicator.xml" value="0.57421875" />
         <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/drawable/blue_white_style_filter.xml" value="0.3828125" />
@@ -108,4 +109,33 @@
       </ProjectState>
     </option>
   </component>
+=======
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/active_duty_layout.xml" value="0.164275956284153" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/detail_application_tab.xml" value="0.15403005464480873" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/dynamic_income_fragment_layout.xml" value="0.23157894736842105" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/income_activity_layout.xml" value="0.15334699453551912" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/income_business_layout.xml" value="0.23157894736842105" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/income_current_employment.xml" value="0.15846994535519127" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/income_military_pay.xml" value="0.23157894736842105" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/income_other_layout.xml" value="0.17076502732240437" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/income_previous_employment.xml" value="0.17896174863387979" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/income_retirement_layout.xml" value="0.1646174863387978" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/income_tab_layout.xml" value="0.16188524590163936" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/loan_purchase_info.xml" value="0.16632513661202186" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/mixed_use_property.xml" value="0.16086065573770492" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/non_permenant_resident_layout.xml" value="0.1687158469945355" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/real_estate_activity_layout.xml" value="0.23157894736842105" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/real_estate_navigation.xml" value="0.23157894736842105" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/real_estate_owned_layout.xml" value="0.25" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/reserve_layout.xml" value="0.1687158469945355" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/self_empolyment_cont_layout.xml" value="0.16188524590163936" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/sub_property_refinance.xml" value="0.15778688524590165" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/subject_property_address.xml" value="0.1711065573770492" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/subject_property_purchase.xml" value="0.16051912568306012" />
+        <entry key="..\:/Work/NewRainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/unmarried_layout.xml" value="0.164275956284153" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+>>>>>>> Colaba-AnitaVersion
 </project>

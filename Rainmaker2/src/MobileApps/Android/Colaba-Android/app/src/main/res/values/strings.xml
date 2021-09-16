@@ -64,7 +64,8 @@
     <string name="conversation">Conversations</string>
     <string name="archive">Archive</string>
     <string name="assets_income"> ASSETS &amp; INCOME</string>
-    <string name="income">INCOME</string>
+    <string name="income">Income</string>
+    <string name="real_estate_owned">Real Estate Owned</string>
 
 
     <string name="pipeline">Pipeline</string>
@@ -390,6 +391,11 @@
     <string name="income_retirement_type">Retirement Income Type</string>
     <string name="other_income_type">Income Type</string>
     <string name="monthly_income">Monthly Income</string>
+    <string name="current_rental_income">Current Rental Income</string>
+    <string name="property_status">Property Status</string>
+    <string name="property_value">Property Value</string>
+    <string name="homeowner_ass_dues">Annual Homeowner"\'\s Association Dues</string>
+
 
 
 
