@@ -23,7 +23,7 @@ class SplashActivity : AppCompatActivity() {
 
     activityScope.launch {
 
-            startActivity(Intent(this@SplashActivity, IncomeActivity::class.java))
+            //startActivity(Intent(this@SplashActivity, IncomeActivity::class.java))
 
             //startActivity(Intent(this@SplashActivity, BorrowerInfoActivity::class.java))
 

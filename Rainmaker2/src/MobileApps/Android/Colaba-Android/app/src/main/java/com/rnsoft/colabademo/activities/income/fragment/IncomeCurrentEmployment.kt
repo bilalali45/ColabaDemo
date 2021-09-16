@@ -173,8 +173,8 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
             binding.layoutBaseSalary.visibility = View.VISIBLE
         }
         else {
-            binding.paytypeSalary.setTypeface(null, Typeface.BOLD)
-            binding.paytypeHourly.setTypeface(null, Typeface.NORMAL)
+            binding.paytypeSalary.setTypeface(null, Typeface.NORMAL)
+            binding.paytypeHourly.setTypeface(null, Typeface.BOLD)
             binding.layoutHourlyRate.visibility= View.VISIBLE
             binding.layoutAvgHours.visibility = View.VISIBLE
             binding.layoutBaseSalary.visibility = View.GONE

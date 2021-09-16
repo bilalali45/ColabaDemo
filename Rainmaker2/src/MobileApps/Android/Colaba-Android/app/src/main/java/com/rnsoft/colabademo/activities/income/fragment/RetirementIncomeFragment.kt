@@ -84,7 +84,7 @@ class RetirementIncomeFragment : Fragment(), View.OnClickListener {
 
         // set Dollar prifix
         CustomMaterialFields.setDollarPrefix(binding.layoutMonthlyIncome, requireContext())
-
+        CustomMaterialFields.setDollarPrefix(binding.layoutMonthlyWithdrawal, requireContext())
     }
 
     private fun setRetirementType(){
