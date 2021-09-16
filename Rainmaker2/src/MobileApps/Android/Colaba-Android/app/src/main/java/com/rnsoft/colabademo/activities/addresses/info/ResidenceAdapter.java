@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.baddresses.info;
+package com.rnsoft.colabademo.activities.addresses.info;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rnsoft.colabademo.R;
-import com.rnsoft.colabademo.activities.baddresses.info.model.Address;
+import com.rnsoft.colabademo.activities.addresses.info.model.Address;
 
 import java.util.ArrayList;
 import java.util.List;

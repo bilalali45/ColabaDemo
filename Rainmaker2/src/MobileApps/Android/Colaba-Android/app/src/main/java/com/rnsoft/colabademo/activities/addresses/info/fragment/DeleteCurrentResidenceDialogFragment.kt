@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.baddresses.info.fragment
+package com.rnsoft.colabademo.activities.addresses.info.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

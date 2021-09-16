@@ -276,6 +276,42 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: AddOtherIncomeViewController.self)) as! AddOtherIncomeViewController
     }
     
+    static func getRealEstateVC() -> RealEstateViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: RealEstateViewController.self)) as! RealEstateViewController
+    }
+    
+    static func getGovernmentQuestionsVC() -> GovernmentQuestionsViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: GovernmentQuestionsViewController.self)) as! GovernmentQuestionsViewController
+    }
+    
+    static func getGovernmentQuestionDetailVC() -> GovernmentQuestionDetailViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: GovernmentQuestionDetailViewController.self)) as! GovernmentQuestionDetailViewController
+    }
+    
+    static func getUndisclosedBorrowerFundsVC() -> UndisclosedBorrowerFundsViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: UndisclosedBorrowerFundsViewController.self)) as! UndisclosedBorrowerFundsViewController
+    }
+    
+    static func getUndisclosedBorrowerFundsFollowupQuestionsVC() -> UndisclosedBorrowerFundsFollowupQuestionsViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: UndisclosedBorrowerFundsFollowupQuestionsViewController.self)) as! UndisclosedBorrowerFundsFollowupQuestionsViewController
+    }
+    
+    static func getOwnershipInterestInPropertyVC() -> OwnershipInterestInPropertyViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: OwnershipInterestInPropertyViewController.self)) as! OwnershipInterestInPropertyViewController
+    }
+    
+    static func getOwnershipInterestInPropertyFollowupQuestionVC() -> OwnershipInterestInPropertyFollowupQuestionViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: OwnershipInterestInPropertyFollowupQuestionViewController.self)) as! OwnershipInterestInPropertyFollowupQuestionViewController
+    }
+    
+    static func getPriorityLiensViewController() -> PriorityLiensViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: PriorityLiensViewController.self)) as! PriorityLiensViewController
+    }
+    
+    static func getPriorityLiensFollowupQuestionViewController() -> PriorityLiensFollowupQuestionViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: PriorityLiensFollowupQuestionViewController.self)) as! PriorityLiensFollowupQuestionViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){

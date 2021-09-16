@@ -47,6 +47,7 @@ class CurrentEmployerAddressViewController: BaseViewController {
     
     var topTitle = ""
     var searchTextFieldPlaceholder = ""
+    var isForSubjectProperty = false
     
     init(validation: Validation) {
         self.validation = validation
@@ -70,6 +71,9 @@ class CurrentEmployerAddressViewController: BaseViewController {
         
         let filter = GMSAutocompleteFilter()
         filter.type = .address
+        if (isForSubjectProperty){
+            filter.country = "US"
+        }
         
         // Create the fetcher.
         fetcher = GMSAutocompleteFetcher(filter: filter)

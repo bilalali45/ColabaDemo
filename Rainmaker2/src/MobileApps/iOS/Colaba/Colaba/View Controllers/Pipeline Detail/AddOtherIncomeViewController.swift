@@ -10,6 +10,8 @@ import DropDown
 
 class AddOtherIncomeViewController: BaseViewController {
 
+    //MARK:- Outlets and Properties
+    
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblUsername: UILabel!
     @IBOutlet weak var btnDelete: UIButton!

@@ -400,10 +400,10 @@
 
 
 
-
-
-
-
+    <string name="govt_questions">Government Questions</string>
+    <string name="undisclosed_question_one">Are you borrowing any money for this real estate transaction (e.g., money for your closing costs or down payment) obtaining any money from another party, such as the seller or realtor, that you have not disclosed on this loan application?</string>
+    <string name="have_you_had_an_ownership_interest">Have you had an ownership interest in another property in the last three years?</string>
+    <string name="will_this_property_be_subject_to_a_lien">Will this property be subject to a lien that could take priority over the first mortgage lien, such as a clean energy lien paid through your property taxes (e.g., the Property Assessed Clean Energy Program)?</string>
 
 
 

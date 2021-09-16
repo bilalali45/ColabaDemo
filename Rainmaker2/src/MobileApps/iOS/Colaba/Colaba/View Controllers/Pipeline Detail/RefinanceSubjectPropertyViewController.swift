@@ -401,23 +401,7 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
             secondMortgageMainViewHeightConstraint.constant = isSecondMortgage ? 350 : 145
             secondMortgageView.isHidden = !isSecondMortgage
         }
-        
-//        btnFirstMortgageYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
-//        lblFirstMortgageYes.font = Theme.getRubikRegularFont(size: 15)
-//        btnFirstMortgageNo.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-//        lblFirstMortgageNo.font = Theme.getRubikMediumFont(size: 15)
-//
-//        btnSecondMortgageYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
-//        lblSecondMortgageYes.font = Theme.getRubikRegularFont(size: 15)
-//        btnSecondMortgageNo.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-//        lblSecondMortgageNo.font = Theme.getRubikMediumFont(size: 15)
-//
-//        firstMortgageMainViewHeightConstraint.constant = 145
-//        firstMortgageView.isHidden = true
-//        secondMortgageMainViewHeightConstraint.constant = 0
-//        secondMortgageMainView.isHidden = true
-//        secondMortgageView.isHidden = true
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.setScreenHeight()
         }
