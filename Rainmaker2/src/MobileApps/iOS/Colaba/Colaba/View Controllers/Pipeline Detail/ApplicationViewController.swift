@@ -740,6 +740,10 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
             navVC.modalPresentationStyle = .fullScreen
             self.presentVC(vc: navVC)
         }
+        else if (collectionView == questionsCollectionView){
+            let vc = Utility.getGovernmentQuestionsVC()
+            self.pushToVC(vc: vc)
+        }
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
