@@ -197,7 +197,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             }
 
             R.id.backButton -> requireActivity().finish()
-            // R.id.ed_dateOfBirth -> openCalendar()
         }
     }
 

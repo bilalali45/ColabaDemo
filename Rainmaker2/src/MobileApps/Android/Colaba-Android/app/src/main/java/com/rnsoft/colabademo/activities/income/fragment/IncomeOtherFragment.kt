@@ -90,6 +90,7 @@ class IncomeOtherFragment : Fragment(), View.OnClickListener {
         val incomeType: String = binding.tvRetirementType.text.toString()
         val annualIncome: String = binding.edAnnualIncome.text.toString()
         val monthlyIncome: String = binding.edMonthlyIncome.text.toString()
+        val desc: String = binding.edDesc.text.toString()
 
         if (incomeType.isEmpty() || incomeType.length == 0) {
             CustomMaterialFields.setError(binding.layoutRetirement, getString(R.string.error_field_required),requireActivity())
@@ -100,6 +101,9 @@ class IncomeOtherFragment : Fragment(), View.OnClickListener {
         if (annualIncome.isEmpty() || annualIncome.length == 0) {
             CustomMaterialFields.setError(binding.layoutAnnualIncome, getString(R.string.error_field_required),requireActivity())
         }
+        if (desc.isEmpty() || desc.length == 0) {
+            CustomMaterialFields.setError(binding.layoutDesc, getString(R.string.error_field_required),requireActivity())
+        }
         if (incomeType.isNotEmpty() || incomeType.length > 0) {
             CustomMaterialFields.clearError(binding.layoutRetirement,requireActivity())
         }
@@ -108,6 +112,9 @@ class IncomeOtherFragment : Fragment(), View.OnClickListener {
         }
         if (monthlyIncome.isNotEmpty() || monthlyIncome.length > 0) {
             CustomMaterialFields.clearError(binding.layoutMonthlyIncome,requireActivity())
+        }
+        if (desc.isNotEmpty() || desc.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutDesc,requireActivity())
         }
 
     }
@@ -132,9 +139,17 @@ class IncomeOtherFragment : Fragment(), View.OnClickListener {
                 var item = binding.tvRetirementType.text.toString()
                 if (item == "Capital Gains" || item == "Interest / Dividends" || item == "Other Income Source") {
                     binding.layoutAnnualIncome.visibility = View.VISIBLE
-                    binding.layoutMonthlyIncome.visibility = View.VISIBLE
-                } else {
+                    binding.layoutMonthlyIncome.visibility = View.GONE
+                    binding.layoutDesc.visibility = View.GONE
+                }
+                else if (item == "Annuity") {
                     binding.layoutAnnualIncome.visibility = View.GONE
+                    binding.layoutMonthlyIncome.visibility = View.VISIBLE
+                    binding.layoutDesc.visibility = View.VISIBLE
+                }
+                else {
+                    binding.layoutAnnualIncome.visibility = View.GONE
+                    binding.layoutDesc.visibility = View.GONE
                     binding.layoutMonthlyIncome.visibility = View.VISIBLE
                 }
 
