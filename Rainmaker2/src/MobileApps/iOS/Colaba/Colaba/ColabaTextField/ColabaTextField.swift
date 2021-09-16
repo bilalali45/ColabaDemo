@@ -8,11 +8,13 @@
 import UIKit
 import LocalAuthentication
 import Material
+import MonthYearPicker
 
 enum ColabaTextFieldType {
     case password
     case dropdown
     case datePicker
+    case monthlyDatePicker
     case delete
     case amount
     case percentage
@@ -90,6 +92,11 @@ class ColabaTextField: TextField {
                 self.isUserInteractionEnabled = true
                 self.tintColor = .clear
                 setButton(image: UIImage(named: "CalendarIcon")!)
+            case .monthlyDatePicker:
+                isButtonHidden(false)
+                self.isUserInteractionEnabled = true
+                self.tintColor = .clear
+                setButton(image: UIImage(named: "CalendarIcon")!)
             case .defaultType:
                 self.setButton(image: nil)
             }
@@ -148,10 +155,15 @@ class ColabaTextField: TextField {
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
-        //        self.endEditing(true)
         if type == .datePicker {
             if self.isUserInteractionEnabled {
                 datePickerButtonClicked()
+            }
+            return
+        }
+        if type == .monthlyDatePicker {
+            if self.isUserInteractionEnabled {
+                monthlyDatePickerButtonClicked()
             }
             return
         }
@@ -164,7 +176,6 @@ class ColabaTextField: TextField {
     
     //MARK: Button Action
     @objc func colabaTextFieldButtonClicked(_ sender: UIButton) {
-        //        self.endEditing(true)
         switch type {
         case .password:
             self.isSecureTextEntry = !self.isSecureTextEntry
@@ -174,6 +185,8 @@ class ColabaTextField: TextField {
             dropDownButtonClicked()
         case .datePicker:
             datePickerButtonClicked()
+        case .monthlyDatePicker:
+            monthlyDatePickerButtonClicked()
         case .delete:
             colabaDelegate?.deleteButtonClicked()
         case .amount:
@@ -192,25 +205,9 @@ class ColabaTextField: TextField {
     private func datePickerButtonClicked() {
         setDatePicker()
     }
-}
-
-
-
-//MARK: Public Functions -- ColabaTextField Values
-extension ColabaTextField {
     
-    
-    public func setUserInteractionDisabled(){
-        //        self.self.isUserInteractionEnabled = false
-        //        isButtonHidden(false)
-        //        setTextField( textColor: UIColor.Palette.formLabel)
-    }
-    
-    public func setDatePickerDisabled() {
-        self.isUserInteractionEnabled = false
-        isButtonHidden(false)
-        button.isUserInteractionEnabled = false
-        //        setTextField( textColor: UIColor.Palette.formLabel)
+    private func monthlyDatePickerButtonClicked() {
+        setMonthlyDatePicker()
     }
 }
 
@@ -452,12 +449,19 @@ extension ColabaTextField: UITextFieldDelegate {
         if type == .percentage && !attributedText!.string.contains("%  |  ") {
             self.attributedText = attributedPrefix
         }
-        if (type == .datePicker){
-            if let datePicker = self.inputView as? UIDatePicker{
+        if type == .datePicker {
+            if let datePicker = self.inputView as? UIDatePicker {
                 self.colabaDelegate?.selectedDate(date: datePicker.date)
                 self.text = getFormattedDate(datePicker: datePicker)
             }
             setDatePicker()
+        }
+        if type == .monthlyDatePicker {
+            if let datePicker = self.inputView as? MonthYearPickerView {
+                self.colabaDelegate?.selectedDate(date: datePicker.date)
+                self.text = getMonthFormattedDate(datePicker: datePicker)
+            }
+            monthlyDatePickerButtonClicked()
         }
     }
     
@@ -518,8 +522,33 @@ extension ColabaTextField {
         toolbar.items = [cancelButton,spacer, doneButton]
         self.isUserInteractionEnabled = true
         self.inputAccessoryView = toolbar
-        self.becomeFirstResponder()
+        _ = self.becomeFirstResponder()
     }
+    
+    func setMonthlyDatePicker() {
+        
+        let datePicker = MonthYearPickerView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 216))
+        datePicker.addTarget(self, action: #selector(monthlyDatePickerValueChanged(datePicker:)), for: .valueChanged)
+        self.inputView = datePicker
+        
+        if let maxDate = self.maximumDate{
+            datePicker.maximumDate = maxDate
+        }
+        if let minDate = self.minimumDate{
+            datePicker.minimumDate = minDate
+        }
+        
+        //Tool Bar
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 44))
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
+        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneMonthlyDatePicker))
+        toolbar.items = [cancelButton,spacer, doneButton]
+        self.isUserInteractionEnabled = true
+        self.inputAccessoryView = toolbar
+        _ = self.becomeFirstResponder()
+    }
+
     
     @objc func cancelDatePicker() {
         self.isUserInteractionEnabled = true
@@ -535,8 +564,22 @@ extension ColabaTextField {
         self.isUserInteractionEnabled = true
     }
     
+    @objc func doneMonthlyDatePicker(datePicker: MonthYearPickerView) {
+        if let datePicker = self.inputView as? MonthYearPickerView {
+            self.colabaDelegate?.selectedDate(date: datePicker.date)
+            self.text = getMonthFormattedDate(datePicker: datePicker)
+        }
+        self.resignFirstResponder()
+        self.isUserInteractionEnabled = true
+    }
+    
     @objc func datePickerValueChanged(datePicker: UIDatePicker) {
         self.text = getFormattedDate(datePicker: datePicker)
+        self.colabaDelegate?.selectedDate(date: datePicker.date)
+    }
+    
+    @objc func monthlyDatePickerValueChanged(datePicker: MonthYearPickerView) {
+        self.text = getMonthFormattedDate(datePicker: datePicker)
         self.colabaDelegate?.selectedDate(date: datePicker.date)
     }
     
@@ -544,6 +587,13 @@ extension ColabaTextField {
         let dateFormater = DateFormatter()
         dateFormater.dateStyle = .medium
         dateFormater.dateFormat = "MM/dd/yyyy"
+        return dateFormater.string(from: datePicker.date)
+    }
+    
+    func getMonthFormattedDate(datePicker: MonthYearPickerView) -> String {
+        let dateFormater = DateFormatter()
+        dateFormater.dateStyle = .medium
+        dateFormater.dateFormat = "MM/yyyy"
         return dateFormater.string(from: datePicker.date)
     }
 }

@@ -35,8 +35,8 @@ class LoginViewController: UIViewController {
         }
         
         #if DEBUG
-        txtFieldEmail.text = "testmcu1@mailinator.com"
-        txtFieldPassword.text = "Danish11"
+//        txtFieldEmail.text = "testmcu1@mailinator.com"
+//        txtFieldPassword.text = "Danish11"
         #endif
     }
     
@@ -51,11 +51,13 @@ class LoginViewController: UIViewController {
     
     func setTextFields() {
         ///Email Text Field
-        txtFieldEmail.setTextField(placeholder: "Email")
+        txtFieldEmail.setTextField(placeholder: "Date Picker")
         txtFieldEmail.setDelegates(controller: self)
-        txtFieldEmail.setValidation(validationType: .email)
-        txtFieldEmail.setTextField(keyboardType: .emailAddress)
+//        txtFieldEmail.setValidation(validationType: .email)
+//        txtFieldEmail.setTextField(keyboardType: .emailAddress)
         txtFieldEmail.setIsValidateOnEndEditing(validate: false)
+        txtFieldEmail.setMinDate(date: Date())
+        txtFieldEmail.type = .monthlyDatePicker
         if (isAppOpenFromBackground){
             txtFieldEmail.setTextField(textColor: Theme.getAppGreyColor())
         }
