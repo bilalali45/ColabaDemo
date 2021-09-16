@@ -324,6 +324,7 @@
     <string name="invalid_phone_num">Your phone number is not valid. Please try again.</string>
     <string name="previous_address">Add Previous Address</string>
     <string name="current_address">Add Current Address</string>
+    <string name="property_address">Property Address</string>
     <string name="loan_stage">Loan Stage</string>
     <string name="purchase_price">Purchase Price</string>
     <string name="loan_amount">Loan Amount</string>
