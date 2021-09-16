@@ -24,9 +24,9 @@ class SplashActivity : AppCompatActivity() {
 
             //startActivity(Intent(this@SplashActivity, IncomeActivity::class.java))
 
-            //startActivity(Intent(this@SplashActivity, BorrowerInfoActivity::class.java))
+            startActivity(Intent(this@SplashActivity, GovtQuestionActivity::class.java))
 
-
+            /*
             if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
                 && sharedPreferences.getBoolean(AppConstant.isbiometricEnabled, false)
             ) {
@@ -41,6 +41,8 @@ class SplashActivity : AppCompatActivity() {
             }
 
             finish()
+
+             */
         }
 
 

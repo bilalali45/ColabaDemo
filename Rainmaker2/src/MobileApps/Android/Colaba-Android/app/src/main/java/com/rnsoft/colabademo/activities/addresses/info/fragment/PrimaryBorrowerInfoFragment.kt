@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.baddresses.info
+package com.rnsoft.colabademo.activities.addresses.info
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -19,12 +19,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.*
-import com.rnsoft.colabademo.activities.baddresses.info.*
-import com.rnsoft.colabademo.activities.baddresses.info.adapter.DependentAdapter
-import com.rnsoft.colabademo.activities.baddresses.info.fragment.DeleteCurrentResidenceDialogFragment
-import com.rnsoft.colabademo.activities.baddresses.info.fragment.SwipeToDeleteEvent
-import com.rnsoft.colabademo.activities.baddresses.info.model.Address
-import com.rnsoft.colabademo.activities.baddresses.info.model.Dependent
+import com.rnsoft.colabademo.activities.addresses.info.*
+import com.rnsoft.colabademo.activities.addresses.info.adapter.DependentAdapter
+import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
+import com.rnsoft.colabademo.activities.addresses.info.fragment.SwipeToDeleteEvent
+import com.rnsoft.colabademo.activities.addresses.info.model.Address
+import com.rnsoft.colabademo.activities.addresses.info.model.Dependent
 import com.rnsoft.colabademo.databinding.*
 import com.rnsoft.colabademo.utils.RecyclerTouchListener
 import org.greenrobot.eventbus.EventBus
