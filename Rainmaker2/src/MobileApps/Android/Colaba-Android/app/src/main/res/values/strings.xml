@@ -64,7 +64,8 @@
     <string name="conversation">Conversations</string>
     <string name="archive">Archive</string>
     <string name="assets_income"> ASSETS &amp; INCOME</string>
-    <string name="income">INCOME</string>
+    <string name="income">Income</string>
+    <string name="real_estate_owned">Real Estate Owned</string>
 
 
     <string name="pipeline">Pipeline</string>
@@ -390,13 +391,18 @@
     <string name="income_retirement_type">Retirement Income Type</string>
     <string name="other_income_type">Income Type</string>
     <string name="monthly_income">Monthly Income</string>
+    <string name="current_rental_income">Current Rental Income</string>
+    <string name="property_status">Property Status</string>
+    <string name="property_value">Property Value</string>
+    <string name="homeowner_ass_dues">Annual Homeowner"\'\s Association Dues</string>
 
 
 
 
-
-
-
+    <string name="govt_questions">Government Questions</string>
+    <string name="undisclosed_question_one">Are you borrowing any money for this real estate transaction (e.g., money for your closing costs or down payment) obtaining any money from another party, such as the seller or realtor, that you have not disclosed on this loan application?</string>
+    <string name="have_you_had_an_ownership_interest">Have you had an ownership interest in another property in the last three years?</string>
+    <string name="will_this_property_be_subject_to_a_lien">Will this property be subject to a lien that could take priority over the first mortgage lien, such as a clean energy lien paid through your property taxes (e.g., the Property Assessed Clean Energy Program)?</string>
 
 
 

@@ -5,19 +5,61 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_income_tab">
 
-
    <fragment
         android:id="@+id/navigation_income_tab"
         android:name="com.rnsoft.colabademo.IncomeTabFragment"
         android:label="@string/income"
         tools:layout="@layout/income_fragment_layout" />
 
-
    <fragment
        android:id="@+id/navigation_b_income_one"
        android:name="com.rnsoft.colabademo.BorrowerOneIncome"
        android:label="@string/income"
-       tools:layout="@layout/income_fragment_layout" />
+       tools:layout="@layout/income_fragment_layout">
+
+      <action
+          android:id="@+id/action_current_address"
+          app:destination="@id/navigation_current_employment_address"
+          app:enterAnim="@anim/slide_up"
+          app:exitAnim="@anim/slide_down"/>
+
+      <action
+          android:id="@+id/action_prev_address"
+          app:destination="@id/navigation_income_prev_emplyoyment"
+          app:enterAnim="@anim/slide_up"
+          app:exitAnim="@anim/slide_down"/>
+
+      <action
+          android:id="@+id/action_selfEmployment"
+          app:destination="@id/navigation_selfEmployment"
+          app:enterAnim="@anim/slide_up"
+          app:exitAnim="@anim/slide_down"/>
+
+      <action
+          android:id="@+id/action_business"
+          app:destination="@id/navigation_business"
+          app:enterAnim="@anim/slide_up"
+          app:exitAnim="@anim/slide_down"/>
+
+      <action
+          android:id="@+id/action_militaryPay"
+          app:destination="@id/navigation_military_pay"
+          app:enterAnim="@anim/slide_up"
+          app:exitAnim="@anim/slide_down"/>
+
+      <action
+          android:id="@+id/action_retirement"
+          app:destination="@id/navigation_retirement"
+          app:enterAnim="@anim/slide_up"
+          app:exitAnim="@anim/slide_down"/>
+
+      <action
+          android:id="@+id/action_other"
+          app:destination="@id/navigation_other"
+          app:enterAnim="@anim/slide_up"
+          app:exitAnim="@anim/slide_down"/>
+
+   </fragment>
 
    <fragment
        android:id="@+id/navigation_b_income_two"

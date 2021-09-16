@@ -63,7 +63,7 @@ class IncomeOtherFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
-            R.id.btn_save_change -> findNavController().popBackStack()
+            R.id.btn_save_change -> checkValidations()
             R.id.btn_close -> findNavController().popBackStack()
             R.id.mainLayout_other -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutOther)
 
@@ -76,7 +76,6 @@ class IncomeOtherFragment : Fragment(), View.OnClickListener {
         binding.edMonthlyIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edMonthlyIncome, binding.layoutMonthlyIncome, requireContext()))
         binding.edAnnualIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edAnnualIncome, binding.layoutAnnualIncome, requireContext()))
 
-
         // set input format
         binding.edMonthlyIncome.addTextChangedListener(NumberTextFormat(binding.edMonthlyIncome))
         binding.edAnnualIncome.addTextChangedListener(NumberTextFormat(binding.edAnnualIncome))
@@ -84,6 +83,39 @@ class IncomeOtherFragment : Fragment(), View.OnClickListener {
         // set Dollar prifix
         CustomMaterialFields.setDollarPrefix(binding.layoutMonthlyIncome, requireContext())
         CustomMaterialFields.setDollarPrefix(binding.layoutAnnualIncome, requireContext())
+    }
+
+    private fun checkValidations(){
+
+        val incomeType: String = binding.tvRetirementType.text.toString()
+        val annualIncome: String = binding.edAnnualIncome.text.toString()
+        val monthlyIncome: String = binding.edMonthlyIncome.text.toString()
+        val desc: String = binding.edDesc.text.toString()
+
+        if (incomeType.isEmpty() || incomeType.length == 0) {
+            CustomMaterialFields.setError(binding.layoutRetirement, getString(R.string.error_field_required),requireActivity())
+        }
+        if (monthlyIncome.isEmpty() || monthlyIncome.length == 0) {
+            CustomMaterialFields.setError(binding.layoutMonthlyIncome, getString(R.string.error_field_required),requireActivity())
+        }
+        if (annualIncome.isEmpty() || annualIncome.length == 0) {
+            CustomMaterialFields.setError(binding.layoutAnnualIncome, getString(R.string.error_field_required),requireActivity())
+        }
+        if (desc.isEmpty() || desc.length == 0) {
+            CustomMaterialFields.setError(binding.layoutDesc, getString(R.string.error_field_required),requireActivity())
+        }
+        if (incomeType.isNotEmpty() || incomeType.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutRetirement,requireActivity())
+        }
+        if (annualIncome.isNotEmpty() || annualIncome.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutAnnualIncome,requireActivity())
+        }
+        if (monthlyIncome.isNotEmpty() || monthlyIncome.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutMonthlyIncome,requireActivity())
+        }
+        if (desc.isNotEmpty() || desc.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutDesc,requireActivity())
+        }
 
     }
 
@@ -107,22 +139,24 @@ class IncomeOtherFragment : Fragment(), View.OnClickListener {
                 var item = binding.tvRetirementType.text.toString()
                 if (item == "Capital Gains" || item == "Interest / Dividends" || item == "Other Income Source") {
                     binding.layoutAnnualIncome.visibility = View.VISIBLE
-                    binding.layoutMonthlyIncome.visibility = View.VISIBLE
-                } else {
+                    binding.layoutMonthlyIncome.visibility = View.GONE
+                    binding.layoutDesc.visibility = View.GONE
+                }
+                else if (item == "Annuity") {
                     binding.layoutAnnualIncome.visibility = View.GONE
                     binding.layoutMonthlyIncome.visibility = View.VISIBLE
+                    binding.layoutDesc.visibility = View.VISIBLE
+                }
+                else {
+                    binding.layoutAnnualIncome.visibility = View.GONE
+                    binding.layoutDesc.visibility = View.GONE
+                    binding.layoutMonthlyIncome.visibility = View.VISIBLE
                 }
 
-
-
-                /*if (binding.tvRetirementType.text.isNotEmpty() && binding.tvRetirementType.text.isNotBlank()) {
-                    //clearError(binding.layoutLoanStage)
+                if (binding.tvRetirementType.text.isNotEmpty() && binding.tvRetirementType.text.isNotBlank()) {
+                    CustomMaterialFields.clearError(binding.layoutRetirement,requireActivity())
                 }
 
-                if (position == occupancyTypeArray.size - 1)
-                    binding.layoutOccupancyType.visibility = View.VISIBLE
-                else
-                    binding.layoutOccupancyType.visibility = View.GONE */
             }
         }
     }

@@ -11,6 +11,7 @@ data class IncomeModelClass(
     val listenerAttached: View.OnClickListener= View.OnClickListener {  }
     )
 
-data class IncomeContentCell(val title:String="Title", val description:String="detail", val contentAmount:String="0$" , val tenure:String= "")
+data class IncomeContentCell(val title:String="Title", val description:String="detail", val contentAmount:String="0$" , val tenure:String= "",
+                             val contentListenerAttached: View.OnClickListener?= null)
 
 
