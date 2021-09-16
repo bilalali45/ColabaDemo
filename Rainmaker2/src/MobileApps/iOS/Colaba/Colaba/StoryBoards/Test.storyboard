@@ -6898,6 +6898,208 @@ Houston, TX 77027, USA</string>
             </objects>
             <point key="canvasLocation" x="9378" y="4907"/>
         </scene>
+        <!--Undisclosed Mortgage Application View Controller-->
+        <scene sceneID="7uB-tS-q71">
+            <objects>
+                <viewController storyboardIdentifier="UndisclosedMortgageApplicationViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="eFp-a0-SDE" customClass="UndisclosedMortgageApplicationViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="PS6-dN-pv5">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nkn-yB-D4A">
+                                <rect key="frame" x="0.0" y="5" width="375" height="400"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UmN-ld-X57">
+                                        <rect key="frame" x="20" y="0.0" width="345" height="133.5"/>
+                                        <attributedString key="attributedText">
+                                            <fragment>
+                                                <string key="content">Have you or will you be applying for a mortgage loan on another property (not the property securing this loan) on or before closing this transaction that is not disclosed on this loan application?</string>
+                                                <attributes>
+                                                    <color key="NSColor" name="AppGreyColor"/>
+                                                    <font key="NSFont" size="15" name="Rubik-Regular"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="VSx-5g-SbU">
+                                        <rect key="frame" x="20" y="153.5" width="335" height="40"/>
+                                        <subviews>
+                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DQI-zk-OzG">
+                                                <rect key="frame" x="0.0" y="0.0" width="18" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="4IZ-Ib-yBk"/>
+                                                    <constraint firstAttribute="width" constant="18" id="H57-aE-er0"/>
+                                                </constraints>
+                                                <state key="normal" image="RadioButtonUnselected"/>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VoV-Gn-K6e">
+                                                <rect key="frame" x="34" y="0.0" width="301" height="40"/>
+                                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
+                                                <color key="textColor" name="AppBlackColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="GtU-HL-y6c">
+                                        <rect key="frame" x="20" y="193.5" width="335" height="40"/>
+                                        <subviews>
+                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g5O-E4-pV4">
+                                                <rect key="frame" x="0.0" y="0.0" width="18" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="Fse-eA-8Fv"/>
+                                                    <constraint firstAttribute="width" constant="18" id="ynr-CU-9iu"/>
+                                                </constraints>
+                                                <state key="normal" image="RadioButtonUnselected"/>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Rg-iq-Igm">
+                                                <rect key="frame" x="34" y="0.0" width="301" height="40"/>
+                                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
+                                                <color key="textColor" name="AppBlackColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="UmN-ld-X57" firstAttribute="top" secondItem="Nkn-yB-D4A" secondAttribute="top" id="2zi-i2-zxg"/>
+                                    <constraint firstAttribute="trailing" secondItem="VSx-5g-SbU" secondAttribute="trailing" constant="20" id="5hh-m9-lFe"/>
+                                    <constraint firstItem="GtU-HL-y6c" firstAttribute="leading" secondItem="Nkn-yB-D4A" secondAttribute="leading" constant="20" id="E8d-41-KKA"/>
+                                    <constraint firstItem="UmN-ld-X57" firstAttribute="leading" secondItem="Nkn-yB-D4A" secondAttribute="leading" constant="20" id="Eq9-8T-0MJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="UmN-ld-X57" secondAttribute="trailing" constant="10" id="P0m-JE-q4v"/>
+                                    <constraint firstItem="GtU-HL-y6c" firstAttribute="top" secondItem="VSx-5g-SbU" secondAttribute="bottom" id="ScF-ga-V0a"/>
+                                    <constraint firstItem="VSx-5g-SbU" firstAttribute="leading" secondItem="Nkn-yB-D4A" secondAttribute="leading" constant="20" id="n6Z-W8-zLl"/>
+                                    <constraint firstAttribute="trailing" secondItem="GtU-HL-y6c" secondAttribute="trailing" constant="20" id="soo-7B-CDJ"/>
+                                    <constraint firstItem="VSx-5g-SbU" firstAttribute="top" secondItem="UmN-ld-X57" secondAttribute="bottom" constant="20" id="ua7-Ye-nAf"/>
+                                    <constraint firstAttribute="height" constant="400" id="vpa-AZ-BM2"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="7qX-6L-0pZ"/>
+                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Nkn-yB-D4A" firstAttribute="trailing" secondItem="7qX-6L-0pZ" secondAttribute="trailing" id="MIx-Sf-L8e"/>
+                            <constraint firstItem="Nkn-yB-D4A" firstAttribute="top" secondItem="7qX-6L-0pZ" secondAttribute="top" constant="5" id="c25-2r-f6K"/>
+                            <constraint firstItem="Nkn-yB-D4A" firstAttribute="leading" secondItem="7qX-6L-0pZ" secondAttribute="leading" id="gVD-eH-aF3"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="btnNo" destination="g5O-E4-pV4" id="eCY-Ka-nyK"/>
+                        <outlet property="btnYes" destination="DQI-zk-OzG" id="zN6-1J-s6Q"/>
+                        <outlet property="lblNo" destination="0Rg-iq-Igm" id="Pge-u2-r6R"/>
+                        <outlet property="lblQuestion" destination="UmN-ld-X57" id="xse-lp-gCQ"/>
+                        <outlet property="lblYes" destination="VoV-Gn-K6e" id="wfh-CC-Li5"/>
+                        <outlet property="noStackView" destination="GtU-HL-y6c" id="IzJ-Pf-kfI"/>
+                        <outlet property="yesStackView" destination="VSx-5g-SbU" id="4ct-2q-DpH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0EU-cd-QIo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="10028" y="4907"/>
+        </scene>
+        <!--Undisclosed Credit Application View Controller-->
+        <scene sceneID="w2D-ID-R1J">
+            <objects>
+                <viewController storyboardIdentifier="UndisclosedCreditApplicationViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cWb-jy-CuZ" customClass="UndisclosedCreditApplicationViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="V2b-gW-ex5">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U2e-lo-U8C">
+                                <rect key="frame" x="0.0" y="5" width="375" height="400"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rmV-TT-Ekx">
+                                        <rect key="frame" x="20" y="0.0" width="345" height="107"/>
+                                        <attributedString key="attributedText">
+                                            <fragment>
+                                                <string key="content">Have you or will you be applying for any new credit (e.g., instalment loan, credit card, etc.) on or before closing this loan that is not disclosed on this application?</string>
+                                                <attributes>
+                                                    <color key="NSColor" name="AppGreyColor"/>
+                                                    <font key="NSFont" size="15" name="Rubik-Regular"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="fTc-sT-x8o">
+                                        <rect key="frame" x="20" y="127" width="335" height="40"/>
+                                        <subviews>
+                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EQ4-Gc-CHz">
+                                                <rect key="frame" x="0.0" y="0.0" width="18" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="LNa-xZ-9oX"/>
+                                                    <constraint firstAttribute="width" constant="18" id="hmA-cP-9Dj"/>
+                                                </constraints>
+                                                <state key="normal" image="RadioButtonUnselected"/>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IjV-bP-CRI">
+                                                <rect key="frame" x="34" y="0.0" width="301" height="40"/>
+                                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
+                                                <color key="textColor" name="AppBlackColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="l5o-k1-iZx">
+                                        <rect key="frame" x="20" y="167" width="335" height="40"/>
+                                        <subviews>
+                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8qz-wP-9bX">
+                                                <rect key="frame" x="0.0" y="0.0" width="18" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="18" id="65x-fZ-JjP"/>
+                                                    <constraint firstAttribute="height" constant="40" id="SF5-b4-rdb"/>
+                                                </constraints>
+                                                <state key="normal" image="RadioButtonUnselected"/>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J6R-7b-OSC">
+                                                <rect key="frame" x="34" y="0.0" width="301" height="40"/>
+                                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
+                                                <color key="textColor" name="AppBlackColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="400" id="0FE-e6-4Cd"/>
+                                    <constraint firstItem="fTc-sT-x8o" firstAttribute="leading" secondItem="U2e-lo-U8C" secondAttribute="leading" constant="20" id="98e-jf-1Ro"/>
+                                    <constraint firstAttribute="trailing" secondItem="rmV-TT-Ekx" secondAttribute="trailing" constant="10" id="AXn-k7-00p"/>
+                                    <constraint firstAttribute="trailing" secondItem="fTc-sT-x8o" secondAttribute="trailing" constant="20" id="Kmf-eZ-pQF"/>
+                                    <constraint firstItem="fTc-sT-x8o" firstAttribute="top" secondItem="rmV-TT-Ekx" secondAttribute="bottom" constant="20" id="NDm-sw-YYG"/>
+                                    <constraint firstAttribute="trailing" secondItem="l5o-k1-iZx" secondAttribute="trailing" constant="20" id="PWw-kf-3z9"/>
+                                    <constraint firstItem="rmV-TT-Ekx" firstAttribute="top" secondItem="U2e-lo-U8C" secondAttribute="top" id="WGM-DQ-cWP"/>
+                                    <constraint firstItem="rmV-TT-Ekx" firstAttribute="leading" secondItem="U2e-lo-U8C" secondAttribute="leading" constant="20" id="Yav-Iu-aNX"/>
+                                    <constraint firstItem="l5o-k1-iZx" firstAttribute="top" secondItem="fTc-sT-x8o" secondAttribute="bottom" id="bvm-p0-nGi"/>
+                                    <constraint firstItem="l5o-k1-iZx" firstAttribute="leading" secondItem="U2e-lo-U8C" secondAttribute="leading" constant="20" id="cGe-dj-QDb"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="rb7-MX-jW5"/>
+                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="U2e-lo-U8C" firstAttribute="top" secondItem="rb7-MX-jW5" secondAttribute="top" constant="5" id="Mo7-h2-Uc7"/>
+                            <constraint firstItem="U2e-lo-U8C" firstAttribute="leading" secondItem="rb7-MX-jW5" secondAttribute="leading" id="aRA-vz-iX2"/>
+                            <constraint firstItem="U2e-lo-U8C" firstAttribute="trailing" secondItem="rb7-MX-jW5" secondAttribute="trailing" id="zdi-UO-obW"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="btnNo" destination="8qz-wP-9bX" id="w4D-Ie-ZP8"/>
+                        <outlet property="btnYes" destination="EQ4-Gc-CHz" id="3uI-D4-lGL"/>
+                        <outlet property="lblNo" destination="J6R-7b-OSC" id="4tR-4V-Hdt"/>
+                        <outlet property="lblQuestion" destination="rmV-TT-Ekx" id="j85-0U-lNp"/>
+                        <outlet property="lblYes" destination="IjV-bP-CRI" id="lY5-1W-hPF"/>
+                        <outlet property="noStackView" destination="l5o-k1-iZx" id="Phs-jp-ODT"/>
+                        <outlet property="yesStackView" destination="fTc-sT-x8o" id="6LQ-c4-Mbd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="03H-h2-Hgr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="10678" y="4907"/>
+        </scene>
     </scenes>
     <resources>
         <image name="AddCurrentEmployement" width="20" height="20"/>

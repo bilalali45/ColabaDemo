@@ -62,6 +62,8 @@
 		238E0F9326F37CC40025FF06 /* OwnershipInterestInPropertyFollowupQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238E0F9226F37CC40025FF06 /* OwnershipInterestInPropertyFollowupQuestionViewController.swift */; };
 		238E0F9526F37F430025FF06 /* PriorityLiensViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238E0F9426F37F430025FF06 /* PriorityLiensViewController.swift */; };
 		238E0F9726F389060025FF06 /* PriorityLiensFollowupQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238E0F9626F389060025FF06 /* PriorityLiensFollowupQuestionViewController.swift */; };
+		238E0F9926F38AFC0025FF06 /* UndisclosedMortgageApplicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238E0F9826F38AFC0025FF06 /* UndisclosedMortgageApplicationViewController.swift */; };
+		238E0F9B26F38C8E0025FF06 /* UndisclosedCreditApplicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238E0F9A26F38C8E0025FF06 /* UndisclosedCreditApplicationViewController.swift */; };
 		23908F9E26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23908F9C26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift */; };
 		23908F9F26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23908F9D26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib */; };
 		2390FED426A6B624007A5A52 /* ApplicationTabHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2390FED326A6B624007A5A52 /* ApplicationTabHeaderView.xib */; };
@@ -256,6 +258,8 @@
 		238E0F9226F37CC40025FF06 /* OwnershipInterestInPropertyFollowupQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnershipInterestInPropertyFollowupQuestionViewController.swift; sourceTree = "<group>"; };
 		238E0F9426F37F430025FF06 /* PriorityLiensViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityLiensViewController.swift; sourceTree = "<group>"; };
 		238E0F9626F389060025FF06 /* PriorityLiensFollowupQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityLiensFollowupQuestionViewController.swift; sourceTree = "<group>"; };
+		238E0F9826F38AFC0025FF06 /* UndisclosedMortgageApplicationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndisclosedMortgageApplicationViewController.swift; sourceTree = "<group>"; };
+		238E0F9A26F38C8E0025FF06 /* UndisclosedCreditApplicationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndisclosedCreditApplicationViewController.swift; sourceTree = "<group>"; };
 		23908F9C26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerAddressAndLoanInfoTableViewCell.swift; sourceTree = "<group>"; };
 		23908F9D26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerAddressAndLoanInfoTableViewCell.xib; sourceTree = "<group>"; };
 		2390FED326A6B624007A5A52 /* ApplicationTabHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApplicationTabHeaderView.xib; sourceTree = "<group>"; };
@@ -612,6 +616,8 @@
 				238E0F9226F37CC40025FF06 /* OwnershipInterestInPropertyFollowupQuestionViewController.swift */,
 				238E0F9426F37F430025FF06 /* PriorityLiensViewController.swift */,
 				238E0F9626F389060025FF06 /* PriorityLiensFollowupQuestionViewController.swift */,
+				238E0F9826F38AFC0025FF06 /* UndisclosedMortgageApplicationViewController.swift */,
+				238E0F9A26F38C8E0025FF06 /* UndisclosedCreditApplicationViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -1138,6 +1144,7 @@
 				23932C3626E64A7500D02FEA /* AssetsDetailViewController.swift in Sources */,
 				23908F9E26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift in Sources */,
 				23DBAD222696EBA800119680 /* LoanDetailViewController.swift in Sources */,
+				238E0F9B26F38C8E0025FF06 /* UndisclosedCreditApplicationViewController.swift in Sources */,
 				2321247A26C17A0F00439A44 /* AddResidenceViewController.swift in Sources */,
 				2368D6552667DA5900D5C1C5 /* BaseViewController.swift in Sources */,
 				238E0F8B26F335F90025FF06 /* GovernmentQuestionDetailViewController.swift in Sources */,
@@ -1256,6 +1263,7 @@
 				236EA1AE2678CE1B00C2F8B5 /* DummyDashboardViewController.swift in Sources */,
 				23F23B4326CA591400AEF33E /* SaveAddressPopupViewController.swift in Sources */,
 				23C244862689B6A500EED1D0 /* AllLoanModel.swift in Sources */,
+				238E0F9926F38AFC0025FF06 /* UndisclosedMortgageApplicationViewController.swift in Sources */,
 				23A1CA6C268C4B8400D93DC4 /* UILoadControl.swift in Sources */,
 				7186AD562653CD5C00E740D3 /* Theme.swift in Sources */,
 				7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */,

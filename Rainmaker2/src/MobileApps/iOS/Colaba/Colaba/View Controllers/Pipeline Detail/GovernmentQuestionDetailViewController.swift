@@ -33,6 +33,8 @@ class GovernmentQuestionDetailViewController: BaseViewController {
     var undisclosedVC: UndisclosedBorrowerFundsViewController!
     var ownershipInterestVC: OwnershipInterestInPropertyViewController!
     var priorityLiensVC: PriorityLiensViewController!
+    var undisclosedMortgageApplicationVC: UndisclosedMortgageApplicationViewController!
+    var undisclosedCreditApplicationVC: UndisclosedCreditApplicationViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +42,8 @@ class GovernmentQuestionDetailViewController: BaseViewController {
         undisclosedVC = Utility.getUndisclosedBorrowerFundsVC()
         ownershipInterestVC = Utility.getOwnershipInterestInPropertyVC()
         priorityLiensVC = Utility.getPriorityLiensViewController()
+        undisclosedMortgageApplicationVC = Utility.getUndisclosedMortgageApplicationVC()
+        undisclosedCreditApplicationVC = Utility.getUndisclosedCreditApplicationVC()
         
         roundAllFilterViews(filterViews: [unDisclosedView, ownershipInterestView, priorityLiensView, undisclosedMortgageApplicationsView, undisclosedCreditApplicationView, debtCoSignerView, outstandingJudgementsView, fedralDebtView, partyToLawsuitView, titleConveyanceView, preForceClosureView, foreClosuredPropertyView, bankruptcyView, childSupportView, demographicView])
         filterViewTapped(selectedFilterView: unDisclosedView, filterViews: [unDisclosedView, ownershipInterestView, priorityLiensView, undisclosedMortgageApplicationsView, undisclosedCreditApplicationView, debtCoSignerView, outstandingJudgementsView, fedralDebtView, partyToLawsuitView, titleConveyanceView, preForceClosureView, foreClosuredPropertyView, bankruptcyView, childSupportView, demographicView])
@@ -92,16 +96,24 @@ class GovernmentQuestionDetailViewController: BaseViewController {
             }
         }
         if (selectedFilterView == unDisclosedView){
-            remove(viewControllers: [ownershipInterestVC, priorityLiensVC])
+            remove(viewControllers: [ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC])
             add(viewController: undisclosedVC)
         }
         else if (selectedFilterView == ownershipInterestView){
-            remove(viewControllers: [undisclosedVC, priorityLiensVC])
+            remove(viewControllers: [undisclosedVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC])
             add(viewController: ownershipInterestVC)
         }
         else if (selectedFilterView == priorityLiensView){
-            remove(viewControllers: [undisclosedVC, ownershipInterestVC])
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC])
             add(viewController: priorityLiensVC)
+        }
+        else if (selectedFilterView == undisclosedMortgageApplicationsView){
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedCreditApplicationVC])
+            add(viewController: undisclosedMortgageApplicationVC)
+        }
+        else if (selectedFilterView == undisclosedCreditApplicationView){
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC])
+            add(viewController: undisclosedCreditApplicationVC)
         }
     }
     

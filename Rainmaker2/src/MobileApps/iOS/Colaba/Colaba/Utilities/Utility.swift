@@ -312,6 +312,14 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: PriorityLiensFollowupQuestionViewController.self)) as! PriorityLiensFollowupQuestionViewController
     }
     
+    static func getUndisclosedMortgageApplicationVC() -> UndisclosedMortgageApplicationViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: UndisclosedMortgageApplicationViewController.self)) as! UndisclosedMortgageApplicationViewController
+    }
+    
+    static func getUndisclosedCreditApplicationVC() -> UndisclosedCreditApplicationViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: UndisclosedCreditApplicationViewController.self)) as! UndisclosedCreditApplicationViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
