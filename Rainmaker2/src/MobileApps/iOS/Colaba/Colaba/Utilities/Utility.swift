@@ -320,6 +320,34 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: UndisclosedCreditApplicationViewController.self)) as! UndisclosedCreditApplicationViewController
     }
     
+    static func getDebtCoSignerVC() -> DebtCoSignerViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: DebtCoSignerViewController.self)) as! DebtCoSignerViewController
+    }
+    
+    static func getOutstandingJudgementsVC() -> OutstandingJudgementsViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: OutstandingJudgementsViewController.self)) as! OutstandingJudgementsViewController
+    }
+    
+    static func getFedralDebtVC() -> FedralDebtViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: FedralDebtViewController.self)) as! FedralDebtViewController
+    }
+    
+    static func getPartyToLawsuitVC() -> PartyToLawsuitViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: PartyToLawsuitViewController.self)) as! PartyToLawsuitViewController
+    }
+    
+    static func getTitleConveyanceVC() -> TitleConveyanceViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: TitleConveyanceViewController.self)) as! TitleConveyanceViewController
+    }
+    
+    static func getPreForceClosureVC() -> PreForceClosureViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: PreForceClosureViewController.self)) as! PreForceClosureViewController
+    }
+    
+    static func getForceClosedPropertyVC() -> ForceClosedPropertyViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: ForceClosedPropertyViewController.self)) as! ForceClosedPropertyViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
