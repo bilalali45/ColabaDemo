@@ -9,10 +9,12 @@ import UIKit
 import LocalAuthentication
 import Material
 import MonthYearPicker
+import DropDown
 
 enum ColabaTextFieldType {
     case password
     case dropdown
+//    case editableDropdown
     case datePicker
     case monthlyDatePicker
     case delete
@@ -23,9 +25,7 @@ enum ColabaTextFieldType {
 
 protocol ColabaTextFieldDelegate {
     func deleteButtonClicked()
-    func dropDownClicked(alert: UIAlertController)
-    func dropDownClicked(alert: UIAlertController, withTag: Int)
-    func selectedOption(option: String, alert: UIAlertController)
+    func selectedOption(option: String, atIndex : Int)
     func selectedDate(date:Date)
     func textFieldEndEditing(_ textField : TextField)
     func dismiss()
@@ -33,9 +33,7 @@ protocol ColabaTextFieldDelegate {
 
 extension ColabaTextFieldDelegate {
     func deleteButtonClicked(){}
-    func dropDownClicked(alert: UIAlertController){}
-    func dropDownClicked(alert: UIAlertController, withTag: Int){}
-    func selectedOption(option: String, alert: UIAlertController){}
+    func selectedOption(option: String, atIndex : Int) {}
     func selectedDate(date:Date){}
     func biometricClicked(){}
     func passwordClicked(){}
@@ -47,14 +45,12 @@ class ColabaTextField: TextField {
     
     //MARK: Outlets and Private Properties
     private var button: UIButton!
-    
-    private var selectionList : [String]?
-    private var alert: UIAlertController?
     private var imagePicker: UIImagePickerController?
     private var maximumDate:Date?
     private var minimumDate:Date?
     private var isValidateOnEndEditing: Bool!
     private var validationType: ValidationType!
+    private var dropDown: DropDown!
     
     //MARK: Public Properties
     public var colabaDelegate: ColabaTextFieldDelegate?
@@ -63,9 +59,9 @@ class ColabaTextField: TextField {
     private var attributedPrefix: NSMutableAttributedString? // "$│ "
     private var fieldMinLength = 0
     private var fieldMaxLength = 20
-    private var selectedCountryCallingCode = ""
     private var allowedCharacters : CharacterSet = .alphanumerics
     internal var regex: String?
+    
     
     public var type: ColabaTextFieldType = .defaultType {
         didSet {
@@ -78,6 +74,7 @@ class ColabaTextField: TextField {
                 isButtonHidden(false)
                 self.isUserInteractionEnabled = true
                 self.setButton(image: UIImage(named: "textfield-dropdownIcon")!)
+                setDropDown()
             case .delete:
                 button.contentHorizontalAlignment = .center
                 self.setButton(image: UIImage(named: "DeleteDependent"))
@@ -168,8 +165,8 @@ class ColabaTextField: TextField {
             return
         }
         if type == .dropdown {
-            //dropDownButtonClicked()
-            //return
+            dropDownButtonClicked()
+            return
         }
         _ = self.becomeFirstResponder()
     }
@@ -199,7 +196,8 @@ class ColabaTextField: TextField {
     }
     
     private func dropDownButtonClicked() {
-        //colabaDelegate?.dropDownClicked(alert: alert ?? UIAlertController(title: "", message: "", preferredStyle: .actionSheet), withTag: self.tag)
+        setButton(image: UIImage(named: "textfield-dropdownIconUp"))
+        dropDown.show()
     }
     
     private func datePickerButtonClicked() {
@@ -208,6 +206,39 @@ class ColabaTextField: TextField {
     
     private func monthlyDatePickerButtonClicked() {
         setMonthlyDatePicker()
+    }
+    
+    private func setDropDown() {
+        dropDown = DropDown()
+        dropDown.anchorView = self
+        setDropDownDirection()
+        setDropDownDismissMode()
+        dropDown.cancelAction = .some({ [weak self] in
+            self?.setButton(image: UIImage(named: "textfield-dropdownIcon"))
+            self?.resignFirstResponder()
+        })
+        dropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            self?.setButton(image: UIImage(named: "textfield-dropdownIcon"))
+            self?.dropDown.hide()
+            self?.text = item
+            self?.resignFirstResponder()
+            self?.colabaDelegate?.selectedOption(option: item, atIndex: index)
+        }
+    }
+    
+    public func setDropDownDismissMode(_ dimsissMode : DropDown.DismissMode = .automatic) {
+        dropDown.dismissMode = dimsissMode
+    }
+    
+    public func setDropDownDataSource(_ dataSource : [String]) {
+        dropDown.dataSource = dataSource
+    }
+    public func setDropDownDirection(_ direction : DropDown.Direction = .any) {
+        if direction == .top {
+            dropDown.topOffset = CGPoint(x: 0, y:-(dropDown.anchorView?.plainView.bounds.height)!)
+        } else {
+            dropDown.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!)
+        }
     }
 }
 
@@ -328,25 +359,6 @@ extension ColabaTextField {
         self.tag = tag
     }
     
-    public func setDropDown(_ title: String, _ list: [String], showText: Bool = true) {
-        alert = UIAlertController(title: title, message: "", preferredStyle: .actionSheet)
-        for actionTitle in list {
-            
-            let action = UIAlertAction(title: actionTitle, style: .default) { [weak self] _ in
-                if showText {
-                    self?.text = actionTitle
-                }
-                self?.colabaDelegate?.selectedOption(option: actionTitle, alert: (self?.alert!)!)
-            }
-            
-            alert?.addAction(action)
-        }
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
-            self?.colabaDelegate?.selectedOption(option: "cancelled", alert: (self?.alert!)!)
-        }
-        alert?.addAction(cancel)
-    }
-    
     //MARK: Button
     public func setButton(_ title : String?) {
         button.setTitle(title, for: .normal)
@@ -463,6 +475,9 @@ extension ColabaTextField: UITextFieldDelegate {
             }
             monthlyDatePickerButtonClicked()
         }
+        if type == .dropdown {
+            dropDownButtonClicked()
+        }
     }
     
     public func textFieldDidEndEditing(_ textField: UITextField) {
@@ -480,6 +495,9 @@ extension ColabaTextField: UITextFieldDelegate {
         }
         if type == .percentage && self.text == prefix {
             self.text = ""
+        }
+        if type == .dropdown {
+            setButton(image: UIImage(named: "textfield-dropdownIcon"))
         }
         
         if isValidateOnEndEditing {
