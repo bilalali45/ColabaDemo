@@ -1,13 +1,13 @@
 //
-//  PriorityLiensViewController.swift
+//  BankruptcyViewController.swift
 //  Colaba
 //
-//  Created by Muhammad Murtaza on 16/09/2021.
+//  Created by Muhammad Murtaza on 17/09/2021.
 //
 
 import UIKit
 
-class PriorityLiensViewController: BaseViewController {
+class BankruptcyViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     
@@ -18,9 +18,9 @@ class PriorityLiensViewController: BaseViewController {
     @IBOutlet weak var noStackView: UIStackView!
     @IBOutlet weak var btnNo: UIButton!
     @IBOutlet weak var lblNo: UILabel!
-    @IBOutlet weak var priorityLiensView: UIView!
-    @IBOutlet weak var lblPriorityQuestion: UILabel!
-    @IBOutlet weak var lblAns: UILabel!
+    @IBOutlet weak var typeView: UIView!
+    @IBOutlet weak var lblBankruptcyQuestion: UILabel!
+    @IBOutlet weak var lblBankruptcyType: UILabel!
     
     var isYes = true
     
@@ -35,18 +35,17 @@ class PriorityLiensViewController: BaseViewController {
     
     func setupViews(){
         
-        priorityLiensView.layer.cornerRadius = 6
-        priorityLiensView.layer.borderWidth = 1
-        priorityLiensView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        priorityLiensView.dropShadowToCollectionViewCell()
-        priorityLiensView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(priorityLiensViewTapped)))
+        typeView.layer.cornerRadius = 6
+        typeView.layer.borderWidth = 1
+        typeView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        typeView.dropShadowToCollectionViewCell()
+        typeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(typeViewTapped)))
     }
     
     @objc func yesStackViewTapped(){
         isYes = true
         changeStatus()
-        let vc = Utility.getPriorityLiensFollowupQuestionViewController()
-        vc.type = .priorityLiens
+        let vc = Utility.getBankruptcyFollowupVC()
         self.presentVC(vc: vc)
     }
     
@@ -60,12 +59,11 @@ class PriorityLiensViewController: BaseViewController {
         lblYes.font = isYes ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
         btnNo.setImage(UIImage(named: !isYes ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
         lblNo.font = !isYes ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-        priorityLiensView.isHidden = !isYes
+        typeView.isHidden = !isYes
     }
     
-    @objc func priorityLiensViewTapped(){
-        let vc = Utility.getPriorityLiensFollowupQuestionViewController()
-        vc.type = .priorityLiens
+    @objc func typeViewTapped(){
+        let vc = Utility.getBankruptcyFollowupVC()
         self.presentVC(vc: vc)
     }
 }
