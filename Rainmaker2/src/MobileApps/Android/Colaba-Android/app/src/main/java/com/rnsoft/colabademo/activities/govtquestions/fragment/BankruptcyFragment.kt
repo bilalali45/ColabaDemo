@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.rnsoft.colabademo.databinding.BankAccountLayoutBinding
+import com.rnsoft.colabademo.databinding.BankruptcyLayoutBinding
 import com.rnsoft.colabademo.databinding.PriorityLiensLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -14,7 +15,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class BankruptcyFragment:Fragment() {
 
-    private var _binding: BankAccountLayoutBinding? = null
+    private var _binding: BankruptcyLayoutBinding? = null
     private val binding get() = _binding!!
 
     @Inject
@@ -25,7 +26,7 @@ class BankruptcyFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = BankAccountLayoutBinding.inflate(inflater, container, false)
+        _binding = BankruptcyLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
         return root

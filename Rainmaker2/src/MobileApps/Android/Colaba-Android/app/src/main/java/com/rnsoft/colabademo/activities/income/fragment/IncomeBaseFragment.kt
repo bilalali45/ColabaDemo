@@ -3,7 +3,6 @@ package com.rnsoft.colabademo
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.activities.baddresses.info.fragment.DeleteCurrentResidenceDialogFragment
 import com.rnsoft.colabademo.activities.income.fragment.BottomDialogSelectEmployment
 
 open class IncomeBaseFragment:Fragment() {

@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.govtquestions.fragment
+package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
