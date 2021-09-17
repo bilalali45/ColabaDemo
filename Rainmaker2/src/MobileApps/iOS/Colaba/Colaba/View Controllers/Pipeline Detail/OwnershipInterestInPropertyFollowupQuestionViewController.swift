@@ -36,7 +36,7 @@ class OwnershipInterestInPropertyFollowupQuestionViewController: BaseViewControl
         txtfieldPropertyType.setTextField(keyboardType: .asciiCapable)
         txtfieldPropertyType.setIsValidateOnEndEditing(validate: true)
         txtfieldPropertyType.setValidation(validationType: .required)
-        txtfieldPropertyType.type = .dropdown
+        txtfieldPropertyType.type = .dropdown //kOccupancyTypeArray
         
         txtfieldHoldTitle.setTextField(placeholder: "How did you hold title to the property?")
         txtfieldHoldTitle.setDelegates(controller: self)
@@ -44,7 +44,7 @@ class OwnershipInterestInPropertyFollowupQuestionViewController: BaseViewControl
         txtfieldHoldTitle.setTextField(keyboardType: .asciiCapable)
         txtfieldHoldTitle.setIsValidateOnEndEditing(validate: true)
         txtfieldHoldTitle.setValidation(validationType: .required)
-        txtfieldHoldTitle.type = .dropdown
+        txtfieldHoldTitle.type = .dropdown //kHoldTitleArray
         
         btnSaveChanges.layer.borderWidth = 1
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor

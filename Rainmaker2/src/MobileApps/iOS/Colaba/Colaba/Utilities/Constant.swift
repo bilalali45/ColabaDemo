@@ -66,3 +66,4 @@ let kTransactionTypeArray = ["Proceeds From A Loan", "Proceeds From Selling Non-
 let kAssetsTypeArray = ["House", "Automobile", "Financial Account", "Other"]
 let kGiftSourceArray = ["Relative", "Unmarried Partner", "Federal Agency", "State Agency", "Local Agency", "Community Non Profit", "Employer", "Religious Non Profit", "Lender"]
 let kOtherAssetsTypeArray = ["Trust Account", "Bridge Loan Proceeds", "Individual Development Account (IDA)", "Cash Value of Life Insurance", "Employer Assistance", "Relocation Funds", "Rent Credit", "Lot Equity", "Sweat Equity", "Trade Equity", "Other"]
+let kHoldTitleArray = ["By Yourself", "Jointly with your spouse", "Jointly with another person"]

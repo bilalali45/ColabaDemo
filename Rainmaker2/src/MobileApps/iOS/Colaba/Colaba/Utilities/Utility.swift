@@ -348,6 +348,14 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: ForceClosedPropertyViewController.self)) as! ForceClosedPropertyViewController
     }
     
+    static func getBankruptcyVC() -> BankruptcyViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: BankruptcyViewController.self)) as! BankruptcyViewController
+    }
+    
+    static func getBankruptcyFollowupVC() -> BankruptcyFollowupViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: BankruptcyFollowupViewController.self)) as! BankruptcyFollowupViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
