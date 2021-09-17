@@ -1,5 +1,5 @@
 //
-//  OutstandingJudgementsViewController.swift
+//  ChildSupportViewController.swift
 //  Colaba
 //
 //  Created by Muhammad Murtaza on 17/09/2021.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OutstandingJudgementsViewController: BaseViewController {
+class ChildSupportViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     
@@ -45,8 +45,7 @@ class OutstandingJudgementsViewController: BaseViewController {
     @objc func yesStackViewTapped(){
         isYes = true
         changeStatus()
-        let vc = Utility.getPriorityLiensFollowupQuestionViewController()
-        vc.type = .outStandingJudgement
+        let vc = Utility.getChildSupportFollowupQuestionsVC()
         self.presentVC(vc: vc)
     }
     
@@ -69,8 +68,7 @@ class OutstandingJudgementsViewController: BaseViewController {
     }
     
     @objc func detailViewTapped(){
-        let vc = Utility.getPriorityLiensFollowupQuestionViewController()
-        vc.type = .outStandingJudgement
+        let vc = Utility.getChildSupportFollowupQuestionsVC()
         self.presentVC(vc: vc)
     }
     

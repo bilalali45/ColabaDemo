@@ -356,6 +356,14 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: BankruptcyFollowupViewController.self)) as! BankruptcyFollowupViewController
     }
     
+    static func getChildSupportVC() -> ChildSupportViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: ChildSupportViewController.self)) as! ChildSupportViewController
+    }
+    
+    static func getChildSupportFollowupQuestionsVC() -> ChildSupportFollowupQuestionsViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: ChildSupportFollowupQuestionsViewController.self)) as! ChildSupportFollowupQuestionsViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){

@@ -46,6 +46,7 @@ class PriorityLiensViewController: BaseViewController {
         isYes = true
         changeStatus()
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
+        vc.type = .priorityLiens
         self.presentVC(vc: vc)
     }
     
@@ -64,6 +65,7 @@ class PriorityLiensViewController: BaseViewController {
     
     @objc func priorityLiensViewTapped(){
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
+        vc.type = .priorityLiens
         self.presentVC(vc: vc)
     }
 }
