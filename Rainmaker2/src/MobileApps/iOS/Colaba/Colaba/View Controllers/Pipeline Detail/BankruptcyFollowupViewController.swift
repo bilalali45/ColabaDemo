@@ -1,14 +1,14 @@
 //
-//  PriorityLiensFollowupQuestionViewController.swift
+//  BankruptcyFollowupViewController.swift
 //  Colaba
 //
-//  Created by Muhammad Murtaza on 16/09/2021.
+//  Created by Muhammad Murtaza on 17/09/2021.
 //
 
 import UIKit
 import MaterialComponents
 
-class PriorityLiensFollowupQuestionViewController: UIViewController {
+class BankruptcyFollowupViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     
@@ -17,28 +17,36 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var chapter7StackView: UIStackView!
+    @IBOutlet weak var btnChapter7: UIButton!
+    @IBOutlet weak var lblChapter7: UILabel!
+    @IBOutlet weak var chapter11StackView: UIStackView!
+    @IBOutlet weak var btnChapter11: UIButton!
+    @IBOutlet weak var lblChapter11: UILabel!
+    @IBOutlet weak var chapter12StackView: UIStackView!
+    @IBOutlet weak var btnChapter12: UIButton!
+    @IBOutlet weak var lblChapter12: UILabel!
+    @IBOutlet weak var chapter13StackView: UIStackView!
+    @IBOutlet weak var btnChapter13: UIButton!
+    @IBOutlet weak var lblChapter13: UILabel!
     @IBOutlet weak var txtviewDetailContainerView: UIView!
     @IBOutlet weak var btnSaveChanges: UIButton!
     
     var txtViewDetail = MDCFilledTextArea()
-    
-    private let validation: Validation
-    
-    init(validation: Validation) {
-        self.validation = validation
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        self.validation = Validation()
-        super.init(coder: coder)
-    }
+    var isChapter7 = false
+    var isChapter11 = false
+    var isChapter12 = false
+    var isChapter13 = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextView()
+        chapter7StackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(chapter7StackViewTapped)))
+        chapter11StackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(chapter11StackViewTapped)))
+        chapter12StackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(chapter12StackViewTapped)))
+        chapter13StackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(chapter13StackViewTapped)))
     }
-
+    
     //MARK:- Methods and Actions
     
     func setupTextView(){
@@ -70,7 +78,7 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
         txtViewDetail.setLeadingAssistiveLabel(.red, for: .editing)
         txtViewDetail.setLeadingAssistiveLabel(.red, for: .disabled)
         txtViewDetail.textView.textColor = .black
-        txtViewDetail.textView.delegate = self
+        //txtViewDetail.textView.delegate = self
         mainView.addSubview(txtViewDetail)
         
         btnSaveChanges.layer.borderWidth = 1
@@ -78,12 +86,28 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
         btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
     }
     
-    func validate() -> Bool {
-
-        if (txtViewDetail.textView.text == ""){
-            return false
-        }
-        return true
+    @objc func chapter7StackViewTapped(){
+        isChapter7 = !isChapter7
+        btnChapter7.setImage(UIImage(named: isChapter7 ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
+        lblChapter7.font = isChapter7 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+    }
+    
+    @objc func chapter11StackViewTapped(){
+        isChapter11 = !isChapter11
+        btnChapter11.setImage(UIImage(named: isChapter11 ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
+        lblChapter11.font = isChapter11 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+    }
+    
+    @objc func chapter12StackViewTapped(){
+        isChapter12 = !isChapter12
+        btnChapter12.setImage(UIImage(named: isChapter12 ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
+        lblChapter12.font = isChapter12 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+    }
+    
+    @objc func chapter13StackViewTapped(){
+        isChapter13 = !isChapter13
+        btnChapter13.setImage(UIImage(named: isChapter13 ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
+        lblChapter13.font = isChapter13 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
@@ -109,23 +133,4 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
             self.dismissVC()
         //}
     }
-}
-
-extension PriorityLiensFollowupQuestionViewController: UITextViewDelegate{
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-//        do{
-//            let assetDescription = try validation.validateAssetDescription(txtViewDetail.textView.text)
-//            DispatchQueue.main.async {
-//                self.txtViewDetail.setUnderlineColor(Theme.getSeparatorNormalColor(), for: .normal)
-//                self.txtViewDetail.leadingAssistiveLabel.text = ""
-//            }
-//
-//        }
-//        catch{
-//            self.txtViewDetail.setUnderlineColor(Theme.getSeparatorErrorColor(), for: .normal)
-//            self.txtViewDetail.leadingAssistiveLabel.text = error.localizedDescription
-//        }
-    }
-    
 }

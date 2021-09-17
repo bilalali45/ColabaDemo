@@ -63,6 +63,7 @@ class RealEstateViewController: BaseViewController {
     
     let propertyTypeDropDown = DropDown()
     let occupancyTypeDropDown = DropDown()
+    let propertyStatusDropDown = DropDown()
     var isFirstMortgage = false
     var isSecondMortgage = false
     
@@ -110,7 +111,7 @@ class RealEstateViewController: BaseViewController {
         txtfieldPropertyStatus.setTextField(keyboardType: .asciiCapable)
         txtfieldPropertyStatus.setIsValidateOnEndEditing(validate: true)
         //txtfieldPropertyStatus.type = .dropdown
-        //txtfieldPropertyStatus.addTarget(self, action: #selector(txtfieldOccupancyTypeStartEditing), for: .editingDidBegin)
+        txtfieldPropertyStatus.addTarget(self, action: #selector(txtfieldPropertyStatusStartEditing), for: .editingDidBegin)
         
         txtfieldHomeOwnerAssociationDues.setTextField(placeholder: "Homeowner’s Association Dues")
         txtfieldHomeOwnerAssociationDues.setDelegates(controller: self)
@@ -201,6 +202,25 @@ class RealEstateViewController: BaseViewController {
             showHideRentalIncome()
         }
         
+        propertyStatusDropDown.dismissMode = .onTap
+        propertyStatusDropDown.anchorView = propertyStatusDropDownAnchorView
+        propertyStatusDropDown.dataSource = kPropertyStatusArray
+        propertyStatusDropDown.cancelAction = .some({
+            self.btnPropertyStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            self.txtfieldPropertyStatus.dividerColor = Theme.getSeparatorNormalColor()
+            self.txtfieldPropertyStatus.resignFirstResponder()
+        })
+        propertyStatusDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            btnPropertyStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
+            txtfieldPropertyStatus.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldPropertyStatus.placeholderLabel.textColor = Theme.getAppGreyColor()
+            txtfieldPropertyStatus.text = item
+            txtfieldPropertyStatus.resignFirstResponder()
+            txtfieldPropertyStatus.detail = ""
+            propertyStatusDropDown.hide()
+            
+        }
+        
         btnSaveChanges.layer.borderWidth = 1
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
@@ -238,6 +258,13 @@ class RealEstateViewController: BaseViewController {
         txtfieldOccupancyType.dividerColor = Theme.getButtonBlueColor()
         btnOccupancyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
         occupancyTypeDropDown.show()
+    }
+    
+    @objc func txtfieldPropertyStatusStartEditing(){
+        txtfieldPropertyStatus.resignFirstResponder()
+        txtfieldPropertyStatus.dividerColor = Theme.getButtonBlueColor()
+        btnPropertyStatusDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
+        propertyStatusDropDown.show()
     }
     
     @objc func showHideRentalIncome(){
