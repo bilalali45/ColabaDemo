@@ -110,7 +110,6 @@ class RealEstateOwnedFragment : Fragment() , View.OnClickListener {
         binding.edHomeownerInsurance.addTextChangedListener(NumberTextFormat(binding.edHomeownerInsurance))
         binding.edFloodInsurance.addTextChangedListener(NumberTextFormat(binding.edFloodInsurance))
 
-
         // set Dollar prifix
         CustomMaterialFields.setDollarPrefix(binding.layoutRentalIncome,requireContext())
         CustomMaterialFields.setDollarPrefix(binding.layoutAssociationDues,requireContext())
@@ -120,7 +119,6 @@ class RealEstateOwnedFragment : Fragment() , View.OnClickListener {
         CustomMaterialFields.setDollarPrefix(binding.layoutFloodInsurance,requireContext())
 
     }
-
 
     private fun setSpinnerData() {
 
@@ -200,56 +198,6 @@ class RealEstateOwnedFragment : Fragment() , View.OnClickListener {
         }
     }
 
-    private fun checkValidations(){
-
-        findNavController().popBackStack()
-
-        /*if (binding.tvOccupancyType.text.toString().isEmpty() || binding.tvOccupancyType.text.toString().length == 0) {
-            CustomMaterialFields.setError(binding.layoutOccupancyType, getString(R.string.error_field_required),requireActivity())
-        }
-        if (binding.tvPropertyType.text.toString().isEmpty() || binding.tvPropertyType.text.toString().length == 0) {
-            CustomMaterialFields.setError(binding.layoutPropertyType, getString(R.string.error_field_required),requireActivity())
-        }
-        if (binding.edPropertyValue.text.toString().isEmpty() || binding.edPropertyValue.text.toString().length == 0) {
-            CustomMaterialFields.setError(binding.layoutPropertyValue, getString(R.string.error_field_required),requireActivity())
-        }
-        if (binding.edAssociationDues.text.toString().isEmpty() || binding.edAssociationDues.text.toString().length == 0) {
-            CustomMaterialFields.setError(binding.layoutAssociationDues, getString(R.string.error_field_required),requireActivity())
-        }
-        if (binding.edPropertyTaxes.text.toString().isEmpty() || binding.edPropertyTaxes.text.toString().length == 0) {
-            CustomMaterialFields.setError(binding.layoutPropertyTaxes, getString(R.string.error_field_required),requireActivity())
-        }
-        if (binding.edHomeownerInsurance.text.toString().isEmpty() || binding.edHomeownerInsurance.text.toString().length == 0) {
-            CustomMaterialFields.setError(binding.layoutHomeownerInsurance, getString(R.string.error_field_required),requireActivity())
-        }
-        if (binding.edFloodInsurance.text.toString().isEmpty() || binding.edFloodInsurance.text.toString().length == 0) {
-            CustomMaterialFields.setError(binding.layoutFloodInsurance, getString(R.string.error_field_required),requireActivity())
-        }
-
-        if (binding.tvOccupancyType.text.toString().isNotEmpty() || binding.tvOccupancyType.text.toString().length > 0) {
-            CustomMaterialFields.clearError(binding.layoutOccupancyType,requireActivity())
-        }
-        if (binding.tvPropertyType.text.toString().isNotEmpty() || binding.tvPropertyType.text.toString().length > 0) {
-            CustomMaterialFields.clearError(binding.layoutPropertyType,requireActivity())
-        }
-        if (binding.edPropertyValue.text.toString().isNotEmpty() || binding.edPropertyValue.text.toString().length > 0) {
-            CustomMaterialFields.clearError(binding.layoutPropertyValue,requireActivity())
-        }
-        if (binding.edAssociationDues.text.toString().isNotEmpty() || binding.edAssociationDues.text.toString().length > 0) {
-            CustomMaterialFields.clearError(binding.layoutAssociationDues,requireActivity())
-        }
-        if (binding.edPropertyTaxes.text.toString().isNotEmpty() || binding.edPropertyTaxes.text.toString().length > 0) {
-            CustomMaterialFields.clearError(binding.layoutPropertyTaxes,requireActivity())
-        }
-        if (binding.edHomeownerInsurance.text.toString().isNotEmpty() || binding.edHomeownerInsurance.text.toString().length > 0) {
-            CustomMaterialFields.clearError(binding.layoutHomeownerInsurance,requireActivity())
-        }
-        if (binding.edFloodInsurance.text.toString().isNotEmpty() || binding.edFloodInsurance.text.toString().length > 0) {
-            CustomMaterialFields.clearError(binding.layoutFloodInsurance,requireActivity())
-        } */
-
-
-    }
 
     private fun openAddressFragment(){
         val addressFragment = IncomeAddress()
@@ -300,6 +248,56 @@ class RealEstateOwnedFragment : Fragment() , View.OnClickListener {
         binding.layoutSecMortgageDetail.visibility = View.GONE
         binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
         binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
+    }
+
+
+    private fun checkValidations(){
+
+        findNavController().popBackStack()
+
+        /*if (binding.tvOccupancyType.text.toString().isEmpty() || binding.tvOccupancyType.text.toString().length == 0) {
+            CustomMaterialFields.setError(binding.layoutOccupancyType, getString(R.string.error_field_required),requireActivity())
+        }
+        if (binding.tvPropertyType.text.toString().isEmpty() || binding.tvPropertyType.text.toString().length == 0) {
+            CustomMaterialFields.setError(binding.layoutPropertyType, getString(R.string.error_field_required),requireActivity())
+        }
+        if (binding.edPropertyValue.text.toString().isEmpty() || binding.edPropertyValue.text.toString().length == 0) {
+            CustomMaterialFields.setError(binding.layoutPropertyValue, getString(R.string.error_field_required),requireActivity())
+        }
+        if (binding.edAssociationDues.text.toString().isEmpty() || binding.edAssociationDues.text.toString().length == 0) {
+            CustomMaterialFields.setError(binding.layoutAssociationDues, getString(R.string.error_field_required),requireActivity())
+        }
+        if (binding.edPropertyTaxes.text.toString().isEmpty() || binding.edPropertyTaxes.text.toString().length == 0) {
+            CustomMaterialFields.setError(binding.layoutPropertyTaxes, getString(R.string.error_field_required),requireActivity())
+        }
+        if (binding.edHomeownerInsurance.text.toString().isEmpty() || binding.edHomeownerInsurance.text.toString().length == 0) {
+            CustomMaterialFields.setError(binding.layoutHomeownerInsurance, getString(R.string.error_field_required),requireActivity())
+        }
+        if (binding.edFloodInsurance.text.toString().isEmpty() || binding.edFloodInsurance.text.toString().length == 0) {
+            CustomMaterialFields.setError(binding.layoutFloodInsurance, getString(R.string.error_field_required),requireActivity())
+        }
+
+        if (binding.tvOccupancyType.text.toString().isNotEmpty() || binding.tvOccupancyType.text.toString().length > 0) {
+            CustomMaterialFields.clearError(binding.layoutOccupancyType,requireActivity())
+        }
+        if (binding.tvPropertyType.text.toString().isNotEmpty() || binding.tvPropertyType.text.toString().length > 0) {
+            CustomMaterialFields.clearError(binding.layoutPropertyType,requireActivity())
+        }
+        if (binding.edPropertyValue.text.toString().isNotEmpty() || binding.edPropertyValue.text.toString().length > 0) {
+            CustomMaterialFields.clearError(binding.layoutPropertyValue,requireActivity())
+        }
+        if (binding.edAssociationDues.text.toString().isNotEmpty() || binding.edAssociationDues.text.toString().length > 0) {
+            CustomMaterialFields.clearError(binding.layoutAssociationDues,requireActivity())
+        }
+        if (binding.edPropertyTaxes.text.toString().isNotEmpty() || binding.edPropertyTaxes.text.toString().length > 0) {
+            CustomMaterialFields.clearError(binding.layoutPropertyTaxes,requireActivity())
+        }
+        if (binding.edHomeownerInsurance.text.toString().isNotEmpty() || binding.edHomeownerInsurance.text.toString().length > 0) {
+            CustomMaterialFields.clearError(binding.layoutHomeownerInsurance,requireActivity())
+        }
+        if (binding.edFloodInsurance.text.toString().isNotEmpty() || binding.edFloodInsurance.text.toString().length > 0) {
+            CustomMaterialFields.clearError(binding.layoutFloodInsurance,requireActivity())
+        } */
     }
 
     override fun onStart() {

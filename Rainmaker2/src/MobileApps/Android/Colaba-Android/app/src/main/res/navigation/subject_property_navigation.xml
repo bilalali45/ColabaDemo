@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/subject_property_navigation"
-    app:startDestination="@+id/nav_sub_property_refinance">
+    app:startDestination="@+id/nav_sub_property_purchase">
 
     <fragment
-        android:id="@+id/nav_sub_property"
+        android:id="@+id/nav_sub_property_purchase"
         android:name="com.rnsoft.colabademo.SubjectPropertyPurchase"
         android:label="@string/subject_property"
         tools:layout="@layout/subject_property_purchase" >

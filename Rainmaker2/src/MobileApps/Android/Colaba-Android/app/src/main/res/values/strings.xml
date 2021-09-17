@@ -48,10 +48,14 @@
     </string-array>
 
     <string-array name="array_property_status">
-        <item>Own</item>
-        <item>Rent</item>
-        <item>No Primary Housing Expense</item>
+        <item>Retained</item>
+        <item>Pending Sale</item>
     </string-array>
+
+
+    <!--  <item>Own</item>
+        <item>Rent</item>
+        <item>No Primary Housing Expense</item>-->
 
     <string name="doc_filter_all">All</string>
     <string name="doc_filter_in_draft">In Draft</string>
@@ -205,7 +209,6 @@
     <string name="save_changes">SAVE CHANGES</string>
 
 
-
     <string name="richard">Richard Glenn Randall</string>
     <string name="refinance">Refinance</string>
     <string name="application_started">Application Started</string>
@@ -301,9 +304,11 @@
 
 
     <!-- primary info labels-->
-    <string name="first_name">Legal First Name</string>
+    <string name="legal_first_name">Legal First Name</string>
+    <string name="first_name">First Name</string>
     <string name="middle_name">Middle Name</string>
-    <string name="last_name">Legal Last Name</string>
+    <string name="legal_last_name">Legal Last Name</string>
+    <string name="last_name">Last Name</string>
     <string name="suffix">Suffix</string>
     <string name="email_add">Email Address</string>
     <string name="home_number">Home Number</string>
@@ -360,7 +365,6 @@
     <string name="first_mortgage_ques2">Will this mortgage be paid off at or before closing?</string>
     <string name="sub_property_refinance_ques1">Do you currently have mortages against this property?</string>
     <string name="sub_property_refinance_ques2">Do you have any second mortages on this property?</string>
-
 
 
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
@@ -422,14 +426,24 @@
     <string name="homeowner_ass_dues">Annual Homeowner"\'\s Association Dues</string>
     <string name="txt_delete_property">Are you sure you want to delete this property?</string>
 
+    <string name="start_new_application">Start New Application</string>
+    <string name="create_application">Create Application</string>
+    <string name="create_new_contact">Create New Contact</string>
+    <string name="find_contact">Find a Contact</string>
+    <string name="search_contact">Search by Name, Email, or Phone Number</string>
+    <string name="loan_purpose">Loan Purpose</string>
+    <string name="loan_goal">Loan Goal</string>
+    <string name="lower_payments_term">Lower Payments or Term</string>
+    <string name="cash_out">Cash-Out</string>
+    <string name="debt_consolidated">Debt Consolidation</string>
+
+
+
 
     <string name="govt_questions">Government Questions</string>
     <string name="undisclosed_question_one">Are you borrowing any money for this real estate transaction (e.g., money for your closing costs or down payment) obtaining any money from another party, such as the seller or realtor, that you have not disclosed on this loan application?</string>
     <string name="have_you_had_an_ownership_interest">Have you had an ownership interest in another property in the last three years?</string>
     <string name="will_this_property_be_subject_to_a_lien">Will this property be subject to a lien that could take priority over the first mortgage lien, such as a clean energy lien paid through your property taxes (e.g., the Property Assessed Clean Energy Program)?</string>
-
-
-
 
 
 </resources>
