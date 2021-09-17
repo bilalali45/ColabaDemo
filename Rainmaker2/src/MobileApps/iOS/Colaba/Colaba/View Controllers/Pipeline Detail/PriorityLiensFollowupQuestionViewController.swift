@@ -8,17 +8,33 @@
 import UIKit
 import MaterialComponents
 
+enum DetailScreenType{
+    case priorityLiens
+    case undisclosedMortgageApplication
+    case undisclosedCreditApplication
+    case debtCoSigner
+    case outStandingJudgement
+    case federalDebt
+    case partyToLawsuit
+    case titleConveyance
+    case preForceClosure
+    case forceClosedProperty
+}
+
 class PriorityLiensFollowupQuestionViewController: UIViewController {
 
     //MARK:- Outlets and Properties
     
     @IBOutlet weak var btnBack: UIButton!
+    @IBOutlet weak var lblTopTitle: UILabel!
     @IBOutlet weak var lblUsername: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var txtviewDetailContainerView: UIView!
     @IBOutlet weak var btnSaveChanges: UIButton!
+    
+    var type: DetailScreenType!
     
     var txtViewDetail = MDCFilledTextArea()
     
@@ -37,6 +53,37 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextView()
+        
+        if (type == .priorityLiens){
+            lblTopTitle.text = "Priority Liens"
+        }
+        else if (type == .undisclosedMortgageApplication){
+            lblTopTitle.text = "Undisclosed Mortgage Applications"
+        }
+        else if (type == .undisclosedCreditApplication){
+            lblTopTitle.text = "Undisclosed Credit Applications"
+        }
+        else if (type == .debtCoSigner){
+            lblTopTitle.text = "Debt Co-signer or Guarantor"
+        }
+        else if (type == .outStandingJudgement){
+            lblTopTitle.text = "Outstanding Judgements"
+        }
+        else if (type == .federalDebt){
+            lblTopTitle.text = "Federal Debt Deliquency"
+        }
+        else if (type == .partyToLawsuit){
+            lblTopTitle.text = "Party to Lawsuit"
+        }
+        else if (type == .titleConveyance){
+            lblTopTitle.text = "Title Conveyance"
+        }
+        else if (type == .preForceClosure){
+            lblTopTitle.text = "Pre-Foreclosure or Short Sale"
+        }
+        else if (type == .forceClosedProperty){
+            lblTopTitle.text = "Foreclosured Property"
+        }
     }
 
     //MARK:- Methods and Actions
