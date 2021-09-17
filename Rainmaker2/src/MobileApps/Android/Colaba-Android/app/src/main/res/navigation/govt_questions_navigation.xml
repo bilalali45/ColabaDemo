@@ -15,7 +15,7 @@
     <fragment
         android:id="@+id/navigation_child_support"
         android:name="com.rnsoft.colabademo.ChildSupportFragment"
-        android:label="@string/child_support"
+        android:label="@string/govt_questions"
         tools:layout="@layout/child_support_layout" />
 
 

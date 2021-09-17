@@ -18,20 +18,31 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.HideSoftkeyboard
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import java.util.*
+
 
 /**
  * Created by Anita Kiran on 9/9/2021.
  */
 class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener, View.OnClickListener {
 
-    private lateinit var binding : SubPropertyRefinanceBinding
-    private val propertyTypeArray = listOf("Single Family Property","Condominium","Townhouse", "Cooperative", "Manufactured Home", "Duplex (2 Unit)", "Triplex (3 Unit)", "Quadplex (4 Unit)")
-    private val occupancyTypeArray = listOf("Primary Residence", "Second Home", "Investment Property")
-    var isPropertyAddress : Boolean = false
-    var isMixedProperty : Boolean = false
-    var isFirstMortgage : Boolean = false
-    var isSecMortgage : Boolean = false
-
+    private lateinit var binding: SubPropertyRefinanceBinding
+    private val propertyTypeArray = listOf(
+        "Single Family Property",
+        "Condominium",
+        "Townhouse",
+        "Cooperative",
+        "Manufactured Home",
+        "Duplex (2 Unit)",
+        "Triplex (3 Unit)",
+        "Quadplex (4 Unit)"
+    )
+    private val occupancyTypeArray =
+        listOf("Primary Residence", "Second Home", "Investment Property")
+    var isPropertyAddress: Boolean = false
+    var isMixedProperty: Boolean = false
+    var isFirstMortgage: Boolean = false
+    var isSecMortgage: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,26 +76,26 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
 
         binding.edDateOfHomePurchase.showSoftInputOnFocus = false
         binding.edDateOfHomePurchase.setOnClickListener { createCustomDialog() }
-        binding.edDateOfHomePurchase.setOnFocusChangeListener{ _ , _ ->  createCustomDialog() }
+        binding.edDateOfHomePurchase.setOnFocusChangeListener { _, _ -> createCustomDialog() }
 
-        if(isFirstMortgage){
+        if (isFirstMortgage) {
             binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
             binding.layoutSecondMortgage.visibility = View.VISIBLE
             binding.rbFirstMortgageYes.setTypeface(null, Typeface.BOLD)
         }
 
-        if(isSecMortgage){
+        if (isSecMortgage) {
             binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
             binding.layoutSecondMortgage.visibility = View.VISIBLE
             binding.layoutSecMortgageDetail.visibility = View.VISIBLE
         }
 
-        if(isPropertyAddress){
+        if (isPropertyAddress) {
             binding.tvSubPropertyAddress.visibility = View.VISIBLE
-            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
+            binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
         }
 
-        if(isMixedProperty){
+        if (isMixedProperty) {
             binding.rbMixedPropertyYes.setTypeface(null, Typeface.BOLD)
             binding.layoutDetails.visibility = View.VISIBLE
         }
@@ -93,15 +104,51 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
 
     }
 
-    private fun setInputFields(){
+    private fun setInputFields() {
 
         // set lable focus
-        binding.edRentalIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edRentalIncome, binding.layoutRentalIncome, requireContext()))
-        binding.edPropertyValue.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edPropertyValue, binding.layoutPropertyValue, requireContext()))
-        binding.edAssociation.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edAssociation, binding.layoutAssociationDues, requireContext()))
-        binding.edPropertyTaxes.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edPropertyTaxes, binding.layoutPropertyTaxes, requireContext()))
-        binding.edHomeownerInsurance.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edHomeownerInsurance, binding.layoutHomeownerInsurance, requireContext()))
-        binding.edFloodInsurance.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edFloodInsurance, binding.layoutFloodInsurance, requireContext()))
+        binding.edRentalIncome.setOnFocusChangeListener(
+            CustomFocusListenerForEditText(
+                binding.edRentalIncome,
+                binding.layoutRentalIncome,
+                requireContext()
+            )
+        )
+        binding.edPropertyValue.setOnFocusChangeListener(
+            CustomFocusListenerForEditText(
+                binding.edPropertyValue,
+                binding.layoutPropertyValue,
+                requireContext()
+            )
+        )
+        binding.edAssociation.setOnFocusChangeListener(
+            CustomFocusListenerForEditText(
+                binding.edAssociation,
+                binding.layoutAssociationDues,
+                requireContext()
+            )
+        )
+        binding.edPropertyTaxes.setOnFocusChangeListener(
+            CustomFocusListenerForEditText(
+                binding.edPropertyTaxes,
+                binding.layoutPropertyTaxes,
+                requireContext()
+            )
+        )
+        binding.edHomeownerInsurance.setOnFocusChangeListener(
+            CustomFocusListenerForEditText(
+                binding.edHomeownerInsurance,
+                binding.layoutHomeownerInsurance,
+                requireContext()
+            )
+        )
+        binding.edFloodInsurance.setOnFocusChangeListener(
+            CustomFocusListenerForEditText(
+                binding.edFloodInsurance,
+                binding.layoutFloodInsurance,
+                requireContext()
+            )
+        )
 
         // set input format
         binding.edRentalIncome.addTextChangedListener(NumberTextFormat(binding.edRentalIncome))
@@ -112,12 +159,12 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
         binding.edFloodInsurance.addTextChangedListener(NumberTextFormat(binding.edFloodInsurance))
 
         // set Dollar prifix
-        CustomMaterialFields.setDollarPrefix(binding.layoutRentalIncome,requireContext())
-        CustomMaterialFields.setDollarPrefix(binding.layoutPropertyValue,requireContext())
-        CustomMaterialFields.setDollarPrefix(binding.layoutAssociationDues,requireContext())
-        CustomMaterialFields.setDollarPrefix(binding.layoutPropertyTaxes,requireContext())
-        CustomMaterialFields.setDollarPrefix(binding.layoutHomeownerInsurance,requireContext())
-        CustomMaterialFields.setDollarPrefix(binding.layoutFloodInsurance,requireContext())
+        CustomMaterialFields.setDollarPrefix(binding.layoutRentalIncome, requireContext())
+        CustomMaterialFields.setDollarPrefix(binding.layoutPropertyValue, requireContext())
+        CustomMaterialFields.setDollarPrefix(binding.layoutAssociationDues, requireContext())
+        CustomMaterialFields.setDollarPrefix(binding.layoutPropertyTaxes, requireContext())
+        CustomMaterialFields.setDollarPrefix(binding.layoutHomeownerInsurance, requireContext())
+        CustomMaterialFields.setDollarPrefix(binding.layoutFloodInsurance, requireContext())
 
     }
 
@@ -136,7 +183,10 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
             R.id.rb_mixed_property_yes -> mixedPropertyDetailClick()
             R.id.layout_details -> mixedPropertyDetailClick()
             R.id.rb_first_mortgage_yes -> onFirstMortgageYes()
-            R.id.refinance_parent_layout -> HideSoftkeyboard.hide(requireActivity(),binding.refinanceParentLayout)
+            R.id.refinance_parent_layout -> HideSoftkeyboard.hide(
+                requireActivity(),
+                binding.refinanceParentLayout
+            )
 
             R.id.rb_first_mortgage_no -> {
                 binding.layoutFirstMortgageDetail.visibility = View.GONE
@@ -150,7 +200,7 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
                     binding.layoutDetails.visibility = View.GONE
                     binding.rbMixedPropertyNo.setTypeface(null, Typeface.BOLD)
                     binding.rbMixedPropertyYes.setTypeface(null, Typeface.NORMAL)
-                }else{
+                } else {
                     binding.rbMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
                 }
 
@@ -158,7 +208,7 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
                 if (binding.rbOccupying.isChecked) {
                     binding.rbOccupying.setTypeface(null, Typeface.BOLD)
                     binding.rbNonOccupying.setTypeface(null, Typeface.NORMAL)
-                }else{
+                } else {
                     binding.rbOccupying.setTypeface(null, Typeface.NORMAL)
                 }
 
@@ -166,14 +216,15 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
                 if (binding.rbNonOccupying.isChecked) {
                     binding.rbNonOccupying.setTypeface(null, Typeface.BOLD)
                     binding.rbOccupying.setTypeface(null, Typeface.NORMAL)
-                }else{
+                } else {
                     binding.rbNonOccupying.setTypeface(null, Typeface.NORMAL)
                 }
         }
     }
 
     private fun setSpinnerData() {
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,propertyTypeArray )
+        val adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, propertyTypeArray)
         binding.tvPropertyType.setAdapter(adapter)
         binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
             binding.tvPropertyType.showDropDown()
@@ -185,8 +236,9 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
             AdapterView.OnItemClickListener {
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                 binding.layoutPropertyType.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-                 showHideRental()
+                    ContextCompat.getColor(requireContext(), R.color.grey_color_two)
+                )
+                showHideRental()
             }
         }
 
@@ -204,30 +256,38 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
         binding.tvOccupancyType.onItemClickListener = object :
             AdapterView.OnItemClickListener {
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                binding.layoutOccupancyType.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+                binding.layoutOccupancyType.defaultHintTextColor = ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.grey_color_two
+                    )
+                )
                 showHideRental()
 
             }
         }
     }
 
-    private fun showHideRental(){
-        if(binding.tvOccupancyType.text.toString().equals("Investment Property")) {
+    private fun showHideRental() {
+        if (binding.tvOccupancyType.text.toString().equals("Investment Property")) {
             binding.layoutRentalIncome.visibility = View.VISIBLE
 
         } else if (binding.tvOccupancyType.text.toString().equals("Primary Residence")) {
             var propertyType = binding.tvPropertyType.text.toString()
-            if (propertyType.equals("Duplex (2 Unit)") || propertyType.equals("Triplex (3 Unit)") || propertyType.equals("Quadplex (4 Unit)"))
+            if (propertyType.equals("Duplex (2 Unit)") || propertyType.equals("Triplex (3 Unit)") || propertyType.equals(
+                    "Quadplex (4 Unit)"
+                )
+            )
                 binding.layoutRentalIncome.visibility = View.VISIBLE
             else
                 binding.layoutRentalIncome.visibility = View.GONE
 
-        } else if (binding.tvOccupancyType.text.toString().equals("Second Home")){
+        } else if (binding.tvOccupancyType.text.toString().equals("Second Home")) {
             binding.layoutRentalIncome.visibility = View.GONE
         }
     }
 
-    private fun createCustomDialog(){
+    private fun createCustomDialog() {
         val pd = MonthYearPickerDialog()
         pd.setListener(this)
         pd.show(requireActivity().supportFragmentManager, "MonthYearPickerDialog")
@@ -235,14 +295,14 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
         var stringMonth = p2.toString()
-        if(p2<10)
+        if (p2 < 10)
             stringMonth = "0$p2"
 
         val sampleDate = "$stringMonth / $p1"
         binding.edDateOfHomePurchase.setText(sampleDate)
     }
 
-    private fun mixedPropertyDetailClick(){
+    private fun mixedPropertyDetailClick() {
         isMixedProperty = true
         findNavController().navigate(R.id.nav_mixed_use_property)
         binding.layoutDetails.visibility = View.VISIBLE
@@ -250,56 +310,58 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
         binding.rbMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
     }
 
-    private fun radioSubPropertyClick(){
+    private fun radioSubPropertyClick() {
         binding.rbSubProperty.isChecked = true
         binding.rbSubPropertyAddress.isChecked = false
         binding.tvSubPropertyAddress.visibility = View.GONE
         //bold text
-        binding.rbSubProperty.setTypeface(null,Typeface.BOLD)
-        binding.radioTxtPropertyAdd.setTypeface(null,Typeface.NORMAL)
-
-
-
+        binding.rbSubProperty.setTypeface(null, Typeface.BOLD)
+        binding.radioTxtPropertyAdd.setTypeface(null, Typeface.NORMAL)
     }
 
-    private fun radioAddressClick(){
+    private fun radioAddressClick() {
         binding.rbSubProperty.isChecked = false
         binding.rbSubPropertyAddress.isChecked = true
         binding.tvSubPropertyAddress.visibility = View.VISIBLE
         //bold text
-        binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
-        binding.rbSubProperty.setTypeface(null,Typeface.NORMAL)
+        binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
+        binding.rbSubProperty.setTypeface(null, Typeface.NORMAL)
         isPropertyAddress = true
         findNavController().navigate(R.id.nav_sub_property_address)
-
-
     }
 
-    private fun onFirstMortgageYes(){
-        if(binding.rbFirstMortgageYes.isChecked) {
+    private fun onFirstMortgageYes() {
+        if (binding.rbFirstMortgageYes.isChecked) {
             isFirstMortgage = true
             binding.layoutSecondMortgage.visibility = View.VISIBLE
-            findNavController().navigate(R.id.nav_first_mortage)
+            //findNavController().navigate(R.id.nav_first_mortage)
             binding.rbFirstMortgageYes.setTypeface(null, Typeface.BOLD)
             binding.rbFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
+
+            val fragment = FirstMortgageFragment()
+            val bundle = Bundle()
+            bundle.putString(AppConstant.address, getString(R.string.subject_property))
+            fragment.arguments = bundle
+            findNavController().navigate(R.id.nav_first_mortage, fragment.arguments)
 
         }
     }
 
-    private fun onSecMortgageYesClick(){
-        isSecMortgage = true
-        binding.layoutSecondMortgage.visibility = View.VISIBLE
-        binding.layoutSecMortgageDetail.visibility = View.VISIBLE
-        findNavController().navigate(R.id.nav_sec_mortage)
-        binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
-        binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
-    }
+        private fun onSecMortgageYesClick() {
+            isSecMortgage = true
+            binding.layoutSecondMortgage.visibility = View.VISIBLE
+            binding.layoutSecMortgageDetail.visibility = View.VISIBLE
+            findNavController().navigate(R.id.nav_sec_mortage)
+            binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
+            binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
+        }
 
-    private fun onSecMortgegeNoClick(){
-        isSecMortgage = false
-        binding.layoutSecondMortgage.visibility = View.VISIBLE
-        binding.layoutSecMortgageDetail.visibility = View.GONE
-        binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
-        binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
-    }
+        private fun onSecMortgegeNoClick() {
+            isSecMortgage = false
+            binding.layoutSecondMortgage.visibility = View.VISIBLE
+            binding.layoutSecMortgageDetail.visibility = View.GONE
+            binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
+            binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
+        }
+
 }

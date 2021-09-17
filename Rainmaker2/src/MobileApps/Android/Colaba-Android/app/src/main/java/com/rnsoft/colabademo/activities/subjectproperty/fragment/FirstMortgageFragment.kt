@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
-import com.rnsoft.colabademo.databinding.SubPropertyFirstMortgageBinding
+import com.rnsoft.colabademo.databinding.FirstMortgageLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.HideSoftkeyboard
 import com.rnsoft.colabademo.utils.NumberTextFormat
@@ -18,14 +18,19 @@ import com.rnsoft.colabademo.utils.NumberTextFormat
  */
 class FirstMortgageFragment : Fragment(),View.OnClickListener {
 
-    private lateinit var binding : SubPropertyFirstMortgageBinding
+    private lateinit var binding : FirstMortgageLayoutBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = SubPropertyFirstMortgageBinding.inflate(inflater, container, false)
+        binding = FirstMortgageLayoutBinding.inflate(inflater, container, false)
+
+        val title = arguments?.getString(AppConstant.address).toString()
+        title.let {
+            binding.borrowerPurpose.setText(title)
+        }
 
         binding.backButton.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
@@ -36,7 +41,6 @@ class FirstMortgageFragment : Fragment(),View.OnClickListener {
         binding.switchCreditLimit.setOnClickListener(this)
         binding.rbQuesYes.setOnClickListener(this)
         binding.rbQuesNo.setOnClickListener(this)
-
 
         setInputFields()
 
@@ -142,8 +146,6 @@ class FirstMortgageFragment : Fragment(),View.OnClickListener {
             clearError(binding.layoutCreditLimit)
         } */
     }
-
-
 
     fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
         textInputlayout.helperText = errorMsg

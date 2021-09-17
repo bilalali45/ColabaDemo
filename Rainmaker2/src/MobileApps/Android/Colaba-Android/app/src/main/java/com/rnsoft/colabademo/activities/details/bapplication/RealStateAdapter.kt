@@ -27,9 +27,7 @@ class RealStateAdapter internal constructor(private var realStateDataList: Array
 
 
             itemView.setOnClickListener {
-
-                   //itemView.context.startActivity(Intent(itemView.context, RealEstateActivity::class.java))
-
+                itemView.context.startActivity(Intent(itemView.context, RealEstateActivity::class.java))
             }
         }
 
