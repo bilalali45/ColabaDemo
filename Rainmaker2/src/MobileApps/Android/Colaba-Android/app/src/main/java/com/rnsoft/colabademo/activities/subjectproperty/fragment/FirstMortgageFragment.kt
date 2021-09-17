@@ -27,6 +27,11 @@ class FirstMortgageFragment : Fragment(),View.OnClickListener {
     ): View? {
         binding = SubPropertyFirstMortgageBinding.inflate(inflater, container, false)
 
+        val title = arguments?.getString(AppConstant.address).toString()
+        title.let {
+            binding.borrowerPurpose.setText(title)
+        }
+
         binding.backButton.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
         binding.parentLayout.setOnClickListener(this)
@@ -36,7 +41,6 @@ class FirstMortgageFragment : Fragment(),View.OnClickListener {
         binding.switchCreditLimit.setOnClickListener(this)
         binding.rbQuesYes.setOnClickListener(this)
         binding.rbQuesNo.setOnClickListener(this)
-
 
         setInputFields()
 

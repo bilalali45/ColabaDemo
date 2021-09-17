@@ -10,6 +10,44 @@
         android:name="com.rnsoft.colabademo.RealEstateOwnedFragment"
         android:label="@string/real_estate_owned"
         tools:layout="@layout/real_estate_owned_layout">
+        <action
+            android:id="@+id/action_realestate_address"
+            app:destination="@id/navigation_realestate_address"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down" />
+
+        <action
+            android:id="@+id/action_realestate_first_mortgage"
+            app:destination="@id/nav_first_mortage"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down" />
+
+        <action
+            android:id="@+id/action_realestate_second_mortgage"
+            app:destination="@id/nav_sec_mortage"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down" />
+
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_realestate_address"
+        android:name="com.rnsoft.colabademo.RealEstateAddressFragment"
+        android:label="@string/real_estate_owned"
+        tools:layout="@layout/subject_property_address">
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_first_mortage"
+        android:name="com.rnsoft.colabademo.FirstMortgageFragment"
+        android:label="@string/first_mortgage"
+        tools:layout="@layout/sub_property_first_mortgage" />
+
+    <fragment
+        android:id="@+id/nav_sec_mortage"
+        android:name="com.rnsoft.colabademo.RealEstateSecondMortgage"
+        android:label="@string/sec_mortgage"
+        tools:layout="@layout/real_estate_second_mortgage" />
 
 </navigation>

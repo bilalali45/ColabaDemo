@@ -7,10 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import com.rnsoft.colabademo.activities.baddresses.info.model.Dependent
 import com.rnsoft.colabademo.databinding.MixedUsePropertyBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import kotlinx.android.synthetic.main.dependent_input_field.view.*
 
 /**
  * Created by Anita Kiran on 9/8/2021.

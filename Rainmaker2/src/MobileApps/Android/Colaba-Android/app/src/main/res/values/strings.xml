@@ -29,6 +29,30 @@
         <item>Pre-Approval</item>
     </string-array>
 
+
+    <string-array name="array_occupancy_type">
+        <item>Primary Residence</item>
+        <item>Second Home</item>
+        <item>Investment Property</item>
+    </string-array>
+
+    <string-array name="array_property_type">
+        <item>Single Family Property</item>
+        <item>Condominium</item>
+        <item>Townhouse</item>
+        <item>Cooperative</item>
+        <item>Manufactured Home</item>
+        <item>Duplex (2 Unit)</item>
+        <item>Triplex (3 Unit)</item>
+        <item>Quadplex (4 Unit)</item>
+    </string-array>
+
+    <string-array name="array_property_status">
+        <item>Own</item>
+        <item>Rent</item>
+        <item>No Primary Housing Expense</item>
+    </string-array>
+
     <string name="doc_filter_all">All</string>
     <string name="doc_filter_in_draft">In Draft</string>
     <string name="doc_filter_borrower_to_do">Borrower To Do</string>
@@ -396,8 +420,7 @@
     <string name="property_status">Property Status</string>
     <string name="property_value">Property Value</string>
     <string name="homeowner_ass_dues">Annual Homeowner"\'\s Association Dues</string>
-
-
+    <string name="txt_delete_property">Are you sure you want to delete this property?</string>
 
 
     <string name="govt_questions">Government Questions</string>
