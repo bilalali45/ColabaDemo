@@ -103,19 +103,6 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
         txtfieldState.setDropDownDataSource(kUSAStatesArray)
     }
     
-    func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){
-        for allTextField in allTextFields{
-            if (allTextField == selectedTextField){
-                if (allTextField.text == ""){
-                    allTextField.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-                }
-                else{
-                    allTextField.placeholderLabel.textColor = Theme.getAppGreyColor()
-                }
-            }
-        }
-    }
-    
     @objc func yesStackViewTapped(){
         isNonLegalSpouse = 1
         changeNonLegalSpouseStatus()
