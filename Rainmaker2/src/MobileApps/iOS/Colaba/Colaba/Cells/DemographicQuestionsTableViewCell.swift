@@ -13,6 +13,7 @@ class DemographicQuestionsTableViewCell: UITableViewCell {
     @IBOutlet weak var btnCheckBox: UIButton!
     @IBOutlet weak var lblQuestion: UILabel!
     @IBOutlet weak var stackViewLeadingConstraint: NSLayoutConstraint! //20 or 54
+    @IBOutlet weak var lblHeading: UILabel!
     @IBOutlet weak var otherView: UIView!
     @IBOutlet weak var txtfieldOther: UITextField!
     
