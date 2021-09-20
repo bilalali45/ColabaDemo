@@ -37,7 +37,7 @@ extension ColabaTextFieldDelegate {
     func selectedDate(date:Date){}
     func biometricClicked(){}
     func passwordClicked(){}
-    func textFieldEndEditing(_ textField : UITextField) {}
+    func textFieldEndEditing(_ textField : TextField) {}
     func dismiss(){}
 }
 
@@ -231,6 +231,7 @@ class ColabaTextField: TextField {
             self?.text = item
             self?.resignFirstResponder()
             self?.colabaDelegate?.selectedOption(option: item, atIndex: index)
+            self?.validate()
         }
     }
     
@@ -481,18 +482,18 @@ extension ColabaTextField: UITextFieldDelegate {
             self.attributedText = attributedPrefix
         }
         if type == .datePicker {
+            setDatePicker()
             if let datePicker = self.inputView as? UIDatePicker {
                 self.colabaDelegate?.selectedDate(date: datePicker.date)
                 self.text = getFormattedDate(datePicker: datePicker)
             }
-            setDatePicker()
         }
         if type == .monthlyDatePicker {
+            setMonthlyDatePicker()
             if let datePicker = self.inputView as? MonthYearPickerView {
                 self.colabaDelegate?.selectedDate(date: datePicker.date)
                 self.text = getMonthFormattedDate(datePicker: datePicker)
             }
-            monthlyDatePickerButtonClicked()
         }
         if type == .dropdown {
             dropDownButtonClicked()
@@ -530,7 +531,7 @@ extension ColabaTextField: UITextFieldDelegate {
             _ = validate()
         }
         
-        colabaDelegate?.textFieldEndEditing(textField)
+        colabaDelegate?.textFieldEndEditing(textField as! TextField)
     }
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -566,7 +567,9 @@ extension ColabaTextField {
         toolbar.items = [cancelButton,spacer, doneButton]
         self.isUserInteractionEnabled = true
         self.inputAccessoryView = toolbar
-        _ = self.becomeFirstResponder()
+        if !self.isFirstResponder {
+            _ = self.becomeFirstResponder()
+        }
     }
     
     func setMonthlyDatePicker() {
@@ -590,10 +593,11 @@ extension ColabaTextField {
         toolbar.items = [cancelButton,spacer, doneButton]
         self.isUserInteractionEnabled = true
         self.inputAccessoryView = toolbar
-        _ = self.becomeFirstResponder()
+        if !self.isFirstResponder {
+            _ = self.becomeFirstResponder()
+        }
     }
 
-    
     @objc func cancelDatePicker() {
         self.isUserInteractionEnabled = true
         self.resignFirstResponder()
