@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/subject_property_navigation"
-    app:startDestination="@+id/nav_sub_property_refinance">
+    app:startDestination="@+id/nav_sub_property_purchase">
 
     <fragment
-        android:id="@+id/nav_sub_property"
+        android:id="@+id/nav_sub_property_purchase"
         android:name="com.rnsoft.colabademo.SubjectPropertyPurchase"
         android:label="@string/subject_property"
         tools:layout="@layout/subject_property_purchase" >
@@ -46,7 +46,7 @@
         android:id="@+id/nav_first_mortage"
         android:name="com.rnsoft.colabademo.FirstMortgageFragment"
         android:label="@string/first_mortgage"
-        tools:layout="@layout/sub_property_first_mortgage" />
+        tools:layout="@layout/first_mortgage_layout" />
 
     <fragment
         android:id="@+id/nav_sec_mortage"

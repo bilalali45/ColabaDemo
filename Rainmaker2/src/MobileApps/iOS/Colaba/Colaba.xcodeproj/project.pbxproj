@@ -111,6 +111,8 @@
 		23B5E98326F46F4C00686B8E /* ForceClosedPropertyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E98226F46F4C00686B8E /* ForceClosedPropertyViewController.swift */; };
 		23B5E98526F4A40E00686B8E /* BankruptcyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E98426F4A40E00686B8E /* BankruptcyViewController.swift */; };
 		23B5E98726F4A96E00686B8E /* BankruptcyFollowupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E98626F4A96E00686B8E /* BankruptcyFollowupViewController.swift */; };
+		23B5E98926F4C85E00686B8E /* ChildSupportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E98826F4C85E00686B8E /* ChildSupportViewController.swift */; };
+		23B5E98B26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E98A26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift */; };
 		23BBADCC26EF2A5400813F04 /* IncomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCB26EF2A5400813F04 /* IncomeViewController.swift */; };
 		23BBADCE26EF2A6200813F04 /* IncomeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCD26EF2A6200813F04 /* IncomeDetailViewController.swift */; };
 		23BBADD026EF3F1D00813F04 /* AddEmployementPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCF26EF3F1D00813F04 /* AddEmployementPopupViewController.swift */; };
@@ -316,6 +318,8 @@
 		23B5E98226F46F4C00686B8E /* ForceClosedPropertyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceClosedPropertyViewController.swift; sourceTree = "<group>"; };
 		23B5E98426F4A40E00686B8E /* BankruptcyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankruptcyViewController.swift; sourceTree = "<group>"; };
 		23B5E98626F4A96E00686B8E /* BankruptcyFollowupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankruptcyFollowupViewController.swift; sourceTree = "<group>"; };
+		23B5E98826F4C85E00686B8E /* ChildSupportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSupportViewController.swift; sourceTree = "<group>"; };
+		23B5E98A26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSupportFollowupQuestionsViewController.swift; sourceTree = "<group>"; };
 		23BBADCB26EF2A5400813F04 /* IncomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeViewController.swift; sourceTree = "<group>"; };
 		23BBADCD26EF2A6200813F04 /* IncomeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeDetailViewController.swift; sourceTree = "<group>"; };
 		23BBADCF26EF3F1D00813F04 /* AddEmployementPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEmployementPopupViewController.swift; sourceTree = "<group>"; };
@@ -645,6 +649,8 @@
 				23B5E98226F46F4C00686B8E /* ForceClosedPropertyViewController.swift */,
 				23B5E98426F4A40E00686B8E /* BankruptcyViewController.swift */,
 				23B5E98626F4A96E00686B8E /* BankruptcyFollowupViewController.swift */,
+				23B5E98826F4C85E00686B8E /* ChildSupportViewController.swift */,
+				23B5E98A26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -1172,6 +1178,7 @@
 				23908F9E26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.swift in Sources */,
 				23DBAD222696EBA800119680 /* LoanDetailViewController.swift in Sources */,
 				238E0F9B26F38C8E0025FF06 /* UndisclosedCreditApplicationViewController.swift in Sources */,
+				23B5E98926F4C85E00686B8E /* ChildSupportViewController.swift in Sources */,
 				2321247A26C17A0F00439A44 /* AddResidenceViewController.swift in Sources */,
 				2368D6552667DA5900D5C1C5 /* BaseViewController.swift in Sources */,
 				238E0F8B26F335F90025FF06 /* GovernmentQuestionDetailViewController.swift in Sources */,
@@ -1256,6 +1263,7 @@
 				239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */,
 				23A56C592685B017005CE6F4 /* Manager.swift in Sources */,
 				23B5E97926F46DA200686B8E /* OutstandingJudgementsViewController.swift in Sources */,
+				23B5E98B26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift in Sources */,
 				23F23B3D26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift in Sources */,
 				23BE064B26F093BD00F9B4B8 /* AddPreviousEmploymentViewController.swift in Sources */,
 				23C2448A2689E3F800EED1D0 /* InActiveLoanModel.swift in Sources */,

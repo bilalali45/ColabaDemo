@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="Bankruptcy"
+            android:text="Child Support, Alimony, etc."
             android:textColor="@color/grey_color_one"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -79,15 +79,26 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assets_top_container">
+        app:layout_constraintTop_toBottomOf="@+id/assets_top_container"
+        >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        >
 
 
         <androidx.appcompat.widget.AppCompatCheckBox
@@ -98,58 +109,13 @@
             android:fontFamily="@font/rubik_regular"
             android:paddingStart="15dp"
             android:text="Child Support"
-            android:textStyle="bold"
             android:textColor="@color/grey_color_one"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:buttonCompat="@drawable/cb_selector"
             app:layout_constraintStart_toStartOf="@+id/textView40"
             app:layout_constraintTop_toBottomOf="@+id/textView40" />
 
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:fontFamily="@font/rubik_light"
-            android:hint="Details"
-            android:textColorHint="@color/primary_info_label_color"
-
-
-            app:boxCollapsedPaddingTop="1dp"
-            app:boxStrokeColor="@color/primary_info_line_color"
-            app:boxStrokeWidth="0.5dp"
-            app:boxStrokeWidthFocused="1dp"
-            app:helperTextEnabled="true"
-            app:helperTextTextAppearance="@style/inputError"
-            app:helperTextTextColor="@color/colaba_red_color"
-            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-            app:hintTextColor="@color/grey_color_two"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="227dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/ed_details"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:cursorVisible="true"
-                android:ems="10"
-                android:fontFamily="@font/rubik_regular"
-                android:gravity="top|start"
-                android:imeOptions="actionNone"
-                android:inputType="textMultiLine"
-                android:lines="10"
-                android:maxLines="10"
-                android:minLines="1"
-                android:paddingStart="0dp"
-                android:scrollHorizontally="false"
-                android:singleLine="false"
-                android:textColor="@color/grey_color_one"
-                android:textSize="@dimen/ed_txt_size_primary_info" />
-
-        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/textView40"
@@ -157,13 +123,361 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/rubik_medium"
             android:text="Select all that apply"
+            android:textColor="@color/grey_color_two"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:textColor="@color/grey_color_two"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/payment_remaining_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:layout_marginTop="26dp"
+            android:background="@android:color/transparent"
+            android:hint="Payments remaining"
+            android:textColorHint="@color/primary_info_label_color"
+            app:boxCollapsedPaddingTop="1dp"
+            app:boxStrokeColor="@color/primary_info_line_color"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:endIconDrawable="@drawable/ic_down_arrow"
+
+            app:endIconMode="custom"
+            app:endIconTint="@color/grey_color_three"
+
+            app:helperTextEnabled="true"
+
+            app:helperTextTextAppearance="@style/inputError"
+            app:helperTextTextColor="@color/colaba_red_color"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+            app:hintTextColor="@color/grey_color_two"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chapter7">
+
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/payment_remaining_text_view"
+                style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:backgroundTint="@android:color/transparent"
+                android:completionThreshold="1"
+                android:cursorVisible="true"
+
+                android:focusable="true"
+
+                android:focusableInTouchMode="true"
+                android:fontFamily="@font/rubik_regular"
+                android:gravity="bottom"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:spinnerMode="dropdown"
+
+                android:textAlignment="gravity"
+                android:textColor="@color/grey_color_one"
+                android:textColorHint="@color/grey_color_three"
+                android:textSize="15sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/monthly_payment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:fontFamily="@font/rubik_light"
+            android:hint="Monthly Payment"
+            android:textColorHint="@color/primary_info_label_color"
+            app:boxCollapsedPaddingTop="1dp"
+            app:boxStrokeColor="@color/primary_info_line_color"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:helperTextEnabled="true"
+
+            app:helperTextTextAppearance="@style/inputError"
+
+            app:helperTextTextColor="@color/colaba_red_color"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/payment_remaining_layout"
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/monthly_payment_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:inputType="textPostalAddress"
+                android:fontFamily="@font/rubik_regular"
+                android:imeOptions="actionNext"
+                android:paddingStart="0dp"
+                android:singleLine="true"
+                android:textColor="@color/grey_color_one"
+                android:textSize="@dimen/ed_txt_size_primary_info" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/payment_receipt_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:fontFamily="@font/rubik_light"
+            android:hint="Payment Recipient"
+            android:textColorHint="@color/primary_info_label_color"
+            app:boxCollapsedPaddingTop="1dp"
+            app:boxStrokeColor="@color/primary_info_line_color"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:helperTextEnabled="true"
+
+            app:helperTextTextAppearance="@style/inputError"
+
+            app:helperTextTextColor="@color/colaba_red_color"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/monthly_payment_layout"
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/payment_receipt_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:inputType="textPostalAddress"
+                android:fontFamily="@font/rubik_regular"
+                android:imeOptions="actionNext"
+                android:paddingStart="0dp"
+                android:singleLine="true"
+                android:textColor="@color/grey_color_one"
+                android:textSize="@dimen/ed_txt_size_primary_info" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/alimony"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/rubik_regular"
+            android:paddingStart="15dp"
+            android:text="Alimony"
+            android:textColor="@color/grey_color_one"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:buttonCompat="@drawable/cb_selector"
+            app:layout_constraintStart_toStartOf="@+id/payment_receipt_layout"
+            app:layout_constraintTop_toBottomOf="@+id/payment_receipt_layout" />
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/alimony_monthly_payment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:fontFamily="@font/rubik_light"
+            android:hint="Monthly Payment"
+            android:textColorHint="@color/primary_info_label_color"
+            app:boxCollapsedPaddingTop="1dp"
+            app:boxStrokeColor="@color/primary_info_line_color"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:helperTextEnabled="true"
+
+            app:helperTextTextAppearance="@style/inputError"
+
+            app:helperTextTextColor="@color/colaba_red_color"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/alimony"
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/alimony_monthly_payment_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:inputType="textPostalAddress"
+                android:fontFamily="@font/rubik_regular"
+                android:imeOptions="actionNext"
+                android:paddingStart="0dp"
+                android:singleLine="true"
+                android:textColor="@color/grey_color_one"
+                android:textSize="@dimen/ed_txt_size_primary_info" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/alimony_payment_receipt_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:fontFamily="@font/rubik_light"
+            android:hint="Payment Recipient"
+            android:textColorHint="@color/primary_info_label_color"
+            app:boxCollapsedPaddingTop="1dp"
+            app:boxStrokeColor="@color/primary_info_line_color"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:helperTextEnabled="true"
+
+            app:helperTextTextAppearance="@style/inputError"
+
+            app:helperTextTextColor="@color/colaba_red_color"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/alimony_monthly_payment_layout"
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/alimony_payment_receipt_layout_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:inputType="textPostalAddress"
+                android:fontFamily="@font/rubik_regular"
+                android:imeOptions="actionNext"
+                android:paddingStart="0dp"
+                android:singleLine="true"
+                android:textColor="@color/grey_color_one"
+                android:textSize="@dimen/ed_txt_size_primary_info" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/separate_maintenance"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/rubik_regular"
+            android:paddingStart="15dp"
+            android:text="Separate Maintenance"
+            android:textColor="@color/grey_color_one"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:buttonCompat="@drawable/cb_selector"
+            app:layout_constraintStart_toStartOf="@+id/alimony_payment_receipt_layout"
+            app:layout_constraintTop_toBottomOf="@+id/alimony_payment_receipt_layout" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/separate_monthly_payment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:fontFamily="@font/rubik_light"
+            android:hint="Monthly Payment"
+            android:textColorHint="@color/primary_info_label_color"
+            app:boxCollapsedPaddingTop="1dp"
+            app:boxStrokeColor="@color/primary_info_line_color"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:helperTextEnabled="true"
+
+            app:helperTextTextAppearance="@style/inputError"
+
+            app:helperTextTextColor="@color/colaba_red_color"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/separate_maintenance"
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/separate_monthly_payment_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:inputType="textPostalAddress"
+                android:fontFamily="@font/rubik_regular"
+                android:imeOptions="actionNext"
+                android:paddingStart="0dp"
+                android:singleLine="true"
+                android:textColor="@color/grey_color_one"
+                android:textSize="@dimen/ed_txt_size_primary_info" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/separate_payment_receipt_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:fontFamily="@font/rubik_light"
+            android:hint="Payment Recipient"
+            android:textColorHint="@color/primary_info_label_color"
+            app:boxCollapsedPaddingTop="1dp"
+            app:boxStrokeColor="@color/primary_info_line_color"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:helperTextEnabled="true"
+
+            app:helperTextTextAppearance="@style/inputError"
+
+            app:helperTextTextColor="@color/colaba_red_color"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/separate_monthly_payment_layout"
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/separate_payment_receipt_layout_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:inputType="textPostalAddress"
+                android:fontFamily="@font/rubik_regular"
+                android:imeOptions="actionNext"
+                android:paddingStart="0dp"
+                android:singleLine="true"
+                android:textColor="@color/grey_color_one"
+                android:textSize="@dimen/ed_txt_size_primary_info" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
