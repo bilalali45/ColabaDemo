@@ -37,7 +37,7 @@ extension ColabaTextFieldDelegate {
     func selectedDate(date:Date){}
     func biometricClicked(){}
     func passwordClicked(){}
-    func textFieldEndEditing(_ textField : UITextField) {}
+    func textFieldEndEditing(_ textField : TextField) {}
     func dismiss(){}
 }
 
@@ -530,7 +530,7 @@ extension ColabaTextField: UITextFieldDelegate {
             _ = validate()
         }
         
-        colabaDelegate?.textFieldEndEditing(textField)
+        colabaDelegate?.textFieldEndEditing(textField as! TextField)
     }
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -593,7 +593,6 @@ extension ColabaTextField {
         _ = self.becomeFirstResponder()
     }
 
-    
     @objc func cancelDatePicker() {
         self.isUserInteractionEnabled = true
         self.resignFirstResponder()
