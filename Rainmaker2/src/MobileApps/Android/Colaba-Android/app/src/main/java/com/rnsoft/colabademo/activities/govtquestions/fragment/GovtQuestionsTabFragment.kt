@@ -47,7 +47,7 @@ class GovtQuestionsTabFragment : GovtQuestionBaseFragment() {
 
         val governmentQuestionActivity = (activity as? GovtQuestionActivity)
         governmentQuestionActivity?.let { governmentQuestionActivity-> }
-
+        viewPager.isUserInputEnabled = false
         viewPager.setPageTransformer(null)
         viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {

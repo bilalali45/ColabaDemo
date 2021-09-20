@@ -442,7 +442,7 @@
     <string name="debt_consolidated">Debt Consolidation</string>
 
 
-
+    <string name="child_support_question">Are you currently obligated to pay child support, alimony or separate maintenance?</string>
     <string name="undisclosed_mortgage_question">Have you or will you be applying for a mortgage loan on another property (not the property securing this loan) on or before closing this transaction that is not disclosed on this loan application?</string>
     <string name="undisclosed_credit_question">Have you or will you be applying for any new credit (e.g., instalment loan, credit card, etc.) on or before closing this loan that is not disclosed on this application?</string>
     <string name="debt_co_question">Are you a co-signer or guarantor on any debt or loan that is not disclosed on this application?</string>
