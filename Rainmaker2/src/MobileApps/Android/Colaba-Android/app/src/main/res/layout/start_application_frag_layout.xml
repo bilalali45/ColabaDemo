@@ -89,12 +89,13 @@
                 android:textSize="15sp" />
 
             <LinearLayout
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/layout_find_contact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
+                android:paddingBottom="30dp"
                 android:background="@drawable/content_bg_with_drop_shadow">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
@@ -112,11 +113,11 @@
                     android:checked="true"/>
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/searchEdittext"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginStart="18dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:paddingLeft="10dp"
                     android:fontFamily="@font/rubik_regular"
@@ -128,8 +129,18 @@
                     android:drawableEnd="@drawable/ic_search"
                     android:paddingRight="10dp"/>
 
-            </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:visibility="gone"
+                    android:id="@+id/recyclerview_contacts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/create_new_contact_btn"
@@ -280,7 +291,7 @@
 
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_home_num"
+                    android:id="@+id/layout_mobile_num"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -301,7 +312,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/layout_email">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/ed_home_number"
+                        android:id="@+id/ed_mobile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
@@ -430,6 +441,7 @@
                 android:id="@+id/btn_create_app"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/selector_btn_round"
                 android:fontFamily="@font/rubik_medium"
                 android:text="@string/create_application"

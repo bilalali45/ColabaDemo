@@ -58,7 +58,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     var isVisaOther : Boolean = false
     var isAddressLoaded :Boolean = false
     var addressBtnText : String = "Add Previous Address"
-    var isBtnSet : Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
