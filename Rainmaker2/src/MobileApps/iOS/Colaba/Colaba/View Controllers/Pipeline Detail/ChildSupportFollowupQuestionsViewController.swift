@@ -64,6 +64,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
         txtfieldChildSupportPaymentsRemaining.setTextField(keyboardType: .asciiCapable)
         txtfieldChildSupportPaymentsRemaining.setIsValidateOnEndEditing(validate: true)
         txtfieldChildSupportPaymentsRemaining.type = .dropdown
+        txtfieldChildSupportPaymentsRemaining.setDropDownDataSource(kPaymentsRemainingArray)
         
         txtfieldChildSupportMonthlyPayment.setTextField(placeholder: "Monthly Payment")
         txtfieldChildSupportMonthlyPayment.setDelegates(controller: self)
@@ -84,6 +85,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
         txtfieldAlimonyPaymentsRemaining.setTextField(keyboardType: .asciiCapable)
         txtfieldAlimonyPaymentsRemaining.setIsValidateOnEndEditing(validate: true)
         txtfieldAlimonyPaymentsRemaining.type = .dropdown
+        txtfieldAlimonyPaymentsRemaining.setDropDownDataSource(kPaymentsRemainingArray)
         
         txtfieldAlimonyMonthlyPayment.setTextField(placeholder: "Monthly Payment")
         txtfieldAlimonyMonthlyPayment.setDelegates(controller: self)
@@ -104,6 +106,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
         txtfieldSeparateMaintainancePaymentsRemaining.setTextField(keyboardType: .asciiCapable)
         txtfieldSeparateMaintainancePaymentsRemaining.setIsValidateOnEndEditing(validate: true)
         txtfieldSeparateMaintainancePaymentsRemaining.type = .dropdown
+        txtfieldSeparateMaintainancePaymentsRemaining.setDropDownDataSource(kPaymentsRemainingArray)
         
         txtfieldSeparateMaintainanceMonthlyPayment.setTextField(placeholder: "Monthly Payment")
         txtfieldSeparateMaintainanceMonthlyPayment.setDelegates(controller: self)

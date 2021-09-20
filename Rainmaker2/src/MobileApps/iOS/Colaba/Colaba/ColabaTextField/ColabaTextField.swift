@@ -231,6 +231,7 @@ class ColabaTextField: TextField {
             self?.text = item
             self?.resignFirstResponder()
             self?.colabaDelegate?.selectedOption(option: item, atIndex: index)
+            self?.validate()
         }
     }
     
