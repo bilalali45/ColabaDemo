@@ -119,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func loadBorrowerInfoController(){
-        let vc = Utility.getNonPermanentResidenceFollowUpQuestionsVC()
+        let vc = Utility.getActiveDutyPersonnelFollowUpQuestionVC()
         self.window?.rootViewController = vc
     }
     

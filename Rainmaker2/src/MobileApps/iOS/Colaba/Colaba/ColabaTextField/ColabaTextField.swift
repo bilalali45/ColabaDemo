@@ -482,18 +482,18 @@ extension ColabaTextField: UITextFieldDelegate {
             self.attributedText = attributedPrefix
         }
         if type == .datePicker {
+            setDatePicker()
             if let datePicker = self.inputView as? UIDatePicker {
                 self.colabaDelegate?.selectedDate(date: datePicker.date)
                 self.text = getFormattedDate(datePicker: datePicker)
             }
-            setDatePicker()
         }
         if type == .monthlyDatePicker {
+            setMonthlyDatePicker()
             if let datePicker = self.inputView as? MonthYearPickerView {
                 self.colabaDelegate?.selectedDate(date: datePicker.date)
                 self.text = getMonthFormattedDate(datePicker: datePicker)
             }
-            monthlyDatePickerButtonClicked()
         }
         if type == .dropdown {
             dropDownButtonClicked()
@@ -567,7 +567,9 @@ extension ColabaTextField {
         toolbar.items = [cancelButton,spacer, doneButton]
         self.isUserInteractionEnabled = true
         self.inputAccessoryView = toolbar
-        _ = self.becomeFirstResponder()
+        if !self.isFirstResponder {
+            _ = self.becomeFirstResponder()
+        }
     }
     
     func setMonthlyDatePicker() {
@@ -591,7 +593,9 @@ extension ColabaTextField {
         toolbar.items = [cancelButton,spacer, doneButton]
         self.isUserInteractionEnabled = true
         self.inputAccessoryView = toolbar
-        _ = self.becomeFirstResponder()
+        if !self.isFirstResponder {
+            _ = self.becomeFirstResponder()
+        }
     }
 
     @objc func cancelDatePicker() {
