@@ -364,6 +364,10 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: ChildSupportFollowupQuestionsViewController.self)) as! ChildSupportFollowupQuestionsViewController
     }
     
+    static func getDemographicInformationVC() -> DemographicInformationViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: DemographicInformationViewController.self)) as! DemographicInformationViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){

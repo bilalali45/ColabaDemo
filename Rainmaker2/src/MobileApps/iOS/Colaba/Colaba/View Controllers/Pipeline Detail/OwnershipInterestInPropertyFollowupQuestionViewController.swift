@@ -34,17 +34,19 @@ class OwnershipInterestInPropertyFollowupQuestionViewController: BaseViewControl
         txtfieldPropertyType.setDelegates(controller: self)
         txtfieldPropertyType.setValidation(validationType: .required)
         txtfieldPropertyType.setTextField(keyboardType: .asciiCapable)
-        txtfieldPropertyType.setIsValidateOnEndEditing(validate: true)
+        //txtfieldPropertyType.setIsValidateOnEndEditing(validate: true)
         txtfieldPropertyType.setValidation(validationType: .required)
-        txtfieldPropertyType.type = .dropdown //kOccupancyTypeArray
+        txtfieldPropertyType.type = .dropdown
+        txtfieldPropertyType.setDropDownDataSource(kOccupancyTypeArray)
         
         txtfieldHoldTitle.setTextField(placeholder: "How did you hold title to the property?")
         txtfieldHoldTitle.setDelegates(controller: self)
         txtfieldHoldTitle.setValidation(validationType: .required)
         txtfieldHoldTitle.setTextField(keyboardType: .asciiCapable)
-        txtfieldHoldTitle.setIsValidateOnEndEditing(validate: true)
+        //txtfieldHoldTitle.setIsValidateOnEndEditing(validate: true)
         txtfieldHoldTitle.setValidation(validationType: .required)
-        txtfieldHoldTitle.type = .dropdown //kHoldTitleArray
+        txtfieldHoldTitle.type = .dropdown
+        txtfieldHoldTitle.setDropDownDataSource(kHoldTitleArray)
         
         btnSaveChanges.layer.borderWidth = 1
         btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor

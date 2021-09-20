@@ -117,6 +117,10 @@
 		23BBADCE26EF2A6200813F04 /* IncomeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCD26EF2A6200813F04 /* IncomeDetailViewController.swift */; };
 		23BBADD026EF3F1D00813F04 /* AddEmployementPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCF26EF3F1D00813F04 /* AddEmployementPopupViewController.swift */; };
 		23BBADD226EF5F8900813F04 /* AddCurrentEmployementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADD126EF5F8900813F04 /* AddCurrentEmployementViewController.swift */; };
+		23BDB1CD26F8615D00C73E33 /* DemographicInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BDB1CC26F8615D00C73E33 /* DemographicInformationViewController.swift */; };
+		23BDB1D026F865EA00C73E33 /* DemographicQuestionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BDB1CE26F865EA00C73E33 /* DemographicQuestionsTableViewCell.swift */; };
+		23BDB1D126F865EA00C73E33 /* DemographicQuestionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23BDB1CF26F865EA00C73E33 /* DemographicQuestionsTableViewCell.xib */; };
+		23BDB1D326F8706900C73E33 /* DemographicQuestionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BDB1D226F8706900C73E33 /* DemographicQuestionsModel.swift */; };
 		23BE064926F08EED00F9B4B8 /* CurrentEmployerAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE064826F08EED00F9B4B8 /* CurrentEmployerAddressViewController.swift */; };
 		23BE064B26F093BD00F9B4B8 /* AddPreviousEmploymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE064A26F093BD00F9B4B8 /* AddPreviousEmploymentViewController.swift */; };
 		23BE064D26F0C0EF00F9B4B8 /* AddSelfEmploymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE064C26F0C0EF00F9B4B8 /* AddSelfEmploymentViewController.swift */; };
@@ -324,6 +328,10 @@
 		23BBADCD26EF2A6200813F04 /* IncomeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeDetailViewController.swift; sourceTree = "<group>"; };
 		23BBADCF26EF3F1D00813F04 /* AddEmployementPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEmployementPopupViewController.swift; sourceTree = "<group>"; };
 		23BBADD126EF5F8900813F04 /* AddCurrentEmployementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCurrentEmployementViewController.swift; sourceTree = "<group>"; };
+		23BDB1CC26F8615D00C73E33 /* DemographicInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemographicInformationViewController.swift; sourceTree = "<group>"; };
+		23BDB1CE26F865EA00C73E33 /* DemographicQuestionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemographicQuestionsTableViewCell.swift; sourceTree = "<group>"; };
+		23BDB1CF26F865EA00C73E33 /* DemographicQuestionsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DemographicQuestionsTableViewCell.xib; sourceTree = "<group>"; };
+		23BDB1D226F8706900C73E33 /* DemographicQuestionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemographicQuestionsModel.swift; sourceTree = "<group>"; };
 		23BE064826F08EED00F9B4B8 /* CurrentEmployerAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentEmployerAddressViewController.swift; sourceTree = "<group>"; };
 		23BE064A26F093BD00F9B4B8 /* AddPreviousEmploymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPreviousEmploymentViewController.swift; sourceTree = "<group>"; };
 		23BE064C26F0C0EF00F9B4B8 /* AddSelfEmploymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSelfEmploymentViewController.swift; sourceTree = "<group>"; };
@@ -478,6 +486,7 @@
 				23DF0CED269ED82000F29B70 /* LoanInfoModel.swift */,
 				23DF0CEF269F022B00F29B70 /* LoanDocumentModel.swift */,
 				23E1A7A326B7E6F200714D3B /* LoanApplicationModel.swift */,
+				23BDB1D226F8706900C73E33 /* DemographicQuestionsModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -529,6 +538,8 @@
 				230B94CD26E7496E004CBC83 /* AssetsDetailTableViewCell.xib */,
 				230B94D026E74C03004CBC83 /* AssetsAddNewTableViewCell.swift */,
 				230B94D126E74C03004CBC83 /* AssetsAddNewTableViewCell.xib */,
+				23BDB1CE26F865EA00C73E33 /* DemographicQuestionsTableViewCell.swift */,
+				23BDB1CF26F865EA00C73E33 /* DemographicQuestionsTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -651,6 +662,7 @@
 				23B5E98626F4A96E00686B8E /* BankruptcyFollowupViewController.swift */,
 				23B5E98826F4C85E00686B8E /* ChildSupportViewController.swift */,
 				23B5E98A26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift */,
+				23BDB1CC26F8615D00C73E33 /* DemographicInformationViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -977,6 +989,7 @@
 				23A0D5CE26958E58002B4BCE /* DashboardHeaderView.xib in Resources */,
 				235BBD7226988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.xib in Resources */,
 				239570E826E8E78700B2B0A7 /* Test.storyboard in Resources */,
+				23BDB1D126F865EA00C73E33 /* DemographicQuestionsTableViewCell.xib in Resources */,
 				2320138E2698324800F500E2 /* BorrowerAddressTableViewCell.xib in Resources */,
 				7186ACBC2653B25B00E740D3 /* LaunchScreen.storyboard in Resources */,
 				7186ACB92653B25B00E740D3 /* Assets.xcassets in Resources */,
@@ -1192,6 +1205,7 @@
 				23DF0CF0269F022B00F29B70 /* LoanDocumentModel.swift in Sources */,
 				23DBAD26269714A800119680 /* ApplicationViewController.swift in Sources */,
 				23B5E97726F46D4700686B8E /* DebtCoSignerViewController.swift in Sources */,
+				23BDB1D326F8706900C73E33 /* DemographicQuestionsModel.swift in Sources */,
 				238A076B26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift in Sources */,
 				2380E25A26DF71EA00B66C61 /* PurchaseSubjectPropertyViewController.swift in Sources */,
 				238E0F8D26F3631E0025FF06 /* UndisclosedBorrowerFundsViewController.swift in Sources */,
@@ -1205,6 +1219,7 @@
 				238E0F9726F389060025FF06 /* PriorityLiensFollowupQuestionViewController.swift in Sources */,
 				23E1A7A426B7E6F200714D3B /* LoanApplicationModel.swift in Sources */,
 				2397AF63267782E6007A1A45 /* PipelineTableViewCell.swift in Sources */,
+				23BDB1D026F865EA00C73E33 /* DemographicQuestionsTableViewCell.swift in Sources */,
 				710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */,
 				23E9C754269C5F100066C978 /* DocumentsDetailViewController.swift in Sources */,
 				237DF98B26D77B98000CAA8E /* AddPreviousResidenceViewController.swift in Sources */,
@@ -1240,6 +1255,7 @@
 				7113F52526569D310066E179 /* LocalAuthManager.swift in Sources */,
 				236EA1AC26789EAC00C2F8B5 /* PipelineMoreViewController.swift in Sources */,
 				236B59D1266504060001F416 /* UserModel.swift in Sources */,
+				23BDB1CD26F8615D00C73E33 /* DemographicInformationViewController.swift in Sources */,
 				23B5E98726F4A96E00686B8E /* BankruptcyFollowupViewController.swift in Sources */,
 				23BBADD026EF3F1D00813F04 /* AddEmployementPopupViewController.swift in Sources */,
 				711D33282654F1710091BC18 /* Constant.swift in Sources */,
