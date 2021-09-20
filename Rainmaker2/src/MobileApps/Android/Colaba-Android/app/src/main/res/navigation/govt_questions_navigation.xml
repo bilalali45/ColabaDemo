@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_child_support">
+    app:startDestination="@+id/navigation_demographic">
 
     <fragment
         android:id="@+id/navigation_question_tab"
@@ -17,6 +17,13 @@
         android:name="com.rnsoft.colabademo.ChildSupportFragment"
         android:label="@string/govt_questions"
         tools:layout="@layout/child_support_layout" />
+
+
+    <fragment
+        android:id="@+id/navigation_demographic"
+        android:name="com.rnsoft.colabademo.DemoGraphicInfoFragment"
+        android:label="@string/debt_co_question"
+        tools:layout="@layout/demographic_info_layout" />
 
 
 </navigation>
