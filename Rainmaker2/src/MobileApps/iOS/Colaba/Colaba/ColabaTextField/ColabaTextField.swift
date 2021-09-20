@@ -14,7 +14,7 @@ import DropDown
 enum ColabaTextFieldType {
     case password
     case dropdown
-//    case editableDropdown
+    case editableDropdown
     case datePicker
     case monthlyDatePicker
     case delete
@@ -51,6 +51,7 @@ class ColabaTextField: TextField {
     private var isValidateOnEndEditing: Bool!
     private var validationType: ValidationType!
     private var dropDown: DropDown!
+    private var dropDownDataSource: [String] = []
     
     //MARK: Public Properties
     public var colabaDelegate: ColabaTextFieldDelegate?
@@ -71,6 +72,11 @@ class ColabaTextField: TextField {
                 isSecureText(true)
                 toggleButtonImage()
             case .dropdown:
+                isButtonHidden(false)
+                self.isUserInteractionEnabled = true
+                self.setButton(image: UIImage(named: "textfield-dropdownIcon")!)
+                setDropDown()
+            case .editableDropdown:
                 isButtonHidden(false)
                 self.isUserInteractionEnabled = true
                 self.setButton(image: UIImage(named: "textfield-dropdownIcon")!)
@@ -180,6 +186,8 @@ class ColabaTextField: TextField {
             colabaDelegate?.passwordClicked()
         case .dropdown:
             dropDownButtonClicked()
+        case .editableDropdown:
+            print("No any action on editable dropdown")
         case .datePicker:
             datePickerButtonClicked()
         case .monthlyDatePicker:
@@ -232,6 +240,7 @@ class ColabaTextField: TextField {
     
     public func setDropDownDataSource(_ dataSource : [String]) {
         dropDown.dataSource = dataSource
+        dropDownDataSource = dataSource // Datasource in case we are filtering datasource
     }
     public func setDropDownDirection(_ direction : DropDown.Direction = .any) {
         if direction == .top {
@@ -448,6 +457,16 @@ extension ColabaTextField: UITextFieldDelegate {
             let string = cleanString(string: self.attributedText!.string, replaceCharacters: [prefix!], replaceWith: "")
             self.attributedText = appendAttributedString(baseString: createAttributedText(prefix: prefix!), string: string, fontColor: Theme.getAppBlackColor(), font: Theme.getRubikRegularFont(size: 15))
         }
+        if type == .editableDropdown {
+            if textField.text == "" {
+                dropDown.dataSource = dropDownDataSource
+                dropDownButtonClicked()
+            } else {
+                let filteredDataSource = dropDownDataSource.filter{$0.localizedCaseInsensitiveContains(self.text!)}
+                dropDown.dataSource = filteredDataSource
+                dropDownButtonClicked()
+            }
+        }
     }
     
     //To hide error text when textField begin editing
@@ -497,6 +516,13 @@ extension ColabaTextField: UITextFieldDelegate {
             self.text = ""
         }
         if type == .dropdown {
+            setButton(image: UIImage(named: "textfield-dropdownIcon"))
+        }
+        if type == .editableDropdown {
+            if !(dropDownDataSource.contains(self.text!)){
+                self.text = ""
+                dropDown.hide()
+            }
             setButton(image: UIImage(named: "textfield-dropdownIcon"))
         }
         

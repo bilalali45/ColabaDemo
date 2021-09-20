@@ -32,7 +32,6 @@
             android:layout_height="wrap_content"
             android:text="Bank Account"
             android:gravity="start"
-
            android:fontFamily="@font/rubik_regular"
             android:textColor="@color/grey_color_one"
             android:textSize="15sp"
