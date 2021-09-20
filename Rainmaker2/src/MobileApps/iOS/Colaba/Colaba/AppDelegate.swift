@@ -119,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func loadBorrowerInfoController(){
-        let vc = Utility.getGovernmentQuestionsVC()
+        let vc = Utility.getAddResidenceVC()
         self.window?.rootViewController = vc
     }
     
