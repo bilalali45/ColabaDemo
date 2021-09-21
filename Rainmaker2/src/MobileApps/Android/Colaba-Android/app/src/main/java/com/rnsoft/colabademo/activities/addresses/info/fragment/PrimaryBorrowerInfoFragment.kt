@@ -45,6 +45,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     lateinit var msBinding: SublayoutMaritalStatusBinding
     lateinit var citizenshipBinding: SublayoutCitizenshipBinding
     lateinit var bindingMilitary: SubLayoutMilitaryBinding
+    private var savedViewInstance: View? = null
     var list: ArrayList<Address> = ArrayList()
     private var touchListener: RecyclerTouchListener? = null
     var count : Int = 0
@@ -52,54 +53,28 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     val listItems = ArrayList<Dependent>()
     lateinit var adapter:ResidenceAdapter
     lateinit var dependentAdapter: DependentAdapter
-    var isMaritalStatusVisible : Boolean = false
-    var isResActiveDuty : Boolean = false
-    var isNationalGuard : Boolean = false
-    var isVisaOther : Boolean = false
-    var isAddressLoaded :Boolean = false
     var addressBtnText : String = "Add Previous Address"
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        bi = PrimaryBorrowerInfoLayoutBinding.inflate(inflater, container, false)
-        msBinding = bi.layoutMaritalStatus
-        citizenshipBinding = bi.layoutCitizenship
-        bindingMilitary = bi.layoutMilitaryService
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return if (savedViewInstance != null) {
+            savedViewInstance
+        } else {
+            bi = PrimaryBorrowerInfoLayoutBinding.inflate(inflater, container, false)
+            savedViewInstance = bi.root
+            msBinding = bi.layoutMaritalStatus
+            citizenshipBinding = bi.layoutCitizenship
+            bindingMilitary = bi.layoutMilitaryService
 
-        setViews()
-        setResidence()
+            setViews()
+            setResidence()
+            bi.tvResidence.setText(addressBtnText)
 
-        if(isMaritalStatusVisible){
-            msBinding.unmarriedAddendum.visibility = View.VISIBLE
-        }
-
-        if(isResActiveDuty) {
-            bindingMilitary.layoutActivePersonnel.visibility = View.VISIBLE
-        }
-
-        if(isNationalGuard){
-            bindingMilitary.layoutNationalGuard.visibility = View.VISIBLE
-        }
-        if(isVisaOther){
-            citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
-        }
-
-        if(!isAddressLoaded){
             list.clear()
             list.add(Address(true,"5919 Trussvile Crossings Parkways, ZV Street, Birmingham AL 35235"))
             list.add(Address(false,"5919 Trussvile Crossings Pkwy, Birmingham AL 35235"))
+
+            savedViewInstance
         }
-
-        bi.tvResidence.setText(addressBtnText)
-
-//        if(!isBtnSet){
-//            bi.tvResidence.setText(getString(R.string.previous_address))
-//        }
-
-        return bi.root
     }
 
     private fun setViews() {
@@ -131,10 +106,10 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         setNumberFormts()
 
         bi.mainConstraintLayout.setOnClickListener { hideSoftKeyboard() }
-        msBinding.unmarriedAddendum.setOnClickListener { findNavController().navigate(R.id.navigation_unmarried) }
-        bindingMilitary.layoutActivePersonnel.setOnClickListener { findNavController().navigate(R.id.navigation_active_duty)}
-        bindingMilitary.layoutNationalGuard.setOnClickListener { findNavController().navigate(R.id.navigation_reserve) }
-        citizenshipBinding.layoutVisaStatusOther.setOnClickListener { findNavController().navigate(R.id.navigation_non_permanent) }
+        msBinding.unmarriedAddendum.setOnClickListener { findNavController().navigate(R.id.action_info_unmarried_addendum) }
+        bindingMilitary.layoutActivePersonnel.setOnClickListener { findNavController().navigate(R.id.action_info_active_duty)}
+        bindingMilitary.layoutNationalGuard.setOnClickListener { findNavController().navigate(R.id.action_info_reserve) }
+        citizenshipBinding.layoutVisaStatusOther.setOnClickListener { findNavController().navigate(R.id.action_info_non_pr) }
 
     }
 
@@ -189,10 +164,9 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             R.id.btn_save_info -> checkValidations()
             R.id.add_dependent_click -> addEmptyDependentField()
             R.id.add_prev_address ->  if(bi.tvResidence.text.equals(getString(R.string.current_address))){
-
-                findNavController().navigate(R.id.navigation_current_address)
+                findNavController().navigate(R.id.action_info_current_address)
             } else {
-                findNavController().navigate(R.id.navigation_mailing_address)
+                findNavController().navigate(R.id.action_info_mailing_address)
             }
 
             R.id.backButton -> requireActivity().finish()
@@ -299,7 +273,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
 
                     if(list.get(position).isCurrentAddress){
                         addressBtnText = getString(R.string.previous_address)
-                        findNavController().navigate(R.id.navigation_current_address)
+                        findNavController().navigate(R.id.action_info_current_address)
                     }
                     else {
                         if(list.get(0).isCurrentAddress) {
@@ -307,7 +281,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
                         } else {
                             addressBtnText = getString(R.string.current_address)
                         }
-                        findNavController().navigate(R.id.navigation_mailing_address)
+                        findNavController().navigate(R.id.action_info_mailing_address)
                     }
                 }
                 override fun onIndependentViewClicked(independentViewID: Int, position: Int) {}
@@ -448,23 +422,20 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
 
     private fun setMaritalStatus(isUnmarried: Boolean, isMarried: Boolean, isDivorced: Boolean) {
         if (isUnmarried) {
-            findNavController().navigate(R.id.navigation_unmarried)
+            findNavController().navigate(R.id.action_info_unmarried_addendum)
             msBinding.unmarriedAddendum.visibility = View.VISIBLE
-            isMaritalStatusVisible = true
             msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
             msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbDivorced.setTypeface(null, Typeface.NORMAL)
 
         }
         if (isMarried) {
-            isMaritalStatusVisible=false
             msBinding.unmarriedAddendum.visibility = View.GONE
             msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbMarried.setTypeface(null, Typeface.BOLD)
             msBinding.rbDivorced.setTypeface(null, Typeface.NORMAL)
         }
         if (isDivorced) {
-            isMaritalStatusVisible=false
             msBinding.unmarriedAddendum.visibility = View.GONE
             msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
@@ -474,22 +445,19 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
 
     private fun setCitizenship(usCitizen: Boolean, PR: Boolean, nonPR: Boolean) {
         if (usCitizen) {
-            isVisaOther = false
             citizenshipBinding.layoutVisaStatusOther.visibility = View.GONE
             citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.BOLD)
             citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
             citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.NORMAL)
         }
         if (PR) {
-            isVisaOther = false
             citizenshipBinding.layoutVisaStatusOther.visibility = View.GONE
             citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
             citizenshipBinding.rbPr.setTypeface(null, Typeface.BOLD)
             citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.NORMAL)
         }
         if (nonPR) {
-            findNavController().navigate(R.id.navigation_non_permanent)
-            isVisaOther = true
+            findNavController().navigate(R.id.action_info_non_pr)
             citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
             citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
             citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
@@ -500,13 +468,11 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     private fun militaryActivePersonel() {
 
         if (bindingMilitary.chbDutyPersonel.isChecked) {
-            findNavController().navigate(R.id.navigation_active_duty)
-            isResActiveDuty = true
+            findNavController().navigate(R.id.action_info_active_duty)
             bindingMilitary.layoutActivePersonnel.visibility = View.VISIBLE
             bindingMilitary.chbDutyPersonel.setTypeface(null, Typeface.BOLD)
 
         } else {
-            isResActiveDuty = false
             bindingMilitary.layoutActivePersonnel.visibility = View.GONE
             bindingMilitary.chbDutyPersonel.setTypeface(null, Typeface.NORMAL)
         }
@@ -515,13 +481,11 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     private fun militaryNationalGuard() {
 
         if (bindingMilitary.chbResNationalGuard.isChecked) {
-            findNavController().navigate(R.id.navigation_reserve)
-            isNationalGuard = true
+            findNavController().navigate(R.id.action_info_reserve)
             bindingMilitary.layoutNationalGuard.visibility = View.VISIBLE
             bindingMilitary.chbResNationalGuard.setTypeface(null, Typeface.BOLD)
 
         } else {
-            isNationalGuard= false
             bindingMilitary.layoutNationalGuard.visibility = View.GONE
             bindingMilitary.chbResNationalGuard.setTypeface(null, Typeface.NORMAL)
         }
@@ -613,7 +577,6 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSwipeDeleteReceivedEvent(event: SwipeToDeleteEvent) {
         if(event.boolean){
-            isAddressLoaded = true
             selectedPosition?.let {
                 if (list.get(selectedPosition!!).isCurrentAddress) {
                     bi.tvResidence.setText(getString(R.string.current_address))
@@ -666,6 +629,7 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
         }
         false
     } */
+
 
 
 }

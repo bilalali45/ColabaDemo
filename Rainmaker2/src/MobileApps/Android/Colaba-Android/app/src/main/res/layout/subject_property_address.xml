@@ -115,6 +115,8 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+
+
             <!--<View
                 android:id="@+id/search_separator"
                 android:layout_width="match_parent"

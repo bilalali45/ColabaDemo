@@ -35,7 +35,7 @@
         android:background="@drawable/content_bg_with_drop_shadow"
         android:layout_marginTop="20dp"
         android:clickable="true"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/content_bg_with_drop_shadow"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_marginTop="20dp">
 
         <TextView
