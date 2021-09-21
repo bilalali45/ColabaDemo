@@ -83,6 +83,7 @@
 		2397AF64267782E6007A1A45 /* PipelineTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2397AF62267782E6007A1A45 /* PipelineTableViewCell.xib */; };
 		2397AF672677A60A007A1A45 /* PipelineDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397AF652677A60A007A1A45 /* PipelineDetailTableViewCell.swift */; };
 		2397AF682677A60A007A1A45 /* PipelineDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */; };
+		239983F226F9B92100C0AFA7 /* NewApplication.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 239983F126F9B92100C0AFA7 /* NewApplication.storyboard */; };
 		239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */; };
 		23A0D5CE26958E58002B4BCE /* DashboardHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23A0D5CD26958E58002B4BCE /* DashboardHeaderView.xib */; };
 		23A0D5D026958E83002B4BCE /* DashboardHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A0D5CF26958E83002B4BCE /* DashboardHeaderView.swift */; };
@@ -294,6 +295,7 @@
 		2397AF62267782E6007A1A45 /* PipelineTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PipelineTableViewCell.xib; sourceTree = "<group>"; };
 		2397AF652677A60A007A1A45 /* PipelineDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineDetailTableViewCell.swift; sourceTree = "<group>"; };
 		2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PipelineDetailTableViewCell.xib; sourceTree = "<group>"; };
+		239983F126F9B92100C0AFA7 /* NewApplication.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NewApplication.storyboard; sourceTree = "<group>"; };
 		239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewPopupViewController.swift; sourceTree = "<group>"; };
 		23A0D5CD26958E58002B4BCE /* DashboardHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DashboardHeaderView.xib; sourceTree = "<group>"; };
 		23A0D5CF26958E83002B4BCE /* DashboardHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardHeaderView.swift; sourceTree = "<group>"; };
@@ -544,6 +546,13 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		239983F026F9B71100C0AFA7 /* Start New Application */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Start New Application";
+			sourceTree = "<group>";
+		};
 		23A0D5CA26958DBC002B4BCE /* View Xib */ = {
 			isa = PBXGroup;
 			children = (
@@ -782,6 +791,7 @@
 				7186ACED2653C5CE00E740D3 /* Authentication.storyboard */,
 				23DBAD1F2696EB2D00119680 /* PipelineDetail.storyboard */,
 				239570E726E8E78700B2B0A7 /* Test.storyboard */,
+				239983F126F9B92100C0AFA7 /* NewApplication.storyboard */,
 			);
 			path = StoryBoards;
 			sourceTree = "<group>";
@@ -789,6 +799,7 @@
 		7186ACE62653C56C00E740D3 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				239983F026F9B71100C0AFA7 /* Start New Application */,
 				23DBAD1E2696EAAA00119680 /* Pipeline Detail */,
 				2368D6532667DA3900D5C1C5 /* Dashboard */,
 				7186ACF22653C61700E740D3 /* Authentication */,
@@ -1008,6 +1019,7 @@
 				23908F9F26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib in Resources */,
 				230B94D326E74C03004CBC83 /* AssetsAddNewTableViewCell.xib in Resources */,
 				23A56C602686152A005CE6F4 /* Rubik-LightItalic.ttf in Resources */,
+				239983F226F9B92100C0AFA7 /* NewApplication.storyboard in Resources */,
 				23DBAD202696EB2D00119680 /* PipelineDetail.storyboard in Resources */,
 				230B94CB26E73F15004CBC83 /* AssetsHeadingTableViewCell.xib in Resources */,
 				232013922698549F00F500E2 /* BorrowerLoanInfoTableViewCell.xib in Resources */,
