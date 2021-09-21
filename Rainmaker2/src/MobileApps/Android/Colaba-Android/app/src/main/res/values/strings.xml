@@ -368,7 +368,7 @@
     <string name="sub_property_refinance_ques1">Do you currently have mortages against this property?</string>
     <string name="sub_property_refinance_ques2">Do you have any second mortages on this property?</string>
 
-
+    <string name="bankruptcy">Bankruptcy</string>
     <string name="demo_graphic_info">DemoGraphic Information</string>
 
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
@@ -402,6 +402,8 @@
     <string name="years_profession">Years in Profession</string>
     <string name="income_ques1">Are you employed by a family member, property seller, real estate agent, or other party to the transaction?</string>
     <string name="income_ques2">Do you have an ownership interest in this business?</string>
+    <string name="priority_liens">Priority liens</string>
+    <string name="undisclosed_fund">undisclosed_fund</string>
     <string name="ownership_percentage">Ownership Percentage</string>
     <string name="pay_type">Pay Type</string>
     <string name="additional_income">Additional Income</string>

@@ -106,9 +106,6 @@ class GiftsAssetsFragment:Fragment() {
             }
         })
 
-
-
-
         binding.dateOfTransferEditText.showSoftInputOnFocus = false
         binding.dateOfTransferEditText.setOnClickListener { openCalendar() }
         binding.dateOfTransferEditText.setOnFocusChangeListener{ _ , _ ->  openCalendar() }

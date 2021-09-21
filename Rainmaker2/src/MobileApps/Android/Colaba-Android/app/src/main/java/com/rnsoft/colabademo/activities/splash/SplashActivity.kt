@@ -39,10 +39,10 @@ class SplashActivity : AppCompatActivity() {
                 delay(500)
                 startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
             }
-
             finish()
+            */
 
-             */
+
 
     }
 
