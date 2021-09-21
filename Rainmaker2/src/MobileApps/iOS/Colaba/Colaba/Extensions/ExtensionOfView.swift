@@ -49,6 +49,13 @@ extension UIView{
         self.layer.shadowRadius = shadowRadius
     }
     
+    func removeShadow(){
+        self.layer.shadowColor = nil
+        self.layer.shadowOffset = .zero
+        self.layer.shadowOpacity = 0
+        self.layer.shadowRadius = 0
+    }
+    
     func roundAllCorners(radius: CGFloat) {
         self.clipsToBounds = true
         self.layer.cornerRadius = radius

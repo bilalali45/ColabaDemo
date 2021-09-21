@@ -84,6 +84,7 @@
 		2397AF672677A60A007A1A45 /* PipelineDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397AF652677A60A007A1A45 /* PipelineDetailTableViewCell.swift */; };
 		2397AF682677A60A007A1A45 /* PipelineDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */; };
 		239983F226F9B92100C0AFA7 /* NewApplication.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 239983F126F9B92100C0AFA7 /* NewApplication.storyboard */; };
+		239983F426F9BA9200C0AFA7 /* StartNewApplicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239983F326F9BA9200C0AFA7 /* StartNewApplicationViewController.swift */; };
 		239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */; };
 		23A0D5CE26958E58002B4BCE /* DashboardHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23A0D5CD26958E58002B4BCE /* DashboardHeaderView.xib */; };
 		23A0D5D026958E83002B4BCE /* DashboardHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A0D5CF26958E83002B4BCE /* DashboardHeaderView.swift */; };
@@ -296,6 +297,7 @@
 		2397AF652677A60A007A1A45 /* PipelineDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineDetailTableViewCell.swift; sourceTree = "<group>"; };
 		2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PipelineDetailTableViewCell.xib; sourceTree = "<group>"; };
 		239983F126F9B92100C0AFA7 /* NewApplication.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NewApplication.storyboard; sourceTree = "<group>"; };
+		239983F326F9BA9200C0AFA7 /* StartNewApplicationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartNewApplicationViewController.swift; sourceTree = "<group>"; };
 		239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewPopupViewController.swift; sourceTree = "<group>"; };
 		23A0D5CD26958E58002B4BCE /* DashboardHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DashboardHeaderView.xib; sourceTree = "<group>"; };
 		23A0D5CF26958E83002B4BCE /* DashboardHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardHeaderView.swift; sourceTree = "<group>"; };
@@ -549,6 +551,7 @@
 		239983F026F9B71100C0AFA7 /* Start New Application */ = {
 			isa = PBXGroup;
 			children = (
+				239983F326F9BA9200C0AFA7 /* StartNewApplicationViewController.swift */,
 			);
 			path = "Start New Application";
 			sourceTree = "<group>";
@@ -1218,6 +1221,7 @@
 				23DBAD26269714A800119680 /* ApplicationViewController.swift in Sources */,
 				23B5E97726F46D4700686B8E /* DebtCoSignerViewController.swift in Sources */,
 				23BDB1D326F8706900C73E33 /* DemographicQuestionsModel.swift in Sources */,
+				239983F426F9BA9200C0AFA7 /* StartNewApplicationViewController.swift in Sources */,
 				238A076B26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift in Sources */,
 				2380E25A26DF71EA00B66C61 /* PurchaseSubjectPropertyViewController.swift in Sources */,
 				238E0F8D26F3631E0025FF06 /* UndisclosedBorrowerFundsViewController.swift in Sources */,
