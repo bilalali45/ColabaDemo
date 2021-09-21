@@ -25,7 +25,7 @@ class AddMilitaryPayViewController: BaseViewController {
     @IBOutlet weak var txtfieldStartDate: ColabaTextField!
     @IBOutlet weak var txtfieldMonthlyBaseSalary: ColabaTextField!
     @IBOutlet weak var txtfieldMilitaryEntitlements: ColabaTextField!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,9 +83,7 @@ class AddMilitaryPayViewController: BaseViewController {
         addressView.dropShadowToCollectionViewCell()
         addressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
     }
     

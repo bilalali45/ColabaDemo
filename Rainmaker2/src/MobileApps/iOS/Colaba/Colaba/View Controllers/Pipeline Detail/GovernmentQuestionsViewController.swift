@@ -13,7 +13,7 @@ class GovernmentQuestionsViewController: BaseViewController {
     //MARK:- Outlets and Properties
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var tabView: UIView!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,9 +23,7 @@ class GovernmentQuestionsViewController: BaseViewController {
     //MARK:- Methods and Actions
     func setupHeaderAndFooter(){
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) {
             let tabItems = ["Richard Glenn", "Maria Randall"]

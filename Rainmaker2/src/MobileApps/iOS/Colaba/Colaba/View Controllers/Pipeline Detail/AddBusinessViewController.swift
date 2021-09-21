@@ -29,7 +29,7 @@ class AddBusinessViewController: BaseViewController {
     @IBOutlet weak var txtfieldJobTitle: ColabaTextField!
     @IBOutlet weak var txtfieldOwnershipPercentage: ColabaTextField!
     @IBOutlet weak var txtfieldNetAnnualIncome: ColabaTextField!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     let businessTypeDropDown = DropDown()
     
@@ -112,9 +112,7 @@ class AddBusinessViewController: BaseViewController {
             businessTypeDropDown.hide()
         }
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
     }
     

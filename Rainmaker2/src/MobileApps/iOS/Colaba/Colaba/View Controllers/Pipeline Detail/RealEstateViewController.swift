@@ -59,7 +59,7 @@ class RealEstateViewController: BaseViewController {
     @IBOutlet weak var secondMortgageView: UIView!
     @IBOutlet weak var lblSecondMortgagePayment: UILabel!
     @IBOutlet weak var lblSecondMortgageBalance: UILabel!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     let propertyTypeDropDown = DropDown()
     let occupancyTypeDropDown = DropDown()
@@ -221,9 +221,7 @@ class RealEstateViewController: BaseViewController {
             
         }
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
     }
     

@@ -19,7 +19,7 @@ class ActiveDutyPersonnelFollowUpQuestionViewController: BaseViewController {
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var txtfieldLastDate: ColabaTextField!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,9 +35,7 @@ class ActiveDutyPersonnelFollowUpQuestionViewController: BaseViewController {
         txtfieldLastDate.type = .monthlyDatePicker
         _ = txtfieldLastDate.becomeFirstResponder()
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {

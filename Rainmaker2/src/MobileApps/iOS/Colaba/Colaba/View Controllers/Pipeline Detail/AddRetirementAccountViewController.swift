@@ -23,7 +23,7 @@ class AddRetirementAccountViewController: BaseViewController {
     @IBOutlet weak var btnEye: UIButton!
     @IBOutlet weak var txtfieldAnnualBaseSalary: TextField!
     @IBOutlet weak var annualBaseSalaryDollarView: UIView!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var isShowAccountNumber = false
     private let validation: Validation
@@ -61,9 +61,7 @@ class AddRetirementAccountViewController: BaseViewController {
         
         txtfieldAnnualBaseSalary.addTarget(self, action: #selector(textfieldAnnualBaseSalaryChanged), for: .editingChanged)
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
     }
     

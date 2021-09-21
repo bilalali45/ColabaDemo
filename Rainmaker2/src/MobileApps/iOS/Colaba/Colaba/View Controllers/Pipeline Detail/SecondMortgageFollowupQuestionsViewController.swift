@@ -42,7 +42,7 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
     @IBOutlet weak var noStackView2: UIStackView!
     @IBOutlet weak var btnNo2: UIButton!
     @IBOutlet weak var lblNo2: UILabel!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var isMortgageCombine = true
     var isMortgageTakenWhenPropertyPurchase = true
@@ -70,9 +70,7 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
         yesStackView2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackView2Tapped)))
         noStackView2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackView2Tapped)))
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
         setTextFields()
     }
