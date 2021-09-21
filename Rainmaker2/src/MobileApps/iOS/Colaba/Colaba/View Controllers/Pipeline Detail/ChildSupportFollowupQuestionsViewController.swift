@@ -40,7 +40,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
     @IBOutlet weak var txtfieldSeparateMaintainancePaymentsRemaining: ColabaTextField!
     @IBOutlet weak var txtfieldSeparateMaintainanceMonthlyPayment: ColabaTextField!
     @IBOutlet weak var txtfieldSeparateMaintainancePaymentRecipient: ColabaTextField!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var isChildSupport = false
     var isAlimony = false
@@ -121,9 +121,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
         txtfieldSeparateMaintainancePaymentRecipient.setTextField(keyboardType: .asciiCapable)
         txtfieldSeparateMaintainancePaymentRecipient.setIsValidateOnEndEditing(validate: true)
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
     }
     
@@ -179,12 +177,67 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
         }
     }
     
+    func validate() -> Bool{
+        if (isChildSupport){
+            if (!txtfieldChildSupportPaymentsRemaining.validate()){
+                return false
+            }
+            if (!txtfieldChildSupportMonthlyPayment.validate()){
+                return false
+            }
+            if (!txtfieldChildSupportPaymentRecipient.validate()){
+                return false
+            }
+        }
+        if (isAlimony){
+            if (!txtfieldAlimonyPaymentsRemaining.validate()){
+                return false
+            }
+            if (!txtfieldAlimonyMonthlyPayment.validate()){
+                return false
+            }
+            if (!txtfieldAlimonyPaymentRecipient.validate()){
+                return false
+            }
+        }
+        if (isSeparateMaintainance){
+            if (!txtfieldSeparateMaintainancePaymentsRemaining.validate()){
+                return false
+            }
+            if (!txtfieldSeparateMaintainanceMonthlyPayment.validate()){
+                return false
+            }
+            if (!txtfieldSeparateMaintainancePaymentRecipient.validate()){
+                return false
+            }
+        }
+        return true
+    }
+    
     @IBAction func btnBackTapped(_ sender: UIButton) {
         self.dismissVC()
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        self.dismissVC()
+        if (isChildSupport){
+            txtfieldChildSupportPaymentsRemaining.validate()
+            txtfieldChildSupportMonthlyPayment.validate()
+            txtfieldChildSupportPaymentRecipient.validate()
+        }
+        if (isAlimony){
+            txtfieldAlimonyPaymentsRemaining.validate()
+            txtfieldAlimonyMonthlyPayment.validate()
+            txtfieldAlimonyPaymentRecipient.validate()
+        }
+        if (isSeparateMaintainance){
+            txtfieldSeparateMaintainancePaymentsRemaining.validate()
+            txtfieldSeparateMaintainanceMonthlyPayment.validate()
+            txtfieldSeparateMaintainancePaymentRecipient.validate()
+        }
+        
+        if (validate()){
+            self.dismissVC()
+        }
     }
     
 }

@@ -30,7 +30,7 @@ class BankruptcyFollowupViewController: BaseViewController {
     @IBOutlet weak var btnChapter13: UIButton!
     @IBOutlet weak var lblChapter13: UILabel!
     @IBOutlet weak var txtviewDetailContainerView: UIView!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var txtViewDetail = MDCFilledTextArea()
     var isChapter7 = false
@@ -81,9 +81,7 @@ class BankruptcyFollowupViewController: BaseViewController {
         //txtViewDetail.textView.delegate = self
         mainView.addSubview(txtViewDetail)
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
     }
     
     @objc func chapter7StackViewTapped(){

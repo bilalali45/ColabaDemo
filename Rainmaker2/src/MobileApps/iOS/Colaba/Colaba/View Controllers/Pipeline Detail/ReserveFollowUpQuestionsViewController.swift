@@ -23,7 +23,7 @@ class ReserveFollowUpQuestionsViewController: BaseViewController {
     @IBOutlet weak var noStackView: UIStackView!
     @IBOutlet weak var btnNo: UIButton!
     @IBOutlet weak var lblNo: UILabel!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var isActive = 1 // 1 for yes 2 for no
     
@@ -31,9 +31,7 @@ class ReserveFollowUpQuestionsViewController: BaseViewController {
         super.viewDidLoad()
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
     }
 
     //MARK:- Methods and Actions

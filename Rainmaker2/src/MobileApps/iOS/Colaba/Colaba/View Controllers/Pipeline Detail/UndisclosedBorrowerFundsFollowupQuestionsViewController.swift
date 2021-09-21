@@ -20,7 +20,7 @@ class UndisclosedBorrowerFundsFollowupQuestionsViewController: BaseViewControlle
     @IBOutlet weak var lblQuestion: UILabel!
     @IBOutlet weak var txtfieldAmountBorrowed: ColabaTextField!
     @IBOutlet weak var txtviewDetailContainerView: UIView!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var txtViewDetail = MDCFilledTextArea()
     
@@ -82,9 +82,7 @@ class UndisclosedBorrowerFundsFollowupQuestionsViewController: BaseViewControlle
         txtViewDetail.textView.delegate = self
         mainView.addSubview(txtViewDetail)
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
     }
     
     func validate() -> Bool {

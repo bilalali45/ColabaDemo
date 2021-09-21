@@ -29,7 +29,7 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
     @IBOutlet weak var txtfieldTypeOfRelation: ColabaTextField!
     @IBOutlet weak var txtfieldState: ColabaTextField!
     @IBOutlet weak var relationshipDetailTextViewContainer: UIView!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var isNonLegalSpouse = 2 // 1 for yes 2 for no
     var txtViewRelationshipDetail = MDCFilledTextArea()
@@ -80,9 +80,7 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
         txtViewRelationshipDetail.textView.delegate = self
         mainView.addSubview(txtViewRelationshipDetail)
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
         setTextFields()
     }
@@ -136,40 +134,39 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton){
         
-        if validate() {
-            if (txtfieldTypeOfRelation.text != "" && txtfieldState.text != ""){
-                if (txtfieldTypeOfRelation.text == "Other" && txtViewRelationshipDetail.textView.text != ""){
-                    self.dismissVC()
+        if isNonLegalSpouse == 1 {
+            if validate() {
+                if (txtfieldTypeOfRelation.text != "" && txtfieldState.text != ""){
+                    if (txtfieldTypeOfRelation.text == "Other" && txtViewRelationshipDetail.textView.text != ""){
+                        self.dismissVC()
+                    }
+                    else if (txtfieldTypeOfRelation.text != "Other"){
+                        self.dismissVC()
+                    }
                 }
-                else if (txtfieldTypeOfRelation.text != "Other"){
-                    self.dismissVC()
-                }
-            }
-        }
+            }}
         else{
             self.dismissVC()
         }
     }
     
     func validate() -> Bool {
-        if isNonLegalSpouse == 1 {
-            var isValidate = txtfieldTypeOfRelation.validate()
-            isValidate = txtfieldState.validate()
-            if (txtfieldTypeOfRelation.text == "Other") {
-                isValidate = validateTextView()
-            }
-            return isValidate
-        } else {
-            return false
+        var isValidate = txtfieldTypeOfRelation.validate()
+        isValidate = txtfieldState.validate()
+        if (txtfieldTypeOfRelation.text == "Other") {
+            isValidate = validateTextView()
         }
+        return isValidate
     }
 }
 
 extension UnmarriedFollowUpQuestionsViewController : ColabaTextFieldDelegate {
 
-    func selectedOption(option: String, atIndex: Int) {
-        relationshipDetailTextViewContainer.isHidden = (option != "Other")
-        txtViewRelationshipDetail.isHidden = (option != "Other")
+    func selectedOption(option: String, atIndex: Int, textField : ColabaTextField) {
+        if textField == txtfieldTypeOfRelation {
+            relationshipDetailTextViewContainer.isHidden = (option != "Other")
+            txtViewRelationshipDetail.isHidden = (option != "Other")
+        }
     }
 }
 

@@ -38,7 +38,18 @@ extension UIView{
         self.layer.shadowOffset = .zero
         self.layer.shadowOpacity = 1
         self.layer.shadowRadius = 8.0
-        
+    }
+    
+    func makeRoundedView() {
+        layer.cornerRadius = frame.height/2
+        layer.masksToBounds = true
+    }
+    
+    func applyShadow(color: UIColor, offset: CGSize, opacity : Float, radius: CGFloat) {
+        layer.shadowColor = color.cgColor
+        layer.shadowOffset = offset
+        layer.shadowOpacity = opacity
+        layer.shadowRadius = radius
     }
     
     func dropShadowToCollectionViewCell(shadowColor: CGColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor,
@@ -47,6 +58,13 @@ extension UIView{
         self.layer.shadowOffset = .zero
         self.layer.shadowOpacity = shadowOpacity
         self.layer.shadowRadius = shadowRadius
+    }
+    
+    func removeShadow(){
+        self.layer.shadowColor = nil
+        self.layer.shadowOffset = .zero
+        self.layer.shadowOpacity = 0
+        self.layer.shadowRadius = 0
     }
     
     func roundAllCorners(radius: CGFloat) {

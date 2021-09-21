@@ -48,7 +48,7 @@ class AddResidenceViewController: BaseViewController {
     @IBOutlet weak var txtfieldMonthlyRentTopConstraint: NSLayoutConstraint! //30 or 0
     @IBOutlet weak var txtfieldMonthlyRentHeightConstraint: NSLayoutConstraint! //39 or 0
     @IBOutlet weak var addMailingAddressStackView: UIStackView!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     @IBOutlet weak var tblViewMailingAddress: UITableView!
     
     @IBOutlet weak var tblViewPlaces: UITableView!
@@ -171,9 +171,7 @@ class AddResidenceViewController: BaseViewController {
         
         addMailingAddressStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addMailingAddressStackViewTapped)))
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
         moveInDateFormatter.dateStyle = .medium
         moveInDateFormatter.dateFormat = "MM/yyyy"

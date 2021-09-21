@@ -17,7 +17,7 @@ class MixPropertyDetailFollowUpViewController: BaseViewController {
     @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var detailTextViewContainer: UIView!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var txtViewDetail = MDCFilledTextArea()
     private let validation: Validation
@@ -71,9 +71,7 @@ class MixPropertyDetailFollowUpViewController: BaseViewController {
         txtViewDetail.textView.delegate = self
         mainView.addSubview(txtViewDetail)
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton){

@@ -25,7 +25,7 @@ class AddRetirementIncomeViewController: BaseViewController {
     @IBOutlet weak var txtfieldEmployerNameHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var txtfieldEmployerNameTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var txtfieldMonthlyIncome: ColabaTextField!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     let retirementIncomeTypeDropDown = DropDown()
     
@@ -93,9 +93,7 @@ class AddRetirementIncomeViewController: BaseViewController {
             }
         }
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
     }
     

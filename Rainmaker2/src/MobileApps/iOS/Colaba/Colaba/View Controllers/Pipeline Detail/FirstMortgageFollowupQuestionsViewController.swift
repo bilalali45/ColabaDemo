@@ -11,16 +11,13 @@ import Material
 class FirstMortgageFollowupQuestionsViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
-    
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblTopHeading: UILabel!
     @IBOutlet weak var lblUsername: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
-    @IBOutlet weak var txtfieldMortgagePayment: TextField!
-    @IBOutlet weak var mortgagePaymentDollarView: UIView!
-    @IBOutlet weak var txtfieldMortgageBalance: TextField!
-    @IBOutlet weak var mortgageBalanceDollarView: UIView!
+    @IBOutlet weak var txtfieldMortgagePayment: ColabaTextField!
+    @IBOutlet weak var txtfieldMortgageBalance: ColabaTextField!
     @IBOutlet weak var accountPaymentsView: UIView!
     @IBOutlet weak var accountPaymentViewHeightConstraint: NSLayoutConstraint! // 337 or 248
     @IBOutlet weak var lblAccountPaymentQuestion: UILabel!
@@ -36,8 +33,7 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     @IBOutlet weak var homeEquityStackView: UIStackView!
     @IBOutlet weak var switchHomeEquity: UISwitch!
     @IBOutlet weak var lblHomeEquity: UILabel!
-    @IBOutlet weak var txtfieldCreditLimit: TextField!
-    @IBOutlet weak var creditLimitDollarView: UIView!
+    @IBOutlet weak var txtfieldCreditLimit: ColabaTextField!
     @IBOutlet weak var mortgagePaidOffView: UIView!
     @IBOutlet weak var lblMortgagePaidOffQuestion: UILabel!
     @IBOutlet weak var yesStackView: UIStackView!
@@ -46,7 +42,7 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     @IBOutlet weak var noStackView: UIStackView!
     @IBOutlet weak var btnNo: UIButton!
     @IBOutlet weak var lblNo: UILabel!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var isAnnualFloodInsurance = true
     var isAnnualPropertyTax = true
@@ -57,7 +53,7 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setMaterialTextFieldsAndViews(textfields: [txtfieldMortgagePayment, txtfieldMortgageBalance, txtfieldCreditLimit])
+        setMaterialTextFieldsAndViews()
         if (isForRealEstate){
             lblUsername.text = "5919 TRUSSVILLE CROSSINGS PKWY"
         }
@@ -65,24 +61,8 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     
     //MARK:- Methods and Actions
     
-    func setMaterialTextFieldsAndViews(textfields: [TextField]){
-        for textfield in textfields{
-            textfield.dividerActiveColor = Theme.getButtonBlueColor()
-            textfield.dividerColor = Theme.getSeparatorNormalColor()
-            textfield.placeholderActiveColor = Theme.getAppGreyColor()
-            textfield.delegate = self
-            textfield.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-            textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
-            textfield.detailColor = .red
-            textfield.detailVerticalOffset = 4
-            textfield.placeholderVerticalOffset = 8
-            textfield.textColor = Theme.getAppBlackColor()
-        }
-        
-        txtfieldMortgagePayment.addTarget(self, action: #selector(txtfieldMortgagePaymentChanged), for: .editingChanged)
-        txtfieldMortgageBalance.addTarget(self, action: #selector(txtfieldMortgageBalanceChanged), for: .editingChanged)
-        txtfieldCreditLimit.addTarget(self, action: #selector(txtfieldCreditChanged), for: .editingChanged)
-        
+    func setMaterialTextFieldsAndViews(){
+
         annualFloodInsuranceStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(annualFloodInsuranceStackViewTapped)))
         annualPropertyTaxesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(annualPropertyTaxStackViewTapped)))
         annualHomeownerInsuranceStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(annualHomeownerInsuranceStackViewTapped)))
@@ -90,41 +70,29 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
-        
-    }
-    
-    func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){
-        for allTextField in allTextFields{
-            if (allTextField == selectedTextField){
-                if (allTextField.text == ""){
-                    allTextField.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-                }
-                else{
-                    allTextField.placeholderLabel.textColor = Theme.getAppGreyColor()
-                }
-            }
-        }
-    }
-    
-    @objc func txtfieldMortgagePaymentChanged(){
-        if let amount = Int(txtfieldMortgagePayment.text!.replacingOccurrences(of: ",", with: "")){
-            txtfieldMortgagePayment.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
-        }
-    }
 
-    @objc func txtfieldMortgageBalanceChanged(){
-        if let amount = Int(txtfieldMortgageBalance.text!.replacingOccurrences(of: ",", with: "")){
-            txtfieldMortgageBalance.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
-        }
+        
+        setTextFields()
     }
     
-    @objc func txtfieldCreditChanged(){
-        if let amount = Int(txtfieldCreditLimit.text!.replacingOccurrences(of: ",", with: "")){
-            txtfieldCreditLimit.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
-        }
+    func setTextFields() {
+        ///First Mortgage Payment Text Field
+        txtfieldMortgagePayment.setTextField(placeholder: "First Mortgage Payment")
+        txtfieldMortgagePayment.setDelegates(controller: self)
+        txtfieldMortgagePayment.setValidation(validationType: .noValidation)
+        txtfieldMortgagePayment.type = .amount
+        
+        ///Unpaid First Mortgage Balance Text Field
+        txtfieldMortgageBalance.setTextField(placeholder: "Unpaid First Mortgage Balance")
+        txtfieldMortgageBalance.setDelegates(controller: self)
+        txtfieldMortgageBalance.setValidation(validationType: .noValidation)
+        txtfieldMortgageBalance.type = .amount
+        
+        ///Credit Limit Text Field
+        txtfieldCreditLimit.setTextField(placeholder: "Credit Limit")
+        txtfieldCreditLimit.setDelegates(controller: self)
+        txtfieldCreditLimit.setValidation(validationType: .noValidation)
+        txtfieldCreditLimit.type = .amount
     }
     
     @objc func annualFloodInsuranceStackViewTapped(){
@@ -170,9 +138,6 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
         lblHomeEquity.font = sender.isOn ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         
         txtfieldCreditLimit.text = ""
-        txtfieldCreditLimit.textInsetsPreset = .none
-        txtfieldCreditLimit.placeholderHorizontalOffset = 0
-        creditLimitDollarView.isHidden = true
         txtfieldCreditLimit.isHidden = !sender.isOn
         accountPaymentViewHeightConstraint.constant = sender.isOn ? 337 : 248
         UIView.animate(withDuration: 0.5) {
@@ -183,54 +148,4 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         self.dismissVC()
     }
-    
-}
-
-extension FirstMortgageFollowupQuestionsViewController: UITextFieldDelegate{
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        
-        if (textField == txtfieldMortgagePayment){
-            txtfieldMortgagePayment.textInsetsPreset = .horizontally5
-            txtfieldMortgagePayment.placeholderHorizontalOffset = -24
-            mortgagePaymentDollarView.isHidden = false
-        }
-        
-        if (textField == txtfieldMortgageBalance){
-            txtfieldMortgageBalance.textInsetsPreset = .horizontally5
-            txtfieldMortgageBalance.placeholderHorizontalOffset = -24
-            mortgageBalanceDollarView.isHidden = false
-        }
-        
-        if (textField == txtfieldCreditLimit){
-            txtfieldCreditLimit.textInsetsPreset = .horizontally5
-            txtfieldCreditLimit.placeholderHorizontalOffset = -24
-            creditLimitDollarView.isHidden = false
-        }
-        
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        
-        if (textField == txtfieldMortgagePayment && txtfieldMortgagePayment.text == ""){
-            txtfieldMortgagePayment.textInsetsPreset = .none
-            txtfieldMortgagePayment.placeholderHorizontalOffset = 0
-            mortgagePaymentDollarView.isHidden = true
-        }
-        
-        if (textField == txtfieldMortgageBalance && txtfieldMortgageBalance.text == ""){
-            txtfieldMortgageBalance.textInsetsPreset = .none
-            txtfieldMortgageBalance.placeholderHorizontalOffset = 0
-            mortgageBalanceDollarView.isHidden = true
-        }
-        
-        if (textField == txtfieldCreditLimit && txtfieldCreditLimit.text == ""){
-            txtfieldCreditLimit.textInsetsPreset = .none
-            txtfieldCreditLimit.placeholderHorizontalOffset = 0
-            creditLimitDollarView.isHidden = true
-        }
-        
-        setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldMortgagePayment, txtfieldMortgageBalance, txtfieldCreditLimit])
-    }
-    
 }

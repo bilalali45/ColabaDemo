@@ -25,7 +25,7 @@ enum ColabaTextFieldType {
 
 protocol ColabaTextFieldDelegate {
     func deleteButtonClicked()
-    func selectedOption(option: String, atIndex : Int)
+    func selectedOption(option: String, atIndex : Int, textField: ColabaTextField)
     func selectedDate(date:Date)
     func textFieldEndEditing(_ textField : TextField)
     func dismiss()
@@ -33,7 +33,7 @@ protocol ColabaTextFieldDelegate {
 
 extension ColabaTextFieldDelegate {
     func deleteButtonClicked(){}
-    func selectedOption(option: String, atIndex : Int) {}
+    func selectedOption(option: String, atIndex : Int, textField: ColabaTextField) {}
     func selectedDate(date:Date){}
     func biometricClicked(){}
     func passwordClicked(){}
@@ -230,7 +230,7 @@ class ColabaTextField: TextField {
             self?.dropDown.hide()
             self?.text = item
             self?.resignFirstResponder()
-            self?.colabaDelegate?.selectedOption(option: item, atIndex: index)
+            self?.colabaDelegate?.selectedOption(option: item, atIndex: index, textField: self!)
             self?.validate()
         }
     }

@@ -40,7 +40,7 @@ class AddGiftFundsViewController: UIViewController {
     @IBOutlet weak var lblNo: UILabel!
     @IBOutlet weak var txtfieldDate: TextField!
     @IBOutlet weak var btnCalendar: UIButton!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     let giftSourceDropDown = DropDown()
     var isCashGift = false
@@ -112,9 +112,7 @@ class AddGiftFundsViewController: UIViewController {
         dateOfTransferDateFormatter.dateFormat = "MM/dd/yyyy"
         txtfieldDate.addInputViewDatePicker(target: self, selector: #selector(dateChanged))
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
     }
     
