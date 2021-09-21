@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_demographic">
+    app:startDestination="@+id/navigation_question_tab">
 
     <fragment
         android:id="@+id/navigation_question_tab"
@@ -23,7 +23,7 @@
         android:id="@+id/navigation_demographic"
         android:name="com.rnsoft.colabademo.DemoGraphicInfoFragment"
         android:label="@string/debt_co_question"
-        tools:layout="@layout/demographic_info_layout" />
+        />
 
 
 </navigation>

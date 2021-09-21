@@ -6,17 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.rnsoft.colabademo.databinding.ChildSupportLayoutBinding
-import com.rnsoft.colabademo.databinding.DemographicInfoLayoutBinding
-import com.rnsoft.colabademo.databinding.PriorityLiensLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class DemoGraphicInfoFragment:Fragment() {
 
-    private var _binding: DemographicInfoLayoutBinding? = null
-    private val binding get() = _binding!!
+    //private var _binding: DemographicInfoLayoutBinding? = null
+    //private val binding get() = _binding!!
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -26,13 +23,15 @@ class DemoGraphicInfoFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = DemographicInfoLayoutBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        setUpUI()
-        return root
+        //_binding = DemographicInfoLayoutBinding.inflate(inflater, container, false)
+      //  val root: View = binding.root
+        //setUpDemoGraphicScreen()
+        return View(requireContext())
     }
 
-    private fun setUpUI() {
+
+    /*
+    private fun setUpDemoGraphicScreen() {
         binding.asianCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 binding.asianInnerConstraintLayout.visibility = View.VISIBLE
@@ -93,4 +92,5 @@ class DemoGraphicInfoFragment:Fragment() {
 
         }
     }
+     */
 }
