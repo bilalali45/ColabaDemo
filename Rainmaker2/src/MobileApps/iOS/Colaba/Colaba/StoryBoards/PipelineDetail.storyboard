@@ -9203,7 +9203,7 @@ Birmingham AL 35235</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H6i-hT-iab">
-                                        <rect key="frame" x="120" y="36" width="135.5" height="13"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -9247,9 +9247,9 @@ Birmingham AL 35235</string>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QkT-QT-znq">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
                                         <subviews>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="R1w-Om-92v" customClass="TextField" customModule="Material">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="R1w-Om-92v" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="30" width="335" height="39"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="nMc-DS-dp9"/>
                                                 </constraints>
@@ -9277,20 +9277,9 @@ Birmingham AL 35235</string>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kOX-fi-uSo">
-                                                <rect key="frame" x="20" y="69" width="335" height="2"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="2" id="Sqx-Pd-6Zn"/>
-                                                </constraints>
-                                            </view>
-                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fmm-TR-xD9">
-                                                <rect key="frame" x="335" y="32" width="18" height="22"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="textfield-dropdownIcon"/>
-                                            </button>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GuI-gf-3rX" customClass="TextField" customModule="Material">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GuI-gf-3rX" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="99" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="pkU-Lh-LvD"/>
                                                 </constraints>
@@ -9317,8 +9306,9 @@ Birmingham AL 35235</string>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xVa-hU-eQ8" customClass="TextField" customModule="Material">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xVa-hU-eQ8" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="168" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="OHj-41-hSj"/>
                                                 </constraints>
@@ -9345,20 +9335,9 @@ Birmingham AL 35235</string>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfm-zz-Gda">
-                                                <rect key="frame" x="328" y="170" width="25" height="25"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="25" id="nBj-Yq-Jfs"/>
-                                                    <constraint firstAttribute="height" constant="25" id="nLx-cf-wze"/>
-                                                </constraints>
-                                                <state key="normal" image="eyeIcon"/>
-                                                <connections>
-                                                    <action selector="btnEyeTapped:" destination="q1B-Od-9yL" eventType="touchUpInside" id="kBo-MG-yLG"/>
-                                                </connections>
-                                            </button>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4Y0-JT-Gfr" customClass="TextField" customModule="Material">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4Y0-JT-Gfr" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="237" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="2lF-Lx-5hb"/>
                                                 </constraints>
@@ -9385,60 +9364,21 @@ Birmingham AL 35235</string>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ohA-nB-Hoj">
-                                                <rect key="frame" x="20" y="237" width="24" height="39"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1aU-Ii-qTT">
-                                                        <rect key="frame" x="0.0" y="11" width="10" height="18"/>
-                                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
-                                                        <color key="textColor" name="AppGreyColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v2J-qo-Hmu">
-                                                        <rect key="frame" x="17" y="12.5" width="1" height="15"/>
-                                                        <color key="backgroundColor" name="SeparatorNormalColor"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="1" id="vSw-Zv-VXA"/>
-                                                        </constraints>
-                                                    </view>
-                                                </subviews>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="24" id="Q9y-N2-Tml"/>
-                                                    <constraint firstAttribute="height" constant="39" id="Xfl-vL-ebY"/>
-                                                    <constraint firstItem="v2J-qo-Hmu" firstAttribute="leading" secondItem="1aU-Ii-qTT" secondAttribute="trailing" constant="7" id="f5P-z3-iIP"/>
-                                                    <constraint firstItem="v2J-qo-Hmu" firstAttribute="centerY" secondItem="1aU-Ii-qTT" secondAttribute="centerY" id="tkF-iO-p3L"/>
-                                                    <constraint firstAttribute="bottom" secondItem="1aU-Ii-qTT" secondAttribute="bottom" constant="10" id="uM4-HZ-Pba"/>
-                                                    <constraint firstItem="1aU-Ii-qTT" firstAttribute="leading" secondItem="ohA-nB-Hoj" secondAttribute="leading" id="vae-fO-b09"/>
-                                                    <constraint firstItem="v2J-qo-Hmu" firstAttribute="height" secondItem="1aU-Ii-qTT" secondAttribute="height" multiplier="0.833333" id="wV4-JK-LZ7"/>
-                                                </constraints>
-                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="GuI-gf-3rX" firstAttribute="top" secondItem="R1w-Om-92v" secondAttribute="bottom" constant="30" id="2dz-n3-Cwg"/>
-                                            <constraint firstAttribute="trailing" secondItem="kOX-fi-uSo" secondAttribute="trailing" constant="20" id="Bks-NB-rA6"/>
                                             <constraint firstAttribute="trailing" secondItem="GuI-gf-3rX" secondAttribute="trailing" constant="20" id="N0b-Bk-c6g"/>
-                                            <constraint firstItem="ohA-nB-Hoj" firstAttribute="leading" secondItem="QkT-QT-znq" secondAttribute="leading" constant="20" id="Oyd-ob-BCc"/>
                                             <constraint firstAttribute="trailing" secondItem="4Y0-JT-Gfr" secondAttribute="trailing" constant="20" id="S82-QK-Yys"/>
-                                            <constraint firstItem="fmm-TR-xD9" firstAttribute="top" secondItem="QkT-QT-znq" secondAttribute="top" constant="32" id="Wyt-bv-IwS"/>
-                                            <constraint firstItem="kOX-fi-uSo" firstAttribute="top" secondItem="R1w-Om-92v" secondAttribute="bottom" id="ZHb-Wu-3JS"/>
-                                            <constraint firstAttribute="trailing" secondItem="gfm-zz-Gda" secondAttribute="trailing" constant="22" id="Zrm-j5-ZCB"/>
-                                            <constraint firstItem="kOX-fi-uSo" firstAttribute="leading" secondItem="QkT-QT-znq" secondAttribute="leading" constant="20" id="adF-UW-Rvw"/>
                                             <constraint firstAttribute="trailing" secondItem="xVa-hU-eQ8" secondAttribute="trailing" constant="20" id="b4S-4g-nTy"/>
                                             <constraint firstItem="xVa-hU-eQ8" firstAttribute="top" secondItem="GuI-gf-3rX" secondAttribute="bottom" constant="30" id="cVh-pt-vja"/>
-                                            <constraint firstAttribute="trailing" secondItem="fmm-TR-xD9" secondAttribute="trailing" constant="22" id="cyy-Xj-3Pl"/>
-                                            <constraint firstItem="ohA-nB-Hoj" firstAttribute="top" secondItem="xVa-hU-eQ8" secondAttribute="bottom" constant="30" id="eEl-Ei-nyj"/>
                                             <constraint firstItem="4Y0-JT-Gfr" firstAttribute="top" secondItem="xVa-hU-eQ8" secondAttribute="bottom" constant="30" id="g4o-rN-KKl"/>
                                             <constraint firstItem="R1w-Om-92v" firstAttribute="top" secondItem="QkT-QT-znq" secondAttribute="top" constant="30" id="gVZ-9j-wwe"/>
                                             <constraint firstAttribute="height" constant="300" id="hrK-82-kMd"/>
                                             <constraint firstItem="xVa-hU-eQ8" firstAttribute="leading" secondItem="QkT-QT-znq" secondAttribute="leading" constant="20" id="m7z-qa-FIn"/>
                                             <constraint firstAttribute="trailing" secondItem="R1w-Om-92v" secondAttribute="trailing" constant="20" id="nAd-u1-AJP"/>
-                                            <constraint firstAttribute="trailing" secondItem="kOX-fi-uSo" secondAttribute="trailing" constant="20" id="omA-ta-TK9"/>
-                                            <constraint firstItem="gfm-zz-Gda" firstAttribute="top" secondItem="GuI-gf-3rX" secondAttribute="bottom" constant="32" id="rpn-nI-X0C"/>
                                             <constraint firstItem="GuI-gf-3rX" firstAttribute="leading" secondItem="QkT-QT-znq" secondAttribute="leading" constant="20" id="si4-AQ-nHr"/>
                                             <constraint firstItem="R1w-Om-92v" firstAttribute="leading" secondItem="QkT-QT-znq" secondAttribute="leading" constant="20" id="tlH-dC-vpJ"/>
-                                            <constraint firstItem="kOX-fi-uSo" firstAttribute="leading" secondItem="QkT-QT-znq" secondAttribute="leading" constant="20" id="xTx-oV-tcY"/>
                                             <constraint firstItem="4Y0-JT-Gfr" firstAttribute="leading" secondItem="QkT-QT-znq" secondAttribute="leading" constant="20" id="zLY-WU-3DN"/>
                                         </constraints>
                                     </view>
@@ -9451,7 +9391,7 @@ Birmingham AL 35235</string>
                                     <constraint firstAttribute="trailing" secondItem="QkT-QT-znq" secondAttribute="trailing" id="vwD-ZD-oog"/>
                                 </constraints>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ihw-op-yMi">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ihw-op-yMi" customClass="ColabaButton" customModule="Colaba" customModuleProvider="target">
                                 <rect key="frame" x="300" y="592" width="60" height="60"/>
                                 <color key="backgroundColor" name="ButtonBlueColor"/>
                                 <constraints>
@@ -9484,12 +9424,8 @@ Birmingham AL 35235</string>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="accountTypeDropDownAnchorView" destination="kOX-fi-uSo" id="qXv-pi-HK5"/>
-                        <outlet property="annualBaseSalaryDollarView" destination="ohA-nB-Hoj" id="Db9-JD-RrX"/>
-                        <outlet property="btnAccountTypeDropDown" destination="fmm-TR-xD9" id="IUc-mY-nh2"/>
                         <outlet property="btnBack" destination="mqm-br-Z7H" id="tb6-ok-QhF"/>
                         <outlet property="btnDelete" destination="1I8-Z5-F3s" id="hjd-6O-Uz3"/>
-                        <outlet property="btnEye" destination="gfm-zz-Gda" id="PAA-iZ-8aF"/>
                         <outlet property="btnSaveChanges" destination="ihw-op-yMi" id="61r-PF-PMJ"/>
                         <outlet property="lblBorrowerName" destination="H6i-hT-iab" id="RJj-J9-P4A"/>
                         <outlet property="lblTitle" destination="9G5-0K-w4k" id="yFN-vF-vVQ"/>
