@@ -114,7 +114,7 @@ class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
 
 extension NonPermanentResidenceFollowUpQuestionsViewController : ColabaTextFieldDelegate {
 
-    func selectedOption(option: String, atIndex: Int) {
+    func selectedOption(option: String, atIndex: Int, textField: ColabaTextField) {
         statusDetailTextViewContainer.isHidden = (option != "Other")
         txtViewStatusDetail.isHidden = (option != "Other")
     }

@@ -15,7 +15,7 @@ class MainTabBarViewController: UITabBarController {
         super.viewDidLoad()
         self.tabBar.tintColor = Theme.getButtonBlueColor()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(popupViewCloseTapped), name: NSNotification.Name(rawValue: kNotificationPopupViewCloseTapped), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(popupViewCloseTapped), name: NSNotification.Name(rawValue: kNotificationPopupViewCloseTapped), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(getNotificationCount), name: NSNotification.Name(rawValue: kNotificationRefreshCounter), object: nil)
         
         let centerPoint = (self.view.frame.width / 2) - 30
@@ -40,18 +40,20 @@ class MainTabBarViewController: UITabBarController {
     
     //MARK:- Methods and Actions
     @objc func newButtonTapped(){
-        UIView.transition(with: self.newButton, duration: 0.5, options: .transitionCrossDissolve, animations: {
-            self.newButton.isHidden = true
-        })
-        let vc = Utility.getCreateNewPopupVC()
-        self.present(vc, animated: false, completion: nil)
+//        UIView.transition(with: self.newButton, duration: 0.5, options: .transitionCrossDissolve, animations: {
+//            self.newButton.isHidden = true
+//        })
+//        let vc = Utility.getCreateNewPopupVC()
+//        self.present(vc, animated: false, completion: nil)
+        let vc = Utility.getStartNewApplicationVC()
+        self.presentVC(vc: vc)
     }
     
-    @objc func popupViewCloseTapped(){
-        UIView.transition(with: self.newButton, duration: 0.5, options: .transitionCrossDissolve, animations: {
-            self.newButton.isHidden = false
-        })
-    }
+//    @objc func popupViewCloseTapped(){
+//        UIView.transition(with: self.newButton, duration: 0.5, options: .transitionCrossDissolve, animations: {
+//            self.newButton.isHidden = false
+//        })
+//    }
    
     //MARK:- API's
     

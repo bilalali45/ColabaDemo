@@ -76,14 +76,14 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
     }
     
     func setTextFields() {
-        ///First Mortgage Payment Text Field
+        ///Second Mortgage Payment Text Field
         txtfieldMortgagePayment.setTextField(placeholder: "Second Mortgage Payment")
         txtfieldMortgagePayment.setDelegates(controller: self)
         txtfieldMortgagePayment.setValidation(validationType: .noValidation)
         txtfieldMortgagePayment.type = .amount
         
-        ///Unpaid First Mortgage Balance Text Field
-        txtfieldMortgageBalance.setTextField(placeholder: "Second First Mortgage Balance")
+        ///Unpaid Second Mortgage Balance Text Field
+        txtfieldMortgageBalance.setTextField(placeholder: "Unpaid Second Mortgage Balance")
         txtfieldMortgageBalance.setDelegates(controller: self)
         txtfieldMortgageBalance.setValidation(validationType: .noValidation)
         txtfieldMortgageBalance.type = .amount
