@@ -40,7 +40,7 @@ class AddProceedsFromTransactionViewController: BaseViewController {
     @IBOutlet weak var btnAssetsTypeDropDown: UIButton!
     @IBOutlet weak var assetsTypeDropDownAnchorView: UIView!
     @IBOutlet weak var assetsDescriptionTextViewContainer: UIView!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     let transactionTypeDropDown = DropDown()
     var isLoanSecureByAnAsset = false
@@ -188,9 +188,7 @@ class AddProceedsFromTransactionViewController: BaseViewController {
         
         txtfieldExpectedProceeds.addTarget(self, action: #selector(textfieldExpectedProceedsChanged), for: .editingChanged)
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
     }
     

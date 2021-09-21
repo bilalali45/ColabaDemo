@@ -31,7 +31,7 @@ class PurchaseLoanInfoViewController: BaseViewController {
     @IBOutlet weak var txtfieldPercentage: TextField!
     @IBOutlet weak var percentageView: UIView!
     @IBOutlet weak var txtfieldClosingDate: TextField!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     let loanStageDropDown = DropDown()
     let closingDateFormatter = DateFormatter()
@@ -74,9 +74,7 @@ class PurchaseLoanInfoViewController: BaseViewController {
         txtfieldDownPayment.addTarget(self, action: #selector(txtfieldDownPaymentChanged), for: .editingChanged)
         txtfieldPercentage.addTarget(self, action: #selector(txtfieldPercentageChanged), for: .editingChanged)
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
         closingDateFormatter.dateStyle = .medium
         closingDateFormatter.dateFormat = "MM/yyyy"

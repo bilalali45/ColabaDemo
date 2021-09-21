@@ -21,7 +21,7 @@ class RefinanceLoanInfoViewController: BaseViewController {
     @IBOutlet weak var txtfieldLoanStage: ColabaTextField!
     @IBOutlet weak var txtfieldAdditionalCashoutAmount: ColabaTextField!
     @IBOutlet weak var txtfieldLoanAmount: ColabaTextField!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,9 +48,7 @@ class RefinanceLoanInfoViewController: BaseViewController {
         txtfieldLoanAmount.setValidation(validationType: .required)
         txtfieldLoanAmount.type = .amount
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
     }
     

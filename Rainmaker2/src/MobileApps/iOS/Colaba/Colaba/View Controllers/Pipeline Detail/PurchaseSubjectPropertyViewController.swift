@@ -18,7 +18,7 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var seperatorView: UIView!
     @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     @IBOutlet weak var subjectPropertyTBDView: UIView!
     @IBOutlet weak var lblSubjectPropertyTBD: UILabel!
     @IBOutlet weak var btnSubjectPropertyTBD: UIButton!
@@ -153,9 +153,7 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
         occupyingStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(occupyingStackViewTapped)))
         nonOccupyingStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nonOccupyingStackViewTapped)))
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
     }
     

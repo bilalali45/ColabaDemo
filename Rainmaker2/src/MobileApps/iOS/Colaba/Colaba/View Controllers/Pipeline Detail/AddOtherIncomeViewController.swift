@@ -25,7 +25,7 @@ class AddOtherIncomeViewController: BaseViewController {
     @IBOutlet weak var txtfieldDescriptionTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var txtfieldDescriptionHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var txtfieldMonthlyIncome: ColabaTextField!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     let incomeTypeDropDown = DropDown()
     
@@ -84,9 +84,7 @@ class AddOtherIncomeViewController: BaseViewController {
             self.view.layoutSubviews()
         }
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
     }
     

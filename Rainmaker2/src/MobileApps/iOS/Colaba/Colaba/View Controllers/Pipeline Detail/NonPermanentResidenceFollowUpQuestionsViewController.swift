@@ -21,7 +21,7 @@ class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var txtfieldVisaStatus: ColabaTextField!
     @IBOutlet weak var statusDetailTextViewContainer: UIView!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var txtViewStatusDetail = MDCFilledTextArea()
     
@@ -71,9 +71,7 @@ class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
         txtViewStatusDetail.textView.delegate = self
         mainView.addSubview(txtViewStatusDetail)
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
         setTextFields()
     }

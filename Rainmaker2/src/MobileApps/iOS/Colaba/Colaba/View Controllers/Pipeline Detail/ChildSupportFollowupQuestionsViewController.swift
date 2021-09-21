@@ -40,7 +40,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
     @IBOutlet weak var txtfieldSeparateMaintainancePaymentsRemaining: ColabaTextField!
     @IBOutlet weak var txtfieldSeparateMaintainanceMonthlyPayment: ColabaTextField!
     @IBOutlet weak var txtfieldSeparateMaintainancePaymentRecipient: ColabaTextField!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var isChildSupport = false
     var isAlimony = false
@@ -121,9 +121,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
         txtfieldSeparateMaintainancePaymentRecipient.setTextField(keyboardType: .asciiCapable)
         txtfieldSeparateMaintainancePaymentRecipient.setIsValidateOnEndEditing(validate: true)
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
     }
     

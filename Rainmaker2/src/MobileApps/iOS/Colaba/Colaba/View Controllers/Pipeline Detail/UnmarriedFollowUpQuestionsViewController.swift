@@ -29,7 +29,7 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
     @IBOutlet weak var txtfieldTypeOfRelation: ColabaTextField!
     @IBOutlet weak var txtfieldState: ColabaTextField!
     @IBOutlet weak var relationshipDetailTextViewContainer: UIView!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var isNonLegalSpouse = 2 // 1 for yes 2 for no
     var txtViewRelationshipDetail = MDCFilledTextArea()
@@ -80,9 +80,7 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
         txtViewRelationshipDetail.textView.delegate = self
         mainView.addSubview(txtViewRelationshipDetail)
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
         setTextFields()
     }

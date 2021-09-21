@@ -36,7 +36,7 @@ class AddPreviousEmploymentViewController: BaseViewController {
     @IBOutlet weak var txtfieldOwnershipPercentage: ColabaTextField!
     @IBOutlet weak var ownershipViewHeightConstraint: NSLayoutConstraint! //215 or 126
     @IBOutlet weak var txtfieldNetAnnualIncome: ColabaTextField!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var hasOwnershipInterest = true
     
@@ -105,9 +105,7 @@ class AddPreviousEmploymentViewController: BaseViewController {
         addressView.dropShadowToCollectionViewCell()
         addressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
         ownershipYesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ownershipYesStackViewTapped)))
         ownershipNoStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ownershipNoStackViewTapped)))
