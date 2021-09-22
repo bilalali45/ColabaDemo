@@ -66,6 +66,7 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
         binding.layoutAddress.setOnClickListener(this)
         toolbar.btnClose.setOnClickListener(this)
         binding.btnSaveChange.setOnClickListener(this)
+        binding.currentEmpLayout.setOnClickListener(this)
 
         setInputFields()
     }
@@ -131,7 +132,7 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
             R.id.cb_commission -> commissionClicked()
             R.id.layout_address -> openAddressFragment() //findNavController().navigate(R.id.action_address)
             R.id.btn_close -> findNavController().popBackStack()
-            R.id.mainLayout_curr_employment -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutCurrEmployment)
+            R.id.current_emp_layout -> HideSoftkeyboard.hide(requireActivity(),binding.currentEmpLayout)
 
         }
     }

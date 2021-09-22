@@ -38,7 +38,6 @@ class IncomePreviousEmployment : Fragment(),View.OnClickListener {
             toolbar = binding.headerIncome
             savedViewInstance = binding.root
 
-
             // set Header title
             toolbar.toolbarTitle.setText(getString(R.string.previous_employment))
 
@@ -46,9 +45,7 @@ class IncomePreviousEmployment : Fragment(),View.OnClickListener {
             savedViewInstance
 
         }
-
     }
-
 
     private fun initViews() {
         binding.rbOwnershipYes.setOnClickListener(this)
@@ -56,6 +53,7 @@ class IncomePreviousEmployment : Fragment(),View.OnClickListener {
         binding.layoutAddress.setOnClickListener(this)
         toolbar.btnClose.setOnClickListener(this)
         binding.btnSaveChange.setOnClickListener(this)
+        binding.mainLayoutPrevEmployment.setOnClickListener(this)
 
         setInputFields()
     }

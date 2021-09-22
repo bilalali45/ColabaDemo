@@ -28,7 +28,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
-            android:id="@+id/mainLayout_curr_employment"
+            android:id="@+id/current_emp_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -77,7 +77,7 @@
                 android:id="@+id/layout_emp_phnum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/emp_phone_number"
                 android:textColorHint="@color/primary_info_label_color"
@@ -153,7 +153,7 @@
                 android:id="@+id/layout_job_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/job_title"
                 android:textColorHint="@color/primary_info_label_color"
@@ -187,7 +187,7 @@
                 android:id="@+id/layout_start_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:hint="@string/start_date"
                 android:textColorHint="@color/primary_info_label_color"
                 android:fontFamily="@font/rubik_light"
@@ -228,7 +228,7 @@
                 android:id="@+id/layout_years_profession"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/years_profession"
                 android:textColorHint="@color/primary_info_label_color"
@@ -262,7 +262,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_regular"
                 android:lineSpacingExtra="10dp"
                 android:text="@string/income_ques1"

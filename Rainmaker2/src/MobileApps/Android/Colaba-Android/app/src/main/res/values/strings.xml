@@ -389,6 +389,7 @@
     <string name="credit_limit_switch">Home Equity Line of Credit (HELOC)</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="total_income">Total Income</string>
     <string name="current_employment">Current Employment</string>
     <string name="previous_employment">Previous Employment</string>
     <string name="self_employment_contractor">Self Employment / Ind. Contractor</string>

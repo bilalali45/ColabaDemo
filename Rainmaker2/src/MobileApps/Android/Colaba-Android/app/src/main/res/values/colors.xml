@@ -24,6 +24,7 @@
     <color name="half_white">#FBFBFB</color>
     <color name="half_white_one">#F8F8F8</color>
     <color name="layout_border_color">#E5E5E5</color>
+    <color name="background_one">#E5E5E5</color>
 
     <color name="colaba_primary_color">#FF4484F4</color>
 
@@ -43,7 +44,6 @@
     <color name="grey_color_four">#FFCCCCCC</color>
     <color name="colaba_line_separator">#FFCCCCCC</color>
     <color name="colaba_red_color">#FFFF5652</color>
-
 
     <color name="colaba_grey_line_color">#FF707070</color>
     <color name="loan_view_holder_separator">#80E5E5E5</color>
