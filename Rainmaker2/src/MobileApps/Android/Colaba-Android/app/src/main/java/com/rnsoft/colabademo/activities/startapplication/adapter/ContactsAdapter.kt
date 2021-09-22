@@ -1,8 +1,7 @@
-package com.rnsoft.colabademo.startapplication.adapter
+package com.rnsoft.colabademo.activities.startapplication.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.Contacts
