@@ -775,3 +775,14 @@ func appendAttributedString(baseString: NSMutableAttributedString, string: Strin
     baseString.append(attributedString)
     return baseString
 }
+
+func createAttributedPrefix(prefix : String) -> NSMutableAttributedString {
+    //TODO: Create new attributed string function with basic strings attributes and target strings attributes
+    var attributedString =  createAttributedString(baseString: prefix, string: prefix, fontColor: Theme.getAppGreyColor(), font: Theme.getRubikMediumFont(size: 15.0))
+    attributedString =  updateAttributedString(baseString: attributedString, string: "|", fontColor: Theme.getSeparatorNormalColor(), font: Theme.getRubikRegularFont(size: 14.0))
+    return attributedString
+}
+
+func createAttributedTextWithPrefix(prefix : String, string: String) -> NSMutableAttributedString {
+    return appendAttributedString(baseString: createAttributedPrefix(prefix: prefix), string: string, fontColor: Theme.getAppBlackColor(), font: Theme.getRubikRegularFont(size: 15))
+}

@@ -11,6 +11,11 @@ import Material
 import MonthYearPicker
 import DropDown
 
+enum PrefixType: String {
+    case amount     = "$  |  "
+    case percentage = "%  |  "
+}
+
 enum ColabaTextFieldType {
     case password
     case dropdown
@@ -27,6 +32,7 @@ protocol ColabaTextFieldDelegate {
     func deleteButtonClicked()
     func selectedOption(option: String, atIndex : Int, textField: ColabaTextField)
     func selectedDate(date:Date)
+    func textFieldDidChange(_ textField : ColabaTextField)
     func textFieldEndEditing(_ textField : ColabaTextField)
     func dismiss()
 }
@@ -37,6 +43,7 @@ extension ColabaTextFieldDelegate {
     func selectedDate(date:Date){}
     func biometricClicked(){}
     func passwordClicked(){}
+    func textFieldDidChange(_ textField : ColabaTextField) {}
     func textFieldEndEditing(_ textField : ColabaTextField) {}
     func dismiss(){}
 }
@@ -85,11 +92,11 @@ class ColabaTextField: TextField {
                 button.contentHorizontalAlignment = .center
                 self.setButton(image: UIImage(named: "DeleteDependent"))
             case .amount:
-                prefix = "$  |  "
-                attributedPrefix = createAttributedText(prefix: prefix!)
+                prefix = PrefixType.amount.rawValue
+                attributedPrefix = createAttributedPrefix(prefix: prefix!)
             case .percentage:
-                prefix = "%  |  "
-                attributedPrefix = createAttributedText(prefix: prefix!)
+                prefix = PrefixType.percentage.rawValue
+                attributedPrefix = createAttributedPrefix(prefix: prefix!)
             case .datePicker:
                 isButtonHidden(false)
                 self.isUserInteractionEnabled = true
@@ -231,7 +238,7 @@ class ColabaTextField: TextField {
             self?.text = item
             self?.resignFirstResponder()
             self?.colabaDelegate?.selectedOption(option: item, atIndex: index, textField: self!)
-            self?.validate()
+            _ = self?.validate()
         }
     }
     
@@ -386,13 +393,6 @@ extension ColabaTextField {
         setButton(image: UIImage(named: self.isSecureTextEntry ? "eyeIcon" : "hide"))
     }
     
-    private func createAttributedText(prefix : String) -> NSMutableAttributedString {
-        //TODO: Create new attributed string function with basic strings attributes and target strings attributes
-        var attributedString =  createAttributedString(baseString: prefix, string: prefix, fontColor: Theme.getAppGreyColor(), font: Theme.getRubikMediumFont(size: 15.0))
-        attributedString =  updateAttributedString(baseString: attributedString, string: "|", fontColor: Theme.getSeparatorNormalColor(), font: Theme.getRubikRegularFont(size: 14.0))
-        return attributedString
-    }
-    
     public func isButtonHidden(_ hidden: Bool = true) {
         self.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 36)
         button.isHidden = hidden
@@ -451,12 +451,12 @@ extension ColabaTextField: UITextFieldDelegate {
             if let amount = Int(cleanString(string: self.attributedText!.string, replaceCharacters: [prefix!,",", " "], replaceWith: "")){
                 //With Commas function create String like $10,000.00, now remove $ and 0.00 from string and return to field
                 let amountWithComma = cleanString(string: amount.withCommas(), replaceCharacters: ["$",".00"], replaceWith: "")
-                self.attributedText = appendAttributedString(baseString: createAttributedText(prefix: prefix!), string: amountWithComma, fontColor: Theme.getAppBlackColor(), font: Theme.getRubikRegularFont(size: 15))
+                self.attributedText = createAttributedTextWithPrefix(prefix: prefix!, string: amountWithComma)
             }
         }
         if type == .percentage {
-            let string = cleanString(string: self.attributedText!.string, replaceCharacters: [prefix!], replaceWith: "")
-            self.attributedText = appendAttributedString(baseString: createAttributedText(prefix: prefix!), string: string, fontColor: Theme.getAppBlackColor(), font: Theme.getRubikRegularFont(size: 15))
+            let string = Int(cleanString(string: self.attributedText!.string, replaceCharacters: [prefix!], replaceWith: ""))?.description
+            self.attributedText = createAttributedTextWithPrefix(prefix: prefix!, string: string ?? "0" )
         }
         if type == .editableDropdown {
             if textField.text == "" {
@@ -468,6 +468,7 @@ extension ColabaTextField: UITextFieldDelegate {
                 dropDownButtonClicked()
             }
         }
+        colabaDelegate?.textFieldDidChange(self)
     }
     
     //To hide error text when textField begin editing
@@ -531,7 +532,7 @@ extension ColabaTextField: UITextFieldDelegate {
             _ = validate()
         }
         
-        colabaDelegate?.textFieldEndEditing(textField as! ColabaTextField)
+        colabaDelegate?.textFieldEndEditing(self)
     }
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
