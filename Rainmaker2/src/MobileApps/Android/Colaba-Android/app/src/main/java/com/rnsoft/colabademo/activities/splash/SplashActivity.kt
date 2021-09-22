@@ -10,38 +10,34 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
-    private val activityScope = CoroutineScope(Dispatchers.Main)
+        private val activityScope = CoroutineScope(Dispatchers.Main)
 
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
+        @Inject
+        lateinit var sharedPreferences: SharedPreferences
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.splash_layout)
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.splash_layout)
 
 
-    activityScope.launch {
+        activityScope.launch {
+                //startActivity(Intent(this@SplashActivity, SubjectPropertyActivity::class.java))
+                //startActivity(Intent(this@SplashActivity, GovtQuestionActivity::class.java))
+               if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
+                    && sharedPreferences.getBoolean(AppConstant.isbiometricEnabled, false)
+                ) {
+                    delay(500)
+                    startActivity(Intent(this@SplashActivity, WelcomeActivity::class.java))
+                } else if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)) {
+                    delay(500)
+                    startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
+                } else {
+                    delay(500)
+                    startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
+                }
+                finish()
 
-        startActivity(Intent(this@SplashActivity, SubjectPropertyActivity::class.java))
-
-        //startActivity(Intent(this@SplashActivity, GovtQuestionActivity::class.java))
-
-//
-//           if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
-//                && sharedPreferences.getBoolean(AppConstant.isbiometricEnabled, false)
-//            ) {
-//                delay(500)
-//                startActivity(Intent(this@SplashActivity, WelcomeActivity::class.java))
-//            } else if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)) {
-//                delay(500)
-//                startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
-//            } else {
-//                delay(500)
-//                startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
-//            }
-//            finish()
-
-    }
+        }
 
     }
 }
