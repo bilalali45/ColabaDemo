@@ -119,7 +119,7 @@ class AddPreviousEmploymentViewController: BaseViewController {
         let totalHeight = ownershipViewHeight + 900
         self.mainViewHeightConstraint.constant = totalHeight
         
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
     }

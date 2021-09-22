@@ -89,7 +89,7 @@ class DetailTabFragment : Fragment() {
 
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                Log.e("Selected_Page", position.toString())
+                //Log.e("Selected_Page", position.toString())
 
                 selectedPosition = position
             }
@@ -106,10 +106,9 @@ class DetailTabFragment : Fragment() {
                 tab?.let {
                     viewPager.adapter
                     viewPager.currentItem
-                }
+                 }
+                binding.mAppbar.setExpanded(true,true)
             }
-
-
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
 

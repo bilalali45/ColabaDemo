@@ -184,7 +184,7 @@ class AddCurrentEmployementViewController: BaseViewController {
         let totalHeight = employedViewHeight + ownershipViewHeight + payTypeViewHeight + additionalIncomeViewHeight + 700
         self.mainViewHeightConstraint.constant = totalHeight
         
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
     }

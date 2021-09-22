@@ -76,7 +76,7 @@ class AssetsDetailViewController: BaseViewController {
         
         self.mainViewHeightConstraint.constant = CGFloat(totalHeight)
         
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
             self.tableViewBankAccount.reloadData()
             self.tableViewRetirementAccount.reloadData()

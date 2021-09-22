@@ -231,9 +231,9 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         let firstMortgageViewHeight = self.firstMortgageMainView.frame.height
         let secondMortgageViewHeight = self.secondMortgageMainView.frame.height
         
-        self.mainViewHeightConstraint.constant = firstMortgageViewHeight + secondMortgageViewHeight + 1500
+        self.mainViewHeightConstraint.constant = firstMortgageViewHeight + secondMortgageViewHeight + 1600
         
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
     }
@@ -257,7 +257,9 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         lblSubjectPropertyAddress.font = isTBDProperty ?  Theme.getRubikRegularFont(size: 15) : Theme.getRubikMediumFont(size: 15)
         subjectPropertyAddressViewHeightConstraint.constant = isTBDProperty ? 50 : 110
         lblAddress.isHidden = isTBDProperty
-        setScreenHeight()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.setScreenHeight()
+        }
     }
     
     @objc func showHideRentalIncome(){
@@ -283,7 +285,9 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
             txtfieldRentalIncome.textInsetsPreset = .none
             txtfieldRentalIncome.placeholderHorizontalOffset = 0
         }
-        setScreenHeight()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.setScreenHeight()
+        }
     }
     
     @objc func yesStackViewTapped(){
@@ -305,7 +309,9 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         lblNo.font = isMixedUseProperty ?  Theme.getRubikRegularFont(size: 15) : Theme.getRubikMediumFont(size: 15)
         propertyDetailView.isHidden = !isMixedUseProperty
         propertyViewHeightConstraint.constant = isMixedUseProperty ? 347 : 203
-        setScreenHeight()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.setScreenHeight()
+        }
     }
     
     @objc func propertyDetailViewTapped(){

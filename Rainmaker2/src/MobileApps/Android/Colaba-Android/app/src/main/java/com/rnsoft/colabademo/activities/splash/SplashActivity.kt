@@ -24,10 +24,10 @@ class SplashActivity : AppCompatActivity() {
 
         //startActivity(Intent(this@SplashActivity, SubjectPropertyActivity::class.java))
 
-        startActivity(Intent(this@SplashActivity, GovtQuestionActivity::class.java))
+        //startActivity(Intent(this@SplashActivity, GovtQuestionActivity::class.java))
 
-            /*
-            if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
+
+           if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
                 && sharedPreferences.getBoolean(AppConstant.isbiometricEnabled, false)
             ) {
                 delay(500)
@@ -40,9 +40,6 @@ class SplashActivity : AppCompatActivity() {
                 startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
             }
             finish()
-            */
-
-
 
     }
 

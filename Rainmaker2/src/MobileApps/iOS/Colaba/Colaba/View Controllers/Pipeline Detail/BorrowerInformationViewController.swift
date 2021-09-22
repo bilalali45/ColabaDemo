@@ -159,7 +159,7 @@ class BorrowerInformationViewController: BaseViewController {
         dependentsCollectionViewHeightConstraint.constant = dependentsCollectionViewHeight
         self.mainViewHeightConstraint.constant = totalHeight
         
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
     }

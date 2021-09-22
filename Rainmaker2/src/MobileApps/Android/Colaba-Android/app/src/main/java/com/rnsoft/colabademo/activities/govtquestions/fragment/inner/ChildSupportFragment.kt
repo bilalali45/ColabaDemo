@@ -67,8 +67,6 @@ class ChildSupportFragment:Fragment() {
         }
 
 
-
-
         binding.alimonyPaymentRemainingTextView.setAdapter(dataAdapter)
         binding.alimonyPaymentRemainingTextView.setOnFocusChangeListener { _, _ ->
             HideSoftkeyboard.hide(requireContext(),  binding.alimonyPaymentRemainingTextView)
@@ -123,7 +121,6 @@ class ChildSupportFragment:Fragment() {
         CustomMaterialFields.setDollarPrefix(binding.alimonyMonthlyPaymentLayout, requireActivity())
         CustomMaterialFields.setDollarPrefix(binding.separateMonthlyPaymentLayout, requireActivity())
 
-
         binding.childSupportCheckBox.setOnClickListener {
             if(binding.childSupportCheckBox.isChecked)
                 binding.childSupportInnerFields.visibility = View.VISIBLE
@@ -156,6 +153,15 @@ class ChildSupportFragment:Fragment() {
         binding.backButton.setOnClickListener{
             findNavController().popBackStack()
         }
+
+        binding.separateMonthlyPaymentEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.separateMonthlyPaymentEditText, binding.separateMaintenancePaymentRemainingLayout, requireContext()))
+        binding.separatePaymentReceiptEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.separatePaymentReceiptEditText, binding.separatePaymentReceiptLayout, requireContext()))
+
+        binding.alimonyMonthlyPaymentEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.alimonyMonthlyPaymentEditText, binding.alimonyMonthlyPaymentLayout, requireContext()))
+        binding.alimonyPaymentReceiptEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.alimonyPaymentReceiptEditText, binding.alimonyPaymentReceiptLayout, requireContext()))
+
+        binding.monthlyPaymentEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.monthlyPaymentEditText, binding.monthlyPaymentLayout, requireContext()))
+        binding.paymentReceiptEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.paymentReceiptEditText, binding.paymentReceiptLayout, requireContext()))
     }
 
     private fun checkEmptyFields():Boolean{
