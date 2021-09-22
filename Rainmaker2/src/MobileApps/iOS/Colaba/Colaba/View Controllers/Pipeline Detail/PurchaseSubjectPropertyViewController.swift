@@ -171,7 +171,7 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     }
     
     func setScreenHeight(){
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
     }

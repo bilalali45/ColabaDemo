@@ -134,7 +134,7 @@ class StartNewApplicationViewController: BaseViewController {
         let findBorrowerHeight = findBorrowerView.frame.height
         let createNewContactHeight = createContactView.frame.height
         self.mainViewHeightConstraint.constant = findBorrowerHeight + createNewContactHeight + 450
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
     }
@@ -173,7 +173,7 @@ class StartNewApplicationViewController: BaseViewController {
             createContactView.removeShadow()
         }
         
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
         
