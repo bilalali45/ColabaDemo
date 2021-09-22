@@ -104,14 +104,8 @@ class LoginFragment : Fragment() {
             }
         }
 
-
-
-        userEmailField.setText("mcureg99@mailinator.com")
-        passwordField.setText("Test@124")
-
-
-
-
+       userEmailField.setText("mcureg99@mailinator.com")
+       passwordField.setText("Test@124")
 
 
         imageView5 =  root.findViewById<ImageView>(R.id.imageView5)

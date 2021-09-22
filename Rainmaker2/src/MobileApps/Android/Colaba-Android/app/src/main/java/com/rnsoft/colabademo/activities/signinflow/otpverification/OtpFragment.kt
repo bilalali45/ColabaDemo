@@ -88,8 +88,10 @@ class OtpFragment: Fragment() {
         //////////////////////////////////////////////////////////////////////////////////////////////
 
         sharedPreferences.getString(AppConstant.phoneNumber,"")?.let { phoneNumber ->
-            val lastFour = phoneNumber.substring(phoneNumber.length - 4, phoneNumber.length)
-            phoneMessageText.text = "Enter the code sent to (***) ***-"+lastFour
+            if(phoneNumber.isNotEmpty() && phoneNumber.isNotBlank()) {
+                val lastFour = phoneNumber.substring(phoneNumber.length - 4, phoneNumber.length)
+                phoneMessageText.text = "Enter the code sent to (***) ***-" + lastFour
+            }
         }
 
         otpEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(otpEditText, textInputLayout, requireContext()))
