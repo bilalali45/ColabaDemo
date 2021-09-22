@@ -27,6 +27,7 @@ class PurchaseLoanInfoViewController: BaseViewController {
     @IBOutlet weak var txtfieldClosingDate: ColabaTextField!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
+    var isDownPaymentPercentageChanged = false
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextFields()
@@ -103,12 +104,44 @@ class PurchaseLoanInfoViewController: BaseViewController {
     }
 }
 
-/*
- 
- if let percentage = Double(txtfieldPercentage.text!), let purchaseAmount = Double(txtfieldPurchasePrice.text!.replacingOccurrences(of: ",", with: "")){
- let downPaymentPercentage = percentage / 100
- let downPayment = Int(purchaseAmount * downPaymentPercentage)
- self.txtfieldDownPayment.text = downPayment.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
- self.txtfieldDownPayment.dividerColor = Theme.getSeparatorNormalColor()
- self.txtfieldDownPayment.detail = ""
- */
+extension PurchaseLoanInfoViewController: ColabaTextFieldDelegate {
+    func textFieldDidChange(_ textField: ColabaTextField) {
+        if textField == txtfieldPurchasePrice {
+            if !isDownPaymentPercentageChanged {
+                txtfieldPercentage.attributedText = createAttributedTextWithPrefix(prefix: PrefixType.percentage.rawValue, string: "20")
+                isDownPaymentPercentageChanged = true
+            }
+            calculateDownPayment()
+        }
+        if textField == txtfieldPercentage {
+            isDownPaymentPercentageChanged = true
+            calculateDownPayment()
+        }
+        
+        if textField == txtfieldDownPayment {
+            isDownPaymentPercentageChanged = true
+            calculatePercentage()
+        }
+    }
+    
+    func calculateDownPayment() {
+        let percentage = Double(cleanString(string: txtfieldPercentage.text ?? "0.0", replaceCharacters: [PrefixType.percentage.rawValue], replaceWith: "")) ?? 0.0
+        
+        if let purchaseAmount = Double(cleanString(string: txtfieldPurchasePrice.text!, replaceCharacters: [PrefixType.amount.rawValue, ","], replaceWith: "")) {
+            let downPaymentPercentage = percentage / 100
+            let downPayment = Int(round(purchaseAmount * downPaymentPercentage))
+            let downPaymentString = cleanString(string: downPayment.withCommas(), replaceCharacters: ["$",".00"], replaceWith: "")
+            txtfieldDownPayment.attributedText = createAttributedTextWithPrefix(prefix: PrefixType.amount.rawValue, string: downPaymentString)
+        }
+    }
+    
+    func calculatePercentage() {
+        let downPayment = Double(cleanString(string: txtfieldDownPayment.text ?? "0.0", replaceCharacters: [PrefixType.amount.rawValue, ","], replaceWith: "")) ?? 0.0
+        
+        if let purchaseAmount = Double(cleanString(string: txtfieldPurchasePrice.text!, replaceCharacters: [PrefixType.amount.rawValue, ","], replaceWith: "")) {
+            let percentage = Int(round(downPayment / purchaseAmount * 100))
+            txtfieldPercentage.attributedText = createAttributedTextWithPrefix(prefix: PrefixType.percentage.rawValue, string: percentage.description)
+        }
+    }
+}
+
