@@ -205,3 +205,21 @@ class AddPreviousEmploymentViewController: BaseViewController {
     }
 }
 
+extension AddPreviousEmploymentViewController: ColabaTextFieldDelegate{
+    
+    func textFieldEndEditing(_ textField: ColabaTextField) {
+        if (textField == txtfieldStartDate){
+            let dateFormater = DateFormatter()
+            dateFormater.dateStyle = .medium
+            dateFormater.dateFormat = "MM/dd/yyyy"
+            txtfieldEndDate.setMinDate(date: dateFormater.date(from: txtfieldStartDate.text!)!)
+        }
+        else if (textField == txtfieldEndDate){
+            let dateFormater = DateFormatter()
+            dateFormater.dateStyle = .medium
+            dateFormater.dateFormat = "MM/dd/yyyy"
+            txtfieldStartDate.setMaxDate(date: dateFormater.date(from: txtfieldEndDate.text!)!)
+        }
+    }
+    
+}

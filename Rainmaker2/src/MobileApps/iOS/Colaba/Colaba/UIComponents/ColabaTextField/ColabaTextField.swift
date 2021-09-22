@@ -27,7 +27,7 @@ protocol ColabaTextFieldDelegate {
     func deleteButtonClicked()
     func selectedOption(option: String, atIndex : Int, textField: ColabaTextField)
     func selectedDate(date:Date)
-    func textFieldEndEditing(_ textField : TextField)
+    func textFieldEndEditing(_ textField : ColabaTextField)
     func dismiss()
 }
 
@@ -37,7 +37,7 @@ extension ColabaTextFieldDelegate {
     func selectedDate(date:Date){}
     func biometricClicked(){}
     func passwordClicked(){}
-    func textFieldEndEditing(_ textField : TextField) {}
+    func textFieldEndEditing(_ textField : ColabaTextField) {}
     func dismiss(){}
 }
 
@@ -531,7 +531,7 @@ extension ColabaTextField: UITextFieldDelegate {
             _ = validate()
         }
         
-        colabaDelegate?.textFieldEndEditing(textField as! TextField)
+        colabaDelegate?.textFieldEndEditing(textField as! ColabaTextField)
     }
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
