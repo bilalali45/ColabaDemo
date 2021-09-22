@@ -20,6 +20,7 @@ class RealEstateViewController: BaseViewController {
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var addressView: UIView!
     @IBOutlet weak var lblAddress: UILabel!
+    @IBOutlet weak var addAddressView: UIView!
     @IBOutlet weak var txtfieldPropertyType: ColabaTextField!
     @IBOutlet weak var btnPropertyTypeDropDown: UIButton!
     @IBOutlet weak var propertyTypeDropDownAnchorView: UIView!
@@ -81,6 +82,11 @@ class RealEstateViewController: BaseViewController {
         addressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         addressView.dropShadowToCollectionViewCell()
         addressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
+        
+        addAddressView.layer.cornerRadius = 6
+        addAddressView.layer.borderWidth = 1
+        addAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        addAddressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
         
         txtfieldPropertyType.setTextField(placeholder: "Property Type")
         txtfieldPropertyType.setDelegates(controller: self)
