@@ -174,7 +174,7 @@
             android:id="@+id/loanPurpose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="25dp"
             android:fontFamily="@font/rubik_medium"
             android:text="Purchase"
@@ -343,7 +343,7 @@
             android:id="@+id/imageView35"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/propertyValue"
             app:srcCompat="@drawable/ic_dollar_home_svg" />
