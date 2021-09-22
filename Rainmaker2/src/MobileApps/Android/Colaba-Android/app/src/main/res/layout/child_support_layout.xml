@@ -64,18 +64,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/borrower_purpose" />
 
-        <ImageView
-            android:id="@+id/top_del_imageview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-
-            app:srcCompat="@drawable/ic_grey_del" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -83,6 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
+        android:paddingBottom="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +91,7 @@
 
 
         <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/chapter7"
+            android:id="@+id/child_support_check_box"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginTop="20dp"
@@ -128,6 +117,21 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/child_support_inner_fields"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:paddingBottom="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/child_support_check_box"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            >
+
+
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/payment_remaining_layout"
@@ -158,7 +162,7 @@
             app:hintTextColor="@color/grey_color_two"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chapter7">
+            app:layout_constraintTop_toTopOf="parent">
 
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -169,8 +173,8 @@
                 android:layout_gravity="bottom"
                 android:backgroundTint="@android:color/transparent"
                 android:completionThreshold="1"
-                android:cursorVisible="true"
-
+                android:cursorVisible="false"
+                android:inputType="none"
                 android:focusable="true"
 
                 android:focusableInTouchMode="true"
@@ -219,11 +223,12 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:ems="10"
-                android:inputType="textPostalAddress"
+                android:digits="1234567890-"
+                android:singleLine="true"
+                android:inputType="number"
                 android:fontFamily="@font/rubik_regular"
                 android:imeOptions="actionNext"
                 android:paddingStart="0dp"
-                android:singleLine="true"
                 android:textColor="@color/grey_color_one"
                 android:textSize="@dimen/ed_txt_size_primary_info" />
 
@@ -273,12 +278,14 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/alimony"
+            android:id="@+id/alimony_check_box"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/rubik_regular"
             android:paddingStart="15dp"
             android:text="Alimony"
@@ -286,16 +293,84 @@
             android:textSize="14sp"
             android:textStyle="bold"
             app:buttonCompat="@drawable/cb_selector"
-            app:layout_constraintStart_toStartOf="@+id/payment_receipt_layout"
-            app:layout_constraintTop_toBottomOf="@+id/payment_receipt_layout" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/child_support_inner_fields" />
 
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/alimony_inner_fields"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:paddingBottom="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/alimony_check_box"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            >
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/alimony_payment_remaining_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:background="@android:color/transparent"
+            android:hint="Payments remaining"
+            android:textColorHint="@color/primary_info_label_color"
+            app:boxCollapsedPaddingTop="1dp"
+            app:boxStrokeColor="@color/primary_info_line_color"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:endIconDrawable="@drawable/ic_down_arrow"
+
+            app:endIconMode="custom"
+            app:endIconTint="@color/grey_color_three"
+            android:layout_marginTop="26dp"
+            app:helperTextEnabled="true"
+
+            app:helperTextTextAppearance="@style/inputError"
+            app:helperTextTextColor="@color/colaba_red_color"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+            app:hintTextColor="@color/grey_color_two"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/alimony_payment_remaining_text_view"
+                style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:backgroundTint="@android:color/transparent"
+                android:completionThreshold="1"
+                android:cursorVisible="false"
+                android:inputType="none"
+                android:focusable="true"
+
+                android:focusableInTouchMode="true"
+                android:fontFamily="@font/rubik_regular"
+                android:gravity="bottom"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:spinnerMode="dropdown"
+
+                android:textAlignment="gravity"
+                android:textColor="@color/grey_color_one"
+                android:textColorHint="@color/grey_color_three"
+                android:textSize="15sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/alimony_monthly_payment_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
             android:fontFamily="@font/rubik_light"
             android:hint="Monthly Payment"
             android:textColorHint="@color/primary_info_label_color"
@@ -304,7 +379,7 @@
             app:boxStrokeWidth="0.5dp"
             app:boxStrokeWidthFocused="1dp"
             app:helperTextEnabled="true"
-
+            android:layout_marginTop="26dp"
             app:helperTextTextAppearance="@style/inputError"
 
             app:helperTextTextColor="@color/colaba_red_color"
@@ -312,7 +387,7 @@
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/alimony"
+            app:layout_constraintTop_toBottomOf="@+id/alimony_payment_remaining_layout"
 
             >
 
@@ -322,11 +397,12 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:ems="10"
-                android:inputType="textPostalAddress"
+                android:digits="1234567890-"
+                android:singleLine="true"
+                android:inputType="number"
                 android:fontFamily="@font/rubik_regular"
                 android:imeOptions="actionNext"
                 android:paddingStart="0dp"
-                android:singleLine="true"
                 android:textColor="@color/grey_color_one"
                 android:textSize="@dimen/ed_txt_size_primary_info" />
 
@@ -360,7 +436,7 @@
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/alimony_payment_receipt_layout_edit_text"
+                android:id="@+id/alimony_payment_receipt_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -375,12 +451,14 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/separate_maintenance"
+            android:id="@+id/separate_maintenance_check_box"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/rubik_regular"
             android:paddingStart="15dp"
             android:text="Separate Maintenance"
@@ -388,8 +466,78 @@
             android:textSize="14sp"
             android:textStyle="bold"
             app:buttonCompat="@drawable/cb_selector"
-            app:layout_constraintStart_toStartOf="@+id/alimony_payment_receipt_layout"
-            app:layout_constraintTop_toBottomOf="@+id/alimony_payment_receipt_layout" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/alimony_inner_fields" />
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/separate_maintenance_inner_fields"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/separate_maintenance_check_box"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            >
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/separate_maintenance_payment_remaining_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:background="@android:color/transparent"
+            android:hint="Payments remaining"
+            android:textColorHint="@color/primary_info_label_color"
+            app:boxCollapsedPaddingTop="1dp"
+            app:boxStrokeColor="@color/primary_info_line_color"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:endIconDrawable="@drawable/ic_down_arrow"
+            android:layout_marginTop="26dp"
+            app:endIconMode="custom"
+            app:endIconTint="@color/grey_color_three"
+
+            app:helperTextEnabled="true"
+
+            app:helperTextTextAppearance="@style/inputError"
+            app:helperTextTextColor="@color/colaba_red_color"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+            app:hintTextColor="@color/grey_color_two"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/separate_maintenance_payment_remaining_text_view"
+                style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:backgroundTint="@android:color/transparent"
+                android:completionThreshold="1"
+                android:cursorVisible="false"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
+                android:fontFamily="@font/rubik_regular"
+                android:gravity="bottom"
+                android:inputType="none"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:spinnerMode="dropdown"
+
+                android:textAlignment="gravity"
+                android:textColor="@color/grey_color_one"
+                android:textColorHint="@color/grey_color_three"
+                android:textSize="15sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -413,7 +561,7 @@
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/separate_maintenance"
+            app:layout_constraintTop_toBottomOf="@+id/separate_maintenance_payment_remaining_layout"
 
             >
 
@@ -423,17 +571,16 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:ems="10"
-                android:inputType="textPostalAddress"
+                android:digits="1234567890-"
+                android:singleLine="true"
+                android:inputType="number"
                 android:fontFamily="@font/rubik_regular"
                 android:imeOptions="actionNext"
                 android:paddingStart="0dp"
-                android:singleLine="true"
                 android:textColor="@color/grey_color_one"
                 android:textSize="@dimen/ed_txt_size_primary_info" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/separate_payment_receipt_layout"
@@ -461,7 +608,7 @@
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/separate_payment_receipt_layout_edit_text"
+                android:id="@+id/separate_payment_receipt_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -476,8 +623,22 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <ImageView
+        android:id="@+id/save_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_save_icon"
+        app:elevation="3dp"
+        android:translationX="18dp"
+        android:translationY="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@+id/login_fragment_id">
 
-  <fragment
+    <fragment
         android:id="@+id/login_fragment_id"
         android:name="com.rnsoft.colabademo.LoginFragment"
         android:label="@string/login"
@@ -39,8 +39,7 @@
     <fragment
         android:id="@+id/phone_number_id"
         android:name="com.rnsoft.colabademo.PhoneNumberFragment"
-        tools:layout="@layout/phone_number">
-
+        tools:layout="@layout/phone_number_layout">
         <argument
             android:name="flowStepNumber"
             android:defaultValue="2"
@@ -50,7 +49,6 @@
             app:destination="@id/otp_verification_id" />
 
     </fragment>
-
 
     <fragment
         android:id="@+id/otp_verification_id"

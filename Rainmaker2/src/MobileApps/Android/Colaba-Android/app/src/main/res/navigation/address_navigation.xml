@@ -7,17 +7,56 @@
 
     <fragment
         android:id="@+id/navigation_primary_borrower_info"
-        android:name="com.rnsoft.colabademo.activities.baddresses.info.PrimaryBorrowerInfoFragment"
+        android:name="com.rnsoft.colabademo.activities.addresses.info.PrimaryBorrowerInfoFragment"
         android:label="@string/primary_borrower_info"
-        tools:layout="@layout/primary_borrower_info_layout" />
+        tools:layout="@layout/primary_borrower_info_layout">
+
+        <action
+            android:id="@+id/action_info_current_address"
+            app:destination="@id/navigation_current_address"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down" />
+
+        <action
+            android:id="@+id/action_info_mailing_address"
+            app:destination="@id/navigation_mailing_address"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down" />
+
+        <action
+            android:id="@+id/action_info_unmarried_addendum"
+            app:destination="@id/navigation_unmarried"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down" />
+
+        <action
+            android:id="@+id/action_info_active_duty"
+            app:destination="@id/navigation_active_duty"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down" />
+
+        <action
+            android:id="@+id/action_info_reserve"
+            app:destination="@id/navigation_reserve"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down" />
+
+        <action
+            android:id="@+id/action_info_non_pr"
+            app:destination="@id/navigation_non_permanent"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_current_address"
         android:name="com.rnsoft.colabademo.CurrentResidenceFragment"
         android:label="@string/current_residence"
-        tools:layout="@layout/current_residence_layout" />
+        tools:layout="@layout/current_residence_layout">
+    </fragment>
 
-   <fragment
+    <fragment
         android:id="@+id/navigation_mailing_address"
         android:name="com.rnsoft.colabademo.MailingAddressFragment"
         android:label="@string/mailing_address"

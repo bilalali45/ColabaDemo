@@ -100,14 +100,13 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
 
         binding.layoutSearchAddress.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                //setTextInputLayoutHintColor(bi.layoutLastName, R.color.grey_color_two )
                 CustomMaterialFields.setColor(binding.layoutSearchAddress,R.color.grey_color_two, requireActivity())
             } else {
                 val search: String = binding.tvSearch.text.toString()
                 if (search.length == 0) {
                     CustomMaterialFields.setColor(binding.layoutSearchAddress,R.color.grey_color_three, requireActivity())
                 } else {
-                    CustomMaterialFields.setColor(binding.layoutSearchAddress,R.color.grey_color_three, requireActivity())
+                    CustomMaterialFields.setColor(binding.layoutSearchAddress,R.color.grey_color_two, requireActivity())
                     CustomMaterialFields.clearError(binding.layoutSearchAddress, requireActivity())
                 }
             }
@@ -143,7 +142,6 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
         if(searchBar.isEmpty() || searchBar.length == 0) {
                 CustomMaterialFields.setError(binding.layoutSearchAddress, getString(R.string.error_field_required),requireActivity())
         }
-
         if (searchBar.isNotEmpty() || searchBar.length > 0) {
             CustomMaterialFields.clearError(binding.layoutSearchAddress,requireActivity())
         }
@@ -165,12 +163,7 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
         binding.tvCountrySpinner.onItemClickListener =
             object : AdapterView.OnItemClickListener {
                 override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                    binding.layoutCountry.defaultHintTextColor = ColorStateList.valueOf(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.grey_color_two
-                        )
-                    )
+                    binding.layoutCountry.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
                 }
             }
 
