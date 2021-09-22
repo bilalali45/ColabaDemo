@@ -2,23 +2,14 @@ package com.rnsoft.colabademo
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.activities.addresses.info.ResidenceAdapter
-import com.rnsoft.colabademo.activities.addresses.info.adapter.DependentAdapter
-import com.rnsoft.colabademo.activities.addresses.info.model.Address
-import com.rnsoft.colabademo.activities.addresses.info.model.Dependent
 import com.rnsoft.colabademo.databinding.StartApplicationFragLayoutBinding
-import com.rnsoft.colabademo.startapplication.adapter.ContactsAdapter
-import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.activities.startapplication.adapter.ContactsAdapter
 import com.rnsoft.colabademo.utils.HideSoftkeyboard
-import com.rnsoft.colabademo.utils.NumberTextFormat
-import kotlinx.android.synthetic.main.dependent_input_field.view.*
 
 /**
  * Created by Anita Kiran on 9/17/2021.
