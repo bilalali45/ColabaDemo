@@ -96,7 +96,7 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
                     }
                 }
            }
-        } */
+        }
 
         binding.layoutSearchAddress.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
@@ -110,7 +110,7 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
                     CustomMaterialFields.clearError(binding.layoutSearchAddress, requireActivity())
                 }
             }
-        }
+        } */
 
 
         // set lable focus
@@ -119,8 +119,6 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
         binding.edCity.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCity, binding.layoutCity, requireContext()))
         binding.edCounty.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCounty, binding.layoutCounty, requireContext()))
         binding.edZipcode.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edZipcode, binding.layoutZipCode, requireContext()))
-         //binding.tvCountrySpinner.setOnFocusChangeListener(MyCustomFocusListener(binding.tvCountrySpinner, binding.layoutCountry, requireContext()))
-        //binding.tvStateSpinner.setOnFocusChangeListener(MyCustomFocusListener(binding.tvStateSpinner, binding.layoutState, requireContext()))
 
         CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edUnitAtpNo, binding.layoutUnitAptNo)
         CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edStreetAddress, binding.layoutStreetAddress)
@@ -206,10 +204,19 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
 
         binding.tvSearch.dropDownHeight = 0
         binding.tvSearch.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
-            if (hasFocus)
+            if (hasFocus) {
+                CustomMaterialFields.setColor(binding.layoutSearchAddress,R.color.grey_color_two, requireActivity())
                 binding.tvSearch.addTextChangedListener(placeTextWatcher)
-            else
+            }
+            else {
                 binding.tvSearch.removeTextChangedListener(placeTextWatcher)
+                if (binding.tvSearch.text.toString().length == 0) {
+                    CustomMaterialFields.setColor(binding.layoutSearchAddress,R.color.grey_color_three, requireActivity())
+                } else {
+                    CustomMaterialFields.setColor(binding.layoutSearchAddress,R.color.grey_color_two, requireActivity())
+                    CustomMaterialFields.clearError(binding.layoutSearchAddress, requireActivity())
+                }
+            }
         }
 
         binding.tvSearch.setOnClickListener { }
@@ -258,10 +265,10 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
         placesClient.findAutocompletePredictions(request)
             .addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
                 for (prediction in response.autocompletePredictions) {
-                    Log.e(TAG, prediction.placeId)
+                    //Log.e(TAG, prediction.placeId)
                     response.autocompletePredictions
                     predicationList.add(prediction.getFullText(null).toString())
-                    Log.e(TAG, prediction.getFullText(null).toString())
+                    //Log.e(TAG, prediction.getFullText(null).toString())
 
                 }
                 predictAdapter.setPredictions(response.autocompletePredictions)
