@@ -22,7 +22,7 @@ class SplashActivity : AppCompatActivity() {
 
     activityScope.launch {
 
-        startActivity(Intent(this@SplashActivity, IncomeActivity::class.java))
+        startActivity(Intent(this@SplashActivity, AssetsActivity::class.java))
 
         //startActivity(Intent(this@SplashActivity, GovtQuestionActivity::class.java))
 

@@ -12,7 +12,6 @@
         android:id="@+id/assets_top_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/half_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -54,7 +53,7 @@
                 android:id="@+id/tab_top_border"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/background_one"
+                android:background="@color/colaba_app_border_color"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -66,7 +65,6 @@
             android:layout_width="match_parent"
             android:id="@+id/assets_tab_layout"
             android:layout_height="wrap_content"
-            android:background="@color/colaba_loan_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/assetHeaderContainer">
@@ -98,7 +96,7 @@
                 android:layout_height="1.5dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:background="@color/background_one"
+                android:background="@color/colaba_app_border_color"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

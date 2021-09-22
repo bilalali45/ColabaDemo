@@ -425,14 +425,22 @@
     <string name="retirement">Retirement</string>
     <string name="income_other">Other</string>
     <string name="income_retirement_type">Retirement Income Type</string>
+    <string name="military_entitlements">Military Entitlements</string>
+    <string name="service_location_add">Service Location Address</string>
+    <string name="business_main_address">Business Main Address</string>
+    <string name="monthly_withdrawal">Monthly Withdrawal</string>
+    <string name="annual_income">Annual Income</string>
     <string name="other_income_type">Income Type</string>
     <string name="monthly_income">Monthly Income</string>
+    <string name="monthly_base_salary">Monthly Base Salary</string>
     <string name="current_rental_income">Current Rental Income</string>
     <string name="property_status">Property Status</string>
     <string name="property_value">Property Value</string>
-    <string name="homeowner_ass_dues">Annual Homeowner"\'\s Association Dues</string>
+    <string name="property_type">Property Type</string>
+    <string name="occupancy_type">Occupancy Type</string>
+    <string name="rental_income">Rental Income</string>
+    <string name="homeowner_assocaition_dues">Annual Homeowner"\'\s Association Dues</string>
     <string name="txt_delete_property">Are you sure you want to delete this property?</string>
-
     <string name="start_new_application">Start New Application</string>
     <string name="create_application">Create Application</string>
     <string name="create_new_contact">Create New Contact</string>
@@ -443,6 +451,13 @@
     <string name="lower_payments_term">Lower Payments or Term</string>
     <string name="cash_out">Cash-Out</string>
     <string name="debt_consolidated">Debt Consolidation</string>
+    <string name="mortgage_balance">Mortgage Balance</string>
+    <string name="mortgage_payment">Mortgage Payment</string>
+    <string name="credit_limit">Credit Limit</string>
+    <string name="unpaid_sec_mortgage_bal">Unpaid Second Mortgage Balance</string>
+    <string name="sub_property_sec_mortgage_ques1">Will this mortgage be combined with the new first mortgage?</string>
+    <string name="sub_property_sec_mortgage_ques2">Was this mortgage taken when the property was purchased?</string>
+
 
 
     <string name="child_support_question">Are you currently obligated to pay child support, alimony or separate maintenance?</string>

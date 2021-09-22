@@ -413,7 +413,7 @@
                     android:digits="1234567890"
                     android:ems="10"
                     android:fontFamily="@font/rubik_regular"
-                    android:imeOptions="actionNext"
+                    android:imeOptions="actionDone"
                     android:inputType="number"
                     android:paddingStart="0dp"
                     android:singleLine="true"

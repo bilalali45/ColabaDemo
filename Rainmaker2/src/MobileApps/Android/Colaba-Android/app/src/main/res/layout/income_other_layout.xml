@@ -90,9 +90,9 @@
                 android:id="@+id/layout_annual_income"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_light"
-                android:hint="Annual Income"
+                android:hint="@string/annual_income"
                 android:textColorHint="@color/primary_info_label_color"
                 app:boxCollapsedPaddingTop="1dp"
                 app:boxStrokeColor="@color/primary_info_line_color"
@@ -126,7 +126,7 @@
                 android:id="@+id/layout_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/rubik_light"
                 android:hint="Description"
@@ -163,14 +163,12 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
-
             <com.google.android.material.textfield.TextInputLayout
                 android:visibility="gone"
                 android:id="@+id/layout_monthly_income"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/monthly_income"
                 android:textColorHint="@color/primary_info_label_color"
@@ -199,8 +197,6 @@
                     android:textSize="@dimen/ed_txt_size_primary_info" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-
 
         </LinearLayout>
     </ScrollView>

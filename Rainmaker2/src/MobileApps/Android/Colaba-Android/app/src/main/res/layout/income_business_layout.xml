@@ -20,9 +20,10 @@
         android:id="@+id/scrollview_busines"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:fillViewport="true"
         android:scrollbars="none"
         android:isScrollContainer="false"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
         app:layout_constraintTop_toBottomOf="@+id/header_income"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +37,6 @@
             android:layout_marginStart="22dp"
             android:layout_marginEnd="22dp"
             android:paddingBottom="200dp">
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_business_type"
@@ -214,7 +214,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="15dp"
                     android:fontFamily="@font/rubik_medium"
-                    android:text="Business Main Address"
+                    android:text="@string/business_main_address"
                     android:textAlignment="center"
                     android:drawablePadding="7dp"
                     android:textColor="@color/grey_color_one"
@@ -308,8 +308,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_ownership_percentage"
                 android:layout_width="match_parent"
@@ -345,7 +343,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_net_income"
                 android:layout_width="match_parent"
@@ -372,7 +369,7 @@
                     android:digits="1234567890"
                     android:ems="10"
                     android:fontFamily="@font/rubik_regular"
-                    android:imeOptions="actionNext"
+                    android:imeOptions="actionDone"
                     android:inputType="number"
                     android:paddingStart="0dp"
                     android:singleLine="true"
@@ -380,7 +377,6 @@
                     android:textSize="@dimen/ed_txt_size_primary_info" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
 
         </LinearLayout>
     </ScrollView>
@@ -397,7 +393,6 @@
         android:src="@drawable/ic_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
