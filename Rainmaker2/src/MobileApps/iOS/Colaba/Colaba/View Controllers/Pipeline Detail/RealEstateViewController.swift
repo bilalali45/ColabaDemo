@@ -231,7 +231,7 @@ class RealEstateViewController: BaseViewController {
         
         self.mainViewHeightConstraint.constant = firstMortgageViewHeight + secondMortgageViewHeight + 1000
         
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
     }
