@@ -1905,6 +1905,7 @@
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/scroll"
+                android:isScrollContainer="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"

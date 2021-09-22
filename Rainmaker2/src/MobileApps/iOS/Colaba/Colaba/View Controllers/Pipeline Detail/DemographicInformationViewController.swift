@@ -169,7 +169,7 @@ class DemographicInformationViewController: BaseViewController {
         
         self.mainViewHeightConstraint.constant = raceTableViewHeight + ethnicityTableViewHeight + sexTableViewHeight + 400
         
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
     }

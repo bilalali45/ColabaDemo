@@ -133,7 +133,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
         
         let totalHeight = childSupportViewHeight + alimonyViewHeight + separateMaintainanceViewHeight + 200
         self.mainViewHeightConstraint.constant = totalHeight
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
     }

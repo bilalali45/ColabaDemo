@@ -78,7 +78,7 @@ class IncomeDetailViewController: BaseViewController {
         
         self.mainViewHeightConstraint.constant = CGFloat(totalHeight)
         
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
             self.tableViewEmployement.reloadData()
             self.tableViewSelfEmployement.reloadData()

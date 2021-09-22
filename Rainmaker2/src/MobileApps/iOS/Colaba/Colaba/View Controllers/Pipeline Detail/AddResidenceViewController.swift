@@ -130,7 +130,7 @@ class AddResidenceViewController: BaseViewController {
             txtfieldMonthlyRent.isHidden = item != "Rent"
             txtfieldMonthlyRentTopConstraint.constant = item == "Rent" ? 30 : 0
             txtfieldMonthlyRentHeightConstraint.constant = item == "Rent" ? 39 : 0
-            UIView.animate(withDuration: 0.5) {
+            UIView.animate(withDuration: 0.0) {
                 self.view.layoutSubviews()
             }
         }
@@ -238,7 +238,7 @@ class AddResidenceViewController: BaseViewController {
         addMailingAddressStackView.isHidden = false
         tblViewMailingAddress.isHidden = true
         
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
     }

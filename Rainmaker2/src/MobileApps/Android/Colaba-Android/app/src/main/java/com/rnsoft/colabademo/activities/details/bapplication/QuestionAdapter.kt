@@ -5,9 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 
-class QuestionAdapter internal constructor(private var questionsModel: ArrayList<BorrowerQuestionsModel>) :
+class QuestionAdapter internal constructor(private var questionsModel: ArrayList<BorrowerQuestionsModel> ,  private val governmentQuestionClickListener: GovernmentQuestionClickListener) :
     RecyclerView.Adapter<QuestionAdapter.BaseViewHolder>(){
 
     abstract class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) { abstract fun bind(item: BorrowerQuestionsModel) }
@@ -28,6 +29,14 @@ class QuestionAdapter internal constructor(private var questionsModel: ArrayList
         private var answer1Yes:TextView = view.findViewById(R.id.answer1_yes)
         private var answer2No:TextView = view.findViewById(R.id.answer2_no)
         private  var answer3Na:TextView = view.findViewById(R.id.answer3_na)
+
+        private  var topContainer:ConstraintLayout = view.findViewById(R.id.top_container)
+
+        init {
+            topContainer.setOnClickListener {
+                governmentQuestionClickListener.navigateToGovernmentActivity(adapterPosition)
+            }
+        }
 
         override fun bind(item: BorrowerQuestionsModel) {
             questionTitle.text = item.questionDetail?.questionHeader
@@ -89,7 +98,12 @@ class QuestionAdapter internal constructor(private var questionsModel: ArrayList
 
     inner class DemoGraphicViewHolder(itemView: View) : BaseViewHolder(itemView) {
         private var raceEthnicityTextView: TextView = itemView.findViewById(R.id.race_ethnicity)
-
+        private  var topContainer:ConstraintLayout = itemView.findViewById(R.id.top_container)
+        init {
+            topContainer.setOnClickListener {
+                governmentQuestionClickListener.navigateToGovernmentActivity(adapterPosition)
+            }
+        }
         override fun bind(item: BorrowerQuestionsModel) {
             var raceEthnicity = ""
             item.races?.let {  races->
