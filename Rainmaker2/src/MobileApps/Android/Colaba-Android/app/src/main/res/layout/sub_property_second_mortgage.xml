@@ -90,7 +90,7 @@
                 android:id="@+id/layout_sec_payment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/sec_mortgage_payment"
                 android:textColorHint="@color/primary_info_label_color"
@@ -125,9 +125,9 @@
                 android:id="@+id/layout_unpaid_balance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_light"
-                android:hint="Unpaid Second Mortgage Balance"
+                android:hint="@string/unpaid_sec_mortgage_bal"
                 android:textColorHint="@color/primary_info_label_color"
                 app:boxCollapsedPaddingTop="1dp"
                 app:boxStrokeColor="@color/primary_info_line_color"
@@ -159,7 +159,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="50dp">
+                android:layout_marginTop="40dp">
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_credit_limit"
@@ -189,9 +189,9 @@
                 android:id="@+id/layout_credit_limit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/rubik_light"
-                android:hint="Credit Limit"
+                android:hint="@string/credit_limit"
                 android:textColorHint="@color/primary_info_label_color"
                 app:boxCollapsedPaddingTop="1dp"
                 app:boxStrokeColor="@color/primary_info_line_color"
@@ -221,9 +221,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/rubik_regular"
-                android:text="Will this mortgage be combined with the new first mortgage?"
+                android:text="@string/sub_property_sec_mortgage_ques1"
                 android:textColor="@color/grey_color_two"
                 android:textSize="15sp" />
 
@@ -259,17 +259,14 @@
 
             </RadioGroup>
 
-
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_medium"
-                android:text="Was this mortgage taken when the property was purchased?"
-                android:textAlignment="center"
+                android:text="@string/sub_property_sec_mortgage_ques2"
                 android:textColor="@color/grey_color_two"
-                android:textSize="13sp" />
+                android:textSize="15sp" />
 
             <RadioGroup
                 android:layout_width="wrap_content"
@@ -302,9 +299,7 @@
                     android:textSize="14sp" />
 
             </RadioGroup>
-
         </LinearLayout>
-
     </ScrollView>
 
     <ImageButton

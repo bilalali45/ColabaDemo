@@ -77,7 +77,7 @@
                 android:id="@+id/layout_bus_phnum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/business_phnum"
                 android:textColorHint="@color/primary_info_label_color"
@@ -113,7 +113,7 @@
                 android:id="@+id/layout_bStart_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:hint="@string/business_start_date"
                 android:textColorHint="@color/primary_info_label_color"
                 android:fontFamily="@font/rubik_light"
@@ -193,7 +193,7 @@
                 android:id="@+id/layout_job_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/job_title"
                 android:textColorHint="@color/primary_info_label_color"
@@ -229,7 +229,7 @@
                 android:id="@+id/layout_comm_income"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/commission_income"
                 android:textColorHint="@color/primary_info_label_color"
@@ -265,7 +265,7 @@
                 android:id="@+id/layout_net_income"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/net_annual_income"
@@ -287,7 +287,7 @@
                     android:digits="1234567890"
                     android:ems="10"
                     android:fontFamily="@font/rubik_regular"
-                    android:imeOptions="actionNext"
+                    android:imeOptions="actionDone"
                     android:inputType="number"
                     android:paddingStart="0dp"
                     android:singleLine="true"
@@ -295,7 +295,6 @@
                     android:textSize="@dimen/ed_txt_size_primary_info" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
 
         </LinearLayout>
     </ScrollView>

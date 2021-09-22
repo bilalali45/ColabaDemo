@@ -12,7 +12,7 @@ class IncomeActivity : BaseActivity() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: IncomeActivityLayoutBinding
-    private lateinit var appBarConfiguration : AppBarConfiguration
+    //private lateinit var appBarConfiguration : AppBarConfiguration
 
     var loanApplicationId:Int? = null
     var loanPurpose:String? = null

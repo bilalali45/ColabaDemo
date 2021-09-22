@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.SubPropertyRefinanceBinding
+import com.rnsoft.colabademo.databinding.SubjectPropertyPurchaseBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.HideSoftkeyboard
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
@@ -39,68 +40,49 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
     )
     private val occupancyTypeArray =
         listOf("Primary Residence", "Second Home", "Investment Property")
-    var isPropertyAddress: Boolean = false
-    var isMixedProperty: Boolean = false
-    var isFirstMortgage: Boolean = false
-    var isSecMortgage: Boolean = false
 
-    override fun onCreateView(
+    private var savedViewInstance: View? = null
+
+     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = SubPropertyRefinanceBinding.inflate(inflater, container, false)
+        return if (savedViewInstance != null) {
+            savedViewInstance
+        } else {
+            binding = SubPropertyRefinanceBinding.inflate(inflater, container, false)
+            savedViewInstance = binding.root
 
-        setInputFields()
-        setSpinnerData()
 
+            binding.rbSubProperty.isChecked = false
+            binding.rbSubPropertyAddress.isChecked = false
+            binding.rbSubProperty.setOnClickListener(this)
+            binding.rbSubPropertyAddress.setOnClickListener(this)
+            binding.rbMixedPropertyNo.setOnClickListener(this)
+            binding.rbMixedPropertyYes.setOnClickListener(this)
+            binding.layoutDetails.setOnClickListener(this)
+            binding.backButton.setOnClickListener(this)
+            binding.rbFirstMortgageYes.setOnClickListener(this)
+            binding.rbFirstMortgageNo.setOnClickListener(this)
+            binding.rbSecMortgageYes.setOnClickListener(this)
+            binding.rbSecMortgageNo.setOnClickListener(this)
+            binding.layoutFirstMortgageDetail.setOnClickListener(this)
+            binding.layoutSecMortgageDetail.setOnClickListener(this)
+            binding.rbOccupying.setOnClickListener(this)
+            binding.rbNonOccupying.setOnClickListener(this)
+            binding.refinanceParentLayout.setOnClickListener(this)
+            binding.btnSave.setOnClickListener(this)
 
-        binding.rbSubProperty.isChecked = false
-        binding.rbSubPropertyAddress.isChecked = false
-        binding.rbSubProperty.setOnClickListener(this)
-        binding.rbSubPropertyAddress.setOnClickListener(this)
-        binding.rbMixedPropertyNo.setOnClickListener(this)
-        binding.rbMixedPropertyYes.setOnClickListener(this)
-        binding.layoutDetails.setOnClickListener(this)
-        binding.backButton.setOnClickListener(this)
-        binding.rbFirstMortgageYes.setOnClickListener(this)
-        binding.rbFirstMortgageNo.setOnClickListener(this)
-        binding.rbSecMortgageYes.setOnClickListener(this)
-        binding.rbSecMortgageNo.setOnClickListener(this)
-        binding.layoutFirstMortgageDetail.setOnClickListener(this)
-        binding.layoutSecMortgageDetail.setOnClickListener(this)
-        binding.rbOccupying.setOnClickListener(this)
-        binding.rbNonOccupying.setOnClickListener(this)
-        binding.refinanceParentLayout.setOnClickListener(this)
-        binding.btnSave.setOnClickListener(this)
+            binding.edDateOfHomePurchase.showSoftInputOnFocus = false
+            binding.edDateOfHomePurchase.setOnClickListener { createCustomDialog() }
+            binding.edDateOfHomePurchase.setOnFocusChangeListener { _, _ -> createCustomDialog() }
 
-        binding.edDateOfHomePurchase.showSoftInputOnFocus = false
-        binding.edDateOfHomePurchase.setOnClickListener { createCustomDialog() }
-        binding.edDateOfHomePurchase.setOnFocusChangeListener { _, _ -> createCustomDialog() }
+            setSpinnerData()
+            setInputFields()
 
-        if (isFirstMortgage) {
-            binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
-            binding.layoutSecondMortgage.visibility = View.VISIBLE
-            binding.rbFirstMortgageYes.setTypeface(null, Typeface.BOLD)
+            savedViewInstance
         }
-
-        if (isSecMortgage) {
-            binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
-            binding.layoutSecondMortgage.visibility = View.VISIBLE
-            binding.layoutSecMortgageDetail.visibility = View.VISIBLE
-        }
-
-        if (isPropertyAddress) {
-            binding.tvSubPropertyAddress.visibility = View.VISIBLE
-            binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
-        }
-
-        if (isMixedProperty) {
-            binding.rbMixedPropertyYes.setTypeface(null, Typeface.BOLD)
-            binding.layoutDetails.visibility = View.VISIBLE
-        }
-
-        return binding.root
 
     }
 
@@ -303,7 +285,6 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun mixedPropertyDetailClick() {
-        isMixedProperty = true
         findNavController().navigate(R.id.nav_mixed_use_property)
         binding.layoutDetails.visibility = View.VISIBLE
         binding.rbMixedPropertyYes.setTypeface(null, Typeface.BOLD)
@@ -326,13 +307,11 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
         //bold text
         binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
         binding.rbSubProperty.setTypeface(null, Typeface.NORMAL)
-        isPropertyAddress = true
         findNavController().navigate(R.id.nav_sub_property_address)
     }
 
     private fun onFirstMortgageYes() {
         if (binding.rbFirstMortgageYes.isChecked) {
-            isFirstMortgage = true
             binding.layoutSecondMortgage.visibility = View.VISIBLE
             //findNavController().navigate(R.id.nav_first_mortage)
             binding.rbFirstMortgageYes.setTypeface(null, Typeface.BOLD)
@@ -348,7 +327,6 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
     }
 
         private fun onSecMortgageYesClick() {
-            isSecMortgage = true
             binding.layoutSecondMortgage.visibility = View.VISIBLE
             binding.layoutSecMortgageDetail.visibility = View.VISIBLE
             findNavController().navigate(R.id.nav_sec_mortage)
@@ -357,7 +335,6 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
         }
 
         private fun onSecMortgegeNoClick() {
-            isSecMortgage = false
             binding.layoutSecondMortgage.visibility = View.VISIBLE
             binding.layoutSecMortgageDetail.visibility = View.GONE
             binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)

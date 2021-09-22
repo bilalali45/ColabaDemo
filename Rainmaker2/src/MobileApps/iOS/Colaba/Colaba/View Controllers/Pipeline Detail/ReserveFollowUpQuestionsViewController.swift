@@ -25,13 +25,13 @@ class ReserveFollowUpQuestionsViewController: BaseViewController {
     @IBOutlet weak var lblNo: UILabel!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
-    var isActive = 1 // 1 for yes 2 for no
+    var isActive = 0 // 1 for yes 2 for no
     
     override func viewDidLoad() {
         super.viewDidLoad()
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
-
+        changeActiveStatus()
     }
 
     //MARK:- Methods and Actions

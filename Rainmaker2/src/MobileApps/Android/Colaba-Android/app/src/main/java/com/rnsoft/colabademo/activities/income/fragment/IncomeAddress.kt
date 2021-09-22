@@ -44,7 +44,6 @@ class IncomeAddress : Fragment() , PlacePredictionAdapter.OnPlaceClickListener {
     private var predicationList: ArrayList<String> = ArrayList()
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

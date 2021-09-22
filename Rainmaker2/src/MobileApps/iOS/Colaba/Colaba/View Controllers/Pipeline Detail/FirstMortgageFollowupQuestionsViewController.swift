@@ -44,10 +44,10 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     @IBOutlet weak var lblNo: UILabel!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
-    var isAnnualFloodInsurance = true
-    var isAnnualPropertyTax = true
+    var isAnnualFloodInsurance = false
+    var isAnnualPropertyTax = false
     var isAnnualHomeownerInsurance = false
-    var isMortgagePaidOff = true
+    var isMortgagePaidOff:Int?
     
     var isForRealEstate = false
     
@@ -57,6 +57,11 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
         if (isForRealEstate){
             lblUsername.text = "5919 TRUSSVILLE CROSSINGS PKWY"
         }
+        btnAnnualFloodInsurance.isUserInteractionEnabled = false
+        btnAnnualTaxes.isUserInteractionEnabled = false
+        btnAnnualHomeownerInsurance.isUserInteractionEnabled = false
+        changeAccountsIncluded()
+        changeMortgagePaidOffStatus()
     }
     
     //MARK:- Methods and Actions
@@ -97,37 +102,43 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     
     @objc func annualFloodInsuranceStackViewTapped(){
         isAnnualFloodInsurance = !isAnnualFloodInsurance
-        btnAnnualFloodInsurance.setImage(UIImage(named: isAnnualFloodInsurance ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
-        lblAnnualFloodInsurance.font = isAnnualFloodInsurance ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        changeAccountsIncluded()
     }
     
     @objc func annualPropertyTaxStackViewTapped(){
         isAnnualPropertyTax = !isAnnualPropertyTax
-        btnAnnualTaxes.setImage(UIImage(named: isAnnualPropertyTax ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
-        lblAnnualTaxes.font = isAnnualPropertyTax ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        changeAccountsIncluded()
     }
     
     @objc func annualHomeownerInsuranceStackViewTapped(){
         isAnnualHomeownerInsurance = !isAnnualHomeownerInsurance
+        changeAccountsIncluded()
+    }
+    
+    func changeAccountsIncluded(){
+        btnAnnualFloodInsurance.setImage(UIImage(named: isAnnualFloodInsurance ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
+        lblAnnualFloodInsurance.font = isAnnualFloodInsurance ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        btnAnnualTaxes.setImage(UIImage(named: isAnnualPropertyTax ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
+        lblAnnualTaxes.font = isAnnualPropertyTax ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         btnAnnualHomeownerInsurance.setImage(UIImage(named: isAnnualHomeownerInsurance ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
         lblAnnualHomeownerInsurance.font = isAnnualHomeownerInsurance ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
     }
     
     @objc func yesStackViewTapped(){
-        isMortgagePaidOff = true
+        isMortgagePaidOff = 1
         changeMortgagePaidOffStatus()
     }
     
     @objc func noStackViewTapped(){
-        isMortgagePaidOff = false
+        isMortgagePaidOff = 0
         changeMortgagePaidOffStatus()
     }
     
     func changeMortgagePaidOffStatus(){
-        btnYes.setImage(UIImage(named: isMortgagePaidOff ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblYes.font = isMortgagePaidOff ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-        btnNo.setImage(UIImage(named: isMortgagePaidOff ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
-        lblNo.font = isMortgagePaidOff ?  Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
+        btnYes.setImage(UIImage(named: isMortgagePaidOff == 1 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+        lblYes.font = isMortgagePaidOff == 1 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        btnNo.setImage(UIImage(named: isMortgagePaidOff == 0 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+        lblNo.font = isMortgagePaidOff == 0 ?  Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
