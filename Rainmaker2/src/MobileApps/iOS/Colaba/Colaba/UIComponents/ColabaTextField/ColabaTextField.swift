@@ -8,11 +8,15 @@
 import UIKit
 import LocalAuthentication
 import Material
+import MonthYearPicker
+import DropDown
 
 enum ColabaTextFieldType {
     case password
     case dropdown
+    case editableDropdown
     case datePicker
+    case monthlyDatePicker
     case delete
     case amount
     case percentage
@@ -21,9 +25,7 @@ enum ColabaTextFieldType {
 
 protocol ColabaTextFieldDelegate {
     func deleteButtonClicked()
-    func dropDownClicked(alert: UIAlertController)
-    func dropDownClicked(alert: UIAlertController, withTag: Int)
-    func selectedOption(option: String, alert: UIAlertController)
+    func selectedOption(option: String, atIndex : Int, textField: ColabaTextField)
     func selectedDate(date:Date)
     func textFieldEndEditing(_ textField : TextField)
     func dismiss()
@@ -31,13 +33,11 @@ protocol ColabaTextFieldDelegate {
 
 extension ColabaTextFieldDelegate {
     func deleteButtonClicked(){}
-    func dropDownClicked(alert: UIAlertController){}
-    func dropDownClicked(alert: UIAlertController, withTag: Int){}
-    func selectedOption(option: String, alert: UIAlertController){}
+    func selectedOption(option: String, atIndex : Int, textField: ColabaTextField) {}
     func selectedDate(date:Date){}
     func biometricClicked(){}
     func passwordClicked(){}
-    func textFieldEndEditing(_ textField : UITextField) {}
+    func textFieldEndEditing(_ textField : TextField) {}
     func dismiss(){}
 }
 
@@ -45,14 +45,13 @@ class ColabaTextField: TextField {
     
     //MARK: Outlets and Private Properties
     private var button: UIButton!
-    
-    private var selectionList : [String]?
-    private var alert: UIAlertController?
     private var imagePicker: UIImagePickerController?
     private var maximumDate:Date?
     private var minimumDate:Date?
     private var isValidateOnEndEditing: Bool!
     private var validationType: ValidationType!
+    private var dropDown: DropDown!
+    private var dropDownDataSource: [String] = []
     
     //MARK: Public Properties
     public var colabaDelegate: ColabaTextFieldDelegate?
@@ -61,9 +60,9 @@ class ColabaTextField: TextField {
     private var attributedPrefix: NSMutableAttributedString? // "$│ "
     private var fieldMinLength = 0
     private var fieldMaxLength = 20
-    private var selectedCountryCallingCode = ""
     private var allowedCharacters : CharacterSet = .alphanumerics
     internal var regex: String?
+    
     
     public var type: ColabaTextFieldType = .defaultType {
         didSet {
@@ -76,6 +75,12 @@ class ColabaTextField: TextField {
                 isButtonHidden(false)
                 self.isUserInteractionEnabled = true
                 self.setButton(image: UIImage(named: "textfield-dropdownIcon")!)
+                setDropDown()
+            case .editableDropdown:
+                isButtonHidden(false)
+                self.isUserInteractionEnabled = true
+                self.setButton(image: UIImage(named: "textfield-dropdownIcon")!)
+                setDropDown()
             case .delete:
                 button.contentHorizontalAlignment = .center
                 self.setButton(image: UIImage(named: "DeleteDependent"))
@@ -86,6 +91,11 @@ class ColabaTextField: TextField {
                 prefix = "%  |  "
                 attributedPrefix = createAttributedText(prefix: prefix!)
             case .datePicker:
+                isButtonHidden(false)
+                self.isUserInteractionEnabled = true
+                self.tintColor = .clear
+                setButton(image: UIImage(named: "CalendarIcon")!)
+            case .monthlyDatePicker:
                 isButtonHidden(false)
                 self.isUserInteractionEnabled = true
                 self.tintColor = .clear
@@ -148,23 +158,27 @@ class ColabaTextField: TextField {
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
-        //        self.endEditing(true)
         if type == .datePicker {
             if self.isUserInteractionEnabled {
                 datePickerButtonClicked()
             }
             return
         }
+        if type == .monthlyDatePicker {
+            if self.isUserInteractionEnabled {
+                monthlyDatePickerButtonClicked()
+            }
+            return
+        }
         if type == .dropdown {
-            //dropDownButtonClicked()
-            //return
+            dropDownButtonClicked()
+            return
         }
         _ = self.becomeFirstResponder()
     }
     
     //MARK: Button Action
     @objc func colabaTextFieldButtonClicked(_ sender: UIButton) {
-        //        self.endEditing(true)
         switch type {
         case .password:
             self.isSecureTextEntry = !self.isSecureTextEntry
@@ -172,8 +186,12 @@ class ColabaTextField: TextField {
             colabaDelegate?.passwordClicked()
         case .dropdown:
             dropDownButtonClicked()
+        case .editableDropdown:
+            print("No any action on editable dropdown")
         case .datePicker:
             datePickerButtonClicked()
+        case .monthlyDatePicker:
+            monthlyDatePickerButtonClicked()
         case .delete:
             colabaDelegate?.deleteButtonClicked()
         case .amount:
@@ -186,31 +204,51 @@ class ColabaTextField: TextField {
     }
     
     private func dropDownButtonClicked() {
-        //colabaDelegate?.dropDownClicked(alert: alert ?? UIAlertController(title: "", message: "", preferredStyle: .actionSheet), withTag: self.tag)
+        setButton(image: UIImage(named: "textfield-dropdownIconUp"))
+        dropDown.show()
     }
     
     private func datePickerButtonClicked() {
         setDatePicker()
     }
-}
-
-
-
-//MARK: Public Functions -- ColabaTextField Values
-extension ColabaTextField {
     
-    
-    public func setUserInteractionDisabled(){
-        //        self.self.isUserInteractionEnabled = false
-        //        isButtonHidden(false)
-        //        setTextField( textColor: UIColor.Palette.formLabel)
+    private func monthlyDatePickerButtonClicked() {
+        setMonthlyDatePicker()
     }
     
-    public func setDatePickerDisabled() {
-        self.isUserInteractionEnabled = false
-        isButtonHidden(false)
-        button.isUserInteractionEnabled = false
-        //        setTextField( textColor: UIColor.Palette.formLabel)
+    private func setDropDown() {
+        dropDown = DropDown()
+        dropDown.anchorView = self
+        setDropDownDirection()
+        setDropDownDismissMode()
+        dropDown.cancelAction = .some({ [weak self] in
+            self?.setButton(image: UIImage(named: "textfield-dropdownIcon"))
+            self?.resignFirstResponder()
+        })
+        dropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            self?.setButton(image: UIImage(named: "textfield-dropdownIcon"))
+            self?.dropDown.hide()
+            self?.text = item
+            self?.resignFirstResponder()
+            self?.colabaDelegate?.selectedOption(option: item, atIndex: index, textField: self!)
+            self?.validate()
+        }
+    }
+    
+    public func setDropDownDismissMode(_ dimsissMode : DropDown.DismissMode = .automatic) {
+        dropDown.dismissMode = dimsissMode
+    }
+    
+    public func setDropDownDataSource(_ dataSource : [String]) {
+        dropDown.dataSource = dataSource
+        dropDownDataSource = dataSource // Datasource in case we are filtering datasource
+    }
+    public func setDropDownDirection(_ direction : DropDown.Direction = .any) {
+        if direction == .top {
+            dropDown.topOffset = CGPoint(x: 0, y:-(dropDown.anchorView?.plainView.bounds.height)!)
+        } else {
+            dropDown.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!)
+        }
     }
 }
 
@@ -331,25 +369,6 @@ extension ColabaTextField {
         self.tag = tag
     }
     
-    public func setDropDown(_ title: String, _ list: [String], showText: Bool = true) {
-        alert = UIAlertController(title: title, message: "", preferredStyle: .actionSheet)
-        for actionTitle in list {
-            
-            let action = UIAlertAction(title: actionTitle, style: .default) { [weak self] _ in
-                if showText {
-                    self?.text = actionTitle
-                }
-                self?.colabaDelegate?.selectedOption(option: actionTitle, alert: (self?.alert!)!)
-            }
-            
-            alert?.addAction(action)
-        }
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
-            self?.colabaDelegate?.selectedOption(option: "cancelled", alert: (self?.alert!)!)
-        }
-        alert?.addAction(cancel)
-    }
-    
     //MARK: Button
     public func setButton(_ title : String?) {
         button.setTitle(title, for: .normal)
@@ -439,6 +458,16 @@ extension ColabaTextField: UITextFieldDelegate {
             let string = cleanString(string: self.attributedText!.string, replaceCharacters: [prefix!], replaceWith: "")
             self.attributedText = appendAttributedString(baseString: createAttributedText(prefix: prefix!), string: string, fontColor: Theme.getAppBlackColor(), font: Theme.getRubikRegularFont(size: 15))
         }
+        if type == .editableDropdown {
+            if textField.text == "" {
+                dropDown.dataSource = dropDownDataSource
+                dropDownButtonClicked()
+            } else {
+                let filteredDataSource = dropDownDataSource.filter{$0.localizedCaseInsensitiveContains(self.text!)}
+                dropDown.dataSource = filteredDataSource
+                dropDownButtonClicked()
+            }
+        }
     }
     
     //To hide error text when textField begin editing
@@ -452,12 +481,22 @@ extension ColabaTextField: UITextFieldDelegate {
         if type == .percentage && !attributedText!.string.contains("%  |  ") {
             self.attributedText = attributedPrefix
         }
-        if (type == .datePicker){
-            if let datePicker = self.inputView as? UIDatePicker{
+        if type == .datePicker {
+            setDatePicker()
+            if let datePicker = self.inputView as? UIDatePicker {
                 self.colabaDelegate?.selectedDate(date: datePicker.date)
                 self.text = getFormattedDate(datePicker: datePicker)
             }
-            setDatePicker()
+        }
+        if type == .monthlyDatePicker {
+            setMonthlyDatePicker()
+            if let datePicker = self.inputView as? MonthYearPickerView {
+                self.colabaDelegate?.selectedDate(date: datePicker.date)
+                self.text = getMonthFormattedDate(datePicker: datePicker)
+            }
+        }
+        if type == .dropdown {
+            dropDownButtonClicked()
         }
     }
     
@@ -477,12 +516,22 @@ extension ColabaTextField: UITextFieldDelegate {
         if type == .percentage && self.text == prefix {
             self.text = ""
         }
+        if type == .dropdown {
+            setButton(image: UIImage(named: "textfield-dropdownIcon"))
+        }
+        if type == .editableDropdown {
+            if !(dropDownDataSource.contains(self.text!)){
+                self.text = ""
+                dropDown.hide()
+            }
+            setButton(image: UIImage(named: "textfield-dropdownIcon"))
+        }
         
         if isValidateOnEndEditing {
             _ = validate()
         }
         
-        colabaDelegate?.textFieldEndEditing(textField)
+        colabaDelegate?.textFieldEndEditing(textField as! TextField)
     }
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -518,9 +567,37 @@ extension ColabaTextField {
         toolbar.items = [cancelButton,spacer, doneButton]
         self.isUserInteractionEnabled = true
         self.inputAccessoryView = toolbar
-        self.becomeFirstResponder()
+        if !self.isFirstResponder {
+            _ = self.becomeFirstResponder()
+        }
     }
     
+    func setMonthlyDatePicker() {
+        
+        let datePicker = MonthYearPickerView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 216))
+        datePicker.addTarget(self, action: #selector(monthlyDatePickerValueChanged(datePicker:)), for: .valueChanged)
+        self.inputView = datePicker
+        
+        if let maxDate = self.maximumDate{
+            datePicker.maximumDate = maxDate
+        }
+        if let minDate = self.minimumDate{
+            datePicker.minimumDate = minDate
+        }
+        
+        //Tool Bar
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 44))
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
+        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneMonthlyDatePicker))
+        toolbar.items = [cancelButton,spacer, doneButton]
+        self.isUserInteractionEnabled = true
+        self.inputAccessoryView = toolbar
+        if !self.isFirstResponder {
+            _ = self.becomeFirstResponder()
+        }
+    }
+
     @objc func cancelDatePicker() {
         self.isUserInteractionEnabled = true
         self.resignFirstResponder()
@@ -535,8 +612,22 @@ extension ColabaTextField {
         self.isUserInteractionEnabled = true
     }
     
+    @objc func doneMonthlyDatePicker(datePicker: MonthYearPickerView) {
+        if let datePicker = self.inputView as? MonthYearPickerView {
+            self.colabaDelegate?.selectedDate(date: datePicker.date)
+            self.text = getMonthFormattedDate(datePicker: datePicker)
+        }
+        self.resignFirstResponder()
+        self.isUserInteractionEnabled = true
+    }
+    
     @objc func datePickerValueChanged(datePicker: UIDatePicker) {
         self.text = getFormattedDate(datePicker: datePicker)
+        self.colabaDelegate?.selectedDate(date: datePicker.date)
+    }
+    
+    @objc func monthlyDatePickerValueChanged(datePicker: MonthYearPickerView) {
+        self.text = getMonthFormattedDate(datePicker: datePicker)
         self.colabaDelegate?.selectedDate(date: datePicker.date)
     }
     
@@ -544,6 +635,13 @@ extension ColabaTextField {
         let dateFormater = DateFormatter()
         dateFormater.dateStyle = .medium
         dateFormater.dateFormat = "MM/dd/yyyy"
+        return dateFormater.string(from: datePicker.date)
+    }
+    
+    func getMonthFormattedDate(datePicker: MonthYearPickerView) -> String {
+        let dateFormater = DateFormatter()
+        dateFormater.dateStyle = .medium
+        dateFormater.dateFormat = "MM/yyyy"
         return dateFormater.string(from: datePicker.date)
     }
 }

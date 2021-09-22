@@ -33,6 +33,18 @@ class GovernmentQuestionDetailViewController: BaseViewController {
     var undisclosedVC: UndisclosedBorrowerFundsViewController!
     var ownershipInterestVC: OwnershipInterestInPropertyViewController!
     var priorityLiensVC: PriorityLiensViewController!
+    var undisclosedMortgageApplicationVC: UndisclosedMortgageApplicationViewController!
+    var undisclosedCreditApplicationVC: UndisclosedCreditApplicationViewController!
+    var debtCoSignerVC: DebtCoSignerViewController!
+    var outstandingJudgementsVC: OutstandingJudgementsViewController!
+    var fedralDebtVC: FedralDebtViewController!
+    var partyToLawsuitVC: PartyToLawsuitViewController!
+    var titleConveyanceVC: TitleConveyanceViewController!
+    var preForceClosureVC: PreForceClosureViewController!
+    var forceClosedPropertyVC: ForceClosedPropertyViewController!
+    var bankruptcyVC: BankruptcyViewController!
+    var childSupportVC: ChildSupportViewController!
+    var demographicInfoVC: DemographicInformationViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +52,18 @@ class GovernmentQuestionDetailViewController: BaseViewController {
         undisclosedVC = Utility.getUndisclosedBorrowerFundsVC()
         ownershipInterestVC = Utility.getOwnershipInterestInPropertyVC()
         priorityLiensVC = Utility.getPriorityLiensViewController()
+        undisclosedMortgageApplicationVC = Utility.getUndisclosedMortgageApplicationVC()
+        undisclosedCreditApplicationVC = Utility.getUndisclosedCreditApplicationVC()
+        debtCoSignerVC = Utility.getDebtCoSignerVC()
+        outstandingJudgementsVC = Utility.getOutstandingJudgementsVC()
+        fedralDebtVC =  Utility.getFedralDebtVC()
+        partyToLawsuitVC = Utility.getPartyToLawsuitVC()
+        titleConveyanceVC = Utility.getTitleConveyanceVC()
+        preForceClosureVC = Utility.getPreForceClosureVC()
+        forceClosedPropertyVC = Utility.getForceClosedPropertyVC()
+        bankruptcyVC = Utility.getBankruptcyVC()
+        childSupportVC = Utility.getChildSupportVC()
+        demographicInfoVC = Utility.getDemographicInformationVC()
         
         roundAllFilterViews(filterViews: [unDisclosedView, ownershipInterestView, priorityLiensView, undisclosedMortgageApplicationsView, undisclosedCreditApplicationView, debtCoSignerView, outstandingJudgementsView, fedralDebtView, partyToLawsuitView, titleConveyanceView, preForceClosureView, foreClosuredPropertyView, bankruptcyView, childSupportView, demographicView])
         filterViewTapped(selectedFilterView: unDisclosedView, filterViews: [unDisclosedView, ownershipInterestView, priorityLiensView, undisclosedMortgageApplicationsView, undisclosedCreditApplicationView, debtCoSignerView, outstandingJudgementsView, fedralDebtView, partyToLawsuitView, titleConveyanceView, preForceClosureView, foreClosuredPropertyView, bankruptcyView, childSupportView, demographicView])
@@ -92,16 +116,64 @@ class GovernmentQuestionDetailViewController: BaseViewController {
             }
         }
         if (selectedFilterView == unDisclosedView){
-            remove(viewControllers: [ownershipInterestVC, priorityLiensVC])
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: undisclosedVC)
             add(viewController: undisclosedVC)
         }
         else if (selectedFilterView == ownershipInterestView){
-            remove(viewControllers: [undisclosedVC, priorityLiensVC])
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: ownershipInterestVC)
             add(viewController: ownershipInterestVC)
         }
         else if (selectedFilterView == priorityLiensView){
-            remove(viewControllers: [undisclosedVC, ownershipInterestVC])
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: priorityLiensVC)
             add(viewController: priorityLiensVC)
+        }
+        else if (selectedFilterView == undisclosedMortgageApplicationsView){
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: undisclosedMortgageApplicationVC)
+            add(viewController: undisclosedMortgageApplicationVC)
+        }
+        else if (selectedFilterView == undisclosedCreditApplicationView){
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: undisclosedCreditApplicationVC)
+            add(viewController: undisclosedCreditApplicationVC)
+        }
+        else if (selectedFilterView == debtCoSignerView){
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: debtCoSignerVC)
+            add(viewController: debtCoSignerVC)
+        }
+        else if (selectedFilterView == outstandingJudgementsView){
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: outstandingJudgementsVC)
+            add(viewController: outstandingJudgementsVC)
+        }
+        else if (selectedFilterView == fedralDebtView){
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: fedralDebtVC)
+            add(viewController: fedralDebtVC)
+        }
+        else if (selectedFilterView == partyToLawsuitView){
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: partyToLawsuitVC)
+            add(viewController: partyToLawsuitVC)
+        }
+        else if (selectedFilterView == titleConveyanceView){
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: titleConveyanceVC)
+            add(viewController: titleConveyanceVC)
+        }
+        else if (selectedFilterView == preForceClosureView){
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: preForceClosureVC)
+            add(viewController: preForceClosureVC)
+        }
+        else if (selectedFilterView == foreClosuredPropertyView){
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: forceClosedPropertyVC)
+            add(viewController: forceClosedPropertyVC)
+        }
+        else if (selectedFilterView == bankruptcyView){
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: bankruptcyVC)
+            add(viewController: bankruptcyVC)
+        }
+        else if (selectedFilterView == childSupportView){
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: childSupportVC)
+            add(viewController: childSupportVC)
+        }
+        else if (selectedFilterView == demographicView){
+            remove(viewControllers: [undisclosedVC, ownershipInterestVC, priorityLiensVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: demographicInfoVC)
+            add(viewController: demographicInfoVC)
         }
     }
     
@@ -113,11 +185,13 @@ class GovernmentQuestionDetailViewController: BaseViewController {
         viewController.didMove(toParent: self)
     }
     
-    func remove(viewControllers: [UIViewController]){
+    func remove(viewControllers: [UIViewController], selectedVC: UIViewController){
         for viewController in viewControllers{
-            viewController.willMove(toParent: nil)
-            viewController.view.removeFromSuperview()
-            viewController.removeFromParent()
+            if (viewController != selectedVC){
+                viewController.willMove(toParent: nil)
+                viewController.view.removeFromSuperview()
+                viewController.removeFromParent()
+            }
         }
     }
     

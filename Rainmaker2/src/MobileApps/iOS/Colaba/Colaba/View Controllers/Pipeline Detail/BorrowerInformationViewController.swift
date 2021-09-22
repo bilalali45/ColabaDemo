@@ -92,7 +92,7 @@ class BorrowerInformationViewController: BaseViewController {
     @IBOutlet weak var reserveOrNationalGuardMainView: UIView!
     @IBOutlet weak var lblReserveNationalGuardQuestion: UILabel!
     @IBOutlet weak var lblReserveNationalGuardAns: UILabel!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var totalAddresses = 2
     var maritalStatus = 1 //1 for unmarried, 2 for married and 3 for separated
@@ -210,10 +210,6 @@ class BorrowerInformationViewController: BaseViewController {
         reserveOrNationalGuardMainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         reserveOrNationalGuardMainView.dropShadowToCollectionViewCell()
         reserveOrNationalGuardMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(reserveOrNationalGuardMainViewTapped)))
-        
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
     }
     
     func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){

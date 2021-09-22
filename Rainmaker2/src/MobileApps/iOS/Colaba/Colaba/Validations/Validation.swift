@@ -8,6 +8,7 @@
 import Foundation
 
 enum ValidationType {
+    case noValidation
     case required
     case email
     case password
@@ -31,6 +32,8 @@ extension String {
             return try Validation.validateVerificationCode(self)
         case .netAnnualIncome:
             return try Validation.validateNetAnnualIncome(self)
+        case .noValidation:
+            return true //TODO: Set as the default validation type in the colaba text when all the validations are implemented in the project
         }
     }
 }

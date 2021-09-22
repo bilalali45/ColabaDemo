@@ -67,7 +67,7 @@ class AddCurrentEmployementViewController: BaseViewController {
     @IBOutlet weak var lblCommission: UILabel!
     @IBOutlet weak var commissionStackViewTopConstraint: NSLayoutConstraint! //100 or 0
     @IBOutlet weak var txtfieldAnnualCommision: ColabaTextField!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var hasEmployed = true
     var hasOwnershipInterest = true
@@ -161,9 +161,7 @@ class AddCurrentEmployementViewController: BaseViewController {
         addressView.dropShadowToCollectionViewCell()
         addressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
         employedViewYesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(employedYesStackViewTapped)))
         employedViewNoStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(employedNoStackViewTapped)))

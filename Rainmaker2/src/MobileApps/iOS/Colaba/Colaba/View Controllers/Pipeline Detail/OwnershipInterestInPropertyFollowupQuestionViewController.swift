@@ -19,7 +19,7 @@ class OwnershipInterestInPropertyFollowupQuestionViewController: BaseViewControl
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var txtfieldPropertyType: ColabaTextField!
     @IBOutlet weak var txtfieldHoldTitle: ColabaTextField!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,21 +34,21 @@ class OwnershipInterestInPropertyFollowupQuestionViewController: BaseViewControl
         txtfieldPropertyType.setDelegates(controller: self)
         txtfieldPropertyType.setValidation(validationType: .required)
         txtfieldPropertyType.setTextField(keyboardType: .asciiCapable)
-        txtfieldPropertyType.setIsValidateOnEndEditing(validate: true)
+        //txtfieldPropertyType.setIsValidateOnEndEditing(validate: true)
         txtfieldPropertyType.setValidation(validationType: .required)
         txtfieldPropertyType.type = .dropdown
+        txtfieldPropertyType.setDropDownDataSource(kOccupancyTypeArray)
         
         txtfieldHoldTitle.setTextField(placeholder: "How did you hold title to the property?")
         txtfieldHoldTitle.setDelegates(controller: self)
         txtfieldHoldTitle.setValidation(validationType: .required)
         txtfieldHoldTitle.setTextField(keyboardType: .asciiCapable)
-        txtfieldHoldTitle.setIsValidateOnEndEditing(validate: true)
+        //txtfieldHoldTitle.setIsValidateOnEndEditing(validate: true)
         txtfieldHoldTitle.setValidation(validationType: .required)
         txtfieldHoldTitle.type = .dropdown
+        txtfieldHoldTitle.setDropDownDataSource(kHoldTitleArray)
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
     }
     
     func validate() -> Bool {

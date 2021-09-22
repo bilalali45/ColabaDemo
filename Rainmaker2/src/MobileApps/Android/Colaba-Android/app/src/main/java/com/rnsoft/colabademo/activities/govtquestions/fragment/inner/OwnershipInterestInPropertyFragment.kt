@@ -7,12 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.RadioGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.OwnershipInterestInPropertyLayoutBinding
-import com.rnsoft.colabademo.databinding.ProceedFromTransLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.HideSoftkeyboard
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,9 +41,7 @@ class OwnershipInterestInPropertyFragment : Fragment() {
 
     private fun setUpUI(){
 
-
-
-        val dataArray: ArrayList<String> = arrayListOf("Proceeds From A Loan", "Proceeds From Selling Non-Real Estate Assets", "Proceeds From Selling Real Estate Assets")
+        val dataArray: ArrayList<String> = arrayListOf("Primary Residence", "Second Home", "Investment Property")
         val stateNamesAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  dataArray)
         binding.transactionAutoCompleteTextView.setAdapter(stateNamesAdapter)
         binding.transactionAutoCompleteTextView.setOnFocusChangeListener { _, _ ->
@@ -58,7 +55,7 @@ class OwnershipInterestInPropertyFragment : Fragment() {
         binding.transactionAutoCompleteTextView.onItemClickListener = object: AdapterView.OnItemClickListener {
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                 binding.transactionTextInputLayout.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(requireContext(), R.color.grey_color_two ))
+                    ContextCompat.getColor(requireContext(), R.color.grey_color_two))
 
                 binding.transactionTextInputLayout.helperText?.let{
                     if(it.isNotEmpty())
@@ -68,21 +65,14 @@ class OwnershipInterestInPropertyFragment : Fragment() {
                 removeErrorFromFields()
                 clearFocusFromFields()
 
-                if(position ==0) {
-                    binding.whichAssetInputLayout.visibility = View.GONE
-                    binding.whichAssetsCompleteView.setText("")
-                }
-                else{
-                    binding.whichAssetsCompleteView.setText("")
-                    binding.whichAssetInputLayout.visibility = View.GONE
-                }
             }
         }
 
 
 
 
-        val dataArray2: ArrayList<String> = arrayListOf("House", "Automobile", "Financial Account", "Other")
+
+        val dataArray2: ArrayList<String> = arrayListOf("By Yourself", "Jointly with your spouse", "Jointly with another person")
         val dataArrayAdapter2 = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  dataArray2)
         binding.whichAssetsCompleteView.setAdapter(dataArrayAdapter2)
         binding.whichAssetsCompleteView.setOnFocusChangeListener { _, _ ->
@@ -96,7 +86,7 @@ class OwnershipInterestInPropertyFragment : Fragment() {
         binding.whichAssetsCompleteView.onItemClickListener = object: AdapterView.OnItemClickListener {
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                 binding.whichAssetInputLayout.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(requireContext(), R.color.grey_color_two ))
+                    ContextCompat.getColor(requireContext(), R.color.grey_color_two))
 
                 binding.whichAssetInputLayout.helperText?.let{
                     if(it.isNotEmpty())
@@ -131,11 +121,7 @@ class OwnershipInterestInPropertyFragment : Fragment() {
 
 
 
-    private fun clearFocusFromFields(){
-        //binding.annualBaseLayout.clearFocus()
-        binding.whichAssetInputLayout.clearFocus()
-        binding.transactionTextInputLayout.clearFocus()
-    }
+
 
     private fun checkEmptyFields():Boolean{
         var bool =  true
@@ -164,6 +150,11 @@ class OwnershipInterestInPropertyFragment : Fragment() {
         CustomMaterialFields.clearError(binding.whichAssetInputLayout,  requireContext())
     }
 
+    private fun clearFocusFromFields(){
+        //binding.annualBaseLayout.clearFocus()
+        binding.whichAssetInputLayout.clearFocus()
+        binding.transactionTextInputLayout.clearFocus()
+    }
 
 
 }

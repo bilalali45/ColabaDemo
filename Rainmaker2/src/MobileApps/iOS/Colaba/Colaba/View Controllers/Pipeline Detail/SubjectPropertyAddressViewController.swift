@@ -33,7 +33,7 @@ class SubjectPropertyAddressViewController: BaseViewController {
     @IBOutlet weak var txtfieldCountry: TextField!
     @IBOutlet weak var countryDropDownAnchorView: UIView!
     @IBOutlet weak var btnCountryDropDown: UIButton!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     @IBOutlet weak var tblViewPlaces: UITableView!
     var placesData=[GMSAutocompletePrediction]()
@@ -94,9 +94,7 @@ class SubjectPropertyAddressViewController: BaseViewController {
             textfield.textColor = Theme.getAppBlackColor()
         }
         txtfieldHomeAddress.textInsetsPreset = .horizontally5
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
         countryDropDown.dismissMode = .onTap
         countryDropDown.anchorView = countryDropDownAnchorView

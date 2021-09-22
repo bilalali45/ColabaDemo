@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="array_loan_stage">
+        <item>Pre-Approval</item>
+    </string-array>
+
     <string name="app_name">Colaba</string>
 
     <string name="api_key">AIzaSyBzPEiQOTReBzy6W1UcIyHApPu7_5Die6w </string>
@@ -25,9 +29,7 @@
     <string name="sign_in_with_password">Sign in with Password</string>
 
 
-    <string-array name="array_loan_stage">
-        <item>Pre-Approval</item>
-    </string-array>
+
 
 
     <string-array name="array_occupancy_type">
@@ -366,6 +368,8 @@
     <string name="sub_property_refinance_ques1">Do you currently have mortages against this property?</string>
     <string name="sub_property_refinance_ques2">Do you have any second mortages on this property?</string>
 
+    <string name="bankruptcy">Bankruptcy</string>
+    <string name="demo_graphic_info">DemoGraphic Information</string>
 
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
     <string name="mixed_use_property_ques">If Borrower will occupy the property, will Borrower set aside space within the property to operate his/her own business?</string>
@@ -398,6 +402,8 @@
     <string name="years_profession">Years in Profession</string>
     <string name="income_ques1">Are you employed by a family member, property seller, real estate agent, or other party to the transaction?</string>
     <string name="income_ques2">Do you have an ownership interest in this business?</string>
+    <string name="priority_liens">Priority liens</string>
+    <string name="undisclosed_fund">undisclosed_fund</string>
     <string name="ownership_percentage">Ownership Percentage</string>
     <string name="pay_type">Pay Type</string>
     <string name="additional_income">Additional Income</string>
@@ -438,12 +444,22 @@
     <string name="debt_consolidated">Debt Consolidation</string>
 
 
-
-
+    <string name="child_support_question">Are you currently obligated to pay child support, alimony or separate maintenance?</string>
+    <string name="undisclosed_mortgage_question">Have you or will you be applying for a mortgage loan on another property (not the property securing this loan) on or before closing this transaction that is not disclosed on this loan application?</string>
+    <string name="undisclosed_credit_question">Have you or will you be applying for any new credit (e.g., instalment loan, credit card, etc.) on or before closing this loan that is not disclosed on this application?</string>
+    <string name="debt_co_question">Are you a co-signer or guarantor on any debt or loan that is not disclosed on this application?</string>
+    <string name="outstanding_judgement_question">Are there any outstanding judgments against you?</string>
+    <string name="federal_debt_question">Are you currently delinquent or in default on a Federal debt?</string>
+    <string name="party_to_lawsuit_question">Are you a party to a lawsuit in which you potentially have any personal financial liability?</string>
+    <string name="title_conveyance_question">Have you conveyed title to any property in lieu of foreclosure in the past 7 years?</string>
+    <string name="pre_foreclosure_or_short_sale_question">Within the past 7 years, have you completed a pre-foreclosure sale or short sale, whereby the property was sold to a third party and the Lender agreed to accept less than the outstanding mortgage balance due?</string>
+    <string name="foreclosured_property_question">Have you had property foreclosed upon in the last 7 years?</string>
+    <string name="bankruptcy_question">Have you declared bankruptcy within the past 7 years?</string>
     <string name="govt_questions">Government Questions</string>
     <string name="undisclosed_question_one">Are you borrowing any money for this real estate transaction (e.g., money for your closing costs or down payment) obtaining any money from another party, such as the seller or realtor, that you have not disclosed on this loan application?</string>
     <string name="have_you_had_an_ownership_interest">Have you had an ownership interest in another property in the last three years?</string>
     <string name="will_this_property_be_subject_to_a_lien">Will this property be subject to a lien that could take priority over the first mortgage lien, such as a clean energy lien paid through your property taxes (e.g., the Property Assessed Clean Energy Program)?</string>
+
 
 
 </resources>

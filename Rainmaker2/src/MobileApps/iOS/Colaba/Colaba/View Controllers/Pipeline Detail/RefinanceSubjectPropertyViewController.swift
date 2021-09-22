@@ -20,7 +20,7 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     @IBOutlet weak var subjectPropertyTBDView: UIView!
     @IBOutlet weak var lblSubjectPropertyTBD: UILabel!
     @IBOutlet weak var btnSubjectPropertyTBD: UIButton!
@@ -172,9 +172,7 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         secondMortgageView.dropShadowToCollectionViewCell()
         secondMortgageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(secondMortgageViewTapped)))
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
         propertyTypeDropDown.dismissMode = .onTap
         propertyTypeDropDown.anchorView = propertyTypeDropDownAnchorView

@@ -33,7 +33,7 @@ class AddOtherAssetsViewController: BaseViewController {
     @IBOutlet weak var txtfieldCashValue: TextField!
     @IBOutlet weak var cashValueDollarView: UIView!
     @IBOutlet weak var assetsDescriptionTextViewContainer: UIView!
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var isShowAccountNumber = false
     let assetTypeDropDown = DropDown()
@@ -186,9 +186,7 @@ class AddOtherAssetsViewController: BaseViewController {
         
         txtfieldCashValue.addTarget(self, action: #selector(textfieldAnnualBaseSalaryChanged), for: .editingChanged)
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
     }
     

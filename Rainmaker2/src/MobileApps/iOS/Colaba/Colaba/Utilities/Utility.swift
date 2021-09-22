@@ -15,6 +15,7 @@ struct Utility {
     static let mainStoryboard = UIStoryboard.init(name: "Main", bundle: nil)
     static let loanDetailStoryboard = UIStoryboard.init(name: "PipelineDetail", bundle: nil)
     static let testStoryboard = UIStoryboard.init(name: "Test", bundle: nil)
+    static let newApplicationStoryboard = UIStoryboard.init(name: "NewApplication", bundle: nil)
     
     static private var pipelineDateFormatter: DateFormatter?
     static private var loanApplicationDateFormatter: DateFormatter?
@@ -310,6 +311,66 @@ struct Utility {
     
     static func getPriorityLiensFollowupQuestionViewController() -> PriorityLiensFollowupQuestionViewController{
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: PriorityLiensFollowupQuestionViewController.self)) as! PriorityLiensFollowupQuestionViewController
+    }
+    
+    static func getUndisclosedMortgageApplicationVC() -> UndisclosedMortgageApplicationViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: UndisclosedMortgageApplicationViewController.self)) as! UndisclosedMortgageApplicationViewController
+    }
+    
+    static func getUndisclosedCreditApplicationVC() -> UndisclosedCreditApplicationViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: UndisclosedCreditApplicationViewController.self)) as! UndisclosedCreditApplicationViewController
+    }
+    
+    static func getDebtCoSignerVC() -> DebtCoSignerViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: DebtCoSignerViewController.self)) as! DebtCoSignerViewController
+    }
+    
+    static func getOutstandingJudgementsVC() -> OutstandingJudgementsViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: OutstandingJudgementsViewController.self)) as! OutstandingJudgementsViewController
+    }
+    
+    static func getFedralDebtVC() -> FedralDebtViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: FedralDebtViewController.self)) as! FedralDebtViewController
+    }
+    
+    static func getPartyToLawsuitVC() -> PartyToLawsuitViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: PartyToLawsuitViewController.self)) as! PartyToLawsuitViewController
+    }
+    
+    static func getTitleConveyanceVC() -> TitleConveyanceViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: TitleConveyanceViewController.self)) as! TitleConveyanceViewController
+    }
+    
+    static func getPreForceClosureVC() -> PreForceClosureViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: PreForceClosureViewController.self)) as! PreForceClosureViewController
+    }
+    
+    static func getForceClosedPropertyVC() -> ForceClosedPropertyViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: ForceClosedPropertyViewController.self)) as! ForceClosedPropertyViewController
+    }
+    
+    static func getBankruptcyVC() -> BankruptcyViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: BankruptcyViewController.self)) as! BankruptcyViewController
+    }
+    
+    static func getBankruptcyFollowupVC() -> BankruptcyFollowupViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: BankruptcyFollowupViewController.self)) as! BankruptcyFollowupViewController
+    }
+    
+    static func getChildSupportVC() -> ChildSupportViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: ChildSupportViewController.self)) as! ChildSupportViewController
+    }
+    
+    static func getChildSupportFollowupQuestionsVC() -> ChildSupportFollowupQuestionsViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: ChildSupportFollowupQuestionsViewController.self)) as! ChildSupportFollowupQuestionsViewController
+    }
+    
+    static func getDemographicInformationVC() -> DemographicInformationViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: DemographicInformationViewController.self)) as! DemographicInformationViewController
+    }
+    
+    static func getStartNewApplicationVC() -> StartNewApplicationViewController{
+        return newApplicationStoryboard.instantiateViewController(withIdentifier: String(describing: StartNewApplicationViewController.self)) as! StartNewApplicationViewController
     }
     
     static var localPiplineDateFormatter: DateFormatter{

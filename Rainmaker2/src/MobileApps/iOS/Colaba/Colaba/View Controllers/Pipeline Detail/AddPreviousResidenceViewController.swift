@@ -48,7 +48,7 @@ class AddPreviousResidenceViewController: BaseViewController {
     @IBOutlet weak var monthlyRentDollarView: UIView!
     @IBOutlet weak var txtfieldMonthlyRentTopConstraint: NSLayoutConstraint! //30 or 0
     @IBOutlet weak var txtfieldMonthlyRentHeightConstraint: NSLayoutConstraint! //39 or 0
-    @IBOutlet weak var btnSaveChanges: UIButton!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     @IBOutlet weak var tblViewPlaces: UITableView!
     var placesData=[GMSAutocompletePrediction]()
@@ -168,9 +168,7 @@ class AddPreviousResidenceViewController: BaseViewController {
             stateDropDown.hide()
         }
         
-        btnSaveChanges.layer.borderWidth = 1
-        btnSaveChanges.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        btnSaveChanges.roundButtonWithShadow(shadowColor: UIColor.white.withAlphaComponent(0.20).cgColor)
+
         
         moveInDateFormatter.dateStyle = .medium
         moveInDateFormatter.dateFormat = "MM/yyyy"
