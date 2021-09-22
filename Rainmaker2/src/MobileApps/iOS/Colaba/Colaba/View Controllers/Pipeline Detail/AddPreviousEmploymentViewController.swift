@@ -21,6 +21,7 @@ class AddPreviousEmploymentViewController: BaseViewController {
     @IBOutlet weak var txtfieldEmployerPhoneNumber: ColabaTextField!
     @IBOutlet weak var addressView: UIView!
     @IBOutlet weak var lblAddress: UILabel!
+    @IBOutlet weak var addAddressView: UIView!
     @IBOutlet weak var txtfieldJobTitle: ColabaTextField!
     @IBOutlet weak var txtfieldProfessionYears: ColabaTextField!
     @IBOutlet weak var txtfieldStartDate: ColabaTextField!
@@ -105,7 +106,10 @@ class AddPreviousEmploymentViewController: BaseViewController {
         addressView.dropShadowToCollectionViewCell()
         addressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
         
-
+        addAddressView.layer.cornerRadius = 6
+        addAddressView.layer.borderWidth = 1
+        addAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        addAddressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
         
         ownershipYesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ownershipYesStackViewTapped)))
         ownershipNoStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ownershipNoStackViewTapped)))
@@ -201,3 +205,21 @@ class AddPreviousEmploymentViewController: BaseViewController {
     }
 }
 
+extension AddPreviousEmploymentViewController: ColabaTextFieldDelegate{
+    
+    func textFieldEndEditing(_ textField: ColabaTextField) {
+        if (textField == txtfieldStartDate){
+            let dateFormater = DateFormatter()
+            dateFormater.dateStyle = .medium
+            dateFormater.dateFormat = "MM/dd/yyyy"
+            txtfieldEndDate.setMinDate(date: dateFormater.date(from: txtfieldStartDate.text!)!)
+        }
+        else if (textField == txtfieldEndDate){
+            let dateFormater = DateFormatter()
+            dateFormater.dateStyle = .medium
+            dateFormater.dateFormat = "MM/dd/yyyy"
+            txtfieldStartDate.setMaxDate(date: dateFormater.date(from: txtfieldEndDate.text!)!)
+        }
+    }
+    
+}

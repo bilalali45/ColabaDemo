@@ -26,6 +26,7 @@ class AddBusinessViewController: BaseViewController {
     @IBOutlet weak var txtfieldBusinessStartDate: ColabaTextField!
     @IBOutlet weak var addressView: UIView!
     @IBOutlet weak var lblAddress: UILabel!
+    @IBOutlet weak var addAddressView: UIView!
     @IBOutlet weak var txtfieldJobTitle: ColabaTextField!
     @IBOutlet weak var txtfieldOwnershipPercentage: ColabaTextField!
     @IBOutlet weak var txtfieldNetAnnualIncome: ColabaTextField!
@@ -94,6 +95,11 @@ class AddBusinessViewController: BaseViewController {
         addressView.dropShadowToCollectionViewCell()
         addressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
         
+        addAddressView.layer.cornerRadius = 6
+        addAddressView.layer.borderWidth = 1
+        addAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        addAddressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
+        
         businessTypeDropDown.dismissMode = .automatic
         businessTypeDropDown.anchorView = businessTypeDropDownAnchorView
         businessTypeDropDown.dataSource = kBusinessTypeArray
@@ -111,8 +117,6 @@ class AddBusinessViewController: BaseViewController {
             txtfieldBusinessType.detail = ""
             businessTypeDropDown.hide()
         }
-        
-
         
     }
     

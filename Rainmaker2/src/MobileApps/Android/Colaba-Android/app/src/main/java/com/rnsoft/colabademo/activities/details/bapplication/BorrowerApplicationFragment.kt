@@ -3,7 +3,6 @@ package com.rnsoft.colabademo
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -18,7 +17,7 @@ import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
-class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
+class BorrowerApplicationFragment : Fragment() , AdapterClickListener, GovernmentQuestionClickListener {
 
     private var _binding: DetailApplicationTabBinding? = null
     private val binding get() = _binding!!
@@ -38,7 +37,7 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
 
     private var borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList , this)
     private var realStateAdapter  = RealStateAdapter(realStateList)
-    private var questionAdapter  = QuestionAdapter(questionList)
+    private var questionAdapter  = QuestionAdapter(questionList, this)
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -221,7 +220,7 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
 
 
                 questionList.add(BorrowerQuestionsModel(null,null, true, races, ethnicities ))
-                questionAdapter  = QuestionAdapter(questionList)
+                questionAdapter  = QuestionAdapter(questionList , this@BorrowerApplicationFragment)
                 questionsRecyclerView.adapter = questionAdapter
                 questionAdapter.notifyDataSetChanged()
 
@@ -268,6 +267,8 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
             override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
         })
 
+
+
         return root
 
     }
@@ -308,6 +309,11 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener {
 
     override fun navigateTo(position: Int) {
         startActivity(Intent(requireActivity(), BorrowerAddressActivity::class.java))
+    }
+
+    override fun navigateToGovernmentActivity(position: Int) {
+        // TODO("Not yet implemented")
+        startActivity(Intent(requireActivity(), GovtQuestionActivity::class.java))
     }
 
     /*

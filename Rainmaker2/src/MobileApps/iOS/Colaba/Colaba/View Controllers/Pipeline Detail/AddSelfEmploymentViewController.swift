@@ -21,6 +21,7 @@ class AddSelfEmploymentViewController: BaseViewController {
     @IBOutlet weak var txtfieldBusinessPhoneNumber: ColabaTextField!
     @IBOutlet weak var addressView: UIView!
     @IBOutlet weak var lblAddress: UILabel!
+    @IBOutlet weak var addAddressView: UIView!
     @IBOutlet weak var txtfieldJobTitle: ColabaTextField!
     @IBOutlet weak var txtfieldBusinessStartDate: ColabaTextField!
     
@@ -72,7 +73,10 @@ class AddSelfEmploymentViewController: BaseViewController {
         addressView.dropShadowToCollectionViewCell()
         addressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
         
-
+        addAddressView.layer.cornerRadius = 6
+        addAddressView.layer.borderWidth = 1
+        addAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        addAddressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
         
     }
     
