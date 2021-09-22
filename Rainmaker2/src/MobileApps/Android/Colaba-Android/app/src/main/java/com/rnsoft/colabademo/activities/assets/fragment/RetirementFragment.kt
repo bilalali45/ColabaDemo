@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.RetirementLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.HideSoftkeyboard
+
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.login_layout.*
 import kotlinx.android.synthetic.main.non_permenant_resident_layout.*

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.LoanBaseFragment
 import com.rnsoft.colabademo.databinding.FragmentLoanBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -28,7 +28,7 @@ import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
-class AllLoansFragment : BaseFragment(), AdapterClickListener ,  LoanFilterInterface {
+class AllLoansFragment : LoanBaseFragment(), AdapterClickListener ,  LoanFilterInterface {
     private var _binding: FragmentLoanBinding? = null
     private val binding get() = _binding!!
 
