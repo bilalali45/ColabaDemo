@@ -20,6 +20,7 @@ class AddMilitaryPayViewController: BaseViewController {
     @IBOutlet weak var txtfieldEmployerName: ColabaTextField!
     @IBOutlet weak var addressView: UIView!
     @IBOutlet weak var lblAddress: UILabel!
+    @IBOutlet weak var addAddressView: UIView!
     @IBOutlet weak var txtfieldJobTitle: ColabaTextField!
     @IBOutlet weak var txtfieldProfessionYears: ColabaTextField!
     @IBOutlet weak var txtfieldStartDate: ColabaTextField!
@@ -83,7 +84,10 @@ class AddMilitaryPayViewController: BaseViewController {
         addressView.dropShadowToCollectionViewCell()
         addressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
         
-
+        addAddressView.layer.cornerRadius = 6
+        addAddressView.layer.borderWidth = 1
+        addAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        addAddressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
         
     }
     
