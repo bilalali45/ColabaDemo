@@ -143,9 +143,9 @@ class AddGiftFundsViewController: UIViewController {
     
     func changeGiftType(){
         btnCashGift.setImage(UIImage(named: isCashGift ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblCashGift.font = isCashGift ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
+        lblCashGift.font = isCashGift ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         btnGiftOfEquity.setImage(UIImage(named: !isCashGift ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblGiftOfEquity.font = !isCashGift ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
+        lblGiftOfEquity.font = !isCashGift ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         
         txtfieldCashValue.isHidden = false
         txtfieldCashValue.placeholder = isCashGift ? "Cash Value" : "Market Value"

@@ -44,8 +44,8 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
     @IBOutlet weak var lblNo2: UILabel!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
-    var isMortgageCombine = true
-    var isMortgageTakenWhenPropertyPurchase = true
+    var isMortgageCombine: Int?
+    var isMortgageTakenWhenPropertyPurchase: Int?
     
     var isForRealEstate = false
     
@@ -58,6 +58,8 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
             mortgageCombinedViewHeightConstarint.constant = 0
             propertyPurchaseViewTopConstraint.constant = 0
         }
+        changeMortgageCombineStatus()
+        changeMortgageTakenWhenPropertyPurchaseStatus()
     }
     
     //MARK:- Methods and Actions
@@ -96,37 +98,37 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
     }
     
     @objc func yesStackViewTapped(){
-        isMortgageCombine = true
+        isMortgageCombine = 1
         changeMortgageCombineStatus()
     }
     
     @objc func noStackViewTapped(){
-        isMortgageCombine = false
+        isMortgageCombine = 0
         changeMortgageCombineStatus()
     }
     
     func changeMortgageCombineStatus(){
-        btnYes.setImage(UIImage(named: isMortgageCombine ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblYes.font = isMortgageCombine ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-        btnNo.setImage(UIImage(named: isMortgageCombine ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
-        lblNo.font = isMortgageCombine ?  Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
+        btnYes.setImage(UIImage(named: isMortgageCombine == 1 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+        lblYes.font = isMortgageCombine == 1 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        btnNo.setImage(UIImage(named: isMortgageCombine == 0 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+        lblNo.font = isMortgageCombine == 0 ?  Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
     }
     
     @objc func yesStackView2Tapped(){
-        isMortgageTakenWhenPropertyPurchase = true
+        isMortgageTakenWhenPropertyPurchase = 1
         changeMortgageTakenWhenPropertyPurchaseStatus()
     }
     
     @objc func noStackView2Tapped(){
-        isMortgageTakenWhenPropertyPurchase = false
+        isMortgageTakenWhenPropertyPurchase = 0
         changeMortgageTakenWhenPropertyPurchaseStatus()
     }
     
     func changeMortgageTakenWhenPropertyPurchaseStatus(){
-        btnYes2.setImage(UIImage(named: isMortgageTakenWhenPropertyPurchase ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblYes2.font = isMortgageTakenWhenPropertyPurchase ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-        btnNo2.setImage(UIImage(named: isMortgageTakenWhenPropertyPurchase ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
-        lblNo2.font = isMortgageTakenWhenPropertyPurchase ?  Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
+        btnYes2.setImage(UIImage(named: isMortgageTakenWhenPropertyPurchase == 1 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+        lblYes2.font = isMortgageTakenWhenPropertyPurchase == 1 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        btnNo2.setImage(UIImage(named: isMortgageTakenWhenPropertyPurchase == 0 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+        lblNo2.font = isMortgageTakenWhenPropertyPurchase == 0 ?  Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {

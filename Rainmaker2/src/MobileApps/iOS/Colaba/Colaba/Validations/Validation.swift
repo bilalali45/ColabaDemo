@@ -15,11 +15,14 @@ enum ValidationType {
     case phoneNumber
     case verificationCode
     case netAnnualIncome
+    case purchasePrice
 }
 
 extension String {
     func validate(type: ValidationType) throws -> Bool {
         switch type {
+        case .noValidation:
+            return true //TODO: Set as the default validation type in the colaba text when all the validations are implemented in the project
         case .required:
             return try Validation.validateRequired(self)
         case .email:
@@ -32,8 +35,8 @@ extension String {
             return try Validation.validateVerificationCode(self)
         case .netAnnualIncome:
             return try Validation.validateNetAnnualIncome(self)
-        case .noValidation:
-            return true //TODO: Set as the default validation type in the colaba text when all the validations are implemented in the project
+        case .purchasePrice:
+            return try Validation.validatePurchasePrice(self)
         }
     }
 }
@@ -81,6 +84,15 @@ struct Validation {
             throw ValidationError.requiredNetAnnualIncome
         }
         return true
+    }
+    fileprivate static func validatePurchasePrice(_ text: String) throws -> Bool {
+        if text.isEmpty {
+            throw ValidationError.invalidPurchasePrice
+        } else if let price = Int(cleanString(string: text, replaceCharacters: ["$  |  ",","], replaceWith: "")), price >= 50000 && price <= 100000000 {
+            return true
+        } else {
+            throw ValidationError.invalidPurchasePrice
+        }
     }
     
     
