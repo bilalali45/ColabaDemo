@@ -22,13 +22,16 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
     @IBOutlet weak var lblPropertyQuestion: UILabel!
     @IBOutlet weak var lblPropertyType: UILabel!
     
-    var isYes = true
+    var isYes: Bool?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
+        btnYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+        lblYes.font = Theme.getRubikRegularFont(size: 14)
+        propertyTypeView.isHidden = true
     }
     
     //MARK:- Methods
@@ -55,11 +58,13 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
     }
     
     func changeStatus(){
-        btnYes.setImage(UIImage(named: isYes ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblYes.font = isYes ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-        btnNo.setImage(UIImage(named: !isYes ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblNo.font = !isYes ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-        propertyTypeView.isHidden = !isYes
+        if let yes = isYes{
+            btnYes.setImage(UIImage(named: yes ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+            lblYes.font = yes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+            btnNo.setImage(UIImage(named: !yes ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+            lblNo.font = !yes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+            propertyTypeView.isHidden = !yes
+        }
     }
     
     @objc func propertyTypeViewTapped(){
