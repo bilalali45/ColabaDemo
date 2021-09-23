@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/half_white">
+    android:background="@color/half_white"
+    android:id="@+id/address_parent_layout">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/app_header"
@@ -51,7 +51,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/app_header">
 
         <LinearLayout
-            android:id="@+id/subProperty_address_layout"
+            android:id="@+id/address_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -117,13 +116,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
-            <!--<View
-                android:id="@+id/search_separator"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/grey_color_four" /> -->
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_places"
                 android:layout_width="match_parent"
@@ -134,7 +126,6 @@
                 android:visibility="gone"
                 android:background="@color/white"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:visibility="gone"
@@ -154,7 +145,6 @@
                 app:helperTextTextColor="@color/colaba_red_color"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_street_address"
                     android:layout_width="match_parent"
@@ -170,7 +160,6 @@
                     android:textSize="@dimen/ed_txt_size_primary_info" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:visibility="gone"
@@ -244,7 +233,6 @@
                     android:textSize="@dimen/ed_txt_size_primary_info" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:visibility="gone"

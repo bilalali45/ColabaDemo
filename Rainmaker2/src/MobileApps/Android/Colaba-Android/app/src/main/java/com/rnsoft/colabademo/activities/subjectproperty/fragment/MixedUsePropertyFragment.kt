@@ -21,7 +21,7 @@ class MixedUsePropertyFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = MixedUsePropertyBinding.inflate(inflater, container, false)
 
         binding.backButton.setOnClickListener {
@@ -36,8 +36,6 @@ class MixedUsePropertyFragment : BaseFragment() {
                 requireActivity().onBackPressed()
             }
         }
-
-
         binding.edDetails.doAfterTextChanged {
             it.let {
                 CustomMaterialFields.clearError(binding.layoutDetail,requireActivity())

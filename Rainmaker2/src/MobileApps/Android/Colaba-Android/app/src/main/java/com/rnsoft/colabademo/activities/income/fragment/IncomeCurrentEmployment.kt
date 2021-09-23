@@ -26,7 +26,7 @@ import java.util.*
 /**
  * Created by Anita Kiran on 9/13/2021.
  */
-class IncomeCurrentEmployment : BaseFragment() , View.OnClickListener {
+class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
 
     private lateinit var binding: IncomeCurrentEmploymentBinding
     private lateinit var toolbar: AppHeaderWithCrossDeleteBinding
@@ -133,8 +133,10 @@ class IncomeCurrentEmployment : BaseFragment() , View.OnClickListener {
             R.id.cb_commission -> commissionClicked()
             R.id.layout_address -> openAddressFragment() //findNavController().navigate(R.id.action_address)
             R.id.btn_close -> findNavController().popBackStack()
-            R.id.current_emp_layout -> HideSoftkeyboard.hide(requireActivity(),binding.currentEmpLayout)
-
+            R.id.current_emp_layout -> {
+                HideSoftkeyboard.hide(requireActivity(), binding.currentEmpLayout)
+                super.removeFocusFromAllFields(binding.currentEmpLayout)
+            }
         }
     }
 

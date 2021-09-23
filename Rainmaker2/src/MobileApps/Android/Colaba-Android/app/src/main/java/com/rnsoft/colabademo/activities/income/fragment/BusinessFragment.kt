@@ -72,7 +72,10 @@ class BusinessFragment : BaseFragment(), View.OnClickListener {
             R.id.btn_save_change -> checkValidations()
             R.id.layout_address -> openAddressFragment()
             R.id.btn_close -> findNavController().popBackStack()
-            R.id.mainLayout_business -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutBusiness)
+            R.id.mainLayout_business -> {
+                HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutBusiness)
+                super.removeFocusFromAllFields(binding.mainLayoutBusiness)
+            }
         }
     }
 

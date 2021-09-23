@@ -107,7 +107,10 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         setEndIconClicks()
         setNumberFormts()
 
-        bi.mainConstraintLayout.setOnClickListener { hideSoftKeyboard() }
+        bi.mainConstraintLayout.setOnClickListener {
+            HideSoftkeyboard.hide(requireActivity(),   bi.mainConstraintLayout)
+            super.removeFocusFromAllFields(bi.mainConstraintLayout)
+        }
         msBinding.unmarriedAddendum.setOnClickListener { findNavController().navigate(R.id.action_info_unmarried_addendum) }
         bindingMilitary.layoutActivePersonnel.setOnClickListener { findNavController().navigate(R.id.action_info_active_duty)}
         bindingMilitary.layoutNationalGuard.setOnClickListener { findNavController().navigate(R.id.action_info_reserve) }
