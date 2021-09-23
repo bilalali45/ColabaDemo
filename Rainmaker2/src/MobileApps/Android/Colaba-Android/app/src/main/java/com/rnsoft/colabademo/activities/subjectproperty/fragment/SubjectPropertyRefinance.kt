@@ -19,6 +19,7 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import timber.log.Timber
 import java.util.*
 
 
@@ -165,10 +166,10 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             R.id.rb_mixed_property_yes -> mixedPropertyDetailClick()
             R.id.layout_details -> mixedPropertyDetailClick()
             R.id.rb_first_mortgage_yes -> onFirstMortgageYes()
-            R.id.refinance_parent_layout -> HideSoftkeyboard.hide(
-                requireActivity(),
-                binding.refinanceParentLayout
-            )
+            R.id.refinance_parent_layout -> {
+                HideSoftkeyboard.hide(requireActivity(), binding.refinanceParentLayout)
+                super.removeFocusFromAllFields(binding.refinanceParentLayout)
+            }
 
             R.id.rb_first_mortgage_no -> {
                 binding.layoutFirstMortgageDetail.visibility = View.GONE
@@ -312,6 +313,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
 
     private fun onFirstMortgageYes() {
         if (binding.rbFirstMortgageYes.isChecked) {
+            binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
             binding.layoutSecondMortgage.visibility = View.VISIBLE
             //findNavController().navigate(R.id.nav_first_mortage)
             binding.rbFirstMortgageYes.setTypeface(null, Typeface.BOLD)

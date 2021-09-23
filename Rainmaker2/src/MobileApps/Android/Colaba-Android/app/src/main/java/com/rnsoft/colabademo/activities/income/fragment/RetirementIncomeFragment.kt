@@ -64,7 +64,10 @@ class RetirementIncomeFragment : BaseFragment(), View.OnClickListener {
         when (view?.getId()) {
             R.id.btn_save_change -> checkValidations()
             R.id.btn_close -> findNavController().popBackStack()
-            R.id.mainLayout_retirement -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutRetirement)
+            R.id.mainLayout_retirement -> {
+                HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutRetirement)
+                super.removeFocusFromAllFields(binding.mainLayoutRetirement)
+            }
 
         }
     }

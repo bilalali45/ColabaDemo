@@ -2,8 +2,6 @@ package com.rnsoft.colabademo
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +9,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
-
 import com.rnsoft.colabademo.databinding.AppHeaderWithBackNavBinding
 import com.rnsoft.colabademo.databinding.LoanRefinanceInfoBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-
 import com.rnsoft.colabademo.utils.NumberTextFormat
 
 /**
@@ -53,12 +48,12 @@ class LoanRefinance : BaseFragment() {
             requireActivity().finish()
         }
 
-        binding.loanRefinanceLayout.setOnClickListener{
-            HideSoftkeyboard.hide(requireActivity(),binding.loanRefinanceLayout)
-        }
-        binding.parentLayout.setOnClickListener{
-            HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
-        }
+//        binding.loanRefinanceLayout.setOnClickListener{
+//            HideSoftkeyboard.hide(requireActivity(),binding.loanRefinanceLayout)
+//        }
+//        binding.parentLayout.setOnClickListener{
+//            HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
+//        }
         super.addListeners(binding.root)
         return binding.root
 

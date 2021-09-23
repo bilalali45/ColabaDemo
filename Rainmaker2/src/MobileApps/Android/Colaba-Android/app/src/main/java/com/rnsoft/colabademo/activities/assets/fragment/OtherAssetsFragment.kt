@@ -11,16 +11,13 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-
 import com.rnsoft.colabademo.databinding.OtherAssetsLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-
+import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 import javax.inject.Inject
-
 @AndroidEntryPoint
 class OtherAssetsFragment:BaseFragment() {
 
@@ -106,6 +103,7 @@ class OtherAssetsFragment:BaseFragment() {
         addFocusOutListenerToFields()
 
         CustomMaterialFields.setDollarPrefix(binding.annualBaseLayout, requireActivity())
+        binding.annualBaseEditText.addTextChangedListener(NumberTextFormat(binding.annualBaseEditText))
 
         setUpEndIcon()
     }

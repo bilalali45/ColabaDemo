@@ -69,7 +69,10 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
             R.id.rb_ownership_no -> ownershipInterest()
             R.id.layout_address -> openAddressFragment() //findNavController().navigate(R.id.action_address)
             R.id.btn_close -> findNavController().popBackStack()
-            R.id.mainLayout_prev_employment -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutPrevEmployment)
+            R.id.mainLayout_prev_employment ->  {
+                HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutPrevEmployment)
+                super.removeFocusFromAllFields(binding.mainLayoutPrevEmployment)
+            }
         }
     }
 

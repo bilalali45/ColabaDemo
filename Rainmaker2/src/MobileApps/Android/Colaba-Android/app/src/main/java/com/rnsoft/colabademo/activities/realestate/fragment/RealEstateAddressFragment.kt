@@ -65,12 +65,15 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
         setUpCompleteViewForPlaces()
         initializeUSAstates()
 
-        binding.parentLayout.setOnClickListener {
-            HideSoftkeyboard.hide(requireActivity(), binding.parentLayout)
+
+        binding.addressParentLayout.setOnClickListener {
+            HideSoftkeyboard.hide(requireActivity(),binding.addressParentLayout)
+            super.removeFocusFromAllFields(binding.addressLayout)
         }
 
-        binding.subPropertyAddressLayout.setOnClickListener {
-            HideSoftkeyboard.hide(requireActivity(), binding.subPropertyAddressLayout)
+        binding.addressLayout.setOnClickListener {
+            HideSoftkeyboard.hide(requireActivity(),binding.addressLayout)
+            super.removeFocusFromAllFields(binding.addressLayout)
         }
 
         binding.btnSave.setOnClickListener {

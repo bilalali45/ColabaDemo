@@ -22,20 +22,16 @@ class SubjectPropertyActivity : BaseActivity() {
         binding = BorrowerSubjectPropertyLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navController = findNavController(R.id.nav_host_borrower_subject_property)
-        navController.navigate(R.id.nav_sub_property_purchase)
-
-
-        /*val extras = intent.extras
+        val extras = intent.extras
         extras?.let {
             purpose = it.getString(AppConstant.borrowerPurpose)
         }
 
         val navController = findNavController(R.id.nav_host_borrower_subject_property)
         if(purpose.equals(AppConstant.purchase, ignoreCase = true))
-            navController.navigate(R.id.nav_sub_property)
+            navController.navigate(R.id.nav_sub_property_purchase)
         else if(purpose.equals(AppConstant.refinance, ignoreCase = true)) {
             navController.navigate(R.id.nav_sub_property_refinance)
-        } */
+        }
     }
  }

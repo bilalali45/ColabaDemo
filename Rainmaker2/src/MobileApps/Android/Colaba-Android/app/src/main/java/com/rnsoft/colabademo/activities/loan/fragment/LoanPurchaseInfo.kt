@@ -30,7 +30,7 @@ import java.text.DecimalFormat
 /**
  * Created by Anita Kiran on 9/3/2021.
  */
-class LoanPurchaseInfo : BaseFragment(), DatePickerDialog.OnDateSetListener {
+class LoanPurchaseInfo : BaseFragment(){
 
     private lateinit var binding: LoanPurchaseInfoBinding
     private lateinit var bindingToolbar : AppHeaderWithBackNavBinding
@@ -60,7 +60,9 @@ class LoanPurchaseInfo : BaseFragment(), DatePickerDialog.OnDateSetListener {
         }
         binding.loanPurchaseLayout.setOnClickListener{
             HideSoftkeyboard.hide(requireActivity(),binding.loanPurchaseLayout)
+            super.removeFocusFromAllFields(binding.loanPurchaseLayout)
         }
+
         super.addListeners(binding.root)
         return binding.root
     }
@@ -301,10 +303,11 @@ class LoanPurchaseInfo : BaseFragment(), DatePickerDialog.OnDateSetListener {
 
     private fun createCalendarDialog() {
         val pd = MonthYearPickerDialog()
-        pd.setListener(this)
+        //pd.setListener(this)
         pd.show(requireActivity().supportFragmentManager, "MonthYearPickerDialog")
     }
 
+    /*
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
         var stringMonth = p2.toString()
         if (p2 < 10)
@@ -314,6 +317,8 @@ class LoanPurchaseInfo : BaseFragment(), DatePickerDialog.OnDateSetListener {
         binding.edClosingDate.setText(sampleDate)
         clearError(binding.layoutClosingDate)
     }
+
+     */
 
     private fun checkValidations(){
 
