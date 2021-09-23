@@ -100,9 +100,9 @@ class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
     
     func validate() -> Bool {
         var isValidate = true
-        isValidate = txtfieldVisaStatus.validate()
+        isValidate = txtfieldVisaStatus.validate() && isValidate
         if (txtfieldVisaStatus.text == "Other") {
-            isValidate = validateTextView()
+            isValidate = validateTextView() && isValidate
         }
         return isValidate
     }

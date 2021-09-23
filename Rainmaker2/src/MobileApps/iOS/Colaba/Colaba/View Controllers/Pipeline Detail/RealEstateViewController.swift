@@ -297,16 +297,16 @@ class RealEstateViewController: BaseViewController {
     
     func validate() -> Bool {
         var isValidate = txtfieldPropertyType.validate()
-        isValidate = txtfieldOccupancyType.validate()
-        isValidate = txtfieldPropertyStatus.validate()
+        isValidate = txtfieldOccupancyType.validate() && isValidate
+        isValidate = txtfieldPropertyStatus.validate() && isValidate
         if !txtfieldCurrentRentalIncome.isHidden {
-            isValidate = txtfieldCurrentRentalIncome.validate()
+            isValidate = txtfieldCurrentRentalIncome.validate() && isValidate
         }
-        isValidate = txtfieldHomeOwnerAssociationDues.validate()
-        isValidate = txtfieldPropertyValue.validate()
-        isValidate = txtfieldAnnualPropertyTax.validate()
-        isValidate = txtfieldAnnualHomeOwnerInsurance.validate()
-        isValidate = txtfieldAnnualFloodInsurance.validate()
+        isValidate = txtfieldHomeOwnerAssociationDues.validate() && isValidate
+        isValidate = txtfieldPropertyValue.validate() && isValidate
+        isValidate = txtfieldAnnualPropertyTax.validate() && isValidate
+        isValidate = txtfieldAnnualHomeOwnerInsurance.validate() && isValidate
+        isValidate = txtfieldAnnualFloodInsurance.validate() && isValidate
         return isValidate
     }
 }

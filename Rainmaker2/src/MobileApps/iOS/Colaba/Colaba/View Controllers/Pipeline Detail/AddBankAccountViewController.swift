@@ -77,9 +77,9 @@ class AddBankAccountViewController: BaseViewController {
     
     func validate() -> Bool {
         var isValidate = txtfieldAccountType.validate()
-        isValidate = txtfieldFinancialInstitution.validate()
-        isValidate = txtfieldAccountNumber.validate()
-        isValidate = txtfieldAnnualBaseSalary.validate()
+        isValidate = txtfieldFinancialInstitution.validate() && isValidate
+        isValidate = txtfieldAccountNumber.validate() && isValidate
+        isValidate = txtfieldAnnualBaseSalary.validate() && isValidate
         return isValidate
     }
 }

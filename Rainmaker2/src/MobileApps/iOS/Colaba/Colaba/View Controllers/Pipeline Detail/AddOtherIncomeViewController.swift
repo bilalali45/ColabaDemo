@@ -67,8 +67,10 @@ class AddOtherIncomeViewController: BaseViewController {
     
     func validate() -> Bool {
         var isValidate = txtfieldIncomeType.validate()
-        isValidate = txtfieldDescription.validate()
-        isValidate = txtfieldMonthlyIncome.validate()
+        if (!txtfieldDescription.isHidden){
+            isValidate = txtfieldDescription.validate() && isValidate
+        }
+        isValidate = txtfieldMonthlyIncome.validate() && isValidate
         return isValidate
     }
 }

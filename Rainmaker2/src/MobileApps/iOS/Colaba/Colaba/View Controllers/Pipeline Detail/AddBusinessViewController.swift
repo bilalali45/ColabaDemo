@@ -78,7 +78,7 @@ class AddBusinessViewController: BaseViewController {
         txtfieldNetAnnualIncome.setDelegates(controller: self)
         txtfieldNetAnnualIncome.setTextField(keyboardType: .numberPad)
         txtfieldNetAnnualIncome.setIsValidateOnEndEditing(validate: true)
-        txtfieldNetAnnualIncome.setValidation(validationType: .netAnnualIncome)
+        txtfieldNetAnnualIncome.setValidation(validationType: .required)
         txtfieldNetAnnualIncome.type = .amount
         
         addressView.layer.cornerRadius = 6
@@ -102,9 +102,9 @@ class AddBusinessViewController: BaseViewController {
     
     func validate() -> Bool {
         var isValidate = txtfieldBusinessType.validate()
-        isValidate = txtfieldBusinessName.validate()
-        isValidate = txtfieldBusinessStartDate.validate()
-        isValidate = txtfieldNetAnnualIncome.validate()
+        isValidate = txtfieldBusinessName.validate() && isValidate
+        isValidate = txtfieldBusinessStartDate.validate() && isValidate
+        isValidate = txtfieldNetAnnualIncome.validate() && isValidate
         return isValidate
     }
     

@@ -181,11 +181,14 @@ class AddProceedsFromTransactionViewController: BaseViewController {
     
     func validate() -> Bool {
         var isValidate = txtfieldTransactionType.validate()
-        if isLoanSecureByAnAsset {
-            isValidate = txtfieldAssetsType.validate()
+        if isLoanSecureByAnAsset && !txtfieldAssetsType.isHidden{
+            isValidate = txtfieldAssetsType.validate() && isValidate
         }
-        isValidate = validateTextView()
-        isValidate = txtfieldExpectedProceeds.validate()
+        if !txtViewAssetsDescription.isHidden{
+            isValidate = validateTextView() && isValidate
+        }
+        
+        isValidate = txtfieldExpectedProceeds.validate() && isValidate
         return isValidate
     }
 }

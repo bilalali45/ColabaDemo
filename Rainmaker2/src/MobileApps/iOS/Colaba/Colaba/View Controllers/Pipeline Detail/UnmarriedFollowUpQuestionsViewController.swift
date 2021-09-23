@@ -148,9 +148,9 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
     
     func validate() -> Bool {
         var isValidate = txtfieldTypeOfRelation.validate()
-        isValidate = txtfieldState.validate()
+        isValidate = txtfieldState.validate() && isValidate
         if (txtfieldTypeOfRelation.text == "Other") {
-            isValidate = validateTextView()
+            isValidate = validateTextView() && isValidate
         }
         return isValidate
     }

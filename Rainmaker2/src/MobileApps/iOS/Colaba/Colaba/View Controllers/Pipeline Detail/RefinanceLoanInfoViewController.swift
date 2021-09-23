@@ -63,7 +63,7 @@ class RefinanceLoanInfoViewController: BaseViewController {
     
     func validate() -> Bool {
         var isValidate = txtfieldLoanStage.validate()
-        isValidate = txtfieldLoanAmount.validate()
+        isValidate = txtfieldLoanAmount.validate() && isValidate
         return isValidate
     }
 }

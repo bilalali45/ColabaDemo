@@ -66,8 +66,8 @@ class AddRetirementAccountViewController: BaseViewController {
     
     func validate() -> Bool {
         var isValidate = txtfieldFinancialInstitution.validate()
-        isValidate = txtfieldAccountNumber.validate()
-        isValidate = txtfieldAnnualBaseSalary.validate()
+        isValidate = txtfieldAccountNumber.validate() && isValidate
+        isValidate = txtfieldAnnualBaseSalary.validate() && isValidate
         return isValidate
     }
 }

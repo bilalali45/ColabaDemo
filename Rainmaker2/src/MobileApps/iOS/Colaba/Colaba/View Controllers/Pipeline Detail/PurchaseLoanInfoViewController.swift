@@ -91,11 +91,11 @@ class PurchaseLoanInfoViewController: BaseViewController {
     
     func validate() -> Bool {
         var isValidate = txtfieldLoanStage.validate()
-        isValidate = txtfieldPurchasePrice.validate()
-        isValidate = txtfieldLoanAmount.validate()
-        isValidate = txtfieldDownPayment.validate()
-        isValidate = txtfieldPercentage.validate()
-        isValidate = txtfieldClosingDate.validate()
+        isValidate = txtfieldPurchasePrice.validate() && isValidate
+        isValidate = txtfieldLoanAmount.validate() && isValidate
+        isValidate = txtfieldDownPayment.validate() && isValidate
+        isValidate = txtfieldPercentage.validate() && isValidate
+        isValidate = txtfieldClosingDate.validate() && isValidate
         return isValidate
     }
 }

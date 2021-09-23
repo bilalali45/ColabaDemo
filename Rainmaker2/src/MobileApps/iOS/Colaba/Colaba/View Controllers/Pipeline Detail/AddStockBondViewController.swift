@@ -75,9 +75,9 @@ class AddStockBondViewController: BaseViewController {
     
     func validate() -> Bool {
         var isValidate = txtfieldAccountType.validate()
-        isValidate = txtfieldFinancialInstitution.validate()
-        isValidate = txtfieldAccountNumber.validate()
-        isValidate = txtfieldCurrentMarketValue.validate()
+        isValidate = txtfieldFinancialInstitution.validate() && isValidate
+        isValidate = txtfieldAccountNumber.validate() && isValidate
+        isValidate = txtfieldCurrentMarketValue.validate() && isValidate
         return isValidate
     }
 }
