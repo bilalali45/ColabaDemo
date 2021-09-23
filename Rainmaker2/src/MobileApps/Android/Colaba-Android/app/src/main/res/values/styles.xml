@@ -8,6 +8,33 @@
       <item name="colorControlActivated">@color/txt_primary_info</item>
   </style> -->
 
+    <style name="MySpinnerDatePickerStyle" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:datePickerStyle">@style/MySpinnerDatePicker</item>
+        <item name="android:windowBackground">@color/white</item>     <!--calendar background-->
+        <item name="colorPrimary">@color/colaba_primary_color</item>
+        <item name="colorPrimaryDark">@color/grey_color_one</item>
+        <item name="android:textColorSecondary">@color/colaba_primary_color</item>    <!--days of the week-->
+
+
+        <!-- THESE WILL APPLY TO OTHER CALENDAR VIEW -->
+        <item name="android:colorAccent">@color/filter_green</item>                   <!-- FOR OTHER VIEW header background -->
+        <item name="android:colorControlActivated">@color/filter_blue</item> <!--selected day-->
+        <item name="android:textColorPrimary">@color/grey_color_one</item> <!--days of the month-->
+
+
+    </style>
+
+    <style name="MySpinnerDatePicker" parent="android:Widget.Material.DatePicker">
+        <item name="android:datePickerMode">spinner</item>
+
+
+
+    </style>
+
+    <style name="datepicker" parent="Theme.AppCompat.Light.Dialog">
+
+    </style>
+
 
     <style name="TextAppearence.Unmarried.TextInputLayout"  parent="@android:style/TextAppearance">
         <!--<item name="android:textColorHint">@color/colaba_red_color</item>-->

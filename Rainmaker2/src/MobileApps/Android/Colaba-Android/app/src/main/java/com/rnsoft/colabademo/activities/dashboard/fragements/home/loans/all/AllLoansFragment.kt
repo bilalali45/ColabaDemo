@@ -175,17 +175,19 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener ,  LoanFilterI
     }
 
     override fun navigateTo(position: Int) {
-        val borrowerDetailIntent= Intent(requireActivity(), DetailActivity::class.java)
-        val test = allLoansArrayList[position]
-        Log.e("Before" , test.loanApplicationId.toString())
-        //borrowerDetailIntent.putExtra(AppConstant.borrowerParcelObject, allLoansArrayList[position])
-        borrowerDetailIntent.putExtra(AppConstant.loanApplicationId,  test.loanApplicationId)
-        borrowerDetailIntent.putExtra(AppConstant.loanPurpose,  test.loanPurpose)
-        borrowerDetailIntent.putExtra(AppConstant.firstName,  test.firstName)
-        borrowerDetailIntent.putExtra(AppConstant.lastName,  test.lastName)
-        borrowerDetailIntent.putExtra(AppConstant.bPhoneNumber,  test.cellNumber)
-        borrowerDetailIntent.putExtra(AppConstant.bEmail,  test.email)
-        startActivity(borrowerDetailIntent)
+        if(allLoansArrayList.size>=position) {
+            val borrowerDetailIntent = Intent(requireActivity(), DetailActivity::class.java)
+            val test = allLoansArrayList[position]
+            Log.e("Before", test.loanApplicationId.toString())
+            //borrowerDetailIntent.putExtra(AppConstant.borrowerParcelObject, allLoansArrayList[position])
+            borrowerDetailIntent.putExtra(AppConstant.loanApplicationId, test.loanApplicationId)
+            borrowerDetailIntent.putExtra(AppConstant.loanPurpose, test.loanPurpose)
+            borrowerDetailIntent.putExtra(AppConstant.firstName, test.firstName)
+            borrowerDetailIntent.putExtra(AppConstant.lastName, test.lastName)
+            borrowerDetailIntent.putExtra(AppConstant.bPhoneNumber, test.cellNumber)
+            borrowerDetailIntent.putExtra(AppConstant.bEmail, test.email)
+            startActivity(borrowerDetailIntent)
+        }
     }
 
 

@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.app.DatePickerDialog
 import android.graphics.Typeface
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.rnsoft.colabademo.databinding.IncomePreviousEmploymentBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -189,6 +191,8 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         findNavController().navigate(R.id.action_prev_employment_address, addressFragment.arguments)
     }
 
+    var maxDate:Long = 0
+
     private fun openCalendar() {
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
@@ -197,13 +201,24 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         val newMonth = month + 1
 
         val dpd = DatePickerDialog(
-            requireActivity(),
-            { view, year, monthOfYear, dayOfMonth -> binding.edStartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year) },
-            year,
-            month,
-            day
-        )
+            requireActivity(), {
+                view, year, monthOfYear, dayOfMonth -> binding.edStartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year)
+                val cal = Calendar.getInstance()
+                cal.set(year, newMonth, dayOfMonth)
+                val date = DateFormat.format("dd-MM-yyyy", cal).toString()
+                maxDate = convertDateToLong(date)
+            }, year, month, day)
+
+
+
+        //Date().time = cal.time
+
         dpd.show()
+    }
+
+    private fun convertDateToLong(date: String): Long {
+        val df = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
+        return df.parse(date).time
     }
 
     private fun endDateCalendar() {
@@ -220,6 +235,10 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
             month,
             day
         )
+
+        if(maxDate!=0L)
+            dpd.datePicker.maxDate = maxDate
+
         dpd.show()
     }
 

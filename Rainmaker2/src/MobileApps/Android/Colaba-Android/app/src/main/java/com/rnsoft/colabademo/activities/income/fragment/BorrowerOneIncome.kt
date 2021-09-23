@@ -158,7 +158,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
             findNavController().navigate(R.id.navigation_income_current_employment)
         }
         else {
-            findNavController().navigate(R.id.navigation_income_prev_emplyoyment)
+            findNavController().navigate(R.id.navigation_income_prev_employment)
         }
     }
 
