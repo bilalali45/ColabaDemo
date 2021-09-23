@@ -6,14 +6,11 @@
 //
 
 import UIKit
-import Material
-import DropDown
 import MaterialComponents
 
 class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
     
     //MARK:- Outlets and Properties
-    
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblTopHeading: UILabel!
     @IBOutlet weak var lblBorrowerName: UILabel!
@@ -32,11 +29,10 @@ class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        txtfieldVisaStatus.becomeFirstResponder()
+        _ = txtfieldVisaStatus.becomeFirstResponder()
     }
     
     //MARK:- Methods and Actions
-    
     func setMaterialTextFieldsAndViews(){
         
         let estimatedFrame = statusDetailTextViewContainer.frame

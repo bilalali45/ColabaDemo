@@ -6,14 +6,11 @@
 //
 
 import UIKit
-import Material
-import DropDown
 import MaterialComponents
 
 class UnmarriedFollowUpQuestionsViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
-    
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblTopHeading: UILabel!
     @IBOutlet weak var lblBorrowerName: UILabel!
@@ -80,8 +77,6 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
         txtViewRelationshipDetail.textView.textColor = .black
         txtViewRelationshipDetail.textView.delegate = self
         mainView.addSubview(txtViewRelationshipDetail)
-        
-
         
         setTextFields()
     }

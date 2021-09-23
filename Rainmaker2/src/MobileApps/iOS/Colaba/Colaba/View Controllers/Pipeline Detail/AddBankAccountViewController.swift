@@ -6,13 +6,10 @@
 //
 
 import UIKit
-import Material
-import DropDown
 
 class AddBankAccountViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
-    
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var lblBorrowerName: UILabel!
