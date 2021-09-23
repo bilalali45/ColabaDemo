@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class FederalDebt:Fragment() {
+class FederalDebt:BaseFragment() {
 
     private var _binding: FederalDeptLayoutBinding? = null
     private val binding get() = _binding!!
@@ -30,6 +30,7 @@ class FederalDebt:Fragment() {
         _binding = FederalDeptLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

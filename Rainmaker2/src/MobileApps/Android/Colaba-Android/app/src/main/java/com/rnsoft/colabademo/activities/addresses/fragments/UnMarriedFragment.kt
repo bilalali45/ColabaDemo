@@ -19,7 +19,7 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.non_permenant_resident_layout.*
 
 @AndroidEntryPoint
-class UnMarriedFragment : Fragment() {
+class UnMarriedFragment : BaseFragment() {
 
     private var _binding: UnmarriedLayoutBinding? = null
     private val binding get() = _binding!!
@@ -36,7 +36,6 @@ class UnMarriedFragment : Fragment() {
 
         _binding = UnmarriedLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
 
         binding.radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
@@ -58,6 +57,9 @@ class UnMarriedFragment : Fragment() {
 
         setRelationShipField()
         setStateField()
+
+        super.addListeners(binding.root)
+
         return root
     }
 

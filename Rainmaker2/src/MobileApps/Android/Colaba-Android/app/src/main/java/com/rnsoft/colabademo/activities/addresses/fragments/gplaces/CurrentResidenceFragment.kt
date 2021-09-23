@@ -43,7 +43,7 @@ import kotlinx.android.synthetic.main.temp_residence_layout.*
 
 
 @AndroidEntryPoint
-class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
+class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     PlacePredictionAdapter.OnPlaceClickListener {
 
     private var _binding: TempResidenceLayoutBinding? = null
@@ -258,8 +258,9 @@ class CurrentResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
         setUpCompleteViewForPlaces()
 
-
         initializeUSAstates()
+
+        super.addListeners(binding.root)
 
         return root
 

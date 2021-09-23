@@ -24,7 +24,7 @@ import java.util.*
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
-class BusinessFragment : Fragment(), View.OnClickListener {
+class BusinessFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var binding: IncomeBusinessLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
@@ -48,6 +48,7 @@ class BusinessFragment : Fragment(), View.OnClickListener {
             toolbarBinding.toolbarTitle.setText(getString(R.string.business))
 
             initViews()
+            super.addListeners(binding.root)
             savedViewInstance
 
         }

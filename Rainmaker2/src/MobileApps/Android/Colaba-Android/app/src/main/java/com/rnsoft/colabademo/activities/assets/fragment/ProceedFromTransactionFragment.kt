@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 
     @AndroidEntryPoint
-    class ProceedFromTransactionFragment : Fragment() {
+    class ProceedFromTransactionFragment : BaseFragment() {
 
         private var _binding: ProceedFromTransLayoutBinding? = null
         private val binding get() = _binding!!
@@ -37,6 +37,7 @@ import javax.inject.Inject
             _binding = ProceedFromTransLayoutBinding.inflate(inflater, container, false)
             val root: View = binding.root
             setUpUI()
+            super.addListeners(binding.root)
             return root
         }
 

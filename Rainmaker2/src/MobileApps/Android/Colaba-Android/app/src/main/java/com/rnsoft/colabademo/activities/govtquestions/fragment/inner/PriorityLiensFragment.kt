@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PriorityLiensFragment:Fragment() {
+class PriorityLiensFragment:BaseFragment() {
 
     private var _binding: PriorityLiensLayoutBinding? = null
     private val binding get() = _binding!!
@@ -29,6 +29,7 @@ class PriorityLiensFragment:Fragment() {
         _binding = PriorityLiensLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

@@ -1,11 +1,10 @@
 package com.rnsoft.colabademo
 
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.activities.income.fragment.BottomDialogSelectEmployment
 
-open class IncomeBaseFragment:Fragment() {
+open class IncomeBaseFragment:BaseFragment() {
     fun getSampleIncome():ArrayList<IncomeModelClass>{
         val assetModelCell = IncomeModelClass( headerTitle = "Employment", headerAmount = "$5,000/mo" , footerTitle = "Add Employment",
             incomeContentCell = arrayListOf(

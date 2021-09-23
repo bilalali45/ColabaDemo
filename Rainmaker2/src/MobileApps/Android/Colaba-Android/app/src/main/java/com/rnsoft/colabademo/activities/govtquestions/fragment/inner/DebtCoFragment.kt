@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DebtCoFragment:Fragment() {
+class DebtCoFragment:BaseFragment() {
 
     private var _binding: DebtCoLayoutBinding? = null
     private val binding get() = _binding!!
@@ -29,6 +29,7 @@ class DebtCoFragment:Fragment() {
         _binding = DebtCoLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

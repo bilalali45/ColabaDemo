@@ -4,7 +4,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
-open class AssetBaseFragment:Fragment() {
+open class AssetBaseFragment:BaseFragment() {
+
     protected fun getSampleAssets():ArrayList<AssetsModelClass>{
         val assetModelCell = AssetsModelClass( headerTitle = "Bank Account", headerAmount = "$26,000" , footerTitle = "Add Bank Account",
             contentCell = arrayListOf(

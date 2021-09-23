@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.subject_property_purchase.*
 /**
  * Created by Anita Kiran on 9/8/2021.
  */
-class SubjectPropertyPurchase : AppBaseFragment(), View.OnClickListener {
+class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
 
     lateinit var binding: SubjectPropertyPurchaseBinding
     private val propertyTypeArray = listOf("Single Family Property","Condominium","Townhouse", "Cooperative", "Manufactured Home", "Duplex (2 Unit)", "Triplex (3 Unit)", "Quadplex (4 Unit)")

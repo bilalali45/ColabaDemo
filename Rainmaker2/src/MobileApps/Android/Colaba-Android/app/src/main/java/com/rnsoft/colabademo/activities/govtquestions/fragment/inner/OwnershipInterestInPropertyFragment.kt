@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class OwnershipInterestInPropertyFragment : Fragment() {
+class OwnershipInterestInPropertyFragment : BaseFragment() {
 
     private var _binding: OwnershipInterestInPropertyLayoutBinding? = null
     private val binding get() = _binding!!
@@ -37,6 +37,7 @@ class OwnershipInterestInPropertyFragment : Fragment() {
         _binding = OwnershipInterestInPropertyLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

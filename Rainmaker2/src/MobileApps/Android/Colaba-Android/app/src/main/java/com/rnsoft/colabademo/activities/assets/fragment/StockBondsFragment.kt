@@ -24,7 +24,7 @@ import java.util.ArrayList
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class StockBondsFragment:Fragment() {
+class StockBondsFragment:BaseFragment() {
 
     private var _binding: StockBondsLayoutBinding? = null
     private val binding get() = _binding!!
@@ -39,6 +39,7 @@ class StockBondsFragment:Fragment() {
         _binding = StockBondsLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

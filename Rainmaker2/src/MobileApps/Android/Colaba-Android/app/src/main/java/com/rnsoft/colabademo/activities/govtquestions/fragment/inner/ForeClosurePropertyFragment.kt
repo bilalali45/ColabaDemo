@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ForeClosurePropertyFragment:Fragment() {
+class ForeClosurePropertyFragment:BaseFragment() {
 
     private var _binding: ForeClosurePropertyLayoutBinding? = null
     private val binding get() = _binding!!
@@ -30,6 +30,7 @@ class ForeClosurePropertyFragment:Fragment() {
         _binding = ForeClosurePropertyLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

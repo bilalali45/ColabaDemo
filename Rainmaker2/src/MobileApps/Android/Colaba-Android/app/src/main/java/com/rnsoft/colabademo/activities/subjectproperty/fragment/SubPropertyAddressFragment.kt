@@ -36,7 +36,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by Anita Kiran on 9/8/2021.
  */
-class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceClickListener {
+class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListener {
 
     lateinit var binding: SubjectPropertyAddressBinding
     private lateinit var predictAdapter: PlacePredictionAdapter
@@ -71,7 +71,7 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
         binding.btnSave.setOnClickListener{
             checkValidations()
         }
-
+        super.addListeners(binding.root)
         return binding.root
 
     }

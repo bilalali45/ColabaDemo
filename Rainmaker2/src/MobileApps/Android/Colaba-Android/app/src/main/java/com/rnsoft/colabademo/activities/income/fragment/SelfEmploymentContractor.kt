@@ -20,7 +20,7 @@ import java.util.*
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
-class SelfEmploymentContractor : Fragment(),View.OnClickListener {
+class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
 
     private lateinit var binding: SelfEmpolymentContLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
@@ -37,7 +37,7 @@ class SelfEmploymentContractor : Fragment(),View.OnClickListener {
             binding = SelfEmpolymentContLayoutBinding.inflate(inflater, container, false)
             toolbarBinding = binding.headerIncome
             savedViewInstance = binding.root
-
+            super.addListeners(binding.root)
             // set Header title
             toolbarBinding.toolbarTitle.setText(getString(R.string.self_employment_contractor))
 

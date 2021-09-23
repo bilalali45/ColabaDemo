@@ -20,7 +20,7 @@ import com.rnsoft.colabademo.utils.NumberTextFormat
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
-class RetirementIncomeFragment : Fragment(), View.OnClickListener {
+class RetirementIncomeFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var binding: IncomeRetirementLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
@@ -39,7 +39,7 @@ class RetirementIncomeFragment : Fragment(), View.OnClickListener {
             binding = IncomeRetirementLayoutBinding.inflate(inflater, container, false)
             toolbarBinding = binding.headerIncome
             savedViewInstance = binding.root
-
+            super.addListeners(binding.root)
             // set Header title
             toolbarBinding.toolbarTitle.setText(getString(R.string.retirement))
 

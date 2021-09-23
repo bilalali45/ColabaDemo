@@ -21,7 +21,7 @@ import java.util.*
 /**
  * Created by Anita Kiran on 9/13/2021.
  */
-class IncomePreviousEmployment : Fragment(),View.OnClickListener {
+class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
 
     private lateinit var binding: IncomePreviousEmploymentBinding
     private lateinit var toolbar: AppHeaderWithCrossDeleteBinding
@@ -38,7 +38,7 @@ class IncomePreviousEmployment : Fragment(),View.OnClickListener {
             binding = IncomePreviousEmploymentBinding.inflate(inflater, container, false)
             toolbar = binding.headerIncome
             savedViewInstance = binding.root
-
+            super.addListeners(binding.root)
             // set Header title
             toolbar.toolbarTitle.setText(getString(R.string.previous_employment))
 

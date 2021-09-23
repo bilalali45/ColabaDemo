@@ -81,7 +81,7 @@ class GovtQuestionsTabFragment : GovtQuestionBaseFragment() {
             requireActivity().finish()
         }
 
-
+        super.addListeners(binding.root)
         return root
     }
 

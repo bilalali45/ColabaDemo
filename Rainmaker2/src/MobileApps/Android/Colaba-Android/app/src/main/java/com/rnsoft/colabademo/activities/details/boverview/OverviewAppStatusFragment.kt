@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class OverviewAppStatusFragment : Fragment(), AdapterClickListener {
+class OverviewAppStatusFragment : BaseFragment(), AdapterClickListener {
 
     private var _binding: ApplicationStatusLayoutBinding? = null
     private val binding get() = _binding!!
@@ -49,6 +49,7 @@ class OverviewAppStatusFragment : Fragment(), AdapterClickListener {
         binding.backButtonImageView.setOnClickListener{
            findNavController().popBackStack()
         }
+        super.addListeners(binding.root)
         return rootTestView
     }
 

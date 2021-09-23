@@ -36,7 +36,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
-class IncomeAddress : Fragment() , PlacePredictionAdapter.OnPlaceClickListener {
+class IncomeAddress : BaseFragment() , PlacePredictionAdapter.OnPlaceClickListener {
 
     lateinit var binding: SubjectPropertyAddressBinding
     private lateinit var predictAdapter: PlacePredictionAdapter
@@ -49,7 +49,7 @@ class IncomeAddress : Fragment() , PlacePredictionAdapter.OnPlaceClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = SubjectPropertyAddressBinding.inflate(inflater, container, false)
 
 
@@ -80,7 +80,7 @@ class IncomeAddress : Fragment() , PlacePredictionAdapter.OnPlaceClickListener {
             //checkValidations()
             findNavController().popBackStack()
         }
-
+        super.addListeners(binding.root)
         return binding.root
 
     }

@@ -26,7 +26,7 @@ import java.util.*
 /**
  * Created by Anita Kiran on 9/13/2021.
  */
-class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
+class IncomeCurrentEmployment : BaseFragment() , View.OnClickListener {
 
     private lateinit var binding: IncomeCurrentEmploymentBinding
     private lateinit var toolbar: AppHeaderWithCrossDeleteBinding
@@ -44,7 +44,7 @@ class IncomeCurrentEmployment : Fragment() , View.OnClickListener {
             binding = IncomeCurrentEmploymentBinding.inflate(inflater, container, false)
             toolbar = binding.headerIncome
             savedViewInstance = binding.root
-
+            super.addListeners(binding.root)
             // set Header title
             toolbar.toolbarTitle.setText(getString(R.string.current_employment))
 

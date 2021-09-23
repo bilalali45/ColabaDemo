@@ -14,7 +14,7 @@ import com.rnsoft.colabademo.databinding.ImageViewLayoutBinding
 import java.io.File
 import javax.inject.Inject
 
-class ImageViewFragment : Fragment(), AdapterClickListener {
+class ImageViewFragment : BaseFragment(), AdapterClickListener {
     private var _binding: ImageViewLayoutBinding? = null
     private val binding get() = _binding!!
 
@@ -49,7 +49,7 @@ class ImageViewFragment : Fragment(), AdapterClickListener {
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
-
+        super.addListeners(binding.root)
         return view
     }
 

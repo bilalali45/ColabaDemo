@@ -17,7 +17,7 @@ import com.rnsoft.colabademo.utils.NumberTextFormat
 /**
  * Created by Anita Kiran on 9/9/2021.
  */
-class FirstMortgageFragment : Fragment(),View.OnClickListener {
+class FirstMortgageFragment : BaseFragment(),View.OnClickListener {
 
     private lateinit var binding : FirstMortgageLayoutBinding
 
@@ -44,10 +44,8 @@ class FirstMortgageFragment : Fragment(),View.OnClickListener {
         binding.rbQuesNo.setOnClickListener(this)
 
         setInputFields()
-
-
+        super.addListeners(binding.root)
         return binding.root
-
     }
 
     override fun onClick(view: View?) {

@@ -22,6 +22,7 @@ class BorrowerTwoAssets : AssetBaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DynamicAssetFragmentLayoutBinding.inflate(inflater, container, false)
         setupLayout()
+        super.addListeners(binding.root)
         return binding.root
     }
 
