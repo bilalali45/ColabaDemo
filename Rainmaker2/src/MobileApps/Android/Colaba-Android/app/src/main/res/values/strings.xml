@@ -458,8 +458,6 @@
     <string name="sub_property_sec_mortgage_ques1">Will this mortgage be combined with the new first mortgage?</string>
     <string name="sub_property_sec_mortgage_ques2">Was this mortgage taken when the property was purchased?</string>
 
-
-
     <string name="child_support_question">Are you currently obligated to pay child support, alimony or separate maintenance?</string>
     <string name="undisclosed_mortgage_question">Have you or will you be applying for a mortgage loan on another property (not the property securing this loan) on or before closing this transaction that is not disclosed on this loan application?</string>
     <string name="undisclosed_credit_question">Have you or will you be applying for any new credit (e.g., instalment loan, credit card, etc.) on or before closing this loan that is not disclosed on this application?</string>
@@ -476,6 +474,10 @@
     <string name="have_you_had_an_ownership_interest">Have you had an ownership interest in another property in the last three years?</string>
     <string name="will_this_property_be_subject_to_a_lien">Will this property be subject to a lien that could take priority over the first mortgage lien, such as a clean energy lien paid through your property taxes (e.g., the Property Assessed Clean Energy Program)?</string>
 
+    <string name="add_employer_add">Add Employer Address</string>
+    <string name="add_business_add">Add Business Address</string>
+    <string name="add_service_add">Add Service Location Address</string>
+    <string name="add_property_add">Add Property Address</string>
 
 
 </resources>

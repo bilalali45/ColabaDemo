@@ -19,7 +19,7 @@ import java.util.*
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
-class MilitaryPay : BaseFragment(), View.OnClickListener {
+class MilitaryPayFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var binding: IncomeMilitaryPayBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding

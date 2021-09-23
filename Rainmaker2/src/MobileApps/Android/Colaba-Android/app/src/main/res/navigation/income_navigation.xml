@@ -137,7 +137,7 @@
 
    <fragment
        android:id="@+id/navigation_military_pay"
-       android:name="com.rnsoft.colabademo.MilitaryPay"
+       android:name="com.rnsoft.colabademo.MilitaryPayFragment"
        android:label="@string/income"
        tools:layout="@layout/income_military_pay">
 

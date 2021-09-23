@@ -480,7 +480,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
-                    android:background="@drawable/style_btn_add_residence"
+                    android:background="@drawable/style_btn_add"
                     android:clickable="true"
                     android:gravity="center">
 

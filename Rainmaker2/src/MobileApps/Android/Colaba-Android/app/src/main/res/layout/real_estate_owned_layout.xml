@@ -77,6 +77,38 @@
             </LinearLayout>
 
 
+            <!-- add address -->
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/add_property_address"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/style_btn_add"
+                android:clickable="true"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_add_icon_light" />
+
+                <TextView
+                    android:id="@+id/tv_residence"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/rubik_medium"
+                    android:text="@string/add_property_add"
+                    android:textAlignment="center"
+                    android:textColor="@color/colaba_apptheme_blue"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+
+
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_property_type"
