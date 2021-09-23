@@ -111,9 +111,9 @@ class AddGiftFundsViewController: UIViewController {
     
     func changeGiftDepositType(){
         btnYes.setImage(UIImage(named: isGiftDeposit ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblYes.font = isGiftDeposit ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
+        lblYes.font = isGiftDeposit ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         btnNo.setImage(UIImage(named: !isGiftDeposit ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblNo.font = !isGiftDeposit ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
+        lblNo.font = !isGiftDeposit ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         
         txtfieldDate.isHidden = false
         txtfieldDate.setTextField(placeholder: isGiftDeposit ? "Date of Transfer" : "Expected Date of Transfer")
