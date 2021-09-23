@@ -195,14 +195,16 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
     }
 
     var maxDate:Long = 0
+    var minDate:Long = 0
 
     private fun openCalendar() {
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
-        val newMonth = month + 1
+        //val newMonth = month + 1
 
+        /*
         val dpd = DatePickerDialog(
             requireActivity(), {
                 view, year, monthOfYear, dayOfMonth -> binding.edStartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year)
@@ -211,12 +213,27 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
                 val date = DateFormat.format("dd-MM-yyyy", cal).toString()
                 maxDate = convertDateToLong(date)
             }, year, month, day)
+         */
 
 
+        val datePickerDialog = DatePickerDialog(
+            requireActivity(), R.style.MySpinnerDatePickerStyle,
+            {
+                view, selectedYear, monthOfYear, dayOfMonth ->
+                binding.edStartDate.setText("" + (monthOfYear+1) + "/" + dayOfMonth + "/" + selectedYear)
+                val cal = Calendar.getInstance()
+                cal.set(selectedYear, (monthOfYear), dayOfMonth)
+                val date = DateFormat.format("dd-MM-yyyy", cal).toString()
+                maxDate = convertDateToLong(date)
+            }
+            , year, month, day
+        )
+        if(minDate!=0L)
+            datePickerDialog.datePicker.maxDate = minDate
+        datePickerDialog.show()
 
         //Date().time = cal.time
-
-        dpd.show()
+        // dpd.show()
     }
 
     private fun convertDateToLong(date: String): Long {
@@ -229,8 +246,9 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
-        val newMonth = month + 1
+        //val newMonth = month + 1
 
+        /*
         val dpd = DatePickerDialog(
             requireActivity(),
             { view, year, monthOfYear, dayOfMonth -> binding.edEndDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year) },
@@ -238,11 +256,26 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
             month,
             day
         )
-
-        if(maxDate!=0L)
-            dpd.datePicker.maxDate = maxDate
-
         dpd.show()
+         */
+
+        val datePickerDialog = DatePickerDialog(
+            requireActivity(), R.style.MySpinnerDatePickerStyle,
+            {
+                    view, selectedYear, monthOfYear, dayOfMonth ->
+                binding.edEndDate.setText("" + (monthOfYear+1) + "/" + dayOfMonth + "/" + selectedYear)
+                val cal = Calendar.getInstance()
+                cal.set(selectedYear, monthOfYear, dayOfMonth)
+                val date = DateFormat.format("dd-MM-yyyy", cal).toString()
+                minDate = convertDateToLong(date)
+            }
+            , year, month, day
+        )
+        if(maxDate!=0L)
+            datePickerDialog.datePicker.minDate = maxDate
+        datePickerDialog.show()
+
+
     }
 
 }
