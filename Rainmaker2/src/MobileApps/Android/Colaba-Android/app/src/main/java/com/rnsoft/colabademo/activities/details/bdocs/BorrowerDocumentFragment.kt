@@ -28,7 +28,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class BorrowerDocumentFragment : Fragment(), AdapterClickListener, DownloadClickListener, View.OnClickListener {
+class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadClickListener, View.OnClickListener {
 
     private var _binding: BorrowerDocLayoutBinding? = null
     private val binding get() = _binding!!
@@ -126,7 +126,7 @@ class BorrowerDocumentFragment : Fragment(), AdapterClickListener, DownloadClick
         (activity as DetailActivity).showFabIcons()
 
         observeDownloadProgress()
-
+        super.addListeners(binding.root)
         return view
 
     }

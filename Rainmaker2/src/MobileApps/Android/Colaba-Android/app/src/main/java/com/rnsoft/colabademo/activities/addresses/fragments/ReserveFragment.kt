@@ -14,13 +14,13 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class ReserveFragment : Fragment() {
+class ReserveFragment : BaseFragment() {
 
     private var _binding: ReserveLayoutBinding? = null
     private val binding get() = _binding!!
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,6 +34,7 @@ class ReserveFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        super.addListeners(binding.root)
 
         return root
 

@@ -14,7 +14,7 @@ import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MailingAddressFragment : Fragment() {
+class MailingAddressFragment : BaseFragment() {
 
     private var _binding: MailingAddressLayoutBinding? = null
     private val binding get() = _binding!!
@@ -95,6 +95,8 @@ class MailingAddressFragment : Fragment() {
         binding.backButton.setOnClickListener{
             findNavController().popBackStack()
         }
+
+        super.addListeners(binding.root)
 
         return root
 

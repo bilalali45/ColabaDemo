@@ -22,7 +22,7 @@ import java.util.ArrayList
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class OtherAssetsFragment:Fragment() {
+class OtherAssetsFragment:BaseFragment() {
 
     private var _binding: OtherAssetsLayoutBinding? = null
     private val binding get() = _binding!!
@@ -38,6 +38,7 @@ class OtherAssetsFragment:Fragment() {
         _binding = OtherAssetsLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

@@ -28,16 +28,16 @@ class GovtQuestionPagerAdapter(fragmentManager: FragmentManager, lifecycle: Life
             }
 
             2 -> {
-                return Fragment()
+                return BaseFragment()
             }
 
             3 -> {
-                return Fragment()
+                return BaseFragment()
             }
         }
 
 
-        return Fragment()
+        return BaseFragment()
 
     }
 }

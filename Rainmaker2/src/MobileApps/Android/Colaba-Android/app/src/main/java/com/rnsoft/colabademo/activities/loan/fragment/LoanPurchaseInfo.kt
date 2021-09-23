@@ -30,7 +30,7 @@ import java.text.DecimalFormat
 /**
  * Created by Anita Kiran on 9/3/2021.
  */
-class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
+class LoanPurchaseInfo : BaseFragment(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: LoanPurchaseInfoBinding
     private lateinit var bindingToolbar : AppHeaderWithBackNavBinding
@@ -43,7 +43,7 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = LoanPurchaseInfoBinding.inflate(inflater, container, false)
         bindingToolbar = binding.headerLoanPurchase
 
@@ -61,7 +61,7 @@ class LoanPurchaseInfo : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.loanPurchaseLayout.setOnClickListener{
             HideSoftkeyboard.hide(requireActivity(),binding.loanPurchaseLayout)
         }
-
+        super.addListeners(binding.root)
         return binding.root
     }
 

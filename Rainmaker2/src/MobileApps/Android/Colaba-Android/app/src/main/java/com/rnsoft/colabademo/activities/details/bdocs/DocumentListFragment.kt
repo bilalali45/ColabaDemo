@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class DocumentListFragment : Fragment(), DocsViewClickListener {
+class DocumentListFragment : BaseFragment(), DocsViewClickListener {
     private var _binding: DetailListLayoutBinding? = null
     private val binding get() = _binding!!
     private val detailViewModel: DetailViewModel by activityViewModels()
@@ -116,7 +116,7 @@ class DocumentListFragment : Fragment(), DocsViewClickListener {
         }
 
         (activity as DetailActivity).showFabIcons()
-
+        super.addListeners(binding.root)
         return view
     }
 

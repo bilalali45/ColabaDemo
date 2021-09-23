@@ -33,7 +33,7 @@ import kotlinx.android.synthetic.main.login_layout.*
 
 
 @AndroidEntryPoint
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment() {
 
     private lateinit var root: View
     private val loginViewModel: LoginViewModel by activityViewModels()
@@ -69,7 +69,7 @@ class LoginFragment : Fragment() {
                 passwordLayout.setEndIconDrawable(R.drawable.ic_eye_icon_svg)
             }
         })
-
+        super.addListeners(root as ViewGroup)
         return root
     }
 

@@ -33,7 +33,7 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
         }
 
 
-        return Fragment()
+        return BaseFragment()
 
     }
 }

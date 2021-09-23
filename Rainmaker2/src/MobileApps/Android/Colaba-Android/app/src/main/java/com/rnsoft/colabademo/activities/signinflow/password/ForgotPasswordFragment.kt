@@ -19,7 +19,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class ForgotPasswordFragment : Fragment() {
+class ForgotPasswordFragment : BaseFragment() {
     private lateinit var root: View
 
     private val forgotPasswordViewModel: ForgotPasswordViewModel by activityViewModels()
@@ -58,7 +58,7 @@ class ForgotPasswordFragment : Fragment() {
             hideSoftKeyboard()
         }
 
-
+        super.addListeners(root as ViewGroup)
         return root
     }
 

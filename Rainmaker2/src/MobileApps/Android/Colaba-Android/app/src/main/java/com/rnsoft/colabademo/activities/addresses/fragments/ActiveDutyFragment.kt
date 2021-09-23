@@ -18,7 +18,7 @@ import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import java.lang.Exception
 
 @AndroidEntryPoint
-class ActiveDutyFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+class ActiveDutyFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
 
     private var _binding: ActiveDutyLayoutBinding? = null
     private val binding get() = _binding!!
@@ -45,6 +45,7 @@ class ActiveDutyFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             findNavController().popBackStack()
         }
 
+        super.addListeners(binding.root)
 
         return root
 

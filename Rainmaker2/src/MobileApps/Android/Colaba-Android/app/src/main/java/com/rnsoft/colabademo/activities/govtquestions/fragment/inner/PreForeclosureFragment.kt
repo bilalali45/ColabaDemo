@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PreForeclosureFragment:Fragment() {
+class PreForeclosureFragment:BaseFragment() {
 
     private var _binding: PreForceClosureLayoutBinding? = null
     private val binding get() = _binding!!
@@ -30,6 +30,7 @@ class PreForeclosureFragment:Fragment() {
         _binding = PreForceClosureLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

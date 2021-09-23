@@ -37,7 +37,7 @@ class AssetsPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
         }
 
 
-        return Fragment()
+        return BaseFragment()
 
     }
 }

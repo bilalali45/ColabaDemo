@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class PreviousResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
 
     private var _binding: PreviousResidenceLayoutBinding? = null
     private val binding get() = _binding!!
@@ -167,7 +167,7 @@ class PreviousResidenceFragment : Fragment(), DatePickerDialog.OnDateSetListener
             AddressNotSavingDialogFragment.newInstance(message).show(childFragmentManager, AddressNotSavingDialogFragment::class.java.canonicalName)
         }
 
-
+        super.addListeners(binding.root)
 
         return root
 

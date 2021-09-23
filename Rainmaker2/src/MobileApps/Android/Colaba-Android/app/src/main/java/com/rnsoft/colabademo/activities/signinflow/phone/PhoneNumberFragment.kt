@@ -30,7 +30,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class PhoneNumberFragment : Fragment() {
+class PhoneNumberFragment : BaseFragment() {
 
     private lateinit var root: View
 
@@ -136,9 +136,7 @@ class PhoneNumberFragment : Fragment() {
             }
         }
 
-
-
-
+        super.addListeners(root as ViewGroup)
         return root
     }
 

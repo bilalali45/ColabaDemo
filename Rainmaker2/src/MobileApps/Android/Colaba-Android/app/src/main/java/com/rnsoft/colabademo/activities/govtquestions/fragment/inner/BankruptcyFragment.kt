@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BankruptcyFragment:Fragment() {
+class BankruptcyFragment:BaseFragment() {
 
     private var _binding: BankruptcyLayoutBinding? = null
     private val binding get() = _binding!!
@@ -30,6 +30,7 @@ class BankruptcyFragment:Fragment() {
         _binding = BankruptcyLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

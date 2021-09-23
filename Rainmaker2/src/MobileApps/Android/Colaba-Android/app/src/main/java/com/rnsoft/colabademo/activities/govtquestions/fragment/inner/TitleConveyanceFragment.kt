@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TitleConveyanceFragment:Fragment() {
+class TitleConveyanceFragment:BaseFragment() {
 
     private var _binding: TitleConveyanceLayoutBinding? = null
     private val binding get() = _binding!!
@@ -30,6 +30,7 @@ class TitleConveyanceFragment:Fragment() {
         _binding = TitleConveyanceLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

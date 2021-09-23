@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.rnsoft.colabademo.databinding.DetailApplicationTabBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
-class BorrowerApplicationFragment : Fragment() , AdapterClickListener, GovernmentQuestionClickListener {
+class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, GovernmentQuestionClickListener {
 
     private var _binding: DetailApplicationTabBinding? = null
     private val binding get() = _binding!!
@@ -59,14 +60,13 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener, Governmen
         //applicationTopContainer = root.findViewById(R.id.application_top_container)
 
         binding.assetsConstraintLayout.setOnClickListener{
+            Timber.e("assets layout - clicked...")
             navigateToAssetActivity()
         }
 
         binding.incomeConstraintLayout.setOnClickListener{
             navigateToIncomeActivity()
         }
-
-
 
         loanLayout.setOnClickListener {
 
@@ -268,7 +268,7 @@ class BorrowerApplicationFragment : Fragment() , AdapterClickListener, Governmen
         })
 
 
-
+        super.addListeners(binding.root)
         return root
 
     }

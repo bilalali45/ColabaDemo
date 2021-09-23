@@ -29,7 +29,7 @@ import java.util.*
 /**
  * Created by Anita Kiran on 9/16/2021.
  */
-class RealEstateOwnedFragment : Fragment() , View.OnClickListener {
+class RealEstateOwnedFragment : BaseFragment() , View.OnClickListener {
 
     private lateinit var binding: RealEstateOwnedLayoutBinding
     private lateinit var toolbar: AppHeaderWithCrossDeleteBinding
@@ -51,7 +51,7 @@ class RealEstateOwnedFragment : Fragment() , View.OnClickListener {
             toolbar.toolbarTitle.setText(getString(R.string.real_estate_owned))
 
             initViews()
-
+            super.addListeners(binding.root)
             savedViewInstance
 
         }
