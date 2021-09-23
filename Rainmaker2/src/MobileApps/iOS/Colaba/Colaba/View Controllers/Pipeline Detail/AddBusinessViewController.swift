@@ -6,12 +6,10 @@
 //
 
 import UIKit
-import DropDown
 
 class AddBusinessViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
-    
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblUsername: UILabel!
     @IBOutlet weak var btnDelete: UIButton!
@@ -19,8 +17,6 @@ class AddBusinessViewController: BaseViewController {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var txtfieldBusinessType: ColabaTextField!
-    @IBOutlet weak var businessTypeDropDownAnchorView: UIView!
-    @IBOutlet weak var btnBusinessTypeDropDown: UIButton!
     @IBOutlet weak var txtfieldBusinessName: ColabaTextField!
     @IBOutlet weak var txtfieldBusinessPhoneNumber: ColabaTextField!
     @IBOutlet weak var txtfieldBusinessStartDate: ColabaTextField!
@@ -32,24 +28,20 @@ class AddBusinessViewController: BaseViewController {
     @IBOutlet weak var txtfieldNetAnnualIncome: ColabaTextField!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
-    let businessTypeDropDown = DropDown()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextFields()
     }
         
     //MARK:- Methods and Actions
-    
     func setupTextFields(){
         
         txtfieldBusinessType.setTextField(placeholder: "Select Your Business Type")
         txtfieldBusinessType.setDelegates(controller: self)
         txtfieldBusinessType.setValidation(validationType: .required)
         txtfieldBusinessType.setTextField(keyboardType: .asciiCapable)
-        txtfieldBusinessType.setIsValidateOnEndEditing(validate: true)
-        //txtfieldBusinessType.type = .dropdown
-        txtfieldBusinessType.addTarget(self, action: #selector(txtfieldBusinessTypeStartEditing), for: .editingDidBegin)
+        txtfieldBusinessType.type = .dropdown
+        txtfieldBusinessType.setDropDownDataSource(kBusinessTypeArray)
         
         txtfieldBusinessName.setTextField(placeholder: "Business Name")
         txtfieldBusinessName.setDelegates(controller: self)
@@ -86,7 +78,7 @@ class AddBusinessViewController: BaseViewController {
         txtfieldNetAnnualIncome.setDelegates(controller: self)
         txtfieldNetAnnualIncome.setTextField(keyboardType: .numberPad)
         txtfieldNetAnnualIncome.setIsValidateOnEndEditing(validate: true)
-        txtfieldNetAnnualIncome.setValidation(validationType: .netAnnualIncome)
+        txtfieldNetAnnualIncome.setValidation(validationType: .required)
         txtfieldNetAnnualIncome.type = .amount
         
         addressView.layer.cornerRadius = 6
@@ -99,32 +91,6 @@ class AddBusinessViewController: BaseViewController {
         addAddressView.layer.borderWidth = 1
         addAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         addAddressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
-        
-        businessTypeDropDown.dismissMode = .automatic
-        businessTypeDropDown.anchorView = businessTypeDropDownAnchorView
-        businessTypeDropDown.dataSource = kBusinessTypeArray
-        businessTypeDropDown.cancelAction = .some({
-            self.btnBusinessTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            self.txtfieldBusinessType.dividerColor = Theme.getSeparatorNormalColor()
-            self.txtfieldBusinessType.resignFirstResponder()
-        })
-        businessTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-            btnBusinessTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            txtfieldBusinessType.dividerColor = Theme.getSeparatorNormalColor()
-            txtfieldBusinessType.placeholderLabel.textColor = Theme.getAppGreyColor()
-            txtfieldBusinessType.text = item
-            txtfieldBusinessType.resignFirstResponder()
-            txtfieldBusinessType.detail = ""
-            businessTypeDropDown.hide()
-        }
-        
-    }
-    
-    @objc func txtfieldBusinessTypeStartEditing(){
-        txtfieldBusinessType.resignFirstResponder()
-        txtfieldBusinessType.dividerColor = Theme.getButtonBlueColor()
-        btnBusinessTypeDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-        businessTypeDropDown.show()
     }
     
     @objc func addressViewTapped(){
@@ -135,22 +101,11 @@ class AddBusinessViewController: BaseViewController {
     }
     
     func validate() -> Bool {
-        if (!txtfieldBusinessType.validate()){
-            return false
-        }
-        else if (!txtfieldBusinessName.validate()) {
-            return false
-        }
-        else if (txtfieldBusinessPhoneNumber.text != "" && !txtfieldBusinessPhoneNumber.validate()){
-            return false
-        }
-        else if (!txtfieldBusinessStartDate.validate()) {
-            return false
-        }
-        else if (!txtfieldNetAnnualIncome.validate()){
-            return false
-        }
-        return true
+        var isValidate = txtfieldBusinessType.validate()
+        isValidate = txtfieldBusinessName.validate() && isValidate
+        isValidate = txtfieldBusinessStartDate.validate() && isValidate
+        isValidate = txtfieldNetAnnualIncome.validate() && isValidate
+        return isValidate
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
@@ -162,13 +117,6 @@ class AddBusinessViewController: BaseViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        txtfieldBusinessType.validate()
-        txtfieldBusinessName.validate()
-        txtfieldBusinessStartDate.validate()
-        txtfieldNetAnnualIncome.validate()
-        if (txtfieldBusinessPhoneNumber.text != ""){
-            txtfieldBusinessPhoneNumber.validate()
-        }
         if validate(){
             self.dismissVC()
         }

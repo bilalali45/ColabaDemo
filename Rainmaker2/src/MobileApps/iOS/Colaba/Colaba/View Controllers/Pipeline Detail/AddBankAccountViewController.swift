@@ -6,13 +6,10 @@
 //
 
 import UIKit
-import Material
-import DropDown
 
 class AddBankAccountViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
-    
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var lblBorrowerName: UILabel!
@@ -80,9 +77,9 @@ class AddBankAccountViewController: BaseViewController {
     
     func validate() -> Bool {
         var isValidate = txtfieldAccountType.validate()
-        isValidate = txtfieldFinancialInstitution.validate()
-        isValidate = txtfieldAccountNumber.validate()
-        isValidate = txtfieldAnnualBaseSalary.validate()
+        isValidate = txtfieldFinancialInstitution.validate() && isValidate
+        isValidate = txtfieldAccountNumber.validate() && isValidate
+        isValidate = txtfieldAnnualBaseSalary.validate() && isValidate
         return isValidate
     }
 }

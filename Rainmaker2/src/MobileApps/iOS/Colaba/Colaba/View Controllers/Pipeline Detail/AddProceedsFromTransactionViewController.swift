@@ -6,25 +6,19 @@
 //
 
 import UIKit
-import Material
-import DropDown
 import MaterialComponents
 
 class AddProceedsFromTransactionViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
-    
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var lblBorrowerName: UILabel!
     @IBOutlet weak var btnDelete: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
-    @IBOutlet weak var txtfieldTransactionType: TextField!
-    @IBOutlet weak var btnTransactionTypeDropDown: UIButton!
-    @IBOutlet weak var transactionTypeDropDownAnchorView: UIView!
-    @IBOutlet weak var txtfieldExpectedProceeds: TextField!
-    @IBOutlet weak var expectedProceedsDollarView: UIView!
+    @IBOutlet weak var txtfieldTransactionType: ColabaTextField!
+    @IBOutlet weak var txtfieldExpectedProceeds: ColabaTextField!
     @IBOutlet weak var loanSecureView: UIView!
     @IBOutlet weak var loanSecureViewTopConstraint: NSLayoutConstraint! // 40 or 0
     @IBOutlet weak var loanSecureViewHeightConstraint: NSLayoutConstraint! // 140 or 0
@@ -34,50 +28,22 @@ class AddProceedsFromTransactionViewController: BaseViewController {
     @IBOutlet weak var noStackView: UIStackView!
     @IBOutlet weak var btnNo: UIButton!
     @IBOutlet weak var lblNo: UILabel!
-    @IBOutlet weak var txtfieldAssetsType: TextField!
+    @IBOutlet weak var txtfieldAssetsType: ColabaTextField!
     @IBOutlet weak var txtfieldAssetsTypeTopConstraint: NSLayoutConstraint! // 20 or 0
     @IBOutlet weak var txtFieldAssetsTypeHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var btnAssetsTypeDropDown: UIButton!
-    @IBOutlet weak var assetsTypeDropDownAnchorView: UIView!
     @IBOutlet weak var assetsDescriptionTextViewContainer: UIView!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
-    let transactionTypeDropDown = DropDown()
     var isLoanSecureByAnAsset = false
-    let assetsTypeDropDown = DropDown()
     var txtViewAssetsDescription = MDCFilledTextArea()
-    private let validation: Validation
-    
-    init(validation: Validation) {
-        self.validation = validation
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        self.validation = Validation()
-        super.init(coder: coder)
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        setMaterialTextFieldsAndViews(textfields: [txtfieldTransactionType, txtfieldExpectedProceeds, txtfieldAssetsType])
+        setMaterialTextFieldsAndViews()
     }
    
     //MARK:- Methods and Actions
-    
-    func setMaterialTextFieldsAndViews(textfields: [TextField]){
-        for textfield in textfields{
-            textfield.dividerActiveColor = Theme.getButtonBlueColor()
-            textfield.dividerColor = Theme.getSeparatorNormalColor()
-            textfield.placeholderActiveColor = Theme.getAppGreyColor()
-            textfield.delegate = self
-            textfield.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-            textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
-            textfield.detailColor = .red
-            textfield.detailVerticalOffset = 4
-            textfield.placeholderVerticalOffset = 8
-            textfield.textColor = Theme.getAppBlackColor()
-        }
+    func setMaterialTextFieldsAndViews(){
         
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
@@ -114,106 +80,36 @@ class AddProceedsFromTransactionViewController: BaseViewController {
         txtViewAssetsDescription.textView.delegate = self
         mainView.addSubview(txtViewAssetsDescription)
         
-        txtfieldTransactionType.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 24)
-        transactionTypeDropDown.dismissMode = .onTap
-        transactionTypeDropDown.anchorView = transactionTypeDropDownAnchorView
-        transactionTypeDropDown.dataSource = kTransactionTypeArray
-        transactionTypeDropDown.cancelAction = .some({
-            self.btnTransactionTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            self.txtfieldTransactionType.dividerColor = Theme.getSeparatorNormalColor()
-            self.txtfieldTransactionType.resignFirstResponder()
-        })
-        transactionTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-            btnTransactionTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            txtfieldTransactionType.dividerColor = Theme.getSeparatorNormalColor()
-            txtfieldTransactionType.placeholderLabel.textColor = Theme.getAppGreyColor()
-            txtfieldTransactionType.text = item
-            txtfieldTransactionType.resignFirstResponder()
-            txtfieldTransactionType.detail = ""
-            transactionTypeDropDown.hide()
-            txtfieldExpectedProceeds.isHidden = false
-            if (item == "Proceeds From A Loan"){
-                loanSecureView.isHidden = false
-                loanSecureViewTopConstraint.constant = 40
-                loanSecureViewHeightConstraint.constant = 140
-                txtfieldAssetsType.isHidden = true
-                btnAssetsTypeDropDown.isHidden = true
-                txtfieldAssetsTypeTopConstraint.constant = 0
-                txtFieldAssetsTypeHeightConstraint.constant = 0
-                assetsDescriptionTextViewContainer.isHidden = true
-                txtViewAssetsDescription.isHidden = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    txtViewAssetsDescription.frame = assetsDescriptionTextViewContainer.frame
-                }
-            }
-            else{
-                loanSecureView.isHidden = true
-                loanSecureViewTopConstraint.constant = 0
-                loanSecureViewHeightConstraint.constant = 0
-                txtfieldAssetsType.isHidden = true
-                btnAssetsTypeDropDown.isHidden = true
-                txtfieldAssetsTypeTopConstraint.constant = 0
-                txtFieldAssetsTypeHeightConstraint.constant = 0
-                assetsDescriptionTextViewContainer.isHidden = false
-                txtViewAssetsDescription.isHidden = false
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    txtViewAssetsDescription.frame = assetsDescriptionTextViewContainer.frame
-                }
-            }
-            
-            setScreenHeight()
-        }
-        
-        assetsTypeDropDown.dismissMode = .onTap
-        assetsTypeDropDown.anchorView = assetsTypeDropDownAnchorView
-        assetsTypeDropDown.dataSource = kAssetsTypeArray
-        assetsTypeDropDown.cancelAction = .some({
-            self.btnAssetsTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            self.txtfieldAssetsType.dividerColor = Theme.getSeparatorNormalColor()
-            self.txtfieldAssetsType.resignFirstResponder()
-        })
-        assetsTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-            btnAssetsTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            txtfieldAssetsType.dividerColor = Theme.getSeparatorNormalColor()
-            txtfieldAssetsType.placeholderLabel.textColor = Theme.getAppGreyColor()
-            txtfieldAssetsType.text = item
-            txtfieldAssetsType.resignFirstResponder()
-            txtfieldAssetsType.detail = ""
-            assetsTypeDropDown.hide()
-            assetsDescriptionTextViewContainer.isHidden = item != "Other"
-            txtViewAssetsDescription.isHidden = item != "Other"
-            txtViewAssetsDescription.frame = assetsDescriptionTextViewContainer.frame
-            setScreenHeight()
-        }
-        
-        txtfieldExpectedProceeds.addTarget(self, action: #selector(textfieldExpectedProceedsChanged), for: .editingChanged)
-        
-
-        
+        setTextFields()
     }
     
-    func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){
-        for allTextField in allTextFields{
-            if (allTextField == selectedTextField){
-                if (allTextField.text == ""){
-                    allTextField.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-                }
-                else{
-                    allTextField.placeholderLabel.textColor = Theme.getAppGreyColor()
-                }
-            }
-        }
+    func setTextFields() {
+
+        ///Transaction Type  Text Field
+        txtfieldTransactionType.setTextField(placeholder: "Transaction Type")
+        txtfieldTransactionType.setDelegates(controller: self)
+        txtfieldTransactionType.setValidation(validationType: .required)
+        txtfieldTransactionType.type = .dropdown
+        txtfieldTransactionType.setDropDownDataSource(kTransactionTypeArray)
+        
+        ///Expected Proceeds Text Field
+        txtfieldExpectedProceeds.setTextField(placeholder: "Expected Proceeds")
+        txtfieldExpectedProceeds.setDelegates(controller: self)
+        txtfieldExpectedProceeds.setTextField(keyboardType: .numberPad)
+        txtfieldExpectedProceeds.setValidation(validationType: .required)
+        txtfieldExpectedProceeds.type = .amount
+        
+        ///Assets Type Text Field
+        txtfieldAssetsType.setTextField(placeholder: "Which Asset?")
+        txtfieldAssetsType.setDelegates(controller: self)
+        txtfieldAssetsType.setValidation(validationType: .required)
+        txtfieldAssetsType.type = .dropdown
+        txtfieldAssetsType.setDropDownDataSource(kAssetsTypeArray)
     }
     
     func setScreenHeight(){
         UIView.animate(withDuration: 0.0) {
             self.view.layoutSubviews()
-        }
-    }
-    
-    @objc func textfieldExpectedProceedsChanged(){
-        if let amount = Int(txtfieldExpectedProceeds.text!.replacingOccurrences(of: ",", with: "")){
-            txtfieldExpectedProceeds.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
         }
     }
     
@@ -241,7 +137,6 @@ class AddProceedsFromTransactionViewController: BaseViewController {
         btnNo.setImage(UIImage(named: !isLoanSecureByAnAsset ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
         lblNo.font = !isLoanSecureByAnAsset ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
         txtfieldAssetsType.isHidden = !isLoanSecureByAnAsset
-        btnAssetsTypeDropDown.isHidden = !isLoanSecureByAnAsset
         txtfieldAssetsTypeTopConstraint.constant = isLoanSecureByAnAsset ? 20 : 0
         txtFieldAssetsTypeHeightConstraint.constant = isLoanSecureByAnAsset ? 39 : 0
     }
@@ -255,203 +150,111 @@ class AddProceedsFromTransactionViewController: BaseViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        do{
-            let transactionType = try validation.validateTransactionType(txtfieldTransactionType.text)
-            DispatchQueue.main.async {
-                self.txtfieldTransactionType.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtfieldTransactionType.detail = ""
-            }
-            
-        }
-        catch{
-            self.txtfieldTransactionType.dividerColor = .red
-            self.txtfieldTransactionType.detail = error.localizedDescription
-        }
-  
-        do{
-            let expectedProceeds = try validation.validateExpectedProceeds(txtfieldExpectedProceeds.text)
-            DispatchQueue.main.async {
-                self.txtfieldExpectedProceeds.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtfieldExpectedProceeds.detail = ""
-            }
-            
-        }
-        catch{
-            self.txtfieldExpectedProceeds.dividerColor = .red
-            self.txtfieldExpectedProceeds.detail = error.localizedDescription
-        }
-        
-        do{
-            let assetDescription = try validation.validateAssetDescription(txtViewAssetsDescription.textView.text)
-            DispatchQueue.main.async {
-                self.txtViewAssetsDescription.setUnderlineColor(Theme.getSeparatorNormalColor(), for: .normal)
-                self.txtViewAssetsDescription.leadingAssistiveLabel.text = ""
-            }
 
-        }
-        catch{
-            self.txtViewAssetsDescription.setUnderlineColor(Theme.getSeparatorErrorColor(), for: .normal)
-            self.txtViewAssetsDescription.leadingAssistiveLabel.text = error.localizedDescription
-        }
-    
-        if (isLoanSecureByAnAsset){
-            do{
-                let assetsType = try validation.validateAssetsType(txtfieldAssetsType.text)
-                DispatchQueue.main.async {
-                    self.txtfieldAssetsType.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldAssetsType.detail = ""
-                }
-                
-            }
-            catch{
-                self.txtfieldAssetsType.dividerColor = .red
-                self.txtfieldAssetsType.detail = error.localizedDescription
-            }
-        }
-        
-        if (txtfieldTransactionType.text == "Proceeds From A Loan"){
-            if (isLoanSecureByAnAsset){
-                if (txtfieldAssetsType.text == "Other"){
-                    if (txtfieldTransactionType.text != "" && txtfieldExpectedProceeds.text != "" && txtViewAssetsDescription.textView.text != ""){
-                        self.dismissVC()
+        if validate() {
+            if (txtfieldTransactionType.text == "Proceeds From A Loan"){
+                if (isLoanSecureByAnAsset){
+                    if (txtfieldAssetsType.text == "Other"){
+                        if (txtfieldTransactionType.text != "" && txtfieldExpectedProceeds.text != "" && txtViewAssetsDescription.textView.text != ""){
+                            self.dismissVC()
+                        }
+                    }
+                    else{
+                        if (txtfieldTransactionType.text != "" && txtfieldExpectedProceeds.text != "" && txtfieldAssetsType.text != ""){
+                            self.dismissVC()
+                        }
                     }
                 }
                 else{
-                    if (txtfieldTransactionType.text != "" && txtfieldExpectedProceeds.text != "" && txtfieldAssetsType.text != ""){
+                    if (txtfieldTransactionType.text != "" && txtfieldExpectedProceeds.text != ""){
                         self.dismissVC()
                     }
                 }
             }
             else{
-                if (txtfieldTransactionType.text != "" && txtfieldExpectedProceeds.text != ""){
+                if (txtfieldTransactionType.text != "" && txtfieldExpectedProceeds.text != "" && txtViewAssetsDescription.textView.text != ""){
                     self.dismissVC()
                 }
             }
         }
-        else{
-            if (txtfieldTransactionType.text != "" && txtfieldExpectedProceeds.text != "" && txtViewAssetsDescription.textView.text != ""){
-                self.dismissVC()
-            }
-        }
-        
-        
-    }
-}
-
-extension AddProceedsFromTransactionViewController: UITextFieldDelegate{
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        
-        if (textField == txtfieldTransactionType){
-            textField.endEditing(true)
-            txtfieldTransactionType.dividerColor = Theme.getButtonBlueColor()
-            btnTransactionTypeDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-            transactionTypeDropDown.show()
-        }
-        
-        if (textField == txtfieldExpectedProceeds){
-            txtfieldExpectedProceeds.textInsetsPreset = .horizontally5
-            txtfieldExpectedProceeds.placeholderHorizontalOffset = -24
-            expectedProceedsDollarView.isHidden = false
-        }
-        
-        if (textField == txtfieldAssetsType){
-            textField.endEditing(true)
-            txtfieldAssetsType.dividerColor = Theme.getButtonBlueColor()
-            btnAssetsTypeDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-            assetsTypeDropDown.show()
-        }
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        
-        if (textField == txtfieldTransactionType){
-            if !(kTransactionTypeArray.contains(txtfieldTransactionType.text!)){
-                txtfieldTransactionType.text = ""
-                txtfieldTransactionType.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-                transactionTypeDropDown.hide()
-            }
-            
-            btnTransactionTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            do{
-                let transactionType = try validation.validateTransactionType(txtfieldTransactionType.text)
-                DispatchQueue.main.async {
-                    self.txtfieldTransactionType.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldTransactionType.detail = ""
-                }
-                
-            }
-            catch{
-                self.txtfieldTransactionType.dividerColor = .red
-                self.txtfieldTransactionType.detail = error.localizedDescription
-            }
-
+    func validate() -> Bool {
+        var isValidate = txtfieldTransactionType.validate()
+        if isLoanSecureByAnAsset && !txtfieldAssetsType.isHidden{
+            isValidate = txtfieldAssetsType.validate() && isValidate
+        }
+        if !txtViewAssetsDescription.isHidden{
+            isValidate = validateTextView() && isValidate
         }
         
-        if (textField == txtfieldExpectedProceeds){
-            do{
-                let expectedProceeds = try validation.validateExpectedProceeds(txtfieldExpectedProceeds.text)
-                DispatchQueue.main.async {
-                    self.txtfieldExpectedProceeds.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldExpectedProceeds.detail = ""
-                }
-                
-            }
-            catch{
-                self.txtfieldExpectedProceeds.dividerColor = .red
-                self.txtfieldExpectedProceeds.detail = error.localizedDescription
-            }
-        }
-        
-        if (textField == txtfieldExpectedProceeds && txtfieldExpectedProceeds.text == ""){
-            txtfieldExpectedProceeds.textInsetsPreset = .none
-            txtfieldExpectedProceeds.placeholderHorizontalOffset = 0
-            expectedProceedsDollarView.isHidden = true
-        }
-        
-        if (textField == txtfieldAssetsType){
-            if !(kAssetsTypeArray.contains(txtfieldAssetsType.text!)){
-                txtfieldAssetsType.text = ""
-                txtfieldAssetsType.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-                assetsTypeDropDown.hide()
-            }
-            
-            btnAssetsTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            do{
-                let assetsType = try validation.validateAssetsType(txtfieldAssetsType.text)
-                DispatchQueue.main.async {
-                    self.txtfieldAssetsType.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldAssetsType.detail = ""
-                }
-                
-            }
-            catch{
-                self.txtfieldAssetsType.dividerColor = .red
-                self.txtfieldAssetsType.detail = error.localizedDescription
-            }
-
-        }
-        
-        setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldTransactionType, txtfieldExpectedProceeds, txtfieldAssetsType])
+        isValidate = txtfieldExpectedProceeds.validate() && isValidate
+        return isValidate
     }
-    
 }
 
 extension AddProceedsFromTransactionViewController: UITextViewDelegate{
     
     func textViewDidEndEditing(_ textView: UITextView) {
+        _ = validateTextView()
+    }
+    
+    func validateTextView() -> Bool {
         do{
-            let assetDescription = try validation.validateAssetDescription(txtViewAssetsDescription.textView.text)
+            let response = try txtViewAssetsDescription.textView.text.validate(type: .required)
             DispatchQueue.main.async {
                 self.txtViewAssetsDescription.setUnderlineColor(Theme.getSeparatorNormalColor(), for: .normal)
                 self.txtViewAssetsDescription.leadingAssistiveLabel.text = ""
             }
-
+            return response
         }
         catch{
             self.txtViewAssetsDescription.setUnderlineColor(Theme.getSeparatorErrorColor(), for: .normal)
             self.txtViewAssetsDescription.leadingAssistiveLabel.text = error.localizedDescription
+            return false
         }
     }
-    
+}
+
+extension AddProceedsFromTransactionViewController : ColabaTextFieldDelegate {
+    func selectedOption(option: String, atIndex: Int, textField: ColabaTextField) {
+        if textField == txtfieldTransactionType {
+            txtfieldExpectedProceeds.isHidden = false
+            if (option == "Proceeds From A Loan"){
+                loanSecureView.isHidden = false
+                loanSecureViewTopConstraint.constant = 40
+                loanSecureViewHeightConstraint.constant = 140
+                txtfieldAssetsType.isHidden = true
+                txtfieldAssetsTypeTopConstraint.constant = 0
+                txtFieldAssetsTypeHeightConstraint.constant = 0
+                assetsDescriptionTextViewContainer.isHidden = true
+                txtViewAssetsDescription.isHidden = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                    self?.txtViewAssetsDescription.frame = self?.assetsDescriptionTextViewContainer.frame ?? CGRect(x: 0, y: 0, width: 0, height: 0)
+                }
+            }
+            else{
+                loanSecureView.isHidden = true
+                loanSecureViewTopConstraint.constant = 0
+                loanSecureViewHeightConstraint.constant = 0
+                txtfieldAssetsType.isHidden = true
+                txtfieldAssetsTypeTopConstraint.constant = 0
+                txtFieldAssetsTypeHeightConstraint.constant = 0
+                assetsDescriptionTextViewContainer.isHidden = false
+                txtViewAssetsDescription.isHidden = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                    self?.txtViewAssetsDescription.frame = self?.assetsDescriptionTextViewContainer.frame ?? CGRect(x: 0, y: 0, width: 0, height: 0)
+                }
+            }
+            
+            setScreenHeight()
+        }
+        
+        if textField == txtfieldAssetsType {
+            assetsDescriptionTextViewContainer.isHidden = option != "Other"
+            txtViewAssetsDescription.isHidden = option != "Other"
+            txtViewAssetsDescription.frame = assetsDescriptionTextViewContainer.frame
+            setScreenHeight()
+        }
+    }
 }

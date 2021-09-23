@@ -29,6 +29,9 @@ class ChildSupportViewController: BaseViewController {
         setupViews()
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
+        btnYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+        lblYes.font = Theme.getRubikRegularFont(size: 14)
+        detailView.isHidden = true
     }
     
     func setupViews(){
@@ -57,9 +60,9 @@ class ChildSupportViewController: BaseViewController {
     func changeStatus(){
         if let ansYes = isYes{
             btnYes.setImage(UIImage(named: ansYes ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-            lblYes.font = ansYes ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
+            lblYes.font = ansYes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
             btnNo.setImage(UIImage(named: !ansYes ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-            lblNo.font = !ansYes ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
+            lblNo.font = !ansYes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
             if let yes = isYes{
                 detailView.isHidden = !yes
             }
