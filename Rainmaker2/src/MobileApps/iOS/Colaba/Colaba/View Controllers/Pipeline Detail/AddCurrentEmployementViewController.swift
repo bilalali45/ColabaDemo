@@ -70,9 +70,9 @@ class AddCurrentEmployementViewController: BaseViewController {
     @IBOutlet weak var txtfieldAnnualCommision: ColabaTextField!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
-    var hasEmployed = true
-    var hasOwnershipInterest = true
-    var hasSalaryPayType = true
+    var hasEmployed: Bool?
+    var hasOwnershipInterest: Bool?
+    var hasSalaryPayType: Bool?
     var hasBonusIncome = false
     var hasOvertimeIncome = false
     var hasCommissionIncome = false
@@ -80,6 +80,19 @@ class AddCurrentEmployementViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextFields()
+        btnEmployedYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+        lblEmployedYes.font = Theme.getRubikRegularFont(size: 14)
+        btnOwnershipYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+        lblOwnershipYes.font = Theme.getRubikRegularFont(size: 14)
+        txtfieldOwnershipPercentage.isHidden = true
+        ownershipViewHeightConstraint.constant = 126
+        btnSalary.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+        lblSalary.font = Theme.getRubikRegularFont(size: 14)
+        txtfieldAnnualBaseSalary.isHidden = true
+        payTypeViewHeightConstraint.constant = 160
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.setScreenHeight()
+        }
     }
         
     //MARK:- Methods and Actions
@@ -211,10 +224,14 @@ class AddCurrentEmployementViewController: BaseViewController {
     }
     
     func changeEmployedViewStatus(){
-        btnEmployedYes.setImage(UIImage(named: hasEmployed ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblEmployedYes.font = hasEmployed ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-        btnEmployedNo.setImage(UIImage(named: hasEmployed ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
-        lblEmployedNo.font = hasEmployed ? Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
+        
+        if let employed = hasEmployed{
+            btnEmployedYes.setImage(UIImage(named: employed ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+            lblEmployedYes.font = employed ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+            btnEmployedNo.setImage(UIImage(named: employed ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
+            lblEmployedNo.font = employed ? Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
+        }
+        
     }
     
     @objc func ownershipYesStackViewTapped(){
@@ -228,15 +245,18 @@ class AddCurrentEmployementViewController: BaseViewController {
     }
     
     func changeOwnershipInterestStatus(){
-        btnOwnershipYes.setImage(UIImage(named: hasOwnershipInterest ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblOwnershipYes.font = hasOwnershipInterest ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-        btnOwnershipNo.setImage(UIImage(named: hasOwnershipInterest ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
-        lblOwnershipNo.font = hasOwnershipInterest ? Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
-        txtfieldOwnershipPercentage.isHidden = !hasOwnershipInterest
-        ownershipViewHeightConstraint.constant = hasOwnershipInterest ? 215 : 126
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.setScreenHeight()
+        if let ownershipInterest = hasOwnershipInterest{
+            btnOwnershipYes.setImage(UIImage(named: ownershipInterest ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+            lblOwnershipYes.font = ownershipInterest ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+            btnOwnershipNo.setImage(UIImage(named: ownershipInterest ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
+            lblOwnershipNo.font = ownershipInterest ? Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
+            txtfieldOwnershipPercentage.isHidden = !ownershipInterest
+            ownershipViewHeightConstraint.constant = ownershipInterest ? 215 : 126
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.setScreenHeight()
+            }
         }
+        
     }
     
     @objc func salaryStackViewTapped(){
@@ -250,16 +270,21 @@ class AddCurrentEmployementViewController: BaseViewController {
     }
     
     func changePayTypeStatus(){
-        btnSalary.setImage(UIImage(named: hasSalaryPayType ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblSalary.font = hasSalaryPayType ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-        btnHourly.setImage(UIImage(named: hasSalaryPayType ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
-        lblHourly.font = hasSalaryPayType ? Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
-        txtfieldAnnualBaseSalary.placeholder = hasSalaryPayType ? "Annual Base Salary" : "Hourly Rate"
-        txtfieldHoursPerWeek.isHidden = hasSalaryPayType
-        payTypeViewHeightConstraint.constant = hasSalaryPayType ? 230 : 300
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.setScreenHeight()
+        
+        if let payTypeSalary = hasSalaryPayType{
+            btnSalary.setImage(UIImage(named: payTypeSalary ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+            lblSalary.font = payTypeSalary ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+            btnHourly.setImage(UIImage(named: payTypeSalary ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
+            lblHourly.font = payTypeSalary ? Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
+            txtfieldAnnualBaseSalary.placeholder = payTypeSalary ? "Annual Base Salary" : "Hourly Rate"
+            txtfieldAnnualBaseSalary.isHidden = false
+            txtfieldHoursPerWeek.isHidden = payTypeSalary
+            payTypeViewHeightConstraint.constant = payTypeSalary ? 230 : 300
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.setScreenHeight()
+            }
         }
+        
     }
     
     @objc func bonusStackViewTapped(){
@@ -304,13 +329,13 @@ class AddCurrentEmployementViewController: BaseViewController {
         else if (!txtfieldStartDate.validate()) {
             return false
         }
-        else if (hasOwnershipInterest && !txtfieldOwnershipPercentage.validate()){
+        else if (!txtfieldOwnershipPercentage.isHidden && !txtfieldOwnershipPercentage.validate()){
             return false
         }
-        else if (!txtfieldAnnualBaseSalary.validate()){
+        else if (!txtfieldAnnualBaseSalary.isHidden && !txtfieldAnnualBaseSalary.validate()){
             return false
         }
-        else if (!hasSalaryPayType && !txtfieldHoursPerWeek.validate()){
+        else if (!txtfieldHoursPerWeek.isHidden && !txtfieldHoursPerWeek.validate()){
             return false
         }
         else if (hasBonusIncome && !txtfieldAnnualBonusIncome.validate()){
@@ -339,11 +364,11 @@ class AddCurrentEmployementViewController: BaseViewController {
         if (txtfieldEmployerPhoneNumber.text != ""){
             txtfieldEmployerPhoneNumber.validate()
         }
-        if (hasOwnershipInterest){
+        if (!txtfieldOwnershipPercentage.isHidden){
             txtfieldOwnershipPercentage.validate()
         }
         txtfieldAnnualBaseSalary.validate()
-        if (!hasSalaryPayType){
+        if (!txtfieldHoursPerWeek.isHidden){
             txtfieldHoursPerWeek.validate()
         }
         if (hasBonusIncome){

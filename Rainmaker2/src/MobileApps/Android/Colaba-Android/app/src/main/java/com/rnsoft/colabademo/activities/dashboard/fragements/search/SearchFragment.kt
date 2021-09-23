@@ -31,7 +31,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
-class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
+class SearchFragment : BaseFragment() , SearchAdapter.SearchClickListener {
 
 
 
@@ -104,8 +104,6 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
 
         })
 
-
-
         binding.searchEditTextField.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 binding.searchEditTextField.clearFocus()
@@ -166,6 +164,8 @@ class SearchFragment : Fragment() , SearchAdapter.SearchClickListener {
         }
 
         searchRecyclerView?.addOnScrollListener(scrollListener)
+
+        super.addListeners(binding.root)
 
         return root
     }

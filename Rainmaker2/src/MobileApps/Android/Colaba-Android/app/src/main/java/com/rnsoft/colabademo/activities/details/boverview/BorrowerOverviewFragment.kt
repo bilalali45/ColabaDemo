@@ -16,7 +16,7 @@ import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
-class BorrowerOverviewFragment : Fragment()  {
+class BorrowerOverviewFragment : BaseFragment()  {
 
     private var _binding: DetailBorrowerLayoutTwoBinding? = null
     private val binding get() = _binding!!
@@ -125,7 +125,7 @@ class BorrowerOverviewFragment : Fragment()  {
                 Log.e("should-stop"," here....")
 
         })
-
+        super.addListeners(binding.root)
         return root
 
     }

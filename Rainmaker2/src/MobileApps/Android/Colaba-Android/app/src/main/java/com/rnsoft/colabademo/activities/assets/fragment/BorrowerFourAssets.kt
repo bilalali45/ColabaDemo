@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import com.rnsoft.colabademo.databinding.*
 import kotlinx.android.synthetic.main.assets_top_cell.view.*
 
-class BorrowerFourAssets : Fragment() {
+class BorrowerFourAssets : BaseFragment() {
 
     private lateinit var binding: DynamicAssetFragmentLayoutBinding
 
@@ -23,7 +23,7 @@ class BorrowerFourAssets : Fragment() {
         binding = DynamicAssetFragmentLayoutBinding.inflate(inflater, container, false)
 
         setupLayout()
-
+        super.addListeners(binding.root)
         return binding.root
     }
 

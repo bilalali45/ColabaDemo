@@ -25,7 +25,7 @@ private val assetsTabArray = arrayOf(
 )
 
 @AndroidEntryPoint
-class AssetsTabFragment : Fragment() {
+class AssetsTabFragment : BaseFragment() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -82,6 +82,7 @@ class AssetsTabFragment : Fragment() {
             requireActivity().finish()
         }
 
+        super.addListeners(binding.root)
 
         return root
     }

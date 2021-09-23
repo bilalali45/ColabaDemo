@@ -21,7 +21,7 @@ import java.util.ArrayList
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ChildSupportFragment:Fragment() {
+class ChildSupportFragment:BaseFragment() {
 
     private var _binding: ChildSupportLayoutBinding? = null
     private val binding get() = _binding!!
@@ -37,6 +37,7 @@ class ChildSupportFragment:Fragment() {
         _binding = ChildSupportLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

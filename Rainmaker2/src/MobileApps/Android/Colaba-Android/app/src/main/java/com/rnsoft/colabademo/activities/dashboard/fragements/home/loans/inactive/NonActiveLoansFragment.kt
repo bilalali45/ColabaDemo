@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.rnsoft.colabademo.activities.dashboard.fragements.home.LoanBaseFragment
 import com.rnsoft.colabademo.databinding.NonActiveFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus

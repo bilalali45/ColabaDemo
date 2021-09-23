@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class UndisclosedMortgageFragment:Fragment() {
+class UndisclosedMortgageFragment:BaseFragment() {
 
     private var _binding: UndisclosedMortgageLayoutBinding? = null
     private val binding get() = _binding!!
@@ -30,6 +30,7 @@ class UndisclosedMortgageFragment:Fragment() {
         _binding = UndisclosedMortgageLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

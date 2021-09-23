@@ -15,7 +15,7 @@ import com.rnsoft.colabademo.databinding.*
 
 
 @AndroidEntryPoint
-class TestFieldsFragment : Fragment() {
+class TestFieldsFragment : BaseFragment() {
 
     private var _binding: TestFieldsLayoutBinding? = null
     private val binding get() = _binding!!
@@ -41,6 +41,7 @@ class TestFieldsFragment : Fragment() {
             binding.stateCompleteTextView.showDropDown()
         }
 
+        super.addListeners(binding.root)
 
         return root
     }

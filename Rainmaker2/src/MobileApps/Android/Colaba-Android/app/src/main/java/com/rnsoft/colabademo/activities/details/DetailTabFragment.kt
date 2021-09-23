@@ -30,7 +30,7 @@ private val detailTabArray = arrayOf(
 
 
 @AndroidEntryPoint
-class DetailTabFragment : Fragment() {
+class DetailTabFragment : BaseFragment() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -99,8 +99,6 @@ class DetailTabFragment : Fragment() {
             }
         })
 
-
-
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
@@ -115,16 +113,7 @@ class DetailTabFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-
-
-
-
-
-
-        binding.backButton.setOnClickListener{
-            requireActivity().finish()
-        }
-
+        binding.backButton.setOnClickListener{ requireActivity().finish() }
         loadDetailWebservices()
 
         if(viewPager.visibility == View.INVISIBLE)
@@ -136,7 +125,7 @@ class DetailTabFragment : Fragment() {
             TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = detailTabArray[position] }.attach()
 
         observeFileReadChanges()
-
+        super.addListeners(binding.root)
         return root
     }
 

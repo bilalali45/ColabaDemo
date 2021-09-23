@@ -13,7 +13,7 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 /**
  * Created by Anita Kiran on 9/8/2021.
  */
-class MixedUsePropertyFragment : Fragment() {
+class MixedUsePropertyFragment : BaseFragment() {
 
     lateinit var binding : MixedUsePropertyBinding
 
@@ -43,6 +43,7 @@ class MixedUsePropertyFragment : Fragment() {
                 CustomMaterialFields.clearError(binding.layoutDetail,requireActivity())
             }
         }
+        super.addListeners(binding.root)
         return binding.root
 
     }

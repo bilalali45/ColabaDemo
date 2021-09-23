@@ -17,7 +17,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.rnsoft.colabademo.activities.dashboard.fragements.home.LoanBaseFragment
 import com.rnsoft.colabademo.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -31,7 +30,7 @@ val tabArray = arrayOf(
 
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -68,7 +67,6 @@ class HomeFragment : Fragment() {
             ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
 
         val root: View = binding.root
 
@@ -164,7 +162,7 @@ class HomeFragment : Fragment() {
         }
 
         setGreetingMessageOnTop()
-
+        super.addListeners(binding.root)
         return root
     }
 

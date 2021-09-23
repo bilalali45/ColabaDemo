@@ -25,7 +25,7 @@ import java.util.*
 /**
  * Created by Anita Kiran on 9/9/2021.
  */
-class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener, View.OnClickListener {
+class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListener, View.OnClickListener {
 
     private lateinit var binding: SubPropertyRefinanceBinding
     private val propertyTypeArray = listOf(
@@ -80,7 +80,7 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
 
             setSpinnerData()
             setInputFields()
-
+            super.addListeners(binding.root)
             savedViewInstance
         }
 

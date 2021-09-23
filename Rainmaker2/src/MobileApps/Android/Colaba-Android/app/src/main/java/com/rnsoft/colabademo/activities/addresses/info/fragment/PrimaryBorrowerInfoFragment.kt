@@ -39,7 +39,7 @@ import kotlin.collections.ArrayList
  * Created by Anita Kiran on 8/23/2021.
  */
 
-class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.OnClickListener, AddressClickListener {
+class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, View.OnClickListener, AddressClickListener {
 
     lateinit var bi: PrimaryBorrowerInfoLayoutBinding
     lateinit var msBinding: SublayoutMaritalStatusBinding
@@ -72,6 +72,8 @@ class PrimaryBorrowerInfoFragment : Fragment(), RecyclerviewClickListener, View.
             list.clear()
             list.add(Address(true,"5919 Trussvile Crossings Parkways, ZV Street, Birmingham AL 35235"))
             list.add(Address(false,"5919 Trussvile Crossings Pkwy, Birmingham AL 35235"))
+
+            super.addListeners(savedViewInstance as ViewGroup)
 
             savedViewInstance
         }

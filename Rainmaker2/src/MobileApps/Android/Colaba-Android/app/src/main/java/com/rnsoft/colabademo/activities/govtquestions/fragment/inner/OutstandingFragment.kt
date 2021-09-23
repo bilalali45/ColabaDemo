@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class OutstandingFragment:Fragment() {
+class OutstandingFragment:BaseFragment() {
 
     private var _binding: OutstandingLayoutBinding? = null
     private val binding get() = _binding!!
@@ -29,6 +29,7 @@ class OutstandingFragment:Fragment() {
         _binding = OutstandingLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

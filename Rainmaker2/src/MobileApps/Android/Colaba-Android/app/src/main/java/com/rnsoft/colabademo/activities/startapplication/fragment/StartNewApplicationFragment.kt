@@ -15,7 +15,7 @@ import com.rnsoft.colabademo.activities.startapplication.adapter.ContactsAdapter
 /**
  * Created by Anita Kiran on 9/17/2021.
  */
-class StartNewApplicationFragment : Fragment(), View.OnClickListener {
+class StartNewApplicationFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var binding: StartApplicationFragLayoutBinding
     private var savedViewInstance: View? = null
@@ -35,7 +35,7 @@ class StartNewApplicationFragment : Fragment(), View.OnClickListener {
 
             initViews()
             setLabelFocus()
-
+            super.addListeners(binding.root)
             savedViewInstance
         }
     }

@@ -22,7 +22,7 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class GiftsAssetsFragment:Fragment() {
+class GiftsAssetsFragment:BaseFragment() {
 
     private var _binding: GiftsAssetLayoutBinding? = null
     private val binding get() = _binding!!
@@ -38,6 +38,7 @@ class GiftsAssetsFragment:Fragment() {
         _binding = GiftsAssetLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

@@ -23,7 +23,7 @@ import java.util.ArrayList
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BankAccountFragment : Fragment() {
+class BankAccountFragment : BaseFragment() {
 
     private var _binding: BankAccountLayoutBinding? = null
     private val binding get() = _binding!!
@@ -38,6 +38,7 @@ class BankAccountFragment : Fragment() {
         _binding = BankAccountLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

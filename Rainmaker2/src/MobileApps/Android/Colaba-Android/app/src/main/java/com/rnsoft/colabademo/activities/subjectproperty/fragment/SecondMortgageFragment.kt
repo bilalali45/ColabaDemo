@@ -15,7 +15,7 @@ import com.rnsoft.colabademo.utils.NumberTextFormat
 /**
  * Created by Anita Kiran on 9/9/2021.
  */
-class SecondMortgageFragment : Fragment(), View.OnClickListener {
+class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var binding : SubPropertySecondMortgageBinding
 
@@ -36,7 +36,7 @@ class SecondMortgageFragment : Fragment(), View.OnClickListener {
         binding.switchCreditLimit.setOnClickListener(this)
 
         setInputFields()
-
+        super.addListeners(binding.root)
         return binding.root
 
     }

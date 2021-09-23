@@ -23,7 +23,7 @@ import java.util.ArrayList
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class RetirementFragment:Fragment() {
+class RetirementFragment:BaseFragment() {
 
     private var _binding: RetirementLayoutBinding? = null
     private val binding get() = _binding!!
@@ -38,10 +38,8 @@ class RetirementFragment:Fragment() {
 
         _binding = RetirementLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-
         setUpUI()
-
+        super.addListeners(binding.root)
         return root
     }
 

@@ -19,7 +19,7 @@ import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.non_permenant_resident_layout.*
 
 @AndroidEntryPoint
-class NonPermanentFragment : Fragment() {
+class NonPermanentFragment : BaseFragment() {
 
     private var _binding: NonPermenantResidentLayoutBinding? = null
     private val binding get() = _binding!!
@@ -65,6 +65,8 @@ class NonPermanentFragment : Fragment() {
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        super.addListeners(binding.root)
 
         return root
     }

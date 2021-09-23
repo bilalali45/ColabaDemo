@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class UndisclosedBorrowerFundFragment:Fragment() {
+class UndisclosedBorrowerFundFragment:BaseFragment() {
 
     private var _binding: UndisclosedBorrowerFundLayoutBinding? = null
     private val binding get() = _binding!!
@@ -29,6 +29,7 @@ class UndisclosedBorrowerFundFragment:Fragment() {
         _binding = UndisclosedBorrowerFundLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 
