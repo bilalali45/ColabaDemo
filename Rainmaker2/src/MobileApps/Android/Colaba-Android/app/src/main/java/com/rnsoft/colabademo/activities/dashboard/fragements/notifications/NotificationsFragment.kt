@@ -28,7 +28,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class NotificationsFragment : Fragment(), NotificationClickListener,RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
+class NotificationsFragment : BaseFragment(), NotificationClickListener,RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var coordinatorLayout: CoordinatorLayout
@@ -164,7 +164,7 @@ class NotificationsFragment : Fragment(), NotificationClickListener,RecyclerItem
                 }
             })
         notificationRecycleView.addOnItemTouchListener(touchListener!!)
-
+        super.addListeners(binding.root)
         return root
     }
 

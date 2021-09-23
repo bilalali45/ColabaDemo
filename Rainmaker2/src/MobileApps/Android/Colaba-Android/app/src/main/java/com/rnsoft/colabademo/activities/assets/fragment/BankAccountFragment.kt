@@ -14,16 +14,16 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
+
 import com.rnsoft.colabademo.databinding.BankAccountLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.HideSoftkeyboard
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BankAccountFragment : Fragment() {
+class BankAccountFragment : BaseFragment() {
 
     private var _binding: BankAccountLayoutBinding? = null
     private val binding get() = _binding!!
@@ -38,6 +38,7 @@ class BankAccountFragment : Fragment() {
         _binding = BankAccountLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

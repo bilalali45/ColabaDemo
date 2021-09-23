@@ -10,17 +10,18 @@ import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.IncomePreviousEmploymentBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.HideSoftkeyboard
+
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import java.util.*
 
 /**
  * Created by Anita Kiran on 9/13/2021.
  */
-class IncomePreviousEmployment : Fragment(),View.OnClickListener {
+class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
 
     private lateinit var binding: IncomePreviousEmploymentBinding
     private lateinit var toolbar: AppHeaderWithCrossDeleteBinding
@@ -37,7 +38,7 @@ class IncomePreviousEmployment : Fragment(),View.OnClickListener {
             binding = IncomePreviousEmploymentBinding.inflate(inflater, container, false)
             toolbar = binding.headerIncome
             savedViewInstance = binding.root
-
+            super.addListeners(binding.root)
             // set Header title
             toolbar.toolbarTitle.setText(getString(R.string.previous_employment))
 

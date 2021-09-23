@@ -56,8 +56,8 @@ class StartNewApplicationViewController: BaseViewController {
     @IBOutlet weak var btnCreateApplication: UIButton!
     
     var isCreateNewContact = false
-    var loanPurpose = 0
-    var loanGoal = 0
+    var loanPurpose: Int?
+    var loanGoal: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()

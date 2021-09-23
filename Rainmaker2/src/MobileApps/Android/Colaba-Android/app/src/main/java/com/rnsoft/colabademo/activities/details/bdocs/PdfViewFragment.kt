@@ -13,7 +13,7 @@ import com.rnsoft.colabademo.databinding.PdfViewLayoutBinding
 import java.io.File
 import javax.inject.Inject
 
-class PdfViewFragment : Fragment(), AdapterClickListener {
+class PdfViewFragment : BaseFragment(), AdapterClickListener {
     private var _binding: PdfViewLayoutBinding? = null
     private val binding get() = _binding!!
 
@@ -48,6 +48,8 @@ class PdfViewFragment : Fragment(), AdapterClickListener {
         }
 
         hideFabIcons()
+
+        super.addListeners(binding.root)
 
         return view
     }

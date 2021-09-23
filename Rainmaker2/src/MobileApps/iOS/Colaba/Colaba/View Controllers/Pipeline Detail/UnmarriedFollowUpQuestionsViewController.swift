@@ -31,12 +31,13 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
     @IBOutlet weak var relationshipDetailTextViewContainer: UIView!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
-    var isNonLegalSpouse = 2 // 1 for yes 2 for no
+    var isNonLegalSpouse = 0 // 1 for yes 2 for no
     var txtViewRelationshipDetail = MDCFilledTextArea()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setMaterialTextFieldsAndViews()
+        changeNonLegalSpouseStatus()
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
     }

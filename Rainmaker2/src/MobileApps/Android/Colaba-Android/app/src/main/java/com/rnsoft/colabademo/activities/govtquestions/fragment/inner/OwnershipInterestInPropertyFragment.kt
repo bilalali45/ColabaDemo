@@ -10,17 +10,18 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+
 import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.OwnershipInterestInPropertyLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.HideSoftkeyboard
+
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class OwnershipInterestInPropertyFragment : Fragment() {
+class OwnershipInterestInPropertyFragment : BaseFragment() {
 
     private var _binding: OwnershipInterestInPropertyLayoutBinding? = null
     private val binding get() = _binding!!
@@ -36,6 +37,7 @@ class OwnershipInterestInPropertyFragment : Fragment() {
         _binding = OwnershipInterestInPropertyLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

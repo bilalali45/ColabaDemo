@@ -12,15 +12,17 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+
 import com.rnsoft.colabademo.databinding.SubjectPropertyPurchaseBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.HideSoftkeyboard
+
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import kotlinx.android.synthetic.main.subject_property_purchase.*
 
 /**
  * Created by Anita Kiran on 9/8/2021.
  */
-class SubjectPropertyPurchase : Fragment(), View.OnClickListener {
+class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
 
     lateinit var binding: SubjectPropertyPurchaseBinding
     private val propertyTypeArray = listOf("Single Family Property","Condominium","Townhouse", "Cooperative", "Manufactured Home", "Duplex (2 Unit)", "Triplex (3 Unit)", "Quadplex (4 Unit)")
@@ -37,6 +39,10 @@ class SubjectPropertyPurchase : Fragment(), View.OnClickListener {
         } else {
             binding = SubjectPropertyPurchaseBinding.inflate(inflater, container, false)
             savedViewInstance = binding.root
+
+            binding.testSubject.setOnClickListener{
+                HideSoftkeyboard.hide(requireContext(), binding.testSubject)
+            }
 
             binding.rbSubProperty.isChecked = false
             binding.rbSubPropertyAddress.isChecked = false
@@ -56,7 +62,7 @@ class SubjectPropertyPurchase : Fragment(), View.OnClickListener {
 
             setSpinnerData()
             setInputFields()
-
+            super.addListeners(binding.root)
             savedViewInstance
         }
     }

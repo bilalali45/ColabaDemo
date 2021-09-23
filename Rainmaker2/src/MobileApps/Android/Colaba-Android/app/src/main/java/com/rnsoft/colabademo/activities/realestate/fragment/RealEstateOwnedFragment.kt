@@ -11,13 +11,14 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+
 import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
 import com.rnsoft.colabademo.activities.addresses.info.fragment.SwipeToDeleteEvent
 import com.rnsoft.colabademo.activities.income.fragment.BottomDialogSelectEmployment
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.RealEstateOwnedLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.HideSoftkeyboard
+
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -28,7 +29,7 @@ import java.util.*
 /**
  * Created by Anita Kiran on 9/16/2021.
  */
-class RealEstateOwnedFragment : Fragment() , View.OnClickListener {
+class RealEstateOwnedFragment : BaseFragment() , View.OnClickListener {
 
     private lateinit var binding: RealEstateOwnedLayoutBinding
     private lateinit var toolbar: AppHeaderWithCrossDeleteBinding
@@ -50,7 +51,7 @@ class RealEstateOwnedFragment : Fragment() , View.OnClickListener {
             toolbar.toolbarTitle.setText(getString(R.string.real_estate_owned))
 
             initViews()
-
+            super.addListeners(binding.root)
             savedViewInstance
 
         }

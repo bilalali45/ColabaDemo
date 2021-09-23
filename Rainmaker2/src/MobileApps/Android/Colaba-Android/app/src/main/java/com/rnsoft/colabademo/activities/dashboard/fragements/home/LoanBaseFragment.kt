@@ -1,10 +1,8 @@
-package com.rnsoft.colabademo.activities.dashboard.fragements.home
+package com.rnsoft.colabademo
 
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.rnsoft.colabademo.LoanViewModel
 
-open class BaseFragment: Fragment() {
+open class LoanBaseFragment: BaseFragment() {
 
     companion object {
         var globalAssignToMe: Boolean = false

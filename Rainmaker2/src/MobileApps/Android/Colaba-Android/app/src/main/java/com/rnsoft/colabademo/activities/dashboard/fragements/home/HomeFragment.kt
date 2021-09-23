@@ -17,7 +17,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
 import com.rnsoft.colabademo.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -31,7 +30,7 @@ val tabArray = arrayOf(
 
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -69,7 +68,6 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-
         val root: View = binding.root
 
         homeProfileLayout = root.findViewById(R.id.assets_top_container)
@@ -87,7 +85,7 @@ class HomeFragment : Fragment() {
         if (sharedPreferences.contains(AppConstant.ASSIGN_TO_ME)) {
             assignToMeSwitch.isChecked =
                 sharedPreferences.getBoolean(AppConstant.ASSIGN_TO_ME, false)
-            BaseFragment.globalAssignToMe = assignToMeSwitch.isChecked
+            LoanBaseFragment.globalAssignToMe = assignToMeSwitch.isChecked
         }
 
         val viewPager = binding.viewPager
@@ -119,7 +117,7 @@ class HomeFragment : Fragment() {
                 val test2: Fragment? =
                     requireActivity().supportFragmentManager.findFragmentByTag("f${position}")
                 if (test2 != null) {
-                    baseFragment = test2 as BaseFragment
+                    loanBaseFragment = test2 as LoanBaseFragment
                 }
             }
 
@@ -152,7 +150,7 @@ class HomeFragment : Fragment() {
 
 
         filterImageView.setOnClickListener {
-            baseFragment?.let {
+            loanBaseFragment?.let {
                 CustomFilterBottomSheetDialogFragment.newInstance(it).show(
                     childFragmentManager,
                     CustomFilterBottomSheetDialogFragment::class.java.canonicalName
@@ -164,7 +162,7 @@ class HomeFragment : Fragment() {
         }
 
         setGreetingMessageOnTop()
-
+        super.addListeners(binding.root)
         return root
     }
 
@@ -172,12 +170,12 @@ class HomeFragment : Fragment() {
         CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             //assignToMeSwitch.setOnClickListener(null)
             Log.e("selectedText-", selectedText)
-            baseFragment?.setAssignToMe(isChecked)
+            loanBaseFragment?.setAssignToMe(isChecked)
             sharedPreferences.edit().putBoolean(AppConstant.ASSIGN_TO_ME, isChecked).apply()
         }
 
     //private var loanFilterInterface:LoanFilterInterface?=null
-    private var baseFragment: BaseFragment? = null
+    private var loanBaseFragment: LoanBaseFragment? = null
 
     private fun setGreetingMessageOnTop() {
         var greetingString = AppSetting.returnGreetingString()

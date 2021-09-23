@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PartyToFragment:Fragment() {
+class PartyToFragment:BaseFragment() {
 
     private var _binding: PartyToLayoutBinding? = null
     private val binding get() = _binding!!
@@ -30,6 +30,7 @@ class PartyToFragment:Fragment() {
         _binding = PartyToLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

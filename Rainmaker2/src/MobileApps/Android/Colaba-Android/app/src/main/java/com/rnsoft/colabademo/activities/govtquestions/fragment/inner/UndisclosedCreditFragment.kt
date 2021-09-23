@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class UndisclosedCreditFragment:Fragment() {
+class UndisclosedCreditFragment:BaseFragment() {
 
     private var _binding: UndisclosedCreditLayoutBinding? = null
     private val binding get() = _binding!!
@@ -31,6 +31,7 @@ class UndisclosedCreditFragment:Fragment() {
         _binding = UndisclosedCreditLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

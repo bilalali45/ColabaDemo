@@ -6,12 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+
 import com.rnsoft.colabademo.databinding.RealEstateSecondMortgageBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.HideSoftkeyboard
+
 import com.rnsoft.colabademo.utils.NumberTextFormat
 
-class RealEstateSecondMortgage : Fragment(), View.OnClickListener {
+class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
 
     private lateinit var binding : RealEstateSecondMortgageBinding
 
@@ -19,7 +20,7 @@ class RealEstateSecondMortgage : Fragment(), View.OnClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = RealEstateSecondMortgageBinding.inflate(inflater, container, false)
 
         val title = arguments?.getString(AppConstant.address).toString()
@@ -35,7 +36,7 @@ class RealEstateSecondMortgage : Fragment(), View.OnClickListener {
         binding.switchCreditLimit.setOnClickListener(this)
 
         setInputFields()
-
+        super.addListeners(binding.root)
         return binding.root
 
     }

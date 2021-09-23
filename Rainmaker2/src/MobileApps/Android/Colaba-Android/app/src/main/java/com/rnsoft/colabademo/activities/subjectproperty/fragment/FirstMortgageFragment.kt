@@ -8,15 +8,16 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
+
 import com.rnsoft.colabademo.databinding.FirstMortgageLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.HideSoftkeyboard
+
 import com.rnsoft.colabademo.utils.NumberTextFormat
 
 /**
  * Created by Anita Kiran on 9/9/2021.
  */
-class FirstMortgageFragment : Fragment(),View.OnClickListener {
+class FirstMortgageFragment : BaseFragment(),View.OnClickListener {
 
     private lateinit var binding : FirstMortgageLayoutBinding
 
@@ -43,10 +44,8 @@ class FirstMortgageFragment : Fragment(),View.OnClickListener {
         binding.rbQuesNo.setOnClickListener(this)
 
         setInputFields()
-
-
+        super.addListeners(binding.root)
         return binding.root
-
     }
 
     override fun onClick(view: View?) {

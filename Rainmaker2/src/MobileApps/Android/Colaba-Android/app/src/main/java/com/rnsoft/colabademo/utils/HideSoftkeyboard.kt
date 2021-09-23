@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.utils
+package com.rnsoft.colabademo
 
 import android.content.Context
 import android.view.View

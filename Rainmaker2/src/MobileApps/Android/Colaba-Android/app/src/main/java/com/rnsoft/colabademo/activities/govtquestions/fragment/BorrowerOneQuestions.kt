@@ -32,6 +32,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         binding = BorrowerOneQuestionsLayoutBinding.inflate(inflater, container, false)
         setupLayout()
         test = binding.root.findViewById<ConstraintLayout>(R.id.asian_inner_constraint_layout)
+        super.addListeners(binding.root)
         return binding.root
     }
 

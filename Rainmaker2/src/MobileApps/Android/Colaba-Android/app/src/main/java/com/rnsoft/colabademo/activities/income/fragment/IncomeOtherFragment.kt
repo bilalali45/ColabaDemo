@@ -10,16 +10,17 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.IncomeOtherLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.HideSoftkeyboard
+
 import com.rnsoft.colabademo.utils.NumberTextFormat
 
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
-class IncomeOtherFragment : Fragment(), View.OnClickListener {
+class IncomeOtherFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var binding: IncomeOtherLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
@@ -40,7 +41,7 @@ class IncomeOtherFragment : Fragment(), View.OnClickListener {
             binding = IncomeOtherLayoutBinding.inflate(inflater, container, false)
             toolbarBinding = binding.headerIncome
             savedViewInstance = binding.root
-
+            super.addListeners(binding.root)
             // set Header title
             toolbarBinding.toolbarTitle.setText(getString(R.string.income_other))
 

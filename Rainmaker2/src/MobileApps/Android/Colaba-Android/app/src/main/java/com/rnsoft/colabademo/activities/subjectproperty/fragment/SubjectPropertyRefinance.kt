@@ -16,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.SubPropertyRefinanceBinding
 import com.rnsoft.colabademo.databinding.SubjectPropertyPurchaseBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.HideSoftkeyboard
+
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import java.util.*
@@ -25,7 +25,7 @@ import java.util.*
 /**
  * Created by Anita Kiran on 9/9/2021.
  */
-class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener, View.OnClickListener {
+class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListener, View.OnClickListener {
 
     private lateinit var binding: SubPropertyRefinanceBinding
     private val propertyTypeArray = listOf(
@@ -80,7 +80,7 @@ class SubjectPropertyRefinance : Fragment(), DatePickerDialog.OnDateSetListener,
 
             setSpinnerData()
             setInputFields()
-
+            super.addListeners(binding.root)
             savedViewInstance
         }
 

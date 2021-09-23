@@ -13,16 +13,16 @@ import android.widget.RadioGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+
 import com.rnsoft.colabademo.databinding.GiftsAssetLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.HideSoftkeyboard
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class GiftsAssetsFragment:Fragment() {
+class GiftsAssetsFragment:BaseFragment() {
 
     private var _binding: GiftsAssetLayoutBinding? = null
     private val binding get() = _binding!!
@@ -38,6 +38,7 @@ class GiftsAssetsFragment:Fragment() {
         _binding = GiftsAssetLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

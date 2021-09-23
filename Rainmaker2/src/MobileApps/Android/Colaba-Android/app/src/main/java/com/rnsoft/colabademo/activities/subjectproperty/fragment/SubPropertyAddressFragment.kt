@@ -24,9 +24,10 @@ import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
+
 import com.rnsoft.colabademo.databinding.SubjectPropertyAddressBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.HideSoftkeyboard
+
 import kotlinx.android.synthetic.main.temp_residence_layout.*
 import java.io.IOException
 import java.util.*
@@ -35,7 +36,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by Anita Kiran on 9/8/2021.
  */
-class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceClickListener {
+class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListener {
 
     lateinit var binding: SubjectPropertyAddressBinding
     private lateinit var predictAdapter: PlacePredictionAdapter
@@ -70,7 +71,7 @@ class SubPropertyAddressFragment : Fragment(), PlacePredictionAdapter.OnPlaceCli
         binding.btnSave.setOnClickListener{
             checkValidations()
         }
-
+        super.addListeners(binding.root)
         return binding.root
 
     }

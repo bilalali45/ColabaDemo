@@ -13,16 +13,17 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
+
 import com.rnsoft.colabademo.databinding.AppHeaderWithBackNavBinding
 import com.rnsoft.colabademo.databinding.LoanRefinanceInfoBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.HideSoftkeyboard
+
 import com.rnsoft.colabademo.utils.NumberTextFormat
 
 /**
  * Created by Anita Kiran on 9/6/2021.
  */
-class LoanRefinance : Fragment() {
+class LoanRefinance : BaseFragment() {
 
     private lateinit var binding: LoanRefinanceInfoBinding
     private lateinit var bindingToolbar: AppHeaderWithBackNavBinding
@@ -33,7 +34,7 @@ class LoanRefinance : Fragment() {
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = LoanRefinanceInfoBinding.inflate(inflater, container, false)
         bindingToolbar = binding.headerLoanPurchase
 
@@ -58,8 +59,8 @@ class LoanRefinance : Fragment() {
         binding.parentLayout.setOnClickListener{
             HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
         }
-
-       return binding.root
+        super.addListeners(binding.root)
+        return binding.root
 
     }
 

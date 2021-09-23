@@ -25,18 +25,19 @@ import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
+
 import com.rnsoft.colabademo.AppSetting
 import com.rnsoft.colabademo.CustomFocusListenerForEditText
 import com.rnsoft.colabademo.PlacePredictionAdapter
 import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.SubjectPropertyAddressBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.HideSoftkeyboard
+
 import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RealEstateAddressFragment : Fragment() , PlacePredictionAdapter.OnPlaceClickListener {
+class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlaceClickListener {
 
     lateinit var binding: SubjectPropertyAddressBinding
     private lateinit var predictAdapter: PlacePredictionAdapter
@@ -49,7 +50,7 @@ class RealEstateAddressFragment : Fragment() , PlacePredictionAdapter.OnPlaceCli
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = SubjectPropertyAddressBinding.inflate(inflater, container, false)
 
         val title = arguments?.getString(AppConstant.address).toString()
@@ -76,7 +77,7 @@ class RealEstateAddressFragment : Fragment() , PlacePredictionAdapter.OnPlaceCli
             //checkValidations()
             findNavController().popBackStack()
         }
-
+        super.addListeners(binding.root)
         return binding.root
 
     }

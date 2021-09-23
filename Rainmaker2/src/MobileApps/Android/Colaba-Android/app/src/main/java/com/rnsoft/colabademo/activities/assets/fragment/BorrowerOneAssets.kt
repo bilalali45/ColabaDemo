@@ -27,6 +27,8 @@ class BorrowerOneAssets : AssetBaseFragment() {
 
         setupLayout()
 
+        super.addListeners(binding.root)
+
         return binding.root
     }
 

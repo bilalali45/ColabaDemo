@@ -33,7 +33,7 @@ class DetailPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
         }
 
 
-        return Fragment()
+        return BaseFragment()
 
     }
 }

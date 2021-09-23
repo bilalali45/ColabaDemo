@@ -25,9 +25,10 @@ import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
+
 import com.rnsoft.colabademo.databinding.SubjectPropertyAddressBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.HideSoftkeyboard
+
 import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
@@ -35,7 +36,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
-class IncomeAddress : Fragment() , PlacePredictionAdapter.OnPlaceClickListener {
+class IncomeAddress : BaseFragment() , PlacePredictionAdapter.OnPlaceClickListener {
 
     lateinit var binding: SubjectPropertyAddressBinding
     private lateinit var predictAdapter: PlacePredictionAdapter
@@ -48,7 +49,7 @@ class IncomeAddress : Fragment() , PlacePredictionAdapter.OnPlaceClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = SubjectPropertyAddressBinding.inflate(inflater, container, false)
 
 
@@ -79,7 +80,7 @@ class IncomeAddress : Fragment() , PlacePredictionAdapter.OnPlaceClickListener {
             //checkValidations()
             findNavController().popBackStack()
         }
-
+        super.addListeners(binding.root)
         return binding.root
 
     }

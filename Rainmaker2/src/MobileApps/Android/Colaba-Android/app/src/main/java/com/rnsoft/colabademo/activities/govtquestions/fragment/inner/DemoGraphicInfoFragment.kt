@@ -10,7 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DemoGraphicInfoFragment:Fragment() {
+class DemoGraphicInfoFragment:BaseFragment() {
 
     //private var _binding: DemographicInfoLayoutBinding? = null
     //private val binding get() = _binding!!

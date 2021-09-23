@@ -11,16 +11,17 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+
 import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.ChildSupportLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.HideSoftkeyboard
+
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ChildSupportFragment:Fragment() {
+class ChildSupportFragment:BaseFragment() {
 
     private var _binding: ChildSupportLayoutBinding? = null
     private val binding get() = _binding!!
@@ -36,6 +37,7 @@ class ChildSupportFragment:Fragment() {
         _binding = ChildSupportLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+        super.addListeners(binding.root)
         return root
     }
 

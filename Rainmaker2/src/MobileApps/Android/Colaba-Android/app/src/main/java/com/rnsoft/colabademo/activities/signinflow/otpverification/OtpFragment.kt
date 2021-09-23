@@ -31,7 +31,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class OtpFragment: Fragment() {
+class OtpFragment: BaseFragment() {
 
     private lateinit var root:View
     @Inject
@@ -143,7 +143,7 @@ class OtpFragment: Fragment() {
 
         parentLayout.setOnClickListener { hideSoftKeyboard() }
 
-
+        super.addListeners(root as ViewGroup)
         return root
     }
 
