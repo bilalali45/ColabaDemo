@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.rnsoft.colabademo.LoanViewModel
 
-open class BaseFragment: Fragment() {
+open class LoanBaseFragment: Fragment() {
 
     companion object {
         var globalAssignToMe: Boolean = false

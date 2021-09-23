@@ -1,31 +1,25 @@
 package com.rnsoft.colabademo
 
 
-import android.R.color
-import android.graphics.BlendMode
-import android.graphics.BlendModeColorFilter
-import android.graphics.PorterDuff
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.annotation.Nullable
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.rnsoft.colabademo.activities.dashboard.fragements.home.BaseFragment
+import com.rnsoft.colabademo.activities.dashboard.fragements.home.LoanBaseFragment
 import com.rnsoft.colabademo.databinding.DialogFragmentModalBottomSheetBinding
 
 
 class CustomFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
-         lateinit var baseFragment:BaseFragment
+         lateinit var loanBaseFragment:LoanBaseFragment
 
-        fun newInstance(topFragment:BaseFragment): CustomFilterBottomSheetDialogFragment {
-            baseFragment    =   topFragment
+        fun newInstance(topFragmentLoan:LoanBaseFragment): CustomFilterBottomSheetDialogFragment {
+            loanBaseFragment    =   topFragmentLoan
             return CustomFilterBottomSheetDialogFragment()
         }
 
@@ -54,7 +48,7 @@ class CustomFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
         binding.borrowerIconReverse.setColorFilter(resources.getColor(R.color.grey_color_two , activity?.theme))
         binding.borrowerztoa.setTextColor(resources.getColor(R.color.grey_color_two , activity?.theme))
 
-        when(BaseFragment.globalOrderBy){
+        when(LoanBaseFragment.globalOrderBy){
             0->{
 
                 binding.pendingIcon.setColorFilter(resources.getColor(R.color.colaba_apptheme_blue, activity?.theme))
@@ -97,24 +91,24 @@ class CustomFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         binding.mostPendingLayout.setOnClickListener {
             dismiss()
-            baseFragment.setOrderId(orderBy = 1)
+            loanBaseFragment.setOrderId(orderBy = 1)
 
         }
 
         binding.mostRecentLayout.setOnClickListener {
             dismiss()
-            baseFragment.setOrderId(orderBy = 0)
+            loanBaseFragment.setOrderId(orderBy = 0)
             //loadLoanApplications(1)
         }
 
         binding.borrowerAToZLayout.setOnClickListener {
             dismiss()
-            baseFragment.setOrderId(orderBy = 2)
+            loanBaseFragment.setOrderId(orderBy = 2)
             //loadLoanApplications(2)
         }
         binding.borrowerZToALayout.setOnClickListener {
             dismiss()
-            baseFragment.setOrderId(orderBy = 3)
+            loanBaseFragment.setOrderId(orderBy = 3)
             //loadLoanApplications(3)
         }
 

@@ -54,8 +54,8 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var lblNonOccupying: UILabel!
     
     var isTBDProperty = true
-    var isMixedUseProperty = true
-    var isOccupying = true
+    var isMixedUseProperty: Bool?
+    var isOccupying: Bool?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,6 +132,15 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
         
         occupyingStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(occupyingStackViewTapped)))
         nonOccupyingStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nonOccupyingStackViewTapped)))
+        
+        btnYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+        lblYes.font = Theme.getRubikRegularFont(size: 14)
+        propertyDetailView.isHidden = true
+        propertyViewHeightConstraint.constant = 203
+        setScreenHeight()
+        
+        btnOccupying.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+        lblOccupying.font = Theme.getRubikRegularFont(size: 14)
     }
     
     func setScreenHeight(){
@@ -175,13 +184,16 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     }
     
     @objc func changeMixedUseProperty(){
-        btnYes.setImage(UIImage(named: isMixedUseProperty ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblYes.font = isMixedUseProperty ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-        btnNo.setImage(UIImage(named: isMixedUseProperty ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
-        lblNo.font = isMixedUseProperty ?  Theme.getRubikRegularFont(size: 15) : Theme.getRubikMediumFont(size: 15)
-        propertyDetailView.isHidden = !isMixedUseProperty
-        propertyViewHeightConstraint.constant = isMixedUseProperty ? 347 : 203
-        setScreenHeight()
+        if let mixUseProperty = isMixedUseProperty{
+            btnYes.setImage(UIImage(named: mixUseProperty ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+            lblYes.font = mixUseProperty ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+            btnNo.setImage(UIImage(named: mixUseProperty ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
+            lblNo.font = mixUseProperty ?  Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
+            propertyDetailView.isHidden = !mixUseProperty
+            propertyViewHeightConstraint.constant = mixUseProperty ? 347 : 203
+            setScreenHeight()
+        }
+        
     }
     
     @objc func propertyDetailViewTapped(){
@@ -200,10 +212,13 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     }
     
     @objc func changeOccupyingStatus(){
-        btnOccupying.setImage(UIImage(named: isOccupying ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblOccupying.font = isOccupying ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-        btnNonOccupying.setImage(UIImage(named: isOccupying ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
-        lblNonOccupying.font = isOccupying ?  Theme.getRubikRegularFont(size: 15) : Theme.getRubikMediumFont(size: 15)
+        if let occupying = isOccupying{
+            btnOccupying.setImage(UIImage(named: occupying ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+            lblOccupying.font = occupying ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 14)
+            btnNonOccupying.setImage(UIImage(named: occupying ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
+            lblNonOccupying.font = occupying ?  Theme.getRubikRegularFont(size: 15) : Theme.getRubikMediumFont(size: 14)
+        }
+        
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton){
