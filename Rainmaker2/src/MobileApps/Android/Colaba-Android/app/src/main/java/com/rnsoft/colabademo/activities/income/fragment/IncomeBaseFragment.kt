@@ -55,7 +55,7 @@ open class IncomeBaseFragment:BaseFragment() {
     }
 
     private val navigateToCurrentEmployment = View.OnClickListener { findNavController().navigate(R.id.navigation_income_current_employment) }
-    private val navigateToPreviousEmployment = View.OnClickListener { findNavController().navigate(R.id.navigation_income_prev_emplyoyment) }
+    private val navigateToPreviousEmployment = View.OnClickListener { findNavController().navigate(R.id.navigation_income_prev_employment) }
     private val navigateToSelfEmployment = View.OnClickListener { findNavController().navigate(R.id.navigation_selfEmployment) }
     private val navigateToBusinessIncome = View.OnClickListener { findNavController().navigate(R.id.navigation_business) }
     private val navigateToMilitaryPay = View.OnClickListener { findNavController().navigate(R.id.navigation_military_pay) }

@@ -358,7 +358,7 @@
             android:backgroundTint="@android:color/transparent"
             android:completionThreshold="1"
             android:cursorVisible="false"
-
+            android:inputType="none"
             android:focusable="true"
 
             android:focusableInTouchMode="true"
