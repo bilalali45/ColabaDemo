@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.OtherAssetsLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.HideSoftkeyboard
+import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 import javax.inject.Inject
@@ -104,6 +105,7 @@ class OtherAssetsFragment:Fragment() {
         addFocusOutListenerToFields()
 
         CustomMaterialFields.setDollarPrefix(binding.annualBaseLayout, requireActivity())
+        binding.annualBaseEditText.addTextChangedListener(NumberTextFormat(binding.annualBaseEditText))
 
         setUpEndIcon()
     }

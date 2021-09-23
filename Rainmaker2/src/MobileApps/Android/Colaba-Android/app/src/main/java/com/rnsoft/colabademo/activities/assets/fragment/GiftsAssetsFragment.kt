@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.GiftsAssetLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.HideSoftkeyboard
+import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
@@ -76,8 +77,11 @@ class GiftsAssetsFragment:Fragment() {
                 }
             }
         }
-
+        //set prefix and format
         CustomMaterialFields.setDollarPrefix(binding.annualBaseLayout, requireActivity())
+        binding.annualBaseEditText.addTextChangedListener(NumberTextFormat(binding.annualBaseEditText))
+
+
 
         binding.radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { _, checkedId ->
             when (checkedId) {

@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.ProceedFromTransLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.HideSoftkeyboard
+import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 import javax.inject.Inject
@@ -134,6 +135,7 @@ import javax.inject.Inject
             }
 
             CustomMaterialFields.setDollarPrefix(binding.annualBaseLayout, requireActivity())
+            binding.annualBaseEditText.addTextChangedListener(NumberTextFormat(binding.annualBaseEditText))
 
             binding.backButton.setOnClickListener {
                 findNavController().popBackStack()
