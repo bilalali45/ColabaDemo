@@ -6,13 +6,10 @@
 //
 
 import UIKit
-import Material
-import DropDown
 
 class RefinanceLoanInfoViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
-    
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblNavTitle: UILabel!
     @IBOutlet weak var seperatorView: UIView!
