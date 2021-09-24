@@ -6,13 +6,10 @@
 //
 
 import UIKit
-import Material
-import DropDown
 
 class RefinanceLoanInfoViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
-    
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblNavTitle: UILabel!
     @IBOutlet weak var seperatorView: UIView!
@@ -66,7 +63,7 @@ class RefinanceLoanInfoViewController: BaseViewController {
     
     func validate() -> Bool {
         var isValidate = txtfieldLoanStage.validate()
-        isValidate = txtfieldLoanAmount.validate()
+        isValidate = txtfieldLoanAmount.validate() && isValidate
         return isValidate
     }
 }

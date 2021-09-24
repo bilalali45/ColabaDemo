@@ -170,8 +170,19 @@ class NonActiveLoansFragment : LoanBaseFragment() , AdapterClickListener , LoanF
     }
 
     override fun navigateTo(position: Int) {
-        startActivity(Intent(requireActivity(), DetailActivity::class.java))
-        //requireActivity().finish()
+        if(nonActiveLoansList.size>=position) {
+            val borrowerDetailIntent = Intent(requireActivity(), DetailActivity::class.java)
+            val test = nonActiveLoansList[position]
+            Log.e("Before", test.loanApplicationId.toString())
+            //borrowerDetailIntent.putExtra(AppConstant.borrowerParcelObject, allLoansArrayList[position])
+            borrowerDetailIntent.putExtra(AppConstant.loanApplicationId, test.loanApplicationId)
+            borrowerDetailIntent.putExtra(AppConstant.loanPurpose, test.loanPurpose)
+            borrowerDetailIntent.putExtra(AppConstant.firstName, test.firstName)
+            borrowerDetailIntent.putExtra(AppConstant.lastName, test.lastName)
+            borrowerDetailIntent.putExtra(AppConstant.bPhoneNumber, test.cellNumber)
+            borrowerDetailIntent.putExtra(AppConstant.bEmail, test.email)
+            startActivity(borrowerDetailIntent)
+        }
     }
 
    override fun onStart() {

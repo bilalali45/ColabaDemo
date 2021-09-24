@@ -115,16 +115,18 @@
             style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="bottom"
+
             android:backgroundTint="@android:color/transparent"
             android:completionThreshold="1"
-            android:cursorVisible="false"
 
-            android:focusable="true"
+            android:cursorVisible="false"
+            android:focusable="false"
             android:inputType="none"
             android:focusableInTouchMode="true"
-            android:fontFamily="@font/rubik_regular"
             android:gravity="bottom"
+            android:layout_gravity="bottom"
+
+            android:fontFamily="@font/rubik_regular"
             android:paddingStart="0dp"
             android:paddingEnd="0dp"
             android:spinnerMode="dropdown"

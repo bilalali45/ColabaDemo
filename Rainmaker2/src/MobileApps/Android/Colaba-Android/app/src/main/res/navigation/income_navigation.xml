@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_income_tab">
+    app:startDestination="@+id/navigation_income_prev_employment">
 
    <fragment
         android:id="@+id/navigation_income_tab"
@@ -25,7 +25,7 @@
 
       <action
           android:id="@+id/action_prev_address"
-          app:destination="@id/navigation_income_prev_emplyoyment"
+          app:destination="@id/navigation_income_prev_employment"
           app:enterAnim="@anim/slide_up"
           app:exitAnim="@anim/slide_down"/>
 
@@ -95,7 +95,7 @@
    </fragment>
 
    <fragment
-       android:id="@+id/navigation_income_prev_emplyoyment"
+       android:id="@+id/navigation_income_prev_employment"
        android:name="com.rnsoft.colabademo.IncomePreviousEmployment"
        android:label="@string/income"
        tools:layout="@layout/income_previous_employment">

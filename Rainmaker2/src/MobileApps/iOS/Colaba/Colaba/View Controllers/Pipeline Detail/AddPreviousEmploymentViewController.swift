@@ -39,11 +39,18 @@ class AddPreviousEmploymentViewController: BaseViewController {
     @IBOutlet weak var txtfieldNetAnnualIncome: ColabaTextField!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
-    var hasOwnershipInterest = true
+    var hasOwnershipInterest: Bool?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextFields()
+        btnOwnershipYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+        lblOwnershipYes.font = Theme.getRubikRegularFont(size: 14)
+        txtfieldOwnershipPercentage.isHidden = true
+        ownershipViewHeightConstraint.constant = 126
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.setScreenHeight()
+        }
     }
         
     //MARK:- Methods and Actions
@@ -146,15 +153,19 @@ class AddPreviousEmploymentViewController: BaseViewController {
     }
     
     func changeOwnershipInterestStatus(){
-        btnOwnershipYes.setImage(UIImage(named: hasOwnershipInterest ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblOwnershipYes.font = hasOwnershipInterest ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-        btnOwnershipNo.setImage(UIImage(named: hasOwnershipInterest ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
-        lblOwnershipNo.font = hasOwnershipInterest ? Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
-        txtfieldOwnershipPercentage.isHidden = !hasOwnershipInterest
-        ownershipViewHeightConstraint.constant = hasOwnershipInterest ? 215 : 126
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.setScreenHeight()
+        
+        if let ownershipInterest = hasOwnershipInterest{
+            btnOwnershipYes.setImage(UIImage(named: ownershipInterest ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+            lblOwnershipYes.font = ownershipInterest ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+            btnOwnershipNo.setImage(UIImage(named: ownershipInterest ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
+            lblOwnershipNo.font = ownershipInterest ? Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
+            txtfieldOwnershipPercentage.isHidden = !ownershipInterest
+            ownershipViewHeightConstraint.constant = ownershipInterest ? 215 : 126
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.setScreenHeight()
+            }
         }
+        
     }
     
     func validate() -> Bool {
@@ -170,7 +181,7 @@ class AddPreviousEmploymentViewController: BaseViewController {
         else if (!txtfieldEndDate.validate()) {
             return false
         }
-        else if (hasOwnershipInterest && !txtfieldOwnershipPercentage.validate()){
+        else if (!txtfieldOwnershipPercentage.isHidden && !txtfieldOwnershipPercentage.validate()){
             return false
         }
         else if (!txtfieldNetAnnualIncome.validate()){
@@ -195,7 +206,7 @@ class AddPreviousEmploymentViewController: BaseViewController {
             txtfieldEmployerPhoneNumber.validate()
         }
         txtfieldNetAnnualIncome.validate()
-        if (hasOwnershipInterest){
+        if (!txtfieldOwnershipPercentage.isHidden){
             txtfieldOwnershipPercentage.validate()
         }
         

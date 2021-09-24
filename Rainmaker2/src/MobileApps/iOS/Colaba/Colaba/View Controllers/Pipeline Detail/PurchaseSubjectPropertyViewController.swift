@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import Material
-import DropDown
 
 class PurchaseSubjectPropertyViewController: BaseViewController {
     

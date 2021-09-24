@@ -551,17 +551,28 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
-        val newMonth = month + 1
+
+        /*
+
         //  datePicker.findViewById(Resources.getSystem().getIdentifier("day", "id", "android")).setVisibility(View.GONE);
 
-        val dpd = DatePickerDialog(requireActivity(), { view, year, monthOfYear, dayOfMonth -> bi.edDateOfBirth.setText("" + newMonth + "-" + dayOfMonth + "-" + year) },
+        val dpd = DatePickerDialog(requireActivity(), { view, selectedYear, monthOfYear, dayOfMonth -> bi.edDateOfBirth.setText("" + monthOfYear + "-" + dayOfMonth + "-" + selectedYear) },
             year,
             month,
             day
         )
-
+        dpd.datePicker.spinnersShown = true
+        dpd.getDatePicker().setCalendarViewShown(false);
         dpd.show()
+        */
 
+        // New Style Calendar Added....
+        val datePickerDialog = DatePickerDialog(
+            requireActivity(), R.style.MySpinnerDatePickerStyle,
+            { view, selectedYear, monthOfYear, dayOfMonth -> bi.edDateOfBirth.setText("" + (monthOfYear+1) + "-" + dayOfMonth + "-" + selectedYear) }
+            , year, month, day
+        )
+        datePickerDialog.show()
     }
 
     override fun onResume() {

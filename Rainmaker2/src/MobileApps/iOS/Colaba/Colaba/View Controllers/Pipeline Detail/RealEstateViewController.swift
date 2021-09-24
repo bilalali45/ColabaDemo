@@ -6,12 +6,10 @@
 //
 
 import UIKit
-import DropDown
 
 class RealEstateViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
-    
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var lblUsername: UILabel!
     @IBOutlet weak var btnDelete: UIButton!
@@ -22,17 +20,11 @@ class RealEstateViewController: BaseViewController {
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var addAddressView: UIView!
     @IBOutlet weak var txtfieldPropertyType: ColabaTextField!
-    @IBOutlet weak var btnPropertyTypeDropDown: UIButton!
-    @IBOutlet weak var propertyTypeDropDownAnchorView: UIView!
     @IBOutlet weak var txtfieldOccupancyType: ColabaTextField!
-    @IBOutlet weak var btnOccupancyTypeDropDown: UIButton!
-    @IBOutlet weak var occupancyTypeDropDownAnchorView: UIView!
     @IBOutlet weak var txtfieldCurrentRentalIncome: ColabaTextField!
     @IBOutlet weak var txtfieldRentalIncomeTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var txtfieldRentalIncomeHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var txtfieldPropertyStatus: ColabaTextField!
-    @IBOutlet weak var btnPropertyStatusDropDown: UIButton!
-    @IBOutlet weak var propertyStatusDropDownAnchorView: UIView!
     @IBOutlet weak var txtfieldHomeOwnerAssociationDues: ColabaTextField!
     @IBOutlet weak var txtfieldPropertyValue: ColabaTextField!
     @IBOutlet weak var txtfieldAnnualPropertyTax: ColabaTextField!
@@ -62,9 +54,6 @@ class RealEstateViewController: BaseViewController {
     @IBOutlet weak var lblSecondMortgageBalance: UILabel!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
-    let propertyTypeDropDown = DropDown()
-    let occupancyTypeDropDown = DropDown()
-    let propertyStatusDropDown = DropDown()
     var isFirstMortgage = false
     var isSecondMortgage = false
     
@@ -91,18 +80,14 @@ class RealEstateViewController: BaseViewController {
         txtfieldPropertyType.setTextField(placeholder: "Property Type")
         txtfieldPropertyType.setDelegates(controller: self)
         txtfieldPropertyType.setValidation(validationType: .required)
-        txtfieldPropertyType.setTextField(keyboardType: .asciiCapable)
-        txtfieldPropertyType.setIsValidateOnEndEditing(validate: true)
-        //txtfieldPropertyType.type = .dropdown
-        txtfieldPropertyType.addTarget(self, action: #selector(txtfieldPropertyTypeStartEditing), for: .editingDidBegin)
+        txtfieldPropertyType.type = .dropdown
+        txtfieldPropertyType.setDropDownDataSource(kPropertyTypeArray)
         
         txtfieldOccupancyType.setTextField(placeholder: "Occupancy Type")
         txtfieldOccupancyType.setDelegates(controller: self)
         txtfieldOccupancyType.setValidation(validationType: .required)
-        txtfieldOccupancyType.setTextField(keyboardType: .asciiCapable)
-        txtfieldOccupancyType.setIsValidateOnEndEditing(validate: true)
-        //txtfieldOccupancyType.type = .dropdown
-        txtfieldOccupancyType.addTarget(self, action: #selector(txtfieldOccupancyTypeStartEditing), for: .editingDidBegin)
+        txtfieldOccupancyType.type = .dropdown
+        txtfieldOccupancyType.setDropDownDataSource(kOccupancyTypeArray)
         
         txtfieldCurrentRentalIncome.setTextField(placeholder: "Current Rental Income")
         txtfieldCurrentRentalIncome.setDelegates(controller: self)
@@ -114,10 +99,8 @@ class RealEstateViewController: BaseViewController {
         txtfieldPropertyStatus.setTextField(placeholder: "Property Status")
         txtfieldPropertyStatus.setDelegates(controller: self)
         txtfieldPropertyStatus.setValidation(validationType: .required)
-        txtfieldPropertyStatus.setTextField(keyboardType: .asciiCapable)
-        txtfieldPropertyStatus.setIsValidateOnEndEditing(validate: true)
-        //txtfieldPropertyStatus.type = .dropdown
-        txtfieldPropertyStatus.addTarget(self, action: #selector(txtfieldPropertyStatusStartEditing), for: .editingDidBegin)
+        txtfieldPropertyStatus.type = .dropdown
+        txtfieldPropertyStatus.setDropDownDataSource(kPropertyStatusArray)
         
         txtfieldHomeOwnerAssociationDues.setTextField(placeholder: "Homeowner’s Association Dues")
         txtfieldHomeOwnerAssociationDues.setDelegates(controller: self)
@@ -170,65 +153,6 @@ class RealEstateViewController: BaseViewController {
         secondMortgageView.dropShadowToCollectionViewCell()
         secondMortgageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(secondMortgageViewTapped)))
         
-        propertyTypeDropDown.dismissMode = .onTap
-        propertyTypeDropDown.anchorView = propertyTypeDropDownAnchorView
-        propertyTypeDropDown.dataSource = kPropertyTypeArray
-        propertyTypeDropDown.cancelAction = .some({
-            self.btnPropertyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            self.txtfieldPropertyType.dividerColor = Theme.getSeparatorNormalColor()
-            self.txtfieldPropertyType.resignFirstResponder()
-        })
-        propertyTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-            btnPropertyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            txtfieldPropertyType.dividerColor = Theme.getSeparatorNormalColor()
-            txtfieldPropertyType.placeholderLabel.textColor = Theme.getAppGreyColor()
-            txtfieldPropertyType.text = item
-            txtfieldPropertyType.resignFirstResponder()
-            txtfieldPropertyType.detail = ""
-            propertyTypeDropDown.hide()
-            showHideRentalIncome()
-        }
-        
-        occupancyTypeDropDown.dismissMode = .onTap
-        occupancyTypeDropDown.anchorView = occupancyTypeDropDownAnchorView
-        occupancyTypeDropDown.dataSource = kOccupancyTypeArray
-        occupancyTypeDropDown.cancelAction = .some({
-            self.btnOccupancyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            self.txtfieldOccupancyType.dividerColor = Theme.getSeparatorNormalColor()
-            self.txtfieldOccupancyType.resignFirstResponder()
-        })
-        occupancyTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-            btnOccupancyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            txtfieldOccupancyType.dividerColor = Theme.getSeparatorNormalColor()
-            txtfieldOccupancyType.placeholderLabel.textColor = Theme.getAppGreyColor()
-            txtfieldOccupancyType.text = item
-            txtfieldOccupancyType.resignFirstResponder()
-            txtfieldOccupancyType.detail = ""
-            occupancyTypeDropDown.hide()
-            showHideRentalIncome()
-        }
-        
-        propertyStatusDropDown.dismissMode = .onTap
-        propertyStatusDropDown.anchorView = propertyStatusDropDownAnchorView
-        propertyStatusDropDown.dataSource = kPropertyStatusArray
-        propertyStatusDropDown.cancelAction = .some({
-            self.btnPropertyStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            self.txtfieldPropertyStatus.dividerColor = Theme.getSeparatorNormalColor()
-            self.txtfieldPropertyStatus.resignFirstResponder()
-        })
-        propertyStatusDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-            btnPropertyStatusDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            txtfieldPropertyStatus.dividerColor = Theme.getSeparatorNormalColor()
-            txtfieldPropertyStatus.placeholderLabel.textColor = Theme.getAppGreyColor()
-            txtfieldPropertyStatus.text = item
-            txtfieldPropertyStatus.resignFirstResponder()
-            txtfieldPropertyStatus.detail = ""
-            propertyStatusDropDown.hide()
-            
-        }
-        
-
-        
     }
     
     func setScreenHeight(){
@@ -248,27 +172,6 @@ class RealEstateViewController: BaseViewController {
         vc.topTitle = "Subject Property Address"
         vc.searchTextFieldPlaceholder = "Search Property Address"
         self.pushToVC(vc: vc)
-    }
-    
-    @objc func txtfieldPropertyTypeStartEditing(){
-        txtfieldPropertyType.resignFirstResponder()
-        txtfieldPropertyType.dividerColor = Theme.getButtonBlueColor()
-        btnPropertyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-        propertyTypeDropDown.show()
-    }
-
-    @objc func txtfieldOccupancyTypeStartEditing(){
-        txtfieldOccupancyType.resignFirstResponder()
-        txtfieldOccupancyType.dividerColor = Theme.getButtonBlueColor()
-        btnOccupancyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-        occupancyTypeDropDown.show()
-    }
-    
-    @objc func txtfieldPropertyStatusStartEditing(){
-        txtfieldPropertyStatus.resignFirstResponder()
-        txtfieldPropertyStatus.dividerColor = Theme.getButtonBlueColor()
-        btnPropertyStatusDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-        propertyStatusDropDown.show()
     }
     
     @objc func showHideRentalIncome(){
@@ -375,39 +278,6 @@ class RealEstateViewController: BaseViewController {
         }
     }
     
-    func validate() -> Bool {
-
-        if (!txtfieldPropertyType.validate()) {
-            return false
-        }
-        if (!txtfieldOccupancyType.validate()) {
-            return false
-        }
-        if (!txtfieldCurrentRentalIncome.validate() && !txtfieldCurrentRentalIncome.isHidden){
-            return false
-        }
-        if (!txtfieldPropertyStatus.validate()){
-            return false
-        }
-        if (!txtfieldHomeOwnerAssociationDues.validate()){
-            return false
-        }
-        if (!txtfieldPropertyValue.validate()){
-            return false
-        }
-        if (!txtfieldAnnualPropertyTax.validate()){
-            return false
-        }
-        if (!txtfieldAnnualHomeOwnerInsurance.validate()){
-            return false
-        }
-        if (!txtfieldAnnualFloodInsurance.validate()){
-            return false
-        }
-
-        return true
-    }
-    
     @IBAction func btnBackTapped(_ sender: UIButton) {
         self.dismissVC()
     }
@@ -420,22 +290,31 @@ class RealEstateViewController: BaseViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        
-        txtfieldPropertyType.validate()
-        txtfieldOccupancyType.validate()
-        if (!txtfieldCurrentRentalIncome.isHidden){
-            txtfieldCurrentRentalIncome.validate()
-        }
-        txtfieldPropertyStatus.validate()
-        txtfieldHomeOwnerAssociationDues.validate()
-        txtfieldPropertyValue.validate()
-        txtfieldAnnualPropertyTax.validate()
-        txtfieldAnnualHomeOwnerInsurance.validate()
-        txtfieldAnnualFloodInsurance.validate()
-        
         if validate(){
             self.dismissVC()
         }
     }
     
+    func validate() -> Bool {
+        var isValidate = txtfieldPropertyType.validate()
+        isValidate = txtfieldOccupancyType.validate() && isValidate
+        isValidate = txtfieldPropertyStatus.validate() && isValidate
+        if !txtfieldCurrentRentalIncome.isHidden {
+            isValidate = txtfieldCurrentRentalIncome.validate() && isValidate
+        }
+        isValidate = txtfieldHomeOwnerAssociationDues.validate() && isValidate
+        isValidate = txtfieldPropertyValue.validate() && isValidate
+        isValidate = txtfieldAnnualPropertyTax.validate() && isValidate
+        isValidate = txtfieldAnnualHomeOwnerInsurance.validate() && isValidate
+        isValidate = txtfieldAnnualFloodInsurance.validate() && isValidate
+        return isValidate
+    }
+}
+
+extension RealEstateViewController : ColabaTextFieldDelegate {
+    func selectedOption(option: String, atIndex: Int, textField: ColabaTextField) {
+        if textField == txtfieldPropertyType || textField == txtfieldOccupancyType {
+            showHideRentalIncome()
+        }
+    }
 }
