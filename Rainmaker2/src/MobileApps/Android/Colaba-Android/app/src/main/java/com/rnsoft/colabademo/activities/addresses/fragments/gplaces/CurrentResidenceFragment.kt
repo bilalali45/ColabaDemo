@@ -39,6 +39,7 @@ import android.location.Geocoder
 import java.io.IOException
 import java.util.*
 import com.rnsoft.colabademo.databinding.TempResidenceLayoutBinding
+import com.rnsoft.colabademo.utils.CustomMaterialFields
 import kotlinx.android.synthetic.main.temp_residence_layout.*
 
 
@@ -70,7 +71,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         }
         binding.moveInEditText.showSoftInputOnFocus = false
 
-        binding.topSearchAutoTextView.onFocusChangeListener = object : View.OnFocusChangeListener {
+       /* binding.topSearchAutoTextView.onFocusChangeListener = object : View.OnFocusChangeListener {
             override fun onFocusChange(p0: View?, p1: Boolean) {
                 if (p1) {
                     binding.topSearchTextInputLine.minimumHeight = 1
@@ -91,8 +92,26 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                     binding.topSearchAutoTextView.clearFocus()
                 }
             }
-        }
+        } */
 
+        binding.topSearchAutoTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
+            if (hasFocus) {
+                binding.topSearchTextInputLine.layoutParams.height = 1
+                binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.colaba_apptheme_blue, requireActivity().theme))
+                binding.topSearchAutoTextView.addTextChangedListener(placeTextWatcher)
+            } else {
+                binding.topSearchAutoTextView.removeTextChangedListener(placeTextWatcher)
+                binding.topSearchTextInputLine.minimumHeight = 0.5.toInt()
+                binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
+
+                val search: String = binding.topSearchAutoTextView.text.toString()
+                if (search.length == 0) {
+                    binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.grey_color_three, requireActivity().theme))
+                } else {
+                    binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.grey_color_two, requireActivity().theme))
+                }
+            }
+        }
 
         binding.cityEditText.setOnFocusChangeListener(
             CustomFocusListenerForEditText(
@@ -223,7 +242,6 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
 
 
-
         binding.addAddressLayout.setOnClickListener {
             findNavController().navigate(R.id.navigation_previous_address)
         }
@@ -248,7 +266,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         }
 
         binding.saveCurrentAddress.setOnClickListener {
-            findNavController().popBackStack()
+           checkValidations()
         }
 
         binding.currentResidenceParentLayout.setOnClickListener{
@@ -266,8 +284,33 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
     }
 
+    private fun checkValidations() {
+        val searchBar: String = binding.topSearchAutoTextView.text.toString()
+        if (searchBar.isEmpty() || searchBar.length == 0) {
+            setError()
+        }
+        if (searchBar.isNotEmpty() || searchBar.length > 0) {
+            removeError()
+            findNavController().popBackStack()
+        }
+    }
 
+     private fun setError(){
+        //binding.tvError.visibility = View.VISIBLE
+        binding.topSearchTextInputLine.layoutParams.height = 1
+        binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.colaba_red_color, requireActivity().theme))
+    }
 
+    private fun removeError() {
+        //binding.tvError.visibility = View.GONE
+        //binding.searchSeparator.layoutParams.height= 0.5.toInt()
+        binding.topSearchTextInputLine.setBackgroundColor(
+            resources.getColor(
+                R.color.grey_color_four,
+                requireActivity().theme
+            )
+        )
+    }
     // Create a RectangularBounds object.
     private val bounds = RectangularBounds.newInstance(
         LatLng(24.7433195, -124.7844079),
@@ -310,20 +353,17 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         //binding.topSearchAutoTextView.setAdapter(autoCompleteAdapter)
         binding.topSearchAutoTextView.dropDownHeight = 0
 
-        binding.topSearchAutoTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
+        /*binding.topSearchAutoTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus)
                 binding.topSearchAutoTextView.addTextChangedListener(placeTextWatcher)
             else
                 binding.topSearchAutoTextView.removeTextChangedListener(placeTextWatcher)
-        }
+        } */
 
 
         binding.topSearchAutoTextView.setOnClickListener {
             //binding.topSearchAutoTextView.addTextChangedListener(placeTextWatcher)
         }
-
-
-
 
     }
 

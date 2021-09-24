@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.app.ActionBar
 import android.content.res.ColorStateList
 import android.location.Address
 import android.location.Geocoder
@@ -46,7 +47,6 @@ class IncomeAddress : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListene
     private lateinit var placesClient: PlacesClient
     private var predicationList: ArrayList<String> = ArrayList()
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -65,6 +65,12 @@ class IncomeAddress : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListene
         setStateAndCountyDropDown()
         setUpCompleteViewForPlaces()
         initializeUSAstates()
+
+
+
+        val params: ViewGroup.LayoutParams = binding.searchSeparator.getLayoutParams()
+        params.height = 1
+        binding.searchSeparator.layoutParams = params
 
         binding.addressParentLayout.setOnClickListener {
             HideSoftkeyboard.hide(requireActivity(),binding.addressParentLayout)
@@ -87,6 +93,26 @@ class IncomeAddress : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListene
 
     private fun setInputFields() {
         // set lable focus
+        binding.tvSearch.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
+            if (hasFocus) {
+                //binding.searchSeparator.minimumHeight = 2
+                binding.searchSeparator.layoutParams.height = 1
+                binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_apptheme_blue, requireActivity().theme))
+                binding.tvSearch.addTextChangedListener(placeTextWatcher)
+            } else {
+                binding.tvSearch.removeTextChangedListener(placeTextWatcher)
+                binding.searchSeparator.minimumHeight = 0.5.toInt()
+                binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
+
+                val search: String = binding.tvSearch.text.toString()
+                if (search.length == 0) {
+                    CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_three, requireActivity())
+                } else {
+                    CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_two, requireActivity())
+                }
+            }
+        }
+
         binding.edUnitAtpNo.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edUnitAtpNo,binding.layoutUnitAptNo, requireContext()))
         binding.edStreetAddress.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edStreetAddress, binding.layoutStreetAddress, requireContext()))
         binding.edCity.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCity, binding.layoutCity, requireContext()))
@@ -99,14 +125,26 @@ class IncomeAddress : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListene
         CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.edZipcode, binding.layoutZipCode)
     }
 
+    private fun setError(){
+        binding.tvError.visibility = View.VISIBLE
+        binding.searchSeparator.layoutParams.height = 1
+        binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_red_color, requireActivity().theme))
+    }
+
+    private fun removeError(){
+        binding.tvError.visibility = View.GONE
+        //binding.searchSeparator.layoutParams.height= 0.5.toInt()
+        binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
+    }
+
     private fun checkValidations() {
         val searchBar: String = binding.tvSearch.text.toString()
         if (searchBar.isEmpty() || searchBar.length == 0) {
-            binding.tvError.visibility = View.VISIBLE
+            setError()
         }
         if (searchBar.isNotEmpty() || searchBar.length > 0) {
-            CustomMaterialFields.clearError(binding.layoutSearchAddress, requireActivity())
-            binding.tvError.visibility = View.GONE
+            removeError()
+            findNavController().popBackStack()
         }
     }
 
@@ -188,26 +226,8 @@ class IncomeAddress : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListene
 
 
         binding.tvSearch.dropDownHeight = 0
-        binding.tvSearch.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
-            if (hasFocus) {
-                binding.searchSeparator.minimumHeight = 2
-                binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_apptheme_blue, requireActivity().theme))
-                binding.tvSearch.addTextChangedListener(placeTextWatcher)
-            } else {
-                binding.tvSearch.removeTextChangedListener(placeTextWatcher)
-                binding.searchSeparator.minimumHeight = 0.5.toInt()
-                binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
 
-                val search: String = binding.tvSearch.text.toString()
-                if (search.length == 0) {
-                    CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_three, requireActivity())
-                } else {
-                    CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_two, requireActivity())
-                }
-            }
-        }
-
-        binding.tvSearch.setOnClickListener { }
+        //binding.tvSearch.setOnClickListener { }
     }
 
     private val placeTextWatcher = (object : TextWatcher {
@@ -217,7 +237,7 @@ class IncomeAddress : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListene
             val str: String = binding.tvSearch.text.toString()
             if (str.length >= 3) {
                 if(binding.tvError.isVisible)
-                    binding.tvError.visibility = View.GONE
+                   removeError()
                 searchForGooglePlaces(str)
             } else
                 if (str.length in 0..2) {

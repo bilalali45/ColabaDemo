@@ -383,6 +383,7 @@
     <string name="mixed_use_property">Mixed Use Property Property</string>
     <string name="first_mortgage">First Mortgage</string>
     <string name="sec_mortgage">Second Mortgage</string>
+    <string name="first_mortgage_payment">First Mortgage Payment</string>
     <string name="sec_mortgage_payment">Second Mortgage Payment</string>
     <string name="credit_limit_switch">Home Equity Line of Credit (HELOC)</string>
     <string name="yes">Yes</string>
@@ -452,6 +453,7 @@
     <string name="mortgage_balance">Mortgage Balance</string>
     <string name="mortgage_payment">Mortgage Payment</string>
     <string name="credit_limit">Credit Limit</string>
+    <string name="unpaid_first_mortgage_bal">Unpaid First Mortgage Balance</string>
     <string name="unpaid_sec_mortgage_bal">Unpaid Second Mortgage Balance</string>
     <string name="sub_property_sec_mortgage_ques1">Will this mortgage be combined with the new first mortgage?</string>
     <string name="sub_property_sec_mortgage_ques2">Was this mortgage taken when the property was purchased?</string>

@@ -88,9 +88,5 @@ class IncomeTabFragment : BaseFragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
-
-
 }
 

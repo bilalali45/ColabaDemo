@@ -3,7 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_income_prev_employment">
+    app:startDestination="@+id/navigation_income_tab">
+
+<!--   <fragment-->
+<!--       android:id="@+id/navigation_base_fragment"-->
+<!--       android:name="com.rnsoft.colabademo.BorrowerTwoIncome"-->
+<!--       android:label="@string/income"-->
+<!--       tools:layout="@layout/income_fragment_layout" />-->
+
 
    <fragment
         android:id="@+id/navigation_income_tab"

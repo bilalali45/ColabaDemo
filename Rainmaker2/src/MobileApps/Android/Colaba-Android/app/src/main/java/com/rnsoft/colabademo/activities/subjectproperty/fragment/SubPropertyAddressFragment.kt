@@ -13,7 +13,9 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
@@ -80,43 +82,28 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
 
     private fun setInputFields(){
 
-        /*binding.tvSearch.onFocusChangeListener = object : View.OnFocusChangeListener {
-            override fun onFocusChange(p0: View?, p1: Boolean) {
-                if (p1) {
-                    Log.e("has Focus", "true")
-                    binding.searchSeparator.minimumHeight = 1
-                    binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_primary_color, requireActivity().theme))
+        // set lable focus
 
-                } else {
-                    Log.e("has Focus", "removed")
-
-                    binding.searchSeparator.minimumHeight = 1
-                    binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
-                    binding.searchSeparator.clearFocus()
-
-                    if(binding.tvSearch.text.toString().isNotEmpty()){
-                        CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_two, requireContext())
-                    }
-                }
-           }
-        }
-
-        binding.layoutSearchAddress.setOnFocusChangeListener { view, hasFocus ->
+        binding.tvSearch.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
-                CustomMaterialFields.setColor(binding.layoutSearchAddress,R.color.grey_color_two, requireActivity())
+                //binding.searchSeparator.minimumHeight = 2
+                binding.searchSeparator.layoutParams.height = 1
+                binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_apptheme_blue, requireActivity().theme))
+                binding.tvSearch.addTextChangedListener(placeTextWatcher)
             } else {
+                binding.tvSearch.removeTextChangedListener(placeTextWatcher)
+                binding.searchSeparator.minimumHeight = 0.5.toInt()
+                binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
+
                 val search: String = binding.tvSearch.text.toString()
                 if (search.length == 0) {
-                    CustomMaterialFields.setColor(binding.layoutSearchAddress,R.color.grey_color_three, requireActivity())
+                    CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_three, requireActivity())
                 } else {
-                    CustomMaterialFields.setColor(binding.layoutSearchAddress,R.color.grey_color_two, requireActivity())
-                    CustomMaterialFields.clearError(binding.layoutSearchAddress, requireActivity())
+                    CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_two, requireActivity())
                 }
             }
-        } */
+        }
 
-
-        // set lable focus
         binding.edUnitAtpNo.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edUnitAtpNo, binding.layoutUnitAptNo, requireContext()))
         binding.edStreetAddress.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edStreetAddress, binding.layoutStreetAddress , requireContext()))
         binding.edCity.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCity, binding.layoutCity, requireContext()))
@@ -131,23 +118,29 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
 
     }
 
+    private fun setError(){
+        binding.tvError.visibility = View.VISIBLE
+        binding.searchSeparator.layoutParams.height = 1
+        binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_red_color, requireActivity().theme))
+    }
+
+    private fun removeError(){
+        binding.tvError.visibility = View.GONE
+        //binding.searchSeparator.layoutParams.height= 0.5.toInt()
+        binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
+    }
+
     private fun checkValidations() {
-
         val searchBar: String = binding.tvSearch.text.toString()
-//        val purchasePrice: String = binding.edPurchasePrice.text.toString()
-//        val loanAmount: String = binding.edLoanAmount.text.toString()
-//        val downPayment: String = binding.edDownPayment.text.toString()
-//        val percentage: String = binding.edPercent.text.toString()
-//        val closingDate: String = binding.edClosingDate.text.toString()
-
-        if(searchBar.isEmpty() || searchBar.length == 0) {
-                CustomMaterialFields.setError(binding.layoutSearchAddress, getString(R.string.error_field_required),requireActivity())
+        if (searchBar.isEmpty() || searchBar.length == 0) {
+            setError()
         }
         if (searchBar.isNotEmpty() || searchBar.length > 0) {
-            CustomMaterialFields.clearError(binding.layoutSearchAddress,requireActivity())
+            removeError()
+            findNavController().popBackStack()
         }
-
     }
+
     private fun setStateAndCountyDropDown(){
 
         val countryAdapter =
@@ -231,6 +224,8 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         override fun afterTextChanged(s: Editable) {
             val str: String = binding.tvSearch.text.toString()
             if (str.length >= 3) {
+                if(binding.tvError.isVisible)
+                    removeError()
                 searchForGooglePlaces(str)
             } else
                 if (str.length in 0..2) {
@@ -285,7 +280,6 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         //Log.e("predicationList", predicationList.size.toString())
 
     }
-
 
     override fun onPlaceClicked(place: AutocompletePrediction) {
         //Log.e("which-place", "desc = " + place.getFullText(null).toString())
@@ -405,7 +399,5 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         map.put("WI", "Wisconsin")
         map.put("WY", "Wyoming")
     }
-
-
 
 }
