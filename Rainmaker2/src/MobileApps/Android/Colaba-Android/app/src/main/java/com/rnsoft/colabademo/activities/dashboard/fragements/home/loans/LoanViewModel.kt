@@ -53,15 +53,14 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                 pageNumber = pageNumber, pageSize = pageSize, loanFilter = loanFilter,
                 orderBy = orderBy, assignedToMe = assignedToMe
             )
-
-            if (result is Result.Success) {
-                withContext(Dispatchers.Main) {
-                    _allLoansArrayList.value = result.data
-                }
-            } else if (result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
-                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
-            else if (result is Result.Error)
-                EventBus.getDefault().post(WebServiceErrorEvent(errorResult = result ))
+            withContext(Dispatchers.Main) {
+                if (result is Result.Success) {
+                        _allLoansArrayList.value = result.data
+                } else if (result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (result is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(errorResult = result ))
+            }
         }
     }
 
@@ -76,15 +75,14 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                 pageNumber = pageNumber, pageSize = pageSize, loanFilter = loanFilter,
                 orderBy = orderBy, assignedToMe = assignedToMe)
 
-            if (result is Result.Success) {
-                withContext(Dispatchers.Main) {
+            withContext(Dispatchers.Main) {
+                if (result is Result.Success)
                     _activeLoansArrayList.value = result.data
-                }
+                else if (result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (result is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(errorResult = result))
             }
-            else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
-                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
-            else if (result is Result.Error)
-                EventBus.getDefault().post(WebServiceErrorEvent(errorResult = result ))
         }
     }
 
@@ -99,15 +97,14 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
                 pageNumber = pageNumber, pageSize = pageSize, loanFilter = loanFilter,
                 orderBy = orderBy, assignedToMe = assignedToMe)
 
-            if (result is Result.Success) {
-                withContext(Dispatchers.Main) {
+            withContext(Dispatchers.Main) {
+                if (result is Result.Success)
                     _nonActiveLoansArrayList.value = result.data
-                }
+                else if (result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (result is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(errorResult = result))
             }
-            else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
-                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
-            else if (result is Result.Error)
-                EventBus.getDefault().post(WebServiceErrorEvent(errorResult = result ))
         }
     }
 
