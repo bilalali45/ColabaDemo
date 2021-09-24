@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.income.fragment.EventAddEmployment
 import com.rnsoft.colabademo.databinding.*
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
 import kotlinx.android.synthetic.main.assets_middle_cell.view.*
@@ -17,6 +18,9 @@ import kotlinx.android.synthetic.main.income_middle_cell.view.*
 import kotlinx.android.synthetic.main.income_middle_cell.view.content_amount
 import kotlinx.android.synthetic.main.income_middle_cell.view.content_desc
 import kotlinx.android.synthetic.main.income_middle_cell.view.content_title
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class BorrowerTwoIncome : IncomeBaseFragment() {
 
@@ -128,6 +132,26 @@ class BorrowerTwoIncome : IncomeBaseFragment() {
             middleCell.visibility = View.GONE
             bottomCell.visibility = View.GONE
              */
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onAddEmploymentEvent(event: EventAddEmployment) {
+        if(event.boolean) {
+            findNavController().navigate(R.id.action_current_employement)
+        }
+        else {
+            findNavController().navigate(R.id.action_prev_employment)
         }
     }
 
