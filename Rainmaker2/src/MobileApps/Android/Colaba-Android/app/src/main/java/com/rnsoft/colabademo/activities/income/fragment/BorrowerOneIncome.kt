@@ -155,10 +155,10 @@ class BorrowerOneIncome : IncomeBaseFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onAddEmploymentEvent(event: EventAddEmployment) {
         if(event.boolean) {
-            findNavController().navigate(R.id.navigation_income_current_employment)
+            findNavController().navigate(R.id.action_current_employement)
         }
         else {
-            findNavController().navigate(R.id.navigation_income_prev_employment)
+            findNavController().navigate(R.id.action_prev_employment)
         }
     }
 

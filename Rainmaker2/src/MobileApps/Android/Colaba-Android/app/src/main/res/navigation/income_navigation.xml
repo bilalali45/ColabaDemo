@@ -5,63 +5,50 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_income_tab">
 
-<!--   <fragment-->
-<!--       android:id="@+id/navigation_base_fragment"-->
-<!--       android:name="com.rnsoft.colabademo.BorrowerTwoIncome"-->
-<!--       android:label="@string/income"-->
-<!--       tools:layout="@layout/income_fragment_layout" />-->
-
-
    <fragment
         android:id="@+id/navigation_income_tab"
         android:name="com.rnsoft.colabademo.IncomeTabFragment"
         android:label="@string/income"
-        tools:layout="@layout/income_fragment_layout" />
-
-   <fragment
-       android:id="@+id/navigation_b_income_one"
-       android:name="com.rnsoft.colabademo.BorrowerOneIncome"
-       android:label="@string/income"
-       tools:layout="@layout/income_fragment_layout">
+        tools:layout="@layout/income_fragment_layout">
 
       <action
-          android:id="@+id/action_current_address"
-          app:destination="@id/navigation_current_employment_address"
+          android:id="@+id/action_current_employement"
+          app:destination="@id/navigation_income_current_employment"
           app:enterAnim="@anim/slide_up"
           app:exitAnim="@anim/slide_down"/>
 
       <action
-          android:id="@+id/action_prev_address"
+          android:id="@+id/action_prev_employment"
           app:destination="@id/navigation_income_prev_employment"
           app:enterAnim="@anim/slide_up"
           app:exitAnim="@anim/slide_down"/>
 
       <action
-          android:id="@+id/action_selfEmployment"
+          android:id="@+id/action_self_employment"
           app:destination="@id/navigation_selfEmployment"
           app:enterAnim="@anim/slide_up"
           app:exitAnim="@anim/slide_down"/>
 
       <action
-          android:id="@+id/action_business"
+          android:id="@+id/action_income_business"
           app:destination="@id/navigation_business"
           app:enterAnim="@anim/slide_up"
           app:exitAnim="@anim/slide_down"/>
 
       <action
-          android:id="@+id/action_militaryPay"
+          android:id="@+id/action_income_military_pay"
           app:destination="@id/navigation_military_pay"
           app:enterAnim="@anim/slide_up"
           app:exitAnim="@anim/slide_down"/>
 
       <action
-          android:id="@+id/action_retirement"
+          android:id="@+id/action_income_retirement"
           app:destination="@id/navigation_retirement"
           app:enterAnim="@anim/slide_up"
           app:exitAnim="@anim/slide_down"/>
 
       <action
-          android:id="@+id/action_other"
+          android:id="@+id/action_income_other"
           app:destination="@id/navigation_other"
           app:enterAnim="@anim/slide_up"
           app:exitAnim="@anim/slide_down"/>
@@ -69,11 +56,18 @@
    </fragment>
 
    <fragment
+       android:id="@+id/navigation_b_income_one"
+       android:name="com.rnsoft.colabademo.BorrowerOneIncome"
+       android:label="@string/income"
+       tools:layout="@layout/income_fragment_layout">
+   </fragment>
+
+   <fragment
        android:id="@+id/navigation_b_income_two"
        android:name="com.rnsoft.colabademo.BorrowerTwoIncome"
        android:label="@string/income"
-       tools:layout="@layout/income_fragment_layout" />
-
+       tools:layout="@layout/income_fragment_layout" >
+   </fragment>
 
    <fragment
        android:id="@+id/navigation_income_current_employment"
@@ -94,11 +88,6 @@
        android:name="com.rnsoft.colabademo.IncomeAddress"
        android:label="@string/income"
        tools:layout="@layout/subject_property_address">
-      <!--sli<action
-          android:id="@+id/action_exit_address"
-          app:destination="@id/navigation_income_current_employment"
-          app:exitAnim="@anim/slide_down"/> -->
-
    </fragment>
 
    <fragment
@@ -161,7 +150,6 @@
        android:name="com.rnsoft.colabademo.RetirementIncomeFragment"
        android:label="@string/income"
        tools:layout="@layout/income_retirement_layout">
-
    </fragment>
 
    <fragment
@@ -177,7 +165,5 @@
           app:exitAnim="@anim/slide_down"/>
 
    </fragment>
-
-
 
 </navigation>
