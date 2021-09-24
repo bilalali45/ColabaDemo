@@ -25,17 +25,16 @@ class DependentCollectionViewCell: UICollectionViewCell, ColabaTextFieldDelegate
     
     func setTextFields() {
         ///Age Text Field
+        
+        /*DO NOT CHANGE SET TEXT FIELD FUNCTIONS FOR THIS CLASS*/
+        
         txtfieldAge.setTextField(placeholder: "Email")
         txtfieldAge.setDelegates(collectionViewCell: self)
         txtfieldAge.setValidation(validationType: .required)
         txtfieldAge.setTextField(keyboardType: .numberPad)
         txtfieldAge.type = .delete
     }
-    
-    func textFieldEndEditing(_ textField: TextField) {
-        print("End Editing Called")
-    }
-    
+
     func deleteButtonClicked() {
         self.delegate?.deleteDependent(indexPath: indexPath)
     }
