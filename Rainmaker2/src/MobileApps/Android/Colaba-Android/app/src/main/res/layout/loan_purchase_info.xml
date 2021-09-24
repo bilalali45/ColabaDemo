@@ -88,7 +88,7 @@
                 android:id="@+id/layout_purchase_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/purchase_price"
                 android:textColorHint="@color/primary_info_label_color"

@@ -119,13 +119,14 @@ class AppModule {
                 //.addInterceptor(LoggingInterceptor())
                 //.addInterceptor(interceptor)
                 .addInterceptor(httpLoggingInterceptor)
-                .addInterceptor(networkConnectionInterceptor)
+                //.addInterceptor(networkConnectionInterceptor)
 
                 //.cookieJar(testCookieJar)
                 .connectTimeout(60,TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .build()
         }
+
 
 
         @Provides
@@ -136,11 +137,14 @@ class AppModule {
 
 
 
+
         @Provides
         @Singleton
         fun provideTokenAuthenticator(sharedPreferences: SharedPreferences): TokenAuthenticator {
             return TokenAuthenticator(sharedPreferences)
         }
+
+
 
 
         @Provides
