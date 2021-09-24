@@ -2777,7 +2777,7 @@
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XGh-lE-Cpf" customClass="TextField" customModule="Material">
                                                 <rect key="frame" x="20" y="30" width="335" height="39"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="r2x-Z4-K10"/>
                                                 </constraints>
@@ -2809,20 +2809,15 @@
                                                 <rect key="frame" x="22" y="34" width="14" height="22"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="search-textfield-icon"/>
-                                                <connections>
-                                                    <action selector="btnSearchTapped:" destination="8Fu-Na-sgy" eventType="touchUpInside" id="7TZ-nl-qX5"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WDJ-An-HOI">
                                                 <rect key="frame" x="335.5" y="32" width="17.5" height="22"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="textfield-dropdownIcon"/>
-                                                <connections>
-                                                    <action selector="btnDropdownTapped:" destination="8Fu-Na-sgy" eventType="touchUpInside" id="c4x-IR-CvG"/>
-                                                </connections>
                                             </button>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vio-JK-MC0" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vio-JK-MC0" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="99" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="6fe-0u-v62"/>
                                                 </constraints>
@@ -2849,8 +2844,9 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dMH-FV-QvH" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dMH-FV-QvH" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="168" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="I9u-wh-6SA"/>
                                                 </constraints>
@@ -2877,8 +2873,9 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sr4-2W-izY" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sr4-2W-izY" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="237" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="hdQ-aO-UcA"/>
                                                 </constraints>
@@ -2905,8 +2902,9 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CnP-gC-rJM" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CnP-gC-rJM" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="306" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="X3q-8L-g7Z"/>
                                                 </constraints>
@@ -2933,15 +2931,9 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vye-dt-KpN">
-                                                <rect key="frame" x="20" y="367" width="335" height="2"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="2" id="jJv-aQ-esz"/>
-                                                </constraints>
-                                            </view>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="21W-Ph-iWb" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="21W-Ph-iWb" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="375" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="AY1-rM-LTK"/>
                                                 </constraints>
@@ -2968,16 +2960,9 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xoe-rx-6rT">
-                                                <rect key="frame" x="335.5" y="378" width="17.5" height="22"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="textfield-dropdownIcon"/>
-                                                <connections>
-                                                    <action selector="btnStateDropDownTapped:" destination="8Fu-Na-sgy" eventType="touchUpInside" id="z57-HU-NiX"/>
-                                                </connections>
-                                            </button>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BFZ-Yq-6vr" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BFZ-Yq-6vr" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="444" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="4Qp-EE-FUn"/>
                                                 </constraints>
@@ -3004,8 +2989,9 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="28G-17-6tf" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="28G-17-6tf" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="513" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="84u-VC-ybj"/>
                                                 </constraints>
@@ -3032,23 +3018,9 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M0H-QI-yrf">
-                                                <rect key="frame" x="20" y="505" width="335" height="2"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="2" id="bRt-LE-YNs"/>
-                                                </constraints>
-                                            </view>
-                                            <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gxs-Ux-UVo">
-                                                <rect key="frame" x="335.5" y="516" width="17.5" height="22"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="textfield-dropdownIcon"/>
-                                                <connections>
-                                                    <action selector="btnCountryDropDownTapped:" destination="8Fu-Na-sgy" eventType="touchUpInside" id="G4g-59-PnI"/>
-                                                </connections>
-                                            </button>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Z8i-Mv-0O8" customClass="TextField" customModule="Material">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Z8i-Mv-0O8" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="99" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="Jho-cR-b4y"/>
                                                 </constraints>
@@ -3075,20 +3047,9 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b2M-mZ-6X9">
-                                                <rect key="frame" x="328" y="100" width="25" height="25"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="25" id="G0C-wa-Z79"/>
-                                                    <constraint firstAttribute="width" constant="25" id="n6K-a4-TUq"/>
-                                                </constraints>
-                                                <state key="normal" image="CalendarIcon"/>
-                                                <connections>
-                                                    <action selector="btnCalendarTapped:" destination="8Fu-Na-sgy" eventType="touchUpInside" id="9gT-o8-9MK"/>
-                                                </connections>
-                                            </button>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MSm-Ao-wCk" customClass="TextField" customModule="Material">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MSm-Ao-wCk" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="168" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="9l3-77-NmL"/>
                                                 </constraints>
@@ -3115,23 +3076,9 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lp0-2S-uJW">
-                                                <rect key="frame" x="20" y="207" width="335" height="2"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="2" id="o0b-gc-2sK"/>
-                                                </constraints>
-                                            </view>
-                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G2L-en-NSr">
-                                                <rect key="frame" x="335.5" y="171" width="17.5" height="22"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="textfield-dropdownIcon"/>
-                                                <connections>
-                                                    <action selector="btnHousingDropDownTapped:" destination="8Fu-Na-sgy" eventType="touchUpInside" id="NIg-TQ-yFs"/>
-                                                </connections>
-                                            </button>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bnJ-7H-nhK" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bnJ-7H-nhK" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="207" width="335" height="0.0"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" id="26Z-WZ-geh"/>
                                                 </constraints>
@@ -3158,34 +3105,6 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dyO-DZ-T2H">
-                                                <rect key="frame" x="20" y="237" width="24" height="39"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fVb-hx-EIk">
-                                                        <rect key="frame" x="0.0" y="11" width="10" height="18"/>
-                                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
-                                                        <color key="textColor" name="AppGreyColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VeJ-tZ-g6x">
-                                                        <rect key="frame" x="17" y="12.5" width="1" height="15"/>
-                                                        <color key="backgroundColor" name="SeparatorNormalColor"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="1" id="ImU-TA-n5B"/>
-                                                        </constraints>
-                                                    </view>
-                                                </subviews>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="24" id="LIf-Es-qPf"/>
-                                                    <constraint firstItem="VeJ-tZ-g6x" firstAttribute="height" secondItem="fVb-hx-EIk" secondAttribute="height" multiplier="0.833333" id="Rzn-wc-ZgJ"/>
-                                                    <constraint firstItem="VeJ-tZ-g6x" firstAttribute="leading" secondItem="fVb-hx-EIk" secondAttribute="trailing" constant="7" id="SXd-vT-EdT"/>
-                                                    <constraint firstItem="fVb-hx-EIk" firstAttribute="leading" secondItem="dyO-DZ-T2H" secondAttribute="leading" id="WgP-zb-U9O"/>
-                                                    <constraint firstAttribute="bottom" secondItem="fVb-hx-EIk" secondAttribute="bottom" constant="10" id="g0i-iu-gfu"/>
-                                                    <constraint firstAttribute="height" constant="39" id="yS4-2u-5rA"/>
-                                                    <constraint firstItem="VeJ-tZ-g6x" firstAttribute="centerY" secondItem="fVb-hx-EIk" secondAttribute="centerY" id="zsv-R1-3Y8"/>
-                                                </constraints>
-                                            </view>
                                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="3EI-hs-uPr">
                                                 <rect key="frame" x="20" y="237" width="235.5" height="28"/>
                                                 <subviews>
@@ -3218,62 +3137,43 @@
                                             <constraint firstItem="4jW-pU-rUi" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" id="142-wl-kc9"/>
                                             <constraint firstItem="dMH-FV-QvH" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="3pZ-cj-Qms"/>
                                             <constraint firstItem="MSm-Ao-wCk" firstAttribute="top" secondItem="Z8i-Mv-0O8" secondAttribute="bottom" constant="30" id="5KZ-ZB-GTQ"/>
-                                            <constraint firstItem="28G-17-6tf" firstAttribute="top" secondItem="M0H-QI-yrf" secondAttribute="bottom" constant="6" id="5bg-aC-TIF"/>
                                             <constraint firstItem="Vio-JK-MC0" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="6iC-C7-NwY"/>
                                             <constraint firstItem="3EI-hs-uPr" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="8An-3m-a3g"/>
-                                            <constraint firstItem="dyO-DZ-T2H" firstAttribute="top" secondItem="MSm-Ao-wCk" secondAttribute="bottom" constant="30" id="8q5-A7-zyo"/>
                                             <constraint firstAttribute="trailing" secondItem="CnP-gC-rJM" secondAttribute="trailing" constant="20" id="AEW-Aq-GfU"/>
-                                            <constraint firstItem="dyO-DZ-T2H" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="BIH-bb-pSm"/>
                                             <constraint firstAttribute="trailing" secondItem="28G-17-6tf" secondAttribute="trailing" constant="20" id="BZL-2P-FnO"/>
                                             <constraint firstItem="MSm-Ao-wCk" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="CHR-1V-AkR"/>
-                                            <constraint firstItem="vye-dt-KpN" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="DhT-A1-PJt"/>
                                             <constraint firstAttribute="trailing" secondItem="21W-Ph-iWb" secondAttribute="trailing" constant="20" id="FPC-so-odS"/>
                                             <constraint firstAttribute="trailing" secondItem="MSm-Ao-wCk" secondAttribute="trailing" constant="20" id="GFP-52-8tQ"/>
                                             <constraint firstAttribute="height" constant="350" id="Gai-cT-61w"/>
-                                            <constraint firstItem="gxs-Ux-UVo" firstAttribute="top" secondItem="BFZ-Yq-6vr" secondAttribute="bottom" constant="33" id="GeW-at-MT0"/>
                                             <constraint firstAttribute="trailing" secondItem="BFZ-Yq-6vr" secondAttribute="trailing" constant="20" id="JOu-33-VlP"/>
                                             <constraint firstItem="XGh-lE-Cpf" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="Jov-J3-AMs"/>
                                             <constraint firstItem="3EI-hs-uPr" firstAttribute="top" secondItem="bnJ-7H-nhK" secondAttribute="bottom" constant="30" id="LaU-TG-Adx"/>
-                                            <constraint firstAttribute="trailing" secondItem="b2M-mZ-6X9" secondAttribute="trailing" constant="22" id="M1X-Xu-m5g"/>
-                                            <constraint firstAttribute="trailing" secondItem="G2L-en-NSr" secondAttribute="trailing" constant="22" id="MEc-so-F5M"/>
-                                            <constraint firstAttribute="trailing" secondItem="gxs-Ux-UVo" secondAttribute="trailing" constant="22" id="N0W-13-1DF"/>
                                             <constraint firstAttribute="trailing" secondItem="Vio-JK-MC0" secondAttribute="trailing" constant="20" id="N2g-gQ-TLZ"/>
-                                            <constraint firstItem="Xoe-rx-6rT" firstAttribute="top" secondItem="CnP-gC-rJM" secondAttribute="bottom" constant="33" id="NmS-S6-wfj"/>
                                             <constraint firstItem="CnP-gC-rJM" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="OHv-sd-AM6"/>
                                             <constraint firstItem="Z8i-Mv-0O8" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="QHQ-WA-qrb"/>
                                             <constraint firstItem="bnJ-7H-nhK" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="RlQ-Ah-sL8"/>
                                             <constraint firstItem="sr4-2W-izY" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="SXN-gu-vHo"/>
                                             <constraint firstItem="Vio-JK-MC0" firstAttribute="top" secondItem="XGh-lE-Cpf" secondAttribute="bottom" constant="30" id="TU2-UP-h81"/>
-                                            <constraint firstItem="21W-Ph-iWb" firstAttribute="top" secondItem="vye-dt-KpN" secondAttribute="bottom" constant="6" id="V0s-xQ-IXU"/>
                                             <constraint firstAttribute="trailing" secondItem="bnJ-7H-nhK" secondAttribute="trailing" constant="20" id="V3b-vD-1KB"/>
-                                            <constraint firstItem="lp0-2S-uJW" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="VSr-Ml-a1J"/>
                                             <constraint firstAttribute="trailing" secondItem="XGh-lE-Cpf" secondAttribute="trailing" constant="20" id="VW9-o4-2bg"/>
                                             <constraint firstItem="WDJ-An-HOI" firstAttribute="top" secondItem="eNx-3q-TmC" secondAttribute="top" constant="32" id="Vf7-Ht-dbq"/>
                                             <constraint firstItem="hU7-jD-Rnc" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="22" id="YBf-y1-TMx"/>
-                                            <constraint firstAttribute="trailing" secondItem="M0H-QI-yrf" secondAttribute="trailing" constant="20" id="aLv-oz-AJY"/>
                                             <constraint firstItem="dMH-FV-QvH" firstAttribute="top" secondItem="Vio-JK-MC0" secondAttribute="bottom" constant="30" id="b7d-Vv-PqC"/>
-                                            <constraint firstAttribute="trailing" secondItem="Xoe-rx-6rT" secondAttribute="trailing" constant="22" id="bJ6-Qf-EcG"/>
                                             <constraint firstItem="21W-Ph-iWb" firstAttribute="top" secondItem="CnP-gC-rJM" secondAttribute="bottom" constant="30" id="bxY-ae-qhv"/>
                                             <constraint firstItem="XGh-lE-Cpf" firstAttribute="top" secondItem="eNx-3q-TmC" secondAttribute="top" constant="30" id="dcv-U5-zGD"/>
                                             <constraint firstItem="21W-Ph-iWb" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="dm9-oE-UOJ"/>
                                             <constraint firstItem="sr4-2W-izY" firstAttribute="top" secondItem="dMH-FV-QvH" secondAttribute="bottom" constant="30" id="euE-d8-zGM"/>
                                             <constraint firstAttribute="trailing" secondItem="4jW-pU-rUi" secondAttribute="trailing" id="ffL-1N-gcb"/>
-                                            <constraint firstItem="lp0-2S-uJW" firstAttribute="top" secondItem="MSm-Ao-wCk" secondAttribute="bottom" id="gKI-Gw-CBt"/>
                                             <constraint firstItem="28G-17-6tf" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="hKK-43-7Ra"/>
-                                            <constraint firstAttribute="trailing" secondItem="lp0-2S-uJW" secondAttribute="trailing" constant="20" id="hLo-vM-hA4"/>
                                             <constraint firstItem="28G-17-6tf" firstAttribute="top" secondItem="BFZ-Yq-6vr" secondAttribute="bottom" constant="30" id="hn0-ja-Jgo"/>
-                                            <constraint firstItem="G2L-en-NSr" firstAttribute="top" secondItem="Z8i-Mv-0O8" secondAttribute="bottom" constant="33" id="i3h-AC-kvR"/>
                                             <constraint firstItem="CnP-gC-rJM" firstAttribute="top" secondItem="sr4-2W-izY" secondAttribute="bottom" constant="30" id="iUo-Cs-8Kt"/>
-                                            <constraint firstAttribute="trailing" secondItem="vye-dt-KpN" secondAttribute="trailing" constant="20" id="ny6-Gs-a7W"/>
                                             <constraint firstAttribute="trailing" secondItem="sr4-2W-izY" secondAttribute="trailing" constant="20" id="pKH-lG-gIs"/>
                                             <constraint firstItem="hU7-jD-Rnc" firstAttribute="top" secondItem="eNx-3q-TmC" secondAttribute="top" constant="34" id="qcr-iN-rVV"/>
                                             <constraint firstAttribute="trailing" secondItem="Z8i-Mv-0O8" secondAttribute="trailing" constant="20" id="qdX-7B-AEf"/>
                                             <constraint firstItem="Z8i-Mv-0O8" firstAttribute="top" secondItem="XGh-lE-Cpf" secondAttribute="bottom" constant="30" id="raD-tT-cuM"/>
                                             <constraint firstItem="bnJ-7H-nhK" firstAttribute="top" secondItem="MSm-Ao-wCk" secondAttribute="bottom" id="vrD-5k-qaZ"/>
-                                            <constraint firstItem="M0H-QI-yrf" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="wFT-fk-2UO"/>
                                             <constraint firstItem="BFZ-Yq-6vr" firstAttribute="top" secondItem="21W-Ph-iWb" secondAttribute="bottom" constant="30" id="wHd-wh-11n"/>
                                             <constraint firstItem="4jW-pU-rUi" firstAttribute="top" secondItem="bnJ-7H-nhK" secondAttribute="bottom" constant="29" id="wR2-ZG-sCv"/>
-                                            <constraint firstItem="b2M-mZ-6X9" firstAttribute="top" secondItem="XGh-lE-Cpf" secondAttribute="bottom" constant="31" id="wRf-1Q-Kah"/>
                                             <constraint firstItem="BFZ-Yq-6vr" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="xla-gS-Shh"/>
                                             <constraint firstAttribute="trailing" secondItem="dMH-FV-QvH" secondAttribute="trailing" constant="20" id="zta-tW-0Lo"/>
                                         </constraints>
@@ -3332,25 +3232,15 @@
                     <connections>
                         <outlet property="addMailingAddressStackView" destination="3EI-hs-uPr" id="4E7-Fl-vUj"/>
                         <outlet property="btnBack" destination="2ni-MW-Iqd" id="d6Y-Qk-ihS"/>
-                        <outlet property="btnCalendar" destination="b2M-mZ-6X9" id="DId-3t-ZGs"/>
-                        <outlet property="btnCalendarTopConstraint" destination="wRf-1Q-Kah" id="BUZ-ww-0cW"/>
-                        <outlet property="btnCountryDropDown" destination="gxs-Ux-UVo" id="wvL-FP-ftt"/>
                         <outlet property="btnDelete" destination="1MK-za-KbL" id="uGh-4E-vn3"/>
                         <outlet property="btnDropDown" destination="WDJ-An-HOI" id="2G2-lx-u3f"/>
-                        <outlet property="btnHousingStatusDropDown" destination="G2L-en-NSr" id="KhC-f5-C6Y"/>
                         <outlet property="btnSaveChanges" destination="gXg-yg-wbe" id="Eb1-PR-L8j"/>
-                        <outlet property="btnSearch" destination="hU7-jD-Rnc" id="7J9-lq-TGx"/>
                         <outlet property="btnSearchTopConstraint" destination="qcr-iN-rVV" id="0pG-Mb-NPw"/>
-                        <outlet property="btnStateDropDown" destination="Xoe-rx-6rT" id="AEM-hV-6dJ"/>
-                        <outlet property="countryDropDownAnchorView" destination="M0H-QI-yrf" id="t00-VT-x2Z"/>
-                        <outlet property="housingStatusDropDownAnchorView" destination="lp0-2S-uJW" id="JF9-XV-gWH"/>
                         <outlet property="lblBorrowerName" destination="z8b-U9-WqU" id="0KA-gf-40k"/>
                         <outlet property="lblTopHeading" destination="cLM-pr-PBw" id="cpX-TJ-oW2"/>
                         <outlet property="mainView" destination="eNx-3q-TmC" id="cog-Jf-L0m"/>
                         <outlet property="mainViewHeightConstraint" destination="Gai-cT-61w" id="tjp-mq-OmZ"/>
-                        <outlet property="monthlyRentDollarView" destination="dyO-DZ-T2H" id="pNE-ZD-Fez"/>
                         <outlet property="seperatorView" destination="rXK-om-kXg" id="JuI-iJ-0yL"/>
-                        <outlet property="stateDropDownAnchorView" destination="vye-dt-KpN" id="D7N-KU-HVj"/>
                         <outlet property="tblViewMailingAddress" destination="4jW-pU-rUi" id="m2F-j2-reC"/>
                         <outlet property="tblViewPlaces" destination="47v-tD-NML" id="ClU-F1-T2s"/>
                         <outlet property="txtfieldCity" destination="sr4-2W-izY" id="89T-1L-sYi"/>
