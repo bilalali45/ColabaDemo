@@ -120,8 +120,7 @@ class AddPreviousResidenceViewController: BaseViewController {
         fetcher?.delegate = self as GMSAutocompleteFetcherDelegate
 
         txtfieldHomeAddress.addTarget(self, action: #selector(txtfieldHomeAddressTextChanged), for: UIControl.Event.editingChanged)
-        txtfieldMonthlyRent.addTarget(self, action: #selector(txtfieldRentChanged), for: .editingChanged)
-
+        
         tblViewPlaces.delegate = self
         tblViewPlaces.dataSource = self
 
@@ -229,12 +228,6 @@ class AddPreviousResidenceViewController: BaseViewController {
     
     @objc func dismissAddressVC(){
         self.dismissVC()
-    }
-    
-    @objc func txtfieldRentChanged(){
-        if let amount = Int(txtfieldMonthlyRent.text!.replacingOccurrences(of: ",", with: "")){
-            txtfieldMonthlyRent.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
-        }
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
@@ -453,6 +446,16 @@ extension AddPreviousResidenceViewController: GMSAutocompleteFetcherDelegate {
 }
 
 extension AddPreviousResidenceViewController : ColabaTextFieldDelegate {
+    
+    func textFieldEndEditing(_ textField: ColabaTextField) {
+        if (textField == txtfieldMoveInDate){
+            txtfieldMoveOutDate.setMinDate(string: txtfieldMoveInDate.text!)
+        }
+        else if (textField == txtfieldMoveOutDate){
+            txtfieldMoveInDate.setMaxDate(string: txtfieldMoveOutDate.text!)
+        }
+    }
+    
     func selectedOption(option: String, atIndex: Int, textField: ColabaTextField) {
         if textField == txtfieldHousingStatus {
             txtfieldMonthlyRent.isHidden = option != "Rent"

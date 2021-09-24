@@ -39,7 +39,7 @@ class AddStockBondViewController: BaseViewController {
 
         ///Account Number Text Field
         txtfieldAccountNumber.type = .password
-        txtfieldAccountNumber.setTextField(placeholder: "Account Number", controller: self, validationType: .required)
+        txtfieldAccountNumber.setTextField(placeholder: "Account Number", controller: self, validationType: .required, keyboardType: .numberPad)
     
         ///Current Market Value Text Field
         txtfieldCurrentMarketValue.setTextField(placeholder: "Current Market Value", controller: self, validationType: .required)

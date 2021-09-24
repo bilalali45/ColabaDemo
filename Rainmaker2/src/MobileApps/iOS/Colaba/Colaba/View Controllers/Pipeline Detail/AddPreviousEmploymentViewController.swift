@@ -59,7 +59,6 @@ class AddPreviousEmploymentViewController: BaseViewController {
         txtfieldEmployerName.setTextField(placeholder: "Employer Name", controller: self, validationType: .required)
     
         txtfieldEmployerPhoneNumber.setTextField(placeholder: "Employer Phone Number", controller: self, validationType: .phoneNumber, keyboardType: .phonePad)
-        txtfieldEmployerPhoneNumber.setIsValidateOnEndEditing(validate: false)
         
         txtfieldJobTitle.setTextField(placeholder: "Job Title", controller: self, validationType: .required)
         txtfieldJobTitle.setIsValidateOnEndEditing(validate: false)
