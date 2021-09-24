@@ -85,7 +85,7 @@ class AddOtherAssetsViewController: BaseViewController {
         txtfieldFinancialInstitution.setTextField(placeholder: "Financial Institution", controller: self, validationType: .required)
         
         ///Account Number Text Field
-        txtfieldAccountNumber.setTextField(placeholder: "Account Number", controller: self, validationType: .required)
+        txtfieldAccountNumber.setTextField(placeholder: "Account Number", controller: self, validationType: .required, keyboardType: .numberPad)
         txtfieldAccountNumber.type = .password
         
         ///Cash Value Text Field

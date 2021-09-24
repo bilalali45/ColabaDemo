@@ -414,6 +414,22 @@ extension ColabaTextField {
     public func setMinDate(date:Date) {
         self.minimumDate = date
     }
+    
+    public func setMaxDate(string: String) {
+        let dateFormater = DateFormatter()
+        dateFormater.dateStyle = .medium
+        dateFormater.dateFormat = "MM/yyyy"
+        dateFormater.timeZone = TimeZone(abbreviation: "UTC")
+        self.maximumDate = dateFormater.date(from: string)
+    }
+    
+    public func setMinDate(string: String) {
+        let dateFormater = DateFormatter()
+        dateFormater.dateStyle = .medium
+        dateFormater.dateFormat = "MM/yyyy"
+        dateFormater.timeZone = TimeZone(abbreviation: "UTC")
+        self.minimumDate = dateFormater.date(from: string)
+    }
 }
 
 //MARK: Delegates
