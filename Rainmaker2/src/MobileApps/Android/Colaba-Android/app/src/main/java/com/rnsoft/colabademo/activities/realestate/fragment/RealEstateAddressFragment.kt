@@ -94,13 +94,12 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
         // set lable focus
         binding.tvSearch.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
-                //binding.searchSeparator.minimumHeight = 2
-                binding.searchSeparator.layoutParams.height = 1
+                binding.searchSeparator.layoutParams.height = 3
                 binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_apptheme_blue, requireActivity().theme))
                 binding.tvSearch.addTextChangedListener(placeTextWatcher)
             } else {
                 binding.tvSearch.removeTextChangedListener(placeTextWatcher)
-                binding.searchSeparator.minimumHeight = 0.5.toInt()
+                binding.searchSeparator.layoutParams.height = 1
                 binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
 
                 val search: String = binding.tvSearch.text.toString()
@@ -313,10 +312,10 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
         placesClient.findAutocompletePredictions(request)
             .addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
                 for (prediction in response.autocompletePredictions) {
-                    Log.e(TAG, prediction.placeId)
+                    //Log.e(TAG, prediction.placeId)
                     response.autocompletePredictions
                     predicationList.add(prediction.getFullText(null).toString())
-                    Log.e(TAG, prediction.getFullText(null).toString())
+                    //Log.e(TAG, prediction.getFullText(null).toString())
 
                 }
                 predictAdapter.setPredictions(response.autocompletePredictions)
@@ -400,13 +399,13 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
 
     private fun setError(){
         binding.tvError.visibility = View.VISIBLE
-        binding.searchSeparator.layoutParams.height = 1
+        binding.searchSeparator.layoutParams.height = 3
         binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_red_color, requireActivity().theme))
     }
 
     private fun removeError(){
         binding.tvError.visibility = View.GONE
-        //binding.searchSeparator.layoutParams.height= 0.5.toInt()
+        binding.searchSeparator.layoutParams.height = 1
         binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
     }
 

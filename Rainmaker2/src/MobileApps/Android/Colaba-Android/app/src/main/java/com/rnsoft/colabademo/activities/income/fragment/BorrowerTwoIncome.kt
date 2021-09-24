@@ -7,17 +7,15 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.activities.income.fragment.EventAddEmployment
 import com.rnsoft.colabademo.databinding.*
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
-import kotlinx.android.synthetic.main.assets_middle_cell.view.*
+import kotlinx.android.synthetic.main.assets_middle_cell.view.content_amount
+import kotlinx.android.synthetic.main.assets_middle_cell.view.content_desc
+import kotlinx.android.synthetic.main.assets_middle_cell.view.content_title
 import kotlinx.android.synthetic.main.assets_top_cell.view.*
 import kotlinx.android.synthetic.main.income_middle_cell.view.*
-import kotlinx.android.synthetic.main.income_middle_cell.view.content_amount
-import kotlinx.android.synthetic.main.income_middle_cell.view.content_desc
-import kotlinx.android.synthetic.main.income_middle_cell.view.content_title
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -64,13 +62,20 @@ class BorrowerTwoIncome : IncomeBaseFragment() {
             for (j in 0 until modelData.incomeContentCell.size) {
                 val contentCell: View =
                     layoutInflater.inflate(R.layout.income_middle_cell, null)
+
+
+
+
                 val contentData = modelData.incomeContentCell[j]
                 contentCell.content_title.text = contentData.title
                 contentCell.content_desc.text = contentData.description
                 contentCell.content_amount.text = contentData.contentAmount
                 contentCell.tenureTextView.text = contentData.tenure
                 contentCell.visibility = View.GONE
-                contentCell.setOnClickListener(modelData.listenerAttached)
+                if(contentData.contentListenerAttached!=null)
+                    contentCell.setOnClickListener(contentData.contentListenerAttached)
+                else
+                    contentCell.setOnClickListener(modelData.listenerAttached)
                 mainCell.addView(contentCell)
             }
 
@@ -135,6 +140,8 @@ class BorrowerTwoIncome : IncomeBaseFragment() {
         }
     }
 
+
+
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -154,8 +161,6 @@ class BorrowerTwoIncome : IncomeBaseFragment() {
             findNavController().navigate(R.id.action_prev_employment)
         }
     }
-
-
 
 
 

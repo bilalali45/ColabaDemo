@@ -95,13 +95,12 @@ class IncomeAddress : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListene
         // set lable focus
         binding.tvSearch.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
-                //binding.searchSeparator.minimumHeight = 2
-                binding.searchSeparator.layoutParams.height = 1
+                binding.searchSeparator.layoutParams.height = 3
                 binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_apptheme_blue, requireActivity().theme))
                 binding.tvSearch.addTextChangedListener(placeTextWatcher)
             } else {
                 binding.tvSearch.removeTextChangedListener(placeTextWatcher)
-                binding.searchSeparator.minimumHeight = 0.5.toInt()
+                binding.searchSeparator.layoutParams.height = 1
                 binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
 
                 val search: String = binding.tvSearch.text.toString()
@@ -127,15 +126,21 @@ class IncomeAddress : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListene
 
     private fun setError(){
         binding.tvError.visibility = View.VISIBLE
-        binding.searchSeparator.layoutParams.height = 1
+        binding.searchSeparator.layoutParams.height = 3
         binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_red_color, requireActivity().theme))
     }
 
     private fun removeError(){
         binding.tvError.visibility = View.GONE
-        //binding.searchSeparator.layoutParams.height= 0.5.toInt()
+        binding.searchSeparator.layoutParams.height = 1
         binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
     }
+
+    /*private fun setSearchFieldStroke(lineheight: Int){
+        val layoutParams = binding.searchSeparator.layoutParams
+        layoutParams.height = lineheight
+        binding.searchSeparator.layoutParams = layoutParams
+    } */
 
     private fun checkValidations() {
         val searchBar: String = binding.tvSearch.text.toString()
@@ -224,10 +229,8 @@ class IncomeAddress : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListene
         // Create a new Places client instance.
         placesClient = Places.createClient(requireContext())
 
-
         binding.tvSearch.dropDownHeight = 0
 
-        //binding.tvSearch.setOnClickListener { }
     }
 
     private val placeTextWatcher = (object : TextWatcher {

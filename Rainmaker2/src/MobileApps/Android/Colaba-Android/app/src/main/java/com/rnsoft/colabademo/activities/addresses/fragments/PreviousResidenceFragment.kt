@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.PreviousResidenceLayoutBinding
+import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -65,19 +66,29 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
             }
         }
 
+        binding.saveBtn.setOnClickListener {
+            checkValidations()
+        }
 
-        binding.topSearchAutoTextView.onFocusChangeListener = object:View.OnFocusChangeListener{
-            override fun onFocusChange(p0: View?, p1: Boolean) {
-                if(p1) {
-                    binding.topSearchTextInputLine.minimumHeight = 1
-                    binding.topSearchTextInputLine.setBackgroundColor(resources.getColor( R.color.colaba_primary_color , requireActivity().theme))
-                }
-                else{
-                    binding.topSearchTextInputLine.minimumHeight = 1
-                    binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
+
+        binding.topSearchAutoTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
+            if (hasFocus) {
+                binding.topSearchTextInputLine.layoutParams.height = 3
+                binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.colaba_apptheme_blue, requireActivity().theme))
+            } else {
+                binding.topSearchTextInputLine.layoutParams.height = 1
+                binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
+
+                val search: String = binding.topSearchAutoTextView.text.toString()
+                if (search.length == 0) {
+                    CustomMaterialFields.setColor(binding.layoutSearchField, R.color.grey_color_three, requireActivity())
+                } else {
+                    CustomMaterialFields.setColor(binding.layoutSearchField, R.color.grey_color_three, requireActivity())
                 }
             }
         }
+
+
 
 
         binding.cityEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.cityEditText, binding.cityLayout, requireContext()))
@@ -171,6 +182,29 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
 
         return root
 
+    }
+
+    private fun checkValidations() {
+        val searchBar: String = binding.topSearchAutoTextView.text.toString()
+        if (searchBar.isEmpty() || searchBar.length == 0) {
+            setError()
+        }
+        if (searchBar.isNotEmpty() || searchBar.length > 0) {
+            removeError()
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun setError(){
+        binding.tvError.visibility = View.VISIBLE
+        binding.topSearchTextInputLine.layoutParams.height = 3
+        binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.colaba_red_color, requireActivity().theme))
+    }
+
+    private fun removeError() {
+        binding.tvError.visibility = View.GONE
+        binding.topSearchTextInputLine.layoutParams.height = 1
+        binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
     }
 
 
