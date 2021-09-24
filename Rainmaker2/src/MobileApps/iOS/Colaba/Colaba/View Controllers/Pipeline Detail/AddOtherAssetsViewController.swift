@@ -82,16 +82,11 @@ class AddOtherAssetsViewController: BaseViewController {
         txtfieldAssetType.setDropDownDataSource(kOtherAssetsTypeArray)
         
         ///Financial Institution Text Field
-        txtfieldFinancialInstitution.setTextField(placeholder: "Financial Institution")
-        txtfieldFinancialInstitution.setDelegates(controller: self)
-        txtfieldFinancialInstitution.setValidation(validationType: .required)
+        txtfieldFinancialInstitution.setTextField(placeholder: "Financial Institution", controller: self, validationType: .required)
         
         ///Account Number Text Field
-        txtfieldAccountNumber.setTextField(placeholder: "Account Number")
-        txtfieldAccountNumber.setDelegates(controller: self)
+        txtfieldAccountNumber.setTextField(placeholder: "Account Number", controller: self, validationType: .required)
         txtfieldAccountNumber.type = .password
-        txtfieldAccountNumber.setValidation(validationType: .required)
-        txtfieldAccountNumber.setTextField(keyboardType: .numberPad)
         
         ///Cash Value Text Field
         txtfieldCashValue.setTextField(placeholder: "Cash or Market Value")

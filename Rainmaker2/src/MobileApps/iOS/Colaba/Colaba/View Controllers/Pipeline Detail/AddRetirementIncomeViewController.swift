@@ -31,24 +31,13 @@ class AddRetirementIncomeViewController: BaseViewController {
     //MARK:- Methods and Actions
     func setupTextFields(){
         
-        txtfieldRetirementIncomeType.setTextField(placeholder: "Retirement Income Type")
-        txtfieldRetirementIncomeType.setDelegates(controller: self)
-        txtfieldRetirementIncomeType.setValidation(validationType: .required)
-        txtfieldRetirementIncomeType.setTextField(keyboardType: .asciiCapable)
+        txtfieldRetirementIncomeType.setTextField(placeholder: "Retirement Income Type", controller: self, validationType: .required)
         txtfieldRetirementIncomeType.type = .dropdown
         txtfieldRetirementIncomeType.setDropDownDataSource(kRetirementIncomeTypeArray)
         
-        txtfieldEmployerName.setTextField(placeholder: "Employer Name")
-        txtfieldEmployerName.setDelegates(controller: self)
-        txtfieldEmployerName.setValidation(validationType: .required)
-        txtfieldEmployerName.setTextField(keyboardType: .asciiCapable)
-        txtfieldEmployerName.setIsValidateOnEndEditing(validate: true)
+        txtfieldEmployerName.setTextField(placeholder: "Employer Name", controller: self, validationType: .required)
         
-        txtfieldMonthlyIncome.setTextField(placeholder: "Monthly Income")
-        txtfieldMonthlyIncome.setDelegates(controller: self)
-        txtfieldMonthlyIncome.setValidation(validationType: .required)
-        txtfieldMonthlyIncome.setTextField(keyboardType: .numberPad)
-        txtfieldMonthlyIncome.setIsValidateOnEndEditing(validate: true)
+        txtfieldMonthlyIncome.setTextField(placeholder: "Monthly Income", controller: self, validationType: .required)
         txtfieldMonthlyIncome.type = .amount
     }
     

@@ -43,12 +43,7 @@ class UndisclosedBorrowerFundsFollowupQuestionsViewController: BaseViewControlle
     //MARK:- Methods and Actions
     
     func setupTextfields(){
-        txtfieldAmountBorrowed.setTextField(placeholder: "Amount Borrowed")
-        txtfieldAmountBorrowed.setDelegates(controller: self)
-        txtfieldAmountBorrowed.setValidation(validationType: .required)
-        txtfieldAmountBorrowed.setTextField(keyboardType: .numberPad)
-        txtfieldAmountBorrowed.setIsValidateOnEndEditing(validate: true)
-        txtfieldAmountBorrowed.setValidation(validationType: .required)
+        txtfieldAmountBorrowed.setTextField(placeholder: "Amount Borrowed", controller: self, validationType: .required)
         txtfieldAmountBorrowed.type = .amount
         
         let estimatedFrame = txtviewDetailContainerView.frame

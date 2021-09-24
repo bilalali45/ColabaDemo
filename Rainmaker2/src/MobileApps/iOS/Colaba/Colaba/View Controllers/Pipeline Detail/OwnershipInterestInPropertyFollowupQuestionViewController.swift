@@ -34,7 +34,7 @@ class OwnershipInterestInPropertyFollowupQuestionViewController: BaseViewControl
         txtfieldPropertyType.setDelegates(controller: self)
         txtfieldPropertyType.setValidation(validationType: .required)
         txtfieldPropertyType.setTextField(keyboardType: .asciiCapable)
-        //txtfieldPropertyType.setIsValidateOnEndEditing(validate: true)
+        //txtfieldPropertyType
         txtfieldPropertyType.setValidation(validationType: .required)
         txtfieldPropertyType.type = .dropdown
         txtfieldPropertyType.setDropDownDataSource(kOccupancyTypeArray)
@@ -43,7 +43,7 @@ class OwnershipInterestInPropertyFollowupQuestionViewController: BaseViewControl
         txtfieldHoldTitle.setDelegates(controller: self)
         txtfieldHoldTitle.setValidation(validationType: .required)
         txtfieldHoldTitle.setTextField(keyboardType: .asciiCapable)
-        //txtfieldHoldTitle.setIsValidateOnEndEditing(validate: true)
+        //txtfieldHoldTitle
         txtfieldHoldTitle.setValidation(validationType: .required)
         txtfieldHoldTitle.type = .dropdown
         txtfieldHoldTitle.setDropDownDataSource(kHoldTitleArray)

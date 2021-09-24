@@ -74,9 +74,7 @@ class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
     
     func setTextFields() {
         ///Visa Status Text Field
-        txtfieldVisaStatus.setTextField(placeholder: "Visa Status")
-        txtfieldVisaStatus.setDelegates(controller: self)
-        txtfieldVisaStatus.setValidation(validationType: .required)
+        txtfieldVisaStatus.setTextField(placeholder: "Visa Status", controller: self, validationType: .required)
         txtfieldVisaStatus.type = .dropdown
         txtfieldVisaStatus.setDropDownDataSource(kVisaStatusArray)
     }

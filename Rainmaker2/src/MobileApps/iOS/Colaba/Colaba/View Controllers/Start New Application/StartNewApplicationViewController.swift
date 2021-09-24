@@ -102,25 +102,21 @@ class StartNewApplicationViewController: BaseViewController {
         txtfieldFirstName.setDelegates(controller: self)
         txtfieldFirstName.setValidation(validationType: .required)
         txtfieldFirstName.setTextField(keyboardType: .asciiCapable)
-        txtfieldFirstName.setIsValidateOnEndEditing(validate: true)
         
         txtfieldLastName.setTextField(placeholder: "Last Name")
         txtfieldLastName.setDelegates(controller: self)
         txtfieldLastName.setValidation(validationType: .required)
         txtfieldLastName.setTextField(keyboardType: .asciiCapable)
-        txtfieldLastName.setIsValidateOnEndEditing(validate: true)
         
         txtfieldEmail.setTextField(placeholder: "Email Address")
         txtfieldEmail.setDelegates(controller: self)
         txtfieldEmail.setValidation(validationType: .email)
         txtfieldEmail.setTextField(keyboardType: .emailAddress)
-        txtfieldEmail.setIsValidateOnEndEditing(validate: true)
         
         txtfieldPhone.setTextField(placeholder: "Mobile Number")
         txtfieldPhone.setDelegates(controller: self)
         txtfieldPhone.setValidation(validationType: .phoneNumber)
         txtfieldPhone.setTextField(keyboardType: .phonePad)
-        txtfieldPhone.setIsValidateOnEndEditing(validate: true)
         
         assignLoanOfficerView.layer.cornerRadius = 8
         assignLoanOfficerView.layer.borderWidth = 1
