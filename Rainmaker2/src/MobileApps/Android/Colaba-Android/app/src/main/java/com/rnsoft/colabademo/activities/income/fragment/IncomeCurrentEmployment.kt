@@ -48,6 +48,8 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
             // set Header title
             toolbar.toolbarTitle.setText(getString(R.string.current_employment))
 
+
+
             initViews()
             savedViewInstance
 
@@ -71,7 +73,6 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
 
         setInputFields()
     }
-
 
     private fun setInputFields() {
 

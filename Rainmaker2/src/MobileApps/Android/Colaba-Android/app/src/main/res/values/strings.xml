@@ -191,13 +191,11 @@
     <string name="unit_or_apt">Unit Or Apt. Number (Optional)</string>
     <string name="city">City</string>
     <string name="relationship_details"> Relationship Details</string>
-
     <string name="county">County</string>
     <string name="state">State</string>
-
     <string name="type_of_relations">Types of Relationship</string>
-
-    <string name="search_home_address">Search Mailing Address</string>
+    <string name="search_mailing_address">Search Mailing Address</string>
+    <string name="search_home_address">Search Home Address</string>
 
     <string name="zip_code">Zip Code</string>
     <string name="country">Country</string>

@@ -21,7 +21,7 @@ open class BaseFragment:Fragment() {
                 removeFocusFromAllFields(item)
             item.clearFocus()
 
-            Timber.e("clearing focus "+item.id)
+            //Timber.e("clearing focus "+item.id)
         }
     }
 
