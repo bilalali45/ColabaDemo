@@ -37,36 +37,25 @@ class AddMilitaryPayViewController: BaseViewController {
     
     func setupTextFields(){
         
-        txtfieldEmployerName.setTextField(placeholder: "Employer Name")
-        txtfieldEmployerName.setDelegates(controller: self)
-        txtfieldEmployerName.setValidation(validationType: .required)
-        txtfieldEmployerName.setTextField(keyboardType: .asciiCapable)
-        txtfieldEmployerName.setIsValidateOnEndEditing(validate: true)
+        txtfieldEmployerName.setTextField(placeholder: "Employer Name", controller: self, validationType: .required)
         
-        txtfieldJobTitle.setTextField(placeholder: "Job Title")
-        txtfieldJobTitle.setDelegates(controller: self)
-        txtfieldJobTitle.setValidation(validationType: .required)
-        txtfieldJobTitle.setTextField(keyboardType: .asciiCapable)
-        txtfieldJobTitle.setIsValidateOnEndEditing(validate: true)
+        txtfieldJobTitle.setTextField(placeholder: "Job Title", controller: self, validationType: .required)
         
         txtfieldProfessionYears.setTextField(placeholder: "Years in Profession")
         txtfieldProfessionYears.setDelegates(controller: self)
         txtfieldProfessionYears.setValidation(validationType: .required)
         txtfieldProfessionYears.setTextField(keyboardType: .numberPad)
-        txtfieldProfessionYears.setIsValidateOnEndEditing(validate: true)
         
         txtfieldStartDate.setTextField(placeholder: "Start Date (MM/DD/YYYY)")
         txtfieldStartDate.setDelegates(controller: self)
         txtfieldStartDate.setValidation(validationType: .required)
         txtfieldStartDate.setTextField(keyboardType: .asciiCapable)
-        txtfieldStartDate.setIsValidateOnEndEditing(validate: true)
         txtfieldStartDate.type = .datePicker
         
         txtfieldMonthlyBaseSalary.setTextField(placeholder: "Monthly Base Salary")
         txtfieldMonthlyBaseSalary.setDelegates(controller: self)
         txtfieldMonthlyBaseSalary.setValidation(validationType: .required)
         txtfieldMonthlyBaseSalary.setTextField(keyboardType: .numberPad)
-        txtfieldMonthlyBaseSalary.setIsValidateOnEndEditing(validate: true)
         txtfieldMonthlyBaseSalary.setValidation(validationType: .required)
         txtfieldMonthlyBaseSalary.type = .amount
         
@@ -74,7 +63,6 @@ class AddMilitaryPayViewController: BaseViewController {
         txtfieldMilitaryEntitlements.setDelegates(controller: self)
         txtfieldMilitaryEntitlements.setValidation(validationType: .required)
         txtfieldMilitaryEntitlements.setTextField(keyboardType: .numberPad)
-        txtfieldMilitaryEntitlements.setIsValidateOnEndEditing(validate: true)
         txtfieldMilitaryEntitlements.setValidation(validationType: .required)
         txtfieldMilitaryEntitlements.type = .amount
         

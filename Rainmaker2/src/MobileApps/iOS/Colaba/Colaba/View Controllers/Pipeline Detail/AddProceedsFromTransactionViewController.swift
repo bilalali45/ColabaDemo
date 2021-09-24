@@ -86,23 +86,16 @@ class AddProceedsFromTransactionViewController: BaseViewController {
     func setTextFields() {
 
         ///Transaction Type  Text Field
-        txtfieldTransactionType.setTextField(placeholder: "Transaction Type")
-        txtfieldTransactionType.setDelegates(controller: self)
-        txtfieldTransactionType.setValidation(validationType: .required)
+        txtfieldTransactionType.setTextField(placeholder: "Transaction Type", controller: self, validationType: .required)
         txtfieldTransactionType.type = .dropdown
         txtfieldTransactionType.setDropDownDataSource(kTransactionTypeArray)
         
         ///Expected Proceeds Text Field
-        txtfieldExpectedProceeds.setTextField(placeholder: "Expected Proceeds")
-        txtfieldExpectedProceeds.setDelegates(controller: self)
-        txtfieldExpectedProceeds.setTextField(keyboardType: .numberPad)
-        txtfieldExpectedProceeds.setValidation(validationType: .required)
+        txtfieldExpectedProceeds.setTextField(placeholder: "Expected Proceeds", controller: self, validationType: .required)
         txtfieldExpectedProceeds.type = .amount
         
         ///Assets Type Text Field
-        txtfieldAssetsType.setTextField(placeholder: "Which Asset?")
-        txtfieldAssetsType.setDelegates(controller: self)
-        txtfieldAssetsType.setValidation(validationType: .required)
+        txtfieldAssetsType.setTextField(placeholder: "Which Asset?", controller: self, validationType: .required)
         txtfieldAssetsType.type = .dropdown
         txtfieldAssetsType.setDropDownDataSource(kAssetsTypeArray)
     }

@@ -92,7 +92,6 @@ class RealEstateViewController: BaseViewController {
         txtfieldCurrentRentalIncome.setTextField(placeholder: "Current Rental Income")
         txtfieldCurrentRentalIncome.setDelegates(controller: self)
         txtfieldCurrentRentalIncome.setTextField(keyboardType: .numberPad)
-        txtfieldCurrentRentalIncome.setIsValidateOnEndEditing(validate: true)
         txtfieldCurrentRentalIncome.setValidation(validationType: .required)
         txtfieldCurrentRentalIncome.type = .amount
         
@@ -105,35 +104,30 @@ class RealEstateViewController: BaseViewController {
         txtfieldHomeOwnerAssociationDues.setTextField(placeholder: "Homeowner’s Association Dues")
         txtfieldHomeOwnerAssociationDues.setDelegates(controller: self)
         txtfieldHomeOwnerAssociationDues.setTextField(keyboardType: .numberPad)
-        txtfieldHomeOwnerAssociationDues.setIsValidateOnEndEditing(validate: true)
         txtfieldHomeOwnerAssociationDues.setValidation(validationType: .required)
         txtfieldHomeOwnerAssociationDues.type = .amount
         
         txtfieldPropertyValue.setTextField(placeholder: "Property Value")
         txtfieldPropertyValue.setDelegates(controller: self)
         txtfieldPropertyValue.setTextField(keyboardType: .numberPad)
-        txtfieldPropertyValue.setIsValidateOnEndEditing(validate: true)
         txtfieldPropertyValue.setValidation(validationType: .required)
         txtfieldPropertyValue.type = .amount
         
         txtfieldAnnualPropertyTax.setTextField(placeholder: "Annual Property Taxes")
         txtfieldAnnualPropertyTax.setDelegates(controller: self)
         txtfieldAnnualPropertyTax.setTextField(keyboardType: .numberPad)
-        txtfieldAnnualPropertyTax.setIsValidateOnEndEditing(validate: true)
         txtfieldAnnualPropertyTax.setValidation(validationType: .required)
         txtfieldAnnualPropertyTax.type = .amount
         
         txtfieldAnnualHomeOwnerInsurance.setTextField(placeholder: "Annual Homeowner's Insurance")
         txtfieldAnnualHomeOwnerInsurance.setDelegates(controller: self)
         txtfieldAnnualHomeOwnerInsurance.setTextField(keyboardType: .numberPad)
-        txtfieldAnnualHomeOwnerInsurance.setIsValidateOnEndEditing(validate: true)
         txtfieldAnnualHomeOwnerInsurance.setValidation(validationType: .required)
         txtfieldAnnualHomeOwnerInsurance.type = .amount
         
         txtfieldAnnualFloodInsurance.setTextField(placeholder: "Annual Flood Insurance")
         txtfieldAnnualFloodInsurance.setDelegates(controller: self)
         txtfieldAnnualFloodInsurance.setTextField(keyboardType: .numberPad)
-        txtfieldAnnualFloodInsurance.setIsValidateOnEndEditing(validate: true)
         txtfieldAnnualFloodInsurance.setValidation(validationType: .required)
         txtfieldAnnualFloodInsurance.type = .amount
         

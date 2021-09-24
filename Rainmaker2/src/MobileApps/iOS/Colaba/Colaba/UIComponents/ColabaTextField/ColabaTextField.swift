@@ -94,9 +94,11 @@ class ColabaTextField: TextField {
             case .amount:
                 prefix = PrefixType.amount.rawValue
                 attributedPrefix = createAttributedPrefix(prefix: prefix!)
+                setTextField(keyboardType: .numberPad)
             case .percentage:
                 prefix = PrefixType.percentage.rawValue
                 attributedPrefix = createAttributedPrefix(prefix: prefix!)
+                setTextField(keyboardType: .numberPad)
             case .datePicker:
                 isButtonHidden(false)
                 self.isUserInteractionEnabled = true
@@ -263,6 +265,13 @@ class ColabaTextField: TextField {
 extension ColabaTextField {
     
     //MARK: Textfield
+    public func setTextField(placeholder: String, controller: UIViewController, validationType: ValidationType, keyboardType: UIKeyboardType = .asciiCapable) {
+        setTextField(placeholder: placeholder)
+        setDelegates(controller: controller)
+        setValidation(validationType: validationType)
+        setTextField(keyboardType: keyboardType)
+    }
+    
     public func setTextField(textColor: UIColor) {
         self.tintColor = textColor
         self.textColor = textColor
@@ -404,6 +413,22 @@ extension ColabaTextField {
     
     public func setMinDate(date:Date) {
         self.minimumDate = date
+    }
+    
+    public func setMaxDate(string: String) {
+        let dateFormater = DateFormatter()
+        dateFormater.dateStyle = .medium
+        dateFormater.dateFormat = "MM/yyyy"
+        dateFormater.timeZone = TimeZone(abbreviation: "UTC")
+        self.maximumDate = dateFormater.date(from: string)
+    }
+    
+    public func setMinDate(string: String) {
+        let dateFormater = DateFormatter()
+        dateFormater.dateStyle = .medium
+        dateFormater.dateFormat = "MM/yyyy"
+        dateFormater.timeZone = TimeZone(abbreviation: "UTC")
+        self.minimumDate = dateFormater.date(from: string)
     }
 }
 

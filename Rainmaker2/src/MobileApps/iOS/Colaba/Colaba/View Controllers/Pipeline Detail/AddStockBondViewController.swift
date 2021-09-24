@@ -30,29 +30,19 @@ class AddStockBondViewController: BaseViewController {
     //MARK:- Methods and Actions
     func setTextFields() {
         ///Account Type Text Field
-        txtfieldAccountType.setTextField(placeholder: "Account Type")
-        txtfieldAccountType.setDelegates(controller: self)
-        txtfieldAccountType.setValidation(validationType: .required)
+        txtfieldAccountType.setTextField(placeholder: "Account Type", controller: self, validationType: .required)
         txtfieldAccountType.type = .dropdown
         txtfieldAccountType.setDropDownDataSource(kFinancialsAccountTypeArray)
 
         ///Financial Institution Text Field
-        txtfieldFinancialInstitution.setTextField(placeholder: "Financial Institution")
-        txtfieldFinancialInstitution.setDelegates(controller: self)
-        txtfieldFinancialInstitution.setValidation(validationType: .required)
+        txtfieldFinancialInstitution.setTextField(placeholder: "Financial Institution", controller: self, validationType: .required)
 
         ///Account Number Text Field
-        txtfieldAccountNumber.setTextField(placeholder: "Account Number")
-        txtfieldAccountNumber.setDelegates(controller: self)
         txtfieldAccountNumber.type = .password
-        txtfieldAccountNumber.setValidation(validationType: .required)
-        txtfieldAccountNumber.setTextField(keyboardType: .numberPad)
-
+        txtfieldAccountNumber.setTextField(placeholder: "Account Number", controller: self, validationType: .required, keyboardType: .numberPad)
+    
         ///Current Market Value Text Field
-        txtfieldCurrentMarketValue.setTextField(placeholder: "Current Market Value")
-        txtfieldCurrentMarketValue.setDelegates(controller: self)
-        txtfieldCurrentMarketValue.setTextField(keyboardType: .numberPad)
-        txtfieldCurrentMarketValue.setValidation(validationType: .required)
+        txtfieldCurrentMarketValue.setTextField(placeholder: "Current Market Value", controller: self, validationType: .required)
         txtfieldCurrentMarketValue.type = .amount
         
     }

@@ -32,31 +32,20 @@ class AddBankAccountViewController: BaseViewController {
     //MARK:- Methods and Actions
     func setTextFields() {
         ///Account Type Text Field
-        txtfieldAccountType.setTextField(placeholder: "Account Type")
-        txtfieldAccountType.setDelegates(controller: self)
-        txtfieldAccountType.setValidation(validationType: .required)
+        txtfieldAccountType.setTextField(placeholder: "Account Type", controller: self, validationType: .required)
         txtfieldAccountType.type = .dropdown
         txtfieldAccountType.setDropDownDataSource(kAccountTypeArray)
         
         ///Financial Institution Text Field
-        txtfieldFinancialInstitution.setTextField(placeholder: "Financial Institution")
-        txtfieldFinancialInstitution.setDelegates(controller: self)
-        txtfieldFinancialInstitution.setValidation(validationType: .required)
+        txtfieldFinancialInstitution.setTextField(placeholder: "Financial Institution", controller: self, validationType: .required)
         
         ///Account Number Text Field
-        txtfieldAccountNumber.setTextField(placeholder: "Account Number")
-        txtfieldAccountNumber.setDelegates(controller: self)
+        txtfieldAccountNumber.setTextField(placeholder: "Account Number", controller: self, validationType: .required, keyboardType: .numberPad)
         txtfieldAccountNumber.type = .password
-        txtfieldAccountNumber.setValidation(validationType: .required)
-        txtfieldAccountNumber.setTextField(keyboardType: .numberPad)
         
         ///Annual Base Salary Text Field
-        txtfieldAnnualBaseSalary.setTextField(placeholder: "Annual Base Salary")
-        txtfieldAnnualBaseSalary.setDelegates(controller: self)
-        txtfieldAnnualBaseSalary.setTextField(keyboardType: .numberPad)
-        txtfieldAnnualBaseSalary.setValidation(validationType: .required)
+        txtfieldAnnualBaseSalary.setTextField(placeholder: "Annual Base Salary", controller: self, validationType: .required)
         txtfieldAnnualBaseSalary.type = .amount
-        
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {

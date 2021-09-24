@@ -58,71 +58,32 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
     
     func setupTextfields(){
         
-        txtfieldChildSupportPaymentsRemaining.setTextField(placeholder: "Payments remaining")
-        txtfieldChildSupportPaymentsRemaining.setDelegates(controller: self)
-        txtfieldChildSupportPaymentsRemaining.setValidation(validationType: .required)
-        txtfieldChildSupportPaymentsRemaining.setTextField(keyboardType: .asciiCapable)
-        txtfieldChildSupportPaymentsRemaining.setIsValidateOnEndEditing(validate: true)
+        txtfieldChildSupportPaymentsRemaining.setTextField(placeholder: "Payments remaining", controller: self, validationType: .required)
         txtfieldChildSupportPaymentsRemaining.type = .dropdown
         txtfieldChildSupportPaymentsRemaining.setDropDownDataSource(kPaymentsRemainingArray)
         
-        txtfieldChildSupportMonthlyPayment.setTextField(placeholder: "Monthly Payment")
-        txtfieldChildSupportMonthlyPayment.setDelegates(controller: self)
-        txtfieldChildSupportMonthlyPayment.setTextField(keyboardType: .numberPad)
-        txtfieldChildSupportMonthlyPayment.setIsValidateOnEndEditing(validate: true)
-        txtfieldChildSupportMonthlyPayment.setValidation(validationType: .required)
+        txtfieldChildSupportMonthlyPayment.setTextField(placeholder: "Monthly Payment", controller: self, validationType: .required)
         txtfieldChildSupportMonthlyPayment.type = .amount
         
-        txtfieldChildSupportPaymentRecipient.setTextField(placeholder: "Payment Recipient")
-        txtfieldChildSupportPaymentRecipient.setDelegates(controller: self)
-        txtfieldChildSupportPaymentRecipient.setValidation(validationType: .required)
-        txtfieldChildSupportPaymentRecipient.setTextField(keyboardType: .asciiCapable)
-        txtfieldChildSupportPaymentRecipient.setIsValidateOnEndEditing(validate: true)
-        
-        txtfieldAlimonyPaymentsRemaining.setTextField(placeholder: "Payments remaining")
-        txtfieldAlimonyPaymentsRemaining.setDelegates(controller: self)
-        txtfieldAlimonyPaymentsRemaining.setValidation(validationType: .required)
-        txtfieldAlimonyPaymentsRemaining.setTextField(keyboardType: .asciiCapable)
-        txtfieldAlimonyPaymentsRemaining.setIsValidateOnEndEditing(validate: true)
+        txtfieldChildSupportPaymentRecipient.setTextField(placeholder: "Payment Recipient", controller: self, validationType: .required)
+            
+        txtfieldAlimonyPaymentsRemaining.setTextField(placeholder: "Payments remaining", controller: self, validationType: .required)
         txtfieldAlimonyPaymentsRemaining.type = .dropdown
         txtfieldAlimonyPaymentsRemaining.setDropDownDataSource(kPaymentsRemainingArray)
         
-        txtfieldAlimonyMonthlyPayment.setTextField(placeholder: "Monthly Payment")
-        txtfieldAlimonyMonthlyPayment.setDelegates(controller: self)
-        txtfieldAlimonyMonthlyPayment.setTextField(keyboardType: .numberPad)
-        txtfieldAlimonyMonthlyPayment.setIsValidateOnEndEditing(validate: true)
-        txtfieldAlimonyMonthlyPayment.setValidation(validationType: .required)
+        txtfieldAlimonyMonthlyPayment.setTextField(placeholder: "Monthly Payment", controller: self, validationType: .required)
         txtfieldAlimonyMonthlyPayment.type = .amount
+            
+        txtfieldAlimonyPaymentRecipient.setTextField(placeholder: "Payment Recipient", controller: self, validationType: .required)
         
-        txtfieldAlimonyPaymentRecipient.setTextField(placeholder: "Payment Recipient")
-        txtfieldAlimonyPaymentRecipient.setDelegates(controller: self)
-        txtfieldAlimonyPaymentRecipient.setValidation(validationType: .required)
-        txtfieldAlimonyPaymentRecipient.setTextField(keyboardType: .asciiCapable)
-        txtfieldAlimonyPaymentRecipient.setIsValidateOnEndEditing(validate: true)
-        
-        txtfieldSeparateMaintainancePaymentsRemaining.setTextField(placeholder: "Payments remaining")
-        txtfieldSeparateMaintainancePaymentsRemaining.setDelegates(controller: self)
-        txtfieldSeparateMaintainancePaymentsRemaining.setValidation(validationType: .required)
-        txtfieldSeparateMaintainancePaymentsRemaining.setTextField(keyboardType: .asciiCapable)
-        txtfieldSeparateMaintainancePaymentsRemaining.setIsValidateOnEndEditing(validate: true)
+        txtfieldSeparateMaintainancePaymentsRemaining.setTextField(placeholder: "Payments remaining", controller: self, validationType: .required)
         txtfieldSeparateMaintainancePaymentsRemaining.type = .dropdown
         txtfieldSeparateMaintainancePaymentsRemaining.setDropDownDataSource(kPaymentsRemainingArray)
         
-        txtfieldSeparateMaintainanceMonthlyPayment.setTextField(placeholder: "Monthly Payment")
-        txtfieldSeparateMaintainanceMonthlyPayment.setDelegates(controller: self)
-        txtfieldSeparateMaintainanceMonthlyPayment.setTextField(keyboardType: .numberPad)
-        txtfieldSeparateMaintainanceMonthlyPayment.setIsValidateOnEndEditing(validate: true)
-        txtfieldSeparateMaintainanceMonthlyPayment.setValidation(validationType: .required)
+        txtfieldSeparateMaintainanceMonthlyPayment.setTextField(placeholder: "Monthly Payment", controller: self, validationType: .required)
         txtfieldSeparateMaintainanceMonthlyPayment.type = .amount
         
-        txtfieldSeparateMaintainancePaymentRecipient.setTextField(placeholder: "Payment Recipient")
-        txtfieldSeparateMaintainancePaymentRecipient.setDelegates(controller: self)
-        txtfieldSeparateMaintainancePaymentRecipient.setValidation(validationType: .required)
-        txtfieldSeparateMaintainancePaymentRecipient.setTextField(keyboardType: .asciiCapable)
-        txtfieldSeparateMaintainancePaymentRecipient.setIsValidateOnEndEditing(validate: true)
-        
-
-        
+        txtfieldSeparateMaintainancePaymentRecipient.setTextField(placeholder: "Payment Recipient", controller: self, validationType: .required)
     }
     
     func setScreenHeight(){

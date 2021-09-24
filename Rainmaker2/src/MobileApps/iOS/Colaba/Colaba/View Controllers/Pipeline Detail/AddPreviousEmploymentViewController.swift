@@ -56,55 +56,27 @@ class AddPreviousEmploymentViewController: BaseViewController {
     //MARK:- Methods and Actions
     
     func setupTextFields(){
-        txtfieldEmployerName.setTextField(placeholder: "Employer Name")
-        txtfieldEmployerName.setDelegates(controller: self)
-        txtfieldEmployerName.setValidation(validationType: .required)
-        txtfieldEmployerName.setTextField(keyboardType: .asciiCapable)
-        txtfieldEmployerName.setIsValidateOnEndEditing(validate: true)
+        txtfieldEmployerName.setTextField(placeholder: "Employer Name", controller: self, validationType: .required)
+    
+        txtfieldEmployerPhoneNumber.setTextField(placeholder: "Employer Phone Number", controller: self, validationType: .phoneNumber, keyboardType: .phonePad)
         
-        txtfieldEmployerPhoneNumber.setTextField(placeholder: "Employer Phone Number")
-        txtfieldEmployerPhoneNumber.setDelegates(controller: self)
-        txtfieldEmployerPhoneNumber.setTextField(keyboardType: .numberPad)
-        txtfieldEmployerPhoneNumber.setIsValidateOnEndEditing(validate: true)
-        txtfieldEmployerPhoneNumber.setValidation(validationType: .phoneNumber)
-        
-        txtfieldJobTitle.setTextField(placeholder: "Job Title")
-        txtfieldJobTitle.setDelegates(controller: self)
-        txtfieldJobTitle.setTextField(keyboardType: .asciiCapable)
+        txtfieldJobTitle.setTextField(placeholder: "Job Title", controller: self, validationType: .required)
         txtfieldJobTitle.setIsValidateOnEndEditing(validate: false)
         
-        txtfieldProfessionYears.setTextField(placeholder: "Years in Profession")
-        txtfieldProfessionYears.setDelegates(controller: self)
-        txtfieldProfessionYears.setTextField(keyboardType: .numberPad)
+        txtfieldProfessionYears.setTextField(placeholder: "Years in Profession", controller: self, validationType: .required)
         txtfieldProfessionYears.setIsValidateOnEndEditing(validate: false)
         txtfieldProfessionYears.setTextField(maxLength: 2)
         
-        txtfieldStartDate.setTextField(placeholder: "Start Date (MM/DD/YYYY)")
-        txtfieldStartDate.setDelegates(controller: self)
-        txtfieldStartDate.setValidation(validationType: .required)
-        txtfieldStartDate.setTextField(keyboardType: .asciiCapable)
-        txtfieldStartDate.setIsValidateOnEndEditing(validate: true)
+        txtfieldStartDate.setTextField(placeholder: "Start Date (MM/DD/YYYY)", controller: self, validationType: .required)
         txtfieldStartDate.type = .datePicker
-        
-        txtfieldEndDate.setTextField(placeholder: "End Date (MM/DD/YYYY)")
-        txtfieldEndDate.setDelegates(controller: self)
-        txtfieldEndDate.setValidation(validationType: .required)
-        txtfieldEndDate.setTextField(keyboardType: .asciiCapable)
-        txtfieldEndDate.setIsValidateOnEndEditing(validate: true)
+            
+        txtfieldEndDate.setTextField(placeholder: "End Date (MM/DD/YYYY)", controller: self, validationType: .required)
         txtfieldEndDate.type = .datePicker
         
-        txtfieldOwnershipPercentage.setTextField(placeholder: "Ownership Percentage")
-        txtfieldOwnershipPercentage.setDelegates(controller: self)
-        txtfieldOwnershipPercentage.setTextField(keyboardType: .numberPad)
-        txtfieldOwnershipPercentage.setIsValidateOnEndEditing(validate: true)
-        txtfieldOwnershipPercentage.setValidation(validationType: .required)
+        txtfieldOwnershipPercentage.setTextField(placeholder: "Ownership Percentage", controller: self, validationType: .required)
         txtfieldOwnershipPercentage.type = .percentage
         
-        txtfieldNetAnnualIncome.setTextField(placeholder: "Net Annual Income")
-        txtfieldNetAnnualIncome.setDelegates(controller: self)
-        txtfieldNetAnnualIncome.setTextField(keyboardType: .numberPad)
-        txtfieldNetAnnualIncome.setIsValidateOnEndEditing(validate: true)
-        txtfieldNetAnnualIncome.setValidation(validationType: .netAnnualIncome)
+        txtfieldNetAnnualIncome.setTextField(placeholder: "Net Annual Income", controller: self, validationType: .netAnnualIncome)
         txtfieldNetAnnualIncome.type = .amount
         
         addressView.layer.cornerRadius = 6

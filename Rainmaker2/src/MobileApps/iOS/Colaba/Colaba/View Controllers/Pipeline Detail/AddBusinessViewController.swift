@@ -47,37 +47,30 @@ class AddBusinessViewController: BaseViewController {
         txtfieldBusinessName.setDelegates(controller: self)
         txtfieldBusinessName.setValidation(validationType: .required)
         txtfieldBusinessName.setTextField(keyboardType: .asciiCapable)
-        txtfieldBusinessName.setIsValidateOnEndEditing(validate: true)
         
         txtfieldBusinessPhoneNumber.setTextField(placeholder: "Business Phone Number")
         txtfieldBusinessPhoneNumber.setDelegates(controller: self)
         txtfieldBusinessPhoneNumber.setTextField(keyboardType: .numberPad)
-        txtfieldBusinessPhoneNumber.setIsValidateOnEndEditing(validate: true)
         txtfieldBusinessPhoneNumber.setValidation(validationType: .phoneNumber)
         
         txtfieldBusinessStartDate.setTextField(placeholder: "Business Start Date (MM/DD/YYYY)")
         txtfieldBusinessStartDate.setDelegates(controller: self)
         txtfieldBusinessStartDate.setValidation(validationType: .required)
         txtfieldBusinessStartDate.setTextField(keyboardType: .asciiCapable)
-        txtfieldBusinessStartDate.setIsValidateOnEndEditing(validate: true)
         txtfieldBusinessStartDate.type = .datePicker
         
-        txtfieldJobTitle.setTextField(placeholder: "Job Title")
-        txtfieldJobTitle.setDelegates(controller: self)
-        txtfieldJobTitle.setTextField(keyboardType: .asciiCapable)
+        txtfieldJobTitle.setTextField(placeholder: "Job Title", controller: self, validationType: .required)
         txtfieldJobTitle.setIsValidateOnEndEditing(validate: false)
         
         txtfieldOwnershipPercentage.setTextField(placeholder: "Ownership Percentage")
         txtfieldOwnershipPercentage.setDelegates(controller: self)
         txtfieldOwnershipPercentage.setTextField(keyboardType: .numberPad)
-        txtfieldOwnershipPercentage.setIsValidateOnEndEditing(validate: true)
         txtfieldOwnershipPercentage.setValidation(validationType: .required)
         txtfieldOwnershipPercentage.type = .percentage
         
         txtfieldNetAnnualIncome.setTextField(placeholder: "Net Annual Income")
         txtfieldNetAnnualIncome.setDelegates(controller: self)
         txtfieldNetAnnualIncome.setTextField(keyboardType: .numberPad)
-        txtfieldNetAnnualIncome.setIsValidateOnEndEditing(validate: true)
         txtfieldNetAnnualIncome.setValidation(validationType: .required)
         txtfieldNetAnnualIncome.type = .amount
         

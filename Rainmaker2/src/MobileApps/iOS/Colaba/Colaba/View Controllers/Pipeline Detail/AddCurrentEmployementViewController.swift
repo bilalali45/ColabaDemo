@@ -98,28 +98,17 @@ class AddCurrentEmployementViewController: BaseViewController {
     //MARK:- Methods and Actions
     
     func setupTextFields(){
-        txtfieldEmployerName.setTextField(placeholder: "Employer Name")
-        txtfieldEmployerName.setDelegates(controller: self)
-        txtfieldEmployerName.setValidation(validationType: .required)
-        txtfieldEmployerName.setTextField(keyboardType: .asciiCapable)
-        txtfieldEmployerName.setIsValidateOnEndEditing(validate: true)
+        txtfieldEmployerName.setTextField(placeholder: "Employer Name", controller: self, validationType: .required)
         
-        txtfieldEmployerPhoneNumber.setTextField(placeholder: "Employer Phone Number")
-        txtfieldEmployerPhoneNumber.setDelegates(controller: self)
-        txtfieldEmployerPhoneNumber.setTextField(keyboardType: .numberPad)
-        txtfieldEmployerPhoneNumber.setIsValidateOnEndEditing(validate: true)
-        txtfieldEmployerPhoneNumber.setValidation(validationType: .phoneNumber)
+        txtfieldEmployerPhoneNumber.setTextField(placeholder: "Employer Phone Number", controller: self, validationType: .phoneNumber, keyboardType: .phonePad)
         
-        txtfieldJobTitle.setTextField(placeholder: "Job Title")
-        txtfieldJobTitle.setDelegates(controller: self)
-        txtfieldJobTitle.setTextField(keyboardType: .asciiCapable)
+        txtfieldJobTitle.setTextField(placeholder: "Job Title", controller: self, validationType: .required)
         txtfieldJobTitle.setIsValidateOnEndEditing(validate: false)
         
         txtfieldStartDate.setTextField(placeholder: "Start Date (MM/DD/YYYY)")
         txtfieldStartDate.setDelegates(controller: self)
         txtfieldStartDate.setValidation(validationType: .required)
         txtfieldStartDate.setTextField(keyboardType: .asciiCapable)
-        txtfieldStartDate.setIsValidateOnEndEditing(validate: true)
         txtfieldStartDate.type = .datePicker
         
         txtfieldProfessionYears.setTextField(placeholder: "Years in Profession")
@@ -131,41 +120,32 @@ class AddCurrentEmployementViewController: BaseViewController {
         txtfieldOwnershipPercentage.setTextField(placeholder: "Ownership Percentage")
         txtfieldOwnershipPercentage.setDelegates(controller: self)
         txtfieldOwnershipPercentage.setTextField(keyboardType: .numberPad)
-        txtfieldOwnershipPercentage.setIsValidateOnEndEditing(validate: true)
         txtfieldOwnershipPercentage.setValidation(validationType: .required)
         txtfieldOwnershipPercentage.type = .percentage
         
-        txtfieldAnnualBaseSalary.setTextField(placeholder: "Annual Base Salary")
-        txtfieldAnnualBaseSalary.setDelegates(controller: self)
-        txtfieldAnnualBaseSalary.setTextField(keyboardType: .numberPad)
-        txtfieldAnnualBaseSalary.setIsValidateOnEndEditing(validate: true)
-        txtfieldAnnualBaseSalary.setValidation(validationType: .required)
+        txtfieldAnnualBaseSalary.setTextField(placeholder: "Annual Base Salary", controller: self, validationType: .required)
         txtfieldAnnualBaseSalary.type = .amount
         
         txtfieldHoursPerWeek.setTextField(placeholder: "Average Hours / Week")
         txtfieldHoursPerWeek.setDelegates(controller: self)
         txtfieldHoursPerWeek.setTextField(keyboardType: .numberPad)
-        txtfieldHoursPerWeek.setIsValidateOnEndEditing(validate: true)
         txtfieldHoursPerWeek.setValidation(validationType: .required)
         
         txtfieldAnnualBonusIncome.setTextField(placeholder: "Annual Bonus Income")
         txtfieldAnnualBonusIncome.setDelegates(controller: self)
         txtfieldAnnualBonusIncome.setTextField(keyboardType: .numberPad)
-        txtfieldAnnualBonusIncome.setIsValidateOnEndEditing(validate: true)
         txtfieldAnnualBonusIncome.setValidation(validationType: .required)
         txtfieldAnnualBonusIncome.type = .amount
         
         txtfieldAnnualOvertime.setTextField(placeholder: "Annual Overtime Income")
         txtfieldAnnualOvertime.setDelegates(controller: self)
         txtfieldAnnualOvertime.setTextField(keyboardType: .numberPad)
-        txtfieldAnnualOvertime.setIsValidateOnEndEditing(validate: true)
         txtfieldAnnualOvertime.setValidation(validationType: .required)
         txtfieldAnnualOvertime.type = .amount
         
         txtfieldAnnualCommision.setTextField(placeholder: "Annual Commission Income")
         txtfieldAnnualCommision.setDelegates(controller: self)
         txtfieldAnnualCommision.setTextField(keyboardType: .numberPad)
-        txtfieldAnnualCommision.setIsValidateOnEndEditing(validate: true)
         txtfieldAnnualCommision.setValidation(validationType: .required)
         txtfieldAnnualCommision.type = .amount
         
