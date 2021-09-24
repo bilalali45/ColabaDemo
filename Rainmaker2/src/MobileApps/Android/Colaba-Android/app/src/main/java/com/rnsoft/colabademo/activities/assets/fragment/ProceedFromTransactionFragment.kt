@@ -1,4 +1,5 @@
 package com.rnsoft.colabademo
+
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -9,12 +10,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RadioGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-
 import com.rnsoft.colabademo.databinding.ProceedFromTransLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-
+import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 import javax.inject.Inject
@@ -136,6 +135,7 @@ import javax.inject.Inject
             }
 
             CustomMaterialFields.setDollarPrefix(binding.annualBaseLayout, requireActivity())
+            binding.annualBaseEditText.addTextChangedListener(NumberTextFormat(binding.annualBaseEditText))
 
             binding.backButton.setOnClickListener {
                 findNavController().popBackStack()

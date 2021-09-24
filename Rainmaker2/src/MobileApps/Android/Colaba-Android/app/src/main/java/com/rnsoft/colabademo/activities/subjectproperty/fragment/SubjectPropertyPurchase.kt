@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
+import androidx.core.view.iterator
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
@@ -18,6 +19,7 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import kotlinx.android.synthetic.main.subject_property_purchase.*
+import timber.log.Timber
 
 /**
  * Created by Anita Kiran on 9/8/2021.
@@ -40,9 +42,6 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
             binding = SubjectPropertyPurchaseBinding.inflate(inflater, container, false)
             savedViewInstance = binding.root
 
-            binding.testSubject.setOnClickListener{
-                HideSoftkeyboard.hide(requireContext(), binding.testSubject)
-            }
 
             binding.rbSubProperty.isChecked = false
             binding.rbSubPropertyAddress.isChecked = false
@@ -57,7 +56,7 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
             binding.rbNonOccupying.setOnClickListener(this)
             binding.rbMixedPropertyYes.setOnClickListener(this)
             binding.rbMixedPropertyNo.setOnClickListener(this)
-            binding.parentLayout.setOnClickListener(this)
+            binding.subpropertyParentLayout.setOnClickListener(this)
             binding.btnSave.setOnClickListener(this)
 
             setSpinnerData()
@@ -76,7 +75,10 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
             R.id.layout_address -> setAddressClick()
             R.id.backButton -> requireActivity().finish()
             R.id.btn_save -> requireActivity().finish()
-            R.id.parentLayout -> HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
+            R.id.subproperty_parent_layout -> {
+                HideSoftkeyboard.hide(requireActivity(),binding.subpropertyParentLayout)
+                super.removeFocusFromAllFields(binding.subpropertyParentLayout)
+            }
 
             R.id.rb_mixed_property_no ->
                 if (binding.rbMixedPropertyNo.isChecked) {

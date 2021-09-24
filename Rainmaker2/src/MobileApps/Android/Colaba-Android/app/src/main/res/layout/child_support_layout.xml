@@ -175,7 +175,7 @@
                 android:completionThreshold="1"
                 android:cursorVisible="false"
                 android:inputType="none"
-                android:focusable="true"
+                android:focusable="false"
 
                 android:focusableInTouchMode="true"
                 android:fontFamily="@font/rubik_regular"
@@ -350,7 +350,7 @@
                 android:completionThreshold="1"
                 android:cursorVisible="false"
                 android:inputType="none"
-                android:focusable="true"
+                android:focusable="false"
 
                 android:focusableInTouchMode="true"
                 android:fontFamily="@font/rubik_regular"
@@ -522,7 +522,7 @@
                 android:backgroundTint="@android:color/transparent"
                 android:completionThreshold="1"
                 android:cursorVisible="false"
-                android:focusable="true"
+                android:focusable="false"
                 android:focusableInTouchMode="true"
 
                 android:fontFamily="@font/rubik_regular"

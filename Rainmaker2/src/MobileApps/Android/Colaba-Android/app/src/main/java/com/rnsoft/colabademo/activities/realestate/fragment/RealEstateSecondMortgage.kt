@@ -30,7 +30,7 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
 
         binding.backButton.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
-        binding.parentLayout.setOnClickListener(this)
+        binding.layoutRealestateSecMortgage.setOnClickListener(this)
         binding.rbQuesYes.setOnClickListener(this)
         binding.rbQuesNo.setOnClickListener(this)
         binding.switchCreditLimit.setOnClickListener(this)
@@ -45,7 +45,11 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
         when (view?.getId()) {
             R.id.backButton ->  requireActivity().onBackPressed()
             R.id.btn_save ->  checkValidations()
-            R.id.parentLayout-> HideSoftkeyboard.hide(requireActivity(), binding.parentLayout)
+            R.id.layout_realestate_sec_mortgage-> {
+                HideSoftkeyboard.hide(requireActivity(), binding.layoutRealestateSecMortgage)
+                super.removeFocusFromAllFields(binding.layoutRealestateSecMortgage)
+            }
+
             R.id.rb_ques_yes ->
                 if (binding.rbQuesYes.isChecked) {
                     binding.rbQuesYes.setTypeface(null, Typeface.BOLD)

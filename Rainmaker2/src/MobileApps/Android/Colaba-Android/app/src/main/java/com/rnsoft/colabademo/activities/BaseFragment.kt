@@ -14,13 +14,14 @@ open class BaseFragment:Fragment() {
         }
     }
 
-    private fun removeFocusFromAllFields(rootView: ViewGroup){
+    protected fun removeFocusFromAllFields(rootView: ViewGroup){
         for (item in rootView) {
             //if(item is ConstraintLayout || item is LinearLayoutCompat || item is LinearLayout || item is RelativeLayout || item is FrameLayout)
             if(item is ViewGroup)
                 removeFocusFromAllFields(item)
             item.clearFocus()
-            Timber.e("clearing focus")
+
+            //Timber.e("clearing focus "+item.id)
         }
     }
 

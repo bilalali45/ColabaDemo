@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colaba_loan_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/assets_top_container"
@@ -89,13 +90,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9">
 
-
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/yesRadioBtn"
             android:layout_width="match_parent"
             android:layout_height="22dp"
             android:fontFamily="@font/rubik_regular"
-            android:text="Yes"
+            android:text="@string/yes"
             android:textColor="@color/grey_color_one"
             android:textSize="15sp"
             android:paddingStart="15dp"
@@ -107,7 +107,7 @@
             android:layout_height="22dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/rubik_regular"
-            android:text="No"
+            android:text="@string/no"
             android:textColor="@color/grey_color_one"
             android:textSize="15sp"
             android:checked="true"
@@ -172,21 +172,18 @@
                 style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="bottom"
                 android:backgroundTint="@android:color/transparent"
                 android:completionThreshold="1"
-                
                 android:cursorVisible="false"
+                android:focusable="false"
                 android:inputType="none"
-
-                android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:fontFamily="@font/rubik_regular"
                 android:gravity="bottom"
+                android:layout_gravity="bottom"
+                android:fontFamily="@font/rubik_regular"
                 android:paddingStart="0dp"
                 android:paddingEnd="0dp"
                 android:spinnerMode="dropdown"
-
                 android:textAlignment="gravity"
                 android:textColor="@color/grey_color_one"
                 android:textColorHint="@color/grey_color_three"

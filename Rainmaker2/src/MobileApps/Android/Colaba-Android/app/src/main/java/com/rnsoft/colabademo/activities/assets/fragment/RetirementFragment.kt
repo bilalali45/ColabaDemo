@@ -1,25 +1,17 @@
 package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.RetirementLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-
+import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.login_layout.*
-import kotlinx.android.synthetic.main.non_permenant_resident_layout.*
-import java.util.ArrayList
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -46,6 +38,7 @@ class RetirementFragment:BaseFragment() {
     private fun setUpUI(){
 
         CustomMaterialFields.setDollarPrefix(binding.annualBaseLayout, requireActivity())
+        binding.annualBaseEditText.addTextChangedListener(NumberTextFormat(binding.annualBaseEditText))
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()

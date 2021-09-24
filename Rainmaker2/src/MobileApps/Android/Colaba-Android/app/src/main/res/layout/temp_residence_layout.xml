@@ -12,7 +12,6 @@
         android:id="@+id/assets_top_container"
         android:layout_width="match_parent"
         android:layout_height="54dp"
-        android:background="@color/colaba_loan_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -65,7 +64,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
             app:srcCompat="@drawable/ic_grey_del" />
 
         <View
@@ -76,7 +74,7 @@
             android:layout_marginTop="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/borrower_purpose" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -99,10 +97,7 @@
             android:id="@+id/topSearchTextViewLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-
             app:layout_constraintEnd_toEndOf="parent"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/assets_top_container">
 
@@ -112,7 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:hint="@string/search_home_address"
+                android:hint="@string/search_mailing_address"
                 android:background="@android:color/transparent"
                 android:textColorHint="@color/primary_info_label_color"
                 app:boxCollapsedPaddingTop="1dp"
@@ -159,21 +154,31 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-
-
             <View
                 android:id="@+id/topSearchTextInputLine"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginStart="20dp"
-
                 android:layout_marginEnd="20dp"
-
                 android:background="@color/grey_color_four"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/topSearchFieldTextInputLayout" />
 
+<!--            <TextView-->
+<!--                android:visibility="gone"-->
+<!--                android:id="@+id/tv_error"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:textColor="@color/colaba_red_color"-->
+<!--                android:text="@string/error_field_required"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:textSize="11sp"-->
+<!--                android:fontFamily="@font/rubik_regular"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/topSearchTextInputLine"/>-->
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -698,15 +703,14 @@
                     android:layout_height="match_parent"
                     style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
                     android:backgroundTint="@android:color/transparent"
+                    android:completionThreshold="1"
+                    android:dropDownAnchor="@+id/housingCompleteTextView"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:inputType="none"
+                    android:focusableInTouchMode="true"
                     android:gravity="bottom"
                     android:layout_gravity="bottom"
-                    android:completionThreshold="1"
-                    android:cursorVisible="false"
-                    android:dropDownAnchor="@+id/housingCompleteTextView"
-
-                    android:inputType="none"
-                    android:focusable="false"
-                    android:focusableInTouchMode="true"
                     android:fontFamily="@font/rubik_regular"
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"

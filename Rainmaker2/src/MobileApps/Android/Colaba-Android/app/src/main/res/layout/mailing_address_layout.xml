@@ -13,7 +13,6 @@
         android:id="@+id/assets_top_container"
         android:layout_width="match_parent"
         android:layout_height="54dp"
-        android:background="@color/colaba_loan_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -62,11 +61,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
             app:srcCompat="@drawable/ic_grey_del" />
 
         <View
@@ -77,7 +74,7 @@
             android:layout_marginTop="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/borrower_purpose" />
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -556,84 +553,6 @@
                 android:textSize="@dimen/ed_txt_size_primary_info" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
-
-
-
-
-        <!--
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/countryCompleteLayout2"
-
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:gravity="left"
-            android:textColorHint="@color/grey_color_three"
-            android:hint="@string/country"
-            android:paddingStart="-17dp"
-            android:theme="@style/InputText_Overlay"
-            app:boxBackgroundColor="@android:color/transparent"
-
-            app:boxStrokeColor="@null"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:hintTextColor="@color/grey_color_two"
-            app:endIconDrawable="@drawable/ic_down_arrow"
-            app:endIconMode="custom"
-
-            app:endIconTint="@color/grey_color_three"
-
-            android:layout_marginStart="20dp"
-
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="20dp"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/zipcodeLayout"
-            >
-
-
-
-            <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:id="@+id/countryCompleteTextView2"
-
-                android:layout_width="match_parent"
-                android:drawableEnd="@drawable/ic_down_arrow"
-                android:textColorHint="@color/grey_color_three"
-                android:text=" "
-                android:completionThreshold="1"
-                android:dropDownVerticalOffset="-40dp"
-
-
-                android:dropDownHeight="260dp"
-                android:dropDownAnchor="@+id/zipcodeLayout"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-
-                android:spinnerMode="dropdown"
-                android:textAlignment="viewStart"
-
-                android:layout_height="wrap_content"
-
-                android:textSize="15sp"
-                android:padding="0dp"
-                android:fontFamily="@font/rubik_regular"
-                android:textColor="@color/grey_color_one"
-                android:cursorVisible="true"
-
-
-
-
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
-        -->
 
 
 

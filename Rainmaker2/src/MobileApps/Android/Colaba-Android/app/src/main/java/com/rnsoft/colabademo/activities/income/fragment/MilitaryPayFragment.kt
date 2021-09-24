@@ -19,7 +19,7 @@ import java.util.*
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
-class MilitaryPay : BaseFragment(), View.OnClickListener {
+class MilitaryPayFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var binding: IncomeMilitaryPayBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
@@ -64,7 +64,10 @@ class MilitaryPay : BaseFragment(), View.OnClickListener {
             R.id.btn_save_change -> checkValidations()
             R.id.layout_address -> openAddressFragment()
             R.id.btn_close -> findNavController().popBackStack()
-            R.id.mainLayout_military_pay -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutMilitaryPay)
+            R.id.mainLayout_military_pay -> {
+                HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutMilitaryPay)
+                super.removeFocusFromAllFields(binding.mainLayoutMilitaryPay)
+            }
 
         }
     }

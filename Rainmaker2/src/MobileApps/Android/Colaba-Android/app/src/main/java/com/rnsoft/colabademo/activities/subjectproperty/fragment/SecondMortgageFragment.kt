@@ -28,7 +28,7 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
 
         binding.backButton.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
-        binding.parentLayout.setOnClickListener(this)
+        binding.secMortgageParentLayout.setOnClickListener(this)
         binding.rbQuesOneYes.setOnClickListener(this)
         binding.rbQuesOneNo.setOnClickListener(this)
         binding.rbQuesTwoYes.setOnClickListener(this)
@@ -45,7 +45,10 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
         when (view?.getId()) {
             R.id.backButton ->  requireActivity().onBackPressed()
             R.id.btn_save ->  checkValidations()
-            R.id.parentLayout-> HideSoftkeyboard.hide(requireActivity(), binding.parentLayout)
+            R.id.sec_mortgage_parentLayout-> {
+                HideSoftkeyboard.hide(requireActivity(), binding.secMortgageParentLayout)
+                super.removeFocusFromAllFields(binding.secMortgageParentLayout)
+            }
             R.id.rb_ques_one_yes ->
                 if (binding.rbQuesOneYes.isChecked) {
                     binding.rbQuesOneYes.setTypeface(null, Typeface.BOLD)

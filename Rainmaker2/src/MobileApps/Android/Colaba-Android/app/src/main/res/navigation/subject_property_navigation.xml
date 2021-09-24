@@ -40,7 +40,33 @@
         android:id="@+id/nav_sub_property_refinance"
         android:name="com.rnsoft.colabademo.SubjectPropertyRefinance"
         android:label="@string/subject_property"
-        tools:layout="@layout/sub_property_refinance" />
+        tools:layout="@layout/sub_property_refinance">
+
+        <action
+            android:id="@+id/action_mixed_property"
+            app:destination="@id/nav_mixed_use_property"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down"/>
+
+        <action
+            android:id="@+id/action_address"
+            app:destination="@id/nav_sub_property_address"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down"/>
+
+        <action
+            android:id="@+id/action_refinance_first_mortgage"
+            app:destination="@id/nav_first_mortage"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down"/>
+
+        <action
+            android:id="@+id/action_refinance_sec_mortgage"
+            app:destination="@id/nav_sec_mortage"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_first_mortage"

@@ -17,16 +17,13 @@
     </include>
 
     <ScrollView
-        android:id="@+id/scrollview_loan"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fillViewport="true"
+        android:layout_height="wrap_content"
         android:scrollbars="none"
         android:isScrollContainer="false"
         app:layout_constraintTop_toBottomOf="@+id/header_loan_purchase"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:id="@+id/loan_purchase_layout"
@@ -276,6 +273,7 @@
                     android:focusableInTouchMode="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
     </ScrollView>
 

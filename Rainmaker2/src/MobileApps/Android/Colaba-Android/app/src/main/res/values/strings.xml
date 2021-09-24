@@ -191,13 +191,11 @@
     <string name="unit_or_apt">Unit Or Apt. Number (Optional)</string>
     <string name="city">City</string>
     <string name="relationship_details"> Relationship Details</string>
-
     <string name="county">County</string>
     <string name="state">State</string>
-
     <string name="type_of_relations">Types of Relationship</string>
-
-    <string name="search_home_address">Search Mailing Address</string>
+    <string name="search_mailing_address">Search Mailing Address</string>
+    <string name="search_home_address">Search Home Address</string>
 
     <string name="zip_code">Zip Code</string>
     <string name="country">Country</string>
@@ -385,6 +383,7 @@
     <string name="mixed_use_property">Mixed Use Property Property</string>
     <string name="first_mortgage">First Mortgage</string>
     <string name="sec_mortgage">Second Mortgage</string>
+    <string name="first_mortgage_payment">First Mortgage Payment</string>
     <string name="sec_mortgage_payment">Second Mortgage Payment</string>
     <string name="credit_limit_switch">Home Equity Line of Credit (HELOC)</string>
     <string name="yes">Yes</string>
@@ -454,11 +453,10 @@
     <string name="mortgage_balance">Mortgage Balance</string>
     <string name="mortgage_payment">Mortgage Payment</string>
     <string name="credit_limit">Credit Limit</string>
+    <string name="unpaid_first_mortgage_bal">Unpaid First Mortgage Balance</string>
     <string name="unpaid_sec_mortgage_bal">Unpaid Second Mortgage Balance</string>
     <string name="sub_property_sec_mortgage_ques1">Will this mortgage be combined with the new first mortgage?</string>
     <string name="sub_property_sec_mortgage_ques2">Was this mortgage taken when the property was purchased?</string>
-
-
 
     <string name="child_support_question">Are you currently obligated to pay child support, alimony or separate maintenance?</string>
     <string name="undisclosed_mortgage_question">Have you or will you be applying for a mortgage loan on another property (not the property securing this loan) on or before closing this transaction that is not disclosed on this loan application?</string>
@@ -476,6 +474,10 @@
     <string name="have_you_had_an_ownership_interest">Have you had an ownership interest in another property in the last three years?</string>
     <string name="will_this_property_be_subject_to_a_lien">Will this property be subject to a lien that could take priority over the first mortgage lien, such as a clean energy lien paid through your property taxes (e.g., the Property Assessed Clean Energy Program)?</string>
 
+    <string name="add_employer_add">Add Employer Address</string>
+    <string name="add_business_add">Add Business Address</string>
+    <string name="add_service_add">Add Service Location Address</string>
+    <string name="add_property_add">Add Property Address</string>
 
 
 </resources>

@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/half_white"
-    android:id="@+id/parentLayout">
+    android:background="@color/half_white">
 
     <include
         android:id="@+id/header_loan_purchase"
@@ -18,11 +17,11 @@
     </include>
 
     <ScrollView
-        android:id="@+id/scroll_primary_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none"
         android:isScrollContainer="false"
+
         app:layout_constraintTop_toBottomOf="@+id/header_loan_purchase"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">

@@ -73,7 +73,10 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
             R.id.btn_save_change -> checkValidations()
             R.id.layout_address -> openAddressFragment()
             R.id.btn_close -> findNavController().popBackStack()
-            R.id.mainLayout_businessCont -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutBusinessCont)
+            R.id.mainLayout_businessCont -> {
+                HideSoftkeyboard.hide(requireActivity(), binding.mainLayoutBusinessCont)
+                super.removeFocusFromAllFields(binding.mainLayoutBusinessCont)
+            }
 
         }
     }

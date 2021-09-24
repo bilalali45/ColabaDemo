@@ -78,7 +78,10 @@ class RealEstateOwnedFragment : BaseFragment() , View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
-            R.id.realestate_mainlayout -> HideSoftkeyboard.hide(requireActivity(),binding.realestateMainlayout)
+            R.id.realestate_mainlayout -> {
+                HideSoftkeyboard.hide(requireActivity(),binding.realestateMainlayout)
+                super.removeFocusFromAllFields(binding.realestateMainlayout)
+            }
             R.id.btn_close -> requireActivity().finish()
             R.id.btn_save -> checkValidations()
             R.id.btn_top_delete -> DeleteCurrentResidenceDialogFragment.newInstance(getString(R.string.txt_delete_property)).show(childFragmentManager, DeleteCurrentResidenceDialogFragment::class.java.canonicalName)

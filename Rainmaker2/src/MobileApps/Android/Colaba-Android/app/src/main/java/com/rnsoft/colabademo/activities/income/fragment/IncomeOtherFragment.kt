@@ -66,7 +66,10 @@ class IncomeOtherFragment : BaseFragment(), View.OnClickListener {
         when (view?.getId()) {
             R.id.btn_save_change -> checkValidations()
             R.id.btn_close -> findNavController().popBackStack()
-            R.id.mainLayout_other -> HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutOther)
+            R.id.mainLayout_other -> {
+                HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutOther)
+                super.removeFocusFromAllFields(binding.mainLayoutOther)
+            }
 
         }
     }

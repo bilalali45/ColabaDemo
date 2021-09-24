@@ -147,6 +147,34 @@
 
             </LinearLayout>
 
+            <!-- add address -->
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/add_employer_address"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/style_btn_add"
+                android:clickable="true"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_add_icon_light" />
+
+                <TextView
+                    android:id="@+id/tv_residence"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/rubik_medium"
+                    android:text="@string/add_employer_add"
+                    android:textAlignment="center"
+                    android:textColor="@color/colaba_apptheme_blue"
+                    android:textSize="13sp" />
+            </LinearLayout>
 
             <!-- Job Title -->
 
@@ -348,7 +376,6 @@
             </RadioGroup>
 
 
-
             <!-- ownership percentage -->
 
             <com.google.android.material.textfield.TextInputLayout
@@ -466,8 +493,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
-
             <com.google.android.material.textfield.TextInputLayout
                 android:visibility="gone"
                 android:id="@+id/layout_avg_hours"
@@ -572,7 +597,7 @@
                 android:id="@+id/layout_bonus_income"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/bonus_income"
                 android:textColorHint="@color/primary_info_label_color"
@@ -619,7 +644,7 @@
                 android:id="@+id/layout_overtime_income"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/overtime_income"
                 android:textColorHint="@color/primary_info_label_color"
@@ -669,7 +694,7 @@
                 android:id="@+id/layout_comm_income"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/commission_income"
                 android:textColorHint="@color/primary_info_label_color"

@@ -35,7 +35,7 @@ class FirstMortgageFragment : BaseFragment(),View.OnClickListener {
 
         binding.backButton.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
-        binding.parentLayout.setOnClickListener(this)
+        binding.firstMorgtageParentLayout.setOnClickListener(this)
         binding.cbFloodInsurance.setOnClickListener(this)
         binding.cbHomeownwerInsurance.setOnClickListener(this)
         binding.cbPropertyTaxes.setOnClickListener(this)
@@ -52,7 +52,10 @@ class FirstMortgageFragment : BaseFragment(),View.OnClickListener {
         when (view?.getId()) {
             R.id.backButton ->  requireActivity().onBackPressed()
             R.id.btn_save ->  checkValidations()
-            R.id.parentLayout->HideSoftkeyboard.hide(requireActivity(), binding.parentLayout)
+            R.id.first_morgtage_parentLayout-> {
+                HideSoftkeyboard.hide(requireActivity(), binding.firstMorgtageParentLayout)
+                super.removeFocusFromAllFields(binding.firstMorgtageParentLayout)
+            }
             R.id.cb_flood_insurance ->
                 if (binding.cbFloodInsurance.isChecked) {
                     binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
