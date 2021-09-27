@@ -88,7 +88,7 @@
                 android:id="@+id/layout_purchase_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="26dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/purchase_price"
                 android:textColorHint="@color/primary_info_label_color"
@@ -123,7 +123,7 @@
                 android:id="@+id/layout_loan_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="26dp"
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/loan_amount"
                 android:textColorHint="@color/primary_info_label_color"
@@ -161,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="2"
-                android:layout_marginTop="50dp">
+                android:layout_marginTop="26dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_down_payment"
@@ -239,7 +239,7 @@
                 android:id="@+id/layout_closing_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="26dp"
                 android:hint="@string/estimated_closing_date"
                 android:textColorHint="@color/primary_info_label_color"
                 android:fontFamily="@font/rubik_light"

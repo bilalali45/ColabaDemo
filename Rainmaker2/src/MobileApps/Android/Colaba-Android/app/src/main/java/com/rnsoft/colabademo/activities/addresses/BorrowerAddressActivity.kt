@@ -4,9 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import com.rnsoft.colabademo.databinding.BorrowerAddressLayoutBinding
@@ -27,6 +24,8 @@ class BorrowerAddressActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = BorrowerAddressLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        overridePendingTransition(R.anim.slide_left, R.anim.hold)
 
         val navController = findNavController(R.id.nav_host_borrower_address_main)
         val appBarConfiguration = AppBarConfiguration(

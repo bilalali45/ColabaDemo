@@ -26,9 +26,6 @@
 
     <style name="MySpinnerDatePicker" parent="android:Widget.Material.DatePicker">
         <item name="android:datePickerMode">spinner</item>
-
-
-
     </style>
 
     <style name="datepicker" parent="Theme.AppCompat.Light.Dialog">
@@ -77,6 +74,10 @@
     <style name="animation">
         <item name="android:windowEnterAnimation">@anim/in_animation</item>
         <item name="android:windowExitAnimation">@anim/out_animation</item>
+    </style>
+
+    <style name="noAnimTheme" parent="android:Theme">
+        <item name="android:windowAnimationStyle">@null</item>
     </style>
 
     <!--

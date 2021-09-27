@@ -2,10 +2,7 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import com.rnsoft.colabademo.databinding.BorrowerSubjectPropertyLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -21,6 +18,8 @@ class SubjectPropertyActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = BorrowerSubjectPropertyLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        overridePendingTransition(R.anim.slide_left, R.anim.hold)
+
 
         val extras = intent.extras
         extras?.let {

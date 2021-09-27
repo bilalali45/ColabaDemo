@@ -1,21 +1,17 @@
 package com.rnsoft.colabademo
 
-import android.R
-import android.app.DatePickerDialog
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.DatePicker
+import androidx.activity.addCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithBackNavBinding
@@ -54,7 +50,15 @@ class LoanPurchaseInfo : BaseFragment(){
 
         bindingToolbar.backButton.setOnClickListener {
             requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_right)
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_right)
+        }
+
+
         binding.btnSaveChange.setOnClickListener {
             checkValidations()
         }
@@ -276,7 +280,7 @@ class LoanPurchaseInfo : BaseFragment(){
     }
 
     private fun setLoanStageSpinner() {
-        val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, loanStageArray)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, loanStageArray)
         binding.tvLoanStage.setAdapter(adapter)
         binding.tvLoanStage.setOnFocusChangeListener { _, _ ->
             binding.tvLoanStage.showDropDown()

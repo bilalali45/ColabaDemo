@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.addCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputLayout
@@ -46,14 +47,14 @@ class LoanRefinance : BaseFragment() {
 
         bindingToolbar.backButton.setOnClickListener {
             requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_right)
+
+        }
+        requireActivity().onBackPressedDispatcher.addCallback {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_right)
         }
 
-//        binding.loanRefinanceLayout.setOnClickListener{
-//            HideSoftkeyboard.hide(requireActivity(),binding.loanRefinanceLayout)
-//        }
-//        binding.parentLayout.setOnClickListener{
-//            HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
-//        }
         super.addListeners(binding.root)
         return binding.root
 

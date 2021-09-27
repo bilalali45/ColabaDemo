@@ -56,10 +56,10 @@ open class AssetBaseFragment:BaseFragment() {
 
     }
 
-    private val navigateToBank = View.OnClickListener { findNavController().navigate(R.id.navigation_bank_account) }
-    private val navigateToRetirement = View.OnClickListener { findNavController().navigate(R.id.navigation_retirement_fragment) }
-    private val navigateToStockBonds = View.OnClickListener { findNavController().navigate(R.id.navigation_stock_bonds) }
-    private val navigateToTransactionAsset = View.OnClickListener { findNavController().navigate(R.id.navigation_proceed_from_transaction) }
-    private val navigateToGiftAsset = View.OnClickListener { findNavController().navigate(R.id.navigation_gift_assets) }
-    private val navigateToOtherAsset = View.OnClickListener { findNavController().navigate(R.id.navigation_other_asset) }
+    private val navigateToBank = View.OnClickListener { findNavController().navigate(R.id.action_assets_bank_account) }
+    private val navigateToRetirement = View.OnClickListener { findNavController().navigate(R.id.action_assets_retirement) }
+    private val navigateToStockBonds = View.OnClickListener { findNavController().navigate(R.id.action_assets_stocks_bond) }
+    private val navigateToTransactionAsset = View.OnClickListener { findNavController().navigate(R.id.action_assets_proceeds_transaction) }
+    private val navigateToGiftAsset = View.OnClickListener { findNavController().navigate(R.id.action_assets_gift) }
+    private val navigateToOtherAsset = View.OnClickListener { findNavController().navigate(R.id.action_assets_other) }
 }

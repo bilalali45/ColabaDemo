@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
@@ -79,6 +80,12 @@ class GovtQuestionsTabFragment : GovtQuestionBaseFragment() {
 
         binding.backButton.setOnClickListener {
             requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_right)
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            requireActivity().finish()
+
         }
 
         super.addListeners(binding.root)

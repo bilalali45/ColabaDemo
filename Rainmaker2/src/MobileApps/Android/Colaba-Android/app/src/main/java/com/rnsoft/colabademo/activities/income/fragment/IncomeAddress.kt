@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-import android.app.ActionBar
 import android.content.res.ColorStateList
 import android.location.Address
 import android.location.Geocoder
@@ -15,7 +14,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.maps.model.LatLng
@@ -95,13 +93,12 @@ class IncomeAddress : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListene
         // set lable focus
         binding.tvSearch.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
-                //binding.searchSeparator.minimumHeight = 2
-                binding.searchSeparator.layoutParams.height = 1
+                binding.searchSeparator.layoutParams.height = 3
                 binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_apptheme_blue, requireActivity().theme))
                 binding.tvSearch.addTextChangedListener(placeTextWatcher)
             } else {
                 binding.tvSearch.removeTextChangedListener(placeTextWatcher)
-                binding.searchSeparator.minimumHeight = 0.5.toInt()
+                binding.searchSeparator.layoutParams.height = 1
                 binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
 
                 val search: String = binding.tvSearch.text.toString()
@@ -127,13 +124,13 @@ class IncomeAddress : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListene
 
     private fun setError(){
         binding.tvError.visibility = View.VISIBLE
-        binding.searchSeparator.layoutParams.height = 1
+        binding.searchSeparator.layoutParams.height = 3
         binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_red_color, requireActivity().theme))
     }
 
     private fun removeError(){
         binding.tvError.visibility = View.GONE
-        //binding.searchSeparator.layoutParams.height= 0.5.toInt()
+        binding.searchSeparator.layoutParams.height = 1
         binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
     }
 
@@ -224,10 +221,8 @@ class IncomeAddress : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListene
         // Create a new Places client instance.
         placesClient = Places.createClient(requireContext())
 
-
         binding.tvSearch.dropDownHeight = 0
 
-        //binding.tvSearch.setOnClickListener { }
     }
 
     private val placeTextWatcher = (object : TextWatcher {
