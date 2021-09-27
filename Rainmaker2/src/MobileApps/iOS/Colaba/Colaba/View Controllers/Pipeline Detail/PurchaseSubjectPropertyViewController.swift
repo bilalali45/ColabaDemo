@@ -64,45 +64,29 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     //MARK:- Methods and Actions
     func setTextFields() {
         ///Property Type Text Field
-        txtfieldPropertyType.setTextField(placeholder: "Property Type")
-        txtfieldPropertyType.setDelegates(controller: self)
-        txtfieldPropertyType.setValidation(validationType: .noValidation)
+        txtfieldPropertyType.setTextField(placeholder: "Property Type" , controller: self, validationType: .noValidation)
         txtfieldPropertyType.type = .dropdown
         txtfieldPropertyType.setDropDownDataSource(kPropertyTypeArray)
         
         ///Occupancy Type Text Field
-        txtfieldOccupancyType.setTextField(placeholder: "Occupancy Type")
-        txtfieldOccupancyType.setDelegates(controller: self)
-        txtfieldOccupancyType.setValidation(validationType: .noValidation)
+        txtfieldOccupancyType.setTextField(placeholder: "Occupancy Type" , controller: self, validationType: .noValidation)
         txtfieldOccupancyType.type = .dropdown
         txtfieldOccupancyType.setDropDownDataSource(kOccupancyTypeArray)
         
         ///Appraised Property Value Text Field
-        txtfieldAppraisedPropertyValue.setTextField(placeholder: "Appraised Property Value")
-        txtfieldAppraisedPropertyValue.setDelegates(controller: self)
-        txtfieldAppraisedPropertyValue.setTextField(keyboardType: .numberPad)
-        txtfieldAppraisedPropertyValue.setValidation(validationType: .noValidation)
+        txtfieldAppraisedPropertyValue.setTextField(placeholder: "Appraised Property Value" , controller: self, validationType: .noValidation)
         txtfieldAppraisedPropertyValue.type = .amount
         
         ///Annual Property Taxes Text Field
-        txtfieldTax.setTextField(placeholder: "Annual Property Taxes")
-        txtfieldTax.setDelegates(controller: self)
-        txtfieldTax.setTextField(keyboardType: .numberPad)
-        txtfieldTax.setValidation(validationType: .noValidation)
+        txtfieldTax.setTextField(placeholder: "Annual Property Taxes", controller: self, validationType: .noValidation)
         txtfieldTax.type = .amount
         
         ///Annual Homeowner's Insurance Text Field
-        txtfieldHomeOwnerInsurance.setTextField(placeholder: "Annual Homeowner's Insurance")
-        txtfieldHomeOwnerInsurance.setDelegates(controller: self)
-        txtfieldHomeOwnerInsurance.setTextField(keyboardType: .numberPad)
-        txtfieldHomeOwnerInsurance.setValidation(validationType: .noValidation)
+        txtfieldHomeOwnerInsurance.setTextField(placeholder: "Annual Homeowner's Insurance", controller: self, validationType: .noValidation)
         txtfieldHomeOwnerInsurance.type = .amount
         
         ///Annual Flood Insurance Text Field
-        txtfieldFloodInsurance.setTextField(placeholder: "Annual Flood Insurance")
-        txtfieldFloodInsurance.setDelegates(controller: self)
-        txtfieldFloodInsurance.setTextField(keyboardType: .numberPad)
-        txtfieldFloodInsurance.setValidation(validationType: .noValidation)
+        txtfieldFloodInsurance.setTextField(placeholder: "Annual Flood Insurance", controller: self, validationType: .noValidation)
         txtfieldFloodInsurance.type = .amount
     }
     

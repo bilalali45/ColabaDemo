@@ -6,9 +6,6 @@
 //
 
 import UIKit
-import Material
-import MonthYearPicker
-import DropDown
 
 class RefinanceSubjectPropertyViewController: BaseViewController {
     
@@ -29,16 +26,11 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var lblSubjectPropertyAddress: UILabel!
     @IBOutlet weak var btnSubjectPropertyAddress: UIButton!
     @IBOutlet weak var lblAddress: UILabel!
-    @IBOutlet weak var txtfieldPropertyType: TextField!
-    @IBOutlet weak var btnPropertyTypeDropDown: UIButton!
-    @IBOutlet weak var propertyTypeDropDownAnchorView: UIView!
-    @IBOutlet weak var txtfieldOccupancyType: TextField!
-    @IBOutlet weak var btnOccupancyTypeDropDown: UIButton!
-    @IBOutlet weak var occupancyTypeDropDownAnchorView: UIView!
-    @IBOutlet weak var txtfieldRentalIncome: TextField!
+    @IBOutlet weak var txtfieldPropertyType: ColabaTextField!
+    @IBOutlet weak var txtfieldOccupancyType: ColabaTextField!
+    @IBOutlet weak var txtfieldRentalIncome: ColabaTextField!
     @IBOutlet weak var txtfieldRentalIncomeTopConstraint: NSLayoutConstraint! //30 or 0
     @IBOutlet weak var txtfieldRentalIncomeHeightConstraint: NSLayoutConstraint! // 39 or 0
-    @IBOutlet weak var rentalIncomeDollarView: UIView!
     @IBOutlet weak var propertyView: UIView!
     @IBOutlet weak var propertyViewHeightConstraint: NSLayoutConstraint! //203 or 347
     @IBOutlet weak var lblUsePropertyQuestion: UILabel!
@@ -50,17 +42,12 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var lblNo: UILabel!
     @IBOutlet weak var propertyDetailView: UIView!
     @IBOutlet weak var lblPropertyUseDetail: UILabel!
-    @IBOutlet weak var txtfieldAppraisedPropertyValue: TextField!
-    @IBOutlet weak var appraisedPropertyValueDollarView: UIView!
-    @IBOutlet weak var txtfieldHomePurchaseDate: TextField!
-    @IBOutlet weak var txtfieldHomeOwnerAssociationDues: TextField!
-    @IBOutlet weak var homeOwnerAssociationDollarView: UIView!
-    @IBOutlet weak var txtfieldTax: TextField!
-    @IBOutlet weak var taxDollarView: UIView!
-    @IBOutlet weak var txtfieldHomeOwnerInsurance: TextField!
-    @IBOutlet weak var homeOwnerInsuranceDollarView: UIView!
-    @IBOutlet weak var txtfieldFloodInsurance: TextField!
-    @IBOutlet weak var floodInsuranceDollarView: UIView!
+    @IBOutlet weak var txtfieldAppraisedPropertyValue: ColabaTextField!
+    @IBOutlet weak var txtfieldHomePurchaseDate: ColabaTextField!
+    @IBOutlet weak var txtfieldHomeOwnerAssociationDues: ColabaTextField!
+    @IBOutlet weak var txtfieldTax: ColabaTextField!
+    @IBOutlet weak var txtfieldHomeOwnerInsurance: ColabaTextField!
+    @IBOutlet weak var txtfieldFloodInsurance: ColabaTextField!
     @IBOutlet weak var occupancyStatusView: UIView!
     @IBOutlet weak var lblCoBorrowerName: UILabel!
     @IBOutlet weak var occupyingStackView: UIStackView!
@@ -92,18 +79,21 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var lblSecondMortgagePayment: UILabel!
     @IBOutlet weak var lblSecondMortgageBalance: UILabel!
     
-    let propertyTypeDropDown = DropDown()
-    let occupancyTypeDropDown = DropDown()
     var isTBDProperty = true
     var isMixedUseProperty: Bool?
     var isOccupying: Bool?
-    let homePurchaseDateFormatter = DateFormatter()
     var isFirstMortgage = false
     var isSecondMortgage = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setMaterialTextFieldsAndViews(textfields: [txtfieldPropertyType, txtfieldOccupancyType,txtfieldRentalIncome, txtfieldAppraisedPropertyValue, txtfieldHomePurchaseDate, txtfieldHomeOwnerAssociationDues, txtfieldTax, txtfieldHomeOwnerInsurance, txtfieldFloodInsurance])
+        setViews()
+        setTextFields()
+    }
+    
+    //MARK:- Methods and Actions
+    func setViews() {
+        
         btnYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
         lblYes.font = Theme.getRubikRegularFont(size: 14)
         propertyDetailView.isHidden = true
@@ -112,23 +102,6 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         lblOccupying.font = Theme.getRubikRegularFont(size: 14)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.setScreenHeight()
-        }
-    }
-    
-    //MARK:- Methods and Actions
-    
-    func setMaterialTextFieldsAndViews(textfields: [TextField]){
-        for textfield in textfields{
-            textfield.dividerActiveColor = Theme.getButtonBlueColor()
-            textfield.dividerColor = Theme.getSeparatorNormalColor()
-            textfield.placeholderActiveColor = Theme.getAppGreyColor()
-            textfield.delegate = self
-            textfield.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-            textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
-            textfield.detailColor = .red
-            textfield.detailVerticalOffset = 4
-            textfield.placeholderVerticalOffset = 8
-            textfield.textColor = Theme.getAppBlackColor()
         }
         
         subjectPropertyTBDView.layer.cornerRadius = 8
@@ -151,17 +124,6 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
         
-        txtfieldRentalIncome.addTarget(self, action: #selector(txtfieldRentalIncomeChanged), for: .editingChanged)
-        txtfieldAppraisedPropertyValue.addTarget(self, action: #selector(txtfieldAppraisedValueChanged), for: .editingChanged)
-        txtfieldHomeOwnerAssociationDues.addTarget(self, action: #selector(txtfieldAssociationDuesChanged), for: .editingChanged)
-        txtfieldTax.addTarget(self, action: #selector(txtfieldTaxChanged), for: .editingChanged)
-        txtfieldHomeOwnerInsurance.addTarget(self, action: #selector(txtfieldHomeInsuranceChanged), for: .editingChanged)
-        txtfieldFloodInsurance.addTarget(self, action: #selector(txtfieldFloodInsuranceChanged), for: .editingChanged)
-        
-        homePurchaseDateFormatter.dateStyle = .medium
-        homePurchaseDateFormatter.dateFormat = "MM/yyyy"
-        txtfieldHomePurchaseDate.addInputViewMonthYearDatePicker(target: self, selector: #selector(dateChanged))
-        
         occupyingStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(occupyingStackViewTapped)))
         nonOccupyingStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nonOccupyingStackViewTapped)))
         
@@ -181,59 +143,47 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         secondMortgageView.dropShadowToCollectionViewCell()
         secondMortgageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(secondMortgageViewTapped)))
         
-
-        
-        propertyTypeDropDown.dismissMode = .onTap
-        propertyTypeDropDown.anchorView = propertyTypeDropDownAnchorView
-        propertyTypeDropDown.dataSource = kPropertyTypeArray
-        propertyTypeDropDown.cancelAction = .some({
-            self.btnPropertyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            self.txtfieldPropertyType.dividerColor = Theme.getSeparatorNormalColor()
-            self.txtfieldPropertyType.resignFirstResponder()
-        })
-        propertyTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-            btnPropertyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            txtfieldPropertyType.dividerColor = Theme.getSeparatorNormalColor()
-            txtfieldPropertyType.placeholderLabel.textColor = Theme.getAppGreyColor()
-            txtfieldPropertyType.text = item
-            txtfieldPropertyType.resignFirstResponder()
-            txtfieldPropertyType.detail = ""
-            propertyTypeDropDown.hide()
-            showHideRentalIncome()
-        }
-        
-        occupancyTypeDropDown.dismissMode = .onTap
-        occupancyTypeDropDown.anchorView = occupancyTypeDropDownAnchorView
-        occupancyTypeDropDown.dataSource = kOccupancyTypeArray
-        occupancyTypeDropDown.cancelAction = .some({
-            self.btnOccupancyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            self.txtfieldOccupancyType.dividerColor = Theme.getSeparatorNormalColor()
-            self.txtfieldOccupancyType.resignFirstResponder()
-        })
-        occupancyTypeDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-            btnOccupancyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            txtfieldOccupancyType.dividerColor = Theme.getSeparatorNormalColor()
-            txtfieldOccupancyType.placeholderLabel.textColor = Theme.getAppGreyColor()
-            txtfieldOccupancyType.text = item
-            txtfieldOccupancyType.resignFirstResponder()
-            txtfieldOccupancyType.detail = ""
-            occupancyTypeDropDown.hide()
-            showHideRentalIncome()
-        }
-        
     }
     
-    func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){
-        for allTextField in allTextFields{
-            if (allTextField == selectedTextField){
-                if (allTextField.text == ""){
-                    allTextField.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-                }
-                else{
-                    allTextField.placeholderLabel.textColor = Theme.getAppGreyColor()
-                }
-            }
-        }
+    func setTextFields(){
+
+        txtfieldPropertyType.setTextField(placeholder: "Property Type" , controller: self, validationType: .noValidation)
+        txtfieldPropertyType.type = .dropdown
+        txtfieldPropertyType.setDropDownDataSource(kPropertyTypeArray)
+        
+        ///Occupancy Type Text Field
+        txtfieldOccupancyType.setTextField(placeholder: "Occupancy Type" , controller: self, validationType: .noValidation)
+        txtfieldOccupancyType.type = .dropdown
+        txtfieldOccupancyType.setDropDownDataSource(kOccupancyTypeArray)
+        
+        ///Rental Income Text Field
+        txtfieldRentalIncome.setTextField(placeholder: "Rental Income" , controller: self, validationType: .noValidation)
+        txtfieldRentalIncome.type = .amount
+        
+        ///Property Value Text Field
+        txtfieldAppraisedPropertyValue.setTextField(placeholder: "Property Value" , controller: self, validationType: .noValidation)
+        txtfieldAppraisedPropertyValue.type = .amount
+        
+        ///Property Value Text Field
+        txtfieldHomePurchaseDate.setTextField(placeholder: "Date of Home Purchase (MM/YYYY)", controller: self, validationType: .noValidation)
+        txtfieldHomePurchaseDate.type = .monthlyDatePicker
+        
+        ///Annual Homeowner's Associations Due Text Field
+        txtfieldHomeOwnerAssociationDues.setTextField(placeholder: "Annual Homeowner's Associations Due", controller: self, validationType: .noValidation)
+        txtfieldHomeOwnerAssociationDues.type = .amount
+        
+        ///Annual Property Taxes Text Field
+        txtfieldTax.setTextField(placeholder: "Annual Property Taxes", controller: self, validationType: .noValidation)
+        txtfieldTax.type = .amount
+        
+        ///Annual Homeowner's Insurance Text Field
+        txtfieldHomeOwnerInsurance.setTextField(placeholder: "Annual Homeowner's Insurance", controller: self, validationType: .noValidation)
+        txtfieldHomeOwnerInsurance.type = .amount
+        
+        ///Annual Flood Insurance Text Field
+        txtfieldFloodInsurance.setTextField(placeholder: "Annual Flood Insurance", controller: self, validationType: .noValidation)
+        txtfieldFloodInsurance.type = .amount
+        
     }
     
     func setScreenHeight(){
@@ -241,7 +191,6 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         let secondMortgageViewHeight = self.secondMortgageMainView.frame.height
         
         self.mainViewHeightConstraint.constant = firstMortgageViewHeight + secondMortgageViewHeight + 1600
-        
         UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
@@ -287,7 +236,6 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         else{
             txtfieldRentalIncomeTopConstraint.constant = 0
             txtfieldRentalIncomeHeightConstraint.constant = 0
-            rentalIncomeDollarView.isHidden = true
             txtfieldRentalIncome.isHidden = true
             txtfieldRentalIncome.resignFirstResponder()
             txtfieldRentalIncome.text = ""
@@ -392,7 +340,6 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
             lblFirstMortgageYes.font = Theme.getRubikRegularFont(size: 15)
             btnFirstMortgageNo.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
             lblFirstMortgageNo.font = Theme.getRubikMediumFont(size: 15)
-            
             firstMortgageMainViewHeightConstraint.constant = 145
             firstMortgageView.isHidden = true
             secondMortgageMainViewHeightConstraint.constant = 0
@@ -405,13 +352,10 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
             lblFirstMortgageYes.font = Theme.getRubikMediumFont(size: 15)
             btnFirstMortgageNo.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
             lblFirstMortgageNo.font = Theme.getRubikRegularFont(size: 15)
-            
             firstMortgageMainViewHeightConstraint.constant = 350
             firstMortgageView.isHidden = false
-            
             secondMortgageMainView.isHidden = false
             secondMortgageView.isHidden = true
-            
             btnSecondMortgageYes.setImage(UIImage(named: isSecondMortgage ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
             lblSecondMortgageYes.font = isSecondMortgage ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
             btnSecondMortgageNo.setImage(UIImage(named: !isSecondMortgage ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
@@ -425,48 +369,6 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         }
     }
     
-    @objc func txtfieldRentalIncomeChanged(){
-        if let amount = Int(txtfieldRentalIncome.text!.replacingOccurrences(of: ",", with: "")){
-            txtfieldRentalIncome.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
-        }
-    }
-    
-    @objc func txtfieldAppraisedValueChanged(){
-        if let amount = Int(txtfieldAppraisedPropertyValue.text!.replacingOccurrences(of: ",", with: "")){
-            txtfieldAppraisedPropertyValue.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
-        }
-    }
-    
-    @objc func txtfieldAssociationDuesChanged(){
-        if let amount = Int(txtfieldHomeOwnerAssociationDues.text!.replacingOccurrences(of: ",", with: "")){
-            txtfieldHomeOwnerAssociationDues.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
-        }
-    }
-    
-    @objc func txtfieldTaxChanged(){
-        if let amount = Int(txtfieldTax.text!.replacingOccurrences(of: ",", with: "")){
-            txtfieldTax.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
-        }
-    }
-    
-    @objc func txtfieldHomeInsuranceChanged(){
-        if let amount = Int(txtfieldHomeOwnerInsurance.text!.replacingOccurrences(of: ",", with: "")){
-            txtfieldHomeOwnerInsurance.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
-        }
-    }
-    
-    @objc func txtfieldFloodInsuranceChanged(){
-        if let amount = Int(txtfieldFloodInsurance.text!.replacingOccurrences(of: ",", with: "")){
-            txtfieldFloodInsurance.text = amount.withCommas().replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ".00", with: "")
-        }
-    }
-    
-    @objc func dateChanged() {
-        if let  datePicker = self.txtfieldHomePurchaseDate.inputView as? MonthYearPickerView {
-            self.txtfieldHomePurchaseDate.text = homePurchaseDateFormatter.string(from: datePicker.date)
-        }
-    }
-    
     @IBAction func btnBackTapped(_ sender: UIButton){
         self.goBack()
     }
@@ -476,104 +378,10 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     }
 }
 
-extension RefinanceSubjectPropertyViewController: UITextFieldDelegate{
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        
-        if (textField == txtfieldPropertyType){
-            textField.endEditing(true)
-            txtfieldPropertyType.dividerColor = Theme.getButtonBlueColor()
-            btnPropertyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-            propertyTypeDropDown.show()
-        }
-        
-        if (textField == txtfieldOccupancyType){
-            textField.endEditing(true)
-            txtfieldOccupancyType.dividerColor = Theme.getButtonBlueColor()
-            btnOccupancyTypeDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-            occupancyTypeDropDown.show()
-        }
-        
-        if (textField == txtfieldRentalIncome){
-            txtfieldRentalIncome.textInsetsPreset = .horizontally5
-            txtfieldRentalIncome.placeholderHorizontalOffset = -24
-            rentalIncomeDollarView.isHidden = false
-        }
-        
-        if (textField == txtfieldAppraisedPropertyValue){
-            txtfieldAppraisedPropertyValue.textInsetsPreset = .horizontally5
-            txtfieldAppraisedPropertyValue.placeholderHorizontalOffset = -24
-            appraisedPropertyValueDollarView.isHidden = false
-        }
-        
-        if (textField == txtfieldHomePurchaseDate){
-            dateChanged()
-        }
-        
-        if (textField == txtfieldHomeOwnerAssociationDues){
-            txtfieldHomeOwnerAssociationDues.textInsetsPreset = .horizontally5
-            txtfieldHomeOwnerAssociationDues.placeholderHorizontalOffset = -24
-            homeOwnerAssociationDollarView.isHidden = false
-        }
-        
-        if (textField == txtfieldTax){
-            txtfieldTax.textInsetsPreset = .horizontally5
-            txtfieldTax.placeholderHorizontalOffset = -24
-            taxDollarView.isHidden = false
-        }
-        
-        if (textField == txtfieldHomeOwnerInsurance){
-            txtfieldHomeOwnerInsurance.textInsetsPreset = .horizontally5
-            txtfieldHomeOwnerInsurance.placeholderHorizontalOffset = -24
-            homeOwnerInsuranceDollarView.isHidden = false
-        }
-        
-        if (textField == txtfieldFloodInsurance){
-            txtfieldFloodInsurance.textInsetsPreset = .horizontally5
-            txtfieldFloodInsurance.placeholderHorizontalOffset = -24
-            floodInsuranceDollarView.isHidden = false
+extension RefinanceSubjectPropertyViewController: ColabaTextFieldDelegate {
+    func selectedOption(option: String, atIndex: Int, textField: ColabaTextField) {
+        if textField == txtfieldPropertyType || textField == txtfieldOccupancyType {
+            showHideRentalIncome()
         }
     }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        
-        if (textField == txtfieldRentalIncome && txtfieldRentalIncome.text == ""){
-            txtfieldRentalIncome.textInsetsPreset = .none
-            txtfieldRentalIncome.placeholderHorizontalOffset = 0
-            rentalIncomeDollarView.isHidden = true
-        }
-        
-        if (textField == txtfieldAppraisedPropertyValue && txtfieldAppraisedPropertyValue.text == ""){
-            txtfieldAppraisedPropertyValue.textInsetsPreset = .none
-            txtfieldAppraisedPropertyValue.placeholderHorizontalOffset = 0
-            appraisedPropertyValueDollarView.isHidden = true
-        }
-        
-        if (textField == txtfieldHomeOwnerAssociationDues && txtfieldHomeOwnerAssociationDues.text == ""){
-            txtfieldHomeOwnerAssociationDues.textInsetsPreset = .none
-            txtfieldHomeOwnerAssociationDues.placeholderHorizontalOffset = 0
-            homeOwnerAssociationDollarView.isHidden = true
-        }
-        
-        if (textField == txtfieldTax && txtfieldTax.text == ""){
-            txtfieldTax.textInsetsPreset = .none
-            txtfieldTax.placeholderHorizontalOffset = 0
-            taxDollarView.isHidden = true
-        }
-        
-        if (textField == txtfieldHomeOwnerInsurance && txtfieldHomeOwnerInsurance.text == ""){
-            txtfieldHomeOwnerInsurance.textInsetsPreset = .none
-            txtfieldHomeOwnerInsurance.placeholderHorizontalOffset = 0
-            homeOwnerInsuranceDollarView.isHidden = true
-        }
-        
-        if (textField == txtfieldFloodInsurance && txtfieldFloodInsurance.text == ""){
-            txtfieldFloodInsurance.textInsetsPreset = .none
-            txtfieldFloodInsurance.placeholderHorizontalOffset = 0
-            floodInsuranceDollarView.isHidden = true
-        }
-        
-        setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldPropertyType, txtfieldOccupancyType,txtfieldRentalIncome, txtfieldAppraisedPropertyValue, txtfieldHomePurchaseDate, txtfieldHomeOwnerAssociationDues, txtfieldTax, txtfieldHomeOwnerInsurance, txtfieldFloodInsurance])
-    }
-    
 }
