@@ -701,6 +701,169 @@
             </objects>
             <point key="canvasLocation" x="2412" y="2615"/>
         </scene>
+        <!--Assign Loan Officer Popup View Controller-->
+        <scene sceneID="xD4-Yk-NZA">
+            <objects>
+                <viewController storyboardIdentifier="AssignLoanOfficerPopupViewController" modalPresentationStyle="overFullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5QU-3s-R0K" customClass="AssignLoanOfficerPopupViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="PCR-d3-GUf">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dW1-Ep-ChE">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="307"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a69-gl-mIC">
+                                <rect key="frame" x="0.0" y="667" width="375" height="350"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Assign Application to" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J4z-bT-3Fu">
+                                        <rect key="frame" x="27" y="28" width="184" height="21.5"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
+                                        <color key="textColor" name="AppBlackColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hdW-KN-ma2">
+                                        <rect key="frame" x="0.0" y="49.5" width="375" height="300.5"/>
+                                    </containerView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="350" id="1lO-cj-Ekd"/>
+                                    <constraint firstItem="J4z-bT-3Fu" firstAttribute="top" secondItem="a69-gl-mIC" secondAttribute="top" constant="28" id="Sub-bU-RCt"/>
+                                    <constraint firstItem="J4z-bT-3Fu" firstAttribute="leading" secondItem="a69-gl-mIC" secondAttribute="leading" constant="27" id="a5Q-tA-95d"/>
+                                    <constraint firstItem="hdW-KN-ma2" firstAttribute="top" secondItem="J4z-bT-3Fu" secondAttribute="bottom" id="g4Q-eN-mHF"/>
+                                    <constraint firstItem="hdW-KN-ma2" firstAttribute="leading" secondItem="a69-gl-mIC" secondAttribute="leading" id="j3a-3J-1pW"/>
+                                    <constraint firstAttribute="bottom" secondItem="hdW-KN-ma2" secondAttribute="bottom" id="ogt-lz-Pfv"/>
+                                    <constraint firstAttribute="trailing" secondItem="hdW-KN-ma2" secondAttribute="trailing" id="tLU-M2-BIY"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="O4c-lZ-YCC"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="a69-gl-mIC" firstAttribute="leading" secondItem="O4c-lZ-YCC" secondAttribute="leading" id="JUF-Wi-RWU"/>
+                            <constraint firstAttribute="bottom" secondItem="a69-gl-mIC" secondAttribute="bottom" constant="-350" id="S9a-Ow-OTr"/>
+                            <constraint firstItem="O4c-lZ-YCC" firstAttribute="trailing" secondItem="dW1-Ep-ChE" secondAttribute="trailing" id="glN-FA-S7q"/>
+                            <constraint firstAttribute="bottom" secondItem="dW1-Ep-ChE" secondAttribute="bottom" constant="360" id="q7y-5u-EkD"/>
+                            <constraint firstItem="dW1-Ep-ChE" firstAttribute="leading" secondItem="O4c-lZ-YCC" secondAttribute="leading" id="qRs-a0-v7s"/>
+                            <constraint firstItem="O4c-lZ-YCC" firstAttribute="trailing" secondItem="a69-gl-mIC" secondAttribute="trailing" id="v2n-gA-Zao"/>
+                            <constraint firstItem="dW1-Ep-ChE" firstAttribute="top" secondItem="O4c-lZ-YCC" secondAttribute="top" id="ySa-lJ-QQB"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="backgroundView" destination="dW1-Ep-ChE" id="aem-7w-y6O"/>
+                        <outlet property="containerView" destination="hdW-KN-ma2" id="7fu-zM-QQK"/>
+                        <outlet property="mainView" destination="a69-gl-mIC" id="8HH-sH-uTb"/>
+                        <outlet property="mainViewBottomConstraint" destination="S9a-Ow-OTr" id="wL8-Xp-i2k"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z6H-kB-CF6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3042" y="2615"/>
+        </scene>
+        <!--Loan Officer Main View Controller-->
+        <scene sceneID="6su-YL-bg7">
+            <objects>
+                <viewController storyboardIdentifier="LoanOfficerMainViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pqb-bb-bEh" customClass="LoanOfficerMainViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="RFh-AN-z4T">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eza-Va-6DE">
+                                <rect key="frame" x="25" y="15" width="325" height="40"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search for team members" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wuG-Ag-UyS">
+                                        <rect key="frame" x="15" y="5" width="257" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="DsD-Eo-r0f"/>
+                                        </constraints>
+                                        <color key="textColor" name="AppBlackColor"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SearchBlack" translatesAutoresizingMaskIntoConstraints="NO" id="g3x-gr-nYs">
+                                        <rect key="frame" x="287" y="8.5" width="23" height="23"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="23" id="eta-QW-i4B"/>
+                                            <constraint firstAttribute="width" constant="23" id="jeY-sa-0kK"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="2td-NK-OP5"/>
+                                    <constraint firstItem="g3x-gr-nYs" firstAttribute="leading" secondItem="wuG-Ag-UyS" secondAttribute="trailing" constant="15" id="Eag-Wt-FT2"/>
+                                    <constraint firstItem="wuG-Ag-UyS" firstAttribute="leading" secondItem="Eza-Va-6DE" secondAttribute="leading" constant="15" id="ORW-Nf-yBc"/>
+                                    <constraint firstItem="wuG-Ag-UyS" firstAttribute="centerY" secondItem="Eza-Va-6DE" secondAttribute="centerY" id="OhB-PQ-EgG"/>
+                                    <constraint firstAttribute="trailing" secondItem="g3x-gr-nYs" secondAttribute="trailing" constant="15" id="U5S-ax-ic0"/>
+                                    <constraint firstItem="g3x-gr-nYs" firstAttribute="centerY" secondItem="Eza-Va-6DE" secondAttribute="centerY" id="irn-WV-Kne"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iyt-d0-LAX">
+                                <rect key="frame" x="0.0" y="75" width="375" height="592"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Qrr-Hp-Cfa"/>
+                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Eza-Va-6DE" firstAttribute="top" secondItem="Qrr-Hp-Cfa" secondAttribute="top" constant="15" id="1za-CO-zLD"/>
+                            <constraint firstItem="Iyt-d0-LAX" firstAttribute="leading" secondItem="Qrr-Hp-Cfa" secondAttribute="leading" id="4Fg-Kt-41k"/>
+                            <constraint firstItem="Eza-Va-6DE" firstAttribute="leading" secondItem="Qrr-Hp-Cfa" secondAttribute="leading" constant="25" id="4vz-C6-FRW"/>
+                            <constraint firstItem="Qrr-Hp-Cfa" firstAttribute="bottom" secondItem="Iyt-d0-LAX" secondAttribute="bottom" id="AzL-2d-OJY"/>
+                            <constraint firstItem="Qrr-Hp-Cfa" firstAttribute="trailing" secondItem="Eza-Va-6DE" secondAttribute="trailing" constant="25" id="T0b-Ab-tMF"/>
+                            <constraint firstItem="Qrr-Hp-Cfa" firstAttribute="trailing" secondItem="Iyt-d0-LAX" secondAttribute="trailing" id="ubJ-V6-kbO"/>
+                            <constraint firstItem="Iyt-d0-LAX" firstAttribute="top" secondItem="Eza-Va-6DE" secondAttribute="bottom" constant="20" id="xQB-bi-aMe"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="searchIcon" destination="g3x-gr-nYs" id="Z9O-Uf-jr6"/>
+                        <outlet property="searchView" destination="Eza-Va-6DE" id="oWy-qR-SbW"/>
+                        <outlet property="tabView" destination="Iyt-d0-LAX" id="Wcf-Ea-d6e"/>
+                        <outlet property="txtfieldSearch" destination="wuG-Ag-UyS" id="aQH-Jy-rfF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4s2-Kq-pUP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3671" y="2615"/>
+        </scene>
+        <!--Loan Officer List View Controller-->
+        <scene sceneID="2Df-bx-ETt">
+            <objects>
+                <viewController storyboardIdentifier="LoanOfficerListViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fTo-iU-By1" customClass="LoanOfficerListViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EjV-HC-EIY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="r6e-7q-JYA">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="5da-EL-vak">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="hJi-6n-Wo4"/>
+                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="hJi-6n-Wo4" firstAttribute="trailing" secondItem="r6e-7q-JYA" secondAttribute="trailing" id="JgX-j3-n6l"/>
+                            <constraint firstItem="hJi-6n-Wo4" firstAttribute="bottom" secondItem="r6e-7q-JYA" secondAttribute="bottom" id="jQC-A1-kbL"/>
+                            <constraint firstItem="r6e-7q-JYA" firstAttribute="leading" secondItem="hJi-6n-Wo4" secondAttribute="leading" id="o0U-BG-Byg"/>
+                            <constraint firstItem="r6e-7q-JYA" firstAttribute="top" secondItem="hJi-6n-Wo4" secondAttribute="top" id="sJn-mF-cnI"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="r6e-7q-JYA" id="AZk-dw-0gp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ENi-kd-7hU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4324" y="2615"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Close-Icon" width="16.523000717163086" height="16.523000717163086"/>
