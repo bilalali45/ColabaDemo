@@ -141,6 +141,8 @@
 		23C9130726982A120067920E /* BorrowerOverviewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23C9130526982A120067920E /* BorrowerOverviewTableViewCell.xib */; };
 		23CD143226E259C000627127 /* FirstMortgageFollowupQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD143126E259C000627127 /* FirstMortgageFollowupQuestionsViewController.swift */; };
 		23CD143426E25B4400627127 /* SecondMortgageFollowupQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD143326E25B4400627127 /* SecondMortgageFollowupQuestionsViewController.swift */; };
+		23D9E6EC2701A4EF004D34CF /* ContactListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D9E6EA2701A4EF004D34CF /* ContactListTableViewCell.swift */; };
+		23D9E6ED2701A4EF004D34CF /* ContactListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23D9E6EB2701A4EF004D34CF /* ContactListTableViewCell.xib */; };
 		23DBAD202696EB2D00119680 /* PipelineDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23DBAD1F2696EB2D00119680 /* PipelineDetail.storyboard */; };
 		23DBAD222696EBA800119680 /* LoanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DBAD212696EBA800119680 /* LoanDetailViewController.swift */; };
 		23DBAD242697149300119680 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DBAD232697149300119680 /* OverviewViewController.swift */; };
@@ -354,6 +356,8 @@
 		23C9130526982A120067920E /* BorrowerOverviewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerOverviewTableViewCell.xib; sourceTree = "<group>"; };
 		23CD143126E259C000627127 /* FirstMortgageFollowupQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstMortgageFollowupQuestionsViewController.swift; sourceTree = "<group>"; };
 		23CD143326E25B4400627127 /* SecondMortgageFollowupQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondMortgageFollowupQuestionsViewController.swift; sourceTree = "<group>"; };
+		23D9E6EA2701A4EF004D34CF /* ContactListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactListTableViewCell.swift; sourceTree = "<group>"; };
+		23D9E6EB2701A4EF004D34CF /* ContactListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactListTableViewCell.xib; sourceTree = "<group>"; };
 		23DBAD1F2696EB2D00119680 /* PipelineDetail.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PipelineDetail.storyboard; sourceTree = "<group>"; };
 		23DBAD212696EBA800119680 /* LoanDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanDetailViewController.swift; sourceTree = "<group>"; };
 		23DBAD232697149300119680 /* OverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
@@ -544,6 +548,8 @@
 				230B94D126E74C03004CBC83 /* AssetsAddNewTableViewCell.xib */,
 				23BDB1CE26F865EA00C73E33 /* DemographicQuestionsTableViewCell.swift */,
 				23BDB1CF26F865EA00C73E33 /* DemographicQuestionsTableViewCell.xib */,
+				23D9E6EA2701A4EF004D34CF /* ContactListTableViewCell.swift */,
+				23D9E6EB2701A4EF004D34CF /* ContactListTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1024,6 +1030,7 @@
 				7186ACBC2653B25B00E740D3 /* LaunchScreen.storyboard in Resources */,
 				7186ACB92653B25B00E740D3 /* Assets.xcassets in Resources */,
 				7186AD082653C77B00E740D3 /* Rubik-Regular.ttf in Resources */,
+				23D9E6ED2701A4EF004D34CF /* ContactListTableViewCell.xib in Resources */,
 				2330CD2626B000ED00FF3C43 /* DocumentMessageTableViewCell.xib in Resources */,
 				2390FEE226A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.xib in Resources */,
 				2330CD2226AFEBDF00FF3C43 /* rubik_bold.ttf in Resources */,
@@ -1287,6 +1294,7 @@
 				7113F52526569D310066E179 /* LocalAuthManager.swift in Sources */,
 				236EA1AC26789EAC00C2F8B5 /* PipelineMoreViewController.swift in Sources */,
 				236B59D1266504060001F416 /* UserModel.swift in Sources */,
+				23D9E6EC2701A4EF004D34CF /* ContactListTableViewCell.swift in Sources */,
 				23BDB1CD26F8615D00C73E33 /* DemographicInformationViewController.swift in Sources */,
 				23B5E98726F4A96E00686B8E /* BankruptcyFollowupViewController.swift in Sources */,
 				23BBADD026EF3F1D00813F04 /* AddEmployementPopupViewController.swift in Sources */,

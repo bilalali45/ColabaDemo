@@ -26,6 +26,8 @@ class StartNewApplicationViewController: BaseViewController {
     @IBOutlet weak var borrowerInfoView: UIView!
     @IBOutlet weak var lblBorrowerName: UILabel!
     @IBOutlet weak var lblBorrowerEmailAndPhone: UILabel!
+    @IBOutlet weak var contactListView: UIView!
+    @IBOutlet weak var tableViewContactList: UITableView!
     @IBOutlet weak var createContactView: UIView!
     @IBOutlet weak var createContactViewHeightConstarint: NSLayoutConstraint! //50 or 335
     @IBOutlet weak var stackViewCreateContact: UIStackView!
@@ -43,6 +45,7 @@ class StartNewApplicationViewController: BaseViewController {
     @IBOutlet weak var btnRefinance: UIButton!
     @IBOutlet weak var lblRefinance: UILabel!
     @IBOutlet weak var loanGoalView: UIView!
+    @IBOutlet weak var loanGoalViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var stackViewLowerPayments: UIStackView!
     @IBOutlet weak var btnLowerPayment: UIButton!
     @IBOutlet weak var lblLowerPayment: UILabel!
@@ -53,6 +56,11 @@ class StartNewApplicationViewController: BaseViewController {
     @IBOutlet weak var btnDebt: UIButton!
     @IBOutlet weak var lblDebt: UILabel!
     @IBOutlet weak var assignLoanOfficerView: UIView!
+    @IBOutlet weak var loanOfficerView: UIView!
+    @IBOutlet weak var loanOfficerImage: UIImageView!
+    @IBOutlet weak var lblLoanOfficerName: UILabel!
+    @IBOutlet weak var lblLoanOfficerTenant: UILabel!
+    
     @IBOutlet weak var btnCreateApplication: UIButton!
     
     var isCreateNewContact = false
@@ -62,6 +70,8 @@ class StartNewApplicationViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewsAndTextfields()
+        tableViewContactList.register(UINib(nibName: "ContactListTableViewCell", bundle: nil), forCellReuseIdentifier: "ContactListTableViewCell")
+        tableViewContactList.rowHeight = 71
         stackViewFindBorrower.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(findBorrowerStackViewTapped)))
         stackViewCreateContact.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(createContactStackViewTapped)))
         stackViewPurchase.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(purchaseStackViewTapped)))
@@ -69,6 +79,7 @@ class StartNewApplicationViewController: BaseViewController {
         stackViewLowerPayments.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(lowerPaymentsStackViewTapped)))
         stackViewCashOut.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cashOutStackViewTapped)))
         stackViewDebt.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(debtStackViewTapped)))
+        
     }
     
     //MARK:- Methods and Actions
@@ -82,12 +93,17 @@ class StartNewApplicationViewController: BaseViewController {
         searchView.layer.cornerRadius = 5
         searchView.layer.borderWidth = 1
         searchView.layer.borderColor = Theme.getSearchBarBorderColor().cgColor
+        txtfieldSearch.addTarget(self, action: #selector(txtfieldSearchTextChanged), for: .editingChanged)
         
         borrowerInfoView.layer.cornerRadius = 5
         borrowerInfoView.layer.borderWidth = 1
         borrowerInfoView.layer.borderColor = Theme.getSearchBarBorderColor().cgColor
         
-        let bororwerEmailAndPhone = "richard.glenn@gmail.com   ·    (121) 353 1343"
+        contactListView.roundOnlyBottomCorners(radius: 5)
+        contactListView.layer.borderWidth = 1
+        contactListView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        
+        let bororwerEmailAndPhone = "richard.glenn@gmail.com  ·  (121) 353 1343"
         let bororwerEmailAndPhoneAttributedText = NSMutableAttributedString(string: bororwerEmailAndPhone)
         let range1 = bororwerEmailAndPhone.range(of: "·")
         bororwerEmailAndPhoneAttributedText.addAttributes([NSAttributedString.Key.font: Theme.getRubikBoldFont(size: 20), NSAttributedString.Key.foregroundColor : Theme.getButtonBlueColor()], range: bororwerEmailAndPhone.nsRange(from: range1!))
@@ -122,6 +138,10 @@ class StartNewApplicationViewController: BaseViewController {
         assignLoanOfficerView.layer.borderWidth = 1
         assignLoanOfficerView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.2).cgColor
         
+        loanOfficerView.layer.cornerRadius = 8
+        loanOfficerView.layer.borderWidth = 1
+        loanOfficerView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         btnCreateApplication.layer.cornerRadius = 5
         btnCreateApplication.isEnabled = false
     }
@@ -129,7 +149,8 @@ class StartNewApplicationViewController: BaseViewController {
     func setScreenHeight(){
         let findBorrowerHeight = findBorrowerView.frame.height
         let createNewContactHeight = createContactView.frame.height
-        self.mainViewHeightConstraint.constant = findBorrowerHeight + createNewContactHeight + 450
+        let loanGoalViewHeight = loanGoalView.frame.height
+        self.mainViewHeightConstraint.constant = findBorrowerHeight + createNewContactHeight + loanGoalViewHeight + 310
         UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
@@ -138,11 +159,25 @@ class StartNewApplicationViewController: BaseViewController {
     @objc func findBorrowerStackViewTapped(){
         isCreateNewContact = false
         changeBorrowerContactType()
+        searchView.layer.borderColor = Theme.getSearchBarBorderColor().cgColor
+        searchView.layer.cornerRadius = 5
+        borrowerInfoView.isHidden = true
+        contactListView.isHidden = true
     }
     
     @objc func createContactStackViewTapped(){
         isCreateNewContact = true
         changeBorrowerContactType()
+        searchView.layer.borderColor = Theme.getSearchBarBorderColor().cgColor
+        searchView.layer.cornerRadius = 5
+        borrowerInfoView.isHidden = true
+        contactListView.isHidden = true
+    }
+    
+    @objc func txtfieldSearchTextChanged(){
+        searchView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        searchView.roundOnlyTopCorners(radius: 5)
+        contactListView.isHidden = false
     }
     
     func changeBorrowerContactType(){
@@ -196,6 +231,15 @@ class StartNewApplicationViewController: BaseViewController {
         btnCreateApplication.backgroundColor = Theme.getButtonBlueColor()
         btnCreateApplication.setTitleColor(.white, for: .normal)
         btnCreateApplication.isEnabled = true
+        loanGoalView.isHidden = false
+        loanGoalViewHeightConstraint.constant = loanPurpose == 0 ? 100 : 140
+        stackViewDebt.isHidden = loanPurpose == 0
+        lblLowerPayment.text = loanPurpose == 0 ? "Pre-Approval" : "Lower Payments or Term"
+        lblCashOut.text = loanPurpose == 0 ? "Property Under Contract" : "Cash-Out"
+        lblDebt.text = "Debt Consolidation"
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.setScreenHeight()
+        }
     }
     
     @objc func lowerPaymentsStackViewTapped(){
@@ -249,7 +293,7 @@ class StartNewApplicationViewController: BaseViewController {
     }
     
     @IBAction func btnBorrowerInfoCloseTapped(_ sender: UIButton){
-        
+        findBorrowerStackViewTapped()
     }
     
     @IBAction func btnCreateApplicationTapped(_ sender: UIButton) {
@@ -261,6 +305,47 @@ class StartNewApplicationViewController: BaseViewController {
         }
         if (validate()){
             self.dismissVC()
+        }
+    }
+}
+
+extension StartNewApplicationViewController: UITableViewDataSource, UITableViewDelegate{
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 6
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ContactListTableViewCell", for: indexPath) as! ContactListTableViewCell
+        
+        let borrowerName = indexPath.row % 2 == 0 ? "Richard Glenn Randall" : "Arnold Richard"
+        let attributedBorrowerName = NSMutableAttributedString(string: borrowerName)
+        let range = borrowerName.range(of: indexPath.row % 2 == 0 ? "Richard" : "Richard")
+        attributedBorrowerName.addAttributes([NSAttributedString.Key.foregroundColor : Theme.getAppBlackColor(), NSAttributedString.Key.font : Theme.getRubikMediumFont(size: 15)], range: borrowerName.nsRange(from: range!))
+        cell.lblName.attributedText = attributedBorrowerName
+        
+        let borrowerEmailAndPhone = indexPath.row % 2 == 0 ? "richard.glenn@gmail.com  ·  (121) 353 1343" : "arnold634@gmail.com  ·  (121) 353 1343"
+        let attributedBorrowerEmailAndPhone = NSMutableAttributedString(string: borrowerEmailAndPhone)
+        let rangeOfName = borrowerEmailAndPhone.range(of: indexPath.row % 2 == 0 ? "richard" : " ")
+        let range2 = borrowerEmailAndPhone.range(of: "·")
+        attributedBorrowerEmailAndPhone.addAttributes([NSAttributedString.Key.foregroundColor : Theme.getAppBlackColor(), NSAttributedString.Key.font : Theme.getRubikMediumFont(size: 13)], range: borrowerEmailAndPhone.nsRange(from: rangeOfName!))
+        attributedBorrowerEmailAndPhone.addAttributes([NSAttributedString.Key.font: Theme.getRubikBoldFont(size: 20), NSAttributedString.Key.foregroundColor : Theme.getButtonBlueColor()], range: borrowerEmailAndPhone.nsRange(from: range2!))
+        cell.lblEmailPhoneNumber.attributedText = attributedBorrowerEmailAndPhone
+        
+        return cell
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        contactListView.isHidden = true
+        searchView.isHidden = true
+        searchView.layer.borderColor = Theme.getSearchBarBorderColor().cgColor
+        searchView.layer.cornerRadius = 5
+        borrowerInfoView.isHidden = false
+        findBorrowerViewHeightConstraint.constant = 140
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.setScreenHeight()
         }
     }
 }

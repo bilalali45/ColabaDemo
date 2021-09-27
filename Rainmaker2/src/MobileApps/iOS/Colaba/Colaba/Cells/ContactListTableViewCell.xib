@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Rubik-Regular.ttf">
+            <string>Rubik-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ContactListTableViewCell" rowHeight="71" id="KGk-i7-Jjw" customClass="ContactListTableViewCell" customModule="Colaba" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="336" height="71"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="336" height="71"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Richard Glenn Randall" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wbu-f3-P6c">
+                        <rect key="frame" x="15" y="15" width="306" height="18"/>
+                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
+                        <color key="textColor" name="AppGreyColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Richard Glenn Randall" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vDU-TG-9CU">
+                        <rect key="frame" x="15" y="41" width="306" height="15.5"/>
+                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
+                        <color key="textColor" name="AppGreyColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CV7-as-rH2">
+                        <rect key="frame" x="15" y="70" width="306" height="1"/>
+                        <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="K9i-Ys-pQk"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="vDU-TG-9CU" firstAttribute="top" secondItem="wbu-f3-P6c" secondAttribute="bottom" constant="8" id="8Az-0R-UtT"/>
+                    <constraint firstAttribute="bottom" secondItem="CV7-as-rH2" secondAttribute="bottom" id="Haa-8q-q9J"/>
+                    <constraint firstAttribute="trailing" secondItem="wbu-f3-P6c" secondAttribute="trailing" constant="15" id="OUI-k1-5cr"/>
+                    <constraint firstAttribute="trailing" secondItem="CV7-as-rH2" secondAttribute="trailing" constant="15" id="Qje-DX-78I"/>
+                    <constraint firstAttribute="trailing" secondItem="vDU-TG-9CU" secondAttribute="trailing" constant="15" id="S95-fd-Ymd"/>
+                    <constraint firstItem="CV7-as-rH2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="SDM-Hg-RMa"/>
+                    <constraint firstItem="vDU-TG-9CU" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="Wpp-T7-jzR"/>
+                    <constraint firstItem="wbu-f3-P6c" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="nBk-uo-4Nv"/>
+                    <constraint firstItem="wbu-f3-P6c" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="w67-Hr-oHV"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="lblEmailPhoneNumber" destination="vDU-TG-9CU" id="GUh-k9-CE2"/>
+                <outlet property="lblName" destination="wbu-f3-P6c" id="gCE-RV-Mxs"/>
+            </connections>
+            <point key="canvasLocation" x="124.6376811594203" y="121.54017857142857"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="AppGreyColor">
+            <color red="0.49411764705882355" green="0.50980392156862742" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

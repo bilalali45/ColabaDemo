@@ -401,8 +401,8 @@
                                                     <constraint firstItem="aM6-o5-3wE" firstAttribute="width" secondItem="xzg-Mu-AuR" secondAttribute="width" multiplier="0.4" id="dV2-Oo-D3K"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gen-jg-rDz">
-                                                <rect key="frame" x="0.0" y="310" width="375" height="140"/>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gen-jg-rDz">
+                                                <rect key="frame" x="0.0" y="310" width="375" height="0.0"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loan Goal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sgW-kW-GCh">
                                                         <rect key="frame" x="40" y="0.0" width="64" height="17"/>
@@ -476,7 +476,7 @@
                                                     <constraint firstItem="ZaN-TV-Zdg" firstAttribute="top" secondItem="sgW-kW-GCh" secondAttribute="bottom" id="L5U-XT-61v"/>
                                                     <constraint firstItem="dP3-Vq-SZI" firstAttribute="top" secondItem="SzM-Y4-eFF" secondAttribute="bottom" id="MBx-wH-qT6"/>
                                                     <constraint firstItem="dP3-Vq-SZI" firstAttribute="leading" secondItem="Gen-jg-rDz" secondAttribute="leading" constant="40" id="USp-sV-CEG"/>
-                                                    <constraint firstAttribute="height" constant="140" id="YEP-8Q-PJF"/>
+                                                    <constraint firstAttribute="height" id="YEP-8Q-PJF"/>
                                                     <constraint firstAttribute="trailing" secondItem="ZaN-TV-Zdg" secondAttribute="trailing" constant="40" id="YaO-Zd-Rnx"/>
                                                     <constraint firstItem="sgW-kW-GCh" firstAttribute="leading" secondItem="Gen-jg-rDz" secondAttribute="leading" constant="40" id="j9V-vg-NvT"/>
                                                     <constraint firstItem="SzM-Y4-eFF" firstAttribute="top" secondItem="ZaN-TV-Zdg" secondAttribute="bottom" id="pB0-82-tUU"/>
@@ -485,14 +485,14 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nhP-Vz-ena">
-                                                <rect key="frame" x="40" y="460" width="295" height="1"/>
+                                                <rect key="frame" x="40" y="320" width="295" height="1"/>
                                                 <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="n7R-ga-Vqb"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Ak-ax-pwK">
-                                                <rect key="frame" x="40" y="491" width="295" height="50"/>
+                                                <rect key="frame" x="40" y="351" width="295" height="50"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="addloanofficer" translatesAutoresizingMaskIntoConstraints="NO" id="qxg-S0-Yad">
                                                         <rect key="frame" x="17" y="13" width="24" height="24"/>
@@ -513,13 +513,78 @@
                                                     <constraint firstItem="qxg-S0-Yad" firstAttribute="centerY" secondItem="0Ak-ax-pwK" secondAttribute="centerY" id="xX7-hV-An3"/>
                                                 </constraints>
                                             </view>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NYc-2n-6z2">
+                                                <rect key="frame" x="40" y="351" width="295" height="80"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="UserImage" translatesAutoresizingMaskIntoConstraints="NO" id="kvW-rk-Fm1">
+                                                        <rect key="frame" x="15" y="15" width="50" height="50"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="50" id="axM-c0-rN4"/>
+                                                            <constraint firstAttribute="height" constant="50" id="oQ1-Ef-esY"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="JJy-Vz-Oc8">
+                                                        <rect key="frame" x="75" y="22" width="210" height="36.5"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jacky Doe Victor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QG6-eA-zMn">
+                                                                <rect key="frame" x="0.0" y="0.0" width="117.5" height="18"/>
+                                                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
+                                                                <color key="textColor" name="AppBlackColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Texas Trust Home Loans" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C0w-7F-Hab">
+                                                                <rect key="frame" x="0.0" y="22" width="135" height="14.5"/>
+                                                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
+                                                                <color key="textColor" name="ButtonGreyTextColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="JJy-Vz-Oc8" firstAttribute="leading" secondItem="kvW-rk-Fm1" secondAttribute="trailing" constant="10" id="9nI-rv-7IU"/>
+                                                    <constraint firstItem="kvW-rk-Fm1" firstAttribute="centerY" secondItem="NYc-2n-6z2" secondAttribute="centerY" id="EkW-1A-QqB"/>
+                                                    <constraint firstAttribute="trailing" secondItem="JJy-Vz-Oc8" secondAttribute="trailing" constant="10" id="NTd-23-VvT"/>
+                                                    <constraint firstItem="kvW-rk-Fm1" firstAttribute="leading" secondItem="NYc-2n-6z2" secondAttribute="leading" constant="15" id="RR3-qh-onj"/>
+                                                    <constraint firstItem="JJy-Vz-Oc8" firstAttribute="centerY" secondItem="kvW-rk-Fm1" secondAttribute="centerY" id="eyR-Z7-xbK"/>
+                                                    <constraint firstAttribute="height" constant="80" id="f6h-Ji-Sd9"/>
+                                                </constraints>
+                                            </view>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CGh-tc-CFp">
+                                                <rect key="frame" x="40" y="110" width="295" height="292"/>
+                                                <subviews>
+                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="D1v-ne-xZe">
+                                                        <rect key="frame" x="0.0" y="0.0" width="295" height="292"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <connections>
+                                                            <outlet property="dataSource" destination="s3w-cJ-8mx" id="4VD-9e-mv4"/>
+                                                            <outlet property="delegate" destination="s3w-cJ-8mx" id="EaO-Yc-MUt"/>
+                                                        </connections>
+                                                    </tableView>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstItem="D1v-ne-xZe" firstAttribute="top" secondItem="CGh-tc-CFp" secondAttribute="top" id="3UG-kl-PjY"/>
+                                                    <constraint firstAttribute="height" constant="292" id="POs-Or-KuK"/>
+                                                    <constraint firstAttribute="trailing" secondItem="D1v-ne-xZe" secondAttribute="trailing" id="b9p-3g-0Tv"/>
+                                                    <constraint firstItem="D1v-ne-xZe" firstAttribute="leading" secondItem="CGh-tc-CFp" secondAttribute="leading" id="jLS-CU-1hT"/>
+                                                    <constraint firstAttribute="bottom" secondItem="D1v-ne-xZe" secondAttribute="bottom" id="qaV-BG-CqT"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="LLC-pM-VNx" firstAttribute="leading" secondItem="i3L-sR-1x8" secondAttribute="leading" constant="20" id="1l7-bi-vhj"/>
                                             <constraint firstAttribute="trailing" secondItem="CYt-ny-h4f" secondAttribute="trailing" constant="20" id="BE2-rP-J7L"/>
+                                            <constraint firstItem="CGh-tc-CFp" firstAttribute="leading" secondItem="i3L-sR-1x8" secondAttribute="leading" constant="40" id="BbZ-6i-ebk"/>
                                             <constraint firstAttribute="height" constant="650" id="BsW-S3-2vK"/>
+                                            <constraint firstItem="NYc-2n-6z2" firstAttribute="leading" secondItem="i3L-sR-1x8" secondAttribute="leading" constant="40" id="EAO-ug-NKM"/>
+                                            <constraint firstItem="NYc-2n-6z2" firstAttribute="top" secondItem="nhP-Vz-ena" secondAttribute="bottom" constant="30" id="FOL-2O-pTG"/>
+                                            <constraint firstAttribute="trailing" secondItem="CGh-tc-CFp" secondAttribute="trailing" constant="40" id="Gcf-ok-wED"/>
                                             <constraint firstItem="nhP-Vz-ena" firstAttribute="top" secondItem="Gen-jg-rDz" secondAttribute="bottom" constant="10" id="T1L-B9-5le"/>
+                                            <constraint firstAttribute="trailing" secondItem="NYc-2n-6z2" secondAttribute="trailing" constant="40" id="Wjn-ua-Sqv"/>
+                                            <constraint firstItem="CGh-tc-CFp" firstAttribute="top" secondItem="i3L-sR-1x8" secondAttribute="top" constant="110" id="XgK-5y-TGQ"/>
                                             <constraint firstItem="LLC-pM-VNx" firstAttribute="top" secondItem="CYt-ny-h4f" secondAttribute="bottom" constant="15" id="Xoe-iI-ajc"/>
                                             <constraint firstAttribute="trailing" secondItem="0Ak-ax-pwK" secondAttribute="trailing" constant="40" id="axr-3z-Oaf"/>
                                             <constraint firstItem="nhP-Vz-ena" firstAttribute="leading" secondItem="i3L-sR-1x8" secondAttribute="leading" constant="40" id="e8D-vM-iDm"/>
@@ -591,6 +656,7 @@
                         <outlet property="btnLowerPayment" destination="4W5-ep-pW8" id="XX2-ER-nf5"/>
                         <outlet property="btnPurchase" destination="SSg-l5-tvw" id="Qjx-lJ-l3C"/>
                         <outlet property="btnRefinance" destination="PM0-8Z-Omu" id="Dag-7y-aGA"/>
+                        <outlet property="contactListView" destination="CGh-tc-CFp" id="p0d-uU-zWz"/>
                         <outlet property="createContactView" destination="LLC-pM-VNx" id="bNW-sR-gay"/>
                         <outlet property="createContactViewHeightConstarint" destination="AhY-7y-Evp" id="LQT-uz-xAc"/>
                         <outlet property="findBorrowerView" destination="CYt-ny-h4f" id="eDB-b7-XSp"/>
@@ -601,10 +667,15 @@
                         <outlet property="lblCreateContact" destination="6vm-3J-skV" id="ihT-X7-jxY"/>
                         <outlet property="lblDebt" destination="UbN-eL-2gx" id="XxY-XH-Ike"/>
                         <outlet property="lblFindBorrower" destination="sNw-xu-ii4" id="fWw-kO-xCt"/>
+                        <outlet property="lblLoanOfficerName" destination="QG6-eA-zMn" id="xi5-pN-xxA"/>
+                        <outlet property="lblLoanOfficerTenant" destination="C0w-7F-Hab" id="Ydx-E3-ijx"/>
                         <outlet property="lblLowerPayment" destination="4sh-Aw-1jH" id="kbN-l7-c7z"/>
                         <outlet property="lblPurchase" destination="mNr-4f-Tlz" id="xvW-Ap-sWs"/>
                         <outlet property="lblRefinance" destination="YNN-Ss-jfw" id="Yvv-Bz-LTB"/>
                         <outlet property="loanGoalView" destination="Gen-jg-rDz" id="f70-Lf-cHs"/>
+                        <outlet property="loanGoalViewHeightConstraint" destination="YEP-8Q-PJF" id="3vG-FB-TKZ"/>
+                        <outlet property="loanOfficerImage" destination="kvW-rk-Fm1" id="6C4-NH-EIl"/>
+                        <outlet property="loanOfficerView" destination="NYc-2n-6z2" id="3ps-dN-6BA"/>
                         <outlet property="loanPurposeView" destination="xzg-Mu-AuR" id="ztt-9J-Cwg"/>
                         <outlet property="mainView" destination="i3L-sR-1x8" id="rCh-1S-w6J"/>
                         <outlet property="mainViewHeightConstraint" destination="BsW-S3-2vK" id="A6L-7O-ttc"/>
@@ -618,6 +689,7 @@
                         <outlet property="stackViewLowerPayments" destination="ZaN-TV-Zdg" id="TxX-OI-nea"/>
                         <outlet property="stackViewPurchase" destination="aM6-o5-3wE" id="hVq-ad-dT2"/>
                         <outlet property="stackViewRefinance" destination="2bf-W9-Ugb" id="Otp-Fa-1CL"/>
+                        <outlet property="tableViewContactList" destination="D1v-ne-xZe" id="p2j-Zz-Rh4"/>
                         <outlet property="txtfieldEmail" destination="GWA-u2-CJY" id="sf3-jy-5aP"/>
                         <outlet property="txtfieldFirstName" destination="2pX-f7-YhW" id="tdX-MX-Lew"/>
                         <outlet property="txtfieldLastName" destination="jwb-i2-cNL" id="h67-kW-tab"/>
@@ -635,6 +707,7 @@
         <image name="RadioButtonSelected" width="18" height="18"/>
         <image name="RadioButtonUnselected" width="18" height="18"/>
         <image name="SearchBlack" width="23.041000366210938" height="23.371000289916992"/>
+        <image name="UserImage" width="50" height="50"/>
         <image name="addloanofficer" width="24" height="24"/>
         <image name="closeSmall" width="14.142000198364258" height="14.142000198364258"/>
         <namedColor name="AppBlackColor">
