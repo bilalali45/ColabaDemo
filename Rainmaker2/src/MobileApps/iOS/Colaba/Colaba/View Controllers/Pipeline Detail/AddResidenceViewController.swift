@@ -71,7 +71,7 @@ class AddResidenceViewController: BaseViewController {
         txtfieldState.setDropDownDataSource(kUSAStatesArray)
         
         ///Zip Code Text Field
-        txtfieldZipCode.setTextField(placeholder: "Zip Code", controller: self, validationType: .required)
+        txtfieldZipCode.setTextField(placeholder: "Zip Code", controller: self, validationType: .required, keyboardType: .numberPad)
         
         ///Country Text Field
         txtfieldCountry.setTextField(placeholder: "Country", controller: self, validationType: .required)

@@ -13,6 +13,7 @@ enum ValidationType {
     case email
     case password
     case phoneNumber
+    case socialSecurityNumber
     case verificationCode
     case netAnnualIncome
     case purchasePrice
@@ -37,6 +38,8 @@ extension String {
             return try Validation.validateNetAnnualIncome(self)
         case .purchasePrice:
             return try Validation.validatePurchasePrice(self)
+        case .socialSecurityNumber:
+            return true //TODO: Confirm from Murtaza on this
         }
     }
 }

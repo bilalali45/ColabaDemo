@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Material
 
 class BorrowerInformationViewController: BaseViewController {
 
@@ -19,15 +18,15 @@ class BorrowerInformationViewController: BaseViewController {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var borrowerInfoView: UIView!
-    @IBOutlet weak var txtfieldLegalFirstName: TextField!
-    @IBOutlet weak var txtfieldMiddleName: TextField!
-    @IBOutlet weak var txtfieldLegalLastName: TextField!
-    @IBOutlet weak var txtfieldSuffix: TextField!
-    @IBOutlet weak var txtfieldEmail: TextField!
-    @IBOutlet weak var txtfieldHomeNumber: TextField!
-    @IBOutlet weak var txtfieldWorkNumber: TextField!
-    @IBOutlet weak var txtfieldExtensionNumber: TextField!
-    @IBOutlet weak var txtfieldCellNumber: TextField!
+    @IBOutlet weak var txtfieldLegalFirstName: ColabaTextField!
+    @IBOutlet weak var txtfieldMiddleName: ColabaTextField!
+    @IBOutlet weak var txtfieldLegalLastName: ColabaTextField!
+    @IBOutlet weak var txtfieldSuffix: ColabaTextField!
+    @IBOutlet weak var txtfieldEmail: ColabaTextField!
+    @IBOutlet weak var txtfieldHomeNumber: ColabaTextField!
+    @IBOutlet weak var txtfieldWorkNumber: ColabaTextField!
+    @IBOutlet weak var txtfieldExtensionNumber: ColabaTextField!
+    @IBOutlet weak var txtfieldCellNumber: ColabaTextField!
     @IBOutlet weak var tblViewAddress: UITableView!
     @IBOutlet weak var tblViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var addAddressView: UIView!
@@ -60,11 +59,8 @@ class BorrowerInformationViewController: BaseViewController {
     @IBOutlet weak var nonPermanentResidentMainView: UIView!
     @IBOutlet weak var lblNonPermanentQuestion: UILabel!
     @IBOutlet weak var lblNonPermanentAns: UILabel!
-    @IBOutlet weak var txtfieldDOB: TextField!
-    @IBOutlet weak var btnCalendar: UIButton!
-    @IBOutlet weak var txtfieldSecurityNo: TextField!
-    @IBOutlet weak var btnEye: UIButton!
-//    @IBOutlet weak var txtfieldNoOfDependent: TextField!
+    @IBOutlet weak var txtfieldDOB: ColabaTextField!
+    @IBOutlet weak var txtfieldSecurityNo: ColabaTextField!
     @IBOutlet weak var lblNoOfDependent: UILabel!
     @IBOutlet weak var dependentsCollectionView: UICollectionView!
     @IBOutlet weak var dependentsCollectionViewHeightConstraint: NSLayoutConstraint!
@@ -103,26 +99,62 @@ class BorrowerInformationViewController: BaseViewController {
     var isReserveOrNationalCard = true
     var isVeteran = false
     var isSurvivingSpouse = false
-    private let validation: Validation
-    let dobDateFormatter = DateFormatter()
-    
-    init(validation: Validation) {
-        self.validation = validation
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        self.validation = Validation()
-        super.init(coder: coder)
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setViews()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setDependentCollectionViewLayout()
+        setScreenHeight()
+        setTextFields()
+    }
+
+    //MARK:- Methods and Actions
+    func setTextFields() {
+        ///Legal First Name Text Field
+        txtfieldLegalFirstName.setTextField(placeholder: "Legal First Name", controller: self, validationType: .noValidation)
+        txtfieldLegalFirstName.setIsValidateOnEndEditing(validate: false)
         
-        setMaterialTextFieldsAndViews(textfields: [txtfieldLegalFirstName, txtfieldMiddleName, txtfieldLegalLastName, txtfieldSuffix, txtfieldEmail, txtfieldHomeNumber, txtfieldWorkNumber, txtfieldExtensionNumber, txtfieldCellNumber, txtfieldDOB, txtfieldSecurityNo /*txtfieldNoOfDependent*/])
-        tblViewAddress.register(UINib(nibName: "BorrowerAddressInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerAddressInfoTableViewCell")
-        dependentsCollectionView.register(UINib(nibName: "DependentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "DependentCollectionViewCell")
+        ///Legal Middle Name Text Field
+        txtfieldMiddleName.setTextField(placeholder: "Legal Middle Name", controller: self, validationType: .noValidation)
+        txtfieldMiddleName.setIsValidateOnEndEditing(validate: false)
         
+        ///Legal Last Name Text Field
+        txtfieldLegalLastName.setTextField(placeholder: "Legal Last Name", controller: self, validationType: .noValidation)
+        txtfieldLegalLastName.setIsValidateOnEndEditing(validate: false)
+        
+        ///Suffix Text Field
+        txtfieldSuffix.setTextField(placeholder: "Suffix", controller: self, validationType: .noValidation)
+        txtfieldSuffix.setIsValidateOnEndEditing(validate: false)
+        
+        ///Email Adress Text Field
+        txtfieldEmail.setTextField(placeholder: "Email", controller: self, validationType: .email, keyboardType: .emailAddress)
+        
+        ///Home Number Text Field
+        txtfieldHomeNumber.setTextField(placeholder: "Home Number", controller: self, validationType: .phoneNumber, keyboardType: .phonePad)
+        
+        ///Work Number Text Field
+        txtfieldWorkNumber.setTextField(placeholder: "Work Number", controller: self, validationType: .phoneNumber, keyboardType: .phonePad)
+
+        ///Extension Number Text Field
+        txtfieldExtensionNumber.setTextField(placeholder: "Extension Number", controller: self, validationType: .noValidation, keyboardType: .phonePad)
+        
+        ///Cell Number Text Field
+        txtfieldCellNumber.setTextField(placeholder: "Cell Number", controller: self, validationType: .phoneNumber, keyboardType: .phonePad)
+        
+        ///Date of Birth Text Field
+        txtfieldDOB.setTextField(placeholder: "Date of Birth", controller: self, validationType: .noValidation)
+        txtfieldDOB.type = .datePicker
+        
+        ///Work Number Text Field
+        txtfieldSecurityNo.setTextField(placeholder: "Social Security Number", controller: self, validationType: .socialSecurityNumber, keyboardType: .numberPad)
+        txtfieldSecurityNo.type = .password
+    }
+    
+    func setViews() {
         unMarriedStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(unmarriedTapped)))
         marriedStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(marriedTapped)))
         separatedStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(separatedTapped)))
@@ -137,46 +169,6 @@ class BorrowerInformationViewController: BaseViewController {
         reserveNationalGuardStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(reserveNationalGuardTapped)))
         veteranStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(veteranTapped)))
         survivingSpouseStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(survivingSpouseTapped)))
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        setDependentCollectionViewLayout()
-        setScreenHeight()
-    }
-    
-    //MARK:- Methods and Actions
-    
-    func setScreenHeight(){
-        let addressTableViewHeight = tblViewAddress.contentSize.height
-        let maritalStatusViewHeight = maritalStatusView.frame.height
-        let citizenshipViewHeight = citizenshipView.frame.height
-        let dependentsCollectionViewHeight = dependentsCollectionView.contentSize.height
-        let militaryViewHeight = militaryView.frame.height
-        let totalHeight = addressTableViewHeight + maritalStatusViewHeight + citizenshipViewHeight + dependentsCollectionViewHeight + militaryViewHeight + 1100
-        tblViewHeightConstraint.constant = addressTableViewHeight
-        dependentsCollectionViewHeightConstraint.constant = dependentsCollectionViewHeight
-        self.mainViewHeightConstraint.constant = totalHeight
-        
-        UIView.animate(withDuration: 0.0) {
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    func setMaterialTextFieldsAndViews(textfields: [TextField]){
-        for textfield in textfields{
-            textfield.dividerActiveColor = Theme.getButtonBlueColor()
-            textfield.dividerColor = Theme.getSeparatorNormalColor()
-            textfield.placeholderActiveColor = Theme.getAppGreyColor()
-            textfield.delegate = self
-            textfield.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-            textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
-            textfield.detailColor = .red
-            textfield.detailVerticalOffset = 4
-            textfield.placeholderVerticalOffset = 8
-            textfield.textColor = Theme.getAppBlackColor()
-        }
         
         addAddressView.layer.cornerRadius = 6
         addAddressView.layer.borderWidth = 1
@@ -195,9 +187,6 @@ class BorrowerInformationViewController: BaseViewController {
         nonPermanentResidentMainView.dropShadowToCollectionViewCell()
         nonPermanentResidentMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nonPermanentResidentMainViewTapped)))
         
-        dobDateFormatter.dateStyle = .medium
-        dobDateFormatter.dateFormat = "MM/dd/yyyy"
-        txtfieldDOB.addInputViewDatePicker(target: self, selector: #selector(dateChanged), maximumDate: Date())
         
         lastDateOfServiceMainView.layer.cornerRadius = 6
         lastDateOfServiceMainView.layer.borderWidth = 1
@@ -205,23 +194,29 @@ class BorrowerInformationViewController: BaseViewController {
         lastDateOfServiceMainView.dropShadowToCollectionViewCell()
         lastDateOfServiceMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(lastDateOfServiceMainViewTapped)))
         
+        
         reserveOrNationalGuardMainView.layer.cornerRadius = 6
         reserveOrNationalGuardMainView.layer.borderWidth = 1
         reserveOrNationalGuardMainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         reserveOrNationalGuardMainView.dropShadowToCollectionViewCell()
         reserveOrNationalGuardMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(reserveOrNationalGuardMainViewTapped)))
+        
+        tblViewAddress.register(UINib(nibName: "BorrowerAddressInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerAddressInfoTableViewCell")
+        dependentsCollectionView.register(UINib(nibName: "DependentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "DependentCollectionViewCell")
     }
-    
-    func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){
-        for allTextField in allTextFields{
-            if (allTextField == selectedTextField){
-                if (allTextField.text == ""){
-                    allTextField.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-                }
-                else{
-                    allTextField.placeholderLabel.textColor = Theme.getAppGreyColor()
-                }
-            }
+    func setScreenHeight(){
+        let addressTableViewHeight = tblViewAddress.contentSize.height
+        let maritalStatusViewHeight = maritalStatusView.frame.height
+        let citizenshipViewHeight = citizenshipView.frame.height
+        let dependentsCollectionViewHeight = dependentsCollectionView.contentSize.height
+        let militaryViewHeight = militaryView.frame.height
+        let totalHeight = addressTableViewHeight + maritalStatusViewHeight + citizenshipViewHeight + dependentsCollectionViewHeight + militaryViewHeight + 1100
+        tblViewHeightConstraint.constant = addressTableViewHeight
+        dependentsCollectionViewHeightConstraint.constant = dependentsCollectionViewHeight
+        self.mainViewHeightConstraint.constant = totalHeight
+        
+        UIView.animate(withDuration: 0.0) {
+            self.view.layoutIfNeeded()
         }
     }
     
@@ -372,12 +367,6 @@ class BorrowerInformationViewController: BaseViewController {
         self.presentVC(vc: vc)
     }
     
-    @objc func dateChanged() {
-        if let  datePicker = self.txtfieldDOB.inputView as? UIDatePicker {
-            self.txtfieldDOB.text = dobDateFormatter.string(from: datePicker.date)
-        }
-    }
-    
     @objc func addDependentTapped(){
         if (noOfDependents < 99){
             noOfDependents = noOfDependents + 1
@@ -497,16 +486,6 @@ class BorrowerInformationViewController: BaseViewController {
         nonPermanentResidentTapped()
     }
     
-    @IBAction func btnCalendarTapped(_ sender: UIButton){
-        
-    }
-    
-    @IBAction func btnEyeTapped(_ sender: UIButton){
-        isShowSecurityNo = !isShowSecurityNo
-        txtfieldSecurityNo.isSecureTextEntry = !isShowSecurityNo
-        btnEye.setImage(UIImage(named: isShowSecurityNo ? "hide" : "eyeIcon"), for: .normal)
-    }
-    
     @IBAction func btnActiveDutyTapped(_ sender: UIButton) {
         activeDutyTapped()
     }
@@ -524,103 +503,74 @@ class BorrowerInformationViewController: BaseViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton){
-        
-        var borrowerFirstName: String = "", borrowerLastName: String = "", borrowerEmail: String = "", borrowerHomeNumber: String = ""
         var dependentAges = [String:String]()
         
-//        do{
-//            let firstName = try validation.validateBorrowerFirstName(txtfieldLegalFirstName.text)
-//            borrowerFirstName = firstName
-//            DispatchQueue.main.async {
-//                self.txtfieldLegalFirstName.dividerColor = Theme.getSeparatorNormalColor()
-//                self.txtfieldLegalFirstName.detail = ""
+//        for i in 0..<noOfDependents{
+//            let cell = dependentsCollectionView.cellForItem(at: IndexPath(row: i, section: 0)) as! DependentCollectionViewCell
+//            do{
+//                let age = try cell.txtfieldAge.text?.validate(type: .required)
+//                let dictKey = (i + 1).ordinalNumber()
+//                dependentAges[dictKey] = cell.txtfieldAge.text
+//                DispatchQueue.main.async {
+//                    cell.txtfieldAge.dividerColor = Theme.getSeparatorNormalColor()
+//                    cell.txtfieldAge.detail = ""
+//                }
+//
 //            }
-//
-//        }
-//        catch{
-//            self.txtfieldLegalFirstName.dividerColor = .red
-//            self.txtfieldLegalFirstName.detail = error.localizedDescription
-//        }
-//
-//        do{
-//            let lastName = try validation.validateBorrowerLastName(txtfieldLegalLastName.text)
-//            borrowerLastName = lastName
-//            DispatchQueue.main.async {
-//                self.txtfieldLegalLastName.dividerColor = Theme.getSeparatorNormalColor()
-//                self.txtfieldLegalLastName.detail = ""
+//            catch{
+//                cell.txtfieldAge.dividerColor = .red
+//                cell.txtfieldAge.detail = error.localizedDescription
 //            }
-//
 //        }
-//        catch{
-//            self.txtfieldLegalLastName.dividerColor = .red
-//            self.txtfieldLegalLastName.detail = error.localizedDescription
-//        }
-        if (txtfieldEmail.text != ""){
-            do{
-                let email = try validation.validateBorrowerEmail(txtfieldEmail.text)
-                borrowerEmail = email
-                DispatchQueue.main.async {
-                    self.txtfieldEmail.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldEmail.detail = ""
+        if validate() {
+            if (txtfieldEmail.text != "" && txtfieldHomeNumber.text != ""){
+                if (txtfieldEmail.text!.isValidEmail() && txtfieldHomeNumber.text?.count == 14){
+                    self.goBack()
                 }
-                
             }
-            catch{
-                self.txtfieldEmail.dividerColor = .red
-                self.txtfieldEmail.detail = error.localizedDescription
+            else if (txtfieldEmail.text != "" && txtfieldEmail.text!.isValidEmail() && txtfieldHomeNumber.text == ""){
+                self.goBack()
             }
-        }
-        
-        if (txtfieldHomeNumber.text != ""){
-            do{
-                let homeNumber = try validation.validateBorrowrHomePhoneNumber(txtfieldHomeNumber.text)
-                borrowerHomeNumber = homeNumber
-                DispatchQueue.main.async {
-                    self.txtfieldHomeNumber.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldHomeNumber.detail = ""
-                }
-                
+            else if (txtfieldEmail.text == "" && txtfieldHomeNumber.text?.count == 14){
+                self.goBack()
             }
-            catch{
-                self.txtfieldHomeNumber.dividerColor = .red
-                self.txtfieldHomeNumber.detail = error.localizedDescription
-            }
-        }
-        
-        for i in 0..<noOfDependents{
-            let cell = dependentsCollectionView.cellForItem(at: IndexPath(row: i, section: 0)) as! DependentCollectionViewCell
-            do{
-                let age = try validation.validateDependentAge(cell.txtfieldAge.text)
-                let dictKey = (i + 1).ordinalNumber()
-                dependentAges[dictKey] = age
-                DispatchQueue.main.async {
-                    cell.txtfieldAge.dividerColor = Theme.getSeparatorNormalColor()
-                    cell.txtfieldAge.detail = ""
-                }
-                
-            }
-            catch{
-                cell.txtfieldAge.dividerColor = .red
-                cell.txtfieldAge.detail = error.localizedDescription
-            }
-        }
-        if (txtfieldEmail.text != "" && txtfieldHomeNumber.text != ""){
-            if (txtfieldEmail.text!.isValidEmail() && txtfieldHomeNumber.text?.count == 14){
+            else if (txtfieldEmail.text == "" && txtfieldHomeNumber.text == ""){
                 self.goBack()
             }
         }
-        else if (txtfieldEmail.text != "" && txtfieldEmail.text!.isValidEmail() && txtfieldHomeNumber.text == ""){
-            self.goBack()
+    }
+    
+    func validate() -> Bool {
+        
+        var isValidate = true
+        
+        for i in 0..<noOfDependents{
+            let cell = dependentsCollectionView.cellForItem(at: IndexPath(row: i, section: 0)) as! DependentCollectionViewCell
+            isValidate = cell.txtfieldAge.validate() && isValidate
         }
-        else if (txtfieldEmail.text == "" && txtfieldHomeNumber.text?.count == 14){
-            self.goBack()
+        
+        if txtfieldEmail.text != "" {
+            isValidate = txtfieldEmail.validate() && isValidate
         }
-        else if (txtfieldEmail.text == "" && txtfieldHomeNumber.text == ""){
-            self.goBack()
+        if txtfieldHomeNumber.text != "" {
+            isValidate = txtfieldHomeNumber.validate() && isValidate
         }
-//        if (borrowerFirstName != "" && borrowerLastName != "" && borrowerEmail != "" && borrowerHomeNumber != "" && dependentAges.keys.count == noOfDependents){
-//            self.goBack()
-//        }
+        if txtfieldWorkNumber.text != "" {
+            isValidate = txtfieldWorkNumber.validate() && isValidate
+        }
+        if txtfieldCellNumber.text != "" {
+            isValidate = txtfieldCellNumber.validate() && isValidate
+        }
+        if txtfieldSecurityNo.text != "" {
+            isValidate = txtfieldSecurityNo.validate() && isValidate
+        }
+        return isValidate
+    }
+}
+
+extension BorrowerInformationViewController: ColabaTextFieldDelegate {
+    func textFieldEndEditing(_ textField: ColabaTextField) {
+        _ = validate()
     }
 }
 
@@ -734,126 +684,5 @@ extension BorrowerInformationViewController: DependentCollectionViewCellDelegate
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.setScreenHeight()
         }
-    }
-}
-
-extension BorrowerInformationViewController: UITextFieldDelegate{
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if (textField == txtfieldDOB){
-            dateChanged()
-        }
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldLegalFirstName, txtfieldMiddleName, txtfieldLegalLastName, txtfieldSuffix, txtfieldEmail, txtfieldHomeNumber, txtfieldWorkNumber, txtfieldExtensionNumber, txtfieldCellNumber, txtfieldDOB, txtfieldSecurityNo /*txtfieldNoOfDependent*/])
-       
-//        if (textField == txtfieldLegalFirstName){
-//            do{
-//                let firstName = try validation.validateBorrowerFirstName(txtfieldLegalFirstName.text)
-//                DispatchQueue.main.async {
-//                    self.txtfieldLegalFirstName.dividerColor = Theme.getSeparatorNormalColor()
-//                    self.txtfieldLegalFirstName.detail = ""
-//                }
-//
-//            }
-//            catch{
-//                self.txtfieldLegalFirstName.dividerColor = .red
-//                self.txtfieldLegalFirstName.detail = error.localizedDescription
-//            }
-//        }
-//
-//        if (textField == txtfieldLegalLastName){
-//            do{
-//                let lastName = try validation.validateBorrowerLastName(txtfieldLegalLastName.text)
-//                DispatchQueue.main.async {
-//                    self.txtfieldLegalLastName.dividerColor = Theme.getSeparatorNormalColor()
-//                    self.txtfieldLegalLastName.detail = ""
-//                }
-//
-//            }
-//            catch{
-//                self.txtfieldLegalLastName.dividerColor = .red
-//                self.txtfieldLegalLastName.detail = error.localizedDescription
-//            }
-//        }
-        
-        if (textField == txtfieldEmail){
-            do{
-                let email = try validation.validateBorrowerEmail(txtfieldEmail.text)
-                DispatchQueue.main.async {
-                    self.txtfieldEmail.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldEmail.detail = ""
-                }
-                
-            }
-            catch{
-                if (error.localizedDescription == ValidationError.requiredField.localizedDescription){
-                    self.txtfieldEmail.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldEmail.detail = ""
-                }
-                else{
-                    self.txtfieldEmail.dividerColor = .red
-                    self.txtfieldEmail.detail = error.localizedDescription
-                }
-                
-            }
-        }
-        
-        if (textField == txtfieldHomeNumber){
-            do{
-                let homeNumber = try validation.validateBorrowrHomePhoneNumber(txtfieldHomeNumber.text)
-                DispatchQueue.main.async {
-                    self.txtfieldHomeNumber.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldHomeNumber.detail = ""
-                }
-                
-            }
-            catch{
-                if (error.localizedDescription == ValidationError.requiredField.localizedDescription){
-                    self.txtfieldHomeNumber.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldHomeNumber.detail = ""
-                }
-                else{
-                    self.txtfieldHomeNumber.dividerColor = .red
-                    self.txtfieldHomeNumber.detail = error.localizedDescription
-                }
-                
-            }
-        }
-
-    }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        if (textField == txtfieldHomeNumber || textField == txtfieldWorkNumber || textField == txtfieldCellNumber){
-            guard let text = textField.text else { return false }
-            let newString = (text as NSString).replacingCharacters(in: range, with: string)
-            textField.text = formatNumber(with: "(XXX) XXX-XXXX", number: newString)
-            return false
-        }
-        else if (textField == txtfieldSecurityNo){
-            guard let text = textField.text else { return false }
-            let newString = (text as NSString).replacingCharacters(in: range, with: string)
-            textField.text = formatNumber(with: "XXX-XX-XXXX", number: newString)
-            return false
-        }
-        else if (textField == txtfieldExtensionNumber){
-            return string == "" ? true : (txtfieldExtensionNumber.text!.count < 8)
-        }
-        else{
-            return true
-        }
-//        do{
-//            let phoneNumber = try validation.validatePhoneNumber(txtFieldPhone.text)
-//            self.lblPhoneError.isHidden = true
-//            self.phoneSeparator.backgroundColor = Theme.getSeparatorNormalColor()
-//        }
-//        catch{
-////            self.lblPhoneError.text = error.localizedDescription
-////            self.lblPhoneError.isHidden = false
-////            self.phoneSeparator.backgroundColor = Theme.getSeparatorErrorColor()
-//        }
-        
     }
 }
