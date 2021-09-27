@@ -435,12 +435,12 @@ extension ColabaTextField {
 //MARK: Delegates
 extension ColabaTextField: UITextFieldDelegate {
     public func setDelegates(controller: UIViewController) {
-        self.self.delegate = self
+        self.delegate = self
         self.colabaDelegate = controller as? ColabaTextFieldDelegate
     }
     
     public func setDelegates(collectionViewCell: UICollectionViewCell) {
-        self.self.delegate = self
+        self.delegate = self
         self.colabaDelegate = collectionViewCell as? ColabaTextFieldDelegate
     }
     
@@ -451,6 +451,13 @@ extension ColabaTextField: UITextFieldDelegate {
             let newString = (text as NSString).replacingCharacters(in: range, with: string)
             textField.text = formatNumber(with: "(XXX) XXX-XXXX", number: newString)
             return false
+        }
+        if validationType == .socialSecurityNumber {
+            guard let text = textField.text else { return false }
+            let newString = (text as NSString).replacingCharacters(in: range, with: string)
+            textField.text = formatNumber(with: "XXX-XX-XXXX", number: newString)
+            return false
+
         }
         if validationType == .verificationCode {
             if (string == "" || textField.text!.count < 6){

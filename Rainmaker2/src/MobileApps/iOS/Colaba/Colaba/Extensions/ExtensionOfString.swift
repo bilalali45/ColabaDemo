@@ -41,7 +41,6 @@ extension Int{
         numberFormatter.numberStyle = .ordinal
         let ordinalNumber = numberFormatter.string(from: NSNumber(value: self))!
         return ordinalNumber
-        //return kOrdinalToSpellingDictionary[ordinalNumber]!
     }
 }
 
