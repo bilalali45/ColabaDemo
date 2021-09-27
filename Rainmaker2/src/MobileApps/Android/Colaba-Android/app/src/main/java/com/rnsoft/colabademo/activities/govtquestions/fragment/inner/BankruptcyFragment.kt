@@ -5,11 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.databinding.BankAccountLayoutBinding
 import com.rnsoft.colabademo.databinding.BankruptcyLayoutBinding
-import com.rnsoft.colabademo.databinding.PriorityLiensLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
