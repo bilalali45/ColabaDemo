@@ -3,23 +3,19 @@ package com.rnsoft.colabademo
 import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
-import androidx.core.view.iterator
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.databinding.SubjectPropertyPurchaseBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
-import kotlinx.android.synthetic.main.subject_property_purchase.*
-import timber.log.Timber
 
 /**
  * Created by Anita Kiran on 9/8/2021.
@@ -62,6 +58,12 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
             setSpinnerData()
             setInputFields()
             super.addListeners(binding.root)
+
+            requireActivity().onBackPressedDispatcher.addCallback {
+                requireActivity().finish()
+                requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_right)
+            }
+
             savedViewInstance
         }
     }
@@ -73,7 +75,10 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
             R.id.rb_mixed_property_yes -> mixedPropertyDetail()
             R.id.layout_details -> mixedPropertyDetail()
             R.id.layout_address -> setAddressClick()
-            R.id.backButton -> requireActivity().finish()
+            R.id.backButton ->  {
+                requireActivity().finish()
+                requireActivity().overridePendingTransition(R.anim.slide_right, R.anim.hold)
+            }
             R.id.btn_save -> requireActivity().finish()
             R.id.subproperty_parent_layout -> {
                 HideSoftkeyboard.hide(requireActivity(),binding.subpropertyParentLayout)

@@ -29,7 +29,7 @@ import java.util.*
 /**
  * Created by Anita Kiran on 9/16/2021.
  */
-class RealEstateOwnedFragment : BaseFragment() , View.OnClickListener {
+class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var binding: RealEstateOwnedLayoutBinding
     private lateinit var toolbar: AppHeaderWithCrossDeleteBinding

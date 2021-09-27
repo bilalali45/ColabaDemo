@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -83,6 +84,12 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             setSpinnerData()
             setInputFields()
             super.addListeners(binding.root)
+
+            requireActivity().onBackPressedDispatcher.addCallback {
+                requireActivity().finish()
+                requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_right)
+            }
+
             savedViewInstance
         }
 
@@ -146,7 +153,10 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             R.id.rb_sec_mortgage_no -> onSecMortgegeNoClick()
             R.id.layout_first_mortgage_detail -> onFirstMortgageYes()
             R.id.layout_sec_mortgage_detail -> onSecMortgageYesClick()
-            R.id.backButton -> requireActivity().finish()
+            R.id.backButton -> {
+                requireActivity().finish()
+                requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_right)
+            }
             R.id.btn_save -> requireActivity().finish()
             R.id.rb_sub_property -> radioSubPropertyClick()
             R.id.rb_sub_property_address -> radioAddressClick()

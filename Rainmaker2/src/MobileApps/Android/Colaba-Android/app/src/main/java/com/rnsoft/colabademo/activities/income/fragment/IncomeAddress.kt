@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-import android.app.ActionBar
 import android.content.res.ColorStateList
 import android.location.Address
 import android.location.Geocoder
@@ -15,7 +14,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.maps.model.LatLng
@@ -135,12 +133,6 @@ class IncomeAddress : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListene
         binding.searchSeparator.layoutParams.height = 1
         binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
     }
-
-    /*private fun setSearchFieldStroke(lineheight: Int){
-        val layoutParams = binding.searchSeparator.layoutParams
-        layoutParams.height = lineheight
-        binding.searchSeparator.layoutParams = layoutParams
-    } */
 
     private fun checkValidations() {
         val searchBar: String = binding.tvSearch.text.toString()

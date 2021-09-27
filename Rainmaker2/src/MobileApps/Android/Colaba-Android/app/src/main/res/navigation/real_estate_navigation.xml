@@ -13,20 +13,17 @@
         <action
             android:id="@+id/action_realestate_address"
             app:destination="@id/navigation_realestate_address"
-            app:enterAnim="@anim/slide_up"
-            app:exitAnim="@anim/slide_down" />
+            app:enterAnim="@anim/slide_up" />
 
         <action
             android:id="@+id/action_realestate_first_mortgage"
             app:destination="@id/nav_first_mortage"
-            app:enterAnim="@anim/slide_up"
-            app:exitAnim="@anim/slide_down" />
+            app:enterAnim="@anim/slide_up" />
 
         <action
             android:id="@+id/action_realestate_second_mortgage"
             app:destination="@id/nav_sec_mortage"
-            app:enterAnim="@anim/slide_up"
-            app:exitAnim="@anim/slide_down" />
+            app:enterAnim="@anim/slide_up" />
 
     </fragment>
 

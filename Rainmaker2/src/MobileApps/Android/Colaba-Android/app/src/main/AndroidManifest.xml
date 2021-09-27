@@ -34,8 +34,8 @@
         <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:screenOrientation="sensorPortrait">
-            <intent-filter>
+            android:screenOrientation="sensorPortrait"     >
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -64,7 +64,7 @@
         <activity
             android:name=".BorrowerAddressActivity"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".BorrowerLoanActivity"
             android:screenOrientation="sensorPortrait"

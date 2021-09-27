@@ -196,6 +196,7 @@
     <string name="type_of_relations">Types of Relationship</string>
     <string name="search_mailing_address">Search Mailing Address</string>
     <string name="search_home_address">Search Home Address</string>
+    <string name="search_prev_home_address">Search Previous Home Address</string>
 
     <string name="zip_code">Zip Code</string>
     <string name="country">Country</string>

@@ -2,7 +2,6 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import com.rnsoft.colabademo.BaseActivity
 import com.rnsoft.colabademo.databinding.ActivityStartNewApplicationBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -22,5 +21,7 @@ class StartNewApplicationActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStartNewApplicationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        overridePendingTransition(R.anim.slide_left, 0)
+
     }
 }

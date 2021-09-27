@@ -10,7 +10,39 @@
         android:id="@+id/navigation_asset_tab"
         android:name="com.rnsoft.colabademo.AssetsTabFragment"
         android:label="@string/assets"
-        tools:layout="@layout/dynamic_asset_fragment_layout" />
+        tools:layout="@layout/dynamic_asset_fragment_layout">
+
+        <action
+            android:id="@+id/action_assets_bank_account"
+            app:destination="@id/navigation_bank_account"
+            app:enterAnim="@anim/slide_up" />
+
+        <action
+            android:id="@+id/action_assets_retirement"
+            app:destination="@id/navigation_retirement_fragment"
+            app:enterAnim="@anim/slide_up" />
+
+        <action
+            android:id="@+id/action_assets_stocks_bond"
+            app:destination="@id/navigation_stock_bonds"
+            app:enterAnim="@anim/slide_up" />
+
+        <action
+            android:id="@+id/action_assets_proceeds_transaction"
+            app:destination="@id/navigation_proceed_from_transaction"
+            app:enterAnim="@anim/slide_up" />
+
+        <action
+            android:id="@+id/action_assets_other"
+            app:destination="@id/navigation_other_asset"
+            app:enterAnim="@anim/slide_up" />
+
+        <action
+            android:id="@+id/action_assets_gift"
+            app:destination="@id/navigation_gift_assets"
+            app:enterAnim="@anim/slide_up" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_b_assets_one"

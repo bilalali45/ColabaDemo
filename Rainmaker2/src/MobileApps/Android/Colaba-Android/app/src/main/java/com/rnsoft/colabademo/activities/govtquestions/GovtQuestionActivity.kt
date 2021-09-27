@@ -14,7 +14,7 @@ class GovtQuestionActivity : BaseActivity() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     lateinit var binding: GovtQuestionsActivityLayoutBinding
-    private lateinit var appBarConfiguration : AppBarConfiguration
+    //private lateinit var appBarConfiguration : AppBarConfiguration
 
     var loanApplicationId:Int? = null
     var loanPurpose:String? = null
@@ -23,6 +23,9 @@ class GovtQuestionActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = GovtQuestionsActivityLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        overridePendingTransition(R.anim.slide_left, R.anim.hold)
+
+
         val extras = intent.extras
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)

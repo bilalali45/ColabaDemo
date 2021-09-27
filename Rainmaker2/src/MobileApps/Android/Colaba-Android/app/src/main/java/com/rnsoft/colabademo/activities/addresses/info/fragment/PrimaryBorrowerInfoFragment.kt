@@ -12,10 +12,10 @@ import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.addCallback
 import androidx.annotation.ColorRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.*
@@ -75,13 +75,15 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
             super.addListeners(savedViewInstance as ViewGroup)
 
+
+
             savedViewInstance
         }
     }
 
     private fun setViews() {
 
-        bi.backButton.setOnClickListener(this)
+        bi.backButtonInfo.setOnClickListener(this)
         bi.btnSaveInfo.setOnClickListener(this)
         bi.edDateOfBirth.setOnClickListener(this)
         msBinding.rbUnmarried.setOnClickListener(this)
@@ -115,6 +117,11 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         bindingMilitary.layoutActivePersonnel.setOnClickListener { findNavController().navigate(R.id.action_info_active_duty)}
         bindingMilitary.layoutNationalGuard.setOnClickListener { findNavController().navigate(R.id.action_info_reserve) }
         citizenshipBinding.layoutVisaStatusOther.setOnClickListener { findNavController().navigate(R.id.action_info_non_pr) }
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_right)
+        }
 
     }
 
@@ -168,13 +175,16 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             R.id.chb_surviving_spouse -> militarySurvivingSpouse()
             R.id.btn_save_info -> checkValidations()
             R.id.add_dependent_click -> addEmptyDependentField()
-            R.id.add_prev_address ->  if(bi.tvResidence.text.equals(getString(R.string.current_address))){
+            R.id.add_prev_address -> if (bi.tvResidence.text.equals(getString(R.string.current_address))) {
                 findNavController().navigate(R.id.action_info_current_address)
             } else {
                 findNavController().navigate(R.id.action_info_mailing_address)
             }
 
-            R.id.backButton -> requireActivity().finish()
+            R.id.backButton_info -> {
+                requireActivity().finish()
+                requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_right)
+            }
         }
     }
 
