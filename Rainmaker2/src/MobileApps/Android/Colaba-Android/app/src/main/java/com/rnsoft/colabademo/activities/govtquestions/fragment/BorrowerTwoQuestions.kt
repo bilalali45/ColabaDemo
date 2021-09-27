@@ -171,89 +171,89 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
             openDetailBoxHashMap.getValue(p0 as AppCompatRadioButton).visibility = View.VISIBLE
             when(p0) {
                 binding.childSupportYes -> {
-                    findNavController().navigate(R.id.navigation_child_support)
+                    findNavController().navigate(R.id.action_child_support)
                     openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.navigation_child_support)
+                        findNavController().navigate(R.id.action_child_support)
                     }
                 }
                 binding.bankruptcyYes -> {
-                    findNavController().navigate(R.id.navigation_bankruptcy)
+                    findNavController().navigate(R.id.action_bankruptcy)
                     openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.navigation_bankruptcy)
+                        findNavController().navigate(R.id.action_bankruptcy)
                     }
                 }
                 binding.priorityLiensYes -> {
-                    findNavController().navigate(R.id.navigation_priority_liens)
+                    findNavController().navigate(R.id.action_priority_liens)
                     openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.navigation_priority_liens)
+                        findNavController().navigate(R.id.action_priority_liens)
                     }
                 }
                 binding.ownershipInterestYes -> {
-                    findNavController().navigate(R.id.navigation_ownership_interest)
+                    findNavController().navigate(R.id.action_ownership_interest)
                     openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.navigation_ownership_interest)
+                        findNavController().navigate(R.id.action_ownership_interest)
                     }
                 }
                 binding.undisclosedYes -> {
-                    findNavController().navigate(R.id.navigation_undisclosed_borrower_fund)
+                    findNavController().navigate(R.id.action_undisclosed_borrower_fund)
                     openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.navigation_undisclosed_borrower_fund)
+                        findNavController().navigate(R.id.action_undisclosed_borrower_fund)
                     }
                 }
                 binding.debtCoYes-> {
-                    findNavController().navigate(R.id.navigation_debt_co)
+                    findNavController().navigate(R.id.action_debt_co)
                     openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.navigation_debt_co)
+                        findNavController().navigate(R.id.action_debt_co)
                     }
                 }
                 binding.outstandingJudgementYes-> {
-                    findNavController().navigate(R.id.navigation_outstanding)
+                    findNavController().navigate(R.id.action_outstanding)
                     openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.navigation_outstanding)
+                        findNavController().navigate(R.id.action_outstanding)
                     }
                 }
                 binding.federalDeptYes-> {
-                    findNavController().navigate(R.id.navigation_federal_debt)
+                    findNavController().navigate(R.id.action_federal_debt)
                     openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.navigation_federal_debt)
+                        findNavController().navigate(R.id.action_federal_debt)
                     }
                 }
                 binding.partyToLawsuitYes-> {
-                    findNavController().navigate(R.id.navigation_party_to)
+                    findNavController().navigate(R.id.action_party_to)
                     openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.navigation_party_to)
+                        findNavController().navigate(R.id.action_party_to)
                     }
                 }
 
                 binding.titleConveyanceYes-> {
-                    findNavController().navigate(R.id.navigation_title_conveyance)
+                    findNavController().navigate(R.id.action_title_conveyance)
                     openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.navigation_title_conveyance)
+                        findNavController().navigate(R.id.action_title_conveyance)
                     }
                 }
                 binding.preForeclosureShortSaleYes-> {
-                    findNavController().navigate(R.id.navigation_pre_for_closure)
+                    findNavController().navigate(R.id.action_pre_for_closure)
                     openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.navigation_pre_for_closure)
+                        findNavController().navigate(R.id.action_pre_for_closure)
                     }
                 }
                 binding.foreclosuredPropertyYes-> {
-                    findNavController().navigate(R.id.navigation_fore_closure_property)
+                    findNavController().navigate(R.id.action_fore_closure_property)
                     openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.navigation_fore_closure_property)
+                        findNavController().navigate(R.id.action_fore_closure_property)
                     }
                 }
 
                 binding.undisclosedCreditYes-> {
-                    findNavController().navigate(R.id.navigation_undisclosed_credit)
+                    findNavController().navigate(R.id.action_undisclosed_credit)
                     openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.navigation_undisclosed_credit)
+                        findNavController().navigate(R.id.action_undisclosed_credit)
                     }
                 }
                 binding.undisclosedMortgageYes-> {
-                    findNavController().navigate(R.id.navigation_undisclosed_mortgage)
+                    findNavController().navigate(R.id.action_undisclosed_mortgage)
                     openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.navigation_undisclosed_mortgage)
+                        findNavController().navigate(R.id.action_undisclosed_mortgage)
                     }
                 }
 

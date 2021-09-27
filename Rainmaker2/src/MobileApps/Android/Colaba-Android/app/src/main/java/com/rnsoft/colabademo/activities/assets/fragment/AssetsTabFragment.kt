@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
@@ -80,6 +81,12 @@ class AssetsTabFragment : BaseFragment() {
 
         binding.backButton.setOnClickListener {
             requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_right)
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_right)
         }
 
         super.addListeners(binding.root)

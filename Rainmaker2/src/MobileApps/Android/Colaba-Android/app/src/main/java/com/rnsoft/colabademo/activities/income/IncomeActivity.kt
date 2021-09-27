@@ -2,7 +2,6 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.navigation.ui.AppBarConfiguration
 import com.rnsoft.colabademo.databinding.IncomeActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -21,6 +20,9 @@ class IncomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = IncomeActivityLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        overridePendingTransition(R.anim.slide_left, R.anim.hold)
+
+
         /*val extras = intent.extras
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)

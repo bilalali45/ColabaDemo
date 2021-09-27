@@ -20,6 +20,8 @@ class RealEstateActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = RealEstateActivityLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        overridePendingTransition(R.anim.slide_up, R.anim.hold)
+
 
         /*val extras = intent.extras
         extras?.let {

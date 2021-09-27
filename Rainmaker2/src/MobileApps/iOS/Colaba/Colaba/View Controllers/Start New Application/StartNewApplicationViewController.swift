@@ -137,6 +137,7 @@ class StartNewApplicationViewController: BaseViewController {
         assignLoanOfficerView.layer.cornerRadius = 8
         assignLoanOfficerView.layer.borderWidth = 1
         assignLoanOfficerView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.2).cgColor
+        assignLoanOfficerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(assignLoanOfficerViewTapped)))
         
         loanOfficerView.layer.cornerRadius = 8
         loanOfficerView.layer.borderWidth = 1
@@ -267,6 +268,11 @@ class StartNewApplicationViewController: BaseViewController {
         btnCreateApplication.backgroundColor = Theme.getButtonBlueColor()
         btnCreateApplication.setTitleColor(.white, for: .normal)
         btnCreateApplication.isEnabled = true
+    }
+    
+    @objc func assignLoanOfficerViewTapped(){
+        let vc = Utility.getAssignLoanOfficerPopupVC()
+        self.present(vc, animated: false, completion: nil)
     }
     
     func validate() -> Bool{

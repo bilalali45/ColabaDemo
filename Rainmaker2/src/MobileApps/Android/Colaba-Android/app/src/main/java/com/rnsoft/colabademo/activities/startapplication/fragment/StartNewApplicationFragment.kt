@@ -52,6 +52,14 @@ class StartNewApplicationFragment : BaseFragment(), View.OnClickListener {
         binding.parentLayout.setOnClickListener(this)
         binding.backButton.setOnClickListener(this)
 
+
+        binding.btnCreateApp.setOnClickListener {
+            AssignBorrowerBottomDialogFragment.newInstance(this@StartNewApplicationFragment).show(
+                childFragmentManager,
+                AssignBorrowerBottomDialogFragment::class.java.canonicalName
+            )
+        }
+
         adapter = ContactsAdapter(requireActivity(),searchList)
         searchList.add(Contacts("Richard Glenn Randall","richard.glenn@gmail.com","(121) 353 1343"))
         searchList.add(Contacts("Arnold Richard","arnold634@gmail.com","(121) 353 1343"))

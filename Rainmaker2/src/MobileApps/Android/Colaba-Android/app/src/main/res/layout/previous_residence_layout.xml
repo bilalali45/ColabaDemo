@@ -11,7 +11,6 @@
         android:id="@+id/assets_top_container"
         android:layout_width="match_parent"
         android:layout_height="54dp"
-        android:background="@color/colaba_loan_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -64,7 +63,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
             app:srcCompat="@drawable/ic_grey_del" />
 
         <View
@@ -75,7 +73,7 @@
             android:layout_marginTop="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/borrower_purpose" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -106,12 +104,12 @@
             app:layout_constraintTop_toBottomOf="@+id/assets_top_container">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/topSearchFieldTextInputLayout"
+                android:id="@+id/layout_search_field"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:hint="@string/search_home_address"
+                android:hint="@string/search_prev_home_address"
                 android:background="@android:color/transparent"
                 android:textColorHint="@color/primary_info_label_color"
                 app:boxCollapsedPaddingTop="1dp"
@@ -126,19 +124,11 @@
                 app:endIconDrawable="@drawable/ic_down_arrow"
                 app:endIconMode="custom"
                 app:endIconTint="@color/grey_color_three"
-
-
                 android:layout_marginStart="20dp"
-
                 android:layout_marginEnd="20dp"
-
-
                 android:gravity="start"
-
-
                 android:paddingStart="-17dp"
                 android:theme="@style/InputText_Overlay"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -155,28 +145,36 @@
                     android:padding="0dp"
                     android:fontFamily="@font/rubik_regular"
                     android:textColor="@color/grey_color_one"
-
                     android:drawablePadding="-12dp"
-                    android:inputType="textAutoComplete"
-                    />
+                    android:inputType="textAutoComplete" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-
 
             <View
                 android:id="@+id/topSearchTextInputLine"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginStart="20dp"
-
                 android:layout_marginEnd="20dp"
-
                 android:background="@color/grey_color_four"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/topSearchFieldTextInputLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/layout_search_field" />
 
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/colaba_red_color"
+                android:text="@string/error_field_required"
+                android:layout_marginTop="5dp"
+                android:textSize="11sp"
+                android:fontFamily="@font/rubik_regular"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topSearchTextInputLine"/>
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -196,17 +194,12 @@
                 app:boxStrokeWidth="0.5dp"
                 app:boxStrokeWidthFocused="1dp"
                 app:helperTextEnabled="true"
-
                 app:helperTextTextAppearance="@style/inputError"
-
                 app:helperTextTextColor="@color/colaba_red_color"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/topSearchFieldTextInputLayout"
-
-                >
+                app:layout_constraintTop_toBottomOf="@+id/layout_search_field">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/streetAddressEditText"
@@ -784,7 +777,7 @@
     </ScrollView>
 
     <ImageView
-        android:id="@+id/phone_fab"
+        android:id="@+id/save_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_save_icon"

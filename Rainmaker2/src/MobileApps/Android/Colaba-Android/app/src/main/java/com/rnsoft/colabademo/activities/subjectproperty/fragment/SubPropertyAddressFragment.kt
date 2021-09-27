@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -53,9 +54,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
     ): View? {
         binding = SubjectPropertyAddressBinding.inflate(inflater, container, false)
 
-        binding.backButton.setOnClickListener {
-            requireActivity().onBackPressed()
-        }
+
 
         setInputFields()
         setStateAndCountyDropDown()
@@ -75,6 +74,18 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         binding.btnSave.setOnClickListener{
             checkValidations()
         }
+
+        binding.backButton.setOnClickListener {
+            //findNavController().navigate(R.id.action_back_fromAddress_toPurchase)
+            findNavController().popBackStack()
+
+        }
+
+       /*requireActivity().onBackPressedDispatcher.addCallback {
+           findNavController().navigate(R.id.action_back_fromAddress_toPurchase)
+       } */
+
+
         super.addListeners(binding.root)
         return binding.root
 
