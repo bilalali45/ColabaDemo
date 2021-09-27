@@ -131,21 +131,19 @@ class BorrowerInformationViewController: BaseViewController {
         txtfieldSuffix.setIsValidateOnEndEditing(validate: false)
         
         ///Email Adress Text Field
-        txtfieldEmail.setTextField(placeholder: "Email", controller: self, validationType: .email)
+        txtfieldEmail.setTextField(placeholder: "Email", controller: self, validationType: .email, keyboardType: .emailAddress)
         
         ///Home Number Text Field
         txtfieldHomeNumber.setTextField(placeholder: "Home Number", controller: self, validationType: .phoneNumber, keyboardType: .phonePad)
-        txtfieldHomeNumber.setIsValidateOnEndEditing(validate: false)
         
         ///Work Number Text Field
         txtfieldWorkNumber.setTextField(placeholder: "Work Number", controller: self, validationType: .phoneNumber, keyboardType: .phonePad)
-        txtfieldWorkNumber.setIsValidateOnEndEditing(validate: false)
+
         ///Extension Number Text Field
         txtfieldExtensionNumber.setTextField(placeholder: "Extension Number", controller: self, validationType: .noValidation, keyboardType: .phonePad)
         
         ///Cell Number Text Field
         txtfieldCellNumber.setTextField(placeholder: "Cell Number", controller: self, validationType: .phoneNumber, keyboardType: .phonePad)
-        txtfieldCellNumber.setIsValidateOnEndEditing(validate: false)
         
         ///Date of Birth Text Field
         txtfieldDOB.setTextField(placeholder: "Date of Birth", controller: self, validationType: .noValidation)
