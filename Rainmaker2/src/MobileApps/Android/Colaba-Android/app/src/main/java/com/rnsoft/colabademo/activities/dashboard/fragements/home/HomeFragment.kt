@@ -93,7 +93,8 @@ class HomeFragment : BaseFragment() {
 
         pageAdapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
         viewPager.adapter = pageAdapter
-
+        viewPager.isUserInputEnabled = false
+        viewPager.setPageTransformer(null)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabArray[position]
         }.attach()
