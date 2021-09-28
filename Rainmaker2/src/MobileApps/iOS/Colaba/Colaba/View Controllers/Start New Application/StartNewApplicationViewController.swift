@@ -144,6 +144,7 @@ class StartNewApplicationViewController: BaseViewController {
         loanOfficerView.layer.cornerRadius = 8
         loanOfficerView.layer.borderWidth = 1
         loanOfficerView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        loanOfficerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(assignLoanOfficerViewTapped)))
         
         btnCreateApplication.layer.cornerRadius = 5
         btnCreateApplication.isEnabled = false
@@ -325,7 +326,9 @@ class StartNewApplicationViewController: BaseViewController {
             txtfieldPhone.validate()
         }
         if (validate()){
-            self.dismissVC()
+            //self.dismissVC()
+            let vc = Utility.getDuplicateContactPopupVC()
+            self.present(vc, animated: false, completion: nil)
         }
     }
 }

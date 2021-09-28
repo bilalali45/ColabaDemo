@@ -56,6 +56,7 @@
 		2381B4F32701E21B0045D917 /* LoanOfficerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2381B4F12701E21B0045D917 /* LoanOfficerCollectionViewCell.xib */; };
 		2381B4F52701F65A0045D917 /* AssignLoanOfficerPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2381B4F42701F65A0045D917 /* AssignLoanOfficerPopupViewController.swift */; };
 		238973FC2702F15E00759965 /* AssignLoanOfficerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238973FB2702F15E00759965 /* AssignLoanOfficerViewController.swift */; };
+		238973FE2703132D00759965 /* DuplicateContactPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238973FD2703132D00759965 /* DuplicateContactPopupViewController.swift */; };
 		238A076926DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238A076826DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift */; };
 		238A076B26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238A076A26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift */; };
 		238D70772678E8C80067687C /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238D70762678E8C80067687C /* FiltersViewController.swift */; };
@@ -277,6 +278,7 @@
 		2381B4F12701E21B0045D917 /* LoanOfficerCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoanOfficerCollectionViewCell.xib; sourceTree = "<group>"; };
 		2381B4F42701F65A0045D917 /* AssignLoanOfficerPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignLoanOfficerPopupViewController.swift; sourceTree = "<group>"; };
 		238973FB2702F15E00759965 /* AssignLoanOfficerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignLoanOfficerViewController.swift; sourceTree = "<group>"; };
+		238973FD2703132D00759965 /* DuplicateContactPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateContactPopupViewController.swift; sourceTree = "<group>"; };
 		238A076826DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseLoanInfoViewController.swift; sourceTree = "<group>"; };
 		238A076A26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinanceLoanInfoViewController.swift; sourceTree = "<group>"; };
 		238D70762678E8C80067687C /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
@@ -576,6 +578,7 @@
 				2381B4EE2701DD0E0045D917 /* LoanOfficerListViewController.swift */,
 				2381B4F42701F65A0045D917 /* AssignLoanOfficerPopupViewController.swift */,
 				238973FB2702F15E00759965 /* AssignLoanOfficerViewController.swift */,
+				238973FD2703132D00759965 /* DuplicateContactPopupViewController.swift */,
 			);
 			path = "Start New Application";
 			sourceTree = "<group>";
@@ -1375,6 +1378,7 @@
 				23A56C5C2685B017005CE6F4 /* Extensions.swift in Sources */,
 				2381B4F22701E21B0045D917 /* LoanOfficerCollectionViewCell.swift in Sources */,
 				23C9130626982A120067920E /* BorrowerOverviewTableViewCell.swift in Sources */,
+				238973FE2703132D00759965 /* DuplicateContactPopupViewController.swift in Sources */,
 				238A076926DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift in Sources */,
 				7160CA88267339060061ACD5 /* ProfileViewController.swift in Sources */,
 				238E0F9126F37A040025FF06 /* OwnershipInterestInPropertyViewController.swift in Sources */,

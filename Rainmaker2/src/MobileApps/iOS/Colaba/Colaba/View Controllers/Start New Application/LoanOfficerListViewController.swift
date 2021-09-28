@@ -56,7 +56,7 @@ extension LoanOfficerListViewController: UICollectionViewDataSource, UICollectio
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoanOfficerCollectionViewCell", for: indexPath) as! LoanOfficerCollectionViewCell
         cell.userImageView.image = UIImage(named: indexPath.row % 2 == 0 ? "LoanOfficer1" : "LoanOfficer2")
-        cell.lblUsername.text = indexPath.row % 2 == 0 ? "John Doe" : "Jenny Dan"
+        cell.lblUsername.text = indexPath.row % 2 == 0 ? "John Doe" : "Jacky Doe"
         cell.lblTenant.text = indexPath.row % 2 == 0 ? "Texas Trust Home" : "AHC Lending"
         cell.selectedView.isHidden = selectedIndex != indexPath
         if isForPopup && indexPath.row == 3{
@@ -67,7 +67,7 @@ extension LoanOfficerListViewController: UICollectionViewDataSource, UICollectio
             cell.seeMoreImage.isHidden = false
         }
         else{
-            cell.lblUsername.text = indexPath.row % 2 == 0 ? "John Doe" : "Jenny Dan"
+            cell.lblUsername.text = indexPath.row % 2 == 0 ? "John Doe" : "Jacky Doe"
             cell.lblTenant.text = indexPath.row % 2 == 0 ? "Texas Trust Home" : "AHC Lending"
             cell.seeMoreImage.isHidden = true
         }
