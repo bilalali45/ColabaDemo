@@ -23,7 +23,9 @@ class AssignLoanOfficerPopupViewController: BaseViewController {
         loanOfficerMainVC = Utility.getLoanOfficerMainVC()
         loanOfficerMainVC.isForPopup = true
         add(viewController: loanOfficerMainVC)
-        self.backgroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissPopup)))
+        self.backgroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(backgroundViewTapped)))
+        NotificationCenter.default.addObserver(self, selector: #selector(seeMoreTapped), name: NSNotification.Name(rawValue: kNotificationLoanOfficerSeeMoreTapped), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loanOfficerSelected), name: NSNotification.Name(rawValue: kNotificationLoanOfficerSelected), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -50,17 +52,35 @@ class AssignLoanOfficerPopupViewController: BaseViewController {
         viewController.didMove(toParent: self)
     }
     
-    @objc func dismissPopup(){
+    @objc func backgroundViewTapped(){
+        dismissPopup(shouldAnimate: true)
+    }
+    
+    @objc func dismissPopup(shouldAnimate: Bool){
         
         self.mainViewBottomConstraint.constant = -350
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: shouldAnimate ? 0.3 : 0.0) {
             self.view.layoutIfNeeded()
         }
-        UIView.animate(withDuration: 0.30) {
+        UIView.animate(withDuration: shouldAnimate ? 0.30 : 0.0) {
             self.view.backgroundColor = .clear
         } completion: { _ in
             self.dismissVC()
         }
         
+    }
+    
+    @objc func seeMoreTapped(){
+        dismissPopup(shouldAnimate: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: kNotificationLoanOfficerSeeMoreTapped), object: nil)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanOfficerSeeMoreTapped), object: nil)
+        }
+    }
+    
+    @objc func loanOfficerSelected(){
+        dismissPopup(shouldAnimate: true)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: kNotificationLoanOfficerSelected), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanOfficerSelected), object: nil)
     }
 }

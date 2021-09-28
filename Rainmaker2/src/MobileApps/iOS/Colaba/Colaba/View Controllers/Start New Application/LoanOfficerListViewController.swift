@@ -77,5 +77,15 @@ extension LoanOfficerListViewController: UICollectionViewDataSource, UICollectio
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedIndex = indexPath
         self.collectionView.reloadData()
+        if (isForPopup && indexPath.row == 3){
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanOfficerSeeMoreTapped), object: nil)
+        }
+        else{
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanOfficerSelected), object: nil)
+            if (!isForPopup){
+                self.dismissVC()
+            }
+            
+        }
     }
 }
