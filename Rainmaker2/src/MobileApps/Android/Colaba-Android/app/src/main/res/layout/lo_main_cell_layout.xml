@@ -3,13 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:paddingBottom="30dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="28dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,8 +23,7 @@
             android:layout_height="wrap_content"
 
             android:visibility="invisible"
-
-            app:layout_constraintEnd_toStartOf="@+id/constraintLayout4"
+            app:layout_constraintEnd_toStartOf="@+id/third_container"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/first_container"
             app:layout_constraintTop_toTopOf="parent">
@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            app:layout_constraintEnd_toStartOf="@+id/constraintLayout6"
+            app:layout_constraintEnd_toStartOf="@+id/second_container"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
@@ -148,7 +148,7 @@
 
             android:visibility="invisible"
 
-            app:layout_constraintEnd_toStartOf="@+id/constraintLayout7"
+            app:layout_constraintEnd_toStartOf="@+id/fourth_container"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/second_container"
             app:layout_constraintTop_toTopOf="parent">
@@ -209,7 +209,6 @@
             android:id="@+id/fourth_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
 
             android:visibility="invisible"
 

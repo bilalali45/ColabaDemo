@@ -31,7 +31,7 @@ class AssignLoanCoordinatorFragment : BaseFragment() {
 
     private fun setupLayout() {
         val sampleLoList = getSampleLoDetails()
-        var mainCell: LinearLayoutCompat = layoutInflater.inflate(R.layout.lo_main_cell_layout, null) as LinearLayoutCompat
+        var mainCell: ConstraintLayout = layoutInflater.inflate(R.layout.lo_main_cell_layout, null) as ConstraintLayout
 
         /*
         val options: RequestOptions = RequestOptions()
@@ -47,34 +47,35 @@ class AssignLoanCoordinatorFragment : BaseFragment() {
             val modelData = sampleLoList[i]
 
             if(i%4==0) {
-                mainCell = layoutInflater.inflate(R.layout.lo_main_cell_layout, null) as LinearLayoutCompat
+                mainCell = layoutInflater.inflate(R.layout.lo_main_cell_layout, null) as ConstraintLayout
                 //mainCell.tag = R.string.ass
+                mainCell.first_container.visibility = View.VISIBLE
                 mainCell.first_container.first_lo_name.setText(modelData.loName)
                 mainCell.first_container.first_lo_detail.setText(modelData.loAffiliation)
-                Glide.with(this).load(modelData.loImage).into(mainCell.first_container.first_lo_image)
+                Glide.with(requireActivity()).load(R.drawable.b1).into(mainCell.first_container.first_lo_image)
                 binding.loParentContainer.addView(mainCell)
             }
-
             else
-            if(i%4==1) {
-                mainCell.second_container.second_lo_name.setText(modelData.loName)
-                mainCell.second_container.second_lo_detail.setText(modelData.loAffiliation)
-                Glide.with(this).load(modelData.loImage).into(mainCell.second_container.second_lo_image)
-            }
-
-            else
-            if(i%4==2) {
-                mainCell.third_container.third_lo_name.setText(modelData.loName)
-                mainCell.third_container.third_lo_detail.setText(modelData.loAffiliation)
-                Glide.with(this).load(modelData.loImage).into(mainCell.third_container.third_lo_image)
-            }
-
-            else
-            if(i%4==3) {
-                mainCell.fourth_container.fourth_lo_name.setText(modelData.loName)
-                mainCell.fourth_container.fourth_lo_detail.setText(modelData.loAffiliation)
-                Glide.with(this).load(modelData.loImage).into(mainCell.fourth_container.fourth_lo_image)
-            }
+                if(i%4==1) {
+                    mainCell.second_container.visibility = View.VISIBLE
+                    mainCell.second_container.second_lo_name.setText(modelData.loName)
+                    mainCell.second_container.second_lo_detail.setText(modelData.loAffiliation)
+                    Glide.with(this).load(R.drawable.b2).into(mainCell.second_container.second_lo_image)
+                }
+                else
+                    if(i%4==2) {
+                        mainCell.third_container.visibility = View.VISIBLE
+                        mainCell.third_container.third_lo_name.setText(modelData.loName)
+                        mainCell.third_container.third_lo_detail.setText(modelData.loAffiliation)
+                        Glide.with(this).load(R.drawable.b3).into(mainCell.third_container.third_lo_image)
+                    }
+                    else
+                        if(i%4==3) {
+                            mainCell.fourth_container.visibility = View.VISIBLE
+                            mainCell.fourth_container.fourth_lo_name.setText(modelData.loName)
+                            mainCell.fourth_container.fourth_lo_detail.setText(modelData.loAffiliation)
+                            Glide.with(this).load(R.drawable.b1).into(mainCell.fourth_container.fourth_lo_image)
+                        }
 
 
         }

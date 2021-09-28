@@ -3,9 +3,7 @@
     android:shape="rectangle">
     <item android:gravity="center">
         <shape>
-            <size
-                android:width="84dp"
-                android:height="4dp" />
+
 
             <solid android:color="@color/colaba_apptheme_blue" />
             <corners

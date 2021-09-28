@@ -79,6 +79,16 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+
+    <style name="loCustomTab" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/grey_color_two</item>
+        <item name="android:fontFamily">@font/rubik_regular</item>
+        <item name="android:font">@font/rubik_regular</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
     <style name="Widget.TabWidget" parent="android:Theme">
         <item name="android:tabStripEnabled">false</item>
     </style>
