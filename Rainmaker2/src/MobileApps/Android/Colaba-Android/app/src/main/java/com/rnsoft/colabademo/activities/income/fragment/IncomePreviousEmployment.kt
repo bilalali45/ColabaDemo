@@ -4,12 +4,10 @@ import android.app.DatePickerDialog
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
@@ -187,9 +185,9 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
     }
 
     private fun openAddressFragment(){
-        val addressFragment = IncomeAddress()
+        val addressFragment = AddressPrevEmployment()
         val bundle = Bundle()
-        bundle.putString("address", "Employer Address")
+        bundle.putString(AppConstant.address, getString(R.string.previous_employer_address))
         addressFragment.arguments = bundle
         findNavController().navigate(R.id.action_prev_employment_address, addressFragment.arguments)
     }

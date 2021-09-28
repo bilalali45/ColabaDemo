@@ -3,7 +3,6 @@ package com.rnsoft.colabademo
 import android.app.DatePickerDialog
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
@@ -128,9 +126,9 @@ class BusinessFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun openAddressFragment(){
-        val addressFragment = IncomeAddress()
+        val addressFragment = AddressBusiness()
         val bundle = Bundle()
-        bundle.putString("address", "Business Main Address")
+        bundle.putString(AppConstant.address, getString(R.string.business_main_address))
         addressFragment.arguments = bundle
         findNavController().navigate(R.id.action_address, addressFragment.arguments)
     }

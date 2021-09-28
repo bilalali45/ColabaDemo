@@ -185,8 +185,7 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
 
         // set occupancy type spinner
 
-        val adapterOccupanycyType =
-            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, occupancyTypeArray)
+        val adapterOccupanycyType = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, occupancyTypeArray)
         binding.tvOccupancyType.setAdapter(adapterOccupanycyType)
         binding.tvOccupancyType.setOnFocusChangeListener { _, _ -> binding.tvOccupancyType.showDropDown()
         }

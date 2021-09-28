@@ -153,7 +153,6 @@ class LoanPurchaseInfo : BaseFragment(){
 
     private fun setCalulations(){
 
-
         mTextWatcher  = object : TextWatcher {
             override fun afterTextChanged(et: Editable?) {
 
@@ -260,7 +259,7 @@ class LoanPurchaseInfo : BaseFragment(){
     private fun validatePurchasePrice(value:String){
         var purchasePrice = value.replace(",", "");
         if (purchasePrice.toInt() < 50000 || purchasePrice.toInt() > 100000000){
-            CustomMaterialFields.setError(binding.layoutPurchasePrice,getString(com.rnsoft.colabademo.R.string.invalid_purchase_price),requireContext())
+            CustomMaterialFields.setError(binding.layoutPurchasePrice,getString(R.string.invalid_purchase_price),requireContext())
         } else {
             CustomMaterialFields.clearError(binding.layoutPurchasePrice, requireContext())
         }
@@ -337,7 +336,7 @@ class LoanPurchaseInfo : BaseFragment(){
             setError(binding.layoutLoanStage, getString(com.rnsoft.colabademo.R.string.error_field_required))
         }
         if (purchasePrice.isEmpty() || purchasePrice.length == 0) {
-            setError(binding.layoutPurchasePrice, getString(com.rnsoft.colabademo.R.string.invalid_purchase_price))
+            setError(binding.layoutPurchasePrice, getString(R.string.invalid_purchase_price))
         }
         if (loanAmount.isEmpty() || loanAmount.length == 0) {
             setError(binding.layoutLoanAmount, getString(com.rnsoft.colabademo.R.string.error_field_required))
@@ -378,7 +377,7 @@ class LoanPurchaseInfo : BaseFragment(){
     fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
         textInputlayout.helperText = errorMsg
         textInputlayout.setBoxStrokeColorStateList(
-            AppCompatResources.getColorStateList(requireContext(), com.rnsoft.colabademo.R.color.primary_info_stroke_error_color))
+            AppCompatResources.getColorStateList(requireContext(), R.color.primary_info_stroke_error_color))
     }
 
     fun clearError(textInputlayout: TextInputLayout) {
