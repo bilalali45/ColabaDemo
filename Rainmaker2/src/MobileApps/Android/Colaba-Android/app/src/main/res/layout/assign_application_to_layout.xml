@@ -128,7 +128,8 @@
             app:tabGravity="start"
             app:tabIconTint="@color/colaba_red_color"
 
-            app:tabIndicatorFullWidth="true"
+            app:tabIndicatorFullWidth="false"
+
 
             app:tabIndicator="@drawable/lo_tab_indicator"
 
