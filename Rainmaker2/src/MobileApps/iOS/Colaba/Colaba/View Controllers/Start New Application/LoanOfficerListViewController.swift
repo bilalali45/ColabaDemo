@@ -50,7 +50,7 @@ class LoanOfficerListViewController: BaseViewController {
 extension LoanOfficerListViewController: UICollectionViewDataSource, UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return isForPopup ? 4 : 30
+        return isForPopup ? 4 : 14
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -273,6 +273,8 @@ class StartNewApplicationViewController: BaseViewController {
     @objc func assignLoanOfficerViewTapped(){
         let vc = Utility.getAssignLoanOfficerPopupVC()
         self.present(vc, animated: false, completion: nil)
+//        let vc = Utility.getAssignLoanOfficerVC()
+//        self.presentVC(vc: vc)
     }
     
     func validate() -> Bool{
