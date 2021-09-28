@@ -7,7 +7,6 @@
 
 import UIKit
 import Material
-import DropDown
 import GooglePlaces
 
 class AddMailingAddressViewController: BaseViewController {
@@ -21,118 +20,86 @@ class AddMailingAddressViewController: BaseViewController {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint! //100 and 700
     @IBOutlet weak var txtfieldHomeAddress: TextField!
-    @IBOutlet weak var btnSearch: UIButton!
     @IBOutlet weak var btnSearchTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnDropDown: UIButton!
-    @IBOutlet weak var txtfieldStreetAddress: TextField!
-    @IBOutlet weak var txtfieldUnitNo: TextField!
-    @IBOutlet weak var txtfieldCity: TextField!
-    @IBOutlet weak var txtfieldCounty: TextField!
-    @IBOutlet weak var txtfieldState: TextField!
-    @IBOutlet weak var stateDropDownAnchorView: UIView!
-    @IBOutlet weak var btnStateDropDown: UIButton!
-    @IBOutlet weak var txtfieldZipCode: TextField!
-    @IBOutlet weak var txtfieldCountry: TextField!
-    @IBOutlet weak var countryDropDownAnchorView: UIView!
-    @IBOutlet weak var btnCountryDropDown: UIButton!
+    @IBOutlet weak var txtfieldStreetAddress: ColabaTextField!
+    @IBOutlet weak var txtfieldUnitNo: ColabaTextField!
+    @IBOutlet weak var txtfieldCity: ColabaTextField!
+    @IBOutlet weak var txtfieldCounty: ColabaTextField!
+    @IBOutlet weak var txtfieldState: ColabaTextField!
+    @IBOutlet weak var txtfieldZipCode: ColabaTextField!
+    @IBOutlet weak var txtfieldCountry: ColabaTextField!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     @IBOutlet weak var tblViewPlaces: UITableView!
     var placesData=[GMSAutocompletePrediction]()
     var fetcher: GMSAutocompleteFetcher?
     
-    let moveInDateFormatter = DateFormatter()
-    let countryDropDown = DropDown()
-    let stateDropDown = DropDown()
-    private let validation: Validation
-    
-    init(validation: Validation) {
-        self.validation = validation
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        self.validation = Validation()
-        super.init(coder: coder)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setMaterialTextFieldsAndViews(textfields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry])
+        setTextFields()
+        setPlacePickerTextField()
+    }
+    
+    //MARK:- Methods and Actions
+    func setTextFields() {
+        ///Street Address Text Field
+        txtfieldStreetAddress.setTextField(placeholder: "Street Address", controller: self, validationType: .required)
+        
+        ///Unit Number Text Field
+        txtfieldUnitNo.setTextField(placeholder: "Unit Or Apt. Number (Optional)", controller: self, validationType: .noValidation)
+        
+        ///City Text Field
+        txtfieldCity.setTextField(placeholder: "City", controller: self, validationType: .required)
+        
+        ///County Text Field
+        txtfieldCounty.setTextField(placeholder: "County", controller: self, validationType: .noValidation)
+        
+        ///State Text Field
+        txtfieldState.setTextField(placeholder: "State", controller: self, validationType: .required)
+        txtfieldState.type = .editableDropdown
+        txtfieldState.setDropDownDataSource(kUSAStatesArray)
+        
+        ///Zip Code Text Field
+        txtfieldZipCode.setTextField(placeholder: "Zip Code", controller: self, validationType: .required, keyboardType: .numberPad)
+        
+        ///Country Text Field
+        txtfieldCountry.setTextField(placeholder: "Country", controller: self, validationType: .required)
+        txtfieldCountry.type = .editableDropdown
+        txtfieldCountry.setDropDownDataSource(kCountryListArray)
+    }
+    
+    func setPlacePickerTextField() {
+        txtfieldHomeAddress.dividerActiveColor = Theme.getButtonBlueColor()
+        txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
+        txtfieldHomeAddress.placeholderActiveColor = Theme.getAppGreyColor()
+        txtfieldHomeAddress.delegate = self
+        txtfieldHomeAddress.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+        txtfieldHomeAddress.detailLabel.font = Theme.getRubikRegularFont(size: 12)
+        txtfieldHomeAddress.detailColor = .red
+        txtfieldHomeAddress.detailVerticalOffset = 4
+        txtfieldHomeAddress.placeholderVerticalOffset = 8
+        txtfieldHomeAddress.textColor = Theme.getAppBlackColor()
+        txtfieldHomeAddress.textInsetsPreset = .horizontally5
+        
         NotificationCenter.default.addObserver(self, selector: #selector(goBackAfterDelete), name: NSNotification.Name(rawValue: kNotificationDeleteMailingAddressAndDismiss), object: nil)
-        txtfieldCountry.addTarget(self, action: #selector(txtfieldCountryTextChanged), for: .editingChanged)
-        txtfieldState.addTarget(self, action: #selector(txtfieldStateTextChanged), for: .editingChanged)
         
         let filter = GMSAutocompleteFilter()
         filter.type = .address
-
+        
         // Create the fetcher.
         fetcher = GMSAutocompleteFetcher(filter: filter)
         fetcher?.delegate = self as GMSAutocompleteFetcherDelegate
-
+        
         txtfieldHomeAddress.addTarget(self, action: #selector(txtfieldHomeAddressTextChanged), for: UIControl.Event.editingChanged)
-
+        
         tblViewPlaces.delegate = self
         tblViewPlaces.dataSource = self
-
+        
         tblViewPlaces.reloadData()
         tblViewPlaces.dropShadowToCollectionViewCell()
-        
     }
 
-    //MARK:- Methods and Actions
-    
-    func setMaterialTextFieldsAndViews(textfields: [TextField]){
-        for textfield in textfields{
-            textfield.dividerActiveColor = Theme.getButtonBlueColor()
-            textfield.dividerColor = Theme.getSeparatorNormalColor()
-            textfield.placeholderActiveColor = Theme.getAppGreyColor()
-            textfield.delegate = self
-            textfield.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-            textfield.detailLabel.font = Theme.getRubikRegularFont(size: 12)
-            textfield.detailColor = .red
-            textfield.detailVerticalOffset = 4
-            textfield.placeholderVerticalOffset = 8
-            textfield.textColor = Theme.getAppBlackColor()
-        }
-        txtfieldHomeAddress.textInsetsPreset = .horizontally5
-
-        
-        countryDropDown.dismissMode = .onTap
-        countryDropDown.anchorView = countryDropDownAnchorView
-        countryDropDown.direction = .any
-        countryDropDown.dataSource = kCountryListArray
-        countryDropDown.cancelAction = .some({
-            self.btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-        })
-        countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-            changedDeleteButton()
-            btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
-            txtfieldCountry.detail = ""
-            txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
-            txtfieldCountry.text = item
-            countryDropDown.hide()
-        }
-        
-        stateDropDown.dismissMode = .onTap
-        stateDropDown.anchorView = stateDropDownAnchorView
-        stateDropDown.direction = .any
-        stateDropDown.dataSource = kUSAStatesArray
-        stateDropDown.cancelAction = .some({
-            self.btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-        })
-        stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-            changedDeleteButton()
-            btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
-            txtfieldState.detail = ""
-            txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
-            txtfieldState.text = item
-            stateDropDown.hide()
-        }
-    }
-    
     func setPlaceholderLabelColorAfterTextFilled(selectedTextField: UITextField, allTextFields: [TextField]){
         for allTextField in allTextFields{
             if (allTextField == selectedTextField){
@@ -177,10 +144,8 @@ class AddMailingAddressViewController: BaseViewController {
         txtfieldCity.isHidden = false
         txtfieldCounty.isHidden = false
         txtfieldState.isHidden = false
-        btnStateDropDown.isHidden = false
         txtfieldZipCode.isHidden = false
         txtfieldCountry.isHidden = false
-        btnCountryDropDown.isHidden = false
         
         UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
@@ -233,60 +198,6 @@ class AddMailingAddressViewController: BaseViewController {
         })
     }
     
-    @objc func txtfieldCountryTextChanged(){
-        btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-        if (txtfieldCountry.text == ""){
-            countryDropDown.dataSource = kCountryListArray
-            countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-                txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
-                txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
-                txtfieldCountry.detail = ""
-                txtfieldCountry.text = item
-                btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            }
-        }
-        else{
-            let filterCountries = kCountryListArray.filter{$0.contains(txtfieldCountry.text!)}
-            countryDropDown.dataSource = filterCountries
-            countryDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-                txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
-                txtfieldCountry.detail = ""
-                txtfieldCountry.placeholderLabel.textColor = Theme.getAppGreyColor()
-                txtfieldCountry.text = item
-                btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            }
-        }
-        
-        countryDropDown.show()
-    }
-    
-    @objc func txtfieldStateTextChanged(){
-        btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-        if (txtfieldState.text == ""){
-            stateDropDown.dataSource = kUSAStatesArray
-            stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-                txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
-                txtfieldState.detail = ""
-                txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
-                txtfieldState.text = item
-                btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            }
-        }
-        else{
-            let filterStates = kUSAStatesArray.filter{$0.contains(txtfieldState.text!)}
-            stateDropDown.dataSource = filterStates
-            stateDropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-                txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
-                txtfieldState.detail = ""
-                txtfieldState.placeholderLabel.textColor = Theme.getAppGreyColor()
-                txtfieldState.text = item
-                btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            }
-        }
-        
-        stateDropDown.show()
-    }
-    
     @objc func goBackAfterDelete(){
         self.goBack()
     }
@@ -302,109 +213,24 @@ class AddMailingAddressViewController: BaseViewController {
         self.present(vc, animated: false, completion: nil)
     }
     
-    @IBAction func btnSearchTapped(_ sender: UIButton){
-        showAllFields()
-    }
-    
-    @IBAction func btnDropdownTapped(_ sender: UIButton){
-        showAllFields()
-    }
-    
-    @IBAction func btnStateDropDownTapped(_ sender: UIButton) {
-        
-    }
-    
-    @IBAction func btnCountryDropDownTapped(_ sender: UIButton) {
-    }
-    
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        
-        do{
-            let searchHomeAddress = try validation.validateSearchHomeAddress(txtfieldHomeAddress.text)
-            DispatchQueue.main.async {
-                self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtfieldHomeAddress.detail = ""
+        if validate() {
+            if (self.txtfieldHomeAddress.text != "" && txtfieldStreetAddress.text != "" && txtfieldCity.text != "" && txtfieldState.text != "" && txtfieldZipCode.text != "" && txtfieldCountry.text != ""){
+                self.goBack()
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowMailingAddress), object: nil)
             }
-            
         }
-        catch{
-            self.txtfieldHomeAddress.dividerColor = .red
-            self.txtfieldHomeAddress.detail = error.localizedDescription
-        }
-        
-        do{
-            let streetAddress = try validation.validateStreetAddressHomeAddress(txtfieldStreetAddress.text)
-            DispatchQueue.main.async {
-                self.txtfieldStreetAddress.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtfieldStreetAddress.detail = ""
-            }
-            
-        }
-        catch{
-            self.txtfieldStreetAddress.dividerColor = .red
-            self.txtfieldStreetAddress.detail = error.localizedDescription
-        }
-        
-        do{
-            let city = try validation.validateCity(txtfieldCity.text)
-            DispatchQueue.main.async {
-                self.txtfieldCity.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtfieldCity.detail = ""
-            }
-            
-        }
-        catch{
-            self.txtfieldCity.dividerColor = .red
-            self.txtfieldCity.detail = error.localizedDescription
-        }
-        
-        do{
-            let state = try validation.validateState(txtfieldState.text)
-            DispatchQueue.main.async {
-                self.txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtfieldState.detail = ""
-            }
-            
-        }
-        catch{
-            self.txtfieldState.dividerColor = .red
-            self.txtfieldState.detail = error.localizedDescription
-        }
-        
-        do{
-            let zipCode = try validation.validateZipcode(txtfieldZipCode.text)
-            DispatchQueue.main.async {
-                self.txtfieldZipCode.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtfieldZipCode.detail = ""
-            }
-            
-        }
-        catch{
-            self.txtfieldZipCode.dividerColor = .red
-            self.txtfieldZipCode.detail = error.localizedDescription
-        }
-        
-        do{
-            let country = try validation.validateCountry(txtfieldCountry.text)
-            DispatchQueue.main.async {
-                self.txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
-                self.txtfieldCountry.detail = ""
-            }
-            
-        }
-        catch{
-            self.txtfieldCountry.dividerColor = .red
-            self.txtfieldCountry.detail = error.localizedDescription
-        }
-        
-        
-        if (self.txtfieldHomeAddress.text != "" && txtfieldStreetAddress.text != "" && txtfieldCity.text != "" && txtfieldState.text != "" && txtfieldZipCode.text != "" && txtfieldCountry.text != ""){
-            self.goBack()
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowMailingAddress), object: nil)
-        }
-        
     }
     
+    func validate() -> Bool {
+        var isValidate = validateHomeAddress()
+        isValidate = txtfieldStreetAddress.validate() && isValidate
+        isValidate = txtfieldCity.validate() && isValidate
+        isValidate = txtfieldState.validate() && isValidate
+        isValidate = txtfieldZipCode.validate() && isValidate
+        isValidate = txtfieldCountry.validate() && isValidate
+        return isValidate
+    }
 }
 
 extension AddMailingAddressViewController: UITableViewDataSource, UITableViewDelegate{
@@ -416,7 +242,6 @@ extension AddMailingAddressViewController: UITableViewDataSource, UITableViewDel
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell: UITableViewCell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier:"addCategoryCell")
-
         cell.selectionStyle =  .default
         cell.backgroundColor = UIColor.white
         cell.contentView.backgroundColor = UIColor.clear
@@ -425,7 +250,6 @@ extension AddMailingAddressViewController: UITableViewDataSource, UITableViewDel
         cell.textLabel?.font = Theme.getRubikMediumFont(size: 14)
         cell.textLabel?.text = placesData[indexPath.row].attributedFullText.string
         return cell
-        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -450,7 +274,6 @@ extension AddMailingAddressViewController: UITableViewDataSource, UITableViewDel
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 40
     }
-    
 }
 
 extension AddMailingAddressViewController: UITextFieldDelegate{
@@ -462,23 +285,9 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
             self.view.layoutSubviews()
             txtfieldHomeAddress.placeholderHorizontalOffset = -24
         }
-        
-        if (textField == txtfieldCountry){
-            //textField.endEditing(true)
-            //btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-            //countryDropDown.show()
-        }
-        
-        if (textField == txtfieldState){
-            //textField.endEditing(true)
-            //btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIconUp"), for: .normal)
-            //stateDropDown.show()
-        }
-        
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
         if (textField == txtfieldHomeAddress){
             btnDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
             if (txtfieldHomeAddress.text == ""){
@@ -486,169 +295,64 @@ extension AddMailingAddressViewController: UITextFieldDelegate{
                 btnSearchTopConstraint.constant = 34
                 self.view.layoutSubviews()
             }
-            
-            do{
-                let searchHomeAddress = try validation.validateSearchHomeAddress(txtfieldHomeAddress.text!.replacingOccurrences(of: "       ", with: ""))
-                DispatchQueue.main.async {
-                    self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldHomeAddress.detail = ""
-                }
-                
-            }
-            catch{
-                self.txtfieldHomeAddress.dividerColor = .red
-                self.txtfieldHomeAddress.detail = error.localizedDescription
-            }
+            _ = validateHomeAddress()
+            setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry])
         }
-        
-        if (textField == txtfieldState){
-            
-            if !(kUSAStatesArray.contains(txtfieldState.text!)){
-                txtfieldState.text = ""
-                txtfieldState.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-                stateDropDown.hide()
-            }
-            
-            btnStateDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            do{
-                let state = try validation.validateState(txtfieldState.text)
-                DispatchQueue.main.async {
-                    self.txtfieldState.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldState.detail = ""
-                }
-                
-            }
-            catch{
-                self.txtfieldState.dividerColor = .red
-                self.txtfieldState.detail = error.localizedDescription
-            }
-        }
-        
-        if (textField == txtfieldCountry){
-            
-            if !(kCountryListArray.contains(txtfieldCountry.text!)){
-                txtfieldCountry.text = ""
-                txtfieldCountry.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-                countryDropDown.hide()
-            }
-            
-            btnCountryDropDown.setImage(UIImage(named: "textfield-dropdownIcon"), for: .normal)
-            do{
-                let country = try validation.validateCountry(txtfieldCountry.text)
-                DispatchQueue.main.async {
-                    self.txtfieldCountry.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldCountry.detail = ""
-                }
-                
-            }
-            catch{
-                self.txtfieldCountry.dividerColor = .red
-                self.txtfieldCountry.detail = error.localizedDescription
-            }
-        }
-        
-        if (textField == txtfieldStreetAddress){
-            do{
-                let streetAddress = try validation.validateStreetAddressHomeAddress(txtfieldStreetAddress.text)
-                DispatchQueue.main.async {
-                    self.txtfieldStreetAddress.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldStreetAddress.detail = ""
-                }
-                
-            }
-            catch{
-                self.txtfieldStreetAddress.dividerColor = .red
-                self.txtfieldStreetAddress.detail = error.localizedDescription
-            }
-        }
-        
-        if (textField == txtfieldCity){
-            do{
-                let city = try validation.validateCity(txtfieldCity.text)
-                DispatchQueue.main.async {
-                    self.txtfieldCity.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldCity.detail = ""
-                }
-                
-            }
-            catch{
-                self.txtfieldCity.dividerColor = .red
-                self.txtfieldCity.detail = error.localizedDescription
-            }
-        }
-        
-        if (textField == txtfieldZipCode){
-            do{
-                let zipCode = try validation.validateZipcode(txtfieldZipCode.text)
-                DispatchQueue.main.async {
-                    self.txtfieldZipCode.dividerColor = Theme.getSeparatorNormalColor()
-                    self.txtfieldZipCode.detail = ""
-                }
-                
-            }
-            catch{
-                self.txtfieldZipCode.dividerColor = .red
-                self.txtfieldZipCode.detail = error.localizedDescription
-            }
-        }
-        
-        setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldHomeAddress, txtfieldStreetAddress, txtfieldUnitNo, txtfieldCity, txtfieldCounty, txtfieldState, txtfieldZipCode, txtfieldCountry])
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        changedDeleteButton()
-        if (textField == txtfieldHomeAddress){
-            if (txtfieldHomeAddress.text == "       " && string == ""){
-                return false
+    func validateHomeAddress() -> Bool {
+        do{
+            let response = try txtfieldHomeAddress.text?.validate(type: .required)
+            DispatchQueue.main.async {
+                self.txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
+                self.txtfieldHomeAddress.detail = ""
             }
-            else{
-                return true
-            }
+            return response ?? false
         }
-        if (textField == txtfieldZipCode){
-            return string == "" ? true : (txtfieldZipCode.text!.count < 5)
+        catch{
+            self.txtfieldHomeAddress.dividerColor = .red
+            self.txtfieldHomeAddress.detail = error.localizedDescription
+            return false
         }
-        return true
     }
 }
 
 extension AddMailingAddressViewController: GMSAutocompleteViewControllerDelegate {
-
-  // Handle the user's selection.
-  func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-    if let formattedAddress = place.formattedAddress{
-        txtfieldHomeAddress.text = "       \(formattedAddress)"
-        txtfieldHomeAddress.placeholder = "Search Mailing Address"
-        txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
-        txtfieldHomeAddress.detail = ""
+    
+    // Handle the user's selection.
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+        if let formattedAddress = place.formattedAddress{
+            txtfieldHomeAddress.text = "       \(formattedAddress)"
+            txtfieldHomeAddress.placeholder = "Search Mailing Address"
+            txtfieldHomeAddress.dividerColor = Theme.getSeparatorNormalColor()
+            txtfieldHomeAddress.detail = ""
+        }
+        if let shortName = place.addressComponents?.first?.shortName{
+            txtfieldStreetAddress.text = shortName
+        }
+        showAllFields()
+        getAddressFromLatLon(pdblLatitude: "\(place.coordinate.latitude)", withLongitude: "\(place.coordinate.longitude)")
+        dismiss(animated: true, completion: nil)
     }
-    if let shortName = place.addressComponents?.first?.shortName{
-        txtfieldStreetAddress.text = shortName
+    
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+        // TODO: handle the error.
+        print("Error: ", error.localizedDescription)
     }
-    showAllFields()
-    getAddressFromLatLon(pdblLatitude: "\(place.coordinate.latitude)", withLongitude: "\(place.coordinate.longitude)")
-    dismiss(animated: true, completion: nil)
-  }
-
-  func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
-    // TODO: handle the error.
-    print("Error: ", error.localizedDescription)
-  }
-
-  // User canceled the operation.
-  func wasCancelled(_ viewController: GMSAutocompleteViewController) {
-    dismiss(animated: true, completion: nil)
-  }
-
-  // Turn the network activity indicator on and off again.
-  func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
-    UIApplication.shared.isNetworkActivityIndicatorVisible = true
-  }
-
-  func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
-    UIApplication.shared.isNetworkActivityIndicatorVisible = false
-  }
-
+    
+    // User canceled the operation.
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    // Turn the network activity indicator on and off again.
+    func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+    
+    func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
 }
 
 extension AddMailingAddressViewController: GMSAutocompleteFetcherDelegate {
@@ -656,12 +360,10 @@ extension AddMailingAddressViewController: GMSAutocompleteFetcherDelegate {
     func didAutocomplete(with predictions: [GMSAutocompletePrediction]) {
         placesData.removeAll()
         placesData = predictions
-
         tblViewPlaces.reloadData()
     }
-
+    
     func didFailAutocompleteWithError(_ error: Error) {
         print(error.localizedDescription)
     }
-    
 }

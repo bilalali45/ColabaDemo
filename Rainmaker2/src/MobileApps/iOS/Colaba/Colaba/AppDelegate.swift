@@ -89,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func showInitialViewController(){
-//            
+            
         var isAlreadyRegisteredWithBiometric = ""
         if let isBiometricRegistered = UserDefaults.standard.value(forKey: kIsUserRegisteredWithBiometric){
             isAlreadyRegisteredWithBiometric = isBiometricRegistered as! String
@@ -119,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func loadBorrowerInfoController(){
-        let vc = Utility.getAddPreviousResidenceVC()
+        let vc = Utility.getCurrentEmployerAddressVC()
         self.window?.rootViewController = vc
     }
     

@@ -56,7 +56,7 @@ class LoanOfficerMainViewController: BaseViewController {
             subView.roundOnlyTopCorners(radius: 4)
             indicator?.addSubview(subView)
             subView.translatesAutoresizingMaskIntoConstraints = false
-            subView.widthAnchor.constraint(equalToConstant: segmentWidth * 0.7).isActive = true
+            subView.widthAnchor.constraint(equalToConstant: segmentWidth * 0.8).isActive = true
             subView.centerXAnchor.constraint(equalTo: indicator!.centerXAnchor, constant: 0).isActive = true
             subView.topAnchor.constraint(equalTo: indicator!.topAnchor, constant: 0).isActive = true
             subView.bottomAnchor.constraint(equalTo: indicator!.bottomAnchor, constant: 0).isActive = true

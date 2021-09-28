@@ -104,11 +104,10 @@ class AddResidenceViewController: BaseViewController {
         txtfieldHomeAddress.detailVerticalOffset = 4
         txtfieldHomeAddress.placeholderVerticalOffset = 8
         txtfieldHomeAddress.textColor = Theme.getAppBlackColor()
+        txtfieldHomeAddress.textInsetsPreset = .horizontally5
         
         NotificationCenter.default.addObserver(self, selector: #selector(showMailingAddress), name: NSNotification.Name(rawValue: kNotificationShowMailingAddress), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(dismissAddressVC), name: NSNotification.Name(rawValue: kNotificationSaveAddressAndDismiss), object: nil)
-        
-        txtfieldHomeAddress.textInsetsPreset = .horizontally5
         
         let filter = GMSAutocompleteFilter()
         filter.type = .address
@@ -423,10 +422,11 @@ extension AddResidenceViewController: UITextFieldDelegate{
                 btnSearchTopConstraint.constant = 34
                 self.view.layoutSubviews()
             }
-            
+            _ = validateHomeAddress()
             setPlaceholderLabelColorAfterTextFilled(selectedTextField: textField, allTextFields: [txtfieldHomeAddress])
         }
     }
+    
     func validateHomeAddress() -> Bool {
         do{
             let response = try txtfieldHomeAddress.text?.validate(type: .required)

@@ -385,6 +385,14 @@ struct Utility {
         return newApplicationStoryboard.instantiateViewController(withIdentifier: String(describing: AssignLoanOfficerPopupViewController.self)) as! AssignLoanOfficerPopupViewController
     }
     
+    static func getAssignLoanOfficerVC() -> AssignLoanOfficerViewController{
+        return newApplicationStoryboard.instantiateViewController(withIdentifier: String(describing: AssignLoanOfficerViewController.self)) as! AssignLoanOfficerViewController
+    }
+    
+    static func getDuplicateContactPopupVC() -> DuplicateContactPopupViewController{
+        return newApplicationStoryboard.instantiateViewController(withIdentifier: String(describing: DuplicateContactPopupViewController.self)) as! DuplicateContactPopupViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){

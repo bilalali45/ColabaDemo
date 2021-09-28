@@ -2110,244 +2110,82 @@
                                                 <rect key="frame" x="22" y="34" width="14" height="22"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="search-textfield-icon"/>
-                                                <connections>
-                                                    <action selector="btnSearchTapped:" destination="UpE-6e-w5X" eventType="touchUpInside" id="267-yX-KPq"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zW1-Wv-hVe">
                                                 <rect key="frame" x="335" y="32" width="18" height="22"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="textfield-dropdownIcon"/>
-                                                <connections>
-                                                    <action selector="btnDropdownTapped:" destination="UpE-6e-w5X" eventType="touchUpInside" id="PAc-pH-t9v"/>
-                                                </connections>
                                             </button>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jLN-g8-CTR" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jLN-g8-CTR" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="99" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="ivM-uZ-Eoy"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Street Address"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7XX-fJ-rLs" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7XX-fJ-rLs" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="168" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="EsB-cD-yOG"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Unit Or Apt. Number (Optional)"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OxK-At-4Wr" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OxK-At-4Wr" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="237" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="lWV-A4-ydL"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="City"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rj6-kA-JOe" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rj6-kA-JOe" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="306" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="Y1K-bS-8pR"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="County"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dE7-ey-8HG">
-                                                <rect key="frame" x="20" y="367" width="335" height="2"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="2" id="3Hm-Xd-ioL"/>
-                                                </constraints>
-                                            </view>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6hv-bx-4Xt" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6hv-bx-4Xt" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="375" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="Rha-Wm-vPc"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="State"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KtT-g4-AD1">
-                                                <rect key="frame" x="335" y="378" width="18" height="22"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="textfield-dropdownIcon"/>
-                                                <connections>
-                                                    <action selector="btnStateDropDownTapped:" destination="UpE-6e-w5X" eventType="touchUpInside" id="UPv-J2-v9T"/>
-                                                </connections>
-                                            </button>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uoQ-pa-CvD" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uoQ-pa-CvD" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="444" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="pzC-dv-Q3U"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardType="numberPad"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Zip Code"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AJw-Ta-meI">
-                                                <rect key="frame" x="20" y="505" width="335" height="2"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="2" id="27V-fQ-t5m"/>
-                                                </constraints>
-                                            </view>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0FZ-ed-WPT" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0FZ-ed-WPT" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="513" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="MLr-K7-yuY"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Country"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ucT-75-VSv">
-                                                <rect key="frame" x="335" y="516" width="18" height="22"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="textfield-dropdownIcon"/>
-                                                <connections>
-                                                    <action selector="btnCountryDropDownTapped:" destination="UpE-6e-w5X" eventType="touchUpInside" id="ovu-yf-wrM"/>
-                                                </connections>
-                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                         <constraints>
@@ -2356,39 +2194,29 @@
                                             <constraint firstAttribute="trailing" secondItem="Oab-da-N8R" secondAttribute="trailing" constant="20" id="1zB-qz-7l4"/>
                                             <constraint firstItem="Rj6-kA-JOe" firstAttribute="top" secondItem="OxK-At-4Wr" secondAttribute="bottom" constant="30" id="3RO-e0-oD2"/>
                                             <constraint firstAttribute="trailing" secondItem="0FZ-ed-WPT" secondAttribute="trailing" constant="20" id="4Fl-C2-5St"/>
-                                            <constraint firstAttribute="trailing" secondItem="KtT-g4-AD1" secondAttribute="trailing" constant="22" id="7kp-Pc-erl"/>
                                             <constraint firstItem="0FZ-ed-WPT" firstAttribute="leading" secondItem="hBM-AX-W0l" secondAttribute="leading" constant="20" id="96L-JS-mMw"/>
                                             <constraint firstItem="Rj6-kA-JOe" firstAttribute="leading" secondItem="hBM-AX-W0l" secondAttribute="leading" constant="20" id="9rs-YC-pbK"/>
                                             <constraint firstItem="jLN-g8-CTR" firstAttribute="top" secondItem="Oab-da-N8R" secondAttribute="bottom" constant="30" id="AL9-Ho-iPp"/>
-                                            <constraint firstAttribute="trailing" secondItem="dE7-ey-8HG" secondAttribute="trailing" constant="20" id="AZG-0a-7bl"/>
                                             <constraint firstAttribute="height" constant="100" id="CQu-f9-wEr"/>
                                             <constraint firstItem="Oab-da-N8R" firstAttribute="top" secondItem="hBM-AX-W0l" secondAttribute="top" constant="30" id="Cha-Oa-L5g"/>
                                             <constraint firstAttribute="trailing" secondItem="jLN-g8-CTR" secondAttribute="trailing" constant="20" id="EpD-7a-8xE"/>
                                             <constraint firstItem="wpN-N3-Sos" firstAttribute="leading" secondItem="hBM-AX-W0l" secondAttribute="leading" constant="22" id="FCn-5Z-sYW"/>
                                             <constraint firstItem="OxK-At-4Wr" firstAttribute="leading" secondItem="hBM-AX-W0l" secondAttribute="leading" constant="20" id="HU5-bV-57G"/>
                                             <constraint firstAttribute="trailing" secondItem="zW1-Wv-hVe" secondAttribute="trailing" constant="22" id="J6V-oC-hcn"/>
-                                            <constraint firstAttribute="trailing" secondItem="ucT-75-VSv" secondAttribute="trailing" constant="22" id="LEM-wM-Jyf"/>
                                             <constraint firstAttribute="trailing" secondItem="OxK-At-4Wr" secondAttribute="trailing" constant="20" id="N9j-cB-adh"/>
-                                            <constraint firstItem="KtT-g4-AD1" firstAttribute="top" secondItem="Rj6-kA-JOe" secondAttribute="bottom" constant="33" id="O4H-H3-Lth"/>
-                                            <constraint firstItem="0FZ-ed-WPT" firstAttribute="top" secondItem="AJw-Ta-meI" secondAttribute="bottom" constant="6" id="OI9-PW-a8d"/>
                                             <constraint firstItem="OxK-At-4Wr" firstAttribute="top" secondItem="7XX-fJ-rLs" secondAttribute="bottom" constant="30" id="VEm-Ba-30G"/>
                                             <constraint firstItem="zW1-Wv-hVe" firstAttribute="top" secondItem="hBM-AX-W0l" secondAttribute="top" constant="32" id="b1A-4U-VTM"/>
-                                            <constraint firstItem="6hv-bx-4Xt" firstAttribute="top" secondItem="dE7-ey-8HG" secondAttribute="bottom" constant="6" id="c0f-kX-txF"/>
                                             <constraint firstAttribute="trailing" secondItem="uoQ-pa-CvD" secondAttribute="trailing" constant="20" id="cch-FX-Vnv"/>
                                             <constraint firstItem="uoQ-pa-CvD" firstAttribute="leading" secondItem="hBM-AX-W0l" secondAttribute="leading" constant="20" id="fyc-rx-iGQ"/>
                                             <constraint firstItem="Oab-da-N8R" firstAttribute="leading" secondItem="hBM-AX-W0l" secondAttribute="leading" constant="20" id="g03-UC-m5U"/>
                                             <constraint firstItem="7XX-fJ-rLs" firstAttribute="leading" secondItem="hBM-AX-W0l" secondAttribute="leading" constant="20" id="gol-iC-q84"/>
-                                            <constraint firstAttribute="trailing" secondItem="AJw-Ta-meI" secondAttribute="trailing" constant="20" id="hIC-lB-Cwg"/>
                                             <constraint firstAttribute="trailing" secondItem="Rj6-kA-JOe" secondAttribute="trailing" constant="20" id="hR1-fo-PfH"/>
-                                            <constraint firstItem="AJw-Ta-meI" firstAttribute="leading" secondItem="hBM-AX-W0l" secondAttribute="leading" constant="20" id="o8q-jW-KT8"/>
-                                            <constraint firstItem="dE7-ey-8HG" firstAttribute="leading" secondItem="hBM-AX-W0l" secondAttribute="leading" constant="20" id="oxo-dQ-fTr"/>
                                             <constraint firstItem="6hv-bx-4Xt" firstAttribute="top" secondItem="Rj6-kA-JOe" secondAttribute="bottom" constant="30" id="qyn-yy-rER"/>
                                             <constraint firstAttribute="trailing" secondItem="6hv-bx-4Xt" secondAttribute="trailing" constant="20" id="rg3-ge-X2A"/>
                                             <constraint firstItem="7XX-fJ-rLs" firstAttribute="top" secondItem="jLN-g8-CTR" secondAttribute="bottom" constant="30" id="sk4-nN-jEG"/>
                                             <constraint firstItem="6hv-bx-4Xt" firstAttribute="leading" secondItem="hBM-AX-W0l" secondAttribute="leading" constant="20" id="tFq-g9-PK4"/>
                                             <constraint firstAttribute="trailing" secondItem="7XX-fJ-rLs" secondAttribute="trailing" constant="20" id="toy-gX-Umu"/>
                                             <constraint firstItem="uoQ-pa-CvD" firstAttribute="top" secondItem="6hv-bx-4Xt" secondAttribute="bottom" constant="30" id="uxJ-GM-QIE"/>
-                                            <constraint firstItem="ucT-75-VSv" firstAttribute="top" secondItem="uoQ-pa-CvD" secondAttribute="bottom" constant="33" id="v8w-XM-ZKi"/>
                                             <constraint firstItem="jLN-g8-CTR" firstAttribute="leading" secondItem="hBM-AX-W0l" secondAttribute="leading" constant="20" id="xzR-k1-I1t"/>
                                         </constraints>
                                     </view>
@@ -2445,20 +2273,15 @@
                     </view>
                     <connections>
                         <outlet property="btnBack" destination="IyA-mm-5cj" id="1US-kD-3gI"/>
-                        <outlet property="btnCountryDropDown" destination="ucT-75-VSv" id="RcS-XI-iVD"/>
                         <outlet property="btnDelete" destination="XjA-iK-Fob" id="c8I-2L-E7p"/>
                         <outlet property="btnDropDown" destination="zW1-Wv-hVe" id="fM2-08-DZR"/>
                         <outlet property="btnSaveChanges" destination="oMo-8x-eLX" id="eZM-ZV-egR"/>
-                        <outlet property="btnSearch" destination="wpN-N3-Sos" id="WBu-bl-TNw"/>
                         <outlet property="btnSearchTopConstraint" destination="0sV-SA-sT4" id="gtP-Yj-I9l"/>
-                        <outlet property="btnStateDropDown" destination="KtT-g4-AD1" id="7oM-Gs-mOu"/>
-                        <outlet property="countryDropDownAnchorView" destination="AJw-Ta-meI" id="rIy-iN-HP6"/>
                         <outlet property="lblBorrowerName" destination="EPf-qy-dz4" id="QPp-K8-eVu"/>
                         <outlet property="lblTopHeading" destination="3G9-1N-Qdv" id="4vZ-eW-Wje"/>
                         <outlet property="mainView" destination="hBM-AX-W0l" id="5D1-vl-Oen"/>
                         <outlet property="mainViewHeightConstraint" destination="CQu-f9-wEr" id="nTF-Kd-RYT"/>
                         <outlet property="seperatorView" destination="CKT-GM-3bp" id="ZqU-Ub-nqe"/>
-                        <outlet property="stateDropDownAnchorView" destination="dE7-ey-8HG" id="22h-ip-h8t"/>
                         <outlet property="tblViewPlaces" destination="bsw-Bh-Az2" id="wre-p7-ddQ"/>
                         <outlet property="txtfieldCity" destination="OxK-At-4Wr" id="Uc1-hA-4Cg"/>
                         <outlet property="txtfieldCountry" destination="0FZ-ed-WPT" id="wdS-ax-nde"/>
@@ -5394,9 +5217,6 @@ Birmingham AL 35235</string>
                                                 <rect key="frame" x="22" y="34" width="14" height="22"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="search-textfield-icon"/>
-                                                <connections>
-                                                    <action selector="btnSearchTapped:" destination="SNi-ey-z7K" eventType="touchUpInside" id="wGb-gu-Fk8"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w59-cj-gpc">
                                                 <rect key="frame" x="335" y="32" width="18" height="22"/>
@@ -5406,239 +5226,81 @@ Birmingham AL 35235</string>
                                                     <action selector="btnDropdownTapped:" destination="SNi-ey-z7K" eventType="touchUpInside" id="sNu-QM-uUi"/>
                                                 </connections>
                                             </button>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oJU-xh-6bg" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oJU-xh-6bg" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="99" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="yLI-Y3-9LI"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Street Address"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ezd-QG-r13" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ezd-QG-r13" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="168" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="NM9-aT-9KC"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Unit Or Apt. Number (Optional)"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BlN-Me-IsQ" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BlN-Me-IsQ" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="237" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="dw5-TR-0KI"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="City"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vuo-lT-3R5" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vuo-lT-3R5" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="306" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="erS-uI-SW8"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="County"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c8t-0p-XBG">
-                                                <rect key="frame" x="20" y="367" width="335" height="2"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="2" id="tZQ-AL-DQj"/>
-                                                </constraints>
-                                            </view>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BgU-rB-Hjn" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BgU-rB-Hjn" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="375" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="0at-Co-VDq"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="State"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gQz-rD-qFM">
-                                                <rect key="frame" x="335" y="378" width="18" height="22"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="textfield-dropdownIcon"/>
-                                                <connections>
-                                                    <action selector="btnStateDropDownTapped:" destination="SNi-ey-z7K" eventType="touchUpInside" id="8Ct-Cw-Oj1"/>
-                                                </connections>
-                                            </button>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5SB-Bw-9Bk" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5SB-Bw-9Bk" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="444" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="moB-5d-ncU"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardType="numberPad"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Zip Code"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3mM-x8-Ssh">
-                                                <rect key="frame" x="20" y="505" width="335" height="2"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="2" id="UgI-hd-zEu"/>
-                                                </constraints>
-                                            </view>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VHk-g1-UlC" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VHk-g1-UlC" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="513" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="BiB-AJ-X8z"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Country"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="su8-SO-qyi">
-                                                <rect key="frame" x="335" y="516" width="18" height="22"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="textfield-dropdownIcon"/>
-                                                <connections>
-                                                    <action selector="btnCountryDropDownTapped:" destination="SNi-ey-z7K" eventType="touchUpInside" id="hQv-07-gwu"/>
-                                                </connections>
-                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="y7z-KA-8eg" firstAttribute="leading" secondItem="fsF-bL-G7C" secondAttribute="leading" constant="22" id="1Lm-fd-Dci"/>
                                             <constraint firstItem="VHk-g1-UlC" firstAttribute="leading" secondItem="fsF-bL-G7C" secondAttribute="leading" constant="20" id="3Br-hR-4hy"/>
-                                            <constraint firstItem="c8t-0p-XBG" firstAttribute="leading" secondItem="fsF-bL-G7C" secondAttribute="leading" constant="20" id="3yN-hQ-VB5"/>
-                                            <constraint firstItem="gQz-rD-qFM" firstAttribute="top" secondItem="Vuo-lT-3R5" secondAttribute="bottom" constant="33" id="4YX-2L-XW0"/>
                                             <constraint firstAttribute="height" constant="100" id="7l6-V7-F3L"/>
                                             <constraint firstAttribute="trailing" secondItem="BlN-Me-IsQ" secondAttribute="trailing" constant="20" id="8Ht-JZ-6mJ"/>
                                             <constraint firstAttribute="trailing" secondItem="5SB-Bw-9Bk" secondAttribute="trailing" constant="20" id="Apo-2h-fPg"/>
@@ -5656,14 +5318,7 @@ Birmingham AL 35235</string>
                                             <constraint firstItem="BgU-rB-Hjn" firstAttribute="leading" secondItem="fsF-bL-G7C" secondAttribute="leading" constant="20" id="UDu-wX-ClU"/>
                                             <constraint firstItem="ezd-QG-r13" firstAttribute="top" secondItem="oJU-xh-6bg" secondAttribute="bottom" constant="30" id="WEG-Qo-Jae"/>
                                             <constraint firstAttribute="trailing" secondItem="Vuo-lT-3R5" secondAttribute="trailing" constant="20" id="Ya9-7N-dfb"/>
-                                            <constraint firstAttribute="trailing" secondItem="3mM-x8-Ssh" secondAttribute="trailing" constant="20" id="ZvW-N8-dij"/>
-                                            <constraint firstAttribute="trailing" secondItem="su8-SO-qyi" secondAttribute="trailing" constant="22" id="aJN-dk-PQZ"/>
-                                            <constraint firstItem="3mM-x8-Ssh" firstAttribute="leading" secondItem="fsF-bL-G7C" secondAttribute="leading" constant="20" id="cW7-qK-Eea"/>
-                                            <constraint firstItem="VHk-g1-UlC" firstAttribute="top" secondItem="3mM-x8-Ssh" secondAttribute="bottom" constant="6" id="cj7-xo-L6Q"/>
-                                            <constraint firstItem="su8-SO-qyi" firstAttribute="top" secondItem="5SB-Bw-9Bk" secondAttribute="bottom" constant="33" id="d6L-Vj-0TJ"/>
-                                            <constraint firstItem="BgU-rB-Hjn" firstAttribute="top" secondItem="c8t-0p-XBG" secondAttribute="bottom" constant="6" id="dM5-Ew-qD3"/>
                                             <constraint firstAttribute="trailing" secondItem="w59-cj-gpc" secondAttribute="trailing" constant="22" id="eID-G8-gsX"/>
-                                            <constraint firstAttribute="trailing" secondItem="gQz-rD-qFM" secondAttribute="trailing" constant="22" id="en9-9U-FQK"/>
                                             <constraint firstItem="Vuo-lT-3R5" firstAttribute="leading" secondItem="fsF-bL-G7C" secondAttribute="leading" constant="20" id="ept-Qz-yXB"/>
                                             <constraint firstItem="5SB-Bw-9Bk" firstAttribute="top" secondItem="BgU-rB-Hjn" secondAttribute="bottom" constant="30" id="ffy-rI-Us9"/>
                                             <constraint firstAttribute="trailing" secondItem="ezd-QG-r13" secondAttribute="trailing" constant="20" id="gPP-lK-Lr0"/>
@@ -5671,7 +5326,6 @@ Birmingham AL 35235</string>
                                             <constraint firstItem="oJU-xh-6bg" firstAttribute="leading" secondItem="fsF-bL-G7C" secondAttribute="leading" constant="20" id="kSH-H2-TuP"/>
                                             <constraint firstItem="5SB-Bw-9Bk" firstAttribute="leading" secondItem="fsF-bL-G7C" secondAttribute="leading" constant="20" id="kcY-F4-oJp"/>
                                             <constraint firstAttribute="trailing" secondItem="BgU-rB-Hjn" secondAttribute="trailing" constant="20" id="nFh-5c-Xpw"/>
-                                            <constraint firstAttribute="trailing" secondItem="c8t-0p-XBG" secondAttribute="trailing" constant="20" id="p0E-eo-uUf"/>
                                             <constraint firstAttribute="trailing" secondItem="QTv-Br-gh6" secondAttribute="trailing" constant="20" id="pAo-ex-I9B"/>
                                             <constraint firstItem="Vuo-lT-3R5" firstAttribute="top" secondItem="BlN-Me-IsQ" secondAttribute="bottom" constant="30" id="tCk-bV-hqe"/>
                                         </constraints>
@@ -5729,18 +5383,13 @@ Birmingham AL 35235</string>
                     </view>
                     <connections>
                         <outlet property="btnBack" destination="Ox2-D6-a1R" id="mvg-Un-CRE"/>
-                        <outlet property="btnCountryDropDown" destination="su8-SO-qyi" id="NlM-d3-Mbs"/>
                         <outlet property="btnDropDown" destination="w59-cj-gpc" id="bn9-ui-ujm"/>
                         <outlet property="btnSaveChanges" destination="WQy-Qc-XvJ" id="PIp-V8-v54"/>
-                        <outlet property="btnSearch" destination="y7z-KA-8eg" id="0HX-hv-m8s"/>
                         <outlet property="btnSearchTopConstraint" destination="KFE-sC-qQR" id="N6F-aF-lCB"/>
-                        <outlet property="btnStateDropDown" destination="gQz-rD-qFM" id="8yz-tV-n5l"/>
-                        <outlet property="countryDropDownAnchorView" destination="3mM-x8-Ssh" id="zDK-p0-oOQ"/>
                         <outlet property="lblTopHeading" destination="9Ih-dc-TOK" id="C55-uQ-KKs"/>
                         <outlet property="mainView" destination="fsF-bL-G7C" id="C2K-Bm-YMD"/>
                         <outlet property="mainViewHeightConstraint" destination="7l6-V7-F3L" id="nUD-XQ-7mo"/>
                         <outlet property="seperatorView" destination="tWe-QZ-YRf" id="Cdj-Cd-U1H"/>
-                        <outlet property="stateDropDownAnchorView" destination="c8t-0p-XBG" id="mjm-x6-bFC"/>
                         <outlet property="tblViewPlaces" destination="fgP-7g-Rpo" id="aJu-IR-Ngs"/>
                         <outlet property="txtfieldCity" destination="BlN-Me-IsQ" id="7ib-SV-agE"/>
                         <outlet property="txtfieldCountry" destination="VHk-g1-UlC" id="seA-O8-yvO"/>
@@ -5877,148 +5526,36 @@ Birmingham AL 35235</string>
                                                     <constraint firstItem="Rps-GC-uf3" firstAttribute="leading" secondItem="M9O-fN-pcK" secondAttribute="leading" constant="48" id="sHF-Mp-Ny8"/>
                                                 </constraints>
                                             </view>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NZ9-h6-BpU" customClass="TextField" customModule="Material">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NZ9-h6-BpU" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="205" width="335" height="39"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="Gde-Dt-R8M"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Property Type"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eO6-GV-kpC">
-                                                <rect key="frame" x="335.5" y="207" width="17.5" height="22"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="textfield-dropdownIcon"/>
-                                            </button>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6OC-7I-H7o">
-                                                <rect key="frame" x="20" y="244" width="335" height="2"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="2" id="WXP-G4-uy6"/>
-                                                </constraints>
-                                            </view>
-                                            <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ir7-hV-qJc" customClass="TextField" customModule="Material">
+                                            <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ir7-hV-qJc" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="274" width="335" height="39"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="In2-03-87q"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Occupancy Type"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ysm-Qb-T0P">
-                                                <rect key="frame" x="335.5" y="276" width="17.5" height="22"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="textfield-dropdownIcon"/>
-                                            </button>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XGf-7Y-VjX">
-                                                <rect key="frame" x="20" y="313" width="335" height="2"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="2" id="EDk-DM-9gR"/>
-                                                </constraints>
-                                            </view>
-                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ooj-6t-Kqv" customClass="TextField" customModule="Material">
+                                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ooj-6t-Kqv" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="313" width="335" height="0.0"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" id="Cv8-hK-Iat"/>
                                                 </constraints>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardType="numberPad"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Rental Income"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                        <real key="value" value="11"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
-                                                </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QhM-4C-dsY">
-                                                <rect key="frame" x="20" y="343" width="24" height="39"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rf3-84-q5D">
-                                                        <rect key="frame" x="0.0" y="11.5" width="8.5" height="17.5"/>
-                                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
-                                                        <color key="textColor" name="AppGreyColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uhh-Y1-GAc">
-                                                        <rect key="frame" x="15.5" y="13" width="1" height="14.5"/>
-                                                        <color key="backgroundColor" name="SeparatorNormalColor"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="1" id="ADI-ot-w7f"/>
-                                                        </constraints>
-                                                    </view>
-                                                </subviews>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstItem="Uhh-Y1-GAc" firstAttribute="centerY" secondItem="rf3-84-q5D" secondAttribute="centerY" id="GHn-16-DUJ"/>
-                                                    <constraint firstAttribute="width" constant="24" id="HBL-YU-DWw"/>
-                                                    <constraint firstItem="Uhh-Y1-GAc" firstAttribute="height" secondItem="rf3-84-q5D" secondAttribute="height" multiplier="0.833333" id="fnR-2X-MMM"/>
-                                                    <constraint firstAttribute="height" constant="39" id="gWG-tb-977"/>
-                                                    <constraint firstAttribute="bottom" secondItem="rf3-84-q5D" secondAttribute="bottom" constant="10" id="l3V-6c-uXK"/>
-                                                    <constraint firstItem="Uhh-Y1-GAc" firstAttribute="leading" secondItem="rf3-84-q5D" secondAttribute="trailing" constant="7" id="nWk-4t-8De"/>
-                                                    <constraint firstItem="rf3-84-q5D" firstAttribute="leading" secondItem="QhM-4C-dsY" secondAttribute="leading" id="yw0-ga-iue"/>
-                                                </constraints>
-                                            </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="doA-Qp-h4f">
                                                 <rect key="frame" x="0.0" y="363" width="375" height="347"/>
                                                 <subviews>
@@ -6141,369 +5678,88 @@ Birmingham AL 35235</string>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pDL-cr-efO">
                                                 <rect key="frame" x="0.0" y="760" width="375" height="424"/>
                                                 <subviews>
-                                                    <textField opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BxF-2J-8ni" customClass="TextField" customModule="Material">
+                                                    <textField opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BxF-2J-8ni" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                         <rect key="frame" x="20" y="0.0" width="335" height="39"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="39" id="lwx-Kf-pL4"/>
                                                         </constraints>
                                                         <color key="textColor" name="AppBlackColor"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardType="numberPad"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Property Value"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                                <real key="value" value="1"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                                <real key="value" value="11"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                                <real key="value" value="10"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                                <real key="value" value="1"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                                <real key="value" value="0.0"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
-                                                        </userDefinedRuntimeAttributes>
                                                     </textField>
-                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VlF-wK-2ru">
-                                                        <rect key="frame" x="20" y="0.0" width="24" height="39"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gg7-fu-WJA">
-                                                                <rect key="frame" x="0.0" y="11.5" width="8.5" height="17.5"/>
-                                                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
-                                                                <color key="textColor" name="AppGreyColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IaR-Lc-JiA">
-                                                                <rect key="frame" x="15.5" y="13" width="1" height="14.5"/>
-                                                                <color key="backgroundColor" name="SeparatorNormalColor"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="1" id="t9k-dQ-XLY"/>
-                                                                </constraints>
-                                                            </view>
-                                                        </subviews>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="24" id="4IS-jf-e2a"/>
-                                                            <constraint firstItem="IaR-Lc-JiA" firstAttribute="centerY" secondItem="gg7-fu-WJA" secondAttribute="centerY" id="9zc-zT-DOV"/>
-                                                            <constraint firstItem="gg7-fu-WJA" firstAttribute="leading" secondItem="VlF-wK-2ru" secondAttribute="leading" id="FUM-ND-Uqh"/>
-                                                            <constraint firstItem="IaR-Lc-JiA" firstAttribute="height" secondItem="gg7-fu-WJA" secondAttribute="height" multiplier="0.833333" id="FYK-vC-RO8"/>
-                                                            <constraint firstAttribute="bottom" secondItem="gg7-fu-WJA" secondAttribute="bottom" constant="10" id="ORE-If-ZUU"/>
-                                                            <constraint firstItem="IaR-Lc-JiA" firstAttribute="leading" secondItem="gg7-fu-WJA" secondAttribute="trailing" constant="7" id="sAl-Pa-ytf"/>
-                                                            <constraint firstAttribute="height" constant="39" id="vaf-Bp-gfg"/>
-                                                        </constraints>
-                                                    </view>
-                                                    <textField opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ivx-1j-eis" customClass="TextField" customModule="Material">
+                                                    <textField opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ivx-1j-eis" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                         <rect key="frame" x="20" y="69" width="335" height="39"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="39" id="IGi-ou-63l"/>
                                                         </constraints>
                                                         <color key="textColor" name="AppBlackColor"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Date of Home Purchase (MM/YYYY)"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                                <real key="value" value="1"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                                <real key="value" value="11"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                                <real key="value" value="10"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                                <real key="value" value="1"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                                <real key="value" value="0.0"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
-                                                        </userDefinedRuntimeAttributes>
                                                     </textField>
-                                                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vwt-x1-Zfe">
-                                                        <rect key="frame" x="328" y="70" width="25" height="25"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="25" id="MEg-CZ-ogn"/>
-                                                            <constraint firstAttribute="width" constant="25" id="Zqx-LJ-98Q"/>
-                                                        </constraints>
-                                                        <state key="normal" image="CalendarIcon"/>
-                                                    </button>
-                                                    <textField opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="X9i-Pg-FfO" customClass="TextField" customModule="Material">
+                                                    <textField opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="X9i-Pg-FfO" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                         <rect key="frame" x="20" y="138" width="335" height="39"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="39" id="NYB-Tt-wiB"/>
                                                         </constraints>
                                                         <color key="textColor" name="AppBlackColor"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardType="numberPad"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Annual Homeowner’s Association Dues"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                                <real key="value" value="1"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                                <real key="value" value="11"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                                <real key="value" value="10"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                                <real key="value" value="1"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                                <real key="value" value="0.0"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
-                                                        </userDefinedRuntimeAttributes>
                                                     </textField>
-                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3T6-37-fct">
-                                                        <rect key="frame" x="20" y="138" width="24" height="39"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pLG-we-g00">
-                                                                <rect key="frame" x="0.0" y="11.5" width="8.5" height="17.5"/>
-                                                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
-                                                                <color key="textColor" name="AppGreyColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jqO-7R-s5L">
-                                                                <rect key="frame" x="15.5" y="13" width="1" height="14.5"/>
-                                                                <color key="backgroundColor" name="SeparatorNormalColor"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="1" id="VLw-tI-rMN"/>
-                                                                </constraints>
-                                                            </view>
-                                                        </subviews>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="bottom" secondItem="pLG-we-g00" secondAttribute="bottom" constant="10" id="BZV-V7-InC"/>
-                                                            <constraint firstItem="jqO-7R-s5L" firstAttribute="leading" secondItem="pLG-we-g00" secondAttribute="trailing" constant="7" id="DUv-k2-MGF"/>
-                                                            <constraint firstItem="jqO-7R-s5L" firstAttribute="centerY" secondItem="pLG-we-g00" secondAttribute="centerY" id="hKg-tH-Shd"/>
-                                                            <constraint firstItem="jqO-7R-s5L" firstAttribute="height" secondItem="pLG-we-g00" secondAttribute="height" multiplier="0.833333" id="i1C-Er-Pgl"/>
-                                                            <constraint firstAttribute="height" constant="39" id="osV-QS-eav"/>
-                                                            <constraint firstItem="pLG-we-g00" firstAttribute="leading" secondItem="3T6-37-fct" secondAttribute="leading" id="q35-NV-QlP"/>
-                                                            <constraint firstAttribute="width" constant="24" id="uok-RO-nDP"/>
-                                                        </constraints>
-                                                    </view>
-                                                    <textField opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sqL-rL-thJ" customClass="TextField" customModule="Material">
+                                                    <textField opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sqL-rL-thJ" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                         <rect key="frame" x="20" y="207" width="335" height="39"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="39" id="bPG-kl-4uD"/>
                                                         </constraints>
                                                         <color key="textColor" name="AppBlackColor"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardType="numberPad"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Annual Property Taxes"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                                <real key="value" value="1"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                                <real key="value" value="11"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                                <real key="value" value="10"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                                <real key="value" value="1"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                                <real key="value" value="0.0"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
-                                                        </userDefinedRuntimeAttributes>
                                                     </textField>
-                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rp4-G5-R6g">
-                                                        <rect key="frame" x="22" y="207" width="24" height="39"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iiD-ug-sBU">
-                                                                <rect key="frame" x="0.0" y="11.5" width="8.5" height="17.5"/>
-                                                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
-                                                                <color key="textColor" name="AppGreyColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fko-4X-Ghp">
-                                                                <rect key="frame" x="15.5" y="13" width="1" height="14.5"/>
-                                                                <color key="backgroundColor" name="SeparatorNormalColor"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="1" id="wHL-mv-KCh"/>
-                                                                </constraints>
-                                                            </view>
-                                                        </subviews>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <constraints>
-                                                            <constraint firstItem="iiD-ug-sBU" firstAttribute="leading" secondItem="rp4-G5-R6g" secondAttribute="leading" id="8Rv-up-Lcm"/>
-                                                            <constraint firstAttribute="bottom" secondItem="iiD-ug-sBU" secondAttribute="bottom" constant="10" id="HiR-Tz-1Y8"/>
-                                                            <constraint firstItem="Fko-4X-Ghp" firstAttribute="leading" secondItem="iiD-ug-sBU" secondAttribute="trailing" constant="7" id="LMF-7d-ZYq"/>
-                                                            <constraint firstAttribute="height" constant="39" id="h59-OY-hZF"/>
-                                                            <constraint firstAttribute="width" constant="24" id="n6s-4H-V3e"/>
-                                                            <constraint firstItem="Fko-4X-Ghp" firstAttribute="height" secondItem="iiD-ug-sBU" secondAttribute="height" multiplier="0.833333" id="rFg-23-sVv"/>
-                                                            <constraint firstItem="Fko-4X-Ghp" firstAttribute="centerY" secondItem="iiD-ug-sBU" secondAttribute="centerY" id="uIf-7S-ddJ"/>
-                                                        </constraints>
-                                                    </view>
-                                                    <textField opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cSp-rI-49x" customClass="TextField" customModule="Material">
+                                                    <textField opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cSp-rI-49x" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                         <rect key="frame" x="20" y="276" width="335" height="39"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="39" id="6M9-zD-JQx"/>
                                                         </constraints>
                                                         <color key="textColor" name="AppBlackColor"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardType="numberPad"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Annual Homeowner’s Insurance"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                                <real key="value" value="1"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                                <real key="value" value="11"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                                <real key="value" value="10"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                                <real key="value" value="1"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                                <real key="value" value="0.0"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
-                                                        </userDefinedRuntimeAttributes>
                                                     </textField>
-                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PC5-8b-Y6t">
-                                                        <rect key="frame" x="20" y="276" width="24" height="39"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FKl-B0-lPF">
-                                                                <rect key="frame" x="0.0" y="11.5" width="8.5" height="17.5"/>
-                                                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
-                                                                <color key="textColor" name="AppGreyColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2TC-kg-dLC">
-                                                                <rect key="frame" x="15.5" y="13" width="1" height="14.5"/>
-                                                                <color key="backgroundColor" name="SeparatorNormalColor"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="1" id="lz3-3L-eef"/>
-                                                                </constraints>
-                                                            </view>
-                                                        </subviews>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <constraints>
-                                                            <constraint firstItem="FKl-B0-lPF" firstAttribute="leading" secondItem="PC5-8b-Y6t" secondAttribute="leading" id="ATu-WS-pfM"/>
-                                                            <constraint firstAttribute="height" constant="39" id="Erq-Tx-GmH"/>
-                                                            <constraint firstItem="2TC-kg-dLC" firstAttribute="centerY" secondItem="FKl-B0-lPF" secondAttribute="centerY" id="g7l-V8-BoC"/>
-                                                            <constraint firstItem="2TC-kg-dLC" firstAttribute="height" secondItem="FKl-B0-lPF" secondAttribute="height" multiplier="0.833333" id="iqc-kJ-2iZ"/>
-                                                            <constraint firstAttribute="bottom" secondItem="FKl-B0-lPF" secondAttribute="bottom" constant="10" id="kll-Fc-UxQ"/>
-                                                            <constraint firstItem="2TC-kg-dLC" firstAttribute="leading" secondItem="FKl-B0-lPF" secondAttribute="trailing" constant="7" id="oep-c7-abJ"/>
-                                                            <constraint firstAttribute="width" constant="24" id="q2U-5f-qCG"/>
-                                                        </constraints>
-                                                    </view>
-                                                    <textField opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EVn-jc-Yrq" customClass="TextField" customModule="Material">
+                                                    <textField opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EVn-jc-Yrq" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                         <rect key="frame" x="20" y="345" width="335" height="39"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="39" id="zqi-qc-OWp"/>
                                                         </constraints>
                                                         <color key="textColor" name="AppBlackColor"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardType="numberPad"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Annual Flood Insurance"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                                <real key="value" value="1"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="placeholderVerticalOffset">
-                                                                <real key="value" value="11"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
-                                                                <real key="value" value="10"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                                <real key="value" value="1"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="NO"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="placeholderHorizontalOffset">
-                                                                <real key="value" value="0.0"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
-                                                        </userDefinedRuntimeAttributes>
                                                     </textField>
-                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LLW-VB-zJe">
-                                                        <rect key="frame" x="20" y="345" width="24" height="39"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HBf-PL-TXZ">
-                                                                <rect key="frame" x="0.0" y="11.5" width="8.5" height="17.5"/>
-                                                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
-                                                                <color key="textColor" name="AppGreyColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wv4-oG-md5">
-                                                                <rect key="frame" x="15.5" y="13" width="1" height="14.5"/>
-                                                                <color key="backgroundColor" name="SeparatorNormalColor"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="1" id="bAH-tr-INk"/>
-                                                                </constraints>
-                                                            </view>
-                                                        </subviews>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <constraints>
-                                                            <constraint firstItem="Wv4-oG-md5" firstAttribute="centerY" secondItem="HBf-PL-TXZ" secondAttribute="centerY" id="3uH-pz-t7M"/>
-                                                            <constraint firstAttribute="width" constant="24" id="Atl-X2-VqO"/>
-                                                            <constraint firstItem="HBf-PL-TXZ" firstAttribute="leading" secondItem="LLW-VB-zJe" secondAttribute="leading" id="Jy3-te-Arq"/>
-                                                            <constraint firstItem="Wv4-oG-md5" firstAttribute="height" secondItem="HBf-PL-TXZ" secondAttribute="height" multiplier="0.833333" id="OmH-VS-dgg"/>
-                                                            <constraint firstItem="Wv4-oG-md5" firstAttribute="leading" secondItem="HBf-PL-TXZ" secondAttribute="trailing" constant="7" id="htb-2w-xSL"/>
-                                                            <constraint firstAttribute="height" constant="39" id="lO5-5h-ceg"/>
-                                                            <constraint firstAttribute="bottom" secondItem="HBf-PL-TXZ" secondAttribute="bottom" constant="10" id="qEz-1G-eL8"/>
-                                                        </constraints>
-                                                    </view>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstItem="cSp-rI-49x" firstAttribute="top" secondItem="sqL-rL-thJ" secondAttribute="bottom" constant="30" id="4sm-Ua-cJj"/>
-                                                    <constraint firstAttribute="trailing" secondItem="vwt-x1-Zfe" secondAttribute="trailing" constant="22" id="5EF-YC-qJ2"/>
-                                                    <constraint firstItem="LLW-VB-zJe" firstAttribute="leading" secondItem="pDL-cr-efO" secondAttribute="leading" constant="20" id="Ape-FT-Mvx"/>
                                                     <constraint firstItem="sqL-rL-thJ" firstAttribute="leading" secondItem="pDL-cr-efO" secondAttribute="leading" constant="20" id="Ic9-8F-GBM"/>
-                                                    <constraint firstItem="PC5-8b-Y6t" firstAttribute="top" secondItem="sqL-rL-thJ" secondAttribute="bottom" constant="30" id="JNT-h6-zqi"/>
                                                     <constraint firstItem="sqL-rL-thJ" firstAttribute="top" secondItem="X9i-Pg-FfO" secondAttribute="bottom" constant="30" id="M25-dt-blF"/>
                                                     <constraint firstAttribute="trailing" secondItem="EVn-jc-Yrq" secondAttribute="trailing" constant="20" id="MjN-OT-LeI"/>
                                                     <constraint firstItem="X9i-Pg-FfO" firstAttribute="top" secondItem="Ivx-1j-eis" secondAttribute="bottom" constant="30" id="Mz2-GT-KQa"/>
                                                     <constraint firstItem="Ivx-1j-eis" firstAttribute="leading" secondItem="pDL-cr-efO" secondAttribute="leading" constant="20" id="MzP-nt-7VS"/>
-                                                    <constraint firstItem="PC5-8b-Y6t" firstAttribute="leading" secondItem="pDL-cr-efO" secondAttribute="leading" constant="20" id="Ou5-CR-qpl"/>
                                                     <constraint firstAttribute="trailing" secondItem="BxF-2J-8ni" secondAttribute="trailing" constant="20" id="QB1-wP-Qvp"/>
-                                                    <constraint firstItem="vwt-x1-Zfe" firstAttribute="top" secondItem="BxF-2J-8ni" secondAttribute="bottom" constant="31" id="QfV-bd-Mwn"/>
                                                     <constraint firstItem="EVn-jc-Yrq" firstAttribute="leading" secondItem="pDL-cr-efO" secondAttribute="leading" constant="20" id="R7b-as-qro"/>
-                                                    <constraint firstItem="LLW-VB-zJe" firstAttribute="top" secondItem="cSp-rI-49x" secondAttribute="bottom" constant="30" id="UK9-co-FeO"/>
                                                     <constraint firstItem="BxF-2J-8ni" firstAttribute="top" secondItem="pDL-cr-efO" secondAttribute="top" id="VbQ-x5-agY"/>
                                                     <constraint firstItem="EVn-jc-Yrq" firstAttribute="top" secondItem="cSp-rI-49x" secondAttribute="bottom" constant="30" id="X05-Bh-PBI"/>
-                                                    <constraint firstItem="rp4-G5-R6g" firstAttribute="leading" secondItem="pDL-cr-efO" secondAttribute="leading" constant="22" id="Ynu-WK-WYb"/>
                                                     <constraint firstAttribute="trailing" secondItem="X9i-Pg-FfO" secondAttribute="trailing" constant="20" id="aQ6-Ud-Zgf"/>
                                                     <constraint firstAttribute="trailing" secondItem="Ivx-1j-eis" secondAttribute="trailing" constant="20" id="aSz-F2-nr6"/>
-                                                    <constraint firstItem="3T6-37-fct" firstAttribute="leading" secondItem="pDL-cr-efO" secondAttribute="leading" constant="20" id="ayB-8k-ClE"/>
-                                                    <constraint firstItem="rp4-G5-R6g" firstAttribute="top" secondItem="X9i-Pg-FfO" secondAttribute="bottom" constant="30" id="b6i-dc-kgW"/>
                                                     <constraint firstItem="BxF-2J-8ni" firstAttribute="leading" secondItem="pDL-cr-efO" secondAttribute="leading" constant="20" id="bAt-8Y-1CI"/>
                                                     <constraint firstItem="Ivx-1j-eis" firstAttribute="top" secondItem="BxF-2J-8ni" secondAttribute="bottom" constant="30" id="cwg-f3-a5f"/>
                                                     <constraint firstItem="X9i-Pg-FfO" firstAttribute="leading" secondItem="pDL-cr-efO" secondAttribute="leading" constant="20" id="fKn-SN-7M2"/>
                                                     <constraint firstAttribute="trailing" secondItem="sqL-rL-thJ" secondAttribute="trailing" constant="20" id="fue-Cl-Qg5"/>
                                                     <constraint firstAttribute="height" constant="424" id="iXc-am-mrZ"/>
-                                                    <constraint firstItem="3T6-37-fct" firstAttribute="top" secondItem="Ivx-1j-eis" secondAttribute="bottom" constant="30" id="j0A-AG-9aB"/>
                                                     <constraint firstAttribute="trailing" secondItem="cSp-rI-49x" secondAttribute="trailing" constant="20" id="lT0-4t-COt"/>
-                                                    <constraint firstItem="VlF-wK-2ru" firstAttribute="leading" secondItem="pDL-cr-efO" secondAttribute="leading" constant="20" id="q86-i9-4Ht"/>
                                                     <constraint firstItem="cSp-rI-49x" firstAttribute="leading" secondItem="pDL-cr-efO" secondAttribute="leading" constant="20" id="xBP-j9-ZAM"/>
-                                                    <constraint firstItem="VlF-wK-2ru" firstAttribute="top" secondItem="pDL-cr-efO" secondAttribute="top" id="zYx-KD-14t"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p7v-Hc-Nqa">
@@ -6846,15 +6102,11 @@ Birmingham AL 35235</string>
                                             <constraint firstItem="doA-Qp-h4f" firstAttribute="top" secondItem="ooj-6t-Kqv" secondAttribute="bottom" constant="50" id="4DK-Hm-UHp"/>
                                             <constraint firstAttribute="trailing" secondItem="xSR-IC-9hd" secondAttribute="trailing" id="5Wl-X7-H8h"/>
                                             <constraint firstItem="xSR-IC-9hd" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" id="5aO-cQ-1PA"/>
-                                            <constraint firstItem="eO6-GV-kpC" firstAttribute="top" secondItem="M9O-fN-pcK" secondAttribute="bottom" constant="72" id="83o-c6-uvz"/>
-                                            <constraint firstItem="6OC-7I-H7o" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" constant="20" id="Bjd-Qe-KHD"/>
                                             <constraint firstItem="ooj-6t-Kqv" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" constant="20" id="Bpi-sQ-oPG"/>
                                             <constraint firstItem="xSR-IC-9hd" firstAttribute="top" secondItem="EdP-bu-26h" secondAttribute="bottom" constant="40" id="Fcv-fJ-FG3"/>
-                                            <constraint firstAttribute="trailing" secondItem="eO6-GV-kpC" secondAttribute="trailing" constant="22" id="G4d-fC-DoE"/>
                                             <constraint firstItem="pDL-cr-efO" firstAttribute="top" secondItem="doA-Qp-h4f" secondAttribute="bottom" constant="50" id="Jr8-L4-Yhx"/>
                                             <constraint firstAttribute="height" constant="1600" id="K6B-LJ-fNn"/>
                                             <constraint firstItem="NZ9-h6-BpU" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" constant="20" id="KAf-q1-SQE"/>
-                                            <constraint firstItem="6OC-7I-H7o" firstAttribute="top" secondItem="NZ9-h6-BpU" secondAttribute="bottom" id="Kch-gK-PKv"/>
                                             <constraint firstItem="M9O-fN-pcK" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" constant="20" id="L0Z-Od-o84"/>
                                             <constraint firstItem="p7v-Hc-Nqa" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" id="MaM-do-3iK"/>
                                             <constraint firstAttribute="trailing" secondItem="NZ9-h6-BpU" secondAttribute="trailing" constant="20" id="PNG-OW-edI"/>
@@ -6864,24 +6116,16 @@ Birmingham AL 35235</string>
                                             <constraint firstAttribute="trailing" secondItem="ooj-6t-Kqv" secondAttribute="trailing" constant="20" id="WuZ-Cv-HBB"/>
                                             <constraint firstAttribute="trailing" secondItem="EdP-bu-26h" secondAttribute="trailing" id="btu-OW-wKD"/>
                                             <constraint firstItem="pDL-cr-efO" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" id="dIR-Um-Ink"/>
-                                            <constraint firstItem="QhM-4C-dsY" firstAttribute="top" secondItem="Ir7-hV-qJc" secondAttribute="bottom" constant="30" id="dMT-u7-stS"/>
                                             <constraint firstItem="EdP-bu-26h" firstAttribute="top" secondItem="p7v-Hc-Nqa" secondAttribute="bottom" constant="42" id="eJL-Z9-9qE"/>
-                                            <constraint firstAttribute="trailing" secondItem="Ysm-Qb-T0P" secondAttribute="trailing" constant="22" id="fov-2o-mBr"/>
-                                            <constraint firstItem="Ysm-Qb-T0P" firstAttribute="top" secondItem="NZ9-h6-BpU" secondAttribute="bottom" constant="32" id="gBU-Dy-SF2"/>
                                             <constraint firstAttribute="trailing" secondItem="M9O-fN-pcK" secondAttribute="trailing" constant="20" id="h8h-Xe-1cn"/>
                                             <constraint firstAttribute="trailing" secondItem="Ir7-hV-qJc" secondAttribute="trailing" constant="20" id="l7n-Wd-b5x"/>
                                             <constraint firstAttribute="trailing" secondItem="doA-Qp-h4f" secondAttribute="trailing" id="mEO-mI-aa4"/>
-                                            <constraint firstItem="XGf-7Y-VjX" firstAttribute="top" secondItem="Ir7-hV-qJc" secondAttribute="bottom" id="nPw-mF-xEp"/>
                                             <constraint firstItem="p7v-Hc-Nqa" firstAttribute="top" secondItem="pDL-cr-efO" secondAttribute="bottom" id="ojD-aR-vaY"/>
                                             <constraint firstItem="Ir7-hV-qJc" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" constant="20" id="p7C-i2-xUa"/>
                                             <constraint firstItem="g4P-Iz-B6p" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" constant="20" id="r57-pD-iU1"/>
                                             <constraint firstItem="ooj-6t-Kqv" firstAttribute="top" secondItem="Ir7-hV-qJc" secondAttribute="bottom" id="sg6-gf-2iC"/>
-                                            <constraint firstAttribute="trailing" secondItem="6OC-7I-H7o" secondAttribute="trailing" constant="20" id="tZZ-vm-IBn"/>
-                                            <constraint firstAttribute="trailing" secondItem="XGf-7Y-VjX" secondAttribute="trailing" constant="20" id="uda-H2-6XL"/>
                                             <constraint firstItem="EdP-bu-26h" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" id="uqG-n5-bKO"/>
                                             <constraint firstItem="Ir7-hV-qJc" firstAttribute="top" secondItem="NZ9-h6-BpU" secondAttribute="bottom" constant="30" id="vtB-is-heL"/>
-                                            <constraint firstItem="XGf-7Y-VjX" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" constant="20" id="yCb-Xc-c9D"/>
-                                            <constraint firstItem="QhM-4C-dsY" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" constant="20" id="yYo-Mv-xh9"/>
                                             <constraint firstItem="M9O-fN-pcK" firstAttribute="top" secondItem="g4P-Iz-B6p" secondAttribute="bottom" constant="15" id="yZG-ra-c5g"/>
                                             <constraint firstAttribute="trailing" secondItem="p7v-Hc-Nqa" secondAttribute="trailing" id="yeX-Rk-6Br"/>
                                         </constraints>
@@ -6930,15 +6174,12 @@ Birmingham AL 35235</string>
                     </view>
                     <size key="freeformSize" width="375" height="2200"/>
                     <connections>
-                        <outlet property="appraisedPropertyValueDollarView" destination="VlF-wK-2ru" id="Q0W-a0-MBx"/>
                         <outlet property="btnBack" destination="fjV-NL-VDf" id="R6p-EY-OUC"/>
                         <outlet property="btnFirstMortgageNo" destination="gKk-0x-duO" id="MEr-TE-sYd"/>
                         <outlet property="btnFirstMortgageYes" destination="iXz-Mh-1h6" id="Ykx-1P-g22"/>
                         <outlet property="btnNo" destination="hfi-pt-umw" id="Skj-E8-EDX"/>
                         <outlet property="btnNonOccupying" destination="aJE-lF-ETk" id="j7S-4v-Jlg"/>
-                        <outlet property="btnOccupancyTypeDropDown" destination="Ysm-Qb-T0P" id="jdg-40-Nr5"/>
                         <outlet property="btnOccupying" destination="eD6-rX-Ir4" id="cSr-1B-YHK"/>
-                        <outlet property="btnPropertyTypeDropDown" destination="eO6-GV-kpC" id="Jge-7e-PCE"/>
                         <outlet property="btnSaveChanges" destination="By6-FS-4yD" id="Hju-Na-kWz"/>
                         <outlet property="btnSecondMortgageNo" destination="yrg-qH-Doi" id="S12-il-bK8"/>
                         <outlet property="btnSecondMortgageYes" destination="yE4-Ja-svt" id="MiJ-in-jSr"/>
@@ -6950,9 +6191,6 @@ Birmingham AL 35235</string>
                         <outlet property="firstMortgageNoStackView" destination="69v-9c-uzd" id="d5Q-KA-Ga0"/>
                         <outlet property="firstMortgageView" destination="Gph-qJ-t0s" id="R5I-Qf-cGm"/>
                         <outlet property="firstMortgageYesStackView" destination="NPz-n8-5Ad" id="hN0-SW-McF"/>
-                        <outlet property="floodInsuranceDollarView" destination="LLW-VB-zJe" id="J94-WA-WG3"/>
-                        <outlet property="homeOwnerAssociationDollarView" destination="3T6-37-fct" id="9W3-zq-wsm"/>
-                        <outlet property="homeOwnerInsuranceDollarView" destination="PC5-8b-Y6t" id="FZb-sm-SYf"/>
                         <outlet property="lblAddress" destination="Rps-GC-uf3" id="dYQ-Ij-AUv"/>
                         <outlet property="lblCoBorrowerName" destination="hFK-v5-rtV" id="dKr-ZE-jeA"/>
                         <outlet property="lblFirstMortgageBalance" destination="xnV-p5-6iB" id="SnK-og-IgL"/>
@@ -6978,13 +6216,10 @@ Birmingham AL 35235</string>
                         <outlet property="noStackView" destination="CJL-eR-Bbe" id="fiV-nu-IFG"/>
                         <outlet property="nonOccupyingStackView" destination="nww-0N-jRh" id="rgl-cO-gwF"/>
                         <outlet property="occupancyStatusView" destination="p7v-Hc-Nqa" id="IHY-a7-wRa"/>
-                        <outlet property="occupancyTypeDropDownAnchorView" destination="XGf-7Y-VjX" id="V1r-Zp-RtF"/>
                         <outlet property="occupyingStackView" destination="PV7-ZO-CgO" id="fXe-tq-TBA"/>
                         <outlet property="propertyDetailView" destination="w0q-mi-cGw" id="bQg-6o-6Fi"/>
-                        <outlet property="propertyTypeDropDownAnchorView" destination="6OC-7I-H7o" id="57i-PB-ZvR"/>
                         <outlet property="propertyView" destination="doA-Qp-h4f" id="JJI-7o-b87"/>
                         <outlet property="propertyViewHeightConstraint" destination="p5K-XE-uzw" id="Sr0-tK-jLD"/>
-                        <outlet property="rentalIncomeDollarView" destination="QhM-4C-dsY" id="4Zi-co-6oZ"/>
                         <outlet property="secondMortgageMainView" destination="xSR-IC-9hd" id="ja1-bW-bY4"/>
                         <outlet property="secondMortgageMainViewHeightConstraint" destination="5U0-w7-b8C" id="Dkf-ju-Aee"/>
                         <outlet property="secondMortgageNoStackView" destination="jpy-CG-FaO" id="h2Z-9e-DZH"/>
@@ -6994,7 +6229,6 @@ Birmingham AL 35235</string>
                         <outlet property="subjectPropertyAddressView" destination="M9O-fN-pcK" id="tnj-oR-XHs"/>
                         <outlet property="subjectPropertyAddressViewHeightConstraint" destination="cTH-lM-ES9" id="gFG-PR-yse"/>
                         <outlet property="subjectPropertyTBDView" destination="g4P-Iz-B6p" id="ITH-yS-iYA"/>
-                        <outlet property="taxDollarView" destination="rp4-G5-R6g" id="WVE-Ff-eeN"/>
                         <outlet property="txtfieldAppraisedPropertyValue" destination="BxF-2J-8ni" id="16r-b3-zNF"/>
                         <outlet property="txtfieldFloodInsurance" destination="EVn-jc-Yrq" id="bhr-5T-aCK"/>
                         <outlet property="txtfieldHomeOwnerAssociationDues" destination="X9i-Pg-FfO" id="mml-An-Gdh"/>
@@ -8804,7 +8038,6 @@ Birmingham AL 35235</string>
         <image name="Application-Tab-Property" width="20" height="20"/>
         <image name="Application-Tab-Real-Estate" width="20" height="20"/>
         <image name="Blue-Dot" width="6" height="6"/>
-        <image name="CalendarIcon" width="18" height="20"/>
         <image name="CheckBoxSelected" width="18" height="18"/>
         <image name="CheckBoxUnSelected" width="18" height="18"/>
         <image name="Close-Icon" width="16.523000717163086" height="16.523000717163086"/>
@@ -8852,9 +8085,6 @@ Birmingham AL 35235</string>
         </namedColor>
         <namedColor name="SeparatorErrorColor">
             <color red="1" green="0.14901960784313725" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="SeparatorNormalColor">
-            <color red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TopTabsColor">
             <color red="0.98431372549019602" green="0.98431372549019602" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
