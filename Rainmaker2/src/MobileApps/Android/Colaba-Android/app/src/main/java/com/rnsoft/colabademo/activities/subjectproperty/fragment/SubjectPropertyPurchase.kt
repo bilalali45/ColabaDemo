@@ -61,7 +61,7 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
 
             requireActivity().onBackPressedDispatcher.addCallback {
                 requireActivity().finish()
-                requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_right)
+                requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
             }
 
             savedViewInstance
@@ -77,7 +77,7 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
             R.id.layout_address -> setAddressClick()
             R.id.backButton ->  {
                 requireActivity().finish()
-                requireActivity().overridePendingTransition(R.anim.slide_right, R.anim.hold)
+                requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
             }
             R.id.btn_save -> requireActivity().finish()
             R.id.subproperty_parent_layout -> {

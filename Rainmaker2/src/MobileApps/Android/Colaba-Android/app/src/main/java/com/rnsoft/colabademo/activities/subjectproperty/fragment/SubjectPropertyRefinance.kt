@@ -12,16 +12,12 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.SubPropertyRefinanceBinding
-import com.rnsoft.colabademo.databinding.SubjectPropertyPurchaseBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import com.rnsoft.colabademo.utils.NumberTextFormat
-import timber.log.Timber
-import java.util.*
 
 
 /**
@@ -87,7 +83,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
 
             requireActivity().onBackPressedDispatcher.addCallback {
                 requireActivity().finish()
-                requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_right)
+                requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
             }
 
             savedViewInstance
@@ -155,7 +151,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             R.id.layout_sec_mortgage_detail -> onSecMortgageYesClick()
             R.id.backButton -> {
                 requireActivity().finish()
-                requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_right)
+                requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
             }
             R.id.btn_save -> requireActivity().finish()
             R.id.rb_sub_property -> radioSubPropertyClick()

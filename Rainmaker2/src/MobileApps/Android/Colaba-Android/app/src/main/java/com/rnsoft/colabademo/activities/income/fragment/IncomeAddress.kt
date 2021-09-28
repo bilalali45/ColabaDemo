@@ -28,7 +28,6 @@ import com.google.android.libraries.places.api.net.PlacesClient
 
 import com.rnsoft.colabademo.databinding.SubjectPropertyAddressBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import timber.log.Timber
 
 import java.io.IOException
 import java.util.*

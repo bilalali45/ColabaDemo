@@ -25,7 +25,7 @@ class BorrowerAddressActivity : BaseActivity() {
         binding = BorrowerAddressLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        overridePendingTransition(R.anim.slide_left, R.anim.hold)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
 
         val navController = findNavController(R.id.nav_host_borrower_address_main)
         val appBarConfiguration = AppBarConfiguration(

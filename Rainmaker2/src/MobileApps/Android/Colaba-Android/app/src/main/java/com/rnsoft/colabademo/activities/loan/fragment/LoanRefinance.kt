@@ -47,12 +47,12 @@ class LoanRefinance : BaseFragment() {
 
         bindingToolbar.backButton.setOnClickListener {
             requireActivity().finish()
-            requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_right)
+            requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_out_left)
 
         }
         requireActivity().onBackPressedDispatcher.addCallback {
             requireActivity().finish()
-            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_right)
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }
 
         super.addListeners(binding.root)
