@@ -120,7 +120,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
         requireActivity().onBackPressedDispatcher.addCallback {
             requireActivity().finish()
-            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_right)
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }
 
     }
@@ -183,7 +183,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
             R.id.backButton_info -> {
                 requireActivity().finish()
-                requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_right)
+                requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_out_left)
             }
         }
     }

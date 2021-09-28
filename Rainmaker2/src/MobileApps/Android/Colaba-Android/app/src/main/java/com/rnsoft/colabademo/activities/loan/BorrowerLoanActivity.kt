@@ -21,7 +21,7 @@ class BorrowerLoanActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = BorrowerLoanLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        overridePendingTransition(R.anim.slide_left, R.anim.hold)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
 
         val extras = intent.extras
         extras?.let {

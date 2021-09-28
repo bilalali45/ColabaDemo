@@ -49,9 +49,7 @@
         <activity
             android:name=".WelcomeActivity"
             android:exported="false"
-            android:screenOrientation="sensorPortrait"
-
-            />
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name=".DashBoardActivity"
             android:exported="false"
@@ -72,9 +70,7 @@
         <activity
             android:name=".SubjectPropertyActivity"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
-
-            />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity
             android:name=".AssetsActivity"
             android:screenOrientation="sensorPortrait"
@@ -98,5 +94,4 @@
 
 
     </application>
-
 </manifest>

@@ -326,15 +326,24 @@
             app:layout_constraintStart_toEndOf="@+id/imageView36"
             app:layout_constraintTop_toTopOf="@+id/imageView36" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/assetsConstraintLayout"
-            android:layout_width="182dp"
-            android:layout_height="75dp"
+        <LinearLayout
+            android:id="@+id/layout_assest_income"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:weightSum="2"
+            android:orientation="horizontal"
             android:layout_marginStart="21dp"
+            android:layout_marginEnd="21dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/search_view_holder_style"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView84">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/assetsConstraintLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/content_bg_with_drop_shadow">
 
             <ImageView
                 android:id="@+id/imageView31"
@@ -376,16 +385,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/incomeConstraintLayout"
-            android:layout_width="182dp"
-            android:layout_height="75dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="21dp"
-            android:background="@drawable/search_view_holder_style"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/assetsConstraintLayout"
-            app:layout_constraintTop_toBottomOf="@+id/textView84">
+            android:background="@drawable/content_bg_with_drop_shadow">
 
             <ImageView
                 android:id="@+id/imageView51"
@@ -425,13 +429,15 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </LinearLayout>
+
         <ImageView
             android:id="@+id/imageView66"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             app:layout_constraintStart_toStartOf="@+id/imageView26"
-            app:layout_constraintTop_toBottomOf="@+id/assetsConstraintLayout"
+            app:layout_constraintTop_toBottomOf="@+id/layout_assest_income"
             app:srcCompat="@drawable/ic_realstate" />
 
         <TextView
@@ -453,6 +459,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:layout_marginEnd="10dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"

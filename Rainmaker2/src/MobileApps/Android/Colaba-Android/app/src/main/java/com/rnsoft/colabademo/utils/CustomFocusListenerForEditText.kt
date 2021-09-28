@@ -15,20 +15,16 @@ import timber.log.Timber
 class CustomFocusListenerForEditText(private val mEditText: TextInputEditText, private val mTextInputLayout: TextInputLayout, private val context: Context, private val errorString:String =""):View.OnFocusChangeListener {
     override fun onFocusChange(p0: View?, p1: Boolean) {
         if(p1) {
-            //Timber.e("Clearing error")
-
-            setTextInputLayoutHintColor(mTextInputLayout, context = context, R.color.grey_color_two)
+             setTextInputLayoutHintColor(mTextInputLayout, context = context, R.color.grey_color_two)
         }
         else{
             if (mEditText.text?.length == 0) {
-                //Timber.e("lenght 0")
                 if(errorString.isNotEmpty())
                     CustomMaterialFields.setError(mTextInputLayout, errorString, context)
-                else
-                    setTextInputLayoutHintColor(mTextInputLayout, context = context, R.color.grey_color_three )
+                //else
+                setTextInputLayoutHintColor(mTextInputLayout, context = context, R.color.grey_color_three )
             }
             else {
-                //Timber.e("Clearing error")
                 CustomMaterialFields.clearError(mTextInputLayout, context)
                 setTextInputLayoutHintColor(mTextInputLayout, context = context, R.color.grey_color_two)
             }
