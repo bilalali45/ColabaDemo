@@ -286,6 +286,8 @@ dependencies {
     //implementation 'com.google.maps.android:places-v3-ktx:1.0.0'
     //api name:'places-maps-sdk-3.1.0-beta', ext:'aar'
 
+    //implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
     // Instead of use default Log library. use Timber
     implementation 'com.jakewharton.timber:timber:5.0.1'
 }

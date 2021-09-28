@@ -3,7 +3,6 @@ package com.rnsoft.colabademo
 import android.content.SharedPreferences
 
 import android.os.Bundle
-import androidx.navigation.ui.AppBarConfiguration
 import com.rnsoft.colabademo.databinding.AssetsActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -23,7 +22,7 @@ class AssetsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = AssetsActivityLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        overridePendingTransition(R.anim.slide_left, R.anim.hold)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
 
         val extras = intent.extras
         extras?.let {

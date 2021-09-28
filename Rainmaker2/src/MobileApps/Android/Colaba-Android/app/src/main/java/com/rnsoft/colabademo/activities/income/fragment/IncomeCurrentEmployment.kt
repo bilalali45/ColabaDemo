@@ -1,18 +1,13 @@
 package com.rnsoft.colabademo
 
 import android.app.DatePickerDialog
-import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.textfield.TextInputLayout
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.IncomeCurrentEmploymentBinding
@@ -179,9 +174,9 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
     }
 
     private fun openAddressFragment(){
-        val addressFragment = IncomeAddress()
+        val addressFragment = AddressCurrentEmployment()
         val bundle = Bundle()
-        bundle.putString("address", "Current Employer Address")
+        bundle.putString(AppConstant.address, getString(R.string.current_employer_address))
         addressFragment.arguments = bundle
         findNavController().navigate(R.id.action_current_employment_address, addressFragment.arguments)
     }

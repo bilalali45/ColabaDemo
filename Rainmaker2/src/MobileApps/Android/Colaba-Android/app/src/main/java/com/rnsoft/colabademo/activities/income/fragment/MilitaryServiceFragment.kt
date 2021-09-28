@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
@@ -19,7 +18,7 @@ import java.util.*
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
-class MilitaryPayFragment : BaseFragment(), View.OnClickListener {
+class MilitaryServiceFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var binding: IncomeMilitaryPayBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
@@ -73,11 +72,11 @@ class MilitaryPayFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun openAddressFragment(){
-        val addressFragment = IncomeAddress()
+        val addressFragment = AddressMilitaryService()
         val bundle = Bundle()
-        bundle.putString("address", "Service Location Address")
+        bundle.putString(AppConstant.address, getString(R.string.service_location_add))
         addressFragment.arguments = bundle
-        findNavController().navigate(R.id.action_address, addressFragment.arguments)
+        findNavController().navigate(R.id.action_military_address, addressFragment.arguments)
     }
 
 

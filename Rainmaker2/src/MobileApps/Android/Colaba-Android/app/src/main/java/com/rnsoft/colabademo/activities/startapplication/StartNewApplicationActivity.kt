@@ -21,7 +21,7 @@ class StartNewApplicationActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStartNewApplicationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        overridePendingTransition(R.anim.slide_left, 0)
+        overridePendingTransition(R.anim.slide_out_left, 0)
 
     }
 }

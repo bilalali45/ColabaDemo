@@ -763,7 +763,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView69"
+                        android:id="@+id/third_lo_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/rubik_regular"
@@ -861,7 +861,7 @@
 
 
                     <TextView
-                        android:id="@+id/textView80"
+                        android:id="@+id/fourth_lo_detail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/rubik_regular"
@@ -873,7 +873,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView79"
+                        android:id="@+id/fourth_lo_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
@@ -885,7 +885,7 @@
                         android:textSize="13sp"
 
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView80" />
+                        app:layout_constraintTop_toBottomOf="@+id/fourth_lo_detail" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

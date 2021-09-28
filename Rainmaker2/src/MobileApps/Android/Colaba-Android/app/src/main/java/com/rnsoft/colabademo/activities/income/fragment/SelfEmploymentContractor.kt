@@ -6,10 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
-import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.SelfEmpolymentContLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -60,11 +58,11 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
     }
 
     private fun openAddressFragment(){
-        val addressFragment = IncomeAddress()
+        val addressFragment = AddressBusiness()
         val bundle = Bundle()
-        bundle.putString("address", "Business Main Address")
+        bundle.putString(AppConstant.address, getString(R.string.business_main_address))
         addressFragment.arguments = bundle
-        findNavController().navigate(R.id.action_address, addressFragment.arguments)
+        findNavController().navigate(R.id.action_business_address, addressFragment.arguments)
     }
 
 

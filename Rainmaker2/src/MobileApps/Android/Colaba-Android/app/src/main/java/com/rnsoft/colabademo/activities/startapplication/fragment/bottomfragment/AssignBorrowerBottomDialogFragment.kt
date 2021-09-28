@@ -85,6 +85,8 @@ class AssignBorrowerBottomDialogFragment : BottomSheetDialogFragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
         TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = bottomBorrowerTabArray[position] }.attach()
+
+        binding.searchEditTextField.clearFocus()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
