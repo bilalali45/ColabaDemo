@@ -292,9 +292,7 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
                         binding.asianInnerConstraintLayout.visibility = View.GONE
                         binding.nativeHawaianInnerLayout.visibility = View.GONE
                         binding.hispanicOrLatinoLayout.visibility = View.GONE
-                        binding.otherAsianConstraintlayout.visibility = View.GONE
-                        binding.otherHispanicConstraintLayout.visibility = View.GONE
-                        binding.otherPacificIslanderConstraintLayout.visibility = View.GONE
+
                     }
                 }
             }
@@ -345,27 +343,7 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
             binding.notHispanic.isChecked = false
         }
 
-        binding.otherAsianCheckBox.setOnCheckedChangeListener{ buttonView, isChecked ->
-            if(isChecked)
-                binding.otherAsianConstraintlayout.visibility = View.VISIBLE
-            else
-                binding.otherAsianConstraintlayout.visibility = View.GONE
-        }
 
-        binding.otherHispanicOrLatino.setOnCheckedChangeListener{ buttonView, isChecked ->
-            if(isChecked)
-                binding.otherHispanicConstraintLayout.visibility = View.VISIBLE
-            else
-                binding.otherHispanicConstraintLayout.visibility = View.GONE
-        }
-
-        binding.otherPacificIslanderCheckBox.setOnCheckedChangeListener{ buttonView, isChecked ->
-            if(isChecked)
-                binding.otherPacificIslanderConstraintLayout.visibility = View.VISIBLE
-            else
-                binding.otherPacificIslanderConstraintLayout.visibility = View.GONE
-
-        }
     }
 
 

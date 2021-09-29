@@ -50,6 +50,7 @@ class ChildSupportFragment:BaseFragment() {
             binding.paymentRemainingTextView.showDropDown()
         }
         binding.paymentRemainingTextView.setOnClickListener{
+            HideSoftkeyboard.hide(requireContext(),  binding.paymentRemainingTextView)
             binding.paymentRemainingTextView.showDropDown()
         }
 
@@ -75,6 +76,7 @@ class ChildSupportFragment:BaseFragment() {
             binding.alimonyPaymentRemainingTextView.showDropDown()
         }
         binding.alimonyPaymentRemainingTextView.setOnClickListener{
+            HideSoftkeyboard.hide(requireContext(),  binding.paymentRemainingTextView)
             binding.alimonyPaymentRemainingTextView.showDropDown()
         }
         binding.alimonyPaymentRemainingTextView.onItemClickListener = object: AdapterView.OnItemClickListener {
@@ -96,6 +98,7 @@ class ChildSupportFragment:BaseFragment() {
             binding.separateMaintenancePaymentRemainingTextView.showDropDown()
         }
         binding.separateMaintenancePaymentRemainingTextView.setOnClickListener{
+            HideSoftkeyboard.hide(requireContext(),  binding.paymentRemainingTextView)
             binding.separateMaintenancePaymentRemainingTextView.showDropDown()
         }
 
@@ -124,22 +127,28 @@ class ChildSupportFragment:BaseFragment() {
         CustomMaterialFields.setDollarPrefix(binding.separateMonthlyPaymentLayout, requireActivity())
 
         binding.childSupportCheckBox.setOnClickListener {
-            if(binding.childSupportCheckBox.isChecked)
+            if(binding.childSupportCheckBox.isChecked) {
+                binding.errorInChildSupport.visibility = View.GONE
                 binding.childSupportInnerFields.visibility = View.VISIBLE
+            }
             else
                 binding.childSupportInnerFields.visibility = View.GONE
         }
 
         binding.alimonyCheckBox.setOnClickListener {
-            if(binding.alimonyCheckBox.isChecked)
+            if(binding.alimonyCheckBox.isChecked) {
+                binding.errorInChildSupport.visibility = View.GONE
                 binding.alimonyInnerFields.visibility = View.VISIBLE
+            }
             else
                 binding.alimonyInnerFields.visibility = View.GONE
         }
 
         binding.separateMaintenanceCheckBox.setOnClickListener {
-            if(binding.separateMaintenanceCheckBox.isChecked)
+            if(binding.separateMaintenanceCheckBox.isChecked) {
+                binding.errorInChildSupport.visibility = View.GONE
                 binding.separateMaintenanceInnerFields.visibility = View.VISIBLE
+            }
             else
                 binding.separateMaintenanceInnerFields.visibility = View.GONE
         }
@@ -150,6 +159,9 @@ class ChildSupportFragment:BaseFragment() {
                 clearFocusFromFields()
                 findNavController().popBackStack()
             }
+            else
+            if(!binding.separateMaintenanceCheckBox.isChecked && !binding.alimonyCheckBox.isChecked && !binding.childSupportCheckBox.isChecked)
+                binding.errorInChildSupport.visibility = View.VISIBLE
         }
 
         binding.backButton.setOnClickListener{
@@ -167,10 +179,9 @@ class ChildSupportFragment:BaseFragment() {
     }
 
     private fun checkEmptyFields():Boolean{
-        var bool =  true
+        var bool =  false
         if(binding.separateMaintenanceCheckBox.isChecked){
-
-
+            bool = true
             if(binding.separateMonthlyPaymentEditText.text?.isEmpty() == true || binding.separateMonthlyPaymentEditText.text?.isBlank() == true) {
                 CustomMaterialFields.setError(binding.separateMonthlyPaymentLayout, "This field is required." , requireContext())
                 bool = false
@@ -195,7 +206,7 @@ class ChildSupportFragment:BaseFragment() {
         }
 
         if(binding.alimonyCheckBox.isChecked){
-
+            bool = true
             if(binding.alimonyMonthlyPaymentEditText.text?.isEmpty() == true || binding.alimonyMonthlyPaymentEditText.text?.isBlank() == true) {
                 CustomMaterialFields.setError(binding.alimonyMonthlyPaymentLayout, "This field is required." , requireContext())
                 bool = false
@@ -220,8 +231,7 @@ class ChildSupportFragment:BaseFragment() {
         }
 
         if(binding.childSupportCheckBox.isChecked){
-
-
+            bool = true
             if(binding.paymentRemainingTextView.text?.isEmpty() == true || binding.paymentRemainingTextView.text?.isBlank() == true) {
                 CustomMaterialFields.setError(binding.paymentRemainingLayout, "This field is required." , requireContext())
                 bool = false
@@ -242,9 +252,6 @@ class ChildSupportFragment:BaseFragment() {
             }
             else
                 CustomMaterialFields.clearError(binding.paymentReceiptLayout,  requireContext())
-
-
-
         }
 
         return bool

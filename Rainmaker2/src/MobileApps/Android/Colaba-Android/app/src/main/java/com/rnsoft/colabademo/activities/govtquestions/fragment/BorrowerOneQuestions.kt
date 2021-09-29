@@ -137,22 +137,12 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
         binding.doNotWishCheckBox.setOnClickListener{
             binding.whiteCheckBox.isChecked = false
-            binding.nativeHawaianOrOtherCheckBox.isChecked = false
-            val items = binding.nativeHawaianInnerLayout
-            for(item in items){
-                if(item is AppCompatCheckBox){
-                    item.isChecked = false
-                }
-            }
             binding.blackOrAfricanCheckBox.isChecked = false
-            binding.asianCheckBox.isChecked = false
-            val asianItems = binding.asianInnerConstraintLayout
-            for(item in asianItems){
-                if(item is AppCompatCheckBox){
-                    item.isChecked = false
-                }
-            }
             binding.americanOrIndianCheckBox.isChecked = false
+            binding.nativeHawaianOrOtherCheckBox.isChecked = false
+            binding.nativeHawaianInnerLayout.visibility = View.GONE
+            binding.asianCheckBox.isChecked = false
+            binding.asianInnerConstraintLayout.visibility = View.GONE
         }
 
         binding.whiteCheckBox.setOnClickListener{ binding.doNotWishCheckBox.isChecked = false }
@@ -290,9 +280,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         binding.asianInnerConstraintLayout.visibility = View.GONE
                         binding.nativeHawaianInnerLayout.visibility = View.GONE
                         binding.hispanicOrLatinoLayout.visibility = View.GONE
-                        binding.otherAsianConstraintlayout.visibility = View.GONE
-                        binding.otherHispanicConstraintLayout.visibility = View.GONE
-                        binding.otherPacificIslanderConstraintLayout.visibility = View.GONE
                     }
                 }
             }
@@ -306,6 +293,13 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
                 test.visibility = View.VISIBLE
                 binding.asianInnerConstraintLayout.visibility = View.VISIBLE
+
+                findNavController().navigate(R.id.action_asian)
+                binding.asianInnerConstraintLayout.setOnClickListener{
+                    findNavController().navigate(R.id.action_asian)
+                }
+
+
                 Timber.e("not accessible...")
                 Timber.e("not accessible...")
             }else{
@@ -316,6 +310,10 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         binding.nativeHawaianOrOtherCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 binding.nativeHawaianInnerLayout.visibility = View.VISIBLE
+                findNavController().navigate(R.id.action_native_hawai)
+                binding.nativeHawaianInnerLayout.setOnClickListener{
+                    findNavController().navigate(R.id.action_native_hawai)
+                }
             }else{
                 binding.nativeHawaianInnerLayout.visibility = View.GONE
             }
@@ -324,13 +322,15 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
         binding.hispanicOrLatino.setOnClickListener {
             binding.hispanicOrLatinoLayout.visibility = View.VISIBLE
+            findNavController().navigate(R.id.action_hispanic)
+            binding.hispanicOrLatinoLayout.setOnClickListener{
+                findNavController().navigate(R.id.action_hispanic)
+            }
             binding.notHispanic.isChecked = false
             binding.notTellingEthnicity.isChecked = false
         }
 
         binding.notHispanic.setOnClickListener{
-
-
             binding.hispanicOrLatinoLayout.visibility = View.GONE
             binding.hispanicOrLatino.isChecked = false
             binding.notTellingEthnicity.isChecked = false
@@ -341,28 +341,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             binding.hispanicOrLatinoLayout.visibility = View.GONE
             binding.hispanicOrLatino.isChecked = false
             binding.notHispanic.isChecked = false
-        }
-
-        binding.otherAsianCheckBox.setOnCheckedChangeListener{ buttonView, isChecked ->
-            if(isChecked)
-                binding.otherAsianConstraintlayout.visibility = View.VISIBLE
-            else
-                binding.otherAsianConstraintlayout.visibility = View.GONE
-        }
-
-        binding.otherHispanicOrLatino.setOnCheckedChangeListener{ buttonView, isChecked ->
-            if(isChecked)
-                binding.otherHispanicConstraintLayout.visibility = View.VISIBLE
-            else
-                binding.otherHispanicConstraintLayout.visibility = View.GONE
-        }
-
-        binding.otherPacificIslanderCheckBox.setOnCheckedChangeListener{ buttonView, isChecked ->
-            if(isChecked)
-                binding.otherPacificIslanderConstraintLayout.visibility = View.VISIBLE
-            else
-                binding.otherPacificIslanderConstraintLayout.visibility = View.GONE
-
         }
     }
 

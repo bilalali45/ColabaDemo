@@ -86,6 +86,22 @@
             app:destination="@id/navigation_undisclosed_borrower_fund"
             app:enterAnim="@anim/slide_up" />
 
+        <action
+            android:id="@+id/action_asian"
+            app:destination="@id/navigation_asian"
+            app:enterAnim="@anim/slide_up" />
+
+        <action
+            android:id="@+id/action_native_hawai"
+            app:destination="@id/navigation_native_hawai"
+            app:enterAnim="@anim/slide_up" />
+
+
+        <action
+            android:id="@+id/action_hispanic"
+            app:destination="@id/navigation_hispanic"
+            app:enterAnim="@anim/slide_up" />
+
     </fragment>
 
     <fragment
@@ -173,5 +189,24 @@
         tools:layout="@layout/undisclosed_borrower_fund_layout" />
 
 
+
+
+    <fragment
+        android:id="@+id/navigation_asian"
+        android:name="com.rnsoft.colabademo.AsianFragment"
+        android:label="@string/test_id"
+        tools:layout="@layout/asian_layout" />
+
+    <fragment
+        android:id="@+id/navigation_native_hawai"
+        android:name="com.rnsoft.colabademo.NativeHawaiFragment"
+        android:label="@string/test_id"
+        tools:layout="@layout/native_hawaiian_layout" />
+
+    <fragment
+        android:id="@+id/navigation_hispanic"
+        android:name="com.rnsoft.colabademo.HispanicFragment"
+        android:label="@string/test_id"
+        tools:layout="@layout/hispanic_layout" />
 
 </navigation>

@@ -164,7 +164,7 @@
             android:hint="Specify"
             android:textColorHint="@color/primary_info_label_color"
             app:boxCollapsedPaddingTop="1dp"
-
+            android:visibility="gone"
 
             app:boxStrokeColor="@color/primary_info_line_color"
             app:boxStrokeWidth="0.5dp"
