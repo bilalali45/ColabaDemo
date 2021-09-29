@@ -106,6 +106,7 @@
 		23A56C5E2685B017005CE6F4 /* Loaf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A56C582685B017005CE6F4 /* Loaf.swift */; };
 		23A56C602686152A005CE6F4 /* Rubik-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23A56C5F2686152A005CE6F4 /* Rubik-LightItalic.ttf */; };
 		23A6578826D65B610013A37B /* LoginNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6578726D65B610013A37B /* LoginNavigationViewController.swift */; };
+		23A8D1A927045AA300950195 /* DemographicDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A8D1A827045AA300950195 /* DemographicDetailViewController.swift */; };
 		23B238B82679D38900508449 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B238B72679D38900508449 /* SearchViewController.swift */; };
 		23B238BB2679E05200508449 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B238B92679E05200508449 /* SearchResultTableViewCell.swift */; };
 		23B238BC2679E05200508449 /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */; };
@@ -328,6 +329,7 @@
 		23A56C582685B017005CE6F4 /* Loaf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loaf.swift; sourceTree = "<group>"; };
 		23A56C5F2686152A005CE6F4 /* Rubik-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-LightItalic.ttf"; sourceTree = "<group>"; };
 		23A6578726D65B610013A37B /* LoginNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNavigationViewController.swift; sourceTree = "<group>"; };
+		23A8D1A827045AA300950195 /* DemographicDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemographicDetailViewController.swift; sourceTree = "<group>"; };
 		23B238B72679D38900508449 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		23B238B92679E05200508449 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
@@ -702,6 +704,7 @@
 				23B5E98826F4C85E00686B8E /* ChildSupportViewController.swift */,
 				23B5E98A26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift */,
 				23BDB1CC26F8615D00C73E33 /* DemographicInformationViewController.swift */,
+				23A8D1A827045AA300950195 /* DemographicDetailViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -1284,6 +1287,7 @@
 				23E9C754269C5F100066C978 /* DocumentsDetailViewController.swift in Sources */,
 				237DF98B26D77B98000CAA8E /* AddPreviousResidenceViewController.swift in Sources */,
 				23A56C5E2685B017005CE6F4 /* Loaf.swift in Sources */,
+				23A8D1A927045AA300950195 /* DemographicDetailViewController.swift in Sources */,
 				3963EE3626F9F7740044FAFA /* ColabaButton.swift in Sources */,
 				2381B4F52701F65A0045D917 /* AssignLoanOfficerPopupViewController.swift in Sources */,
 				238E0F9326F37CC40025FF06 /* OwnershipInterestInPropertyFollowupQuestionViewController.swift in Sources */,

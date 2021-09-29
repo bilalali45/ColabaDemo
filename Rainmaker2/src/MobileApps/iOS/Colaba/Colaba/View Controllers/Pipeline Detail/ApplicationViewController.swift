@@ -280,6 +280,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                 cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
                 cell.lblQuestionHeading.text = question.questionHeader
                 cell.lblQuestion.text = question.questionText
+                cell.alertIcon.isHidden = question.questionResponses.count > 0
                 
                 if (self.loanApplicationDetail.borrowersInformation.count == 0){
                     cell.mainViewHeightConstraint.constant = 90
