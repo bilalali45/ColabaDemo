@@ -54,9 +54,16 @@ class StartNewApplicationFragment : BaseFragment(), View.OnClickListener {
 
 
         binding.btnCreateApp.setOnClickListener {
+            /*
             AssignBorrowerBottomDialogFragment.newInstance(this@StartNewApplicationFragment).show(
                 childFragmentManager,
                 AssignBorrowerBottomDialogFragment::class.java.canonicalName
+            )
+             */
+
+            BottomEmailPhoneErrorFragment.newInstance().show(
+                childFragmentManager,
+                BottomEmailPhoneErrorFragment::class.java.canonicalName
             )
         }
 
