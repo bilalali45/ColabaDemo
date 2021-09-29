@@ -102,7 +102,7 @@
             app:tabPaddingStart="10dp"
 
 
-            app:tabIndicator="@drawable/assign_to_tab_indicator"
+            app:tabIndicator="@drawable/lo_tab_indicator"
             app:tabIndicatorColor="@color/colaba_apptheme_blue"
 
             app:tabIndicatorHeight="4dp"
