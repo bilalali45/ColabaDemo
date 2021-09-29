@@ -2,9 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
->
-    
+    android:layout_height="wrap_content">
+
     <TextView
         android:id="@+id/contact_name"
         android:layout_width="wrap_content"
@@ -20,30 +19,39 @@
 
     <TextView
         android:id="@+id/contact_email"
+        android:maxWidth="250dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
         android:ellipsize="end"
-        android:singleLine="true"
+        android:maxLines="1"
         android:fontFamily="@font/rubik_medium"
         android:text="richard.glenn@gmail.com"
         android:textColor="@color/grey_color_two"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contact_name"
-        app:layout_constraintEnd_toStartOf="@+id/contact_num"/>
+        app:layout_constraintTop_toBottomOf="@+id/contact_name"/>
 
     <TextView
         android:id="@+id/contact_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingStart="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:textAllCaps="false"
+        android:gravity="start|center"
         android:fontFamily="@font/rubik_regular"
         android:text="(121) 353 1343"
-        android:layout_marginTop="8dp"
         android:textColor="@color/grey_color_two"
         android:textSize="13sp"
+        android:drawableStart="@drawable/circle_medium"
+        android:drawableTint="@color/colaba_primary_color"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contact_name" />
+        app:layout_constraintTop_toBottomOf="@+id/contact_name"
+        />
+
 
     <View
         android:layout_width="match_parent"
