@@ -369,6 +369,10 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: DemographicInformationViewController.self)) as! DemographicInformationViewController
     }
     
+    static func getDemographicDetailVC() -> DemographicDetailViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: DemographicDetailViewController.self)) as! DemographicDetailViewController
+    }
+    
     static func getStartNewApplicationVC() -> StartNewApplicationViewController{
         return newApplicationStoryboard.instantiateViewController(withIdentifier: String(describing: StartNewApplicationViewController.self)) as! StartNewApplicationViewController
     }
