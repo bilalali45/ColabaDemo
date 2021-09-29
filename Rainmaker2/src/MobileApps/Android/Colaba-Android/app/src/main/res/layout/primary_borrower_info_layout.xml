@@ -29,7 +29,7 @@
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/rubik_medium"
             android:text="@string/heading_borrower_info"
             android:textColor="@color/grey_color_one"
@@ -40,10 +40,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/borrower_purpose"
+            android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:fontFamily="@font/rubik_light"
             android:text="Richard Glenn Randell"
             android:textAllCaps="true"
@@ -57,11 +57,11 @@
             android:id="@+id/tab_top_border"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="12sp"
             android:background="#E5E5E5"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/borrower_purpose" />
+            app:layout_constraintTop_toBottomOf="@+id/name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -447,7 +447,7 @@
                 android:id="@+id/layout_residence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="40dp"
                 android:orientation="vertical"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"

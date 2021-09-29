@@ -143,7 +143,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
     }
 
-    override fun deleteDependentClick(position: Int) {
+    override fun onItemClick(position: Int) {
         listItems.removeAt(position)
         //update list/ recreate again
         for(i in 0 until listItems.size){

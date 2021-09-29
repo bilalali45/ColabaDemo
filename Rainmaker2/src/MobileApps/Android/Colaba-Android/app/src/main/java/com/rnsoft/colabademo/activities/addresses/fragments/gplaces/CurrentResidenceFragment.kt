@@ -71,7 +71,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         }
         binding.moveInEditText.showSoftInputOnFocus = false
 
-        binding.topSearchAutoTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
+        /*binding.topSearchAutoTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
                 binding.topSearchTextInputLine.layoutParams.height = 3
                 binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.colaba_apptheme_blue, requireActivity().theme))
@@ -88,51 +88,14 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                     CustomMaterialFields.setColor(binding.layoutSearchField, R.color.grey_color_three, requireActivity())
                 }
             }
-        }
+        } */
 
-        binding.cityEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.cityEditText,
-                binding.cityLayout,
-                requireContext()
-            )
-        )
-        binding.streetAddressEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.streetAddressEditText,
-                binding.streetAddressLayout,
-                requireContext()
-            )
-        )
-        binding.unitAptInputEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.unitAptInputEditText,
-                binding.unitAptInputLayout,
-                requireContext()
-            )
-        )
-        binding.countyEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.countyEditText,
-                binding.countyLayout,
-                requireContext()
-            )
-        )
-        binding.zipcodeEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.zipcodeEditText,
-                binding.zipcodeLayout,
-                requireContext()
-            )
-        )
-
-        binding.monthlyRentEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.monthlyRentEditText,
-                binding.monthlyRentLayout,
-                requireContext()
-            )
-        )
+        binding.cityEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.cityEditText, binding.cityLayout, requireContext()))
+        binding.streetAddressEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.streetAddressEditText, binding.streetAddressLayout, requireContext()))
+        binding.unitAptInputEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.unitAptInputEditText, binding.unitAptInputLayout, requireContext()))
+        binding.countyEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.countyEditText, binding.countyLayout, requireContext()))
+        binding.zipcodeEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.zipcodeEditText, binding.zipcodeLayout, requireContext()))
+        binding.monthlyRentEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.monthlyRentEditText, binding.monthlyRentLayout, requireContext()))
 
         val countryAdapter =
             ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.countries)
@@ -271,7 +234,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
      private fun setError(){
          binding.tvError.visibility = View.VISIBLE
-         binding.topSearchTextInputLine.layoutParams.height = 3
+         binding.topSearchTextInputLine.layoutParams.height = 1
          binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.colaba_red_color, requireActivity().theme))
     }
 
@@ -360,7 +323,6 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
         }
     })
-
 
     private var predicationList: ArrayList<String> = ArrayList()
     //private lateinit var autoCompleteAdapter:ArrayAdapter<String>    //= ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,  predicationList)
