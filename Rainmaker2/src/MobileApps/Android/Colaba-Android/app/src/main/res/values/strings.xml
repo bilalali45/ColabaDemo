@@ -481,6 +481,8 @@
     <string name="have_you_had_an_ownership_interest">Have you had an ownership interest in another property in the last three years?</string>
     <string name="will_this_property_be_subject_to_a_lien">Will this property be subject to a lien that could take priority over the first mortgage lien, such as a clean energy lien paid through your property taxes (e.g., the Property Assessed Clean Energy Program)?</string>
 
+    <string name="assign_loan_officer">Assign Loan Officer</string>
+
     <string name="add_employer_add">Add Employer Address</string>
     <string name="add_business_add">Add Business Address</string>
     <string name="add_service_add">Add Service Location Address</string>

@@ -390,16 +390,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             }
         }
 
-        // date of birth
-        /*bi.edDateOfBirth.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(v: View, m: MotionEvent): Boolean {
-                when (m.getAction()) {
-                    MotionEvent.ACTION_DOWN -> openCalendar()
-                }
-                return false
-            }
-        }) */
-
         bi.edDateOfBirth.showSoftInputOnFocus = false
         bi.edDateOfBirth.setOnClickListener { openCalendar() }
         bi.edDateOfBirth.setOnFocusChangeListener{ _ , _ ->  openCalendar() }

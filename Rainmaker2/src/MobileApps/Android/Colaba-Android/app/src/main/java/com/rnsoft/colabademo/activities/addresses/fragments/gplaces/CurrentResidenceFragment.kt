@@ -41,16 +41,21 @@ import java.util.*
 import com.rnsoft.colabademo.databinding.TempResidenceLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import kotlinx.android.synthetic.main.temp_residence_layout.*
+import timber.log.Timber
 
 
 @AndroidEntryPoint
 class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     PlacePredictionAdapter.OnPlaceClickListener {
 
-    private var _binding: TempResidenceLayoutBinding? = null
-    private val binding get() = _binding!!
     @Inject
     lateinit var sharedPreferences: SharedPreferences
+    private var _binding: TempResidenceLayoutBinding? = null
+    private val binding get() = _binding!!
+    private var predicationList: ArrayList<String> = ArrayList()
+    private lateinit var token: AutocompleteSessionToken
+    private lateinit var placesClient: PlacesClient
+    private lateinit var predictAdapter: PlacePredictionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,18 +65,41 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
         _binding = TempResidenceLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        super.addListeners(binding.root)
+
+        setUpUI()
+        setDropDownData()
+        setUpCompleteViewForPlaces()
+        initializeUSAstates()
+
+        return root
+
+    }
+
+    private fun setUpUI(){
 
         binding.moveInEditText.setOnClickListener {
             createCustomDialog()
             binding.topSearchAutoTextView.clearFocus()
         }
-        binding.moveInEditText.setOnFocusChangeListener { _, p1 ->
-            if (p1)
-                createCustomDialog()
-        }
+
         binding.moveInEditText.showSoftInputOnFocus = false
 
-        /*binding.topSearchAutoTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
+        binding.moveInEditText.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
+            if (hasFocus) {
+                createCustomDialog()
+                CustomMaterialFields.setColor(binding.moveInLayout, R.color.grey_color_two, requireActivity())
+            } else {
+                if (binding.moveInEditText.text.toString().length == 0) {
+                    CustomMaterialFields.setColor(binding.moveInLayout, R.color.grey_color_three, requireActivity())
+                } else {
+                    CustomMaterialFields.clearError(binding.moveInLayout,requireActivity())
+                    CustomMaterialFields.setColor(binding.moveInLayout, R.color.grey_color_two, requireActivity())
+                }
+            }
+        }
+
+        binding.topSearchAutoTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
                 binding.topSearchTextInputLine.layoutParams.height = 3
                 binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.colaba_apptheme_blue, requireActivity().theme))
@@ -83,12 +111,52 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
                 val search: String = binding.topSearchAutoTextView.text.toString()
                 if (search.length == 0) {
+                    setError()
                     CustomMaterialFields.setColor(binding.layoutSearchField, R.color.grey_color_three, requireActivity())
                 } else {
-                    CustomMaterialFields.setColor(binding.layoutSearchField, R.color.grey_color_three, requireActivity())
+                    removeError()
+                    CustomMaterialFields.setColor(binding.layoutSearchField, R.color.grey_color_two, requireActivity())
                 }
             }
-        } */
+        }
+
+        binding.stateCompleteTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
+            if (hasFocus) {
+                binding.stateCompleteTextView.showDropDown()
+                binding.stateCompleteTextView.addTextChangedListener(stateTextWatcher)
+                CustomMaterialFields.setColor(binding.stateCompleteTextInputLayout, R.color.grey_color_two, requireActivity())
+
+            } else {
+                binding.stateCompleteTextView.removeTextChangedListener(stateTextWatcher)
+                val state: String = binding.stateCompleteTextView.text.toString()
+                if (state.length == 0) {
+                    CustomMaterialFields.setError(binding.stateCompleteTextInputLayout,getString(R.string.error_field_required),requireActivity())
+                    CustomMaterialFields.setColor(binding.stateCompleteTextInputLayout, R.color.grey_color_three, requireActivity())
+                } else {
+                    CustomMaterialFields.clearError(binding.stateCompleteTextInputLayout,requireActivity())
+                    CustomMaterialFields.setColor(binding.stateCompleteTextInputLayout, R.color.grey_color_two, requireActivity())
+                }
+            }
+        }
+
+        binding.countryCompleteTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
+            if (hasFocus) {
+                binding.countryCompleteTextView.showDropDown()
+                binding.countryCompleteTextView.addTextChangedListener(countryTextWatcher)
+                CustomMaterialFields.setColor(binding.countryCompleteLayout, R.color.grey_color_two, requireActivity())
+
+            } else {
+                binding.countryCompleteTextView.removeTextChangedListener(countryTextWatcher)
+                val country: String = binding.countryCompleteTextView.text.toString()
+                if (country.length == 0) {
+                    CustomMaterialFields.setError(binding.countryCompleteLayout,getString(R.string.error_field_required),requireActivity())
+                    CustomMaterialFields.setColor(binding.countryCompleteLayout, R.color.grey_color_three, requireActivity())
+                } else {
+                    CustomMaterialFields.clearError(binding.countryCompleteLayout,requireActivity())
+                    CustomMaterialFields.setColor(binding.countryCompleteLayout, R.color.grey_color_two, requireActivity())
+                }
+            }
+        }
 
         binding.cityEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.cityEditText, binding.cityLayout, requireContext()))
         binding.streetAddressEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.streetAddressEditText, binding.streetAddressLayout, requireContext()))
@@ -97,87 +165,6 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.zipcodeEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.zipcodeEditText, binding.zipcodeLayout, requireContext()))
         binding.monthlyRentEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.monthlyRentEditText, binding.monthlyRentLayout, requireContext()))
 
-        val countryAdapter =
-            ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.countries)
-        binding.countryCompleteTextView.setAdapter(countryAdapter)
-
-        binding.countryCompleteTextView.setOnFocusChangeListener { _, _ ->
-            binding.countryCompleteTextView.showDropDown()
-        }
-        binding.countryCompleteTextView.setOnClickListener {
-            binding.countryCompleteTextView.showDropDown()
-        }
-
-        binding.countryCompleteTextView.onItemClickListener =
-            object : AdapterView.OnItemClickListener {
-                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                    binding.countryCompleteLayout.defaultHintTextColor = ColorStateList.valueOf(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.grey_color_two
-                        )
-                    )
-                }
-            }
-
-
-        val stateAdapter =
-            ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.states)
-        binding.stateCompleteTextView.setAdapter(stateAdapter)
-
-        binding.stateCompleteTextView.setOnFocusChangeListener { _, _ ->
-            binding.stateCompleteTextView.showDropDown()
-        }
-        binding.stateCompleteTextView.setOnClickListener {
-            binding.stateCompleteTextView.showDropDown()
-        }
-
-        binding.stateCompleteTextView.onItemClickListener =
-            object : AdapterView.OnItemClickListener {
-                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                    binding.stateCompleteTextInputLayout.defaultHintTextColor =
-                        ColorStateList.valueOf(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.grey_color_two
-                            )
-                        )
-                }
-            }
-
-
-        val houseLivingTypeArray: ArrayList<String> =
-            arrayListOf("Own", "Rent", "No Primary Housing Expense")
-        val houseTypeAdapter =
-            ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, houseLivingTypeArray)
-        binding.housingCompleteTextView.setAdapter(houseTypeAdapter)
-
-        binding.housingCompleteTextView.setOnFocusChangeListener { _, _ ->
-            binding.housingCompleteTextView.showDropDown()
-
-        }
-        binding.housingCompleteTextView.setOnClickListener {
-            binding.housingCompleteTextView.showDropDown()
-            binding.topSearchAutoTextView.clearFocus()
-        }
-
-        binding.housingCompleteTextView.onItemClickListener =
-            object : AdapterView.OnItemClickListener {
-                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                    if (position == houseLivingTypeArray.size - 2) {
-                        binding.monthlyRentLayout.visibility = View.VISIBLE
-                        binding.housingLayout.defaultHintTextColor = ColorStateList.valueOf(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.grey_color_two
-                            )
-                        )
-                    } else
-                        binding.monthlyRentLayout.visibility = View.GONE
-                }
-            }
-
-
 
         binding.addAddressLayout.setOnClickListener {
             findNavController().navigate(R.id.navigation_previous_address)
@@ -185,79 +172,94 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
         binding.backButton.setOnClickListener {
             val message = "Are you sure you want to delete Richard's Current Residence?"
-            //binding.topDelImageview.setColorFilter(resources.getColor(R.color.biometric_error_color, activity?.theme))
             AddressNotSavingDialogFragment.newInstance(message).show(
-                childFragmentManager,
-                AddressNotSavingDialogFragment::class.java.canonicalName
-            )
-            //findNavController().popBackStack()
+                childFragmentManager, AddressNotSavingDialogFragment::class.java.canonicalName)
         }
 
         binding.topDelImageview.setOnClickListener {
             val message = "Are you sure you want to delete Richard's Current Residence?"
             binding.topDelImageview.setColorFilter(resources.getColor(R.color.biometric_error_color, activity?.theme))
             AddressNotSavingDialogFragment.newInstance(message).show(
-                childFragmentManager,
-                AddressNotSavingDialogFragment::class.java.canonicalName
-            )
+                childFragmentManager,AddressNotSavingDialogFragment::class.java.canonicalName)
         }
 
         binding.saveCurrentAddress.setOnClickListener {
-           checkValidations()
+            checkValidations()
         }
 
         binding.currentResidenceParentLayout.setOnClickListener{
             binding.topDelImageview.setColorFilter(resources.getColor(R.color.grey_color_three, activity?.theme))
             binding.topSearchAutoTextView.clearFocus()
         }
-
-        setUpCompleteViewForPlaces()
-
-        initializeUSAstates()
-
-        super.addListeners(binding.root)
-
-        return root
-
     }
 
     private fun checkValidations() {
         val searchBar: String = binding.topSearchAutoTextView.text.toString()
+        val country: String = binding.countryCompleteTextView.text.toString()
+        val state: String = binding.stateCompleteTextView.text.toString()
+        val street = binding.streetAddressEditText.text.toString()
+        val city = binding.cityEditText.text.toString()
+        val county = binding.countyEditText.text.toString()
+        val zipCode = binding.zipcodeEditText.text.toString()
+        val moveInDate = binding.moveInEditText.text.toString()
+        val housingStatus = binding.housingCompleteTextView.text.toString()
+
         if (searchBar.isEmpty() || searchBar.length == 0) {
             setError()
         }
-        if (searchBar.isNotEmpty() || searchBar.length > 0) {
-            removeError()
+
+        if (moveInDate.isEmpty() || moveInDate.length == 0) {
+            CustomMaterialFields.setError(binding.moveInLayout,getString(R.string.error_field_required), requireActivity())
+        }
+        if (housingStatus.isEmpty() || housingStatus.length == 0) {
+            CustomMaterialFields.setError(binding.housingLayout,getString(R.string.error_field_required), requireActivity())
+        }
+
+        if(binding.streetAddressLayout.visibility == View.VISIBLE){
+            if(street.isEmpty() || street.length == 0) {
+                CustomMaterialFields.setError(binding.streetAddressLayout,getString(R.string.error_field_required),requireActivity())
+            }
+            if(city.isEmpty() || city.length == 0) {
+                CustomMaterialFields.setError(binding.cityLayout,getString(R.string.error_field_required),requireActivity())
+            }
+            if(county.isEmpty() || county.length == 0) {
+                CustomMaterialFields.setError(binding.countyLayout,getString(R.string.error_field_required),requireActivity())
+            }
+            if(zipCode.isEmpty() || zipCode.length == 0) {
+                CustomMaterialFields.setError(binding.zipcodeLayout,getString(R.string.error_field_required),requireActivity())
+            }
+            if(country.isEmpty() || country.length == 0) {
+                CustomMaterialFields.setError(binding.countryCompleteLayout,getString(R.string.error_field_required),requireActivity())
+            }
+            if(state.isEmpty() || state.length == 0) {
+                CustomMaterialFields.setError(binding.stateCompleteTextInputLayout,getString(R.string.error_field_required),requireActivity())
+            }
+            // clear error
+            if(street.isNotEmpty() || street.length > 0) {
+                CustomMaterialFields.clearError(binding.streetAddressLayout,requireActivity())
+            }
+            if(city.isNotEmpty() || city.length > 0) {
+                CustomMaterialFields.clearError(binding.cityLayout,requireActivity())
+            }
+            if(county.isNotEmpty() || county.length > 0) {
+                CustomMaterialFields.clearError(binding.countyLayout,requireActivity())
+            }
+            if(zipCode.isNotEmpty() || zipCode.length > 0) {
+                CustomMaterialFields.clearError(binding.zipcodeLayout,requireActivity())
+            }
+            if(country.isNotEmpty() || country.length > 0) {
+                CustomMaterialFields.clearError(binding.countryCompleteLayout,requireActivity())
+            }
+            if(state.isNotEmpty() || state.length > 0) {
+                CustomMaterialFields.clearError(binding.stateCompleteTextInputLayout,requireActivity())
+            }
+        }
+
+        if (searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && county.length>0  && country.length > 0 && zipCode.length > 0) {
             findNavController().popBackStack()
         }
+
     }
-
-     private fun setError(){
-         binding.tvError.visibility = View.VISIBLE
-         binding.topSearchTextInputLine.layoutParams.height = 1
-         binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.colaba_red_color, requireActivity().theme))
-    }
-
-    private fun removeError() {
-        binding.tvError.visibility = View.GONE
-        binding.topSearchTextInputLine.layoutParams.height = 1
-        binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
-    }
-    // Create a RectangularBounds object.
-    private val bounds = RectangularBounds.newInstance(
-        LatLng(24.7433195, -124.7844079),
-        LatLng(49.3457868, -66.9513812)
-    )
-
-    private val bias: LocationBias = RectangularBounds.newInstance(
-        LatLng(37.7576948, -122.4727051), // SW lat, lng
-        LatLng(37.808300, -122.391338) // NE lat, lng
-    )
-
-    private lateinit var token: AutocompleteSessionToken
-    private lateinit var placesClient: PlacesClient
-
-    private lateinit var predictAdapter: PlacePredictionAdapter
 
     private fun setUpCompleteViewForPlaces() {
 
@@ -319,13 +321,35 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                     //binding.topSearchAutoTextView.removeTextChangedListener(this)
                     //binding.topSearchAutoTextView.clearFocus()
                 }
-
-
         }
     })
 
-    private var predicationList: ArrayList<String> = ArrayList()
-    //private lateinit var autoCompleteAdapter:ArrayAdapter<String>    //= ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,  predicationList)
+    private val countryTextWatcher = (object : TextWatcher {
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+        override fun afterTextChanged(s: Editable) {
+            val str: String = binding.countryCompleteTextView.text.toString()
+            if (str.length == 0) {
+                CustomMaterialFields.setColor(binding.countryCompleteLayout, R.color.grey_color_three, requireActivity())
+            } else {
+                CustomMaterialFields.clearError(binding.countryCompleteLayout,requireActivity())
+                CustomMaterialFields.setColor(binding.countryCompleteLayout, R.color.grey_color_two, requireActivity())
+            }
+        }
+    })
+
+    private val stateTextWatcher = (object : TextWatcher {
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+        override fun afterTextChanged(s: Editable) {
+            val str: String = binding.stateCompleteTextView.text.toString()
+            if (str.length == 0) {
+                CustomMaterialFields.setColor(binding.stateCompleteTextInputLayout, R.color.grey_color_three, requireActivity())
+            } else {
+                CustomMaterialFields.clearError(binding.stateCompleteTextInputLayout,requireActivity())
+                CustomMaterialFields.setColor(binding.stateCompleteTextInputLayout, R.color.grey_color_two, requireActivity())            }
+        }
+    })
 
     private fun searchForGooglePlaces(queryPlace: String) {
 
@@ -391,57 +415,63 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         //}, 200)
     }
 
+    private fun setDropDownData(){
+        // set country drop down
+        val countryAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.countries)
+        binding.countryCompleteTextView.setAdapter(countryAdapter)
+        binding.countryCompleteTextView.addTextChangedListener(countryTextWatcher)
 
-    /*
-    private var listAutocompletePrediction:List<AutocompletePrediction> = listOf()
-
-    private val activityScope = CoroutineScope(Dispatchers.IO)
-
-    private suspend fun searchGooglePlacesUsingExperimentalApi(queryPlace:String){
-
-        activityScope.launch {
-            val response = placesClient.awaitFindAutocompletePredictions {
-                locationBias = bias
-                typeFilter = TypeFilter.ESTABLISHMENT
-                this.query = query
-                countries = listOf("US")
-            }
-
-            listAutocompletePrediction = response.autocompletePredictions
-
-            withContext(Dispatchers.Main){
-                predictAdapter.setPredictions(listAutocompletePrediction)
-            }
-    }
-
-     */
-
-
-    override fun onStart() {
-        super.onStart()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        EventBus.getDefault().unregister(this)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onNotSavingAddressEvent(event: NotSavingAddressEvent) {
-        binding.topDelImageview.setColorFilter(resources.getColor(R.color.grey_color_three, activity?.theme))
-
-        if (event.boolean) {
-            findNavController().popBackStack()
+        binding.countryCompleteTextView.setOnClickListener {
+            binding.countryCompleteTextView.showDropDown()
         }
-    }
+        binding.countryCompleteTextView.onItemClickListener =
+            object : AdapterView.OnItemClickListener {
+                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                    binding.countryCompleteLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+                }
+            }
 
 
-    private fun hideKeyBoard() {
-        val inputMethodManager =
-            ContextCompat.getSystemService(requireContext(), InputMethodManager::class.java)!!
-        inputMethodManager.hideSoftInputFromWindow(binding.moveInEditText.windowToken, 0)
+        // set state drop donw
+        val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.states)
+        binding.stateCompleteTextView.setAdapter(stateAdapter)
+        binding.stateCompleteTextView.addTextChangedListener(stateTextWatcher)
 
+        binding.stateCompleteTextView.setOnClickListener {
+            binding.stateCompleteTextView.showDropDown()
+        }
+
+        binding.stateCompleteTextView.onItemClickListener =
+            object : AdapterView.OnItemClickListener {
+                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                    binding.stateCompleteTextInputLayout.defaultHintTextColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+                }
+            }
+
+
+        // set housing status
+        val houseLivingTypeArray: ArrayList<String> = arrayListOf("Own", "Rent", "No Primary Housing Expense")
+        val houseTypeAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, houseLivingTypeArray)
+        binding.housingCompleteTextView.setAdapter(houseTypeAdapter)
+        binding.housingCompleteTextView.setOnFocusChangeListener { _, _ ->
+            binding.housingCompleteTextView.showDropDown()
+        }
+        binding.housingCompleteTextView.setOnClickListener {
+            binding.housingCompleteTextView.showDropDown()
+            binding.topSearchAutoTextView.clearFocus()
+        }
+
+        binding.housingCompleteTextView.onItemClickListener =
+            object : AdapterView.OnItemClickListener {
+                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                    if (position == houseLivingTypeArray.size - 2) {
+                        binding.monthlyRentLayout.visibility = View.VISIBLE
+                        binding.housingLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+                    } else
+                        binding.monthlyRentLayout.visibility = View.GONE
+                }
+            }
     }
 
     private fun createCustomDialog() {
@@ -458,7 +488,6 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         val sampleDate = "$stringMonth / $p1"
         binding.moveInEditText.setText(sampleDate)
     }
-
 
     private var map: HashMap<String, String> = HashMap()
 
@@ -516,9 +545,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         map.put("WY", "Wyoming")
     }
 
-
     override fun onPlaceClicked(place: AutocompletePrediction) {
-        Log.e("which-place", "desc = " + place.getFullText(null).toString())
         predictAdapter.setPredictions(null)
         binding.fakePlaceSearchRecyclerView.visibility = View.GONE
         val placeSelected = place.getFullText(null).toString()
@@ -528,25 +555,18 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.topSearchAutoTextView.setText(placeSelected)
         binding.topSearchAutoTextView.clearFocus()
 
-
-
-        //val latLng: LatLng = place
-        //val MyLat = latLng.latitude
-        //val MyLong = latLng.longitude
         val geocoder = Geocoder(requireContext(), Locale.getDefault())
         try {
-            val addresses: List<Address>? =
-                geocoder.getFromLocationName(place.getFullText(null).toString(), 1)
+            val addresses: List<Address>? = geocoder.getFromLocationName(place.getFullText(null).toString(), 1)
             val countryName: String? = addresses?.get(0)?.countryName
-            //val stateName: String? = addresses?.get(0)?.locale
             val locality: String? = addresses?.get(0)?.locality
             val subLocality: String? = addresses?.get(0)?.subLocality
             val postalCode: String? = addresses?.get(0)?.postalCode
-            val featureName: String? = addresses?.get(0)?.featureName
-            val addressLine: String? = addresses?.get(0)?.getAddressLine(0)
             val premises: String? = addresses?.get(0)?.premises
-            val countryCode: String? = addresses?.get(0)?.countryCode
-
+            //val featureName: String? = addresses?.get(0)?.featureName
+            //val addressLine: String? = addresses?.get(0)?.getAddressLine(0)
+            //val countryCode: String? = addresses?.get(0)?.countryCode
+            //val stateName: String? = addresses?.get(0)?.locale
 
 
             locality?.let { binding.cityEditText.setText(it) }
@@ -560,34 +580,22 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
             premises?.let { binding.unitAptInputEditText.setText(it) }
             //unitAptInputEditText.setText(place.getSecondaryText(null))
-
             //featureName?.let {  binding.cityEditText.setText(it) }
             //countryCode?.let {  binding.cityEditText.setText(it) }
-
             //cityName?.let {  binding.cityEditText.setText(it) }
-
-
-            Log.e("Bingo ", " = " + subLocality + " " + locality + "  " + postalCode)
-            //edit_profile_city_editText.setText(place.getName().toString() + "," + stateName)
+            //Log.e("Bingo ", " = " + subLocality + " " + locality + "  " + postalCode)
         } catch (e: IOException) {
             e.printStackTrace()
         }
 
-
         val extractState = place.getFullText(null)
         var stateCode =  extractState.substring(extractState.lastIndexOf(",")-2,extractState.lastIndexOf(","))
-
         stateCode = stateCode.capitalize()
-        Log.e("stateCode ", " = $stateCode")
-
-        Log.e("Test State - ", " = " +map.get("LA") +"  "+map.get(stateCode))
 
         if(map.get(stateCode)!=null)
             stateCompleteTextView.setText(map.get(stateCode))
         else
             stateCompleteTextView.setText("")
-
-
 
         visibleAllFields()
     }
@@ -607,6 +615,53 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         //binding.monthlyRentLayout.visibility = View.VISIBLE
 
 
+    }
+
+    private fun setError(){
+        binding.tvError.visibility = View.VISIBLE
+        binding.topSearchTextInputLine.layoutParams.height = 1
+        binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.colaba_red_color, requireActivity().theme))
+    }
+
+    private fun removeError() {
+        binding.tvError.visibility = View.GONE
+        binding.topSearchTextInputLine.layoutParams.height = 1
+        binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
+    }
+
+    private val bounds = RectangularBounds.newInstance(
+        LatLng(24.7433195, -124.7844079),
+        LatLng(49.3457868, -66.9513812)
+    )
+
+    private val bias: LocationBias = RectangularBounds.newInstance(
+        LatLng(37.7576948, -122.4727051), // SW lat, lng
+        LatLng(37.808300, -122.391338) // NE lat, lng
+    )
+
+    private fun hideKeyBoard() {
+        val inputMethodManager =
+            ContextCompat.getSystemService(requireContext(), InputMethodManager::class.java)!!
+        inputMethodManager.hideSoftInputFromWindow(binding.moveInEditText.windowToken, 0)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onNotSavingAddressEvent(event: NotSavingAddressEvent) {
+        binding.topDelImageview.setColorFilter(resources.getColor(R.color.grey_color_three, activity?.theme))
+
+        if (event.boolean) {
+            findNavController().popBackStack()
+        }
     }
 
 
