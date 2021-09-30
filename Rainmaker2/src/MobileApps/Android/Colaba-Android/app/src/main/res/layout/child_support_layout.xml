@@ -98,12 +98,13 @@
             android:fontFamily="@font/rubik_regular"
             android:paddingStart="15dp"
             android:text="Child Support"
+
             android:textColor="@color/grey_color_one"
             android:textSize="14sp"
             android:textStyle="bold"
             app:buttonCompat="@drawable/cb_selector"
             app:layout_constraintStart_toStartOf="@+id/textView40"
-            app:layout_constraintTop_toBottomOf="@+id/textView40" />
+            app:layout_constraintTop_toBottomOf="@+id/errorInChildSupport" />
 
 
         <TextView
@@ -117,6 +118,21 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/errorInChildSupport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="Choose one or more options."
+            android:textColor="@color/biometric_error_color"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView40" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/child_support_inner_fields"
@@ -522,6 +538,7 @@
                 android:backgroundTint="@android:color/transparent"
                 android:completionThreshold="1"
                 android:cursorVisible="false"
+
                 android:focusable="false"
                 android:focusableInTouchMode="true"
 

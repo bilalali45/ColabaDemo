@@ -109,6 +109,8 @@
     <string name="login_failed">Login credentials not verified</string>
     <string name="email_format_error">Invalid Email, Please try again…</string>
     <string name="email_empty_error"> Empty Email, Please try again…</string>
+    <string name="bottom_email_error">This email and/or phone number is already associated with a contact.</string>
+
     <string name="password_empty_error">Password Empty, Please try again…</string>
     <string name="password_error">Invalid Password, Please try again…</string>
     <string name="password_length_error">Invalid Password, Length too short…</string>

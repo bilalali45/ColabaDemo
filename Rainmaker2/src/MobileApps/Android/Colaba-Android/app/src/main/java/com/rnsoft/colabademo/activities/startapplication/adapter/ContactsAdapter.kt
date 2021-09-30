@@ -1,29 +1,42 @@
 package com.rnsoft.colabademo.activities.startapplication.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.Contacts
+import com.rnsoft.colabademo.RecyclerviewClickListener
+import com.rnsoft.colabademo.activities.addresses.info.model.Address
 import com.rnsoft.colabademo.databinding.ContactListItemBinding
 
 /**
  * Created by Anita Kiran on 9/20/2021.
  */
-class ContactsAdapter(var context: Context, var contact: List<Contacts> = arrayListOf()) :
+class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListener) :    //, var contact: List<Contacts> = arrayListOf()
     RecyclerView.Adapter<ContactsAdapter.EpisodeViewHolder>() {
 
+    var contact: List<Contacts> = arrayListOf()
+    private var clickEvent: RecyclerviewClickListener = clickListner
+
+    init {
+        this.clickEvent = clickListner
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
-        var binding = ContactListItemBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
+        var binding = ContactListItemBinding.inflate(LayoutInflater.from(parent.context), parent,
+            false)
         return EpisodeViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: EpisodeViewHolder, position: Int) {
         holder.bind(contact.get(position), position)
+
+        holder.itemView.setOnClickListener {
+            clickEvent.onItemClick(position)
+        }
+
     }
 
     override fun getItemCount() = contact.size
@@ -36,5 +49,11 @@ class ContactsAdapter(var context: Context, var contact: List<Contacts> = arrayL
             binding.contactEmail.text = contact.contactEmail
             binding.contactNum.text = contact.contactNumber
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun showResult(contact: List<Contacts>) {
+        this.contact = contact
+        notifyDataSetChanged()
     }
 }
