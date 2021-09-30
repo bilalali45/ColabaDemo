@@ -113,9 +113,6 @@
                 app:boxStrokeColor="@color/primary_info_line_color"
                 app:boxStrokeWidth="0.5dp"
                 app:boxStrokeWidthFocused="1dp"
-                app:helperTextEnabled="true"
-                app:helperTextTextAppearance="@style/inputError"
-                app:helperTextTextColor="@color/colaba_red_color"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
                 app:hintTextColor="@color/grey_color_two"
                 app:endIconDrawable="@drawable/ic_down_arrow"
@@ -172,7 +169,7 @@
                 android:textColor="@color/colaba_red_color"
                 android:text="@string/error_field_required"
                 android:layout_marginTop="5dp"
-                android:textSize="11sp"
+                android:textSize="12sp"
                 android:fontFamily="@font/rubik_regular"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -236,9 +233,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/unitAptInputLayout"
                 android:layout_width="match_parent"
-
                 android:visibility="gone"
-
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="30dp"
@@ -251,14 +246,11 @@
                 app:boxStrokeColor="@color/primary_info_line_color"
                 app:boxStrokeWidth="0.5dp"
                 app:boxStrokeWidthFocused="1dp"
-
                 app:helperTextEnabled="true"
                 app:helperTextTextAppearance="@style/inputError"
                 app:helperTextTextColor="@color/colaba_red_color"
-
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
                 app:hintTextColor="@color/grey_color_two"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/streetAddressLayout">
@@ -283,7 +275,6 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/cityLayout"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="30dp"
@@ -296,22 +287,15 @@
                 app:boxStrokeColor="@color/primary_info_line_color"
                 app:boxStrokeWidth="0.5dp"
                 app:boxStrokeWidthFocused="1dp"
-
-
                 android:visibility="gone"
-
                 app:helperTextEnabled="true"
                 app:helperTextTextAppearance="@style/inputError"
                 app:helperTextTextColor="@color/colaba_red_color"
-
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
                 app:hintTextColor="@color/grey_color_two"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/unitAptInputLayout"
-
-                >
+                app:layout_constraintTop_toBottomOf="@+id/unitAptInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/cityEditText"
@@ -319,7 +303,6 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:cursorVisible="true"
-
                     android:ems="10"
                     android:fontFamily="@font/rubik_regular"
                     android:imeOptions="actionNext"
@@ -327,7 +310,6 @@
                     android:paddingStart="0dp"
                     android:singleLine="true"
                     android:textColor="@color/grey_color_one"
-
                     android:textSize="@dimen/ed_txt_size_primary_info" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -336,7 +318,6 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/countyLayout"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="30dp"
@@ -349,20 +330,13 @@
                 app:boxStrokeWidth="0.5dp"
                 app:boxStrokeWidthFocused="1dp"
                 app:helperTextEnabled="true"
-
-
                 android:visibility="gone"
-
                 app:helperTextTextAppearance="@style/inputError"
-
                 app:helperTextTextColor="@color/colaba_red_color"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cityLayout"
-
-                >
+                app:layout_constraintTop_toBottomOf="@+id/cityLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/countyEditText"
@@ -377,16 +351,15 @@
                     android:paddingStart="0dp"
                     android:singleLine="true"
                     android:textColor="@color/grey_color_one"
-
                     android:textSize="@dimen/ed_txt_size_primary_info" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
+                android:visibility="gone"
                 android:id="@+id/stateCompleteTextInputLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -405,37 +378,26 @@
                 app:endIconTint="@color/grey_color_three"
                 app:helperTextEnabled="true"
                 app:helperTextTextAppearance="@style/inputError"
-
-                android:visibility="gone"
-
                 app:helperTextTextColor="@color/colaba_red_color"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-
                 app:hintTextColor="@color/grey_color_two"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/countyLayout">
-
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/stateCompleteTextView"
                     style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
-
                     android:completionThreshold="1"
                     android:fontFamily="@font/rubik_regular"
-
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"
                     android:backgroundTint="@android:color/transparent"
-
                     android:cursorVisible="true"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-
                     android:spinnerMode="dropdown"
                     android:layout_gravity="bottom"
                     android:gravity="bottom"
@@ -462,19 +424,13 @@
                 app:boxStrokeWidth="0.5dp"
                 app:boxStrokeWidthFocused="1dp"
                 app:helperTextEnabled="true"
-
                 android:visibility="gone"
-
                 app:helperTextTextAppearance="@style/inputError"
-
                 app:helperTextTextColor="@color/colaba_red_color"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/stateCompleteTextInputLayout"
-
-                >
+                app:layout_constraintTop_toBottomOf="@+id/stateCompleteTextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/zipcodeEditText"
@@ -490,18 +446,14 @@
                     android:paddingStart="0dp"
                     android:singleLine="true"
                     android:textColor="@color/grey_color_one"
-
                     android:textSize="@dimen/ed_txt_size_primary_info" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/countryCompleteLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-
                 android:visibility="gone"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -520,17 +472,12 @@
                 app:endIconDrawable="@drawable/ic_down_arrow"
                 app:endIconMode="custom"
                 app:endIconTint="@color/grey_color_three"
-
                 android:layout_marginStart="20dp"
-
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="20dp"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/zipcodeLayout"
-                >
-
+                app:layout_constraintTop_toBottomOf="@+id/zipcodeLayout">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/countryCompleteTextView"
@@ -650,7 +597,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/monthlyRentLayout"
                 android:layout_width="match_parent"
@@ -670,8 +616,6 @@
                 app:helperTextTextAppearance="@style/inputError"
                 app:helperTextTextColor="@color/colaba_red_color"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/housingLayout">
@@ -688,24 +632,19 @@
                     android:text=""
                     android:textColor="@color/grey_color_one" />
 
-
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/addAddressLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:visibility="gone"
-
                 android:layout_marginTop="31dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/monthlyRentLayout">
-
 
                 <ImageView
                     android:id="@+id/imageView33"
@@ -730,7 +669,6 @@
                     app:layout_constraintTop_toTopOf="@+id/imageView33" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/showAddressLayout"
                 android:layout_width="match_parent"
@@ -738,9 +676,7 @@
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="35dp"
                 android:layout_marginEnd="22dp"
-
                 android:background="@drawable/white_blue_border"
-
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:visibility="gone"
@@ -748,16 +684,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/monthlyRentLayout">
 
-
                 <TextView
                     android:id="@+id/temp_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="22dp"
-
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="22dp"
-
                     android:background="@null"
                     android:fontFamily="@font/rubik_regular"
                     android:text="@string/temp_address"
@@ -767,13 +700,11 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
                 <TextView
                     android:id="@+id/textView28"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="22dp"
-
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/rubik_regular"
                     android:text="Mailing Address"
@@ -782,9 +713,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/temp_address" />
 
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

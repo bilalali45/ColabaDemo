@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="12sp"
-            android:background="#E5E5E5"
+            android:background="@color/colaba_app_border_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -73,6 +73,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
+            android:paddingBottom="200dp"
             android:clickable="true"
             android:orientation="vertical">
 
@@ -80,7 +81,7 @@
                 android:id="@+id/find_contact_btn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/content_background_light_new"
+                android:background="@drawable/content_background_halfwhite"
                 android:button="@null"
                 android:drawableStart="@drawable/radiodraw"
                 android:drawablePadding="15dp"
@@ -153,6 +154,15 @@
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
+                    <ImageView
+                        android:id="@+id/btn_cancel_contact"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ic_cross_small" />
+
                     <TextView
                         android:id="@+id/searched_contact_email"
                         android:layout_width="wrap_content"
@@ -181,7 +191,6 @@
                         android:textColor="@color/grey_color_two"
                         android:textSize="14sp" />
 
-
                 </RelativeLayout>
 
 
@@ -199,12 +208,14 @@
 
             </LinearLayout>
 
+            <!-- layout create new contact -->
+
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/create_contact_btn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/content_background_light_new"
                 android:layout_marginTop="15dp"
+                android:background="@drawable/content_background_halfwhite"
                 android:button="@null"
                 android:drawableStart="@drawable/radiodraw"
                 android:drawablePadding="15dp"
@@ -213,8 +224,6 @@
                 android:text="@string/create_new_contact"
                 android:textColor="@color/grey_color_one"
                 android:textSize="15sp" />
-
-            <!-- layout create new contact -->
 
             <LinearLayout
                 android:visibility="gone"
@@ -246,7 +255,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/rubik_light"
                     android:layout_marginStart="18dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="20dp"
                     android:hint="@string/first_name"
                     android:textColorHint="@color/primary_info_label_color"
                     app:boxCollapsedPaddingTop="1dp"
@@ -274,15 +284,14 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/rubik_light"
                     android:layout_marginStart="18dp"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="25dp"
                     android:hint="@string/last_name"
                     android:textColorHint="@color/primary_info_label_color"
                     app:boxCollapsedPaddingTop="1dp"
@@ -315,7 +324,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="25dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/rubik_light"
                     android:hint="@string/email_add"
@@ -352,7 +361,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="25dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="25dp"
                     android:fontFamily="@font/rubik_light"
@@ -376,7 +385,7 @@
                         android:digits="1234567890-()"
                         android:ems="10"
                         android:fontFamily="@font/rubik_regular"
-                        android:imeOptions="actionNext"
+                        android:imeOptions="actionDone"
                         android:inputType="number"
                         android:maxLength="14"
                         android:paddingStart="0dp"
@@ -485,28 +494,64 @@
                     tools:ignore="RtlSymmetry" />
             </RadioGroup>
 
-        <LinearLayout
-            android:id="@+id/LinearLayouts02"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom|end"
-            android:layout_marginTop="50dp"
-            android:paddingBottom="20dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@color/colaba_app_border_color" />
 
-            <Button
-                android:id="@+id/btn_create_app"
+            <LinearLayout
+                android:id="@+id/assign_loan_officer"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/selector_btn_round"
-                android:fontFamily="@font/rubik_medium"
-                android:text="@string/create_application"
-                android:textAlignment="center"
-                android:textColor="@color/text_color_selector"
-                android:textSize="17sp" />
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/content_background_fullwhite"
+                android:clickable="true"
+                android:gravity="start|center">
 
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_add_person"
+                    android:layout_marginStart="17dp"/>
+
+                <TextView
+                    android:id="@+id/tv_residence"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="@string/assign_loan_officer"
+                    android:textColor="@color/colaba_apptheme_blue"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_create_app"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/selector_btn_round"
+        android:textColor="@color/text_color_selector"
+        android:fontFamily="@font/rubik_medium"
+        android:text="@string/create_application"
+        android:textAlignment="center"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- android:textColor="@color/text_color_selector"
+-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>

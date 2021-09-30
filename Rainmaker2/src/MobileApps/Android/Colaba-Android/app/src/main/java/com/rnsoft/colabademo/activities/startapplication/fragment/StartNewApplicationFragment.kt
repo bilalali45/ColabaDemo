@@ -11,8 +11,10 @@ import android.view.ViewGroup
 
 import com.rnsoft.colabademo.databinding.StartApplicationFragLayoutBinding
 import com.rnsoft.colabademo.activities.startapplication.adapter.ContactsAdapter
+import com.rnsoft.colabademo.utils.CustomMaterialFields
 import kotlinx.android.synthetic.main.non_permenant_resident_layout.*
 import timber.log.Timber
+import java.util.regex.Pattern
 
 
 /**
@@ -35,6 +37,8 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         } else {
             binding = StartApplicationFragLayoutBinding.inflate(inflater, container, false)
             savedViewInstance = binding.root
+
+            binding.btnCreateApp.isEnabled = true
 
             setupUI()
             setLabelFocus()
@@ -66,6 +70,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             }
         })
 
+
         binding.findContactBtn.setOnClickListener { findOrCreateContactClick() }
 
         binding.createContactBtn.setOnClickListener { findOrCreateContactClick() }
@@ -82,6 +87,27 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
         binding.backButton.setOnClickListener { requireActivity().finish() }
 
+        binding.assignLoanOfficer.setOnClickListener {
+            
+        }
+
+        binding.btnCancelContact.setOnClickListener{
+            binding.recyclerviewContacts.visibility = View.VISIBLE
+            binding.layoutResult.visibility = View.GONE
+            binding.searchEdittext.visibility = View.VISIBLE
+        }
+
+       binding.parentLayout.setOnClickListener {
+           HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
+           super.removeFocusFromAllFields(binding.parentLayout)
+       }
+
+    }
+
+    private fun checkRequiredFields(){
+
+       // if(!binding.edFirstName.text.toString().isEmpty() && !binding.edLastName.text.toString().isEmpty() && !binding.edMobile.text.toString().isEmpty())
+
     }
 
     override fun onItemClick(position: Int) {
@@ -91,18 +117,36 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
         binding.layoutResult.visibility = View.VISIBLE
         binding.searchEdittext.visibility = View.GONE
-        binding.searchEdittext.setText("")
+        //binding.searchEdittext.setText("")
         binding.recyclerviewContacts.visibility = View.GONE
        // searchList.clear()
     }
 
     private fun setLabelFocus(){
         // set lable focus
-        binding.edFirstName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edFirstName, binding.layoutFirstName, requireContext()))
-        binding.edLastName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edLastName, binding.layoutLastName, requireContext()))
-        binding.edEmail.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edEmail, binding.layoutEmail, requireContext()))
-        binding.edMobile.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edMobile, binding.layoutMobileNum, requireContext()))
+        binding.edFirstName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edFirstName, binding.layoutFirstName, requireContext(),getString(R.string.error_field_required)))
+        binding.edLastName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edLastName, binding.layoutLastName, requireContext(),getString(R.string.error_field_required)))
+        binding.edMobile.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edMobile, binding.layoutMobileNum, requireContext(),getString(R.string.invalid_phone_num)))
         binding.edMobile.addTextChangedListener(PhoneTextFormatter(binding.edMobile, "(###) ###-####"))
+
+        binding.edEmail.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_two,requireActivity())
+            } else {
+                if (binding.edEmail.text?.length == 0) {
+                    CustomMaterialFields.setError(binding.layoutEmail,getString(R.string.error_field_required),requireActivity())
+                    CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_three,requireActivity())
+                } else {
+                    CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_two,requireActivity())
+                    if (!isValidEmailAddress(binding.edEmail.text.toString())) {
+                        CustomMaterialFields.setError(binding.layoutEmail,getString(R.string.invalid_email),requireActivity())
+                    } else {
+                        CustomMaterialFields.clearError(binding.layoutEmail,requireActivity())
+                    }
+                }
+            }
+        }
+
     }
 
     private fun findOrCreateContactClick(){
@@ -154,6 +198,14 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             binding.btnCashout.setTypeface(null, Typeface.NORMAL)
             binding.btnDebtConsolidation.setTypeface(null, Typeface.BOLD)
         }
+    }
+
+    private fun isValidEmailAddress(email: String?): Boolean {
+        val ePattern =
+            "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"
+        val p = Pattern.compile(ePattern)
+        val m = p.matcher(email)
+        return m.matches()
     }
 
 }
