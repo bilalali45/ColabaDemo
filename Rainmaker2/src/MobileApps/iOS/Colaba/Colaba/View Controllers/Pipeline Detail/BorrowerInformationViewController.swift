@@ -73,11 +73,11 @@ class BorrowerInformationViewController: BaseViewController {
     @IBOutlet weak var reserveNationalGuardStackView: UIStackView!
     @IBOutlet weak var btnReserveNationalGuard: UIButton!
     @IBOutlet weak var lblReserveNationalGuard: UILabel!
-    @IBOutlet weak var reserveNationalGuardStackViewTopConstraint: NSLayoutConstraint!// 17 or 134
+    @IBOutlet weak var reserveNationalGuardStackViewTopConstraint: NSLayoutConstraint!// 17 or 116
     @IBOutlet weak var veteranStackView: UIStackView!
     @IBOutlet weak var btnVeteran: UIButton!
     @IBOutlet weak var lblVeteran: UILabel!
-    @IBOutlet weak var veteranStackViewTopConstraint: NSLayoutConstraint!// 154 or 17
+    @IBOutlet weak var veteranStackViewTopConstraint: NSLayoutConstraint!// 136 or 17
     @IBOutlet weak var survivingSpouseStackView: UIStackView!
     @IBOutlet weak var btnSurvivingSpouse: UIButton!
     @IBOutlet weak var lblSurvingSpouse: UILabel!
@@ -91,12 +91,12 @@ class BorrowerInformationViewController: BaseViewController {
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var totalAddresses = 2
-    var maritalStatus = 1 //1 for unmarried, 2 for married and 3 for separated
-    var citizenshipStatus = 1 // 1 for US Citizen, 2 for Permanent and 3 for Non Permanent
+    var maritalStatus = 0 //1 for unmarried, 2 for married and 3 for separated
+    var citizenshipStatus = 0 // 1 for US Citizen, 2 for Permanent and 3 for Non Permanent
     var isShowSecurityNo = false
     var noOfDependents = 0
-    var isActiveDutyPersonal = true
-    var isReserveOrNationalCard = true
+    var isActiveDutyPersonal = false
+    var isReserveOrNationalCard = false
     var isVeteran = false
     var isSurvivingSpouse = false
     
@@ -159,9 +159,19 @@ class BorrowerInformationViewController: BaseViewController {
         marriedStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(marriedTapped)))
         separatedStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(separatedTapped)))
         
+        btnUnMarried.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+        lblUnMarried.font = Theme.getRubikRegularFont(size: 14)
+        unmarriedMainView.isHidden = true
+        maritalStatusViewHeightConstraint.constant = 140
+        
         usCitizenStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(usCitizenTapped)))
         permanentResidentStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(permanentResidentTapped)))
         nonPermanentStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nonPermanentResidentTapped)))
+        
+        btnNonPermanent.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+        lblNonPermanent.font = Theme.getRubikRegularFont(size: 14)
+        nonPermanentResidentMainView.isHidden = true
+        citizenshipViewHeightConstraint.constant = 140
         
         stackViewAddDependent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addDependentTapped)))
         
@@ -187,19 +197,26 @@ class BorrowerInformationViewController: BaseViewController {
         nonPermanentResidentMainView.dropShadowToCollectionViewCell()
         nonPermanentResidentMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nonPermanentResidentMainViewTapped)))
         
-        
         lastDateOfServiceMainView.layer.cornerRadius = 6
         lastDateOfServiceMainView.layer.borderWidth = 1
         lastDateOfServiceMainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         lastDateOfServiceMainView.dropShadowToCollectionViewCell()
         lastDateOfServiceMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(lastDateOfServiceMainViewTapped)))
         
-        
         reserveOrNationalGuardMainView.layer.cornerRadius = 6
         reserveOrNationalGuardMainView.layer.borderWidth = 1
         reserveOrNationalGuardMainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         reserveOrNationalGuardMainView.dropShadowToCollectionViewCell()
         reserveOrNationalGuardMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(reserveOrNationalGuardMainViewTapped)))
+        
+        btnActiveDuty.setImage(UIImage(named: isActiveDutyPersonal ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
+        lblActiveDuty.font = isActiveDutyPersonal ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        btnReserveNationalGuard.setImage(UIImage(named: isActiveDutyPersonal ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
+        lblReserveNationalGuard.font = isActiveDutyPersonal ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        changeMilitaryStatus()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.setScreenHeight()
+        }
         
         tblViewAddress.register(UINib(nibName: "BorrowerAddressInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerAddressInfoTableViewCell")
         dependentsCollectionView.register(UINib(nibName: "DependentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "DependentCollectionViewCell")
@@ -428,29 +445,29 @@ class BorrowerInformationViewController: BaseViewController {
         if (isActiveDutyPersonal && isReserveOrNationalCard){ //Both are selected
             lastDateOfServiceMainView.isHidden = false
             reserveOrNationalGuardMainView.isHidden = false
-            reserveNationalGuardStackViewTopConstraint.constant = 134
-            veteranStackViewTopConstraint.constant = 154
+            reserveNationalGuardStackViewTopConstraint.constant = 116
+            veteranStackViewTopConstraint.constant = 136
             militaryViewHeightConstraint.constant = 470
         }
         else if (isActiveDutyPersonal && !isReserveOrNationalCard){ // Active duty is selected but reserve national is not selected
             lastDateOfServiceMainView.isHidden = false
             reserveOrNationalGuardMainView.isHidden = true
-            reserveNationalGuardStackViewTopConstraint.constant = 134
-            veteranStackViewTopConstraint.constant = 17
+            reserveNationalGuardStackViewTopConstraint.constant = 116
+            veteranStackViewTopConstraint.constant = 0
             militaryViewHeightConstraint.constant = 340
         }
         else if (isReserveOrNationalCard && !isActiveDutyPersonal){ // Reserve is selected but active duty is not selected
             lastDateOfServiceMainView.isHidden = true
             reserveOrNationalGuardMainView.isHidden = false
-            reserveNationalGuardStackViewTopConstraint.constant = 17
-            veteranStackViewTopConstraint.constant = 154
+            reserveNationalGuardStackViewTopConstraint.constant = 0
+            veteranStackViewTopConstraint.constant = 136
             militaryViewHeightConstraint.constant = 370
         }
         else{ // No Active duty and no reserver personal
             lastDateOfServiceMainView.isHidden = true
             reserveOrNationalGuardMainView.isHidden = true
-            reserveNationalGuardStackViewTopConstraint.constant = 17
-            veteranStackViewTopConstraint.constant = 17
+            reserveNationalGuardStackViewTopConstraint.constant = 0
+            veteranStackViewTopConstraint.constant = 0
             militaryViewHeightConstraint.constant = 250
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
