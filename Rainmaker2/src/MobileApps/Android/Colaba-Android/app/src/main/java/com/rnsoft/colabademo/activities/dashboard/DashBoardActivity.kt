@@ -102,6 +102,11 @@ class DashBoardActivity : BaseActivity() {
                  */
             }
         }
+
+        binding.centerFab.setOnClickListener{
+            val startNewApplicationActivity = Intent(this@DashBoardActivity, StartNewApplicationActivity::class.java)
+            startActivity(startNewApplicationActivity)
+        }
     }
 
 
