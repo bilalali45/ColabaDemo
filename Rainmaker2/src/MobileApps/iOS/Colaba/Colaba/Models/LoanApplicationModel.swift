@@ -86,6 +86,9 @@ class LoanApplicationModel: NSObject{
             governmentQuestions.append(model)
         }
         
+        governmentQuestions = governmentQuestions.sorted { question1, question2 in
+            return question1.questionResponses.count < question2.questionResponses.count
+        }
     }
     
 }
