@@ -113,6 +113,9 @@
 		23AFA3712707187700388905 /* DocumentsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AFA3702707187700388905 /* DocumentsListViewController.swift */; };
 		23AFA3742707208900388905 /* DocumentsTemplatesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AFA3722707208900388905 /* DocumentsTemplatesTableViewCell.swift */; };
 		23AFA3752707208900388905 /* DocumentsTemplatesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23AFA3732707208900388905 /* DocumentsTemplatesTableViewCell.xib */; };
+		23AFA37727073EF000388905 /* CheckListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AFA37627073EEF00388905 /* CheckListViewController.swift */; };
+		23AFA37A2707422900388905 /* CheckListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AFA3782707422900388905 /* CheckListTableViewCell.swift */; };
+		23AFA37B2707422900388905 /* CheckListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23AFA3792707422900388905 /* CheckListTableViewCell.xib */; };
 		23B238B82679D38900508449 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B238B72679D38900508449 /* SearchViewController.swift */; };
 		23B238BB2679E05200508449 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B238B92679E05200508449 /* SearchResultTableViewCell.swift */; };
 		23B238BC2679E05200508449 /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */; };
@@ -342,6 +345,9 @@
 		23AFA3702707187700388905 /* DocumentsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsListViewController.swift; sourceTree = "<group>"; };
 		23AFA3722707208900388905 /* DocumentsTemplatesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsTemplatesTableViewCell.swift; sourceTree = "<group>"; };
 		23AFA3732707208900388905 /* DocumentsTemplatesTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DocumentsTemplatesTableViewCell.xib; sourceTree = "<group>"; };
+		23AFA37627073EEF00388905 /* CheckListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckListViewController.swift; sourceTree = "<group>"; };
+		23AFA3782707422900388905 /* CheckListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckListTableViewCell.swift; sourceTree = "<group>"; };
+		23AFA3792707422900388905 /* CheckListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckListTableViewCell.xib; sourceTree = "<group>"; };
 		23B238B72679D38900508449 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		23B238B92679E05200508449 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		23B238BA2679E05200508449 /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
@@ -582,6 +588,8 @@
 				2381B4F12701E21B0045D917 /* LoanOfficerCollectionViewCell.xib */,
 				23AFA3722707208900388905 /* DocumentsTemplatesTableViewCell.swift */,
 				23AFA3732707208900388905 /* DocumentsTemplatesTableViewCell.xib */,
+				23AFA3782707422900388905 /* CheckListTableViewCell.swift */,
+				23AFA3792707422900388905 /* CheckListTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -655,6 +663,7 @@
 				23AFA36C2707131C00388905 /* RequestDocumentViewController.swift */,
 				23AFA36E2707181100388905 /* DocumentTemplatesViewController.swift */,
 				23AFA3702707187700388905 /* DocumentsListViewController.swift */,
+				23AFA37627073EEF00388905 /* CheckListViewController.swift */,
 			);
 			path = "Request Document";
 			sourceTree = "<group>";
@@ -1110,6 +1119,7 @@
 				7113F51F26568E3B0066E179 /* Home.svg in Resources */,
 				23E9C758269C6C140066C978 /* DocumentsDetailTableViewCell.xib in Resources */,
 				2397AF64267782E6007A1A45 /* PipelineTableViewCell.xib in Resources */,
+				23AFA37B2707422900388905 /* CheckListTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1331,6 +1341,7 @@
 				2330CD2526B000ED00FF3C43 /* DocumentMessageTableViewCell.swift in Sources */,
 				23A56C5D2685B017005CE6F4 /* Icons.swift in Sources */,
 				2392A4CB26C4F9700083EFE4 /* DependentCollectionViewCell.swift in Sources */,
+				23AFA37A2707422900388905 /* CheckListTableViewCell.swift in Sources */,
 				239570E626E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift in Sources */,
 				23E9C751269C3F980066C978 /* DocumentsTableViewCell.swift in Sources */,
 				2381B4ED2701D7A60045D917 /* LoanOfficerMainViewController.swift in Sources */,
@@ -1374,6 +1385,7 @@
 				230B94D926E7A436004CBC83 /* AddStockBondViewController.swift in Sources */,
 				23B5E98126F46F0C00686B8E /* PreForceClosureViewController.swift in Sources */,
 				2319224626E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift in Sources */,
+				23AFA37727073EF000388905 /* CheckListViewController.swift in Sources */,
 				239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */,
 				23A56C592685B017005CE6F4 /* Manager.swift in Sources */,
 				23B5E97926F46DA200686B8E /* OutstandingJudgementsViewController.swift in Sources */,

@@ -93,6 +93,8 @@ extension DocumentTemplatesViewController: UITableViewDataSource, UITableViewDel
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
                 cell.lblTemplateName.text = myTemplatesArray[indexPath.row - 1]
+                cell.indexPath = indexPath
+                cell.delegate = self
                 return cell
             }
         }
@@ -108,6 +110,8 @@ extension DocumentTemplatesViewController: UITableViewDataSource, UITableViewDel
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
                 cell.lblTemplateName.text = systemTemplatesArray[indexPath.row - 1]
+                cell.indexPath = indexPath
+                cell.delegate = self
                 return cell
             }
         }
@@ -128,4 +132,17 @@ extension DocumentTemplatesViewController: UITableViewDataSource, UITableViewDel
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return indexPath.row == 0 ? 56 : 40
     }
+}
+
+extension DocumentTemplatesViewController: DocumentsTemplatesTableViewCellDelegate{
+    
+    func infoTapped(indexPath: IndexPath) {
+        let vc = Utility.getCheckListVC()
+        self.present(vc, animated: false, completion: nil)
+    }
+    
+    func templateSelect(indexPath: IndexPath) {
+        
+    }
+    
 }

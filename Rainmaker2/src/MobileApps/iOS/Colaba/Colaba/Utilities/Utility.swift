@@ -410,6 +410,10 @@ struct Utility {
         return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: DocumentsListViewController.self)) as! DocumentsListViewController
     }
     
+    static func getCheckListVC() -> CheckListViewController{
+        return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: CheckListViewController.self)) as! CheckListViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
