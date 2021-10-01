@@ -32,50 +32,71 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
     private val _borrowerApplicationTabModel : MutableLiveData<BorrowerApplicationTabModel> =   MutableLiveData()
     val borrowerApplicationTabModel: LiveData<BorrowerApplicationTabModel> get() = _borrowerApplicationTabModel
 
+    private var docsServiceRunning:Boolean = false
+    private var overviewServiceRunning:Boolean = false
+    private var applicationServiceRunning:Boolean = false
+
     //private val _fileName : MutableLiveData<String> =   MutableLiveData()
     //val fileName: LiveData<String> get() = _fileName
 
 
-    suspend fun getLoanInfo(token:String, loanApplicationId:Int) {
-        viewModelScope.launch (Dispatchers.IO) {
-            val responseResult = detailRepo.getLoanInfo(token = token, loanApplicationId = loanApplicationId)
-            if (responseResult is Result.Success)
+    suspend fun getBorrowerOverview(token:String, loanApplicationId:Int) {
+        if(!overviewServiceRunning) {
+            overviewServiceRunning = true
+            viewModelScope.launch (Dispatchers.IO) {
+                val responseResult = detailRepo.getLoanInfo(token = token, loanApplicationId = loanApplicationId)
                 withContext(Dispatchers.Main) {
-                    _borrowerOverviewModel.value = (responseResult.data)
+                    overviewServiceRunning = false
+                    if (responseResult is Result.Success)
+                        _borrowerOverviewModel.value = (responseResult.data)
+                    else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                        EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                    else if (responseResult is Result.Error)
+                        EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
                 }
-            else if(responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
-                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
-            else if(responseResult is Result.Error)
-                EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
         }
     }
 
     suspend fun getBorrowerDocuments(token:String, loanApplicationId:Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = detailRepo.getBorrowerDocuments(token = token, loanApplicationId = loanApplicationId)
-            if (responseResult is Result.Success)
+        if(!docsServiceRunning) {
+            docsServiceRunning = true
+            viewModelScope.launch(Dispatchers.IO) {
+                val responseResult = detailRepo.getBorrowerDocuments(
+                    token = token,
+                    loanApplicationId = loanApplicationId
+                )
                 withContext(Dispatchers.Main) {
-                    _borrowerDocsModelList.value = (responseResult.data)
+                    docsServiceRunning = false
+                    if (responseResult is Result.Success)
+                        _borrowerDocsModelList.value = (responseResult.data)
+                    else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                        EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                    else if (responseResult is Result.Error)
+                        EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
                 }
-            else if(responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
-                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
-            else if(responseResult is Result.Error)
-                EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
         }
     }
 
     suspend fun getBorrowerApplicationTabData(token:String, loanApplicationId:Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = detailRepo.getBorrowerApplicationTabData(token = token, loanApplicationId = loanApplicationId)
-            if (responseResult is Result.Success) {
+        if(!applicationServiceRunning) {
+            applicationServiceRunning = true
+            viewModelScope.launch(Dispatchers.IO) {
+                val responseResult = detailRepo.getBorrowerApplicationTabData(
+                    token = token,
+                    loanApplicationId = loanApplicationId
+                )
                 withContext(Dispatchers.Main) {
-                    _borrowerApplicationTabModel.value = (responseResult.data)
+                    applicationServiceRunning = false
+                    if (responseResult is Result.Success)
+                        _borrowerApplicationTabModel.value = (responseResult.data)
+                    else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                        EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                    else if (responseResult is Result.Error)
+                        EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
                 }
             }
-            else if(responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
-                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
-            else if(responseResult is Result.Error)
-                EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
         }
     }
 

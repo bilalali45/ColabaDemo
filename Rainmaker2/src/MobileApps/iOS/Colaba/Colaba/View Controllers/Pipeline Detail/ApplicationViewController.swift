@@ -17,20 +17,29 @@ class ApplicationViewController: BaseViewController {
     @IBOutlet weak var borrowerInfoView: UIView!
     @IBOutlet weak var borrowerCollectionView: UICollectionView!
     @IBOutlet weak var subjectPropertyView: UIView!
+    @IBOutlet weak var subjectPropertyViewHeightConstraint: NSLayoutConstraint! //180 or 134
+    @IBOutlet weak var addSubjectPropertyView: UIView!
     @IBOutlet weak var addressView: UIView!
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var lblPropertyType: UILabel!
     @IBOutlet weak var loanInfoView: UIView!
+    @IBOutlet weak var loanInfoViewHeightConstraint: NSLayoutConstraint! //182 or 136
+    @IBOutlet weak var addLoanInformationView: UIView!
     @IBOutlet weak var LoanInfoMainView: UIView!
     @IBOutlet weak var lblLoanPayment: UILabel!
     @IBOutlet weak var lblDownPayment: UILabel!
     @IBOutlet weak var lblPercentage: UILabel!
     @IBOutlet weak var assetsAndIncomeView: UIView!
+    @IBOutlet weak var assetsAndIncomeViewHeightConstraint: NSLayoutConstraint! //158 or 133
+    @IBOutlet weak var addAssetsView: UIView!
     @IBOutlet weak var assetsView: UIView!
     @IBOutlet weak var lblTotalAssets: UILabel!
+    @IBOutlet weak var addIncomeView: UIView!
     @IBOutlet weak var monthlyIncomeView: UIView!
     @IBOutlet weak var lblMonthlyIncome: UILabel!
     @IBOutlet weak var RealEstateView: UIView!
+    @IBOutlet weak var realEstateHeightConstraint: NSLayoutConstraint! //182 or 136
+    @IBOutlet weak var addRealStateOwnedView: UIView!
     @IBOutlet weak var realEstateCollectionView: UICollectionView!
     @IBOutlet weak var governmentQuestionsView: UIView!
     @IBOutlet weak var questionsCollectionView: UICollectionView!
@@ -44,6 +53,25 @@ class ApplicationViewController: BaseViewController {
         super.viewDidLoad()
         setupViews()
         getLoanApplicationDetail()
+        
+        /// For Showing Add Buttons
+        
+//        addSubjectPropertyView.isHidden = false
+//        addLoanInformationView.isHidden = false
+//        addAssetsView.isHidden = false
+//        addIncomeView.isHidden = false
+//        addRealStateOwnedView.isHidden = false
+//
+//        addressView.isHidden = true
+//        LoanInfoMainView.isHidden = true
+//        assetsView.isHidden = true
+//        monthlyIncomeView.isHidden = true
+//        realEstateCollectionView.isHidden = true
+//
+//        subjectPropertyViewHeightConstraint.constant = 134
+//        loanInfoViewHeightConstraint.constant = 136
+//        assetsAndIncomeViewHeightConstraint.constant = 133
+//        realEstateHeightConstraint.constant = 136
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -58,28 +86,50 @@ class ApplicationViewController: BaseViewController {
         realEstateCollectionView.register(UINib(nibName: "RealEstateCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "RealEstateCollectionViewCell")
         questionsCollectionView.register(UINib(nibName: "GovernmentQuestionsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "GovernmentQuestionsCollectionViewCell")
         questionsCollectionView.register(UINib(nibName: "DemographicInformationCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "DemographicInformationCollectionViewCell")
+        addSubjectPropertyView.layer.cornerRadius = 5
+        addSubjectPropertyView.layer.borderWidth = 1
+        addSubjectPropertyView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
         addressView.layer.cornerRadius = 6
         addressView.layer.borderWidth = 1
         addressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         addressView.dropShadowToCollectionViewCell()
+        addLoanInformationView.layer.cornerRadius = 5
+        addLoanInformationView.layer.borderWidth = 1
+        addLoanInformationView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
         LoanInfoMainView.layer.cornerRadius = 6
         LoanInfoMainView.layer.borderWidth = 1
         LoanInfoMainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         LoanInfoMainView.dropShadowToCollectionViewCell()
+        addAssetsView.layer.cornerRadius = 5
+        addAssetsView.layer.borderWidth = 1
+        addAssetsView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        addAssetsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(assetsViewTapped)))
         assetsView.layer.cornerRadius = 6
         assetsView.layer.borderWidth = 1
         assetsView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         assetsView.dropShadowToCollectionViewCell()
         assetsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(assetsViewTapped)))
+        addIncomeView.layer.cornerRadius = 5
+        addIncomeView.layer.borderWidth = 1
+        addIncomeView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        addIncomeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(incomeViewTapped)))
         monthlyIncomeView.layer.cornerRadius = 6
         monthlyIncomeView.layer.borderWidth = 1
         monthlyIncomeView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         monthlyIncomeView.dropShadowToCollectionViewCell()
         monthlyIncomeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(incomeViewTapped)))
+        addRealStateOwnedView.layer.cornerRadius = 5
+        addRealStateOwnedView.layer.borderWidth = 1
+        addRealStateOwnedView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        addRealStateOwnedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addRealStateOwnedViewTapped)))
         mainScrollView.delegate = self
         
+        addSubjectPropertyView.isUserInteractionEnabled = true
+        addSubjectPropertyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(subjectPropertyTapped)))
         subjectPropertyView.isUserInteractionEnabled = true
         subjectPropertyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(subjectPropertyTapped)))
+        addLoanInformationView.isUserInteractionEnabled = true
+        addLoanInformationView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(loanInfoViewTapped)))
         LoanInfoMainView.isUserInteractionEnabled = true
         LoanInfoMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(loanInfoViewTapped)))
     }
@@ -162,6 +212,14 @@ class ApplicationViewController: BaseViewController {
     @objc func incomeViewTapped(){
         let vc = Utility.getIncomeVC()
         self.pushToVC(vc: vc)
+    }
+    
+    @objc func addRealStateOwnedViewTapped(){
+        let vc = Utility.getRealEstateVC()
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.navigationBar.isHidden = true
+        navVC.modalPresentationStyle = .fullScreen
+        self.presentVC(vc: navVC)
     }
     
     //MARK:- API's

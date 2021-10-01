@@ -104,7 +104,7 @@ class LoginFragment : BaseFragment() {
             }
         }
 
-       userEmailField.setText("mcureg99@mailinator.com")
+       userEmailField.setText("mobileuser1@mailinator.com")
        passwordField.setText("Test@124")
 
 
