@@ -171,7 +171,6 @@ class AddressCurrentEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceC
         val county = binding.edCounty.text.toString()
         val zipCode = binding.edZipcode.text.toString()
 
-
         if (searchBar.isEmpty() || searchBar.length == 0) {
             setError()
         }

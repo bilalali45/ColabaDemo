@@ -53,7 +53,6 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
             }
         }
 
-
         binding.moveOutEditText.showSoftInputOnFocus = false
         binding.moveOutEditText.setOnClickListener {
             outInSelection = true
@@ -87,9 +86,6 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
                 }
             }
         }
-
-
-
 
         binding.cityEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.cityEditText, binding.cityLayout, requireContext()))
         binding.streetAddressEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.streetAddressEditText, binding.streetAddressLayout, requireContext()))
@@ -207,9 +203,6 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
         binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
     }
 
-
-
-
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -225,13 +218,6 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
         if(event.boolean){
             findNavController().popBackStack()
         }
-    }
-
-
-    private fun hideKeyBoard() {
-            val inputMethodManager = ContextCompat.getSystemService(requireContext(), InputMethodManager::class.java)!!
-            inputMethodManager.hideSoftInputFromWindow(binding.moveInEditText.windowToken, 0)
-
     }
 
     private fun createCustomDialog(){

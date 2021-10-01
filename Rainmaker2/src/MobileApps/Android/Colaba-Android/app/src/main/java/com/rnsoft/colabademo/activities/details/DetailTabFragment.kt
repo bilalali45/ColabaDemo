@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.getColor
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
@@ -17,9 +16,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.rnsoft.colabademo.databinding.DetailTabLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import com.google.android.material.badge.BadgeDrawable
-
-
 
 
 private val detailTabArray = arrayOf(
@@ -152,7 +148,7 @@ class DetailTabFragment : BaseFragment() {
                 val testLoanId = it.loanApplicationId
                 testLoanId?.let { loanId->
                     sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        detailViewModel.getLoanInfo(token = authToken, loanApplicationId = loanId)
+                        detailViewModel.getBorrowerOverview(token = authToken, loanApplicationId = loanId)
                         detailViewModel.getBorrowerDocuments(token = authToken, loanApplicationId = loanId)
                         detailViewModel.getBorrowerApplicationTabData(token = authToken, loanApplicationId = loanId)
                     }
