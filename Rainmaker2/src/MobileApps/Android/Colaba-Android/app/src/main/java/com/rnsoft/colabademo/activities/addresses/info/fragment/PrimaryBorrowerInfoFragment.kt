@@ -242,11 +242,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     fun clearError(textInputlayout: TextInputLayout) {
         textInputlayout.helperText = ""
         textInputlayout.setBoxStrokeColorStateList(
-            AppCompatResources.getColorStateList(
-                requireContext(),
-                R.color.primary_info_line_color
-            )
-        )
+            AppCompatResources.getColorStateList(requireContext(), R.color.primary_info_line_color))
     }
 
     private fun setEndIconClicks() {

@@ -29,9 +29,6 @@
     <string name="sign_in_with_password">Sign in with Password</string>
 
 
-
-
-
     <string-array name="array_occupancy_type">
         <item>Primary Residence</item>
         <item>Second Home</item>

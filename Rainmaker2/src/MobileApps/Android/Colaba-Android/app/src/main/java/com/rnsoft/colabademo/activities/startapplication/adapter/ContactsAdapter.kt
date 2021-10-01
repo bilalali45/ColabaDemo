@@ -2,6 +2,10 @@ package com.rnsoft.colabademo.activities.startapplication.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -27,6 +31,8 @@ class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListen
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
         var binding = ContactListItemBinding.inflate(LayoutInflater.from(parent.context), parent,
             false)
+
+
         return EpisodeViewHolder(binding)
     }
 
@@ -48,7 +54,26 @@ class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListen
             binding.contactName.text = contact.contactName
             binding.contactEmail.text = contact.contactEmail
             binding.contactNum.text = contact.contactNumber
+
+
+            /*binding.contactName.text.split(" ").forEach {
+                if(it.equals("Richard", ignoreCase = false)){
+                    //it.setTypeface(null, Typeface.NORMAL)
+                }
+            } */
+
+
+//            val spannableStringBuilder = SpannableStringBuilder(contact.contactName)
+//            spannableStringBuilder.setSpan(StyleSpan(Typeface.BOLD), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE))
+//            spannableStringBuilder.append(" ")
+//            spannableStringBuilder.append(subText)
+            //textView.text = spannableStringBuilder
+
+
+
+
         }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
