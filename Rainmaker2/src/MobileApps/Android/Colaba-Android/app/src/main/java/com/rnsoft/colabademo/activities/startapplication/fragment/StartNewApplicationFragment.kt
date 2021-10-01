@@ -38,7 +38,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             binding = StartApplicationFragLayoutBinding.inflate(inflater, container, false)
             savedViewInstance = binding.root
 
-            binding.btnCreateApp.isEnabled = true
+            binding.btnCreateApp.isEnabled = false
 
             setupUI()
             setLabelFocus()
@@ -88,8 +88,9 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         binding.backButton.setOnClickListener { requireActivity().finish() }
 
         binding.assignLoanOfficer.setOnClickListener {
-            
+
         }
+
 
         binding.btnCancelContact.setOnClickListener{
             binding.recyclerviewContacts.visibility = View.VISIBLE
