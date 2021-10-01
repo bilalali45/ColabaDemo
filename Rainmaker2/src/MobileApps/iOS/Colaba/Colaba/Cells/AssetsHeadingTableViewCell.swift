@@ -12,6 +12,7 @@ class AssetsHeadingTableViewCell: UITableViewCell {
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var lblAmount: UILabel!
     @IBOutlet weak var imageArrow: UIImageView!
+    @IBOutlet weak var separatorView: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
