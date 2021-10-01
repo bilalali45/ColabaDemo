@@ -1,18 +1,15 @@
 //
-//  AssetsHeadingTableViewCell.swift
+//  CheckListTableViewCell.swift
 //  Colaba
 //
-//  Created by Muhammad Murtaza on 07/09/2021.
+//  Created by Muhammad Murtaza on 01/10/2021.
 //
 
 import UIKit
 
-class AssetsHeadingTableViewCell: UITableViewCell {
+class CheckListTableViewCell: UITableViewCell {
 
     @IBOutlet weak var lblTitle: UILabel!
-    @IBOutlet weak var lblAmount: UILabel!
-    @IBOutlet weak var imageArrow: UIImageView!
-    @IBOutlet weak var separatorView: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

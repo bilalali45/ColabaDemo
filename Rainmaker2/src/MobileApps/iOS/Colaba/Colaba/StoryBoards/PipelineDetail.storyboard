@@ -1987,25 +1987,39 @@
                                 </connections>
                             </tableView>
                             <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="No-Documents" translatesAutoresizingMaskIntoConstraints="NO" id="f8P-pf-qYr">
-                                <rect key="frame" x="63.5" y="186.5" width="248" height="227"/>
+                                <rect key="frame" x="63.5" y="153.5" width="248" height="227"/>
                             </imageView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No documents found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M0d-L9-5ZE">
-                                <rect key="frame" x="104.5" y="437.5" width="166" height="20"/>
+                                <rect key="frame" x="104.5" y="404.5" width="166" height="20"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="17"/>
                                 <color key="textColor" name="AppGreyColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ej-3S-5gV">
+                                <rect key="frame" x="40" y="454.5" width="295" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="rpp-sl-zWE"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="17"/>
+                                <state key="normal" title="REQUEST DOCUMENTS"/>
+                                <connections>
+                                    <action selector="btnRequestDocuments:" destination="Ym2-BP-dxA" eventType="touchUpInside" id="IK8-1U-s7H"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="HDh-Ic-Ytq"/>
                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="f8P-pf-qYr" firstAttribute="centerX" secondItem="T3y-6e-Lk7" secondAttribute="centerX" id="92N-P5-3R3"/>
                             <constraint firstItem="RTq-jg-1eg" firstAttribute="leading" secondItem="HDh-Ic-Ytq" secondAttribute="leading" id="EI0-lR-SNQ"/>
+                            <constraint firstItem="HDh-Ic-Ytq" firstAttribute="trailing" secondItem="5ej-3S-5gV" secondAttribute="trailing" constant="40" id="Kw4-Bc-PaR"/>
                             <constraint firstItem="M0d-L9-5ZE" firstAttribute="centerX" secondItem="T3y-6e-Lk7" secondAttribute="centerX" id="Qyb-Bt-dNJ"/>
+                            <constraint firstItem="5ej-3S-5gV" firstAttribute="top" secondItem="M0d-L9-5ZE" secondAttribute="bottom" constant="30" id="ThG-mp-TmJ"/>
+                            <constraint firstItem="5ej-3S-5gV" firstAttribute="leading" secondItem="HDh-Ic-Ytq" secondAttribute="leading" constant="40" id="YSa-T6-pij"/>
                             <constraint firstItem="HDh-Ic-Ytq" firstAttribute="bottom" secondItem="RTq-jg-1eg" secondAttribute="bottom" id="bMF-9o-hOB"/>
                             <constraint firstItem="RTq-jg-1eg" firstAttribute="top" secondItem="RXo-Tq-NIT" secondAttribute="bottom" constant="15" id="g2h-lO-jX7"/>
                             <constraint firstItem="HDh-Ic-Ytq" firstAttribute="trailing" secondItem="RTq-jg-1eg" secondAttribute="trailing" id="l40-WT-dP5"/>
-                            <constraint firstItem="f8P-pf-qYr" firstAttribute="centerY" secondItem="T3y-6e-Lk7" secondAttribute="centerY" multiplier="0.9" id="lkZ-eo-Iy5"/>
+                            <constraint firstItem="f8P-pf-qYr" firstAttribute="centerY" secondItem="T3y-6e-Lk7" secondAttribute="centerY" multiplier="0.8" id="lkZ-eo-Iy5"/>
                             <constraint firstItem="HDh-Ic-Ytq" firstAttribute="trailing" secondItem="RXo-Tq-NIT" secondAttribute="trailing" id="mbA-qe-qeH"/>
                             <constraint firstItem="RXo-Tq-NIT" firstAttribute="top" secondItem="HDh-Ic-Ytq" secondAttribute="top" constant="15" id="nfS-kR-pgz"/>
                             <constraint firstItem="RXo-Tq-NIT" firstAttribute="leading" secondItem="HDh-Ic-Ytq" secondAttribute="leading" id="pXh-B1-90u"/>
@@ -2015,6 +2029,7 @@
                     <connections>
                         <outlet property="allView" destination="T3L-yd-r5s" id="g8F-bg-iR1"/>
                         <outlet property="borrowerToDoView" destination="aq8-Cc-e9b" id="AiM-oo-QCa"/>
+                        <outlet property="btnRequestDocuments" destination="5ej-3S-5gV" id="RZF-lb-kbd"/>
                         <outlet property="completedView" destination="kaD-ft-61d" id="Jbq-xy-DEp"/>
                         <outlet property="draftView" destination="6R8-T4-o1K" id="Hvv-PA-stf"/>
                         <outlet property="iconNoDocument" destination="f8P-pf-qYr" id="z9O-7g-j8k"/>
