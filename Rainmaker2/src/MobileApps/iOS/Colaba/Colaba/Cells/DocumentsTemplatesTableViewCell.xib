@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Rubik-Regular.ttf">
+            <string>Rubik-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="DocumentsTemplatesTableViewCell" id="KGk-i7-Jjw" customClass="DocumentsTemplatesTableViewCell" customModule="Colaba" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="0qd-jn-EO9">
+                        <rect key="frame" x="15" y="2" width="232" height="40"/>
+                        <subviews>
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KFm-2B-TgD">
+                                <rect key="frame" x="0.0" y="0.0" width="18" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="brb-65-KyU"/>
+                                    <constraint firstAttribute="width" constant="18" id="e59-2k-I84"/>
+                                </constraints>
+                                <state key="normal" image="CheckBoxUnSelected"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Income Template" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WBc-wO-MSW">
+                                <rect key="frame" x="34" y="0.0" width="198" height="40"/>
+                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
+                                <color key="textColor" name="AppBlackColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uxa-25-ZvS">
+                        <rect key="frame" x="262" y="2" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="9bW-nD-pNM"/>
+                            <constraint firstAttribute="width" constant="40" id="xX3-T3-jCv"/>
+                        </constraints>
+                        <state key="normal" image="InfoIcon"/>
+                        <connections>
+                            <action selector="btnInfoTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="LFo-N2-mPf"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="uxa-25-ZvS" firstAttribute="leading" secondItem="0qd-jn-EO9" secondAttribute="trailing" constant="15" id="2Kb-fV-MMn"/>
+                    <constraint firstItem="0qd-jn-EO9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="8Df-mJ-XsW"/>
+                    <constraint firstItem="uxa-25-ZvS" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="8UU-fl-fJL"/>
+                    <constraint firstAttribute="trailing" secondItem="uxa-25-ZvS" secondAttribute="trailing" constant="18" id="BQ7-07-mzA"/>
+                    <constraint firstItem="0qd-jn-EO9" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="DLp-Xj-c9b"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="btnCheckbox" destination="KFm-2B-TgD" id="o8H-Oh-7Vt"/>
+                <outlet property="btnInfo" destination="uxa-25-ZvS" id="ZaM-CL-fuT"/>
+                <outlet property="lblTemplateName" destination="WBc-wO-MSW" id="f0z-Gg-hl1"/>
+                <outlet property="stackViewTemplateName" destination="0qd-jn-EO9" id="JHW-jT-713"/>
+            </connections>
+            <point key="canvasLocation" x="106" y="113"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="CheckBoxUnSelected" width="18" height="18"/>
+        <image name="InfoIcon" width="19" height="19"/>
+        <namedColor name="AppBlackColor">
+            <color red="0.30588235294117649" green="0.30588235294117649" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
