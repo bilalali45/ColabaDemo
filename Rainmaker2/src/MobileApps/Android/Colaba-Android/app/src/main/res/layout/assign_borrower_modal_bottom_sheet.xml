@@ -2,94 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
-
-    android:paddingBottom="40dp"
+    android:background="@color/half_white"
+    android:paddingBottom="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:id="@+id/bottomBorrower_constraint_layout"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_search_layout">
-
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/bottomBorrowerTabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tabGravity="fill"
-            app:tabIconTint="@color/colaba_red_color"
-
-            app:tabMinWidth="180dp"
-
-            app:tabMode="fixed"
-            app:tabPaddingEnd="10dp"
-            app:tabPaddingStart="10dp"
-
-
-            app:tabIndicator="@drawable/assets_tab_indicator"
-            app:tabIndicatorColor="@color/colaba_apptheme_blue"
-
-            app:tabIndicatorHeight="4dp"
-            app:tabSelectedTextColor="@color/colaba_apptheme_blue"
-            app:tabTextAppearance="@style/MineCustomTabText"
-            app:tabTextColor="@color/grey_color_two"
-            />
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/colaba_app_border_color"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bottomBorrower_constraint_layout" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/bottomBorrowerViewPagerLayout"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintStart_toStartOf="@+id/borrowerName"
-        app:layout_constraintTop_toBottomOf="@+id/bottomBorrower_constraint_layout">
-
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/bottomBorrowerViewPager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="12dp"
-            android:layout_weight="1"
-
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
 
@@ -139,6 +55,8 @@
             android:background="@android:color/transparent"
             android:fontFamily="@font/rubik_medium"
             android:hint="Search"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@null"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:paddingStart="16dp"
@@ -151,6 +69,89 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/bottomBorrower_constraint_layout"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_search_layout">
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/bottomBorrowerTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="28dp"
+            android:background="@color/half_white"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabGravity="fill"
+            app:tabIconTint="@color/colaba_red_color"
+
+            app:tabMinWidth="180dp"
+
+            app:tabMode="fixed"
+            app:tabPaddingEnd="10dp"
+            app:tabPaddingStart="10dp"
+
+
+            app:tabIndicator="@drawable/lo_tab_indicator"
+            app:tabIndicatorColor="@color/colaba_apptheme_blue"
+
+            app:tabIndicatorHeight="4dp"
+            app:tabSelectedTextColor="@color/colaba_apptheme_blue"
+            app:tabTextAppearance="@style/MineCustomTabText"
+            app:tabTextColor="@color/grey_color_two"
+            />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colaba_app_border_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bottomBorrower_constraint_layout" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomBorrowerViewPagerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="@+id/borrowerName"
+        app:layout_constraintTop_toBottomOf="@+id/bottomBorrower_constraint_layout">
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/bottomBorrowerViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="12dp"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
 
 
 

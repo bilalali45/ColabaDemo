@@ -2,15 +2,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/subject_property_navigation"
-    app:startDestination="@+id/start_new_application">
+    app:startDestination="@+id/navigateToStartNewApplication">
 
     <fragment
-        android:id="@+id/start_new_application"
+        android:id="@+id/navigateToStartNewApplication"
         android:name="com.rnsoft.colabademo.StartNewApplicationFragment"
         android:label="@string/start_new_application"
         tools:layout="@layout/start_application_frag_layout">
     </fragment>
 
 
+    <fragment
+        android:id="@+id/navigateToAssignApplicationToFragment"
+        android:name="com.rnsoft.colabademo.AssignApplicationToFragment"
+        android:label="@string/assign_application_to"
+        tools:layout="@layout/assign_application_to_layout">
+    </fragment>
 
 </navigation>

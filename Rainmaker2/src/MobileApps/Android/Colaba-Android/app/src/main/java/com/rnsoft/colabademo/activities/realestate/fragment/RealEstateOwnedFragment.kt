@@ -9,12 +9,10 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
 import com.rnsoft.colabademo.activities.addresses.info.fragment.SwipeToDeleteEvent
-import com.rnsoft.colabademo.activities.income.fragment.BottomDialogSelectEmployment
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.RealEstateOwnedLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -204,7 +202,7 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
 
 
     private fun openAddressFragment(){
-        val addressFragment = IncomeAddress()
+        val addressFragment = AddressCurrentEmployment()
         val bundle = Bundle()
         bundle.putString(AppConstant.address, getString(R.string.property_address))
         addressFragment.arguments = bundle

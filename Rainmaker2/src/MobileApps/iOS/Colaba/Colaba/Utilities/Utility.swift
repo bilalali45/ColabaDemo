@@ -16,6 +16,7 @@ struct Utility {
     static let loanDetailStoryboard = UIStoryboard.init(name: "PipelineDetail", bundle: nil)
     static let testStoryboard = UIStoryboard.init(name: "Test", bundle: nil)
     static let newApplicationStoryboard = UIStoryboard.init(name: "NewApplication", bundle: nil)
+    static let requestDocumentStoryboard = UIStoryboard.init(name: "RequestDocument", bundle: nil)
     
     static private var pipelineDateFormatter: DateFormatter?
     static private var loanApplicationDateFormatter: DateFormatter?
@@ -369,6 +370,10 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: DemographicInformationViewController.self)) as! DemographicInformationViewController
     }
     
+    static func getDemographicDetailVC() -> DemographicDetailViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: DemographicDetailViewController.self)) as! DemographicDetailViewController
+    }
+    
     static func getStartNewApplicationVC() -> StartNewApplicationViewController{
         return newApplicationStoryboard.instantiateViewController(withIdentifier: String(describing: StartNewApplicationViewController.self)) as! StartNewApplicationViewController
     }
@@ -383,6 +388,30 @@ struct Utility {
     
     static func getAssignLoanOfficerPopupVC() -> AssignLoanOfficerPopupViewController{
         return newApplicationStoryboard.instantiateViewController(withIdentifier: String(describing: AssignLoanOfficerPopupViewController.self)) as! AssignLoanOfficerPopupViewController
+    }
+    
+    static func getAssignLoanOfficerVC() -> AssignLoanOfficerViewController{
+        return newApplicationStoryboard.instantiateViewController(withIdentifier: String(describing: AssignLoanOfficerViewController.self)) as! AssignLoanOfficerViewController
+    }
+    
+    static func getDuplicateContactPopupVC() -> DuplicateContactPopupViewController{
+        return newApplicationStoryboard.instantiateViewController(withIdentifier: String(describing: DuplicateContactPopupViewController.self)) as! DuplicateContactPopupViewController
+    }
+    
+    static func getRequestDocumentVC() -> RequestDocumentViewController{
+        return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: RequestDocumentViewController.self)) as! RequestDocumentViewController
+    }
+    
+    static func getDocumentTemplatesVC() -> DocumentTemplatesViewController{
+        return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: DocumentTemplatesViewController.self)) as! DocumentTemplatesViewController
+    }
+    
+    static func getDocumentsListVC() -> DocumentsListViewController{
+        return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: DocumentsListViewController.self)) as! DocumentsListViewController
+    }
+    
+    static func getCheckListVC() -> CheckListViewController{
+        return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: CheckListViewController.self)) as! CheckListViewController
     }
     
     static var localPiplineDateFormatter: DateFormatter{

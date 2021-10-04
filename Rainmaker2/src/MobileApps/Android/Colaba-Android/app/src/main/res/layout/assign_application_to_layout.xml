@@ -9,7 +9,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/assets_top_container"
+        android:id="@+id/assign_app_top_container"
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:background="@color/half_white"
@@ -23,7 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:padding="4dp"
-            app:layout_constraintBottom_toTopOf="@+id/tab_top_border"
+
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_grey_cross" />
@@ -52,7 +53,7 @@
         android:background="@color/colaba_app_border_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assets_top_container" />
+        app:layout_constraintTop_toBottomOf="@+id/assign_app_top_container" />
 
 
 
@@ -100,5 +101,90 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomBorrower_constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_search_layout">
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/assignLoanApplicationTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginEnd="22dp"
+
+            android:background="@color/half_white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabGravity="start"
+            app:tabIconTint="@color/colaba_red_color"
+
+            app:tabIndicatorFullWidth="false"
+
+
+            app:tabIndicator="@drawable/lo_tab_indicator"
+
+            app:tabIndicatorColor="@color/colaba_apptheme_blue"
+            app:tabIndicatorHeight="4dp"
+
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/colaba_apptheme_blue"
+            app:tabTextAppearance="@style/loCustomTab"
+            app:tabTextColor="@color/grey_color_two" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colaba_app_border_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bottomBorrower_constraint_layout" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/assignLoanApplicationViewPagerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bottomBorrower_constraint_layout">
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/assignLoanApplicationViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+
+            android:layout_weight="1"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

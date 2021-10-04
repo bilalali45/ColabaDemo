@@ -16,6 +16,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var lblError: UILabel!
     @IBOutlet weak var childSupportView: UIView!
     @IBOutlet weak var childSupportViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var childSupportStackView: UIStackView!
@@ -100,6 +101,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
     }
     
     @objc func childSupportStackViewTapped(){
+        lblError.text = ""
         isChildSupport = !isChildSupport
         btnChildSupport.setImage(UIImage(named: isChildSupport ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
         lblChildSupport.font = isChildSupport ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
@@ -113,6 +115,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
     }
     
     @objc func alimonyStackViewTapped(){
+        lblError.text = ""
         isAlimony = !isAlimony
         btnAlimony.setImage(UIImage(named: isAlimony ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
         lblAlimony.font = isAlimony ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
@@ -126,6 +129,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
     }
     
     @objc func separateMaintainanceStackViewTapped(){
+        lblError.text = ""
         isSeparateMaintainance = !isSeparateMaintainance
         btnSeparateMaintainance.setImage(UIImage(named: isSeparateMaintainance ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
         lblSeparateMaintainance.font = isSeparateMaintainance ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
@@ -139,40 +143,49 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
     }
     
     func validate() -> Bool{
-        if (isChildSupport){
-            if (!txtfieldChildSupportPaymentsRemaining.validate()){
-                return false
-            }
-            if (!txtfieldChildSupportMonthlyPayment.validate()){
-                return false
-            }
-            if (!txtfieldChildSupportPaymentRecipient.validate()){
-                return false
-            }
+        
+        if (!isChildSupport && !isAlimony && !isSeparateMaintainance){
+            lblError.text = "Choose one or more options."
+            return false
         }
-        if (isAlimony){
-            if (!txtfieldAlimonyPaymentsRemaining.validate()){
-                return false
+        else{
+            lblError.text = ""
+            if (isChildSupport){
+                if (!txtfieldChildSupportPaymentsRemaining.validate()){
+                    return false
+                }
+                if (!txtfieldChildSupportMonthlyPayment.validate()){
+                    return false
+                }
+                if (!txtfieldChildSupportPaymentRecipient.validate()){
+                    return false
+                }
             }
-            if (!txtfieldAlimonyMonthlyPayment.validate()){
-                return false
+            if (isAlimony){
+                if (!txtfieldAlimonyPaymentsRemaining.validate()){
+                    return false
+                }
+                if (!txtfieldAlimonyMonthlyPayment.validate()){
+                    return false
+                }
+                if (!txtfieldAlimonyPaymentRecipient.validate()){
+                    return false
+                }
             }
-            if (!txtfieldAlimonyPaymentRecipient.validate()){
-                return false
+            if (isSeparateMaintainance){
+                if (!txtfieldSeparateMaintainancePaymentsRemaining.validate()){
+                    return false
+                }
+                if (!txtfieldSeparateMaintainanceMonthlyPayment.validate()){
+                    return false
+                }
+                if (!txtfieldSeparateMaintainancePaymentRecipient.validate()){
+                    return false
+                }
             }
+            return true
         }
-        if (isSeparateMaintainance){
-            if (!txtfieldSeparateMaintainancePaymentsRemaining.validate()){
-                return false
-            }
-            if (!txtfieldSeparateMaintainanceMonthlyPayment.validate()){
-                return false
-            }
-            if (!txtfieldSeparateMaintainancePaymentRecipient.validate()){
-                return false
-            }
-        }
-        return true
+        
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {

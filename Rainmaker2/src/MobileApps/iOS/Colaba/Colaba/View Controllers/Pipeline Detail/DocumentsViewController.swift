@@ -23,6 +23,7 @@ class DocumentsViewController: BaseViewController {
     @IBOutlet weak var tblViewDocuments: UITableView!
     @IBOutlet weak var iconNoDocument: UIImageView!
     @IBOutlet weak var lblNoDocuments: UILabel!
+    @IBOutlet weak var btnRequestDocuments: UIButton!
     
     var loanApplicationId = 0
     var documentsArray = [LoanDocumentModel]()
@@ -36,6 +37,9 @@ class DocumentsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        btnRequestDocuments.layer.borderWidth = 1
+        btnRequestDocuments.layer.cornerRadius = 5
+        btnRequestDocuments.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         tblViewDocuments.contentInset = UIEdgeInsets(top: -20, left: 0, bottom: 120, right: 0)
         tblViewDocuments.register(UINib(nibName: "DocumentsTableViewCell", bundle: nil), forCellReuseIdentifier: "DocumentsTableViewCell")
         tblViewDocuments.coverableCellsIdentifiers = ["DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell", "DocumentsTableViewCell"]
@@ -132,6 +136,11 @@ class DocumentsViewController: BaseViewController {
         filterViewTapped(selectedFilterView: manuallyView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView])
     }
     
+    @IBAction func btnRequestDocuments(_ sender: UIButton) {
+        let vc = Utility.getRequestDocumentVC()
+        self.presentVC(vc: vc)
+    }
+    
     //MARK:- API's
     
     func getDocuments(){
@@ -149,6 +158,7 @@ class DocumentsViewController: BaseViewController {
             DispatchQueue.main.async {
                 self.loadingPlaceholderView.uncover()
                 self.view.isUserInteractionEnabled = true
+                self.btnRequestDocuments.isHidden = result.arrayValue.count > 0
                 
                 if (status == .success){
                     
@@ -164,17 +174,20 @@ class DocumentsViewController: BaseViewController {
                         self.documentsArray.append(documentModel)
                     }
                     self.tblViewDocuments.reloadData()
+                    
                 }
                 else if (status == .internetError){
                     self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { reason in
                         
                     }
+                    
                 }
                 else{
                     self.showPopup(message: "No documents found", popupState: .error, popupDuration: .custom(2)) { reason in
                         
                     }
                     self.tblViewDocuments.reloadData()
+                    
                 }
             }
             

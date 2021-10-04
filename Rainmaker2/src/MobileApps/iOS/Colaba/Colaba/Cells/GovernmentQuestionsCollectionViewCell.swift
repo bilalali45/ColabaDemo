@@ -12,6 +12,7 @@ class GovernmentQuestionsCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var lblQuestionHeading: UILabel!
+    @IBOutlet weak var alertIcon: UIImageView!
     @IBOutlet weak var lblQuestion: UILabel!
     @IBOutlet weak var iconAns1: UIImageView!
     @IBOutlet weak var lblAns1: UILabel!

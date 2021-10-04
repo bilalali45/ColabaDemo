@@ -79,6 +79,8 @@ class StartNewApplicationViewController: BaseViewController {
         stackViewLowerPayments.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(lowerPaymentsStackViewTapped)))
         stackViewCashOut.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cashOutStackViewTapped)))
         stackViewDebt.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(debtStackViewTapped)))
+        NotificationCenter.default.addObserver(self, selector: #selector(seeMoreTapped), name: NSNotification.Name(rawValue: kNotificationLoanOfficerSeeMoreTapped), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loanOfficerSelected), name: NSNotification.Name(rawValue: kNotificationLoanOfficerSelected), object: nil)
         
     }
     
@@ -131,6 +133,7 @@ class StartNewApplicationViewController: BaseViewController {
         loanOfficerView.layer.cornerRadius = 8
         loanOfficerView.layer.borderWidth = 1
         loanOfficerView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        loanOfficerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(assignLoanOfficerViewTapped)))
         
         btnCreateApplication.layer.cornerRadius = 5
         btnCreateApplication.isEnabled = false
@@ -264,6 +267,19 @@ class StartNewApplicationViewController: BaseViewController {
         self.present(vc, animated: false, completion: nil)
     }
     
+    @objc func seeMoreTapped(){
+        let vc = Utility.getAssignLoanOfficerVC()
+        self.presentVC(vc: vc)
+    }
+    
+    @objc func loanOfficerSelected(){
+        assignLoanOfficerView.isHidden = true
+        loanOfficerView.isHidden = false
+        btnCreateApplication.backgroundColor = Theme.getButtonBlueColor()
+        btnCreateApplication.setTitleColor(.white, for: .normal)
+        btnCreateApplication.isEnabled = true
+    }
+    
     func validate() -> Bool{
         if (isCreateNewContact){
             if (!txtfieldFirstName.validate()) {
@@ -299,7 +315,9 @@ class StartNewApplicationViewController: BaseViewController {
             txtfieldPhone.validate()
         }
         if (validate()){
-            self.dismissVC()
+            //self.dismissVC()
+            let vc = Utility.getDuplicateContactPopupVC()
+            self.present(vc, animated: false, completion: nil)
         }
     }
 }

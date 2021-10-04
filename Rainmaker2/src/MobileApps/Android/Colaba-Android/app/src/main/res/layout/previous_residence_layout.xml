@@ -178,10 +178,9 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
+                android:visibility="gone"
                 android:id="@+id/streetAddressLayout"
                 android:layout_width="match_parent"
-
-
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="30dp"
@@ -217,11 +216,10 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
+                android:visibility="gone"
                 android:id="@+id/unitAptInputLayout"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="30dp"
@@ -264,11 +262,10 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
+                android:visibility="gone"
                 android:id="@+id/cityLayout"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="30dp"
@@ -315,11 +312,10 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
+                android:visibility="gone"
                 android:id="@+id/countyLayout"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="30dp"
@@ -363,11 +359,10 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
+                android:visibility="gone"
                 android:id="@+id/stateCompleteTextInputLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -423,8 +418,8 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
+                android:visibility="gone"
                 android:id="@+id/zipcodeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -471,11 +466,10 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
+                android:visibility="gone"
                 android:id="@+id/countryCompleteLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

@@ -12,7 +12,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.rnsoft.colabademo.databinding.AssignBorrowerModalBottomSheetBinding
+import com.rnsoft.colabademo.databinding.AssignApplicationToLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 private val bottomBorrowerTabArray = arrayOf(
@@ -23,36 +23,19 @@ private val bottomBorrowerTabArray = arrayOf(
 )
 
 @AndroidEntryPoint
-class AssignBorrowerBottomDialogFragment : BottomSheetDialogFragment() {
+class AssignApplicationToFragment : BottomSheetDialogFragment() {
 
-    lateinit var binding: AssignBorrowerModalBottomSheetBinding
+    lateinit var binding: AssignApplicationToLayoutBinding
 
     private var selectedPosition:Int = 0
-    private lateinit var pageAdapter:BottomBorrowerPagerAdapter
+    private lateinit var pageAdapter:AssignApplicationToPagerAdapter
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
 
-
-    companion object {
-         lateinit var startNewApplicationFragment: StartNewApplicationFragment
-
-        fun newInstance(topFragmentLoan: StartNewApplicationFragment): AssignBorrowerBottomDialogFragment {
-            startNewApplicationFragment    =   topFragmentLoan
-            return AssignBorrowerBottomDialogFragment()
-        }
-
-        //fun newInstance() = CustomFilterBottomSheetDialogFragment()
-    }
-
-    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.roundedBottomSheetDialog)
-    }
-
     private fun setInitialSelection(){
-        viewPager = binding.bottomBorrowerViewPager
-        tabLayout = binding.bottomBorrowerTabLayout
-        pageAdapter = BottomBorrowerPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
+        viewPager = binding.assignLoanApplicationViewPager
+        tabLayout = binding.assignLoanApplicationTabLayout
+        pageAdapter = AssignApplicationToPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
         viewPager.adapter = pageAdapter
 
         //val governmentQuestionActivity = (activity as? GovtQuestionActivity)
@@ -85,10 +68,12 @@ class AssignBorrowerBottomDialogFragment : BottomSheetDialogFragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
         TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = bottomBorrowerTabArray[position] }.attach()
+
+        binding.searchEditTextField.clearFocus()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = AssignBorrowerModalBottomSheetBinding.inflate(inflater, container, false)
+        binding = AssignApplicationToLayoutBinding.inflate(inflater, container, false)
         //binding.crossImageView.setOnClickListener{ dismiss() }
         setStyle(DialogFragment.STYLE_NORMAL, R.style.roundedBottomSheetDialog)
 
@@ -101,13 +86,5 @@ class AssignBorrowerBottomDialogFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initDialog()
-    }
 
-    private fun initDialog() {
-        requireDialog().window?.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        requireDialog().window?.statusBarColor = requireContext().getColor(android.R.color.transparent)
-    }
 }

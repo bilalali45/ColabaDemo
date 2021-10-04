@@ -173,6 +173,7 @@ class DemographicInformationViewController: BaseViewController {
             self.view.layoutIfNeeded()
         }
     }
+    
 }
 
 extension DemographicInformationViewController: UITableViewDataSource, UITableViewDelegate{
@@ -194,16 +195,16 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
         
         if (tableView == raceTableView){
             if (section == 1){
-                return isAsianSelected ? asianOptionArray.count + 1 : 1
+                return 1//isAsianSelected ? asianOptionArray.count + 1 : 1
             }
             else if (section == 3){
-                return isNativeHawaiianSelected ? nativeHawaiianOptionArray.count + 1 : 1
+                return 1//isNativeHawaiianSelected ? nativeHawaiianOptionArray.count + 1 : 1
             }
             return 1
         }
         else if (tableView == ethnicityTableView){
             if (section == 0){
-                return ethnicitySelectedIndex == section ? hispanicOptionArray.count + 1 : 1
+                return 1//ethnicitySelectedIndex == section ? hispanicOptionArray.count + 1 : 1
             }
             else{
                 return 1
@@ -220,6 +221,8 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
         if (tableView == raceTableView){
             let cell = tableView.dequeueReusableCell(withIdentifier: "DemographicQuestionsTableViewCell", for: indexPath) as! DemographicQuestionsTableViewCell
             cell.lblHeading.text = ""
+            cell.indexPath = indexPath
+            cell.delegate = self
             if (indexPath.row == 0){
                 let race = racesArray[indexPath.section]
                 cell.lblQuestion.text = race.question
@@ -227,6 +230,30 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
                 cell.lblQuestion.font = race.isQuestionSelected ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
                 cell.otherView.isHidden = true
                 cell.stackViewLeadingConstraint.constant = 20
+                if (indexPath.section == 1){
+                    cell.otherDetailView.isHidden = !race.isQuestionSelected
+                    cell.otherDetailViewHeightConstraint.constant = 84
+                    cell.lblDetail.text = "Asian Indian"
+                    let otherAsian = "Other Asian: Thai"
+                    let attributedOtherAsian = NSMutableAttributedString(string: otherAsian)
+                    let range = otherAsian.range(of: "Thai")
+                    attributedOtherAsian.addAttribute(NSMutableAttributedString.Key.foregroundColor, value: Theme.getAppGreyColor(), range: otherAsian.nsRange(from: range!))
+                    cell.lblOther.attributedText = attributedOtherAsian
+                }
+                else if (indexPath.section == 3){
+                    cell.otherDetailView.isHidden = !race.isQuestionSelected
+                    cell.otherDetailViewHeightConstraint.constant = 58
+                    cell.lblDetail.text = ""
+                    cell.lblOther.text = "Other Pacific Islander: Fijian"
+                    let otherHawaiian = "Other Pacific Islander: Fijian"
+                    let attributedOtherHawaiian = NSMutableAttributedString(string: otherHawaiian)
+                    let range = otherHawaiian.range(of: "Fijian")
+                    attributedOtherHawaiian.addAttribute(NSMutableAttributedString.Key.foregroundColor, value: Theme.getAppGreyColor(), range: otherHawaiian.nsRange(from: range!))
+                    cell.lblOther.attributedText = attributedOtherHawaiian
+                }
+                else{
+                    cell.otherDetailView.isHidden = true
+                }
             }
             else{
                 let race = indexPath.section == 1 ? asianOptionArray[indexPath.row - 1] : nativeHawaiianOptionArray[indexPath.row - 1]
@@ -251,6 +278,8 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
         }
         else if (tableView == ethnicityTableView){
             let cell = tableView.dequeueReusableCell(withIdentifier: "DemographicQuestionsTableViewCell", for: indexPath) as! DemographicQuestionsTableViewCell
+            cell.indexPath = indexPath
+            cell.delegate = self
             if (indexPath.row == 0){
                 let ethnicity = ethnicityArray[indexPath.section]
                 cell.lblQuestion.text = ethnicity.question
@@ -259,6 +288,19 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
                 cell.otherView.isHidden = true
                 cell.lblHeading.text = ""
                 cell.stackViewLeadingConstraint.constant = 20
+                if (indexPath.section == 0){
+                    cell.otherDetailView.isHidden = ethnicitySelectedIndex != indexPath.section
+                }
+                else{
+                    cell.otherDetailView.isHidden = true
+                }
+                cell.otherDetailViewHeightConstraint.constant = 58
+                cell.lblDetail.text = ""
+                let otherHispanic = "Other Hispanic or Latino: Argentinean"
+                let attributedOtherHispanic = NSMutableAttributedString(string: otherHispanic)
+                let range = otherHispanic.range(of: "Argentinean")
+                attributedOtherHispanic.addAttribute(NSMutableAttributedString.Key.foregroundColor, value: Theme.getAppGreyColor(), range: otherHispanic.nsRange(from: range!))
+                cell.lblOther.attributedText = attributedOtherHispanic
             }
             else{
                 let ethnicity = hispanicOptionArray[indexPath.row - 1]
@@ -276,6 +318,7 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
                 }
                 cell.stackViewLeadingConstraint.constant = 54
             }
+            cell.layoutIfNeeded()
             return cell
         }
         else{
@@ -291,15 +334,27 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        let vc = Utility.getDemographicDetailVC()
+        
         if (tableView == raceTableView){
             var race = DemographicQuestionsModel()
             if (indexPath.row == 0){
                 race = racesArray[indexPath.section]
                 if (indexPath.section == 1){
                     isAsianSelected = !isAsianSelected
+                    if (isAsianSelected){
+                        vc.type = .asian
+                        vc.demographicTypeArray = self.asianOptionArray
+                        self.presentVC(vc: vc)
+                    }
                 }
                 else if (indexPath.section == 3){
                     isNativeHawaiianSelected = !isNativeHawaiianSelected
+                    if (isNativeHawaiianSelected){
+                        vc.type = .hawaiian
+                        vc.demographicTypeArray = self.nativeHawaiianOptionArray
+                        self.presentVC(vc: vc)
+                    }
                 }
             }
             else{
@@ -349,6 +404,11 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
                 ethnicity.isQuestionSelected = !ethnicity.isQuestionSelected
             }
             self.ethnicityTableView.reloadData()
+            if (ethnicitySelectedIndex == 0){
+                vc.type = .hispanic
+                vc.demographicTypeArray = self.hispanicOptionArray
+                self.presentVC(vc: vc)
+            }
         }
         else{
             sexSelectedIndex = indexPath.section
@@ -367,23 +427,35 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         if (tableView == raceTableView){
-            if (indexPath.section == 1 && indexPath.row == 7){
-                let race = asianOptionArray[indexPath.row - 1]
-                return race.isQuestionSelected ? 100 : 40
+//            if (indexPath.section == 1 && indexPath.row == 7){
+//                let race = asianOptionArray[indexPath.row - 1]
+//                return race.isQuestionSelected ? 100 : 40
+//            }
+//            else if (indexPath.section == 3 && indexPath.row == 4){
+//                let race = nativeHawaiianOptionArray[indexPath.row - 1]
+//                return race.isQuestionSelected ? 100 : 40
+//            }
+//            return 40
+            let race = racesArray[indexPath.section]
+            if (indexPath.section == 1){
+                return race.isQuestionSelected ? 140 : 40
             }
-            else if (indexPath.section == 3 && indexPath.row == 4){
-                let race = nativeHawaiianOptionArray[indexPath.row - 1]
-                return race.isQuestionSelected ? 100 : 40
+            else if (indexPath.section == 3){
+                return race.isQuestionSelected ? 110 : 40
             }
             return 40
         }
         else if (tableView == ethnicityTableView){
-            if (indexPath.section == 0 && indexPath.row == 1){
-                return 56
-            }
-            else if (indexPath.section == 0 && indexPath.row == 4){
-                let ethnicity = hispanicOptionArray[indexPath.row - 1]
-                return ethnicity.isQuestionSelected ? 100 : 40
+//            if (indexPath.section == 0 && indexPath.row == 1){
+//                return 56
+//            }
+//            else if (indexPath.section == 0 && indexPath.row == 4){
+//                let ethnicity = hispanicOptionArray[indexPath.row - 1]
+//                return ethnicity.isQuestionSelected ? 100 : 40
+//            }
+//            return 40
+            if (indexPath.section == 0 && ethnicitySelectedIndex == 0){
+                return 110
             }
             return 40
         }
@@ -391,4 +463,30 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
             return 40
         }
     }
+}
+
+extension DemographicInformationViewController: DemographicQuestionsTableViewCellDelegate{
+    
+    func otherDetailViewTapped(indexPath: IndexPath) {
+        
+        let vc = Utility.getDemographicDetailVC()
+        
+        if (indexPath.section == 0){
+            vc.type = .hispanic
+            vc.demographicTypeArray = self.hispanicOptionArray
+            self.presentVC(vc: vc)
+        }
+        else if (indexPath.section == 1){
+            vc.type = .asian
+            vc.demographicTypeArray = self.hispanicOptionArray
+            self.presentVC(vc: vc)
+        }
+        else if (indexPath.section == 3){
+            vc.type = .hawaiian
+            vc.demographicTypeArray = self.hispanicOptionArray
+            self.presentVC(vc: vc)
+        }
+        
+    }
+    
 }

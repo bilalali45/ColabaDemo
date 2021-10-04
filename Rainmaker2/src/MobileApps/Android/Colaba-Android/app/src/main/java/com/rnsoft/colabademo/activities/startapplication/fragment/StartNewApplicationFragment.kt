@@ -2,20 +2,25 @@ package com.rnsoft.colabademo
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
 
 import com.rnsoft.colabademo.databinding.StartApplicationFragLayoutBinding
 import com.rnsoft.colabademo.activities.startapplication.adapter.ContactsAdapter
+import com.rnsoft.colabademo.utils.CustomMaterialFields
+import kotlinx.android.synthetic.main.non_permenant_resident_layout.*
+import timber.log.Timber
+import java.util.regex.Pattern
 
 
 /**
  * Created by Anita Kiran on 9/17/2021.
  */
-class StartNewApplicationFragment : BaseFragment(), View.OnClickListener {
+class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
     private lateinit var binding: StartApplicationFragLayoutBinding
     private var savedViewInstance: View? = null
@@ -33,84 +38,133 @@ class StartNewApplicationFragment : BaseFragment(), View.OnClickListener {
             binding = StartApplicationFragLayoutBinding.inflate(inflater, container, false)
             savedViewInstance = binding.root
 
-            initViews()
+            binding.btnCreateApp.isEnabled = false
+
+            setupUI()
             setLabelFocus()
             super.addListeners(binding.root)
+
             savedViewInstance
         }
     }
 
-    private fun initViews() {
+    private fun setupUI() {
 
-        binding.findContactBtn.setOnClickListener(this)
-        binding.createNewContactBtn.setOnClickListener(this)
-        binding.btnLoanRefinance.setOnClickListener(this)
-        binding.btnLoanPurchase.setOnClickListener(this)
-        binding.rbDebtConsolidation.setOnClickListener(this)
-        binding.rbCashout.setOnClickListener(this)
-        binding.rbLowerPaymentterms.setOnClickListener(this)
-        binding.parentLayout.setOnClickListener(this)
-        binding.backButton.setOnClickListener(this)
+        searchList.add(Contacts("Richard Glenn Randall","richard.glenn@gmail.com","(121) 353 1343"))
+        searchList.add(Contacts("Arnold Richard","arnold634@gmail.com","(121) 353 1343"))
+        searchList.add(Contacts("Richard Glenn Randall","richard.glenn@gmail.com","(121) 353 1343"))
+        searchList.add(Contacts("Arnold Richard","arnold634@gmail.com","(121) 353 1343"))
+        searchList.add(Contacts("Richard Glenn Randall","richard.glenn@gmail.com","(121) 353 1343"))
+
+        adapter = ContactsAdapter(requireActivity(), this@StartNewApplicationFragment)
+
+          binding.searchEdittext.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                adapter.showResult(searchList)
+                binding.recyclerviewContacts.adapter = adapter
+                binding.layoutFindContact.visibility = View.VISIBLE
+                binding.recyclerviewContacts.visibility = View.VISIBLE
+
+            }
+        })
 
 
-        binding.btnCreateApp.setOnClickListener {
-            AssignBorrowerBottomDialogFragment.newInstance(this@StartNewApplicationFragment).show(
-                childFragmentManager,
-                AssignBorrowerBottomDialogFragment::class.java.canonicalName
-            )
+        binding.findContactBtn.setOnClickListener { findOrCreateContactClick() }
+
+        binding.createContactBtn.setOnClickListener { findOrCreateContactClick() }
+
+        binding.btnLoanPurchase.setOnClickListener { onLoanPurposeClick() }
+
+        binding.btnLoanRefinance.setOnClickListener { onLoanPurposeClick() }
+
+        binding.btnLowerPaymentTerms.setOnClickListener { onLoanGoalClick() }
+
+        binding.btnCashout.setOnClickListener { onLoanGoalClick() }
+
+        binding.btnDebtConsolidation.setOnClickListener { onLoanGoalClick() }
+
+        binding.backButton.setOnClickListener { requireActivity().finish() }
+
+        binding.assignLoanOfficer.setOnClickListener {
+
         }
 
-        adapter = ContactsAdapter(requireActivity(),searchList)
-        searchList.add(Contacts("Richard Glenn Randall","richard.glenn@gmail.com","(121) 353 1343"))
-        searchList.add(Contacts("Arnold Richard","arnold634@gmail.com","(121) 353 1343"))
-        searchList.add(Contacts("Richard Glenn Randall","richard.glenn@gmail.com","(121) 353 1343"))
-        searchList.add(Contacts("Arnold Richard","arnold634@gmail.com","(121) 353 1343"))
 
-        binding.searchEdittext.doAfterTextChanged {
-            it.let {
-                binding.recyclerviewContacts.adapter = adapter
-                binding.recyclerviewContacts.visibility = View.VISIBLE
+        binding.btnCancelContact.setOnClickListener{
+            binding.recyclerviewContacts.visibility = View.VISIBLE
+            binding.layoutResult.visibility = View.GONE
+            binding.searchEdittext.visibility = View.VISIBLE
+        }
+
+       binding.parentLayout.setOnClickListener {
+           HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
+           super.removeFocusFromAllFields(binding.parentLayout)
+       }
+
+    }
+
+    private fun checkRequiredFields(){
+
+       // if(!binding.edFirstName.text.toString().isEmpty() && !binding.edLastName.text.toString().isEmpty() && !binding.edMobile.text.toString().isEmpty())
+
+    }
+
+    override fun onItemClick(position: Int) {
+        binding.searchedContactName.text = searchList.get(position).contactName
+        binding.searchedContactEmail.text = searchList.get(position).contactEmail
+        binding.searchedContactPhone.text = searchList.get(position).contactNumber
+
+        binding.layoutResult.visibility = View.VISIBLE
+        binding.searchEdittext.visibility = View.GONE
+        //binding.searchEdittext.setText("")
+        binding.recyclerviewContacts.visibility = View.GONE
+       // searchList.clear()
+    }
+
+    private fun setLabelFocus(){
+        // set lable focus
+        binding.edFirstName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edFirstName, binding.layoutFirstName, requireContext(),getString(R.string.error_field_required)))
+        binding.edLastName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edLastName, binding.layoutLastName, requireContext(),getString(R.string.error_field_required)))
+        binding.edMobile.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edMobile, binding.layoutMobileNum, requireContext(),getString(R.string.invalid_phone_num)))
+        binding.edMobile.addTextChangedListener(PhoneTextFormatter(binding.edMobile, "(###) ###-####"))
+
+        binding.edEmail.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_two,requireActivity())
+            } else {
+                if (binding.edEmail.text?.length == 0) {
+                    CustomMaterialFields.setError(binding.layoutEmail,getString(R.string.error_field_required),requireActivity())
+                    CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_three,requireActivity())
+                } else {
+                    CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_two,requireActivity())
+                    if (!isValidEmailAddress(binding.edEmail.text.toString())) {
+                        CustomMaterialFields.setError(binding.layoutEmail,getString(R.string.invalid_email),requireActivity())
+                    } else {
+                        CustomMaterialFields.clearError(binding.layoutEmail,requireActivity())
+                    }
+                }
             }
         }
 
     }
 
-    override fun onClick(view: View?) {
-        when (view?.getId()) {
-            R.id.find_contact_btn -> findOrCreateContactClick()
-            R.id.btn_loan_purchase -> onLoanPurposeClick()
-            R.id.btn_loan_refinance -> onLoanPurposeClick()
-            R.id.rb_lower_paymentterms -> onLoanGoalClick()
-            R.id.rb_cashout -> onLoanGoalClick()
-            R.id.rb_debt_consolidation -> onLoanGoalClick()
-            R.id.create_new_contact_btn ->findOrCreateContactClick()
-            R.id.backButton -> requireActivity().finish()
-            R.id.parentLayout -> HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
-        }
-    }
-
-    private fun setLabelFocus(){
-        // set lable focus
-        binding.edFirstName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edFirstName, binding.layoutFirstName, requireContext()))
-        binding.edLastName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edLastName, binding.layoutLastName, requireContext()))
-        binding.edEmail.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edEmail, binding.layoutEmail, requireContext()))
-        binding.edMobile.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edMobile, binding.layoutMobileNum, requireContext()))
-        binding.edMobile.addTextChangedListener(PhoneTextFormatter(binding.edMobile, "(###) ###-####"))
-    }
-
     private fun findOrCreateContactClick(){
         if(binding.findContactBtn.isChecked) {
-            searchList.clear()
+            //searchList.clear()
             binding.findContactBtn.isChecked = false
-            binding.createNewContactBtn.visibility=View.VISIBLE
+            binding.createContactBtn.visibility=View.VISIBLE
             binding.layoutFindContact.visibility = View.VISIBLE
+            binding.searchEdittext.visibility = View.VISIBLE
+            binding.layoutResult.visibility = View.GONE
             binding.layoutCreateContact.visibility = View.GONE
             binding.findContactBtn.visibility = View.GONE
         }
         else {
-            if (binding.createNewContactBtn.isChecked) {
-                binding.createNewContactBtn.isChecked = false
-                binding.createNewContactBtn.visibility=View.GONE
+            if (binding.createContactBtn.isChecked) {
+                binding.createContactBtn.isChecked = false
+                binding.createContactBtn.visibility=View.GONE
                 binding.findContactBtn.visibility = View.VISIBLE
                 binding.layoutFindContact.visibility = View.GONE
                 binding.layoutCreateContact.visibility = View.VISIBLE
@@ -130,21 +184,29 @@ class StartNewApplicationFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun onLoanGoalClick(){
-        if(binding.rbLowerPaymentterms.isChecked){
-            binding.rbLowerPaymentterms.setTypeface(null, Typeface.BOLD)
-            binding.rbCashout.setTypeface(null, Typeface.NORMAL)
-            binding.rbDebtConsolidation.setTypeface(null, Typeface.NORMAL)
+        if(binding.btnLowerPaymentTerms.isChecked){
+            binding.btnLowerPaymentTerms.setTypeface(null, Typeface.BOLD)
+            binding.btnCashout.setTypeface(null, Typeface.NORMAL)
+            binding.btnDebtConsolidation.setTypeface(null, Typeface.NORMAL)
         }
-        else if(binding.rbCashout.isChecked) {
-            binding.rbLowerPaymentterms.setTypeface(null, Typeface.NORMAL)
-            binding.rbCashout.setTypeface(null, Typeface.BOLD)
-            binding.rbDebtConsolidation.setTypeface(null, Typeface.NORMAL)
+        else if(binding.btnCashout.isChecked) {
+            binding.btnLowerPaymentTerms.setTypeface(null, Typeface.NORMAL)
+            binding.btnCashout.setTypeface(null, Typeface.BOLD)
+            binding.btnDebtConsolidation.setTypeface(null, Typeface.NORMAL)
         }
-        else if (binding.rbLowerPaymentterms.isChecked){
-            binding.rbLowerPaymentterms.setTypeface(null, Typeface.NORMAL)
-            binding.rbCashout.setTypeface(null, Typeface.NORMAL)
-            binding.rbDebtConsolidation.setTypeface(null, Typeface.BOLD)
+        else if (binding.btnDebtConsolidation.isChecked){
+            binding.btnLowerPaymentTerms.setTypeface(null, Typeface.NORMAL)
+            binding.btnCashout.setTypeface(null, Typeface.NORMAL)
+            binding.btnDebtConsolidation.setTypeface(null, Typeface.BOLD)
         }
+    }
+
+    private fun isValidEmailAddress(email: String?): Boolean {
+        val ePattern =
+            "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"
+        val p = Pattern.compile(ePattern)
+        val m = p.matcher(email)
+        return m.matches()
     }
 
 }

@@ -50,13 +50,13 @@ class LoanOfficerListViewController: BaseViewController {
 extension LoanOfficerListViewController: UICollectionViewDataSource, UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return isForPopup ? 4 : 30
+        return isForPopup ? 4 : 14
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoanOfficerCollectionViewCell", for: indexPath) as! LoanOfficerCollectionViewCell
         cell.userImageView.image = UIImage(named: indexPath.row % 2 == 0 ? "LoanOfficer1" : "LoanOfficer2")
-        cell.lblUsername.text = indexPath.row % 2 == 0 ? "John Doe" : "Jenny Dan"
+        cell.lblUsername.text = indexPath.row % 2 == 0 ? "John Doe" : "Jacky Doe"
         cell.lblTenant.text = indexPath.row % 2 == 0 ? "Texas Trust Home" : "AHC Lending"
         cell.selectedView.isHidden = selectedIndex != indexPath
         if isForPopup && indexPath.row == 3{
@@ -67,7 +67,7 @@ extension LoanOfficerListViewController: UICollectionViewDataSource, UICollectio
             cell.seeMoreImage.isHidden = false
         }
         else{
-            cell.lblUsername.text = indexPath.row % 2 == 0 ? "John Doe" : "Jenny Dan"
+            cell.lblUsername.text = indexPath.row % 2 == 0 ? "John Doe" : "Jacky Doe"
             cell.lblTenant.text = indexPath.row % 2 == 0 ? "Texas Trust Home" : "AHC Lending"
             cell.seeMoreImage.isHidden = true
         }
@@ -77,5 +77,15 @@ extension LoanOfficerListViewController: UICollectionViewDataSource, UICollectio
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedIndex = indexPath
         self.collectionView.reloadData()
+        if (isForPopup && indexPath.row == 3){
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanOfficerSeeMoreTapped), object: nil)
+        }
+        else{
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanOfficerSelected), object: nil)
+            if (!isForPopup){
+                self.dismissVC()
+            }
+            
+        }
     }
 }

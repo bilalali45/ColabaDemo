@@ -20,7 +20,8 @@ import java.util.*
 /**
  * Created by Anita Kiran on 8/24/2021.
  */
-class DependentAdapter (val mContext : Context, private val items: ArrayList<Dependent>, clickListner: RecyclerviewClickListener) : RecyclerView.Adapter<DependentAdapter.DataViewHolder>() {
+class DependentAdapter (val mContext : Context, private val items: ArrayList<Dependent>, clickListner: RecyclerviewClickListener) :
+    RecyclerView.Adapter<DependentAdapter.DataViewHolder>() {
 
     private var deleteClick: RecyclerviewClickListener = clickListner
 
@@ -76,7 +77,7 @@ class DependentAdapter (val mContext : Context, private val items: ArrayList<Dep
         holder.itemView.til_dependent.setEndIconOnClickListener {
 
             if(holder.itemView.til_dependent.endIconDrawable?.isVisible == true)
-                deleteClick.deleteDependentClick(position)
+                deleteClick.onItemClick(position)
         }
 
 

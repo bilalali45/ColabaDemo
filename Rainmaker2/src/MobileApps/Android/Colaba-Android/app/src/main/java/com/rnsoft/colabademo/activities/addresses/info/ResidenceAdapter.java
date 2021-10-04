@@ -64,6 +64,7 @@ public class ResidenceAdapter extends RecyclerView.Adapter<ResidenceAdapter.MyVi
     public int getItemCount() {
         return taskList.size();
     }
+
     public void setTaskList(List<Address> taskList) {
         this.taskList = taskList;
         notifyDataSetChanged();

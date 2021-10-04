@@ -4,37 +4,34 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.rnsoft.colabademo.BaseFragment
-import com.rnsoft.colabademo.BorrowerOneQuestions
-import com.rnsoft.colabademo.BorrowerTwoQuestions
 
-class BottomBorrowerPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+class AssignApplicationToPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
         FragmentStateAdapter(fragmentManager, lifecycle) {
 
     companion object{
-        const val BOTTOM_BORROWER_TABS = 4 // this number will decide, how many tabs and fragments will be displayed...
+        const val ASSIGN_APP_TABS = 4 // this number will decide, how many tabs and fragments will be displayed...
     }
 
     override fun getItemCount(): Int {
-        return BOTTOM_BORROWER_TABS
+        return ASSIGN_APP_TABS
     }
 
     override fun createFragment(position: Int): Fragment {
 
         when (position) {
             0 -> {
-                return BottomLoanOfficer()
+                return AssignLoanOfficerFragment()
             }
             1 -> {
-                return BottomLoanCoordinator()
+                return AssignLoanCoordinatorFragment()
             }
 
             2 -> {
-                return BottomPreProcessor()
+                return AssignPreProcessorFragment()
             }
 
             3 -> {
-                return BottomLoanProcessor()
+                return AssignLoanProcessorFragment()
             }
         }
 

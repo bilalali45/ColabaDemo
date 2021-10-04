@@ -763,7 +763,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView69"
+                        android:id="@+id/third_lo_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/rubik_regular"
@@ -861,7 +861,7 @@
 
 
                     <TextView
-                        android:id="@+id/textView80"
+                        android:id="@+id/fourth_lo_detail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/rubik_regular"
@@ -873,7 +873,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView79"
+                        android:id="@+id/fourth_lo_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
@@ -885,7 +885,7 @@
                         android:textSize="13sp"
 
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView80" />
+                        app:layout_constraintTop_toBottomOf="@+id/fourth_lo_detail" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -1971,155 +1971,52 @@
                         app:layout_constraintTop_toBottomOf="@+id/american_or_indian_check_box" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:visibility="visible"
-                        android:paddingBottom="1dp"
                         android:id="@+id/asian_inner_constraint_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
-
+                        android:minHeight="54dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/irfan_content_bg_with_drop_shadow"
+                        android:padding="20dp"
+                        android:visibility="visible"
                         app:layout_constraintStart_toStartOf="@+id/asian_check_box"
                         app:layout_constraintTop_toBottomOf="@+id/asian_check_box">
 
-
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/asian_indian_check_box"
+                        <TextView
+                            android:id="@+id/textView56"
                             android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="20dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:paddingStart="14dp"
+                            android:layout_height="wrap_content"
                             android:text="Asian Indian"
-
+                            android:fontFamily="@font/rubik_regular"
+                            android:textSize="15sp"
                             android:textColor="@color/grey_color_one"
-                            android:textSize="14sp"
-                            app:buttonCompat="@drawable/cb_selector"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/chinese_check_box"
+                        <TextView
+                            android:id="@+id/textView60"
                             android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Other Asian:"
                             android:fontFamily="@font/rubik_regular"
-                            android:paddingStart="14dp"
-                            android:text="Chinese"
+                            android:textSize="15sp"
                             android:textColor="@color/grey_color_one"
-                            android:textSize="14sp"
-                            app:buttonCompat="@drawable/cb_selector"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/asian_indian_check_box" />
+                            app:layout_constraintTop_toBottomOf="@+id/textView56" />
 
-
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/filipino_check_box"
+                        <TextView
+                            android:id="@+id/textView61"
                             android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:text="Thai"
                             android:fontFamily="@font/rubik_regular"
-                            android:paddingStart="14dp"
-                            android:text="Filipino"
-
-                            android:textColor="@color/grey_color_one"
-                            android:textSize="14sp"
-                            app:buttonCompat="@drawable/cb_selector"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/chinese_check_box" />
-
-
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/japanese_check_box"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="20dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:paddingStart="14dp"
-                            android:text="Japanese"
-                            android:textColor="@color/grey_color_one"
-                            android:textSize="14sp"
-                            app:buttonCompat="@drawable/cb_selector"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/filipino_check_box" />
-
-
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/korean_check_box"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="20dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:paddingStart="14dp"
-                            android:text="Korean"
-
-                            android:textColor="@color/grey_color_one"
-                            android:textSize="14sp"
-                            app:buttonCompat="@drawable/cb_selector"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/japanese_check_box" />
-
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/vietnamese_check_box"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="20dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:paddingStart="14dp"
-                            android:text="Vietnamese"
-
-                            android:textColor="@color/grey_color_one"
-                            android:textSize="14sp"
-                            app:buttonCompat="@drawable/cb_selector"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/korean_check_box" />
-
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/other_asian_check_box"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="20dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:paddingStart="14dp"
-                            android:text="Other Asian"
-
-                            android:textColor="@color/grey_color_one"
-                            android:textSize="14sp"
-                            app:buttonCompat="@drawable/cb_selector"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/vietnamese_check_box" />
-
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/other_asian_constraintlayout"
-                            android:visibility="visible"
-                            android:layout_width="0dp"
-                            android:layout_height="54dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/irfan_content_bg_with_drop_shadow"
-                            android:paddingStart="20dp"
-                            android:paddingEnd="20dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@+id/other_asian_check_box"
-                            app:layout_constraintTop_toBottomOf="@+id/other_asian_check_box">
-
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/textView46"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:fontFamily="@font/rubik_regular"
-                                android:gravity="center_vertical"
-                                android:text=""
-                                android:background="@android:color/transparent"
-                                android:textColor="@color/grey_color_two"
-                                android:textSize="13sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"/>
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
+                            android:textSize="15sp"
+                            android:textColor="@color/grey_color_two"
+                            app:layout_constraintStart_toEndOf="@+id/textView60"
+                            app:layout_constraintTop_toTopOf="@+id/textView60" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.appcompat.widget.AppCompatCheckBox
@@ -2151,107 +2048,42 @@
                         app:layout_constraintTop_toBottomOf="@+id/black_or_african_check_box" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:visibility="visible"
                         android:id="@+id/native_hawaian_inner_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:minHeight="54dp"
+                        android:padding="20dp"
                         android:layout_marginStart="32dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/irfan_content_bg_with_drop_shadow"
                         android:paddingBottom="1dp"
+                        android:visibility="visible"
                         app:layout_constraintStart_toStartOf="@+id/native_hawaian_or_other_check_box"
                         app:layout_constraintTop_toBottomOf="@+id/native_hawaian_or_other_check_box">
 
-
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/native_hawaiian_check_box"
+                        <TextView
+                            android:id="@+id/textView160"
                             android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="20dp"
+                            android:layout_height="wrap_content"
                             android:fontFamily="@font/rubik_regular"
-                            android:paddingStart="14dp"
-                            android:text="Native Hawaiian"
-
+                            android:text="Other Pacific Islander:"
                             android:textColor="@color/grey_color_one"
-                            android:textSize="14sp"
-                            app:buttonCompat="@drawable/cb_selector"
+                            android:textSize="15sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/guamanian_or_chamorro_check_box"
+                        <TextView
+                            android:id="@+id/textView162"
                             android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:text="Fijian"
                             android:fontFamily="@font/rubik_regular"
-                            android:paddingStart="14dp"
-                            android:text="Chinese"
-                            android:textColor="@color/grey_color_one"
-                            android:textSize="14sp"
-                            app:buttonCompat="@drawable/cb_selector"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/native_hawaiian_check_box" />
+                            android:textSize="15sp"
+                            android:textColor="@color/grey_color_two"
+                            app:layout_constraintStart_toEndOf="@+id/textView160"
+                            app:layout_constraintTop_toTopOf="@+id/textView160" />
 
-
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/samoan_check_box"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="20dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:paddingStart="14dp"
-                            android:text="Samoan"
-
-                            android:textColor="@color/grey_color_one"
-                            android:textSize="14sp"
-                            app:buttonCompat="@drawable/cb_selector"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/guamanian_or_chamorro_check_box" />
-
-
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/other_pacific_islander_check_box"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="20dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:paddingStart="14dp"
-                            android:text="Other Pacific Islander"
-                            android:textColor="@color/grey_color_one"
-                            android:textSize="14sp"
-                            app:buttonCompat="@drawable/cb_selector"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/samoan_check_box" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/other_pacific_islander_constraintLayout"
-                            android:visibility="visible"
-                            android:layout_width="0dp"
-                            android:layout_height="54dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/irfan_content_bg_with_drop_shadow"
-                            android:paddingStart="20dp"
-                            android:paddingEnd="20dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@+id/other_pacific_islander_check_box"
-                            app:layout_constraintTop_toBottomOf="@+id/other_pacific_islander_check_box">
-
-
-                            <com.google.android.material.textfield.TextInputEditText
-
-                                android:id="@+id/textView56"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:fontFamily="@font/rubik_regular"
-                                android:gravity="center_vertical"
-                                android:text=""
-                                android:background="@android:color/transparent"
-                                android:textColor="@color/grey_color_two"
-                                android:textSize="13sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"  />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -2437,7 +2269,9 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/hispanic_or_latino_layout"
                         android:visibility="visible"
-
+                        android:minHeight="54dp"
+                        android:padding="20dp"
+                        android:background="@drawable/irfan_content_bg_with_drop_shadow"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="36dp"
@@ -2447,104 +2281,29 @@
                         app:layout_constraintTop_toBottomOf="@+id/hispanic_or_latino">
 
 
-                        <TextView
-                            android:id="@+id/textView48"
+                           <TextView
+                            android:id="@+id/textView170"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/rubik_medium"
-                            android:text="Select all that apply."
-                            android:textColor="@color/grey_color_two"
-                            android:textSize="13sp"
+                            android:fontFamily="@font/rubik_regular"
+                            android:text="Other Hispanic or Latino: "
+                            android:textColor="@color/grey_color_one"
+                            android:textSize="15sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/mexican"
+                        <TextView
+                            android:id="@+id/textView182"
                             android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="20dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:paddingStart="14dp"
-                            android:text="Mexican"
-                            android:textColor="@color/grey_color_one"
-                            android:textSize="14sp"
-                            android:visibility="visible"
-                            app:buttonCompat="@drawable/cb_selector"
-                            app:layout_constraintStart_toStartOf="@+id/textView48"
-                            app:layout_constraintTop_toBottomOf="@+id/textView48" />
-
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/puerto_rican"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="20dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:paddingStart="14dp"
-                            android:text="Puerto Rican"
-                            android:textColor="@color/grey_color_one"
-                            android:textSize="14sp"
-                            app:buttonCompat="@drawable/cb_selector"
-                            app:layout_constraintStart_toStartOf="@+id/mexican"
-                            app:layout_constraintTop_toBottomOf="@+id/mexican" />
-
-
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/cuban"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="20dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:paddingStart="14dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
                             android:text="Cuban"
-                            android:textColor="@color/grey_color_one"
-                            android:textSize="14sp"
-                            app:buttonCompat="@drawable/cb_selector"
-                            app:layout_constraintStart_toStartOf="@+id/puerto_rican"
-                            app:layout_constraintTop_toBottomOf="@+id/puerto_rican" />
-
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/other_hispanic_or_latino"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="20dp"
                             android:fontFamily="@font/rubik_regular"
-                            android:paddingStart="14dp"
-                            android:text="Other Hispanic or Latino"
-                            android:textColor="@color/grey_color_one"
-                            android:textSize="14sp"
-                            app:buttonCompat="@drawable/cb_selector"
-                            app:layout_constraintStart_toStartOf="@+id/cuban"
-                            app:layout_constraintTop_toBottomOf="@+id/cuban" />
+                            android:textSize="15sp"
+                            android:textColor="@color/grey_color_two"
+                            app:layout_constraintStart_toEndOf="@+id/textView170"
+                            app:layout_constraintTop_toTopOf="@+id/textView170" />
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/other_hispanic_constraintLayout"
-                            android:visibility="visible"
-                            android:layout_width="0dp"
-                            android:layout_height="54dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/irfan_content_bg_with_drop_shadow"
-                            android:paddingStart="20dp"
-                            android:paddingEnd="20dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@+id/other_hispanic_or_latino"
-                            app:layout_constraintTop_toBottomOf="@+id/other_hispanic_or_latino">
-
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/textView66"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:fontFamily="@font/rubik_regular"
-                                android:gravity="center_vertical"
-                                android:text=""
-                                android:background="@android:color/transparent"
-                                android:textColor="@color/grey_color_two"
-                                android:textSize="13sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

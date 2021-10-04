@@ -100,6 +100,7 @@
 
     <string name="pipeline">Pipeline</string>
     <string name="assigned_to_me">Assigned to Me</string>
+    <string name="assign_application_to">Assign Application To</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -108,6 +109,8 @@
     <string name="login_failed">Login credentials not verified</string>
     <string name="email_format_error">Invalid Email, Please try again…</string>
     <string name="email_empty_error"> Empty Email, Please try again…</string>
+    <string name="bottom_email_error">This email and/or phone number is already associated with a contact.</string>
+
     <string name="password_empty_error">Password Empty, Please try again…</string>
     <string name="password_error">Invalid Password, Please try again…</string>
     <string name="password_length_error">Invalid Password, Length too short…</string>
@@ -185,6 +188,9 @@
     <string name="loan_info_refinance">Refinance Loan Information</string>
 
 
+    <string name="request_docs">Request Docs</string>
+
+
     <string name="assets">Assets</string>
 
     <string name="street_address">Street Address</string>
@@ -197,6 +203,9 @@
     <string name="search_mailing_address">Search Mailing Address</string>
     <string name="search_home_address">Search Home Address</string>
     <string name="search_prev_home_address">Search Previous Home Address</string>
+    <string name="search_main_address">Search Main Address</string>
+    <string name="search_business_address">Search Business Address</string>
+    <string name="search_service_location_address">Search Service Location Address</string>
 
     <string name="zip_code">Zip Code</string>
     <string name="country">Country</string>
@@ -475,10 +484,14 @@
     <string name="have_you_had_an_ownership_interest">Have you had an ownership interest in another property in the last three years?</string>
     <string name="will_this_property_be_subject_to_a_lien">Will this property be subject to a lien that could take priority over the first mortgage lien, such as a clean energy lien paid through your property taxes (e.g., the Property Assessed Clean Energy Program)?</string>
 
+    <string name="assign_loan_officer">Assign Loan Officer</string>
+
     <string name="add_employer_add">Add Employer Address</string>
     <string name="add_business_add">Add Business Address</string>
     <string name="add_service_add">Add Service Location Address</string>
     <string name="add_property_add">Add Property Address</string>
+    <string name="current_employer_address">Current Employer Address</string>
+    <string name="previous_employer_address">Previous Employer Address</string>
 
 
 </resources>

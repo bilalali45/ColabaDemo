@@ -120,7 +120,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
         requireActivity().onBackPressedDispatcher.addCallback {
             requireActivity().finish()
-            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_right)
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }
 
     }
@@ -143,7 +143,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
     }
 
-    override fun deleteDependentClick(position: Int) {
+    override fun onItemClick(position: Int) {
         listItems.removeAt(position)
         //update list/ recreate again
         for(i in 0 until listItems.size){
@@ -183,7 +183,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
             R.id.backButton_info -> {
                 requireActivity().finish()
-                requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_right)
+                requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_out_left)
             }
         }
     }
@@ -389,16 +389,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                 }
             }
         }
-
-        // date of birth
-        /*bi.edDateOfBirth.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(v: View, m: MotionEvent): Boolean {
-                when (m.getAction()) {
-                    MotionEvent.ACTION_DOWN -> openCalendar()
-                }
-                return false
-            }
-        }) */
 
         bi.edDateOfBirth.showSoftInputOnFocus = false
         bi.edDateOfBirth.setOnClickListener { openCalendar() }

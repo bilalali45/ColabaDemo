@@ -2,7 +2,6 @@ package com.rnsoft.colabademo
 
 import android.view.View
 
-
 data class IncomeModelClass(
     val headerTitle: String = "Header Title",
     val headerAmount: String = "$0",

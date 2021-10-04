@@ -192,16 +192,16 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
     private fun setStateAndCountyDropDown() {
 
         val countryAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.countries)
-        binding.tvCountrySpinner.setAdapter(countryAdapter)
+        binding.tvCountry.setAdapter(countryAdapter)
 
-        binding.tvCountrySpinner.setOnFocusChangeListener { _, _ ->
-            binding.tvCountrySpinner.showDropDown()
+        binding.tvCountry.setOnFocusChangeListener { _, _ ->
+            binding.tvCountry.showDropDown()
         }
-        binding.tvCountrySpinner.setOnClickListener {
-            binding.tvCountrySpinner.showDropDown()
+        binding.tvCountry.setOnClickListener {
+            binding.tvCountry.showDropDown()
         }
 
-        binding.tvCountrySpinner.onItemClickListener =
+        binding.tvCountry.onItemClickListener =
             object : AdapterView.OnItemClickListener {
                 override fun onItemClick(
                     p0: AdapterView<*>?,
@@ -221,16 +221,16 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
 
         val stateAdapter =
             ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.states)
-        binding.tvStateSpinner.setAdapter(stateAdapter)
+        binding.tvState.setAdapter(stateAdapter)
 
-        binding.tvStateSpinner.setOnFocusChangeListener { _, _ ->
-            binding.tvStateSpinner.showDropDown()
+        binding.tvState.setOnFocusChangeListener { _, _ ->
+            binding.tvState.showDropDown()
         }
-        binding.tvStateSpinner.setOnClickListener {
-            binding.tvStateSpinner.showDropDown()
+        binding.tvState.setOnClickListener {
+            binding.tvState.showDropDown()
         }
 
-        binding.tvStateSpinner.onItemClickListener =
+        binding.tvState.onItemClickListener =
             object : AdapterView.OnItemClickListener {
                 override fun onItemClick(
                     p0: AdapterView<*>?,
@@ -360,7 +360,7 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
             locality?.let { binding.edCity.setText(it) }
             subLocality?.let { binding.edCounty.setText(it) }
             postalCode?.let { binding.edZipcode.setText(it) }
-            countryName?.let { binding.tvCountrySpinner.setText(it) }
+            countryName?.let { binding.tvCountry.setText(it) }
             binding.edStreetAddress.setText(place.getPrimaryText(null))
             premises?.let { binding.edUnitAtpNo.setText(it) }
 
@@ -380,9 +380,9 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
         //Log.e("Test State - ", " = " +map.get("LA") +"  "+map.get(stateCode))
 
         if (map.get(stateCode) != null)
-            binding.tvStateSpinner.setText(map.get(stateCode))
+            binding.tvState.setText(map.get(stateCode))
         else
-            binding.tvStateSpinner.setText("")
+            binding.tvState.setText("")
 
         visibleAllFields()
     }
