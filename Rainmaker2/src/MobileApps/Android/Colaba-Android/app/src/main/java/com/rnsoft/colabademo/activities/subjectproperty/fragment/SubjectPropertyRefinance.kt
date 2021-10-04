@@ -41,7 +41,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
 
     private var savedViewInstance: View? = null
 
-     override fun onCreateView(
+    override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,7 +75,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
 
             binding.edDateOfHomePurchase.showSoftInputOnFocus = false
             binding.edDateOfHomePurchase.setOnClickListener { createCustomDialog() }
-            binding.edDateOfHomePurchase.setOnFocusChangeListener { _, _ -> createCustomDialog() }
+            //binding.edDateOfHomePurchase.setOnFocusChangeListener { _, _ -> createCustomDialog() }
 
             setSpinnerData()
             setInputFields()
@@ -92,6 +92,18 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     }
 
     private fun setInputFields() {
+
+        /*binding.edDateOfHomePurchase.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                //createCustomDialog()
+                CustomMaterialFields.setColor(binding.layoutDateOfHomepurchase,R.color.grey_color_two,requireActivity())
+            } else {
+                if (binding.edDateOfHomePurchase.text?.length == 0)
+                    CustomMaterialFields.setColor(binding.layoutDateOfHomepurchase,R.color.grey_color_three,requireActivity())
+                else
+                    CustomMaterialFields.setColor(binding.layoutDateOfHomepurchase,R.color.grey_color_two,requireActivity())
+            }
+        } */
 
         // set lable focus
         binding.edRentalIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edRentalIncome, binding.layoutRentalIncome, requireContext()))
@@ -132,6 +144,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.edPropertyTaxes.addTextChangedListener(NumberTextFormat(binding.edPropertyTaxes))
         binding.edHomeownerInsurance.addTextChangedListener(NumberTextFormat(binding.edHomeownerInsurance))
         binding.edFloodInsurance.addTextChangedListener(NumberTextFormat(binding.edFloodInsurance))
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.edDateOfHomePurchase, binding.layoutDateOfHomepurchase)
+
 
         // set Dollar prifix
         CustomMaterialFields.setDollarPrefix(binding.layoutRentalIncome, requireContext())
@@ -252,9 +266,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         } else if (binding.tvOccupancyType.text.toString().equals("Primary Residence")) {
             var propertyType = binding.tvPropertyType.text.toString()
             if (propertyType.equals("Duplex (2 Unit)") || propertyType.equals("Triplex (3 Unit)") || propertyType.equals(
-                    "Quadplex (4 Unit)"
-                )
-            )
+                    "Quadplex (4 Unit)"))
                 binding.layoutRentalIncome.visibility = View.VISIBLE
             else
                 binding.layoutRentalIncome.visibility = View.GONE
@@ -336,5 +348,6 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
         binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
     }
+
 
 }

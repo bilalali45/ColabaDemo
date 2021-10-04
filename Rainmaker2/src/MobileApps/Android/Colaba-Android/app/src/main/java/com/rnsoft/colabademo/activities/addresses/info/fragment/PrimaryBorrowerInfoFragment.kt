@@ -178,7 +178,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             R.id.add_prev_address -> if (bi.tvResidence.text.equals(getString(R.string.current_address))) {
                 findNavController().navigate(R.id.action_info_current_address)
             } else {
-                findNavController().navigate(R.id.action_info_mailing_address)
+                findNavController().navigate(R.id.action_info_previous_address)
             }
 
             R.id.backButton_info -> {
@@ -292,7 +292,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                         } else {
                             addressBtnText = getString(R.string.current_address)
                         }
-                        findNavController().navigate(R.id.action_info_mailing_address)
+                        findNavController().navigate(R.id.action_info_previous_address)
                     }
                 }
                 override fun onIndependentViewClicked(independentViewID: Int, position: Int) {}

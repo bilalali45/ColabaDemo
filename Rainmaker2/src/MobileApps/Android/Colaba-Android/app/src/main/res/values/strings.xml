@@ -490,5 +490,13 @@
     <string name="current_employer_address">Current Employer Address</string>
     <string name="previous_employer_address">Previous Employer Address</string>
 
+    <string name="msg_to_borrower">Include a message to the borrower</string>
+    <string name="custom_document">Custom Document</string>
+    <string name="custom_doc_name">Custom Document Name</string>
+    <string name="standard_checklist">My Standard Checklist</string>
+    <string name="request_email_template">Request Email Template</string>
+    <string name="send_doc_request">Send Document Request</string>
+    <string name="send_request">Send Request</string>
+    <string name="ques_remove_doc">Are you sure you want to remove this document?</string>
 
 </resources>

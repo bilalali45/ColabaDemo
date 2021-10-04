@@ -56,6 +56,8 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
     private lateinit var token: AutocompleteSessionToken
     private lateinit var placesClient: PlacesClient
     private lateinit var predictAdapter: PlacePredictionAdapter
+    private var map: HashMap<String, String> = HashMap()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,19 +75,19 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         initializeUSAstates()
 
         return root
-
     }
 
     private fun setUpUI(){
 
         binding.moveInEditText.setOnClickListener {
             createCustomDialog()
+
             binding.topSearchAutoTextView.clearFocus()
         }
 
         binding.moveInEditText.showSoftInputOnFocus = false
 
-        binding.moveInEditText.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
+        /*binding.moveInEditText.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
                 createCustomDialog()
                 CustomMaterialFields.setColor(binding.moveInLayout, R.color.grey_color_two, requireActivity())
@@ -97,7 +99,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                     CustomMaterialFields.setColor(binding.moveInLayout, R.color.grey_color_two, requireActivity())
                 }
             }
-        }
+        } */
 
         binding.topSearchAutoTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
@@ -165,9 +167,17 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.zipcodeEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.zipcodeEditText, binding.zipcodeLayout, requireContext()))
         binding.monthlyRentEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.monthlyRentEditText, binding.monthlyRentLayout, requireContext()))
 
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.unitAptInputEditText, binding.unitAptInputLayout)
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.streetAddressEditText, binding.streetAddressLayout)
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.cityEditText, binding.cityLayout)
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.countyEditText,binding.countyLayout)
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.zipcodeEditText, binding.zipcodeLayout)
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.moveInEditText, binding.moveInLayout)
+
+
 
         binding.addAddressLayout.setOnClickListener {
-            findNavController().navigate(R.id.navigation_previous_address)
+            findNavController().navigate(R.id.action_info_mailing_address)
         }
 
         binding.backButton.setOnClickListener {
@@ -253,9 +263,14 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
             if(state.isNotEmpty() || state.length > 0) {
                 CustomMaterialFields.clearError(binding.stateCompleteTextInputLayout,requireActivity())
             }
+            if (housingStatus.isNotEmpty() || housingStatus.length > 0) {
+                CustomMaterialFields.clearError(binding.housingLayout,requireActivity())
+            }
+
         }
 
-        if (searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && county.length>0  && country.length > 0 && zipCode.length > 0) {
+        if (searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && county.length>0  && country.length > 0 && zipCode.length > 0
+            && housingStatus.length>0) {
             findNavController().popBackStack()
         }
 
@@ -465,11 +480,16 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.housingCompleteTextView.onItemClickListener =
             object : AdapterView.OnItemClickListener {
                 override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                    binding.housingLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+
                     if (position == houseLivingTypeArray.size - 2) {
                         binding.monthlyRentLayout.visibility = View.VISIBLE
-                        binding.housingLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
                     } else
                         binding.monthlyRentLayout.visibility = View.GONE
+
+                    if (binding.housingCompleteTextView.text.isNotEmpty() && binding.housingCompleteTextView.text.isNotBlank()) {
+                        CustomMaterialFields.clearError(binding.housingLayout,requireActivity())
+                    }
                 }
             }
     }
@@ -487,9 +507,10 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
         val sampleDate = "$stringMonth / $p1"
         binding.moveInEditText.setText(sampleDate)
+        CustomMaterialFields.clearError(binding.moveInLayout,requireActivity())
+
     }
 
-    private var map: HashMap<String, String> = HashMap()
 
     private fun initializeUSAstates() {
         map.put("AL" , "Alabama")
