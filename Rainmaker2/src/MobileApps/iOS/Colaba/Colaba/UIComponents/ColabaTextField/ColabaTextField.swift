@@ -206,7 +206,7 @@ class ColabaTextField: TextField {
         case .amount:
             print("button not available in amount type")
         case .percentage:
-            print("button not available in amount type")
+            print("button not available in percentage type")
         case .defaultType:
             print("button not available in default type")
         }
