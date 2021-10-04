@@ -12,11 +12,13 @@ class AssetsHeadingTableViewCell: UITableViewCell {
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var lblAmount: UILabel!
     @IBOutlet weak var imageArrow: UIImageView!
+    @IBOutlet weak var counterView: UIView!
+    @IBOutlet weak var lblCounter: UILabel!
     @IBOutlet weak var separatorView: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        counterView.layer.cornerRadius = counterView.frame.height / 2
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -24,7 +24,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="0qd-jn-EO9">
-                        <rect key="frame" x="15" y="2" width="232" height="40"/>
+                        <rect key="frame" x="15" y="0.0" width="265" height="40"/>
                         <subviews>
                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KFm-2B-TgD">
                                 <rect key="frame" x="0.0" y="0.0" width="18" height="40"/>
@@ -34,19 +34,22 @@
                                 </constraints>
                                 <state key="normal" image="CheckBoxUnSelected"/>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Income Template" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WBc-wO-MSW">
-                                <rect key="frame" x="34" y="0.0" width="198" height="40"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Income Template" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WBc-wO-MSW">
+                                <rect key="frame" x="34" y="0.0" width="231" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="dOu-ka-0II"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                     </stackView>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uxa-25-ZvS">
-                        <rect key="frame" x="262" y="2" width="40" height="40"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uxa-25-ZvS">
+                        <rect key="frame" x="285" y="0.0" width="30" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="9bW-nD-pNM"/>
-                            <constraint firstAttribute="width" constant="40" id="xX3-T3-jCv"/>
+                            <constraint firstAttribute="width" constant="30" id="xX3-T3-jCv"/>
                         </constraints>
                         <state key="normal" image="InfoIcon"/>
                         <connections>
@@ -56,11 +59,12 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstItem="uxa-25-ZvS" firstAttribute="leading" secondItem="0qd-jn-EO9" secondAttribute="trailing" constant="15" id="2Kb-fV-MMn"/>
+                    <constraint firstItem="uxa-25-ZvS" firstAttribute="leading" secondItem="0qd-jn-EO9" secondAttribute="trailing" constant="5" id="2Kb-fV-MMn"/>
                     <constraint firstItem="0qd-jn-EO9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="8Df-mJ-XsW"/>
                     <constraint firstItem="uxa-25-ZvS" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="8UU-fl-fJL"/>
-                    <constraint firstAttribute="trailing" secondItem="uxa-25-ZvS" secondAttribute="trailing" constant="18" id="BQ7-07-mzA"/>
-                    <constraint firstItem="0qd-jn-EO9" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="DLp-Xj-c9b"/>
+                    <constraint firstAttribute="trailing" secondItem="uxa-25-ZvS" secondAttribute="trailing" constant="5" id="BQ7-07-mzA"/>
+                    <constraint firstItem="0qd-jn-EO9" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="WNx-L1-hZ5"/>
+                    <constraint firstAttribute="bottom" secondItem="0qd-jn-EO9" secondAttribute="bottom" id="hry-vP-UXe"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
