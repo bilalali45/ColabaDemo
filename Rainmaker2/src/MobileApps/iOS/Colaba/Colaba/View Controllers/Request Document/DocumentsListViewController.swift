@@ -16,6 +16,7 @@ class DocumentsListViewController: BaseViewController {
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchIcon: UIImageView!
     @IBOutlet weak var txtfieldSearch: UITextField!
+    @IBOutlet weak var btnClose: UIButton!
     @IBOutlet weak var tableViewAssets: UITableView!
     @IBOutlet weak var tableViewAssetsHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewIncome: UITableView!
@@ -45,6 +46,7 @@ class DocumentsListViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableViewsAndViews(tableViews: [tableViewAssets, tableViewIncome, tableViewLiabilities, tableViewPersonal, tableViewProperty, tableViewDisclosure, tableViewOther])
+        txtfieldSearch.addTarget(self, action: #selector(textfieldSearchEditingChanged), for: .editingChanged)
     }
     
     //MARK:- Methods
@@ -66,6 +68,8 @@ class DocumentsListViewController: BaseViewController {
         searchView.layer.borderWidth = 1
         searchView.layer.borderColor = Theme.getSearchBarBorderColor().cgColor
         
+        txtfieldSearch.delegate = self
+        
         addCustomDocumentView.layer.cornerRadius = 6
         addCustomDocumentView.layer.borderWidth = 1
         addCustomDocumentView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
@@ -83,15 +87,7 @@ class DocumentsListViewController: BaseViewController {
             self.tableViewDisclosure.reloadData()
             self.tableViewOther.reloadData()
         }
-        
-//        let assetsTableViewHeight = selectedTableView == tableViewAssets ? 382 : 56
-//        let incomeTableViewHeight = selectedTableView == tableViewIncome ? 350 : 56
-//        let liabilityTableViewHeight = selectedTableView == tableViewLiabilities ? 267 : 56
-//        let personalTableViewHeight = selectedTableView == tableViewPersonal ? 191 : 56
-//        let propertyTableViewHeight = selectedTableView == tableViewProperty ? 306 : 56
-//        let disclosureTableViewHeight = selectedTableView == tableViewDisclosure ? 306 : 56
-//        let otherTableViewHeight = selectedTableView == tableViewOther ? 432 : 56
-//
+
         let assetsTableViewHeight = selectedTableView == tableViewAssets ? (tableViewAssets.contentSize.height) : 56
         let incomeTableViewHeight = selectedTableView == tableViewIncome ? (tableViewIncome.contentSize.height) : 56
         let liabilityTableViewHeight = selectedTableView == tableViewLiabilities ? (tableViewLiabilities.contentSize.height) : 56
@@ -111,17 +107,16 @@ class DocumentsListViewController: BaseViewController {
         tableViewOtherHeightConstraint.constant = CGFloat(otherTableViewHeight)
         
         self.mainViewHeightConstraint.constant = CGFloat(totalHeight)
-        
-//        UIView.animate(withDuration: 0.0) {
-//            self.view.layoutIfNeeded()
-//            self.tableViewAssets.reloadData()
-//            self.tableViewIncome.reloadData()
-//            self.tableViewLiabilities.reloadData()
-//            self.tableViewPersonal.reloadData()
-//            self.tableViewProperty.reloadData()
-//            self.tableViewDisclosure.reloadData()
-//            self.tableViewOther.reloadData()
-//        }
+
+    }
+    
+    @objc func textfieldSearchEditingChanged(){
+        btnClose.isHidden = txtfieldSearch.text == ""
+    }
+    
+    @IBAction func btnCloseTapped(_ sender: UIButton) {
+        txtfieldSearch.text = ""
+        btnClose.isHidden = true
     }
     
 }
@@ -289,4 +284,14 @@ extension DocumentsListViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return indexPath.row == 0 ? 56 : UITableView.automaticDimension
     }
+}
+
+extension DocumentsListViewController: UITextFieldDelegate{
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let vc = Utility.getSearchRequestDocumentVC()
+        self.presentVC(vc: vc)
+        return true
+    }
+    
 }
