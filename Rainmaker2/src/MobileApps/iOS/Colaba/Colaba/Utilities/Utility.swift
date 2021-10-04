@@ -414,6 +414,10 @@ struct Utility {
         return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: CheckListViewController.self)) as! CheckListViewController
     }
     
+    static func getSearchRequestDocumentVC() -> SearchRequestDocumentViewController{
+        return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: SearchRequestDocumentViewController.self)) as! SearchRequestDocumentViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
