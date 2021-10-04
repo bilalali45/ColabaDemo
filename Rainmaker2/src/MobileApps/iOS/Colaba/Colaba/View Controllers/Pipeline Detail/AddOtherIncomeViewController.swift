@@ -30,16 +30,15 @@ class AddOtherIncomeViewController: BaseViewController {
         
     //MARK:- Methods and Actions
     func setupTextFields(){
-        
+        ///Income Type Text Field
         txtfieldIncomeType.setTextField(placeholder: "Income Type", controller: self, validationType: .required)
         txtfieldIncomeType.type = .dropdown
         txtfieldIncomeType.setDropDownDataSource(kOtherIncomeTypeArray)
         
-        txtfieldDescription.setTextField(placeholder: "Description")
-        txtfieldDescription.setDelegates(controller: self)
-        txtfieldDescription.setValidation(validationType: .required)
-        txtfieldDescription.setTextField(keyboardType: .asciiCapable)
+        ///Description Text Field
+        txtfieldDescription.setTextField(placeholder: "Description", controller: self, validationType: .required)
         
+        ///Monthly Income Text Field
         txtfieldMonthlyIncome.setTextField(placeholder: "Monthly Income", controller: self, validationType: .required)
         txtfieldMonthlyIncome.type = .amount
     }

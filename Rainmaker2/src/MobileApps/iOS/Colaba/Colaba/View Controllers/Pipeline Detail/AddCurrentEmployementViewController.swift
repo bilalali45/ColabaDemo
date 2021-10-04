@@ -105,48 +105,28 @@ class AddCurrentEmployementViewController: BaseViewController {
         txtfieldJobTitle.setTextField(placeholder: "Job Title", controller: self, validationType: .required)
         txtfieldJobTitle.setIsValidateOnEndEditing(validate: false)
         
-        txtfieldStartDate.setTextField(placeholder: "Start Date (MM/DD/YYYY)")
-        txtfieldStartDate.setDelegates(controller: self)
-        txtfieldStartDate.setValidation(validationType: .required)
-        txtfieldStartDate.setTextField(keyboardType: .asciiCapable)
+        txtfieldStartDate.setTextField(placeholder: "Start Date (MM/DD/YYYY)", controller: self, validationType: .required)
         txtfieldStartDate.type = .datePicker
         
-        txtfieldProfessionYears.setTextField(placeholder: "Years in Profession")
-        txtfieldProfessionYears.setDelegates(controller: self)
-        txtfieldProfessionYears.setTextField(keyboardType: .numberPad)
+        txtfieldProfessionYears.setTextField(placeholder: "Years in Profession", controller: self, validationType: .noValidation)
         txtfieldProfessionYears.setIsValidateOnEndEditing(validate: false)
         txtfieldProfessionYears.setTextField(maxLength: 2)
         
-        txtfieldOwnershipPercentage.setTextField(placeholder: "Ownership Percentage")
-        txtfieldOwnershipPercentage.setDelegates(controller: self)
-        txtfieldOwnershipPercentage.setTextField(keyboardType: .numberPad)
-        txtfieldOwnershipPercentage.setValidation(validationType: .required)
+        txtfieldOwnershipPercentage.setTextField(placeholder: "Ownership Percentage", controller: self, validationType: .required)
         txtfieldOwnershipPercentage.type = .percentage
         
         txtfieldAnnualBaseSalary.setTextField(placeholder: "Annual Base Salary", controller: self, validationType: .required)
         txtfieldAnnualBaseSalary.type = .amount
         
-        txtfieldHoursPerWeek.setTextField(placeholder: "Average Hours / Week")
-        txtfieldHoursPerWeek.setDelegates(controller: self)
-        txtfieldHoursPerWeek.setTextField(keyboardType: .numberPad)
-        txtfieldHoursPerWeek.setValidation(validationType: .required)
+        txtfieldHoursPerWeek.setTextField(placeholder: "Average Hours / Week", controller: self, validationType: .required, keyboardType: .numberPad)
         
-        txtfieldAnnualBonusIncome.setTextField(placeholder: "Annual Bonus Income")
-        txtfieldAnnualBonusIncome.setDelegates(controller: self)
-        txtfieldAnnualBonusIncome.setTextField(keyboardType: .numberPad)
-        txtfieldAnnualBonusIncome.setValidation(validationType: .required)
+        txtfieldAnnualBonusIncome.setTextField(placeholder: "Annual Bonus Income", controller: self, validationType: .required)
         txtfieldAnnualBonusIncome.type = .amount
         
-        txtfieldAnnualOvertime.setTextField(placeholder: "Annual Overtime Income")
-        txtfieldAnnualOvertime.setDelegates(controller: self)
-        txtfieldAnnualOvertime.setTextField(keyboardType: .numberPad)
-        txtfieldAnnualOvertime.setValidation(validationType: .required)
+        txtfieldAnnualOvertime.setTextField(placeholder: "Annual Overtime Income", controller: self, validationType: .required)
         txtfieldAnnualOvertime.type = .amount
         
-        txtfieldAnnualCommision.setTextField(placeholder: "Annual Commission Income")
-        txtfieldAnnualCommision.setDelegates(controller: self)
-        txtfieldAnnualCommision.setTextField(keyboardType: .numberPad)
-        txtfieldAnnualCommision.setValidation(validationType: .required)
+        txtfieldAnnualCommision.setTextField(placeholder: "Annual Commission Income", controller: self, validationType: .required)
         txtfieldAnnualCommision.type = .amount
         
         addressView.layer.cornerRadius = 6

@@ -71,13 +71,9 @@ class CodeViewController: UIViewController {
     }
 
     func setTextFields() {
-        ///Mobile Text Field
-        txtFieldCode.setTextField(placeholder: "Mobile Verification Code")
-        txtFieldCode.setDelegates(controller: self)
-        txtFieldCode.setValidation(validationType: .verificationCode)
-        txtFieldCode.setTextField(keyboardType: .numberPad)
+        ///Mobile Verification Code Text Field
+        txtFieldCode.setTextField(placeholder: "Mobile Verification Code", controller: self, validationType: .verificationCode, keyboardType: .numberPad)
         txtFieldCode.setIsValidateOnEndEditing(validate: false)
-        txtFieldCode.addTarget(self, action: #selector(textFieldCodeChanged), for: .editingChanged)
     }
     
     @objc func applicationDidBecomeActive(){
@@ -92,7 +88,6 @@ class CodeViewController: UIViewController {
                     self.changeUIAfterResendCode(message: lastTimerSaveMessage)
                 }
             }
-            
         }
     }
     
@@ -103,16 +98,7 @@ class CodeViewController: UIViewController {
             UserDefaults.standard.setValue(timerEndAt, forKey: "TimerEndAtNotification")
         }
     }
-    
-    @objc func textFieldCodeChanged(){
-        if (txtFieldCode.text!.count != 6){
-            self.checkIcon.isHidden = true
-        }
-        if (txtFieldCode.text!.count == 6){
-            verify2FAWithRequest()
-        }
-    }
-    
+
     func changeUIAfterResendCode(message: String){
         codeLimit = codeLimit - totalAttemptsCount
         if (codeLimit < 1){
@@ -386,6 +372,18 @@ class CodeViewController: UIViewController {
             }
             
         }
-        
+    }
+}
+
+extension CodeViewController : ColabaTextFieldDelegate {
+    func textFieldDidChange(_ textField: ColabaTextField) {
+        if textField == txtFieldCode {
+            if (textField.text!.count != 6){
+                self.checkIcon.isHidden = true
+            }
+            if (textField.text!.count == 6){
+                verify2FAWithRequest()
+            }
+        }
     }
 }

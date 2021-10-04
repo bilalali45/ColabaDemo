@@ -36,34 +36,25 @@ class AddMilitaryPayViewController: BaseViewController {
     //MARK:- Methods and Actions
     
     func setupTextFields(){
-        
+        /// Text Field
         txtfieldEmployerName.setTextField(placeholder: "Employer Name", controller: self, validationType: .required)
         
+        /// Text Field
         txtfieldJobTitle.setTextField(placeholder: "Job Title", controller: self, validationType: .required)
         
-        txtfieldProfessionYears.setTextField(placeholder: "Years in Profession")
-        txtfieldProfessionYears.setDelegates(controller: self)
-        txtfieldProfessionYears.setValidation(validationType: .required)
-        txtfieldProfessionYears.setTextField(keyboardType: .numberPad)
+        /// Text Field
+        txtfieldProfessionYears.setTextField(placeholder: "Years in Profession", controller: self, validationType: .required, keyboardType: .numberPad)
         
-        txtfieldStartDate.setTextField(placeholder: "Start Date (MM/DD/YYYY)")
-        txtfieldStartDate.setDelegates(controller: self)
-        txtfieldStartDate.setValidation(validationType: .required)
-        txtfieldStartDate.setTextField(keyboardType: .asciiCapable)
+        /// Text Field
+        txtfieldStartDate.setTextField(placeholder: "Start Date (MM/DD/YYYY)", controller: self, validationType: .required)
         txtfieldStartDate.type = .datePicker
         
-        txtfieldMonthlyBaseSalary.setTextField(placeholder: "Monthly Base Salary")
-        txtfieldMonthlyBaseSalary.setDelegates(controller: self)
-        txtfieldMonthlyBaseSalary.setValidation(validationType: .required)
-        txtfieldMonthlyBaseSalary.setTextField(keyboardType: .numberPad)
-        txtfieldMonthlyBaseSalary.setValidation(validationType: .required)
+        /// Text Field
+        txtfieldMonthlyBaseSalary.setTextField(placeholder: "Monthly Base Salary", controller: self, validationType: .required)
         txtfieldMonthlyBaseSalary.type = .amount
         
-        txtfieldMilitaryEntitlements.setTextField(placeholder: "Military Entitlements")
-        txtfieldMilitaryEntitlements.setDelegates(controller: self)
-        txtfieldMilitaryEntitlements.setValidation(validationType: .required)
-        txtfieldMilitaryEntitlements.setTextField(keyboardType: .numberPad)
-        txtfieldMilitaryEntitlements.setValidation(validationType: .required)
+        /// Text Field
+        txtfieldMilitaryEntitlements.setTextField(placeholder: "Military Entitlements", controller: self, validationType: .required)
         txtfieldMilitaryEntitlements.type = .amount
         
         addressView.layer.cornerRadius = 6
