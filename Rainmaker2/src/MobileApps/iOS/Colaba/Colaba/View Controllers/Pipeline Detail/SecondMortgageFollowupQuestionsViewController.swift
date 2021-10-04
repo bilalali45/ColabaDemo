@@ -79,21 +79,15 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
     
     func setTextFields() {
         ///Second Mortgage Payment Text Field
-        txtfieldMortgagePayment.setTextField(placeholder: "Second Mortgage Payment")
-        txtfieldMortgagePayment.setDelegates(controller: self)
-        txtfieldMortgagePayment.setValidation(validationType: .noValidation)
+        txtfieldMortgagePayment.setTextField(placeholder: "Second Mortgage Payment", controller: self, validationType: .noValidation)
         txtfieldMortgagePayment.type = .amount
         
         ///Unpaid Second Mortgage Balance Text Field
-        txtfieldMortgageBalance.setTextField(placeholder: "Unpaid Second Mortgage Balance")
-        txtfieldMortgageBalance.setDelegates(controller: self)
-        txtfieldMortgageBalance.setValidation(validationType: .noValidation)
+        txtfieldMortgageBalance.setTextField(placeholder: "Unpaid Second Mortgage Balance", controller: self, validationType: .noValidation)
         txtfieldMortgageBalance.type = .amount
         
         ///Credit Limit Text Field
-        txtfieldCreditLimit.setTextField(placeholder: "Credit Limit")
-        txtfieldCreditLimit.setDelegates(controller: self)
-        txtfieldCreditLimit.setValidation(validationType: .noValidation)
+        txtfieldCreditLimit.setTextField(placeholder: "Credit Limit", controller: self, validationType: .noValidation)
         txtfieldCreditLimit.type = .amount
     }
     

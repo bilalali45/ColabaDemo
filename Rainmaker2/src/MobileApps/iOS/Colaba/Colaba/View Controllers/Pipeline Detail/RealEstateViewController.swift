@@ -77,58 +77,34 @@ class RealEstateViewController: BaseViewController {
         addAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         addAddressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
         
-        txtfieldPropertyType.setTextField(placeholder: "Property Type")
-        txtfieldPropertyType.setDelegates(controller: self)
-        txtfieldPropertyType.setValidation(validationType: .required)
+        txtfieldPropertyType.setTextField(placeholder: "Property Type", controller: self, validationType: .required)
         txtfieldPropertyType.type = .dropdown
         txtfieldPropertyType.setDropDownDataSource(kPropertyTypeArray)
         
-        txtfieldOccupancyType.setTextField(placeholder: "Occupancy Type")
-        txtfieldOccupancyType.setDelegates(controller: self)
-        txtfieldOccupancyType.setValidation(validationType: .required)
+        txtfieldOccupancyType.setTextField(placeholder: "Occupancy Type", controller: self, validationType: .required)
         txtfieldOccupancyType.type = .dropdown
         txtfieldOccupancyType.setDropDownDataSource(kOccupancyTypeArray)
         
-        txtfieldCurrentRentalIncome.setTextField(placeholder: "Current Rental Income")
-        txtfieldCurrentRentalIncome.setDelegates(controller: self)
-        txtfieldCurrentRentalIncome.setTextField(keyboardType: .numberPad)
-        txtfieldCurrentRentalIncome.setValidation(validationType: .required)
+        txtfieldCurrentRentalIncome.setTextField(placeholder: "Current Rental Income", controller: self, validationType: .required)
         txtfieldCurrentRentalIncome.type = .amount
         
-        txtfieldPropertyStatus.setTextField(placeholder: "Property Status")
-        txtfieldPropertyStatus.setDelegates(controller: self)
-        txtfieldPropertyStatus.setValidation(validationType: .required)
+        txtfieldPropertyStatus.setTextField(placeholder: "Property Status", controller: self, validationType: .required)
         txtfieldPropertyStatus.type = .dropdown
         txtfieldPropertyStatus.setDropDownDataSource(kPropertyStatusArray)
         
-        txtfieldHomeOwnerAssociationDues.setTextField(placeholder: "Homeowner’s Association Dues")
-        txtfieldHomeOwnerAssociationDues.setDelegates(controller: self)
-        txtfieldHomeOwnerAssociationDues.setTextField(keyboardType: .numberPad)
-        txtfieldHomeOwnerAssociationDues.setValidation(validationType: .required)
+        txtfieldHomeOwnerAssociationDues.setTextField(placeholder: "Homeowner’s Association Dues", controller: self, validationType: .required)
         txtfieldHomeOwnerAssociationDues.type = .amount
         
-        txtfieldPropertyValue.setTextField(placeholder: "Property Value")
-        txtfieldPropertyValue.setDelegates(controller: self)
-        txtfieldPropertyValue.setTextField(keyboardType: .numberPad)
-        txtfieldPropertyValue.setValidation(validationType: .required)
+        txtfieldPropertyValue.setTextField(placeholder: "Property Value", controller: self, validationType: .required)
         txtfieldPropertyValue.type = .amount
         
-        txtfieldAnnualPropertyTax.setTextField(placeholder: "Annual Property Taxes")
-        txtfieldAnnualPropertyTax.setDelegates(controller: self)
-        txtfieldAnnualPropertyTax.setTextField(keyboardType: .numberPad)
-        txtfieldAnnualPropertyTax.setValidation(validationType: .required)
+        txtfieldAnnualPropertyTax.setTextField(placeholder: "Annual Property Taxes", controller: self, validationType: .required)
         txtfieldAnnualPropertyTax.type = .amount
         
-        txtfieldAnnualHomeOwnerInsurance.setTextField(placeholder: "Annual Homeowner's Insurance")
-        txtfieldAnnualHomeOwnerInsurance.setDelegates(controller: self)
-        txtfieldAnnualHomeOwnerInsurance.setTextField(keyboardType: .numberPad)
-        txtfieldAnnualHomeOwnerInsurance.setValidation(validationType: .required)
+        txtfieldAnnualHomeOwnerInsurance.setTextField(placeholder: "Annual Homeowner's Insurance", controller: self, validationType: .required)
         txtfieldAnnualHomeOwnerInsurance.type = .amount
         
-        txtfieldAnnualFloodInsurance.setTextField(placeholder: "Annual Flood Insurance")
-        txtfieldAnnualFloodInsurance.setDelegates(controller: self)
-        txtfieldAnnualFloodInsurance.setTextField(keyboardType: .numberPad)
-        txtfieldAnnualFloodInsurance.setValidation(validationType: .required)
+        txtfieldAnnualFloodInsurance.setTextField(placeholder: "Annual Flood Insurance", controller: self, validationType: .required)
         txtfieldAnnualFloodInsurance.type = .amount
         
         firstMortgageYesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(firstMortgageYesStackViewTapped)))

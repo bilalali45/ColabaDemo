@@ -30,21 +30,11 @@ class OwnershipInterestInPropertyFollowupQuestionViewController: BaseViewControl
     
     func setupTextfields(){
         
-        txtfieldPropertyType.setTextField(placeholder: "What type of property did you own?")
-        txtfieldPropertyType.setDelegates(controller: self)
-        txtfieldPropertyType.setValidation(validationType: .required)
-        txtfieldPropertyType.setTextField(keyboardType: .asciiCapable)
-        //txtfieldPropertyType
-        txtfieldPropertyType.setValidation(validationType: .required)
+        txtfieldPropertyType.setTextField(placeholder: "What type of property did you own?", controller: self, validationType: .required)
         txtfieldPropertyType.type = .dropdown
         txtfieldPropertyType.setDropDownDataSource(kOccupancyTypeArray)
         
-        txtfieldHoldTitle.setTextField(placeholder: "How did you hold title to the property?")
-        txtfieldHoldTitle.setDelegates(controller: self)
-        txtfieldHoldTitle.setValidation(validationType: .required)
-        txtfieldHoldTitle.setTextField(keyboardType: .asciiCapable)
-        //txtfieldHoldTitle
-        txtfieldHoldTitle.setValidation(validationType: .required)
+        txtfieldHoldTitle.setTextField(placeholder: "How did you hold title to the property?", controller: self, validationType: .required)
         txtfieldHoldTitle.type = .dropdown
         txtfieldHoldTitle.setDropDownDataSource(kHoldTitleArray)
         
