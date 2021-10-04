@@ -116,25 +116,14 @@ class StartNewApplicationViewController: BaseViewController {
         createContactView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         //createContactView.dropShadowToCollectionViewCell()
         
-        txtfieldFirstName.setTextField(placeholder: "First Name")
-        txtfieldFirstName.setDelegates(controller: self)
-        txtfieldFirstName.setValidation(validationType: .required)
-        txtfieldFirstName.setTextField(keyboardType: .asciiCapable)
-        
-        txtfieldLastName.setTextField(placeholder: "Last Name")
-        txtfieldLastName.setDelegates(controller: self)
-        txtfieldLastName.setValidation(validationType: .required)
-        txtfieldLastName.setTextField(keyboardType: .asciiCapable)
-        
-        txtfieldEmail.setTextField(placeholder: "Email Address")
-        txtfieldEmail.setDelegates(controller: self)
-        txtfieldEmail.setValidation(validationType: .email)
-        txtfieldEmail.setTextField(keyboardType: .emailAddress)
-        
-        txtfieldPhone.setTextField(placeholder: "Mobile Number")
-        txtfieldPhone.setDelegates(controller: self)
-        txtfieldPhone.setValidation(validationType: .phoneNumber)
-        txtfieldPhone.setTextField(keyboardType: .phonePad)
+        ///First Name Text Field
+        txtfieldFirstName.setTextField(placeholder: "First Name", controller: self, validationType: .required)
+        ///Last Name Text Field
+        txtfieldLastName.setTextField(placeholder: "Last Name", controller: self, validationType: .required)
+        ///Email Address Text Field
+        txtfieldEmail.setTextField(placeholder: "Email Address", controller: self, validationType: .email, keyboardType: .emailAddress)
+        ///Mobile Number Text Field
+        txtfieldPhone.setTextField(placeholder: "Mobile Number", controller: self, validationType: .phoneNumber, keyboardType: .phonePad)
         
         assignLoanOfficerView.layer.cornerRadius = 8
         assignLoanOfficerView.layer.borderWidth = 1

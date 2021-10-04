@@ -90,27 +90,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func showInitialViewController(){
             
-        var isAlreadyRegisteredWithBiometric = ""
-        if let isBiometricRegistered = UserDefaults.standard.value(forKey: kIsUserRegisteredWithBiometric){
-            isAlreadyRegisteredWithBiometric = isBiometricRegistered as! String
-        }
-
-        if (isAlreadyRegisteredWithBiometric == kYes && UserModel.getCurrentUser() != nil){
-            if (Utility.checkDeviceAuthType() == kTouchID){
-                loadFingerPrintViewController()
-            }
-            else if (Utility.checkDeviceAuthType() == kFaceID){
-                loadFaceLockViewController()
-            }
-            else{
-                loadLoginViewController()
-            }
-        }
-        else{
-            loadLoginViewController()
-        }
-//        self.loadBorrowerInfoController()
-//        self.window?.makeKeyAndVisible()
+//        var isAlreadyRegisteredWithBiometric = ""
+//        if let isBiometricRegistered = UserDefaults.standard.value(forKey: kIsUserRegisteredWithBiometric){
+//            isAlreadyRegisteredWithBiometric = isBiometricRegistered as! String
+//        }
+//
+//        if (isAlreadyRegisteredWithBiometric == kYes && UserModel.getCurrentUser() != nil){
+//            if (Utility.checkDeviceAuthType() == kTouchID){
+//                loadFingerPrintViewController()
+//            }
+//            else if (Utility.checkDeviceAuthType() == kFaceID){
+//                loadFaceLockViewController()
+//            }
+//            else{
+//                loadLoginViewController()
+//            }
+//        }
+//        else{
+//            loadLoginViewController()
+//        }
+        self.loadBorrowerInfoController()
+        self.window?.makeKeyAndVisible()
     }
 
     func loadDashboardViewController(){
@@ -119,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func loadBorrowerInfoController(){
-        let vc = Utility.getCurrentEmployerAddressVC()
+        let vc = Utility.getRequestDocumentVC()
         self.window?.rootViewController = vc
     }
     

@@ -29,9 +29,7 @@ class ActiveDutyPersonnelFollowUpQuestionViewController: BaseViewController {
     //MARK:- Methods and Actions
     func setTextFields() {
         ///Last Date of Service Text Field
-        txtfieldLastDate.setTextField(placeholder: "Last date of service / tour")
-        txtfieldLastDate.setDelegates(controller: self)
-        txtfieldLastDate.setValidation(validationType: .required)
+        txtfieldLastDate.setTextField(placeholder: "Last date of service / tour", controller: self, validationType: .required)
         txtfieldLastDate.type = .monthlyDatePicker
         _ = txtfieldLastDate.becomeFirstResponder()
         

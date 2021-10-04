@@ -36,42 +36,24 @@ class AddBusinessViewController: BaseViewController {
     //MARK:- Methods and Actions
     func setupTextFields(){
         
-        txtfieldBusinessType.setTextField(placeholder: "Select Your Business Type")
-        txtfieldBusinessType.setDelegates(controller: self)
-        txtfieldBusinessType.setValidation(validationType: .required)
-        txtfieldBusinessType.setTextField(keyboardType: .asciiCapable)
+        txtfieldBusinessType.setTextField(placeholder: "Select Your Business Type", controller: self, validationType: .required)
         txtfieldBusinessType.type = .dropdown
         txtfieldBusinessType.setDropDownDataSource(kBusinessTypeArray)
         
-        txtfieldBusinessName.setTextField(placeholder: "Business Name")
-        txtfieldBusinessName.setDelegates(controller: self)
-        txtfieldBusinessName.setValidation(validationType: .required)
-        txtfieldBusinessName.setTextField(keyboardType: .asciiCapable)
+        txtfieldBusinessName.setTextField(placeholder: "Business Name", controller: self, validationType: .required)
         
-        txtfieldBusinessPhoneNumber.setTextField(placeholder: "Business Phone Number")
-        txtfieldBusinessPhoneNumber.setDelegates(controller: self)
-        txtfieldBusinessPhoneNumber.setTextField(keyboardType: .numberPad)
-        txtfieldBusinessPhoneNumber.setValidation(validationType: .phoneNumber)
+        txtfieldBusinessPhoneNumber.setTextField(placeholder: "Business Phone Number", controller: self, validationType: .phoneNumber, keyboardType: .phonePad)
         
-        txtfieldBusinessStartDate.setTextField(placeholder: "Business Start Date (MM/DD/YYYY)")
-        txtfieldBusinessStartDate.setDelegates(controller: self)
-        txtfieldBusinessStartDate.setValidation(validationType: .required)
-        txtfieldBusinessStartDate.setTextField(keyboardType: .asciiCapable)
+        txtfieldBusinessStartDate.setTextField(placeholder: "Business Start Date (MM/DD/YYYY)", controller: self, validationType: .required)
         txtfieldBusinessStartDate.type = .datePicker
         
         txtfieldJobTitle.setTextField(placeholder: "Job Title", controller: self, validationType: .required)
         txtfieldJobTitle.setIsValidateOnEndEditing(validate: false)
         
-        txtfieldOwnershipPercentage.setTextField(placeholder: "Ownership Percentage")
-        txtfieldOwnershipPercentage.setDelegates(controller: self)
-        txtfieldOwnershipPercentage.setTextField(keyboardType: .numberPad)
-        txtfieldOwnershipPercentage.setValidation(validationType: .required)
+        txtfieldOwnershipPercentage.setTextField(placeholder: "Ownership Percentage", controller: self, validationType: .required)
         txtfieldOwnershipPercentage.type = .percentage
         
-        txtfieldNetAnnualIncome.setTextField(placeholder: "Net Annual Income")
-        txtfieldNetAnnualIncome.setDelegates(controller: self)
-        txtfieldNetAnnualIncome.setTextField(keyboardType: .numberPad)
-        txtfieldNetAnnualIncome.setValidation(validationType: .required)
+        txtfieldNetAnnualIncome.setTextField(placeholder: "Net Annual Income", controller: self, validationType: .required)
         txtfieldNetAnnualIncome.type = .amount
         
         addressView.layer.cornerRadius = 6

@@ -37,11 +37,8 @@ class PhoneNumberViewController: UIViewController {
     }
     
     func setTextFields() {
-        ///Mobile Text Field
-        txtFieldPhone.setTextField(placeholder: "Mobile Number")
-        txtFieldPhone.setDelegates(controller: self)
-        txtFieldPhone.setValidation(validationType: .phoneNumber)
-        txtFieldPhone.setTextField(keyboardType: .phonePad)
+        ///Mobile Number Text Field
+        txtFieldPhone.setTextField(placeholder: "Mobile Number", controller: self, validationType: .phoneNumber, keyboardType: .phonePad)
         txtFieldPhone.setIsValidateOnEndEditing(validate: false)
     }
     

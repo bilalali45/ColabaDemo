@@ -75,9 +75,7 @@ class AddOtherAssetsViewController: BaseViewController {
     
     func setTextFields() {
         ///Account Type Text Field
-        txtfieldAssetType.setTextField(placeholder: "Asset Type")
-        txtfieldAssetType.setDelegates(controller: self)
-        txtfieldAssetType.setValidation(validationType: .required)
+        txtfieldAssetType.setTextField(placeholder: "Asset Type", controller: self, validationType: .required)
         txtfieldAssetType.type = .dropdown
         txtfieldAssetType.setDropDownDataSource(kOtherAssetsTypeArray)
         
@@ -89,10 +87,7 @@ class AddOtherAssetsViewController: BaseViewController {
         txtfieldAccountNumber.type = .password
         
         ///Cash Value Text Field
-        txtfieldCashValue.setTextField(placeholder: "Cash or Market Value")
-        txtfieldCashValue.setDelegates(controller: self)
-        txtfieldCashValue.setTextField(keyboardType: .numberPad)
-        txtfieldCashValue.setValidation(validationType: .required)
+        txtfieldCashValue.setTextField(placeholder: "Cash or Market Value", controller: self, validationType: .required)
         txtfieldCashValue.type = .amount
     }
 

@@ -32,44 +32,28 @@ class PurchaseLoanInfoViewController: BaseViewController {
     //MARK:- Methods and Actions
     func setTextFields() {
         ///Loan Stage Text Field
-        txtfieldLoanStage.setTextField(placeholder: "Loan Stage")
-        txtfieldLoanStage.setDelegates(controller: self)
-        txtfieldLoanStage.setValidation(validationType: .required)
+        txtfieldLoanStage.setTextField(placeholder: "Loan Stage", controller: self,validationType: .required)
         txtfieldLoanStage.type = .dropdown
         txtfieldLoanStage.setDropDownDataSource(kLoanStageArray)
         
         ///Purchase Price Text Field
-        txtfieldPurchasePrice.setTextField(placeholder: "Purchase Price")
-        txtfieldPurchasePrice.setDelegates(controller: self)
-        txtfieldPurchasePrice.setTextField(keyboardType: .numberPad)
-        txtfieldPurchasePrice.setValidation(validationType: .purchasePrice)
+        txtfieldPurchasePrice.setTextField(placeholder: "Purchase Price", controller: self, validationType: .purchasePrice, keyboardType: .numberPad)
         txtfieldPurchasePrice.type = .amount
         
         ///Loan Amount Text Field
-        txtfieldLoanAmount.setTextField(placeholder: "Loan Amount")
-        txtfieldLoanAmount.setDelegates(controller: self)
-        txtfieldLoanAmount.setTextField(keyboardType: .numberPad)
-        txtfieldLoanAmount.setValidation(validationType: .required)
+        txtfieldLoanAmount.setTextField(placeholder: "Loan Amount", controller: self, validationType: .required, keyboardType: .numberPad)
         txtfieldLoanAmount.type = .amount
         
         ///Down Payment Salary Text Field
-        txtfieldDownPayment.setTextField(placeholder: "Down Payment")
-        txtfieldDownPayment.setDelegates(controller: self)
-        txtfieldDownPayment.setTextField(keyboardType: .numberPad)
-        txtfieldDownPayment.setValidation(validationType: .required)
+        txtfieldDownPayment.setTextField(placeholder: "Down Payment", controller: self, validationType: .required, keyboardType: .numberPad)
         txtfieldDownPayment.type = .amount
         
         ///Down Payment Salary Text Field
-        txtfieldPercentage.setTextField(placeholder: "")
-        txtfieldPercentage.setDelegates(controller: self)
-        txtfieldPercentage.setTextField(keyboardType: .numberPad)
-        txtfieldPercentage.setValidation(validationType: .required)
+        txtfieldPercentage.setTextField(placeholder: "", controller: self, validationType: .required, keyboardType: .numberPad)
         txtfieldPercentage.type = .percentage
         
         ///Estimated Closing Date Salary Text Field
-        txtfieldClosingDate.setTextField(placeholder: "Estimated Closing Date")
-        txtfieldClosingDate.setDelegates(controller: self)
-        txtfieldClosingDate.setValidation(validationType: .required)
+        txtfieldClosingDate.setTextField(placeholder: "Estimated Closing Date", controller: self, validationType: .required)
         txtfieldClosingDate.type = .monthlyDatePicker
         
     }
