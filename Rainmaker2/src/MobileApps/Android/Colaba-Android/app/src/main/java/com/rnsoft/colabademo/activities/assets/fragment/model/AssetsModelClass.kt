@@ -6,7 +6,7 @@ import android.view.View
 data class AssetsModelClass(
     val headerTitle: String = "Header Title",
     val headerAmount: String = "$0",
-    val footerTitle: String  = "Footer Title",
+    val footerTitle: String  = "Default Footer Title",
     val contentCell:ArrayList<ContentCell>,
     val listenerAttached:View.OnClickListener= View.OnClickListener {  }
     )

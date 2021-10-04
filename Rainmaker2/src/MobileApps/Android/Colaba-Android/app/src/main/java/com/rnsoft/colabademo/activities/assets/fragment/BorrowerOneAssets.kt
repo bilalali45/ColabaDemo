@@ -46,7 +46,7 @@ class BorrowerOneAssets : AssetBaseFragment() {
             Log.e("h-amount",modelData.headerAmount )
 
             val mainCell: LinearLayoutCompat =
-                layoutInflater.inflate(R.layout.assets_main_cell, null) as LinearLayoutCompat
+                layoutInflater.inflate(R.layout.asset_top_main_cell, null) as LinearLayoutCompat
             val topCell: View = layoutInflater.inflate(R.layout.assets_top_cell, null)
             topCell.header_title.text =  modelData.headerTitle
 

@@ -18,10 +18,8 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_layout)
-
-
         activityScope.launch {
-            startActivity(Intent(this@SplashActivity, BorrowerAddressActivity::class.java))
+            startActivity(Intent(this@SplashActivity, RequestDocsActivity::class.java))
             //startActivity(Intent(this@SplashActivity, GovtQuestionActivity::class.java))
             /*
             if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
@@ -36,8 +34,9 @@ class SplashActivity : AppCompatActivity() {
                 delay(500)
                 startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
             }
-            */
             finish()
+
+             */
         }
 
     }

@@ -92,6 +92,13 @@
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="adjustPan" />
 
+        <activity
+            android:name=".RequestDocsActivity"
+            android:screenOrientation="sensorPortrait"
+            android:windowSoftInputMode="adjustPan" />
+
+
+
 
     </application>
 </manifest>
