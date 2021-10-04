@@ -27,22 +27,16 @@ class RefinanceLoanInfoViewController: BaseViewController {
     
     func setTextFields() {
         ///Loan Stage Text Field
-        txtfieldLoanStage.setTextField(placeholder: "Loan Stage")
-        txtfieldLoanStage.setDelegates(controller: self)
-        txtfieldLoanStage.setValidation(validationType: .required)
+        txtfieldLoanStage.setTextField(placeholder: "Loan Stage", controller: self, validationType: .required)
         txtfieldLoanStage.type = .dropdown
         txtfieldLoanStage.setDropDownDataSource(kLoanStageArray)
         
         ///Additional Cash Out Text Field
-        txtfieldAdditionalCashoutAmount.setTextField(placeholder: "Additional Cash Out Amount")
-        txtfieldAdditionalCashoutAmount.setDelegates(controller: self)
-        txtfieldAdditionalCashoutAmount.setValidation(validationType: .noValidation)
+        txtfieldAdditionalCashoutAmount.setTextField(placeholder: "Additional Cash Out Amount", controller: self, validationType: .noValidation)
         txtfieldAdditionalCashoutAmount.type = .amount
         
         ///Loan Amount Text Field
-        txtfieldLoanAmount.setTextField(placeholder: "Loan Amount")
-        txtfieldLoanAmount.setDelegates(controller: self)
-        txtfieldLoanAmount.setValidation(validationType: .required)
+        txtfieldLoanAmount.setTextField(placeholder: "Loan Amount", controller: self, validationType: .required)
         txtfieldLoanAmount.type = .amount
         
 

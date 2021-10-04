@@ -19,9 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ColabaDemo">
-        <activity
-            android:name=".activities.startapplication.SampleActivity"
-            android:exported="true" />
+
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -36,8 +34,8 @@
         <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:screenOrientation="sensorPortrait">
-            <intent-filter>
+            android:screenOrientation="sensorPortrait"     >
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -64,7 +62,7 @@
         <activity
             android:name=".BorrowerAddressActivity"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".BorrowerLoanActivity"
             android:screenOrientation="sensorPortrait"
@@ -93,6 +91,14 @@
             android:name=".StartNewApplicationActivity"
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="adjustPan" />
-    </application>
 
+        <activity
+            android:name=".RequestDocsActivity"
+            android:screenOrientation="sensorPortrait"
+            android:windowSoftInputMode="adjustPan" />
+
+
+
+
+    </application>
 </manifest>

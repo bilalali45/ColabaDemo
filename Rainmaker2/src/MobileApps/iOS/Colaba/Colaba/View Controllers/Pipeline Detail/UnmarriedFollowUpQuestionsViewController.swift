@@ -83,16 +83,12 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
     
     func setTextFields() {
         ///Type of Relationship Text Field
-        txtfieldTypeOfRelation.setTextField(placeholder: "Type of Relationship")
-        txtfieldTypeOfRelation.setDelegates(controller: self)
-        txtfieldTypeOfRelation.setValidation(validationType: .required)
+        txtfieldTypeOfRelation.setTextField(placeholder: "Type of Relationship", controller: self, validationType: .required)
         txtfieldTypeOfRelation.type = .dropdown
         txtfieldTypeOfRelation.setDropDownDataSource(kRelationshipTypeArray)
 
         ///State Text Field
-        txtfieldState.setTextField(placeholder: "In what state was this relationship formed")
-        txtfieldState.setDelegates(controller: self)
-        txtfieldState.setValidation(validationType: .required)
+        txtfieldState.setTextField(placeholder: "In what state was this relationship formed", controller: self, validationType: .required)
         txtfieldState.type = .editableDropdown
         txtfieldState.setDropDownDataSource(kUSAStatesArray)
     }

@@ -70,8 +70,10 @@
     <string name="delete_prev_address">Are you sure you want to delete Richard\'s Previous Address?</string>
     <string name="delete_current_address">Are you sure you want to delete Richard\'s Current Address?</string>
 
+    <string name="docs_top_cell">docs_top_cell</string>
 
     <string name="asset_top_cell">asset_top_cell</string>
+
     <string name="asset_middle_cell">asset_middle_cell</string>
     <string name="asset_bottom_cell">asset_bottom_cell</string>
 

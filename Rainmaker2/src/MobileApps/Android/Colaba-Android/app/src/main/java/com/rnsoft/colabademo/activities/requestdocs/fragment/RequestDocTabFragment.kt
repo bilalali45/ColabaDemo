@@ -15,13 +15,9 @@ import com.rnsoft.colabademo.databinding.RequestDocsTabLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-
-
-private val assetsTabArray = arrayOf(
-    "Richard Glenn",
-    "Maria Randall",
-    "UnderTaker",
-    "Adam Gilchrist"
+private val docsTypeTabArray = arrayOf(
+    "Document Templates",
+    "Document List"
 )
 
 @AndroidEntryPoint
@@ -32,7 +28,7 @@ class RequestDocsTabFragment : BaseFragment() {
     private var _binding: RequestDocsTabLayoutBinding? = null
     private val binding get() = _binding!!
     private var selectedPosition:Int = 0
-    private lateinit var pageAdapter:AssetsPagerAdapter
+    private lateinit var pageAdapter:RequestPagerAdapter
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout:TabLayout
 
@@ -41,9 +37,10 @@ class RequestDocsTabFragment : BaseFragment() {
         _binding = RequestDocsTabLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+
         viewPager = binding.reqDocsViewPager
         tabLayout = binding.reqDocsTabLayout
-        pageAdapter = AssetsPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
+        pageAdapter = RequestPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
         viewPager.adapter = pageAdapter
 
         val requestDocsActivity = (activity as? RequestDocsActivity)
@@ -74,7 +71,7 @@ class RequestDocsTabFragment : BaseFragment() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
-        TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = assetsTabArray[position] }.attach()
+        TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = docsTypeTabArray[position] }.attach()
 
 
 
@@ -89,6 +86,8 @@ class RequestDocsTabFragment : BaseFragment() {
         }
 
         super.addListeners(binding.root)
+
+
 
         return root
     }

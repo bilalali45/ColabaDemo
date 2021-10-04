@@ -51,21 +51,16 @@ class LoginViewController: UIViewController {
     
     func setTextFields() {
         ///Email Text Field
-        txtFieldEmail.setTextField(placeholder: "Email")
-        txtFieldEmail.setDelegates(controller: self)
-        txtFieldEmail.setValidation(validationType: .email)
-        txtFieldEmail.setTextField(keyboardType: .emailAddress)
+        txtFieldEmail.setTextField(placeholder: "Email", controller: self, validationType: .email, keyboardType: .emailAddress)
         txtFieldEmail.setIsValidateOnEndEditing(validate: false)
         if (isAppOpenFromBackground){
             txtFieldEmail.setTextField(textColor: Theme.getAppGreyColor())
         }
         
         ///Password Text Field
-        txtFieldPassword.setTextField(placeholder: "Password")
-        txtFieldPassword.setDelegates(controller: self)
-        txtFieldPassword.type = .password
-        txtFieldPassword.setValidation(validationType: .password)
+        txtFieldPassword.setTextField(placeholder: "Password", controller: self, validationType: .required)
         txtFieldPassword.setIsValidateOnEndEditing(validate: false)
+        txtFieldPassword.type = .password
     }
     
     func completeLoginWithBiometric(){

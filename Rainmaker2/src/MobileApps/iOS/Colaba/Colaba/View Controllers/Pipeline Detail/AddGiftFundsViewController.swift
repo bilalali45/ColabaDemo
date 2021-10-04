@@ -47,23 +47,16 @@ class AddGiftFundsViewController: UIViewController {
     //MARK:- Methods and Actions
     func setTextFields() {
         ///Gift Source Text Field
-        txtfieldGiftSource.setTextField(placeholder: "Gift Source")
-        txtfieldGiftSource.setDelegates(controller: self)
-        txtfieldGiftSource.setValidation(validationType: .required)
+        txtfieldGiftSource.setTextField(placeholder: "Gift Source", controller: self, validationType: .required)
         txtfieldGiftSource.type = .dropdown
         txtfieldGiftSource.setDropDownDataSource(kGiftSourceArray)
         
         ///Cash / Market Value Text Field
-        txtfieldCashValue.setTextField(placeholder: "Cash Value")
-        txtfieldCashValue.setDelegates(controller: self)
-        txtfieldCashValue.setTextField(keyboardType: .numberPad)
-        txtfieldCashValue.setValidation(validationType: .required)
+        txtfieldCashValue.setTextField(placeholder: "Cash Value", controller: self, validationType: .required)
         txtfieldCashValue.type = .amount
         
         ///Date of Transfer / Expected Transfer Date Text Field
-        txtfieldDate.setTextField(placeholder: "Date of Transfer")
-        txtfieldDate.setDelegates(controller: self)
-        txtfieldDate.setValidation(validationType: .required)
+        txtfieldDate.setTextField(placeholder: "Date of Transfer", controller: self, validationType: .required)
         txtfieldDate.type = .datePicker
         
     }

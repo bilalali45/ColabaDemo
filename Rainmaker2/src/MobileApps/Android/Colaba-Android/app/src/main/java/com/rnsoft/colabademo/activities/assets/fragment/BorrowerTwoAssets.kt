@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.*
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
 import kotlinx.android.synthetic.main.assets_middle_cell.view.*
@@ -37,7 +35,7 @@ class BorrowerTwoAssets : AssetBaseFragment() {
             Log.e("h-amount",modelData.headerAmount )
 
             val mainCell: LinearLayoutCompat =
-                layoutInflater.inflate(R.layout.assets_main_cell, null) as LinearLayoutCompat
+                layoutInflater.inflate(R.layout.asset_top_main_cell, null) as LinearLayoutCompat
             val topCell: View = layoutInflater.inflate(R.layout.assets_top_cell, null)
             topCell.header_title.text =  modelData.headerTitle
 
