@@ -324,13 +324,13 @@
                                                 <rect key="frame" x="20" y="558" width="335" height="50"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="UZ7-Df-PB3">
-                                                        <rect key="frame" x="76" y="0.0" width="183.5" height="50"/>
+                                                        <rect key="frame" x="80" y="0.0" width="175.5" height="50"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Add-Address-Button" translatesAutoresizingMaskIntoConstraints="NO" id="IgV-hb-FPR">
                                                                 <rect key="frame" x="0.0" y="0.0" width="28" height="50"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Custom Document" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6UE-lz-pVa">
-                                                                <rect key="frame" x="38" y="0.0" width="145.5" height="50"/>
+                                                                <rect key="frame" x="38" y="0.0" width="137.5" height="50"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                                                                 <color key="textColor" name="ButtonBlueColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -440,7 +440,7 @@
                                 <rect key="frame" x="0.0" y="667" width="375" height="355"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Standard Checklist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pye-nm-7Or">
-                                        <rect key="frame" x="28" y="28" width="195" height="21"/>
+                                        <rect key="frame" x="28" y="28" width="183" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
@@ -531,7 +531,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Request Document" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SFv-Gi-TgU">
-                                        <rect key="frame" x="37.5" y="21.5" width="300" height="21.5"/>
+                                        <rect key="frame" x="37.5" y="21.5" width="300" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
@@ -600,7 +600,7 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search Results" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LUv-IM-gxi">
-                                                <rect key="frame" x="20" y="96" width="91" height="16"/>
+                                                <rect key="frame" x="20" y="96" width="87.5" height="16"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
@@ -613,7 +613,7 @@
                                                 </constraints>
                                             </view>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Results Found for “Form 1888&quot;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lfS-FT-VDA">
-                                                <rect key="frame" x="20" y="145" width="235" height="18"/>
+                                                <rect key="frame" x="20" y="145" width="232.5" height="18"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="ButtonGreyTextColor"/>
                                                 <nil key="highlightedColor"/>
@@ -810,6 +810,118 @@
             </objects>
             <point key="canvasLocation" x="7636" y="2615"/>
         </scene>
+        <!--Documents Type View Controller-->
+        <scene sceneID="cWr-ob-U2M">
+            <objects>
+                <viewController storyboardIdentifier="DocumentsTypeViewController" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Nph-Dd-ag9" customClass="DocumentsTypeViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kEb-N9-GyQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cO6-d1-iao">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b5q-oY-WlZ">
+                                        <rect key="frame" x="15" y="12" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="K3i-Tb-2mb"/>
+                                            <constraint firstAttribute="height" constant="40" id="WTd-Nk-Lyr"/>
+                                        </constraints>
+                                        <state key="normal" image="back"/>
+                                        <connections>
+                                            <action selector="btnBackTapped:" destination="Nph-Dd-ag9" eventType="touchUpInside" id="VxB-z3-rKF"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selected Document Types" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="13x-H7-aX4">
+                                        <rect key="frame" x="37.5" y="21.5" width="300" height="21"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
+                                        <color key="textColor" name="AppBlackColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="13x-H7-aX4" firstAttribute="centerX" secondItem="cO6-d1-iao" secondAttribute="centerX" id="2Tg-bw-Aq5"/>
+                                    <constraint firstItem="b5q-oY-WlZ" firstAttribute="top" secondItem="cO6-d1-iao" secondAttribute="top" constant="12" id="Z4L-a3-iqS"/>
+                                    <constraint firstItem="13x-H7-aX4" firstAttribute="width" secondItem="cO6-d1-iao" secondAttribute="width" multiplier="0.8" id="Zp7-WQ-ZRN"/>
+                                    <constraint firstItem="13x-H7-aX4" firstAttribute="centerY" secondItem="cO6-d1-iao" secondAttribute="centerY" id="lOp-aM-Vau"/>
+                                    <constraint firstAttribute="height" constant="64" id="rb9-ME-PcA"/>
+                                    <constraint firstItem="b5q-oY-WlZ" firstAttribute="leading" secondItem="cO6-d1-iao" secondAttribute="leading" constant="15" id="w98-bj-jjN"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bUw-ed-HDe">
+                                <rect key="frame" x="0.0" y="64" width="375" height="1"/>
+                                <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="u98-n2-qls"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Ja-J5-UN7">
+                                <rect key="frame" x="20" y="95" width="335" height="30.5"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Add details or instructions with each selected documents for borrower.">
+                                        <attributes>
+                                            <color key="NSColor" name="AppGreyColor"/>
+                                            <font key="NSFont" size="13" name="Rubik-Regular"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="K2f-Fa-4vG">
+                                <rect key="frame" x="0.0" y="145.5" width="375" height="521.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Nph-Dd-ag9" id="psH-Il-f3F"/>
+                                    <outlet property="delegate" destination="Nph-Dd-ag9" id="QGo-g7-9lM"/>
+                                </connections>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A3K-6N-Kpz" customClass="ColabaButton" customModule="Colaba" customModuleProvider="target">
+                                <rect key="frame" x="300" y="592" width="60" height="60"/>
+                                <color key="backgroundColor" name="ButtonBlueColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="1oq-cS-igZ"/>
+                                    <constraint firstAttribute="height" constant="60" id="j3M-N1-tz1"/>
+                                </constraints>
+                                <state key="normal" image="NextIcon">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnNextTapped:" destination="Nph-Dd-ag9" eventType="touchUpInside" id="0Mw-HU-6eC"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="znF-ZA-hEO"/>
+                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="znF-ZA-hEO" firstAttribute="trailing" secondItem="A3K-6N-Kpz" secondAttribute="trailing" constant="15" id="7KX-3Q-bms"/>
+                            <constraint firstItem="bUw-ed-HDe" firstAttribute="leading" secondItem="kEb-N9-GyQ" secondAttribute="leading" id="Anf-lv-xar"/>
+                            <constraint firstItem="K2f-Fa-4vG" firstAttribute="top" secondItem="2Ja-J5-UN7" secondAttribute="bottom" constant="20" id="Bw9-Zv-L7z"/>
+                            <constraint firstItem="cO6-d1-iao" firstAttribute="top" secondItem="znF-ZA-hEO" secondAttribute="top" id="CPz-lD-T0x"/>
+                            <constraint firstItem="2Ja-J5-UN7" firstAttribute="top" secondItem="bUw-ed-HDe" secondAttribute="bottom" constant="30" id="Dou-ob-8pc"/>
+                            <constraint firstItem="2Ja-J5-UN7" firstAttribute="leading" secondItem="znF-ZA-hEO" secondAttribute="leading" constant="20" id="I9c-R5-34e"/>
+                            <constraint firstAttribute="trailing" secondItem="2Ja-J5-UN7" secondAttribute="trailing" constant="20" id="K2a-Av-Lj3"/>
+                            <constraint firstAttribute="trailing" secondItem="bUw-ed-HDe" secondAttribute="trailing" id="KIk-pK-fm6"/>
+                            <constraint firstItem="cO6-d1-iao" firstAttribute="trailing" secondItem="znF-ZA-hEO" secondAttribute="trailing" id="LGC-nB-FZV"/>
+                            <constraint firstItem="znF-ZA-hEO" firstAttribute="bottom" secondItem="A3K-6N-Kpz" secondAttribute="bottom" constant="15" id="Orw-0t-gdx"/>
+                            <constraint firstItem="znF-ZA-hEO" firstAttribute="bottom" secondItem="K2f-Fa-4vG" secondAttribute="bottom" id="TBQ-tE-LIK"/>
+                            <constraint firstItem="bUw-ed-HDe" firstAttribute="top" secondItem="cO6-d1-iao" secondAttribute="bottom" id="XFR-V6-ZsH"/>
+                            <constraint firstItem="znF-ZA-hEO" firstAttribute="trailing" secondItem="K2f-Fa-4vG" secondAttribute="trailing" id="fk6-zS-QHo"/>
+                            <constraint firstItem="K2f-Fa-4vG" firstAttribute="leading" secondItem="znF-ZA-hEO" secondAttribute="leading" id="my1-8A-SMs"/>
+                            <constraint firstItem="cO6-d1-iao" firstAttribute="leading" secondItem="znF-ZA-hEO" secondAttribute="leading" id="tfe-Dp-nN2"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="btnBack" destination="b5q-oY-WlZ" id="V07-8p-Ab5"/>
+                        <outlet property="btnNext" destination="A3K-6N-Kpz" id="yxK-Cj-eQT"/>
+                        <outlet property="tableViewDocumentType" destination="K2f-Fa-4vG" id="7Wm-7y-Ggg"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jp9-hz-A81" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="8297" y="2615"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Add-Address-Button" width="28" height="28"/>
@@ -818,8 +930,12 @@
         <image name="PopupCloseIcon" width="24" height="24"/>
         <image name="SearchBarCrossIcon" width="11.300000190734863" height="11.329000473022461"/>
         <image name="SearchGreyIcon" width="23" height="24"/>
+        <image name="back" width="19" height="27"/>
         <namedColor name="AppBlackColor">
             <color red="0.30588235294117649" green="0.30588235294117649" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="AppGreyColor">
+            <color red="0.49411764705882355" green="0.50980392156862742" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="ButtonBlueColor">
             <color red="0.26666666666666666" green="0.51764705882352946" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

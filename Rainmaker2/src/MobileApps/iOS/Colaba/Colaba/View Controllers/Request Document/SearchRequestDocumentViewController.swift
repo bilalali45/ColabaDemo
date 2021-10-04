@@ -124,6 +124,8 @@ class SearchRequestDocumentViewController: BaseViewController {
     }
 
     @IBAction func btnNextTapped(_ sender: UIButton) {
+        let vc = Utility.getDocumentsTypeViewController()
+        self.pushToVC(vc: vc)
     }
 }
 
