@@ -38,7 +38,6 @@ class DocsListFragment:DocsTypesBaseFragment() {
     }
 
     private fun setUpUI(){
-
         val sampleDocs = getSampleDocsFiles()
         for (i in 0 until sampleDocs.size) {
 

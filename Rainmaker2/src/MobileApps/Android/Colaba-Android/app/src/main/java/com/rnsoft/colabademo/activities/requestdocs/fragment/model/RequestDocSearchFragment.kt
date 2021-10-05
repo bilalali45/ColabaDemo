@@ -5,25 +5,21 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import androidx.activity.addCallback
-import androidx.core.view.isVisible
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
-import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.facebook.shimmer.ShimmerFrameLayout
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
-import com.rnsoft.colabademo.databinding.FragmentSearchBinding
 import com.rnsoft.colabademo.databinding.RequestDocsSearchLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.assets_top_cell.view.*
+import kotlinx.android.synthetic.main.docs_type_header_cell.view.*
+import kotlinx.android.synthetic.main.docs_type_middle_cell.view.*
+import java.util.HashMap
 import javax.inject.Inject
 
 private val docsTypeTabArray = arrayOf(
@@ -32,7 +28,7 @@ private val docsTypeTabArray = arrayOf(
 )
 
 @AndroidEntryPoint
-class RequestDocSearchFragment : BaseFragment() {
+class RequestDocSearchFragment : DocsTypesBaseFragment() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -53,7 +49,7 @@ class RequestDocSearchFragment : BaseFragment() {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 binding.searchEditTextField.clearFocus()
                 binding.searchEditTextField.hideKeyboard()
-
+                performLocalSearch( binding.searchEditTextField.text.toString())
                 return@OnEditorActionListener true
             }
             false
@@ -91,6 +87,74 @@ class RequestDocSearchFragment : BaseFragment() {
         return root
     }
 
+    private fun performLocalSearch(searchKeyWord:String){
+        val sampleDocs = getSampleDocsFiles()
+        var title:String = ""
+        val searchMap: HashMap<String, ArrayList<String>> = HashMap()
+        for (i in 0 until sampleDocs.size) {
+            val matchedList:ArrayList<String> = arrayListOf()
+            val modelData = sampleDocs[i]
+            for (j in 0 until modelData.contentCell.size) {
+                val contentData = modelData.contentCell[j]
+                if (contentData.checkboxContent.contains(searchKeyWord,true)) {
+                    matchedList.add(contentData.checkboxContent)
+                    title = modelData.headerTitle
+                }
+            }
+            if(matchedList.size>0)
+                searchMap.put(title, matchedList)
+        }
+
+        if(binding.searchItemsParentLayout.childCount >0)
+            binding.searchItemsParentLayout.removeAllViewsInLayout()
+
+        if(searchMap.size ==0) {
+            //binding.searchResultFoundLayout.visibility = View.INVISIBLE
+            binding.noResultLayout.visibility = View.VISIBLE
+        }
+        else {
+            //binding.searchResultFoundLayout.visibility = View.VISIBLE
+            binding.noResultLayout.visibility = View.GONE
+            for ((key, value) in searchMap) {
+                val modelData = value
+                val mainCell: LinearLayoutCompat = layoutInflater.inflate(
+                    R.layout.docs_type_top_main_cell,
+                    null
+                ) as LinearLayoutCompat
+                val topCell: View = layoutInflater.inflate(R.layout.docs_type_header_cell, null)
+                topCell.cell_header_title.text = key
+                topCell.total_selected.visibility = View.GONE
+                // always hide this...
+                topCell.total_selected.visibility = View.GONE
+                topCell.items_selected_imageview.visibility = View.GONE
+                topCell.docs_arrow_down.visibility = View.GONE
+                topCell.tag = R.string.docs_top_cell
+                mainCell.addView(topCell)
+
+                val emptyCellStart: View =
+                    layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
+                //emptyCell.visibility = View.GONE
+                mainCell.addView(emptyCellStart)
+                for (j in 0 until modelData.size) {
+                    val contentCell: View =
+                        layoutInflater.inflate(R.layout.docs_type_middle_cell, null)
+                    contentCell.checkbox.text = modelData[j]
+                    contentCell.info_imageview.visibility = View.INVISIBLE
+                    //contentCell.info_imageview.setOnClickListener(modelData.contentListenerAttached)
+                    mainCell.addView(contentCell)
+                }
+                val emptyCellEnd: View =
+                    layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
+                //emptyCell.visibility = View.GONE
+                mainCell.addView(emptyCellEnd)
+
+
+                binding.searchItemsParentLayout.addView(mainCell)
+
+            }
+        }
+
+    }
 
     private fun setFocusToSearchField(){
         binding.searchEditTextField.setFocusableInTouchMode(true);
