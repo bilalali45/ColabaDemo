@@ -2,7 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation">
+    android:id="@+id/reques_docs_id"
+    app:startDestination="@+id/navigation_doc_request_email_fragment">
 
     <fragment
         android:id="@+id/navigation_request_docs_tab_fragment"
@@ -10,6 +11,39 @@
         android:label="@string/request_docs"
         tools:layout="@layout/request_docs_tab_layout">
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_doc_request_email_fragment"
+        android:name="com.rnsoft.colabademo.SendDocRequestFragment"
+        android:label="@string/request_docs"
+        tools:layout="@layout/send_doc_request_layout">
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_custom_doc"
+        android:name="com.rnsoft.colabademo.CustomDocumentFragment"
+        android:label="@string/request_docs"
+        tools:layout="@layout/custom_doc_layout">
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_delete_doc"
+        android:name="com.rnsoft.colabademo.DeleteDocumentDialogFragment"
+        android:label="@string/request_docs"
+        tools:layout="@layout/dialog_fragment_delete_document">
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_statement_frag"
+        android:name="com.rnsoft.colabademo.BorrowerStatementFragment"
+        android:label="@string/request_docs"
+        tools:layout="@layout/bank_statement_layout">
+    </fragment>
+
+
+
+
+
 
 
 

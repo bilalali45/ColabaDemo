@@ -29,9 +29,6 @@
     <string name="sign_in_with_password">Sign in with Password</string>
 
 
-
-
-
     <string-array name="array_occupancy_type">
         <item>Primary Residence</item>
         <item>Second Home</item>
@@ -73,8 +70,10 @@
     <string name="delete_prev_address">Are you sure you want to delete Richard\'s Previous Address?</string>
     <string name="delete_current_address">Are you sure you want to delete Richard\'s Current Address?</string>
 
+    <string name="docs_top_cell">docs_top_cell</string>
 
     <string name="asset_top_cell">asset_top_cell</string>
+
     <string name="asset_middle_cell">asset_middle_cell</string>
     <string name="asset_bottom_cell">asset_bottom_cell</string>
 
@@ -493,5 +492,16 @@
     <string name="current_employer_address">Current Employer Address</string>
     <string name="previous_employer_address">Previous Employer Address</string>
 
+    <string name="msg_to_borrower">Include a message to the borrower</string>
+    <string name="custom_document">Custom Document</string>
+    <string name="custom_doc_name">Custom Document Name</string>
+    <string name="standard_checklist">My Standard Checklist</string>
+    <string name="request_email_template">Request Email Template</string>
+    <string name="send_doc_request">Send Document Request</string>
+    <string name="send_request">Send Request</string>
+    <string name="ques_remove_doc">Are you sure you want to remove this document?</string>
+    <string name="email_to">To</string>
+    <string name="email_cc">CC</string>
+    <string name="subject_line">Subject Line</string>
 
 </resources>

@@ -40,13 +40,14 @@ class DetailActivity : BaseActivity() {
             borrowerCellNumber = it.getString(AppConstant.bPhoneNumber)
             borrowerEmail = it.getString(AppConstant.bEmail)
             innerScreenName = it.getString(AppConstant.innerScreenName)
-            Log.e("Names- ", "$borrowerFirstName $borrowerLastName")
+            //Log.e("Names- ", "$borrowerFirstName $borrowerLastName")
         }
 
 
         super.onCreate(savedInstanceState)
         binding = DetailTopLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
 
         binding.emailFab.setOnClickListener{
             if(borrowerEmail!=null) {

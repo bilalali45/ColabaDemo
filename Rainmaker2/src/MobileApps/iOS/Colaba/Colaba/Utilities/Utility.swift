@@ -422,6 +422,26 @@ struct Utility {
         return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: SearchRequestDocumentViewController.self)) as! SearchRequestDocumentViewController
     }
     
+    static func getDocumentsTypeViewController() -> DocumentsTypeViewController{
+        return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: DocumentsTypeViewController.self)) as! DocumentsTypeViewController
+    }
+    
+    static func getBankStatementVC() -> BankStatementViewController{
+        return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: BankStatementViewController.self)) as! BankStatementViewController
+    }
+    
+    static func getCustomDocumentVC() -> CustomDocumentViewController{
+        return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: CustomDocumentViewController.self)) as! CustomDocumentViewController
+    }
+    
+    static func getDeleteDocumentPopupVC() -> DeleteDocumentPopupViewController{
+        return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: DeleteDocumentPopupViewController.self)) as! DeleteDocumentPopupViewController
+    }
+    
+    static func getDocumentRequestSentVC() -> DocumentRequestSentViewController{
+        return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: DocumentRequestSentViewController.self)) as! DocumentRequestSentViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){

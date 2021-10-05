@@ -114,6 +114,7 @@ object AppConstant {
 
         const val  downloadedFileName:String = "pdfFileName"
         const val address:String = "address"
+        const val heading : String = "toolbar_heading"
 
 
 

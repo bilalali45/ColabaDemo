@@ -54,13 +54,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
-        android:id="@+id/scroll_primary_info"
+        android:id="@+id/scrollview_start_application"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:isScrollContainer="false"
         android:layout_marginTop="?actionBarSize"
         android:fillViewport="true"
         android:fitsSystemWindows="true"
+        android:isScrollContainer="false"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,9 +73,9 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:paddingBottom="200dp"
             android:clickable="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="200dp">
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/find_contact_btn"
@@ -91,122 +91,140 @@
                 android:textColor="@color/grey_color_one"
                 android:textSize="15sp" />
 
-            <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/layout_find_contact"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                android:paddingBottom="30dp"
-                android:background="@drawable/content_bg_with_drop_shadow">
+                android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:button="@null"
-                    android:layout_marginTop="17dp"
-                    android:drawableStart="@drawable/radiodraw"
-                    android:drawablePadding="15dp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:paddingStart="15dp"
-                    android:text="@string/find_contact"
-                    android:textColor="@color/grey_color_one"
-                    android:textSize="15sp"
-                    android:checked="true"/>
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/searchEdittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:paddingLeft="10dp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:hint="@string/search_contact"
-                    android:textColorHint="@color/grey_color_four"
-                    android:textStyle="italic|bold"
-                    android:textSize="13sp"
-                    android:background="@drawable/edittext_search_contact_style"
-                    android:drawableEnd="@drawable/ic_search"
-                    android:paddingRight="10dp"/>
-
-                <RelativeLayout
-                    android:visibility="gone"
-                    android:id="@+id/layout_result"
+                <LinearLayout
+                    android:id="@+id/layout_find_contact"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@drawable/content_bg_grey_border">
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/content_bg_with_drop_shadow"
+                    android:orientation="vertical"
+                    android:paddingBottom="30dp"
+                    android:visibility="gone">
 
-                    <TextView
-                        android:id="@+id/searched_contact_name"
+                    <androidx.appcompat.widget.AppCompatRadioButton
                         android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="17dp"
+                        android:button="@null"
+                        android:checked="true"
+                        android:drawableStart="@drawable/radiodraw"
+                        android:drawablePadding="15dp"
+                        android:fontFamily="@font/rubik_regular"
+                        android:paddingStart="15dp"
+                        android:text="@string/find_contact"
+                        android:textColor="@color/grey_color_one"
+                        android:textSize="15sp" />
+
+
+                    <LinearLayout
+                        android:id="@+id/layout_editText"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="@font/rubik_regular"
-                        android:text="Richard Glenn Randal"
-                        android:textColor="@color/colaba_primary_color"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@drawable/edittext_search_contact_style">
 
-                    <ImageView
-                        android:id="@+id/btn_cancel_contact"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:src="@drawable/ic_cross_small" />
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/searchEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@android:color/transparent"
+                            android:drawableEnd="@drawable/ic_search"
+                            android:fontFamily="@font/rubik_regular"
+                            android:hint="@string/search_contact"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:textColorHint="@color/grey_color_four"
+                            android:textSize="13sp"
+                            android:textStyle="italic|bold" />
 
-                    <TextView
-                        android:id="@+id/searched_contact_email"
-                        android:layout_width="wrap_content"
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/layout_result"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/searched_contact_name"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="6dp"
-                        android:fontFamily="@font/rubik_regular"
-                        android:text="richard@gmail.com"
-                        android:textColor="@color/grey_color_two"
-                        android:textSize="14sp" />
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@drawable/content_bg_grey_border"
+                        android:visibility="gone">
 
-                    <TextView
-                        android:id="@+id/searched_contact_phone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="17dp"
-                        android:layout_below="@+id/searched_contact_name"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="15dp"
-                        android:drawableStart="@drawable/ic_circle_blue"
-                        android:drawablePadding="10dp"
-                        android:fontFamily="@font/rubik_regular"
-                        android:text="(121)31245454"
-                        android:textColor="@color/grey_color_two"
-                        android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/searched_contact_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/rubik_regular"
+                            android:text="Richard Glenn Randal"
+                            android:textColor="@color/colaba_primary_color"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
-                </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/btn_cancel_contact"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_cross_small" />
 
+                        <TextView
+                            android:id="@+id/searched_contact_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/searched_contact_name"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="6dp"
+                            android:fontFamily="@font/rubik_regular"
+                            android:text="richard@gmail.com"
+                            android:textColor="@color/grey_color_two"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/searched_contact_phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="17dp"
+                            android:layout_below="@+id/searched_contact_name"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="15dp"
+                            android:drawableStart="@drawable/ic_circle_blue"
+                            android:drawablePadding="10dp"
+                            android:fontFamily="@font/rubik_regular"
+                            android:text="(121)31245454"
+                            android:textColor="@color/grey_color_two"
+                            android:textSize="14sp" />
+
+                    </RelativeLayout>
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:visibility="visible"
                     android:id="@+id/recyclerview_contacts"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
+                    android:layout_height="400dp"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="122dp"
                     android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/layout_style_flat_top"
+                    android:focusableInTouchMode="true"
                     android:orientation="vertical"
+                    android:paddingBottom="20dp"
                     android:scrollbars="vertical"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            </LinearLayout>
+            </FrameLayout>
+
 
             <!-- layout create new contact -->
 
@@ -226,37 +244,37 @@
                 android:textSize="15sp" />
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/layout_create_contact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/content_bg_with_drop_shadow"
                 android:orientation="vertical"
-                android:background="@drawable/content_bg_with_drop_shadow">
+                android:visibility="gone">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
-                    android:button="@null"
-                    android:layout_marginTop="17dp"
                     android:layout_marginStart="3dp"
+                    android:layout_marginTop="17dp"
+                    android:button="@null"
+                    android:checked="true"
                     android:drawableStart="@drawable/radiodraw"
                     android:drawablePadding="15dp"
                     android:fontFamily="@font/rubik_regular"
                     android:paddingStart="15dp"
                     android:text="@string/create_new_contact"
                     android:textColor="@color/grey_color_one"
-                    android:textSize="15sp"
-                    android:checked="true"/>
+                    android:textSize="15sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_first_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/rubik_light"
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/rubik_light"
                     android:hint="@string/first_name"
                     android:textColorHint="@color/primary_info_label_color"
                     app:boxCollapsedPaddingTop="1dp"
@@ -288,10 +306,10 @@
                     android:id="@+id/layout_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/rubik_light"
                     android:layout_marginStart="18dp"
-                    android:layout_marginEnd="20dp"
                     android:layout_marginTop="25dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/rubik_light"
                     android:hint="@string/last_name"
                     android:textColorHint="@color/primary_info_label_color"
                     app:boxCollapsedPaddingTop="1dp"
@@ -401,8 +419,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:layout_marginStart="40dp"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/rubik_regular"
                 android:text="@string/loan_purpose"
                 android:textColor="@color/grey_color_two"
@@ -411,8 +429,8 @@
             <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:layout_marginStart="40dp"
+                android:layout_marginTop="15dp"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
@@ -424,7 +442,7 @@
                     android:paddingStart="15dp"
                     android:text="@string/purchase"
                     android:textColor="@color/grey_color_one"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/btn_loan_refinance"
@@ -436,15 +454,15 @@
                     android:paddingStart="15dp"
                     android:text="@string/refinance"
                     android:textColor="@color/grey_color_one"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
             </RadioGroup>
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
                 android:layout_marginStart="40dp"
+                android:layout_marginTop="50dp"
                 android:fontFamily="@font/rubik_regular"
                 android:text="@string/loan_goal"
                 android:textColor="@color/grey_color_two"
@@ -453,8 +471,8 @@
             <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginStart="40dp">
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="15dp">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/btn_lower_payment_terms"
@@ -497,8 +515,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="30dp"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginEnd="20dp"
                 android:background="@color/colaba_app_border_color" />
 
@@ -516,8 +534,8 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_person"
-                    android:layout_marginStart="17dp"/>
+                    android:layout_marginStart="17dp"
+                    android:src="@drawable/ic_add_person" />
 
                 <TextView
                     android:id="@+id/tv_residence"
@@ -538,18 +556,18 @@
         android:id="@+id/btn_create_app"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/selector_btn_round"
-        android:textColor="@color/text_color_selector"
         android:fontFamily="@font/rubik_medium"
         android:text="@string/create_application"
         android:textAlignment="center"
+        android:textColor="@color/text_color_selector"
         android:textSize="17sp"
         android:textStyle="bold"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- android:textColor="@color/text_color_selector"
 -->
