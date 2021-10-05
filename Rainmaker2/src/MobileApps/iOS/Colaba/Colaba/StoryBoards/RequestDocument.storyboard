@@ -1318,12 +1318,101 @@
             </objects>
             <point key="canvasLocation" x="10329" y="2615"/>
         </scene>
+        <!--Document Request Sent View Controller-->
+        <scene sceneID="ri7-FM-gZn">
+            <objects>
+                <viewController storyboardIdentifier="DocumentRequestSentViewController" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="409-jV-147" customClass="DocumentRequestSentViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9Ck-ht-kqP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2hI-zC-dI2">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Document Request Sent" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TKd-G1-gFP">
+                                        <rect key="frame" x="37.5" y="21.5" width="300" height="21.5"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
+                                        <color key="textColor" name="AppBlackColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="TKd-G1-gFP" firstAttribute="centerX" secondItem="2hI-zC-dI2" secondAttribute="centerX" id="EjT-el-KGG"/>
+                                    <constraint firstItem="TKd-G1-gFP" firstAttribute="centerY" secondItem="2hI-zC-dI2" secondAttribute="centerY" id="WUh-xS-ZKf"/>
+                                    <constraint firstItem="TKd-G1-gFP" firstAttribute="width" secondItem="2hI-zC-dI2" secondAttribute="width" multiplier="0.8" id="ZEB-Yy-Zgp"/>
+                                    <constraint firstAttribute="height" constant="64" id="rhw-pI-utw"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kJ1-YE-af6">
+                                <rect key="frame" x="0.0" y="64" width="375" height="1"/>
+                                <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="AS2-6J-Ohv"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="q6b-7j-p3U">
+                                <rect key="frame" x="37.5" y="120" width="300" height="360.5"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DocumentRequestSent" translatesAutoresizingMaskIntoConstraints="NO" id="F6Z-hT-217">
+                                        <rect key="frame" x="30.5" y="0.0" width="239" height="270"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Document Request has been sent to Richard Glenn Randall" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eNH-UT-tX7">
+                                        <rect key="frame" x="4.5" y="320" width="291.5" height="40.5"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="17"/>
+                                        <color key="textColor" name="AppGreyColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vSP-94-rHF">
+                                <rect key="frame" x="40" y="587" width="295" height="50"/>
+                                <color key="backgroundColor" name="ButtonBlueColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="FOd-uO-shk"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="17"/>
+                                <state key="normal" title="BACK TO DOCUMENTS">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnBackToDocumentTapped:" destination="409-jV-147" eventType="touchUpInside" id="4XS-MJ-EsB"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vCU-Ia-4dI"/>
+                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="kJ1-YE-af6" firstAttribute="top" secondItem="2hI-zC-dI2" secondAttribute="bottom" id="E3t-VY-iDH"/>
+                            <constraint firstAttribute="trailing" secondItem="kJ1-YE-af6" secondAttribute="trailing" id="HMJ-sN-SO9"/>
+                            <constraint firstItem="2hI-zC-dI2" firstAttribute="trailing" secondItem="vCU-Ia-4dI" secondAttribute="trailing" id="KIy-wI-0yA"/>
+                            <constraint firstItem="q6b-7j-p3U" firstAttribute="centerY" secondItem="9Ck-ht-kqP" secondAttribute="centerY" multiplier="0.9" id="Q61-OH-Xjf"/>
+                            <constraint firstItem="2hI-zC-dI2" firstAttribute="top" secondItem="vCU-Ia-4dI" secondAttribute="top" id="Rfa-2n-b0e"/>
+                            <constraint firstItem="vSP-94-rHF" firstAttribute="leading" secondItem="vCU-Ia-4dI" secondAttribute="leading" constant="40" id="Vpt-o7-Mh5"/>
+                            <constraint firstItem="q6b-7j-p3U" firstAttribute="centerX" secondItem="9Ck-ht-kqP" secondAttribute="centerX" id="Y2r-vl-V6r"/>
+                            <constraint firstItem="2hI-zC-dI2" firstAttribute="leading" secondItem="vCU-Ia-4dI" secondAttribute="leading" id="ZtC-B5-1D2"/>
+                            <constraint firstItem="vCU-Ia-4dI" firstAttribute="bottom" secondItem="vSP-94-rHF" secondAttribute="bottom" constant="30" id="bRj-M1-jz7"/>
+                            <constraint firstItem="kJ1-YE-af6" firstAttribute="leading" secondItem="9Ck-ht-kqP" secondAttribute="leading" id="dzG-7p-IEe"/>
+                            <constraint firstItem="q6b-7j-p3U" firstAttribute="width" secondItem="vCU-Ia-4dI" secondAttribute="width" multiplier="0.8" id="pZN-dO-6R8"/>
+                            <constraint firstItem="vCU-Ia-4dI" firstAttribute="trailing" secondItem="vSP-94-rHF" secondAttribute="trailing" constant="40" id="rpi-0R-oO0"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="btnBackToDocument" destination="vSP-94-rHF" id="EDm-g0-Fbq"/>
+                        <outlet property="lblRequestSent" destination="eNH-UT-tX7" id="3TT-HV-omq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x9V-Hq-bhI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="11002" y="2615"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Add-Address-Button" width="28" height="28"/>
         <image name="AddressDeleteIcon" width="24" height="24"/>
         <image name="Close-Icon" width="16.523000717163086" height="16.523000717163086"/>
         <image name="DeletePopupIcon" width="34" height="34"/>
+        <image name="DocumentRequestSent" width="239.31199645996094" height="270.20700073242188"/>
         <image name="NextIcon" width="16.25" height="17.531999588012695"/>
         <image name="PopupCloseIcon" width="24" height="24"/>
         <image name="SearchBarCrossIcon" width="11.300000190734863" height="11.329000473022461"/>
