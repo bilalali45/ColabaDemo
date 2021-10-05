@@ -187,6 +187,8 @@
 		3937F87E26DE0BFB00B85585 /* ColabaTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3937F87D26DE0BFB00B85585 /* ColabaTextField.swift */; };
 		3937F88026DE140D00B85585 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3937F87F26DE140D00B85585 /* BaseView.swift */; };
 		3963EE3626F9F7740044FAFA /* ColabaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3963EE3526F9F7740044FAFA /* ColabaButton.swift */; };
+		39AC4804270B4F730034E3E0 /* SendDocumentRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AC4803270B4F730034E3E0 /* SendDocumentRequestViewController.swift */; };
+		39F7CB08270C900E004A441D /* RequestEmailTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F7CB07270C900E004A441D /* RequestEmailTemplate.swift */; };
 		710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D032E268DC56500A13E63 /* NotificationModel.swift */; };
 		7113F51726568B9A0066E179 /* ExtensionOfSVGKImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */; };
 		7113F51F26568E3B0066E179 /* Home.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7113F51E26568E3B0066E179 /* Home.svg */; };
@@ -421,6 +423,8 @@
 		3937F87D26DE0BFB00B85585 /* ColabaTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColabaTextField.swift; sourceTree = "<group>"; };
 		3937F87F26DE140D00B85585 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		3963EE3526F9F7740044FAFA /* ColabaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColabaButton.swift; sourceTree = "<group>"; };
+		39AC4803270B4F730034E3E0 /* SendDocumentRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendDocumentRequestViewController.swift; sourceTree = "<group>"; };
+		39F7CB07270C900E004A441D /* RequestEmailTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestEmailTemplate.swift; sourceTree = "<group>"; };
 		3D986CBDBB7995778F877F6F /* Pods-ColabaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ColabaTests.debug.xcconfig"; path = "Target Support Files/Pods-ColabaTests/Pods-ColabaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		710D032E268DC56500A13E63 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		7113F51626568B9A0066E179 /* ExtensionOfSVGKImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionOfSVGKImage.swift; sourceTree = "<group>"; };
@@ -531,6 +535,7 @@
 				23DF0CEF269F022B00F29B70 /* LoanDocumentModel.swift */,
 				23E1A7A326B7E6F200714D3B /* LoanApplicationModel.swift */,
 				23BDB1D226F8706900C73E33 /* DemographicQuestionsModel.swift */,
+				39F7CB07270C900E004A441D /* RequestEmailTemplate.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -667,6 +672,7 @@
 				23AFA3702707187700388905 /* DocumentsListViewController.swift */,
 				23AFA37627073EEF00388905 /* CheckListViewController.swift */,
 				23B2148A270B153300215ACC /* SearchRequestDocumentViewController.swift */,
+				39AC4803270B4F730034E3E0 /* SendDocumentRequestViewController.swift */,
 			);
 			path = "Request Document";
 			sourceTree = "<group>";
@@ -1331,6 +1337,7 @@
 				23A56C5E2685B017005CE6F4 /* Loaf.swift in Sources */,
 				23A8D1A927045AA300950195 /* DemographicDetailViewController.swift in Sources */,
 				3963EE3626F9F7740044FAFA /* ColabaButton.swift in Sources */,
+				39AC4804270B4F730034E3E0 /* SendDocumentRequestViewController.swift in Sources */,
 				2381B4F52701F65A0045D917 /* AssignLoanOfficerPopupViewController.swift in Sources */,
 				238E0F9326F37CC40025FF06 /* OwnershipInterestInPropertyFollowupQuestionViewController.swift in Sources */,
 				23B2148B270B153300215ACC /* SearchRequestDocumentViewController.swift in Sources */,
@@ -1411,6 +1418,7 @@
 				23AFA36F2707181100388905 /* DocumentTemplatesViewController.swift in Sources */,
 				230B94D226E74C03004CBC83 /* AssetsAddNewTableViewCell.swift in Sources */,
 				7186AD012653C6AB00E740D3 /* LoginViewController.swift in Sources */,
+				39F7CB08270C900E004A441D /* RequestEmailTemplate.swift in Sources */,
 				23B5E97F26F46EC100686B8E /* TitleConveyanceViewController.swift in Sources */,
 				3937F87E26DE0BFB00B85585 /* ColabaTextField.swift in Sources */,
 				7186ACF42653C66100E740D3 /* FaceRecognitionViewController.swift in Sources */,
