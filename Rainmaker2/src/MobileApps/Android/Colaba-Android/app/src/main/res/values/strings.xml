@@ -500,5 +500,8 @@
     <string name="send_doc_request">Send Document Request</string>
     <string name="send_request">Send Request</string>
     <string name="ques_remove_doc">Are you sure you want to remove this document?</string>
+    <string name="email_to">To</string>
+    <string name="email_cc">CC</string>
+    <string name="subject_line">Subject Line</string>
 
 </resources>

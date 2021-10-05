@@ -1,10 +1,10 @@
-package com.rnsoft.colabademo.activities.requestdocs.fragment
+package com.rnsoft.colabademo
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.rnsoft.colabademo.BaseFragment
+import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.CustomDocLayoutBinding
 
 /**
@@ -18,10 +18,26 @@ class CustomDocumentFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = CustomDocLayoutBinding.inflate(inflater, container, false)
 
+        setupUI()
+
         return binding.root
+
+    }
+
+
+    private fun setupUI(){
+
+        binding.btnTopDelete.setOnClickListener {
+            DeleteDocumentDialogFragment.newInstance("Tax returns with schedules (Personals-Two Years").show(childFragmentManager, DeleteDocumentDialogFragment::class.java.canonicalName)
+        }
+
+        binding.btnClose.setOnClickListener {
+            findNavController().popBackStack()
+            requireActivity().finish()
+        }
 
     }
 }

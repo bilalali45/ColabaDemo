@@ -19,9 +19,9 @@ import org.greenrobot.eventbus.EventBus
 class DeleteDocumentDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
-        lateinit var dialogTitle:String
-        fun newInstance(dTitle:String): DeleteDocumentDialogFragment {
-            dialogTitle = dTitle
+        lateinit var deleteText:String
+        fun newInstance(text:String): DeleteDocumentDialogFragment {
+            deleteText = text
             return DeleteDocumentDialogFragment()
         }
     }
@@ -39,7 +39,7 @@ class DeleteDocumentDialogFragment : BottomSheetDialogFragment() {
             dismiss()
         }
         setStyle(DialogFragment.STYLE_NORMAL, R.style.roundedBottomSheetDialog)
-        binding.tvDeleteText.text= dialogTitle
+        binding.tvDeleteDocName.text= deleteText
 
         binding.yesBtn.setOnClickListener {
             dismiss()
