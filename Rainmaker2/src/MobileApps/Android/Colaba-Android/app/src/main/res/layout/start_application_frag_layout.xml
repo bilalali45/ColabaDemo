@@ -103,7 +103,7 @@
                     android:background="@drawable/content_bg_with_drop_shadow"
                     android:orientation="vertical"
                     android:paddingBottom="30dp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:layout_width="wrap_content"

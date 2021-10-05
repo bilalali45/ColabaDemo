@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.requestdocs.fragment
+package com.rnsoft.colabademo
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -39,7 +39,7 @@ class DeleteDocumentDialogFragment : BottomSheetDialogFragment() {
             dismiss()
         }
         setStyle(DialogFragment.STYLE_NORMAL, R.style.roundedBottomSheetDialog)
-        binding.tvDeleteText.text= deleteText
+        binding.tvDeleteDocName.text= deleteText
 
         binding.yesBtn.setOnClickListener {
             dismiss()

@@ -1,15 +1,9 @@
-package com.rnsoft.colabademo.activities.requestdocs.fragment
+package com.rnsoft.colabademo
 
-import android.content.res.ColorStateList
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import androidx.core.content.ContextCompat
-import com.rnsoft.colabademo.BaseFragment
-import com.rnsoft.colabademo.activities.requestdocs.adapter.EmailTemplateSpinnerAdapter
 import com.rnsoft.colabademo.activities.requestdocs.model.Template
 import com.rnsoft.colabademo.databinding.SendDocRequestLayoutBinding
 
@@ -50,12 +44,12 @@ class SendDocRequestFragment : BaseFragment() {
         templateList.add(Template("Document Request with Intro","Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque"))
         templateList.add(Template("Default Document Request ","Sed ut perspiciatis unde omnis iste natus error sit voluptatem"))
         templateList.add(Template("Only Tenant Intro","Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque"))
-//
-//        val spinnerAdapter = EmailTemplateSpinnerAdapter(requireContext(), templateList)
-//        binding.tvEmailType.setAdapter(spinnerAdapter)
-//        binding.tvEmailType.setOnClickListener {
-//            binding.tvEmailType.showDropDown()
-//        }
+
+        val spinnerAdapter = EmailTemplateSpinnerAdapter(requireContext(), R.layout.email_template_item, templateList)
+        binding.tvEmailType.setAdapter(spinnerAdapter)
+        binding.tvEmailType.setOnClickListener {
+            binding.tvEmailType.showDropDown()
+        }
 //        binding.tvEmailType.onItemClickListener = object :
 //            AdapterView.OnItemClickListener {
 //            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
