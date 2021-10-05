@@ -191,6 +191,8 @@
 		23F23B4126CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B4026CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift */; };
 		23F23B4326CA591400AEF33E /* SaveAddressPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B4226CA591400AEF33E /* SaveAddressPopupViewController.swift */; };
 		23F23B4526CA592800AEF33E /* DeleteAddressPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B4426CA592800AEF33E /* DeleteAddressPopupViewController.swift */; };
+		39158827270CA11D0006C140 /* SendDocumentRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39158826270CA11D0006C140 /* SendDocumentRequestViewController.swift */; };
+		39158829270CA1350006C140 /* RequestEmailTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39158828270CA1350006C140 /* RequestEmailTemplate.swift */; };
 		3937F87E26DE0BFB00B85585 /* ColabaTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3937F87D26DE0BFB00B85585 /* ColabaTextField.swift */; };
 		3937F88026DE140D00B85585 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3937F87F26DE140D00B85585 /* BaseView.swift */; };
 		3963EE3626F9F7740044FAFA /* ColabaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3963EE3526F9F7740044FAFA /* ColabaButton.swift */; };
@@ -432,6 +434,8 @@
 		23F23B4226CA591400AEF33E /* SaveAddressPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveAddressPopupViewController.swift; sourceTree = "<group>"; };
 		23F23B4426CA592800AEF33E /* DeleteAddressPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAddressPopupViewController.swift; sourceTree = "<group>"; };
 		25C6C1D772F13896700CDB1C /* Pods-Colaba.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Colaba.release.xcconfig"; path = "Target Support Files/Pods-Colaba/Pods-Colaba.release.xcconfig"; sourceTree = "<group>"; };
+		39158826270CA11D0006C140 /* SendDocumentRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendDocumentRequestViewController.swift; sourceTree = "<group>"; };
+		39158828270CA1350006C140 /* RequestEmailTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestEmailTemplate.swift; sourceTree = "<group>"; };
 		3937F87D26DE0BFB00B85585 /* ColabaTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColabaTextField.swift; sourceTree = "<group>"; };
 		3937F87F26DE140D00B85585 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		3963EE3526F9F7740044FAFA /* ColabaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColabaButton.swift; sourceTree = "<group>"; };
@@ -545,6 +549,7 @@
 				23DF0CEF269F022B00F29B70 /* LoanDocumentModel.swift */,
 				23E1A7A326B7E6F200714D3B /* LoanApplicationModel.swift */,
 				23BDB1D226F8706900C73E33 /* DemographicQuestionsModel.swift */,
+				39158828270CA1350006C140 /* RequestEmailTemplate.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -688,6 +693,7 @@
 				239DB537270C369100977E20 /* CustomDocumentViewController.swift */,
 				239DB539270C413A00977E20 /* DeleteDocumentPopupViewController.swift */,
 				239DB53B270C67A900977E20 /* DocumentRequestSentViewController.swift */,
+				39158826270CA11D0006C140 /* SendDocumentRequestViewController.swift */,
 			);
 			path = "Request Document";
 			sourceTree = "<group>";
@@ -1383,6 +1389,7 @@
 				2368799F26BC35360045D294 /* DemographicInformationCollectionViewCell.swift in Sources */,
 				23BBADD226EF5F8900813F04 /* AddCurrentEmployementViewController.swift in Sources */,
 				238D70772678E8C80067687C /* FiltersViewController.swift in Sources */,
+				39158827270CA11D0006C140 /* SendDocumentRequestViewController.swift in Sources */,
 				23E9C74D269C23070066C978 /* ApplicationStatusTableViewCell.swift in Sources */,
 				23B5E97D26F46E5200686B8E /* PartyToLawsuitViewController.swift in Sources */,
 				2380E25C26DF721100B66C61 /* RefinanceSubjectPropertyViewController.swift in Sources */,
@@ -1447,6 +1454,7 @@
 				23EB790226A6ED980071BC13 /* RealEstateCollectionViewCell.swift in Sources */,
 				23BE065126F0D7E300F9B4B8 /* AddMilitaryPayViewController.swift in Sources */,
 				239DB536270C2D5F00977E20 /* BankStatementViewController.swift in Sources */,
+				39158829270CA1350006C140 /* RequestEmailTemplate.swift in Sources */,
 				23DF0CEE269ED82000F29B70 /* LoanInfoModel.swift in Sources */,
 				2381B4EF2701DD0E0045D917 /* LoanOfficerListViewController.swift in Sources */,
 				23A56C5A2685B017005CE6F4 /* Controller.swift in Sources */,

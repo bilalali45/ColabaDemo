@@ -294,6 +294,10 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: UndisclosedBorrowerFundsViewController.self)) as! UndisclosedBorrowerFundsViewController
     }
     
+    static func getSendDocumentRequestVC() -> SendDocumentRequestViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: SendDocumentRequestViewController.self)) as! SendDocumentRequestViewController
+    }
+    
     static func getUndisclosedBorrowerFundsFollowupQuestionsVC() -> UndisclosedBorrowerFundsFollowupQuestionsViewController{
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: UndisclosedBorrowerFundsFollowupQuestionsViewController.self)) as! UndisclosedBorrowerFundsFollowupQuestionsViewController
     }
