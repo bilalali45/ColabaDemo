@@ -430,6 +430,10 @@ struct Utility {
         return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: CustomDocumentViewController.self)) as! CustomDocumentViewController
     }
     
+    static func getDeleteDocumentPopupVC() -> DeleteDocumentPopupViewController{
+        return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: DeleteDocumentPopupViewController.self)) as! DeleteDocumentPopupViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){

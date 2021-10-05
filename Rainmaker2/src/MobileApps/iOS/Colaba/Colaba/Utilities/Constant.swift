@@ -41,6 +41,7 @@ let kNotificationAddCurrentEmployement = "notificationAddCurrentEmployement"
 let kNotificationAddPreviousEmployement = "notificationAddPreviousEmployement"
 let kNotificationLoanOfficerSeeMoreTapped = "notificationLoanOfficerSeeMoreTapped"
 let kNotificationLoanOfficerSelected = "notificationLoanOfficerSelected"
+let kNotificationDeleteDocument = "notificationDeleteDocument"
 let kHousingStatusArray = ["Own", "Rent", "No Primary Housing Expense"]
 let kBusinessTypeArray = ["Partnership (e.g. LLC, LP, or GP)", "Corporation (e.g. C-Corp, S-Corp, or LLC)"]
 let kRetirementIncomeTypeArray = ["Social Security", "Pension", "IRA / 401K", "Other Retirement Source"]

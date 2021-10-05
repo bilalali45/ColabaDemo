@@ -95,6 +95,7 @@
 		239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */; };
 		239DB536270C2D5F00977E20 /* BankStatementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DB535270C2D5F00977E20 /* BankStatementViewController.swift */; };
 		239DB538270C369100977E20 /* CustomDocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DB537270C369100977E20 /* CustomDocumentViewController.swift */; };
+		239DB53A270C413A00977E20 /* DeleteDocumentPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DB539270C413A00977E20 /* DeleteDocumentPopupViewController.swift */; };
 		23A0D5CE26958E58002B4BCE /* DashboardHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23A0D5CD26958E58002B4BCE /* DashboardHeaderView.xib */; };
 		23A0D5D026958E83002B4BCE /* DashboardHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A0D5CF26958E83002B4BCE /* DashboardHeaderView.swift */; };
 		23A1CA6B268C4B8400D93DC4 /* UILoadControl_UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1CA69268C4B8300D93DC4 /* UILoadControl_UIScrollView.swift */; };
@@ -333,6 +334,7 @@
 		239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewPopupViewController.swift; sourceTree = "<group>"; };
 		239DB535270C2D5F00977E20 /* BankStatementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankStatementViewController.swift; sourceTree = "<group>"; };
 		239DB537270C369100977E20 /* CustomDocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDocumentViewController.swift; sourceTree = "<group>"; };
+		239DB539270C413A00977E20 /* DeleteDocumentPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteDocumentPopupViewController.swift; sourceTree = "<group>"; };
 		23A0D5CD26958E58002B4BCE /* DashboardHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DashboardHeaderView.xib; sourceTree = "<group>"; };
 		23A0D5CF26958E83002B4BCE /* DashboardHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardHeaderView.swift; sourceTree = "<group>"; };
 		23A1CA69268C4B8300D93DC4 /* UILoadControl_UIScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILoadControl_UIScrollView.swift; sourceTree = "<group>"; };
@@ -682,6 +684,7 @@
 				23B2148C270B32AF00215ACC /* DocumentsTypeViewController.swift */,
 				239DB535270C2D5F00977E20 /* BankStatementViewController.swift */,
 				239DB537270C369100977E20 /* CustomDocumentViewController.swift */,
+				239DB539270C413A00977E20 /* DeleteDocumentPopupViewController.swift */,
 			);
 			path = "Request Document";
 			sourceTree = "<group>";
@@ -1418,6 +1421,7 @@
 				23C2448A2689E3F800EED1D0 /* InActiveLoanModel.swift in Sources */,
 				238E0F8F26F36A820025FF06 /* UndisclosedBorrowerFundsFollowupQuestionsViewController.swift in Sources */,
 				2320138D2698324800F500E2 /* BorrowerAddressTableViewCell.swift in Sources */,
+				239DB53A270C413A00977E20 /* DeleteDocumentPopupViewController.swift in Sources */,
 				2321247726C10F4100439A44 /* BorrowerAddressInfoTableViewCell.swift in Sources */,
 				2390FED626A6B639007A5A52 /* ApplicationTabHeaderView.swift in Sources */,
 				230B94CE26E7496E004CBC83 /* AssetsDetailTableViewCell.swift in Sources */,

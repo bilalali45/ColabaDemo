@@ -25,6 +25,7 @@ class BankStatementViewController: BaseViewController {
         super.viewDidLoad()
         setupMaterialTextView()
         btnNext.setButton(image: UIImage(named: "NextIcon")!)
+        NotificationCenter.default.addObserver(self, selector: #selector(deleteDocumentTapped), name: NSNotification.Name(rawValue: kNotificationDeleteDocument), object: nil)
     }
 
     //MARK:- Methods and Actions
@@ -63,12 +64,17 @@ class BankStatementViewController: BaseViewController {
         
     }
     
+    @objc func deleteDocumentTapped(){
+        self.dismissVC()
+    }
+    
     @IBAction func btnBackTapped(_ sender: UIButton) {
         self.dismissVC()
     }
     
     @IBAction func btnDeleteTapped(_ sender: UIButton) {
-        
+        let vc = Utility.getDeleteDocumentPopupVC()
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnNextTapped(_ sender: UIButton) {

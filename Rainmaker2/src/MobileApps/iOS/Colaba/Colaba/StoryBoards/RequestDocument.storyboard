@@ -1208,11 +1208,122 @@
             </objects>
             <point key="canvasLocation" x="9666" y="2615"/>
         </scene>
+        <!--Delete Document Popup View Controller-->
+        <scene sceneID="NyL-KQ-ejM">
+            <objects>
+                <viewController storyboardIdentifier="DeleteDocumentPopupViewController" modalPresentationStyle="overFullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rUg-su-0lM" customClass="DeleteDocumentPopupViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0ib-9V-NSq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6tj-LQ-XNs">
+                                <rect key="frame" x="0.0" y="667" width="375" height="298"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PUk-Pc-ktu">
+                                        <rect key="frame" x="321" y="12" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="PzG-aK-EWy"/>
+                                            <constraint firstAttribute="height" constant="40" id="vSd-bE-RUo"/>
+                                        </constraints>
+                                        <state key="normal" image="PopupCloseIcon"/>
+                                        <connections>
+                                            <action selector="btnCloseTapped:" destination="rUg-su-0lM" eventType="touchUpInside" id="8Bo-tf-tPC"/>
+                                        </connections>
+                                    </button>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DeletePopupIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Wxl-1e-MjJ">
+                                        <rect key="frame" x="170.5" y="38" width="34" height="34"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Are you sure you want to remove this document?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mm7-01-mGo">
+                                        <rect key="frame" x="56.5" y="92" width="262.5" height="36"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
+                                        <color key="textColor" name="AppBlackColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tax Returns with schedules (Personals - Two Years)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cNT-MQ-9PA">
+                                        <rect key="frame" x="56.5" y="144" width="262.5" height="36"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
+                                        <color key="textColor" name="AppBlackColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="imh-iC-CPL">
+                                        <rect key="frame" x="40" y="210" width="142.5" height="50"/>
+                                        <color key="backgroundColor" name="ButtonBlueColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="jcw-fc-Pdi"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="14"/>
+                                        <state key="normal" title="NO">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="btnNoTapped:" destination="rUg-su-0lM" eventType="touchUpInside" id="LRU-7n-4yR"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vfs-QU-dbE">
+                                        <rect key="frame" x="192.5" y="210" width="142.5" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="4oe-BV-Z8E"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="14"/>
+                                        <state key="normal" title="YES">
+                                            <color key="titleColor" name="ButtonBlueColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="btnYesTapped:" destination="rUg-su-0lM" eventType="touchUpInside" id="gTa-Jg-DAk"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="PUk-Pc-ktu" secondAttribute="trailing" constant="14" id="641-Z0-ouk"/>
+                                    <constraint firstAttribute="height" constant="298" id="9dm-ks-3Vo"/>
+                                    <constraint firstItem="Wxl-1e-MjJ" firstAttribute="top" secondItem="6tj-LQ-XNs" secondAttribute="top" constant="38" id="Bfz-fK-bYl"/>
+                                    <constraint firstItem="imh-iC-CPL" firstAttribute="top" secondItem="cNT-MQ-9PA" secondAttribute="bottom" constant="30" id="Cjj-B4-Xr3"/>
+                                    <constraint firstItem="Vfs-QU-dbE" firstAttribute="top" secondItem="cNT-MQ-9PA" secondAttribute="bottom" constant="30" id="DkC-nR-fB1"/>
+                                    <constraint firstItem="Wxl-1e-MjJ" firstAttribute="centerX" secondItem="6tj-LQ-XNs" secondAttribute="centerX" id="EbI-js-47s"/>
+                                    <constraint firstItem="mm7-01-mGo" firstAttribute="top" secondItem="Wxl-1e-MjJ" secondAttribute="bottom" constant="20" id="H5o-bN-H7c"/>
+                                    <constraint firstItem="imh-iC-CPL" firstAttribute="leading" secondItem="6tj-LQ-XNs" secondAttribute="leading" constant="40" id="KF4-iz-4aQ"/>
+                                    <constraint firstItem="PUk-Pc-ktu" firstAttribute="top" secondItem="6tj-LQ-XNs" secondAttribute="top" constant="12" id="RCY-o2-oi5"/>
+                                    <constraint firstItem="cNT-MQ-9PA" firstAttribute="width" secondItem="mm7-01-mGo" secondAttribute="width" id="RfJ-j8-I6K"/>
+                                    <constraint firstItem="cNT-MQ-9PA" firstAttribute="centerX" secondItem="6tj-LQ-XNs" secondAttribute="centerX" id="WEE-Mq-EIO"/>
+                                    <constraint firstItem="cNT-MQ-9PA" firstAttribute="top" secondItem="mm7-01-mGo" secondAttribute="bottom" constant="16" id="WNd-XM-wXC"/>
+                                    <constraint firstItem="mm7-01-mGo" firstAttribute="centerX" secondItem="6tj-LQ-XNs" secondAttribute="centerX" id="Ym8-Xj-1rT"/>
+                                    <constraint firstItem="Vfs-QU-dbE" firstAttribute="width" secondItem="imh-iC-CPL" secondAttribute="width" id="Z7o-Nu-isF"/>
+                                    <constraint firstAttribute="trailing" secondItem="Vfs-QU-dbE" secondAttribute="trailing" constant="40" id="hPD-FG-7ai"/>
+                                    <constraint firstItem="imh-iC-CPL" firstAttribute="width" secondItem="6tj-LQ-XNs" secondAttribute="width" multiplier="0.38" id="lUl-qu-aVc"/>
+                                    <constraint firstItem="mm7-01-mGo" firstAttribute="width" secondItem="6tj-LQ-XNs" secondAttribute="width" multiplier="0.7" id="rdv-7D-YDl"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="I2O-gA-Mfc"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="6tj-LQ-XNs" secondAttribute="trailing" id="013-3k-kfc"/>
+                            <constraint firstItem="6tj-LQ-XNs" firstAttribute="leading" secondItem="I2O-gA-Mfc" secondAttribute="leading" id="3Oc-aI-2kI"/>
+                            <constraint firstAttribute="bottom" secondItem="6tj-LQ-XNs" secondAttribute="bottom" constant="-298" id="QCB-Br-xLa"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="btnClose" destination="PUk-Pc-ktu" id="0di-4s-dVt"/>
+                        <outlet property="btnNo" destination="imh-iC-CPL" id="De3-1E-2Uq"/>
+                        <outlet property="btnYes" destination="Vfs-QU-dbE" id="wyk-xZ-SmH"/>
+                        <outlet property="lblDeleteTitle" destination="mm7-01-mGo" id="tLn-sM-p1R"/>
+                        <outlet property="lblDocumentName" destination="cNT-MQ-9PA" id="LPQ-qK-drX"/>
+                        <outlet property="mainView" destination="6tj-LQ-XNs" id="xsQ-Zp-SFE"/>
+                        <outlet property="mainViewBottomConstraint" destination="QCB-Br-xLa" id="Tfm-pA-xMk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="J3n-Ul-Ro4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="10329" y="2615"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Add-Address-Button" width="28" height="28"/>
         <image name="AddressDeleteIcon" width="24" height="24"/>
         <image name="Close-Icon" width="16.523000717163086" height="16.523000717163086"/>
+        <image name="DeletePopupIcon" width="34" height="34"/>
         <image name="NextIcon" width="16.25" height="17.531999588012695"/>
         <image name="PopupCloseIcon" width="24" height="24"/>
         <image name="SearchBarCrossIcon" width="11.300000190734863" height="11.329000473022461"/>

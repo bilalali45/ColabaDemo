@@ -25,6 +25,7 @@ class CustomDocumentViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextFieldAndTextView()
+        NotificationCenter.default.addObserver(self, selector: #selector(deleteDocumentTapped), name: NSNotification.Name(rawValue: kNotificationDeleteDocument), object: nil)
     }
 
     //MARK:- Methods and Actions
@@ -66,6 +67,10 @@ class CustomDocumentViewController: BaseViewController {
         btnNext.setButton(image: UIImage(named: "NextIcon")!)
     }
     
+    @objc func deleteDocumentTapped(){
+        self.dismissVC()
+    }
+    
     func validate() -> Bool {
         let isValidate = txtfieldDocumentName.validate()
         return isValidate
@@ -76,7 +81,8 @@ class CustomDocumentViewController: BaseViewController {
     }
     
     @IBAction func btnDeleteTapped(_ sender: UIButton) {
-        
+        let vc = Utility.getDeleteDocumentPopupVC()
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnNextTapped(_ sender: UIButton) {
