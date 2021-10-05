@@ -52,7 +52,14 @@ extension DocumentsTypeViewController: UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.goBack()
+        if (indexPath.row == 1){
+            let vc = Utility.getBankStatementVC()
+            self.presentVC(vc: vc)
+        }
+        else{
+            self.goBack()
+        }
+        
     }
     
 }
