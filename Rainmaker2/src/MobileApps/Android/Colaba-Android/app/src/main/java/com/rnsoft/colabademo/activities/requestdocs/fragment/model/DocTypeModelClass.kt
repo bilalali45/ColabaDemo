@@ -8,9 +8,8 @@ data class DocTypeModelClass(
     val totalSelected: String = "",
     val footerTitle: String  = "",
     val contentCell:ArrayList<DocTypeContentCell>,
-    val listenerAttached:View.OnClickListener= View.OnClickListener {  }
+    val contentListenerAttached:View.OnClickListener= View.OnClickListener {  }
     )
 
-data class DocTypeContentCell(val checkboxContent:String="Title", val description:String="", val isChecked:Boolean=false)
-
+data class DocTypeContentCell(val checkboxContent:String="Title", val description:String="",  val isChecked:Boolean=false)
 

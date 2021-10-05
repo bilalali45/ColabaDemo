@@ -1,27 +1,25 @@
 package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
-import android.content.res.ColorStateList
 import android.os.Bundle
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import androidx.core.content.ContextCompat
-import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.databinding.OtherAssetsLayoutBinding
-import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.NumberTextFormat
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.get
+import com.rnsoft.colabademo.databinding.DocsFilesLayoutBinding
+import com.rnsoft.colabademo.databinding.DocsTemplateLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.ArrayList
+import kotlinx.android.synthetic.main.docs_type_header_cell.view.*
+import kotlinx.android.synthetic.main.docs_type_middle_cell.view.*
 import javax.inject.Inject
+
+
 @AndroidEntryPoint
 class DocsListFragment:DocsTypesBaseFragment() {
 
-    private var _binding: OtherAssetsLayoutBinding? = null
+    private var _binding: DocsFilesLayoutBinding? = null
     private val binding get() = _binding!!
 
     @Inject
@@ -32,7 +30,7 @@ class DocsListFragment:DocsTypesBaseFragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = OtherAssetsLayoutBinding.inflate(inflater, container, false)
+        _binding = DocsFilesLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
         super.addListeners(binding.root)
@@ -40,9 +38,109 @@ class DocsListFragment:DocsTypesBaseFragment() {
     }
 
     private fun setUpUI(){
-        binding.backButton.setOnClickListener { findNavController().popBackStack() }
 
+        val sampleDocs = getSampleDocsFiles()
+        for (i in 0 until sampleDocs.size) {
+
+            val modelData = sampleDocs[i]
+            val mainCell: LinearLayoutCompat = layoutInflater.inflate(R.layout.docs_type_top_main_cell, null) as LinearLayoutCompat
+            val topCell: View = layoutInflater.inflate(R.layout.docs_type_header_cell, null)
+            topCell.cell_header_title.text =  modelData.headerTitle
+            topCell.total_selected.text = modelData.totalSelected
+
+            // always hide this...
+            topCell.total_selected.visibility = View.GONE
+            topCell.items_selected_imageview.visibility = View.GONE
+            topCell.tag = R.string.docs_top_cell
+            mainCell.addView(topCell)
+
+
+            val emptyCellStart: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
+            //emptyCell.visibility = View.GONE
+            mainCell.addView(emptyCellStart)
+
+            for (j in 0 until modelData.contentCell.size) {
+                val contentCell: View =
+                    layoutInflater.inflate(R.layout.docs_type_middle_cell, null)
+                val contentData = modelData.contentCell[j]
+                contentCell.checkbox.text = contentData.checkboxContent
+                //contentCell.content_desc.text = contentData.description
+                //contentCell.visibility = View.GONE
+                contentCell.info_imageview.visibility = View.INVISIBLE
+                //contentCell.info_imageview.setOnClickListener(modelData.contentListenerAttached)
+                if(i+1 ==  sampleDocs.size && j+1 ==  modelData.contentCell.size)
+                    contentCell.edit_imageview.visibility = View.VISIBLE
+                mainCell.addView(contentCell)
+            }
+
+            val emptyCellEnd: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
+            //emptyCell.visibility = View.GONE
+            mainCell.addView(emptyCellEnd)
+
+
+            binding.docsTypeParentContainer.addView(mainCell)
+
+            topCell.setOnClickListener {
+                hideAllAndOpenedSelectedCell(topCell, mainCell)
+            }
+
+            topCell.docs_arrow_up.setOnClickListener {
+                hideCurrentlyOpenedCell(topCell, mainCell)
+            }
+
+            //hideOtherBoxes()
+
+        }
     }
 
+    private fun hideAllAndOpenedSelectedCell(topCell:View, mainCell:LinearLayoutCompat){
+        hideOtherBoxes() // if you want to hide other boxes....
+        topCell.docs_arrow_up.visibility = View.VISIBLE
+        topCell.docs_arrow_down.visibility = View.INVISIBLE
+        toggleContentCells(mainCell, View.VISIBLE)
+        //bottomCell.visibility = View.VISIBLE
+    }
+
+    private fun hideCurrentlyOpenedCell(topCell:View, mainCell:LinearLayoutCompat){
+        topCell.docs_arrow_up.visibility = View.INVISIBLE
+        topCell.docs_arrow_down.visibility = View.VISIBLE
+        //contentCell.visibility = View.GONE
+        toggleContentCells(mainCell , View.GONE)
+        //bottomCell.visibility = View.GONE
+    }
+
+    private fun toggleContentCells(mainCell: LinearLayoutCompat, display:Int){
+        for (j in 0 until mainCell.childCount){
+            if(mainCell[j].tag != R.string.docs_top_cell)
+                mainCell[j].visibility = display
+        }
+    }
+
+    private fun hideOtherBoxes(){
+        val layout = binding.docsTypeParentContainer
+        var mainCell: LinearLayoutCompat?
+        for (i in 0 until layout.childCount) {
+            mainCell = layout[i] as LinearLayoutCompat
+            for(j in 0 until mainCell.childCount) {
+                val innerCell = mainCell[j] as ConstraintLayout
+                if (innerCell.tag == R.string.docs_top_cell) {
+                    innerCell.docs_arrow_up.visibility = View.GONE
+                    innerCell.docs_arrow_down.visibility = View.VISIBLE
+                } else {
+                    innerCell.visibility = View.GONE
+                }
+            }
+
+            /*
+            val topCell = mainCell.getTag(R.string.asset_top_cell) as ConstraintLayout
+            val middleCell = mainCell.getTag(R.string.asset_middle_cell) as ConstraintLayout
+            val bottomCell = mainCell.getTag(R.string.asset_bottom_cell) as ConstraintLayout
+            topCell.arrow_up.visibility = View.GONE
+            topCell.arrow_down.visibility = View.VISIBLE
+            middleCell.visibility = View.GONE
+            bottomCell.visibility = View.GONE
+             */
+        }
+    }
 
 }

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="38dp"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,19 +20,41 @@
 
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/checkbox"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="20dp"
-            android:layout_marginEnd="16dp"
             android:fontFamily="@font/rubik_regular"
             android:paddingStart="14dp"
+            android:layout_marginEnd="8dp"
             android:text="I do not wish to provide this information"
             android:textColor="@color/grey_color_one"
             android:textSize="14sp"
             app:buttonCompat="@drawable/cb_selector"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/info_imageview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/info_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_info_svg" />
+
+
+        <ImageView
+            android:id="@+id/edit_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_edit_svg" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

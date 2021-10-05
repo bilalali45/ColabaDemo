@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.requestdocs.fragment
+package com.rnsoft.colabademo
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,9 +19,9 @@ import org.greenrobot.eventbus.EventBus
 class DeleteDocumentDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
-        lateinit var deleteText:String
-        fun newInstance(text:String): DeleteDocumentDialogFragment {
-            deleteText = text
+        lateinit var dialogTitle:String
+        fun newInstance(dTitle:String): DeleteDocumentDialogFragment {
+            dialogTitle = dTitle
             return DeleteDocumentDialogFragment()
         }
     }
@@ -39,7 +39,7 @@ class DeleteDocumentDialogFragment : BottomSheetDialogFragment() {
             dismiss()
         }
         setStyle(DialogFragment.STYLE_NORMAL, R.style.roundedBottomSheetDialog)
-        binding.tvDeleteText.text= deleteText
+        binding.tvDeleteText.text= dialogTitle
 
         binding.yesBtn.setOnClickListener {
             dismiss()

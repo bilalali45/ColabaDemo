@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.requestdocs.fragment
+package com.rnsoft.colabademo
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.annotation.Nullable
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.DialogStandardChecklistBinding
+import kotlinx.android.synthetic.main.docs_type_bottom_value_cell.view.*
 
 /**
  * Created by Anita Kiran on 10/4/2021.
@@ -17,7 +19,11 @@ import com.rnsoft.colabademo.databinding.DialogStandardChecklistBinding
 class StandardChecklistDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
-        fun newInstance(): StandardChecklistDialogFragment {
+        lateinit var dialogTitle:String
+        lateinit var dialogValues:ArrayList<String>
+        fun newInstance(dTitle:String, dValues:ArrayList<String>): StandardChecklistDialogFragment {
+            dialogTitle = dTitle
+            dialogValues = dValues
             return StandardChecklistDialogFragment()
         }
     }
@@ -32,6 +38,15 @@ class StandardChecklistDialogFragment : BottomSheetDialogFragment() {
 
     private fun setInitialSelection(){
 
+        binding.dialogTitle.text = dialogTitle
+
+        for(dialogValue in dialogValues){
+            val valueCell: LinearLayoutCompat =
+                layoutInflater.inflate(R.layout.docs_type_bottom_value_cell, null) as LinearLayoutCompat
+            valueCell.textValue.text = dialogValue
+            binding.dialogValueContainer.addView(valueCell)
+        }
+
         //binding.recentIcon.setColorFilter(resources.getColor(R.color.grey_color_two, activity?.theme))
         //binding.recentTextView.setTextColor(resources.getColor(R.color.grey_color_two, activity?.theme))
 
@@ -45,7 +60,7 @@ class StandardChecklistDialogFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
-        //setInitialSelection()
+        setInitialSelection()
 
         return binding.root
     }

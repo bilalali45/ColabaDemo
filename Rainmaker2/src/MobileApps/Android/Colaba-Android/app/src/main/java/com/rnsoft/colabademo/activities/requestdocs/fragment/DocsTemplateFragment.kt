@@ -47,16 +47,22 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
             val mainCell: LinearLayoutCompat =
                 layoutInflater.inflate(R.layout.docs_type_top_main_cell, null) as LinearLayoutCompat
 
+
+
             val topCell: View = layoutInflater.inflate(R.layout.docs_type_header_cell, null)
             topCell.cell_header_title.text =  modelData.headerTitle
             topCell.total_selected.text = modelData.totalSelected
-            if(modelData.totalSelected.isBlank() || modelData.totalSelected.isEmpty() || modelData.totalSelected == "0"){
-                topCell.total_selected.visibility = View.INVISIBLE
-                topCell.items_selected_imageview.visibility = View.INVISIBLE
-            }
+
+            // always hide this...
+            topCell.total_selected.visibility = View.GONE
+            topCell.items_selected_imageview.visibility = View.GONE
             topCell.tag = R.string.docs_top_cell
             mainCell.addView(topCell)
 
+
+            val emptyCellStart: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
+            //emptyCell.visibility = View.GONE
+            mainCell.addView(emptyCellStart)
 
             for (j in 0 until modelData.contentCell.size) {
                 val contentCell: View =
@@ -64,40 +70,45 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
                 val contentData = modelData.contentCell[j]
                 contentCell.checkbox.text = contentData.checkboxContent
                 //contentCell.content_desc.text = contentData.description
-                contentCell.visibility = View.GONE
-                contentCell.setOnClickListener(modelData.listenerAttached)
+                //contentCell.visibility = View.GONE
+                contentCell.info_imageview.setOnClickListener(modelData.contentListenerAttached)
                 mainCell.addView(contentCell)
             }
 
+            val emptyCellEnd: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
+            //emptyCell.visibility = View.GONE
+            mainCell.addView(emptyCellEnd)
 
-            val emptyCell: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
-            emptyCell.visibility = View.GONE
-            mainCell.addView(emptyCell)
 
             binding.docsTypeParentContainer.addView(mainCell)
 
-
             topCell.setOnClickListener {
-               hideOtherBoxes() // if you want to hide other boxes....
-               topCell.docs_arrow_up.visibility = View.VISIBLE
-               topCell.docs_arrow_down.visibility = View.INVISIBLE
-               toggleContentCells(mainCell, View.VISIBLE)
-               //bottomCell.visibility = View.VISIBLE
+                hideAllAndOpenedSelectedCell(topCell, mainCell)
             }
-
 
             topCell.docs_arrow_up.setOnClickListener {
-               topCell.docs_arrow_up.visibility = View.INVISIBLE
-               topCell.docs_arrow_down.visibility = View.VISIBLE
-               //contentCell.visibility = View.GONE
-               toggleContentCells(mainCell , View.GONE)
-               //bottomCell.visibility = View.GONE
+                hideCurrentlyOpenedCell(topCell, mainCell)
             }
 
-
-
+            //hideOtherBoxes()
 
         }
+    }
+
+    private fun hideAllAndOpenedSelectedCell(topCell:View, mainCell:LinearLayoutCompat){
+        hideOtherBoxes() // if you want to hide other boxes....
+        topCell.docs_arrow_up.visibility = View.VISIBLE
+        topCell.docs_arrow_down.visibility = View.INVISIBLE
+        toggleContentCells(mainCell, View.VISIBLE)
+        //bottomCell.visibility = View.VISIBLE
+    }
+
+    private fun hideCurrentlyOpenedCell(topCell:View, mainCell:LinearLayoutCompat){
+        topCell.docs_arrow_up.visibility = View.INVISIBLE
+        topCell.docs_arrow_down.visibility = View.VISIBLE
+        //contentCell.visibility = View.GONE
+        toggleContentCells(mainCell , View.GONE)
+        //bottomCell.visibility = View.GONE
     }
 
     private fun toggleContentCells(mainCell: LinearLayoutCompat, display:Int){
