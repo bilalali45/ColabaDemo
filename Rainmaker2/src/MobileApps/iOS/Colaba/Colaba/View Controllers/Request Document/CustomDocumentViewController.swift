@@ -1,5 +1,5 @@
 //
-//  BankStatementViewController.swift
+//  CustomDocumentViewController.swift
 //  Colaba
 //
 //  Created by Muhammad Murtaza on 05/10/2021.
@@ -8,7 +8,7 @@
 import UIKit
 import MaterialComponents
 
-class BankStatementViewController: BaseViewController {
+class CustomDocumentViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     
@@ -16,6 +16,7 @@ class BankStatementViewController: BaseViewController {
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var btnDelete: UIButton!
     @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var txtfieldDocumentName: ColabaTextField!
     @IBOutlet weak var messageTextViewContainer: UIView!
     @IBOutlet weak var btnNext: ColabaButton!
     
@@ -23,13 +24,15 @@ class BankStatementViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupMaterialTextView()
-        btnNext.setButton(image: UIImage(named: "NextIcon")!)
+        setupTextFieldAndTextView()
     }
 
     //MARK:- Methods and Actions
     
-    func setupMaterialTextView(){
+    func setupTextFieldAndTextView(){
+        
+        txtfieldDocumentName.setTextField(placeholder: "Custom Document Name", controller: self, validationType: .required)
+        
         let estimatedFrame = messageTextViewContainer.frame
         txtViewMessage = MDCFilledTextArea(frame: estimatedFrame)
         txtViewMessage.label.text = "Include a message to the borrower"
@@ -60,7 +63,12 @@ class BankStatementViewController: BaseViewController {
         txtViewMessage.textView.textColor = .black
         txtViewMessage.textView.delegate = self
         mainView.addSubview(txtViewMessage)
-        
+        btnNext.setButton(image: UIImage(named: "NextIcon")!)
+    }
+    
+    func validate() -> Bool {
+        let isValidate = txtfieldDocumentName.validate()
+        return isValidate
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
@@ -72,10 +80,12 @@ class BankStatementViewController: BaseViewController {
     }
     
     @IBAction func btnNextTapped(_ sender: UIButton) {
-        self.dismissVC()
+        if validate(){
+            self.dismissVC()
+        }
     }
 }
 
-extension BankStatementViewController: UITextViewDelegate{
+extension CustomDocumentViewController: UITextViewDelegate{
     
 }

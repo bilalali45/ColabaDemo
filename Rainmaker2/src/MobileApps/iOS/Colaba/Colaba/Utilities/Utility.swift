@@ -426,6 +426,10 @@ struct Utility {
         return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: BankStatementViewController.self)) as! BankStatementViewController
     }
     
+    static func getCustomDocumentVC() -> CustomDocumentViewController{
+        return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: CustomDocumentViewController.self)) as! CustomDocumentViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){

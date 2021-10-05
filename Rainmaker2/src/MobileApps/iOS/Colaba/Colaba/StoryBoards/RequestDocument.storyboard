@@ -1058,6 +1058,156 @@
             </objects>
             <point key="canvasLocation" x="8989.6000000000004" y="2614.5427286356826"/>
         </scene>
+        <!--Custom Document View Controller-->
+        <scene sceneID="KWc-BJ-oJU">
+            <objects>
+                <viewController storyboardIdentifier="CustomDocumentViewController" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="exL-Gp-7Up" customClass="CustomDocumentViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="GTn-6t-gCm">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zAR-Xg-d0t">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gqh-l7-Yq9">
+                                        <rect key="frame" x="15" y="13" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="3K1-gD-3Te"/>
+                                            <constraint firstAttribute="width" constant="40" id="aJf-zK-idn"/>
+                                        </constraints>
+                                        <state key="normal" image="Close-Icon"/>
+                                        <connections>
+                                            <action selector="btnBackTapped:" destination="exL-Gp-7Up" eventType="touchUpInside" id="Bxl-FH-koP"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Custom Document" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JNw-lY-QPy">
+                                        <rect key="frame" x="37.5" y="21.5" width="300" height="21"/>
+                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
+                                        <color key="textColor" name="AppBlackColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sDJ-wo-Nmm">
+                                        <rect key="frame" x="320" y="13" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="nZ1-SS-pt0"/>
+                                            <constraint firstAttribute="height" constant="40" id="vCy-yS-uMc"/>
+                                        </constraints>
+                                        <state key="normal" image="AddressDeleteIcon"/>
+                                        <connections>
+                                            <action selector="btnDeleteTapped:" destination="exL-Gp-7Up" eventType="touchUpInside" id="JEa-0v-2Vc"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="JNw-lY-QPy" firstAttribute="centerY" secondItem="zAR-Xg-d0t" secondAttribute="centerY" id="2kb-Np-iiJ"/>
+                                    <constraint firstItem="JNw-lY-QPy" firstAttribute="width" secondItem="zAR-Xg-d0t" secondAttribute="width" multiplier="0.8" id="32o-D2-C8S"/>
+                                    <constraint firstItem="Gqh-l7-Yq9" firstAttribute="top" secondItem="zAR-Xg-d0t" secondAttribute="top" constant="13" id="52l-wF-rHm"/>
+                                    <constraint firstItem="sDJ-wo-Nmm" firstAttribute="top" secondItem="zAR-Xg-d0t" secondAttribute="top" constant="13" id="5ac-AC-aSD"/>
+                                    <constraint firstItem="JNw-lY-QPy" firstAttribute="centerX" secondItem="zAR-Xg-d0t" secondAttribute="centerX" id="MNY-Nf-YkO"/>
+                                    <constraint firstAttribute="height" constant="64" id="P9w-Yz-5zO"/>
+                                    <constraint firstAttribute="trailing" secondItem="sDJ-wo-Nmm" secondAttribute="trailing" constant="15" id="Ppj-wH-dWU"/>
+                                    <constraint firstItem="Gqh-l7-Yq9" firstAttribute="leading" secondItem="zAR-Xg-d0t" secondAttribute="leading" constant="15" id="e1B-WD-S2f"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="660-Mn-thM">
+                                <rect key="frame" x="0.0" y="64" width="375" height="1"/>
+                                <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="hyj-SU-eEb"/>
+                                </constraints>
+                            </view>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1w-mH-xZN">
+                                <rect key="frame" x="0.0" y="65" width="375" height="602"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="98P-EZ-mwR">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="500"/>
+                                        <subviews>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YSz-LM-jru" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
+                                                <rect key="frame" x="20" y="30" width="335" height="39"/>
+                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="39" id="HkO-yP-IVM"/>
+                                                </constraints>
+                                                <color key="textColor" name="AppBlackColor"/>
+                                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
+                                            </textField>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zIN-k6-jHa">
+                                                <rect key="frame" x="20" y="84" width="335" height="71"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="71" id="acl-U2-nL0"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="500" id="0QV-ma-cIx"/>
+                                            <constraint firstItem="YSz-LM-jru" firstAttribute="top" secondItem="98P-EZ-mwR" secondAttribute="top" constant="30" id="1Cv-zy-WO3"/>
+                                            <constraint firstItem="YSz-LM-jru" firstAttribute="leading" secondItem="98P-EZ-mwR" secondAttribute="leading" constant="20" id="Rek-MZ-54K"/>
+                                            <constraint firstAttribute="trailing" secondItem="zIN-k6-jHa" secondAttribute="trailing" constant="20" id="TCT-o6-QA7"/>
+                                            <constraint firstItem="zIN-k6-jHa" firstAttribute="top" secondItem="YSz-LM-jru" secondAttribute="bottom" constant="15" id="q3L-rM-RtS"/>
+                                            <constraint firstItem="zIN-k6-jHa" firstAttribute="leading" secondItem="98P-EZ-mwR" secondAttribute="leading" constant="20" id="x50-ef-ZvX"/>
+                                            <constraint firstAttribute="trailing" secondItem="YSz-LM-jru" secondAttribute="trailing" constant="20" id="xdW-dG-96K"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="98P-EZ-mwR" secondAttribute="trailing" id="DbJ-FP-18o"/>
+                                    <constraint firstItem="98P-EZ-mwR" firstAttribute="width" secondItem="C1w-mH-xZN" secondAttribute="width" id="IVV-Df-B0w"/>
+                                    <constraint firstAttribute="bottom" secondItem="98P-EZ-mwR" secondAttribute="bottom" id="ZeA-3X-456"/>
+                                    <constraint firstItem="98P-EZ-mwR" firstAttribute="top" secondItem="C1w-mH-xZN" secondAttribute="top" id="dYU-iu-Eca"/>
+                                    <constraint firstItem="98P-EZ-mwR" firstAttribute="leading" secondItem="C1w-mH-xZN" secondAttribute="leading" id="h06-lU-N4a"/>
+                                </constraints>
+                            </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="waU-wt-x9d" customClass="ColabaButton" customModule="Colaba" customModuleProvider="target">
+                                <rect key="frame" x="300" y="592" width="60" height="60"/>
+                                <color key="backgroundColor" name="ButtonBlueColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="GsA-iT-2Gb"/>
+                                    <constraint firstAttribute="width" constant="60" id="WME-At-3GS"/>
+                                </constraints>
+                                <state key="normal" image="NextIcon">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnNextTapped:" destination="exL-Gp-7Up" eventType="touchUpInside" id="JgV-vw-tkh"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="GDE-78-L6X"/>
+                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="660-Mn-thM" firstAttribute="leading" secondItem="GTn-6t-gCm" secondAttribute="leading" id="2Z2-QL-qzM"/>
+                            <constraint firstItem="660-Mn-thM" firstAttribute="top" secondItem="zAR-Xg-d0t" secondAttribute="bottom" id="3wx-0e-ABf"/>
+                            <constraint firstItem="zAR-Xg-d0t" firstAttribute="leading" secondItem="GDE-78-L6X" secondAttribute="leading" id="9Pi-OO-unX"/>
+                            <constraint firstItem="zAR-Xg-d0t" firstAttribute="trailing" secondItem="GDE-78-L6X" secondAttribute="trailing" id="CBe-2o-Wft"/>
+                            <constraint firstAttribute="trailing" secondItem="660-Mn-thM" secondAttribute="trailing" id="FEe-dH-3Q4"/>
+                            <constraint firstItem="GDE-78-L6X" firstAttribute="trailing" secondItem="C1w-mH-xZN" secondAttribute="trailing" id="Rrh-et-xou"/>
+                            <constraint firstItem="GDE-78-L6X" firstAttribute="bottom" secondItem="waU-wt-x9d" secondAttribute="bottom" constant="15" id="ZIy-JQ-al3"/>
+                            <constraint firstItem="GDE-78-L6X" firstAttribute="trailing" secondItem="waU-wt-x9d" secondAttribute="trailing" constant="15" id="c65-rb-T0N"/>
+                            <constraint firstItem="C1w-mH-xZN" firstAttribute="top" secondItem="660-Mn-thM" secondAttribute="bottom" id="ign-Tt-BVA"/>
+                            <constraint firstItem="zAR-Xg-d0t" firstAttribute="top" secondItem="GDE-78-L6X" secondAttribute="top" id="jnZ-oD-Mpk"/>
+                            <constraint firstItem="C1w-mH-xZN" firstAttribute="leading" secondItem="GDE-78-L6X" secondAttribute="leading" id="l96-YZ-j9K"/>
+                            <constraint firstItem="GDE-78-L6X" firstAttribute="bottom" secondItem="C1w-mH-xZN" secondAttribute="bottom" id="vhL-YC-MnJ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="btnBack" destination="Gqh-l7-Yq9" id="3ng-W2-97J"/>
+                        <outlet property="btnDelete" destination="sDJ-wo-Nmm" id="8Zs-6y-ahR"/>
+                        <outlet property="btnNext" destination="waU-wt-x9d" id="V3q-ol-9rI"/>
+                        <outlet property="lblTitle" destination="JNw-lY-QPy" id="rwT-IM-ods"/>
+                        <outlet property="mainView" destination="98P-EZ-mwR" id="06V-e1-BnA"/>
+                        <outlet property="messageTextViewContainer" destination="zIN-k6-jHa" id="EUn-wj-mfO"/>
+                        <outlet property="txtfieldDocumentName" destination="YSz-LM-jru" id="I6H-Op-zAA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uCS-9p-PmU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="9666" y="2615"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Add-Address-Button" width="28" height="28"/>
@@ -1085,6 +1235,9 @@
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray5Color">
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
