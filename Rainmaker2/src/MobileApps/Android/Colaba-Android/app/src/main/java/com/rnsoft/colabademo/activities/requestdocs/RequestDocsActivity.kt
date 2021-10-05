@@ -25,6 +25,6 @@ class RequestDocsActivity : BaseActivity() {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             loanPurpose = it.getString(AppConstant.loanPurpose)
         }
-        val navController = findNavController(R.id.nav_host_borrower_loan)
+        //val navController = findNavController(R.id.nav_host_docs_type)
     }
 }

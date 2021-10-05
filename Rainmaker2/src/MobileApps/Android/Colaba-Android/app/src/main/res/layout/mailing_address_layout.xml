@@ -22,7 +22,7 @@
             app:layout_constraintBottom_toTopOf="@+id/tab_top_border"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/search_back" />
+            app:srcCompat="@drawable/ic_grey_cross" />
 
         <TextView
             android:id="@+id/borrower_name_greeting"
@@ -141,7 +141,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <View
                 android:id="@+id/topSearchTextInputLine"
                 android:layout_width="match_parent"
@@ -152,7 +151,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_search_field" />
-
 
             <TextView
                 android:id="@+id/tv_error"
@@ -165,6 +163,21 @@
                 android:textColor="@color/colaba_red_color"
                 android:textSize="11sp"
                 android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topSearchTextInputLine" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fakePlaceSearchRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="1dp"
+                android:elevation="2dp"
+                android:visibility="gone"
+                android:layout_marginStart="22dp"
+                android:layout_marginEnd="22dp"
+                android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/topSearchTextInputLine" />

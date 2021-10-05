@@ -63,7 +63,7 @@ class DetailTabFragment : BaseFragment() {
         detailActivity?.let { detailActivity->
             detailActivity.innerScreenName?.let {
                 viewPager.visibility = View.INVISIBLE
-                Log.e("tabFrag = ", it)
+                //Log.e("tabFrag = ", it)
                 if (it == AppConstant.borrowerAppScreen)
                     viewPager.currentItem = 1
                 if (it == AppConstant.borrowerDocScreen)
@@ -109,7 +109,11 @@ class DetailTabFragment : BaseFragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-        binding.backButton.setOnClickListener{ requireActivity().finish() }
+        binding.backButton.setOnClickListener{
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+        }
+
         loadDetailWebservices()
 
         if(viewPager.visibility == View.INVISIBLE)

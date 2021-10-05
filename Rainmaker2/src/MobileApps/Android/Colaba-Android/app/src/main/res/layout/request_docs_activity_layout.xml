@@ -8,7 +8,7 @@
 
 
     <fragment
-        android:id="@+id/nav_host_borrower_loan"
+        android:id="@+id/nav_host_docs_type"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
