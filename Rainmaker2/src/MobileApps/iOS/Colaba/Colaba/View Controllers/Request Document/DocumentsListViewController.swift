@@ -73,6 +73,7 @@ class DocumentsListViewController: BaseViewController {
         addCustomDocumentView.layer.cornerRadius = 6
         addCustomDocumentView.layer.borderWidth = 1
         addCustomDocumentView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        addCustomDocumentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addCustomDocumentTapped)))
     }
    
     func setScreenHeight(){
@@ -112,6 +113,11 @@ class DocumentsListViewController: BaseViewController {
     
     @objc func textfieldSearchEditingChanged(){
         btnClose.isHidden = txtfieldSearch.text == ""
+    }
+    
+    @objc func addCustomDocumentTapped(){
+        let vc = Utility.getCustomDocumentVC()
+        self.presentVC(vc: vc)
     }
     
     @IBAction func btnCloseTapped(_ sender: UIButton) {
