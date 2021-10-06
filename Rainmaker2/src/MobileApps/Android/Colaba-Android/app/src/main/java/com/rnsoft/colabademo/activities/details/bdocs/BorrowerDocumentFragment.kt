@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Parcelable
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -45,6 +47,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
     lateinit var btnFilterPending: AppCompatTextView
     lateinit var btnFilterCompleted: AppCompatTextView
     lateinit var btnFilterManullayAdded: AppCompatTextView
+    private lateinit var btnRequestDoc : AppCompatButton
     var isStart: Boolean = true
     var filter : String = "All"
     lateinit var layout_noDocFound : ConstraintLayout
@@ -85,7 +88,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
             this.adapter = borrowerDocumentAdapter
         }
 
-        Log.e("Doc created on", "$docsArrayList")
+        //Log.e("Doc created on", "$docsArrayList")
 
         detailViewModel.borrowerDocsModelList.observe(viewLifecycleOwner, {
             if (isStart) {
@@ -123,6 +126,13 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         btnFilterManullayAdded = view.findViewById(R.id.btn_filter_manullayAdded)
         btnFilterManullayAdded.setOnClickListener(this)
 
+        btnRequestDoc = view.findViewById(R.id.btn_req_doc)
+        btnRequestDoc.setOnClickListener {
+            requireActivity().startActivity(Intent(requireContext(), RequestDocsActivity::class.java))
+        }
+
+
+
         (activity as DetailActivity).showFabIcons()
 
         observeDownloadProgress()
@@ -138,7 +148,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         borrowerDocumentAdapter.notifyDataSetChanged()
     }
 
-    override fun onClick(v: View) {
+    override fun onClick(v: View){
         when (v.id) {
             R.id.btn_all -> {
                 filter = AppConstant.filter_all
@@ -223,7 +233,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         detailViewModel.progressGlobal.observe(viewLifecycleOwner, {
             if (it != null && it.size > 0) {
                 var percentage = ((it[0]* 100) / it[1]).toInt()
-                Log.e("Ui-percentage--", ""+percentage)
+                //Log.e("Ui-percentage--", ""+percentage)
                 loader_percentage.text = "$percentage%"
             }
         })

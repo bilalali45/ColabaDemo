@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/reques_docs_id"
-    app:startDestination="@+id/navigation_doc_request_email_fragment">
+    app:startDestination="@+id/navigation_request_docs_tab_fragment">
 
     <fragment
         android:id="@+id/navigation_request_docs_tab_fragment"
@@ -17,6 +17,11 @@
         android:name="com.rnsoft.colabademo.SendDocRequestFragment"
         android:label="@string/request_docs"
         tools:layout="@layout/send_doc_request_layout">
+
+        <action
+            android:id="@+id/action_request_sent"
+            app:destination="@id/navigation_request_sent"
+            app:enterAnim="@anim/slide_up"/>
     </fragment>
 
     <fragment
@@ -40,13 +45,11 @@
         tools:layout="@layout/bank_statement_layout">
     </fragment>
 
-
-
-
-
-
-
-
-
+    <fragment
+        android:id="@+id/navigation_request_sent"
+        android:name="com.rnsoft.colabademo.RequestSentFragment"
+        android:label="@string/request_docs"
+        tools:layout="@layout/doc_request_sent_layout">
+    </fragment>
 
 </navigation>

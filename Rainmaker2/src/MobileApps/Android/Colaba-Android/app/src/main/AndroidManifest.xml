@@ -95,7 +95,7 @@
         <activity
             android:name=".RequestDocsActivity"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
 
 
 
