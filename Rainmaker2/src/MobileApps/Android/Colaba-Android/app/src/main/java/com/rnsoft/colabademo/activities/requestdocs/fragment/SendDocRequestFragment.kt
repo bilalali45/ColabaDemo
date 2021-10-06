@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.chip.ChipDrawable
 import com.rnsoft.colabademo.activities.requestdocs.model.Template
 import com.rnsoft.colabademo.databinding.SendDocRequestLayoutBinding
 import timber.log.Timber
@@ -40,6 +41,11 @@ class SendDocRequestFragment : BaseFragment() {
             setEmailTemplate()
 
 
+//            val chipDrawable = ChipDrawable.createFromResource(requireContext(), R.xml.chip)
+//            chip.setBounds(0, 0, chip.intrinsicWidth, chip.intrinsicHeight)
+//            val span = ImageSpan(chip)
+//            val text = editText.text!!
+//            text.setSpan(span, 0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
             savedViewInstance
         }
@@ -54,8 +60,6 @@ class SendDocRequestFragment : BaseFragment() {
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
-
-
     }
 
     private fun setEmailTemplate(){
@@ -74,4 +78,5 @@ class SendDocRequestFragment : BaseFragment() {
                 binding.layoutEmailTemplate.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
             }
     }
+
 }

@@ -128,9 +128,9 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
 
         btnRequestDoc = view.findViewById(R.id.btn_req_doc)
         btnRequestDoc.setOnClickListener {
-            requireActivity().startActivity(Intent(requireContext(), RequestDocsActivity::class.java))
+            val intent = Intent(requireActivity(),RequestDocsActivity::class.java)
+            requireActivity().startActivity(intent)
         }
-
 
 
         (activity as DetailActivity).showFabIcons()

@@ -20,7 +20,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.splash_layout)
 
         activityScope.launch {
-            startActivity(Intent(this@SplashActivity, DetailActivity::class.java))
+            startActivity(Intent(this@SplashActivity, RequestDocsActivity::class.java))
             //startActivity(Intent(this@SplashActivity, GovtQuestionActivity::class.java))
 
             /*
@@ -38,7 +38,6 @@ class SplashActivity : AppCompatActivity() {
             }
             finish()
             */
-
 
         }
 
