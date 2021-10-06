@@ -33,7 +33,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/tab_top_border"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/search_back" />
+                app:srcCompat="@drawable/ic_grey_cross" />
 
             <TextView
                 android:id="@+id/header_title"
@@ -112,13 +112,36 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/reqDocsViewPager"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+    >
+
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/reqDocsViewPager"
+            android:layout_width="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+
+        <ImageButton
+            android:id="@+id/btn_next"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="20dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_btn_next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

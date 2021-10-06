@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -19,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.assets_top_cell.view.*
 import kotlinx.android.synthetic.main.docs_type_header_cell.view.*
 import kotlinx.android.synthetic.main.docs_type_middle_cell.view.*
+import timber.log.Timber
 import java.util.HashMap
 import javax.inject.Inject
 
@@ -43,13 +45,18 @@ class RequestDocSearchFragment : DocsTypesBaseFragment() {
 
 
         val linearLayoutManager = LinearLayoutManager(activity)
+        val searchKeyWord:String? = arguments?.getString(AppConstant.search_word).toString()
 
 
         binding.searchEditTextField.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 binding.searchEditTextField.clearFocus()
                 binding.searchEditTextField.hideKeyboard()
-                performLocalSearch( binding.searchEditTextField.text.toString())
+                val searchWord = binding.searchEditTextField.text.toString()
+                if (searchKeyWord != null) {
+                    if(searchWord.isNotEmpty() && searchKeyWord.isNotBlank())
+                        performLocalSearch(searchWord)
+                }
                 return@OnEditorActionListener true
             }
             false
@@ -67,27 +74,35 @@ class RequestDocSearchFragment : DocsTypesBaseFragment() {
             }
         })
 
-        setFocusToSearchField()
-
         binding.searchcrossImageView.setOnClickListener{
             binding.searchEditTextField.setText("")
             binding.searchEditTextField.clearFocus()
             binding.searchEditTextField.hideKeyboard()
             binding.searchcrossImageView.visibility = View.INVISIBLE
-
-
-
         }
+
+        //setFocusToSearchField()
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
 
+        binding.btnNext.setOnClickListener {
+            findNavController().navigate(R.id.navigation_selected_doc_fragment)
+        }
+
+        if(!searchKeyWord.isNullOrEmpty()) {
+            binding.searchEditTextField.clearFocus()
+            binding.searchEditTextField.setText(searchKeyWord)
+            binding.searchEditTextField.hideKeyboard()
+            performLocalSearch(searchKeyWord)
+        }
 
         return root
     }
 
     private fun performLocalSearch(searchKeyWord:String){
+        Timber.e("search word is $searchKeyWord")
         val sampleDocs = getSampleDocsFiles()
         var title:String = ""
         val searchMap: HashMap<String, ArrayList<String>> = HashMap()
@@ -98,6 +113,7 @@ class RequestDocSearchFragment : DocsTypesBaseFragment() {
                 val contentData = modelData.contentCell[j]
                 if (contentData.checkboxContent.contains(searchKeyWord,true)) {
                     matchedList.add(contentData.checkboxContent)
+                    Timber.e("search word is "+ contentData.checkboxContent)
                     title = modelData.headerTitle
                 }
             }
@@ -110,11 +126,11 @@ class RequestDocSearchFragment : DocsTypesBaseFragment() {
 
         if(searchMap.size ==0) {
             //binding.searchResultFoundLayout.visibility = View.INVISIBLE
-            binding.noResultLayout.visibility = View.VISIBLE
+            //binding.noResultLayout.visibility = View.VISIBLE
         }
         else {
             //binding.searchResultFoundLayout.visibility = View.VISIBLE
-            binding.noResultLayout.visibility = View.GONE
+            //binding.noResultLayout.visibility = View.GONE
             for ((key, value) in searchMap) {
                 val modelData = value
                 val mainCell: LinearLayoutCompat = layoutInflater.inflate(
@@ -139,18 +155,24 @@ class RequestDocSearchFragment : DocsTypesBaseFragment() {
                     val contentCell: View =
                         layoutInflater.inflate(R.layout.docs_type_middle_cell, null)
                     contentCell.checkbox.text = modelData[j]
+                    contentCell.checkbox.setOnCheckedChangeListener{ buttonView, isChecked ->
+                        if(isChecked)
+                            buttonView.setTypeface(null, Typeface.BOLD) //only text style(only bold)
+                        else
+                            buttonView.setTypeface(null, Typeface.NORMAL) //only text style(only bold)
+                    }
+
                     contentCell.info_imageview.visibility = View.INVISIBLE
                     //contentCell.info_imageview.setOnClickListener(modelData.contentListenerAttached)
+                    Timber.e("mainCell.addView contentCell with title = $key")
                     mainCell.addView(contentCell)
                 }
                 val emptyCellEnd: View =
                     layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
                 //emptyCell.visibility = View.GONE
+
                 mainCell.addView(emptyCellEnd)
-
-
                 binding.searchItemsParentLayout.addView(mainCell)
-
             }
         }
 

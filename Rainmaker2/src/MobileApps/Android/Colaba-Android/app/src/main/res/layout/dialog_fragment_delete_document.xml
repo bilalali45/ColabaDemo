@@ -144,6 +144,8 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/yes_btn"
+            style="?android:attr/borderlessButtonStyle"
+            android:stateListAnimator="@null"
             android:layout_width="162dp"
             android:layout_height="50dp"
             android:layout_marginTop="30dp"

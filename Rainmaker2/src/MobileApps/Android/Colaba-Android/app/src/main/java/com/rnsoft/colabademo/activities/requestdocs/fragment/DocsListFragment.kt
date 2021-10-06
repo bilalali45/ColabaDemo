@@ -1,13 +1,22 @@
 package com.rnsoft.colabademo
 
+import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.os.bundleOf
 import androidx.core.view.get
+import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.DocsFilesLayoutBinding
 import com.rnsoft.colabademo.databinding.DocsTemplateLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,12 +33,7 @@ class DocsListFragment:DocsTypesBaseFragment() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = DocsFilesLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
@@ -40,7 +44,6 @@ class DocsListFragment:DocsTypesBaseFragment() {
     private fun setUpUI(){
         val sampleDocs = getSampleDocsFiles()
         for (i in 0 until sampleDocs.size) {
-
             val modelData = sampleDocs[i]
             val mainCell: LinearLayoutCompat = layoutInflater.inflate(R.layout.docs_type_top_main_cell, null) as LinearLayoutCompat
             val topCell: View = layoutInflater.inflate(R.layout.docs_type_header_cell, null)
@@ -53,7 +56,6 @@ class DocsListFragment:DocsTypesBaseFragment() {
             topCell.tag = R.string.docs_top_cell
             mainCell.addView(topCell)
 
-
             val emptyCellStart: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
             //emptyCell.visibility = View.GONE
             mainCell.addView(emptyCellStart)
@@ -63,6 +65,12 @@ class DocsListFragment:DocsTypesBaseFragment() {
                     layoutInflater.inflate(R.layout.docs_type_middle_cell, null)
                 val contentData = modelData.contentCell[j]
                 contentCell.checkbox.text = contentData.checkboxContent
+                contentCell.checkbox.setOnCheckedChangeListener{ buttonView, isChecked ->
+                    if(isChecked)
+                       buttonView.setTypeface(null,Typeface.BOLD) //only text style(only bold)
+                    else
+                        buttonView.setTypeface(null,Typeface.NORMAL) //only text style(only bold)
+                }
                 //contentCell.content_desc.text = contentData.description
                 //contentCell.visibility = View.GONE
                 contentCell.info_imageview.visibility = View.INVISIBLE
@@ -76,8 +84,14 @@ class DocsListFragment:DocsTypesBaseFragment() {
             //emptyCell.visibility = View.GONE
             mainCell.addView(emptyCellEnd)
 
-
+            mainCell.visibility = View.INVISIBLE
             binding.docsTypeParentContainer.addView(mainCell)
+            binding.docsTypeParentContainer.postDelayed({
+                hideOtherBoxes()
+                binding.docsTypeParentContainer.postDelayed({
+                    mainCell.visibility = View.VISIBLE
+                },250)
+            },50)
 
             topCell.setOnClickListener {
                 hideAllAndOpenedSelectedCell(topCell, mainCell)
@@ -90,6 +104,42 @@ class DocsListFragment:DocsTypesBaseFragment() {
             //hideOtherBoxes()
 
         }
+        binding.customDocConstraintLayout.setOnClickListener {
+            findNavController().navigate(R.id.navigation_create_custom_document)
+        }
+        binding.searchEditTextField.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                binding.searchEditTextField.clearFocus()
+                binding.searchEditTextField.hideKeyboard()
+                val bundle = bundleOf(AppConstant.search_word to binding.searchEditTextField.text.toString())
+                findNavController().navigate(R.id.navigation_request_search_fragment , bundle)
+                return@OnEditorActionListener true
+            }
+            false
+        })
+
+        binding.searchEditTextField.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                val str: String = binding.searchEditTextField.text.toString()
+                if(str.isNotEmpty())
+                    binding.searchcrossImageView.visibility = View.VISIBLE
+                else
+                    binding.searchcrossImageView.visibility = View.INVISIBLE
+            }
+        })
+        binding.searchcrossImageView.setOnClickListener{
+            binding.searchEditTextField.setText("")
+            binding.searchEditTextField.clearFocus()
+            binding.searchEditTextField.hideKeyboard()
+            binding.searchcrossImageView.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
     private fun hideAllAndOpenedSelectedCell(topCell:View, mainCell:LinearLayoutCompat){

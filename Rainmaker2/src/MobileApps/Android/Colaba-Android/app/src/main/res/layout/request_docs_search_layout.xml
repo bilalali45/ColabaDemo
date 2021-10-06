@@ -164,6 +164,7 @@
         android:id="@+id/search_result_found_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:elevation="2dp"
        >
 
 
@@ -194,6 +195,20 @@
 
         </ScrollView>
 
+        <ImageButton
+            android:id="@+id/btn_next"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="15dp"
+            android:foregroundGravity="center"
+
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_btn_next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </LinearLayout>

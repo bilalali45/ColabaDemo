@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
@@ -78,6 +79,10 @@ class RequestDocsTabFragment : BaseFragment() {
         binding.backButton.setOnClickListener {
             requireActivity().finish()
             requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+        }
+
+        binding.btnNext.setOnClickListener {
+            findNavController().navigate(R.id.navigation_selected_doc_fragment)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback {

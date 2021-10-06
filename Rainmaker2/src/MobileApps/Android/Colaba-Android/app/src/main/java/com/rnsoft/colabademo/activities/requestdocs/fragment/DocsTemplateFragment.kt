@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -69,8 +70,14 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
                     layoutInflater.inflate(R.layout.docs_type_middle_cell, null)
                 val contentData = modelData.contentCell[j]
                 contentCell.checkbox.text = contentData.checkboxContent
+                contentCell.checkbox.setOnCheckedChangeListener{ buttonView, isChecked ->
+                    if(isChecked)
+                        buttonView.setTypeface(null, Typeface.BOLD) //only text style(only bold)
+                    else
+                        buttonView.setTypeface(null, Typeface.NORMAL) //only text style(only bold)
+                }
                 //contentCell.content_desc.text = contentData.description
-                //contentCell.visibility = View.GONE
+                contentCell.visibility = View.VISIBLE
                 contentCell.info_imageview.setOnClickListener(modelData.contentListenerAttached)
                 mainCell.addView(contentCell)
             }
@@ -80,9 +87,17 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
             mainCell.addView(emptyCellEnd)
 
 
+            mainCell.visibility = View.INVISIBLE
             binding.docsTypeParentContainer.addView(mainCell)
+            binding.docsTypeParentContainer.postDelayed({
+                hideOtherBoxes()
+                mainCell.visibility = View.VISIBLE
+            },500)
+
+
 
             topCell.setOnClickListener {
+                //hideOtherBoxes()
                 hideAllAndOpenedSelectedCell(topCell, mainCell)
             }
 
@@ -90,7 +105,7 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
                 hideCurrentlyOpenedCell(topCell, mainCell)
             }
 
-            //hideOtherBoxes()
+
 
         }
     }
