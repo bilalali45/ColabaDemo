@@ -1,18 +1,20 @@
 package com.rnsoft.colabademo
 
 import android.content.Context
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.activities.requestdocs.model.Template
+import timber.log.Timber
 
 /**
  * Created by Anita Kiran on 10/4/2021.
  */
-class EmailTemplateSpinnerAdapter(private val mContext: Context,
-                                  private val viewResourceId: Int,
+class EmailTemplateSpinnerAdapter(private val mContext: Context, private val viewResourceId: Int,
                                   private val items: ArrayList<Template>) : ArrayAdapter<Template?>(mContext, viewResourceId, items.toList()) {
 
     private val itemsAll = items.clone() as ArrayList<Template>
@@ -26,11 +28,26 @@ class EmailTemplateSpinnerAdapter(private val mContext: Context,
         }
         val emailTemplte: Template? = items[position]
         if (emailTemplte != null) {
-            val streetTitle = v?.findViewById(R.id.tv_template_type) as TextView?
-            streetTitle?.text = emailTemplte.docType
+            val docTitle = v?.findViewById(R.id.tv_template_type) as TextView?
+            val docDesc = v?.findViewById(R.id.tv_template_desc) as TextView?
+            docTitle?.text = emailTemplte.docType
+            docDesc?.text = emailTemplte.docDesc
         }
         return v!!
     }
+
+    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+        var v: View? = convertView
+        v = super.getDropDownView(position, convertView, parent)
+        //Log.e("adapter", ""+SendDocRequestFragment.selectedItem)
+        if (position == SendDocRequestFragment.selectedItem) {
+            v.setBackgroundColor(Color.BLUE)
+        } else {
+            v.setBackgroundColor(Color.WHITE)
+        }
+        return v
+    }
+
 
     override fun getFilter(): Filter {
         return nameFilter
@@ -43,11 +60,10 @@ class EmailTemplateSpinnerAdapter(private val mContext: Context,
 
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             return if (constraint != null) {
+                //Timber.e("perform filtering")
                 suggestions.clear()
-                for (street in itemsAll) {
-                    if (street.docType.toLowerCase().startsWith(constraint.toString().toLowerCase())) {
-                        suggestions.add(street)
-                    }
+                for (item in itemsAll) {
+                    suggestions.add(item)
                 }
                 val filterResults = FilterResults()
                 filterResults.values = suggestions

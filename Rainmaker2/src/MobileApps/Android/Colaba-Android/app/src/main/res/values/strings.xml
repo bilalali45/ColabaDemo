@@ -498,10 +498,18 @@
     <string name="standard_checklist">My Standard Checklist</string>
     <string name="request_email_template">Request Email Template</string>
     <string name="send_doc_request">Send Document Request</string>
+    <string name="doc_request_sent">Document Request Sent</string>
+    <string name="doc_req_has_been_sent_to">Document Request has been sent to</string>
     <string name="send_request">Send Request</string>
+    <string name="request_doc">REQUEST DOCUMENT</string>
+    <string name="back_to_doc">Back To Document</string>
     <string name="ques_remove_doc">Are you sure you want to remove this document?</string>
     <string name="email_to">To</string>
     <string name="email_cc">CC</string>
     <string name="subject_line">Subject Line</string>
+    <string name="email_body">Hi Richard,\n \nAs we discussed, I’m adding addition To continue your application, we need some more information. \n \nTax Returns with schedules (Personals - Two Years) \nCredit Report \nEarnest Money Deposit \nFinancial Statement \nForm 1099 \nGovernment-issued ID \nLetter of Explanation - General \nMortgage Statement \nPaystubs
+        \nComplete these items as soon as possible so we can continue reviewing your application. \n \n \n \nThanks &amp; Regards, \n John Doe
+
+    </string>
 
 </resources>

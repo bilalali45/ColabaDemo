@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <TextView
         android:id="@+id/tv_template_type"
         android:layout_width="wrap_content"
@@ -28,7 +27,8 @@
         android:fontFamily="@font/rubik_regular"
         android:text="Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque "
         android:textColor="@color/grey_color_three"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:layout_marginBottom="20dp"/>
 
 
 </LinearLayout>
