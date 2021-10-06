@@ -30,6 +30,8 @@
 		2330CD2226AFEBDF00FF3C43 /* rubik_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2330CD2126AFEBDF00FF3C43 /* rubik_bold.ttf */; };
 		2330CD2526B000ED00FF3C43 /* DocumentMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2330CD2326B000ED00FF3C43 /* DocumentMessageTableViewCell.swift */; };
 		2330CD2626B000ED00FF3C43 /* DocumentMessageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2330CD2426B000ED00FF3C43 /* DocumentMessageTableViewCell.xib */; };
+		2338DB73270DA26E00658C2A /* EmailTemplateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2338DB71270DA26E00658C2A /* EmailTemplateTableViewCell.swift */; };
+		2338DB74270DA26E00658C2A /* EmailTemplateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2338DB72270DA26E00658C2A /* EmailTemplateTableViewCell.xib */; };
 		234DB4F226A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234DB4F026A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.swift */; };
 		234DB4F326A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 234DB4F126A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.xib */; };
 		235BBD6A2698649700687174 /* UtilitiesUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235BBD692698649700687174 /* UtilitiesUnitTest.swift */; };
@@ -272,6 +274,8 @@
 		2330CD2126AFEBDF00FF3C43 /* rubik_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = rubik_bold.ttf; path = "../../../../Android/Colaba-Android/app/src/main/res/font/rubik_bold.ttf"; sourceTree = "<group>"; };
 		2330CD2326B000ED00FF3C43 /* DocumentMessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentMessageTableViewCell.swift; sourceTree = "<group>"; };
 		2330CD2426B000ED00FF3C43 /* DocumentMessageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DocumentMessageTableViewCell.xib; sourceTree = "<group>"; };
+		2338DB71270DA26E00658C2A /* EmailTemplateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailTemplateTableViewCell.swift; sourceTree = "<group>"; };
+		2338DB72270DA26E00658C2A /* EmailTemplateTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailTemplateTableViewCell.xib; sourceTree = "<group>"; };
 		234DB4F026A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GovernmentQuestionsCollectionViewCell.swift; sourceTree = "<group>"; };
 		234DB4F126A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GovernmentQuestionsCollectionViewCell.xib; sourceTree = "<group>"; };
 		235BBD692698649700687174 /* UtilitiesUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilitiesUnitTest.swift; sourceTree = "<group>"; };
@@ -613,6 +617,8 @@
 				23AFA3792707422900388905 /* CheckListTableViewCell.xib */,
 				23B2148E270B425100215ACC /* DocumentTypeTableViewCell.swift */,
 				23B2148F270B425100215ACC /* DocumentTypeTableViewCell.xib */,
+				2338DB71270DA26E00658C2A /* EmailTemplateTableViewCell.swift */,
+				2338DB72270DA26E00658C2A /* EmailTemplateTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1125,6 +1131,7 @@
 				2330CD2626B000ED00FF3C43 /* DocumentMessageTableViewCell.xib in Resources */,
 				2390FEE226A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.xib in Resources */,
 				2330CD2226AFEBDF00FF3C43 /* rubik_bold.ttf in Resources */,
+				2338DB74270DA26E00658C2A /* EmailTemplateTableViewCell.xib in Resources */,
 				230B94CF26E7496E004CBC83 /* AssetsDetailTableViewCell.xib in Resources */,
 				23AFA3752707208900388905 /* DocumentsTemplatesTableViewCell.xib in Resources */,
 				23E9C752269C3F980066C978 /* DocumentsTableViewCell.xib in Resources */,
@@ -1371,6 +1378,7 @@
 				23B238B82679D38900508449 /* SearchViewController.swift in Sources */,
 				23B5E98326F46F4C00686B8E /* ForceClosedPropertyViewController.swift in Sources */,
 				23CD143426E25B4400627127 /* SecondMortgageFollowupQuestionsViewController.swift in Sources */,
+				2338DB73270DA26E00658C2A /* EmailTemplateTableViewCell.swift in Sources */,
 				2330CD2526B000ED00FF3C43 /* DocumentMessageTableViewCell.swift in Sources */,
 				23A56C5D2685B017005CE6F4 /* Icons.swift in Sources */,
 				2392A4CB26C4F9700083EFE4 /* DependentCollectionViewCell.swift in Sources */,

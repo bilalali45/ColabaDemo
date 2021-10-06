@@ -32,7 +32,8 @@ class DocumentsTypeViewController: BaseViewController {
     }
     
     @IBAction func btnNextTapped(_ sender: UIButton){
-        
+        let vc = Utility.getSendDocumentRequestVC()
+        self.pushToVC(vc: vc)
     }
     
 }
