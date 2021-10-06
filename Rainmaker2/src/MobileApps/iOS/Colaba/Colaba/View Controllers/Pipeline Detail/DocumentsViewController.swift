@@ -159,6 +159,7 @@ class DocumentsViewController: BaseViewController {
                 self.loadingPlaceholderView.uncover()
                 self.view.isUserInteractionEnabled = true
                 self.btnRequestDocuments.isHidden = result.arrayValue.count > 0
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: result.arrayValue.count > 0 ? kNotificationShowRequestDocumentFooterButton : kNotificationHideRequestDocumentFooterButton), object: nil, userInfo: nil)
                 
                 if (status == .success){
                     

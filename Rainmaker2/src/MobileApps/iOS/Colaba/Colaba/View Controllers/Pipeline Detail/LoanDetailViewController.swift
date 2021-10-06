@@ -22,6 +22,7 @@ class LoanDetailViewController: BaseViewController {
     @IBOutlet weak var btnOptions: UIButton!
     @IBOutlet weak var btnAddPerson: UIButton!
     @IBOutlet weak var tabView: UIView!
+    @IBOutlet weak var btnRequestDocument: UIButton!
     @IBOutlet weak var btnCall: UIButton!
     @IBOutlet weak var btnSms: UIButton!
     @IBOutlet weak var btnEmail: UIButton!
@@ -43,6 +44,8 @@ class LoanDetailViewController: BaseViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(hidesNavigationBar), name: NSNotification.Name(rawValue: kNotificationHidesNavigationBar), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showNavigationBar), name: NSNotification.Name(rawValue: kNotificationShowNavigationBar), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showRequestDocumentFooterButton), name: NSNotification.Name(rawValue: kNotificationShowRequestDocumentFooterButton), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(hideRequestDocumentFooterButton), name: NSNotification.Name(rawValue: kNotificationHideRequestDocumentFooterButton), object: nil)
         
     }
     
@@ -94,7 +97,7 @@ class LoanDetailViewController: BaseViewController {
             
         }
         
-        setupFooterButtons(buttons: [btnCall, btnSms, btnEmail])
+        setupFooterButtons(buttons: [btnRequestDocument, btnCall, btnSms, btnEmail])
         walkthroughView.layer.cornerRadius = walkthroughView.frame.height / 2
         walkthroughView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(walkthroughViewTapped)))
         let swipeDownGesture = UISwipeGestureRecognizer(target: self, action: #selector(walkthroughViewTapped))
@@ -158,6 +161,14 @@ class LoanDetailViewController: BaseViewController {
             }
         }
         
+    }
+    
+    @objc func showRequestDocumentFooterButton(){
+        btnRequestDocument.isHidden = false
+    }
+    
+    @objc func hideRequestDocumentFooterButton(){
+        btnRequestDocument.isHidden = true
     }
     
     private func createEmailUrl(to: String, subject: String, body: String) -> URL? {

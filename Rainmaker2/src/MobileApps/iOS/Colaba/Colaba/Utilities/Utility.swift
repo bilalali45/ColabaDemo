@@ -294,10 +294,6 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: UndisclosedBorrowerFundsViewController.self)) as! UndisclosedBorrowerFundsViewController
     }
     
-    static func getSendDocumentRequestVC() -> SendDocumentRequestViewController{
-        return testStoryboard.instantiateViewController(withIdentifier: String(describing: SendDocumentRequestViewController.self)) as! SendDocumentRequestViewController
-    }
-    
     static func getUndisclosedBorrowerFundsFollowupQuestionsVC() -> UndisclosedBorrowerFundsFollowupQuestionsViewController{
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: UndisclosedBorrowerFundsFollowupQuestionsViewController.self)) as! UndisclosedBorrowerFundsFollowupQuestionsViewController
     }
@@ -436,6 +432,10 @@ struct Utility {
     
     static func getDeleteDocumentPopupVC() -> DeleteDocumentPopupViewController{
         return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: DeleteDocumentPopupViewController.self)) as! DeleteDocumentPopupViewController
+    }
+    
+    static func getSendDocumentRequestVC() -> SendDocumentRequestViewController{
+        return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: SendDocumentRequestViewController.self)) as! SendDocumentRequestViewController
     }
     
     static func getDocumentRequestSentVC() -> DocumentRequestSentViewController{

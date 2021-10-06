@@ -77,6 +77,7 @@ class ApplicationViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowNavigationBar), object: nil, userInfo: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationHideRequestDocumentFooterButton), object: nil, userInfo: nil)
     }
     
     //MARK:- Methods and Actions
