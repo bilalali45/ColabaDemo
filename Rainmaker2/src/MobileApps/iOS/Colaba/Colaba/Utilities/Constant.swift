@@ -74,3 +74,11 @@ let kOtherAssetsTypeArray = ["Trust Account", "Bridge Loan Proceeds", "Individua
 let kHoldTitleArray = ["By Yourself", "Jointly with your spouse", "Jointly with another person"]
 let kPaymentsRemainingArray = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "12+"]
 let kRequestPaymentTemplates: [RequestEmailTemplate] = [RequestEmailTemplate(title: "Document Request with Intro", description: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque"),RequestEmailTemplate(title: "Default Document Request", description: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque"), RequestEmailTemplate(title: "Only Tenant Intro", description: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque")]
+
+let kAssetsArray = ["Credit Report", "Earnest Money Deposit", "Financial Statement", "Form 1099", "Government-issued ID", "Letter of Explanation - General", "Mortgage Statement", "Form 1099"]
+let kIncomeArray = ["Tax Returns with Schedules (Business - Two Years)", "Tax Returns with Schedules (Personal - Two Years)", "Paystubs - Most Recent", "W-2s - Last Two years", "Rental Agreement - Real Estate Owned", "Income - Miscellaneous"]
+let kLiabilitiesArray = ["HOA or Condo Association Fee Statements", "Liabilities - Miscellaneous", "Rental Agreement", "Bankruptcy Papers", "Property Tax Statement"]
+let kPersonalArray = ["Government Issued Identification", "Permanent Resident Card", "Work Visa - Work Permit"]
+let kPropertyArray = ["Purchase Contract", "Condo HO6 Interior Insurance", "Flood Insurance Policy", "Survey Affidavit", "Property Survey", "Homeowner's Association Certificate"]
+let kDisclosureArray = ["Purchase Contract", "Condo HO6 Interior Insurance", "Flood Insurance Policy", "Survey Affidavit", "Property Survey", "Homeowner's Association Certificate"]
+let kOtherArray = ["Trust - Family Trust", "Divorce Decree", "Mortgage Statement", "Homebuyer Education", "Credit Explanation", "Letter of Explanation", "Power of Attorney (POA)", "Purpose of Cash Out", "Page 5 of 5 of bank statements"]

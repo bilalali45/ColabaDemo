@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
+import android.text.Html
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,8 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.compose.runtime.sourceInformation
+import androidx.core.text.HtmlCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rnsoft.colabademo.databinding.RequestDocsSearchLayoutBinding
@@ -23,6 +26,11 @@ import kotlinx.android.synthetic.main.docs_type_middle_cell.view.*
 import timber.log.Timber
 import java.util.HashMap
 import javax.inject.Inject
+import android.text.Spannable
+
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
+
 
 private val docsTypeTabArray = arrayOf(
     "Document Templates",
@@ -149,12 +157,25 @@ class RequestDocSearchFragment : DocsTypesBaseFragment() {
 
                 val emptyCellStart: View =
                     layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
-                //emptyCell.visibility = View.GONE
                 mainCell.addView(emptyCellStart)
+
                 for (j in 0 until modelData.size) {
-                    val contentCell: View =
-                        layoutInflater.inflate(R.layout.docs_type_middle_cell, null)
-                    contentCell.checkbox.text = modelData[j]
+                    val contentCell: View = layoutInflater.inflate(R.layout.docs_type_middle_cell, null)
+                    //contentCell.checkbox.text = modelData[j]
+                    val sentence = modelData[j]
+                    val startIndex = sentence.indexOf(searchKeyWord , 0, true)
+                    val endIndex  = startIndex + searchKeyWord.length
+                    val str = SpannableStringBuilder(sentence)
+                    Timber.e("Key is $key and sentence is $sentence and start index "+startIndex  +"  endIndex "+endIndex)
+                    if(startIndex>=0){
+                        str.setSpan(
+                            StyleSpan(Typeface.BOLD),
+                            startIndex,
+                            endIndex,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+                    }
+                    contentCell.checkbox.text = str
                     contentCell.checkbox.setOnCheckedChangeListener{ buttonView, isChecked ->
                         if(isChecked)
                             buttonView.setTypeface(null, Typeface.BOLD) //only text style(only bold)

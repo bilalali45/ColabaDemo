@@ -64,9 +64,6 @@
     </fragment>
 
 
-
-
-
     <fragment
         android:id="@+id/navigation_request_sent"
         android:name="com.rnsoft.colabademo.RequestSentFragment"

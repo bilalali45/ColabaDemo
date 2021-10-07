@@ -42,15 +42,25 @@ class SearchRequestDocumentViewController: BaseViewController {
     @IBOutlet weak var tableViewOtherTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnNext: ColabaButton!
     
+    var searchedDocumentName = ""
+    
+    var assetsArray: [String] = []
+    var incomeArray: [String] = []
+    var liabilitiesArray: [String] = []
+    var personalArray: [String] = []
+    var propertyArray: [String] = []
+    var disclosureArray: [String] = []
+    var otherArray: [String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupTableViewsAndViews(tableViews: [tableViewAssets, tableViewIncome, tableViewLiabilities, tableViewPersonal, tableViewProperty, tableViewDisclosure, tableViewOther])
         txtfieldSearch.addTarget(self, action: #selector(textfieldSearchEditingChanged), for: .editingChanged)
-//        tableViewAssets.isHidden = true
-//        tableViewOther.isHidden = true
-//        searchResultSeparator.isHidden = false
-//        lblNoResult.isHidden = false
+        txtfieldSearch.delegate = self
+        txtfieldSearch.text = searchedDocumentName
+        textfieldSearchEditingChanged()
+
     }
     
     //MARK:- Methods and Actions
@@ -88,13 +98,33 @@ class SearchRequestDocumentViewController: BaseViewController {
             self.tableViewOther.reloadData()
         }
 
-        let assetsTableViewHeight = (tableViewAssets.contentSize.height)
-        let incomeTableViewHeight = (tableViewIncome.contentSize.height)
-        let liabilityTableViewHeight = (tableViewLiabilities.contentSize.height)
-        let personalTableViewHeight = (tableViewPersonal.contentSize.height)
-        let propertyTableViewHeight = (tableViewProperty.contentSize.height)
-        let disclosureTableViewHeight = (tableViewDisclosure.contentSize.height)
-        let otherTableViewHeight = (tableViewOther.contentSize.height)
+        tableViewAssetTopConstraint.constant = assetsArray.count == 0 ? 0 : 10
+        tableViewIncomeTopConstraint.constant = incomeArray.count == 0 ? 0 : 10
+        tableViewLiabilityTopConstraint.constant = liabilitiesArray.count == 0 ? 0 : 10
+        tableViewPersonalTopConstraint.constant = personalArray.count == 0 ? 0 : 10
+        tableViewPropertyTopConstraint.constant = propertyArray.count == 0 ? 0 : 10
+        tableViewDisclosureTopConstraint.constant = disclosureArray.count == 0 ? 0 : 10
+        tableViewOtherTopConstraint.constant = otherArray.count == 0 ? 0 : 10
+        
+        tableViewAssets.isHidden = assetsArray.count == 0
+        tableViewIncome.isHidden = incomeArray.count == 0
+        tableViewLiabilities.isHidden = liabilitiesArray.count == 0
+        tableViewPersonal.isHidden = personalArray.count == 0
+        tableViewProperty.isHidden = propertyArray.count == 0
+        tableViewDisclosure.isHidden = disclosureArray.count == 0
+        tableViewOther.isHidden = otherArray.count == 0
+        
+        searchResultSeparator.isHidden = !(assetsArray.count == 0 && incomeArray.count == 0 && liabilitiesArray.count == 0 && personalArray.count == 0 && propertyArray.count == 0 && disclosureArray.count == 0 && otherArray.count == 0)
+        lblNoResult.isHidden = !(assetsArray.count == 0 && incomeArray.count == 0 && liabilitiesArray.count == 0 && personalArray.count == 0 && propertyArray.count == 0 && disclosureArray.count == 0 && otherArray.count == 0)
+        lblNoResult.text = "No Results Found for \"\(txtfieldSearch.text!)\" "
+        
+        let assetsTableViewHeight = (assetsArray.count == 0 ? 0 : tableViewAssets.contentSize.height)
+        let incomeTableViewHeight = (incomeArray.count == 0 ? 0 : tableViewIncome.contentSize.height)
+        let liabilityTableViewHeight = (liabilitiesArray.count == 0 ? 0 : tableViewLiabilities.contentSize.height)
+        let personalTableViewHeight = (personalArray.count == 0 ? 0 : tableViewPersonal.contentSize.height)
+        let propertyTableViewHeight = (propertyArray.count == 0 ? 0 : tableViewProperty.contentSize.height)
+        let disclosureTableViewHeight = (disclosureArray.count == 0 ? 0 : tableViewDisclosure.contentSize.height)
+        let otherTableViewHeight = (otherArray.count == 0 ? 0 : tableViewOther.contentSize.height)
         
         let totalHeight = assetsTableViewHeight + incomeTableViewHeight + liabilityTableViewHeight +  personalTableViewHeight + propertyTableViewHeight + disclosureTableViewHeight + otherTableViewHeight + 300
         
@@ -112,6 +142,32 @@ class SearchRequestDocumentViewController: BaseViewController {
     
     @objc func textfieldSearchEditingChanged(){
         btnClose.isHidden = txtfieldSearch.text == ""
+        searchDocument()
+    }
+    
+    func searchDocument(){
+        if (txtfieldSearch.text == ""){
+            assetsArray = []
+            incomeArray = []
+            liabilitiesArray = []
+            personalArray = []
+            propertyArray = []
+            disclosureArray = []
+            otherArray = []
+        }
+        else{
+            assetsArray = kAssetsArray.filter{$0.localizedCaseInsensitiveContains(txtfieldSearch.text!)}
+            incomeArray = kIncomeArray.filter{$0.localizedCaseInsensitiveContains(txtfieldSearch.text!)}
+            liabilitiesArray = kLiabilitiesArray.filter{$0.localizedCaseInsensitiveContains(txtfieldSearch.text!)}
+            personalArray = kPersonalArray.filter{$0.localizedCaseInsensitiveContains(txtfieldSearch.text!)}
+            propertyArray = kPropertyArray.filter{$0.localizedCaseInsensitiveContains(txtfieldSearch.text!)}
+            disclosureArray = kDisclosureArray.filter{$0.localizedCaseInsensitiveContains(txtfieldSearch.text!)}
+            otherArray = kOtherArray.filter{$0.localizedCaseInsensitiveContains(txtfieldSearch.text!)}
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            self.setScreenHeight()
+        }
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
@@ -121,6 +177,7 @@ class SearchRequestDocumentViewController: BaseViewController {
     @IBAction func btnCloseTapped(_ sender: UIButton) {
         txtfieldSearch.text = ""
         btnClose.isHidden = true
+        searchDocument()
     }
 
     @IBAction func btnNextTapped(_ sender: UIButton) {
@@ -133,25 +190,25 @@ extension SearchRequestDocumentViewController: UITableViewDataSource, UITableVie
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (tableView == tableViewAssets){
-            return 2
+            return assetsArray.count + 1
         }
         else if (tableView == tableViewIncome){
-            return 0
+            return incomeArray.count + 1
         }
         else if (tableView == tableViewLiabilities){
-            return 0
+            return liabilitiesArray.count + 1
         }
         else if (tableView == tableViewPersonal){
-            return 0
+            return personalArray.count + 1
         }
         else if (tableView == tableViewProperty){
-            return 0
+            return propertyArray.count + 1
         }
         else if (tableView == tableViewDisclosure){
-            return 0
+            return disclosureArray.count + 1
         }
         else{
-            return 2
+            return otherArray.count + 1
         }
     }
     
@@ -163,11 +220,95 @@ extension SearchRequestDocumentViewController: UITableViewDataSource, UITableVie
                 cell.lblAmount.text = ""
                 cell.imageArrow.image = UIImage(named: "AssetsUpArrow")
                 cell.separatorView.isHidden = false
+
+                cell.lblCounter.text = "2"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = "Credit Report"
+                cell.lblTemplateName.text = assetsArray[indexPath.row - 1]
+                cell.btnInfo.isHidden = true
+                return cell
+            }
+        }
+        else if (tableView == tableViewIncome){
+            if (indexPath.row == 0){
+                let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
+                cell.lblTitle.text = "Income"
+                cell.lblAmount.text = ""
+                cell.imageArrow.image = UIImage(named: "AssetsUpArrow")
+                cell.separatorView.isHidden = false
+                cell.lblCounter.text = "1"
+                return cell
+            }
+            else{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
+                cell.lblTemplateName.text = incomeArray[indexPath.row - 1]
+                cell.btnInfo.isHidden = true
+                return cell
+            }
+        }
+        else if (tableView == tableViewLiabilities){
+            if (indexPath.row == 0){
+                let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
+                cell.lblTitle.text = "Liabilities"
+                cell.lblAmount.text = ""
+                cell.imageArrow.image = UIImage(named: "AssetsUpArrow")
+                cell.separatorView.isHidden = false
+                return cell
+            }
+            else{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
+                cell.lblTemplateName.text = liabilitiesArray[indexPath.row - 1]
+                cell.btnInfo.isHidden = true
+                return cell
+            }
+        }
+        else if (tableView == tableViewPersonal){
+            if (indexPath.row == 0){
+                let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
+                cell.lblTitle.text = "Personal"
+                cell.lblAmount.text = ""
+                cell.imageArrow.image = UIImage(named: "AssetsUpArrow")
+                cell.separatorView.isHidden = false
+                return cell
+            }
+            else{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
+                cell.lblTemplateName.text = personalArray[indexPath.row - 1]
+                cell.btnInfo.isHidden = true
+                return cell
+            }
+        }
+        else if (tableView == tableViewProperty){
+            if (indexPath.row == 0){
+                let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
+                cell.lblTitle.text = "Property"
+                cell.lblAmount.text = ""
+                cell.imageArrow.image = UIImage(named: "AssetsUpArrow")
+                cell.separatorView.isHidden = false
+                cell.lblCounter.text = "4"
+                return cell
+            }
+            else{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
+                cell.lblTemplateName.text = propertyArray[indexPath.row - 1]
+                cell.btnInfo.isHidden = true
+                return cell
+            }
+        }
+        else if (tableView == tableViewDisclosure){
+            if (indexPath.row == 0){
+                let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
+                cell.lblTitle.text = "Disclosure"
+                cell.lblAmount.text = ""
+                cell.imageArrow.image = UIImage(named: "AssetsUpArrow")
+                cell.separatorView.isHidden = false
+                return cell
+            }
+            else{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
+                cell.lblTemplateName.text = disclosureArray[indexPath.row - 1]
                 cell.btnInfo.isHidden = true
                 return cell
             }
@@ -183,15 +324,25 @@ extension SearchRequestDocumentViewController: UITableViewDataSource, UITableVie
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = "Credit Explanation"
-                cell.btnInfo.isHidden = true
+                cell.lblTemplateName.text = otherArray[indexPath.row - 1]
+                cell.btnInfo.isHidden = indexPath.row != otherArray.count
+                cell.btnInfo.setImage(UIImage(named: "editIcon"), for: .normal)
                 return cell
             }
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return indexPath.row == 0 ? 56 : 40
+        return indexPath.row == 0 ? 56 : UITableView.automaticDimension
+    }
+    
+}
+
+extension SearchRequestDocumentViewController: UITextFieldDelegate{
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        searchDocument()
+        return true
     }
     
 }
