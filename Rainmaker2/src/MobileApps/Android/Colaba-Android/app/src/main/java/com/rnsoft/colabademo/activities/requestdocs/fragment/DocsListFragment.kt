@@ -135,6 +135,13 @@ class DocsListFragment:DocsTypesBaseFragment() {
             binding.searchEditTextField.hideKeyboard()
             binding.searchcrossImageView.visibility = View.INVISIBLE
         }
+
+        binding.searchImageView.setOnClickListener{
+            if(binding.searchEditTextField.text.toString().isNotEmpty()){
+                val bundle = bundleOf(AppConstant.search_word to binding.searchEditTextField.text.toString())
+                findNavController().navigate(R.id.navigation_request_search_fragment , bundle)
+            }
+        }
     }
 
     private fun View.hideKeyboard() {
