@@ -185,13 +185,16 @@
                     android:textColor="@color/grey_color_one"
                     android:textSize="@dimen/ed_txt_size_primary_info" />
 
-                <!--<com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Entry"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chip_text" /> -->
 
             </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip"
+                style="@style/Widget.MaterialComponents.Chip.Entry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chip_text" />
 
 
             <LinearLayout
