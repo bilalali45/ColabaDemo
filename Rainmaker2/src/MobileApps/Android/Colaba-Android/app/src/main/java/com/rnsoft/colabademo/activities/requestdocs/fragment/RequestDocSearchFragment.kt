@@ -15,7 +15,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.compose.runtime.sourceInformation
-import androidx.core.text.HtmlCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rnsoft.colabademo.databinding.RequestDocsSearchLayoutBinding
@@ -30,12 +29,8 @@ import android.text.Spannable
 
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
+import android.util.Log
 
-
-private val docsTypeTabArray = arrayOf(
-    "Document Templates",
-    "Document List"
-)
 
 @AndroidEntryPoint
 class RequestDocSearchFragment : DocsTypesBaseFragment() {
@@ -96,7 +91,7 @@ class RequestDocSearchFragment : DocsTypesBaseFragment() {
         }
 
         binding.btnNext.setOnClickListener {
-            findNavController().navigate(R.id.navigation_selected_doc_fragment)
+            findNavController().navigate(R.id.action_selected_doc_fragment)
         }
 
         if(!searchKeyWord.isNullOrEmpty()) {

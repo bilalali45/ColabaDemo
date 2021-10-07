@@ -27,5 +27,11 @@ class DocumentDetailFragment : BaseFragment() {
             findNavController().popBackStack()
         }
 
+        binding.btnNext.setOnClickListener {
+            findNavController().navigate(R.id.action_selected_doc_fragment)
+        }
+
+
+
     }
 }

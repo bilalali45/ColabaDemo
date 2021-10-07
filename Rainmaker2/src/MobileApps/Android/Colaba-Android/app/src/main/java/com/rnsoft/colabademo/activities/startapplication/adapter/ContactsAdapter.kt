@@ -14,6 +14,7 @@ import com.rnsoft.colabademo.Contacts
 import com.rnsoft.colabademo.RecyclerviewClickListener
 import com.rnsoft.colabademo.activities.addresses.info.model.Address
 import com.rnsoft.colabademo.databinding.ContactListItemBinding
+import java.util.HashMap
 
 /**
  * Created by Anita Kiran on 9/20/2021.
@@ -51,26 +52,36 @@ class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListen
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(contact: Contacts, position: Int) {
-            binding.contactName.text = contact.contactName
+            //binding.contactName.text = contact.contactName
             binding.contactEmail.text = contact.contactEmail
             binding.contactNum.text = contact.contactNumber
 
+            var search = "richard"
+            val searchMap: HashMap<String,List<String>> = HashMap()
+            val values : List<String> = binding.contactName.text.split(" ")
+            for (i in 0 until values.size) {
+                 val singleWord = values[i]
+                 if(singleWord.equals(search, ignoreCase = true)) {
+                     //searchMap.put("", values)
 
-            /*binding.contactName.text.split(" ").forEach {
-                if(it.equals("Richard", ignoreCase = false)){
-                    //it.setTypeface(null, Typeface.NORMAL)
-                }
-            } */
+                     for (j in 0 until values.size) {
+                         val sentence = values[j]
+                         val startIndex = sentence.indexOf(search, 0, true)
+                         val endIndex = startIndex + singleWord.length
+                         val str = SpannableStringBuilder(singleWord)
+                         if (startIndex >= 0) {
+                             str.setSpan(
+                                 StyleSpan(Typeface.BOLD),
+                                 startIndex,
+                                 endIndex,
+                                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                             )
+                         }
 
-
-//            val spannableStringBuilder = SpannableStringBuilder(contact.contactName)
-//            spannableStringBuilder.setSpan(StyleSpan(Typeface.BOLD), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE))
-//            spannableStringBuilder.append(" ")
-//            spannableStringBuilder.append(subText)
-            //textView.text = spannableStringBuilder
-
-
-
+                         binding.contactName.text = str
+                     }
+                 }
+            }
 
         }
 

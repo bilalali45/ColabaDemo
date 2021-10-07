@@ -63,7 +63,7 @@ class SendDocRequestFragment : BaseFragment() {
         }
 
         binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
+            findNavController().navigate(R.id.action_selected_doc_fragment)
         }
     }
 

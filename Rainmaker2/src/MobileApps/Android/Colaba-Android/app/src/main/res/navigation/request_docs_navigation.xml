@@ -10,6 +10,22 @@
         android:name="com.rnsoft.colabademo.RequestDocsTabFragment"
         android:label="@string/request_docs"
         tools:layout="@layout/request_docs_tab_layout">
+
+        <action
+            android:id="@+id/action_custom_doc"
+            app:destination="@+id/navigation_create_custom_document"
+            app:enterAnim="@anim/slide_up" />
+
+        <action
+            android:id="@+id/action_search_doc_fragment"
+            app:destination="@+id/navigation_request_search_fragment"
+            app:enterAnim="@anim/slide_up" />
+
+        <action
+            android:id="@+id/action_selected_doc_fragment"
+            app:destination="@+id/navigation_selected_doc_fragment"
+            app:enterAnim="@anim/slide_up"/>
+
     </fragment>
 
     <fragment
@@ -22,6 +38,12 @@
             android:id="@+id/action_request_sent"
             app:destination="@id/navigation_request_sent"
             app:enterAnim="@anim/slide_up"/>
+
+        <action
+            android:id="@+id/action_selected_doc_fragment"
+            app:destination="@+id/navigation_selected_doc_fragment"
+            app:enterAnim="@anim/slide_up"/>
+
     </fragment>
 
     <fragment
@@ -43,6 +65,10 @@
         android:name="com.rnsoft.colabademo.DocumentDetailFragment"
         android:label="@string/request_docs"
         tools:layout="@layout/doc_detail_layout">
+        <action
+            android:id="@+id/action_selected_doc_fragment"
+            app:destination="@+id/navigation_selected_doc_fragment"
+            app:enterAnim="@anim/slide_up"/>
     </fragment>
 
     <fragment
@@ -50,6 +76,12 @@
         android:name="com.rnsoft.colabademo.RequestDocSearchFragment"
         android:label="@string/request_docs"
         tools:layout="@layout/request_docs_search_layout">
+
+        <action
+            android:id="@+id/action_selected_doc_fragment"
+            app:destination="@+id/navigation_selected_doc_fragment"
+            app:enterAnim="@anim/slide_up"/>
+
     </fragment>
 
     <fragment
@@ -57,6 +89,16 @@
         android:name="com.rnsoft.colabademo.SelectedDocsFragment"
         android:label="@string/request_docs"
         tools:layout="@layout/selected_docs_layout">
+
+        <action
+            android:id="@+id/action_doc_detail_fragment"
+            app:destination="@+id/navigation_document_detail_fragment"
+            app:enterAnim="@anim/slide_up"/>
+
+        <action
+            android:id="@+id/action_send_email_request"
+            app:destination="@+id/navigation_doc_request_email_fragment"
+            app:enterAnim="@anim/slide_up"/>
     </fragment>
 
     <fragment

@@ -47,7 +47,7 @@ class SelectedDocsFragment:DocsTypesBaseFragment() {
             mainCell.selectedDocTitle.text = key
             mainCell.setOnClickListener {
                 val bundle = bundleOf(AppConstant.heading to key)
-                findNavController().navigate(R.id.navigation_document_detail_fragment , bundle)
+                findNavController().navigate(R.id.action_doc_detail_fragment , bundle)
             }
             if(value.isNotEmpty() && value.isNotBlank()) {
                 mainCell.selectedDocDetail.visibility = View.VISIBLE
@@ -58,14 +58,14 @@ class SelectedDocsFragment:DocsTypesBaseFragment() {
 
             binding.selectDocContainer.addView(mainCell)
         }
+
+        binding.btnNext.setOnClickListener {
+            findNavController().navigate(R.id.action_send_email_request)
+        }
+
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
     }
-
-
-
-
-
 
 }

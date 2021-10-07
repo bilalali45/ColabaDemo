@@ -82,7 +82,7 @@ class RequestDocsTabFragment : BaseFragment() {
         }
 
         binding.btnNext.setOnClickListener {
-            findNavController().navigate(R.id.navigation_selected_doc_fragment)
+            findNavController().navigate(R.id.action_selected_doc_fragment)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback {
