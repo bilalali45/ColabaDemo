@@ -43,7 +43,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/searchcrossImageView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/searchcrossImageView"
-            app:srcCompat="@drawable/ic_grey_search" />
+            app:srcCompat="@drawable/ic_light_grey_search_icon" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/searchEditTextField"
