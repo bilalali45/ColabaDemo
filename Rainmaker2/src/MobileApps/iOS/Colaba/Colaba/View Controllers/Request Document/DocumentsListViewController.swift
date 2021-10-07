@@ -296,6 +296,7 @@ extension DocumentsListViewController: UITextFieldDelegate{
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         let vc = Utility.getSearchRequestDocumentVC()
+        vc.searchedDocumentName = txtfieldSearch.text!
         let navVC = UINavigationController(rootViewController: vc)
         navVC.navigationBar.isHidden = true
         navVC.modalPresentationStyle = .fullScreen
