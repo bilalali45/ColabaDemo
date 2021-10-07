@@ -189,12 +189,14 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <com.google.android.material.chip.Chip
+
+
+            <!--<com.google.android.material.chip.Chip
                 android:id="@+id/chip"
                 style="@style/Widget.MaterialComponents.Chip.Entry"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/chip_text" />
+                android:text="@string/chip_text" /> -->
 
 
             <LinearLayout
@@ -265,7 +267,7 @@
                 android:textColor="@color/grey_color_two"
                 android:textSize="14sp" />
 
-           <!-- <androidx.appcompat.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/cc_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -273,15 +275,22 @@
                 android:layout_marginEnd="8dp"
                 android:background="@android:color/transparent"
                 android:ems="10"
-                android:text="ali@gmail.com"
+                android:text=""
                 android:imeOptions="actionNext"
                 android:singleLine="true"
                 android:textColor="@color/grey_color_one"
                 android:textSize="14sp"
-                app:fontFamily="@font/rubik_regular" /> -->
+                app:fontFamily="@font/rubik_regular" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.chip.ChipGroup>
 
             <LinearLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/layout_rounded_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

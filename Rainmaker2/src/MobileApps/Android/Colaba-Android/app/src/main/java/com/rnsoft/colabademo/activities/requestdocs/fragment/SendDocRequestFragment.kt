@@ -42,13 +42,12 @@ class SendDocRequestFragment : BaseFragment() {
             setupUI()
             setEmailTemplate()
 
-            /*
+
             val chip = Chip(requireContext())
-            val chipDrawable = ChipDrawable.createFromResource(requireContext(), R.xml.chip)
-            chip.setBounds(0, 0, chip.intrinsicWidth, chip.intrinsicHeight)
-            val span = ImageSpan(chip)
-            val text = binding.edEmail.text!!
-            text.setSpan(span, 0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) */
+            chip.text = "test@gmail.com"
+            chip.isCloseIconEnabled = true
+            binding.chipGroup.addView(chip)
+
 
 
             //binding.chip.text = "anita@gmail.com"

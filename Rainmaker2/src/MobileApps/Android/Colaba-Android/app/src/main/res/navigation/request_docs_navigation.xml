@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/reques_docs_id"
-    app:startDestination="@+id/navigation_doc_request_email_fragment">
+    app:startDestination="@+id/navigation_request_docs_tab_fragment">
 
     <fragment
         android:id="@+id/navigation_request_docs_tab_fragment"
@@ -45,9 +45,6 @@
         tools:layout="@layout/doc_detail_layout">
     </fragment>
 
-
-
-
     <fragment
         android:id="@+id/navigation_request_search_fragment"
         android:name="com.rnsoft.colabademo.RequestDocSearchFragment"
@@ -55,14 +52,12 @@
         tools:layout="@layout/request_docs_search_layout">
     </fragment>
 
-
     <fragment
         android:id="@+id/navigation_selected_doc_fragment"
         android:name="com.rnsoft.colabademo.SelectedDocsFragment"
         android:label="@string/request_docs"
         tools:layout="@layout/selected_docs_layout">
     </fragment>
-
 
     <fragment
         android:id="@+id/navigation_request_sent"
