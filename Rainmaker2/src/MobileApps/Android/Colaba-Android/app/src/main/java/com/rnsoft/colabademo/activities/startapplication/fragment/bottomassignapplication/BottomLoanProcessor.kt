@@ -2,16 +2,11 @@ package com.rnsoft.colabademo
 
 import android.os.Bundle
 import android.view.LayoutInflater
-
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatRadioButton
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.rnsoft.colabademo.GovtQuestionBaseFragment
-import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.*
-
+import org.greenrobot.eventbus.EventBus
 
 class BottomLoanProcessor : BottomBorrowerBaseFragment() {
 
@@ -35,6 +30,9 @@ class BottomLoanProcessor : BottomBorrowerBaseFragment() {
 
     private fun setupLayout() {
         setUpTabs()
+        binding.fourthLoImage.setOnClickListener {
+            EventBus.getDefault().post(OnDismissBottomDialogEvent())
+        }
     }
 
     private fun setUpTabs() {}

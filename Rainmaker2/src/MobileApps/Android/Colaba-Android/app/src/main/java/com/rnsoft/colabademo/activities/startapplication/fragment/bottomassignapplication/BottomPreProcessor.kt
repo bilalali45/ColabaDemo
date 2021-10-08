@@ -9,15 +9,12 @@ import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.rnsoft.colabademo.databinding.*
+import org.greenrobot.eventbus.EventBus
+import timber.log.Timber
 
 class BottomPreProcessor : BottomBorrowerBaseFragment() {
 
     private lateinit var binding: BottomBorrowerCommonLayoutBinding
-
-    private var innerLayoutHashMap = HashMap<AppCompatTextView, ConstraintLayout>(0)
-    private var openDetailBoxHashMap = HashMap<AppCompatRadioButton, ConstraintLayout>(0)
-    private var closeDetailBoxHashMap = HashMap<AppCompatRadioButton, ConstraintLayout>(0)
-    private lateinit var test: ConstraintLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +31,9 @@ class BottomPreProcessor : BottomBorrowerBaseFragment() {
 
     private fun setupLayout() {
         setUpTabs()
+        binding.fourthLoImage.setOnClickListener {
+            EventBus.getDefault().post(OnDismissBottomDialogEvent())
+        }
     }
 
     private fun setUpTabs() {}

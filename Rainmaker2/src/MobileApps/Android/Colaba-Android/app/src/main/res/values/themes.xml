@@ -109,7 +109,7 @@
     </style>
 
     <style name="RoundedBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/rounded_shape</item>
+        <item name="android:background">@drawable/rounded_white_shape</item>
     </style>
 
 

@@ -30,12 +30,6 @@ class StandardChecklistDialogFragment : BottomSheetDialogFragment() {
 
     lateinit var binding: DialogStandardChecklistBinding
 
-    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.roundedBottomSheetDialog)
-
-    }
-
     private fun setInitialSelection(){
 
         binding.dialogTitle.text = dialogTitle
@@ -64,6 +58,12 @@ class StandardChecklistDialogFragment : BottomSheetDialogFragment() {
 
         return binding.root
     }
+
+    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.roundedBottomSheetDialog)
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

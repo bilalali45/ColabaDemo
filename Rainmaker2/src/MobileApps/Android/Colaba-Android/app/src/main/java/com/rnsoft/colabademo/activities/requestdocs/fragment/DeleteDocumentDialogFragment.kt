@@ -28,11 +28,6 @@ class DeleteDocumentDialogFragment : BottomSheetDialogFragment() {
 
     lateinit var binding: DialogFragmentDeleteDocumentBinding
 
-    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.roundedBottomSheetDialog)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogFragmentDeleteDocumentBinding.inflate(inflater, container, false)
         binding.crossImageView.setOnClickListener{
@@ -52,6 +47,12 @@ class DeleteDocumentDialogFragment : BottomSheetDialogFragment() {
 
         return binding.root
     }
+
+    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.roundedBottomSheetDialog)
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -19,6 +19,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rnsoft.colabademo.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -115,6 +117,9 @@ class HomeFragment : BaseFragment() {
                 //Log.e("onPageSelected -", position.toString())
                 selectedText = tabArray[position]
                 selectedPosition = position
+
+
+
                 val test2: Fragment? =
                     requireActivity().supportFragmentManager.findFragmentByTag("f${position}")
                 if (test2 != null) {
@@ -133,6 +138,9 @@ class HomeFragment : BaseFragment() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
                     //Log.e("onTabSelected -", viewPager.currentItem.toString())
+                    Timber.e("onPageSelected - working... "+viewPager.currentItem)
+                    //EventBus.getDefault().post(OnTabSwitchedEvent( viewPager.currentItem))
+
                     selectedText = it.text as String
                     viewPager.adapter
                     viewPager.currentItem
