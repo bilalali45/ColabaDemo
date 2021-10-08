@@ -95,8 +95,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:tabGravity="fill"
             app:tabIconTint="@color/colaba_red_color"
+            app:tabIndicatorFullWidth="false"
 
-            app:tabMinWidth="180dp"
 
             app:tabMode="scrollable"
             app:tabPaddingEnd="10dp"
@@ -108,7 +108,7 @@
 
             app:tabIndicatorHeight="4dp"
             app:tabSelectedTextColor="@color/colaba_apptheme_blue"
-            app:tabTextAppearance="@style/MineCustomTabText"
+            app:tabTextAppearance="@style/loCustomTab"
             app:tabTextColor="@color/grey_color_two"
             />
 
