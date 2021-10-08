@@ -48,6 +48,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
     lateinit var btnFilterCompleted: AppCompatTextView
     lateinit var btnFilterManullayAdded: AppCompatTextView
     private lateinit var btnRequestDoc : AppCompatButton
+    private lateinit var btnRequestDoc1 : AppCompatButton
     var isStart: Boolean = true
     var filter : String = "All"
     lateinit var layout_noDocFound : ConstraintLayout
@@ -128,6 +129,12 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
 
         btnRequestDoc = view.findViewById(R.id.btn_req_doc)
         btnRequestDoc.setOnClickListener {
+            val intent = Intent(requireActivity(),RequestDocsActivity::class.java)
+            requireActivity().startActivity(intent)
+        }
+
+        btnRequestDoc1 = view.findViewById(R.id.btn_req_doc1)
+        btnRequestDoc1.setOnClickListener {
             val intent = Intent(requireActivity(),RequestDocsActivity::class.java)
             requireActivity().startActivity(intent)
         }
