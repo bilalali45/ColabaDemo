@@ -108,7 +108,7 @@ class ActiveLoansFragment : LoanBaseFragment() , AdapterClickListener  ,  LoanFi
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     override fun onResume() {
         super.onResume()
-
+        tabSwitched()
     }
 
     private fun tabSwitched(){
