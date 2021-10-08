@@ -11,6 +11,7 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -19,13 +20,15 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
 
-import com.rnsoft.colabademo.databinding.StartApplicationFragLayoutBinding
 import com.rnsoft.colabademo.activities.startapplication.adapter.ContactsAdapter
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import kotlinx.android.synthetic.main.dependent_input_field.view.*
 import kotlinx.android.synthetic.main.non_permenant_resident_layout.*
 import timber.log.Timber
 import java.util.regex.Pattern
+import android.widget.Toast
+import androidx.activity.addCallback
+import com.rnsoft.colabademo.databinding.StartApplicationFragLayoutBinding
 
 
 /**
@@ -92,13 +95,23 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
         adapter = ContactsAdapter(requireActivity(), this@StartNewApplicationFragment)
         binding.recyclerviewContacts.setHasFixedSize(true)
-        //binding.recyclerviewContacts.setNestedScrollingEnabled(false)
+
 
 
 
         binding.recyclerviewContacts.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View, m: MotionEvent): Boolean {
-                binding.scrollviewStartApplication.requestDisallowInterceptTouchEvent(true)
+                //binding.scrollviewStartApplication.requestDisallowInterceptTouchEvent(true)
+                //binding.scrollviewStartApplication.setOnTouchListener(disableScrollViewListener)
+                binding.scrollviewStartApplication.setEnableScrolling(false); //
+                //binding.recyclerviewContacts.isEnabled = false
+                return false
+            }
+        })
+
+        binding.parentLayout.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View, m: MotionEvent): Boolean {
+                binding.scrollviewStartApplication.setEnableScrolling(true); //
                 return false
             }
         })
@@ -127,7 +140,9 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
         binding.btnDebtConsolidation.setOnClickListener { onLoanGoalClick() }
 
-        binding.backButton.setOnClickListener { requireActivity().finish() }
+        binding.backButton.setOnClickListener {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left) }
 
         binding.assignLoanOfficer.setOnClickListener {
             AssignBorrowerBottomDialogFragment.newInstance(this@StartNewApplicationFragment).show(childFragmentManager, AssignBorrowerBottomDialogFragment::class.java.canonicalName)
@@ -137,11 +152,17 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             BottomEmailPhoneErrorFragment.newInstance().show(childFragmentManager, BottomEmailPhoneErrorFragment::class.java.canonicalName)
         }
 
+        requireActivity().onBackPressedDispatcher.addCallback {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+        }
+
         binding.btnCancelContact.setOnClickListener{
             binding.recyclerviewContacts.visibility = View.VISIBLE
             binding.layoutResult.visibility = View.GONE
             binding.searchEdittext.visibility = View.VISIBLE
         }
+
 
        binding.parentLayout.setOnClickListener {
            HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
@@ -165,6 +186,21 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         }
 
     }
+
+    private val disableScrollViewListener  = object : View.OnTouchListener {
+        override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+            return true
+        }
+
+    }
+
+
+    private val enableScrollViewListener  = object : View.OnTouchListener {
+        override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+            return true
+        }
+
+    };
 
 
     private fun checkRequiredFields() {

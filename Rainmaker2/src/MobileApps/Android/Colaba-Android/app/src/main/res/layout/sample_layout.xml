@@ -53,20 +53,21 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ScrollView
+    <com.rnsoft.colabademo.CustomScrollView
         android:id="@+id/scrollview_start_application"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?actionBarSize"
+        android:layout_marginTop="52dp"
         android:fillViewport="true"
         android:fitsSystemWindows="true"
         android:isScrollContainer="false"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_info_screen">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/parentLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,23 +90,30 @@
                 android:paddingStart="15dp"
                 android:text="@string/find_contact"
                 android:textColor="@color/grey_color_one"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-            <FrameLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_find_contact"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/find_contact_btn"
+                android:visibility="gone">
 
-                <LinearLayout
-                    android:id="@+id/layout_find_contact"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/content_bg_with_drop_shadow"
                     android:orientation="vertical"
                     android:paddingBottom="30dp"
-                    android:visibility="gone">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/radiobtn"
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
                         android:layout_marginTop="17dp"
@@ -117,7 +125,9 @@
                         android:paddingStart="15dp"
                         android:text="@string/find_contact"
                         android:textColor="@color/grey_color_one"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <LinearLayout
                         android:id="@+id/layout_editText"
@@ -126,7 +136,9 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
-                        android:background="@drawable/edittext_search_contact_style">
+                        android:background="@drawable/edittext_search_contact_style"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/radiobtn">
 
                         <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/searchEdittext"
@@ -136,10 +148,10 @@
                             android:drawableEnd="@drawable/ic_search"
                             android:fontFamily="@font/rubik_regular"
                             android:hint="@string/search_contact"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
                             android:imeOptions="actionSearch"
                             android:inputType="text"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
                             android:textColorHint="@color/grey_color_four"
                             android:textSize="13sp"
                             android:textStyle="italic|bold" />
@@ -154,7 +166,9 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="20dp"
                         android:background="@drawable/content_bg_grey_border"
-                        android:visibility="gone">
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/radiobtn">
 
                         <TextView
                             android:id="@+id/searched_contact_name"
@@ -206,26 +220,27 @@
                             android:textSize="14sp" />
 
                     </RelativeLayout>
-                </LinearLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_contacts"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="122dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
                     android:background="@drawable/layout_style_flat_top"
-                    android:focusableInTouchMode="true"
                     android:orientation="vertical"
                     android:paddingBottom="20dp"
                     android:scrollbars="vertical"
-                    android:visibility="gone"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    android:visibility="visible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_find_contact"
+                    />
 
-            </FrameLayout>
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- layout create new contact -->
 
@@ -242,7 +257,9 @@
                 android:paddingStart="15dp"
                 android:text="@string/create_new_contact"
                 android:textColor="@color/grey_color_one"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/find_contact_btn"/>
 
             <LinearLayout
                 android:id="@+id/layout_create_contact"
@@ -251,7 +268,9 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/content_bg_with_drop_shadow"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/find_contact_btn">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:layout_width="wrap_content"
@@ -374,7 +393,6 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_mobile_num"
                     android:layout_width="match_parent"
@@ -418,6 +436,7 @@
 
 
             <TextView
+                android:id="@+id/text1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
@@ -425,14 +444,19 @@
                 android:fontFamily="@font/rubik_regular"
                 android:text="@string/loan_purpose"
                 android:textColor="@color/grey_color_two"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/create_contact_btn"/>
 
             <RadioGroup
+                android:id="@+id/radiogroup_purpose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text1">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/btn_loan_purchase"
@@ -460,6 +484,7 @@
 
 
             <TextView
+                android:id="@+id/tv_loan_goal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
@@ -467,13 +492,16 @@
                 android:fontFamily="@font/rubik_regular"
                 android:text="@string/loan_goal"
                 android:textColor="@color/grey_color_two"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radiogroup_purpose"/>
 
             <RadioGroup
+                android:id="@+id/radiogroup_loangoal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="15dp">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_loan_goal">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/btn_lower_payment_terms"
@@ -514,23 +542,26 @@
             </RadioGroup>
 
             <View
+                android:id="@+id/separator"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="20dp"
-                android:background="@color/colaba_app_border_color" />
+                android:background="@color/colaba_app_border_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radiogroup_loangoal"/>
 
             <LinearLayout
                 android:id="@+id/assign_loan_officer"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/content_background_fullwhite"
                 android:clickable="true"
-                android:gravity="start|center">
+                android:gravity="start|center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/separator">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -550,11 +581,11 @@
             </LinearLayout>
 
 
-        </LinearLayout>
-    </ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.rnsoft.colabademo.CustomScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_create_app"
+        android:id="@+id/btn_create_application"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
