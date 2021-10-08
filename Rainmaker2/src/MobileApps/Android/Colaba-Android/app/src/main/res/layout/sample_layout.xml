@@ -53,18 +53,18 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:id="@+id/scrollview_start_application"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?actionBarSize"
         android:fillViewport="true"
         android:fitsSystemWindows="true"
+        android:isScrollContainer="false"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_info_screen"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_constraintTop_toBottomOf="@+id/header_info_screen">
 
         <LinearLayout
             android:id="@+id/parentLayout"
@@ -91,10 +91,9 @@
                 android:textColor="@color/grey_color_one"
                 android:textSize="15sp" />
 
-            <RelativeLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:id="@+id/layout_find_contact"
@@ -137,10 +136,10 @@
                             android:drawableEnd="@drawable/ic_search"
                             android:fontFamily="@font/rubik_regular"
                             android:hint="@string/search_contact"
-                            android:imeOptions="actionSearch"
-                            android:inputType="text"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
+                            android:imeOptions="actionSearch"
+                            android:inputType="text"
                             android:textColorHint="@color/grey_color_four"
                             android:textSize="13sp"
                             android:textStyle="italic|bold" />
@@ -214,16 +213,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="120dp"
+                    android:layout_marginTop="122dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/layout_style_flat_top"
+                    android:focusableInTouchMode="true"
                     android:orientation="vertical"
                     android:paddingBottom="20dp"
                     android:scrollbars="vertical"
                     android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-            </RelativeLayout>
+
+            </FrameLayout>
 
 
             <!-- layout create new contact -->
@@ -550,10 +551,10 @@
 
 
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_create_application"
+        android:id="@+id/btn_create_app"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
