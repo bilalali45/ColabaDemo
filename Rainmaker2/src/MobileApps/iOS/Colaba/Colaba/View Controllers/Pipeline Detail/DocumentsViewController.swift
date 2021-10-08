@@ -138,7 +138,10 @@ class DocumentsViewController: BaseViewController {
     
     @IBAction func btnRequestDocuments(_ sender: UIButton) {
         let vc = Utility.getRequestDocumentVC()
-        self.presentVC(vc: vc)
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navVC.navigationBar.isHidden = true
+        self.presentVC(vc: navVC)
     }
     
     //MARK:- API's

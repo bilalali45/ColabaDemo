@@ -181,7 +181,7 @@ class SearchRequestDocumentViewController: BaseViewController {
     }
 
     @IBAction func btnNextTapped(_ sender: UIButton) {
-        let vc = Utility.getDocumentsTypeViewController()
+        let vc = Utility.getDocumentsTypeVC()
         self.pushToVC(vc: vc)
     }
 }
@@ -325,8 +325,7 @@ extension SearchRequestDocumentViewController: UITableViewDataSource, UITableVie
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
                 cell.lblTemplateName.text = otherArray[indexPath.row - 1]
-                cell.btnInfo.isHidden = indexPath.row != otherArray.count
-                cell.btnInfo.setImage(UIImage(named: "editIcon"), for: .normal)
+                cell.btnInfo.isHidden = true
                 return cell
             }
         }

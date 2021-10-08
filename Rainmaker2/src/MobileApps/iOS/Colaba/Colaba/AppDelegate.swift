@@ -119,7 +119,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func loadBorrowerInfoController(){
-        let vc = Utility.getRequestDocumentVC()
+        let vc = Utility.getSendDocumentRequestVC()
+        //let vc = Utility.getTestVC()
         self.window?.rootViewController = vc
     }
     

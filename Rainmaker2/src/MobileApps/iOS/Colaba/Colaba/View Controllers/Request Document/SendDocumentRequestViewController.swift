@@ -26,6 +26,7 @@ class SendDocumentRequestViewController: BaseViewController {
     
     var txtViewSubject = MDCFilledTextArea()
     var selectedTemplateIndex = IndexPath(row: 1, section: 0)
+    var chipField: MDCChipField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,11 +34,41 @@ class SendDocumentRequestViewController: BaseViewController {
         txtfieldRequestEmailTemplate.addTarget(self, action: #selector(textfieldRequestTemplateStartEditing), for: .editingDidBegin)
         txtfieldRequestEmailTemplate.text = "Default Document Request"
         txtfieldTo.text = "richard.glenn@gmail.com"
+        //txtfieldTo.isHidden = true
         txtfieldCC.text = "ali@rainsoftfn.com"
         
+//        chipFieldTo.textField.placeholderLabel.text = "Hello Everyone"
+//        chipFieldTo.delegate = self
+//        chipFieldTo.showChipsDeleteButton = true
+//        chipFieldTo.sizeToFit()
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+//        chipField = MDCChipField()
+//        chipField.backgroundColor = .clear
+//        chipField.textField.placeholderLabel.dividerContentEdgeInsetsPreset = .horizontally5
+//        chipField.frame = txtfieldTo.frame
+//        chipField.textField.underline?.color = Theme.getSeparatorNormalColor()
+//        chipField.delegate = self
+//        chipField.textField.placeholderLabel.text = ""
+//        chipField.showChipsDeleteButton = true
+//        chipField.dividerThickness = 1
+//        chipField.dividerColor = Theme.getSeparatorNormalColor()
+//        chipField.contentEdgeInsets = UIEdgeInsets(top: -10, left: -5, bottom: 0, right: 0)
+//        chipField.chipHeight = 40
+//        chipField.heightPreset = .xxlarge
+//        //chipField.minTextFieldWidth = self.txtfieldTo.frame.width
+//        //chipField.sizeToFit()
+//        mainView.addSubview(chipField)
     }
    
     //MARK:- Methods and Actions
+    
+    @objc func chipTap(){
+        
+    }
     
     func setupTextFieldsAndTextViews(){
         txtfieldRequestEmailTemplate.setTextField(placeholder: "Request Email Template", controller: self, validationType: .required)
@@ -189,4 +220,15 @@ extension SendDocumentRequestViewController: UITableViewDataSource, UITableViewD
 
     }
     
+}
+
+extension SendDocumentRequestViewController: MDCChipFieldDelegate{
+    func chipField(_ chipField: MDCChipField, didAddChip chip: MDCChipView) {
+        let index = chip.titleLabel.text!.index(chip.titleLabel.text!.startIndex, offsetBy: 0)
+        let firstLetter = String(chip.titleLabel.text![index])
+        chip.imageView.image = Utility.getChipImage(name: firstLetter)
+        chip.titleLabel.font = Theme.getRubikRegularFont(size: 15)
+        chip.titleLabel.textColor = Theme.getAppBlackColor()
+        chip.setRippleColor(.white, for: .normal)
+    }
 }

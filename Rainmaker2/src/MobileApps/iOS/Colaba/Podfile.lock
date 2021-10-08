@@ -129,6 +129,7 @@ PODS:
   - Realm/Headers (10.7.6)
   - RealmSwift (10.7.6):
     - Realm (= 10.7.6)
+  - RichEditorView (5.0.0)
   - SVGKit (3.0.0):
     - CocoaLumberjack (~> 3.0)
   - SwiftyJSON (5.0.0)
@@ -148,6 +149,7 @@ DEPENDENCIES:
   - MonthYearPicker
   - NVActivityIndicatorView (= 4.8.0)
   - RealmSwift
+  - RichEditorView
   - SVGKit (= 3.0.0)
   - SwiftyJSON (= 5.0.0)
 
@@ -171,6 +173,7 @@ SPEC REPOS:
     - NVActivityIndicatorView
     - Realm
     - RealmSwift
+    - RichEditorView
     - SVGKit
     - SwiftyJSON
 
@@ -193,9 +196,10 @@ SPEC CHECKSUMS:
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
   Realm: ed860452717c8db8f4bf832b6807f7f2ce708839
   RealmSwift: e31c4ddbcc42ac879313d656b86f9ca539f6f4f4
+  RichEditorView: 1bbb07b87ca2d479ac29a6877014b38b8df233ef
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: fb18b3549901caec689354e53c54dbd17d70b0fb
+PODFILE CHECKSUM: a8e12c8cdfcb805b68baaeec32177d3aff54fb58
 
 COCOAPODS: 1.10.1

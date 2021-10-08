@@ -180,7 +180,7 @@
                                         </constraints>
                                         <state key="normal" image="PlusButton"/>
                                         <connections>
-                                            <action selector="btnCallTapped:" destination="JeC-yp-JSs" eventType="touchUpInside" id="Gaf-mp-jxS"/>
+                                            <action selector="btnNewDocumentTapped:" destination="JeC-yp-JSs" eventType="touchUpInside" id="mlN-zt-3Sx"/>
                                         </connections>
                                     </button>
                                 </subviews>

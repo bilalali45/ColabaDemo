@@ -418,7 +418,7 @@ struct Utility {
         return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: SearchRequestDocumentViewController.self)) as! SearchRequestDocumentViewController
     }
     
-    static func getDocumentsTypeViewController() -> DocumentsTypeViewController{
+    static func getDocumentsTypeVC() -> DocumentsTypeViewController{
         return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: DocumentsTypeViewController.self)) as! DocumentsTypeViewController
     }
     
@@ -440,6 +440,10 @@ struct Utility {
     
     static func getDocumentRequestSentVC() -> DocumentRequestSentViewController{
         return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: DocumentRequestSentViewController.self)) as! DocumentRequestSentViewController
+    }
+    
+    static func getTestVC() -> TestViewController{
+        return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: TestViewController.self)) as! TestViewController
     }
     
     static var localPiplineDateFormatter: DateFormatter{
@@ -773,6 +777,17 @@ struct Utility {
         else{
             return false
         }
+    }
+    
+    static func getChipImage(name: String) -> UIImage{
+        let nameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        nameLabel.backgroundColor = Theme.getAppGreyColor()
+        nameLabel.textColor = .white
+        nameLabel.font = Theme.getRubikRegularFont(size: 15)
+        nameLabel.text = name
+        nameLabel.textAlignment = .center
+        let nameImage = UIImage.imageWithLabel(nameLabel)
+        return nameImage.roundedImage()
     }
     
 }
