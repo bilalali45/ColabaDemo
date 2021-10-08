@@ -53,16 +53,17 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.rnsoft.colabademo.CustomScrollView
+    <ScrollView
         android:id="@+id/scrollview_start_application"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?actionBarSize"
+        android:layout_marginTop="52dp"
         android:fillViewport="true"
         android:fitsSystemWindows="true"
         android:isScrollContainer="false"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_info_screen">
 
@@ -91,11 +92,11 @@
                 android:textColor="@color/grey_color_one"
                 android:textSize="15sp" />
 
-            <FrameLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_find_contact"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -103,9 +104,12 @@
                     android:background="@drawable/content_bg_with_drop_shadow"
                     android:orientation="vertical"
                     android:paddingBottom="30dp"
-                    android:visibility="gone">
+                    android:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/radiobtn"
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
                         android:layout_marginTop="17dp"
@@ -117,7 +121,9 @@
                         android:paddingStart="15dp"
                         android:text="@string/find_contact"
                         android:textColor="@color/grey_color_one"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <LinearLayout
                         android:id="@+id/layout_editText"
@@ -126,7 +132,9 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
-                        android:background="@drawable/edittext_search_contact_style">
+                        android:background="@drawable/edittext_search_contact_style"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/radiobtn">
 
                         <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/searchEdittext"
@@ -136,95 +144,38 @@
                             android:drawableEnd="@drawable/ic_search"
                             android:fontFamily="@font/rubik_regular"
                             android:hint="@string/search_contact"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
                             android:imeOptions="actionSearch"
                             android:inputType="text"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
                             android:textColorHint="@color/grey_color_four"
                             android:textSize="13sp"
                             android:textStyle="italic|bold" />
 
                     </LinearLayout>
 
-                    <RelativeLayout
-                        android:id="@+id/layout_result"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="@drawable/content_bg_grey_border"
-                        android:visibility="gone">
 
-                        <TextView
-                            android:id="@+id/searched_contact_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:text="Richard Glenn Randal"
-                            android:textColor="@color/colaba_primary_color"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <ImageView
-                            android:id="@+id/btn_cancel_contact"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:src="@drawable/ic_cross_small" />
-
-                        <TextView
-                            android:id="@+id/searched_contact_email"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/searched_contact_name"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="6dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:text="richard@gmail.com"
-                            android:textColor="@color/grey_color_two"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/searched_contact_phone"
-                            android:layout_width="wrap_content"
-                            android:layout_height="17dp"
-                            android:layout_below="@+id/searched_contact_name"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginTop="6dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="15dp"
-                            android:drawableStart="@drawable/ic_circle_blue"
-                            android:drawablePadding="10dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:text="(121)31245454"
-                            android:textColor="@color/grey_color_two"
-                            android:textSize="14sp" />
-
-                    </RelativeLayout>
-                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_contacts"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="122dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
                     android:background="@drawable/layout_style_flat_top"
-                    android:focusableInTouchMode="true"
                     android:orientation="vertical"
                     android:paddingBottom="20dp"
                     android:scrollbars="vertical"
-                    android:visibility="gone"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    android:translationY="20dp"
+                    android:visibility="visible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_find_contact"
+                    />
 
-            </FrameLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             <!-- layout create new contact -->
@@ -551,10 +502,10 @@
 
 
         </LinearLayout>
-    </com.rnsoft.colabademo.CustomScrollView>
+    </ScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_create_application"
+        android:id="@+id/btn_create_app"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
@@ -570,5 +521,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- android:textColor="@color/text_color_selector"
+-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
