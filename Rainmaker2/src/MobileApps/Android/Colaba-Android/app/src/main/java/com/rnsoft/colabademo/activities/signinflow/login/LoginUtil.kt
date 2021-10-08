@@ -23,6 +23,10 @@ object LoginUtil {
             null
     }
 
+    fun isValidEmailAddress(userEmail: String): Boolean {
+        return !EMAIL_ADDRESS_PATTERN.matcher(userEmail).matches()
+    }
+
 
     fun checkPasswordLength(password: String): String? {
         if (password.isEmpty())

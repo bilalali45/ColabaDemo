@@ -52,7 +52,7 @@ class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListen
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(contact: Contacts, position: Int) {
-            //binding.contactName.text = contact.contactName
+            binding.contactName.text = contact.contactName
             binding.contactEmail.text = contact.contactEmail
             binding.contactNum.text = contact.contactNumber
 
@@ -78,7 +78,7 @@ class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListen
                              )
                          }
 
-                         binding.contactName.text = str
+                         //binding.contactName.text = str
                      }
                  }
             }

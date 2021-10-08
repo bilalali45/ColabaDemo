@@ -1,15 +1,20 @@
 package com.rnsoft.colabademo
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
@@ -44,12 +49,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             binding = StartApplicationFragLayoutBinding.inflate(inflater, container, false)
             savedViewInstance = binding.root
 
-            binding.btnCreateApp.isEnabled = false
-
-
-
-
-
+            binding.btnCreateApplication.isEnabled = false
 
 
             setupUI()
@@ -63,6 +63,27 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
     @SuppressLint("ClickableViewAccessibility", "UseCompatLoadingForDrawables")
     private fun setupUI() {
 
+        binding.searchEdittext.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                binding.searchEdittext.clearFocus()
+                binding.searchEdittext.hideKeyboard()
+                val searchWord = binding.searchEdittext.text.toString()
+                if(searchWord.isNotEmpty() && searchWord.isNotBlank()) {
+                    adapter.showResult(searchList)
+                    binding.recyclerviewContacts.adapter = adapter
+                    binding.layoutFindContact.visibility = View.VISIBLE
+                    binding.recyclerviewContacts.visibility = View.VISIBLE
+                    binding.layoutEditText.setBackgroundResource(R.drawable.layout_style_flat_bottom)
+                }
+
+                return@OnEditorActionListener true
+            }
+            false
+        })
+
+
+
+
         searchList.add(Contacts("Richard Glenn Randall","richard.glenn@gmail.com","(121) 353 1343"))
         searchList.add(Contacts("Arnold Richard","arnold634@gmail.com","(121) 353 1343"))
         searchList.add(Contacts("Richard Glenn Randall","richard.glenn@gmail.com","(121) 353 1343"))
@@ -71,34 +92,18 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
         adapter = ContactsAdapter(requireActivity(), this@StartNewApplicationFragment)
         binding.recyclerviewContacts.setHasFixedSize(true)
-        binding.recyclerviewContacts.setNestedScrollingEnabled(false)
+        //binding.recyclerviewContacts.setNestedScrollingEnabled(false)
 
-          binding.searchEdittext.addTextChangedListener(object : TextWatcher {
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable) {
-                adapter.showResult(searchList)
-                binding.recyclerviewContacts.adapter = adapter
-
-                binding.layoutFindContact.visibility = View.VISIBLE
-                binding.recyclerviewContacts.visibility = View.VISIBLE
-                binding.layoutEditText.setBackgroundResource(R.drawable.layout_style_flat_bottom)
-
-                //binding.searchEdittext.setBackground(requireActivity().resources.getDrawable(R.drawable.layout_style_flat_bottom))
-                //HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
-
-            }
-        })
-
-//        binding.recyclerviewContacts.setOnTouchListener(object : View.OnTouchListener {
-//            override fun onTouch(v: View, m: MotionEvent): Boolean {
-//                binding.scrollviewStartApplication.requestDisallowInterceptTouchEvent(true)
-//                return false
-//            }
-//        })
 
 
         binding.recyclerviewContacts.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View, m: MotionEvent): Boolean {
+                binding.scrollviewStartApplication.requestDisallowInterceptTouchEvent(true)
+                return false
+            }
+        })
+
+       /* binding.recyclerviewContacts.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
                 when (event?.action) {
                     MotionEvent.ACTION_DOWN ->   binding.scrollviewStartApplication.requestDisallowInterceptTouchEvent(true)
@@ -106,17 +111,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
                 return v?.onTouchEvent(event) ?: false
             }
-        })
-
-        /*binding.searchEdittext.setOnFocusChangeListener { view, hasFocus ->
-            if(hasFocus){
-                binding.searchEdittext.setBackground(requireActivity().resources.getDrawable(R.drawable.layout_style_flat_bottom))
-
-            } else {
-                binding.searchEdittext.setBackground(requireActivity().resources.getDrawable(R.drawable.edittext_search_contact_style))
-            }
-        } */
-
+        }) */
 
         binding.findContactBtn.setOnClickListener { findOrCreateContactClick() }
 
@@ -138,12 +133,14 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             AssignBorrowerBottomDialogFragment.newInstance(this@StartNewApplicationFragment).show(childFragmentManager, AssignBorrowerBottomDialogFragment::class.java.canonicalName)
         }
 
+        binding.btnCreateApplication.setOnClickListener {
+            BottomEmailPhoneErrorFragment.newInstance().show(childFragmentManager, BottomEmailPhoneErrorFragment::class.java.canonicalName)
+        }
+
         binding.btnCancelContact.setOnClickListener{
             binding.recyclerviewContacts.visibility = View.VISIBLE
             binding.layoutResult.visibility = View.GONE
             binding.searchEdittext.visibility = View.VISIBLE
-            //binding.layoutEditText.setBackground(requireActivity().resources.getDrawable(R.drawable.edittext_search_contact_style))
-
         }
 
        binding.parentLayout.setOnClickListener {
@@ -173,12 +170,11 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
     private fun checkRequiredFields() {
         if (!binding.edFirstName.text.toString().isEmpty() && !binding.edLastName.text.toString().isEmpty() && !binding.edMobile.text.toString().isEmpty() &&
             !binding.edEmail.text.toString().isEmpty()) {
-            binding.btnCreateApp.isEnabled = true
+            binding.btnCreateApplication.isEnabled = true
         }
         else
-            binding.btnCreateApp.isEnabled = false
+            binding.btnCreateApplication.isEnabled = false
     }
-
 
     override fun onItemClick(position: Int) {
         binding.searchedContactName.text = searchList.get(position).contactName
@@ -210,7 +206,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
                     CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_three,requireActivity())
                 } else {
                     CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_two,requireActivity())
-                    if (!isValidEmailAddress(binding.edEmail.text.toString())) {
+                    if (!isValidEmailAddress(binding.edEmail.text.toString().trim())) {
                         CustomMaterialFields.setError(binding.layoutEmail,getString(R.string.invalid_email),requireActivity())
                     } else {
                         CustomMaterialFields.clearError(binding.layoutEmail,requireActivity())
@@ -231,6 +227,8 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             binding.layoutResult.visibility = View.GONE
             binding.layoutCreateContact.visibility = View.GONE
             binding.findContactBtn.visibility = View.GONE
+            binding.searchEdittext.setText("")
+            binding.layoutEditText.setBackgroundResource(R.drawable.edittext_search_contact_style)
         }
         else {
             if (binding.createContactBtn.isChecked) {
@@ -239,6 +237,8 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
                 binding.findContactBtn.visibility = View.VISIBLE
                 binding.layoutFindContact.visibility = View.GONE
                 binding.layoutCreateContact.visibility = View.VISIBLE
+                binding.recyclerviewContacts.visibility = View.GONE
+
             }
         }
     }
@@ -274,10 +274,37 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
     private fun isValidEmailAddress(email: String?): Boolean {
         val ePattern =
-            "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"
+            "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,3}))$"
         val p = Pattern.compile(ePattern)
         val m = p.matcher(email)
         return m.matches()
     }
 
+
+   // fun CharSequence?.isValidEmail() = !isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
+
+
+    private fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+
 }
+
+
+/*binding.searchEdittext.addTextChangedListener(object : TextWatcher {
+           override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+           override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+           override fun afterTextChanged(s: Editable) {
+               adapter.showResult(searchList)
+               binding.recyclerviewContacts.adapter = adapter
+
+               binding.layoutFindContact.visibility = View.VISIBLE
+               binding.recyclerviewContacts.visibility = View.VISIBLE
+               binding.layoutEditText.setBackgroundResource(R.drawable.layout_style_flat_bottom)
+
+               //binding.searchEdittext.setBackground(requireActivity().resources.getDrawable(R.drawable.layout_style_flat_bottom))
+               //HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
+
+           }
+       }) */
