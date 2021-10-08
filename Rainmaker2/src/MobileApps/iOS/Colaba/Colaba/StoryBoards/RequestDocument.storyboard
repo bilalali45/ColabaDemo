@@ -1414,7 +1414,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Duw-Kj-pBf" customClass="RichEditorView" customModule="RichEditorView">
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Duw-Kj-pBf">
                                 <rect key="frame" x="20" y="20" width="335" height="500"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
@@ -1552,6 +1552,20 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
+                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="X6y-44-Tsd">
+                                                <rect key="frame" x="20" y="99" width="335" height="39"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="39" id="agP-fc-YIM"/>
+                                                </constraints>
+                                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="X2C-z3-0t6">
+                                                    <size key="itemSize" width="128" height="128"/>
+                                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                </collectionViewFlowLayout>
+                                                <cells/>
+                                            </collectionView>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iBN-Yy-5dl" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="168" width="335" height="39"/>
                                                 <color key="backgroundColor" red="0.60392156860000001" green="0.602715373" blue="0.602715373" alpha="0.5" colorSpace="calibratedRGB"/>
@@ -1617,10 +1631,13 @@
                                             <constraint firstItem="iBN-Yy-5dl" firstAttribute="leading" secondItem="GUd-LM-pfu" secondAttribute="leading" constant="20" id="0Th-7K-C9M"/>
                                             <constraint firstAttribute="trailing" secondItem="V1r-E2-bUL" secondAttribute="trailing" constant="40" id="1v1-WL-abf"/>
                                             <constraint firstItem="8gP-cR-1Ii" firstAttribute="leading" secondItem="GUd-LM-pfu" secondAttribute="leading" constant="20" id="4UC-N3-lio"/>
+                                            <constraint firstItem="X6y-44-Tsd" firstAttribute="leading" secondItem="GUd-LM-pfu" secondAttribute="leading" constant="20" id="7NB-M5-FMt"/>
                                             <constraint firstItem="0Dw-oZ-RAf" firstAttribute="top" secondItem="GUd-LM-pfu" secondAttribute="top" constant="30" id="COH-BG-QYY"/>
                                             <constraint firstItem="ez4-b8-4J0" firstAttribute="top" secondItem="oXV-ps-5i5" secondAttribute="bottom" constant="40" id="DUG-tY-sy0"/>
                                             <constraint firstAttribute="trailing" secondItem="ez4-b8-4J0" secondAttribute="trailing" constant="20" id="Eg2-CR-XZv"/>
                                             <constraint firstAttribute="trailing" secondItem="8gP-cR-1Ii" secondAttribute="trailing" constant="20" id="Eq7-2G-BBE"/>
+                                            <constraint firstAttribute="trailing" secondItem="X6y-44-Tsd" secondAttribute="trailing" constant="20" id="H0G-7w-dQb"/>
+                                            <constraint firstItem="X6y-44-Tsd" firstAttribute="top" secondItem="0Dw-oZ-RAf" secondAttribute="bottom" constant="30" id="JKr-Fa-uKQ"/>
                                             <constraint firstItem="iBN-Yy-5dl" firstAttribute="top" secondItem="sJx-DE-YKF" secondAttribute="bottom" constant="30" id="OHS-O3-Vy0"/>
                                             <constraint firstItem="V1r-E2-bUL" firstAttribute="leading" secondItem="GUd-LM-pfu" secondAttribute="leading" constant="40" id="QXw-5j-imH"/>
                                             <constraint firstItem="sJx-DE-YKF" firstAttribute="top" secondItem="0Dw-oZ-RAf" secondAttribute="bottom" constant="30" id="Txu-N7-W5x"/>
@@ -1687,6 +1704,7 @@
                     <connections>
                         <outlet property="btnBack" destination="V77-K5-VRu" id="cG1-qe-j0a"/>
                         <outlet property="btnSendRequest" destination="n4M-cJ-TGX" id="nFP-S4-3K3"/>
+                        <outlet property="collectionViewTo" destination="X6y-44-Tsd" id="8IX-eK-dv2"/>
                         <outlet property="emailBodyContainer" destination="ez4-b8-4J0" id="rzY-by-tqv"/>
                         <outlet property="mainView" destination="GUd-LM-pfu" id="ky5-2k-JWX"/>
                         <outlet property="mainViewHeightConstraint" destination="kDd-xF-nBC" id="oY4-Zq-ZHQ"/>

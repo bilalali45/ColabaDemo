@@ -34,6 +34,8 @@ class LoanOfficerMainViewController: BaseViewController {
         searchView.layer.cornerRadius = 5
         searchView.layer.borderWidth = 1
         searchView.layer.borderColor = Theme.getSearchBarBorderColor().cgColor
+        txtfieldSearch.delegate = self
+        txtfieldSearch.returnKeyType = .search
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) {
             let tabItems = ["Loan Officer", "Loan Coordinator", "Pre Processor", "Loan Processor"]
@@ -76,6 +78,17 @@ extension LoanOfficerMainViewController: CarbonTabSwipeNavigationDelegate{
         let vc = Utility.getLoanOfficerListVC()
         vc.isForPopup = isForPopup
         return vc
+    }
+    
+}
+
+extension LoanOfficerMainViewController: UITextFieldDelegate{
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if (isForPopup){
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanOfficerSeeMoreTapped), object: nil)
+        }
+        return true
     }
     
 }

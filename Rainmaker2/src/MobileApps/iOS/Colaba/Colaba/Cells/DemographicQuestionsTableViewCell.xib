@@ -25,7 +25,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select all that apply." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ppl-Bw-wMF">
-                        <rect key="frame" x="54" y="0.0" width="121.5" height="15.5"/>
+                        <rect key="frame" x="54" y="0.0" width="117" height="15.5"/>
                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                         <color key="textColor" name="AppGreyColor"/>
                         <nil key="highlightedColor"/>
@@ -74,10 +74,10 @@
                         <rect key="frame" x="54" y="59.5" width="353" height="84"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="iXW-Sc-qeF">
-                                <rect key="frame" x="20" y="21.5" width="313" height="41"/>
+                                <rect key="frame" x="20" y="22" width="313" height="40"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g1L-8q-TTU">
-                                        <rect key="frame" x="0.0" y="0.0" width="85.5" height="18"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="82" height="17.5"/>
                                         <string key="text">Asian Indian
 </string>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
@@ -85,7 +85,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Other Asian: Thai" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OfW-je-Yzc">
-                                        <rect key="frame" x="0.0" y="23" width="117.5" height="18"/>
+                                        <rect key="frame" x="0.0" y="22.5" width="115.5" height="17.5"/>
                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>

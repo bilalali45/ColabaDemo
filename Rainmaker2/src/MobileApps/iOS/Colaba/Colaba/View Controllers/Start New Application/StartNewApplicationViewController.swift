@@ -81,6 +81,7 @@ class StartNewApplicationViewController: BaseViewController {
         stackViewDebt.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(debtStackViewTapped)))
         NotificationCenter.default.addObserver(self, selector: #selector(seeMoreTapped), name: NSNotification.Name(rawValue: kNotificationLoanOfficerSeeMoreTapped), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(loanOfficerSelected), name: NSNotification.Name(rawValue: kNotificationLoanOfficerSelected), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loanApplicationCreated), name: NSNotification.Name(rawValue: kNotificationLoanApplicationCreated), object: nil)
         
     }
     
@@ -278,6 +279,10 @@ class StartNewApplicationViewController: BaseViewController {
         btnCreateApplication.backgroundColor = Theme.getButtonBlueColor()
         btnCreateApplication.setTitleColor(.white, for: .normal)
         btnCreateApplication.isEnabled = true
+    }
+    
+    @objc func loanApplicationCreated(){
+        self.dismissVC()
     }
     
     func validate() -> Bool{

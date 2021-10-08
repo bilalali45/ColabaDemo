@@ -23,10 +23,11 @@ class SendDocumentRequestViewController: BaseViewController {
     @IBOutlet weak var emailBodyContainer: UIView!
     @IBOutlet weak var textviewBody: UITextView!
     @IBOutlet weak var btnSendRequest: UIButton!
+    @IBOutlet weak var collectionViewTo: UICollectionView!
     
     var txtViewSubject = MDCFilledTextArea()
     var selectedTemplateIndex = IndexPath(row: 1, section: 0)
-    var chipField: MDCChipField!
+//    var chipField: MDCChipField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,12 +36,17 @@ class SendDocumentRequestViewController: BaseViewController {
         txtfieldRequestEmailTemplate.text = "Default Document Request"
         txtfieldTo.text = "richard.glenn@gmail.com"
         //txtfieldTo.isHidden = true
+        collectionViewTo.isHidden = true
         txtfieldCC.text = "ali@rainsoftfn.com"
         
 //        chipFieldTo.textField.placeholderLabel.text = "Hello Everyone"
 //        chipFieldTo.delegate = self
 //        chipFieldTo.showChipsDeleteButton = true
 //        chipFieldTo.sizeToFit()
+        
+//        collectionViewTo.register(MDCChipCollectionViewCell.self, forCellWithReuseIdentifier: "identifier")
+//        collectionViewTo.dataSource = self
+//        collectionViewTo.delegate = self
         
     }
     
@@ -62,6 +68,15 @@ class SendDocumentRequestViewController: BaseViewController {
 //        //chipField.minTextFieldWidth = self.txtfieldTo.frame.width
 //        //chipField.sizeToFit()
 //        mainView.addSubview(chipField)
+        
+        
+//        let chipView = MDCChipView()
+//        chipView.titleLabel.text = "ali@rainsoftfn.com"
+//        chipView.setTitleColor(UIColor.red, for: .selected)
+//        chipView.sizeToFit()
+//        //chipView.addTarget(self, action: #selector(tap), for: .touchUpInside)
+//        self.mainView.addSubview(chipView)
+        
     }
    
     //MARK:- Methods and Actions
@@ -222,13 +237,23 @@ extension SendDocumentRequestViewController: UITableViewDataSource, UITableViewD
     
 }
 
-extension SendDocumentRequestViewController: MDCChipFieldDelegate{
-    func chipField(_ chipField: MDCChipField, didAddChip chip: MDCChipView) {
-        let index = chip.titleLabel.text!.index(chip.titleLabel.text!.startIndex, offsetBy: 0)
-        let firstLetter = String(chip.titleLabel.text![index])
-        chip.imageView.image = Utility.getChipImage(name: firstLetter)
-        chip.titleLabel.font = Theme.getRubikRegularFont(size: 15)
-        chip.titleLabel.textColor = Theme.getAppBlackColor()
-        chip.setRippleColor(.white, for: .normal)
-    }
-}
+//NSNotification.Name(rawValue: kNotificationLoanApplicationCreated)
+
+//extension SendDocumentRequestViewController: UICollectionViewDataSource, UICollectionViewDelegate{
+//
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return 3
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "identifier", for: indexPath) as! MDCChipCollectionViewCell
+//        let chipView = cell.chipView
+//        chipView.titleLabel.text = "ali@rainsoftfn.com"
+//        chipView.setTitleColor(UIColor.red, for: .selected)
+//        chipView.imageView.image = Utility.getChipImage(name: "a")
+//        chipView.sizeToFit()
+//        return cell
+//    }
+//
+//}

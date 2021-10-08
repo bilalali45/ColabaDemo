@@ -82,6 +82,9 @@ class DuplicateContactPopupViewController: BaseViewController {
     
     @IBAction func btnYesTapped(_ sender: UIButton) {
         self.dismissPopup()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.32) {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanApplicationCreated), object: nil)
+        }
     }
     
     

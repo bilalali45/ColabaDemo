@@ -21,8 +21,8 @@ pod 'DropDown'
 pod 'GooglePlaces'
 pod 'GoogleMaps'
 pod 'MaterialComponents/TextControls+FilledTextAreas'
-pod 'MaterialComponents/Chips'
-pod "RichEditorView"
+#pod 'MaterialComponents/Chips'
+#pod "RichEditorView"
 
   target 'ColabaTests' do
     inherit! :search_paths
