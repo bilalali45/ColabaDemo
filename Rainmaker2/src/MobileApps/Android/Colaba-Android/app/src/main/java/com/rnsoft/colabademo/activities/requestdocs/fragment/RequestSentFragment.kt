@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import com.rnsoft.colabademo.databinding.DocRequestSentLayoutBinding
 
 /**
@@ -26,13 +27,17 @@ class RequestSentFragment : BaseFragment() {
 
     }
 
-
     private fun setupUI(){
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+        }
 
         binding.btnBackToDoc.setOnClickListener {
             requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }
-
 
     }
 }

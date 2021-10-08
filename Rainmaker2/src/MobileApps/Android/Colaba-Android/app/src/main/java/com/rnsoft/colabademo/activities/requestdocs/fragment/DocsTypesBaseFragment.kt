@@ -21,9 +21,15 @@ open class DocsTypesBaseFragment:BaseFragment() {
 
         val docTypeModelClass2 = DocTypeModelClass( headerTitle = "System Templates", totalSelected = "0" , footerTitle = "",
             contentCell = arrayListOf(
-                DocTypeContentCell("Income Template", "Checking"),
-                DocTypeContentCell("My Standard Checklist", "Saving"),
-                DocTypeContentCell("Assets template", "Saving")
+                DocTypeContentCell("FHA Full Doc Refinance - W2", "Checking"),
+                DocTypeContentCell("VA Cash Out - W-2", "Saving"),
+                DocTypeContentCell("FHA Full Doc Refinance", "Saving"),
+                DocTypeContentCell("Conventional Refinance - SE", "Saving"),
+                DocTypeContentCell("VA Purchase - W-2", "Saving"),
+                DocTypeContentCell("Additional Questions", "Saving"),
+                DocTypeContentCell("Auto Loan", "Saving"),
+                DocTypeContentCell("Construction Loan-Phase 1", "Saving")
+
             ), MyLovelyOnClickListener(infoTitle, infoArrayList , childFragmentManager ))
 
         val modelArrayList:ArrayList<DocTypeModelClass> = arrayListOf()

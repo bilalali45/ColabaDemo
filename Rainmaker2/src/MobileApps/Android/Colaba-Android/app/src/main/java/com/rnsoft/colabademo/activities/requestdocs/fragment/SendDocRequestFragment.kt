@@ -2,16 +2,18 @@ package com.rnsoft.colabademo
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.Spanned
+import android.text.style.ImageSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
-import com.rnsoft.colabademo.activities.requestdocs.model.Template
+import com.rnsoft.colabademo.activities.requestdocs.fragment.model.Template
 import com.rnsoft.colabademo.databinding.SendDocRequestLayoutBinding
-import timber.log.Timber
 
 /**
  * Created by Anita Kiran on 10/4/2021.
@@ -41,11 +43,14 @@ class SendDocRequestFragment : BaseFragment() {
             setEmailTemplate()
 
 
-//            val chipDrawable = ChipDrawable.createFromResource(requireContext(), R.xml.chip)
-//            chip.setBounds(0, 0, chip.intrinsicWidth, chip.intrinsicHeight)
-//            val span = ImageSpan(chip)
-//            val text = editText.text!!
-//            text.setSpan(span, 0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            val chip = Chip(requireContext())
+            chip.text = "test@gmail.com"
+            chip.isCloseIconEnabled = true
+            binding.chipGroup.addView(chip)
+
+
+
+            //binding.chip.text = "anita@gmail.com"
 
             savedViewInstance
         }
@@ -54,11 +59,11 @@ class SendDocRequestFragment : BaseFragment() {
     private fun setupUI(){
 
         binding.btnSendRequest.setOnClickListener {
-           findNavController().navigate(R.id.action_request_sent)
+          findNavController().navigate(R.id.action_request_sent)
         }
 
         binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
+            findNavController().navigate(R.id.action_selected_doc_fragment)
         }
     }
 

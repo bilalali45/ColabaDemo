@@ -105,14 +105,14 @@ class DocsListFragment:DocsTypesBaseFragment() {
 
         }
         binding.customDocConstraintLayout.setOnClickListener {
-            findNavController().navigate(R.id.navigation_create_custom_document)
+            findNavController().navigate(R.id.action_custom_doc)
         }
         binding.searchEditTextField.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 binding.searchEditTextField.clearFocus()
                 binding.searchEditTextField.hideKeyboard()
                 val bundle = bundleOf(AppConstant.search_word to binding.searchEditTextField.text.toString())
-                findNavController().navigate(R.id.navigation_request_search_fragment , bundle)
+                findNavController().navigate(R.id.action_search_doc_fragment , bundle)
                 return@OnEditorActionListener true
             }
             false
@@ -134,6 +134,13 @@ class DocsListFragment:DocsTypesBaseFragment() {
             binding.searchEditTextField.clearFocus()
             binding.searchEditTextField.hideKeyboard()
             binding.searchcrossImageView.visibility = View.INVISIBLE
+        }
+
+        binding.searchImageView.setOnClickListener{
+            if(binding.searchEditTextField.text.toString().isNotEmpty()){
+                val bundle = bundleOf(AppConstant.search_word to binding.searchEditTextField.text.toString())
+                findNavController().navigate(R.id.action_search_doc_fragment , bundle)
+            }
         }
     }
 
