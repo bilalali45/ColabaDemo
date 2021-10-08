@@ -1,11 +1,15 @@
 package com.rnsoft.colabademo
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
@@ -75,6 +79,22 @@ class AssignApplicationToFragment : BottomSheetDialogFragment() {
         binding.backButton.setOnClickListener{
             findNavController().popBackStack()
         }
+
+        binding.searchEditTextField.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                binding.searchEditTextField.clearFocus()
+                binding.searchEditTextField.hideKeyboard()
+                val searchWord = binding.searchEditTextField.text.toString()
+
+                return@OnEditorActionListener true
+            }
+            false
+        })
+    }
+
+    private fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -83,7 +103,8 @@ class AssignApplicationToFragment : BottomSheetDialogFragment() {
         setStyle(DialogFragment.STYLE_NORMAL, R.style.roundedBottomSheetDialog)
 
         binding.searchcrossImageView.setOnClickListener {
-            dismiss()
+
+
         }
 
         setInitialSelection()
