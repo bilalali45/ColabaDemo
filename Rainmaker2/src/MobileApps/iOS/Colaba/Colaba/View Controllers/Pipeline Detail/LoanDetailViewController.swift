@@ -206,6 +206,14 @@ class LoanDetailViewController: BaseViewController {
         
     }
     
+    @IBAction func btnNewDocumentTapped(_ sender: UIButton) {
+        let vc = Utility.getRequestDocumentVC()
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navVC.navigationBar.isHidden = true
+        self.presentVC(vc: navVC)
+    }
+    
     @IBAction func btnCallTapped(_ sender: UIButton) {
         if let url = URL(string: "tel://\(phoneNumber))") {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)

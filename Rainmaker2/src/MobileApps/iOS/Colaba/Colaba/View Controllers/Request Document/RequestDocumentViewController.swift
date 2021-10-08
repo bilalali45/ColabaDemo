@@ -61,7 +61,8 @@ class RequestDocumentViewController: BaseViewController {
     }
     
     @IBAction func btnNextTapped(_ sender: UIButton){
-        
+        let vc = Utility.getDocumentsTypeVC()
+        self.pushToVC(vc: vc)
     }
     
 }

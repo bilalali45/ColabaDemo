@@ -170,6 +170,7 @@
 		23CD143426E25B4400627127 /* SecondMortgageFollowupQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD143326E25B4400627127 /* SecondMortgageFollowupQuestionsViewController.swift */; };
 		23D9E6EC2701A4EF004D34CF /* ContactListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D9E6EA2701A4EF004D34CF /* ContactListTableViewCell.swift */; };
 		23D9E6ED2701A4EF004D34CF /* ContactListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23D9E6EB2701A4EF004D34CF /* ContactListTableViewCell.xib */; };
+		23DA70E8270EF07500912804 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA70E7270EF07500912804 /* TestViewController.swift */; };
 		23DBAD202696EB2D00119680 /* PipelineDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23DBAD1F2696EB2D00119680 /* PipelineDetail.storyboard */; };
 		23DBAD222696EBA800119680 /* LoanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DBAD212696EBA800119680 /* LoanDetailViewController.swift */; };
 		23DBAD242697149300119680 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DBAD232697149300119680 /* OverviewViewController.swift */; };
@@ -414,6 +415,7 @@
 		23CD143326E25B4400627127 /* SecondMortgageFollowupQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondMortgageFollowupQuestionsViewController.swift; sourceTree = "<group>"; };
 		23D9E6EA2701A4EF004D34CF /* ContactListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactListTableViewCell.swift; sourceTree = "<group>"; };
 		23D9E6EB2701A4EF004D34CF /* ContactListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactListTableViewCell.xib; sourceTree = "<group>"; };
+		23DA70E7270EF07500912804 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		23DBAD1F2696EB2D00119680 /* PipelineDetail.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PipelineDetail.storyboard; sourceTree = "<group>"; };
 		23DBAD212696EBA800119680 /* LoanDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanDetailViewController.swift; sourceTree = "<group>"; };
 		23DBAD232697149300119680 /* OverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
@@ -700,6 +702,7 @@
 				239DB539270C413A00977E20 /* DeleteDocumentPopupViewController.swift */,
 				239DB53B270C67A900977E20 /* DocumentRequestSentViewController.swift */,
 				39158826270CA11D0006C140 /* SendDocumentRequestViewController.swift */,
+				23DA70E7270EF07500912804 /* TestViewController.swift */,
 			);
 			path = "Request Document";
 			sourceTree = "<group>";
@@ -1431,6 +1434,7 @@
 				23AFA37727073EF000388905 /* CheckListViewController.swift in Sources */,
 				239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */,
 				23B21490270B425100215ACC /* DocumentTypeTableViewCell.swift in Sources */,
+				23DA70E8270EF07500912804 /* TestViewController.swift in Sources */,
 				23A56C592685B017005CE6F4 /* Manager.swift in Sources */,
 				23B5E97926F46DA200686B8E /* OutstandingJudgementsViewController.swift in Sources */,
 				23B5E98B26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift in Sources */,

@@ -112,6 +112,13 @@ extension UIView{
         lineLayer.path = path
         self.layer.addSublayer(lineLayer)
     }
+    
+    func asImage() -> UIImage {
+        let renderer = UIGraphicsImageRenderer(bounds: bounds)
+        return renderer.image { rendererContext in
+            layer.render(in: rendererContext.cgContext)
+        }
+    }
 }
 
 extension UIDevice {
@@ -149,5 +156,54 @@ extension UIDevice {
         case 2778: return .iPhone_12ProMax
         default: return .unknown
         }
+    }
+}
+
+extension UIImage {
+    convenience init(view: UIView) {
+        UIGraphicsBeginImageContext(view.frame.size)
+        view.layer.render(in:UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        self.init(cgImage: image!.cgImage!)
+    }
+    
+    class func imageWithLabel(_ label: UILabel) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(label.bounds.size, false, 0)
+        defer { UIGraphicsEndImageContext() }
+        label.layer.render(in: UIGraphicsGetCurrentContext()!)
+        return UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
+    }
+    
+    func circularImage(_ radius: CGFloat) -> UIImage? {
+        var imageView = UIImageView()
+        if self.size.width > self.size.height {
+            imageView.frame =  CGRect(x: 0, y: 0, width: self.size.width, height: self.size.width)
+            imageView.image = self
+            imageView.contentMode = .scaleAspectFit
+        } else { imageView = UIImageView(image: self) }
+        var layer: CALayer = CALayer()
+    
+        layer = imageView.layer
+        layer.masksToBounds = true
+        layer.cornerRadius = radius
+        UIGraphicsBeginImageContext(imageView.bounds.size)
+        layer.render(in: UIGraphicsGetCurrentContext()!)
+        let roundedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+    
+        return roundedImage
+    }
+    
+    func roundedImage() -> UIImage {
+        let imageView: UIImageView = UIImageView(image: self)
+        let layer = imageView.layer
+        layer.masksToBounds = true
+        layer.cornerRadius = imageView.frame.height / 2
+        UIGraphicsBeginImageContext(imageView.bounds.size)
+        layer.render(in: UIGraphicsGetCurrentContext()!)
+        let roundedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return roundedImage!
     }
 }
