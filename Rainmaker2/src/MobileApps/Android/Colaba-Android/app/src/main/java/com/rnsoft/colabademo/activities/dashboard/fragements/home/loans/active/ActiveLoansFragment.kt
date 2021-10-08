@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -107,11 +108,15 @@ class ActiveLoansFragment : LoanBaseFragment() , AdapterClickListener  ,  LoanFi
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     override fun onResume() {
         super.onResume()
+
+    }
+
+    private fun tabSwitched(){
         Log.e("onResume - ACTIVE ", "$oldListDisplaying")
         rowLoading?.visibility = View.INVISIBLE
         activeLoansList.clear()
         pageNumber = 1
-        loadDataFromCache()
+        //loadDataFromCache()
         loadActiveApplications()
     }
 
@@ -206,6 +211,15 @@ class ActiveLoansFragment : LoanBaseFragment() , AdapterClickListener  ,  LoanFi
         else
         if(event.errorResult!=null)
             SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onTabSwitched(event: OnTabSwitchedEvent) {
+
+        if(event.loanFilter == loanFilter) {
+            Timber.e(" Running from Active loan fragment...")
+            tabSwitched()
+        }
     }
 
     override fun setOrderId(passedOrderBy: Int) {

@@ -2,10 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/half_white"
-    android:paddingBottom="10dp"
+    android:background="@drawable/rounded_white_shape"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp"
+    >
 
 
 
@@ -37,7 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/borrowerName">
 
         <ImageView
-            android:id="@+id/searchcrossImageView"
+            android:id="@+id/searchIconImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
@@ -54,7 +55,7 @@
             android:layout_marginEnd="8dp"
             android:background="@android:color/transparent"
             android:fontFamily="@font/rubik_medium"
-            android:hint="Search"
+            android:hint="Search for team members"
             android:cursorVisible="true"
             android:textCursorDrawable="@null"
             android:imeOptions="actionSearch"
@@ -65,7 +66,7 @@
             android:textColor="@color/grey_color_one"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/searchcrossImageView"
+            app:layout_constraintEnd_toStartOf="@+id/searchIconImageView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -75,7 +76,7 @@
         android:layout_width="match_parent"
         android:id="@+id/bottomBorrower_constraint_layout"
         android:layout_height="wrap_content"
-
+        android:layout_marginTop="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_search_layout">
@@ -87,17 +88,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
             android:layout_marginEnd="28dp"
-            android:background="@color/half_white"
+            android:background="@color/white"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tabGravity="fill"
             app:tabIconTint="@color/colaba_red_color"
+            app:tabIndicatorFullWidth="false"
 
-            app:tabMinWidth="180dp"
 
-            app:tabMode="fixed"
+            app:tabMode="scrollable"
             app:tabPaddingEnd="10dp"
             app:tabPaddingStart="10dp"
 
@@ -107,7 +108,7 @@
 
             app:tabIndicatorHeight="4dp"
             app:tabSelectedTextColor="@color/colaba_apptheme_blue"
-            app:tabTextAppearance="@style/MineCustomTabText"
+            app:tabTextAppearance="@style/loCustomTab"
             app:tabTextColor="@color/grey_color_two"
             />
 

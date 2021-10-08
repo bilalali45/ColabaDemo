@@ -213,7 +213,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             clearError(bi.layoutLastName)
         }
         if (email.isNotEmpty() && email.length > 0) {
-            if (!isValidEmailAddress(email)) {
+            if (!LoginUtil.isValidEmailAddress(email.trim())) {
                 setError(bi.layoutEmail, getString(R.string.invalid_email))
             } else {
                 clearError(bi.layoutEmail)

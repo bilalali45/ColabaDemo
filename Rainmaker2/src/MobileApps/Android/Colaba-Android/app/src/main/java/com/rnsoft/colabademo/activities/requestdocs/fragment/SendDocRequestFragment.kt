@@ -43,14 +43,10 @@ class SendDocRequestFragment : BaseFragment() {
             setEmailTemplate()
 
 
-            val chip = Chip(requireContext())
-            chip.text = "test@gmail.com"
-            chip.isCloseIconEnabled = true
-            binding.chipGroup.addView(chip)
-
-
-
-            //binding.chip.text = "anita@gmail.com"
+//            val chip = Chip(requireContext())
+//            chip.text = "test@gmail.com"
+//            chip.isCloseIconEnabled = true
+//            binding.chipGroup.addView(chip)
 
             savedViewInstance
         }

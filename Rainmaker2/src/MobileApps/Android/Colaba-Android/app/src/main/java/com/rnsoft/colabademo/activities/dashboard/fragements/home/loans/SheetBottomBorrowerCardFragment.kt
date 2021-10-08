@@ -18,11 +18,7 @@ class SheetBottomBorrowerCardFragment : BottomSheetDialogFragment() {
         fun newInstance() = SheetBottomBorrowerCardFragment()
     }
 
-    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.roundedBottomSheetDialog)
-    }
-  
+
     lateinit var binding: DialogFragmentBorrowerCardSheetBinding
 
     private var borrowerParcelObject:LoanItem? =null
@@ -86,6 +82,12 @@ class SheetBottomBorrowerCardFragment : BottomSheetDialogFragment() {
 
         return binding.root
     }
+
+    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.roundedBottomSheetDialog)
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
