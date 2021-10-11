@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -72,6 +73,8 @@ class HomeFragment : BaseFragment() {
 
         val root: View = binding.root
 
+        ViewPagerAdapter.initialize()
+
         homeProfileLayout = root.findViewById(R.id.assets_top_container)
         greetingMessage = root.findViewById(R.id.greetingMessage)
         filterImageView = root.findViewById(R.id.filter_imageview)
@@ -120,11 +123,13 @@ class HomeFragment : BaseFragment() {
 
 
 
-                val test2: Fragment? =
-                    requireActivity().supportFragmentManager.findFragmentByTag("f${position}")
+                /*
+                val test2: Fragment? = requireActivity().supportFragmentManager.findFragmentByTag("f${position}")
                 if (test2 != null) {
                     loanBaseFragment = test2 as LoanBaseFragment
                 }
+
+                 */
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -142,6 +147,13 @@ class HomeFragment : BaseFragment() {
                     //EventBus.getDefault().post(OnTabSwitchedEvent( viewPager.currentItem))
 
                     selectedText = it.text as String
+
+                    when(selectedText){
+                        tabArray[0] -> { loanBaseFragment = ViewPagerAdapter.hashMap.getValue(0) as AllLoansFragment }
+                        tabArray[1] -> { loanBaseFragment = ViewPagerAdapter.hashMap.getValue(1) as ActiveLoansFragment }
+                        tabArray[2] -> { loanBaseFragment = ViewPagerAdapter.hashMap.getValue(2) as NonActiveLoansFragment }
+                    }
+
                     viewPager.adapter
                     viewPager.currentItem
                 }

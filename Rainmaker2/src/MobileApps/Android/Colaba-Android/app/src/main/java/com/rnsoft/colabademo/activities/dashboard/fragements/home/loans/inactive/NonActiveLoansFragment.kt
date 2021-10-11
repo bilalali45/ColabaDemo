@@ -86,6 +86,11 @@ class NonActiveLoansFragment : LoanBaseFragment() , AdapterClickListener , LoanF
                 Log.e("no-record", " found....")
                 shimmerContainer?.stopShimmer()
                 shimmerContainer?.isVisible = false
+                if(pageNumber == 1) {
+                    nonActiveLoansList.clear()
+                    nonActiveRecycler.addOnScrollListener(scrollListener)
+                    nonActiveAdapter.notifyDataSetChanged()
+                }
             }
 
         })
@@ -196,6 +201,9 @@ class NonActiveLoansFragment : LoanBaseFragment() , AdapterClickListener , LoanF
     }
 
     override fun onStop() {
+        //nonActiveLoansList.clear()
+        //nonActiveRecycler.addOnScrollListener(scrollListener)
+        //nonActiveAdapter.notifyDataSetChanged()
         super.onStop()
         EventBus.getDefault().unregister(this)
     }

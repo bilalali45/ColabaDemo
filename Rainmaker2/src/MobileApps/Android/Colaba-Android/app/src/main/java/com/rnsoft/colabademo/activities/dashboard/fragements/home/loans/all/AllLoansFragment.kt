@@ -108,8 +108,14 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener ,  LoanFilterI
             }
             else {
                 Log.e("no-record", " found....")
-                shimmerContainer?.stopShimmer()
-                shimmerContainer?.isVisible = false
+
+                    shimmerContainer?.stopShimmer()
+                    shimmerContainer?.isVisible = false
+                    if(pageNumber == 1) {
+                        allLoansArrayList.clear()
+                        loanRecycleView?.addOnScrollListener(scrollListener)
+                        loansAdapter.notifyDataSetChanged()
+                    }
                 //SandbarUtils.showError(requireActivity(), AppConstant.NO_RECORDS_FOUND )
             }
 
@@ -267,6 +273,7 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener ,  LoanFilterI
     override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
