@@ -11,12 +11,12 @@
         tools:layout="@layout/start_application_frag_layout">
     </fragment>
 
-
     <fragment
         android:id="@+id/navigateToAssignApplicationToFragment"
         android:name="com.rnsoft.colabademo.AssignApplicationToFragment"
         android:label="@string/assign_application_to"
         tools:layout="@layout/assign_application_to_layout">
+
     </fragment>
 
 </navigation>

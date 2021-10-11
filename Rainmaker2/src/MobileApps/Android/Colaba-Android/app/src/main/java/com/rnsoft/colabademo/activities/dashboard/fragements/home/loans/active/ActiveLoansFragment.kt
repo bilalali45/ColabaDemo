@@ -26,6 +26,9 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
+private const val pageSize: Int = 20
+private const val loanFilter: Int = 1
+
 @AndroidEntryPoint
 class ActiveLoansFragment : LoanBaseFragment() , AdapterClickListener  ,  LoanFilterInterface {
     private var _binding: ActiveLoanFragmentBinding? = null
@@ -40,8 +43,7 @@ class ActiveLoansFragment : LoanBaseFragment() , AdapterClickListener  ,  LoanFi
     private var shimmerContainer: ShimmerFrameLayout?=null
     private val linearLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.VERTICAL, false)
     ////////////////////////////////////////////////////////////////////////////
-    private val pageSize: Int = 20
-    private val loanFilter: Int = 1
+
 
     private var pageNumber: Int = 1
     //private var orderBy: Int = 0
@@ -85,6 +87,11 @@ class ActiveLoansFragment : LoanBaseFragment() , AdapterClickListener  ,  LoanFi
                 Log.e("no-record", " found....")
                 shimmerContainer?.stopShimmer()
                 shimmerContainer?.isVisible = false
+                if(pageNumber == 1) {
+                    activeLoansList.clear()
+                    activeRecycler.addOnScrollListener(scrollListener)
+                    activeAdapter.notifyDataSetChanged()
+                }
             }
 
         })
@@ -108,7 +115,7 @@ class ActiveLoansFragment : LoanBaseFragment() , AdapterClickListener  ,  LoanFi
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     override fun onResume() {
         super.onResume()
-
+        tabSwitched()
     }
 
     private fun tabSwitched(){
@@ -197,6 +204,9 @@ class ActiveLoansFragment : LoanBaseFragment() , AdapterClickListener  ,  LoanFi
     }
 
     override fun onStop() {
+        //activeLoansList.clear()
+        //activeRecycler.addOnScrollListener(scrollListener)
+        //activeAdapter.notifyDataSetChanged()
         super.onStop()
         EventBus.getDefault().unregister(this)
     }

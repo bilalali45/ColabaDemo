@@ -11,6 +11,7 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -19,13 +20,15 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
 
-import com.rnsoft.colabademo.databinding.StartApplicationFragLayoutBinding
 import com.rnsoft.colabademo.activities.startapplication.adapter.ContactsAdapter
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import kotlinx.android.synthetic.main.dependent_input_field.view.*
 import kotlinx.android.synthetic.main.non_permenant_resident_layout.*
 import timber.log.Timber
 import java.util.regex.Pattern
+import android.widget.Toast
+import androidx.activity.addCallback
+import com.rnsoft.colabademo.databinding.StartApplicationFragLayoutBinding
 
 
 /**
@@ -80,9 +83,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             }
             false
         })
-
-
-
+        
 
         searchList.add(Contacts("Richard Glenn Randall","richard.glenn@gmail.com","(121) 353 1343"))
         searchList.add(Contacts("Arnold Richard","arnold634@gmail.com","(121) 353 1343"))
@@ -92,13 +93,23 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
         adapter = ContactsAdapter(requireActivity(), this@StartNewApplicationFragment)
         binding.recyclerviewContacts.setHasFixedSize(true)
-        //binding.recyclerviewContacts.setNestedScrollingEnabled(false)
+
 
 
 
         binding.recyclerviewContacts.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View, m: MotionEvent): Boolean {
-                binding.scrollviewStartApplication.requestDisallowInterceptTouchEvent(true)
+                //binding.scrollviewStartApplication.requestDisallowInterceptTouchEvent(true)
+                //binding.scrollviewStartApplication.setOnTouchListener(disableScrollViewListener)
+                binding.scrollviewStartApplication.setEnableScrolling(false); //
+                //binding.recyclerviewContacts.isEnabled = false
+                return false
+            }
+        })
+
+        binding.parentLayout.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View, m: MotionEvent): Boolean {
+                binding.scrollviewStartApplication.setEnableScrolling(true); //
                 return false
             }
         })
@@ -127,7 +138,19 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
         binding.btnDebtConsolidation.setOnClickListener { onLoanGoalClick() }
 
-        binding.backButton.setOnClickListener { requireActivity().finish() }
+        binding.btnPreApproval.setOnClickListener {
+            binding.btnPreApproval.setTypeface(null, Typeface.BOLD)
+            binding.btnPropertyUnderCont.setTypeface(null, Typeface.NORMAL)
+        }
+
+        binding.btnPropertyUnderCont.setOnClickListener {
+            binding.btnPreApproval.setTypeface(null, Typeface.NORMAL)
+            binding.btnPropertyUnderCont.setTypeface(null, Typeface.BOLD)
+        }
+
+        binding.backButton.setOnClickListener {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left) }
 
         binding.assignLoanOfficer.setOnClickListener {
             AssignBorrowerBottomDialogFragment.newInstance(this@StartNewApplicationFragment).show(childFragmentManager, AssignBorrowerBottomDialogFragment::class.java.canonicalName)
@@ -135,6 +158,11 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
         binding.btnCreateApplication.setOnClickListener {
             BottomEmailPhoneErrorFragment.newInstance().show(childFragmentManager, BottomEmailPhoneErrorFragment::class.java.canonicalName)
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }
 
         binding.btnCancelContact.setOnClickListener{
@@ -166,6 +194,19 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
     }
 
+    private val disableScrollViewListener  = object : View.OnTouchListener {
+        override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+            return true
+        }
+
+    }
+
+    private val enableScrollViewListener  = object : View.OnTouchListener {
+        override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+            return true
+        }
+
+    };
 
     private fun checkRequiredFields() {
         if (!binding.edFirstName.text.toString().isEmpty() && !binding.edLastName.text.toString().isEmpty() && !binding.edMobile.text.toString().isEmpty() &&
@@ -247,10 +288,14 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         if(binding.btnLoanPurchase.isChecked){
             binding.btnLoanPurchase.setTypeface(null, Typeface.BOLD)
             binding.btnLoanRefinance.setTypeface(null, Typeface.NORMAL)
+            binding.rgPurchaseLoanGoal.visibility= View.VISIBLE
+            binding.rgRefinanceLoanGoal.visibility = View.GONE
         }
         else {
             binding.btnLoanPurchase.setTypeface(null, Typeface.NORMAL)
             binding.btnLoanRefinance.setTypeface(null, Typeface.BOLD)
+            binding.rgPurchaseLoanGoal.visibility= View.GONE
+            binding.rgRefinanceLoanGoal.visibility = View.VISIBLE
         }
     }
 
