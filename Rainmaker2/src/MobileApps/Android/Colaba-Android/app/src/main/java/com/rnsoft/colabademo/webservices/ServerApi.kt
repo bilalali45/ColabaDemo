@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import com.rnsoft.colabademo.activities.model.PropertyType
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
@@ -17,6 +18,10 @@ interface ServerApi{
         "Cache-Control: max-age=640000"
     )
      */
+
+    // subject property
+    @GET("api/mcu/mobile/loanapplication/Loan/GetAllPropertyTypeDropDown")
+    suspend fun getPropertyTypes(@Header("Authorization" )  Authorization:String) : Response<List<PropertyType>>
 
     @POST("api/mcu/mobile/identity/mcuaccount/signin")
     suspend fun login(@Body loginRequest: LoginRequest ,  @Header("dontAskTwoFaIdentifier")  dontAskTwoFaIdentifier:String=""): Response<LoginResponse>
