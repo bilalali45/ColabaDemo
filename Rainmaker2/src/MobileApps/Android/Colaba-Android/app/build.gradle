@@ -61,8 +61,8 @@ android {
         }
 
         debug {
-            //buildConfigField "String", "BASE_URL", '"https://devmobilegateway.rainsoftfn.com:5002/"'
-            buildConfigField "String", "BASE_URL", '"https://qamobilegateway.rainsoftfn.com/"'
+            buildConfigField "String", "BASE_URL", '"https://devmobilegateway.rainsoftfn.com/"'
+            //buildConfigField "String", "BASE_URL", '"https://qamobilegateway.rainsoftfn.com/"'
             //buildConfigField "String", "TEST_USER" , '"rainmaker.rainsoft@gmail.com"'
             //buildConfigField "String", "TEST_PASSWORD" , '"Rainsoft!"'
         }
