@@ -35,8 +35,8 @@ class LoginViewController: UIViewController {
         }
         
         #if DEBUG
-        txtFieldEmail.text = "mobileuser1@mailinator.com"
-        txtFieldPassword.text = "Test@124"
+        txtFieldEmail.text = "sadiq@rainsoftfn.com"
+        txtFieldPassword.text = "rainsoft"
         #endif
     }
     
