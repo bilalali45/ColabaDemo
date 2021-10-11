@@ -83,9 +83,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             }
             false
         })
-
-
-
+        
 
         searchList.add(Contacts("Richard Glenn Randall","richard.glenn@gmail.com","(121) 353 1343"))
         searchList.add(Contacts("Arnold Richard","arnold634@gmail.com","(121) 353 1343"))
@@ -140,6 +138,16 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
         binding.btnDebtConsolidation.setOnClickListener { onLoanGoalClick() }
 
+        binding.btnPreApproval.setOnClickListener {
+            binding.btnPreApproval.setTypeface(null, Typeface.BOLD)
+            binding.btnPropertyUnderCont.setTypeface(null, Typeface.NORMAL)
+        }
+
+        binding.btnPropertyUnderCont.setOnClickListener {
+            binding.btnPreApproval.setTypeface(null, Typeface.NORMAL)
+            binding.btnPropertyUnderCont.setTypeface(null, Typeface.BOLD)
+        }
+
         binding.backButton.setOnClickListener {
             requireActivity().finish()
             requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left) }
@@ -162,7 +170,6 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             binding.layoutResult.visibility = View.GONE
             binding.searchEdittext.visibility = View.VISIBLE
         }
-
 
        binding.parentLayout.setOnClickListener {
            HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
@@ -194,14 +201,12 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
     }
 
-
     private val enableScrollViewListener  = object : View.OnTouchListener {
         override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
             return true
         }
 
     };
-
 
     private fun checkRequiredFields() {
         if (!binding.edFirstName.text.toString().isEmpty() && !binding.edLastName.text.toString().isEmpty() && !binding.edMobile.text.toString().isEmpty() &&
@@ -283,10 +288,14 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         if(binding.btnLoanPurchase.isChecked){
             binding.btnLoanPurchase.setTypeface(null, Typeface.BOLD)
             binding.btnLoanRefinance.setTypeface(null, Typeface.NORMAL)
+            binding.rgPurchaseLoanGoal.visibility= View.VISIBLE
+            binding.rgRefinanceLoanGoal.visibility = View.GONE
         }
         else {
             binding.btnLoanPurchase.setTypeface(null, Typeface.NORMAL)
             binding.btnLoanRefinance.setTypeface(null, Typeface.BOLD)
+            binding.rgPurchaseLoanGoal.visibility= View.GONE
+            binding.rgRefinanceLoanGoal.visibility = View.VISIBLE
         }
     }
 
