@@ -210,4 +210,19 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     @IBAction func btnSaveChangesTapped(_ sender: UIButton){
         self.goBack()
     }
+    
+    //MARK:- API's
+    
+    func getPropertyTypeDropDown(){
+        
+    }
+    
+    func getOccupancyTypeDropDown(){
+        
+    }
+    
+    func getPurchaseSubjectProperty(){
+        
+    }
+    
 }

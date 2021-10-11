@@ -345,6 +345,29 @@ extension ColabaTextField {
         self.allowedCharacters = acceptableCharacters
     }
     
+    public func setTextField(text: String){
+        if (type == .amount){
+            prefix = PrefixType.amount.rawValue
+            attributedPrefix = createAttributedPrefix(prefix: prefix!)
+            self.attributedText = NSAttributedString(string: "\(attributedPrefix!.string)\(text)")
+            if let amount = Int(cleanString(string: self.attributedText!.string, replaceCharacters: [prefix!,",", " "], replaceWith: "")){
+                //With Commas function create String like $10,000.00, now remove $ and 0.00 from string and return to field
+                let amountWithComma = cleanString(string: amount.withCommas(), replaceCharacters: ["$",".00"], replaceWith: "")
+                self.attributedText = createAttributedTextWithPrefix(prefix: prefix!, string: amountWithComma)
+            }
+        }
+        else if (type == .percentage){
+            prefix = PrefixType.percentage.rawValue
+            attributedPrefix = createAttributedPrefix(prefix: prefix!)
+            self.attributedText = NSAttributedString(string: "\(attributedPrefix!.string)\(text)")
+            let string = Int(cleanString(string: self.attributedText!.string, replaceCharacters: [prefix!], replaceWith: ""))?.description
+            self.attributedText = createAttributedTextWithPrefix(prefix: prefix!, string: string ?? "0" )
+        }
+        else{
+            self.text = text
+        }
+    }
+    
     public func isSecureText(_ secure: Bool = false) {
         self.isSecureTextEntry = secure
     }
