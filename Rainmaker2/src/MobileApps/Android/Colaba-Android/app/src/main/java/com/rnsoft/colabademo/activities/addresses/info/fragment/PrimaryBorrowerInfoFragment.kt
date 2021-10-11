@@ -83,9 +83,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
     private fun setViews() {
 
-        bi.backButtonInfo.setOnClickListener(this)
-        bi.btnSaveInfo.setOnClickListener(this)
-        bi.edDateOfBirth.setOnClickListener(this)
+        //bi.backButtonInfo.setOnClickListener(this)
         msBinding.rbUnmarried.setOnClickListener(this)
         msBinding.rbMarried.setOnClickListener(this)
         msBinding.rbDivorced.setOnClickListener(this)
@@ -105,23 +103,50 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         dependentAdapter = DependentAdapter(requireActivity(),listItems,this@PrimaryBorrowerInfoFragment)
         bi.rvDependents.adapter = dependentAdapter
 
+        setupUI()
         setSingleItemFocus()
         setEndIconClicks()
         setNumberFormts()
 
-        bi.mainConstraintLayout.setOnClickListener {
-            HideSoftkeyboard.hide(requireActivity(),   bi.mainConstraintLayout)
-            super.removeFocusFromAllFields(bi.mainConstraintLayout)
-        }
+
         msBinding.unmarriedAddendum.setOnClickListener { findNavController().navigate(R.id.action_info_unmarried_addendum) }
         bindingMilitary.layoutActivePersonnel.setOnClickListener { findNavController().navigate(R.id.action_info_active_duty)}
         bindingMilitary.layoutNationalGuard.setOnClickListener { findNavController().navigate(R.id.action_info_reserve) }
         citizenshipBinding.layoutVisaStatusOther.setOnClickListener { findNavController().navigate(R.id.action_info_non_pr) }
 
+
+
+    }
+
+    private fun setupUI(){
+
+        bi.btnSaveInfo.setOnClickListener { checkValidations() }
+
+        bi.backButtonInfo.setOnClickListener {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_out_left)
+        }
+
         requireActivity().onBackPressedDispatcher.addCallback {
             requireActivity().finish()
             requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }
+
+        bi.mainConstraintLayout.setOnClickListener {
+            HideSoftkeyboard.hide(requireActivity(),   bi.mainConstraintLayout)
+            super.removeFocusFromAllFields(bi.mainConstraintLayout)
+        }
+
+        bi.addDependentClick.setOnClickListener{ addEmptyDependentField() }
+
+        bi.addPrevAddress.setOnClickListener {
+            if (bi.tvResidence.text.equals(getString(R.string.current_address))) {
+                findNavController().navigate(R.id.action_info_current_address)
+            } else {
+                findNavController().navigate(R.id.action_info_previous_address)
+            }
+        }
+
 
     }
 
@@ -173,7 +198,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             R.id.chb_res_national_guard -> militaryNationalGuard()
             R.id.chb_veteran -> militaryVeteran()
             R.id.chb_surviving_spouse -> militarySurvivingSpouse()
-            R.id.btn_save_info -> checkValidations()
+            /* R.id.btn_save_info -> checkValidations()
             R.id.add_dependent_click -> addEmptyDependentField()
             R.id.add_prev_address -> if (bi.tvResidence.text.equals(getString(R.string.current_address))) {
                 findNavController().navigate(R.id.action_info_current_address)
@@ -184,7 +209,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             R.id.backButton_info -> {
                 requireActivity().finish()
                 requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_out_left)
-            }
+            } */
         }
     }
 
