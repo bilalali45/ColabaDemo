@@ -186,6 +186,7 @@ class ApplicationViewController: BaseViewController {
     @objc func subjectPropertyTapped(){
         if (self.loanApplicationDetail.loanPurposeDescription == "Purchase"){
             let vc = Utility.getPurchaseSubjectPropertyVC()
+            vc.loanApplicationId = self.loanApplicationId
             self.pushToVC(vc: vc)
         }
         else{

@@ -39,6 +39,7 @@ enum EndPoint:String{
     case getLoanApplicationData = "loanapplication/Loan/GetLoanApplicationSummary?"
     case getAllPropertyTypeDrowpDown = "loanapplication/Loan/GetAllPropertyTypeDropDown"
     case getAllOccupancyTypeDropDown = "loanapplication/Loan/GetPropertyUsageDropDown"
+    case getCoBorrowersOccupancyStatus = "loanapplication/SubjectProperty/GetCoBorrowersOccupancyStatus?"
     case getPurchaseSubjectPropertyDetail = "loanapplication/SubjectProperty/GetSubjectPropertyDetails?"
     case logout = "identity/mcuaccount/Logout"
     
