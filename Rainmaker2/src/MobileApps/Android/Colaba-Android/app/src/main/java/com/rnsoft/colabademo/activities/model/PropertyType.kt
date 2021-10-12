@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.model
+package com.rnsoft.colabademo
 
 /**
  * Created by Anita Kiran on 10/11/2021.

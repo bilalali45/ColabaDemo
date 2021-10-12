@@ -1,13 +1,7 @@
-package com.rnsoft.colabademo.activities.subjectproperty
+package com.rnsoft.colabademo
 
-import android.content.Context
-import android.content.SharedPreferences
-import com.rnsoft.colabademo.BorrowerOverviewModel
-import com.rnsoft.colabademo.DetailDataSource
-import com.rnsoft.colabademo.Result
-import com.rnsoft.colabademo.activities.model.PropertyType
-import dagger.hilt.android.qualifiers.ApplicationContext
-import retrofit2.Response
+
+import com.rnsoft.colabademo.activities.model.*
 import javax.inject.Inject
 
 /**
@@ -15,7 +9,36 @@ import javax.inject.Inject
  */
 class RepoSubjectProperty @Inject constructor(private val dataSource: DataSourceSubjectProperty) {
 
-    suspend fun getPropertyType(token:String): Response<List<PropertyType>> {
+    suspend fun getPropertyType(token:String): Result<ArrayList<PropertyType>> {
         return dataSource.getPropertyTypes(token = token)
     }
+
+    suspend fun getOccupancyType(token:String): Result<ArrayList<PropertyType>> {
+        return dataSource.getOccupancyType(token = token)
+    }
+
+    suspend fun getCountries(token:String): Result<ArrayList<CountriesModel>> {
+        return dataSource.getCountries(token = token)
+    }
+
+    suspend fun getCounties(token:String): Result<ArrayList<CountiesModel>> {
+        return dataSource.getCounties(token = token)
+    }
+
+    suspend fun getStates(token:String): Result<ArrayList<StatesModel>> {
+        return dataSource.getStates(token = token)
+    }
+
+    suspend fun getSubjectProptyDetails(token:String ,loanApplicationId:Int):Result<SubjectPropertyDetails>{
+        return dataSource.getSubjectPropertyDetails(token = token , loanApplicationId = loanApplicationId)
+    }
+
+    suspend fun getSubjectProptyRefinance(token:String ,loanApplicationId:Int):Result<SubjectPropertyRefinanceDetails>{
+        return dataSource.getSubjectPropertyRefinance(token = token , loanApplicationId = loanApplicationId)
+    }
+
+    suspend fun getCoBorrowerOccupancyStatus(token:String ,loanApplicationId:Int):Result<CoBorrowerOccupancyStatus>{
+        return dataSource.getCoBorrowerOccupancyStatus(token = token , loanApplicationId = loanApplicationId)
+    }
+
 }
