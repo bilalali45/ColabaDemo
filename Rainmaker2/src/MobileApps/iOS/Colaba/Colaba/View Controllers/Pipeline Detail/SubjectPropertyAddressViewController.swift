@@ -36,12 +36,14 @@ class SubjectPropertyAddressViewController: BaseViewController {
     var countriesArray = [CountriesModel]()
     var statesArray = [StatesModel]()
     var countiesArray = [CountiesModel]()
+    var selectedAddress: AddressModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextFields()
         setPlacePickerTextField()
         getCountriesDropDown()
+        setSavedAddress()
     }
     
     //MARK:- Methods and Actions
@@ -111,6 +113,23 @@ class SubjectPropertyAddressViewController: BaseViewController {
                     allTextField.placeholderLabel.textColor = Theme.getAppGreyColor()
                 }
             }
+        }
+    }
+    
+    func setSavedAddress(){
+        if let address = selectedAddress{
+            showAllFields()
+            if address.street != ""{
+                txtfieldHomeAddress.placeholderHorizontalOffset = -24
+            }
+            txtfieldHomeAddress.text = address.street
+            txtfieldStreetAddress.setTextField(text: address.street)
+            txtfieldUnitNo.setTextField(text: address.unit)
+            txtfieldCity.setTextField(text: address.city)
+            txtfieldCounty.setTextField(text: address.countyName)
+            txtfieldState.setTextField(text: address.stateName)
+            txtfieldZipCode.setTextField(text: address.zipCode)
+            txtfieldCountry.setTextField(text: address.countryName)
         }
     }
     
@@ -248,7 +267,7 @@ class SubjectPropertyAddressViewController: BaseViewController {
                 else{
                     Utility.showOrHideLoader(shouldShow: false)
                     self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
-                        self.goBack()
+                        self.dismissVC()
                     }
                 }
             }
@@ -276,7 +295,7 @@ class SubjectPropertyAddressViewController: BaseViewController {
                 else{
                     Utility.showOrHideLoader(shouldShow: false)
                     self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
-                        self.goBack()
+                        self.dismissVC()
                     }
                 }
             }
