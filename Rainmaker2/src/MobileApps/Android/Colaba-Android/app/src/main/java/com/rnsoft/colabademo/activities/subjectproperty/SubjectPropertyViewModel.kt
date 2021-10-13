@@ -1,18 +1,15 @@
 package com.rnsoft.colabademo
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rnsoft.colabademo.*
 import com.rnsoft.colabademo.activities.model.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -81,8 +78,9 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: RepoS
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repository.getSubjectProptyRefinance(token = token, loanApplicationId = loanApplicationId)
             withContext(Dispatchers.Main) {
-                if (responseResult is Result.Success)
+                if (responseResult is Result.Success) {
                     _refinanceDetails.value = (responseResult.data)
+                }
 
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))

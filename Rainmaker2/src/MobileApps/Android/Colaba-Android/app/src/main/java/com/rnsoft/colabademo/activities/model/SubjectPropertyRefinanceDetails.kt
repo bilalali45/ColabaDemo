@@ -1,13 +1,13 @@
-package com.rnsoft.colabademo
+package com.rnsoft.colabademo.activities.model
 
 import com.google.gson.annotations.SerializedName
 
 /**
- * Created by Anita Kiran on 10/12/2021.
+ * Created by Anita Kiran on 10/13/2021.
  */
 data class SubjectPropertyRefinanceDetails(
     val code: String,
-    @SerializedName("data") val subPropertyData : SubPropertyRefinanceData,
+    @SerializedName("data") val subPropertyData : SubPropertyRefinanceData?,
     val message: String?,
     val status: String
 )
@@ -49,4 +49,3 @@ data class SubPropertyRefinanceData(
     var secondMortgageModel: String?,
     val address : RefinanceAddressData?
 )
-
