@@ -191,6 +191,7 @@ class ApplicationViewController: BaseViewController {
         }
         else{
             let vc = Utility.getRefinanceSubjectPropertyVC()
+            vc.loanApplicationId = self.loanApplicationId
             self.pushToVC(vc: vc)
         }
     }
