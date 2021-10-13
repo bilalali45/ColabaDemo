@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
@@ -10,30 +9,24 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.addCallback
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-
 import com.rnsoft.colabademo.databinding.SubjectPropertyPurchaseBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-
 import com.rnsoft.colabademo.utils.NumberTextFormat
 
 /**
  * Created by Anita Kiran on 9/8/2021.
  */
-class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
+class SubjectPropertyPurchase : BaseFragment() {
 
     private lateinit var binding: SubjectPropertyPurchaseBinding
-    //private val propertyTypeArray = listOf("Single Family Property","Condominium","Townhouse", "Cooperative", "Manufactured Home", "Duplex (2 Unit)", "Triplex (3 Unit)", "Quadplex (4 Unit)")
-    //private val occupancyTypeArray = listOf("Primary Residence", "Second Home", "Investment Property")
     private var savedViewInstance: View? = null
     private val viewModel : SubjectPropertyViewModel by activityViewModels()
     val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA"
     private var propertyTypeId : Int = 0
     private var occupancyTypeId : Int =0
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,48 +38,115 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
         } else {
             binding = SubjectPropertyPurchaseBinding.inflate(inflater, container, false)
             savedViewInstance = binding.root
+            super.addListeners(binding.root)
 
-
-            binding.rbSubProperty.isChecked = false
-            binding.rbSubPropertyAddress.isChecked = false
-            binding.rbSubProperty.setOnClickListener(this)
-            binding.rbSubPropertyAddress.setOnClickListener(this)
-            binding.radioMixedPropertyNo.setOnClickListener(this)
-            binding.radioMixedPropertyYes.setOnClickListener(this)
-            binding.layoutDetails.setOnClickListener(this)
-            binding.backButton.setOnClickListener(this)
-            binding.layoutAddress.setOnClickListener(this)
-            binding.rbOccupying.setOnClickListener(this)
-            binding.rbNonOccupying.setOnClickListener(this)
-            binding.radioMixedPropertyYes.setOnClickListener(this)
-            binding.radioMixedPropertyNo.setOnClickListener(this)
-            binding.subpropertyParentLayout.setOnClickListener(this)
-            binding.btnSave.setOnClickListener(this)
-
+            setupUI()
             setInputFields()
             getPurchaseDetails()
             getCoBorrowerOccupancyStatus()
-            super.addListeners(binding.root)
-
-            requireActivity().onBackPressedDispatcher.addCallback {
-                requireActivity().finish()
-                requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
-            }
 
             savedViewInstance
         }
     }
 
+    private fun setupUI(){
+
+        // radio subject property TBD
+        binding.radioSubPropertyTbd.setOnClickListener {
+            binding.radioSubPropertyAddress.isChecked = false
+            binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
+            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.NORMAL)
+            binding.tvSubPropertyAddress.visibility = View.GONE
+        }
+
+        // radio sub property address
+        binding.radioSubPropertyAddress.setOnClickListener {
+            binding.radioSubPropertyTbd.isChecked = false
+            binding.tvSubPropertyAddress.visibility = View.VISIBLE
+            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
+            binding.radioSubPropertyTbd.setTypeface(null,Typeface.NORMAL)
+        }
+
+        binding.layoutAddress.setOnClickListener {
+            findNavController().navigate(R.id.action_address)
+        }
+
+        // radio mixed use property click
+        binding.radioMixedPropertyYes.setOnClickListener {
+            findNavController().navigate(R.id.action_mixed_property)
+            binding.layoutMixedPropertyDetail.visibility = View.VISIBLE
+        }
+        // mixed property detail
+        binding.layoutMixedPropertyDetail.setOnClickListener{
+            findNavController().navigate(R.id.action_mixed_property)
+        }
+
+        // radio btn mixed use property Yes
+        binding.radioMixedPropertyYes.setOnCheckedChangeListener { _, isChecked ->
+           if(isChecked){
+               binding.radioMixedPropertyYes.setTypeface(null, Typeface.BOLD)
+               binding.radioMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
+           }
+        }
+        // radio btn mixed use property No
+        binding.radioMixedPropertyNo.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.radioMixedPropertyNo.setTypeface(null, Typeface.BOLD)
+                binding.radioMixedPropertyYes.setTypeface(null, Typeface.NORMAL)
+                binding.layoutMixedPropertyDetail.visibility = View.GONE
+            }
+        }
+        // occupying
+        binding.radioOccupying.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.radioOccupying.setTypeface(null, Typeface.BOLD)
+                binding.radioNonOccupying.setTypeface(null, Typeface.NORMAL)
+            }
+        }
+        // radio non occupying
+        binding.radioNonOccupying.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.radioNonOccupying.setTypeface(null, Typeface.BOLD)
+                binding.radioOccupying.setTypeface(null, Typeface.NORMAL)
+            }
+        }
+
+        // close
+        binding.backButton.setOnClickListener {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+        }
+        // back
+        requireActivity().onBackPressedDispatcher.addCallback {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+        }
+
+        binding.btnSave.setOnClickListener {
+            requireActivity().finish()
+        }
+
+        binding.subpropertyParentLayout.setOnClickListener {
+            HideSoftkeyboard.hide(requireActivity(),binding.subpropertyParentLayout)
+            super.removeFocusFromAllFields(binding.subpropertyParentLayout)
+        }
+    }
+
     private fun getPurchaseDetails(){
         lifecycleScope.launchWhenStarted {
-            viewModel.getSubjectPropertyDetails(token, 5)
+            viewModel.getSubjectPropertyDetails(token, 1010)
             viewModel.subjectPropertyDetails.observe(viewLifecycleOwner, { details ->
                 if(details != null){
                     details.subPropertyData?.address?.let {
-                        binding.rbSubPropertyAddress.isChecked = true
+                        binding.radioSubPropertyAddress.isChecked = true
+                        binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
                         binding.tvSubPropertyAddress.visibility = View.VISIBLE
                         binding.tvSubPropertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+                    } ?: run {
+                        binding.radioSubPropertyTbd.isChecked = true
+                        binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
                     }
+
                     // property id
                     details.subPropertyData?.propertyTypeId?.let { id ->
                         propertyTypeId = id
@@ -111,39 +171,24 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
                     details.subPropertyData?.floodInsurance?.let { value ->
                         binding.edFloodInsurance.setText(value.toString())
                     }
-                    // mixed use property
+
                     details.subPropertyData?.isMixedUseProperty?.let { value ->
                         if(value){
                             binding.radioMixedPropertyYes.isChecked = true
-                            binding.radioMixedPropertyYes.setTypeface(null, Typeface.BOLD)
                             details.subPropertyData.mixedUsePropertyExplanation?.let { desc ->
                                 binding.mixedPropertyExplanation.setText(desc)
                             }
                         }
                         else
                             binding.radioMixedPropertyNo.isChecked = true
-                            binding.radioMixedPropertyNo.setTypeface(null, Typeface.BOLD)
+                            //binding.radioMixedPropertyNo.setTypeface(null, Typeface.BOLD)
+                    } ?: run {
+                        binding.radioMixedPropertyNo.isChecked = true
                     }
+
 
                     getDropDownData()
 
-                }
-            })
-        }
-    }
-
-    private fun getCoBorrowerOccupancyStatus(){
-        lifecycleScope.launchWhenStarted {
-            viewModel.getCoBorrowerOccupancyStatus(token, 5)
-            viewModel.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {
-                if(it.occupancyData != null  && it.occupancyData.size > 0){
-                    binding.rbOccupying.isChecked = true
-                    binding.rbOccupying.setTypeface(null, Typeface.BOLD)
-                    binding.coBorrowerName.setText(it.occupancyData.get(0).borrowerFirstName + " " + it.occupancyData.get(0).borrowerLastName)
-                }
-                else {
-                    binding.rbNonOccupying.isChecked = false
-                    binding.coBorrowerName.visibility = View.GONE
                 }
             })
         }
@@ -160,13 +205,14 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
                         itemList.add(item.name)
                         if(propertyTypeId > 0 && propertyTypeId == item.id){
                             binding.tvPropertyType.setText(item.name)
+                            CustomMaterialFields.setColor(binding.layoutPropertyType,R.color.grey_color_two,requireActivity())
                         }
                     }
                     val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,itemList)
                     binding.tvPropertyType.setAdapter(adapter)
-                    binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
-                        binding.tvPropertyType.showDropDown()
-                    }
+//                    binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
+//                        binding.tvPropertyType.showDropDown()
+//                    }
                     binding.tvPropertyType.setOnClickListener {
                         binding.tvPropertyType.showDropDown()
                     }
@@ -174,8 +220,9 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
                     binding.tvPropertyType.onItemClickListener = object :
                         AdapterView.OnItemClickListener {
                         override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                            binding.layoutPropertyType.defaultHintTextColor = ColorStateList.valueOf(
-                                ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+                            //binding.layoutPropertyType.defaultHintTextColor = ColorStateList.valueOf(
+                              //  ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+                            CustomMaterialFields.setColor(binding.layoutPropertyType,R.color.grey_color_two,requireActivity())
                         }
                     }
                 }
@@ -183,7 +230,6 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
         }
 
         // occupancy Type spinner
-
         lifecycleScope.launchWhenStarted {
             viewModel.getOccupancyType("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA")
             viewModel.occupancyType.observe(viewLifecycleOwner, {occupancyList->
@@ -194,24 +240,22 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
                         itemList.add(item.name)
                         if(occupancyTypeId > 0 && occupancyTypeId == item.id){
                             binding.tvOccupancyType.setText(item.name)
+                            CustomMaterialFields.setColor(binding.layoutOccupancyType,R.color.grey_color_two,requireActivity())
                         }
                     }
 
                     val adapterOccupanycyType = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,itemList)
                     binding.tvOccupancyType.setAdapter(adapterOccupanycyType)
-                    binding.tvOccupancyType.setOnFocusChangeListener { _, _ ->
-                        binding.tvOccupancyType.showDropDown()
-                    }
+//                    binding.tvOccupancyType.setOnFocusChangeListener { _, _ ->
+//                        binding.tvOccupancyType.showDropDown()
+//                    }
                     binding.tvOccupancyType.setOnClickListener {
                         binding.tvOccupancyType.showDropDown()
                     }
 
-                    binding.tvOccupancyType.onItemClickListener = object :
-                        AdapterView.OnItemClickListener {
+                    binding.tvOccupancyType.onItemClickListener = object : AdapterView.OnItemClickListener {
                         override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                            binding.layoutOccupancyType.defaultHintTextColor =
-                                ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-
+                            CustomMaterialFields.setColor(binding.layoutOccupancyType,R.color.grey_color_two,requireActivity())
                         }
                     }
                 }
@@ -220,48 +264,21 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
         }
     }
 
-    override fun onClick(view: View?) {
-        when (view?.getId()) {
-            R.id.rb_sub_property -> radioSubPropertyClick()
-            R.id.rb_sub_property_address -> setAddressClick()
-            R.id.radio_mixed_property_yes -> mixedPropertyDetail()
-            R.id.layout_details -> mixedPropertyDetail()
-            R.id.layout_address -> setAddressClick()
-            R.id.backButton ->  {
-                requireActivity().finish()
-                requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
-            }
-            R.id.btn_save -> requireActivity().finish()
-            R.id.subproperty_parent_layout -> {
-                HideSoftkeyboard.hide(requireActivity(),binding.subpropertyParentLayout)
-                super.removeFocusFromAllFields(binding.subpropertyParentLayout)
-            }
-
-            R.id.rb_mixed_property_no ->
-                if (binding.radioMixedPropertyNo.isChecked) {
-                    binding.layoutDetails.visibility = View.GONE
-                    binding.radioMixedPropertyNo.setTypeface(null, Typeface.BOLD)
-                    binding.radioMixedPropertyYes.setTypeface(null, Typeface.NORMAL)
-                }else{
-                    binding.radioMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
+    private fun getCoBorrowerOccupancyStatus(){
+        lifecycleScope.launchWhenStarted {
+            viewModel.getCoBorrowerOccupancyStatus(token, 1010)
+            viewModel.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {
+                if(it.occupancyData != null  && it.occupancyData.size > 0){
+                    binding.radioOccupying.isChecked = true
+                    binding.coBorrowerName.setText(it.occupancyData.get(0).borrowerFirstName + " " + it.occupancyData.get(0).borrowerLastName)
                 }
-            R.id.rb_occupying ->
-                if (binding.rbOccupying.isChecked) {
-                    binding.rbOccupying.setTypeface(null, Typeface.BOLD)
-                    binding.rbNonOccupying.setTypeface(null, Typeface.NORMAL)
-                }else{
-                    binding.rbOccupying.setTypeface(null, Typeface.NORMAL)
+                else {
+                    binding.radioNonOccupying.isChecked = true
+                    binding.coBorrowerName.visibility = View.GONE
                 }
-
-            R.id.rb_non_occupying ->
-                if (binding.rbNonOccupying.isChecked) {
-                    binding.rbNonOccupying.setTypeface(null, Typeface.BOLD)
-                    binding.rbOccupying.setTypeface(null, Typeface.NORMAL)
-                }else{
-                    binding.rbNonOccupying.setTypeface(null, Typeface.NORMAL)
-                }
+            })
         }
-     }
+    }
 
     private fun setInputFields(){
 
@@ -284,72 +301,5 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
         CustomMaterialFields.setDollarPrefix(binding.layoutFloodInsurance,requireContext())
 
     }
-
-    private fun radioSubPropertyClick(){
-        binding.rbSubProperty.isChecked = true
-        binding.rbSubPropertyAddress.isChecked = false
-        binding.tvSubPropertyAddress.visibility = View.GONE
-        //bold text
-        binding.rbSubProperty.setTypeface(null,Typeface.BOLD)
-        binding.radioTxtPropertyAdd.setTypeface(null,Typeface.NORMAL)
-
-    }
-
-    private fun setAddressClick(){
-        binding.rbSubProperty.isChecked = false
-        binding.rbSubPropertyAddress.isChecked = true
-        binding.tvSubPropertyAddress.visibility = View.VISIBLE
-        //bold text
-        binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
-        binding.rbSubProperty.setTypeface(null,Typeface.NORMAL)
-
-        findNavController().navigate(R.id.action_address)
-    }
-
-    private fun mixedPropertyDetail(){
-        findNavController().navigate(R.id.action_mixed_property)
-        binding.layoutDetails.visibility = View.VISIBLE
-        binding.radioMixedPropertyYes.setTypeface(null, Typeface.BOLD)
-        binding.radioMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
-    }
-
-   /* private fun setSpinnerData() {
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,propertyTypeArray )
-        binding.tvPropertyType.setAdapter(adapter)
-        binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
-            binding.tvPropertyType.showDropDown()
-        }
-        binding.tvPropertyType.setOnClickListener {
-            binding.tvPropertyType.showDropDown()
-        }
-        binding.tvPropertyType.onItemClickListener = object :
-            AdapterView.OnItemClickListener {
-            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                binding.layoutPropertyType.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-
-            }
-        }
-
-
-        // set occupancy type spinner
-
-        val adapterOccupanycyType = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, occupancyTypeArray)
-        binding.tvOccupancyType.setAdapter(adapterOccupanycyType)
-        binding.tvOccupancyType.setOnFocusChangeListener { _, _ -> binding.tvOccupancyType.showDropDown()
-        }
-        binding.tvOccupancyType.setOnClickListener {
-            binding.tvOccupancyType.showDropDown()
-        }
-        binding.tvOccupancyType.onItemClickListener = object :
-            AdapterView.OnItemClickListener {
-            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                binding.layoutOccupancyType.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.grey_color_two))
-
-            }
-        }
-    } */
 
 }

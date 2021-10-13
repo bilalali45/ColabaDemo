@@ -83,7 +83,7 @@
                 android:background="@drawable/content_bg_with_drop_shadow">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/rb_sub_property"
+                    android:id="@+id/radio_sub_property_tbd"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:button="@null"
@@ -91,7 +91,7 @@
                     android:drawablePadding="15dp"
                     android:fontFamily="@font/rubik_regular"
                     android:paddingStart="15dp"
-                    android:text="Subject Property TBD"
+                    android:text="@string/subject_property_tbd"
                     android:textColor="@color/grey_color_one"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -104,7 +104,7 @@
                 android:clickable="true">
 
                 <RadioButton
-                    android:id="@+id/rb_sub_property_address"
+                    android:id="@+id/radio_sub_property_address"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:button="@null"
@@ -123,9 +123,9 @@
                     android:text="@string/subject_property_address"
                     android:textColor="@color/grey_color_one"
                     android:textSize="15sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/rb_sub_property_address"
-                    app:layout_constraintStart_toEndOf="@+id/rb_sub_property_address"
-                    app:layout_constraintTop_toTopOf="@+id/rb_sub_property_address" />
+                    app:layout_constraintBottom_toBottomOf="@+id/radio_sub_property_address"
+                    app:layout_constraintStart_toEndOf="@+id/radio_sub_property_address"
+                    app:layout_constraintTop_toTopOf="@+id/radio_sub_property_address" />
 
                 <TextView
                     android:visibility="gone"
@@ -300,7 +300,7 @@
             </RadioGroup>
 
             <LinearLayout
-                android:id="@+id/layout_details"
+                android:id="@+id/layout_mixed_property_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -509,7 +509,7 @@
                 android:layout_marginTop="30dp">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/rb_occupying"
+                    android:id="@+id/radio_occupying"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
                     android:button="@drawable/radiodraw"
@@ -521,7 +521,7 @@
                     android:textSize="14sp" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/rb_non_occupying"
+                    android:id="@+id/radio_non_occupying"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
                     android:layout_marginTop="18dp"

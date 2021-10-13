@@ -388,6 +388,7 @@
     <string name="occupying">Occupying</string>
     <string name="non_occupying">Non-Occupying</string>
     <string name="subject_property">Subject Property</string>
+    <string name="subject_property_tbd">Subject Property TBD</string>
     <string name="subject_property_address">Subject Property Address</string>
     <string name="mixed_use_property">Mixed Use Property</string>
     <string name="first_mortgage">First Mortgage</string>
