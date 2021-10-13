@@ -54,17 +54,29 @@ class RealEstateViewController: BaseViewController {
     @IBOutlet weak var lblSecondMortgageBalance: UILabel!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
+    var loanApplicationId = 0
+    var borrowerPropertyId = 0
+    var borrowerFullName = ""
+    
+    var propertyTypeArray = [DropDownModel]()
+    var occupancyTypeArray = [DropDownModel]()
+    var propertyStatusArray = [DropDownModel]()
+    var realEstateDetail = RealEstateDetailModel()
+    
     var isFirstMortgage = false
     var isSecondMortgage = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextFields()
+        getPropertyTypeDropDown()
     }
 
     //MARK:- Methods and Actions
     
     func setupTextFields(){
+        
+        lblUsername.text = borrowerFullName.uppercased()
         
         addressView.layer.cornerRadius = 6
         addressView.layer.borderWidth = 1
@@ -90,7 +102,6 @@ class RealEstateViewController: BaseViewController {
         
         txtfieldPropertyStatus.setTextField(placeholder: "Property Status", controller: self, validationType: .required)
         txtfieldPropertyStatus.type = .dropdown
-        txtfieldPropertyStatus.setDropDownDataSource(kPropertyStatusArray)
         
         txtfieldHomeOwnerAssociationDues.setTextField(placeholder: "Homeowner’s Association Dues", controller: self, validationType: .required)
         txtfieldHomeOwnerAssociationDues.type = .amount
@@ -125,6 +136,36 @@ class RealEstateViewController: BaseViewController {
         
     }
     
+    func setRealEstateDetail(){
+        if let subjectPropertyAddress = self.realEstateDetail.address{
+            lblAddress.text = "\(subjectPropertyAddress.street) \(subjectPropertyAddress.unit),\n\(subjectPropertyAddress.city), \(subjectPropertyAddress.stateName) \(subjectPropertyAddress.zipCode)"
+        }
+        
+        if let propertyType = self.propertyTypeArray.filter({$0.optionId == self.realEstateDetail.propertyTypeId}).first{
+            self.txtfieldPropertyType.setTextField(text: propertyType.optionName)
+        }
+        if let occupancyType = self.occupancyTypeArray.filter({$0.optionId == self.realEstateDetail.occupancyTypeId}).first{
+            self.txtfieldOccupancyType.setTextField(text: occupancyType.optionName)
+        }
+        
+        txtfieldPropertyStatus.setTextField(text: self.realEstateDetail.propertyStatus)
+        txtfieldCurrentRentalIncome.setTextField(text: String(format: "%.0f", self.realEstateDetail.rentalIncome.rounded()))
+        txtfieldHomeOwnerAssociationDues.setTextField(text: String(format: "%.0f", self.realEstateDetail.homeOwnerDues.rounded()))
+        txtfieldPropertyValue.setTextField(text: String(format: "%.0f", self.realEstateDetail.propertyValue.rounded()))
+        txtfieldAnnualPropertyTax.setTextField(text: String(format: "%.0f", self.realEstateDetail.annualPropertyTax.rounded()))
+        txtfieldAnnualHomeOwnerInsurance.setTextField(text: String(format: "%.0f", self.realEstateDetail.annualHomeInsurance.rounded()))
+        txtfieldAnnualFloodInsurance.setTextField(text: String(format: "%.0f", self.realEstateDetail.annualFloodInsurance.rounded()))
+        isFirstMortgage = self.realEstateDetail.hasFirstMortgage
+        isSecondMortgage = self.realEstateDetail.hasSecondMortgage
+        lblFirstMortgagePayment.text = Int(self.realEstateDetail.firstMortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
+        lblFirstMortgageBalance.text = Int(self.realEstateDetail.firstMortgageBalance).withCommas().replacingOccurrences(of: ".00", with: "")
+        lblSecondMortgagePayment.text = Int(self.realEstateDetail.secondMortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
+        lblSecondMortgageBalance.text = Int(self.realEstateDetail.secondMortgageBalance).withCommas().replacingOccurrences(of: ".00", with: "")
+        
+        showHideRentalIncome()
+        changeMortgageStatus()
+    }
+    
     func setScreenHeight(){
         let firstMortgageViewHeight = self.firstMortgageMainView.frame.height
         let secondMortgageViewHeight = self.secondMortgageMainView.frame.height
@@ -141,6 +182,8 @@ class RealEstateViewController: BaseViewController {
         vc.isForSubjectProperty = true
         vc.topTitle = "Subject Property Address"
         vc.searchTextFieldPlaceholder = "Search Property Address"
+        vc.borrowerFullName = self.borrowerFullName
+        vc.selectedAddress = self.realEstateDetail.address
         self.pushToVC(vc: vc)
     }
     
@@ -279,6 +322,125 @@ class RealEstateViewController: BaseViewController {
         isValidate = txtfieldAnnualFloodInsurance.validate() && isValidate
         return isValidate
     }
+    
+    //MARK:- API's
+    
+    func getPropertyTypeDropDown(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllPropertyTypeDrowpDown, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = DropDownModel()
+                        model.updateModelWithJSON(json: option)
+                        self.propertyTypeArray.append(model)
+                    }
+                    self.txtfieldPropertyType.setDropDownDataSource(self.propertyTypeArray.map{$0.optionName})
+                    self.getOccupancyTypeDropDown()
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+        
+    }
+    
+    func getOccupancyTypeDropDown(){
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllOccupancyTypeDropDown, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = DropDownModel()
+                        model.updateModelWithJSON(json: option)
+                        self.occupancyTypeArray.append(model)
+                    }
+                    self.txtfieldOccupancyType.setDropDownDataSource(self.occupancyTypeArray.map{$0.optionName})
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.getPropertyStatusDropDown()
+                    
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func getPropertyStatusDropDown(){
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllPropertyStatus, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = DropDownModel()
+                        model.updateModelWithJSON(json: option)
+                        self.propertyStatusArray.append(model)
+                    }
+                    self.txtfieldPropertyStatus.setDropDownDataSource(self.propertyStatusArray.map{$0.optionName})
+                    if (self.loanApplicationId > 0){
+                        self.getRealEstateDetail()
+                    }
+                    else{
+                        Utility.showOrHideLoader(shouldShow: false)
+                    }
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+        
+    }
+    
+    func getRealEstateDetail(){
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)&borrowerPropertyId=\(borrowerPropertyId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getRealEstateDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                Utility.showOrHideLoader(shouldShow: false)
+                
+                if (status == .success){
+                    
+                    let realEstateModel = RealEstateDetailModel()
+                    realEstateModel.updateModelWithJSON(json: result["data"])
+                    self.realEstateDetail = realEstateModel
+                    self.setRealEstateDetail()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+    }
+    
 }
 
 extension RealEstateViewController : ColabaTextFieldDelegate {
