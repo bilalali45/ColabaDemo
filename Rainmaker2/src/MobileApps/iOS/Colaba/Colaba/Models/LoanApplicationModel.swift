@@ -109,6 +109,7 @@ class BorrowerInfoModel: NSObject{
     var lastName:String = ""
     var ownTypeName:String = ""
     var ownTypeId: Int = 0
+    var borrowerFullName: String = ""
     var races: [Race] = []
     
     func updateModelWithJSON(json: JSON){
@@ -128,6 +129,7 @@ class BorrowerInfoModel: NSObject{
         lastName = json["lastName"].stringValue
         ownTypeName = json["ownTypeName"].stringValue
         ownTypeId = json["owntypeId"].intValue
+        borrowerFullName = "\(firstName) \(lastName)"
         
         races.removeAll()
         let racesArray = json["races"].arrayValue

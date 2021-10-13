@@ -15,6 +15,9 @@ class IncomeViewController: BaseViewController {
     @IBOutlet weak var tabView: UIView!
     @IBOutlet weak var lblTotalIncomes: UILabel!
     
+    var loanApplicationId = 0
+    var borrowersArray = [BorrowerInfoModel]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupHeaderAndFooter()
@@ -24,8 +27,7 @@ class IncomeViewController: BaseViewController {
     func setupHeaderAndFooter(){
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) {
-            let tabItems = ["Richard Glenn", "Maria Randall"]
-            let carbonTabSwipeNavigation = CarbonTabSwipeNavigation(items: tabItems, delegate: self)
+            let carbonTabSwipeNavigation = CarbonTabSwipeNavigation(items: self.borrowersArray.map{$0.borrowerFullName}, delegate: self)
             
             carbonTabSwipeNavigation.carbonSegmentedControl?.backgroundColor = Theme.getDashboardBackgroundColor()
             carbonTabSwipeNavigation.setTabBarHeight(50)
@@ -36,7 +38,7 @@ class IncomeViewController: BaseViewController {
             carbonTabSwipeNavigation.carbonSegmentedControl?.imageNormalColor = .clear
             carbonTabSwipeNavigation.carbonSegmentedControl?.imageSelectedColor = .clear
             
-            let segmentWidth = (self.tabView.frame.width / 2)
+            let segmentWidth = self.borrowersArray.count > 1 ? self.tabView.frame.width / 2 : self.tabView.frame.width
             
             let indicator = carbonTabSwipeNavigation.carbonSegmentedControl?.indicator
             let subView = UIView()
@@ -44,12 +46,18 @@ class IncomeViewController: BaseViewController {
             subView.roundOnlyTopCorners(radius: 4)
             indicator?.addSubview(subView)
             subView.translatesAutoresizingMaskIntoConstraints = false
-            subView.widthAnchor.constraint(equalToConstant: segmentWidth * 0.8).isActive = true
+            if (self.borrowersArray.count > 1){
+                subView.widthAnchor.constraint(equalToConstant: segmentWidth * 0.8).isActive = true
+            }
+            else{
+                subView.widthAnchor.constraint(equalToConstant: segmentWidth * 0.9).isActive = true
+            }
             subView.centerXAnchor.constraint(equalTo: indicator!.centerXAnchor, constant: 0).isActive = true
             subView.topAnchor.constraint(equalTo: indicator!.topAnchor, constant: 0).isActive = true
             subView.bottomAnchor.constraint(equalTo: indicator!.bottomAnchor, constant: 0).isActive = true
-            carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 0)
-            carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 1)
+            for i in 0..<self.borrowersArray.count{
+                carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: i)
+            }
             carbonTabSwipeNavigation.insert(intoRootViewController: self, andTargetView: self.tabView)
             
         }
