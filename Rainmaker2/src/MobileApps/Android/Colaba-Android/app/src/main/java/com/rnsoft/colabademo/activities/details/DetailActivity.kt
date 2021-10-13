@@ -97,8 +97,6 @@ class DetailActivity : BaseActivity() {
         observeForCallEmailMessage()
     }
 
-
-
     private fun observeForCallEmailMessage(){
         detailViewModel.borrowerOverviewModel.observe(this@DetailActivity, {  overviewModel->
             if(overviewModel!=null) {

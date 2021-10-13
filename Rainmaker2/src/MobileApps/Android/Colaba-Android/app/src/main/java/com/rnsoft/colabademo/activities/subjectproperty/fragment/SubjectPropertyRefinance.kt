@@ -12,6 +12,9 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.SubPropertyRefinanceBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -25,21 +28,13 @@ import com.rnsoft.colabademo.utils.NumberTextFormat
  */
 class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListener, View.OnClickListener {
 
+    private val viewModel : SubjectPropertyViewModel by activityViewModels()
     private lateinit var binding: SubPropertyRefinanceBinding
-    private val propertyTypeArray = listOf(
-        "Single Family Property",
-        "Condominium",
-        "Townhouse",
-        "Cooperative",
-        "Manufactured Home",
-        "Duplex (2 Unit)",
-        "Triplex (3 Unit)",
-        "Quadplex (4 Unit)"
-    )
-    private val occupancyTypeArray =
-        listOf("Primary Residence", "Second Home", "Investment Property")
-
+    //private val propertyTypeArray = listOf("Single Family Property", "Condominium", "Townhouse", "Cooperative", "Manufactured Home", "Duplex (2 Unit)", "Triplex (3 Unit)", "Quadplex (4 Unit)")
+    //private val occupancyTypeArray = listOf("Primary Residence", "Second Home", "Investment Property")
     private var savedViewInstance: View? = null
+    val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA"
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,8 +72,10 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             binding.edDateOfHomePurchase.setOnClickListener { createCustomDialog() }
             //binding.edDateOfHomePurchase.setOnFocusChangeListener { _, _ -> createCustomDialog() }
 
-            setSpinnerData()
+            //setSpinnerData()
+            getDropDownData()
             setInputFields()
+            getRefinanceDetails()
             super.addListeners(binding.root)
 
             requireActivity().onBackPressedDispatcher.addCallback {
@@ -89,6 +86,87 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             savedViewInstance
         }
 
+    }
+
+    private fun getRefinanceDetails(){
+        lifecycleScope.launchWhenStarted {
+            viewModel.getSubjectPropertyDetails(token, 5)
+            viewModel.subjectPropertyDetails.observe(viewLifecycleOwner, {
+            })
+        }
+    }
+
+    private fun getDropDownData(){
+        lifecycleScope.launchWhenStarted {
+            viewModel.getPropertyTypes(token)
+            viewModel.propertyType.observe(viewLifecycleOwner, {
+                if(it != null && it.size > 0) {
+
+                    val itemList:ArrayList<String> = arrayListOf()
+                    for(item in it){
+                        itemList.add(item.name)
+                    }
+                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,itemList)
+                    binding.tvPropertyType.setAdapter(adapter)
+                    binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
+                        binding.tvPropertyType.showDropDown()
+                    }
+                    binding.tvPropertyType.setOnClickListener {
+                        binding.tvPropertyType.showDropDown()
+                    }
+                    binding.tvPropertyType.onItemClickListener = object :
+                        AdapterView.OnItemClickListener {
+                        override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                            binding.layoutPropertyType.defaultHintTextColor = ColorStateList.valueOf(
+                                ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+                        }
+                    }
+                }
+            })
+        }
+
+        // occupancy Type spinner
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.getOccupancyType("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA")
+            viewModel.occupancyType.observe(viewLifecycleOwner, {occupancyList->
+
+                if(occupancyList != null && occupancyList.size > 0) {
+                    val itemList: ArrayList<String> = arrayListOf()
+                    for (item in occupancyList) {
+                        itemList.add(item.name)
+                    }
+
+                    val adapterOccupanycyType =
+                        ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,itemList)
+                    binding.tvOccupancyType.setAdapter(adapterOccupanycyType)
+                    binding.tvOccupancyType.setOnFocusChangeListener { _, _ ->
+                        binding.tvOccupancyType.showDropDown()
+                    }
+                    binding.tvOccupancyType.setOnClickListener {
+                        binding.tvOccupancyType.showDropDown()
+                    }
+                    binding.tvOccupancyType.onItemClickListener = object :
+                        AdapterView.OnItemClickListener {
+                        override fun onItemClick(
+                            p0: AdapterView<*>?,
+                            p1: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+                            binding.layoutOccupancyType.defaultHintTextColor =
+                                ColorStateList.valueOf(
+                                    ContextCompat.getColor(
+                                        requireContext(), R.color.grey_color_two
+                                    )
+                                )
+
+                        }
+                    }
+                }
+
+            })
+        }
     }
 
     private fun setInputFields() {
@@ -213,51 +291,6 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         }
     }
 
-    private fun setSpinnerData() {
-        val adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, propertyTypeArray)
-        binding.tvPropertyType.setAdapter(adapter)
-        binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
-            binding.tvPropertyType.showDropDown()
-        }
-        binding.tvPropertyType.setOnClickListener {
-            binding.tvPropertyType.showDropDown()
-        }
-        binding.tvPropertyType.onItemClickListener = object :
-            AdapterView.OnItemClickListener {
-            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                binding.layoutPropertyType.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(requireContext(), R.color.grey_color_two)
-                )
-                showHideRental()
-            }
-        }
-
-        // set occupancy type spinner
-
-        val adapterOccupanycyType =
-            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, occupancyTypeArray)
-        binding.tvOccupancyType.setAdapter(adapterOccupanycyType)
-        binding.tvOccupancyType.setOnFocusChangeListener { _, _ ->
-            binding.tvOccupancyType.showDropDown()
-        }
-        binding.tvOccupancyType.setOnClickListener {
-            binding.tvOccupancyType.showDropDown()
-        }
-        binding.tvOccupancyType.onItemClickListener = object :
-            AdapterView.OnItemClickListener {
-            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                binding.layoutOccupancyType.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.grey_color_two
-                    )
-                )
-                showHideRental()
-
-            }
-        }
-    }
 
     private fun showHideRental() {
         if (binding.tvOccupancyType.text.toString().equals("Investment Property")) {
@@ -349,5 +382,51 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
     }
 
+/*
+    private fun setSpinnerData() {
+        val adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, propertyTypeArray)
+        binding.tvPropertyType.setAdapter(adapter)
+        binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
+            binding.tvPropertyType.showDropDown()
+        }
+        binding.tvPropertyType.setOnClickListener {
+            binding.tvPropertyType.showDropDown()
+        }
+        binding.tvPropertyType.onItemClickListener = object :
+            AdapterView.OnItemClickListener {
+            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                binding.layoutPropertyType.defaultHintTextColor = ColorStateList.valueOf(
+                    ContextCompat.getColor(requireContext(), R.color.grey_color_two)
+                )
+                showHideRental()
+            }
+        }
+
+        // set occupancy type spinner
+
+        val adapterOccupanycyType =
+            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, occupancyTypeArray)
+        binding.tvOccupancyType.setAdapter(adapterOccupanycyType)
+        binding.tvOccupancyType.setOnFocusChangeListener { _, _ ->
+            binding.tvOccupancyType.showDropDown()
+        }
+        binding.tvOccupancyType.setOnClickListener {
+            binding.tvOccupancyType.showDropDown()
+        }
+        binding.tvOccupancyType.onItemClickListener = object :
+            AdapterView.OnItemClickListener {
+            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                binding.layoutOccupancyType.defaultHintTextColor = ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.grey_color_two
+                    )
+                )
+                showHideRental()
+
+            }
+        }
+    } */
 
 }

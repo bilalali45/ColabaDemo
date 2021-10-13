@@ -16,6 +16,8 @@ import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.maps.model.LatLng
@@ -41,7 +43,8 @@ import kotlin.collections.ArrayList
  */
 class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListener {
 
-    lateinit var binding: SubjectPropertyAddressBinding
+    private val viewModel : SubjectPropertyViewModel by activityViewModels()
+    private lateinit var binding: SubjectPropertyAddressBinding
     private lateinit var predictAdapter: PlacePredictionAdapter
     private lateinit var token: AutocompleteSessionToken
     private lateinit var placesClient: PlacesClient
@@ -54,10 +57,9 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
     ): View? {
         binding = SubjectPropertyAddressBinding.inflate(inflater, container, false)
 
-
-
         setInputFields()
-        setStateAndCountyDropDown()
+        //setStateAndCountyDropDown()
+        getDropDownData()
         setUpCompleteViewForPlaces()
         initializeUSAstates()
 
@@ -91,6 +93,113 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
 
     }
 
+    private fun getDropDownData(){
+         lifecycleScope.launchWhenStarted {
+             viewModel.getStates("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA")
+             viewModel.states.observe(viewLifecycleOwner, { states->
+                 if (states != null && states.size > 0) {
+                     val itemList: ArrayList<String> = arrayListOf()
+                     for (item in states) {
+                         itemList.add(item.name)
+                     }
+                     val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,itemList)
+                     binding.tvState.setAdapter(stateAdapter)
+
+                     binding.tvState.setOnFocusChangeListener { _, _ ->
+                         binding.tvState.showDropDown()
+                     }
+                     binding.tvState.setOnClickListener {
+                         binding.tvState.showDropDown()
+                     }
+
+                     binding.tvState.onItemClickListener =
+                         object : AdapterView.OnItemClickListener {
+                             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                                 binding.layoutState.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+                                 HideSoftkeyboard.hide(requireActivity(),binding.layoutState)
+                             }
+                         }
+                 }
+             })
+         }
+
+        // get countries
+        lifecycleScope.launchWhenStarted {
+            viewModel.getCountries("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA")
+            viewModel.countries.observe(viewLifecycleOwner, { countries ->
+                if (countries != null && countries.size > 0) {
+                    val itemList: ArrayList<String> = arrayListOf()
+                    for (item in countries) {
+                        itemList.add(item.name)
+                    }
+
+                    val countryAdapter =
+                        ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                    binding.tvCountry.setAdapter(countryAdapter)
+
+                    binding.tvCountry.setOnFocusChangeListener { _, _ ->
+                        binding.tvCountry.showDropDown()
+                    }
+                    binding.tvCountry.setOnClickListener {
+                        binding.tvCountry.showDropDown()
+                    }
+
+                    binding.tvCountry.onItemClickListener = object : AdapterView.OnItemClickListener {
+                            override fun onItemClick(
+                                p0: AdapterView<*>?,
+                                p1: View?,
+                                position: Int,
+                                id: Long) {
+                                binding.layoutCountry.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+                                HideSoftkeyboard.hide(requireActivity(),binding.layoutCountry)
+                            }
+                        }
+                }
+
+            })
+        }
+
+        // get county
+        lifecycleScope.launchWhenStarted {
+            viewModel.getCounty("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA")
+            viewModel.counties.observe(viewLifecycleOwner, { counties ->
+                if (counties != null && counties.size > 0) {
+                    val itemList: ArrayList<String> = arrayListOf()
+                    for (item in counties) {
+                        itemList.add(item.name)
+                    }
+
+                    val countyAdapter =
+                        ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                    binding.tvCounty.setAdapter(countyAdapter)
+
+                    //binding.tvCounty.setOnFocusChangeListener { _, _ ->
+                     //   binding.tvCountry.showDropDown()
+                    //}
+                    binding.tvCounty.setOnClickListener {
+                        binding.tvCounty.showDropDown()
+                    }
+
+                    binding.tvCounty.onItemClickListener = object : AdapterView.OnItemClickListener {
+                        override fun onItemClick(
+                            p0: AdapterView<*>?,
+                            p1: View?,
+                            position: Int,
+                            id: Long) {
+                            binding.layoutCounty.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+                            HideSoftkeyboard.hide(requireActivity(),binding.layoutCounty)
+                        }
+                    }
+                }
+
+            })
+        }
+
+
+
+
+    }
+
     private fun setInputFields(){
 
         // set lable focus
@@ -118,27 +227,15 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         binding.edUnitAtpNo.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edUnitAtpNo, binding.layoutUnitAptNo, requireContext()))
         binding.edStreetAddress.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edStreetAddress, binding.layoutStreetAddress , requireContext()))
         binding.edCity.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCity, binding.layoutCity, requireContext()))
-        binding.edCounty.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCounty, binding.layoutCounty, requireContext()))
+        //binding.edCounty.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCounty, binding.layoutCounty, requireContext()))
         binding.edZipcode.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edZipcode, binding.layoutZipCode, requireContext()))
 
         CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edUnitAtpNo, binding.layoutUnitAptNo)
         CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edStreetAddress, binding.layoutStreetAddress)
         CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edCity, binding.layoutCity)
-        CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edCounty, binding.layoutCounty)
+        //CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edCounty, binding.layoutCounty)
         CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edZipcode, binding.layoutZipCode)
 
-    }
-
-    private fun setError(){
-        binding.tvError.visibility = View.VISIBLE
-        binding.searchSeparator.layoutParams.height = 1
-        binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_red_color, requireActivity().theme))
-    }
-
-    private fun removeError(){
-        binding.tvError.visibility = View.GONE
-        //binding.searchSeparator.layoutParams.height= 0.5.toInt()
-        binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
     }
 
     private fun checkValidations() {
@@ -319,7 +416,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
 
 
             locality?.let { binding.edCity.setText(it) }
-            subLocality?.let { binding.edCounty.setText(it) }
+            subLocality?.let { binding.tvCountry.setText(it) }
             postalCode?.let { binding.edZipcode.setText(it) }
             countryName?.let { binding.tvCountry.setText(it) }
             binding.edStreetAddress.setText(place.getPrimaryText(null))
@@ -409,6 +506,18 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         map.put("WV", "West Virginia")
         map.put("WI", "Wisconsin")
         map.put("WY", "Wyoming")
+    }
+
+    private fun setError(){
+        binding.tvError.visibility = View.VISIBLE
+        binding.searchSeparator.layoutParams.height = 1
+        binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_red_color, requireActivity().theme))
+    }
+
+    private fun removeError(){
+        binding.tvError.visibility = View.GONE
+        //binding.searchSeparator.layoutParams.height= 0.5.toInt()
+        binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
     }
 
 }

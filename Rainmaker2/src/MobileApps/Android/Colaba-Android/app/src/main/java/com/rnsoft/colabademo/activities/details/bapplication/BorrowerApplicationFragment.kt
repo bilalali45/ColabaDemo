@@ -125,8 +125,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 }
                 startActivity(subProperty)
             }
-
-
         }
 
         val linearLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
