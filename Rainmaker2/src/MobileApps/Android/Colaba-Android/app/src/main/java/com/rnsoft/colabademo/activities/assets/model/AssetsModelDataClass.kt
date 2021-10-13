@@ -3,22 +3,23 @@ package com.rnsoft.colabademo
 import com.google.gson.annotations.SerializedName
 
 
-data class AssetsModelClass(
-    val code: String,
-    @SerializedName("data") val borrowerAssetData : BorrowerAssetData?,
-    val message: Any,
-    val status: String
+data class AssetsModelDataClass(
+    val code: String?=null,
+    @SerializedName("data") val bAssetData : BAssetData?=null,
+    val message: String?=null,
+    val status: String?=null
 )
 
-data class BorrowerAssetData(
-    @SerializedName("Borrower") val assetBorrowerList :ArrayList<AssetBorrower>,
+data class BAssetData(
+    @SerializedName("Borrower") val assetBorrowerList :ArrayList<AssetBorrowerList>,
     val totalAssetsValue: Double
 )
 
 
-data class AssetBorrower(
+data class AssetBorrowerList(
     val assetsValue: Double,
-    val borrowerAssets: ArrayList<BorrowerAsset>,
+    @SerializedName("BorrowerAsset") val bAssets:ArrayList<BAssets>,
+    //val borrowerAssets: ArrayList<BorrowerAsset>,
     val borrowerId: Int,
     val borrowerName: String,
     val ownTypeDisplayName: String,
@@ -27,7 +28,7 @@ data class AssetBorrower(
 )
 
 
-data class BorrowerAsset(
+data class BAssets(
     val assetCategoryId: Int,
     val assetCategoryName: String,
     val assetId: Int,

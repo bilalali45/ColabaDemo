@@ -144,4 +144,11 @@ interface ServerApi{
         @Query("loanApplicationId")  loanApplicationId:Int):BorrowerApplicationTabModel
 
 
+    @GET("api/mcu/mobile/loanapplication/Loan/GetAssetsDetails")
+    suspend fun getBorrowerAssetsDetail(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int,
+        @Query("borrowerId")  borrowerId:Int
+    ):AssetsModelDataClass
+
 }

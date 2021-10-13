@@ -7,11 +7,15 @@ import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.rnsoft.colabademo.databinding.DetailApplicationTabBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -31,6 +35,8 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     //private lateinit var applicationTopContainer: ConstraintLayout
 
     private val detailViewModel: DetailViewModel by activityViewModels()
+
+    private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
 
     private var borrowerInfoList: ArrayList<BorrowersInformation> = ArrayList()
     private var realStateList: ArrayList<RealStateOwn> = ArrayList()
@@ -60,8 +66,34 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         //applicationTopContainer = root.findViewById(R.id.application_top_container)
 
         binding.assetsConstraintLayout.setOnClickListener{
-            Timber.e("assets layout - clicked...")
-            navigateToAssetActivity()
+            var borrowerIndex = 0
+            borrowerApplicationViewModel.resetAssetModelClass()
+
+                lifecycleScope.launchWhenStarted {
+                    val detailActivity = (activity as? DetailActivity)
+                    detailActivity?.let {
+                        val testLoanId = it.loanApplicationId
+                        testLoanId?.let { loanId ->
+                            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                                while(borrowerIndex++<borrowerInfoList.size) {
+                                    val count: Deferred<Boolean> = async(context = Dispatchers.Main) {
+                                        return@async borrowerApplicationViewModel.getBorrowerAssetsDetail(
+                                            token = authToken,
+                                            loanApplicationId = loanId,
+                                            borrowerId = borrowerInfoList[borrowerIndex].borrowerId
+                                        )
+                                }
+                                count.await()
+                            }
+
+
+                        }
+                    }
+                }
+
+            }
+            //Timber.e("assets layout - clicked...")
+            //navigateToAssetActivity()
         }
 
         binding.incomeConstraintLayout.setOnClickListener{
@@ -272,6 +304,8 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         return root
 
     }
+
+
 
 
     private fun navigateToAssetActivity(){

@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.DetailBorrowerLayoutTwoBinding
@@ -14,26 +13,17 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-
 @AndroidEntryPoint
 class BorrowerOverviewFragment : BaseFragment()  {
-
     private var _binding: DetailBorrowerLayoutTwoBinding? = null
     private val binding get() = _binding!!
-
     private val detailViewModel: DetailViewModel by activityViewModels()
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = DetailBorrowerLayoutTwoBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         detailViewModel.borrowerOverviewModel.observe(viewLifecycleOwner, {  overviewModel->
             if(overviewModel!=null) {
 
@@ -127,7 +117,6 @@ class BorrowerOverviewFragment : BaseFragment()  {
         })
         super.addListeners(binding.root)
         return root
-
     }
 
 }

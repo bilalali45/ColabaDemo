@@ -23,8 +23,6 @@ data class AssetAndIncome(
     val totalMonthyIncome: Double
 )
 
-
-
 data class BorrowersInformation(
     val borrowerId: Int,
     val firstName: String,
@@ -106,6 +104,8 @@ data class RealStateAddress(
     val city: String,
     val countryId: Int,
     val countryName: String,
+    val countyId: Int,
+    val countyName: String,
     val stateId: Int,
     val stateName: String,
     val street: String,
@@ -129,6 +129,8 @@ data class SubjectPropertyAddress(
     val city: String,
     val countryId: Int,
     val countryName: String,
+    val countyId: String,
+    val countyName: String,
     val stateId: Int,
     val stateName: String,
     val street: String,

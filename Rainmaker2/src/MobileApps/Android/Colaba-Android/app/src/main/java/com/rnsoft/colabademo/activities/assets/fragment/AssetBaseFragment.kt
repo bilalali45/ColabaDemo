@@ -1,49 +1,48 @@
 package com.rnsoft.colabademo
 
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
 open class AssetBaseFragment:BaseFragment() {
 
-    protected fun getSampleAssets():ArrayList<AssetsModelClass>{
-        val assetModelCell = AssetsModelClass( headerTitle = "Bank Account", headerAmount = "$26,000" , footerTitle = "Add Bank Account",
+    protected fun getSampleAssets():ArrayList<AssetsModelDataClass>{
+        val assetModelCell = AssetsModelDataClass( headerTitle = "Bank Account", headerAmount = "$26,000" , footerTitle = "Add Bank Account",
             contentCell = arrayListOf(
                 ContentCell("Chase", "Checking" ,"$20,000"), ContentCell("Ally Bank", "Saving", "$6,000")
             ), navigateToBank)
 
-        val assetModelCell2 = AssetsModelClass( headerTitle = "Retirement Account", headerAmount = "$10,000" , footerTitle = "Add Retirement Account",
+        val assetModelCell2 = AssetsModelDataClass( headerTitle = "Retirement Account", headerAmount = "$10,000" , footerTitle = "Add Retirement Account",
             contentCell = arrayListOf(
                 ContentCell("401K", "Retirement Account" ,"$10,000" )
             ), navigateToRetirement)
 
-        val assetModelCell3 = AssetsModelClass( headerTitle = "Stocks, Bonds, or Other\n" +
+        val assetModelCell3 = AssetsModelDataClass( headerTitle = "Stocks, Bonds, or Other\n" +
                 "Financial Assets", headerAmount = "$800" , footerTitle = "Add Financial Assets",
             contentCell = arrayListOf(
                 ContentCell("AHC", "Mutual Funds" ,"$200"  )
             ), navigateToStockBonds)
 
 
-        val assetModelCell4 = AssetsModelClass( headerTitle = "Proceeds From Transaction", headerAmount = "$1,200" , footerTitle = "Add Proceeds From Transaction",
+        val assetModelCell4 = AssetsModelDataClass( headerTitle = "Proceeds From Transaction", headerAmount = "$1,200" , footerTitle = "Add Proceeds From Transaction",
             contentCell = arrayListOf(
                 ContentCell("Proceeds From Selling Non-Real Es...", "Proceeds From Transaction" ,"$1,200" )
             ), navigateToTransactionAsset)
 
 
-        val assetModelCell5 = AssetsModelClass( headerTitle = "Gift Funds", headerAmount = "$2000" , footerTitle = "Add Gifts Account",
+        val assetModelCell5 = AssetsModelDataClass( headerTitle = "Gift Funds", headerAmount = "$2000" , footerTitle = "Add Gifts Account",
             contentCell = arrayListOf(
                 ContentCell("Relative", "Cash Gifts" ,"$2000" )
             ), navigateToGiftAsset)
 
 
-        val assetModelCell6 = AssetsModelClass( headerTitle = "Other", headerAmount = "$600" , footerTitle = "Add Other Assets",
+        val assetModelCell6 = AssetsModelDataClass( headerTitle = "Other", headerAmount = "$600" , footerTitle = "Add Other Assets",
             contentCell = arrayListOf(
                 ContentCell("Individual Development Account", "Other" ,"$600" )
             ) , navigateToOtherAsset)
 
 
 
-        val modelArrayList:ArrayList<AssetsModelClass> = arrayListOf()
+        val modelArrayList:ArrayList<AssetsModelDataClass> = arrayListOf()
         modelArrayList.add(assetModelCell)
         modelArrayList.add(assetModelCell2)
         modelArrayList.add(assetModelCell3)
