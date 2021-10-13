@@ -51,15 +51,15 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
             binding.rbSubPropertyAddress.isChecked = false
             binding.rbSubProperty.setOnClickListener(this)
             binding.rbSubPropertyAddress.setOnClickListener(this)
-            binding.rbMixedPropertyNo.setOnClickListener(this)
-            binding.rbMixedPropertyYes.setOnClickListener(this)
+            binding.radioMixedPropertyNo.setOnClickListener(this)
+            binding.radioMixedPropertyYes.setOnClickListener(this)
             binding.layoutDetails.setOnClickListener(this)
             binding.backButton.setOnClickListener(this)
             binding.layoutAddress.setOnClickListener(this)
             binding.rbOccupying.setOnClickListener(this)
             binding.rbNonOccupying.setOnClickListener(this)
-            binding.rbMixedPropertyYes.setOnClickListener(this)
-            binding.rbMixedPropertyNo.setOnClickListener(this)
+            binding.radioMixedPropertyYes.setOnClickListener(this)
+            binding.radioMixedPropertyNo.setOnClickListener(this)
             binding.subpropertyParentLayout.setOnClickListener(this)
             binding.btnSave.setOnClickListener(this)
 
@@ -82,6 +82,11 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
             viewModel.getSubjectPropertyDetails(token, 5)
             viewModel.subjectPropertyDetails.observe(viewLifecycleOwner, { details ->
                 if(details != null){
+                    details.subPropertyData?.address?.let {
+                        binding.rbSubPropertyAddress.isChecked = true
+                        binding.tvSubPropertyAddress.visibility = View.VISIBLE
+                        binding.tvSubPropertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+                    }
                     // property id
                     details.subPropertyData?.propertyTypeId?.let { id ->
                         propertyTypeId = id
@@ -109,13 +114,15 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
                     // mixed use property
                     details.subPropertyData?.isMixedUseProperty?.let { value ->
                         if(value){
-                            binding.rbMixedPropertyYes.isChecked = true
+                            binding.radioMixedPropertyYes.isChecked = true
+                            binding.radioMixedPropertyYes.setTypeface(null, Typeface.BOLD)
                             details.subPropertyData.mixedUsePropertyExplanation?.let { desc ->
                                 binding.mixedPropertyExplanation.setText(desc)
                             }
                         }
                         else
-                            binding.rbMixedPropertyNo.isChecked = true
+                            binding.radioMixedPropertyNo.isChecked = true
+                            binding.radioMixedPropertyNo.setTypeface(null, Typeface.BOLD)
                     }
 
                     getDropDownData()
@@ -129,6 +136,15 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
         lifecycleScope.launchWhenStarted {
             viewModel.getCoBorrowerOccupancyStatus(token, 5)
             viewModel.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {
+                if(it.occupancyData != null  && it.occupancyData.size > 0){
+                    binding.rbOccupying.isChecked = true
+                    binding.rbOccupying.setTypeface(null, Typeface.BOLD)
+                    binding.coBorrowerName.setText(it.occupancyData.get(0).borrowerFirstName + " " + it.occupancyData.get(0).borrowerLastName)
+                }
+                else {
+                    binding.rbNonOccupying.isChecked = false
+                    binding.coBorrowerName.visibility = View.GONE
+                }
             })
         }
     }
@@ -139,7 +155,6 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
             viewModel.propertyType.observe(viewLifecycleOwner, {
                 if(it != null && it.size > 0) {
 
-                    Log.e("properyId2", ""+ propertyTypeId)
                     val itemList:ArrayList<String> = arrayListOf()
                     for(item in it){
                         itemList.add(item.name)
@@ -209,7 +224,7 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
         when (view?.getId()) {
             R.id.rb_sub_property -> radioSubPropertyClick()
             R.id.rb_sub_property_address -> setAddressClick()
-            R.id.rb_mixed_property_yes -> mixedPropertyDetail()
+            R.id.radio_mixed_property_yes -> mixedPropertyDetail()
             R.id.layout_details -> mixedPropertyDetail()
             R.id.layout_address -> setAddressClick()
             R.id.backButton ->  {
@@ -223,12 +238,12 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
             }
 
             R.id.rb_mixed_property_no ->
-                if (binding.rbMixedPropertyNo.isChecked) {
+                if (binding.radioMixedPropertyNo.isChecked) {
                     binding.layoutDetails.visibility = View.GONE
-                    binding.rbMixedPropertyNo.setTypeface(null, Typeface.BOLD)
-                    binding.rbMixedPropertyYes.setTypeface(null, Typeface.NORMAL)
+                    binding.radioMixedPropertyNo.setTypeface(null, Typeface.BOLD)
+                    binding.radioMixedPropertyYes.setTypeface(null, Typeface.NORMAL)
                 }else{
-                    binding.rbMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
+                    binding.radioMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
                 }
             R.id.rb_occupying ->
                 if (binding.rbOccupying.isChecked) {
@@ -294,8 +309,8 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
     private fun mixedPropertyDetail(){
         findNavController().navigate(R.id.action_mixed_property)
         binding.layoutDetails.visibility = View.VISIBLE
-        binding.rbMixedPropertyYes.setTypeface(null, Typeface.BOLD)
-        binding.rbMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
+        binding.radioMixedPropertyYes.setTypeface(null, Typeface.BOLD)
+        binding.radioMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
     }
 
    /* private fun setSpinnerData() {
@@ -336,10 +351,5 @@ class SubjectPropertyPurchase : BaseFragment(), View.OnClickListener {
             }
         }
     } */
-
-
-
-
-
 
 }

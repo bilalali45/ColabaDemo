@@ -389,7 +389,7 @@
     <string name="non_occupying">Non-Occupying</string>
     <string name="subject_property">Subject Property</string>
     <string name="subject_property_address">Subject Property Address</string>
-    <string name="mixed_use_property">Mixed Use Property Property</string>
+    <string name="mixed_use_property">Mixed Use Property</string>
     <string name="first_mortgage">First Mortgage</string>
     <string name="sec_mortgage">Second Mortgage</string>
     <string name="first_mortgage_payment">First Mortgage Payment</string>
@@ -397,6 +397,7 @@
     <string name="credit_limit_switch">Home Equity Line of Credit (HELOC)</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="details_heading">Details</string>
     <string name="total_income">Total Income</string>
     <string name="current_employment">Current Employment</string>
     <string name="previous_employment">Previous Employment</string>

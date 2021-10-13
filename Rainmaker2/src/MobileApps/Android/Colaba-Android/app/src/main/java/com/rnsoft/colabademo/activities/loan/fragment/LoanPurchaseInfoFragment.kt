@@ -4,6 +4,7 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import android.widget.ArrayAdapter
 import androidx.activity.addCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputLayout
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithBackNavBinding
@@ -26,13 +29,16 @@ import java.text.DecimalFormat
 /**
  * Created by Anita Kiran on 9/3/2021.
  */
-class LoanPurchaseInfo : BaseFragment(){
+class LoanPurchaseInfoFragment : BaseFragment(){
 
+    private val loanViewModel : LoanInfoViewModel by activityViewModels()
     private lateinit var binding: LoanPurchaseInfoBinding
     private lateinit var bindingToolbar : AppHeaderWithBackNavBinding
     val format =  DecimalFormat("#,###,###")
     private val loanStageArray = listOf("Pre-Approval")
-    lateinit var mTextWatcher : TextWatcher
+    private lateinit var mTextWatcher : TextWatcher
+    val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA"
+
 
 
     override fun onCreateView(
@@ -47,6 +53,8 @@ class LoanPurchaseInfo : BaseFragment(){
         initViews()
         setNumberFormats()
         setCalulations()
+        getLoanInfoDetail()
+
 
         bindingToolbar.backButton.setOnClickListener {
             requireActivity().finish()
@@ -71,12 +79,26 @@ class LoanPurchaseInfo : BaseFragment(){
         return binding.root
     }
 
+    private fun getLoanInfoDetail() {
+        lifecycleScope.launchWhenStarted {
+            loanViewModel.getLoanInfoPurchase(token, 5)
+            loanViewModel.loanInfoPurchase.observe(viewLifecycleOwner, { loanInfo ->
+                if (loanInfo != null) {
+                    Log.e("loan", "$loanInfo.loanDetails")
+                }
+
+
+
+            })
+        }
+    }
+
 
 
     private fun initViews() {
 
         // set Header title
-        bindingToolbar.headerTitle.setText(getString(com.rnsoft.colabademo.R.string.loan_info_purchase))
+        bindingToolbar.headerTitle.setText(getString(R.string.loan_info_purchase))
 
         // set field prefixes
         CustomMaterialFields.setDollarPrefix(binding.layoutDownPayment,requireContext())

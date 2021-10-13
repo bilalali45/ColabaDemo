@@ -50,6 +50,12 @@ interface ServerApi{
         @Header("Authorization" )  Authorization:String,
         @Query("loanApplicationId")  loanApplicationId:Int) : CoBorrowerOccupancyStatus
 
+    @GET("api/mcu/mobile/loanapplication/Loan/GetLoanInfoDetails")
+    suspend fun getLoanInfoDetails(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int) : LoanInfoPurchase
+
+
 
 
 
