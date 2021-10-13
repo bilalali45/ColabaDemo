@@ -251,7 +251,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:fontFamily="@font/rubik_medium"
-                android:text="Mixed Use Property"
+                android:text="@string/mixed_use_property"
                 android:textAlignment="center"
                 android:textColor="@color/grey_color_two"
                 android:textSize="13sp"
@@ -273,7 +273,7 @@
                 android:layout_marginTop="20dp">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/rb_mixed_property_yes"
+                    android:id="@+id/radio_mixed_property_yes"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
                     android:button="@drawable/radiodraw"
@@ -285,7 +285,7 @@
                     android:textSize="14sp" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/rb_mixed_property_no"
+                    android:id="@+id/radio_mixed_property_no"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
                     android:layout_marginTop="18dp"
@@ -316,12 +316,13 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/rubik_medium"
-                    android:text="Details"
+                    android:text="@string/details_heading"
                     android:textColor="@color/txt_color_app_headings"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/mixed_property_explanation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -393,7 +394,7 @@
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_property_taxes"
+                    android:id="@+id/ed_property_tax"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -492,6 +493,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/co_borrower_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

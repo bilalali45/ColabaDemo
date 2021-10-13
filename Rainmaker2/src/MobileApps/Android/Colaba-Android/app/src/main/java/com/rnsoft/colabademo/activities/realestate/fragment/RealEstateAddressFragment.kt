@@ -132,13 +132,13 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
                 requireContext()
             )
         )
-        binding.edCounty.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.edCounty,
-                binding.layoutCounty,
-                requireContext()
-            )
-        )
+//        binding.tvCounty.setOnFocusChangeListener(
+//            CustomFocusListenerForEditText(
+//                binding.tvCounty,
+//                binding.layoutCounty,
+//                requireContext()
+//            )
+//        )
         binding.edZipcode.setOnFocusChangeListener(
             CustomFocusListenerForEditText(
                 binding.edZipcode,
@@ -164,11 +164,11 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
             binding.edCity,
             binding.layoutCity
         )
-        CustomMaterialFields.onTextChangedLableColor(
-            requireActivity(),
-            binding.edCounty,
-            binding.layoutCounty
-        )
+//        CustomMaterialFields.onTextChangedLableColor(
+//            requireActivity(),
+//            binding.tvCounty,
+//            binding.layoutCounty
+//        )
         CustomMaterialFields.onTextChangedLableColor(
             requireActivity(),
             binding.edZipcode,
@@ -358,7 +358,7 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
 
 
             locality?.let { binding.edCity.setText(it) }
-            subLocality?.let { binding.edCounty.setText(it) }
+            subLocality?.let { binding.tvCounty.setText(it) }
             postalCode?.let { binding.edZipcode.setText(it) }
             countryName?.let { binding.tvCountry.setText(it) }
             binding.edStreetAddress.setText(place.getPrimaryText(null))

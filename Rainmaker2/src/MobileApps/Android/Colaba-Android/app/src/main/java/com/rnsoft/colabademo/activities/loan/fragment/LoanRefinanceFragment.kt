@@ -19,7 +19,7 @@ import com.rnsoft.colabademo.utils.NumberTextFormat
 /**
  * Created by Anita Kiran on 9/6/2021.
  */
-class LoanRefinance : BaseFragment() {
+class LoanRefinanceFragment : BaseFragment() {
 
     private lateinit var binding: LoanRefinanceInfoBinding
     private lateinit var bindingToolbar: AppHeaderWithBackNavBinding

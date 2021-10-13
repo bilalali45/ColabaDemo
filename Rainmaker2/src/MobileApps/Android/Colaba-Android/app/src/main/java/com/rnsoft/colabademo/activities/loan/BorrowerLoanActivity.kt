@@ -32,7 +32,7 @@ class BorrowerLoanActivity : BaseActivity() {
         val navController = findNavController(R.id.nav_host_borrower_loan)
 
         if(loanPurpose.equals(AppConstant.purchase, ignoreCase = true))
-             navController.navigate(R.id.navigation_loan_refinance)
+             navController.navigate(R.id.navigation_loan_purchase)
          else if(loanPurpose.equals(AppConstant.refinance, ignoreCase = true)) {
              navController.navigate(R.id.navigation_loan_refinance)
          }

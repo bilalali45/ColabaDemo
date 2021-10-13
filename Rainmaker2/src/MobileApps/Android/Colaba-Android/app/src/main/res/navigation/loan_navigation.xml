@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_loan_purchase"
-        android:name="com.rnsoft.colabademo.LoanPurchaseInfo"
+        android:name="com.rnsoft.colabademo.LoanPurchaseInfoFragment"
         android:label="@string/loan_info_purchase"
         tools:layout="@layout/loan_purchase_info" />
 
     <fragment
         android:id="@+id/navigation_loan_refinance"
-        android:name="com.rnsoft.colabademo.LoanRefinance"
+        android:name="com.rnsoft.colabademo.LoanRefinanceFragment"
         android:label="@string/loan_info_refinance"
         tools:layout="@layout/loan_refinance_info" />
 

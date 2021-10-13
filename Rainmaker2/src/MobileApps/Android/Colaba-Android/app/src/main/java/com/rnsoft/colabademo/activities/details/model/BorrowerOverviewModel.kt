@@ -23,6 +23,8 @@ data class BorrowerOverviewModel(
 data class CoBorrower(
     val firstName: String?= "",
     val lastName: String? = "",
+    val middleName:  String? = "",
+    val ownType:String? = "",
     val ownTypeId: Int?
 )
 
@@ -30,6 +32,8 @@ data class WebBorrowerAddress(
     val city: String? = "",
     val countryId: Int?,
     val countryName: String? = "",
+    val countyId: Int?,
+    val countyName: String? = "",
     val stateId: Int?,
     val stateName: String? = "",
     val street: String? = "",

@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import com.rnsoft.colabademo.activities.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
@@ -17,6 +18,50 @@ interface ServerApi{
         "Cache-Control: max-age=640000"
     )
      */
+
+    // subject property
+    @GET("api/mcu/mobile/loanapplication/Loan/GetAllPropertyTypeDropDown")
+    suspend fun getPropertyTypes(@Header("Authorization" )Authorization:String) : ArrayList<PropertyType>
+
+    @GET("api/mcu/mobile/loanapplication/Loan/GetPropertyUsageDropDown")
+    suspend fun getOccupancyType(@Header("Authorization" )Authorization:String) : ArrayList<PropertyType>
+
+    @GET("api/mcu/mobile/loanapplication/Loan/GetCountries")
+    suspend fun getCountries(@Header("Authorization" )Authorization:String) : ArrayList<CountriesModel>
+
+    @GET("api/mcu/mobile/loanapplication/Loan/GetStates")
+    suspend fun getStates(@Header("Authorization" )Authorization:String) : ArrayList<StatesModel>
+
+    @GET("api/mcu/mobile/loanapplication/Loan/GetCounties")
+    suspend fun getCounties(@Header("Authorization" )Authorization:String) : ArrayList<CountiesModel>
+
+    @GET("api/mcu/mobile/loanapplication/SubjectProperty/GetSubjectPropertyDetails")
+    suspend fun getSubjectPropertyDetails(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int) : SubjectPropertyDetails
+
+    @GET("api/mcu/mobile/loanapplication/SubjectProperty/GetRefinanceSubjectPropertyDetail")
+    suspend fun getSubjectPropertyRefinance(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int) : SubjectPropertyRefinanceDetails
+
+    @GET("api/mcu/mobile/loanapplication/SubjectProperty/GetCoBorrowersOccupancyStatus")
+    suspend fun getCoBorrowerOccupancyStatus(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int) : CoBorrowerOccupancyStatus
+
+    @GET("api/mcu/mobile/loanapplication/Loan/GetLoanInfoDetails")
+    suspend fun getLoanInfoDetails(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int) : LoanInfoPurchase
+
+
+
+
+
+
+
+
 
     @POST("api/mcu/mobile/identity/mcuaccount/signin")
     suspend fun login(@Body loginRequest: LoginRequest ,  @Header("dontAskTwoFaIdentifier")  dontAskTwoFaIdentifier:String=""): Response<LoginResponse>
@@ -143,5 +188,12 @@ interface ServerApi{
         @Header("Authorization" )  Authorization:String,
         @Query("loanApplicationId")  loanApplicationId:Int):BorrowerApplicationTabModel
 
+
+    @GET("api/mcu/mobile/loanapplication/Loan/GetAssetsDetails")
+    suspend fun getBorrowerAssetsDetail(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int,
+        @Query("borrowerId")  borrowerId:Int
+    ):AssetsModelDataClass
 
 }
