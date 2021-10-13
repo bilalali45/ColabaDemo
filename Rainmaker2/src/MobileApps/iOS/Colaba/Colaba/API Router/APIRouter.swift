@@ -36,7 +36,17 @@ enum EndPoint:String{
     case getLoanInformation = "loanapplication/loan/getloaninfo?"
     case getLoanDocuments = "documentmanagement/mcudocument/getdocuments?"
     case viewLoanDocument = "documentmanagement/mcudocument/View?"
-    case getLoanApplicationData = "loanapplication/Loan/GetBorrowerLoanApplication?"
+    case getLoanApplicationData = "loanapplication/Loan/GetLoanApplicationSummary?"
+    case getAllPropertyTypeDrowpDown = "loanapplication/Loan/GetAllPropertyTypeDropDown"
+    case getAllOccupancyTypeDropDown = "loanapplication/Loan/GetPropertyUsageDropDown"
+    case getCoBorrowersOccupancyStatus = "loanapplication/SubjectProperty/GetCoBorrowersOccupancyStatus?"
+    case getPurchaseSubjectPropertyDetail = "loanapplication/SubjectProperty/GetSubjectPropertyDetails?"
+    case getAllCountries = "loanapplication/Loan/GetCountries"
+    case getAllStates = "loanapplication/Loan/GetStates"
+    case getAllCounties = "loanapplication/Loan/GetCounties"
+    case getRefinanceSubjectPropertyDetail = "loanapplication/SubjectProperty/GetRefinanceSubjectPropertyDetail?"
+    case getLoanInfoDetail = "loanapplication/Loan/GetLoanInfoDetails?"
+    case getLoanGoals = "loanapplication/Loan/GetAllLoanGoals?"
     case logout = "identity/mcuaccount/Logout"
     
 }

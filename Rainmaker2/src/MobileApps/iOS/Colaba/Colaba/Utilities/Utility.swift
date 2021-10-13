@@ -21,6 +21,7 @@ struct Utility {
     static private var pipelineDateFormatter: DateFormatter?
     static private var loanApplicationDateFormatter: DateFormatter?
     static private var documentDateFormatter: DateFormatter?
+    static private var monthYearFormatter: DateFormatter?
     
     static func getLoginNavigationVC() -> LoginNavigationViewController{
         return authStoryboard.instantiateViewController(withIdentifier: "LoginNavigationViewController")  as! LoginNavigationViewController
@@ -491,6 +492,20 @@ struct Utility {
         
     }
     
+    static var localMonthYearFormatter: DateFormatter{
+        get{
+            if (monthYearFormatter == nil){
+                monthYearFormatter = DateFormatter()
+                monthYearFormatter?.locale = .current
+                monthYearFormatter?.dateFormat = "MM/yyyy"
+            }
+            return monthYearFormatter!
+        }
+        set{
+            
+        }
+    }
+    
     static func checkDeviceAuthType() -> String {
          let authType = LocalAuthManager.shared.biometricType
             switch authType {
@@ -788,6 +803,17 @@ struct Utility {
         nameLabel.textAlignment = .center
         let nameImage = UIImage.imageWithLabel(nameLabel)
         return nameImage.roundedImage()
+    }
+    
+    static func getMonthYear(_ dateString: String) -> String{
+        
+        let actualDate = dateString.replacingOccurrences(of: "T", with: " ")
+        
+        if let date = localLoanApplicationDateFormatter.date(from: actualDate){
+            return localMonthYearFormatter.string(from: date)
+        }
+        
+        return ""
     }
     
 }

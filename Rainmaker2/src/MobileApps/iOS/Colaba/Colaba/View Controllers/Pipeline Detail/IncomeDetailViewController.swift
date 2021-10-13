@@ -14,16 +14,22 @@ class IncomeDetailViewController: BaseViewController {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewEmployement: UITableView!
+    @IBOutlet weak var tableViewEmployementTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewEmployementHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewSelfEmployement: UITableView!
+    @IBOutlet weak var tableViewSelfEmploymentTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewSelfEmployementHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewBusiness: UITableView!
+    @IBOutlet weak var tableViewBusinessTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewBusinessHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewMilitaryPay: UITableView!
+    @IBOutlet weak var tableViewMilitaryTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewMilitaryPayHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewRetitrement: UITableView!
+    @IBOutlet weak var tableViewRetirementTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewRetirementHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewOther: UITableView!
+    @IBOutlet weak var tableViewOtherTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewOtherHeightConstraint: NSLayoutConstraint!
     
     var selectedTableView: UITableView?

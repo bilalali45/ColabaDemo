@@ -18,6 +18,12 @@
 		230B94D526E77AAA004CBC83 /* AddBankAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B94D426E77AAA004CBC83 /* AddBankAccountViewController.swift */; };
 		230B94D726E7A060004CBC83 /* AddRetirementAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B94D626E7A060004CBC83 /* AddRetirementAccountViewController.swift */; };
 		230B94D926E7A436004CBC83 /* AddStockBondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B94D826E7A436004CBC83 /* AddStockBondViewController.swift */; };
+		2313E7C227155E3D00222A6E /* DropDownModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2313E7C127155E3D00222A6E /* DropDownModel.swift */; };
+		2313E7C42715626D00222A6E /* SubjectPropertyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2313E7C32715626D00222A6E /* SubjectPropertyModel.swift */; };
+		2313E7C627157ADC00222A6E /* CountriesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2313E7C527157ADC00222A6E /* CountriesModel.swift */; };
+		2313E7C827157AE600222A6E /* StatesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2313E7C727157AE600222A6E /* StatesModel.swift */; };
+		2313E7CA27157AF100222A6E /* CountiesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2313E7C927157AF100222A6E /* CountiesModel.swift */; };
+		2313E7CC2715B23800222A6E /* RefinanceSubjectPropertyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2313E7CB2715B23800222A6E /* RefinanceSubjectPropertyModel.swift */; };
 		2315E18526E8921B00377764 /* AddProceedsFromTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2315E18426E8921B00377764 /* AddProceedsFromTransactionViewController.swift */; };
 		2319224626E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2319224526E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift */; };
 		2320138D2698324800F500E2 /* BorrowerAddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2320138B2698324800F500E2 /* BorrowerAddressTableViewCell.swift */; };
@@ -142,6 +148,8 @@
 		23B5E98726F4A96E00686B8E /* BankruptcyFollowupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E98626F4A96E00686B8E /* BankruptcyFollowupViewController.swift */; };
 		23B5E98926F4C85E00686B8E /* ChildSupportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E98826F4C85E00686B8E /* ChildSupportViewController.swift */; };
 		23B5E98B26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E98A26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift */; };
+		23B9277F2716B6E1009B460A /* LoanInfoDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B9277E2716B6E1009B460A /* LoanInfoDetailModel.swift */; };
+		23B927812716B7AF009B460A /* LoanGoalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B927802716B7AF009B460A /* LoanGoalModel.swift */; };
 		23BBADCC26EF2A5400813F04 /* IncomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCB26EF2A5400813F04 /* IncomeViewController.swift */; };
 		23BBADCE26EF2A6200813F04 /* IncomeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCD26EF2A6200813F04 /* IncomeDetailViewController.swift */; };
 		23BBADD026EF3F1D00813F04 /* AddEmployementPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCF26EF3F1D00813F04 /* AddEmployementPopupViewController.swift */; };
@@ -263,6 +271,12 @@
 		230B94D426E77AAA004CBC83 /* AddBankAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBankAccountViewController.swift; sourceTree = "<group>"; };
 		230B94D626E7A060004CBC83 /* AddRetirementAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRetirementAccountViewController.swift; sourceTree = "<group>"; };
 		230B94D826E7A436004CBC83 /* AddStockBondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStockBondViewController.swift; sourceTree = "<group>"; };
+		2313E7C127155E3D00222A6E /* DropDownModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownModel.swift; sourceTree = "<group>"; };
+		2313E7C32715626D00222A6E /* SubjectPropertyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectPropertyModel.swift; sourceTree = "<group>"; };
+		2313E7C527157ADC00222A6E /* CountriesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesModel.swift; sourceTree = "<group>"; };
+		2313E7C727157AE600222A6E /* StatesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatesModel.swift; sourceTree = "<group>"; };
+		2313E7C927157AF100222A6E /* CountiesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountiesModel.swift; sourceTree = "<group>"; };
+		2313E7CB2715B23800222A6E /* RefinanceSubjectPropertyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinanceSubjectPropertyModel.swift; sourceTree = "<group>"; };
 		2315E18426E8921B00377764 /* AddProceedsFromTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProceedsFromTransactionViewController.swift; sourceTree = "<group>"; };
 		2319224526E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectPropertyAddressViewController.swift; sourceTree = "<group>"; };
 		2320138B2698324800F500E2 /* BorrowerAddressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerAddressTableViewCell.swift; sourceTree = "<group>"; };
@@ -387,6 +401,8 @@
 		23B5E98626F4A96E00686B8E /* BankruptcyFollowupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankruptcyFollowupViewController.swift; sourceTree = "<group>"; };
 		23B5E98826F4C85E00686B8E /* ChildSupportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSupportViewController.swift; sourceTree = "<group>"; };
 		23B5E98A26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSupportFollowupQuestionsViewController.swift; sourceTree = "<group>"; };
+		23B9277E2716B6E1009B460A /* LoanInfoDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanInfoDetailModel.swift; sourceTree = "<group>"; };
+		23B927802716B7AF009B460A /* LoanGoalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanGoalModel.swift; sourceTree = "<group>"; };
 		23BBADCB26EF2A5400813F04 /* IncomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeViewController.swift; sourceTree = "<group>"; };
 		23BBADCD26EF2A6200813F04 /* IncomeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeDetailViewController.swift; sourceTree = "<group>"; };
 		23BBADCF26EF3F1D00813F04 /* AddEmployementPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEmployementPopupViewController.swift; sourceTree = "<group>"; };
@@ -556,6 +572,14 @@
 				23E1A7A326B7E6F200714D3B /* LoanApplicationModel.swift */,
 				23BDB1D226F8706900C73E33 /* DemographicQuestionsModel.swift */,
 				39158828270CA1350006C140 /* RequestEmailTemplate.swift */,
+				2313E7C127155E3D00222A6E /* DropDownModel.swift */,
+				2313E7C32715626D00222A6E /* SubjectPropertyModel.swift */,
+				2313E7C527157ADC00222A6E /* CountriesModel.swift */,
+				2313E7C727157AE600222A6E /* StatesModel.swift */,
+				2313E7C927157AF100222A6E /* CountiesModel.swift */,
+				2313E7CB2715B23800222A6E /* RefinanceSubjectPropertyModel.swift */,
+				23B9277E2716B6E1009B460A /* LoanInfoDetailModel.swift */,
+				23B927802716B7AF009B460A /* LoanGoalModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1381,6 +1405,7 @@
 				23B238B82679D38900508449 /* SearchViewController.swift in Sources */,
 				23B5E98326F46F4C00686B8E /* ForceClosedPropertyViewController.swift in Sources */,
 				23CD143426E25B4400627127 /* SecondMortgageFollowupQuestionsViewController.swift in Sources */,
+				2313E7C42715626D00222A6E /* SubjectPropertyModel.swift in Sources */,
 				2338DB73270DA26E00658C2A /* EmailTemplateTableViewCell.swift in Sources */,
 				2330CD2526B000ED00FF3C43 /* DocumentMessageTableViewCell.swift in Sources */,
 				23A56C5D2685B017005CE6F4 /* Icons.swift in Sources */,
@@ -1390,6 +1415,7 @@
 				239570E626E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift in Sources */,
 				23E9C751269C3F980066C978 /* DocumentsTableViewCell.swift in Sources */,
 				2381B4ED2701D7A60045D917 /* LoanOfficerMainViewController.swift in Sources */,
+				2313E7C827157AE600222A6E /* StatesModel.swift in Sources */,
 				2392A4CE26C55FEE0083EFE4 /* AddMailingAddressViewController.swift in Sources */,
 				23BE064926F08EED00F9B4B8 /* CurrentEmployerAddressViewController.swift in Sources */,
 				7186AD602653DE8600E740D3 /* ExtensionOfView.swift in Sources */,
@@ -1400,11 +1426,14 @@
 				2368799F26BC35360045D294 /* DemographicInformationCollectionViewCell.swift in Sources */,
 				23BBADD226EF5F8900813F04 /* AddCurrentEmployementViewController.swift in Sources */,
 				238D70772678E8C80067687C /* FiltersViewController.swift in Sources */,
+				23B927812716B7AF009B460A /* LoanGoalModel.swift in Sources */,
 				39158827270CA11D0006C140 /* SendDocumentRequestViewController.swift in Sources */,
 				23E9C74D269C23070066C978 /* ApplicationStatusTableViewCell.swift in Sources */,
 				23B5E97D26F46E5200686B8E /* PartyToLawsuitViewController.swift in Sources */,
 				2380E25C26DF721100B66C61 /* RefinanceSubjectPropertyViewController.swift in Sources */,
 				238E0F8726F31A870025FF06 /* RealEstateViewController.swift in Sources */,
+				23B9277F2716B6E1009B460A /* LoanInfoDetailModel.swift in Sources */,
+				2313E7C227155E3D00222A6E /* DropDownModel.swift in Sources */,
 				7113F52526569D310066E179 /* LocalAuthManager.swift in Sources */,
 				236EA1AC26789EAC00C2F8B5 /* PipelineMoreViewController.swift in Sources */,
 				236B59D1266504060001F416 /* UserModel.swift in Sources */,
@@ -1468,8 +1497,11 @@
 				239DB536270C2D5F00977E20 /* BankStatementViewController.swift in Sources */,
 				39158829270CA1350006C140 /* RequestEmailTemplate.swift in Sources */,
 				23DF0CEE269ED82000F29B70 /* LoanInfoModel.swift in Sources */,
+				2313E7C627157ADC00222A6E /* CountriesModel.swift in Sources */,
 				2381B4EF2701DD0E0045D917 /* LoanOfficerListViewController.swift in Sources */,
+				2313E7CC2715B23800222A6E /* RefinanceSubjectPropertyModel.swift in Sources */,
 				23A56C5A2685B017005CE6F4 /* Controller.swift in Sources */,
+				2313E7CA27157AF100222A6E /* CountiesModel.swift in Sources */,
 				23C2448E2689E55E00EED1D0 /* InActivePipelineViewController.swift in Sources */,
 				23BBADCC26EF2A5400813F04 /* IncomeViewController.swift in Sources */,
 				23A56C5C2685B017005CE6F4 /* Extensions.swift in Sources */,

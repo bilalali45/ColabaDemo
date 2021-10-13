@@ -51,6 +51,13 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var btnNonOccupying: UIButton!
     @IBOutlet weak var lblNonOccupying: UILabel!
     
+    var loanApplicationId = 0
+    
+    var propertyTypeArray = [DropDownModel]()
+    var occupancyTypeArray = [DropDownModel]()
+    var subjectPropertyDetail = SubjectPropertyModel()
+    var coBorrowerOccupancyArray = [CoBorrowerOccupancyModel]()
+    
     var isTBDProperty = true
     var isMixedUseProperty: Bool?
     var isOccupying: Bool?
@@ -59,6 +66,7 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
         super.viewDidLoad()
         setTextFields()
         setViews()
+        getPropertyTypeDropDown()
     }
     
     //MARK:- Methods and Actions
@@ -125,6 +133,31 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
         lblOccupying.font = Theme.getRubikRegularFont(size: 14)
     }
     
+    func setSubjectPropertyData(){
+        isTBDProperty = self.subjectPropertyDetail.address == nil
+        if let subjectPropertyAddress = self.subjectPropertyDetail.address{
+            lblAddress.text = "\(subjectPropertyAddress.street) \(subjectPropertyAddress.unit),\n\(subjectPropertyAddress.city), \(subjectPropertyAddress.stateName) \(subjectPropertyAddress.zipCode)"
+        }
+        
+        if let propertyType = self.propertyTypeArray.filter({$0.optionId == self.subjectPropertyDetail.propertyTypeId}).first{
+            self.txtfieldPropertyType.setTextField(text: propertyType.optionName)
+        }
+        if let occupancyType = self.occupancyTypeArray.filter({$0.optionId == self.subjectPropertyDetail.occupancyTypeId}).first{
+            self.txtfieldOccupancyType.setTextField(text: occupancyType.optionName)
+        }
+        isMixedUseProperty = self.subjectPropertyDetail.isMixedUseProperty
+        lblPropertyUseDetail.text = self.subjectPropertyDetail.mixedUsePropertyExplanation
+        txtfieldAppraisedPropertyValue.setTextField(text: String(format: "%.0f", self.subjectPropertyDetail.appraisedPropertyValue.rounded()))
+        txtfieldTax.setTextField(text: String(format: "%.0f", self.subjectPropertyDetail.propertyTax.rounded()))
+        txtfieldHomeOwnerInsurance.setTextField(text: String(format: "%.0f", self.subjectPropertyDetail.homeOwnerInsurance.rounded()))
+        txtfieldFloodInsurance.setTextField(text: String(format: "%.0f", self.subjectPropertyDetail.floodInsurance.rounded()))
+        isOccupying = self.coBorrowerOccupancyArray.count > 0
+        lblCoBorrowerName.text = self.coBorrowerOccupancyArray.map{$0.borrowerFullName}.joined(separator: ", ")
+        changeOccupyingStatus()
+        changeMixedUseProperty()
+        changedSubjectPropertyType()
+    }
+    
     func setScreenHeight(){
         UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
@@ -138,6 +171,7 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     
     @objc func addressViewTapped(){
         let vc = Utility.getSubjectPropertyAddressVC()
+        vc.selectedAddress = self.subjectPropertyDetail.address
         self.presentVC(vc: vc)
         isTBDProperty = false
         changedSubjectPropertyType()
@@ -196,9 +230,9 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     @objc func changeOccupyingStatus(){
         if let occupying = isOccupying{
             btnOccupying.setImage(UIImage(named: occupying ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-            lblOccupying.font = occupying ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 14)
+            lblOccupying.font = occupying ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
             btnNonOccupying.setImage(UIImage(named: occupying ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
-            lblNonOccupying.font = occupying ?  Theme.getRubikRegularFont(size: 15) : Theme.getRubikMediumFont(size: 14)
+            lblNonOccupying.font = occupying ?  Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
         }
         
     }
@@ -210,4 +244,118 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     @IBAction func btnSaveChangesTapped(_ sender: UIButton){
         self.goBack()
     }
+    
+    //MARK:- API's
+    
+    func getPropertyTypeDropDown(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllPropertyTypeDrowpDown, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = DropDownModel()
+                        model.updateModelWithJSON(json: option)
+                        self.propertyTypeArray.append(model)
+                    }
+                    self.txtfieldPropertyType.setDropDownDataSource(self.propertyTypeArray.map{$0.optionName})
+                    self.getOccupancyTypeDropDown()
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+        
+    }
+    
+    func getOccupancyTypeDropDown(){
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllOccupancyTypeDropDown, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = DropDownModel()
+                        model.updateModelWithJSON(json: option)
+                        self.occupancyTypeArray.append(model)
+                    }
+                    self.txtfieldOccupancyType.setDropDownDataSource(self.occupancyTypeArray.map{$0.optionName})
+                    self.getPurchaseSubjectProperty()
+                    
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func getPurchaseSubjectProperty(){
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getPurchaseSubjectPropertyDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                if (status == .success){
+                    
+                    let subjectPropertyModel = SubjectPropertyModel()
+                    subjectPropertyModel.updateModelWithJSON(json: result["data"])
+                    self.subjectPropertyDetail = subjectPropertyModel
+                    self.getCoBorrowersOccupancyStatus()
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func getCoBorrowersOccupancyStatus(){
+        let extraData = "loanApplicationId=\(loanApplicationId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getCoBorrowersOccupancyStatus, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                Utility.showOrHideLoader(shouldShow: false)
+                
+                if (status == .success){
+                    
+                    let coBorrowers = result["data"].arrayValue
+                    for borrower in coBorrowers{
+                        let model = CoBorrowerOccupancyModel()
+                        model.updateModelWithJSON(json: borrower)
+                        self.coBorrowerOccupancyArray.append(model)
+                    }
+                    self.setSubjectPropertyData()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+    }
+    
 }
