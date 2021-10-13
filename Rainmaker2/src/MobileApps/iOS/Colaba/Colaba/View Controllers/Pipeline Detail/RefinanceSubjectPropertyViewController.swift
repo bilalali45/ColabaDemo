@@ -256,6 +256,7 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     
     @objc func addressViewTapped(){
         let vc = Utility.getSubjectPropertyAddressVC()
+        vc.selectedAddress = self.subjectPropertyDetail.address
         self.presentVC(vc: vc)
         isTBDProperty = false
         changedSubjectPropertyType()

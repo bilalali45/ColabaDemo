@@ -1748,6 +1748,7 @@
                         <outlet property="lblAddress" destination="UfS-NJ-aEV" id="Jj3-3N-080"/>
                         <outlet property="lblDownPayment" destination="9bG-3h-b1t" id="9pI-vS-9xM"/>
                         <outlet property="lblLoanPayment" destination="Ib0-xe-drH" id="7Sh-vf-RKE"/>
+                        <outlet property="lblLoanPurpose" destination="Rew-j6-rij" id="RPL-yU-KJz"/>
                         <outlet property="lblMonthlyIncome" destination="2nO-IH-XQq" id="G5M-wd-ETH"/>
                         <outlet property="lblPercentage" destination="B8j-xh-5wc" id="dvu-ql-fPF"/>
                         <outlet property="lblPropertyType" destination="yJ6-3w-xbu" id="a2g-U5-Uyg"/>

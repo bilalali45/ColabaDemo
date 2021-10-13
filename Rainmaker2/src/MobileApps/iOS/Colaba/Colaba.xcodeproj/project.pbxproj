@@ -148,6 +148,8 @@
 		23B5E98726F4A96E00686B8E /* BankruptcyFollowupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E98626F4A96E00686B8E /* BankruptcyFollowupViewController.swift */; };
 		23B5E98926F4C85E00686B8E /* ChildSupportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E98826F4C85E00686B8E /* ChildSupportViewController.swift */; };
 		23B5E98B26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E98A26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift */; };
+		23B9277F2716B6E1009B460A /* LoanInfoDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B9277E2716B6E1009B460A /* LoanInfoDetailModel.swift */; };
+		23B927812716B7AF009B460A /* LoanGoalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B927802716B7AF009B460A /* LoanGoalModel.swift */; };
 		23BBADCC26EF2A5400813F04 /* IncomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCB26EF2A5400813F04 /* IncomeViewController.swift */; };
 		23BBADCE26EF2A6200813F04 /* IncomeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCD26EF2A6200813F04 /* IncomeDetailViewController.swift */; };
 		23BBADD026EF3F1D00813F04 /* AddEmployementPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCF26EF3F1D00813F04 /* AddEmployementPopupViewController.swift */; };
@@ -399,6 +401,8 @@
 		23B5E98626F4A96E00686B8E /* BankruptcyFollowupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankruptcyFollowupViewController.swift; sourceTree = "<group>"; };
 		23B5E98826F4C85E00686B8E /* ChildSupportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSupportViewController.swift; sourceTree = "<group>"; };
 		23B5E98A26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSupportFollowupQuestionsViewController.swift; sourceTree = "<group>"; };
+		23B9277E2716B6E1009B460A /* LoanInfoDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanInfoDetailModel.swift; sourceTree = "<group>"; };
+		23B927802716B7AF009B460A /* LoanGoalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanGoalModel.swift; sourceTree = "<group>"; };
 		23BBADCB26EF2A5400813F04 /* IncomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeViewController.swift; sourceTree = "<group>"; };
 		23BBADCD26EF2A6200813F04 /* IncomeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeDetailViewController.swift; sourceTree = "<group>"; };
 		23BBADCF26EF3F1D00813F04 /* AddEmployementPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEmployementPopupViewController.swift; sourceTree = "<group>"; };
@@ -574,6 +578,8 @@
 				2313E7C727157AE600222A6E /* StatesModel.swift */,
 				2313E7C927157AF100222A6E /* CountiesModel.swift */,
 				2313E7CB2715B23800222A6E /* RefinanceSubjectPropertyModel.swift */,
+				23B9277E2716B6E1009B460A /* LoanInfoDetailModel.swift */,
+				23B927802716B7AF009B460A /* LoanGoalModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1420,11 +1426,13 @@
 				2368799F26BC35360045D294 /* DemographicInformationCollectionViewCell.swift in Sources */,
 				23BBADD226EF5F8900813F04 /* AddCurrentEmployementViewController.swift in Sources */,
 				238D70772678E8C80067687C /* FiltersViewController.swift in Sources */,
+				23B927812716B7AF009B460A /* LoanGoalModel.swift in Sources */,
 				39158827270CA11D0006C140 /* SendDocumentRequestViewController.swift in Sources */,
 				23E9C74D269C23070066C978 /* ApplicationStatusTableViewCell.swift in Sources */,
 				23B5E97D26F46E5200686B8E /* PartyToLawsuitViewController.swift in Sources */,
 				2380E25C26DF721100B66C61 /* RefinanceSubjectPropertyViewController.swift in Sources */,
 				238E0F8726F31A870025FF06 /* RealEstateViewController.swift in Sources */,
+				23B9277F2716B6E1009B460A /* LoanInfoDetailModel.swift in Sources */,
 				2313E7C227155E3D00222A6E /* DropDownModel.swift in Sources */,
 				7113F52526569D310066E179 /* LocalAuthManager.swift in Sources */,
 				236EA1AC26789EAC00C2F8B5 /* PipelineMoreViewController.swift in Sources */,
