@@ -7,7 +7,7 @@ import javax.inject.Inject
 /**
  * Created by Anita Kiran on 10/11/2021.
  */
-class RepoSubjectProperty @Inject constructor(private val dataSource: DataSourceSubjectProperty) {
+class SubjectPropertyRepo @Inject constructor(private val dataSource: SubjectPropertyDataSource) {
 
     suspend fun getPropertyType(token:String): Result<ArrayList<PropertyType>> {
         return dataSource.getPropertyTypes(token = token)

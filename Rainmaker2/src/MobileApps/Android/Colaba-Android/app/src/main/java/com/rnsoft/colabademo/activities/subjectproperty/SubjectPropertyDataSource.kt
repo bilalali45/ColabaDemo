@@ -8,7 +8,7 @@ import javax.inject.Inject
 /**
  * Created by Anita Kiran on 10/11/2021.
  */
-class DataSourceSubjectProperty @Inject constructor(private val serverApi: ServerApi) {
+class SubjectPropertyDataSource @Inject constructor(private val serverApi: ServerApi) {
 
     suspend fun getPropertyTypes(token: String): Result<ArrayList<PropertyType>> {
         return try {

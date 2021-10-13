@@ -17,7 +17,7 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class SubjectPropertyViewModel @Inject constructor(private val repository: RepoSubjectProperty ) : ViewModel() {
+class SubjectPropertyViewModel @Inject constructor(private val repository: SubjectPropertyRepo ) : ViewModel() {
 
     private val _propertyType : MutableLiveData<ArrayList<PropertyType>> =   MutableLiveData()
     val propertyType: LiveData<ArrayList<PropertyType>> get() = _propertyType
