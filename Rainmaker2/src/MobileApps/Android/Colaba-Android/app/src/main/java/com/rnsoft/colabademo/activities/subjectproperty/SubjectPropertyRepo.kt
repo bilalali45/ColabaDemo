@@ -29,11 +29,11 @@ class SubjectPropertyRepo @Inject constructor(private val dataSource: SubjectPro
         return dataSource.getStates(token = token)
     }
 
-    suspend fun getSubjectProptyDetails(token:String ,loanApplicationId:Int):Result<SubjectPropertyDetails>{
+    suspend fun getSubjectPropertyDetails(token:String, loanApplicationId:Int):Result<SubjectPropertyDetails>{
         return dataSource.getSubjectPropertyDetails(token = token , loanApplicationId = loanApplicationId)
     }
 
-    suspend fun getSubjectProptyRefinance(token:String ,loanApplicationId:Int):Result<SubjectPropertyRefinanceDetails>{
+    suspend fun getSubjectPropertyRefinance(token:String, loanApplicationId:Int):Result<SubjectPropertyRefinanceDetails>{
         return dataSource.getSubjectPropertyRefinance(token = token , loanApplicationId = loanApplicationId)
     }
 

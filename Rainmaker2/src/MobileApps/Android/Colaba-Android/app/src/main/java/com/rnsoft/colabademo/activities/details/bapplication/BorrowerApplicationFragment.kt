@@ -69,6 +69,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
             var borrowerIndex = 0
             borrowerApplicationViewModel.resetAssetModelClass()
 
+            /*
                 lifecycleScope.launchWhenStarted {
                     val detailActivity = (activity as? DetailActivity)
                     detailActivity?.let {
@@ -92,6 +93,8 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 }
 
             }
+
+             */
             //Timber.e("assets layout - clicked...")
             //navigateToAssetActivity()
         }
@@ -255,7 +258,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 questionAdapter.notifyDataSetChanged()
 
             }
-           else
+            else
                binding.applicationTabLayout.visibility = View.INVISIBLE
         })
 
@@ -344,8 +347,30 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     }
 
     override fun navigateToGovernmentActivity(position: Int) {
-        // TODO("Not yet implemented")
         startActivity(Intent(requireActivity(), GovtQuestionActivity::class.java))
+
+        /*
+        binding.questionProgress.visibility = View.VISIBLE
+        lifecycleScope.launchWhenStarted {
+            val detailActivity = (activity as? DetailActivity)
+            detailActivity?.let {
+                val testLoanId = it.loanApplicationId
+                testLoanId?.let { loanId ->
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        Timber.e("loading govt service...")
+                        val bool = borrowerApplicationViewModel.getGovernmentQuestions(authToken, 5, 1, 5)
+                        Timber.e("Government service loaded..."+bool)
+                        startActivity(Intent(requireActivity(), GovtQuestionActivity::class.java))
+                    }
+                }
+            }
+        }
+
+         */
+
+
+
+
     }
 
     /*
