@@ -372,8 +372,8 @@
     <string name="invalid_purchase_price">Purchase price should be between $50,000 and $100,000,000</string>
     <string name="first_mortgage_ques">Which of these accounts are included in payment?</string>
     <string name="first_mortgage_ques2">Will this mortgage be paid off at or before closing?</string>
-    <string name="sub_property_refinance_ques1">Do you currently have mortages against this property?</string>
-    <string name="sub_property_refinance_ques2">Do you have any second mortages on this property?</string>
+    <string name="sub_property_refinance_ques1">Do you currently have mortgages against this property?</string>
+    <string name="sub_property_refinance_ques2">Do you have any second mortgages on this property?</string>
 
     <string name="bankruptcy">Bankruptcy</string>
     <string name="demo_graphic_info">DemoGraphic Information</string>

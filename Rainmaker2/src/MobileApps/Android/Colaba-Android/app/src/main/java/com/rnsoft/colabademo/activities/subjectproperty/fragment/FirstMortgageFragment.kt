@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
 
 import com.rnsoft.colabademo.databinding.FirstMortgageLayoutBinding
@@ -25,7 +24,7 @@ class FirstMortgageFragment : BaseFragment(),View.OnClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FirstMortgageLayoutBinding.inflate(inflater, container, false)
 
         val title = arguments?.getString(AppConstant.address).toString()
@@ -103,7 +102,6 @@ class FirstMortgageFragment : BaseFragment(),View.OnClickListener {
                 }
         }
     }
-
 
     private fun setInputFields(){
 

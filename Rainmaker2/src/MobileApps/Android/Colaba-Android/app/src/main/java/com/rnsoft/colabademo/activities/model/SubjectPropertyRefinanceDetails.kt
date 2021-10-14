@@ -1,6 +1,8 @@
 package com.rnsoft.colabademo.activities.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Anita Kiran on 10/13/2021.
@@ -12,6 +14,7 @@ data class SubjectPropertyRefinanceDetails(
     val status: String
 )
 
+@Parcelize
 data class RefinanceAddressData(
     var street : String?,
     var unit : String?,
@@ -23,7 +26,7 @@ data class RefinanceAddressData(
     var stateName : String?,
     var countyId: Int?,
     var countyName : String?
-)
+) : Parcelable
 
 
 data class SubPropertyRefinanceData(
