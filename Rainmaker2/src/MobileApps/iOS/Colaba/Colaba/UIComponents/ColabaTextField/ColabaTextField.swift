@@ -346,6 +346,7 @@ extension ColabaTextField {
     }
     
     public func setTextField(text: String){
+        self.placeholderLabel.textColor = Theme.getAppGreyColor()
         if (type == .amount){
             prefix = PrefixType.amount.rawValue
             attributedPrefix = createAttributedPrefix(prefix: prefix!)

@@ -150,6 +150,7 @@
 		23B5E98B26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E98A26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift */; };
 		23B9277F2716B6E1009B460A /* LoanInfoDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B9277E2716B6E1009B460A /* LoanInfoDetailModel.swift */; };
 		23B927812716B7AF009B460A /* LoanGoalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B927802716B7AF009B460A /* LoanGoalModel.swift */; };
+		23B927832716F7E4009B460A /* RealEstateDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B927822716F7E4009B460A /* RealEstateDetailModel.swift */; };
 		23BBADCC26EF2A5400813F04 /* IncomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCB26EF2A5400813F04 /* IncomeViewController.swift */; };
 		23BBADCE26EF2A6200813F04 /* IncomeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCD26EF2A6200813F04 /* IncomeDetailViewController.swift */; };
 		23BBADD026EF3F1D00813F04 /* AddEmployementPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BBADCF26EF3F1D00813F04 /* AddEmployementPopupViewController.swift */; };
@@ -403,6 +404,7 @@
 		23B5E98A26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSupportFollowupQuestionsViewController.swift; sourceTree = "<group>"; };
 		23B9277E2716B6E1009B460A /* LoanInfoDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanInfoDetailModel.swift; sourceTree = "<group>"; };
 		23B927802716B7AF009B460A /* LoanGoalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanGoalModel.swift; sourceTree = "<group>"; };
+		23B927822716F7E4009B460A /* RealEstateDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealEstateDetailModel.swift; sourceTree = "<group>"; };
 		23BBADCB26EF2A5400813F04 /* IncomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeViewController.swift; sourceTree = "<group>"; };
 		23BBADCD26EF2A6200813F04 /* IncomeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeDetailViewController.swift; sourceTree = "<group>"; };
 		23BBADCF26EF3F1D00813F04 /* AddEmployementPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEmployementPopupViewController.swift; sourceTree = "<group>"; };
@@ -580,6 +582,7 @@
 				2313E7CB2715B23800222A6E /* RefinanceSubjectPropertyModel.swift */,
 				23B9277E2716B6E1009B460A /* LoanInfoDetailModel.swift */,
 				23B927802716B7AF009B460A /* LoanGoalModel.swift */,
+				23B927822716F7E4009B460A /* RealEstateDetailModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1493,6 +1496,7 @@
 				23A56C5B2685B017005CE6F4 /* Animator.swift in Sources */,
 				230B94D726E7A060004CBC83 /* AddRetirementAccountViewController.swift in Sources */,
 				23EB790226A6ED980071BC13 /* RealEstateCollectionViewCell.swift in Sources */,
+				23B927832716F7E4009B460A /* RealEstateDetailModel.swift in Sources */,
 				23BE065126F0D7E300F9B4B8 /* AddMilitaryPayViewController.swift in Sources */,
 				239DB536270C2D5F00977E20 /* BankStatementViewController.swift in Sources */,
 				39158829270CA1350006C140 /* RequestEmailTemplate.swift in Sources */,

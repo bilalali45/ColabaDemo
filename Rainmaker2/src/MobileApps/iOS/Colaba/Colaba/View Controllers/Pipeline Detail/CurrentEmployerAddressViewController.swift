@@ -36,16 +36,20 @@ class CurrentEmployerAddressViewController: BaseViewController {
 
     var topTitle = ""
     var searchTextFieldPlaceholder = ""
+    var borrowerFullName = ""
+    var selectedAddress: AddressModel?
     var isForSubjectProperty = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextFields()
         setPlacePickerTextField()
+        setSavedAddress()
     }
     
     //MARK:- Methods and Actions
     func setTextFields() {
+        lblUserName.text = self.borrowerFullName
         ///Street Address Text Field
         txtfieldStreetAddress.setTextField(placeholder: "Street Address", controller: self, validationType: .required)
         
@@ -117,6 +121,23 @@ class CurrentEmployerAddressViewController: BaseViewController {
                     allTextField.placeholderLabel.textColor = Theme.getAppGreyColor()
                 }
             }
+        }
+    }
+    
+    func setSavedAddress(){
+        if let address = selectedAddress{
+            showAllFields()
+            if address.street != ""{
+                txtfieldHomeAddress.placeholderHorizontalOffset = -24
+            }
+            txtfieldHomeAddress.text = address.street
+            txtfieldStreetAddress.setTextField(text: address.street)
+            txtfieldUnitNo.setTextField(text: address.unit)
+            txtfieldCity.setTextField(text: address.city)
+            txtfieldCounty.setTextField(text: address.countyName)
+            txtfieldState.setTextField(text: address.stateName)
+            txtfieldZipCode.setTextField(text: address.zipCode)
+            txtfieldCountry.setTextField(text: address.countryName)
         }
     }
     

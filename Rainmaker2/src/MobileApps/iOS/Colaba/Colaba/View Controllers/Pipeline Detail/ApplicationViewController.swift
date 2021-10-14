@@ -183,6 +183,12 @@ class ApplicationViewController: BaseViewController {
 //            self.questionsCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: true)
 //        }
         
+        if (self.loanApplicationDetail.realEstatesOwned.count == 0){
+            addRealStateOwnedView.isHidden = false
+            realEstateCollectionView.isHidden = true
+        }
+        
+        
     }
     
     @objc func subjectPropertyTapped(){
@@ -805,6 +811,16 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
         }
         else if (collectionView == realEstateCollectionView){
             let vc = Utility.getRealEstateVC()
+            if (loanApplicationDetail.realEstatesOwned.count > 0){
+                vc.loanApplicationId = self.loanApplicationId
+                vc.borrowerPropertyId = self.loanApplicationDetail.realEstatesOwned[indexPath.row].borrowerPropertyId
+                if let borrower = self.loanApplicationDetail.borrowersInformation.filter({$0.borrowerId == self.loanApplicationDetail.realEstatesOwned[indexPath.row].borrowerId}).first{
+                    vc.borrowerFullName = borrower.borrowerFullName
+                }
+            }
+//            else{
+//                vc.borrowerFullName = loanApplicationDetail.borrowersInformation.first?.borrowerFullName
+//            }
             let navVC = UINavigationController(rootViewController: vc)
             navVC.navigationBar.isHidden = true
             navVC.modalPresentationStyle = .fullScreen
