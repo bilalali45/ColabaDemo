@@ -48,18 +48,26 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
     var isMortgageTakenWhenPropertyPurchase: Int?
     
     var isForRealEstate = false
+    var streetAddress = ""
+    var mortgageDetail: SecondMortgageModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setMaterialTextFieldsAndViews()
         if (isForRealEstate){
-            lblUsername.text = "5919 TRUSSVILLE CROSSINGS PKWY"
+            lblUsername.text = streetAddress
             mortgageCombinedView.isHidden = true
             mortgageCombinedViewHeightConstarint.constant = 0
             propertyPurchaseViewTopConstraint.constant = 0
         }
         changeMortgageCombineStatus()
         changeMortgageTakenWhenPropertyPurchaseStatus()
+        if (isForRealEstate){
+            //getMortgageDetail
+        }
+        else{
+            setMortgageData()
+        }
     }
     
     //MARK:- Methods and Actions
@@ -89,6 +97,20 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
         ///Credit Limit Text Field
         txtfieldCreditLimit.setTextField(placeholder: "Credit Limit", controller: self, validationType: .noValidation)
         txtfieldCreditLimit.type = .amount
+    }
+    
+    func setMortgageData(){
+        if let secondMortage = mortgageDetail{
+            txtfieldMortgagePayment.setTextField(text: String(format: "%.0f", secondMortage.secondMortgagePayment.rounded()))
+            txtfieldMortgageBalance.setTextField(text: String(format: "%.0f", secondMortage.unpaidSecondMortgagePayment.rounded()))
+            switchHomeEquity.isOn = secondMortage.isHeloc
+            txtfieldCreditLimit.setTextField(text: String(format: "%.0f", secondMortage.helocCreditLimit.rounded()))
+            isMortgageCombine = secondMortage.combineWithNewFirstMortgage == true ? 1 : 0
+            isMortgageTakenWhenPropertyPurchase = secondMortage.paidAtClosing == true ? 1 : 0
+            changeHELOCStatus()
+            changeMortgageCombineStatus()
+            changeMortgageTakenWhenPropertyPurchaseStatus()
+        }
     }
     
     @objc func yesStackViewTapped(){
@@ -125,18 +147,21 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
         lblNo2.font = isMortgageTakenWhenPropertyPurchase == 0 ?  Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
     }
     
+    func changeHELOCStatus(){
+        lblHomeEquity.font = switchHomeEquity.isOn ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        txtfieldCreditLimit.isHidden = !switchHomeEquity.isOn
+        mortgageCombinedViewTopConstraint.constant = switchHomeEquity.isOn ? 140 : 50
+        UIView.animate(withDuration: 0.0) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     @IBAction func btnBackTapped(_ sender: UIButton) {
         self.dismissVC()
     }
     
     @IBAction func switchHomeEquityChanged(_ sender: UISwitch) {
-        lblHomeEquity.font = sender.isOn ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-        txtfieldCreditLimit.text = ""
-        txtfieldCreditLimit.isHidden = !sender.isOn
-        mortgageCombinedViewTopConstraint.constant = sender.isOn ? 140 : 50
-        UIView.animate(withDuration: 0.0) {
-            self.view.layoutIfNeeded()
-        }
+        changeHELOCStatus()
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {

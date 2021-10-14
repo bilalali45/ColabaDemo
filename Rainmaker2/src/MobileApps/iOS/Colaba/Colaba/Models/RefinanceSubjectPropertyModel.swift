@@ -70,6 +70,11 @@ class RefinanceSubjectPropertyModel: NSObject{
 
 class FirstMortgageModel: NSObject{
     
+    var id: Int = 0
+    var propertyTax: Double = 0.0
+    var homeOwnerInsurance: Double = 0.0
+    var floodInsurance: Double = 0.0
+    var loanApplicationId: Int = 0
     var firstMortgagePayment: Double = 0.0
     var floodInsuranceIncludeinPayment: Bool = false
     var helocCreditLimit: Double = 0.0
@@ -80,6 +85,11 @@ class FirstMortgageModel: NSObject{
     var unpaidFirstMortgagePayment: Double = 0.0
     
     func updateModelWithJSON(json: JSON){
+        id = json["id"].intValue
+        propertyTax = json["propertyTax"].doubleValue
+        homeOwnerInsurance = json["homeOwnerInsurance"].doubleValue
+        floodInsurance = json["floodInsurance"].doubleValue
+        loanApplicationId = json["loanApplicationId"].intValue
         firstMortgagePayment = json["firstMortgagePayment"].doubleValue
         floodInsuranceIncludeinPayment = json["floodInsuranceIncludeinPayment"].boolValue
         helocCreditLimit = json["helocCreditLimit"].doubleValue
@@ -94,6 +104,8 @@ class FirstMortgageModel: NSObject{
 
 class SecondMortgageModel: NSObject{
     
+    var id: Int = 0
+    var loanApplicationId: Int = 0
     var combineWithNewFirstMortgage: Bool = false
     var helocCreditLimit: Double = 0.0
     var isHeloc: Bool = false
@@ -104,6 +116,8 @@ class SecondMortgageModel: NSObject{
     var wasSmTaken: Bool = false
     
     func updateModelWithJSON(json: JSON){
+        id = json["id"].intValue
+        loanApplicationId = json["loanApplicationId"].intValue
         combineWithNewFirstMortgage = json["combineWithNewFirstMortgage"].boolValue
         helocCreditLimit = json["helocCreditLimit"].doubleValue
         isHeloc = json["isHeloc"].boolValue

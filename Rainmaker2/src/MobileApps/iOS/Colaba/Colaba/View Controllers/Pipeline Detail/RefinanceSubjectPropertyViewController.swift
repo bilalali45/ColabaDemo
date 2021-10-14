@@ -96,6 +96,10 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         super.viewDidLoad()
         setViews()
         setTextFields()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         getPropertyTypeDropDown()
     }
     
@@ -355,8 +359,6 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     @objc func firstMortgageYesStackViewTapped(){
         let vc = Utility.getFirstMortgageFollowupQuestionsVC()
         self.presentVC(vc: vc)
-        isFirstMortgage = true
-        changeMortgageStatus()
     }
     
     @objc func firstMortgageNoStackViewTapped(){
@@ -367,14 +369,13 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     
     @objc func firstMortgageViewTapped(){
         let vc = Utility.getFirstMortgageFollowupQuestionsVC()
+        vc.mortgageDetail = self.subjectPropertyDetail.firstMortgage
         self.presentVC(vc: vc)
     }
     
     @objc func secondMortgageYesStackViewTapped(){
         let vc = Utility.getSecondMortgageFollowupQuestionsVC()
         self.presentVC(vc: vc)
-        isSecondMortgage = true
-        changeMortgageStatus()
     }
     
     @objc func secondMortgageNoStackViewTapped(){
@@ -384,6 +385,7 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     
     @objc func secondMortgageViewTapped(){
         let vc = Utility.getSecondMortgageFollowupQuestionsVC()
+        vc.mortgageDetail = self.subjectPropertyDetail.secondMortgage
         self.presentVC(vc: vc)
     }
     
@@ -434,6 +436,10 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     //MARK:- API's
     
     func getPropertyTypeDropDown(){
+        
+        self.propertyTypeArray.removeAll()
+        self.occupancyTypeArray.removeAll()
+        self.coBorrowerOccupancyArray.removeAll()
         
         Utility.showOrHideLoader(shouldShow: true)
         

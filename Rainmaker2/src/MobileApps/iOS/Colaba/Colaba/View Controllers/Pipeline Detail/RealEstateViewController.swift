@@ -69,6 +69,10 @@ class RealEstateViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextFields()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         getPropertyTypeDropDown()
     }
 
@@ -216,8 +220,6 @@ class RealEstateViewController: BaseViewController {
         let vc = Utility.getFirstMortgageFollowupQuestionsVC()
         vc.isForRealEstate = true
         self.presentVC(vc: vc)
-        isFirstMortgage = true
-        changeMortgageStatus()
     }
     
     @objc func firstMortgageNoStackViewTapped(){
@@ -236,8 +238,6 @@ class RealEstateViewController: BaseViewController {
         let vc = Utility.getSecondMortgageFollowupQuestionsVC()
         vc.isForRealEstate = true
         self.presentVC(vc: vc)
-        isSecondMortgage = true
-        changeMortgageStatus()
     }
     
     @objc func secondMortgageNoStackViewTapped(){
@@ -326,6 +326,10 @@ class RealEstateViewController: BaseViewController {
     //MARK:- API's
     
     func getPropertyTypeDropDown(){
+        
+        self.propertyTypeArray.removeAll()
+        self.occupancyTypeArray.removeAll()
+        self.propertyStatusArray.removeAll()
         
         Utility.showOrHideLoader(shouldShow: true)
         

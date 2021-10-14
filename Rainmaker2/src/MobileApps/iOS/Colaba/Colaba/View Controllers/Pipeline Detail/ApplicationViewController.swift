@@ -183,6 +183,12 @@ class ApplicationViewController: BaseViewController {
 //            self.questionsCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: true)
 //        }
         
+        if (self.loanApplicationDetail.realEstatesOwned.count == 0){
+            addRealStateOwnedView.isHidden = false
+            realEstateCollectionView.isHidden = true
+        }
+        
+        
     }
     
     @objc func subjectPropertyTapped(){
