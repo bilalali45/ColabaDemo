@@ -10,11 +10,14 @@ import android.widget.ArrayAdapter
 import androidx.activity.addCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.databinding.AppHeaderWithBackNavBinding
 import com.rnsoft.colabademo.databinding.LoanRefinanceInfoBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import java.util.ArrayList
 
 /**
  * Created by Anita Kiran on 9/6/2021.
@@ -23,8 +26,9 @@ class LoanRefinanceFragment : BaseFragment() {
 
     private lateinit var binding: LoanRefinanceInfoBinding
     private lateinit var bindingToolbar: AppHeaderWithBackNavBinding
-    private val loanStageArray = listOf("Pre-Approval")
-
+    private val loanViewModel : LoanInfoViewModel by activityViewModels()
+    val stageList: ArrayList<String> = arrayListOf()
+    val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0NDExMDMyLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.nhk-k0X8XXsqRKCdQHt8nvPtjR8TqrvUrXx8CVjfcpw"
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -37,43 +41,26 @@ class LoanRefinanceFragment : BaseFragment() {
         // set Header title
         bindingToolbar.headerTitle.setText(getString(R.string.loan_info_refinance))
 
-        setLoanStageSpinner()
-        setFieldFocus()
-        addAmountPrefix()
-        setNumberFormats()
-
-        binding.btnSaveChanges.setOnClickListener {
-            checkValidations() }
-
-        bindingToolbar.backButton.setOnClickListener {
-            requireActivity().finish()
-            requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_out_left)
-
-        }
-        requireActivity().onBackPressedDispatcher.addCallback {
-            requireActivity().finish()
-            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
-        }
+        initViews()
+        clicks()
+        getLoanInfoDetail()
 
         super.addListeners(binding.root)
         return binding.root
 
     }
 
-    private fun setNumberFormats(){
+    private fun initViews(){
+
+        // add prefix
+        CustomMaterialFields.setDollarPrefix(binding.layoutLoanAmount,requireContext())
+        CustomMaterialFields.setDollarPrefix(binding.layoutCashout,requireContext())
+
+        // number formats
         binding.edCashoutAmount.addTextChangedListener(NumberTextFormat(binding.edCashoutAmount))
         binding.edLoanAmount.addTextChangedListener(NumberTextFormat(binding.edLoanAmount))
 
-    }
-
-    private fun addAmountPrefix(){
-        CustomMaterialFields.setDollarPrefix(binding.layoutLoanAmount,requireContext())
-        CustomMaterialFields.setDollarPrefix(binding.layoutCashout,requireContext())
-    }
-
-
-    private fun setFieldFocus(){
-
+        // lable focus
         binding.edCashoutAmount.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 CustomMaterialFields.setColor(binding.layoutCashout, R.color.grey_color_two, requireContext())
@@ -100,11 +87,60 @@ class LoanRefinanceFragment : BaseFragment() {
             }
         }
 
+
     }
 
+    private fun clicks(){
+        binding.btnSaveChanges.setOnClickListener {
+            checkValidations()
+        }
+
+        bindingToolbar.backButton.setOnClickListener {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_out_left)
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+        }
+    }
+
+    private fun getLoanInfoDetail() {
+        lifecycleScope.launchWhenStarted {
+            loanViewModel.getLoanInfoPurchase(token, 1010)
+            loanViewModel.loanInfoPurchase.observe(viewLifecycleOwner, { loanInfo ->
+                if (loanInfo != null) {
+                    loanInfo.data?.loanGoalName?.let {
+                        binding.tvLoanStage.setText(it)
+                        CustomMaterialFields.setColor(binding.layoutLoanStage,R.color.grey_color_two,requireActivity())
+                    }
+
+                    loanInfo.data?.cashOutAmount?.let {
+                        binding.edCashoutAmount.setText(Math.round(it).toString())
+                        CustomMaterialFields.setColor(binding.layoutCashout,R.color.grey_color_two,requireActivity())
+                    }
+                    loanInfo.data?.loanPayment?.let {
+                        binding.edLoanAmount.setText(Math.round(it).toString())
+                        CustomMaterialFields.setColor(binding.layoutLoanAmount,R.color.grey_color_two,requireActivity())
+                    }
+
+                    loanInfo.data?.loanPurposeId?.let {
+                        loanViewModel.getLoanGoals(token,it)
+                        loanViewModel.loanGoals.observe(viewLifecycleOwner,{
+                            for(item in it){
+                                stageList.add(item.description)
+                            }
+                            setLoanStageSpinner()
+                        })
+                    }
+                }
+            })
+        }
+    }
 
     private fun setLoanStageSpinner() {
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, loanStageArray)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, stageList)
         binding.tvLoanStage.setAdapter(adapter)
         binding.tvLoanStage.setOnFocusChangeListener { _, _ ->
             binding.tvLoanStage.showDropDown()
@@ -121,10 +157,11 @@ class LoanRefinanceFragment : BaseFragment() {
                 if(binding.tvLoanStage.text.isNotEmpty() && binding.tvLoanStage.text.isNotBlank()) {
                     clearError(binding.layoutLoanStage)
                 }
-                if (position == loanStageArray.size - 1)
+                /*if (position == loanStageArray.size - 1)
                     binding.layoutLoanStage.visibility = View.VISIBLE
                 else
                     binding.layoutLoanStage.visibility = View.GONE
+                 */
             }
         }
     }
@@ -155,7 +192,6 @@ class LoanRefinanceFragment : BaseFragment() {
             clearError(binding.layoutLoanAmount)
         }
     }
-
 
     fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
         textInputlayout.helperText = errorMsg

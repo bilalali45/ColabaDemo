@@ -1,12 +1,7 @@
-package com.rnsoft.colabademo.activities.loan
+package com.rnsoft.colabademo
 
 import android.util.Log
-import com.rnsoft.colabademo.AppConstant
-import com.rnsoft.colabademo.NoConnectivityException
-import com.rnsoft.colabademo.Result
-import com.rnsoft.colabademo.ServerApi
-import com.rnsoft.colabademo.activities.model.LoanInfoPurchase
-import com.rnsoft.colabademo.activities.model.SubjectPropertyRefinanceDetails
+import com.rnsoft.colabademo.activities.loan.model.LoanGoalModel
 import java.io.IOException
 import javax.inject.Inject
 
@@ -19,11 +14,28 @@ class LoanInfoDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun getLoanInfoDetails(
         token: String,
         loanApplicationId: Int
-    ): Result<LoanInfoPurchase> {
+    ): Result<LoanInfoDetailsModel> {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getLoanInfoDetails(newToken, loanApplicationId)
             Log.e("Loan_info_Response", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun getLoanGoals(
+        token: String,
+        loanPurposeId: Int
+    ): Result<ArrayList<LoanGoalModel>> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getLoanGoals(newToken, loanPurposeId)
+            Log.e("LoanGoals", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

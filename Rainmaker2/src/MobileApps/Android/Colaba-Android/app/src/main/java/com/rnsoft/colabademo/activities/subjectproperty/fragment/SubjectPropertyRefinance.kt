@@ -1,7 +1,6 @@
 package com.rnsoft.colabademo
 
 import android.app.DatePickerDialog
-import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,9 +10,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.activity.addCallback
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.SubPropertyRefinanceBinding
@@ -26,17 +23,15 @@ import com.rnsoft.colabademo.utils.NumberTextFormat
 /**
  * Created by Anita Kiran on 9/9/2021.
  */
-class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListener, View.OnClickListener {
+class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListener {
 
     private val viewModel : SubjectPropertyViewModel by activityViewModels()
     private lateinit var binding: SubPropertyRefinanceBinding
-    //private val propertyTypeArray = listOf("Single Family Property", "Condominium", "Townhouse", "Cooperative", "Manufactured Home", "Duplex (2 Unit)", "Triplex (3 Unit)", "Quadplex (4 Unit)")
-    //private val occupancyTypeArray = listOf("Primary Residence", "Second Home", "Investment Property")
     private var savedViewInstance: View? = null
     private var propertyTypeId : Int = 0
     private var occupancyTypeId : Int = 0
-    val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA"
-
+    var addressDetailList :  ArrayList<AddressData> = ArrayList()
+    val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0NDExMDMyLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.nhk-k0X8XXsqRKCdQHt8nvPtjR8TqrvUrXx8CVjfcpw"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,108 +43,274 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         } else {
             binding = SubPropertyRefinanceBinding.inflate(inflater, container, false)
             savedViewInstance = binding.root
+            super.addListeners(binding.root)
 
-
-            binding.rbSubProperty.isChecked = false
-            binding.rbSubPropertyAddress.isChecked = false
-            binding.rbSubProperty.setOnClickListener(this)
-            binding.rbSubPropertyAddress.setOnClickListener(this)
-            binding.rbMixedPropertyNo.setOnClickListener(this)
-            binding.radioMixedPropertyYes.setOnClickListener(this)
-            binding.layoutDetails.setOnClickListener(this)
-            binding.backButton.setOnClickListener(this)
-            binding.radioHasFirstMortgage.setOnClickListener(this)
-            binding.rbFirstMortgageNo.setOnClickListener(this)
-            binding.rbSecMortgageYes.setOnClickListener(this)
-            binding.rbSecMortgageNo.setOnClickListener(this)
-            binding.layoutFirstMortgageDetail.setOnClickListener(this)
-            binding.layoutSecMortgageDetail.setOnClickListener(this)
-            binding.rbOccupying.setOnClickListener(this)
-            binding.rbNonOccupying.setOnClickListener(this)
-            binding.refinanceParentLayout.setOnClickListener(this)
-            binding.btnSave.setOnClickListener(this)
-            binding.layoutAddress.setOnClickListener(this)
-
-            binding.edDateOfHomePurchase.showSoftInputOnFocus = false
-            binding.edDateOfHomePurchase.setOnClickListener { createCustomDialog() }
-            //binding.edDateOfHomePurchase.setOnFocusChangeListener { _, _ -> createCustomDialog() }
-
-            //setSpinnerData()
-            //getDropDownData()
+            clicks()
             setInputFields()
             getRefinanceDetails()
             getCoBorrowerOccupancyStatus()
-            super.addListeners(binding.root)
-
-            requireActivity().onBackPressedDispatcher.addCallback {
-                requireActivity().finish()
-                requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
-            }
 
             savedViewInstance
         }
+    }
 
+    private fun clicks(){
+
+        binding.edDateOfHomePurchase.showSoftInputOnFocus = false
+        binding.edDateOfHomePurchase.setOnClickListener { createCustomDialog() }
+        //binding.edDateOfHomePurchase.setOnFocusChangeListener { _, _ -> createCustomDialog() }
+
+        // radio subject property TBD
+        binding.radioSubPropertyTbd.setOnClickListener {
+            binding.radioSubPropertyAddress.isChecked = false
+            binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
+            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.NORMAL)
+            binding.tvSubPropertyAddress.visibility = View.GONE
+        }
+
+        // radio sub property address
+        binding.radioSubPropertyAddress.setOnClickListener {
+            binding.radioSubPropertyTbd.isChecked = false
+            binding.tvSubPropertyAddress.visibility = View.VISIBLE
+            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
+            binding.radioSubPropertyTbd.setTypeface(null,Typeface.NORMAL)
+            openAddress()
+        }
+
+        binding.layoutAddress.setOnClickListener {
+            openAddress()
+        }
+
+        // radio mixed use property click
+        binding.radioMixedPropertyYes.setOnClickListener {
+            findNavController().navigate(R.id.action_mixed_property)
+            binding.layoutMixedPropertyDetail.visibility = View.VISIBLE
+        }
+        // mixed property detail
+        binding.layoutMixedPropertyDetail.setOnClickListener{
+            findNavController().navigate(R.id.action_mixed_property)
+        }
+
+        // radio btn mixed use property Yes
+        binding.radioMixedPropertyYes.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.radioMixedPropertyYes.setTypeface(null, Typeface.BOLD)
+                binding.radioMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
+            }
+        }
+
+        // radio btn mixed use property No
+        binding.radioMixedPropertyNo.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.radioMixedPropertyNo.setTypeface(null, Typeface.BOLD)
+                binding.radioMixedPropertyYes.setTypeface(null, Typeface.NORMAL)
+                binding.layoutMixedPropertyDetail.visibility = View.GONE
+            }
+        }
+
+        // occupying
+        binding.rbOccupying.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.rbOccupying.setTypeface(null, Typeface.BOLD)
+                binding.rbNonOccupying.setTypeface(null, Typeface.NORMAL)
+            }
+        }
+        // radio non occupying
+        binding.rbNonOccupying.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.rbNonOccupying.setTypeface(null, Typeface.BOLD)
+                binding.rbOccupying.setTypeface(null, Typeface.NORMAL)
+            }
+        }
+
+        // first mortgage yes
+        binding.radioHasFirstMortgageYes.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.BOLD)
+                binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
+                //binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
+            }
+        }
+        binding.radioHasFirstMortgageYes.setOnClickListener { onFirstMortgageYes() }
+
+        binding.layoutFirstMortgageDetail.setOnClickListener { onFirstMortgageYes() }
+
+
+        // first mortgage no
+        binding.radioHasFirstMortgageNo.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.BOLD)
+                binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.NORMAL)
+                binding.layoutFirstMortgageDetail.visibility = View.GONE
+                binding.layoutSecondMortgage.visibility = View.GONE
+            }
+        }
+
+        // sec mortgage no
+        binding.rbSecMortgageNo.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
+                binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
+                binding.layoutSecMortgageDetail.visibility = View.GONE
+            }
+        }
+
+        binding.rbSecMortgageYes.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
+                binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
+                binding.layoutSecMortgageDetail.visibility = View.VISIBLE
+            }
+        }
+
+        binding.rbSecMortgageYes.setOnClickListener{ onSecMortgageYesClick() }
+
+        binding.layoutSecMortgageDetail.setOnClickListener { onSecMortgageYesClick() }
+
+        binding.btnSave.setOnClickListener {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+        }
+
+        binding.backButton.setOnClickListener {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+        }
     }
 
     private fun getRefinanceDetails(){
         lifecycleScope.launchWhenStarted {
-            viewModel.getRefinanceDetails(token, 5)
+            viewModel.getRefinanceDetails(token, 1010)
             viewModel.refinanceDetails.observe(viewLifecycleOwner, { details->
+
                 if(details != null){
                     details.subPropertyData?.address?.let {
-                        binding.rbSubPropertyAddress.isChecked = true
+                        binding.radioSubPropertyAddress.isChecked = true
+                        binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
                         binding.tvSubPropertyAddress.visibility = View.VISIBLE
                         binding.tvSubPropertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+                        addressDetailList.add(AddressData(street= it.street, unit=it.unit, city=it.city,stateName=it.stateName,countryName=it.countryName,countyName = it.countyName,
+                        countyId = it.countyId, stateId = it.stateId, countryId = it.countryId, zipCode = it.zipCode ))
+
+                    } ?: run {
+                        binding.radioSubPropertyTbd.isChecked = true
+                        binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
+                    }
+                    details.subPropertyData?.rentalIncome?.let{
+                        binding.edRentalIncome.setText(it.toString())
+                        binding.layoutRentalIncome.visibility = View.VISIBLE
+                        CustomMaterialFields.setColor(binding.layoutRentalIncome,R.color.grey_color_two,requireActivity())
                     }
                     // property id
                     details.subPropertyData?.propertyTypeId?.let { id ->
                         propertyTypeId = id
                     }
-
-                    // appraised value
+                    // occupancy id
+                    details.subPropertyData?.propertyUsageId?.let { id ->
+                        occupancyTypeId = id
+                    }
+                    // date of home purchased
+                    details.subPropertyData?.dateAcquired?.let {
+                        val date = AppSetting.getMonthAndYear(it)
+                        binding.edDateOfHomePurchase.setText(date)
+                        CustomMaterialFields.setColor(binding.layoutDateOfHomepurchase,R.color.grey_color_two,requireActivity())
+                    }
+                    // property value
                     details.subPropertyData?.propertyValue?.let { value ->
                         binding.edPropertyValue.setText(value.toString())
+                        CustomMaterialFields.setColor(binding.layoutPropertyValue,R.color.grey_color_two,requireActivity())
                     }
                     // hoa dues
                     details.subPropertyData?.hoaDues?.let { value ->
                         binding.edAssociation.setText(value.toString())
+                        CustomMaterialFields.setColor(binding.layoutAssociationDues,R.color.grey_color_two,requireActivity())
                     }
                     // property tax
                     details.subPropertyData?.propertyTax?.let { value ->
                         binding.edPropertyTaxes.setText(value.toString())
+                        CustomMaterialFields.setColor(binding.layoutPropertyTaxes,R.color.grey_color_two,requireActivity())
                     }
                     // home insurance
                     details.subPropertyData?.homeOwnerInsurance?.let { value ->
                         binding.edHomeownerInsurance.setText(value.toString())
+                        CustomMaterialFields.setColor(binding.layoutHomeownerInsurance,R.color.grey_color_two,requireActivity())
                     }
                     // flood insurance
                     details.subPropertyData?.floodInsurance?.let { value ->
-
                         binding.edFloodInsurance.setText(value.toString())
+                        CustomMaterialFields.setColor(binding.layoutFloodInsurance,R.color.grey_color_two,requireActivity())
                     }
-                        // mixed use property
-                        details.subPropertyData?.isMixedUseProperty?.let { value ->
-                            if(value){
-                                binding.radioMixedPropertyYes.isChecked = true
-                                binding.radioMixedPropertyYes.setTypeface(null, Typeface.BOLD)
-                                details.subPropertyData.mixedUsePropertyExplanation?.let { desc ->
-                                    binding.mixedPropertyExplanation.setText(desc)
-                                }
-                            } else
-                                binding.rbMixedPropertyNo.isChecked = true
-                                binding.rbMixedPropertyNo.setTypeface(null, Typeface.BOLD)
 
-                        }
-
-                        // has first mortgage
-                        details.subPropertyData?.hasFirstMortgage?.let{ hasFirstMortgage->
-                            if(hasFirstMortgage){
-                                binding.radioHasFirstMortgage.isChecked = true
+                    details.subPropertyData?.isMixedUseProperty?.let { value ->
+                        if(value){
+                            binding.radioMixedPropertyYes.isChecked = true
+                            details.subPropertyData.mixedUsePropertyExplanation?.let { desc ->
+                                binding.mixedPropertyExplanation.setText(desc)
                             }
-                        }
-                        getDropDownData()
-
+                        } else
+                            binding.radioMixedPropertyNo.isChecked = true
+                    } ?: run {
+                        binding.radioMixedPropertyNo.isChecked = true
                     }
+
+                    // has first mortgage 'yes'
+                    details.subPropertyData?.hasFirstMortgage?.let{ yes->
+                        if(yes){
+                            binding.radioHasFirstMortgageYes.isChecked = true
+                            binding.layoutFirstMortgageDetail.visibility =View.VISIBLE
+                            binding.layoutSecondMortgage.visibility = View.VISIBLE
+
+                            details.subPropertyData.firstMortgageModel?.let{ model->
+                                model.firstMortgagePayment?.let { payment->
+                                    binding.firstMortgagePayment.setText("$" + payment)
+                                } ?: run {
+                                    binding.firstMortgagePayment.setText("$0")
+                                }
+
+                                model.unpaidFirstMortgagePayment?.let{ balance ->
+                                    binding.firstMortgageBalance.setText("$" + balance)
+                                } ?: run{
+                                    binding.firstMortgageBalance.setText("$0")
+                                }
+                            }
+                        }  else binding.radioHasFirstMortgageNo.isChecked = true
+
+                    } ?: run{
+                        binding.radioHasFirstMortgageNo.isChecked = true
+                    }
+
+                    // has second mortgage 'yes'
+                    details.subPropertyData?.hasSecondMortgage?.let{ yes->
+                        if(yes){
+                            binding.rbSecMortgageYes.isChecked = true
+                            binding.layoutSecMortgageDetail.visibility =View.VISIBLE
+
+                            details.subPropertyData.secondMortgageModel?.let{ model->
+                                model.secondMortgagePayment?.let { payment->
+                                    binding.textviewSecMortgagePayment.setText("$" + payment)
+                                } ?: run {
+                                    binding.textviewSecMortgagePayment.setText("$0")
+                                }
+
+                                model.unpaidSecondMortgagePayment?.let{ balance ->
+                                    binding.textviewSecMortgageBalance.setText("$" + balance)
+                                } ?: run{
+                                    binding.textviewSecMortgageBalance.setText("$0")
+                                }
+                            }
+                        } else  binding.radioHasFirstMortgageNo.isChecked = true
+                    } ?: run{
+                        binding.radioHasFirstMortgageNo.isChecked = true
+                    }
+
+                    getDropDownData()
+
+                }
 
             })
         }
@@ -157,7 +318,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
 
     private fun getCoBorrowerOccupancyStatus(){
         lifecycleScope.launchWhenStarted {
-            viewModel.getCoBorrowerOccupancyStatus(token, 5)
+            viewModel.getCoBorrowerOccupancyStatus(token, 1010)
             viewModel.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {
                 if(it.occupancyData != null  && it.occupancyData.size > 0){
                     binding.rbOccupying.isChecked = true
@@ -165,7 +326,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                     binding.coBorrowerName.setText(it.occupancyData.get(0).borrowerFirstName + " " + it.occupancyData.get(0).borrowerLastName)
                 }
                 else {
-                    binding.rbNonOccupying.isChecked = false
+                    binding.rbNonOccupying.isChecked = true
                     binding.rbNonOccupying.setTypeface(null, Typeface.BOLD)
                     binding.coBorrowerName.visibility = View.GONE
                 }
@@ -177,38 +338,37 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         lifecycleScope.launchWhenStarted {
             viewModel.getPropertyTypes(token)
             viewModel.propertyType.observe(viewLifecycleOwner, {
-                if(it != null && it.size > 0) {
+                //if(it != null && it.size > 0) {
 
-                    val itemList:ArrayList<String> = arrayListOf()
-                    for(item in it){
-                        itemList.add(item.name)
-                        if(propertyTypeId > 0 && propertyTypeId == item.id){
-                            binding.tvPropertyType.setText(item.name)
-                        }
-                    }
-                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,itemList)
-                    binding.tvPropertyType.setAdapter(adapter)
-                    binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
-                        binding.tvPropertyType.showDropDown()
-                    }
-                    binding.tvPropertyType.setOnClickListener {
-                        binding.tvPropertyType.showDropDown()
-                    }
-                    binding.tvPropertyType.onItemClickListener = object :
-                        AdapterView.OnItemClickListener {
-                        override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                            binding.layoutPropertyType.defaultHintTextColor = ColorStateList.valueOf(
-                                ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-                        }
+                val itemList:ArrayList<String> = arrayListOf()
+                for(item in it){
+                    itemList.add(item.name)
+                    if(propertyTypeId > 0 && propertyTypeId == item.id){
+                        binding.tvPropertyType.setText(item.name)
+                        CustomMaterialFields.setColor(binding.layoutPropertyType,R.color.grey_color_two,requireActivity())
                     }
                 }
+                val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,itemList)
+                binding.tvPropertyType.setAdapter(adapter)
+                //binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
+                //   binding.tvPropertyType.showDropDown()
+                //}
+                binding.tvPropertyType.setOnClickListener {
+                    binding.tvPropertyType.showDropDown()
+                }
+                binding.tvPropertyType.onItemClickListener = object :
+                    AdapterView.OnItemClickListener {
+                    override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                        showHideRental()
+                    }
+                }
+                //}
             })
         }
 
         // occupancy Type spinner
-
         lifecycleScope.launchWhenStarted {
-            viewModel.getOccupancyType("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA")
+            viewModel.getOccupancyType(token)
             viewModel.occupancyType.observe(viewLifecycleOwner, {occupancyList->
 
                 if(occupancyList != null && occupancyList.size > 0) {
@@ -217,6 +377,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                         itemList.add(item.name)
                         if(occupancyTypeId > 0 && occupancyTypeId == item.id){
                             binding.tvOccupancyType.setText(item.name)
+                            CustomMaterialFields.setColor(binding.layoutOccupancyType,R.color.grey_color_two,requireActivity())
                         }
                     }
 
@@ -231,19 +392,9 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                     }
                     binding.tvOccupancyType.onItemClickListener = object :
                         AdapterView.OnItemClickListener {
-                        override fun onItemClick(
-                            p0: AdapterView<*>?,
-                            p1: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            binding.layoutOccupancyType.defaultHintTextColor =
-                                ColorStateList.valueOf(
-                                    ContextCompat.getColor(
-                                        requireContext(), R.color.grey_color_two
-                                    )
-                                )
-
+                        override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                            CustomMaterialFields.setColor(binding.layoutOccupancyType,R.color.grey_color_two,requireActivity())
+                            showHideRental()
                         }
                     }
                 }
@@ -254,35 +405,11 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
 
     private fun setInputFields() {
 
-        /*binding.edDateOfHomePurchase.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus) {
-                //createCustomDialog()
-                CustomMaterialFields.setColor(binding.layoutDateOfHomepurchase,R.color.grey_color_two,requireActivity())
-            } else {
-                if (binding.edDateOfHomePurchase.text?.length == 0)
-                    CustomMaterialFields.setColor(binding.layoutDateOfHomepurchase,R.color.grey_color_three,requireActivity())
-                else
-                    CustomMaterialFields.setColor(binding.layoutDateOfHomepurchase,R.color.grey_color_two,requireActivity())
-            }
-        } */
-
         // set lable focus
         binding.edRentalIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edRentalIncome, binding.layoutRentalIncome, requireContext()))
         binding.edPropertyValue.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edPropertyValue, binding.layoutPropertyValue, requireContext()))
-        binding.edAssociation.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.edAssociation,
-                binding.layoutAssociationDues,
-                requireContext()
-            )
-        )
-        binding.edPropertyTaxes.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.edPropertyTaxes,
-                binding.layoutPropertyTaxes,
-                requireContext()
-            )
-        )
+        binding.edAssociation.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edAssociation, binding.layoutAssociationDues, requireContext()))
+        binding.edPropertyTaxes.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edPropertyTaxes, binding.layoutPropertyTaxes, requireContext()))
         binding.edHomeownerInsurance.setOnFocusChangeListener(
             CustomFocusListenerForEditText(
                 binding.edHomeownerInsurance,
@@ -318,62 +445,13 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
 
     }
 
-    override fun onClick(view: View?) {
-        when (view?.getId()) {
-            R.id.rb_sec_mortgage_yes -> onSecMortgageYesClick()
-            R.id.rb_sec_mortgage_no -> onSecMortgegeNoClick()
-            R.id.layout_first_mortgage_detail -> onFirstMortgageYes()
-            R.id.layout_sec_mortgage_detail -> onSecMortgageYesClick()
-            R.id.backButton -> {
-                requireActivity().finish()
-                requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
-            }
-            R.id.btn_save -> requireActivity().finish()
-            R.id.rb_sub_property -> radioSubPropertyClick()
-            R.id.rb_sub_property_address -> radioAddressClick()
-            R.id.layout_address -> radioAddressClick()
-            R.id.radio_mixed_property_yes -> mixedPropertyDetailClick()
-            R.id.layout_details -> mixedPropertyDetailClick()
-            R.id.rb_first_mortgage_yes -> onFirstMortgageYes()
-            R.id.refinance_parent_layout -> {
-                HideSoftkeyboard.hide(requireActivity(), binding.refinanceParentLayout)
-                super.removeFocusFromAllFields(binding.refinanceParentLayout)
-            }
-
-            R.id.rb_first_mortgage_no -> {
-                binding.layoutFirstMortgageDetail.visibility = View.GONE
-                binding.layoutSecondMortgage.visibility = View.GONE
-                binding.rbFirstMortgageNo.setTypeface(null, Typeface.BOLD)
-                binding.radioHasFirstMortgage.setTypeface(null, Typeface.NORMAL)
-            }
-
-            R.id.rb_mixed_property_no ->
-                if (binding.rbMixedPropertyNo.isChecked) {
-                    binding.layoutDetails.visibility = View.GONE
-                    binding.rbMixedPropertyNo.setTypeface(null, Typeface.BOLD)
-                    binding.radioMixedPropertyYes.setTypeface(null, Typeface.NORMAL)
-                } else {
-                    binding.rbMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
-                }
-
-            R.id.rb_occupying ->
-                if (binding.rbOccupying.isChecked) {
-                    binding.rbOccupying.setTypeface(null, Typeface.BOLD)
-                    binding.rbNonOccupying.setTypeface(null, Typeface.NORMAL)
-                } else {
-                    binding.rbOccupying.setTypeface(null, Typeface.NORMAL)
-                }
-
-            R.id.rb_non_occupying ->
-                if (binding.rbNonOccupying.isChecked) {
-                    binding.rbNonOccupying.setTypeface(null, Typeface.BOLD)
-                    binding.rbOccupying.setTypeface(null, Typeface.NORMAL)
-                } else {
-                    binding.rbNonOccupying.setTypeface(null, Typeface.NORMAL)
-                }
-        }
+    private fun openAddress(){
+        val fragment = SubPropertyAddressFragment()
+        val bundle = Bundle()
+        bundle.putParcelableArrayList(AppConstant.address,addressDetailList)
+        fragment.arguments = bundle
+        findNavController().navigate(R.id.action_address, fragment.arguments)
     }
-
 
     private fun showHideRental() {
         if (binding.tvOccupancyType.text.toString().equals("Investment Property")) {
@@ -407,109 +485,55 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.edDateOfHomePurchase.setText(sampleDate)
     }
 
-    private fun mixedPropertyDetailClick() {
-        findNavController().navigate(R.id.action_mixed_property)
-        binding.layoutDetails.visibility = View.VISIBLE
-        binding.radioMixedPropertyYes.setTypeface(null, Typeface.BOLD)
-        binding.rbMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
-    }
-
-    private fun radioSubPropertyClick() {
-        binding.rbSubProperty.isChecked = true
-        binding.rbSubPropertyAddress.isChecked = false
-        binding.tvSubPropertyAddress.visibility = View.GONE
-        //bold text
-        binding.rbSubProperty.setTypeface(null, Typeface.BOLD)
-        binding.radioTxtPropertyAdd.setTypeface(null, Typeface.NORMAL)
-    }
-
-    private fun radioAddressClick() {
-        binding.rbSubProperty.isChecked = false
-        binding.rbSubPropertyAddress.isChecked = true
-        binding.tvSubPropertyAddress.visibility = View.VISIBLE
-        //bold text
-        binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
-        binding.rbSubProperty.setTypeface(null, Typeface.NORMAL)
-        findNavController().navigate(R.id.action_address)
-    }
-
     private fun onFirstMortgageYes() {
-        if (binding.radioHasFirstMortgage.isChecked) {
-            binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
-            binding.layoutSecondMortgage.visibility = View.VISIBLE
-            //findNavController().navigate(R.id.nav_first_mortage)
-            binding.radioHasFirstMortgage.setTypeface(null, Typeface.BOLD)
-            binding.rbFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
-
-            val fragment = FirstMortgageFragment()
-            val bundle = Bundle()
-            bundle.putString(AppConstant.address, getString(R.string.subject_property))
-            fragment.arguments = bundle
-            findNavController().navigate(R.id.action_refinance_first_mortgage, fragment.arguments)
-
-        }
+        binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
+        binding.layoutSecondMortgage.visibility = View.VISIBLE
+        val fragment = FirstMortgageFragment()
+        val bundle = Bundle()
+        bundle.putString(AppConstant.address, getString(R.string.subject_property))
+        fragment.arguments = bundle
+        findNavController().navigate(R.id.action_refinance_first_mortgage, fragment.arguments)
     }
 
     private fun onSecMortgageYesClick() {
         binding.layoutSecondMortgage.visibility = View.VISIBLE
         binding.layoutSecMortgageDetail.visibility = View.VISIBLE
-        findNavController().navigate(R.id.action_refinance_sec_mortgage)
         binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
         binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
+        findNavController().navigate(R.id.action_refinance_sec_mortgage)
     }
 
+    /*
     private fun onSecMortgegeNoClick() {
         binding.layoutSecondMortgage.visibility = View.VISIBLE
         binding.layoutSecMortgageDetail.visibility = View.GONE
         binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
         binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
-    }
-
-/*
-    private fun setSpinnerData() {
-        val adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, propertyTypeArray)
-        binding.tvPropertyType.setAdapter(adapter)
-        binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
-            binding.tvPropertyType.showDropDown()
-        }
-        binding.tvPropertyType.setOnClickListener {
-            binding.tvPropertyType.showDropDown()
-        }
-        binding.tvPropertyType.onItemClickListener = object :
-            AdapterView.OnItemClickListener {
-            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                binding.layoutPropertyType.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(requireContext(), R.color.grey_color_two)
-                )
-                showHideRental()
-            }
-        }
-
-        // set occupancy type spinner
-
-        val adapterOccupanycyType =
-            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, occupancyTypeArray)
-        binding.tvOccupancyType.setAdapter(adapterOccupanycyType)
-        binding.tvOccupancyType.setOnFocusChangeListener { _, _ ->
-            binding.tvOccupancyType.showDropDown()
-        }
-        binding.tvOccupancyType.setOnClickListener {
-            binding.tvOccupancyType.showDropDown()
-        }
-        binding.tvOccupancyType.onItemClickListener = object :
-            AdapterView.OnItemClickListener {
-            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                binding.layoutOccupancyType.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.grey_color_two
-                    )
-                )
-                showHideRental()
-
-            }
-        }
     } */
 
+    /*private fun mixedPropertyDetailClick() {
+      findNavController().navigate(R.id.action_mixed_property)
+      //binding.layoutDetails.visibility = View.VISIBLE
+      binding.radioMixedPropertyYes.setTypeface(null, Typeface.BOLD)
+      //binding.rbMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
+  }
+
+  private fun radioSubPropertyClick() {
+      //binding.rbSubProperty.isChecked = true
+      //binding.rbSubPropertyAddress.isChecked = false
+      binding.tvSubPropertyAddress.visibility = View.GONE
+      //bold text
+      //binding.rbSubProperty.setTypeface(null, Typeface.BOLD)
+      binding.radioTxtPropertyAdd.setTypeface(null, Typeface.NORMAL)
+  }
+
+  private fun radioAddressClick() {
+      //binding.rbSubProperty.isChecked = false
+      //binding.rbSubPropertyAddress.isChecked = true
+      binding.tvSubPropertyAddress.visibility = View.VISIBLE
+      //bold text
+      binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
+      //binding.rbSubProperty.setTypeface(null, Typeface.NORMAL)
+      findNavController().navigate(R.id.action_address)
+  } */
 }

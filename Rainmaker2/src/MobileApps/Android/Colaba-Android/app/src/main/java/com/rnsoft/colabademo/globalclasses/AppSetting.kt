@@ -51,7 +51,7 @@ object AppSetting {
     fun returnGreetingString(): String {
         val currentTimeAgain: String =
             SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
-        Log.e("currentTimeAgain-time-", currentTimeAgain)
+        //Log.e("currentTimeAgain-time-", currentTimeAgain)
 
         var greetingString = ""
 
@@ -165,6 +165,17 @@ object AppSetting {
         return output
     }
 
+    fun getMonthAndYear(dateString : String) : String{
+        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val oldDate: Date? = formatter.parse(dateString)
+        val oldMillis = oldDate?.time
+        var finalTimeInFormat = ""
+         oldMillis?.let {
+            finalTimeInFormat = getDate(oldMillis, "MM-yyyy")
+        }
+        return finalTimeInFormat
+
+    }
 
     fun returnLongTimeNow(input: String): String {
 
@@ -290,7 +301,7 @@ object AppSetting {
         }
     }
 
-/*
+    /*
     fun isDateInCurrentWeek(date: Date?): Boolean {
         val currentCalendar = Calendar.getInstance()
         val week = currentCalendar[Calendar.WEEK_OF_YEAR]

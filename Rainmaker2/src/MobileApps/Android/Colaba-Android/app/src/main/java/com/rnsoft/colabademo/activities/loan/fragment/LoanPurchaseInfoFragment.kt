@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.app.DatePickerDialog
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
@@ -10,36 +11,35 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.DatePicker
 import androidx.activity.addCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputLayout
-
 import com.rnsoft.colabademo.databinding.AppHeaderWithBackNavBinding
 import com.rnsoft.colabademo.databinding.LoanPurchaseInfoBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import java.text.DecimalFormat
+import java.util.*
+
 
 
 /**
  * Created by Anita Kiran on 9/3/2021.
  */
-class LoanPurchaseInfoFragment : BaseFragment(){
+class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetListener{
 
     private val loanViewModel : LoanInfoViewModel by activityViewModels()
     private lateinit var binding: LoanPurchaseInfoBinding
     private lateinit var bindingToolbar : AppHeaderWithBackNavBinding
     val format =  DecimalFormat("#,###,###")
-    private val loanStageArray = listOf("Pre-Approval")
     private lateinit var mTextWatcher : TextWatcher
-    val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA"
-
-
+    val stageList:ArrayList<String> = arrayListOf()
+    val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0NDExMDMyLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.nhk-k0X8XXsqRKCdQHt8nvPtjR8TqrvUrXx8CVjfcpw"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,31 +49,9 @@ class LoanPurchaseInfoFragment : BaseFragment(){
         binding = LoanPurchaseInfoBinding.inflate(inflater, container, false)
         bindingToolbar = binding.headerLoanPurchase
 
-        setLoanStageSpinner()
         initViews()
-        setNumberFormats()
         setCalulations()
         getLoanInfoDetail()
-
-
-        bindingToolbar.backButton.setOnClickListener {
-            requireActivity().finish()
-            requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_out_left)
-        }
-
-        requireActivity().onBackPressedDispatcher.addCallback {
-            requireActivity().finish()
-            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
-        }
-
-
-        binding.btnSaveChange.setOnClickListener {
-            checkValidations()
-        }
-        binding.loanPurchaseLayout.setOnClickListener{
-            HideSoftkeyboard.hide(requireActivity(),binding.loanPurchaseLayout)
-            super.removeFocusFromAllFields(binding.loanPurchaseLayout)
-        }
 
         super.addListeners(binding.root)
         return binding.root
@@ -84,23 +62,52 @@ class LoanPurchaseInfoFragment : BaseFragment(){
             loanViewModel.getLoanInfoPurchase(token, 5)
             loanViewModel.loanInfoPurchase.observe(viewLifecycleOwner, { loanInfo ->
                 if (loanInfo != null) {
-                    Log.e("loan", "$loanInfo.loanDetails")
+                    loanInfo.data?.loanGoalName?.let {
+                        binding.tvLoanStage.setText(it)
+                        CustomMaterialFields.setColor(binding.layoutLoanStage,R.color.grey_color_two,requireActivity())
+                    }
+                    loanInfo.data?.propertyValue?.let {
+                        binding.edPurchasePrice.setText(Math.round(it).toString())
+                        CustomMaterialFields.setColor(binding.layoutPurchasePrice,R.color.grey_color_two,requireActivity())
+                    }
+                    loanInfo.data?.loanPayment?.let {
+                        binding.edLoanAmount.setText(Math.round(it).toString())
+                        CustomMaterialFields.setColor(binding.layoutLoanAmount,R.color.grey_color_two,requireActivity())
+                    }
+                    loanInfo.data?.downPayment?.let {
+                        binding.edDownPayment.setText(Math.round(it).toString())
+                        CustomMaterialFields.setColor(binding.layoutDownPayment,R.color.grey_color_two,requireActivity())
+                    }
+                    loanInfo.data?.expectedClosingDate?.let {
+                        val date = AppSetting.getMonthAndYear(it)
+                        binding.edClosingDate.setText(date)
+                        CustomMaterialFields.setColor(binding.layoutClosingDate,R.color.grey_color_two,requireActivity())
+                    }
+                    loanInfo.data?.loanPurposeId?.let {
+                        loanViewModel.getLoanGoals(token,it)
+                        loanViewModel.loanGoals.observe(viewLifecycleOwner,{
+                            for(item in it){
+                                stageList.add(item.description)
+                            }
+                            setLoanStageSpinner()
+                        })
+                    }
                 }
-
-
-
             })
         }
     }
-
-
 
     private fun initViews() {
 
         // set Header title
         bindingToolbar.headerTitle.setText(getString(R.string.loan_info_purchase))
 
-        // set field prefixes
+        // set number format
+        binding.edLoanAmount.addTextChangedListener(NumberTextFormat(binding.edLoanAmount))
+
+        // set field $ prefixes
+        CustomMaterialFields.setDollarPrefix(binding.layoutPurchasePrice,requireContext())
+        CustomMaterialFields.setDollarPrefix(binding.layoutLoanAmount,requireContext())
         CustomMaterialFields.setDollarPrefix(binding.layoutDownPayment,requireContext())
         CustomMaterialFields.setPercentagePrefix(binding.layoutPercent,requireContext())
 
@@ -118,16 +125,15 @@ class LoanPurchaseInfoFragment : BaseFragment(){
 
         binding.edPurchasePrice.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
+                CustomMaterialFields.setColor(binding.layoutPurchasePrice, R.color.grey_color_two, requireContext())
             } else {
                 if (binding.edPurchasePrice.text?.length == 0) {
-                    CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_three, requireContext())
+                    CustomMaterialFields.setColor(binding.layoutPurchasePrice, R.color.grey_color_three, requireContext())
                 } else {
                     clearError(binding.layoutPurchasePrice)
                     clearError(binding.layoutDownPayment)
                     clearError(binding.layoutPercent)
-                    CustomMaterialFields.setColor(binding.layoutPurchasePrice, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
-
+                    CustomMaterialFields.setColor(binding.layoutPurchasePrice, R.color.grey_color_two, requireContext())
                     val value = binding.edPurchasePrice.text.toString()
                     value.let {
                        validatePurchasePrice(value)
@@ -139,14 +145,14 @@ class LoanPurchaseInfoFragment : BaseFragment(){
         binding.edDownPayment.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 binding.edDownPayment.addTextChangedListener(mTextWatcher)
-                CustomMaterialFields.setColor(binding.layoutDownPayment, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
+                CustomMaterialFields.setColor(binding.layoutDownPayment,R.color.grey_color_two, requireContext())
             } else {
                 binding.edDownPayment.removeTextChangedListener(mTextWatcher)
                 if (binding.edDownPayment.text?.length == 0) {
-                    CustomMaterialFields.setColor(binding.layoutDownPayment, com.rnsoft.colabademo.R.color.grey_color_three, requireContext())
+                    CustomMaterialFields.setColor(binding.layoutDownPayment, R.color.grey_color_three, requireContext())
                 } else {
                     clearError(binding.layoutDownPayment)
-                    CustomMaterialFields.setColor(binding.layoutDownPayment, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
+                    CustomMaterialFields.setColor(binding.layoutDownPayment, R.color.grey_color_two, requireContext())
                 }
             }
         }
@@ -161,16 +167,37 @@ class LoanPurchaseInfoFragment : BaseFragment(){
 
         binding.edLoanAmount.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                CustomMaterialFields.setColor(binding.layoutLoanAmount, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
+                CustomMaterialFields.setColor(binding.layoutLoanAmount,R.color.grey_color_two, requireContext())
             } else {
                 if (binding.edLoanAmount.text?.length == 0) {
-                    CustomMaterialFields.setColor(binding.layoutLoanAmount, com.rnsoft.colabademo.R.color.grey_color_three, requireContext())
+                    CustomMaterialFields.setColor(binding.layoutLoanAmount, R.color.grey_color_three, requireContext())
                 } else {
                     clearError(binding.layoutLoanAmount)
-                    CustomMaterialFields.setColor(binding.layoutLoanAmount, com.rnsoft.colabademo.R.color.grey_color_two, requireContext())
+                    CustomMaterialFields.setColor(binding.layoutLoanAmount, R.color.grey_color_two, requireContext())
                 }
             }
         }
+
+        // clicks
+        bindingToolbar.backButton.setOnClickListener {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_out_left)
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+        }
+
+        binding.btnSaveChange.setOnClickListener {
+            checkValidations()
+        }
+
+        binding.loanPurchaseLayout.setOnClickListener{
+            HideSoftkeyboard.hide(requireActivity(),binding.loanPurchaseLayout)
+            super.removeFocusFromAllFields(binding.loanPurchaseLayout)
+        }
+
     }
 
     private fun setCalulations(){
@@ -301,7 +328,7 @@ class LoanPurchaseInfoFragment : BaseFragment(){
     }
 
     private fun setLoanStageSpinner() {
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, loanStageArray)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,stageList)
         binding.tvLoanStage.setAdapter(adapter)
         binding.tvLoanStage.setOnFocusChangeListener { _, _ ->
             binding.tvLoanStage.showDropDown()
@@ -313,37 +340,20 @@ class LoanPurchaseInfoFragment : BaseFragment(){
             AdapterView.OnItemClickListener {
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                 binding.layoutLoanStage.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(requireContext(), com.rnsoft.colabademo.R.color.grey_color_two))
+                    ContextCompat.getColor(requireContext(), R.color.grey_color_two))
 
                 if(binding.tvLoanStage.text.isNotEmpty() && binding.tvLoanStage.text.isNotBlank()) {
                     clearError(binding.layoutLoanStage)
                 }
-                if (position == loanStageArray.size - 1)
-                    binding.layoutLoanStage.visibility = View.VISIBLE
-                else
-                    binding.layoutLoanStage.visibility = View.GONE
             }
         }
     }
 
     private fun createCalendarDialog() {
         val pd = MonthYearPickerDialog()
-        //pd.setListener(this)
+        pd.setListener(this)
         pd.show(requireActivity().supportFragmentManager, "MonthYearPickerDialog")
     }
-
-    /*
-    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-        var stringMonth = p2.toString()
-        if (p2 < 10)
-            stringMonth = "0$p2"
-
-        val sampleDate = "$stringMonth / $p1"
-        binding.edClosingDate.setText(sampleDate)
-        clearError(binding.layoutClosingDate)
-    }
-
-     */
 
     private fun checkValidations(){
 
@@ -406,15 +416,18 @@ class LoanPurchaseInfoFragment : BaseFragment(){
         textInputlayout.helperText = ""
         textInputlayout.setBoxStrokeColorStateList(
             AppCompatResources.getColorStateList(
-                requireContext(),
-                com.rnsoft.colabademo.R.color.primary_info_line_color
+                requireContext(), R.color.primary_info_line_color
             )
         )
     }
 
-    private fun setNumberFormats(){
-        binding.edLoanAmount.addTextChangedListener(NumberTextFormat(binding.edLoanAmount))
+    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
+        var stringMonth = p2.toString()
+        if (p2 < 10)
+            stringMonth = "0$p2"
+        val sampleDate = "$stringMonth / $p1"
+        binding.edClosingDate.setText(sampleDate)
+        CustomMaterialFields.clearError(binding.layoutClosingDate,requireActivity())
     }
-
 
 }
