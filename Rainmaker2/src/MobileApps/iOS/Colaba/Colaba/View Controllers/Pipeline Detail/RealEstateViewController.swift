@@ -231,6 +231,8 @@ class RealEstateViewController: BaseViewController {
     @objc func firstMortgageViewTapped(){
         let vc = Utility.getFirstMortgageFollowupQuestionsVC()
         vc.isForRealEstate = true
+        vc.loanApplicationId = self.loanApplicationId
+        vc.borrowerPropertyId = self.borrowerPropertyId
         self.presentVC(vc: vc)
     }
     
@@ -248,6 +250,8 @@ class RealEstateViewController: BaseViewController {
     @objc func secondMortgageViewTapped(){
         let vc = Utility.getSecondMortgageFollowupQuestionsVC()
         vc.isForRealEstate = true
+        vc.loanApplicationId = self.loanApplicationId
+        vc.borrowerPropertyId = self.borrowerPropertyId
         self.presentVC(vc: vc)
     }
     

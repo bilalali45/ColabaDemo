@@ -49,6 +49,9 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     var isAnnualHomeownerInsurance = false
     var isMortgagePaidOff:Int?
     
+    var loanApplicationId = 0
+    var borrowerPropertyId = 0
+    
     var isForRealEstate = false
     var streetAddress = ""
     var mortgageDetail: FirstMortgageModel?
@@ -65,7 +68,7 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
         changeAccountsIncluded()
         changeMortgagePaidOffStatus()
         if (isForRealEstate){
-           //getMortgageData
+           getMortgageData()
         }
         else{
             setMortgageData()
@@ -179,5 +182,37 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         self.dismissVC()
+    }
+    
+    //MARK:- API's
+    
+    func getMortgageData(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)&borrowerPropertyId=\(borrowerPropertyId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getFirstMortgageDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                Utility.showOrHideLoader(shouldShow: false)
+                
+                if (status == .success){
+                    
+                    let firstMortageModel = FirstMortgageModel()
+                    firstMortageModel.updateModelWithJSON(json: result["data"])
+                    self.mortgageDetail = firstMortageModel
+                    self.setMortgageData()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+        
     }
 }

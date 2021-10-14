@@ -47,6 +47,9 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
     var isMortgageCombine: Int?
     var isMortgageTakenWhenPropertyPurchase: Int?
     
+    var loanApplicationId = 0
+    var borrowerPropertyId = 0
+    
     var isForRealEstate = false
     var streetAddress = ""
     var mortgageDetail: SecondMortgageModel?
@@ -63,7 +66,7 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
         changeMortgageCombineStatus()
         changeMortgageTakenWhenPropertyPurchaseStatus()
         if (isForRealEstate){
-            //getMortgageDetail
+            getMortgageData()
         }
         else{
             setMortgageData()
@@ -154,6 +157,38 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
         UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
+    }
+    
+    //MARK:- API's
+    
+    func getMortgageData(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)&borrowerPropertyId=\(borrowerPropertyId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getSecondMortgageDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                Utility.showOrHideLoader(shouldShow: false)
+                
+                if (status == .success){
+                    
+                    let secondMortageModel = SecondMortgageModel()
+                    secondMortageModel.updateModelWithJSON(json: result["data"])
+                    self.mortgageDetail = secondMortageModel
+                    self.setMortgageData()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+        
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
