@@ -73,7 +73,16 @@ extension AssetsViewController: CarbonTabSwipeNavigationDelegate{
     
     func carbonTabSwipeNavigation(_ carbonTabSwipeNavigation: CarbonTabSwipeNavigation, viewControllerAt index: UInt) -> UIViewController {
         let vc = Utility.getAssetsDetailVC()
+        vc.loanApplicationId = self.loanApplicationId
+        vc.borrowerId = borrowersArray[Int(index)].borrowerId
+        vc.delegate = self
         return vc
     }
     
+}
+
+extension AssetsViewController: AssetsDetailViewControllerDelegate{
+    func getBorrowerTotalAssets(totalAssets: String) {
+        self.lblTotalAssets.text = totalAssets
+    }
 }

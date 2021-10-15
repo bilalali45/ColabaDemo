@@ -6,6 +6,11 @@
 //
 
 import UIKit
+import LoadingPlaceholderView
+
+protocol IncomeDetailViewControllerDelegate: Any {
+    func getBorrowerTotalIncome(totalIncome: String)
+}
 
 class IncomeDetailViewController: BaseViewController {
 
@@ -32,7 +37,20 @@ class IncomeDetailViewController: BaseViewController {
     @IBOutlet weak var tableViewOtherTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewOtherHeightConstraint: NSLayoutConstraint!
     
+    let loadingPlaceholderView = LoadingPlaceholderView()
+    
+    var delegate: IncomeDetailViewControllerDelegate?
+    var loanApplicationId = 0
+    var borrowerId = 0
+    var borrowerIncomeData = BorrowerIncomeModel()
     var selectedTableView: UITableView?
+    
+    var employmentIncome = BorrowerIncome()
+    var selfEmployementIncome = BorrowerIncome()
+    var businessIncome = BorrowerIncome()
+    var militaryIncome = BorrowerIncome()
+    var retiermentIncome = BorrowerIncome()
+    var otherIncome = BorrowerIncome()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +62,12 @@ class IncomeDetailViewController: BaseViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
             self.setScreenHeight()
         }
+        getIncomeDetail()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.delegate?.getBorrowerTotalIncome(totalIncome: "\(Int(borrowerIncomeData.monthlyIncome).withCommas().replacingOccurrences(of: ".00", with: ""))")
     }
     
     //MARK:- Methods and Actions
@@ -61,25 +85,69 @@ class IncomeDetailViewController: BaseViewController {
             tableView.register(UINib(nibName: "AssetsHeadingTableViewCell", bundle: nil), forCellReuseIdentifier: "AssetsHeadingTableViewCell")
             tableView.register(UINib(nibName: "AssetsDetailTableViewCell", bundle: nil), forCellReuseIdentifier: "AssetsDetailTableViewCell")
             tableView.register(UINib(nibName: "AssetsAddNewTableViewCell", bundle: nil), forCellReuseIdentifier: "AssetsAddNewTableViewCell")
+            tableView.coverableCellsIdentifiers = ["AssetsHeadingTableViewCell"]
         }
+    }
+    
+    func setIncomeDetail(){
+        
+        self.delegate?.getBorrowerTotalIncome(totalIncome: "\(Int(borrowerIncomeData.monthlyIncome).withCommas().replacingOccurrences(of: ".00", with: ""))")
+        
+        if let employement = self.borrowerIncomeData.borrowerIncomes.filter({$0.incomeCategory == "Employment"
+        }).first{
+            self.employmentIncome = employement
+        }
+        if let selfEmployment = self.borrowerIncomeData.borrowerIncomes.filter({$0.incomeCategory == "Self Employment / Independent Contractor"
+        }).first{
+            self.selfEmployementIncome = selfEmployment
+        }
+        if let business = self.borrowerIncomeData.borrowerIncomes.filter({$0.incomeCategory == "Business"
+        }).first{
+            self.businessIncome = business
+        }
+        if let militaryPay = self.borrowerIncomeData.borrowerIncomes.filter({$0.incomeCategory == "Military Pay"
+        }).first{
+            self.militaryIncome = militaryPay
+        }
+        if let retirement = self.borrowerIncomeData.borrowerIncomes.filter({$0.incomeCategory == "Retirement"
+        }).first{
+            self.retiermentIncome = retirement
+        }
+        if let other = self.borrowerIncomeData.borrowerIncomes.filter({$0.incomeCategory == "Other"
+        }).first{
+            self.otherIncome = other
+        }
+        
+        self.setScreenHeight()
     }
     
     func setScreenHeight(){
         
-        let bankAccountTableViewHeight = selectedTableView == tableViewEmployement ? 292 : 58
-        let retirementAccountTableViewHeight = selectedTableView == tableViewSelfEmployement ? 227 : 58
-        let stocksBondTableViewHeight = selectedTableView == tableViewBusiness ? 209 : 58
-        let transactionTableViewHeight = selectedTableView == tableViewMilitaryPay ? 209 : 58
-        let giftFundTableViewHeight = selectedTableView == tableViewRetitrement ? 209 : 58
-        let otherTableViewHeight = selectedTableView == tableViewOther ? 209 : 58
+        let employmentHeight = (self.employmentIncome.incomes.count * 83)
+        let employmentTableViewHeight = selectedTableView == tableViewEmployement ? (employmentHeight + 128) : 58
         
-        let totalHeight = bankAccountTableViewHeight + retirementAccountTableViewHeight + stocksBondTableViewHeight + transactionTableViewHeight + giftFundTableViewHeight + otherTableViewHeight + 100
+        let selfEmploymentHeight = (self.selfEmployementIncome.incomes.count * 83)
+        let selfEmploymentTableViewHeight = selectedTableView == tableViewSelfEmployement ? (selfEmploymentHeight + 148) : 58
         
-        tableViewEmployementHeightConstraint.constant = CGFloat(bankAccountTableViewHeight)
-        tableViewSelfEmployementHeightConstraint.constant = CGFloat(retirementAccountTableViewHeight)
-        tableViewBusinessHeightConstraint.constant = CGFloat(stocksBondTableViewHeight)
-        tableViewMilitaryPayHeightConstraint.constant = CGFloat(transactionTableViewHeight)
-        tableViewRetirementHeightConstraint.constant = CGFloat(giftFundTableViewHeight)
+        let businessHeight = (self.businessIncome.incomes.count * 83)
+        let businessTableViewHeight = selectedTableView == tableViewBusiness ? (businessHeight + 128) : 58
+        
+        let militaryHeight = (self.militaryIncome.incomes.count * 83)
+        let militaryPayTableViewHeight = selectedTableView == tableViewMilitaryPay ? (militaryHeight + 128) : 58
+        
+        let retirementHeight = (self.retiermentIncome.incomes.count * 83)
+        let retirementTableViewHeight = selectedTableView == tableViewRetitrement ? (retirementHeight + 128) : 58
+        
+        let otherHeight = (self.otherIncome.incomes.count * 83)
+        let otherTableViewHeight = selectedTableView == tableViewOther ? (otherHeight + 128) : 58
+        
+        let totalHeight = employmentTableViewHeight + selfEmploymentTableViewHeight + businessTableViewHeight + militaryPayTableViewHeight + retirementTableViewHeight + otherTableViewHeight + 100
+        
+        tableViewEmployementHeightConstraint.constant = CGFloat(employmentTableViewHeight)
+        tableViewSelfEmployementHeightConstraint.constant = CGFloat(selfEmploymentTableViewHeight)
+        tableViewBusinessHeightConstraint.constant = CGFloat(businessTableViewHeight)
+        tableViewMilitaryPayHeightConstraint.constant = CGFloat(militaryPayTableViewHeight)
+        tableViewRetirementHeightConstraint.constant = CGFloat(retirementTableViewHeight)
         tableViewOtherHeightConstraint.constant = CGFloat(otherTableViewHeight)
         
         self.mainViewHeightConstraint.constant = CGFloat(totalHeight)
@@ -111,6 +179,36 @@ class IncomeDetailViewController: BaseViewController {
         self.presentVC(vc: navVC)
     }
   
+    //MARK:- API's
+    
+    func getIncomeDetail(){
+        
+        loadingPlaceholderView.cover(self.view, animated: true)
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)&borrowerId=\(borrowerId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getIncomeDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                self.loadingPlaceholderView.uncover(animated: true)
+                
+                if (status == .success){
+                    
+                    let borrowerIncomeModel = BorrowerIncomeModel()
+                    borrowerIncomeModel.updateModelWithJSON(json: result["data"]["borrower"])
+                    self.borrowerIncomeData = borrowerIncomeModel
+                    self.setIncomeDetail()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+            
+        }
+    }
 }
 
 extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate{
@@ -119,7 +217,7 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
         
         if (tableView == tableViewEmployement){
             if (tableView == selectedTableView){
-                return 4
+                return employmentIncome.incomes.count + 2
             }
             else{
                 return 1
@@ -127,7 +225,7 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
         }
         else if (tableView == tableViewSelfEmployement){
             if (tableView == selectedTableView){
-                return 3
+                return selfEmployementIncome.incomes.count + 2
             }
             else{
                 return 1
@@ -135,7 +233,7 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
         }
         else if (tableView == tableViewBusiness){
             if (tableView == selectedTableView){
-                return 3
+                return businessIncome.incomes.count + 2
             }
             else{
                 return 1
@@ -143,7 +241,7 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
         }
         else if (tableView == tableViewMilitaryPay){
             if (tableView == selectedTableView){
-                return 3
+                return militaryIncome.incomes.count + 2
             }
             else{
                 return 1
@@ -151,7 +249,7 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
         }
         else if (tableView == tableViewRetitrement){
             if (tableView == selectedTableView){
-                return 3
+                return retiermentIncome.incomes.count + 2
             }
             else{
                 return 1
@@ -159,7 +257,7 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
         }
         else if (tableView == tableViewOther){
             if (tableView == selectedTableView){
-                return 3
+                return otherIncome.incomes.count + 2
             }
             else{
                 return 1
@@ -173,21 +271,21 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
                 cell.lblTitle.text = "Employment"
-                cell.lblAmount.text = "$5,000/mo"
+                cell.lblAmount.text = "\(Int(employmentIncome.incomeCategoryTotal).withCommas().replacingOccurrences(of: ".00", with: ""))/mo"
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 return cell
             }
-            else if (indexPath.row == 3){
+            else if (indexPath.row == employmentIncome.incomes.count + 1){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsAddNewTableViewCell", for: indexPath) as! AssetsAddNewTableViewCell
                 cell.lblTitle.text = "Add Employment"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsDetailTableViewCell", for: indexPath) as! AssetsDetailTableViewCell
-                cell.lblTitle.text = indexPath.row == 1 ? "Google LLC" : "Disrupt"
-                cell.lblStatus.text = indexPath.row == 1 ? "Chief Executive Officer" : "Admin Manager"
-                cell.lblAmount.text = indexPath.row == 1 ? "$5,000" : "$4,000"
-                cell.lblDate.text = indexPath.row == 1 ? "From Jun 2020" : "Dec 2019 to May 2020"
+                cell.lblTitle.text = employmentIncome.incomes[indexPath.row - 1].incomeName
+                cell.lblStatus.text = employmentIncome.incomes[indexPath.row - 1].jobTitle
+                cell.lblAmount.text = "\(Int(employmentIncome.incomes[indexPath.row - 1].incomeValue).withCommas().replacingOccurrences(of: ".00", with: ""))"
+                cell.lblDate.text = Utility.getIncomeDate(startDate: employmentIncome.incomes[indexPath.row - 1].startDate, endDate: employmentIncome.incomes[indexPath.row - 1].endDate)
                 return cell
             }
         }
@@ -195,21 +293,21 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
                 cell.lblTitle.text = "Self Employment / Independent Contractor"
-                cell.lblAmount.text = "$3,000/mo"
+                cell.lblAmount.text = "\(Int(selfEmployementIncome.incomeCategoryTotal).withCommas().replacingOccurrences(of: ".00", with: ""))/mo"
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 return cell
             }
-            else if (indexPath.row == 2){
+            else if (indexPath.row == selfEmployementIncome.incomes.count + 1){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsAddNewTableViewCell", for: indexPath) as! AssetsAddNewTableViewCell
                 cell.lblTitle.text = "Add Self Employment"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsDetailTableViewCell", for: indexPath) as! AssetsDetailTableViewCell
-                cell.lblTitle.text = "Freelance"
-                cell.lblStatus.text = "Content Writer"
-                cell.lblAmount.text = "$3,000"
-                cell.lblDate.text = "From Dec 2020"
+                cell.lblTitle.text = selfEmployementIncome.incomes[indexPath.row - 1].incomeName
+                cell.lblStatus.text = selfEmployementIncome.incomes[indexPath.row - 1].jobTitle
+                cell.lblAmount.text = "\(Int(selfEmployementIncome.incomes[indexPath.row - 1].incomeValue).withCommas().replacingOccurrences(of: ".00", with: ""))"
+                cell.lblDate.text = Utility.getIncomeDate(startDate: selfEmployementIncome.incomes[indexPath.row - 1].startDate, endDate: selfEmployementIncome.incomes[indexPath.row - 1].endDate)
                 return cell
             }
         }
@@ -217,21 +315,21 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
                 cell.lblTitle.text = "Business"
-                cell.lblAmount.text = "$6,000/mo"
+                cell.lblAmount.text = "\(Int(businessIncome.incomeCategoryTotal).withCommas().replacingOccurrences(of: ".00", with: ""))/mo"
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 return cell
             }
-            else if (indexPath.row == 2){
+            else if (indexPath.row == businessIncome.incomes.count + 1){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsAddNewTableViewCell", for: indexPath) as! AssetsAddNewTableViewCell
                 cell.lblTitle.text = "Add Business"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsDetailTableViewCell", for: indexPath) as! AssetsDetailTableViewCell
-                cell.lblTitle.text = "OPTP"
-                cell.lblStatus.text = "Director"
-                cell.lblAmount.text = "$6,000"
-                cell.lblDate.text = "From Jun 2020"
+                cell.lblTitle.text = businessIncome.incomes[indexPath.row - 1].incomeName
+                cell.lblStatus.text = businessIncome.incomes[indexPath.row - 1].jobTitle
+                cell.lblAmount.text = "\(Int(businessIncome.incomes[indexPath.row - 1].incomeValue).withCommas().replacingOccurrences(of: ".00", with: ""))"
+                cell.lblDate.text = Utility.getIncomeDate(startDate: businessIncome.incomes[indexPath.row - 1].startDate, endDate: businessIncome.incomes[indexPath.row - 1].endDate)
                 return cell
             }
         }
@@ -239,21 +337,21 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
                 cell.lblTitle.text = "Military Pay"
-                cell.lblAmount.text = "$2,000/mo"
+                cell.lblAmount.text = "\(Int(militaryIncome.incomeCategoryTotal).withCommas().replacingOccurrences(of: ".00", with: ""))/mo"
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 return cell
             }
-            else if (indexPath.row == 2){
+            else if (indexPath.row == militaryIncome.incomes.count + 1){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsAddNewTableViewCell", for: indexPath) as! AssetsAddNewTableViewCell
                 cell.lblTitle.text = "Add Military Service"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsDetailTableViewCell", for: indexPath) as! AssetsDetailTableViewCell
-                cell.lblTitle.text = "US Army"
-                cell.lblStatus.text = "Field 15 — Aviation"
-                cell.lblAmount.text = "$2,000"
-                cell.lblDate.text = "From Jun 2020"
+                cell.lblTitle.text = militaryIncome.incomes[indexPath.row - 1].incomeName
+                cell.lblStatus.text = militaryIncome.incomes[indexPath.row - 1].jobTitle
+                cell.lblAmount.text = "\(Int(militaryIncome.incomes[indexPath.row - 1].incomeValue).withCommas().replacingOccurrences(of: ".00", with: ""))"
+                cell.lblDate.text = Utility.getIncomeDate(startDate: militaryIncome.incomes[indexPath.row - 1].startDate, endDate: militaryIncome.incomes[indexPath.row - 1].endDate)
                 return cell
             }
         }
@@ -261,21 +359,21 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
                 cell.lblTitle.text = "Retirement"
-                cell.lblAmount.text = "$1,200/mo"
+                cell.lblAmount.text = "\(Int(retiermentIncome.incomeCategoryTotal).withCommas().replacingOccurrences(of: ".00", with: ""))/mo"
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 return cell
             }
-            else if (indexPath.row == 2){
+            else if (indexPath.row == retiermentIncome.incomes.count + 1){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsAddNewTableViewCell", for: indexPath) as! AssetsAddNewTableViewCell
                 cell.lblTitle.text = "Add Retirement"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsDetailTableViewCell", for: indexPath) as! AssetsDetailTableViewCell
-                cell.lblTitle.text = "Google LLC"
-                cell.lblStatus.text = "Pension"
-                cell.lblAmount.text = "$1,200"
-                cell.lblDate.text = ""
+                cell.lblTitle.text = retiermentIncome.incomes[indexPath.row - 1].incomeName
+                cell.lblStatus.text = retiermentIncome.incomes[indexPath.row - 1].jobTitle
+                cell.lblAmount.text = "\(Int(retiermentIncome.incomes[indexPath.row - 1].incomeValue).withCommas().replacingOccurrences(of: ".00", with: ""))"
+                cell.lblDate.text = Utility.getIncomeDate(startDate: retiermentIncome.incomes[indexPath.row - 1].startDate, endDate: retiermentIncome.incomes[indexPath.row - 1].endDate)
                 return cell
             }
         }
@@ -283,21 +381,21 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
                 cell.lblTitle.text = "Other"
-                cell.lblAmount.text = "$4,125/mo"
+                cell.lblAmount.text = "\(Int(otherIncome.incomeCategoryTotal).withCommas().replacingOccurrences(of: ".00", with: ""))/mo"
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 return cell
             }
-            else if (indexPath.row == 2){
+            else if (indexPath.row == otherIncome.incomes.count + 1){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsAddNewTableViewCell", for: indexPath) as! AssetsAddNewTableViewCell
                 cell.lblTitle.text = "Add Other Income"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsDetailTableViewCell", for: indexPath) as! AssetsDetailTableViewCell
-                cell.lblTitle.text = "Alimony"
-                cell.lblStatus.text = "Family"
-                cell.lblAmount.text = "$4,125"
-                cell.lblDate.text = ""
+                cell.lblTitle.text = otherIncome.incomes[indexPath.row - 1].incomeName
+                cell.lblStatus.text = otherIncome.incomes[indexPath.row - 1].jobTitle
+                cell.lblAmount.text = "\(Int(otherIncome.incomes[indexPath.row - 1].incomeValue).withCommas().replacingOccurrences(of: ".00", with: ""))"
+                cell.lblDate.text = Utility.getIncomeDate(startDate: otherIncome.incomes[indexPath.row - 1].startDate, endDate: otherIncome.incomes[indexPath.row - 1].endDate)
                 return cell
             }
             
@@ -311,7 +409,7 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 return 58
             }
-            else if (indexPath.row == 3){
+            else if (indexPath.row == employmentIncome.incomes.count + 1){
                 return 70
             }
             else{
@@ -322,7 +420,40 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 return selectedTableView == tableViewSelfEmployement ? 78 : 58
             }
-            else if (indexPath.row == 2){
+            else if (indexPath.row == selfEmployementIncome.incomes.count + 1){
+                return 70
+            }
+            else{
+                return 83
+            }
+        }
+        else if (tableView == tableViewBusiness){
+            if (indexPath.row == 0){
+                return 58
+            }
+            else if (indexPath.row == businessIncome.incomes.count + 1){
+                return 70
+            }
+            else{
+                return 83
+            }
+        }
+        else if (tableView == tableViewMilitaryPay){
+            if (indexPath.row == 0){
+                return 58
+            }
+            else if (indexPath.row == militaryIncome.incomes.count + 1){
+                return 70
+            }
+            else{
+                return 83
+            }
+        }
+        else if (tableView == tableViewRetitrement){
+            if (indexPath.row == 0){
+                return 58
+            }
+            else if (indexPath.row == retiermentIncome.incomes.count + 1){
                 return 70
             }
             else{
@@ -333,7 +464,7 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 return 58
             }
-            else if (indexPath.row == 2){
+            else if (indexPath.row == otherIncome.incomes.count + 1){
                 return 70
             }
             else{
@@ -364,48 +495,48 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
                     navVC.modalPresentationStyle = .fullScreen
                     self.presentVC(vc: navVC)
                 }
-                else if (indexPath.row == 2){
+                else if (indexPath.row == employmentIncome.incomes.count + 1){
+                    let vc = Utility.getAddEmployementPopupVC()
+                    self.present(vc, animated: false, completion: nil)
+                }
+                else{
                     let vc = Utility.getAddPreviousEmploymentVC()
                     let navVC = UINavigationController(rootViewController: vc)
                     navVC.navigationBar.isHidden = true
                     navVC.modalPresentationStyle = .fullScreen
                     self.presentVC(vc: navVC)
                 }
-                else if (indexPath.row == 3){
-                    let vc = Utility.getAddEmployementPopupVC()
-                    self.present(vc, animated: false, completion: nil)
-                }
                 
             }
-            else if (tableView == tableViewSelfEmployement && (indexPath.row == 1 || indexPath.row == 2)){
+            else if (tableView == tableViewSelfEmployement && (indexPath.row != 0))/*(indexPath.row == 1 || indexPath.row == 2))*/{
                 let vc = Utility.getAddSelfEmploymentVC()
                 let navVC = UINavigationController(rootViewController: vc)
                 navVC.navigationBar.isHidden = true
                 navVC.modalPresentationStyle = .fullScreen
                 self.presentVC(vc: navVC)
             }
-            else if (tableView == tableViewBusiness && (indexPath.row == 1 || indexPath.row == 2)){
+            else if (tableView == tableViewBusiness && (indexPath.row != 0))/*(indexPath.row == 1 || indexPath.row == 2))*/{
                 let vc = Utility.getAddBusinessVC()
                 let navVC = UINavigationController(rootViewController: vc)
                 navVC.navigationBar.isHidden = true
                 navVC.modalPresentationStyle = .fullScreen
                 self.presentVC(vc: navVC)
             }
-            else if (tableView == tableViewMilitaryPay && (indexPath.row == 1 || indexPath.row == 2)){
+            else if (tableView == tableViewMilitaryPay && (indexPath.row != 0))/*(indexPath.row == 1 || indexPath.row == 2))*/{
                 let vc = Utility.getAddMilitaryPayVC()
                 let navVC = UINavigationController(rootViewController: vc)
                 navVC.navigationBar.isHidden = true
                 navVC.modalPresentationStyle = .fullScreen
                 self.presentVC(vc: navVC)
             }
-            else if (tableView == tableViewRetitrement && (indexPath.row == 1 || indexPath.row == 2)){
+            else if (tableView == tableViewRetitrement && (indexPath.row != 0))/*(indexPath.row == 1 || indexPath.row == 2))*/{
                 let vc = Utility.getAddRetirementIncomeVC()
                 let navVC = UINavigationController(rootViewController: vc)
                 navVC.navigationBar.isHidden = true
                 navVC.modalPresentationStyle = .fullScreen
                 self.presentVC(vc: navVC)
             }
-            else if (tableView == tableViewOther && (indexPath.row == 1 || indexPath.row == 2)){
+            else if (tableView == tableViewOther && (indexPath.row != 0))/*(indexPath.row == 1 || indexPath.row == 2))*/{
                 let vc = Utility.getAddOtherIncomeVC()
                 let navVC = UINavigationController(rootViewController: vc)
                 navVC.navigationBar.isHidden = true
