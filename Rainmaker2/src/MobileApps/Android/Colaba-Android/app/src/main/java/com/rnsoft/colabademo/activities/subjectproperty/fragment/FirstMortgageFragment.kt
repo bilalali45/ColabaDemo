@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +17,10 @@ import com.rnsoft.colabademo.utils.NumberTextFormat
 /**
  * Created by Anita Kiran on 9/9/2021.
  */
-class FirstMortgageFragment : BaseFragment(),View.OnClickListener {
+class FirstMortgageFragment : BaseFragment() {
 
     private lateinit var binding : FirstMortgageLayoutBinding
+    private var list : ArrayList<FirstMortgageModel> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,82 +28,162 @@ class FirstMortgageFragment : BaseFragment(),View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FirstMortgageLayoutBinding.inflate(inflater, container, false)
-
-        val title = arguments?.getString(AppConstant.address).toString()
-        title.let {
-            binding.borrowerPurpose.setText(title)
-        }
-
-        binding.backButton.setOnClickListener(this)
-        binding.btnSave.setOnClickListener(this)
-        binding.firstMorgtageParentLayout.setOnClickListener(this)
-        binding.cbFloodInsurance.setOnClickListener(this)
-        binding.cbHomeownwerInsurance.setOnClickListener(this)
-        binding.cbPropertyTaxes.setOnClickListener(this)
-        binding.switchCreditLimit.setOnClickListener(this)
-        binding.rbQuesYes.setOnClickListener(this)
-        binding.rbQuesNo.setOnClickListener(this)
-
-        setInputFields()
         super.addListeners(binding.root)
-        return binding.root
-    }
 
-    override fun onClick(view: View?) {
-        when (view?.getId()) {
-            R.id.backButton ->  requireActivity().onBackPressed()
-            R.id.btn_save ->  checkValidations()
-            R.id.first_morgtage_parentLayout-> {
-                HideSoftkeyboard.hide(requireActivity(), binding.firstMorgtageParentLayout)
-                super.removeFocusFromAllFields(binding.firstMorgtageParentLayout)
+
+        binding.borrowerPurpose.setText(getString(R.string.subject_property))
+
+        //HideSoftkeyboard.hide(requireActivity(), binding.firstMorgtageParentLayout)
+        //super.removeFocusFromAllFields(binding.firstMorgtageParentLayout)
+
+        setUpUI()
+        setInputFields()
+
+        list = arguments?.getParcelableArrayList(AppConstant.firstMortgage)!!
+        if(list.size > 0){
+            list[0].firstMortgagePayment?.let { binding.edFirstMortgagePayment.setText(it.toString()) }
+            list[0].unpaidFirstMortgagePayment?.let { binding.edUnpaidBalance.setText(it.toString()) }
+            list[0].helocCreditLimit?.let {
+                binding.edCreditLimit.setText(it.toString())
+                binding.layoutCreditLimit.visibility = View.VISIBLE
             }
-            R.id.cb_flood_insurance ->
-                if (binding.cbFloodInsurance.isChecked) {
-                    binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
-                }else{
-                    binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
-                }
-
-            R.id.cb_property_taxes ->
-                if (binding.cbPropertyTaxes.isChecked) {
-                    binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
-                }else{
-                    binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
-                }
-
-            R.id.cb_homeownwer_insurance ->
-                if (binding.cbHomeownwerInsurance.isChecked) {
-                    binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
-                }else{
-                    binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
-                }
-
-            R.id.switch_credit_limit ->
-                if(binding.switchCreditLimit.isChecked) {
-                    binding.layoutCreditLimit.visibility = View.VISIBLE
+            list[0].isHeloc?.let {
+                if(it) {
+                    binding.switchCreditLimit.isChecked = true
                     binding.tvHeloc.setTypeface(null, Typeface.BOLD)
                 } else {
-                    binding.layoutCreditLimit.visibility = View.GONE
+                    binding.switchCreditLimit.isChecked = false
                     binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
                 }
+            }
+            list[0].propertyTaxesIncludeinPayment?.let { taxIncluded->
+                if(taxIncluded) {
+                    binding.cbPropertyTaxes.isChecked = true
+                    binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
+                } else
+                    binding.cbPropertyTaxes.isChecked = false
+            }
+            list[0].homeOwnerInsuranceIncludeinPayment?.let { insuranceIncluded ->
+                if(insuranceIncluded){
+                    binding.cbHomeownwerInsurance.isChecked = true
+                    binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
+                } else
+                    binding.cbHomeownwerInsurance.isChecked = false
+            }
+            list[0].floodInsuranceIncludeinPayment.let { insuranceIncluded->
+                if(insuranceIncluded) {
+                    binding.cbFloodInsurance.isChecked = true
+                    binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
+                } else
+                    binding.cbFloodInsurance.isChecked = false
+            }
+        }
 
-            R.id.rb_ques_yes ->
-                if (binding.rbQuesYes.isChecked) {
-                    binding.rbQuesYes.setTypeface(null, Typeface.BOLD)
-                    binding.rbQuesNo.setTypeface(null, Typeface.NORMAL)
-                }else{
-                    binding.rbQuesYes.setTypeface(null, Typeface.NORMAL)
-                }
+        return binding.root
+    }
+    private fun setUpUI(){
+        binding.backButton.setOnClickListener { requireActivity().onBackPressed() }
 
-            R.id.rb_ques_no ->
-                if (binding.rbQuesNo.isChecked) {
-                    binding.rbQuesNo.setTypeface(null, Typeface.BOLD)
-                    binding.rbQuesYes.setTypeface(null, Typeface.NORMAL)
-                }else{
-                    binding.rbQuesNo.setTypeface(null, Typeface.NORMAL)
-                }
+        binding.btnSave.setOnClickListener { checkValidations() }
+
+        binding.cbPropertyTaxes.setOnClickListener {
+            Log.e("onclick","click")
+            binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
+            binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
+        }
+
+        binding.cbFloodInsurance.setOnClickListener {
+            binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
+            binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
+        }
+
+        binding.cbHomeownwerInsurance.setOnClickListener {
+            binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
+            binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
+        }
+
+        binding.switchCreditLimit.setOnClickListener {
+            if(binding.switchCreditLimit.isChecked) {
+                binding.layoutCreditLimit.visibility = View.VISIBLE
+                binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+            } else {
+                binding.layoutCreditLimit.visibility = View.GONE
+                binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
+            }
+        }
+        binding.rbQuesYes.setOnClickListener {
+            if (binding.rbQuesYes.isChecked) {
+                binding.rbQuesYes.setTypeface(null, Typeface.BOLD)
+                binding.rbQuesNo.setTypeface(null, Typeface.NORMAL)
+            } else {
+                binding.rbQuesYes.setTypeface(null, Typeface.NORMAL)
+            }
+        }
+        binding.rbQuesNo.setOnClickListener {
+            if (binding.rbQuesNo.isChecked) {
+                binding.rbQuesNo.setTypeface(null, Typeface.BOLD)
+                binding.rbQuesYes.setTypeface(null, Typeface.NORMAL)
+            }else{
+                binding.rbQuesNo.setTypeface(null, Typeface.NORMAL)
+            }
         }
     }
+
+//    override fun onClick(view: View?) {
+//        when (view?.getId()) {
+//            //R.id.backButton ->  requireActivity().onBackPressed()
+            //R.id.btn_save ->  checkValidations()
+//            R.id.first_morgtage_parentLayout-> {
+//                HideSoftkeyboard.hide(requireActivity(), binding.firstMorgtageParentLayout)
+//                super.removeFocusFromAllFields(binding.firstMorgtageParentLayout)
+//            }
+//            R.id.cb_flood_insurance ->
+//                if (binding.cbFloodInsurance.isChecked) {
+//                    binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
+//                }else{
+//                    binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
+//                }
+
+//            R.id.cb_property_taxes ->
+//                if (binding.cbPropertyTaxes.isChecked) {
+//                    binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
+//                }else{
+//                    binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
+//                }
+//
+//            R.id.cb_homeownwer_insurance ->
+//                if (binding.cbHomeownwerInsurance.isChecked) {
+//                    binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
+//                }else{
+//                    binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
+//                }
+
+//            R.id.switch_credit_limit ->
+//                if(binding.switchCreditLimit.isChecked) {
+//                    binding.layoutCreditLimit.visibility = View.VISIBLE
+//                    binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+//                } else {
+//                    binding.layoutCreditLimit.visibility = View.GONE
+//                    binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
+//                }
+//
+//            R.id.rb_ques_yes ->
+//                if (binding.rbQuesYes.isChecked) {
+//                    binding.rbQuesYes.setTypeface(null, Typeface.BOLD)
+//                    binding.rbQuesNo.setTypeface(null, Typeface.NORMAL)
+//                }else{
+//                    binding.rbQuesYes.setTypeface(null, Typeface.NORMAL)
+//                }
+//
+//            R.id.rb_ques_no ->
+//                if (binding.rbQuesNo.isChecked) {
+//                    binding.rbQuesNo.setTypeface(null, Typeface.BOLD)
+//                    binding.rbQuesYes.setTypeface(null, Typeface.NORMAL)
+//                }else{
+//                    binding.rbQuesNo.setTypeface(null, Typeface.NORMAL)
+//                }
+//        }
+//    }
 
     private fun setInputFields(){
 

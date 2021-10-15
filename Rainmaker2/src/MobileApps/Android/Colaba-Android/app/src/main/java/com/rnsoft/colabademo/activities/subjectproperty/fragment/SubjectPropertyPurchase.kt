@@ -15,10 +15,12 @@ import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.SubjectPropertyPurchaseBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Created by Anita Kiran on 9/8/2021.
  */
+@AndroidEntryPoint
 class SubjectPropertyPurchase : BaseFragment() {
 
     private lateinit var binding: SubjectPropertyPurchaseBinding

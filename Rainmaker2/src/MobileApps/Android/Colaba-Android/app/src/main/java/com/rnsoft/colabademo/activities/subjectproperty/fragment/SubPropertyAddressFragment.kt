@@ -34,6 +34,7 @@ import com.rnsoft.colabademo.databinding.SubjectPropertyAddressBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import kotlinx.android.synthetic.main.temp_residence_layout.*
+import kotlinx.android.synthetic.main.view_placesearch.*
 import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
@@ -65,16 +66,15 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         setUpCompleteViewForPlaces()
         initializeUSAstates()
 
-
         addressList = arguments?.getParcelableArrayList(AppConstant.address)!!
-        addressList.let {
-            it[0].street?.let { binding.tvSearch.setText(it) }
-            it[0].street?.let { binding.edStreetAddress.setText(it) }
-            it[0].city?.let { binding.edCity.setText(it) }
-            it[0].countryName?.let { binding.tvCountry.setText(it) }
-            it[0].zipCode?.let { binding.edZipcode.setText(it) }
-            it[0].stateName?.let { binding.tvState.setText(it) }
-            it[0].countyName?.let {binding.tvCounty.setText(it)}
+        if(addressList.size > 0 ) {
+            addressList[0].street?.let { binding.tvSearch.setText(it) }
+            addressList[0].street?.let { binding.edStreetAddress.setText(it) }
+            addressList[0].city?.let { binding.edCity.setText(it) }
+            addressList[0].countryName?.let { binding.tvCountry.setText(it) }
+            addressList[0].zipCode?.let { binding.edZipcode.setText(it) }
+            addressList[0].stateName?.let { binding.tvState.setText(it) }
+            addressList[0].countyName?.let {binding.tvCounty.setText(it) }
             visibleAllFields()
         }
 

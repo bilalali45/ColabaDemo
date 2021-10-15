@@ -37,7 +37,7 @@
 
     <fragment
         android:id="@+id/nav_first_mortage"
-        android:name="com.rnsoft.colabademo.FirstMortgageFragment"
+        android:name="com.rnsoft.colabademo.RealEstateFirstMortgage"
         android:label="@string/first_mortgage"
         tools:layout="@layout/first_mortgage_layout" />
 

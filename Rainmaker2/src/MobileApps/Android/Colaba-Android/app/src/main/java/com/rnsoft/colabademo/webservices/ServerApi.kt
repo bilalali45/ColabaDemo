@@ -2,11 +2,11 @@ package com.rnsoft.colabademo
 
 import com.rnsoft.colabademo.activities.loan.model.LoanGoalModel
 import com.rnsoft.colabademo.activities.model.*
+import com.rnsoft.colabademo.activities.realestate.model.RealEstateResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
-import java.io.File
 
 interface ServerApi{
 
@@ -22,10 +22,14 @@ interface ServerApi{
 
     // subject property
     @GET("api/mcu/mobile/loanapplication/Loan/GetAllPropertyTypeDropDown")
-    suspend fun getPropertyTypes(@Header("Authorization" )Authorization:String) : ArrayList<PropertyType>
+    suspend fun getPropertyTypes(@Header("Authorization" )Authorization:String) : ArrayList<DropDownResponse>
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetPropertyUsageDropDown")
-    suspend fun getOccupancyType(@Header("Authorization" )Authorization:String) : ArrayList<PropertyType>
+    suspend fun getOccupancyType(@Header("Authorization" )Authorization:String) : ArrayList<DropDownResponse>
+
+    @GET("api/mcu/mobile/loanapplication/Loan/GetAllPropertyStatusDropDown")
+    suspend fun getPropertyStauts(@Header("Authorization" )Authorization:String) : ArrayList<DropDownResponse>
+
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetCountries")
     suspend fun getCountries(@Header("Authorization" )Authorization:String) : ArrayList<CountriesModel>
@@ -53,7 +57,7 @@ interface ServerApi{
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetLoanInfoDetails")
     suspend fun getLoanInfoDetails(
-        @Header("Authorization" )  Authorization:String,
+        @Header("Authorization")  Authorization:String,
         @Query("loanApplicationId")  loanApplicationId:Int) : LoanInfoDetailsModel
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetAllLoanGoals")
@@ -61,13 +65,25 @@ interface ServerApi{
         @Header("Authorization" )  Authorization:String,
         @Query("loanpurposeid")  loanPurpuseId:Int) : ArrayList<LoanGoalModel>
 
+    @GET("api/mcu/mobile/loanapplication/RealEstate/GetRealEstateDetails")
+    suspend fun getRealEstateDetails(
+        @Header("Authorization") Authorization:String,
+        @Query("loanApplicationId") loanPurpuseId:Int,
+        @Query("borrowerPropertyId") borrowerPropertyId:Int)
+    : RealEstateResponse
+
+    @GET("api/mcu/mobile/loanapplication/RealEstate/GetFirstMortgageDetails")
+    suspend fun getFirstMortgageDetails(
+        @Header("Authorization") Authorization:String,
+        @Query("loanApplicationId") loanPurpuseId:Int,
+        @Query("borrowerPropertyId") borrowerPropertyId:Int) : RealEstateFirstMortgageModel
 
 
-
-
-
-
-
+    @GET("api/mcu/mobile/loanapplication/RealEstate/GetSecondMortgageDetails")
+    suspend fun getSecMortgageDetails(
+        @Header("Authorization") Authorization:String,
+        @Query("loanApplicationId") loanPurpuseId:Int,
+        @Query("borrowerPropertyId") borrowerPropertyId:Int) : RealEstateSecondMortgageModel
 
 
     @POST("api/mcu/mobile/identity/mcuaccount/signin")

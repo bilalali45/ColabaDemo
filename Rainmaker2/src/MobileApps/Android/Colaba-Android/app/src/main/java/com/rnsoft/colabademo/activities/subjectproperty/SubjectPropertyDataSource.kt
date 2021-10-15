@@ -10,7 +10,7 @@ import javax.inject.Inject
  */
 class SubjectPropertyDataSource @Inject constructor(private val serverApi: ServerApi) {
 
-    suspend fun getPropertyTypes(token: String): Result<ArrayList<PropertyType>> {
+    suspend fun getPropertyTypes(token: String): Result<ArrayList<DropDownResponse>> {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getPropertyTypes(newToken)
@@ -23,7 +23,7 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
         }
     }
 
-    suspend fun getOccupancyType(token: String): Result<ArrayList<PropertyType>> {
+    suspend fun getOccupancyType(token: String): Result<ArrayList<DropDownResponse>> {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getOccupancyType(newToken)

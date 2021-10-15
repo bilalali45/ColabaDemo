@@ -3,11 +3,13 @@ package com.rnsoft.colabademo
 import android.content.SharedPreferences
 import android.os.Bundle
 import com.rnsoft.colabademo.databinding.RealEstateActivityLayoutBinding
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
  * Created by Anita Kiran on 9/16/2021.
  */
+@AndroidEntryPoint
 class RealEstateActivity : BaseActivity() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
