@@ -79,16 +79,28 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var lblSecondMortgagePayment: UILabel!
     @IBOutlet weak var lblSecondMortgageBalance: UILabel!
     
+    var loanApplicationId = 0
+    
     var isTBDProperty = true
     var isMixedUseProperty: Bool?
     var isOccupying: Bool?
     var isFirstMortgage = false
     var isSecondMortgage = false
     
+    var propertyTypeArray = [DropDownModel]()
+    var occupancyTypeArray = [DropDownModel]()
+    var subjectPropertyDetail = RefinanceSubjectPropertyModel()
+    var coBorrowerOccupancyArray = [CoBorrowerOccupancyModel]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setViews()
         setTextFields()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        getPropertyTypeDropDown()
     }
     
     //MARK:- Methods and Actions
@@ -186,6 +198,51 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         
     }
     
+    func setSubjectPropertyData(){
+        
+        isTBDProperty = self.subjectPropertyDetail.address == nil
+        if let subjectPropertyAddress = self.subjectPropertyDetail.address{
+            lblAddress.text = "\(subjectPropertyAddress.street) \(subjectPropertyAddress.unit),\n\(subjectPropertyAddress.city), \(subjectPropertyAddress.stateName) \(subjectPropertyAddress.zipCode)"
+        }
+        
+        if let propertyType = self.propertyTypeArray.filter({$0.optionId == self.subjectPropertyDetail.propertyTypeId}).first{
+            self.txtfieldPropertyType.setTextField(text: propertyType.optionName)
+        }
+        if let occupancyType = self.occupancyTypeArray.filter({$0.optionId == self.subjectPropertyDetail.propertyUsageId}).first{
+            self.txtfieldOccupancyType.setTextField(text: occupancyType.optionName)
+        }
+        
+        txtfieldRentalIncome.setTextField(text: String(format: "%.0f", self.subjectPropertyDetail.rentalIncome.rounded()))
+        isMixedUseProperty = self.subjectPropertyDetail.isMixedUseProperty
+        lblPropertyUseDetail.text = self.subjectPropertyDetail.mixedUsePropertyExplanation
+        txtfieldAppraisedPropertyValue.setTextField(text: String(format: "%.0f", self.subjectPropertyDetail.propertyValue.rounded()))
+        txtfieldHomePurchaseDate.setTextField(text: Utility.getMonthYear(self.subjectPropertyDetail.dateAcquired))
+        txtfieldHomeOwnerAssociationDues.setTextField(text: String(format: "%.0f", self.subjectPropertyDetail.hoaDues.rounded()))
+        txtfieldTax.setTextField(text: String(format: "%.0f", self.subjectPropertyDetail.propertyTax.rounded()))
+        txtfieldHomeOwnerInsurance.setTextField(text: String(format: "%.0f", self.subjectPropertyDetail.homeOwnerInsurance.rounded()))
+        txtfieldFloodInsurance.setTextField(text: String(format: "%.0f", self.subjectPropertyDetail.floodInsurance.rounded()))
+        isOccupying = self.coBorrowerOccupancyArray.count > 0
+        lblCoBorrowerName.text = self.coBorrowerOccupancyArray.map{$0.borrowerFullName}.joined(separator: ", ")
+        isFirstMortgage = self.subjectPropertyDetail.hasFirstMortgage
+        isSecondMortgage = self.subjectPropertyDetail.hasSecondMortgage
+        
+        if let firstMortgage = self.subjectPropertyDetail.firstMortgage{
+            lblFirstMortgagePayment.text = Int(firstMortgage.firstMortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
+            lblFirstMortgageBalance.text = Int(firstMortgage.unpaidFirstMortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
+        }
+        
+        if let secondMortgage = self.subjectPropertyDetail.secondMortgage{
+            lblSecondMortgagePayment.text = Int(secondMortgage.secondMortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
+            lblSecondMortgageBalance.text = Int(secondMortgage.unpaidSecondMortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
+        }
+        
+        changeMortgageStatus()
+        showHideRentalIncome()
+        changeOccupyingStatus()
+        changeMixedUseProperty()
+        changedSubjectPropertyType()
+    }
+    
     func setScreenHeight(){
         let firstMortgageViewHeight = self.firstMortgageMainView.frame.height
         let secondMortgageViewHeight = self.secondMortgageMainView.frame.height
@@ -203,6 +260,7 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     
     @objc func addressViewTapped(){
         let vc = Utility.getSubjectPropertyAddressVC()
+        vc.selectedAddress = self.subjectPropertyDetail.address
         self.presentVC(vc: vc)
         isTBDProperty = false
         changedSubjectPropertyType()
@@ -301,8 +359,6 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     @objc func firstMortgageYesStackViewTapped(){
         let vc = Utility.getFirstMortgageFollowupQuestionsVC()
         self.presentVC(vc: vc)
-        isFirstMortgage = true
-        changeMortgageStatus()
     }
     
     @objc func firstMortgageNoStackViewTapped(){
@@ -313,14 +369,13 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     
     @objc func firstMortgageViewTapped(){
         let vc = Utility.getFirstMortgageFollowupQuestionsVC()
+        vc.mortgageDetail = self.subjectPropertyDetail.firstMortgage
         self.presentVC(vc: vc)
     }
     
     @objc func secondMortgageYesStackViewTapped(){
         let vc = Utility.getSecondMortgageFollowupQuestionsVC()
         self.presentVC(vc: vc)
-        isSecondMortgage = true
-        changeMortgageStatus()
     }
     
     @objc func secondMortgageNoStackViewTapped(){
@@ -330,6 +385,7 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     
     @objc func secondMortgageViewTapped(){
         let vc = Utility.getSecondMortgageFollowupQuestionsVC()
+        vc.mortgageDetail = self.subjectPropertyDetail.secondMortgage
         self.presentVC(vc: vc)
     }
     
@@ -375,6 +431,123 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton){
         self.goBack()
+    }
+    
+    //MARK:- API's
+    
+    func getPropertyTypeDropDown(){
+        
+        self.propertyTypeArray.removeAll()
+        self.occupancyTypeArray.removeAll()
+        self.coBorrowerOccupancyArray.removeAll()
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllPropertyTypeDrowpDown, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = DropDownModel()
+                        model.updateModelWithJSON(json: option)
+                        self.propertyTypeArray.append(model)
+                    }
+                    self.txtfieldPropertyType.setDropDownDataSource(self.propertyTypeArray.map{$0.optionName})
+                    self.getOccupancyTypeDropDown()
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+        
+    }
+    
+    func getOccupancyTypeDropDown(){
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllOccupancyTypeDropDown, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = DropDownModel()
+                        model.updateModelWithJSON(json: option)
+                        self.occupancyTypeArray.append(model)
+                    }
+                    self.txtfieldOccupancyType.setDropDownDataSource(self.occupancyTypeArray.map{$0.optionName})
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.getRefinanceSubjectProperty()
+                    
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func getRefinanceSubjectProperty(){
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getRefinanceSubjectPropertyDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                if (status == .success){
+                    let refinancePropertyModel = RefinanceSubjectPropertyModel()
+                    refinancePropertyModel.updateModelWithJSON(json: result["data"])
+                    self.subjectPropertyDetail = refinancePropertyModel
+                    self.getCoBorrowersOccupancyStatus()
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func getCoBorrowersOccupancyStatus(){
+        let extraData = "loanApplicationId=\(loanApplicationId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getCoBorrowersOccupancyStatus, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                Utility.showOrHideLoader(shouldShow: false)
+                
+                if (status == .success){
+                    
+                    let coBorrowers = result["data"].arrayValue
+                    for borrower in coBorrowers{
+                        let model = CoBorrowerOccupancyModel()
+                        model.updateModelWithJSON(json: borrower)
+                        self.coBorrowerOccupancyArray.append(model)
+                    }
+                    self.setSubjectPropertyData()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
     }
 }
 

@@ -1,17 +1,24 @@
 package com.rnsoft.colabademo
 
+import android.content.Context
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.Gravity
 import android.view.LayoutInflater
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.iterator
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.*
+import kotlinx.android.synthetic.main.common_govt_content_layout.view.*
 import timber.log.Timber
 
 
@@ -22,7 +29,9 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
     private var innerLayoutHashMap = HashMap<AppCompatTextView, ConstraintLayout>(0)
     private var openDetailBoxHashMap = HashMap<AppCompatRadioButton, ConstraintLayout>(0)
     private var closeDetailBoxHashMap = HashMap<AppCompatRadioButton, ConstraintLayout>(0)
-    private lateinit var test:ConstraintLayout
+    //private lateinit var test:ConstraintLayout
+
+    private val bAppViewModel: BorrowerApplicationViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,18 +40,134 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
     ): View {
         binding = BorrowerOneQuestionsLayoutBinding.inflate(inflater, container, false)
         setupLayout()
-        test = binding.root.findViewById<ConstraintLayout>(R.id.asian_inner_constraint_layout)
+        //test = binding.root.findViewById<ConstraintLayout>(R.id.asian_inner_constraint_layout)
         super.addListeners(binding.root)
         return binding.root
     }
 
-
     private fun setupLayout(){
-        setUpTabs()
+        setUpDynamicTabs()
+        //setUpTabs()
+    }
+
+    private fun setUpDynamicTabs(){
+        bAppViewModel.governmentQuestionsModelClass.observe(viewLifecycleOwner, Observer {
+            it.questionData?.let{ questionData->
+                for(qData in questionData) {
+                    qData.headerText?.let { tabTitle->
+                        val appCompactTextView = createAppCompactTextView(tabTitle, 0)
+                        binding.horizontalTabs.addView(appCompactTextView)
+                        val contentView = createContentLayoutForTab(qData)
+                        innerLayoutHashMap.put(appCompactTextView, contentView)
+                        binding.parentContainer.addView(contentView)
+                        appCompactTextView.setOnClickListener(scrollerTab)
+                        horizontalTabArrayList.add(appCompactTextView)
+                    }
+                }
+            }
+
+        })
+    }
+
+    fun convertDpToPixel(dp: Float, context: Context): Int {
+        return (dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+    }
+
+    private fun createAppCompactTextView(tabTitle:String, tabIndex:Int):AppCompatTextView{
+        //val appCompactTextView = AppCompatTextView(requireContext())
+
+        val appCompactTextView: AppCompatTextView =
+            layoutInflater.inflate(R.layout.govt_text_view, null) as AppCompatTextView
+
+        //appCompactTextView.setBackgroundColor(R.drawable.blue_white_style_filter)
+        //appCompactTextView.setPadding(12,0,12,0)
+        //appCompactTextView.height = 40
+
+        val textParam = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            convertDpToPixel(30.0f,requireContext()),
+            1.0f
+        )
+
+        textParam.setMargins( convertDpToPixel(8.0f,requireContext()), 0, 0, 0)
+
+        appCompactTextView.setLayoutParams(textParam)
+
+        // appCompactTextView.setTextColor(resources.getColor(R.color.doc_filter_text_color_selector, activity?.theme ))
+        //appCompactTextView.gravity = Gravity.CENTER
+        //appCompactTextView.setTextSize(13, 13F)
+        //appCompactTextView.isAllCaps = false
+        //appCompactTextView.id = tabIndex
+        appCompactTextView.tag = tabTitle
+        appCompactTextView.setText(tabTitle)
+        return appCompactTextView
+    }
+
+    private fun createContentLayoutForTab(questionData:QuestionData):ConstraintLayout{
+        val contentCell: ConstraintLayout =
+            layoutInflater.inflate(R.layout.common_govt_content_layout, null) as ConstraintLayout
+        contentCell.visibility = View.GONE
+        Timber.e(" questionData.question "+questionData.question)
+        contentCell.govt_question.text =  questionData.question
+        questionData.answerDetail?.let {
+            contentCell.detail_text.text = it
+        }
+        var headerTitle = ""
+        questionData.headerText?.let {
+            contentCell.govt_detail_box.tag = it
+            contentCell.ans_yes.tag = it
+            headerTitle = it
+        }
+
+        if(questionData.answer==null)
+            contentCell.ans_no.isChecked = true
+        else {
+            if(questionData.answer.equals("no",true))
+                contentCell.ans_no.isChecked = true
+            else {
+                contentCell.ans_yes.isChecked = true
+                contentCell.govt_detail_box.visibility = View.VISIBLE
+            }
+        }
+        contentCell.ans_no.setOnClickListener { contentCell.govt_detail_box.visibility = View.GONE}
+        contentCell.ans_yes.setOnClickListener {
+            contentCell.govt_detail_box.visibility = View.VISIBLE
+            openDetailBoxNew(headerTitle)
+        }
+        contentCell.govt_detail_box.setOnClickListener {
+            contentCell.govt_detail_box.visibility = View.VISIBLE
+            openDetailBoxNew(headerTitle)
+        }
+        return contentCell
+    }
+
+    private fun openDetailBoxNew(stringForSpecificFragment:String){
+        when(stringForSpecificFragment) {
+            "Undisclosed Borrowered Funds" ->{  findNavController().navigate(R.id.action_undisclosed_borrowerfund)}
+            "Amount to Borrow?" ->{}
+            "Ownership Interest in Property" ->{  findNavController().navigate(R.id.action_ownership_interest)}
+            "Own Property Type" ->{}
+            "Debt Co-Signer or Guarantor" ->{  findNavController().navigate(R.id.action_debt_co)}
+            "Outstanding Judgements" ->{  findNavController().navigate(R.id.action_outstanding)}
+            "Federal Debt Deliquency" ->{ findNavController().navigate(R.id.action_federal_debt)}
+            "Party to Lawsuit" ->{ findNavController().navigate(R.id.action_party_to) }
+            "Bankruptcy " ->{    findNavController().navigate(R.id.action_bankruptcy) }
+            "Child Support, Alimony, etc." ->{ findNavController().navigate(R.id.action_child_support) }
+            "Type" ->{}
+            "Foreclosured Property" ->{ findNavController().navigate(R.id.action_fore_closure_property) }
+            "Pre-Foreclosureor Short Sale" ->{ findNavController().navigate(R.id.action_pre_for_closure) }
+            "Title Conveyance" ->{ findNavController().navigate(R.id.action_title_conveyance)}
+            "Property Title" ->{}
+            "Family or Business affiliation" ->{}
+            else->{
+                Timber.e(" not matching with header title...")
+            }
+        }
     }
 
     private fun setUpTabs(){
-        binding.btnDebtCo.setOnClickListener(scrollerTab)
+        /*
+        binding.btnDebt.setOnClickListener(scrollerTab)
         binding.btnOutstanding.setOnClickListener(scrollerTab)
         binding.btnFederalDebt.setOnClickListener(scrollerTab)
         binding.btnPartyTo.setOnClickListener(scrollerTab)
@@ -57,14 +182,13 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
         binding.btnUndisclosedCredit.setOnClickListener(scrollerTab)
         binding.btnUndisclosedMortgage.setOnClickListener(scrollerTab)
         binding.btnPriorityLiens.setOnClickListener(scrollerTab)
-        horizontalTabArrayList.addAll(arrayListOf(binding.btnDebtCo,binding.btnOutstanding,
+        horizontalTabArrayList.addAll(arrayListOf(binding.btnDebt,binding.btnOutstanding,
             binding.btnFederalDebt, binding.btnPartyTo, binding.btnOwnershipInterest,  binding.btnTitleConveyance , binding.btnPreForeclouser,
             binding.btnForeclosuredProperty, binding.btnBankruptcy ,  binding.btnChildSupport ,  binding.btnDemographicInfo,
             binding.btnUndisclosedBorrowed , binding.btnUndisclosedCredit, binding.btnUndisclosedMortgage ,  binding.btnPriorityLiens))
 
 
-        //testHashMap.put(arrayListOf((binding.btnDebtCo, binding.debtCoContainer),()))
-        innerLayoutHashMap = hashMapOf((binding.btnDebtCo to binding.debtCoContainer),
+        innerLayoutHashMap = hashMapOf((binding.btnDebt to binding.debtCoContainer),
             (binding.btnOutstanding to binding.outstandingJudgementContainer), (binding.btnFederalDebt to binding.federalDeptContainer),
             (binding.btnOwnershipInterest to binding.ownershipInterestContainer), (binding.btnUndisclosedMortgage to binding.undisclosedMortgageContainer),
             (binding.btnPartyTo to binding.partyToLawsuitContainer), (binding.btnTitleConveyance to binding.titleConveyanceContainer),
@@ -74,6 +198,7 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
             (binding.btnUndisclosedBorrowed to binding.undisclosedContainer), (binding.btnUndisclosedCredit to binding.undisclosedCreditContainer),
             (binding.btnPriorityLiens to binding.priorityLiensContainer)
         )
+         */
 
         setUpDemoGraphicScreen()
 
@@ -93,6 +218,7 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
         binding.undisclosedCreditYes.setOnClickListener(openDetailBox)
         binding.undisclosedMortgageYes.setOnClickListener(openDetailBox)
         binding.priorityLiensYes.setOnClickListener(openDetailBox)
+
 
         openDetailBoxHashMap = hashMapOf((binding.debtCoYes to binding.debtCoDetailBox), (binding.childSupportYes to binding.childSupportDetailBox),
             (binding.partyToLawsuitYes to binding.partyToLawsuitDetailBox),
@@ -133,26 +259,14 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
             (binding.undisclosedMortgageNo to binding.undisclosedMortgageDetailBox), (binding.priorityLiensNo to binding.priorityLiensDetailBox)
         )
 
-        binding.btnUndisclosedBorrowed.performClick()
+        //binding.btnUndisclosedBorrowed.performClick()
 
         binding.doNotWishCheckBox.setOnClickListener{
             binding.whiteCheckBox.isChecked = false
-            binding.nativeHawaianOrOtherCheckBox.isChecked = false
-            val items = binding.nativeHawaianInnerLayout
-            for(item in items){
-                if(item is AppCompatCheckBox){
-                    item.isChecked = false
-                }
-            }
             binding.blackOrAfricanCheckBox.isChecked = false
-            binding.asianCheckBox.isChecked = false
-            val asianItems = binding.asianInnerConstraintLayout
-            for(item in asianItems){
-                if(item is AppCompatCheckBox){
-                    item.isChecked = false
-                }
-            }
             binding.americanOrIndianCheckBox.isChecked = false
+            binding.nativeHawaianOrOtherCheckBox.isChecked = false
+            binding.asianCheckBox.isChecked = false
         }
 
         binding.whiteCheckBox.setOnClickListener{ binding.doNotWishCheckBox.isChecked = false }
@@ -160,8 +274,6 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
         binding.blackOrAfricanCheckBox.setOnClickListener{ binding.doNotWishCheckBox.isChecked = false }
         binding.asianCheckBox.setOnClickListener{ binding.doNotWishCheckBox.isChecked = false }
         binding.americanOrIndianCheckBox.setOnClickListener{ binding.doNotWishCheckBox.isChecked = false }
-
-
 
 
     }
@@ -195,9 +307,9 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
                     }
                 }
                 binding.undisclosedYes -> {
-                    findNavController().navigate(R.id.action_undisclosed_borrower_fund)
+                    findNavController().navigate(R.id.action_undisclosed_borrowerfund)
                     openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.action_undisclosed_borrower_fund)
+                        findNavController().navigate(R.id.action_undisclosed_borrowerfund)
                     }
                 }
                 binding.debtCoYes-> {
@@ -279,21 +391,11 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
                 }
                 p0.isActivated = true
                 p0.setTextColor(resources.getColor(R.color.colaba_primary_color, requireActivity().theme))
-
                 for ((key, value) in innerLayoutHashMap) {
                     if(key == p0)
                         value.visibility = View.VISIBLE
                     else
                         value.visibility = View.GONE
-                }
-
-                when(p0){
-                    binding.btnDemographicInfo-> {
-                        binding.asianInnerConstraintLayout.visibility = View.GONE
-                        binding.nativeHawaianInnerLayout.visibility = View.GONE
-                        binding.hispanicOrLatinoLayout.visibility = View.GONE
-
-                    }
                 }
             }
         }
@@ -303,82 +405,34 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
 
         binding.asianCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-
-                test.visibility = View.VISIBLE
-                binding.asianInnerConstraintLayout.visibility = View.VISIBLE
+                //test.visibility = View.VISIBLE
+                findNavController().navigate(R.id.action_asian)
                 Timber.e("not accessible...")
-                Timber.e("not accessible...")
-            }else{
-                binding.asianInnerConstraintLayout.visibility = View.GONE
             }
         }
 
         binding.nativeHawaianOrOtherCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                binding.nativeHawaianInnerLayout.visibility = View.VISIBLE
-            }else{
-                binding.nativeHawaianInnerLayout.visibility = View.GONE
+                findNavController().navigate(R.id.action_native_hawai)
             }
         }
 
 
         binding.hispanicOrLatino.setOnClickListener {
-            binding.hispanicOrLatinoLayout.visibility = View.VISIBLE
+            findNavController().navigate(R.id.action_hispanic)
             binding.notHispanic.isChecked = false
             binding.notTellingEthnicity.isChecked = false
         }
 
         binding.notHispanic.setOnClickListener{
-
-
-            binding.hispanicOrLatinoLayout.visibility = View.GONE
             binding.hispanicOrLatino.isChecked = false
             binding.notTellingEthnicity.isChecked = false
         }
 
         binding.notTellingEthnicity.setOnClickListener{
-
-            binding.hispanicOrLatinoLayout.visibility = View.GONE
             binding.hispanicOrLatino.isChecked = false
             binding.notHispanic.isChecked = false
         }
-
-
     }
 
-
 }
-
-
-    /*
-
-
-    when(p0){
-
-                binding.btnDemographicInfo-> {
-                    binding.asianInnerConstraintLayout.visibility = View.GONE
-                    binding.nativeHawaianInnerLayout.visibility = View.GONE
-                    binding.hispanicOrLatinoLayout.visibility = View.GONE
-                    binding.otherAsianConstraintlayout.visibility = View.GONE
-                    binding.otherHispanicConstraintLayout.visibility = View.GONE
-                    binding.otherPacificIslanderConstraintLayout.visibility = View.GONE
-                }
-
-                binding.btnDebtCo ->{}
-                binding.btnOutstanding ->{}
-                binding.btnFederalDebt ->{}
-                binding.btnPartyTo-> {}
-                binding.btnOwnershipInterest ->  {}
-                binding.btnTitleConveyance -> {}
-                binding.btnPreForeclouser->{}
-                binding.btnForeclosuredProperty-> {}
-                binding.btnBankruptcy ->{}
-                binding.btnChildSupport -> {}
-                binding.btnUndisclosedBorrowed-> {}
-                binding.btnUndisclosedCredit-> {}
-                binding.btnUndisclosedMortgage -> {}
-                binding.btnPriorityLiens-> {}
-                else ->{}
-            }
-
-     */

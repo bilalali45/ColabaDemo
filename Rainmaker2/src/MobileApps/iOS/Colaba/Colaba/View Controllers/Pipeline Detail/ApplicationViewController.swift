@@ -26,6 +26,7 @@ class ApplicationViewController: BaseViewController {
     @IBOutlet weak var loanInfoViewHeightConstraint: NSLayoutConstraint! //182 or 136
     @IBOutlet weak var addLoanInformationView: UIView!
     @IBOutlet weak var LoanInfoMainView: UIView!
+    @IBOutlet weak var lblLoanPurpose: UILabel!
     @IBOutlet weak var lblLoanPayment: UILabel!
     @IBOutlet weak var lblDownPayment: UILabel!
     @IBOutlet weak var lblPercentage: UILabel!
@@ -142,6 +143,7 @@ class ApplicationViewController: BaseViewController {
         let range1 = propertyTypeText.range(of: "·")
         propertyTypeAttributedText.addAttribute(NSAttributedString.Key.font, value: Theme.getRubikBoldFont(size: 15), range: propertyTypeText.nsRange(from: range1!))
         self.lblPropertyType.attributedText = propertyTypeAttributedText
+        self.lblLoanPurpose.text = loanApplicationDetail.loanPurposeDescription.capitalized
         self.lblLoanPayment.text = loanApplicationDetail.loanAmount.withCommas().replacingOccurrences(of: ".00", with: "")
         self.lblDownPayment.text = loanApplicationDetail.downPayment.withCommas().replacingOccurrences(of: ".00", with: "")
         self.lblPercentage.text = String(format: "(%.0f%%)", loanApplicationDetail.downPaymentPercentage.rounded())
@@ -181,15 +183,23 @@ class ApplicationViewController: BaseViewController {
 //            self.questionsCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: true)
 //        }
         
+        if (self.loanApplicationDetail.realEstatesOwned.count == 0){
+            addRealStateOwnedView.isHidden = false
+            realEstateCollectionView.isHidden = true
+        }
+        
+        
     }
     
     @objc func subjectPropertyTapped(){
         if (self.loanApplicationDetail.loanPurposeDescription == "Purchase"){
             let vc = Utility.getPurchaseSubjectPropertyVC()
+            vc.loanApplicationId = self.loanApplicationId
             self.pushToVC(vc: vc)
         }
         else{
             let vc = Utility.getRefinanceSubjectPropertyVC()
+            vc.loanApplicationId = self.loanApplicationId
             self.pushToVC(vc: vc)
         }
     }
@@ -197,21 +207,27 @@ class ApplicationViewController: BaseViewController {
     @objc func loanInfoViewTapped(){
         if (self.loanApplicationDetail.loanPurposeDescription == "Purchase"){
             let vc = Utility.getPurchaseLoanInfoVC()
+            vc.loanApplicationId = self.loanApplicationId
             self.pushToVC(vc: vc)
         }
         else{
             let vc = Utility.getRefinanceLoanInfoVC()
+            vc.loanApplicationId = self.loanApplicationId
             self.pushToVC(vc: vc)
         }
     }
     
     @objc func assetsViewTapped(){
         let vc = Utility.getAssetsVC()
+        vc.loanApplicationId = self.loanApplicationId
+        vc.borrowersArray = self.loanApplicationDetail.borrowersInformation
         self.pushToVC(vc: vc)
     }
     
     @objc func incomeViewTapped(){
         let vc = Utility.getIncomeVC()
+        vc.loanApplicationId = self.loanApplicationId
+        vc.borrowersArray = self.loanApplicationDetail.borrowersInformation
         self.pushToVC(vc: vc)
     }
     
@@ -795,6 +811,16 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
         }
         else if (collectionView == realEstateCollectionView){
             let vc = Utility.getRealEstateVC()
+            if (loanApplicationDetail.realEstatesOwned.count > 0){
+                vc.loanApplicationId = self.loanApplicationId
+                vc.borrowerPropertyId = self.loanApplicationDetail.realEstatesOwned[indexPath.row].borrowerPropertyId
+                if let borrower = self.loanApplicationDetail.borrowersInformation.filter({$0.borrowerId == self.loanApplicationDetail.realEstatesOwned[indexPath.row].borrowerId}).first{
+                    vc.borrowerFullName = borrower.borrowerFullName
+                }
+            }
+//            else{
+//                vc.borrowerFullName = loanApplicationDetail.borrowersInformation.first?.borrowerFullName
+//            }
             let navVC = UINavigationController(rootViewController: vc)
             navVC.navigationBar.isHidden = true
             navVC.modalPresentationStyle = .fullScreen

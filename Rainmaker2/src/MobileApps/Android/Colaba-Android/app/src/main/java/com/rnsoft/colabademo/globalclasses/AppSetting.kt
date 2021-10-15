@@ -208,7 +208,7 @@ object AppSetting {
     fun returnAmountFormattedString(amount: Double): String {
         val df2 = DecimalFormat()
         df2.maximumFractionDigits = 0
-        Log.e("new-deci-format", df2.format(amount).toString())
+        //Log.e("new-deci-format", df2.format(amount).toString())
         return df2.format(amount).toString()
     }
 

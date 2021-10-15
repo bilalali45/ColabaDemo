@@ -29,6 +29,8 @@ class LoanInfoModel: NSObject{
     var countryName: String = ""
     var stateId: Int = 0
     var stateName: String = ""
+    var countyId: Int = 0
+    var countyName: String = ""
     var street: String = ""
     var unit: String = ""
     var zipCode: String = ""
@@ -60,6 +62,8 @@ class LoanInfoModel: NSObject{
         countryName = json["address"]["countryName"].stringValue
         stateId = json["address"]["stateId"].intValue
         stateName = json["address"]["stateName"].stringValue
+        countyId = json["address"]["countyId"].intValue
+        countyName = json["address"]["countyName"].stringValue
         street = json["address"]["street"].stringValue
         unit = json["address"]["unit"].stringValue
         zipCode = json["address"]["zipCode"].stringValue
@@ -70,13 +74,17 @@ class LoanInfoModel: NSObject{
 class BorrowerModel: NSObject{
     
     var firstName: String = ""
+    var middleName: String = ""
     var lastName: String = ""
+    var ownType: String = ""
     var borrowerId: Int = 0
     var ownTypeId: Int = 0
     
     func updateModelWithJSON(json: JSON){
         firstName = json["firstName"].stringValue
+        middleName = json["middleName"].stringValue
         lastName = json["lastName"].stringValue
+        ownType = json["ownType"].stringValue
         borrowerId = json["borrowerId"].intValue
         ownTypeId = json["ownTypeId"].intValue
         

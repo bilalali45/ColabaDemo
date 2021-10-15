@@ -28,15 +28,22 @@ class SubjectPropertyAddressViewController: BaseViewController {
     @IBOutlet weak var txtfieldZipCode: ColabaTextField!
     @IBOutlet weak var txtfieldCountry: ColabaTextField!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
-    
     @IBOutlet weak var tblViewPlaces: UITableView!
+    
     var placesData=[GMSAutocompletePrediction]()
     var fetcher: GMSAutocompleteFetcher?
+    
+    var countriesArray = [CountriesModel]()
+    var statesArray = [StatesModel]()
+    var countiesArray = [CountiesModel]()
+    var selectedAddress: AddressModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextFields()
         setPlacePickerTextField()
+        getCountriesDropDown()
+        setSavedAddress()
     }
     
     //MARK:- Methods and Actions
@@ -52,11 +59,11 @@ class SubjectPropertyAddressViewController: BaseViewController {
         
         ///County Text Field
         txtfieldCounty.setTextField(placeholder: "County", controller: self, validationType: .noValidation)
+        txtfieldCounty.type = .editableDropdown
         
         ///State Text Field
         txtfieldState.setTextField(placeholder: "State", controller: self, validationType: .required)
         txtfieldState.type = .editableDropdown
-        txtfieldState.setDropDownDataSource(kUSAStatesArray)
         
         ///Zip Code Text Field
         txtfieldZipCode.setTextField(placeholder: "Zip Code", controller: self, validationType: .required, keyboardType: .numberPad)
@@ -64,7 +71,6 @@ class SubjectPropertyAddressViewController: BaseViewController {
         ///Country Text Field
         txtfieldCountry.setTextField(placeholder: "Country", controller: self, validationType: .required)
         txtfieldCountry.type = .editableDropdown
-        txtfieldCountry.setDropDownDataSource(kCountryListArray)
     }
     
     func setPlacePickerTextField() {
@@ -107,6 +113,23 @@ class SubjectPropertyAddressViewController: BaseViewController {
                     allTextField.placeholderLabel.textColor = Theme.getAppGreyColor()
                 }
             }
+        }
+    }
+    
+    func setSavedAddress(){
+        if let address = selectedAddress{
+            showAllFields()
+            if address.street != ""{
+                txtfieldHomeAddress.placeholderHorizontalOffset = -24
+            }
+            txtfieldHomeAddress.text = address.street
+            txtfieldStreetAddress.setTextField(text: address.street)
+            txtfieldUnitNo.setTextField(text: address.unit)
+            txtfieldCity.setTextField(text: address.city)
+            txtfieldCounty.setTextField(text: address.countyName)
+            txtfieldState.setTextField(text: address.stateName)
+            txtfieldZipCode.setTextField(text: address.zipCode)
+            txtfieldCountry.setTextField(text: address.countryName)
         }
     }
     
@@ -220,6 +243,90 @@ class SubjectPropertyAddressViewController: BaseViewController {
         isValidate = txtfieldZipCode.validate() && isValidate
         isValidate = txtfieldCountry.validate() && isValidate
         return isValidate
+    }
+    
+    //MARK:- API's
+    
+    func getCountriesDropDown(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllCountries, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let countries = result.arrayValue
+                    for country in countries{
+                        let model = CountriesModel()
+                        model.updateModelWithJSON(json: country)
+                        self.countriesArray.append(model)
+                    }
+                    self.txtfieldCountry.setDropDownDataSource(self.countriesArray.map{$0.name})
+                    self.getStatesDropDown()
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+            
+        }
+        
+    }
+    
+    func getStatesDropDown(){
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllStates, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let statesArray = result.arrayValue
+                    for state in statesArray{
+                        let model = StatesModel()
+                        model.updateModelWithJSON(json: state)
+                        self.statesArray.append(model)
+                    }
+                    self.txtfieldState.setDropDownDataSource(self.statesArray.map{$0.name})
+                    self.getCountiesDropDown()
+                    
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func getCountiesDropDown(){
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllCounties, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    let countiesArray = result.arrayValue
+                    for county in countiesArray{
+                        let model = CountiesModel()
+                        model.updateModelWithJSON(json: county)
+                        self.countiesArray.append(model)
+                    }
+                    self.txtfieldCounty.setDropDownDataSource(self.countiesArray.map{$0.name})
+                    
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
     }
 }
 

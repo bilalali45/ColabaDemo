@@ -206,10 +206,27 @@ interface ServerApi{
         @Query("fileId")  fileId:String):Response<ResponseBody>
 
 
-    @GET("api/mcu/mobile/loanapplication/Loan/GetBorrowerLoanApplication")
+    @GET("api/mcu/mobile/loanapplication/Loan/GetLoanApplicationSummary")
     suspend fun getBorrowerApplicationTabData(
         @Header("Authorization" )  Authorization:String,
         @Query("loanApplicationId")  loanApplicationId:Int):BorrowerApplicationTabModel
+
+
+    @GET("api/mcu/mobile/loanapplication/Loan/GetAssetsDetails")
+    suspend fun getBorrowerAssetsDetail(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int,
+        @Query("borrowerId")  borrowerId:Int
+    ):AssetsModelDataClass
+
+
+    @GET("api/mcu/mobile/loanapplication/GovtQuestions/GetGovernmentQuestions")
+    suspend fun getGovernmentQuestions(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int,
+        @Query("ownTypeId")  ownTypeId:Int,
+        @Query("borrowerId")  borrowerId:Int
+    ):GovernmentQuestionsModelClass
 
 
 }

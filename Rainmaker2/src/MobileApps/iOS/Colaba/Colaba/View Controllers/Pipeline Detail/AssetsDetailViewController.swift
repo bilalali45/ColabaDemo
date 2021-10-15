@@ -6,6 +6,11 @@
 //
 
 import UIKit
+import LoadingPlaceholderView
+
+protocol AssetsDetailViewControllerDelegate: Any {
+    func getBorrowerTotalAssets(totalAssets: String)
+}
 
 class AssetsDetailViewController: BaseViewController {
 
@@ -26,7 +31,20 @@ class AssetsDetailViewController: BaseViewController {
     @IBOutlet weak var tableViewOther: UITableView!
     @IBOutlet weak var tableViewOtherHeightConstraint: NSLayoutConstraint!
     
+    let loadingPlaceholderView = LoadingPlaceholderView()
+    
+    var delegate: AssetsDetailViewControllerDelegate?
+    var loanApplicationId = 0
+    var borrowerId = 0
+    var borrowerAssetData = BorrowerAssetsModel()
     var selectedTableView: UITableView?
+    
+    var bankAccountAsset = BorrowerAsset()
+    var retirementAccountAsset = BorrowerAsset()
+    var stockBondsAsset = BorrowerAsset()
+    var transactionAsset = BorrowerAsset()
+    var giftFundsAsset = BorrowerAsset()
+    var otherAsset = BorrowerAsset()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +54,12 @@ class AssetsDetailViewController: BaseViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
             self.setScreenHeight()
         }
+        getAssetsDetail()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.delegate?.getBorrowerTotalAssets(totalAssets: "\(Int(borrowerAssetData.assetsTotal).withCommas().replacingOccurrences(of: ".00", with: ""))")
     }
     
     //MARK:- Methods and Actions
@@ -53,17 +77,60 @@ class AssetsDetailViewController: BaseViewController {
             tableView.register(UINib(nibName: "AssetsHeadingTableViewCell", bundle: nil), forCellReuseIdentifier: "AssetsHeadingTableViewCell")
             tableView.register(UINib(nibName: "AssetsDetailTableViewCell", bundle: nil), forCellReuseIdentifier: "AssetsDetailTableViewCell")
             tableView.register(UINib(nibName: "AssetsAddNewTableViewCell", bundle: nil), forCellReuseIdentifier: "AssetsAddNewTableViewCell")
+            tableView.coverableCellsIdentifiers = ["AssetsHeadingTableViewCell"]
         }
+    }
+    
+    func setAssetsDetail(){
+        
+        self.delegate?.getBorrowerTotalAssets(totalAssets: "\(Int(borrowerAssetData.assetsTotal).withCommas().replacingOccurrences(of: ".00", with: ""))")
+        
+        if let bankAccount = self.borrowerAssetData.borrowerAssets.filter({$0.assetsCategory == "Bank Account"
+        }).first{
+            self.bankAccountAsset = bankAccount
+        }
+        if let retirementAccount = self.borrowerAssetData.borrowerAssets.filter({$0.assetsCategory == "Retirement Account"
+        }).first{
+            self.retirementAccountAsset = retirementAccount
+        }
+        if let stockAccount = self.borrowerAssetData.borrowerAssets.filter({$0.assetsCategory == "Stocks, Bonds, Or Other Financial Assets"
+        }).first{
+            self.stockBondsAsset = stockAccount
+        }
+        if let transactionAccount = self.borrowerAssetData.borrowerAssets.filter({$0.assetsCategory == "Proceeds from Transactions"
+        }).first{
+            self.transactionAsset = transactionAccount
+        }
+        if let giftAccount = self.borrowerAssetData.borrowerAssets.filter({$0.assetsCategory == "Gift Funds"
+        }).first{
+            self.giftFundsAsset = giftAccount
+        }
+        if let otherAccount = self.borrowerAssetData.borrowerAssets.filter({$0.assetsCategory == "Other"
+        }).first{
+            self.otherAsset = otherAccount
+        }
+        self.setScreenHeight()
     }
     
     func setScreenHeight(){
         
-        let bankAccountTableViewHeight = selectedTableView == tableViewBankAccount ? 292 : 58
-        let retirementAccountTableViewHeight = selectedTableView == tableViewRetirementAccount ? 209 : 58
-        let stocksBondTableViewHeight = selectedTableView == tableViewStockBonds ? 209 : 58
-        let transactionTableViewHeight = selectedTableView == tableViewTransaction ? 209 : 58
-        let giftFundTableViewHeight = selectedTableView == tableViewGiftFunds ? 209 : 58
-        let otherTableViewHeight = selectedTableView == tableViewOther ? 209 : 58
+        let bankAccountHeight = (self.bankAccountAsset.assets.count * 83)
+        let bankAccountTableViewHeight = selectedTableView == tableViewBankAccount ? (bankAccountHeight + 128) : 58
+        
+        let retirementHeight = (self.retirementAccountAsset.assets.count * 83)
+        let retirementAccountTableViewHeight = selectedTableView == tableViewRetirementAccount ? (retirementHeight + 128) : 58
+        
+        let stockHeight = (self.stockBondsAsset.assets.count * 83)
+        let stocksBondTableViewHeight = selectedTableView == tableViewStockBonds ? (stockHeight + 128) : 58
+        
+        let transactionHeight = (self.transactionAsset.assets.count * 83)
+        let transactionTableViewHeight = selectedTableView == tableViewTransaction ? (transactionHeight + 128) : 58
+        
+        let giftHeight = (self.giftFundsAsset.assets.count * 83)
+        let giftFundTableViewHeight = selectedTableView == tableViewGiftFunds ? (giftHeight + 128) : 58
+        
+        let otherHeight = (self.otherAsset.assets.count * 83)
+        let otherTableViewHeight = selectedTableView == tableViewOther ? (otherHeight + 128) : 58
         
         let totalHeight = bankAccountTableViewHeight + retirementAccountTableViewHeight + stocksBondTableViewHeight + transactionTableViewHeight + giftFundTableViewHeight + otherTableViewHeight + 100
         
@@ -86,6 +153,37 @@ class AssetsDetailViewController: BaseViewController {
             self.tableViewOther.reloadData()
         }
     }
+    
+    //MARK:- API's
+    
+    func getAssetsDetail(){
+        
+        loadingPlaceholderView.cover(self.view, animated: true)
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)&borrowerId=\(borrowerId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getAssetsDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                self.loadingPlaceholderView.uncover(animated: true)
+                
+                if (status == .success){
+                    
+                    let borrowerAssetsModel = BorrowerAssetsModel()
+                    borrowerAssetsModel.updateModelWithJSON(json: result["data"]["borrower"])
+                    self.borrowerAssetData = borrowerAssetsModel
+                    self.setAssetsDetail()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+            
+        }
+    }
   
 }
 
@@ -95,7 +193,7 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
         
         if (tableView == tableViewBankAccount){
             if (tableView == selectedTableView){
-                return 4
+                return bankAccountAsset.assets.count + 2
             }
             else{
                 return 1
@@ -103,7 +201,7 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
         }
         else if (tableView == tableViewRetirementAccount){
             if (tableView == selectedTableView){
-                return 3
+                return retirementAccountAsset.assets.count + 2
             }
             else{
                 return 1
@@ -111,7 +209,7 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
         }
         else if (tableView == tableViewStockBonds){
             if (tableView == selectedTableView){
-                return 3
+                return stockBondsAsset.assets.count + 2
             }
             else{
                 return 1
@@ -119,7 +217,7 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
         }
         else if (tableView == tableViewTransaction){
             if (tableView == selectedTableView){
-                return 3
+                return transactionAsset.assets.count + 2
             }
             else{
                 return 1
@@ -127,7 +225,7 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
         }
         else if (tableView == tableViewGiftFunds){
             if (tableView == selectedTableView){
-                return 3
+                return giftFundsAsset.assets.count + 2
             }
             else{
                 return 1
@@ -135,7 +233,7 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
         }
         else if (tableView == tableViewOther){
             if (tableView == selectedTableView){
-                return 3
+                return otherAsset.assets.count + 2
             }
             else{
                 return 1
@@ -149,20 +247,20 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
                 cell.lblTitle.text = "Bank Account"
-                cell.lblAmount.text = "$26,000"
+                cell.lblAmount.text = "\(Int(bankAccountAsset.assetsTotal).withCommas().replacingOccurrences(of: ".00", with: ""))"
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 return cell
             }
-            else if (indexPath.row == 3){
+            else if (indexPath.row == bankAccountAsset.assets.count + 1){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsAddNewTableViewCell", for: indexPath) as! AssetsAddNewTableViewCell
                 cell.lblTitle.text = "Add Bank Account"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsDetailTableViewCell", for: indexPath) as! AssetsDetailTableViewCell
-                cell.lblTitle.text = indexPath.row == 1 ? "Chase" : "Ally Bank"
-                cell.lblStatus.text = indexPath.row == 1 ? "Checking" : "Savings"
-                cell.lblAmount.text = indexPath.row == 1 ? "$20,000" : "$6,000"
+                cell.lblTitle.text = bankAccountAsset.assets[indexPath.row - 1].assetName
+                cell.lblStatus.text = bankAccountAsset.assets[indexPath.row - 1].assetTypeName
+                cell.lblAmount.text = "\(Int(bankAccountAsset.assets[indexPath.row - 1].assetValue).withCommas().replacingOccurrences(of: ".00", with: ""))"
                 return cell
             }
         }
@@ -170,20 +268,20 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
                 cell.lblTitle.text = "Retirement Account"
-                cell.lblAmount.text = "$10,000"
+                cell.lblAmount.text = "\(Int(retirementAccountAsset.assetsTotal).withCommas().replacingOccurrences(of: ".00", with: ""))"
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 return cell
             }
-            else if (indexPath.row == 2){
+            else if (indexPath.row == retirementAccountAsset.assets.count + 1){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsAddNewTableViewCell", for: indexPath) as! AssetsAddNewTableViewCell
                 cell.lblTitle.text = "Add Retirement Account"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsDetailTableViewCell", for: indexPath) as! AssetsDetailTableViewCell
-                cell.lblTitle.text = "401K"
-                cell.lblStatus.text = "Retirement Account"
-                cell.lblAmount.text = "$10,000"
+                cell.lblTitle.text = retirementAccountAsset.assets[indexPath.row - 1].assetName
+                cell.lblStatus.text = retirementAccountAsset.assets[indexPath.row - 1].assetTypeName
+                cell.lblAmount.text = "\(Int(retirementAccountAsset.assets[indexPath.row - 1].assetValue).withCommas().replacingOccurrences(of: ".00", with: ""))"
                 return cell
             }
         }
@@ -191,20 +289,20 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
                 cell.lblTitle.text = "Stocks, Bonds, or Other Assets"
-                cell.lblAmount.text = "$800"
+                cell.lblAmount.text = "\(Int(stockBondsAsset.assetsTotal).withCommas().replacingOccurrences(of: ".00", with: ""))"
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 return cell
             }
-            else if (indexPath.row == 2){
+            else if (indexPath.row == stockBondsAsset.assets.count + 1){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsAddNewTableViewCell", for: indexPath) as! AssetsAddNewTableViewCell
                 cell.lblTitle.text = "Add Financial Assets"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsDetailTableViewCell", for: indexPath) as! AssetsDetailTableViewCell
-                cell.lblTitle.text = "AHC"
-                cell.lblStatus.text = "Mutual Funds"
-                cell.lblAmount.text = "$800"
+                cell.lblTitle.text = stockBondsAsset.assets[indexPath.row - 1].assetName
+                cell.lblStatus.text = stockBondsAsset.assets[indexPath.row - 1].assetTypeName
+                cell.lblAmount.text = "\(Int(stockBondsAsset.assets[indexPath.row - 1].assetValue).withCommas().replacingOccurrences(of: ".00", with: ""))"
                 return cell
             }
         }
@@ -212,20 +310,20 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
                 cell.lblTitle.text = "Proceeds From Transaction"
-                cell.lblAmount.text = "$1,200"
+                cell.lblAmount.text = "\(Int(transactionAsset.assetsTotal).withCommas().replacingOccurrences(of: ".00", with: ""))"
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 return cell
             }
-            else if (indexPath.row == 2){
+            else if (indexPath.row == transactionAsset.assets.count + 1){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsAddNewTableViewCell", for: indexPath) as! AssetsAddNewTableViewCell
                 cell.lblTitle.text = "Add Proceeds From Transaction"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsDetailTableViewCell", for: indexPath) as! AssetsDetailTableViewCell
-                cell.lblTitle.text = "Proceeds From Selling Non-Real Estate"
-                cell.lblStatus.text = "Proceeds From Transaction"
-                cell.lblAmount.text = "$1,200"
+                cell.lblTitle.text = transactionAsset.assets[indexPath.row - 1].assetName
+                cell.lblStatus.text = transactionAsset.assets[indexPath.row - 1].assetTypeName
+                cell.lblAmount.text = "\(Int(transactionAsset.assets[indexPath.row - 1].assetValue).withCommas().replacingOccurrences(of: ".00", with: ""))"
                 return cell
             }
         }
@@ -233,20 +331,20 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
                 cell.lblTitle.text = "Gift Funds"
-                cell.lblAmount.text = "$20,000"
+                cell.lblAmount.text = "\(Int(giftFundsAsset.assetsTotal).withCommas().replacingOccurrences(of: ".00", with: ""))"
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 return cell
             }
-            else if (indexPath.row == 2){
+            else if (indexPath.row == giftFundsAsset.assets.count + 1){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsAddNewTableViewCell", for: indexPath) as! AssetsAddNewTableViewCell
                 cell.lblTitle.text = "Add Gift Funds"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsDetailTableViewCell", for: indexPath) as! AssetsDetailTableViewCell
-                cell.lblTitle.text = "Relative"
-                cell.lblStatus.text = "Cash Gift"
-                cell.lblAmount.text = "$20,000"
+                cell.lblTitle.text = giftFundsAsset.assets[indexPath.row - 1].assetName
+                cell.lblStatus.text = giftFundsAsset.assets[indexPath.row - 1].assetTypeName
+                cell.lblAmount.text = "\(Int(giftFundsAsset.assets[indexPath.row - 1].assetValue).withCommas().replacingOccurrences(of: ".00", with: ""))"
                 return cell
             }
         }
@@ -254,20 +352,20 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
                 cell.lblTitle.text = "Other"
-                cell.lblAmount.text = "$600"
+                cell.lblAmount.text = "\(Int(otherAsset.assetsTotal).withCommas().replacingOccurrences(of: ".00", with: ""))"
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 return cell
             }
-            else if (indexPath.row == 2){
+            else if (indexPath.row == otherAsset.assets.count + 1){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsAddNewTableViewCell", for: indexPath) as! AssetsAddNewTableViewCell
                 cell.lblTitle.text = "Add Other Assets"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsDetailTableViewCell", for: indexPath) as! AssetsDetailTableViewCell
-                cell.lblTitle.text = "Individual Development Account"
-                cell.lblStatus.text = "Other"
-                cell.lblAmount.text = "$600"
+                cell.lblTitle.text = otherAsset.assets[indexPath.row - 1].assetName
+                cell.lblStatus.text = otherAsset.assets[indexPath.row - 1].assetTypeName
+                cell.lblAmount.text = "\(Int(otherAsset.assets[indexPath.row - 1].assetValue).withCommas().replacingOccurrences(of: ".00", with: ""))"
                 return cell
             }
             
@@ -281,7 +379,51 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 return 58
             }
-            else if (indexPath.row == 3){
+            else if (indexPath.row == bankAccountAsset.assets.count + 1){
+                return 70
+            }
+            else{
+                return 83
+            }
+        }
+        else if (tableView == tableViewRetirementAccount){
+            if (indexPath.row == 0){
+                return 58
+            }
+            else if (indexPath.row == retirementAccountAsset.assets.count + 1){
+                return 70
+            }
+            else{
+                return 83
+            }
+        }
+        else if (tableView == tableViewStockBonds){
+            if (indexPath.row == 0){
+                return 58
+            }
+            else if (indexPath.row == stockBondsAsset.assets.count + 1){
+                return 70
+            }
+            else{
+                return 83
+            }
+        }
+        else if (tableView == tableViewTransaction){
+            if (indexPath.row == 0){
+                return 58
+            }
+            else if (indexPath.row == transactionAsset.assets.count + 1){
+                return 70
+            }
+            else{
+                return 83
+            }
+        }
+        else if (tableView == tableViewGiftFunds){
+            if (indexPath.row == 0){
+                return 58
+            }
+            else if (indexPath.row == giftFundsAsset.assets.count + 1){
                 return 70
             }
             else{
@@ -292,14 +434,13 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
             if (indexPath.row == 0){
                 return 58
             }
-            else if (indexPath.row == 2){
+            else if (indexPath.row == otherAsset.assets.count + 1){
                 return 70
             }
             else{
                 return 83
             }
         }
-        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -315,27 +456,27 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
             }
         }
         else{
-            if (tableView == tableViewBankAccount && (indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3)){
+            if (tableView == tableViewBankAccount && (indexPath.row != 0)){
                 let vc = Utility.getAddBankAccountVC()
                 self.presentVC(vc: vc)
             }
-            else if (tableView == tableViewRetirementAccount && (indexPath.row == 1 || indexPath.row == 2)){
+            else if (tableView == tableViewRetirementAccount && (indexPath.row != 0)){
                 let vc = Utility.getAddRetirementAccountVC()
                 self.presentVC(vc: vc)
             }
-            else if (tableView == tableViewStockBonds && (indexPath.row == 1 || indexPath.row == 2)){
+            else if (tableView == tableViewStockBonds && (indexPath.row != 0)){
                 let vc = Utility.getAddStockBondVC()
                 self.presentVC(vc: vc)
             }
-            else if (tableView == tableViewTransaction && (indexPath.row == 1 || indexPath.row == 2)){
+            else if (tableView == tableViewTransaction && (indexPath.row != 0)){
                 let vc = Utility.getAddProceedsFromTransactionVC()
                 self.presentVC(vc: vc)
             }
-            else if (tableView == tableViewGiftFunds && (indexPath.row == 1 || indexPath.row == 2)){
+            else if (tableView == tableViewGiftFunds && (indexPath.row != 0)){
                 let vc = Utility.getAddGiftFundsVC()
                 self.presentVC(vc: vc)
             }
-            else if (tableView == tableViewOther && (indexPath.row == 1 || indexPath.row == 2)){
+            else if (tableView == tableViewOther && (indexPath.row != 0)){
                 let vc = Utility.getAddOtherAssetsVC()
                 self.presentVC(vc: vc)
             }

@@ -16,6 +16,8 @@ class LoanApplicationModel: NSObject{
     var countryName: String = ""
     var stateId: Int = 0
     var stateName: String = ""
+    var countyId: Int = 0
+    var countyName: String = ""
     var street: String = ""
     var unit: String = ""
     var zipCode: String = ""
@@ -61,14 +63,18 @@ class LoanApplicationModel: NSObject{
         countryName = address["countryName"].stringValue
         stateId = address["stateId"].intValue
         stateName = address["stateName"].stringValue
+        countyId = address["countyId"].intValue
+        countyName = address["countyName"].stringValue
         street = address["street"].stringValue
         unit = address["unit"].stringValue
         zipCode = address["zipCode"].stringValue
+        
         downPayment = loanInformation["downPayment"].intValue
         downPaymentPercentage = loanInformation["downPaymentPercent"].doubleValue
         loanAmount = loanInformation["loanAmount"].intValue
         loanPurposeDescription = loanInformation["loanPurposeDescription"].stringValue
         loanPurposeId = loanInformation["loanPurposeId"].intValue
+        
         totalAsset = assetsAndIncome["totalAsset"].doubleValue
         totalMonthyIncome = assetsAndIncome["totalMonthyIncome"].doubleValue
         
@@ -103,6 +109,7 @@ class BorrowerInfoModel: NSObject{
     var lastName:String = ""
     var ownTypeName:String = ""
     var ownTypeId: Int = 0
+    var borrowerFullName: String = ""
     var races: [Race] = []
     
     func updateModelWithJSON(json: JSON){
@@ -122,6 +129,7 @@ class BorrowerInfoModel: NSObject{
         lastName = json["lastName"].stringValue
         ownTypeName = json["ownTypeName"].stringValue
         ownTypeId = json["owntypeId"].intValue
+        borrowerFullName = "\(firstName) \(lastName)"
         
         races.removeAll()
         let racesArray = json["races"].arrayValue
@@ -215,12 +223,15 @@ class RealEstateOwned: NSObject{
     var borrowerId: Int = 0
     var propertyInfoId: Int = 0
     var propertyTypeId: Int = 0
+    var borrowerPropertyId: Int = 0
     var propertyTypeName: String = ""
     var city: String = ""
     var countryId: Int = 0
     var countryName: String = ""
     var stateId: Int = 0
     var stateName: String = ""
+    var countyId: Int = 0
+    var countyName: String = ""
     var street: String = ""
     var unit: String = ""
     var zipCode: String = ""
@@ -229,6 +240,7 @@ class RealEstateOwned: NSObject{
         borrowerId = json["borrowerId"].intValue
         propertyInfoId = json["propertyInfoId"].intValue
         propertyTypeId = json["propertyTypeId"].intValue
+        borrowerPropertyId = json["borrowerPropertyId"].intValue
         propertyTypeName = json["propertyTypeName"].stringValue
         let address = json["address"]
         city = address["city"].stringValue
@@ -236,9 +248,12 @@ class RealEstateOwned: NSObject{
         countryName = address["countryName"].stringValue
         stateId = address["stateId"].intValue
         stateName = address["stateName"].stringValue
+        countyId = address["countyId"].intValue
+        countyName = address["countyName"].stringValue
         street = address["street"].stringValue
         unit = address["unit"].stringValue
         zipCode = address["zipCode"].stringValue
+        
     }
 }
 

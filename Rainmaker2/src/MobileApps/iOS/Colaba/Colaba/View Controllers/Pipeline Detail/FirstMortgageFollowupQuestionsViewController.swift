@@ -49,19 +49,30 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     var isAnnualHomeownerInsurance = false
     var isMortgagePaidOff:Int?
     
+    var loanApplicationId = 0
+    var borrowerPropertyId = 0
+    
     var isForRealEstate = false
+    var streetAddress = ""
+    var mortgageDetail: FirstMortgageModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setMaterialTextFieldsAndViews()
         if (isForRealEstate){
-            lblUsername.text = "5919 TRUSSVILLE CROSSINGS PKWY"
+            lblUsername.text = streetAddress
         }
         btnAnnualFloodInsurance.isUserInteractionEnabled = false
         btnAnnualTaxes.isUserInteractionEnabled = false
         btnAnnualHomeownerInsurance.isUserInteractionEnabled = false
         changeAccountsIncluded()
         changeMortgagePaidOffStatus()
+        if (isForRealEstate){
+           getMortgageData()
+        }
+        else{
+            setMortgageData()
+        }
     }
     
     //MARK:- Methods and Actions
@@ -92,6 +103,22 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
         ///Credit Limit Text Field
         txtfieldCreditLimit.setTextField(placeholder: "Credit Limit", controller: self, validationType: .noValidation)
         txtfieldCreditLimit.type = .amount
+    }
+    
+    func setMortgageData(){
+        if let firstMortgage = mortgageDetail{
+            txtfieldMortgagePayment.setTextField(text: String(format: "%.0f", firstMortgage.firstMortgagePayment.rounded()))
+            txtfieldMortgageBalance.setTextField(text: String(format: "%.0f", firstMortgage.unpaidFirstMortgagePayment.rounded()))
+            isAnnualFloodInsurance = firstMortgage.floodInsuranceIncludeinPayment
+            isAnnualPropertyTax = firstMortgage.propertyTaxesIncludeinPayment
+            isAnnualHomeownerInsurance = firstMortgage.homeOwnerInsuranceIncludeinPayment
+            switchHomeEquity.isOn = firstMortgage.isHeloc
+            txtfieldCreditLimit.setTextField(text: String(format: "%.0f", firstMortgage.helocCreditLimit.rounded()))
+            isMortgagePaidOff = firstMortgage.paidAtClosing == true ? 1 : 0
+            changeMortgagePaidOffStatus()
+            changeAccountsIncluded()
+            changeHELOCStatus()
+        }
     }
     
     @objc func annualFloodInsuranceStackViewTapped(){
@@ -135,22 +162,57 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
         lblNo.font = isMortgagePaidOff == 0 ?  Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
     }
     
-    @IBAction func btnBackTapped(_ sender: UIButton) {
-        self.dismissVC()
-    }
-    
-    @IBAction func switchHomeEquityChanged(_ sender: UISwitch) {
-        lblHomeEquity.font = sender.isOn ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+    func changeHELOCStatus(){
+        lblHomeEquity.font = switchHomeEquity.isOn ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         
-        txtfieldCreditLimit.text = ""
-        txtfieldCreditLimit.isHidden = !sender.isOn
-        accountPaymentViewHeightConstraint.constant = sender.isOn ? 337 : 248
+        txtfieldCreditLimit.isHidden = !switchHomeEquity.isOn
+        accountPaymentViewHeightConstraint.constant = switchHomeEquity.isOn ? 337 : 248
         UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
     }
     
+    @IBAction func btnBackTapped(_ sender: UIButton) {
+        self.dismissVC()
+    }
+    
+    @IBAction func switchHomeEquityChanged(_ sender: UISwitch) {
+        changeHELOCStatus()
+    }
+    
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         self.dismissVC()
+    }
+    
+    //MARK:- API's
+    
+    func getMortgageData(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)&borrowerPropertyId=\(borrowerPropertyId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getFirstMortgageDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                Utility.showOrHideLoader(shouldShow: false)
+                
+                if (status == .success){
+                    
+                    let firstMortageModel = FirstMortgageModel()
+                    firstMortageModel.updateModelWithJSON(json: result["data"])
+                    self.mortgageDetail = firstMortageModel
+                    self.setMortgageData()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+        
     }
 }

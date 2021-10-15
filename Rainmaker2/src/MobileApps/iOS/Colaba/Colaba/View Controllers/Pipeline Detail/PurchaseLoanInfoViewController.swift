@@ -24,9 +24,15 @@ class PurchaseLoanInfoViewController: BaseViewController {
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var isDownPaymentPercentageChanged = false
+    
+    var loanApplicationId = 0
+    var loanStageArray = [LoanGoalModel]()
+    var loanInfo = LoanInfoDetailModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextFields()
+        getLoanDetail()
     }
     
     //MARK:- Methods and Actions
@@ -34,7 +40,6 @@ class PurchaseLoanInfoViewController: BaseViewController {
         ///Loan Stage Text Field
         txtfieldLoanStage.setTextField(placeholder: "Loan Stage", controller: self,validationType: .required)
         txtfieldLoanStage.type = .dropdown
-        txtfieldLoanStage.setDropDownDataSource(kLoanStageArray)
         
         ///Purchase Price Text Field
         txtfieldPurchasePrice.setTextField(placeholder: "Purchase Price", controller: self, validationType: .purchasePrice, keyboardType: .numberPad)
@@ -58,6 +63,16 @@ class PurchaseLoanInfoViewController: BaseViewController {
         
     }
     
+    func setLoanInfo(){
+        if let loanGoalModel = self.loanStageArray.filter({$0.id == self.loanInfo.loanGoalId}).first{
+            txtfieldLoanStage.setTextField(text: loanGoalModel.loanGoal)
+        }
+        txtfieldPurchasePrice.setTextField(text: String(format: "%.0f", self.loanInfo.propertyValue.rounded()))
+        txtfieldLoanAmount.setTextField(text: String(format: "%.0f", self.loanInfo.loanPayment.rounded()))
+        txtfieldDownPayment.setTextField(text: String(format: "%.0f", self.loanInfo.downPayment.rounded()))
+        txtfieldClosingDate.setTextField(text: Utility.getMonthYear(self.loanInfo.expectedClosingDate))
+        calculatePercentage()
+    }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
         self.goBack()
@@ -81,6 +96,66 @@ class PurchaseLoanInfoViewController: BaseViewController {
         isValidate = txtfieldPercentage.validate() && isValidate
         isValidate = txtfieldClosingDate.validate() && isValidate
         return isValidate
+    }
+    
+    //MARK:- API's
+    
+    func getLoanDetail(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getLoanInfoDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                if (status == .success){
+                    let loanInfoDetailModel = LoanInfoDetailModel()
+                    loanInfoDetailModel.updateModelWithJSON(json: result["data"])
+                    self.loanInfo = loanInfoDetailModel
+                    self.getLoanGoals()
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func getLoanGoals(){
+        
+        let extraData = "loanpurposeid=\(self.loanInfo.loanPurposeId)"
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getLoanGoals, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                Utility.showOrHideLoader(shouldShow: false)
+                
+                if (status == .success){
+                    let loanGoalsArray = result.arrayValue
+                    for loanGoal in loanGoalsArray{
+                        let model = LoanGoalModel()
+                        model.updateModelWithJSON(json: loanGoal)
+                        self.loanStageArray.append(model)
+                    }
+                    self.txtfieldLoanStage.setDropDownDataSource(self.loanStageArray.map{$0.loanGoal})
+                    self.setLoanInfo()
+                }
+                else{
+                    
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
     }
 }
 
@@ -119,8 +194,11 @@ extension PurchaseLoanInfoViewController: ColabaTextFieldDelegate {
         let downPayment = Double(cleanString(string: txtfieldDownPayment.text ?? "0.0", replaceCharacters: [PrefixType.amount.rawValue, ","], replaceWith: "")) ?? 0.0
         
         if let purchaseAmount = Double(cleanString(string: txtfieldPurchasePrice.text!, replaceCharacters: [PrefixType.amount.rawValue, ","], replaceWith: "")) {
-            let percentage = Int(round(downPayment / purchaseAmount * 100))
-            txtfieldPercentage.attributedText = createAttributedTextWithPrefix(prefix: PrefixType.percentage.rawValue, string: percentage.description)
+            if purchaseAmount > 0{
+                let percentage = Int(round(downPayment / purchaseAmount * 100))
+                txtfieldPercentage.attributedText = createAttributedTextWithPrefix(prefix: PrefixType.percentage.rawValue, string: percentage.description)
+            }
+            
         }
     }
 }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
@@ -34,6 +35,7 @@ class GovtQuestionsTabFragment : GovtQuestionBaseFragment() {
     private lateinit var pageAdapter:GovtQuestionPagerAdapter
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout:TabLayout
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
