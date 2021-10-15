@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -40,7 +41,6 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
     private val _refinanceDetails : MutableLiveData<SubjectPropertyRefinanceDetails> =   MutableLiveData()
     val refinanceDetails: LiveData<SubjectPropertyRefinanceDetails> get() = _refinanceDetails
 
-
     private val _coBorrowerOccupancyStatus : MutableLiveData<CoBorrowerOccupancyStatus> =   MutableLiveData()
     val coBorrowerOccupancyStatus: LiveData<CoBorrowerOccupancyStatus> get() = _coBorrowerOccupancyStatus
 
@@ -61,7 +61,7 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
 
     suspend fun getSubjectPropertyDetails(token:String, loanApplicationId:Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = repository.getSubjectProptyDetails(token = token, loanApplicationId = loanApplicationId)
+            val responseResult = repository.getSubjectPropertyDetails(token = token, loanApplicationId = loanApplicationId)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _subjectPropertyDetails.value = (responseResult.data)
@@ -76,12 +76,10 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
 
     suspend fun getRefinanceDetails(token:String, loanApplicationId:Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = repository.getSubjectProptyRefinance(token = token, loanApplicationId = loanApplicationId)
+            val responseResult = repository.getSubjectPropertyRefinance(token = token, loanApplicationId = loanApplicationId)
             withContext(Dispatchers.Main) {
-                if (responseResult is Result.Success) {
+                if (responseResult is Result.Success)
                     _refinanceDetails.value = (responseResult.data)
-                }
-
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)
@@ -92,7 +90,7 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
 
 
     suspend fun getPropertyTypes(token:String) {
-        viewModelScope.launch() {
+        viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repository.getPropertyType(token = token)
                 withContext(Dispatchers.Main) {
                     if (responseResult is Result.Success)
@@ -106,7 +104,7 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
     }
 
     suspend fun getOccupancyType(token:String) {
-        viewModelScope.launch() {
+        viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repository.getOccupancyType(token = token )
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
@@ -120,7 +118,7 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
     }
 
     suspend fun getStates(token:String) {
-        viewModelScope.launch() {
+        viewModelScope.launch(Dispatchers.IO) {
             val response = repository.getStates(token = token )
             withContext(Dispatchers.Main) {
                 if (response is Result.Success) {
@@ -135,7 +133,7 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
     }
 
     suspend fun getCounty(token:String) {
-        viewModelScope.launch() {
+        viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repository.getCounties(token = token )
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
@@ -149,7 +147,7 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
     }
 
     suspend fun getCountries(token:String) {
-        viewModelScope.launch() {
+        viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repository.getCountries(token = token )
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)

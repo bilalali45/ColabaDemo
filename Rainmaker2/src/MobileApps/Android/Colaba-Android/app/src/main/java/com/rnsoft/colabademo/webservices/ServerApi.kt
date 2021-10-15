@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import com.rnsoft.colabademo.activities.loan.model.LoanGoalModel
 import com.rnsoft.colabademo.activities.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -53,7 +54,13 @@ interface ServerApi{
     @GET("api/mcu/mobile/loanapplication/Loan/GetLoanInfoDetails")
     suspend fun getLoanInfoDetails(
         @Header("Authorization" )  Authorization:String,
-        @Query("loanApplicationId")  loanApplicationId:Int) : LoanInfoPurchase
+        @Query("loanApplicationId")  loanApplicationId:Int) : LoanInfoDetailsModel
+
+    @GET("api/mcu/mobile/loanapplication/Loan/GetAllLoanGoals")
+    suspend fun getLoanGoals(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanpurposeid")  loanPurpuseId:Int) : ArrayList<LoanGoalModel>
+
 
 
 
@@ -183,7 +190,7 @@ interface ServerApi{
         @Query("fileId")  fileId:String):Response<ResponseBody>
 
 
-    @GET("api/mcu/mobile/loanapplication/Loan/GetBorrowerLoanApplication")
+    @GET("api/mcu/mobile/loanapplication/Loan/GetLoanApplicationSummary")
     suspend fun getBorrowerApplicationTabData(
         @Header("Authorization" )  Authorization:String,
         @Query("loanApplicationId")  loanApplicationId:Int):BorrowerApplicationTabModel
@@ -195,5 +202,15 @@ interface ServerApi{
         @Query("loanApplicationId")  loanApplicationId:Int,
         @Query("borrowerId")  borrowerId:Int
     ):AssetsModelDataClass
+
+
+    @GET("api/mcu/mobile/loanapplication/GovtQuestions/GetGovernmentQuestions")
+    suspend fun getGovernmentQuestions(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int,
+        @Query("ownTypeId")  ownTypeId:Int,
+        @Query("borrowerId")  borrowerId:Int
+    ):GovernmentQuestionsModelClass
+
 
 }

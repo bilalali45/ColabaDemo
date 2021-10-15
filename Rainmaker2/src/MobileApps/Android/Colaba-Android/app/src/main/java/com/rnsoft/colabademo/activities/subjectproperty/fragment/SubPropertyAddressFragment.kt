@@ -49,19 +49,34 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
     private lateinit var token: AutocompleteSessionToken
     private lateinit var placesClient: PlacesClient
     private var predicationList: ArrayList<String> = ArrayList()
+    private var addressList : ArrayList<AddressData> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = SubjectPropertyAddressBinding.inflate(inflater, container, false)
+
 
         setInputFields()
         //setStateAndCountyDropDown()
         getDropDownData()
         setUpCompleteViewForPlaces()
         initializeUSAstates()
+
+
+        addressList = arguments?.getParcelableArrayList(AppConstant.address)!!
+        addressList.let {
+            it[0].street?.let { binding.tvSearch.setText(it) }
+            it[0].street?.let { binding.edStreetAddress.setText(it) }
+            it[0].city?.let { binding.edCity.setText(it) }
+            it[0].countryName?.let { binding.tvCountry.setText(it) }
+            it[0].zipCode?.let { binding.edZipcode.setText(it) }
+            it[0].stateName?.let { binding.tvState.setText(it) }
+            it[0].countyName?.let {binding.tvCounty.setText(it)}
+            visibleAllFields()
+        }
 
         binding.addressParentLayout.setOnClickListener {
             HideSoftkeyboard.hide(requireActivity(),binding.addressParentLayout)

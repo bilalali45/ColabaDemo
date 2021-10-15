@@ -41,6 +41,7 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
 
 
     suspend fun getBorrowerOverview(token:String, loanApplicationId:Int) {
+        Log.e("Token", token)
         if(!overviewServiceRunning) {
             overviewServiceRunning = true
             viewModelScope.launch (Dispatchers.IO) {

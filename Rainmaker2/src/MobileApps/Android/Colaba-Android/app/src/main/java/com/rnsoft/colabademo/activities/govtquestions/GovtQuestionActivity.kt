@@ -3,10 +3,15 @@ package com.rnsoft.colabademo
 import android.content.SharedPreferences
 
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.databinding.GovtQuestionsActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject
+
+
 
 @AndroidEntryPoint
 class GovtQuestionActivity : BaseActivity() {
@@ -18,12 +23,15 @@ class GovtQuestionActivity : BaseActivity() {
     var loanApplicationId:Int? = null
     var loanPurpose:String? = null
 
+    private val borrowerApplicationViewModel: BorrowerApplicationViewModel by viewModels()
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = GovtQuestionsActivityLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
         overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
-
 
         val extras = intent.extras
         extras?.let {
@@ -33,27 +41,19 @@ class GovtQuestionActivity : BaseActivity() {
 
         Timber.e("Running on create function")
 
-
-        /*
-        val host: NavHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_asset) as NavHostFragment? ?: return
-        // Set up Action Bar
-        val navController = host.navController
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            val dest: String = try {
-                resources.getResourceName(destination.id)
-            } catch (e: Resources.NotFoundException) {
-                destination.id.toString()
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                Timber.e("loading govt service...")
+                val bool = borrowerApplicationViewModel.getGovernmentQuestions(authToken, 5, 1, 5)
+                Timber.e("Government service loaded..."+bool)
             }
-            //Log.d("NavigationActivity", "Navigated to $dest")
         }
-        */
 
 
     }
 
     override fun onStop() {
+
         super.onStop()
         Timber.e("onStop from Activity called....")
     }

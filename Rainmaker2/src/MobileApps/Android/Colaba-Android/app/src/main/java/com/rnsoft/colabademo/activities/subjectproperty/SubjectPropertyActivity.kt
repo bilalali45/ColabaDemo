@@ -30,7 +30,7 @@ class SubjectPropertyActivity : BaseActivity() {
         if(purpose.equals(AppConstant.purchase, ignoreCase = true))
             navController.navigate(R.id.nav_sub_property_purchase)
         else if(purpose.equals(AppConstant.refinance, ignoreCase = true)) {
-            navController.navigate(R.id.nav_sub_property_refinance)
+            navController.navigate(R.id.nav_sub_property_purchase)
         }
     }
  }

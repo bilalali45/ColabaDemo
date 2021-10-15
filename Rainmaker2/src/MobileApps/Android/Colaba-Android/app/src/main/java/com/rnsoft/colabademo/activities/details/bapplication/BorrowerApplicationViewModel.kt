@@ -16,6 +16,11 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     private var _assetsModelDataClass : MutableLiveData<AssetsModelDataClass> =   MutableLiveData()
     val assetsModelDataClass: LiveData<AssetsModelDataClass> get() = _assetsModelDataClass
 
+
+
+    private var _governmentQuestionsModelClass : MutableLiveData<GovernmentQuestionsModelClass> =   MutableLiveData()
+    val governmentQuestionsModelClass: LiveData<GovernmentQuestionsModelClass> get() = _governmentQuestionsModelClass
+
     suspend fun getBorrowerAssetsDetail(token:String, loanApplicationId:Int , borrowerId:Int): Boolean {
 
         viewModelScope.launch (Dispatchers.IO) {
@@ -48,29 +53,30 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
                         launch { // this will allow us to run multiple tasks in parallel
                             val responseResult = bAppRepo.getBorrowerAssetsDetail(token = token, loanApplicationId = loanApplicationId , borrowerId = id)
                             if (responseResult is Result.Success) {
-                                //content.find {
-                                  //  it.id == id
-                                //}
+
+                                content.find {
+                                    responseResult.data.bAssetData?.assetBorrowerList?.get(0)?.borrowerId ?: 0 == id
+                                }
                             }
                         }
                     }
                 }  // coroutineScope block will wait here until all child tasks are completed
 
-                /*
 
-                val runningTasks = multipleIds.map { id ->
+
+                val runningTasks = borrowerIds.map { id ->
                     async { // this will allow us to run multiple tasks in parallel
                         val responseResult = bAppRepo.getBorrowerAssetsDetail(token = token, loanApplicationId = loanApplicationId , borrowerId = id)
                         if (responseResult is Result.Success) {
-                            content.find {
-                               // it.id == id
-                            }
+
                         }
                     }
                 }
 
                 val responses = runningTasks.awaitAll()
 
+
+                /*
                 responses.forEach { (id, response) ->
                     if (response.isSuccessful()) {
                        // content.find { it.id == id }.enable = true
@@ -95,6 +101,25 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         _assetsModelDataClass  =   MutableLiveData()
     }
 
+
+    suspend fun getGovernmentQuestions(token:String, loanApplicationId:Int, ownTypeId:Int, borrowerId:Int ): Boolean {
+        var bool = false
+        viewModelScope.launch (Dispatchers.IO) {
+            delay(2000)
+            val responseResult = bAppRepo.getGovernmentQuestions(token = token, loanApplicationId = loanApplicationId , ownTypeId = ownTypeId, borrowerId = borrowerId)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                     bool = true
+                    _governmentQuestionsModelClass.value = responseResult.data
+                }
+                else if (responseResult is Result.Error && (responseResult as Result.Error).exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult as Result.Error))
+            }
+        }
+        return bool
+    }
 
 
 }
