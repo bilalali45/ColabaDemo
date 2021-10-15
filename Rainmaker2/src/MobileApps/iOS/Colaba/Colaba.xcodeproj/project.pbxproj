@@ -188,6 +188,7 @@
 		23DF0CEE269ED82000F29B70 /* LoanInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DF0CED269ED82000F29B70 /* LoanInfoModel.swift */; };
 		23DF0CF0269F022B00F29B70 /* LoanDocumentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DF0CEF269F022B00F29B70 /* LoanDocumentModel.swift */; };
 		23E1A7A426B7E6F200714D3B /* LoanApplicationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E1A7A326B7E6F200714D3B /* LoanApplicationModel.swift */; };
+		23E28BDF27184816004FCAA5 /* BorrowerIncomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E28BDE27184816004FCAA5 /* BorrowerIncomeModel.swift */; };
 		23E9C74A269C214A0066C978 /* ApplicationStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E9C749269C214A0066C978 /* ApplicationStatusViewController.swift */; };
 		23E9C74D269C23070066C978 /* ApplicationStatusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E9C74B269C23070066C978 /* ApplicationStatusTableViewCell.swift */; };
 		23E9C74E269C23070066C978 /* ApplicationStatusTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23E9C74C269C23070066C978 /* ApplicationStatusTableViewCell.xib */; };
@@ -442,6 +443,7 @@
 		23DF0CED269ED82000F29B70 /* LoanInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanInfoModel.swift; sourceTree = "<group>"; };
 		23DF0CEF269F022B00F29B70 /* LoanDocumentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanDocumentModel.swift; sourceTree = "<group>"; };
 		23E1A7A326B7E6F200714D3B /* LoanApplicationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanApplicationModel.swift; sourceTree = "<group>"; };
+		23E28BDE27184816004FCAA5 /* BorrowerIncomeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerIncomeModel.swift; sourceTree = "<group>"; };
 		23E9C749269C214A0066C978 /* ApplicationStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationStatusViewController.swift; sourceTree = "<group>"; };
 		23E9C74B269C23070066C978 /* ApplicationStatusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationStatusTableViewCell.swift; sourceTree = "<group>"; };
 		23E9C74C269C23070066C978 /* ApplicationStatusTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApplicationStatusTableViewCell.xib; sourceTree = "<group>"; };
@@ -583,6 +585,7 @@
 				23B9277E2716B6E1009B460A /* LoanInfoDetailModel.swift */,
 				23B927802716B7AF009B460A /* LoanGoalModel.swift */,
 				23B927822716F7E4009B460A /* RealEstateDetailModel.swift */,
+				23E28BDE27184816004FCAA5 /* BorrowerIncomeModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1495,6 +1498,7 @@
 				71B1944F265CF9780017955B /* OTPTimerManager.swift in Sources */,
 				23A56C5B2685B017005CE6F4 /* Animator.swift in Sources */,
 				230B94D726E7A060004CBC83 /* AddRetirementAccountViewController.swift in Sources */,
+				23E28BDF27184816004FCAA5 /* BorrowerIncomeModel.swift in Sources */,
 				23EB790226A6ED980071BC13 /* RealEstateCollectionViewCell.swift in Sources */,
 				23B927832716F7E4009B460A /* RealEstateDetailModel.swift in Sources */,
 				23BE065126F0D7E300F9B4B8 /* AddMilitaryPayViewController.swift in Sources */,

@@ -22,6 +22,7 @@ struct Utility {
     static private var loanApplicationDateFormatter: DateFormatter?
     static private var documentDateFormatter: DateFormatter?
     static private var monthYearFormatter: DateFormatter?
+    static private var incomeDateFormatter: DateFormatter?
     
     static func getLoginNavigationVC() -> LoginNavigationViewController{
         return authStoryboard.instantiateViewController(withIdentifier: "LoginNavigationViewController")  as! LoginNavigationViewController
@@ -506,6 +507,20 @@ struct Utility {
         }
     }
     
+    static var localIncomeDateFormatter: DateFormatter{
+        get{
+            if (incomeDateFormatter == nil){
+                incomeDateFormatter = DateFormatter()
+                incomeDateFormatter?.locale = .current
+                incomeDateFormatter?.dateFormat = "MMM yyyy"
+            }
+            return incomeDateFormatter!
+        }
+        set{
+            
+        }
+    }
+    
     static func checkDeviceAuthType() -> String {
          let authType = LocalAuthManager.shared.biometricType
             switch authType {
@@ -813,6 +828,30 @@ struct Utility {
             return localMonthYearFormatter.string(from: date)
         }
         
+        return ""
+    }
+    
+    static func getIncomeDate(startDate: String, endDate: String) -> String{
+        
+        let actualStartDate = startDate.replacingOccurrences(of: "T", with: " ")
+        let actualEndDate = endDate.replacingOccurrences(of: "T", with: " ")
+        
+        var startDateString = ""
+        var endDateString = ""
+        
+        if let sDate = localLoanApplicationDateFormatter.date(from: actualStartDate){
+            startDateString = localIncomeDateFormatter.string(from: sDate)
+        }
+        if let eDate = localLoanApplicationDateFormatter.date(from: actualEndDate){
+            endDateString = localIncomeDateFormatter.string(from: eDate)
+        }
+        
+        if (endDateString == "" && startDate != ""){
+            return "From \(startDateString)"
+        }
+        else if (endDateString != "" && startDate != ""){
+            return "\(startDateString) to \(endDateString)"
+        }
         return ""
     }
     

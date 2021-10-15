@@ -73,7 +73,16 @@ extension IncomeViewController: CarbonTabSwipeNavigationDelegate{
     
     func carbonTabSwipeNavigation(_ carbonTabSwipeNavigation: CarbonTabSwipeNavigation, viewControllerAt index: UInt) -> UIViewController {
         let vc = Utility.getIncomeDetailVC()
+        vc.loanApplicationId = self.loanApplicationId
+        vc.borrowerId = borrowersArray[Int(index)].borrowerId
+        vc.delegate = self
         return vc
     }
     
+}
+
+extension IncomeViewController: IncomeDetailViewControllerDelegate{
+    func getBorrowerTotalIncome(totalIncome: String) {
+        self.lblTotalIncomes.text = totalIncome
+    }
 }
