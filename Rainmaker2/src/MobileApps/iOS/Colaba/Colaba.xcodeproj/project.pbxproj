@@ -105,6 +105,7 @@
 		239DB538270C369100977E20 /* CustomDocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DB537270C369100977E20 /* CustomDocumentViewController.swift */; };
 		239DB53A270C413A00977E20 /* DeleteDocumentPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DB539270C413A00977E20 /* DeleteDocumentPopupViewController.swift */; };
 		239DB53C270C67A900977E20 /* DocumentRequestSentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DB53B270C67A900977E20 /* DocumentRequestSentViewController.swift */; };
+		239DEDF727195FD60056FF2B /* BorrowerAssetsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DEDF627195FD60056FF2B /* BorrowerAssetsModel.swift */; };
 		23A0D5CE26958E58002B4BCE /* DashboardHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23A0D5CD26958E58002B4BCE /* DashboardHeaderView.xib */; };
 		23A0D5D026958E83002B4BCE /* DashboardHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A0D5CF26958E83002B4BCE /* DashboardHeaderView.swift */; };
 		23A1CA6B268C4B8400D93DC4 /* UILoadControl_UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1CA69268C4B8300D93DC4 /* UILoadControl_UIScrollView.swift */; };
@@ -360,6 +361,7 @@
 		239DB537270C369100977E20 /* CustomDocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDocumentViewController.swift; sourceTree = "<group>"; };
 		239DB539270C413A00977E20 /* DeleteDocumentPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteDocumentPopupViewController.swift; sourceTree = "<group>"; };
 		239DB53B270C67A900977E20 /* DocumentRequestSentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentRequestSentViewController.swift; sourceTree = "<group>"; };
+		239DEDF627195FD60056FF2B /* BorrowerAssetsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerAssetsModel.swift; sourceTree = "<group>"; };
 		23A0D5CD26958E58002B4BCE /* DashboardHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DashboardHeaderView.xib; sourceTree = "<group>"; };
 		23A0D5CF26958E83002B4BCE /* DashboardHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardHeaderView.swift; sourceTree = "<group>"; };
 		23A1CA69268C4B8300D93DC4 /* UILoadControl_UIScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILoadControl_UIScrollView.swift; sourceTree = "<group>"; };
@@ -586,6 +588,7 @@
 				23B927802716B7AF009B460A /* LoanGoalModel.swift */,
 				23B927822716F7E4009B460A /* RealEstateDetailModel.swift */,
 				23E28BDE27184816004FCAA5 /* BorrowerIncomeModel.swift */,
+				239DEDF627195FD60056FF2B /* BorrowerAssetsModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1459,6 +1462,7 @@
 				2397AF5F26776241007A1A45 /* PipelineViewController.swift in Sources */,
 				23C2448C2689E53F00EED1D0 /* ActivePiplineViewController.swift in Sources */,
 				23F23B4126CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift in Sources */,
+				239DEDF727195FD60056FF2B /* BorrowerAssetsModel.swift in Sources */,
 				23A6578826D65B610013A37B /* LoginNavigationViewController.swift in Sources */,
 				7186AD7926540CCC00E740D3 /* PhoneNumberViewController.swift in Sources */,
 				2315E18526E8921B00377764 /* AddProceedsFromTransactionViewController.swift in Sources */,
