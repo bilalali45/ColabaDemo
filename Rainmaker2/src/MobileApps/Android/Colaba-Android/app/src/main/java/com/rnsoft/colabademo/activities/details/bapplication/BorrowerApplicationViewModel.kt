@@ -105,7 +105,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     suspend fun getGovernmentQuestions(token:String, loanApplicationId:Int, ownTypeId:Int, borrowerId:Int ): Boolean {
         var bool = false
         viewModelScope.launch (Dispatchers.IO) {
-            delay(2000)
+            //delay(2000)
             val responseResult = bAppRepo.getGovernmentQuestions(token = token, loanApplicationId = loanApplicationId , ownTypeId = ownTypeId, borrowerId = borrowerId)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success) {

@@ -1,11 +1,14 @@
 package com.rnsoft.colabademo
 
+import android.content.Context
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.LayoutInflater
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.appcompat.widget.AppCompatTextView
@@ -66,15 +69,34 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
         })
     }
 
+    fun convertDpToPixel(dp: Float, context: Context): Int {
+        return (dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+    }
+
     private fun createAppCompactTextView(tabTitle:String, tabIndex:Int):AppCompatTextView{
-        val appCompactTextView = AppCompatTextView(requireContext())
-        appCompactTextView.setBackgroundColor(R.drawable.blue_white_style_filter)
-        appCompactTextView.setPadding(12,0,12,0)
-        appCompactTextView.height = 30
-        appCompactTextView.setTextColor(resources.getColor(R.color.doc_filter_text_color_selector, activity?.theme ))
-        appCompactTextView.gravity = Gravity.CENTER
-        appCompactTextView.setTextSize(13, 13F)
-        appCompactTextView.isAllCaps = false
+        //val appCompactTextView = AppCompatTextView(requireContext())
+
+        val appCompactTextView: AppCompatTextView =
+            layoutInflater.inflate(R.layout.govt_text_view, null) as AppCompatTextView
+
+        //appCompactTextView.setBackgroundColor(R.drawable.blue_white_style_filter)
+        //appCompactTextView.setPadding(12,0,12,0)
+        //appCompactTextView.height = 40
+
+        val textParam = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            convertDpToPixel(30.0f,requireContext()),
+            1.0f
+        )
+
+        textParam.setMargins( convertDpToPixel(8.0f,requireContext()), 0, 0, 0)
+
+        appCompactTextView.setLayoutParams(textParam)
+
+        // appCompactTextView.setTextColor(resources.getColor(R.color.doc_filter_text_color_selector, activity?.theme ))
+        //appCompactTextView.gravity = Gravity.CENTER
+        //appCompactTextView.setTextSize(13, 13F)
+        //appCompactTextView.isAllCaps = false
         //appCompactTextView.id = tabIndex
         appCompactTextView.tag = tabTitle
         appCompactTextView.setText(tabTitle)
@@ -84,11 +106,12 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
     private fun createContentLayoutForTab(questionData:QuestionData):ConstraintLayout{
         val contentCell: ConstraintLayout =
             layoutInflater.inflate(R.layout.common_govt_content_layout, null) as ConstraintLayout
+        contentCell.visibility = View.GONE
+        Timber.e(" questionData.question "+questionData.question)
         contentCell.govt_question.text =  questionData.question
         questionData.answerDetail?.let {
             contentCell.detail_text.text = it
         }
-
         var headerTitle = ""
         questionData.headerText?.let {
             contentCell.govt_detail_box.tag = it
@@ -141,9 +164,6 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
             }
         }
     }
-
-
-
 
     private fun setUpTabs(){
         /*
@@ -415,39 +435,4 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
         }
     }
 
-
 }
-
-
-    /*
-
-
-    when(p0){
-
-                binding.btnDemographicInfo-> {
-                    binding.asianInnerConstraintLayout.visibility = View.GONE
-                    binding.nativeHawaianInnerLayout.visibility = View.GONE
-                    binding.hispanicOrLatinoLayout.visibility = View.GONE
-                    binding.otherAsianConstraintlayout.visibility = View.GONE
-                    binding.otherHispanicConstraintLayout.visibility = View.GONE
-                    binding.otherPacificIslanderConstraintLayout.visibility = View.GONE
-                }
-
-                binding.btnDebtCo ->{}
-                binding.btnOutstanding ->{}
-                binding.btnFederalDebt ->{}
-                binding.btnPartyTo-> {}
-                binding.btnOwnershipInterest ->  {}
-                binding.btnTitleConveyance -> {}
-                binding.btnPreForeclouser->{}
-                binding.btnForeclosuredProperty-> {}
-                binding.btnBankruptcy ->{}
-                binding.btnChildSupport -> {}
-                binding.btnUndisclosedBorrowed-> {}
-                binding.btnUndisclosedCredit-> {}
-                binding.btnUndisclosedMortgage -> {}
-                binding.btnPriorityLiens-> {}
-                else ->{}
-            }
-
-     */

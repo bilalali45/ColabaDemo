@@ -1,23 +1,27 @@
 package com.rnsoft.colabademo
 
+import android.content.Context
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
-
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginStart
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.*
-import kotlinx.android.synthetic.main.assets_top_cell.view.*
 import kotlinx.android.synthetic.main.common_govt_content_layout.view.*
 import timber.log.Timber
+import android.widget.LinearLayout
+import android.util.DisplayMetrics
+
+
+
+
+
+
 
 
 class BorrowerOneQuestions : GovtQuestionBaseFragment() {
@@ -45,7 +49,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     private fun setupLayout(){
         setUpDynamicTabs()
-
         //setUpTabs()
     }
 
@@ -55,7 +58,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                  for(qData in questionData) {
                      qData.headerText?.let { tabTitle->
                          val appCompactTextView = createAppCompactTextView(tabTitle, 0)
-                         binding.horizontalTabs.addView(appCompactTextView as View)
+                         binding.horizontalTabs.addView(appCompactTextView)
                          val contentView = createContentLayoutForTab(qData)
                          innerLayoutHashMap.put(appCompactTextView, contentView)
                          binding.parentContainer.addView(contentView)
@@ -68,15 +71,38 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         })
     }
 
+    fun convertPixelsToDp(px: Float, context: Context): Int {
+        return (px / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+    }
+
+    fun convertDpToPixel(dp: Float, context: Context): Int {
+        return (dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+    }
+
     private fun createAppCompactTextView(tabTitle:String, tabIndex:Int):AppCompatTextView{
-        val appCompactTextView = AppCompatTextView(requireContext())
+        //val appCompactTextView = AppCompatTextView(requireContext())
+
+        val appCompactTextView: AppCompatTextView =
+            layoutInflater.inflate(R.layout.govt_text_view, null) as AppCompatTextView
+
         //appCompactTextView.setBackgroundColor(R.drawable.blue_white_style_filter)
-        appCompactTextView.setPadding(12,0,12,0)
-        appCompactTextView.height = 30
+        //appCompactTextView.setPadding(12,0,12,0)
+        //appCompactTextView.height = 40
+
+        val textParam = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            convertDpToPixel(30.0f,requireContext()),
+            1.0f
+        )
+
+        textParam.setMargins( convertDpToPixel(8.0f,requireContext()), 0, 0, 0)
+
+        appCompactTextView.setLayoutParams(textParam)
+
        // appCompactTextView.setTextColor(resources.getColor(R.color.doc_filter_text_color_selector, activity?.theme ))
-        appCompactTextView.gravity = Gravity.CENTER
+        //appCompactTextView.gravity = Gravity.CENTER
         //appCompactTextView.setTextSize(13, 13F)
-        appCompactTextView.isAllCaps = false
+        //appCompactTextView.isAllCaps = false
         //appCompactTextView.id = tabIndex
         appCompactTextView.tag = tabTitle
         appCompactTextView.setText(tabTitle)
@@ -87,6 +113,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         val contentCell: ConstraintLayout =
             layoutInflater.inflate(R.layout.common_govt_content_layout, null) as ConstraintLayout
         contentCell.visibility = View.GONE
+        Timber.e(" questionData.question "+questionData.question)
         contentCell.govt_question.text =  questionData.question
         questionData.answerDetail?.let {
             contentCell.detail_text.text = it
