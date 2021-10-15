@@ -11,6 +11,7 @@ import com.rnsoft.colabademo.databinding.SubPropertySecondMortgageBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Created by Anita Kiran on 9/9/2021.
@@ -18,12 +19,13 @@ import com.rnsoft.colabademo.utils.NumberTextFormat
 class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var binding : SubPropertySecondMortgageBinding
+    private var list : ArrayList<SecondMortgageModel> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = SubPropertySecondMortgageBinding.inflate(inflater, container, false)
 
         binding.backButton.setOnClickListener(this)
@@ -37,6 +39,29 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
 
         setInputFields()
         super.addListeners(binding.root)
+
+
+        list = arguments?.getParcelableArrayList(AppConstant.secMortgage)!!
+        if(list.size > 0 ){
+            list[0].secondMortgagePayment?.let { binding.edSecMortgagePayment.setText(it.toString()) }
+            list[0].unpaidSecondMortgagePayment?.let { binding.edUnpaidBalance.setText(it.toString()) }
+            list[0].helocCreditLimit?.let { binding.edCreditLimit.setText(it.toString()) }
+            list[0].isHeloc?.let { binding.switchCreditLimit.isChecked = true }
+            list[0].combineWithNewFirstMortgage?.let { isCombined->
+                if(isCombined)
+                    binding.rbQuesOneYes.isChecked = true
+                else
+                    binding.rbQuesOneNo.isChecked = false
+            }
+            list[0].paidAtClosing?.let { isPaid->
+                if(isPaid)
+                   binding.rbQuesOneYes.isChecked = true
+                else
+                    binding.rbQuesOneYes.isChecked = false
+            }
+            //it[0].wasSmTaken?.let {  }
+        }
+
         return binding.root
 
     }

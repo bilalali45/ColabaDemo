@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.model
+package com.rnsoft.colabademo
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
@@ -55,24 +55,26 @@ data class SubPropertyRefinanceData(
 
 )
 
+@Parcelize
 data class FirstMortgageModel(
     var propertyTaxesIncludeinPayment : Boolean?,
     var homeOwnerInsuranceIncludeinPayment : Boolean?,
     var floodInsuranceIncludeinPayment : Boolean,
     var paidAtClosing : Boolean,
-    var firstMortgagePayment: Float?,
-    var unpaidFirstMortgagePayment : Float?,
-    var helocCreditLimit : Float?,
+    var firstMortgagePayment: Double?,
+    var unpaidFirstMortgagePayment : Double?,
+    var helocCreditLimit : Double?,
     var isHeloc : Boolean?
-)
+) : Parcelable
 
+@Parcelize
 data class SecondMortgageModel(
-    var secondMortgagePayment: Float?,
-    var unpaidSecondMortgagePayment : Float?,
+    var secondMortgagePayment: Double?,
+    var unpaidSecondMortgagePayment : Double?,
     var paidAtClosing: Boolean?,
-    var helocCreditLimit : Float?,
+    var helocCreditLimit : Double?,
     var isHeloc: Boolean?,
     var state: String?,
     var combineWithNewFirstMortgage : Boolean?,
     var wasSmTaken: Boolean?
-)
+) : Parcelable

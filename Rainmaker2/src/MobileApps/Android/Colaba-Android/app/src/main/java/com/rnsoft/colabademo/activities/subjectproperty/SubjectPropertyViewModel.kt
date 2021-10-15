@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,11 +19,11 @@ import javax.inject.Inject
 @HiltViewModel
 class SubjectPropertyViewModel @Inject constructor(private val repository: SubjectPropertyRepo ) : ViewModel() {
 
-    private val _propertyType : MutableLiveData<ArrayList<PropertyType>> =   MutableLiveData()
-    val propertyType: LiveData<ArrayList<PropertyType>> get() = _propertyType
+    private val _propertyType : MutableLiveData<ArrayList<DropDownResponse>> =   MutableLiveData()
+    val propertyType: LiveData<ArrayList<DropDownResponse>> get() = _propertyType
 
-    private val _occupancyType : MutableLiveData<ArrayList<PropertyType>> =   MutableLiveData()
-    val occupancyType: LiveData<ArrayList<PropertyType>> get() = _occupancyType
+    private val _occupancyType : MutableLiveData<ArrayList<DropDownResponse>> =   MutableLiveData()
+    val occupancyType: LiveData<ArrayList<DropDownResponse>> get() = _occupancyType
 
     private val _countries : MutableLiveData<ArrayList<CountriesModel>> =   MutableLiveData()
     val countries: LiveData<ArrayList<CountriesModel>> get() = _countries
@@ -88,7 +87,6 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
         }
     }
 
-
     suspend fun getPropertyTypes(token:String) {
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repository.getPropertyType(token = token)
@@ -121,9 +119,8 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
         viewModelScope.launch(Dispatchers.IO) {
             val response = repository.getStates(token = token )
             withContext(Dispatchers.Main) {
-                if (response is Result.Success) {
+                if (response is Result.Success)
                     _states.value = (response.data)
-                }
                 else if (response is Result.Error && response.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (response is Result.Error)

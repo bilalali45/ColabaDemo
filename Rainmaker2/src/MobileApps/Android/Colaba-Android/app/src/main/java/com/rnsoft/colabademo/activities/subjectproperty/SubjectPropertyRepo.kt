@@ -9,11 +9,11 @@ import javax.inject.Inject
  */
 class SubjectPropertyRepo @Inject constructor(private val dataSource: SubjectPropertyDataSource) {
 
-    suspend fun getPropertyType(token:String): Result<ArrayList<PropertyType>> {
+    suspend fun getPropertyType(token:String): Result<ArrayList<DropDownResponse>> {
         return dataSource.getPropertyTypes(token = token)
     }
 
-    suspend fun getOccupancyType(token:String): Result<ArrayList<PropertyType>> {
+    suspend fun getOccupancyType(token:String): Result<ArrayList<DropDownResponse>> {
         return dataSource.getOccupancyType(token = token)
     }
 

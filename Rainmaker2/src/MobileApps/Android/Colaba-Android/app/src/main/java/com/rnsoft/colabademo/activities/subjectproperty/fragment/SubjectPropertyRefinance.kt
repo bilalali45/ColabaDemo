@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.app.DatePickerDialog
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,11 +19,14 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.sub_property_refinance.*
 
 
 /**
  * Created by Anita Kiran on 9/9/2021.
  */
+@AndroidEntryPoint
 class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListener {
 
     private val viewModel : SubjectPropertyViewModel by activityViewModels()
@@ -30,6 +34,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     private var savedViewInstance: View? = null
     private var propertyTypeId : Int = 0
     private var occupancyTypeId : Int = 0
+    private var secondMortgageList : ArrayList<SecondMortgageModel> = ArrayList()
+    private var firstMortgageList : ArrayList<FirstMortgageModel> = ArrayList()
     var addressDetailList :  ArrayList<AddressData> = ArrayList()
     val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0NDExMDMyLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.nhk-k0X8XXsqRKCdQHt8nvPtjR8TqrvUrXx8CVjfcpw"
 
@@ -115,6 +121,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                 binding.rbNonOccupying.setTypeface(null, Typeface.NORMAL)
             }
         }
+
         // radio non occupying
         binding.rbNonOccupying.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
@@ -131,10 +138,10 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                 //binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
             }
         }
+
         binding.radioHasFirstMortgageYes.setOnClickListener { onFirstMortgageYes() }
 
         binding.layoutFirstMortgageDetail.setOnClickListener { onFirstMortgageYes() }
-
 
         // first mortgage no
         binding.radioHasFirstMortgageNo.setOnCheckedChangeListener { _, isChecked ->
@@ -222,27 +229,27 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                     }
                     // property value
                     details.subPropertyData?.propertyValue?.let { value ->
-                        binding.edPropertyValue.setText(value.toString())
+                        binding.edPropertyValue.setText(Math.round(value).toString())
                         CustomMaterialFields.setColor(binding.layoutPropertyValue,R.color.grey_color_two,requireActivity())
                     }
                     // hoa dues
                     details.subPropertyData?.hoaDues?.let { value ->
-                        binding.edAssociation.setText(value.toString())
+                        binding.edAssociation.setText(Math.round(value).toString())
                         CustomMaterialFields.setColor(binding.layoutAssociationDues,R.color.grey_color_two,requireActivity())
                     }
                     // property tax
                     details.subPropertyData?.propertyTax?.let { value ->
-                        binding.edPropertyTaxes.setText(value.toString())
+                        binding.edPropertyTaxes.setText(Math.round(value).toString())
                         CustomMaterialFields.setColor(binding.layoutPropertyTaxes,R.color.grey_color_two,requireActivity())
                     }
                     // home insurance
                     details.subPropertyData?.homeOwnerInsurance?.let { value ->
-                        binding.edHomeownerInsurance.setText(value.toString())
+                        binding.edHomeownerInsurance.setText(Math.round(value).toString())
                         CustomMaterialFields.setColor(binding.layoutHomeownerInsurance,R.color.grey_color_two,requireActivity())
                     }
                     // flood insurance
                     details.subPropertyData?.floodInsurance?.let { value ->
-                        binding.edFloodInsurance.setText(value.toString())
+                        binding.edFloodInsurance.setText(Math.round(value).toString())
                         CustomMaterialFields.setColor(binding.layoutFloodInsurance,R.color.grey_color_two,requireActivity())
                     }
 
@@ -266,14 +273,18 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                             binding.layoutSecondMortgage.visibility = View.VISIBLE
 
                             details.subPropertyData.firstMortgageModel?.let{ model->
+
+                                firstMortgageList.add(FirstMortgageModel(model.propertyTaxesIncludeinPayment, model.homeOwnerInsuranceIncludeinPayment,model.floodInsuranceIncludeinPayment,
+                                    model.paidAtClosing,model.firstMortgagePayment,model.unpaidFirstMortgagePayment,model.helocCreditLimit,model.isHeloc))
+
                                 model.firstMortgagePayment?.let { payment->
-                                    binding.firstMortgagePayment.setText("$" + payment)
+                                    binding.firstMortgagePayment.setText("$" + Math.round(payment))
                                 } ?: run {
                                     binding.firstMortgagePayment.setText("$0")
                                 }
 
                                 model.unpaidFirstMortgagePayment?.let{ balance ->
-                                    binding.firstMortgageBalance.setText("$" + balance)
+                                    binding.firstMortgageBalance.setText("$" + Math.round(balance))
                                 } ?: run{
                                     binding.firstMortgageBalance.setText("$0")
                                 }
@@ -286,11 +297,16 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
 
                     // has second mortgage 'yes'
                     details.subPropertyData?.hasSecondMortgage?.let{ yes->
+
                         if(yes){
                             binding.rbSecMortgageYes.isChecked = true
                             binding.layoutSecMortgageDetail.visibility =View.VISIBLE
 
                             details.subPropertyData.secondMortgageModel?.let{ model->
+
+                                secondMortgageList.add(SecondMortgageModel(model.secondMortgagePayment, model.unpaidSecondMortgagePayment,model.paidAtClosing,model.helocCreditLimit,model.isHeloc,model.state,
+                                    model.combineWithNewFirstMortgage,model.wasSmTaken))
+
                                 model.secondMortgagePayment?.let { payment->
                                     binding.textviewSecMortgagePayment.setText("$" + payment)
                                 } ?: run {
@@ -309,9 +325,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                     }
 
                     getDropDownData()
-
                 }
-
             })
         }
     }
@@ -343,7 +357,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                 val itemList:ArrayList<String> = arrayListOf()
                 for(item in it){
                     itemList.add(item.name)
-                    if(propertyTypeId > 0 && propertyTypeId == item.id){
+                    if(propertyTypeId == item.id){
                         binding.tvPropertyType.setText(item.name)
                         CustomMaterialFields.setColor(binding.layoutPropertyType,R.color.grey_color_two,requireActivity())
                     }
@@ -486,11 +500,12 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     }
 
     private fun onFirstMortgageYes() {
+        firstMortgageList = ArrayList()
         binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
         binding.layoutSecondMortgage.visibility = View.VISIBLE
         val fragment = FirstMortgageFragment()
         val bundle = Bundle()
-        bundle.putString(AppConstant.address, getString(R.string.subject_property))
+        bundle.putParcelableArrayList(AppConstant.firstMortgage,firstMortgageList)
         fragment.arguments = bundle
         findNavController().navigate(R.id.action_refinance_first_mortgage, fragment.arguments)
     }
@@ -500,7 +515,11 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.layoutSecMortgageDetail.visibility = View.VISIBLE
         binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
         binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
-        findNavController().navigate(R.id.action_refinance_sec_mortgage)
+        val fragment = SecondMortgageFragment()
+        val bundle = Bundle()
+        bundle.putParcelableArrayList(AppConstant.secMortgage,secondMortgageList)
+        fragment.arguments = bundle
+        findNavController().navigate(R.id.action_refinance_sec_mortgage, fragment.arguments)
     }
 
     /*
