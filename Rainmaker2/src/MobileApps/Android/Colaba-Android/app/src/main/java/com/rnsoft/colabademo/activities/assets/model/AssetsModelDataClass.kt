@@ -15,6 +15,8 @@ data class TestAssetsModelClass(
 
 data class TestContentCell(val title:String="Title", val description:String="detail", val contentAmount:String="0$")
 
+
+/*
 data class AssetsModelDataClass(
     val code: String?=null,
     @SerializedName("data") val bAssetData : BAssetData?=null,
@@ -51,3 +53,5 @@ data class BAssets(
     val isDisabledByTenant: Boolean,
     val isEarnestMoney: Boolean
 )
+
+ */

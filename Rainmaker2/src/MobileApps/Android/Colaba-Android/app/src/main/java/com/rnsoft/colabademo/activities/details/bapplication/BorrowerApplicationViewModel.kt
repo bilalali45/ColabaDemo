@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
@@ -13,16 +14,15 @@ import kotlin.coroutines.CoroutineContext
 @HiltViewModel
 class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: BorrowerApplicationRepo) : ViewModel() {
 
-    private var _assetsModelDataClass : MutableLiveData<AssetsModelDataClass> =   MutableLiveData()
-    val assetsModelDataClass: LiveData<AssetsModelDataClass> get() = _assetsModelDataClass
-
-
+    private var _assetsModelDataClass : MutableLiveData<ArrayList<MyAssetBorrowerDataClass>> =   MutableLiveData()
+    val assetsModelDataClass: LiveData<ArrayList<MyAssetBorrowerDataClass>> get() = _assetsModelDataClass
 
     private var _governmentQuestionsModelClass : MutableLiveData<GovernmentQuestionsModelClass> =   MutableLiveData()
     val governmentQuestionsModelClass: LiveData<GovernmentQuestionsModelClass> get() = _governmentQuestionsModelClass
 
-    suspend fun getBorrowerAssetsDetail(token:String, loanApplicationId:Int , borrowerId:Int): Boolean {
+    suspend fun getBorrowerAssetsDetail(token:String, loanApplicationId:Int, borrowerId: ArrayList<Int>?): Boolean {
 
+        /*
         viewModelScope.launch (Dispatchers.IO) {
             val responseResult = bAppRepo.getBorrowerAssetsDetail(token = token, loanApplicationId = loanApplicationId , borrowerId = borrowerId)
             withContext(Dispatchers.Main) {
@@ -35,6 +35,8 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
             }
         }
 
+         */
+
         return true
 
     }
@@ -44,6 +46,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         get() = job + Dispatchers.Main
 
     suspend fun getBorrowerAssetsDetail2(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int>): Boolean {
+        /*
         viewModelScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Default) {
                 //val content = arrayListOf<Int>()
@@ -54,9 +57,6 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
                             val responseResult = bAppRepo.getBorrowerAssetsDetail(token = token, loanApplicationId = loanApplicationId , borrowerId = id)
                             if (responseResult is Result.Success) {
 
-                                content.find {
-                                    responseResult.data.bAssetData?.assetBorrowerList?.get(0)?.borrowerId ?: 0 == id
-                                }
                             }
                         }
                     }
@@ -76,7 +76,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
                 val responses = runningTasks.awaitAll()
 
 
-                /*
+
                 responses.forEach { (id, response) ->
                     if (response.isSuccessful()) {
                        // content.find { it.id == id }.enable = true
@@ -84,18 +84,40 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
                 }
 
 
-                 */
-
             }
 
 
         }
 
+         */
+
         return true
     }
 
 
-            
+
+    suspend fun getBorrowerWithAssets(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int>) {
+        val borrowerAssetList: ArrayList<MyAssetBorrowerDataClass> = ArrayList()
+        viewModelScope.launch(Dispatchers.IO) {
+            coroutineScope {
+                borrowerIds.forEach { id ->
+                    launch { // this will allow us to run multiple tasks in parallel
+                        val responseResult = bAppRepo.getBorrowerAssetsDetail(
+                            token = token,
+                            loanApplicationId = loanApplicationId,
+                            borrowerId = id
+                        )
+                        if (responseResult is Result.Success)
+                            borrowerAssetList.add(responseResult.data)
+                    }
+                }
+            }  // coroutineScope block will wait here until all child tasks are completed
+            withContext(Dispatchers.Main) {
+                _assetsModelDataClass.value = borrowerAssetList
+            }
+        }
+
+    }
 
     fun resetAssetModelClass(){
         _assetsModelDataClass  =   MutableLiveData()

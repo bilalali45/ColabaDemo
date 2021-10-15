@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
+import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
@@ -11,11 +12,11 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
         token: String,
         loanApplicationId: Int,
         borrowerId:Int
-    ): Result<AssetsModelDataClass> {
+    ): Result<MyAssetBorrowerDataClass> {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getBorrowerAssetsDetail(newToken, loanApplicationId = loanApplicationId , borrowerId = borrowerId)
-            Log.e("AssetsModelDataClass-", response.toString())
+            Timber.e("AssetsModelDataClass-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
 import com.rnsoft.colabademo.activities.loan.model.LoanGoalModel
 import com.rnsoft.colabademo.activities.model.*
 import okhttp3.ResponseBody
@@ -196,12 +197,12 @@ interface ServerApi{
         @Query("loanApplicationId")  loanApplicationId:Int):BorrowerApplicationTabModel
 
 
-    @GET("api/mcu/mobile/loanapplication/Loan/GetAssetsDetails")
+    @GET("api/mcu/mobile/loanapplication/Assets/GetAssetsDetails")
     suspend fun getBorrowerAssetsDetail(
         @Header("Authorization" )  Authorization:String,
         @Query("loanApplicationId")  loanApplicationId:Int,
         @Query("borrowerId")  borrowerId:Int
-    ):AssetsModelDataClass
+    ):MyAssetBorrowerDataClass
 
 
     @GET("api/mcu/mobile/loanapplication/GovtQuestions/GetGovernmentQuestions")

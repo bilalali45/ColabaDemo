@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.rnsoft.colabademo.databinding.*
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
 import kotlinx.android.synthetic.main.assets_middle_cell.view.*
@@ -18,6 +20,8 @@ class BorrowerOneAssets : AssetBaseFragment() {
 
     private lateinit var binding: DynamicAssetFragmentLayoutBinding
 
+    private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,7 +29,93 @@ class BorrowerOneAssets : AssetBaseFragment() {
     ): View {
         binding = DynamicAssetFragmentLayoutBinding.inflate(inflater, container, false)
 
-        setupLayout()
+        //setupLayout()
+        /*
+        val assetCategoryId: Int?,
+        val assetCategoryName: String?,
+        val assetId: Int?,
+        val assetName: String?,
+        val assetTypeID: Int?,
+        val assetTypeName: String?,
+        val assetValue: Double?,
+        val isDisabledByTenant: Boolean?,
+        val isEarnestMoney: Boolean?
+
+         */
+
+        borrowerApplicationViewModel.assetsModelDataClass.observe(viewLifecycleOwner, Observer { bSampleAssets->
+            for (a in 0 until bSampleAssets.size) {
+                val sampleAssets = bSampleAssets[a]
+                val borrowerAssets = sampleAssets.bAssetData?.borrower?.borrowerAssets
+                borrowerAssets?.let {  borrowerAssets->
+                    for (i in 0 until borrowerAssets.size) {
+
+                        val modelData = borrowerAssets[i]
+                        Timber.e("header ",modelData.assetsCategory!! )
+                        Timber.e("h-amount ",modelData.assetsTotal!!.toString() )
+
+                        val mainCell: LinearLayoutCompat =
+                            layoutInflater.inflate(R.layout.asset_top_main_cell, null) as LinearLayoutCompat
+                        val topCell: View = layoutInflater.inflate(R.layout.assets_top_cell, null)
+                        topCell.header_title.text =  modelData.assetsCategory
+
+                        topCell.header_amount.setText(modelData.assetsTotal.toString())
+
+                        topCell.tag = R.string.asset_top_cell
+                        mainCell.addView(topCell)
+
+                        modelData.assets?.let {
+
+                            for (j in 0 until it.size) {
+                                val contentCell: View =
+                                    layoutInflater.inflate(R.layout.assets_middle_cell, null)
+                                val contentData = modelData.assets[j]
+                                contentCell.content_title.text = contentData.assetCategoryName
+                                contentCell.content_desc.text = contentData.assetName
+                                contentCell.content_amount.text = contentData.assetValue.toString()
+                                contentCell.visibility = View.GONE
+                                contentCell.setOnClickListener(modelData.listenerAttached)
+                                mainCell.addView(contentCell)
+                            }
+
+                        }
+                        val bottomCell: View = layoutInflater.inflate(R.layout.assets_bottom_cell, null)
+                        bottomCell.footer_title.text =  modelData.assetsCategory
+                        //bottomCell.tag = R.string.asset_bottom_cell
+                        bottomCell.visibility = View.GONE
+                        bottomCell.setOnClickListener(modelData.listenerAttached)
+
+                        mainCell.addView(bottomCell)
+
+
+
+
+                        binding.assetParentContainer.addView(mainCell)
+
+                        val drawable = R.drawable.toast_err
+
+                        topCell.setOnClickListener {
+
+
+                            hideOtherBoxes() // if you want to hide other boxes....
+                            topCell.arrow_up.visibility = View.VISIBLE
+                            topCell.arrow_down.visibility = View.GONE
+                            toggleContentCells(mainCell, View.VISIBLE)
+                            //bottomCell.visibility = View.VISIBLE
+                        }
+
+                        topCell.arrow_up.setOnClickListener {
+                            topCell.arrow_up.visibility = View.GONE
+                            topCell.arrow_down.visibility = View.VISIBLE
+                            //contentCell.visibility = View.GONE
+                            toggleContentCells(mainCell , View.GONE)
+                            //bottomCell.visibility = View.GONE
+                        }
+                    }
+                }
+
+            }
+        })
 
         super.addListeners(binding.root)
 

@@ -96,7 +96,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
              */
             //Timber.e("assets layout - clicked...")
-            //navigateToAssetActivity()
+            navigateToAssetActivity()
         }
 
         binding.incomeConstraintLayout.setOnClickListener{
@@ -313,6 +313,10 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         val detailActivity = (activity as? DetailActivity)
         detailActivity?.let {
             val assetsActivity = Intent(requireActivity(), AssetsActivity::class.java)
+            val bList:ArrayList<Int> = arrayListOf()
+            for(item in borrowerInfoList)
+                bList.add(item.borrowerId)
+            assetsActivity.putIntegerArrayListExtra( AppConstant.assetBorrowerList, bList)
             it.loanApplicationId?.let { loanId ->
                 assetsActivity.putExtra(AppConstant.loanApplicationId, loanId)
             }
