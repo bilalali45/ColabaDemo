@@ -101,6 +101,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         }
 
         binding.incomeConstraintLayout.setOnClickListener{
+            borrowerApplicationViewModel.resetIncomeModelClass()
             navigateToIncomeActivity()
         }
 
@@ -333,6 +334,10 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         val detailActivity = (activity as? DetailActivity)
         detailActivity?.let {
             val incomeActivity = Intent(requireActivity(), IncomeActivity::class.java)
+            val bList:ArrayList<Int> = arrayListOf()
+            for(item in borrowerInfoList)
+                bList.add(item.borrowerId)
+            incomeActivity.putIntegerArrayListExtra( AppConstant.incomeBorrowerList, bList)
             it.loanApplicationId?.let { loanId ->
                 incomeActivity.putExtra(AppConstant.loanApplicationId, loanId)
             }

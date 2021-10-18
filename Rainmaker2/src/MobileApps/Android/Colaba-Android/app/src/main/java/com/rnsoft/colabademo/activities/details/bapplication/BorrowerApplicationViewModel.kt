@@ -1,10 +1,12 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
+import com.rnsoft.colabademo.activities.income.model.IncomeDetailsResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
@@ -16,6 +18,9 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
 
     private var _assetsModelDataClass : MutableLiveData<ArrayList<MyAssetBorrowerDataClass>> =   MutableLiveData()
     val assetsModelDataClass: LiveData<ArrayList<MyAssetBorrowerDataClass>> get() = _assetsModelDataClass
+
+    private var _incomeDetails : MutableLiveData<ArrayList<IncomeDetailsResponse>> =   MutableLiveData()
+    val incomeDetails: LiveData<ArrayList<IncomeDetailsResponse>> get() = _incomeDetails
 
     private var _governmentQuestionsModelClass : MutableLiveData<GovernmentQuestionsModelClass> =   MutableLiveData()
     val governmentQuestionsModelClass: LiveData<GovernmentQuestionsModelClass> get() = _governmentQuestionsModelClass
@@ -116,11 +121,35 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
                 _assetsModelDataClass.value = borrowerAssetList
             }
         }
+    }
 
+    suspend fun getBorrowerWithIncome(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int>) {
+        Log.e("viewModel","getIncome")
+        val borrowerIncomeList: ArrayList<IncomeDetailsResponse> = ArrayList()
+        viewModelScope.launch(Dispatchers.IO) {
+            coroutineScope {
+                borrowerIds.forEach { id ->
+                    launch {
+                        val responseResult = bAppRepo.getBorrowerIncomeDetail(token = token, loanApplicationId = loanApplicationId, borrowerId = id)
+                        if (responseResult is Result.Success){
+                            Log.e("viewmode","success")
+                            borrowerIncomeList.add(responseResult.data)
+                        }
+                    }
+                }
+            }  // coroutineScope block will wait here until all child tasks are completed
+            withContext(Dispatchers.Main) {
+                _incomeDetails.value = borrowerIncomeList
+            }
+        }
     }
 
     fun resetAssetModelClass(){
         _assetsModelDataClass  =   MutableLiveData()
+    }
+
+    fun resetIncomeModelClass(){
+        _incomeDetails  =   MutableLiveData()
     }
 
 
