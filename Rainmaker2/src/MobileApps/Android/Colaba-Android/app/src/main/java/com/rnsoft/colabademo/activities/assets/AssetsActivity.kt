@@ -3,6 +3,9 @@ package com.rnsoft.colabademo
 import android.content.SharedPreferences
 
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.databinding.AssetsActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -18,6 +21,13 @@ class AssetsActivity : BaseActivity() {
     var loanApplicationId:Int? = null
     var loanPurpose:String? = null
 
+    private var bList:ArrayList<Int>? = null
+
+    private val borrowerApplicationViewModel: BorrowerApplicationViewModel by viewModels()
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = AssetsActivityLayoutBinding.inflate(layoutInflater)
@@ -28,10 +38,23 @@ class AssetsActivity : BaseActivity() {
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             loanPurpose = it.getString(AppConstant.loanPurpose)
+            bList = it.getIntegerArrayList(AppConstant.assetBorrowerList) as ArrayList<Int>
         }
 
         Timber.d("Running on create function")
-        Timber.e("Running on create function")
+
+
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if(loanApplicationId!=null && bList!=null ) {
+                    borrowerApplicationViewModel.getBorrowerWithAssets(
+                        authToken, 5,
+                        arrayListOf(5)
+                    )
+                }
+            }
+        }
+
 
 
         /*
