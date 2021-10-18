@@ -1,8 +1,6 @@
 package com.rnsoft.colabademo
 
-import com.rnsoft.colabademo.activities.loan.model.LoanGoalModel
 import com.rnsoft.colabademo.activities.model.*
-import com.rnsoft.colabademo.activities.realestate.model.RealEstateResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response

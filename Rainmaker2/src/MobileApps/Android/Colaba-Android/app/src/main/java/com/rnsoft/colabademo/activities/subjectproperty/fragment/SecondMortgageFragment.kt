@@ -38,32 +38,49 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
         binding.switchCreditLimit.setOnClickListener(this)
 
         setInputFields()
+        setData()
         super.addListeners(binding.root)
 
 
-        list = arguments?.getParcelableArrayList(AppConstant.secMortgage)!!
-        if(list.size > 0 ){
-            list[0].secondMortgagePayment?.let { binding.edSecMortgagePayment.setText(it.toString()) }
-            list[0].unpaidSecondMortgagePayment?.let { binding.edUnpaidBalance.setText(it.toString()) }
-            list[0].helocCreditLimit?.let { binding.edCreditLimit.setText(it.toString()) }
-            list[0].isHeloc?.let { binding.switchCreditLimit.isChecked = true }
-            list[0].combineWithNewFirstMortgage?.let { isCombined->
-                if(isCombined)
-                    binding.rbQuesOneYes.isChecked = true
-                else
-                    binding.rbQuesOneNo.isChecked = false
-            }
-            list[0].paidAtClosing?.let { isPaid->
-                if(isPaid)
-                   binding.rbQuesOneYes.isChecked = true
-                else
-                    binding.rbQuesOneYes.isChecked = false
-            }
-            //it[0].wasSmTaken?.let {  }
-        }
+
+            //it[0].wasSmTaken?.let {
 
         return binding.root
 
+    }
+
+    private fun setData(){
+        list = arguments?.getParcelableArrayList(AppConstant.secMortgage)!!
+        if(list.size > 0 ) {
+            list[0].secondMortgagePayment?.let { binding.edSecMortgagePayment.setText(Math.round(it).toString()) }
+            list[0].unpaidSecondMortgagePayment?.let { binding.edUnpaidBalance.setText(Math.round(it).toString()) }
+            list[0].helocCreditLimit?.let {
+                binding.edCreditLimit.setText(Math.round(it).toString())
+                binding.layoutCreditLimit.visibility = View.VISIBLE
+            }
+            list[0].isHeloc?.let {
+                binding.switchCreditLimit.isChecked = true
+            }
+            list[0].combineWithNewFirstMortgage?.let { isCombined ->
+                if (isCombined == true) {
+                    binding.rbQuesOneYes.isChecked = true
+                    binding.rbQuesOneYes.setTypeface(null, Typeface.BOLD)
+                }
+                else {
+                    binding.rbQuesOneNo.isChecked = false
+                    binding.rbQuesOneNo.setTypeface(null, Typeface.BOLD)
+                }
+            }
+            list[0].paidAtClosing?.let { isPaid ->
+                if (isPaid == true) {
+                    binding.rbQuesTwoYes.isChecked = true
+                    binding.rbQuesTwoYes.setTypeface(null, Typeface.BOLD)
+                } else {
+                    binding.rbQuesTwoNo.isChecked = true
+                    binding.rbQuesTwoNo.setTypeface(null, Typeface.BOLD)
+                }
+            }
+        }
     }
 
     override fun onClick(view: View?) {

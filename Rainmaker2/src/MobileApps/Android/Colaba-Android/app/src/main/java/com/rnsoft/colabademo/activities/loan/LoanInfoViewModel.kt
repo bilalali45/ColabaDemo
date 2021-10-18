@@ -7,7 +7,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewModelScope
-import com.rnsoft.colabademo.activities.loan.model.LoanGoalModel
 import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 

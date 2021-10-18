@@ -1,6 +1,8 @@
-package com.rnsoft.colabademo.activities.realestate.model
+package com.rnsoft.colabademo
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Anita Kiran on 10/15/2021.
@@ -32,16 +34,17 @@ data class RealEstateData(
     val secondMortgagePayment: Double?
 )
 
+@Parcelize
 data class RealEstateAddress(
-    val city: String,
-    val countryId: Int,
-    val countryName: String,
-    val countyId: Int,
-    val countyName: Int,
-    val stateId: Int,
-    val stateName: String,
-    val street: String,
-    val unit: String,
-    val zipCode: String
-)
+    val city: String?,
+    val countryId: Int?,
+    val countryName: String?,
+    val countyId: Int?,
+    val countyName: String?,
+    val stateId: Int?,
+    val stateName: String?,
+    val street: String?,
+    val unit: String?,
+    val zipCode: String?
+) : Parcelable
 

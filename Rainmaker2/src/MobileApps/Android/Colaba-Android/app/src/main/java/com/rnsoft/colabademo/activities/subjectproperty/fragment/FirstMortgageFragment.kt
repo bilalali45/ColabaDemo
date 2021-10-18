@@ -37,57 +37,18 @@ class FirstMortgageFragment : BaseFragment() {
         //super.removeFocusFromAllFields(binding.firstMorgtageParentLayout)
 
         setUpUI()
+        setData()
         setInputFields()
-
-        list = arguments?.getParcelableArrayList(AppConstant.firstMortgage)!!
-        if(list.size > 0){
-            list[0].firstMortgagePayment?.let { binding.edFirstMortgagePayment.setText(it.toString()) }
-            list[0].unpaidFirstMortgagePayment?.let { binding.edUnpaidBalance.setText(it.toString()) }
-            list[0].helocCreditLimit?.let {
-                binding.edCreditLimit.setText(it.toString())
-                binding.layoutCreditLimit.visibility = View.VISIBLE
-            }
-            list[0].isHeloc?.let {
-                if(it) {
-                    binding.switchCreditLimit.isChecked = true
-                    binding.tvHeloc.setTypeface(null, Typeface.BOLD)
-                } else {
-                    binding.switchCreditLimit.isChecked = false
-                    binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
-                }
-            }
-            list[0].propertyTaxesIncludeinPayment?.let { taxIncluded->
-                if(taxIncluded) {
-                    binding.cbPropertyTaxes.isChecked = true
-                    binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
-                } else
-                    binding.cbPropertyTaxes.isChecked = false
-            }
-            list[0].homeOwnerInsuranceIncludeinPayment?.let { insuranceIncluded ->
-                if(insuranceIncluded){
-                    binding.cbHomeownwerInsurance.isChecked = true
-                    binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
-                } else
-                    binding.cbHomeownwerInsurance.isChecked = false
-            }
-            list[0].floodInsuranceIncludeinPayment.let { insuranceIncluded->
-                if(insuranceIncluded) {
-                    binding.cbFloodInsurance.isChecked = true
-                    binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
-                } else
-                    binding.cbFloodInsurance.isChecked = false
-            }
-        }
 
         return binding.root
     }
+
     private fun setUpUI(){
         binding.backButton.setOnClickListener { requireActivity().onBackPressed() }
 
         binding.btnSave.setOnClickListener { checkValidations() }
 
         binding.cbPropertyTaxes.setOnClickListener {
-            Log.e("onclick","click")
             binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
             binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
         }
@@ -111,22 +72,81 @@ class FirstMortgageFragment : BaseFragment() {
                 binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
             }
         }
-        binding.rbQuesYes.setOnClickListener {
-            if (binding.rbQuesYes.isChecked) {
-                binding.rbQuesYes.setTypeface(null, Typeface.BOLD)
-                binding.rbQuesNo.setTypeface(null, Typeface.NORMAL)
+
+        binding.rbPaidClosingYes.setOnClickListener {
+            if (binding.rbPaidClosingYes.isChecked) {
+                binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
+                binding.rbPaidClosingNo.setTypeface(null, Typeface.NORMAL)
             } else {
-                binding.rbQuesYes.setTypeface(null, Typeface.NORMAL)
+                binding.rbPaidClosingYes.setTypeface(null, Typeface.NORMAL)
             }
         }
-        binding.rbQuesNo.setOnClickListener {
-            if (binding.rbQuesNo.isChecked) {
-                binding.rbQuesNo.setTypeface(null, Typeface.BOLD)
-                binding.rbQuesYes.setTypeface(null, Typeface.NORMAL)
+
+        binding.rbPaidClosingNo.setOnClickListener {
+            if (binding.rbPaidClosingNo.isChecked) {
+                binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
+                binding.rbPaidClosingYes.setTypeface(null, Typeface.NORMAL)
             }else{
-                binding.rbQuesNo.setTypeface(null, Typeface.NORMAL)
+                binding.rbPaidClosingNo.setTypeface(null, Typeface.NORMAL)
             }
         }
+    }
+
+    private fun setData(){
+
+        list = arguments?.getParcelableArrayList(AppConstant.firstMortgage)!!
+        if(list.size > 0) {
+            list[0].firstMortgagePayment?.let {
+                binding.edFirstMortgagePayment.setText(Math.round(it).toString())
+            }
+            list[0].unpaidFirstMortgagePayment?.let {
+                binding.edUnpaidBalance.setText(Math.round(it).toString())
+            }
+            list[0].helocCreditLimit?.let {
+                binding.edCreditLimit.setText(Math.round(it).toString())
+                binding.layoutCreditLimit.visibility = View.VISIBLE
+            }
+            list[0].isHeloc?.let {
+                if (it) {
+                    binding.switchCreditLimit.isChecked = true
+                    binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+                } else {
+                    binding.switchCreditLimit.isChecked = false
+                    binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
+                }
+            }
+            list[0].propertyTaxesIncludeinPayment?.let { taxIncluded ->
+                if (taxIncluded) {
+                    binding.cbPropertyTaxes.isChecked = true
+                    binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
+                } else
+                    binding.cbPropertyTaxes.isChecked = false
+            }
+            list[0].homeOwnerInsuranceIncludeinPayment?.let { insuranceIncluded ->
+                if (insuranceIncluded) {
+                    binding.cbHomeownwerInsurance.isChecked = true
+                    binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
+                } else
+                    binding.cbHomeownwerInsurance.isChecked = false
+            }
+            list[0].floodInsuranceIncludeinPayment?.let { insuranceIncluded ->
+                if (insuranceIncluded) {
+                    binding.cbFloodInsurance.isChecked = true
+                    binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
+                } else
+                    binding.cbFloodInsurance.isChecked = false
+            }
+            list[0].paidAtClosing?.let {
+                if (it == true) {
+                    binding.rbPaidClosingYes.isChecked = true
+                    binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
+                } else {
+                    binding.rbPaidClosingNo.isChecked = true
+                    binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
+                }
+            }
+        }
+
     }
 
 //    override fun onClick(view: View?) {

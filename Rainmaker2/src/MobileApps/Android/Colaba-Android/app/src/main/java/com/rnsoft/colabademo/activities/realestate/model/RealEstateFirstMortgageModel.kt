@@ -8,8 +8,8 @@ import com.google.gson.annotations.SerializedName
 
 data class RealEstateFirstMortgageModel(
     val code: String,
-    @SerializedName("data)")
-    val data: FirstMortgageData,
+    @SerializedName("data")
+    val data: FirstMortgageData?,
     val message: String?,
     val status: String
 )

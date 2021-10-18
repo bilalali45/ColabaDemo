@@ -27,12 +27,9 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
 
-import com.rnsoft.colabademo.AppSetting
-import com.rnsoft.colabademo.CustomFocusListenerForEditText
-import com.rnsoft.colabademo.PlacePredictionAdapter
-import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.SubjectPropertyAddressBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import kotlinx.android.synthetic.main.view_placesearch.*
 
 import java.io.IOException
 import java.util.*
@@ -45,7 +42,7 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
     private lateinit var token: AutocompleteSessionToken
     private lateinit var placesClient: PlacesClient
     private var predicationList: ArrayList<String> = ArrayList()
-
+    private var addressList : ArrayList<RealEstateAddress> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,8 +51,9 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
     ): View {
         binding = SubjectPropertyAddressBinding.inflate(inflater, container, false)
 
-        val title = arguments?.getString(AppConstant.address).toString()
-        binding.titleTextView.setText(title)
+        //val title = arguments?.getString(AppConstant.address).toString()
+        //binding.titleTextView.setText(title)
+        binding.titleTextView.setText(getString(R.string.property_address))
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
@@ -67,7 +65,20 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
         initializeUSAstates()
 
 
-        binding.addressParentLayout.setOnClickListener {
+        addressList = arguments?.getParcelableArrayList(AppConstant.address)!!
+        if(addressList.size > 0) {
+            addressList[0].street?.let { binding.tvSearch.setText(it) }
+            addressList[0].street?.let { binding.edStreetAddress.setText(it) }
+            addressList[0].city?.let { binding.edCity.setText(it) }
+            addressList[0].countryName?.let { binding.tvCountry.setText(it) }
+            addressList[0].zipCode?.let { binding.edZipcode.setText(it) }
+            addressList[0].stateName?.let { binding.tvState.setText(it) }
+            addressList[0].countyName?.let { binding.tvCounty.setText(it) }
+            addressList[0].unit?.let{ binding.edUnitAtpNo.setText(it)}
+            visibleAllFields()
+        }
+
+            binding.addressParentLayout.setOnClickListener {
             HideSoftkeyboard.hide(requireActivity(),binding.addressParentLayout)
             super.removeFocusFromAllFields(binding.addressLayout)
         }
