@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rnsoft.colabademo.*
+import com.rnsoft.colabademo.activities.model.StatesModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,8 +32,20 @@ class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo) 
     private val _propertyType : MutableLiveData<ArrayList<DropDownResponse>> =   MutableLiveData()
     val propertyType: LiveData<ArrayList<DropDownResponse>> get() = _propertyType
 
+    private val _propertyStatus : MutableLiveData<ArrayList<DropDownResponse>> =   MutableLiveData()
+    val propertyStatus: LiveData<ArrayList<DropDownResponse>> get() = _propertyStatus
+
     private val _occupancyType : MutableLiveData<ArrayList<DropDownResponse>> =   MutableLiveData()
     val occupancyType: LiveData<ArrayList<DropDownResponse>> get() = _occupancyType
+
+    private val _countries : MutableLiveData<ArrayList<CountriesModel>> =   MutableLiveData()
+    val countries: LiveData<ArrayList<CountriesModel>> get() = _countries
+
+    private val _counties : MutableLiveData<ArrayList<CountiesModel>> =   MutableLiveData()
+    val counties: LiveData<ArrayList<CountiesModel>> get() = _counties
+
+    private val _states : MutableLiveData<ArrayList<StatesModel>> =   MutableLiveData()
+    val states: LiveData<ArrayList<StatesModel>> get() = _states
 
 
 
@@ -106,12 +119,68 @@ class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo) 
         }
     }
 
+    suspend fun getPropertyStatus(token:String) {
+        viewModelScope.launch() {
+            val responseResult = repo.getPropertyStatus(token = token)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _propertyStatus.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
     suspend fun getOccupancyType(token:String) {
         viewModelScope.launch() {
             val responseResult = repo.getOccupancyType(token = token )
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _occupancyType.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun getStates(token:String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = repo.getStates(token = token )
+            withContext(Dispatchers.Main) {
+                if (response is Result.Success)
+                    _states.value = (response.data)
+                else if (response is Result.Error && response.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (response is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(response))
+            }
+        }
+    }
+
+    suspend fun getCounty(token:String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.getCounties(token = token )
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _counties.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun getCountries(token:String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.getCountries(token = token )
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _countries.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)

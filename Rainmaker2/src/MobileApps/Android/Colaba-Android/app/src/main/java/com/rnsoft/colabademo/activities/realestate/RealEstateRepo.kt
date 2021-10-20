@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import com.rnsoft.colabademo.activities.model.StatesModel
 import javax.inject.Inject
 
 /**
@@ -39,6 +40,18 @@ class RealEstateRepo @Inject constructor(private val dataSource: RealEstateDataS
     }
 
     suspend fun getPropertyStatus(token:String): Result<ArrayList<DropDownResponse>> {
-        return dataSource.getOccupancyType(token = token)
+        return dataSource.getPropertyStatus(token = token)
+    }
+
+    suspend fun getCountries(token:String): Result<ArrayList<CountriesModel>> {
+        return dataSource.getCountries(token = token)
+    }
+
+    suspend fun getCounties(token:String): Result<ArrayList<CountiesModel>> {
+        return dataSource.getCounties(token = token)
+    }
+
+    suspend fun getStates(token:String): Result<ArrayList<StatesModel>> {
+        return dataSource.getStates(token = token)
     }
 }

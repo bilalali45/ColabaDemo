@@ -468,6 +468,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         findNavController().navigate(R.id.action_address, fragment.arguments)
     }
 
+
     private fun showHideRental() {
         if (binding.tvOccupancyType.text.toString().equals("Investment Property")) {
             binding.layoutRentalIncome.visibility = View.VISIBLE

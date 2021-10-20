@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.app.Activity
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
@@ -44,15 +45,18 @@ class SubjectPropertyPurchase : BaseFragment() {
             savedViewInstance = binding.root
             super.addListeners(binding.root)
 
+
             setupUI()
             setInputFields()
             getPurchaseDetails()
+
+
 
             savedViewInstance
         }
     }
 
-    private fun setupUI(){
+     fun setupUI(){
 
         // radio subject property TBD
         binding.radioSubPropertyTbd.setOnClickListener {
@@ -198,6 +202,9 @@ class SubjectPropertyPurchase : BaseFragment() {
                     }
                     setDropDownData()
                     setCoBorrowerOccupancyStatus()
+                    val  activity = (activity as? SubjectPropertyActivity)
+                    activity?.binding?.loaderSubjectProperty?.visibility = View.GONE
+
 
                 }
             })
@@ -220,6 +227,9 @@ class SubjectPropertyPurchase : BaseFragment() {
                     }
                     val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,itemList)
                     binding.tvPropertyType.setAdapter(adapter)
+                   // binding.tvPropertyType.freezesText = false
+                    adapter.setNotifyOnChange(true)
+
 //                    binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
 //                        binding.tvPropertyType.showDropDown()
 //                    }
@@ -230,8 +240,6 @@ class SubjectPropertyPurchase : BaseFragment() {
                     binding.tvPropertyType.onItemClickListener = object :
                         AdapterView.OnItemClickListener {
                         override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                            //binding.layoutPropertyType.defaultHintTextColor = ColorStateList.valueOf(
-                              //  ContextCompat.getColor(requireContext(), R.color.grey_color_two))
                             CustomMaterialFields.setColor(binding.layoutPropertyType,R.color.grey_color_two,requireActivity())
                         }
                     }
