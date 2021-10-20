@@ -67,12 +67,18 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
 
         addressList = arguments?.getParcelableArrayList(AppConstant.address)!!
         if(addressList.size > 0) {
-            addressList[0].street?.let { binding.tvSearch.setText(it) }
+            addressList[0].street?.let { binding.tvSearch.setText(it)
+                CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_two, requireActivity())
+            }
             addressList[0].street?.let { binding.edStreetAddress.setText(it) }
             addressList[0].city?.let { binding.edCity.setText(it) }
-            addressList[0].countryName?.let { binding.tvCountry.setText(it) }
+            addressList[0].countryName?.let { binding.tvCountry.setText(it)
+                CustomMaterialFields.setColor(binding.layoutCountry, R.color.grey_color_two, requireActivity())
+            }
             addressList[0].zipCode?.let { binding.edZipcode.setText(it) }
-            addressList[0].stateName?.let { binding.tvState.setText(it) }
+            addressList[0].stateName?.let { binding.tvState.setText(it)
+                CustomMaterialFields.setColor(binding.layoutState, R.color.grey_color_two, requireActivity())
+            }
             addressList[0].countyName?.let { binding.tvCounty.setText(it) }
             addressList[0].unit?.let{ binding.edUnitAtpNo.setText(it)}
             visibleAllFields()
@@ -175,11 +181,7 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
             binding.edCity,
             binding.layoutCity
         )
-//        CustomMaterialFields.onTextChangedLableColor(
-//            requireActivity(),
-//            binding.tvCounty,
-//            binding.layoutCounty
-//        )
+
         CustomMaterialFields.onTextChangedLableColor(
             requireActivity(),
             binding.edZipcode,

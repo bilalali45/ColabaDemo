@@ -39,6 +39,7 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
     private var propertyTypeId : Int = 0
     private var occupancyTypeId : Int = 0
     var addressList : ArrayList<RealEstateAddress> = ArrayList()
+    var addressHeading: String? = null
     val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0NzUzMjYxLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.bHZwTohB4toe2JGgKVNeaOoOh8HIaygh8WqmGpTPzO4"
 
 
@@ -69,8 +70,8 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
 
     private fun getRealEstateDetails() {
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.getRealEstateDetails(token, 5, 1003)
+        //lifecycleScope.launchWhenStarted {
+            //viewModel.getRealEstateDetails(token, 5, 1003)
             viewModel.realEstateDetails.observe(viewLifecycleOwner, {
                 if(it != null) {
                     it.data?.address?.let {
@@ -78,6 +79,7 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                         //binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
                         //binding.tvSubPropertyAddress.visibility = View.VISIBLE
                         binding.tvPropertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+                        addressHeading = it.street
                         addressList.add(RealEstateAddress(street= it.street, unit=it.unit, city=it.city,stateName=it.stateName,countryName=it.countryName,countyName = it.countyName,
                                 countyId = it.countyId, stateId = it.stateId, countryId = it.countryId, zipCode = it.zipCode ))
 
@@ -171,7 +173,6 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
 
                 }
             })
-        }
     }
 
 
@@ -383,7 +384,7 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun openAddressFragment(){
-        val addressFragment = AddressCurrentEmployment()
+        val addressFragment = RealEstateAddressFragment()
         val bundle = Bundle()
         bundle.putParcelableArrayList(AppConstant.address, addressList)
         addressFragment.arguments = bundle
@@ -397,9 +398,9 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
             binding.rbFirstMortgageYes.setTypeface(null, Typeface.BOLD)
             binding.rbFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
 
-            val fragment = FirstMortgageFragment()
+            val fragment = RealEstateFirstMortgage()
             val bundle = Bundle()
-            bundle.putString(AppConstant.address, "5919 TRUSSVILLE CROSSINGS PKWY")
+            bundle.putString(AppConstant.address,addressHeading)
             fragment.arguments = bundle
             findNavController().navigate(R.id.action_realestate_first_mortgage,fragment.arguments)
 
@@ -419,9 +420,9 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
         binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
         binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
 
-        val fragment = SecondMortgageFragment()
+        val fragment = RealEstateSecondMortgage()
         val bundle = Bundle()
-        bundle.putString(AppConstant.address, "5919 TRUSSVILLE CROSSINGS PKWY")
+        bundle.putString(AppConstant.address, addressHeading)
         fragment.arguments = bundle
         findNavController().navigate(R.id.action_realestate_second_mortgage,fragment.arguments)
     }

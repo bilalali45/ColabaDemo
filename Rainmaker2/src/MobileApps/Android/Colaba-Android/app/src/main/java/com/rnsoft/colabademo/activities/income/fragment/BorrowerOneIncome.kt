@@ -48,8 +48,8 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                     for (i in 0 until borrowerAssets.size) {
 
                         val modelData = borrowerAssets[i]
-                        Timber.e("header ",modelData.incomeCategory!! )
-                        Timber.e("h-amount ",modelData.incomeCategoryTotal!!.toString() )
+                        Timber.e("header ",modelData.incomeCategory!!)
+                        Timber.e("h-amount ",modelData.incomeCategoryTotal!!.toString())
 
                         val mainCell: LinearLayoutCompat = layoutInflater.inflate(R.layout.income_main_cell, null) as LinearLayoutCompat
                         val topCell: View = layoutInflater.inflate(R.layout.income_top_cell, null)

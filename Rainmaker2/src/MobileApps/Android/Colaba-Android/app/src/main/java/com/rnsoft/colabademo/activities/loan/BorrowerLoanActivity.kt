@@ -2,6 +2,9 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.rnsoft.colabademo.databinding.BorrowerLoanLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -13,9 +16,10 @@ class BorrowerLoanActivity : BaseActivity() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: BorrowerLoanLayoutBinding
+    private val viewModel: LoanInfoViewModel by viewModels()
 
-    var loanApplicationId:Int? = null
-    var loanPurpose:String? = null
+    var loanApplicationId: Int? = null
+    var loanPurpose: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,17 +35,21 @@ class BorrowerLoanActivity : BaseActivity() {
 
         val navController = findNavController(R.id.nav_host_borrower_loan)
 
-        if(loanPurpose.equals(AppConstant.purchase, ignoreCase = true))
-             navController.navigate(R.id.navigation_loan_purchase)
-         else if(loanPurpose.equals(AppConstant.refinance, ignoreCase = true)) {
-             navController.navigate(R.id.navigation_loan_refinance)
-         }
 
-      /*val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_loan_purchase,
-                R.id.navigation_loan_refinance
-            )
-        ) */
+
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if (loanApplicationId != null) {
+                    //Log.e("authToken", authToken)
+                    //Log.e("laon id", "" + loanApplicationId)
+                    viewModel.getLoanInfoPurchase(authToken, 5)
+                    if (loanPurpose.equals(AppConstant.purchase, ignoreCase = true))
+                        navController.navigate(R.id.navigation_loan_purchase)
+                    else if (loanPurpose.equals(AppConstant.refinance, ignoreCase = true))
+                        navController.navigate(R.id.navigation_loan_refinance)
+
+                }
+            }
+        }
     }
 }

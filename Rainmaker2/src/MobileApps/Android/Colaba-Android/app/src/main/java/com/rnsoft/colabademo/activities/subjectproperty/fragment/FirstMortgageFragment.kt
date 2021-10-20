@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 
 import com.rnsoft.colabademo.databinding.FirstMortgageLayoutBinding
@@ -44,7 +46,11 @@ class FirstMortgageFragment : BaseFragment() {
     }
 
     private fun setUpUI(){
-        binding.backButton.setOnClickListener { requireActivity().onBackPressed() }
+        binding.backButton.setOnClickListener { findNavController().popBackStack() }
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            findNavController().popBackStack()
+        }
 
         binding.btnSave.setOnClickListener { checkValidations() }
 
@@ -98,13 +104,17 @@ class FirstMortgageFragment : BaseFragment() {
         if(list.size > 0) {
             list[0].firstMortgagePayment?.let {
                 binding.edFirstMortgagePayment.setText(Math.round(it).toString())
+                CustomMaterialFields.setColor(binding.layoutFirstPayment,R.color.grey_color_two,requireActivity())
+
             }
             list[0].unpaidFirstMortgagePayment?.let {
                 binding.edUnpaidBalance.setText(Math.round(it).toString())
+                CustomMaterialFields.setColor(binding.layoutUnpaidBalance,R.color.grey_color_two,requireActivity())
             }
             list[0].helocCreditLimit?.let {
                 binding.edCreditLimit.setText(Math.round(it).toString())
                 binding.layoutCreditLimit.visibility = View.VISIBLE
+                CustomMaterialFields.setColor(binding.layoutCreditLimit,R.color.grey_color_two,requireActivity())
             }
             list[0].isHeloc?.let {
                 if (it) {

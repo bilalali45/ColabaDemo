@@ -58,8 +58,8 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
     }
 
     private fun getLoanInfoDetail() {
-        lifecycleScope.launchWhenStarted {
-            loanViewModel.getLoanInfoPurchase(token, 5)
+       // lifecycleScope.launchWhenStarted {
+          //  loanViewModel.getLoanInfoPurchase(token, 5)
             loanViewModel.loanInfoPurchase.observe(viewLifecycleOwner, { loanInfo ->
                 if (loanInfo != null) {
                     loanInfo.data?.loanGoalName?.let {
@@ -94,7 +94,7 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
                     }
                 }
             })
-        }
+        //}
     }
 
     private fun initViews() {

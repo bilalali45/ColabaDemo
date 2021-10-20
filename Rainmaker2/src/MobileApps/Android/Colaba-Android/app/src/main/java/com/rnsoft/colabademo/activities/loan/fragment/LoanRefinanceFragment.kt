@@ -107,8 +107,8 @@ class LoanRefinanceFragment : BaseFragment() {
     }
 
     private fun getLoanInfoDetail() {
-        lifecycleScope.launchWhenStarted {
-            loanViewModel.getLoanInfoPurchase(token, 1010)
+        //lifecycleScope.launchWhenStarted {
+          //  loanViewModel.getLoanInfoPurchase(token, 1010)
             loanViewModel.loanInfoPurchase.observe(viewLifecycleOwner, { loanInfo ->
                 if (loanInfo != null) {
                     loanInfo.data?.loanGoalName?.let {
@@ -136,7 +136,7 @@ class LoanRefinanceFragment : BaseFragment() {
                     }
                 }
             })
-        }
+       // }
     }
 
     private fun setLoanStageSpinner() {
