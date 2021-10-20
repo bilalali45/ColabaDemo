@@ -46,10 +46,10 @@ class AssetsActivity : BaseActivity() {
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(loanApplicationId!=null && bList!=null ) {
+                if(loanApplicationId!=null && bList!=null && loanApplicationId!=null ) {
                     borrowerApplicationViewModel.getBorrowerWithAssets(
-                        authToken, 5,
-                        arrayListOf(5)
+                        authToken, loanApplicationId!!,
+                        bList!!
                     )
                 }
             }
