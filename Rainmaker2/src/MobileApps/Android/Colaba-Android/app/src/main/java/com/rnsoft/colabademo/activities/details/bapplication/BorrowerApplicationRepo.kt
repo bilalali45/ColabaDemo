@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.content.Context
 import android.content.SharedPreferences
 import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
+import com.rnsoft.colabademo.activities.income.model.IncomeDetailsResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -15,6 +16,9 @@ class BorrowerApplicationRepo  @Inject constructor(
         return borrowerApplicationDataSource.getBorrowerAssetsDetail(token = token , loanApplicationId = loanApplicationId, borrowerId = borrowerId )
     }
 
+    suspend fun getBorrowerIncomeDetail(token:String, loanApplicationId:Int, borrowerId:Int):Result<IncomeDetailsResponse>{
+        return borrowerApplicationDataSource.getBorrowerIncomeDetail(token = token , loanApplicationId = loanApplicationId, borrowerId = borrowerId )
+    }
 
     suspend fun getGovernmentQuestions(token:String, loanApplicationId:Int, ownTypeId:Int, borrowerId:Int):Result<GovernmentQuestionsModelClass>{
         return borrowerApplicationDataSource.getGovernmentQuestions(

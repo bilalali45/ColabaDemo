@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.activities.income.fragment.EventAddEmployment
 import com.rnsoft.colabademo.databinding.*
@@ -19,10 +21,13 @@ import kotlinx.android.synthetic.main.income_middle_cell.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 
 class BorrowerOneIncome : IncomeBaseFragment() {
 
     private lateinit var binding: DynamicIncomeFragmentLayoutBinding
+    private val viewModel: BorrowerApplicationViewModel by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,7 +36,79 @@ class BorrowerOneIncome : IncomeBaseFragment() {
     ): View {
         binding = DynamicIncomeFragmentLayoutBinding.inflate(inflater, container, false)
 
-        setupLayout()
+        //setupLayout()
+
+
+
+        viewModel.incomeDetails.observe(viewLifecycleOwner, Observer { incomeDetails->
+            for (a in 0 until incomeDetails.size) {
+                val incomeData = incomeDetails[a]
+                val borrowerIncome = incomeData.data?.borrower?.borrowerIncomes
+                borrowerIncome?.let {  borrowerAssets->
+                    for (i in 0 until borrowerAssets.size) {
+
+                        val modelData = borrowerAssets[i]
+                        Timber.e("header ",modelData.incomeCategory!!)
+                        Timber.e("h-amount ",modelData.incomeCategoryTotal!!.toString())
+
+                        val mainCell: LinearLayoutCompat = layoutInflater.inflate(R.layout.income_main_cell, null) as LinearLayoutCompat
+                        val topCell: View = layoutInflater.inflate(R.layout.income_top_cell, null)
+                        topCell.header_title.text =  modelData.incomeCategory
+                        topCell.header_amount.setText(modelData.incomeCategoryTotal.toString())
+
+                        topCell.tag = R.string.asset_top_cell
+                        mainCell.addView(topCell)
+
+                        when(modelData.incomeCategory){
+                            "Retirement Account" -> {
+                                modelData.listenerAttached = View.OnClickListener { findNavController().navigate(R.id.action_self_employment) }
+                            }
+                            else -> {}
+                        }
+
+                        modelData.incomes?.let {
+
+                            for (j in 0 until it.size) {
+                                val contentCell: View =
+                                    layoutInflater.inflate(R.layout.income_middle_cell, null)
+                                val contentData = modelData.incomes[j]
+                                contentCell.content_title.text = contentData.incomeName
+                                contentCell.content_desc.text = contentData.jobTitle
+                                contentCell.content_amount.text = contentData.incomeValue.toString()
+                                contentCell.visibility = View.GONE
+                                contentCell.setOnClickListener(modelData.listenerAttached)
+                                mainCell.addView(contentCell)
+                            }
+
+                        }
+                        val bottomCell: View = layoutInflater.inflate(R.layout.income_bottom_cell, null)
+                        bottomCell.footer_title.text =  modelData.incomeCategory
+                        bottomCell.tag = R.string.asset_bottom_cell
+                        bottomCell.visibility = View.GONE
+                        bottomCell.setOnClickListener(modelData.listenerAttached)
+                        mainCell.addView(bottomCell)
+
+
+                        binding.assetParentContainer.addView(mainCell)
+
+                        val drawable = R.drawable.toast_err
+                        topCell.setOnClickListener {
+                            hideOtherBoxes() // if you want to hide other boxes....
+                            topCell.arrow_up.visibility = View.VISIBLE
+                            topCell.arrow_down.visibility = View.GONE
+                            toggleContentCells(mainCell, View.VISIBLE)
+                        }
+
+                        topCell.arrow_up.setOnClickListener {
+                            topCell.arrow_up.visibility = View.GONE
+                            topCell.arrow_down.visibility = View.VISIBLE
+                            toggleContentCells(mainCell , View.GONE)
+                        }
+                    }
+                }
+
+            }
+        })
 
         return binding.root
     }

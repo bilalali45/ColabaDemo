@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-import com.rnsoft.colabademo.activities.realestate.model.RealEstateResponse
 import javax.inject.Inject
 
 /**
@@ -15,11 +14,27 @@ class RealEstateRepo @Inject constructor(private val dataSource: RealEstateDataS
             borrowerPropertyId = borrowerPropertyId
         )
     }
-        suspend fun getPropertyType(token:String): Result<ArrayList<DropDownResponse>> {
-            return dataSource.getPropertyTypes(token = token)
-        }
 
-        suspend fun getOccupancyType(token:String): Result<ArrayList<DropDownResponse>> {
+    suspend fun getRealEstateSecondMortgageDetails(token:String ,loanApplicationId:Int,borrowerPropertyId:Int): Result<RealEstateSecondMortgageModel> {
+        return dataSource.getRealEstateSecondMortgage(
+            token = token,
+            loanApplicationId = loanApplicationId,
+            borrowerPropertyId = borrowerPropertyId
+        )
+    }
+
+    suspend fun getRealEstateFirstMortgageDetails(token:String ,loanApplicationId:Int,borrowerPropertyId:Int): Result<RealEstateFirstMortgageModel> {
+        return dataSource.getRealEstateFirstMortgage(
+            token = token,
+            loanApplicationId = loanApplicationId,
+            borrowerPropertyId = borrowerPropertyId
+        )
+    }
+    suspend fun getPropertyType(token:String): Result<ArrayList<DropDownResponse>> {
+            return dataSource.getPropertyTypes(token = token)
+    }
+
+    suspend fun getOccupancyType(token:String): Result<ArrayList<DropDownResponse>> {
         return dataSource.getOccupancyType(token = token)
     }
 

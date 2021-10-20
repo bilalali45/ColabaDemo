@@ -39,7 +39,7 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
     val format =  DecimalFormat("#,###,###")
     private lateinit var mTextWatcher : TextWatcher
     val stageList:ArrayList<String> = arrayListOf()
-    val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0NDExMDMyLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.nhk-k0X8XXsqRKCdQHt8nvPtjR8TqrvUrXx8CVjfcpw"
+    val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0NzUzMjYxLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.bHZwTohB4toe2JGgKVNeaOoOh8HIaygh8WqmGpTPzO4"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,8 +58,8 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
     }
 
     private fun getLoanInfoDetail() {
-        lifecycleScope.launchWhenStarted {
-            loanViewModel.getLoanInfoPurchase(token, 5)
+       // lifecycleScope.launchWhenStarted {
+          //  loanViewModel.getLoanInfoPurchase(token, 5)
             loanViewModel.loanInfoPurchase.observe(viewLifecycleOwner, { loanInfo ->
                 if (loanInfo != null) {
                     loanInfo.data?.loanGoalName?.let {
@@ -94,7 +94,7 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
                     }
                 }
             })
-        }
+        //}
     }
 
     private fun initViews() {

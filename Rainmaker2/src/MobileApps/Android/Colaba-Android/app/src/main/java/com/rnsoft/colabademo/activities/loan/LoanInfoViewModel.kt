@@ -7,7 +7,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewModelScope
-import com.rnsoft.colabademo.activities.loan.model.LoanGoalModel
 import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 
@@ -20,13 +19,11 @@ import javax.inject.Inject
 @HiltViewModel
 class LoanInfoViewModel @Inject constructor(private val repo: LoanInfoRepo) : ViewModel() {
 
-
     private val _loanInfoPurchase : MutableLiveData<LoanInfoDetailsModel> =   MutableLiveData()
     val loanInfoPurchase: LiveData<LoanInfoDetailsModel> get() = _loanInfoPurchase
 
     private val _loanGoals : MutableLiveData<ArrayList<LoanGoalModel>> =   MutableLiveData()
     val loanGoals: LiveData<ArrayList<LoanGoalModel>> get() = _loanGoals
-
 
 
     suspend fun getLoanInfoPurchase(token:String, loanApplicationId:Int) {

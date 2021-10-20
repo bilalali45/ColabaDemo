@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -100,6 +101,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         }
 
         binding.incomeConstraintLayout.setOnClickListener{
+            borrowerApplicationViewModel.resetIncomeModelClass()
             navigateToIncomeActivity()
         }
 
@@ -111,6 +113,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 val borrowerLoanActivity = Intent(requireActivity(), BorrowerLoanActivity::class.java)
                 it.loanApplicationId?.let { loanId ->
                     borrowerLoanActivity.putExtra(AppConstant.loanApplicationId, loanId)
+                    Log.e("Loan Id", ""+it.loanApplicationId)
                 }
                 it.borrowerLoanPurpose?.let{ loanPurpose->
                     borrowerLoanActivity.putExtra(AppConstant.loanPurpose, loanPurpose)
@@ -331,6 +334,10 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         val detailActivity = (activity as? DetailActivity)
         detailActivity?.let {
             val incomeActivity = Intent(requireActivity(), IncomeActivity::class.java)
+            val bList:ArrayList<Int> = arrayListOf()
+            for(item in borrowerInfoList)
+                bList.add(item.borrowerId)
+            incomeActivity.putIntegerArrayListExtra( AppConstant.incomeBorrowerList, bList)
             it.loanApplicationId?.let { loanId ->
                 incomeActivity.putExtra(AppConstant.loanApplicationId, loanId)
             }

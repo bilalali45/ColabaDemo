@@ -2,6 +2,8 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.databinding.RealEstateActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -14,6 +16,7 @@ class RealEstateActivity : BaseActivity() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: RealEstateActivityLayoutBinding
+    private val viewModel : RealEstateViewModel by viewModels()
 
     var loanApplicationId: Int? = null
     var loanPurpose: String? = null
@@ -25,10 +28,18 @@ class RealEstateActivity : BaseActivity() {
         overridePendingTransition(R.anim.slide_up, R.anim.hold)
 
 
-        /*val extras = intent.extras
+        val extras = intent.extras
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             loanPurpose = it.getString(AppConstant.loanPurpose)
-        } */
+        }
+
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                viewModel.getRealEstateDetails(authToken, 5, 1003)
+                //if (loanApplicationId != null)
+                //    viewModel.getRealEstateDetails(authToken, 5, 1003)
+            }
+        }
     }
 }
