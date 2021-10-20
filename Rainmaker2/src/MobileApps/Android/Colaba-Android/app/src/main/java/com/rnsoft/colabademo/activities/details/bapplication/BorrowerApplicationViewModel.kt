@@ -10,6 +10,7 @@ import com.rnsoft.colabademo.activities.income.model.IncomeDetailsResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -106,14 +107,19 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         viewModelScope.launch(Dispatchers.IO) {
             coroutineScope {
                 borrowerIds.forEach { id ->
+                    Timber.e("borrowerIds.id -> "+id)
                     launch { // this will allow us to run multiple tasks in parallel
                         val responseResult = bAppRepo.getBorrowerAssetsDetail(
                             token = token,
                             loanApplicationId = loanApplicationId,
                             borrowerId = id
                         )
-                        if (responseResult is Result.Success)
+                        if (responseResult is Result.Success) {
+
+                            responseResult.data.passedBorrowerId = id
+                            Timber.e("borrowerIds.data.passedBorrowerId -> "+responseResult.data.passedBorrowerId)
                             borrowerAssetList.add(responseResult.data)
+                        }
                     }
                 }
             }  // coroutineScope block will wait here until all child tasks are completed

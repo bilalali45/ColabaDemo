@@ -30,7 +30,7 @@ object AppConstant {
         const val tokenTypeName:String = "tokenTypeName"
 
         const val tenantTwoFaSetting:String = "tenantTwoFaSetting"
-
+        const val tabBorrowerId:String = "tabBorrowerId"
 
         const val otpDataJson:String =  "otpDataJson"
         const val phoneNumber:String = "phoneNumber"

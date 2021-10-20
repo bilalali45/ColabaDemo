@@ -242,7 +242,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
                 //////////////////////////////////////////////////////////////////////////////////////////////////
                 // add add-more last cell to the adapters
-                borrowerInfoList.add(BorrowersInformation(0,"",0,"","", "",0,null, null, true))
+                borrowerInfoList.add(BorrowersInformation(-1,"",0,"","", "",0,null, null, true))
                 borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList , this@BorrowerApplicationFragment )
                 horizontalRecyclerView.adapter = borrowerInfoAdapter
                 borrowerInfoAdapter.notifyDataSetChanged()
@@ -317,8 +317,11 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         detailActivity?.let {
             val assetsActivity = Intent(requireActivity(), AssetsActivity::class.java)
             val bList:ArrayList<Int> = arrayListOf()
-            for(item in borrowerInfoList)
-                bList.add(item.borrowerId)
+            for(item in borrowerInfoList) {
+                Timber.d("borrowerInfoList borrowerId  "+ item)
+                if(item.borrowerId!=-1)
+                    bList.add(item.borrowerId)
+            }
             assetsActivity.putIntegerArrayListExtra( AppConstant.assetBorrowerList, bList)
             it.loanApplicationId?.let { loanId ->
                 assetsActivity.putExtra(AppConstant.loanApplicationId, loanId)

@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
@@ -14,6 +16,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import com.rnsoft.colabademo.databinding.AssetsTabLayoutBinding
+import timber.log.Timber
 
 
 private val assetsTabArray = arrayOf(
@@ -35,47 +38,61 @@ class AssetsTabFragment : BaseFragment() {
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout:TabLayout
 
+    private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         _binding = AssetsTabLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        viewPager = binding.assetViewPager
-        tabLayout = binding.assetTabLayout
-        pageAdapter = AssetsPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
-        viewPager.adapter = pageAdapter
-
         val assetsActivity = (activity as? AssetsActivity)
-        assetsActivity?.let { assetsActivity-> }
-
-        viewPager.setPageTransformer(null)
-        viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-            }
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                Log.e("Selected_Page", position.toString())
-                selectedPosition = position
-            }
-            override fun onPageScrollStateChanged(state: Int) {
-                super.onPageScrollStateChanged(state)
-            }
-        })
-
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                tab?.let {
-                    viewPager.adapter
-                    viewPager.currentItem
-                }
-            }
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })
-        TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = assetsTabArray[position] }.attach()
+        assetsActivity?.let { assetsActivity->
+            //assetsActivity.borrowerTabList?.let { borrowerTabList-> }
+        }
 
 
+        borrowerApplicationViewModel.assetsModelDataClass.observe(
+            viewLifecycleOwner,
+            Observer { observableSampleContent ->
+
+                val tabIds:ArrayList<Int> = arrayListOf()
+                for(tab in observableSampleContent)
+                    tab.passedBorrowerId?.let { tabIds.add(it) }
+
+                viewPager = binding.assetViewPager
+                tabLayout = binding.assetTabLayout
+                Timber.e("tabIds in AssetTab", tabIds.size)
+                pageAdapter = AssetsPagerAdapter(requireActivity().supportFragmentManager, lifecycle, tabIds)
+                viewPager.adapter = pageAdapter
+                viewPager.setPageTransformer(null)
+
+                viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
+                    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                    }
+                    override fun onPageSelected(position: Int) {
+                        super.onPageSelected(position)
+                        Log.e("Selected_Page", position.toString())
+                        selectedPosition = position
+                    }
+                    override fun onPageScrollStateChanged(state: Int) {
+                        super.onPageScrollStateChanged(state)
+                    }
+                })
+
+                tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                    override fun onTabSelected(tab: TabLayout.Tab?) {
+                        tab?.let {
+                            viewPager.adapter
+                            viewPager.currentItem
+                        }
+                    }
+                    override fun onTabUnselected(tab: TabLayout.Tab?) {}
+                    override fun onTabReselected(tab: TabLayout.Tab?) {}
+                })
+                TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = assetsTabArray[position] }.attach()
+
+            })
 
         binding.backButton.setOnClickListener {
             requireActivity().finish()
