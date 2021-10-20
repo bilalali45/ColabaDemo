@@ -37,6 +37,9 @@ class RealEstateActivity : BaseActivity() {
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 viewModel.getRealEstateDetails(authToken, 5, 1003)
+                viewModel.getPropertyTypes(authToken)
+                viewModel.getOccupancyType(authToken)
+                viewModel.getPropertyStatus(authToken)
                 //if (loanApplicationId != null)
                 //    viewModel.getRealEstateDetails(authToken, 5, 1003)
             }

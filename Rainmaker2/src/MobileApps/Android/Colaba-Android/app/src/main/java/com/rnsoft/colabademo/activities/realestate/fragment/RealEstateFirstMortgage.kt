@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
@@ -24,7 +25,11 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
 
     private lateinit var binding : FirstMortgageLayoutBinding
     private val viewModel : RealEstateViewModel by activityViewModels()
-    val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0NzUzMjYxLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.bHZwTohB4toe2JGgKVNeaOoOh8HIaygh8WqmGpTPzO4"
+    lateinit var sharedPreferences : SharedPreferences
+    val authToken : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0NzUzMjYxLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.bHZwTohB4toe2JGgKVNeaOoOh8HIaygh8WqmGpTPzO4"
+
+
+    //val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0NzUzMjYxLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.bHZwTohB4toe2JGgKVNeaOoOh8HIaygh8WqmGpTPzO4"
 
 
     override fun onCreateView(
@@ -57,72 +62,85 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
     }
 
     private fun getFirstMortgageDetails() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.getFirstMortgageDetails(token, 5, 1003)
-            viewModel.firstMortgageDetails.observe(viewLifecycleOwner, {
-                if (it != null) {
-                    it.data?.firstMortgagePayment?.let {
-                        binding.edFirstMortgagePayment.setText(Math.round(it).toString())
-                        CustomMaterialFields.setColor(binding.layoutFirstPayment,R.color.grey_color_two,requireActivity())
-                    }
-                    it.data?.unpaidFirstMortgagePayment?.let {
-                        binding.edUnpaidBalance.setText(Math.round(it).toString())
-                        CustomMaterialFields.setColor(binding.layoutUnpaidBalance,R.color.grey_color_two,requireActivity())
-                    }
-                    it.data?.floodInsuranceIncludeinPayment?.let {
-                        if(it==true) {
-                            binding.cbFloodInsurance.isChecked = true
-                            binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
-                        } else {
-                            binding.cbFloodInsurance.isChecked = false
-                            binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
+        //sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+            lifecycleScope.launchWhenStarted {
+                viewModel.getFirstMortgageDetails(authToken, 5, 1003)
+                viewModel.firstMortgageDetails.observe(viewLifecycleOwner, {
+                    if (it != null) {
+                        it.data?.firstMortgagePayment?.let {
+                            binding.edFirstMortgagePayment.setText(Math.round(it).toString())
+                            CustomMaterialFields.setColor(
+                                binding.layoutFirstPayment,
+                                R.color.grey_color_two,
+                                requireActivity()
+                            )
                         }
-                    }
-                    it.data?.propertyTaxesIncludeinPayment?.let {
-                        if(it==true) {
-                            binding.cbPropertyTaxes.isChecked = true
-                            binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
-                        } else {
-                            binding.cbPropertyTaxes.isChecked = false
-                            binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
+                        it.data?.unpaidFirstMortgagePayment?.let {
+                            binding.edUnpaidBalance.setText(Math.round(it).toString())
+                            CustomMaterialFields.setColor(
+                                binding.layoutUnpaidBalance,
+                                R.color.grey_color_two,
+                                requireActivity()
+                            )
                         }
-                    }
-                    it.data?.homeOwnerInsuranceIncludeinPayment?.let {
-                        if(it==true) {
-                            binding.cbHomeownwerInsurance.isChecked = true
-                            binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
-                        } else {
-                            binding.cbHomeownwerInsurance.isChecked = false
-                            binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
+                        it.data?.floodInsuranceIncludeinPayment?.let {
+                            if (it == true) {
+                                binding.cbFloodInsurance.isChecked = true
+                                binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
+                            } else {
+                                binding.cbFloodInsurance.isChecked = false
+                                binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
+                            }
                         }
-                    }
+                        it.data?.propertyTaxesIncludeinPayment?.let {
+                            if (it == true) {
+                                binding.cbPropertyTaxes.isChecked = true
+                                binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
+                            } else {
+                                binding.cbPropertyTaxes.isChecked = false
+                                binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
+                            }
+                        }
+                        it.data?.homeOwnerInsuranceIncludeinPayment?.let {
+                            if (it == true) {
+                                binding.cbHomeownwerInsurance.isChecked = true
+                                binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
+                            } else {
+                                binding.cbHomeownwerInsurance.isChecked = false
+                                binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
+                            }
+                        }
 
-                    it.data?.isHeloc?.let {
-                        if(it==true) {
-                            binding.switchCreditLimit.isChecked = true
-                            binding.tvHeloc.setTypeface(null, Typeface.BOLD)
-                        } else {
-                            binding.switchCreditLimit.isChecked = false
-                            binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
+                        it.data?.isHeloc?.let {
+                            if (it == true) {
+                                binding.switchCreditLimit.isChecked = true
+                                binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+                            } else {
+                                binding.switchCreditLimit.isChecked = false
+                                binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
+                            }
                         }
-                    }
-                    it.data?.helocCreditLimit?.let {
-                        binding.edCreditLimit.setText(Math.round(it).toString())
-                        CustomMaterialFields.setColor(binding.layoutCreditLimit,R.color.grey_color_two,requireActivity())
-                    }
-                    it.data?.paidAtClosing?.let {
-                        if(it==true) {
-                            binding.rbPaidClosingYes.isChecked = true
-                            binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
-                        } else {
-                            binding.rbPaidClosingNo.isChecked = true
-                            binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
+                        it.data?.helocCreditLimit?.let {
+                            binding.edCreditLimit.setText(Math.round(it).toString())
+                            CustomMaterialFields.setColor(
+                                binding.layoutCreditLimit,
+                                R.color.grey_color_two,
+                                requireActivity()
+                            )
                         }
-                    }
+                        it.data?.paidAtClosing?.let {
+                            if (it == true) {
+                                binding.rbPaidClosingYes.isChecked = true
+                                binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
+                            } else {
+                                binding.rbPaidClosingNo.isChecked = true
+                                binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
+                            }
+                        }
 
-                }
-            })
-        }
+                    }
+                })
+            }
     }
 
 

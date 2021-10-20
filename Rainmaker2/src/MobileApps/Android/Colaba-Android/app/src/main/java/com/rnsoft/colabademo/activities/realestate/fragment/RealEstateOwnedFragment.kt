@@ -75,17 +75,13 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
             viewModel.realEstateDetails.observe(viewLifecycleOwner, {
                 if(it != null) {
                     it.data?.address?.let {
-                        //binding.radioSubPropertyAddress.isChecked = true
-                        //binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
-                        //binding.tvSubPropertyAddress.visibility = View.VISIBLE
                         binding.tvPropertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
                         addressHeading = it.street
                         addressList.add(RealEstateAddress(street= it.street, unit=it.unit, city=it.city,stateName=it.stateName,countryName=it.countryName,countyName = it.countyName,
                                 countyId = it.countyId, stateId = it.stateId, countryId = it.countryId, zipCode = it.zipCode ))
 
                         } ?: run {
-                            //binding.radioSubPropertyTbd.isChecked = true
-                            //binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
+
                         }
                         it.data?.rentalIncome?.let{
                             binding.edRentalIncome.setText(it.toString())
@@ -243,8 +239,8 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
 
     private fun getDropDownData(){
 
-        lifecycleScope.launchWhenStarted {
-             viewModel.getPropertyTypes(token)
+        //lifecycleScope.launchWhenStarted {
+          //   viewModel.getPropertyTypes(token)
              viewModel.propertyType.observe(viewLifecycleOwner, {
                  val itemList: ArrayList<String> = arrayListOf()
                  for (item in it) {
@@ -267,11 +263,11 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                      }
                  }
              })
-         }
+        // }
 
         // occupancy Type spinner
-        lifecycleScope.launchWhenStarted {
-            viewModel.getOccupancyType(token)
+        //lifecycleScope.launchWhenStarted {
+            //viewModel.getOccupancyType(token)
             viewModel.occupancyType.observe(viewLifecycleOwner, {occupancyList->
 
                 if(occupancyList != null && occupancyList.size > 0) {
@@ -302,7 +298,37 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                     }
                 }
             })
-        }
+        //}
+
+
+        viewModel.propertyStatus.observe(viewLifecycleOwner, {
+            if(it != null && it.size > 0) {
+                val itemList: ArrayList<String> = arrayListOf()
+                for (item in it) {
+                    itemList.add(item.name)
+                    /*if(occupancyTypeId > 0 && occupancyTypeId == item.id){
+                        binding.tvOccupancyType.setText(item.name)
+                        CustomMaterialFields.setColor(binding.layoutOccupancyType,R.color.grey_color_two,requireActivity())
+                    } */
+                }
+
+                val adapterPropertyStatus = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,itemList)
+                binding.tvPropertyStatus.setAdapter(adapterPropertyStatus)
+                binding.tvPropertyStatus.setOnFocusChangeListener { _, _ ->
+                    binding.tvPropertyStatus.showDropDown()
+                }
+                binding.tvPropertyStatus.setOnClickListener {
+                    binding.tvPropertyStatus.showDropDown()
+                }
+                binding.tvPropertyStatus.onItemClickListener = object :
+                    AdapterView.OnItemClickListener {
+                    override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                        CustomMaterialFields.setColor(binding.layoutPropertyStatus,R.color.grey_color_two,requireActivity())
+                        showHideRental()
+                    }
+                }
+            }
+        })
     }
 
     private fun setSpinnerData() {
