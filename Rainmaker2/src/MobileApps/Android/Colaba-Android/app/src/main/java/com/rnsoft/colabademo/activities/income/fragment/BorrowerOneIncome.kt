@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.core.view.get
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.income.fragment.BottomDialogSelectEmployment
 import com.rnsoft.colabademo.activities.income.fragment.EventAddEmployment
 import com.rnsoft.colabademo.databinding.*
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
@@ -29,7 +31,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
     private val viewModel: BorrowerApplicationViewModel by activityViewModels()
     private  var tabBorrowerId:Int? = null
     private var grandTotalAmount:Double = 0.0
-
+    val Employment = "Employment"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +48,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
 
         return binding.root
     }
+
 
     private fun setupLayout(){
         lifecycleScope.launchWhenStarted {
@@ -69,8 +72,8 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                     val sampleIncome = getSampleIncome()
                     for (m in 0 until sampleIncome.size) {
                         val modelData = sampleIncome[m]
-                        Timber.e("header", modelData.headerTitle)
-                        Timber.e("h-amount", modelData.headerAmount)
+                        //Timber.e("header", modelData.headerTitle)
+                        //Timber.e("h-amount", modelData.headerAmount)
                         val mainCell: LinearLayoutCompat =
                             layoutInflater.inflate(R.layout.income_main_cell, null) as LinearLayoutCompat
                         val topCell: View =
@@ -85,15 +88,11 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                         for (i in 0 until getBorrowerIncome.size) {
 
                             val webModelData = getBorrowerIncome[i]
-                            webModelData.incomeCategory?.let { assetsCategory->
-                                if(assetsCategory == modelData.headerTitle)   {
+                            webModelData.incomeCategory?.let { incomeCategory->
+                                if(incomeCategory == modelData.headerTitle)   {
                                     webModelData.incomes?.let {
                                         for (j in 0 until it.size) {
-                                            val contentCell: View =
-                                                layoutInflater.inflate(
-                                                    R.layout.income_middle_cell,
-                                                    null
-                                                )
+                                            val contentCell: View = layoutInflater.inflate(R.layout.income_middle_cell, null)
                                             val contentData = webModelData.incomes[j]
                                             contentCell.content_title.text =
                                                 contentData.incomeTypeDisplayName
@@ -105,7 +104,11 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                                                 contentCell.content_amount.text = "$"+incomeValue.toString()
                                             }
                                             contentCell.visibility = View.GONE
-                                            contentCell.setOnClickListener(modelData.listenerAttached)
+                                            if(contentData.endDate == null && contentData.incomeTypeDisplayName == Employment)
+                                                contentCell.setOnClickListener(currentEmploymentListener)
+
+                                            else
+                                                contentCell.setOnClickListener(modelData.listenerAttached)
                                             mainCell.addView(contentCell)
                                         }
                                     }
@@ -120,7 +123,12 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                             layoutInflater.inflate(R.layout.income_bottom_cell, null)
                         bottomCell.footer_title.text = modelData.footerTitle
                         bottomCell.visibility = View.GONE
-                        bottomCell.setOnClickListener(modelData.listenerAttached)
+                        if(modelData.footerTitle == AppConstant.footerAddEmployment) {
+                            bottomCell.setOnClickListener (bottomEmploymentListener)
+                        }
+                        else
+                            bottomCell.setOnClickListener(modelData.listenerAttached)
+
                         mainCell.addView(bottomCell)
                         binding.assetParentContainer.addView(mainCell)
 
@@ -134,9 +142,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                         topCell.arrow_up.setOnClickListener {
                             topCell.arrow_up.visibility = View.GONE
                             topCell.arrow_down.visibility = View.VISIBLE
-                            //contentCell.visibility = View.GONE
                             toggleContentCells(mainCell, View.GONE)
-                            //bottomCell.visibility = View.GONE
                         }
                     }
 
@@ -144,6 +150,14 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                 })
         }
 
+    }
+
+    val currentEmploymentListener:View.OnClickListener= View.OnClickListener {
+        findNavController().navigate(R.id.action_current_employement)
+    }
+
+    val bottomEmploymentListener:View.OnClickListener= View.OnClickListener {
+        BottomDialogSelectEmployment.newInstance().show(childFragmentManager, BottomDialogSelectEmployment::class.java.canonicalName)
     }
 
     private fun toggleContentCells(mainCell: LinearLayoutCompat , display:Int){

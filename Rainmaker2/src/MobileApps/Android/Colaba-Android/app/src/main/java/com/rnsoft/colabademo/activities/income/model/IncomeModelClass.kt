@@ -7,8 +7,8 @@ data class IncomeModelClass(
     val headerAmount: String = "$0",
     val footerTitle: String  = "Footer Title",
     val incomeContentCell:ArrayList<IncomeContentCell>,
-    val listenerAttached: View.OnClickListener= View.OnClickListener {  }
-    )
+    val listenerAttached: View.OnClickListener= View.OnClickListener {}
+)
 
 data class IncomeContentCell(
     val title:String="Title",

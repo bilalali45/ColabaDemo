@@ -40,7 +40,7 @@ class SubjectPropertyActivity : BaseActivity() {
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                Log.e("SubProperty","loanId:" + loanApplicationId + "  " + authToken)
+                //Log.e("SubProperty","loanId:" + loanApplicationId + "  " + authToken)
 
                 if (loanApplicationId != null) {
                     coroutineScope {

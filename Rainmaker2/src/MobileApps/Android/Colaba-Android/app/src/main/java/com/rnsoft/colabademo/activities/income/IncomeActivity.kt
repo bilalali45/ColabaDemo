@@ -2,7 +2,6 @@ package com.rnsoft.colabademo
 
 
 import android.content.SharedPreferences
-
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -34,9 +33,8 @@ class IncomeActivity : BaseActivity() {
             loanPurpose = it.getString(AppConstant.loanPurpose)
             borrowerTabList =
                 it.getIntegerArrayList(AppConstant.incomeBorrowerList) as ArrayList<Int>
-            Timber.d("borrowerTabList size " + borrowerTabList!!.size)
             for (item in borrowerTabList!!) {
-                Timber.d("item size " + item)
+                //Timber.d("item size " + item)
             }
 
             lifecycleScope.launchWhenStarted {

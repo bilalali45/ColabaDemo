@@ -44,8 +44,10 @@ data class Income(
     val isDisabledByTenant: Boolean?,
     val jobTitle: String?,
     val startDate: String?,
-    val endDate: String?,
+    val endDate: String?
 )
+
+
 
 data class EmploymentCategory(
     val categoryDisplayName: String?,
