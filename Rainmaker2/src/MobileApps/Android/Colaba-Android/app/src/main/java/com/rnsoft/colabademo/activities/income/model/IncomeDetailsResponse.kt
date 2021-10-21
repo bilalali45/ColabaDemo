@@ -1,13 +1,14 @@
-package com.rnsoft.colabademo.activities.income.model
+package com.rnsoft.colabademo
 
 import android.view.View
 import com.google.gson.annotations.SerializedName
 
 data class IncomeDetailsResponse(
     val code: String,
-    @SerializedName("data") val data: IncomeData?,
-    val message: Any,
-    val status: String
+    @SerializedName("data") val incomeData: IncomeData?,
+    val message: String?,
+    val status: String?,
+    var passedBorrowerId:Int?
 )
 
 data class IncomeData(
@@ -21,13 +22,13 @@ data class BorrowerIncomeData(
     val ownTypeName: String?,
     val ownTypeDisplayName: String?,
     val monthlyIncome: Double?,
-    val borrowerIncomes: List<BorrowerIncome>?
+    val borrowerIncomes: ArrayList<BorrowerIncome>?
     )
 
 data class BorrowerIncome(
     val incomeCategory: String?,
     val incomeCategoryTotal: Double?,
-    val incomes: List<Income>?,
+    val incomes: ArrayList<Income>?,
     var listenerAttached: View.OnClickListener= View.OnClickListener { }
 
 )

@@ -75,12 +75,11 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
     }
 
     suspend fun getRefinanceDetails(token:String, loanApplicationId:Int) {
-        Log.e("viewModel","getRefinance")
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repository.getSubjectPropertyRefinance(token = token, loanApplicationId = loanApplicationId)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success){
-                    Log.e("getRefinance","success")
+                    //Log.e("getRefinance","success")
                     _refinanceDetails.value = (responseResult.data)
                 }
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)

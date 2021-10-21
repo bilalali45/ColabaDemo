@@ -2,11 +2,59 @@ package com.rnsoft.colabademo
 
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.assets.model.CATEGORIES
 import com.rnsoft.colabademo.activities.income.fragment.BottomDialogSelectEmployment
 
 open class IncomeBaseFragment : BaseFragment() {
 
-    fun getSampleIncome():ArrayList<IncomeModelClass>{
+    protected fun getSampleIncome():ArrayList<IncomeModelClass>{
+
+
+        val assetModelCell = IncomeModelClass( headerTitle = "Employment", headerAmount = "$0" , footerTitle = "Add Employment",
+            incomeContentCell = arrayListOf(), navigateToBusinessIncome)
+
+        val assetModelCell2 = IncomeModelClass( headerTitle = "Self Employment / Independent Contractor", headerAmount = "$0" , footerTitle = "Add Self Employment",
+            incomeContentCell = arrayListOf(), navigateToSelfEmployment)
+
+        val assetModelCell3 = IncomeModelClass( headerTitle = "Business" ,headerAmount = "$0" , footerTitle = "Add Business",
+            incomeContentCell = arrayListOf(), navigateToBusinessIncome)
+
+        val assetModelCell4 = IncomeModelClass( headerTitle = "Military Pay", headerAmount = "$0" , footerTitle = "Add Military Service",
+            incomeContentCell = arrayListOf(), navigateToMilitaryPay)
+
+        val assetModelCell5 = IncomeModelClass( headerTitle = "Retirement", headerAmount = "$0" , footerTitle = "Add Retirement",
+            incomeContentCell = arrayListOf(), navigateToRetirementIncome)
+
+        val assetModelCell6 = IncomeModelClass( headerTitle = "Other", headerAmount = "$0" , footerTitle = "Add Other Income",
+            incomeContentCell = arrayListOf(), navigateToOtherIncome)
+
+        val modelArrayList:ArrayList<IncomeModelClass> = arrayListOf()
+        modelArrayList.add(assetModelCell)
+        modelArrayList.add(assetModelCell2)
+        modelArrayList.add(assetModelCell3)
+        modelArrayList.add(assetModelCell4)
+        modelArrayList.add(assetModelCell5)
+        modelArrayList.add(assetModelCell6)
+
+
+        return modelArrayList
+
+    }
+
+
+    private val navigateToCurrentEmployment = View.OnClickListener { findNavController().navigate(R.id.action_current_employement) }
+    private val navigateToPreviousEmployment = View.OnClickListener {
+        findNavController().navigate(R.id.action_prev_employment)
+
+    }
+    private val navigateToSelfEmployment = View.OnClickListener { findNavController().navigate(R.id.action_self_employment) }
+    private val navigateToBusinessIncome = View.OnClickListener { findNavController().navigate(R.id.action_income_business) }
+    private val navigateToMilitaryPay = View.OnClickListener { findNavController().navigate(R.id.action_income_military_pay) }
+    private val navigateToRetirementIncome = View.OnClickListener { findNavController().navigate(R.id.action_income_retirement) }
+    private val navigateToOtherIncome = View.OnClickListener { findNavController().navigate(R.id.action_income_other) }
+
+
+   /* fun getSampleIncome():ArrayList<IncomeModelClass>{
 
         val assetModelCell = IncomeModelClass( headerTitle = "Employment", headerAmount = "$5,000/mo" , footerTitle = "Add Employment",
             incomeContentCell = arrayListOf(
@@ -65,7 +113,7 @@ open class IncomeBaseFragment : BaseFragment() {
 
     private val openBottomFragment = View.OnClickListener {
         BottomDialogSelectEmployment.newInstance().show(childFragmentManager, BottomDialogSelectEmployment::class.java.canonicalName)
-    }
+    } */
 
 
 }

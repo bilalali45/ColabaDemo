@@ -339,18 +339,21 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     private fun navigateToIncomeActivity(){
         val detailActivity = (activity as? DetailActivity)
         detailActivity?.let {
-            val incomeActivity = Intent(requireActivity(), IncomeActivity::class.java)
+            val assetsActivity = Intent(requireActivity(), IncomeActivity::class.java)
             val bList:ArrayList<Int> = arrayListOf()
-            for(item in borrowerInfoList)
-                bList.add(item.borrowerId)
-            incomeActivity.putIntegerArrayListExtra( AppConstant.incomeBorrowerList, bList)
+            for(item in borrowerInfoList) {
+                Timber.d("borrowerInfoList borrowerId  "+ item)
+                if(item.borrowerId!=-1)
+                    bList.add(item.borrowerId)
+            }
+            assetsActivity.putIntegerArrayListExtra( AppConstant.incomeBorrowerList, bList)
             it.loanApplicationId?.let { loanId ->
-                incomeActivity.putExtra(AppConstant.loanApplicationId, loanId)
+                assetsActivity.putExtra(AppConstant.loanApplicationId, loanId)
             }
             it.borrowerLoanPurpose?.let{ loanPurpose->
-                incomeActivity.putExtra(AppConstant.loanPurpose, loanPurpose)
+                assetsActivity.putExtra(AppConstant.loanPurpose, loanPurpose)
             }
-            startActivity(incomeActivity)
+            startActivity(assetsActivity)
         }
     }
 

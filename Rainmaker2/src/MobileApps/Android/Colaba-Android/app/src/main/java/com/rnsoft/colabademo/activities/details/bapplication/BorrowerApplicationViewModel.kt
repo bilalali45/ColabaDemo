@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
-import com.rnsoft.colabademo.activities.income.model.IncomeDetailsResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
@@ -138,16 +137,18 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     }
 
     suspend fun getBorrowerWithIncome(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int>) {
-        Log.e("viewModel","getIncome")
         val borrowerIncomeList: ArrayList<IncomeDetailsResponse> = ArrayList()
+        var errorResult:Result.Error?=null
         viewModelScope.launch(Dispatchers.IO) {
             coroutineScope {
+                delay(2000)
                 borrowerIds.forEach { id ->
                     launch {
                         val responseResult = bAppRepo.getBorrowerIncomeDetail(token = token, loanApplicationId = loanApplicationId, borrowerId = id)
                         if (responseResult is Result.Success){
-                            Log.e("viewmode","success")
-                            Timber.e("borrowerIds.data.passedBorrowerId -> "+responseResult.data.data)
+                            Log.e("viewmodel-income","success")
+                            responseResult.data.passedBorrowerId = id
+                            Timber.e("borrowerIds.data.passedBorrowerId -> "+responseResult.data.incomeData)
                             borrowerIncomeList.add(responseResult.data)
                         }
                     }
@@ -156,6 +157,11 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
             withContext(Dispatchers.Main) {
                 _incomeDetails.value = borrowerIncomeList
             }
+            if(errorResult!=null) // if service not working.....
+                EventBus.getDefault().post(WebServiceErrorEvent(errorResult, false))
+            else
+                if(borrowerIncomeList.size == 0) // service working without error but no results....
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, false))
         }
     }
 

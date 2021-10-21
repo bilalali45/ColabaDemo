@@ -1,7 +1,6 @@
 package com.rnsoft.colabademo
 
 import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
-import com.rnsoft.colabademo.activities.income.model.IncomeDetailsResponse
 import com.rnsoft.colabademo.activities.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call

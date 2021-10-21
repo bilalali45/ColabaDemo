@@ -15,9 +15,9 @@ import javax.inject.Inject
 class IncomeActivity : BaseActivity() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    private lateinit var binding: IncomeActivityLayoutBinding
+    lateinit var binding: IncomeActivityLayoutBinding
     private val viewModel: BorrowerApplicationViewModel by viewModels()
-    private var bList:ArrayList<Int>? = null
+    private var borrowerTabList:ArrayList<Int>? = null
     var loanApplicationId:Int? = null
     var loanPurpose:String? = null
 
@@ -32,21 +32,25 @@ class IncomeActivity : BaseActivity() {
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             loanPurpose = it.getString(AppConstant.loanPurpose)
-            bList = it.getIntegerArrayList(AppConstant.incomeBorrowerList) as ArrayList<Int>
-            Timber.d("borrowerTabList size " + bList!!.size)
-            for (item in bList!!) {
+            borrowerTabList =
+                it.getIntegerArrayList(AppConstant.incomeBorrowerList) as ArrayList<Int>
+            Timber.d("borrowerTabList size " + borrowerTabList!!.size)
+            for (item in borrowerTabList!!) {
                 Timber.d("item size " + item)
             }
+
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    if (loanApplicationId != null && bList != null && loanApplicationId!=null) {
+                    if (loanApplicationId != null && borrowerTabList != null && loanApplicationId != null) {
                         viewModel.getBorrowerWithIncome(
-                            authToken, loanApplicationId!!, bList!!
+                            authToken, loanApplicationId!!,
+                            borrowerTabList!!
                         )
                     }
                 }
             }
         }
+
 
         /*
         val host: NavHostFragment = supportFragmentManager

@@ -8,7 +8,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.activities.income.fragment.EventAddEmployment
 import com.rnsoft.colabademo.databinding.*
@@ -17,16 +17,18 @@ import kotlinx.android.synthetic.main.assets_middle_cell.view.content_amount
 import kotlinx.android.synthetic.main.assets_middle_cell.view.content_desc
 import kotlinx.android.synthetic.main.assets_middle_cell.view.content_title
 import kotlinx.android.synthetic.main.assets_top_cell.view.*
-import kotlinx.android.synthetic.main.income_middle_cell.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
+import kotlin.math.roundToInt
 
 class BorrowerOneIncome : IncomeBaseFragment() {
 
     private lateinit var binding: DynamicIncomeFragmentLayoutBinding
     private val viewModel: BorrowerApplicationViewModel by activityViewModels()
+    private  var tabBorrowerId:Int? = null
+    private var grandTotalAmount:Double = 0.0
 
 
     override fun onCreateView(
@@ -36,62 +38,92 @@ class BorrowerOneIncome : IncomeBaseFragment() {
     ): View {
         binding = DynamicIncomeFragmentLayoutBinding.inflate(inflater, container, false)
 
-        //setupLayout()
+        arguments?.let {
+            tabBorrowerId = it.getInt(AppConstant.tabBorrowerId)
+        }
 
+        setupLayout()
 
+        return binding.root
+    }
 
-        viewModel.incomeDetails.observe(viewLifecycleOwner, Observer { incomeDetails->
-            for (a in 0 until incomeDetails.size) {
-                val incomeData = incomeDetails[a]
-                val borrowerIncome = incomeData.data?.borrower?.borrowerIncomes
-                borrowerIncome?.let {  borrowerAssets->
-                    for (i in 0 until borrowerAssets.size) {
+    private fun setupLayout(){
+        lifecycleScope.launchWhenStarted {
+            viewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
+                    val incomeActivity = (activity as? IncomeActivity)
+                    incomeActivity?.let { incomeActivity->
+                        incomeActivity.binding.assetDataLoader.visibility = View.INVISIBLE
+                    }
 
-                        val modelData = borrowerAssets[i]
-                        Timber.e("header ",modelData.incomeCategory!!)
-                        Timber.e("h-amount ",modelData.incomeCategoryTotal!!.toString())
-
-                        val mainCell: LinearLayoutCompat = layoutInflater.inflate(R.layout.income_main_cell, null) as LinearLayoutCompat
-                        val topCell: View = layoutInflater.inflate(R.layout.income_top_cell, null)
-                        topCell.header_title.text =  modelData.incomeCategory
-                        topCell.header_amount.setText(modelData.incomeCategoryTotal.toString())
-
+                    var observerCounter = 0
+                    var getBorrowerIncome: ArrayList<BorrowerIncome> = arrayListOf()
+                    while (observerCounter < observableSampleContent.size) {
+                        val webIncome = observableSampleContent[observerCounter]
+                        if (tabBorrowerId == webIncome.passedBorrowerId) {
+                            webIncome.incomeData?.borrower?.borrowerIncomes?.let { webBorrowerIncome ->
+                                getBorrowerIncome = webBorrowerIncome
+                            }
+                        }
+                        observerCounter++
+                    }
+                    val sampleIncome = getSampleIncome()
+                    for (m in 0 until sampleIncome.size) {
+                        val modelData = sampleIncome[m]
+                        Timber.e("header", modelData.headerTitle)
+                        Timber.e("h-amount", modelData.headerAmount)
+                        val mainCell: LinearLayoutCompat =
+                            layoutInflater.inflate(R.layout.income_main_cell, null) as LinearLayoutCompat
+                        val topCell: View =
+                            layoutInflater.inflate(R.layout.income_top_cell, null)
+                        topCell.header_title.text = modelData.headerTitle
+                        topCell.header_amount.setText(modelData.headerAmount)
                         topCell.tag = R.string.asset_top_cell
                         mainCell.addView(topCell)
 
-                        when(modelData.incomeCategory){
-                            "Retirement Account" -> {
-                                modelData.listenerAttached = View.OnClickListener { findNavController().navigate(R.id.action_self_employment) }
+
+                        var totalAmount = 0.0
+                        for (i in 0 until getBorrowerIncome.size) {
+
+                            val webModelData = getBorrowerIncome[i]
+                            webModelData.incomeCategory?.let { assetsCategory->
+                                if(assetsCategory == modelData.headerTitle)   {
+                                    webModelData.incomes?.let {
+                                        for (j in 0 until it.size) {
+                                            val contentCell: View =
+                                                layoutInflater.inflate(
+                                                    R.layout.income_middle_cell,
+                                                    null
+                                                )
+                                            val contentData = webModelData.incomes[j]
+                                            contentCell.content_title.text =
+                                                contentData.incomeTypeDisplayName
+                                            contentCell.content_desc.text =
+                                                contentData.incomeName
+
+                                            contentData.incomeValue?.let{ incomeValue->
+                                                totalAmount += incomeValue
+                                                contentCell.content_amount.text = "$"+incomeValue.toString()
+                                            }
+                                            contentCell.visibility = View.GONE
+                                            contentCell.setOnClickListener(modelData.listenerAttached)
+                                            mainCell.addView(contentCell)
+                                        }
+                                    }
+                                }
                             }
-                            else -> {}
                         }
 
-                        modelData.incomes?.let {
+                        topCell.header_amount.text = "$"+totalAmount.roundToInt().toString()
+                        grandTotalAmount += totalAmount
 
-                            for (j in 0 until it.size) {
-                                val contentCell: View =
-                                    layoutInflater.inflate(R.layout.income_middle_cell, null)
-                                val contentData = modelData.incomes[j]
-                                contentCell.content_title.text = contentData.incomeName
-                                contentCell.content_desc.text = contentData.jobTitle
-                                contentCell.content_amount.text = contentData.incomeValue.toString()
-                                contentCell.visibility = View.GONE
-                                contentCell.setOnClickListener(modelData.listenerAttached)
-                                mainCell.addView(contentCell)
-                            }
-
-                        }
-                        val bottomCell: View = layoutInflater.inflate(R.layout.income_bottom_cell, null)
-                        bottomCell.footer_title.text =  modelData.incomeCategory
-                        bottomCell.tag = R.string.asset_bottom_cell
+                        val bottomCell: View =
+                            layoutInflater.inflate(R.layout.income_bottom_cell, null)
+                        bottomCell.footer_title.text = modelData.footerTitle
                         bottomCell.visibility = View.GONE
                         bottomCell.setOnClickListener(modelData.listenerAttached)
                         mainCell.addView(bottomCell)
-
-
                         binding.assetParentContainer.addView(mainCell)
 
-                        val drawable = R.drawable.toast_err
                         topCell.setOnClickListener {
                             hideOtherBoxes() // if you want to hide other boxes....
                             topCell.arrow_up.visibility = View.VISIBLE
@@ -102,85 +134,16 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                         topCell.arrow_up.setOnClickListener {
                             topCell.arrow_up.visibility = View.GONE
                             topCell.arrow_down.visibility = View.VISIBLE
-                            toggleContentCells(mainCell , View.GONE)
+                            //contentCell.visibility = View.GONE
+                            toggleContentCells(mainCell, View.GONE)
+                            //bottomCell.visibility = View.GONE
                         }
                     }
-                }
 
-            }
-        })
-
-        return binding.root
-    }
-
-
-
-    private fun setupLayout(){
-
-        val sampleIncomeData = getSampleIncome()
-
-        for (i in 0 until sampleIncomeData.size) {
-
-            val modelData = sampleIncomeData[i]
-            //Log.e("header",modelData.headerTitle )
-            //Log.e("h-amount",modelData.headerAmount )
-
-            val mainCell: LinearLayoutCompat =
-                layoutInflater.inflate(R.layout.income_main_cell, null) as LinearLayoutCompat
-            val topCell: View = layoutInflater.inflate(R.layout.income_top_cell, null)
-            topCell.header_title.text =  modelData.headerTitle
-
-            topCell.header_amount.setText(modelData.headerAmount)
-
-            topCell.tag = R.string.asset_top_cell
-            mainCell.addView(topCell)
-
-
-            for (j in 0 until modelData.incomeContentCell.size) {
-                val contentCell: View =
-                    layoutInflater.inflate(R.layout.income_middle_cell, null)
-
-
-
-
-                val contentData = modelData.incomeContentCell[j]
-                contentCell.content_title.text = contentData.title
-                contentCell.content_desc.text = contentData.description
-                contentCell.content_amount.text = contentData.contentAmount
-                contentCell.tenureTextView.text = contentData.tenure
-                contentCell.visibility = View.GONE
-                if(contentData.contentListenerAttached!=null)
-                    contentCell.setOnClickListener(contentData.contentListenerAttached)
-                else
-                    contentCell.setOnClickListener(modelData.listenerAttached)
-                mainCell.addView(contentCell)
-            }
-
-
-            val bottomCell: View = layoutInflater.inflate(R.layout.income_bottom_cell, null)
-            bottomCell.footer_title.text =  modelData.footerTitle
-            bottomCell.visibility = View.GONE
-            bottomCell.setOnClickListener(modelData.listenerAttached)
-            mainCell.addView(bottomCell)
-
-            binding.assetParentContainer.addView(mainCell)
-
-            topCell.setOnClickListener {
-                hideOtherBoxes() // if you want to hide other boxes....
-                topCell.arrow_up.visibility = View.VISIBLE
-                topCell.arrow_down.visibility = View.GONE
-                toggleContentCells(mainCell, View.VISIBLE)
-                //bottomCell.visibility = View.VISIBLE
-            }
-
-            topCell.arrow_up.setOnClickListener {
-                topCell.arrow_up.visibility = View.GONE
-                topCell.arrow_down.visibility = View.VISIBLE
-                //contentCell.visibility = View.GONE
-                toggleContentCells(mainCell , View.GONE)
-                //bottomCell.visibility = View.GONE
-            }
+                    EventBus.getDefault().post(GrandTotalEvent("$"+grandTotalAmount.roundToInt().toString()))
+                })
         }
+
     }
 
     private fun toggleContentCells(mainCell: LinearLayoutCompat , display:Int){
@@ -217,8 +180,6 @@ class BorrowerOneIncome : IncomeBaseFragment() {
         }
     }
 
-
-
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -238,7 +199,5 @@ class BorrowerOneIncome : IncomeBaseFragment() {
             findNavController().navigate(R.id.action_prev_employment)
         }
     }
-
-
 
 }

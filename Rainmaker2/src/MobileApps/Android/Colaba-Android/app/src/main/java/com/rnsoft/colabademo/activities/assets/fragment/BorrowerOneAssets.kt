@@ -40,8 +40,6 @@ class BorrowerOneAssets : AssetBaseFragment() {
             tabBorrowerId = it.getInt(AppConstant.tabBorrowerId)
         }
 
-
-
         lifecycleScope.launchWhenStarted {
             borrowerApplicationViewModel.assetsModelDataClass.observe(
                 viewLifecycleOwner,

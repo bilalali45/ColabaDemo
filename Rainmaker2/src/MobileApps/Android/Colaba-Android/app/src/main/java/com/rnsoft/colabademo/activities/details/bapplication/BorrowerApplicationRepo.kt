@@ -3,7 +3,6 @@ package com.rnsoft.colabademo
 import android.content.Context
 import android.content.SharedPreferences
 import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
-import com.rnsoft.colabademo.activities.income.model.IncomeDetailsResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
