@@ -89,8 +89,6 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
         }
     }
 
-
-
     suspend fun getCountries(token: String): Result<ArrayList<CountriesModel>> {
         return try {
             val newToken = "Bearer $token"

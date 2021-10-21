@@ -23,7 +23,7 @@
         app:navGraph="@navigation/loan_navigation" />
 
     <ProgressBar
-        android:id="@+id/loader_subject_property"
+        android:id="@+id/loader_loan_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

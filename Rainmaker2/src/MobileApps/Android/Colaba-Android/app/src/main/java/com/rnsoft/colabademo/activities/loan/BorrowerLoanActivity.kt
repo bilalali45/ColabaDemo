@@ -3,11 +3,13 @@ package com.rnsoft.colabademo
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.rnsoft.colabademo.databinding.BorrowerLoanLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 
@@ -15,7 +17,7 @@ import javax.inject.Inject
 class BorrowerLoanActivity : BaseActivity() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    private lateinit var binding: BorrowerLoanLayoutBinding
+    lateinit var binding: BorrowerLoanLayoutBinding
     private val viewModel: LoanInfoViewModel by viewModels()
 
     var loanApplicationId: Int? = null
@@ -42,6 +44,8 @@ class BorrowerLoanActivity : BaseActivity() {
                 if (loanApplicationId != null) {
                     //Log.e("authToken", authToken)
                     //Log.e("laon id", "" + loanApplicationId)
+                    binding.loaderLoanInfo.visibility = View.VISIBLE
+                    delay(2000)
                     viewModel.getLoanInfoPurchase(authToken, 5)
                     if (loanPurpose.equals(AppConstant.purchase, ignoreCase = true))
                         navController.navigate(R.id.navigation_loan_purchase)

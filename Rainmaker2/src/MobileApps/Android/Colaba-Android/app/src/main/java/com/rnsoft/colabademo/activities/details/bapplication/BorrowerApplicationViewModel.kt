@@ -139,6 +139,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
                         val responseResult = bAppRepo.getBorrowerIncomeDetail(token = token, loanApplicationId = loanApplicationId, borrowerId = id)
                         if (responseResult is Result.Success){
                             Log.e("viewmode","success")
+                            Timber.e("borrowerIds.data.passedBorrowerId -> "+responseResult.data.data)
                             borrowerIncomeList.add(responseResult.data)
                         }
                     }

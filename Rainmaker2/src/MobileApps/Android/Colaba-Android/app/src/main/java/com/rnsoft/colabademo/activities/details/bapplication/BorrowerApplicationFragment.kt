@@ -108,12 +108,11 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         loanLayout.setOnClickListener {
 
             val detailActivity = (activity as? DetailActivity)
-
             detailActivity?.let {
                 val borrowerLoanActivity = Intent(requireActivity(), BorrowerLoanActivity::class.java)
                 it.loanApplicationId?.let { loanId ->
                     borrowerLoanActivity.putExtra(AppConstant.loanApplicationId, loanId)
-                    Log.e("Loan Id", ""+it.loanApplicationId)
+                    //Log.e("Loan Id", ""+it.loanApplicationId)
                 }
                 it.borrowerLoanPurpose?.let{ loanPurpose->
                     borrowerLoanActivity.putExtra(AppConstant.loanPurpose, loanPurpose)
@@ -125,12 +124,16 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         subjectPropertyLayout.setOnClickListener {
             val detailActivity = (activity as? DetailActivity)
             detailActivity?.let {
-                val subProperty = Intent(requireActivity(), SubjectPropertyActivity::class.java)
-                it.borrowerLoanPurpose?.let{ purpose->
-                    subProperty.putExtra(AppConstant.borrowerPurpose, purpose)
+                val subActivity = Intent(requireActivity(), SubjectPropertyActivity::class.java)
+                it.loanApplicationId?.let { loanId ->
+                    subActivity.putExtra(AppConstant.loanApplicationId, loanId)
                 }
-                startActivity(subProperty)
+                it.borrowerLoanPurpose?.let{ loanPurpose->
+                    subActivity.putExtra(AppConstant.loanPurpose, loanPurpose)
+                }
+                startActivity(subActivity)
             }
+
         }
 
         val linearLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)

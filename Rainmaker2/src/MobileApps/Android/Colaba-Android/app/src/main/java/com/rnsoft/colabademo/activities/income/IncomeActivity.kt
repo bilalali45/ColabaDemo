@@ -1,11 +1,14 @@
 package com.rnsoft.colabademo
 
+
 import android.content.SharedPreferences
+
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.databinding.IncomeActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -18,38 +21,32 @@ class IncomeActivity : BaseActivity() {
     var loanApplicationId:Int? = null
     var loanPurpose:String? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = IncomeActivityLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
         overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
 
-
         val extras = intent.extras
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             loanPurpose = it.getString(AppConstant.loanPurpose)
             bList = it.getIntegerArrayList(AppConstant.incomeBorrowerList) as ArrayList<Int>
-        }
-
-        lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(loanApplicationId!=null && bList!=null ) {
-                    viewModel.getBorrowerWithIncome(
-                        authToken, 5,
-                        arrayListOf(5)
-                    )
+            Timber.d("borrowerTabList size " + bList!!.size)
+            for (item in bList!!) {
+                Timber.d("item size " + item)
+            }
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    if (loanApplicationId != null && bList != null && loanApplicationId!=null) {
+                        viewModel.getBorrowerWithIncome(
+                            authToken, loanApplicationId!!, bList!!
+                        )
+                    }
                 }
             }
         }
-
-
-        /*val extras = intent.extras
-        extras?.let {
-            loanApplicationId = it.getInt(AppConstant.loanApplicationId)
-            loanPurpose = it.getString(AppConstant.loanPurpose)
-        } */
-
 
         /*
         val host: NavHostFragment = supportFragmentManager

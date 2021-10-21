@@ -165,8 +165,11 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                         } else {
                             binding.rbSecMortgageNo.isChecked = true
                         }
-                        getDropDownData()
 
+
+                    getDropDownData()
+                    val  activity = (activity as? RealEstateActivity)
+                    activity?.binding?.loaderRealEstate?.visibility = View.GONE
                 }
             })
     }
@@ -240,7 +243,7 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
     private fun getDropDownData(){
 
         //lifecycleScope.launchWhenStarted {
-          //   viewModel.getPropertyTypes(token)
+          //viewModel.getPropertyTypes(token)
              viewModel.propertyType.observe(viewLifecycleOwner, {
                  val itemList: ArrayList<String> = arrayListOf()
                  for (item in it) {

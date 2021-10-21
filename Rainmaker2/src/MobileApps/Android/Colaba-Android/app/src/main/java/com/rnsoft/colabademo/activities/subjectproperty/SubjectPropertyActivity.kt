@@ -35,15 +35,13 @@ class SubjectPropertyActivity : BaseActivity() {
             purpose = it.getString(AppConstant.borrowerPurpose)
         }
 
+
         val navController = findNavController(R.id.nav_host_borrower_subject_property)
-        /*if(purpose.equals(AppConstant.purchase, ignoreCase = true))
-            navController.navigate(R.id.nav_sub_property_purchase)
-        else if(purpose.equals(AppConstant.refinance, ignoreCase = true)) {
-            navController.navigate(R.id.nav_sub_property_refinance)
-        } */
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                Log.e("SubProperty","loanId:" + loanApplicationId + "  " + authToken)
+
                 if (loanApplicationId != null) {
                     coroutineScope {
                         binding.loaderSubjectProperty.visibility = View.VISIBLE
@@ -60,7 +58,6 @@ class SubjectPropertyActivity : BaseActivity() {
                             viewModel.getRefinanceDetails(authToken, 1010)
                             navController.navigate(R.id.nav_sub_property_refinance)
                         }
-
                     }
                 }
             }
