@@ -2,40 +2,40 @@ package com.rnsoft.colabademo
 
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.assets.model.CATEGORIES
 
 open class AssetBaseFragment:BaseFragment() {
 
     protected fun getSampleAssets():ArrayList<TestAssetsModelClass>{
-        val assetModelCell = TestAssetsModelClass( headerTitle = "Bank Account", headerAmount = "$26,000" , footerTitle = "Add Bank Account",
+        val assetModelCell = TestAssetsModelClass( headerTitle = CATEGORIES.BankAccount.categoryName, headerAmount = "$0" , footerTitle = "Add Bank Account",
             contentCell = arrayListOf(
              //   TestContentCell("Chase", "Checking" ,"$20,000"), TestContentCell("Ally Bank", "Saving", "$6,000")
             ), navigateToBank)
 
-        val assetModelCell2 = TestAssetsModelClass( headerTitle = "Retirement Account", headerAmount = "$10,000" , footerTitle = "Add Retirement Account",
+        val assetModelCell2 = TestAssetsModelClass( headerTitle = CATEGORIES.RetirementAccount.categoryName, headerAmount = "$0" , footerTitle = "Add Retirement Account",
             contentCell = arrayListOf(
                // TestContentCell("401K", "Retirement Account" ,"$10,000" )
             ), navigateToRetirement)
 
-        val assetModelCell3 = TestAssetsModelClass( headerTitle = "Stocks, Bonds, or Other\n" +
-                "Financial Assets", headerAmount = "$800" , footerTitle = "Add Financial Assets",
+        val assetModelCell3 = TestAssetsModelClass( headerTitle = CATEGORIES.StocksBondsOtherFinancialAssets.categoryName, headerAmount = "$0" , footerTitle = "Add Financial Assets",
             contentCell = arrayListOf(
                 //TestContentCell("AHC", "Mutual Funds" ,"$200"  )
             ), navigateToStockBonds)
 
 
-        val assetModelCell4 = TestAssetsModelClass( headerTitle = "Proceeds From Transaction", headerAmount = "$1,200" , footerTitle = "Add Proceeds From Transaction",
+        val assetModelCell4 = TestAssetsModelClass( headerTitle = CATEGORIES.ProceedFromTransaction.categoryName, headerAmount = "$0" , footerTitle = "Add Proceeds From Transaction",
             contentCell = arrayListOf(
                // TestContentCell("Proceeds From Selling Non-Real Es...", "Proceeds From Transaction" ,"$1,200" )
             ), navigateToTransactionAsset)
 
 
-        val assetModelCell5 = TestAssetsModelClass( headerTitle = "Gift Funds", headerAmount = "$2000" , footerTitle = "Add Gifts Account",
+        val assetModelCell5 = TestAssetsModelClass( headerTitle = CATEGORIES.GiftFunds.categoryName, headerAmount = "$0" , footerTitle = "Add Gifts Account",
             contentCell = arrayListOf(
                 //TestContentCell("Relative", "Cash Gifts" ,"$2000" )
             ), navigateToGiftAsset)
 
 
-        val assetModelCell6 = TestAssetsModelClass( headerTitle = "Other", headerAmount = "$600" , footerTitle = "Add Other Assets",
+        val assetModelCell6 = TestAssetsModelClass( headerTitle = CATEGORIES.Other.categoryName, headerAmount = "$0" , footerTitle = "Add Other Assets",
             contentCell = arrayListOf(
                 //TestContentCell("Individual Development Account", "Other" ,"$600" )
             ) , navigateToOtherAsset)

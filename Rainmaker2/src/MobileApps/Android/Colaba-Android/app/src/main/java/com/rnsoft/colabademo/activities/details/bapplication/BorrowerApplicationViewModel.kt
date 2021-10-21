@@ -103,9 +103,11 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
 
 
     suspend fun getBorrowerWithAssets(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int>) {
+        var errorResult:Result.Error?=null
         val borrowerAssetList: ArrayList<MyAssetBorrowerDataClass> = ArrayList()
         viewModelScope.launch(Dispatchers.IO) {
             coroutineScope {
+                delay(4000)
                 borrowerIds.forEach { id ->
                     Timber.e("borrowerIds.id -> "+id)
                     launch { // this will allow us to run multiple tasks in parallel
@@ -115,17 +117,23 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
                             borrowerId = id
                         )
                         if (responseResult is Result.Success) {
-
                             responseResult.data.passedBorrowerId = id
                             Timber.e("borrowerIds.data.passedBorrowerId -> "+responseResult.data.passedBorrowerId)
                             borrowerAssetList.add(responseResult.data)
                         }
+                        else if (responseResult is Result.Error)
+                            errorResult = responseResult
                     }
                 }
             }  // coroutineScope block will wait here until all child tasks are completed
             withContext(Dispatchers.Main) {
                 _assetsModelDataClass.value = borrowerAssetList
             }
+            if(errorResult!=null) // if service not working.....
+                EventBus.getDefault().post(WebServiceErrorEvent(errorResult, false))
+            else
+            if(borrowerAssetList.size == 0) // service working without error but no results....
+                EventBus.getDefault().post(WebServiceErrorEvent(null, false))
         }
     }
 

@@ -24,9 +24,6 @@ class AssetsActivity : BaseActivity() {
 
     private val borrowerApplicationViewModel: BorrowerApplicationViewModel by viewModels()
 
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = AssetsActivityLayoutBinding.inflate(layoutInflater)
@@ -54,30 +51,6 @@ class AssetsActivity : BaseActivity() {
                 }
             }
         }
-
-
-
-
-
-
-
-
-        /*
-        val host: NavHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_asset) as NavHostFragment? ?: return
-        // Set up Action Bar
-        val navController = host.navController
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            val dest: String = try {
-                resources.getResourceName(destination.id)
-            } catch (e: Resources.NotFoundException) {
-                destination.id.toString()
-            }
-            //Log.d("NavigationActivity", "Navigated to $dest")
-        }
-        */
-
 
     }
 
