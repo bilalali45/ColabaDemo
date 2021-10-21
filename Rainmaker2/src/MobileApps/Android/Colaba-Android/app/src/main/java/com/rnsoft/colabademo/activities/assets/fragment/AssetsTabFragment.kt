@@ -16,14 +16,17 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import com.rnsoft.colabademo.databinding.AssetsTabLayoutBinding
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 
 
 private val assetsTabArray = arrayOf(
-    "Richard Glenn",
-    "Maria Randall",
-    "UnderTaker",
-    "Adam Gilchrist"
+    "UnNamed",
+    "UnNamed",
+    "UnNamed",
+    "UnNamed"
 )
 
 @AndroidEntryPoint
@@ -54,11 +57,19 @@ class AssetsTabFragment : BaseFragment() {
         borrowerApplicationViewModel.assetsModelDataClass.observe(
             viewLifecycleOwner,
             Observer { observableSampleContent ->
-
+                var index =0
                 val tabIds:ArrayList<Int> = arrayListOf()
-                for(tab in observableSampleContent)
-                    tab.passedBorrowerId?.let { tabIds.add(it) }
+                for(tab in observableSampleContent) {
+                    tab.passedBorrowerId?.let {
+                        tabIds.add(it)
+                        tab.bAssetData?.borrower?.borrowerName?.let { borrowerName ->
+                            assetsTabArray[index] = borrowerName
+                            index++
+                        }
+                    }
+                }
 
+                binding.viewpagerLine.visibility = View.VISIBLE
                 viewPager = binding.assetViewPager
                 tabLayout = binding.assetTabLayout
                 Timber.e("tabIds in AssetTab", tabIds.size)
@@ -115,7 +126,20 @@ class AssetsTabFragment : BaseFragment() {
         _binding = null
     }
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
 
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onGrandTotalAmountReceived(event: GrandTotalEvent) {
+        binding.grandTotalTextView.text = event.totalAmount
+    }
 
 
 }
