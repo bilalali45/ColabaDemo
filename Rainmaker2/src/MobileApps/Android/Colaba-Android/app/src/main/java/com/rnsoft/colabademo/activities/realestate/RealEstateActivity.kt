@@ -19,9 +19,8 @@ class RealEstateActivity : BaseActivity() {
     lateinit var sharedPreferences: SharedPreferences
     lateinit var binding: RealEstateActivityLayoutBinding
     private val viewModel : RealEstateViewModel by viewModels()
-
-    var loanApplicationId: Int? = null
-    var loanPurpose: String? = null
+    var loanApplicationId: Int = -1
+    var propertyId : Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,19 +31,22 @@ class RealEstateActivity : BaseActivity() {
         val extras = intent.extras
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
-            loanPurpose = it.getString(AppConstant.loanPurpose)
         }
+
+        loanApplicationId = 5
+        propertyId = 1003
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                binding.loaderRealEstate.visibility = View.VISIBLE
-                delay(2000)
-                viewModel.getRealEstateDetails(authToken, 5, 1003)
-                viewModel.getPropertyTypes(authToken)
-                viewModel.getOccupancyType(authToken)
-                viewModel.getPropertyStatus(authToken)
-                //if (loanApplicationId != null)
-                //    viewModel.getRealEstateDetails(authToken, 5, 1003)
+                if (loanApplicationId != -1 && propertyId != -1 ){
+                    binding.loaderRealEstate.visibility = View.VISIBLE
+                    delay(2000)
+                    viewModel.getRealEstateDetails(authToken, loanApplicationId, propertyId)
+                    //viewModel.getFirstMortgageDetails(authToken,loanApplicationId,propertyId)
+                    //viewModel.getPropertyTypes(authToken)
+                    //viewModel.getOccupancyType(authToken)
+                    //viewModel.getPropertyStatus(authToken)
+                }
             }
         }
     }

@@ -14,6 +14,9 @@ import com.rnsoft.colabademo.databinding.RealEstateSecondMortgageBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
 
@@ -167,4 +170,24 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
     private fun checkValidations(){
         requireActivity().onBackPressed()
     }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onErrorReceived(event: WebServiceErrorEvent) {
+        if(event.isInternetError)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+        else
+            if(event.errorResult!=null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
+    }
+
 }

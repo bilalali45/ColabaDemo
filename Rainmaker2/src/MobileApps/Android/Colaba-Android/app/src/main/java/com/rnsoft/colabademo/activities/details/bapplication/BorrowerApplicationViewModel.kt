@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
+import com.rnsoft.colabademo.activities.model.StatesModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
@@ -24,6 +25,33 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
 
     private var _governmentQuestionsModelClass : MutableLiveData<GovernmentQuestionsModelClass> =   MutableLiveData()
     val governmentQuestionsModelClass: LiveData<GovernmentQuestionsModelClass> get() = _governmentQuestionsModelClass
+
+    private val _propertyType: MutableLiveData<ArrayList<DropDownResponse>> = MutableLiveData()
+    val propertyType: LiveData<ArrayList<DropDownResponse>> get() = _propertyType
+
+    private val _occupancyType: MutableLiveData<ArrayList<DropDownResponse>> = MutableLiveData()
+    val occupancyType: LiveData<ArrayList<DropDownResponse>> get() = _occupancyType
+
+    private val _countries: MutableLiveData<ArrayList<CountriesModel>> = MutableLiveData()
+    val countries: LiveData<ArrayList<CountriesModel>> get() = _countries
+
+    private val _counties: MutableLiveData<ArrayList<CountiesModel>> = MutableLiveData()
+    val counties: LiveData<ArrayList<CountiesModel>> get() = _counties
+
+    private val _states: MutableLiveData<ArrayList<StatesModel>> = MutableLiveData()
+    val states: LiveData<ArrayList<StatesModel>> get() = _states
+
+    private val _subjectPropertyDetails: MutableLiveData<SubjectPropertyDetails> = MutableLiveData()
+    val subjectPropertyDetails: LiveData<SubjectPropertyDetails> get() = _subjectPropertyDetails
+
+    private val _refinanceDetails: MutableLiveData<SubjectPropertyRefinanceDetails> =
+        MutableLiveData()
+    val refinanceDetails: LiveData<SubjectPropertyRefinanceDetails> get() = _refinanceDetails
+
+    private val _coBorrowerOccupancyStatus: MutableLiveData<CoBorrowerOccupancyStatus> =
+        MutableLiveData()
+    val coBorrowerOccupancyStatus: LiveData<CoBorrowerOccupancyStatus> get() = _coBorrowerOccupancyStatus
+
 
     suspend fun getBorrowerAssetsDetail(token:String, loanApplicationId:Int, borrowerId: ArrayList<Int>?): Boolean {
 
@@ -100,7 +128,6 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     }
 
 
-
     suspend fun getBorrowerWithAssets(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int>) {
         var errorResult:Result.Error?=null
         val borrowerAssetList: ArrayList<MyAssetBorrowerDataClass> = ArrayList()
@@ -173,7 +200,6 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         _incomeDetails  =   MutableLiveData()
     }
 
-
     suspend fun getGovernmentQuestions(token:String, loanApplicationId:Int, ownTypeId:Int, borrowerId:Int ): Boolean {
         var bool = false
         viewModelScope.launch (Dispatchers.IO) {
@@ -191,6 +217,140 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
             }
         }
         return bool
+    }
+
+
+    suspend fun getCoBorrowerOccupancyStatus(token: String, loanApplicationId: Int) {
+        //Timber.e("CoBorrower: " + loanApplicationId + "Auth Token: " + token)
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = bAppRepo.getCoBorrowerOccupancyStatus(
+                token = token,
+                loanApplicationId = loanApplicationId
+            )
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _coBorrowerOccupancyStatus.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun getSubjectPropertyDetails(token: String, loanApplicationId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = bAppRepo.getSubjectPropertyDetails(
+                token = token,
+                loanApplicationId = loanApplicationId
+            )
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _subjectPropertyDetails.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun getRefinanceDetails(token: String, loanApplicationId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = bAppRepo.getSubjectPropertyRefinance(
+                token = token,
+                loanApplicationId = loanApplicationId
+            )
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    _refinanceDetails.value = (responseResult.data)
+                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun getPropertyTypes(token: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = bAppRepo.getPropertyType(token = token)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _propertyType.value = (responseResult.data)
+                /*else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                        EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                     else if (responseResult is Result.Error)
+                        EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+                    */
+
+            }
+        }
+    }
+
+    suspend fun getOccupancyType(token: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = bAppRepo.getOccupancyType(token = token)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _occupancyType.value = (responseResult.data)
+                /*else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+               EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+            else if (responseResult is Result.Error)
+               EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+
+             */
+
+            }
+        }
+    }
+
+    suspend fun getStates(token: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = bAppRepo.getStates(token = token)
+            withContext(Dispatchers.Main) {
+                if (response is Result.Success)
+                    _states.value = (response.data)
+                else if (response is Result.Error && response.exception.message == AppConstant.INTERNET_ERR_MSG) {
+                    //Timber.e(" GetStates " + response.toString())
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                } else if (response is Result.Error) {
+                    //Timber.e(" GetStates " + response.toString())
+                    EventBus.getDefault().post(WebServiceErrorEvent(response))
+                }
+            }
+        }
+    }
+
+    suspend fun getCounty(token: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = bAppRepo.getCounties(token = token)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    //Timber.e("Counties-Success")
+                    _counties.value = (responseResult.data)
+                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error) {
+                    //Timber.e(" Counties-Error " + responseResult.toString())
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+                }
+            }
+        }
+    }
+
+    suspend fun getCountries(token: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = bAppRepo.getCountries(token = token)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _countries.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
     }
 
 

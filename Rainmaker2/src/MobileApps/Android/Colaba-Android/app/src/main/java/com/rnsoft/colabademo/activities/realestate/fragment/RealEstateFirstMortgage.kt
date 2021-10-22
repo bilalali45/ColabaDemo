@@ -16,7 +16,11 @@ import com.rnsoft.colabademo.databinding.FirstMortgageLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Created by Anita Kiran on 9/9/2021.
@@ -25,8 +29,6 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
 
     private lateinit var binding : FirstMortgageLayoutBinding
     private val viewModel : RealEstateViewModel by activityViewModels()
-    lateinit var sharedPreferences : SharedPreferences
-    //val authToken : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0NzUzMjYxLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.bHZwTohB4toe2JGgKVNeaOoOh8HIaygh8WqmGpTPzO4"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,91 +56,89 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
         getFirstMortgageDetails()
         super.addListeners(binding.root)
 
+
         return binding.root
     }
 
     private fun getFirstMortgageDetails() {
-        //sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-            lifecycleScope.launchWhenStarted {
-                viewModel.getFirstMortgageDetails(AppConstant.authToken, 5, 1003)
-                viewModel.firstMortgageDetails.observe(viewLifecycleOwner, {
-                    if (it != null) {
-                        it.data?.firstMortgagePayment?.let {
-                            binding.edFirstMortgagePayment.setText(Math.round(it).toString())
-                            CustomMaterialFields.setColor(
-                                binding.layoutFirstPayment,
-                                R.color.grey_color_two,
-                                requireActivity()
-                            )
-                        }
-                        it.data?.unpaidFirstMortgagePayment?.let {
-                            binding.edUnpaidBalance.setText(Math.round(it).toString())
-                            CustomMaterialFields.setColor(
-                                binding.layoutUnpaidBalance,
-                                R.color.grey_color_two,
-                                requireActivity()
-                            )
-                        }
-                        it.data?.floodInsuranceIncludeinPayment?.let {
-                            if (it == true) {
-                                binding.cbFloodInsurance.isChecked = true
-                                binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
-                            } else {
-                                binding.cbFloodInsurance.isChecked = false
-                                binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
-                            }
-                        }
-                        it.data?.propertyTaxesIncludeinPayment?.let {
-                            if (it == true) {
-                                binding.cbPropertyTaxes.isChecked = true
-                                binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
-                            } else {
-                                binding.cbPropertyTaxes.isChecked = false
-                                binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
-                            }
-                        }
-                        it.data?.homeOwnerInsuranceIncludeinPayment?.let {
-                            if (it == true) {
-                                binding.cbHomeownwerInsurance.isChecked = true
-                                binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
-                            } else {
-                                binding.cbHomeownwerInsurance.isChecked = false
-                                binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
-                            }
-                        }
-
-                        it.data?.isHeloc?.let {
-                            if (it == true) {
-                                binding.switchCreditLimit.isChecked = true
-                                binding.tvHeloc.setTypeface(null, Typeface.BOLD)
-                            } else {
-                                binding.switchCreditLimit.isChecked = false
-                                binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
-                            }
-                        }
-                        it.data?.helocCreditLimit?.let {
-                            binding.edCreditLimit.setText(Math.round(it).toString())
-                            CustomMaterialFields.setColor(
-                                binding.layoutCreditLimit,
-                                R.color.grey_color_two,
-                                requireActivity()
-                            )
-                        }
-                        it.data?.paidAtClosing?.let {
-                            if (it == true) {
-                                binding.rbPaidClosingYes.isChecked = true
-                                binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
-                            } else {
-                                binding.rbPaidClosingNo.isChecked = true
-                                binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
-                            }
-                        }
-
+        viewModel.firstMortgageDetails.observe(viewLifecycleOwner, {
+            if (it != null) {
+                it.data?.firstMortgagePayment?.let {
+                    binding.edFirstMortgagePayment.setText(Math.round(it).toString())
+                    CustomMaterialFields.setColor(
+                        binding.layoutFirstPayment,
+                        R.color.grey_color_two,
+                        requireActivity()
+                    )
+                }
+                it.data?.unpaidFirstMortgagePayment?.let {
+                    binding.edUnpaidBalance.setText(Math.round(it).toString())
+                    CustomMaterialFields.setColor(
+                        binding.layoutUnpaidBalance,
+                        R.color.grey_color_two,
+                        requireActivity()
+                    )
+                }
+                it.data?.floodInsuranceIncludeinPayment?.let {
+                    if (it == true) {
+                        binding.cbFloodInsurance.isChecked = true
+                        binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
+                    } else {
+                        binding.cbFloodInsurance.isChecked = false
+                        binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
                     }
-                })
-            }
-    }
+                }
+                it.data?.propertyTaxesIncludeinPayment?.let {
+                    if (it == true) {
+                        binding.cbPropertyTaxes.isChecked = true
+                        binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
+                    } else {
+                        binding.cbPropertyTaxes.isChecked = false
+                        binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
+                    }
+                }
+                it.data?.homeOwnerInsuranceIncludeinPayment?.let {
+                    if (it == true) {
+                        binding.cbHomeownwerInsurance.isChecked = true
+                        binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
+                    } else {
+                        binding.cbHomeownwerInsurance.isChecked = false
+                        binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
+                    }
+                }
 
+                it.data?.isHeloc?.let {
+                    if (it == true) {
+                        binding.switchCreditLimit.isChecked = true
+                        binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+                    } else {
+                        binding.switchCreditLimit.isChecked = false
+                        binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
+                    }
+                }
+                it.data?.helocCreditLimit?.let {
+                    binding.edCreditLimit.setText(Math.round(it).toString())
+                    CustomMaterialFields.setColor(
+                        binding.layoutCreditLimit,
+                        R.color.grey_color_two,
+                        requireActivity()
+                    )
+                }
+                it.data?.paidAtClosing?.let {
+                    if (it == true) {
+                        binding.rbPaidClosingYes.isChecked = true
+                        binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
+                    } else {
+                        binding.rbPaidClosingNo.isChecked = true
+                        binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
+                    }
+                }
+             hideLoader()
+            }
+            hideLoader()
+        })
+
+    }
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
@@ -254,5 +254,31 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
             )
         )
     }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onErrorReceived(event: WebServiceErrorEvent) {
+        if(event.isInternetError)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+        else
+            if(event.errorResult!=null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
+        hideLoader()
+    }
+
+    private fun hideLoader(){
+        val  activity = (activity as? RealEstateActivity)
+        activity?.binding?.loaderRealEstate?.visibility = View.GONE
+    }
+
 
 }

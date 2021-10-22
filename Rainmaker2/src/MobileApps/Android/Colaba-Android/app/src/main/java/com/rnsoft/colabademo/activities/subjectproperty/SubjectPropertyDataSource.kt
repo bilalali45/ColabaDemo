@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.util.Log
 import com.rnsoft.colabademo.activities.model.*
+import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 
@@ -44,7 +45,7 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getSubjectPropertyDetails(newToken, loanApplicationId)
-            Log.e("Sub-property-Details", response.toString())
+            Log.e("Sub-property-Details-------", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -107,7 +108,9 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getCounties(newToken)
+            //Timber.e(" Response " + response.toString())
             Result.Success(response)
+
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
@@ -120,12 +123,14 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getStates(newToken)
+            Timber.e(" GetStates " + response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             else
                 Result.Error(IOException("Error notification -", e.cause))
+
         }
     }
 

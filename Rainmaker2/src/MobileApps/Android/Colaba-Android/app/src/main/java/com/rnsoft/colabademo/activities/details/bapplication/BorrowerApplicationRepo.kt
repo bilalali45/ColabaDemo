@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.content.Context
 import android.content.SharedPreferences
 import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
+import com.rnsoft.colabademo.activities.model.StatesModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -24,5 +25,37 @@ class BorrowerApplicationRepo  @Inject constructor(
             token = token , loanApplicationId = loanApplicationId,
             ownTypeId = ownTypeId,
             borrowerId = borrowerId )
+    }
+
+    suspend fun getPropertyType(token:String): Result<ArrayList<DropDownResponse>> {
+        return borrowerApplicationDataSource.getPropertyTypes(token = token)
+    }
+
+    suspend fun getOccupancyType(token:String): Result<ArrayList<DropDownResponse>> {
+        return borrowerApplicationDataSource.getOccupancyType(token = token)
+    }
+
+    suspend fun getCountries(token:String): Result<ArrayList<CountriesModel>> {
+        return borrowerApplicationDataSource.getCountries(token = token)
+    }
+
+    suspend fun getCounties(token:String): Result<ArrayList<CountiesModel>> {
+        return borrowerApplicationDataSource.getCounties(token = token)
+    }
+
+    suspend fun getStates(token:String): Result<ArrayList<StatesModel>> {
+        return borrowerApplicationDataSource.getStates(token = token)
+    }
+
+    suspend fun getSubjectPropertyDetails(token:String, loanApplicationId:Int):Result<SubjectPropertyDetails>{
+        return borrowerApplicationDataSource.getSubjectPropertyDetails(token = token , loanApplicationId = loanApplicationId)
+    }
+
+    suspend fun getSubjectPropertyRefinance(token:String, loanApplicationId:Int):Result<SubjectPropertyRefinanceDetails>{
+        return borrowerApplicationDataSource.getSubjectPropertyRefinance(token = token , loanApplicationId = loanApplicationId)
+    }
+
+    suspend fun getCoBorrowerOccupancyStatus(token:String ,loanApplicationId:Int):Result<CoBorrowerOccupancyStatus>{
+        return borrowerApplicationDataSource.getCoBorrowerOccupancyStatus(token = token , loanApplicationId = loanApplicationId)
     }
 }

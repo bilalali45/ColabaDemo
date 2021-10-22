@@ -35,6 +35,10 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import kotlinx.android.synthetic.main.temp_residence_layout.*
 import kotlinx.android.synthetic.main.view_placesearch.*
+import kotlinx.coroutines.delay
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
@@ -52,7 +56,6 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
     private var predicationList: ArrayList<String> = ArrayList()
     private var addressList : ArrayList<AddressData> = ArrayList()
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,35 +63,11 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
     ): View {
         binding = SubjectPropertyAddressBinding.inflate(inflater, container, false)
 
-
         setInputFields()
         getDropDownData()
         setUpCompleteViewForPlaces()
         initializeUSAstates()
 
-        addressList = arguments?.getParcelableArrayList(AppConstant.address)!!
-        if(addressList.size > 0 ) {
-            addressList[0].street?.let {
-                binding.tvSearch.setText(it)
-                CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_two, requireActivity())
-            }
-            addressList[0].street?.let { binding.edStreetAddress.setText(it) }
-            addressList[0].city?.let { binding.edCity.setText(it) }
-            addressList[0].countryName?.let {
-                binding.tvCountry.setText(it)
-                binding.layoutCountry.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-            }
-            addressList[0].zipCode?.let { binding.edZipcode.setText(it) }
-            addressList[0].stateName?.let { binding.tvState.setText(it)
-                binding.layoutState.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-            }
-            addressList[0].countyName?.let {
-                binding.tvCounty.setText(it)
-                binding.layoutCounty.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-            }
-            addressList[0].unit?.let{ binding.edUnitAtpNo.setText(it)}
-            visibleAllFields()
-        }
 
         binding.addressParentLayout.setOnClickListener {
             HideSoftkeyboard.hide(requireActivity(),binding.addressParentLayout)
@@ -119,118 +98,184 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
 
     }
 
+    private fun setData() {
+        addressList = arguments?.getParcelableArrayList(AppConstant.address)!!
+        if (addressList.size > 0) {
+            addressList[0].street?.let {
+                binding.tvSearch.setText(it)
+                CustomMaterialFields.setColor(
+                    binding.layoutSearchAddress,
+                    R.color.grey_color_two,
+                    requireActivity()
+                )
+            }
+            addressList[0].street?.let { binding.edStreetAddress.setText(it) }
+            addressList[0].city?.let { binding.edCity.setText(it) }
+            addressList[0].countryName?.let {
+                binding.tvCountry.setText(it)
+                binding.layoutCountry.defaultHintTextColor = ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.grey_color_two
+                    )
+                )
+            }
+            addressList[0].zipCode?.let { binding.edZipcode.setText(it) }
+            addressList[0].stateName?.let {
+                binding.tvState.setText(it)
+                binding.layoutState.defaultHintTextColor = ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.grey_color_two
+                    )
+                )
+            }
+            addressList[0].countyName?.let {
+                binding.tvCounty.setText(it)
+                binding.layoutCounty.defaultHintTextColor = ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.grey_color_two
+                    )
+                )
+            }
+            addressList[0].unit?.let { binding.edUnitAtpNo.setText(it) }
+            visibleAllFields()
+        }
+    }
+
     private fun getDropDownData(){
          lifecycleScope.launchWhenStarted {
+             binding.loaderSubproAddress.visibility = View.VISIBLE
+             delay(2000)
+             setData()
+             binding.loaderSubproAddress.visibility = View.GONE
              viewModel.getStates(AppConstant.authToken)
-             viewModel.states.observe(viewLifecycleOwner, { states->
+             // get countries
+             viewModel.getCountries(AppConstant.authToken)
+             // get county
+             viewModel.getCounty(AppConstant.authToken)
+
+             viewModel.states.observe(viewLifecycleOwner, { states ->
                  if (states != null && states.size > 0) {
                      val itemList: ArrayList<String> = arrayListOf()
                      for (item in states) {
                          itemList.add(item.name)
                      }
-                     val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,itemList)
+                     val stateAdapter =
+                         ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
                      binding.tvState.setAdapter(stateAdapter)
 
                      binding.tvState.setOnFocusChangeListener { _, _ ->
                          binding.tvState.showDropDown()
+                         HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
                      }
                      binding.tvState.setOnClickListener {
                          binding.tvState.showDropDown()
-                         HideSoftkeyboard.hide(requireActivity(),binding.layoutState)
+                         HideSoftkeyboard.hide(requireActivity(), binding.layoutState)
                      }
 
                      binding.tvState.onItemClickListener =
                          object : AdapterView.OnItemClickListener {
-                             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                                 binding.layoutState.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-                                 HideSoftkeyboard.hide(requireActivity(),binding.layoutState)
+                             override fun onItemClick(
+                                 p0: AdapterView<*>?,
+                                 p1: View?,
+                                 position: Int,
+                                 id: Long
+                             ) {
+                                 binding.layoutState.defaultHintTextColor = ColorStateList.valueOf(
+                                     ContextCompat.getColor(
+                                         requireContext(),
+                                         R.color.grey_color_two
+                                     )
+                                 )
+                                 HideSoftkeyboard.hide(requireActivity(), binding.layoutState)
                              }
                          }
                  }
              })
+
+             viewModel.countries.observe(viewLifecycleOwner, { countries ->
+                 if (countries != null && countries.size > 0) {
+                     val itemList: ArrayList<String> = arrayListOf()
+                     for (item in countries) {
+                         itemList.add(item.name)
+                     }
+                     val countryAdapter =
+                         ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                     binding.tvCountry.setAdapter(countryAdapter)
+
+                     binding.tvCountry.setOnFocusChangeListener { _, _ ->
+                         binding.tvCountry.showDropDown()
+                         HideSoftkeyboard.hide(requireActivity(), binding.layoutCountry)
+                     }
+                     binding.tvCountry.setOnClickListener {
+                         binding.tvCountry.showDropDown()
+                         HideSoftkeyboard.hide(requireActivity(), binding.layoutCountry)
+                     }
+
+                     binding.tvCountry.onItemClickListener =
+                         object : AdapterView.OnItemClickListener {
+                             override fun onItemClick(
+                                 p0: AdapterView<*>?,
+                                 p1: View?,
+                                 position: Int,
+                                 id: Long
+                             ) {
+                                 binding.layoutCountry.defaultHintTextColor =
+                                     ColorStateList.valueOf(
+                                         ContextCompat.getColor(
+                                             requireContext(),
+                                             R.color.grey_color_two
+                                         )
+                                     )
+                                 HideSoftkeyboard.hide(requireActivity(), binding.layoutCountry)
+                             }
+                         }
+                 }
+             })
+
+             viewModel.counties.observe(viewLifecycleOwner, { counties ->
+                 if (counties != null && counties.size > 0) {
+                     val itemList: ArrayList<String> = arrayListOf()
+                     for (item in counties) {
+                         itemList.add(item.name)
+                     }
+                     val countyAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                         binding.tvCounty.setAdapter(countyAdapter)
+
+                         binding.tvCounty.setOnFocusChangeListener { _, _ ->
+                            binding.tvCounty.showDropDown()
+                             HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
+                         }
+
+                         binding.tvCounty.setOnClickListener {
+                             binding.tvCounty.showDropDown()
+                             HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
+                         }
+
+                         binding.tvCounty.onItemClickListener =
+                             object : AdapterView.OnItemClickListener {
+                                 override fun onItemClick(
+                                     p0: AdapterView<*>?,
+                                     p1: View?,
+                                     position: Int,
+                                     id: Long
+                                 ) {
+                                     binding.layoutCounty.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
+                                     HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
+                                 }
+                             }
+                     }
+
+                 })
+
          }
 
-        // get countries
-        lifecycleScope.launchWhenStarted {
-            viewModel.getCountries(AppConstant.authToken)
-            viewModel.countries.observe(viewLifecycleOwner, { countries ->
-                if (countries != null && countries.size > 0) {
-                    val itemList: ArrayList<String> = arrayListOf()
-                    for (item in countries) {
-                        itemList.add(item.name)
-                    }
-
-                    val countryAdapter =
-                        ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
-                    binding.tvCountry.setAdapter(countryAdapter)
-
-                    binding.tvCountry.setOnFocusChangeListener { _, _ ->
-                        binding.tvCountry.showDropDown()
-                        HideSoftkeyboard.hide(requireActivity(),binding.layoutCountry)
-                    }
-                    binding.tvCountry.setOnClickListener {
-                        binding.tvCountry.showDropDown()
-                        HideSoftkeyboard.hide(requireActivity(),binding.layoutCountry)
-                    }
-
-                    binding.tvCountry.onItemClickListener = object : AdapterView.OnItemClickListener {
-                            override fun onItemClick(
-                                p0: AdapterView<*>?,
-                                p1: View?,
-                                position: Int,
-                                id: Long) {
-                                binding.layoutCountry.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-                                HideSoftkeyboard.hide(requireActivity(),binding.layoutCountry)
-                            }
-                        }
-                }
-
-            })
-        }
-
-        // get county
-        lifecycleScope.launchWhenStarted {
-            viewModel.getCounty(AppConstant.authToken)
-            viewModel.counties.observe(viewLifecycleOwner, { counties ->
-                if (counties != null && counties.size > 0) {
-                    val itemList: ArrayList<String> = arrayListOf()
-                    for (item in counties) {
-                        itemList.add(item.name)
-                    }
-
-                    val countyAdapter =
-                        ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
-                    binding.tvCounty.setAdapter(countyAdapter)
-
-                    //binding.tvCounty.setOnFocusChangeListener { _, _ ->
-                     //   binding.tvCountry.showDropDown()
-                    //}
-                    binding.tvCounty.setOnClickListener {
-                        binding.tvCounty.showDropDown()
-                        HideSoftkeyboard.hide(requireActivity(),binding.layoutCounty)
-                    }
-
-                    binding.tvCounty.onItemClickListener = object : AdapterView.OnItemClickListener {
-                        override fun onItemClick(
-                            p0: AdapterView<*>?,
-                            p1: View?,
-                            position: Int,
-                            id: Long) {
-                            binding.layoutCounty.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-                            HideSoftkeyboard.hide(requireActivity(),binding.layoutCounty)
-                        }
-                    }
-                }
-
-            })
-        }
-        
     }
 
     private fun setInputFields(){
-
         // set lable focus
-
         binding.tvSearch.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
                 //binding.searchSeparator.minimumHeight = 2
@@ -262,7 +307,6 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edCity, binding.layoutCity)
         //CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edCounty, binding.layoutCounty)
         CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edZipcode, binding.layoutZipCode)
-
     }
 
     private fun checkValidations() {
@@ -545,6 +589,30 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         binding.tvError.visibility = View.GONE
         //binding.searchSeparator.layoutParams.height= 0.5.toInt()
         binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onErrorReceived(event: WebServiceErrorEvent) {
+        if(event.isInternetError)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+        else
+            if(event.errorResult!=null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
+        hideLoader()
+    }
+
+    private fun hideLoader(){
+
     }
 
 }

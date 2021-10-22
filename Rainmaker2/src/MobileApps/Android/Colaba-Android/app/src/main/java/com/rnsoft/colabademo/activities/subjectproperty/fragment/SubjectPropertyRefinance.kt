@@ -21,6 +21,9 @@ import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.sub_property_refinance.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 /**
@@ -29,7 +32,7 @@ import kotlinx.android.synthetic.main.sub_property_refinance.*
 @AndroidEntryPoint
 class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListener {
 
-    private val viewModel : SubjectPropertyViewModel by activityViewModels()
+    private val viewModel : BorrowerApplicationViewModel by activityViewModels()
     private lateinit var binding: SubPropertyRefinanceBinding
     private var savedViewInstance: View? = null
     private var propertyTypeId : Int = 0
@@ -189,23 +192,39 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     }
 
     private fun getRefinanceDetails(){
-        //lifecycleScope.launchWhenStarted {
-        //viewModel.getRefinanceDetails(token, 1010)
         viewModel.refinanceDetails.observe(viewLifecycleOwner, { details->
-
             if(details != null){
                 details.subPropertyData?.address?.let {
-                    binding.radioSubPropertyAddress.isChecked = true
-                    binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
-                    binding.tvSubPropertyAddress.visibility = View.VISIBLE
-                    binding.tvSubPropertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
-                    addressDetailList.add(AddressData(street= it.street, unit=it.unit, city=it.city,stateName=it.stateName,countryName=it.countryName,countyName = it.countyName,
-                        countyId = it.countyId, stateId = it.stateId, countryId = it.countryId, zipCode = it.zipCode ))
-
+                     if(it.street == null && it.unit==null && it.city==null && it.stateName==null && it.countryName==null){
+                            binding.radioSubPropertyTbd.isChecked = true
+                            binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
+                        } else {
+                         binding.radioSubPropertyAddress.isChecked = true
+                         binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
+                         binding.tvSubPropertyAddress.visibility = View.VISIBLE
+                         binding.tvSubPropertyAddress.text =
+                             it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
+                         addressDetailList.add(
+                             AddressData(
+                                 street = it.street,
+                                 unit = it.unit,
+                                 city = it.city,
+                                 stateName = it.stateName,
+                                 countryName = it.countryName,
+                                 countyName = it.countyName,
+                                 countyId = it.countyId,
+                                 stateId = it.stateId,
+                                 countryId = it.countryId,
+                                 zipCode = it.zipCode
+                             )
+                         )
+                     }
                 } ?: run {
                     binding.radioSubPropertyTbd.isChecked = true
                     binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
                 }
+
+
                 details.subPropertyData?.rentalIncome?.let{
                     binding.edRentalIncome.setText(Math.round(it).toString())
                     binding.layoutRentalIncome.visibility = View.VISIBLE
@@ -260,7 +279,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                     } else
                         binding.radioMixedPropertyNo.isChecked = true
                 } ?: run {
-                    binding.radioMixedPropertyNo.isChecked = true
+                    //binding.radioMixedPropertyNo.isChecked = true
                 }
 
                 // has first mortgage 'yes'
@@ -290,7 +309,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                     }  else binding.radioHasFirstMortgageNo.isChecked = true
 
                 } ?: run{
-                    binding.radioHasFirstMortgageNo.isChecked = true
+                    //binding.radioHasFirstMortgageNo.isChecked = true
                 }
 
                 // has second mortgage 'yes'
@@ -319,20 +338,18 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                         }
                     } else  binding.radioHasFirstMortgageNo.isChecked = true
                 } ?: run{
-                    binding.radioHasFirstMortgageNo.isChecked = true
+                    //binding.radioHasFirstMortgageNo.isChecked = true
                 }
 
                 getDropDownData()
                 getCoBorrowerOccupancyStatus()
-                val  activity = (activity as? SubjectPropertyActivity)
-                activity?.binding?.loaderSubjectProperty?.visibility = View.GONE
+                hideLoader()
             }
+            hideLoader()
         })
     }
 
     private fun getCoBorrowerOccupancyStatus(){
-        //lifecycleScope.launchWhenStarted {
-        //viewModel.getCoBorrowerOccupancyStatus(token, 1010)
         viewModel.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {
             if(it.occupancyData != null  && it.occupancyData.size > 0){
                 binding.rbOccupying.isChecked = true
@@ -340,8 +357,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                 binding.coBorrowerName.setText(it.occupancyData.get(0).borrowerFirstName + " " + it.occupancyData.get(0).borrowerLastName)
             }
             else {
-                binding.rbNonOccupying.isChecked = true
-                binding.rbNonOccupying.setTypeface(null, Typeface.BOLD)
+                //binding.rbNonOccupying.isChecked = true
+                //binding.rbNonOccupying.setTypeface(null, Typeface.BOLD)
                 binding.coBorrowerName.visibility = View.GONE
             }
         })
@@ -467,7 +484,6 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         findNavController().navigate(R.id.action_address, fragment.arguments)
     }
 
-
     private fun showHideRental() {
         if (binding.tvOccupancyType.text.toString().equals("Investment Property")) {
             binding.layoutRentalIncome.visibility = View.VISIBLE
@@ -522,6 +538,30 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         findNavController().navigate(R.id.action_refinance_sec_mortgage, fragment.arguments)
     }
 
+    private fun hideLoader(){
+        val  activity = (activity as? SubjectPropertyActivity)
+        activity?.binding?.loaderSubjectProperty?.visibility = View.GONE
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onErrorReceived(event: WebServiceErrorEvent) {
+        if(event.isInternetError)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+        else
+            if(event.errorResult!=null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
+        hideLoader()
+    }
     /*
     private fun onSecMortgegeNoClick() {
         binding.layoutSecondMortgage.visibility = View.VISIBLE

@@ -6,9 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.rnsoft.colabademo.activities.details.bapplication.RealEstateClickListener
 
-class RealStateAdapter internal constructor(private var realStateDataList: ArrayList<RealStateOwn>) :
+class RealStateAdapter internal constructor(private var realStateDataList: ArrayList<RealStateOwn>,realEstateClickListener: RealEstateClickListener) :
     RecyclerView.Adapter<RealStateAdapter.BaseViewHolder>(){
+
+    private var onRealEstateClick: RealEstateClickListener = realEstateClickListener
+
+    init {
+        this.onRealEstateClick = realEstateClickListener
+    }
 
     abstract class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) { abstract fun bind(
         item: RealStateOwn
@@ -27,7 +34,8 @@ class RealStateAdapter internal constructor(private var realStateDataList: Array
 
 
             itemView.setOnClickListener {
-                itemView.context.startActivity(Intent(itemView.context, RealEstateActivity::class.java))
+                //itemView.context.startActivity(Intent(itemView.context, RealEstateActivity::class.java))
+                onRealEstateClick.onRealEstateClick(position)
             }
         }
 

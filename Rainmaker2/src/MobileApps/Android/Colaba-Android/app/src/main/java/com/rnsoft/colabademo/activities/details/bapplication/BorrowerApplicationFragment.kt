@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
+import com.rnsoft.colabademo.activities.details.bapplication.RealEstateClickListener
 import com.rnsoft.colabademo.databinding.DetailApplicationTabBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Deferred
@@ -23,7 +24,7 @@ import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
-class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, GovernmentQuestionClickListener {
+class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, GovernmentQuestionClickListener,RealEstateClickListener {
 
     private var _binding: DetailApplicationTabBinding? = null
     private val binding get() = _binding!!
@@ -44,7 +45,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     private var questionList: ArrayList<BorrowerQuestionsModel> = ArrayList()
 
     private var borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList , this)
-    private var realStateAdapter  = RealStateAdapter(realStateList)
+    private var realStateAdapter  = RealStateAdapter(realStateList,this)
     private var questionAdapter  = QuestionAdapter(questionList, this)
 
     @Inject
@@ -124,16 +125,13 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         subjectPropertyLayout.setOnClickListener {
             val detailActivity = (activity as? DetailActivity)
             detailActivity?.let {
-                val subActivity = Intent(requireActivity(), SubjectPropertyActivity::class.java)
-                it.loanApplicationId?.let { loanId ->
-                    subActivity.putExtra(AppConstant.loanApplicationId, loanId)
-                }
-                it.borrowerLoanPurpose?.let{ loanPurpose->
-                    subActivity.putExtra(AppConstant.loanPurpose, loanPurpose)
-                }
-                startActivity(subActivity)
+                val intent = Intent(requireActivity(), SubjectPropertyActivity::class.java)
+                //Log.e("loanAppID", ""+ it.loanApplicationId)
+                //Log.e("purpose", ""+ it.)
+                intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
+                intent.putExtra(AppConstant.borrowerPurpose, it.borrowerLoanPurpose)
+                startActivity(intent)
             }
-
         }
 
         val linearLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
@@ -252,10 +250,9 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
 
                 realStateList.add(RealStateOwn(null,0,0,0,"", true))
-                realStateAdapter  = RealStateAdapter(realStateList)
+                realStateAdapter  = RealStateAdapter(realStateList,this@BorrowerApplicationFragment)
                 realStateRecyclerView.adapter = realStateAdapter
                 realStateAdapter.notifyDataSetChanged()
-
 
 
                 questionList.add(BorrowerQuestionsModel(null,null, true, races, ethnicities ))
@@ -267,7 +264,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
             else
                binding.applicationTabLayout.visibility = View.INVISIBLE
         })
-
 
         horizontalRecyclerView.addOnItemTouchListener(object : OnItemTouchListener {
             override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
@@ -313,8 +309,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     }
 
 
-
-
     private fun navigateToAssetActivity(){
         val detailActivity = (activity as? DetailActivity)
         detailActivity?.let {
@@ -357,13 +351,26 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         }
     }
 
-
     override fun getSingleItemIndex(position: Int) {
 
     }
 
     override fun navigateTo(position: Int) {
         startActivity(Intent(requireActivity(), BorrowerAddressActivity::class.java))
+    }
+
+    override fun onRealEstateClick(position: Int) {
+        val detailActivity = (activity as? DetailActivity)
+        detailActivity?.let {
+            val intent = Intent(requireActivity(), RealEstateActivity::class.java)
+            //Log.e("loanAppID", ""+ it.loanApplicationId)
+            //Log.e("purpose", ""+ it.)
+            intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
+            //intent.putExtra(AppConstant.borrowerPropertyId,it )
+            startActivity(intent)
+        }
+
+
     }
 
     override fun navigateToGovernmentActivity(position: Int) {
@@ -392,6 +399,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
 
     }
+
 
     /*
     private fun setUpGovtQuestionsRecycleView(passedList: ArrayList<BorrowerQuestionsModel>) {

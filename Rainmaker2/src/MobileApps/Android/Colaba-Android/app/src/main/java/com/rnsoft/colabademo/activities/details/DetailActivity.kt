@@ -18,7 +18,6 @@ class DetailActivity : BaseActivity() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: DetailTopLayoutBinding
-
     var loanApplicationId:Int? = null
     var borrowerFirstName:String? = null
     var borrowerLastName:String? = null
