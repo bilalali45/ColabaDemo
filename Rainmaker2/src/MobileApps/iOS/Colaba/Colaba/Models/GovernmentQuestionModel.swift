@@ -25,6 +25,7 @@ class GovernmentQuestionModel: NSObject{
     var selectionOptionText: String = ""
     var isAffiliatedWithSeller: Bool = false
     var affiliationDescription: String = ""
+    var childSupportTypes = [String]()
     
     func updateModelWithJSON(json: JSON){
         parentQuestionId = json["parentQuestionId"].intValue
@@ -47,7 +48,22 @@ class GovernmentQuestionModel: NSObject{
         selectionOptionText = json["answerData"]["selectionOptionText"].stringValue
         isAffiliatedWithSeller = json["answerData"]["IsAffiliatedWithSeller"].boolValue
         affiliationDescription = json["answerData"]["AffiliationDescription"].stringValue
-
+        if (json["headerText"].stringValue == "Type"){
+            for childSupportType in json["answerData"].arrayValue{
+                if (childSupportType["1"].exists()){
+                    self.childSupportTypes.append(childSupportType["1"].stringValue)
+                }
+                else if (childSupportType["2"].exists()){
+                    self.childSupportTypes.append(childSupportType["2"].stringValue)
+                }
+                else if (childSupportType["3"].exists()){
+                    self.childSupportTypes.append(childSupportType["3"].stringValue)
+                }
+                else if (childSupportType["4"].exists()){
+                    self.childSupportTypes.append(childSupportType["4"].stringValue)
+                }
+            }
+        }
     }
     
 }
@@ -68,4 +84,3 @@ class AnswerData: NSObject{
         remainingMonth = json["remainingMonth"].intValue
     }
 }
-

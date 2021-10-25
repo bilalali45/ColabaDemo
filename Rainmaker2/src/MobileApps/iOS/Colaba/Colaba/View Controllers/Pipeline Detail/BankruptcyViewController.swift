@@ -24,6 +24,7 @@ class BankruptcyViewController: BaseViewController {
     
     var isYes: Bool?
     var questionModel = GovernmentQuestionModel()
+    var subQuestionModel: GovernmentQuestionModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,11 @@ class BankruptcyViewController: BaseViewController {
         btnYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
         lblYes.font = Theme.getRubikRegularFont(size: 14)
         typeView.isHidden = true
+        setQuestionData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         setQuestionData()
     }
     
@@ -77,13 +83,18 @@ class BankruptcyViewController: BaseViewController {
             lblYes.font = yes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
             btnNo.setImage(UIImage(named: !yes ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
             lblNo.font = !yes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-            //typeView.isHidden = !yes
+            if let typeQuestion = subQuestionModel{
+                typeView.isHidden = !yes
+                lblBankruptcyQuestion.text = typeQuestion.question
+                lblBankruptcyType.text = typeQuestion.childSupportTypes.joined(separator: ", ")
+            }
         }
         
     }
     
     @objc func typeViewTapped(){
         let vc = Utility.getBankruptcyFollowupVC()
+        vc.questionModel = subQuestionModel
         self.presentVC(vc: vc)
     }
 }

@@ -258,6 +258,9 @@ class GovernmentQuestionDetailViewController: BaseViewController {
         bankruptcyVC = Utility.getBankruptcyVC()
         if let bankruptcyQuestion = governmentQuestions.filter({$0.headerText.localizedCaseInsensitiveContains("Bankruptcy")}).first{
             bankruptcyVC.questionModel = bankruptcyQuestion
+            if let subQuestion = governmentQuestions.filter({$0.parentQuestionId == bankruptcyQuestion.id}).first{
+                bankruptcyVC.subQuestionModel = subQuestion
+            }
         }
         
         childSupportVC = Utility.getChildSupportVC()
