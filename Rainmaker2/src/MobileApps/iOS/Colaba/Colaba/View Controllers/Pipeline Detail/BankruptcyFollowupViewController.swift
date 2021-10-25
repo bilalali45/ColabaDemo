@@ -38,6 +38,7 @@ class BankruptcyFollowupViewController: BaseViewController {
     var isChapter12 = false
     var isChapter13 = false
     var questionModel: GovernmentQuestionModel?
+    var borrowerName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,6 +87,7 @@ class BankruptcyFollowupViewController: BaseViewController {
     }
     
     func setQuestionData(){
+        lblUsername.text = borrowerName.uppercased()
         if let typeQuestion = questionModel{
             isChapter7 = typeQuestion.childSupportTypes.contains("Chapter 7")
             isChapter11 = typeQuestion.childSupportTypes.contains("Chapter 11")

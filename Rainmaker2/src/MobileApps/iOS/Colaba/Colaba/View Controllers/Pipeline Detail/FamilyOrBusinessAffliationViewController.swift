@@ -67,6 +67,7 @@ class FamilyOrBusinessAffliationViewController: UIViewController {
         changeStatus()
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .debtCoSigner
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     
@@ -89,6 +90,7 @@ class FamilyOrBusinessAffliationViewController: UIViewController {
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .familyOrBusinessAffilation
         vc.questionModel = questionModel
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
 

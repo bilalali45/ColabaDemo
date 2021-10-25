@@ -67,6 +67,7 @@ class ForceClosedPropertyViewController: BaseViewController {
         changeStatus()
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .forceClosedProperty
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     
@@ -89,6 +90,7 @@ class ForceClosedPropertyViewController: BaseViewController {
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .forceClosedProperty
         vc.questionModel = questionModel
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     

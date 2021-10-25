@@ -67,6 +67,7 @@ class DebtCoSignerViewController: BaseViewController {
         changeStatus()
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .debtCoSigner
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     
@@ -89,6 +90,7 @@ class DebtCoSignerViewController: BaseViewController {
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .debtCoSigner
         vc.questionModel = questionModel
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     

@@ -67,6 +67,7 @@ class PreForceClosureViewController: BaseViewController {
         changeStatus()
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .preForceClosure
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     
@@ -90,6 +91,7 @@ class PreForceClosureViewController: BaseViewController {
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .preForceClosure
         vc.questionModel = questionModel
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     

@@ -22,6 +22,7 @@ class OwnershipInterestInPropertyFollowupQuestionViewController: BaseViewControl
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var questions: [GovernmentQuestionModel]?
+    var borrowerName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +46,7 @@ class OwnershipInterestInPropertyFollowupQuestionViewController: BaseViewControl
     }
     
     func setQuestionData(){
+        lblUsername.text = borrowerName.uppercased()
         if let allQuestions = questions{
             txtfieldPropertyType.setTextField(text: allQuestions.filter({$0.question.localizedCaseInsensitiveContains("What type of property did you own?")}).first!.answer)
             txtfieldHoldTitle.setTextField(text: allQuestions.filter({$0.question.localizedCaseInsensitiveContains("How did you hold title to the property?")}).first!.answer)

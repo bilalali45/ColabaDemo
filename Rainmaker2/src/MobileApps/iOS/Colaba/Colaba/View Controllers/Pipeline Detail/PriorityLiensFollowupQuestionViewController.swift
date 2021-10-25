@@ -42,6 +42,7 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
     private let validation: Validation
     
     var questionModel = GovernmentQuestionModel()
+    var borrowerName = ""
     
     init(validation: Validation) {
         self.validation = validation
@@ -56,6 +57,7 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextView()
+        lblUsername.text = borrowerName.uppercased()
         txtViewDetail.textView.text = questionModel.answerDetail
         if (type == .priorityLiens){
             lblTopTitle.text = "Priority Liens"

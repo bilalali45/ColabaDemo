@@ -51,6 +51,7 @@ class PriorityLiensViewController: BaseViewController {
         changeStatus()
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .priorityLiens
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     
@@ -74,6 +75,7 @@ class PriorityLiensViewController: BaseViewController {
     @objc func priorityLiensViewTapped(){
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .priorityLiens
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
 }

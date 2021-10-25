@@ -67,6 +67,7 @@ class FedralDebtViewController: BaseViewController {
         changeStatus()
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .federalDebt
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     
@@ -90,6 +91,7 @@ class FedralDebtViewController: BaseViewController {
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .federalDebt
         vc.questionModel = questionModel
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     

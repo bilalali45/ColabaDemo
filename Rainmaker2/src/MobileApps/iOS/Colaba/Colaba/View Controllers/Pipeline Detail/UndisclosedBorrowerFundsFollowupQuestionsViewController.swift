@@ -27,6 +27,7 @@ class UndisclosedBorrowerFundsFollowupQuestionsViewController: BaseViewControlle
     private let validation: Validation
     
     var questionModel: GovernmentQuestionModel?
+    var borrowerName = ""
     
     init(validation: Validation) {
         self.validation = validation
@@ -84,6 +85,7 @@ class UndisclosedBorrowerFundsFollowupQuestionsViewController: BaseViewControlle
     }
     
     func setQuestionData(){
+        lblUsername.text = borrowerName.uppercased()
         if let question = questionModel{
             lblQuestion.text = question.question
             if let amount = Int(question.answer){

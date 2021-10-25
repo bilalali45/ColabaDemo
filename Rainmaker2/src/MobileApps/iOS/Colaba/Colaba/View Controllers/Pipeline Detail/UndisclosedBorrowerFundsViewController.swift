@@ -67,6 +67,7 @@ class UndisclosedBorrowerFundsViewController: BaseViewController {
     @objc func yesStackViewTapped(){
         isYes = true
         let vc = Utility.getUndisclosedBorrowerFundsFollowupQuestionsVC()
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     
@@ -94,6 +95,7 @@ class UndisclosedBorrowerFundsViewController: BaseViewController {
     @objc func amountViewTapped(){
         let vc = Utility.getUndisclosedBorrowerFundsFollowupQuestionsVC()
         vc.questionModel = subQuestionModel
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
 }

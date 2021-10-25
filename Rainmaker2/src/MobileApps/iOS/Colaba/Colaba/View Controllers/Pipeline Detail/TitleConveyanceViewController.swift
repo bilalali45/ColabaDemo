@@ -67,6 +67,7 @@ class TitleConveyanceViewController: BaseViewController {
         changeStatus()
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .titleConveyance
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     
@@ -89,6 +90,7 @@ class TitleConveyanceViewController: BaseViewController {
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .titleConveyance
         vc.questionModel = questionModel
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     

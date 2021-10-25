@@ -64,6 +64,7 @@ class ChildSupportViewController: BaseViewController {
         isYes = true
         changeStatus()
         let vc = Utility.getChildSupportFollowupQuestionsVC()
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     
@@ -84,6 +85,7 @@ class ChildSupportViewController: BaseViewController {
     
     @objc func detailViewTapped(){
         let vc = Utility.getChildSupportFollowupQuestionsVC()
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     

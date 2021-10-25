@@ -68,6 +68,7 @@ class BankruptcyViewController: BaseViewController {
         isYes = true
         changeStatus()
         let vc = Utility.getBankruptcyFollowupVC()
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     
@@ -95,6 +96,7 @@ class BankruptcyViewController: BaseViewController {
     @objc func typeViewTapped(){
         let vc = Utility.getBankruptcyFollowupVC()
         vc.questionModel = subQuestionModel
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
 }

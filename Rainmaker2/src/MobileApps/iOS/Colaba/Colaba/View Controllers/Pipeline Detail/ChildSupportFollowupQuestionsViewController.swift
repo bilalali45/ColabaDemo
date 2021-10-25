@@ -47,6 +47,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
     var isAlimony = false
     var isSeparateMaintainance = false
     var questionModel = GovernmentQuestionModel()
+    var borrowerName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +55,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
         childSupportStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(childSupportStackViewTapped)))
         alimonySupportStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(alimonyStackViewTapped)))
         separateMaintainanceStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(separateMaintainanceStackViewTapped)))
+        setQuestionData()
     }
 
     //MARK:- Methods and Action
@@ -86,6 +88,10 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
         txtfieldSeparateMaintainanceMonthlyPayment.type = .amount
         
         txtfieldSeparateMaintainancePaymentRecipient.setTextField(placeholder: "Payment Recipient", controller: self, validationType: .required)
+    }
+    
+    func setQuestionData(){
+        lblUsername.text = borrowerName.uppercased()
     }
     
     func setScreenHeight(){

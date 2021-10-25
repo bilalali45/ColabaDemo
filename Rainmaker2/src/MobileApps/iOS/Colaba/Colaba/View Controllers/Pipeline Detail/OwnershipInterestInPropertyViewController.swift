@@ -77,6 +77,7 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
     @objc func yesStackViewTapped(){
         isYes = true
         let vc = Utility.getOwnershipInterestInPropertyFollowupQuestionVC()
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     
@@ -105,6 +106,7 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
     @objc func propertyTypeViewTapped(){
         let vc = Utility.getOwnershipInterestInPropertyFollowupQuestionVC()
         vc.questions = subQuestions
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
 }
