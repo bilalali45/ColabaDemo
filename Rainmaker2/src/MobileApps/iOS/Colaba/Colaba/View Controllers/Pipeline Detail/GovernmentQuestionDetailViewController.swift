@@ -204,6 +204,9 @@ class GovernmentQuestionDetailViewController: BaseViewController {
         ownershipInterestVC = Utility.getOwnershipInterestInPropertyVC()
         if let ownershipQuestion = governmentQuestions.filter({$0.headerText.localizedCaseInsensitiveContains("Ownership Interest in Property")}).first{
             ownershipInterestVC.questionModel = ownershipQuestion
+            let subQuestions = governmentQuestions.filter({$0.parentQuestionId == ownershipQuestion.id})
+            ownershipInterestVC.subQuestions = subQuestions
+            
         }
         
         familyOrBusinessAffiliationVC = Utility.getFamilyOrBusinessAffliationVC()

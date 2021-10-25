@@ -56,7 +56,7 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextView()
-        
+        txtViewDetail.textView.text = questionModel.answerDetail
         if (type == .priorityLiens){
             lblTopTitle.text = "Priority Liens"
         }
@@ -125,7 +125,6 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
         txtViewDetail.textView.textColor = .black
         txtViewDetail.textView.delegate = self
         mainView.addSubview(txtViewDetail)
-        
 
     }
     

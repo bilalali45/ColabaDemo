@@ -33,6 +33,11 @@ class DebtCoSignerViewController: BaseViewController {
         setQuestionData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setQuestionData()
+    }
+    
     //MARK:- Methods
     
     func setupViews(){
@@ -83,6 +88,7 @@ class DebtCoSignerViewController: BaseViewController {
     @objc func detailViewTapped(){
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .debtCoSigner
+        vc.questionModel = questionModel
         self.presentVC(vc: vc)
     }
     

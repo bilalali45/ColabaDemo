@@ -6180,13 +6180,50 @@ Houston, TX 77027, USA</string>
                                             <constraint firstItem="pCT-NO-9rl" firstAttribute="top" secondItem="RMn-lQ-ZDX" secondAttribute="top" constant="15" id="pco-32-52u"/>
                                         </constraints>
                                     </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TZD-cC-g90">
+                                        <rect key="frame" x="20" y="284" width="335" height="90"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CnE-o5-2Xm">
+                                                <rect key="frame" x="30" y="15" width="285" height="23.5"/>
+                                                <attributedString key="attributedText">
+                                                    <fragment content="How did you hold title to the property?">
+                                                        <attributes>
+                                                            <color key="NSColor" name="AppGreyColor"/>
+                                                            <font key="NSFont" metaFont="system"/>
+                                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                                        </attributes>
+                                                    </fragment>
+                                                </attributedString>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By Yourself" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJS-qW-g8b">
+                                                <rect key="frame" x="30" y="53.5" width="275" height="18"/>
+                                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
+                                                <color key="textColor" name="AppBlackColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="CnE-o5-2Xm" secondAttribute="trailing" constant="20" id="72B-Ke-Mwq"/>
+                                            <constraint firstItem="dJS-qW-g8b" firstAttribute="leading" secondItem="TZD-cC-g90" secondAttribute="leading" constant="30" id="B8W-DC-6a2"/>
+                                            <constraint firstItem="dJS-qW-g8b" firstAttribute="top" secondItem="CnE-o5-2Xm" secondAttribute="bottom" constant="15" id="EKQ-Ls-X4d"/>
+                                            <constraint firstItem="CnE-o5-2Xm" firstAttribute="leading" secondItem="TZD-cC-g90" secondAttribute="leading" constant="30" id="S7i-85-hMj"/>
+                                            <constraint firstAttribute="height" constant="90" id="dbZ-gu-Qpy"/>
+                                            <constraint firstItem="CnE-o5-2Xm" firstAttribute="top" secondItem="TZD-cC-g90" secondAttribute="top" constant="15" id="f09-RM-pck"/>
+                                            <constraint firstAttribute="trailing" secondItem="dJS-qW-g8b" secondAttribute="trailing" constant="30" id="spy-le-shD"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="TZD-cC-g90" secondAttribute="trailing" constant="20" id="Ed7-YL-Hpd"/>
                                     <constraint firstItem="amq-Pl-IH0" firstAttribute="top" secondItem="Z0J-sj-IXT" secondAttribute="top" id="GPJ-gO-8Bd"/>
                                     <constraint firstItem="cDh-On-GGW" firstAttribute="top" secondItem="amq-Pl-IH0" secondAttribute="bottom" constant="20" id="IMt-Ca-oYp"/>
                                     <constraint firstAttribute="trailing" secondItem="LWH-hj-mKN" secondAttribute="trailing" constant="20" id="JUt-Ym-gvk"/>
+                                    <constraint firstItem="TZD-cC-g90" firstAttribute="leading" secondItem="Z0J-sj-IXT" secondAttribute="leading" constant="20" id="K68-t9-9rv"/>
                                     <constraint firstAttribute="trailing" secondItem="amq-Pl-IH0" secondAttribute="trailing" constant="10" id="LYh-eO-etM"/>
+                                    <constraint firstItem="TZD-cC-g90" firstAttribute="top" secondItem="RMn-lQ-ZDX" secondAttribute="bottom" constant="20" id="LoJ-bY-6ac"/>
                                     <constraint firstItem="cDh-On-GGW" firstAttribute="leading" secondItem="Z0J-sj-IXT" secondAttribute="leading" constant="20" id="VH0-CE-OaI"/>
                                     <constraint firstItem="RMn-lQ-ZDX" firstAttribute="leading" secondItem="Z0J-sj-IXT" secondAttribute="leading" constant="20" id="WBx-mt-kAM"/>
                                     <constraint firstItem="LWH-hj-mKN" firstAttribute="top" secondItem="cDh-On-GGW" secondAttribute="bottom" id="fgg-UB-xYg"/>
@@ -6212,10 +6249,13 @@ Houston, TX 77027, USA</string>
                         <outlet property="btnYes" destination="bfi-x9-evN" id="Trq-8j-e5z"/>
                         <outlet property="lblNo" destination="Jnf-zi-vi9" id="RlB-Wj-QVi"/>
                         <outlet property="lblPropertyQuestion" destination="pCT-NO-9rl" id="CcR-2P-8Sp"/>
+                        <outlet property="lblPropertyTitleAnswer" destination="dJS-qW-g8b" id="5T1-ln-jME"/>
+                        <outlet property="lblPropertyTitleQuestion" destination="CnE-o5-2Xm" id="MA0-Za-sRV"/>
                         <outlet property="lblPropertyType" destination="hC4-nt-f8e" id="8od-ou-vtz"/>
                         <outlet property="lblQuestion" destination="amq-Pl-IH0" id="P7G-IZ-oga"/>
                         <outlet property="lblYes" destination="sYJ-Jj-vhT" id="1fb-PY-Z62"/>
                         <outlet property="noStackView" destination="LWH-hj-mKN" id="7pf-Lh-UvT"/>
+                        <outlet property="propertyTitleView" destination="TZD-cC-g90" id="3mA-K5-GSA"/>
                         <outlet property="propertyTypeView" destination="RMn-lQ-ZDX" id="Rpq-dk-Noo"/>
                         <outlet property="yesStackView" destination="cDh-On-GGW" id="NNJ-fl-8sV"/>
                     </connections>

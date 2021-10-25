@@ -33,6 +33,11 @@ class FedralDebtViewController: BaseViewController {
         setQuestionData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setQuestionData()
+    }
+    
     //MARK:- Methods
     
     func setupViews(){
@@ -84,6 +89,7 @@ class FedralDebtViewController: BaseViewController {
     @objc func detailViewTapped(){
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .federalDebt
+        vc.questionModel = questionModel
         self.presentVC(vc: vc)
     }
     

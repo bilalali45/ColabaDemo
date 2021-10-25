@@ -33,6 +33,11 @@ class OutstandingJudgementsViewController: BaseViewController {
         setQuestionData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setQuestionData()
+    }
+    
     //MARK:- Methods
     
     func setupViews(){
@@ -84,6 +89,7 @@ class OutstandingJudgementsViewController: BaseViewController {
     @objc func detailViewTapped(){
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .outStandingJudgement
+        vc.questionModel = questionModel
         self.presentVC(vc: vc)
     }
     

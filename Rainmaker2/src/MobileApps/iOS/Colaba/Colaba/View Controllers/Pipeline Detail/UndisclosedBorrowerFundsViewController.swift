@@ -87,9 +87,7 @@ class UndisclosedBorrowerFundsViewController: BaseViewController {
                 if let amount = Int(amountQuestion.answer){
                     lblAmount.text = amount.withCommas().replacingOccurrences(of: ".00", with: "")
                 }
-                
             }
-            
         }
     }
     

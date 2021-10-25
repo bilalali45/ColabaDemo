@@ -33,6 +33,11 @@ class ForceClosedPropertyViewController: BaseViewController {
         setQuestionData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setQuestionData()
+    }
+    
     //MARK:- Methods
     
     func setupViews(){
@@ -83,6 +88,7 @@ class ForceClosedPropertyViewController: BaseViewController {
     @objc func detailViewTapped(){
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .forceClosedProperty
+        vc.questionModel = questionModel
         self.presentVC(vc: vc)
     }
     

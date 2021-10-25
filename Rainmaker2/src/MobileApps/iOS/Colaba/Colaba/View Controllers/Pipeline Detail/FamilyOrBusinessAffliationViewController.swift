@@ -33,6 +33,11 @@ class FamilyOrBusinessAffliationViewController: UIViewController {
         setQuestionData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setQuestionData()
+    }
+    
     //MARK:- Methods
     
     func setupViews(){
@@ -83,6 +88,7 @@ class FamilyOrBusinessAffliationViewController: UIViewController {
     @objc func detailViewTapped(){
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .familyOrBusinessAffilation
+        vc.questionModel = questionModel
         self.presentVC(vc: vc)
     }
 
