@@ -55,8 +55,8 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
     private fun getSecondMortgageDetails() {
        // sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
 
-            lifecycleScope.launchWhenStarted {
-                viewModel.getSecondMortgageDetails(AppConstant.authToken, 5, 1003)
+            //lifecycleScope.launchWhenStarted {
+              //  viewModel.getSecondMortgageDetails(AppConstant.authToken, 5, 1003)
                 viewModel.secondMortgageDetails.observe(viewLifecycleOwner, {
                     if (it != null) {
                         it.data?.secondMortgagePayment?.let {
@@ -98,16 +98,15 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
                                 binding.rbPaidClosingYes.isChecked = true
                                 binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
                             } else {
-                                binding.rbPaidClosingNo.isChecked = false
+                                binding.rbPaidClosingNo.isChecked = true
                                 binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
                             }
 
                         }
 
-
                     }
                 })
-            }
+           // }
 
     }
 

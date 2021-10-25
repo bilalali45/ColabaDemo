@@ -58,7 +58,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
         _binding = DetailApplicationTabBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
         horizontalRecyclerView = root.findViewById(R.id.horizontalRecycleView)
         realStateRecyclerView = root.findViewById(R.id.realStateHorizontalRecyclerView)
         questionsRecyclerView = root.findViewById(R.id.govtQuestionHorizontalRecyclerView)
@@ -131,6 +131,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
                 intent.putExtra(AppConstant.borrowerPurpose, it.borrowerLoanPurpose)
                 startActivity(intent)
+
             }
         }
 
@@ -398,6 +399,11 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
     }
 
 

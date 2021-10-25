@@ -17,7 +17,7 @@ class DetailActivity : BaseActivity() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    private lateinit var binding: DetailTopLayoutBinding
+    lateinit var binding: DetailTopLayoutBinding
     var loanApplicationId:Int? = null
     var borrowerFirstName:String? = null
     var borrowerLastName:String? = null
@@ -41,7 +41,6 @@ class DetailActivity : BaseActivity() {
             innerScreenName = it.getString(AppConstant.innerScreenName)
             //Log.e("Names- ", "$borrowerFirstName $borrowerLastName")
         }
-
 
         super.onCreate(savedInstanceState)
         binding = DetailTopLayoutBinding.inflate(layoutInflater)
@@ -118,6 +117,7 @@ class DetailActivity : BaseActivity() {
         binding.emailFab.visibility = View.VISIBLE
         binding.messageFab.visibility = View.VISIBLE
         binding.phoneFab.visibility = View.VISIBLE
+        binding.requestDocFab.visibility = View.GONE
     }
 
     fun checkIfUnreadFileOpened(){

@@ -46,12 +46,15 @@ class SubjectPropertyPurchase : BaseFragment() {
             savedViewInstance
         } else {
             binding = SubjectPropertyPurchaseBinding.inflate(inflater, container, false)
+            postponeEnterTransition()
+
             savedViewInstance = binding.root
+
             super.addListeners(binding.root)
 
-            setupUI()
-            setInputFields()
-            getPurchaseDetails()
+            //setupUI()
+            //setInputFields()
+            //getPurchaseDetails()
 
             savedViewInstance
         }

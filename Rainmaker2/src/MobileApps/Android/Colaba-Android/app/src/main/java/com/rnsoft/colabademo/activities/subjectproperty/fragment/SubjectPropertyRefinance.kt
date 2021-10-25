@@ -181,6 +181,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         }
 
         binding.backButton.setOnClickListener {
+            Log.e("back_click","true")
             requireActivity().finish()
             requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }

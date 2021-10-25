@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.detail_list_layout.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -53,7 +54,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
     var filter : String = "All"
     lateinit var layout_noDocFound : ConstraintLayout
     lateinit var layout_docData : ConstraintLayout
-    lateinit var layout_noDocUplaoded : ConstraintLayout
+    //lateinit var layout_noDocUplaoded : ConstraintLayout
     var state: Parcelable? = null
 
     private val detailViewModel: DetailViewModel by activityViewModels()
@@ -72,13 +73,13 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
 
         shimmerContainer = view.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
         shimmerContainer?.startShimmer()
-
         docsRecycler = view.findViewById(R.id.docs_recycle_view)
         layout_noDocFound = view.findViewById(R.id.layout_no_documents)
         layout_docData = view.findViewById(R.id.layout_doc_data)
-        layout_noDocUplaoded = view.findViewById(R.id.layout_no_doc_uploaded)
         val linearLayoutManager = LinearLayoutManager(activity)
         downloadLoader = view.findViewById(R.id.doc_download_loader)
+        (activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
+
 
         borrowerDocumentAdapter =
             BorrowerDocumentAdapter(docsArrayList, this@BorrowerDocumentFragment , this@BorrowerDocumentFragment)
@@ -87,12 +88,14 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
             this.layoutManager = linearLayoutManager
             this.setHasFixedSize(true)
             this.adapter = borrowerDocumentAdapter
+            //populateRecyclerview(docsArrayList)
         }
 
         //Log.e("Doc created on", "$docsArrayList")
 
         detailViewModel.borrowerDocsModelList.observe(viewLifecycleOwner, {
             if (isStart) {
+                Log.e("isStart","observig Data")
                 if (it != null && it.size > 0) {
                     docsArrayList = it
                     isStart = false
@@ -127,14 +130,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         btnFilterManullayAdded = view.findViewById(R.id.btn_filter_manullayAdded)
         btnFilterManullayAdded.setOnClickListener(this)
 
-        btnRequestDoc = view.findViewById(R.id.btn_req_doc)
-        btnRequestDoc.setOnClickListener {
-            val intent = Intent(requireActivity(),RequestDocsActivity::class.java)
-            requireActivity().startActivity(intent)
-        }
-
-        btnRequestDoc1 = view.findViewById(R.id.btn_req_doc1)
-        btnRequestDoc1.setOnClickListener {
+        (activity as DetailActivity).binding.requestDocFab.setOnClickListener{
             val intent = Intent(requireActivity(),RequestDocsActivity::class.java)
             requireActivity().startActivity(intent)
         }
@@ -149,10 +145,23 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
     }
 
     private fun populateRecyclerview(arrayList: ArrayList<BorrowerDocsModel>) {
-        borrowerDocumentAdapter =
-            BorrowerDocumentAdapter(arrayList, this@BorrowerDocumentFragment , this@BorrowerDocumentFragment )
-        docsRecycler.adapter = borrowerDocumentAdapter
-        borrowerDocumentAdapter.notifyDataSetChanged()
+        Timber.e("populate Recyclerview")
+            if(arrayList.size >0) {
+                Timber.e("size:" + arrayList.size)
+                borrowerDocumentAdapter =
+                    BorrowerDocumentAdapter(
+                        arrayList,
+                        this@BorrowerDocumentFragment,
+                        this@BorrowerDocumentFragment
+                    )
+                docsRecycler.adapter = borrowerDocumentAdapter
+                borrowerDocumentAdapter.notifyDataSetChanged()
+               showHideLayout(true)
+            } else{
+                Timber.e("here", "here")
+                showHideLayout(false)
+            }
+
     }
 
     override fun onClick(v: View){
@@ -171,8 +180,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
                 populateRecyclerview(docsArrayList)
                 layout_docData.visibility = View.VISIBLE
                 docsRecycler.visibility = View.VISIBLE
-                layout_noDocFound.visibility = View.GONE
-                layout_noDocUplaoded.visibility = View.GONE
+
             }
             R.id.btn_filter_indraft -> {
                 filter = AppConstant.filter_inDraft
@@ -345,8 +353,6 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
 
 
 
-
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private fun selectStatusFilter(
@@ -425,15 +431,16 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
     }
 
     private fun showHideLayout(dataLayout: Boolean){
+        Timber.e("datalayout "+ dataLayout)
         if(dataLayout){
             layout_docData.visibility = View.VISIBLE
             layout_noDocFound.visibility = View.GONE
-            layout_noDocUplaoded.visibility = View.GONE
+            (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
         }
         else {
             layout_docData.visibility = View.GONE
             layout_noDocFound.visibility = View.VISIBLE
-            layout_noDocUplaoded.visibility = View.GONE
+            (activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
         }
     }
 
@@ -458,12 +465,14 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
             }
         }
         if(filterDocsList.size>0) {
-            layout_noDocUplaoded.visibility= View.GONE
+            layout_noDocFound.visibility = View.GONE
+            (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
             docsRecycler.visibility=View.VISIBLE
             populateRecyclerview(filterDocsList)
         } else{
             docsRecycler.visibility=View.GONE
-            layout_noDocUplaoded.visibility= View.VISIBLE
+            layout_noDocFound.visibility = View.VISIBLE
+            (activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
         }
     }
 

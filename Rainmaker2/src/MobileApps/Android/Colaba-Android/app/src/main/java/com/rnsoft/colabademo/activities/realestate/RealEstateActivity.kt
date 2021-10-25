@@ -42,10 +42,11 @@ class RealEstateActivity : BaseActivity() {
                     binding.loaderRealEstate.visibility = View.VISIBLE
                     delay(2000)
                     viewModel.getRealEstateDetails(authToken, loanApplicationId, propertyId)
-                    //viewModel.getFirstMortgageDetails(authToken,loanApplicationId,propertyId)
-                    //viewModel.getPropertyTypes(authToken)
-                    //viewModel.getOccupancyType(authToken)
-                    //viewModel.getPropertyStatus(authToken)
+                    viewModel.getFirstMortgageDetails(authToken,loanApplicationId,propertyId)
+                    viewModel.getSecondMortgageDetails(authToken, 5, 1003)
+                    viewModel.getPropertyTypes(authToken)
+                    viewModel.getOccupancyType(authToken)
+                    viewModel.getPropertyStatus(authToken)
                 }
             }
         }

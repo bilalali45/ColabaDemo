@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.rnsoft.colabademo.AppConstant.authToken
@@ -29,7 +30,7 @@ class SubjectPropertyActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = BorrowerSubjectPropertyLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
 
         val extras = intent.extras
         extras?.let {
