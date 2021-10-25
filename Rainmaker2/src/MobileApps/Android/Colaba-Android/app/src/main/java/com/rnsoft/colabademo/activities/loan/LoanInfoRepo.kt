@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-import com.rnsoft.colabademo.activities.loan.model.LoanGoalModel
 import javax.inject.Inject
 
 /**

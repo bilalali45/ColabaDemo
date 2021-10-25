@@ -1,17 +1,22 @@
 package com.rnsoft.colabademo
 
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputLayout
 
 import com.rnsoft.colabademo.databinding.FirstMortgageLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import timber.log.Timber
 
 /**
  * Created by Anita Kiran on 9/9/2021.
@@ -19,6 +24,9 @@ import com.rnsoft.colabademo.utils.NumberTextFormat
 class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
 
     private lateinit var binding : FirstMortgageLayoutBinding
+    private val viewModel : RealEstateViewModel by activityViewModels()
+    lateinit var sharedPreferences : SharedPreferences
+    //val authToken : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0NzUzMjYxLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.bHZwTohB4toe2JGgKVNeaOoOh8HIaygh8WqmGpTPzO4"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,7 +35,10 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
     ): View {
         binding = FirstMortgageLayoutBinding.inflate(inflater, container, false)
 
-        binding.borrowerPurpose.setText(getString(R.string.subject_property))
+        val title = arguments?.getString(AppConstant.address).toString()
+        title.let {
+            binding.borrowerPurpose.setText(title)
+        }
 
         binding.backButton.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
@@ -36,14 +47,98 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
         binding.cbHomeownwerInsurance.setOnClickListener(this)
         binding.cbPropertyTaxes.setOnClickListener(this)
         binding.switchCreditLimit.setOnClickListener(this)
-        binding.rbQuesYes.setOnClickListener(this)
-        binding.rbQuesNo.setOnClickListener(this)
+        binding.rbPaidClosingYes.setOnClickListener(this)
+        binding.rbPaidClosingNo.setOnClickListener(this)
 
         setInputFields()
+        getFirstMortgageDetails()
         super.addListeners(binding.root)
 
         return binding.root
     }
+
+    private fun getFirstMortgageDetails() {
+        //sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+            lifecycleScope.launchWhenStarted {
+                viewModel.getFirstMortgageDetails(AppConstant.authToken, 5, 1003)
+                viewModel.firstMortgageDetails.observe(viewLifecycleOwner, {
+                    if (it != null) {
+                        it.data?.firstMortgagePayment?.let {
+                            binding.edFirstMortgagePayment.setText(Math.round(it).toString())
+                            CustomMaterialFields.setColor(
+                                binding.layoutFirstPayment,
+                                R.color.grey_color_two,
+                                requireActivity()
+                            )
+                        }
+                        it.data?.unpaidFirstMortgagePayment?.let {
+                            binding.edUnpaidBalance.setText(Math.round(it).toString())
+                            CustomMaterialFields.setColor(
+                                binding.layoutUnpaidBalance,
+                                R.color.grey_color_two,
+                                requireActivity()
+                            )
+                        }
+                        it.data?.floodInsuranceIncludeinPayment?.let {
+                            if (it == true) {
+                                binding.cbFloodInsurance.isChecked = true
+                                binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
+                            } else {
+                                binding.cbFloodInsurance.isChecked = false
+                                binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
+                            }
+                        }
+                        it.data?.propertyTaxesIncludeinPayment?.let {
+                            if (it == true) {
+                                binding.cbPropertyTaxes.isChecked = true
+                                binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
+                            } else {
+                                binding.cbPropertyTaxes.isChecked = false
+                                binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
+                            }
+                        }
+                        it.data?.homeOwnerInsuranceIncludeinPayment?.let {
+                            if (it == true) {
+                                binding.cbHomeownwerInsurance.isChecked = true
+                                binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
+                            } else {
+                                binding.cbHomeownwerInsurance.isChecked = false
+                                binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
+                            }
+                        }
+
+                        it.data?.isHeloc?.let {
+                            if (it == true) {
+                                binding.switchCreditLimit.isChecked = true
+                                binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+                            } else {
+                                binding.switchCreditLimit.isChecked = false
+                                binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
+                            }
+                        }
+                        it.data?.helocCreditLimit?.let {
+                            binding.edCreditLimit.setText(Math.round(it).toString())
+                            CustomMaterialFields.setColor(
+                                binding.layoutCreditLimit,
+                                R.color.grey_color_two,
+                                requireActivity()
+                            )
+                        }
+                        it.data?.paidAtClosing?.let {
+                            if (it == true) {
+                                binding.rbPaidClosingYes.isChecked = true
+                                binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
+                            } else {
+                                binding.rbPaidClosingNo.isChecked = true
+                                binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
+                            }
+                        }
+
+                    }
+                })
+            }
+    }
+
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
@@ -83,20 +178,20 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
                     binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
                 }
 
-            R.id.rb_ques_yes ->
-                if (binding.rbQuesYes.isChecked) {
-                    binding.rbQuesYes.setTypeface(null, Typeface.BOLD)
-                    binding.rbQuesNo.setTypeface(null, Typeface.NORMAL)
+            R.id.rb_paid_closing_yes ->
+                if (binding.rbPaidClosingYes.isChecked) {
+                    binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
+                    binding.rbPaidClosingNo.setTypeface(null, Typeface.NORMAL)
                 }else{
-                    binding.rbQuesYes.setTypeface(null, Typeface.NORMAL)
+                    binding.rbPaidClosingYes.setTypeface(null, Typeface.NORMAL)
                 }
 
-            R.id.rb_ques_no ->
-                if (binding.rbQuesNo.isChecked) {
-                    binding.rbQuesNo.setTypeface(null, Typeface.BOLD)
-                    binding.rbQuesYes.setTypeface(null, Typeface.NORMAL)
+            R.id.rb_paid_closing_no ->
+                if (binding.rbPaidClosingNo.isChecked) {
+                    binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
+                    binding.rbPaidClosingYes.setTypeface(null, Typeface.NORMAL)
                 }else{
-                    binding.rbQuesNo.setTypeface(null, Typeface.NORMAL)
+                    binding.rbPaidClosingNo.setTypeface(null, Typeface.NORMAL)
                 }
         }
     }

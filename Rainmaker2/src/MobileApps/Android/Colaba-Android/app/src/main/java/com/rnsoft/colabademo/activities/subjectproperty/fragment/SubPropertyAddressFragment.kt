@@ -52,6 +52,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
     private var predicationList: ArrayList<String> = ArrayList()
     private var addressList : ArrayList<AddressData> = ArrayList()
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,20 +62,31 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
 
 
         setInputFields()
-        //setStateAndCountyDropDown()
         getDropDownData()
         setUpCompleteViewForPlaces()
         initializeUSAstates()
 
         addressList = arguments?.getParcelableArrayList(AppConstant.address)!!
         if(addressList.size > 0 ) {
-            addressList[0].street?.let { binding.tvSearch.setText(it) }
+            addressList[0].street?.let {
+                binding.tvSearch.setText(it)
+                CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_two, requireActivity())
+            }
             addressList[0].street?.let { binding.edStreetAddress.setText(it) }
             addressList[0].city?.let { binding.edCity.setText(it) }
-            addressList[0].countryName?.let { binding.tvCountry.setText(it) }
+            addressList[0].countryName?.let {
+                binding.tvCountry.setText(it)
+                binding.layoutCountry.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+            }
             addressList[0].zipCode?.let { binding.edZipcode.setText(it) }
-            addressList[0].stateName?.let { binding.tvState.setText(it) }
-            addressList[0].countyName?.let {binding.tvCounty.setText(it) }
+            addressList[0].stateName?.let { binding.tvState.setText(it)
+                binding.layoutState.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+            }
+            addressList[0].countyName?.let {
+                binding.tvCounty.setText(it)
+                binding.layoutCounty.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+            }
+            addressList[0].unit?.let{ binding.edUnitAtpNo.setText(it)}
             visibleAllFields()
         }
 
@@ -95,7 +107,6 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         binding.backButton.setOnClickListener {
             //findNavController().navigate(R.id.action_back_fromAddress_toPurchase)
             findNavController().popBackStack()
-
         }
 
        /*requireActivity().onBackPressedDispatcher.addCallback {
@@ -110,7 +121,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
 
     private fun getDropDownData(){
          lifecycleScope.launchWhenStarted {
-             viewModel.getStates("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA")
+             viewModel.getStates(AppConstant.authToken)
              viewModel.states.observe(viewLifecycleOwner, { states->
                  if (states != null && states.size > 0) {
                      val itemList: ArrayList<String> = arrayListOf()
@@ -125,6 +136,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                      }
                      binding.tvState.setOnClickListener {
                          binding.tvState.showDropDown()
+                         HideSoftkeyboard.hide(requireActivity(),binding.layoutState)
                      }
 
                      binding.tvState.onItemClickListener =
@@ -140,7 +152,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
 
         // get countries
         lifecycleScope.launchWhenStarted {
-            viewModel.getCountries("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA")
+            viewModel.getCountries(AppConstant.authToken)
             viewModel.countries.observe(viewLifecycleOwner, { countries ->
                 if (countries != null && countries.size > 0) {
                     val itemList: ArrayList<String> = arrayListOf()
@@ -154,9 +166,11 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
 
                     binding.tvCountry.setOnFocusChangeListener { _, _ ->
                         binding.tvCountry.showDropDown()
+                        HideSoftkeyboard.hide(requireActivity(),binding.layoutCountry)
                     }
                     binding.tvCountry.setOnClickListener {
                         binding.tvCountry.showDropDown()
+                        HideSoftkeyboard.hide(requireActivity(),binding.layoutCountry)
                     }
 
                     binding.tvCountry.onItemClickListener = object : AdapterView.OnItemClickListener {
@@ -176,7 +190,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
 
         // get county
         lifecycleScope.launchWhenStarted {
-            viewModel.getCounty("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA")
+            viewModel.getCounty(AppConstant.authToken)
             viewModel.counties.observe(viewLifecycleOwner, { counties ->
                 if (counties != null && counties.size > 0) {
                     val itemList: ArrayList<String> = arrayListOf()
@@ -193,6 +207,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                     //}
                     binding.tvCounty.setOnClickListener {
                         binding.tvCounty.showDropDown()
+                        HideSoftkeyboard.hide(requireActivity(),binding.layoutCounty)
                     }
 
                     binding.tvCounty.onItemClickListener = object : AdapterView.OnItemClickListener {
@@ -209,10 +224,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
 
             })
         }
-
-
-
-
+        
     }
 
     private fun setInputFields(){

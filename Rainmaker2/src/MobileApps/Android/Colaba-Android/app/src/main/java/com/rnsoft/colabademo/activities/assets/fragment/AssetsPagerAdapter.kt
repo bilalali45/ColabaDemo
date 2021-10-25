@@ -4,40 +4,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import android.os.Bundle
 
-
-class AssetsPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+class AssetsPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, private val tabIds:ArrayList<Int>) :
         FragmentStateAdapter(fragmentManager, lifecycle) {
 
-    companion object{
-        const val BORROWER_ASSET_TABS = 2 // this number will decide, how many tabs and fragments will be displayed...
-    }
-
     override fun getItemCount(): Int {
-        return BORROWER_ASSET_TABS
+        return tabIds.size
     }
 
     override fun createFragment(position: Int): Fragment {
-
-        when (position) {
-            0 -> {
-                return BorrowerOneAssets()
-            }
-            1 -> {
-                return BorrowerOneAssets()
-            }
-
-            2 -> {
-                return BorrowerThreeAssets()
-            }
-
-            3 -> {
-                return BorrowerFourAssets()
-            }
-        }
-
-
-        return BaseFragment()
-
+        val borrowerOneAssets = BorrowerOneAssets()
+        val args = Bundle()
+        args.putInt(AppConstant.tabBorrowerId, tabIds[position])
+        borrowerOneAssets.arguments = args
+        return borrowerOneAssets
     }
+
 }

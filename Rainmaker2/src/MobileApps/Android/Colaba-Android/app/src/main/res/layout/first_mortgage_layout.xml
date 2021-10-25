@@ -241,7 +241,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:fontFamily="@font/rubik_light"
-                android:hint="Credit Limit"
+                android:hint="@string/credit_limit"
                 android:textColorHint="@color/primary_info_label_color"
                 app:boxCollapsedPaddingTop="1dp"
                 app:boxStrokeColor="@color/primary_info_line_color"
@@ -284,7 +284,7 @@
                 android:layout_marginTop="27dp">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/rb_ques_yes"
+                    android:id="@+id/rb_paid_closing_yes"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
                     android:button="@drawable/radiodraw"
@@ -296,7 +296,7 @@
                     android:textSize="14sp" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/rb_ques_no"
+                    android:id="@+id/rb_paid_closing_no"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
                     android:layout_marginTop="18dp"

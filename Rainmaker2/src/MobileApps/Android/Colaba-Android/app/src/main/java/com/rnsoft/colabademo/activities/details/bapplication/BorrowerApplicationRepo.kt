@@ -15,6 +15,9 @@ class BorrowerApplicationRepo  @Inject constructor(
         return borrowerApplicationDataSource.getBorrowerAssetsDetail(token = token , loanApplicationId = loanApplicationId, borrowerId = borrowerId )
     }
 
+    suspend fun getBorrowerIncomeDetail(token:String, loanApplicationId:Int, borrowerId:Int):Result<IncomeDetailsResponse>{
+        return borrowerApplicationDataSource.getBorrowerIncomeDetail(token = token , loanApplicationId = loanApplicationId, borrowerId = borrowerId )
+    }
 
     suspend fun getGovernmentQuestions(token:String, loanApplicationId:Int, ownTypeId:Int, borrowerId:Int):Result<GovernmentQuestionsModelClass>{
         return borrowerApplicationDataSource.getGovernmentQuestions(

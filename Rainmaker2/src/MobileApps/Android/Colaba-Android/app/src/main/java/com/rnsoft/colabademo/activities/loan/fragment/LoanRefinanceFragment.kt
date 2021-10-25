@@ -28,7 +28,6 @@ class LoanRefinanceFragment : BaseFragment() {
     private lateinit var bindingToolbar: AppHeaderWithBackNavBinding
     private val loanViewModel : LoanInfoViewModel by activityViewModels()
     val stageList: ArrayList<String> = arrayListOf()
-    val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0NDExMDMyLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.nhk-k0X8XXsqRKCdQHt8nvPtjR8TqrvUrXx8CVjfcpw"
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -107,8 +106,6 @@ class LoanRefinanceFragment : BaseFragment() {
     }
 
     private fun getLoanInfoDetail() {
-        lifecycleScope.launchWhenStarted {
-            loanViewModel.getLoanInfoPurchase(token, 1010)
             loanViewModel.loanInfoPurchase.observe(viewLifecycleOwner, { loanInfo ->
                 if (loanInfo != null) {
                     loanInfo.data?.loanGoalName?.let {
@@ -126,17 +123,20 @@ class LoanRefinanceFragment : BaseFragment() {
                     }
 
                     loanInfo.data?.loanPurposeId?.let {
-                        loanViewModel.getLoanGoals(token,it)
+                        loanViewModel.getLoanGoals(AppConstant.authToken,it)
                         loanViewModel.loanGoals.observe(viewLifecycleOwner,{
                             for(item in it){
                                 stageList.add(item.description)
                             }
                             setLoanStageSpinner()
+
                         })
                     }
+
+                    val  activity = (activity as? BorrowerLoanActivity)
+                    activity?.binding?.loaderLoanInfo?.visibility = View.GONE
                 }
             })
-        }
     }
 
     private fun setLoanStageSpinner() {

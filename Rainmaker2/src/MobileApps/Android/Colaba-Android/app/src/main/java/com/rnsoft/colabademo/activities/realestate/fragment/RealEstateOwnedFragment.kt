@@ -15,14 +15,11 @@ import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
 import com.rnsoft.colabademo.activities.addresses.info.fragment.SwipeToDeleteEvent
-import com.rnsoft.colabademo.activities.realestate.RealEstateViewModel
-import com.rnsoft.colabademo.activities.realestate.model.RealEstateAddress
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.RealEstateOwnedLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
-import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -42,7 +39,9 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
     private var propertyTypeId : Int = 0
     private var occupancyTypeId : Int = 0
     var addressList : ArrayList<RealEstateAddress> = ArrayList()
-    val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0NDExMDMyLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.nhk-k0X8XXsqRKCdQHt8nvPtjR8TqrvUrXx8CVjfcpw"
+    var addressHeading: String? = null
+    val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0NzUzMjYxLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.bHZwTohB4toe2JGgKVNeaOoOh8HIaygh8WqmGpTPzO4"
+
 
 
     override fun onCreateView(
@@ -71,21 +70,18 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
 
     private fun getRealEstateDetails() {
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.getRealEstateDetails(token, 5, 1003)
+        //lifecycleScope.launchWhenStarted {
+            //viewModel.getRealEstateDetails(token, 5, 1003)
             viewModel.realEstateDetails.observe(viewLifecycleOwner, {
                 if(it != null) {
                     it.data?.address?.let {
-                        //binding.radioSubPropertyAddress.isChecked = true
-                        //binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
-                        //binding.tvSubPropertyAddress.visibility = View.VISIBLE
                         binding.tvPropertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+                        addressHeading = it.street
                         addressList.add(RealEstateAddress(street= it.street, unit=it.unit, city=it.city,stateName=it.stateName,countryName=it.countryName,countyName = it.countyName,
                                 countyId = it.countyId, stateId = it.stateId, countryId = it.countryId, zipCode = it.zipCode ))
 
                         } ?: run {
-                            //binding.radioSubPropertyTbd.isChecked = true
-                            //binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
+
                         }
                         it.data?.rentalIncome?.let{
                             binding.edRentalIncome.setText(it.toString())
@@ -169,11 +165,13 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                         } else {
                             binding.rbSecMortgageNo.isChecked = true
                         }
-                        getDropDownData()
 
+
+                    getDropDownData()
+                    val  activity = (activity as? RealEstateActivity)
+                    activity?.binding?.loaderRealEstate?.visibility = View.GONE
                 }
             })
-        }
     }
 
 
@@ -244,8 +242,8 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
 
     private fun getDropDownData(){
 
-        lifecycleScope.launchWhenStarted {
-             viewModel.getPropertyTypes(token)
+        //lifecycleScope.launchWhenStarted {
+          //viewModel.getPropertyTypes(token)
              viewModel.propertyType.observe(viewLifecycleOwner, {
                  val itemList: ArrayList<String> = arrayListOf()
                  for (item in it) {
@@ -268,11 +266,11 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                      }
                  }
              })
-         }
+        // }
 
         // occupancy Type spinner
-        lifecycleScope.launchWhenStarted {
-            viewModel.getOccupancyType(token)
+        //lifecycleScope.launchWhenStarted {
+            //viewModel.getOccupancyType(token)
             viewModel.occupancyType.observe(viewLifecycleOwner, {occupancyList->
 
                 if(occupancyList != null && occupancyList.size > 0) {
@@ -303,7 +301,37 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                     }
                 }
             })
-        }
+        //}
+
+
+        viewModel.propertyStatus.observe(viewLifecycleOwner, {
+            if(it != null && it.size > 0) {
+                val itemList: ArrayList<String> = arrayListOf()
+                for (item in it) {
+                    itemList.add(item.name)
+                    /*if(occupancyTypeId > 0 && occupancyTypeId == item.id){
+                        binding.tvOccupancyType.setText(item.name)
+                        CustomMaterialFields.setColor(binding.layoutOccupancyType,R.color.grey_color_two,requireActivity())
+                    } */
+                }
+
+                val adapterPropertyStatus = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,itemList)
+                binding.tvPropertyStatus.setAdapter(adapterPropertyStatus)
+                binding.tvPropertyStatus.setOnFocusChangeListener { _, _ ->
+                    binding.tvPropertyStatus.showDropDown()
+                }
+                binding.tvPropertyStatus.setOnClickListener {
+                    binding.tvPropertyStatus.showDropDown()
+                }
+                binding.tvPropertyStatus.onItemClickListener = object :
+                    AdapterView.OnItemClickListener {
+                    override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                        CustomMaterialFields.setColor(binding.layoutPropertyStatus,R.color.grey_color_two,requireActivity())
+                        showHideRental()
+                    }
+                }
+            }
+        })
     }
 
     private fun setSpinnerData() {
@@ -385,9 +413,9 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun openAddressFragment(){
-        val addressFragment = AddressCurrentEmployment()
+        val addressFragment = RealEstateAddressFragment()
         val bundle = Bundle()
-        bundle.putString(AppConstant.address, getString(R.string.property_address))
+        bundle.putParcelableArrayList(AppConstant.address, addressList)
         addressFragment.arguments = bundle
         findNavController().navigate(R.id.action_realestate_address, addressFragment.arguments)
     }
@@ -399,9 +427,9 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
             binding.rbFirstMortgageYes.setTypeface(null, Typeface.BOLD)
             binding.rbFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
 
-            val fragment = FirstMortgageFragment()
+            val fragment = RealEstateFirstMortgage()
             val bundle = Bundle()
-            bundle.putString(AppConstant.address, "5919 TRUSSVILLE CROSSINGS PKWY")
+            bundle.putString(AppConstant.address,addressHeading)
             fragment.arguments = bundle
             findNavController().navigate(R.id.action_realestate_first_mortgage,fragment.arguments)
 
@@ -421,9 +449,9 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
         binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
         binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
 
-        val fragment = SecondMortgageFragment()
+        val fragment = RealEstateSecondMortgage()
         val bundle = Bundle()
-        bundle.putString(AppConstant.address, "5919 TRUSSVILLE CROSSINGS PKWY")
+        bundle.putString(AppConstant.address, addressHeading)
         fragment.arguments = bundle
         findNavController().navigate(R.id.action_realestate_second_mortgage,fragment.arguments)
     }

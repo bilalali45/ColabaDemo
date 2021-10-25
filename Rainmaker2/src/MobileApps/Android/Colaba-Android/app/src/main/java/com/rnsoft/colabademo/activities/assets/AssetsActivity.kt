@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.databinding.AssetsActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,12 +20,9 @@ class AssetsActivity : BaseActivity() {
     var loanApplicationId:Int? = null
     var loanPurpose:String? = null
 
-    private var bList:ArrayList<Int>? = null
+    var borrowerTabList:ArrayList<Int>? = null
 
     private val borrowerApplicationViewModel: BorrowerApplicationViewModel by viewModels()
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,41 +34,23 @@ class AssetsActivity : BaseActivity() {
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             loanPurpose = it.getString(AppConstant.loanPurpose)
-            bList = it.getIntegerArrayList(AppConstant.assetBorrowerList) as ArrayList<Int>
-        }
+            borrowerTabList = it.getIntegerArrayList(AppConstant.assetBorrowerList) as ArrayList<Int>
+            Timber.d("borrowerTabList size "+ borrowerTabList!!.size)
+            for(item in borrowerTabList!!){
+                Timber.d("item size "+ item)
+            }
 
-        Timber.d("Running on create function")
-
-
-        lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(loanApplicationId!=null && bList!=null ) {
-                    borrowerApplicationViewModel.getBorrowerWithAssets(
-                        authToken, 5,
-                        arrayListOf(5)
-                    )
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    if(loanApplicationId!=null && borrowerTabList!=null && loanApplicationId!=null ) {
+                        borrowerApplicationViewModel.getBorrowerWithAssets(
+                            authToken, loanApplicationId!!,
+                            borrowerTabList!!
+                        )
+                    }
                 }
             }
         }
-
-
-
-        /*
-        val host: NavHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_asset) as NavHostFragment? ?: return
-        // Set up Action Bar
-        val navController = host.navController
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            val dest: String = try {
-                resources.getResourceName(destination.id)
-            } catch (e: Resources.NotFoundException) {
-                destination.id.toString()
-            }
-            //Log.d("NavigationActivity", "Navigated to $dest")
-        }
-        */
-
 
     }
 

@@ -59,8 +59,8 @@ data class SubPropertyRefinanceData(
 data class FirstMortgageModel(
     var propertyTaxesIncludeinPayment : Boolean?,
     var homeOwnerInsuranceIncludeinPayment : Boolean?,
-    var floodInsuranceIncludeinPayment : Boolean,
-    var paidAtClosing : Boolean,
+    var floodInsuranceIncludeinPayment : Boolean?,
+    var paidAtClosing : Boolean?,
     var firstMortgagePayment: Double?,
     var unpaidFirstMortgagePayment : Double?,
     var helocCreditLimit : Double?,

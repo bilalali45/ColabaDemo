@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -77,8 +78,10 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repository.getSubjectPropertyRefinance(token = token, loanApplicationId = loanApplicationId)
             withContext(Dispatchers.Main) {
-                if (responseResult is Result.Success)
+                if (responseResult is Result.Success){
+                    //Log.e("getRefinance","success")
                     _refinanceDetails.value = (responseResult.data)
+                }
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)

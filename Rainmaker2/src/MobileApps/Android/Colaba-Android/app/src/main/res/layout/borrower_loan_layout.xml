@@ -22,5 +22,19 @@
         app:layout_constraintVertical_bias="1.0"
         app:navGraph="@navigation/loan_navigation" />
 
+    <ProgressBar
+        android:id="@+id/loader_loan_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:elevation="1dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colaba_apptheme_blue"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

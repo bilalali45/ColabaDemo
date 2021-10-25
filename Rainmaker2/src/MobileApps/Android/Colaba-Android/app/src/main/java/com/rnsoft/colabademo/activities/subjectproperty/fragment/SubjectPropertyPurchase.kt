@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.app.Activity
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
@@ -26,9 +27,10 @@ class SubjectPropertyPurchase : BaseFragment() {
     private lateinit var binding: SubjectPropertyPurchaseBinding
     private var savedViewInstance: View? = null
     private val viewModel : SubjectPropertyViewModel by activityViewModels()
-    val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA"
     private var propertyTypeId : Int = 0
-    private var occupancyTypeId : Int =0
+    private var occupancyTypeId : Int = 0
+    var addressList :  ArrayList<AddressData> = ArrayList()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,13 +47,12 @@ class SubjectPropertyPurchase : BaseFragment() {
             setupUI()
             setInputFields()
             getPurchaseDetails()
-            getCoBorrowerOccupancyStatus()
 
             savedViewInstance
         }
     }
 
-    private fun setupUI(){
+     fun setupUI(){
 
         // radio subject property TBD
         binding.radioSubPropertyTbd.setOnClickListener {
@@ -67,10 +68,12 @@ class SubjectPropertyPurchase : BaseFragment() {
             binding.tvSubPropertyAddress.visibility = View.VISIBLE
             binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
             binding.radioSubPropertyTbd.setTypeface(null,Typeface.NORMAL)
+            openAddress()
         }
 
         binding.layoutAddress.setOnClickListener {
-            findNavController().navigate(R.id.action_address)
+            //findNavController().navigate(R.id.action_address)
+            openAddress()
         }
 
         // radio mixed use property click
@@ -135,8 +138,8 @@ class SubjectPropertyPurchase : BaseFragment() {
     }
 
     private fun getPurchaseDetails(){
-        lifecycleScope.launchWhenStarted {
-            viewModel.getSubjectPropertyDetails(token, 1010)
+       // lifecycleScope.launchWhenStarted {
+         //   viewModel.getSubjectPropertyDetails(token, 1010)
             viewModel.subjectPropertyDetails.observe(viewLifecycleOwner, { details ->
                 if(details != null){
                     details.subPropertyData?.address?.let {
@@ -144,6 +147,8 @@ class SubjectPropertyPurchase : BaseFragment() {
                         binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
                         binding.tvSubPropertyAddress.visibility = View.VISIBLE
                         binding.tvSubPropertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+                        addressList.add(AddressData(street= it.street, unit=it.unit, city=it.city,stateName=it.stateName,countryName=it.countryName,countyName = it.countyName,
+                            countyId = it.countyId, stateId = it.stateId, countryId = it.countryId, zipCode = it.zipCode ))
                     } ?: run {
                         binding.radioSubPropertyTbd.isChecked = true
                         binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
@@ -159,19 +164,24 @@ class SubjectPropertyPurchase : BaseFragment() {
                     }
                     // appraised value
                     details.subPropertyData?.appraisedPropertyValue?.let { value ->
-                        binding.edAppraisedPropertyValue.setText(value.toString())
+                        binding.edAppraisedPropertyValue.setText(Math.round(value).toString())
+                        CustomMaterialFields.setColor(binding.layoutAppraisedProperty,R.color.grey_color_two,requireActivity())
+
                     }
                     // property tax
                     details.subPropertyData?.propertyTax?.let { value ->
-                        binding.edPropertyTax.setText(value.toString())
+                        binding.edPropertyTax.setText(Math.round(value).toString())
+                        CustomMaterialFields.setColor(binding.layoutPropertyTaxes,R.color.grey_color_two,requireActivity())
                     }
                     // home insurance
                     details.subPropertyData?.homeOwnerInsurance?.let { value ->
-                        binding.edHomeownerInsurance.setText(value.toString())
+                        binding.edHomeownerInsurance.setText(Math.round(value).toString())
+                        CustomMaterialFields.setColor(binding.layoutHomeownerInsurance,R.color.grey_color_two,requireActivity())
                     }
                     // flood insurance
                     details.subPropertyData?.floodInsurance?.let { value ->
-                        binding.edFloodInsurance.setText(value.toString())
+                        binding.edFloodInsurance.setText(Math.round(value).toString())
+                        CustomMaterialFields.setColor(binding.layoutFloodInsurance,R.color.grey_color_two,requireActivity())
                     }
 
                     details.subPropertyData?.isMixedUseProperty?.let { value ->
@@ -183,22 +193,23 @@ class SubjectPropertyPurchase : BaseFragment() {
                         }
                         else
                             binding.radioMixedPropertyNo.isChecked = true
-                            //binding.radioMixedPropertyNo.setTypeface(null, Typeface.BOLD)
                     } ?: run {
                         binding.radioMixedPropertyNo.isChecked = true
                     }
+                    setDropDownData()
+                    setCoBorrowerOccupancyStatus()
+                    val  activity = (activity as? SubjectPropertyActivity)
+                    activity?.binding?.loaderSubjectProperty?.visibility = View.GONE
 
-
-                    getDropDownData()
 
                 }
             })
-        }
+       // }
     }
 
-    private fun getDropDownData(){
-        lifecycleScope.launchWhenStarted {
-            viewModel.getPropertyTypes(token)
+    private fun setDropDownData(){
+        //lifecycleScope.launchWhenStarted {
+          //  viewModel.getPropertyTypes(token)
             viewModel.propertyType.observe(viewLifecycleOwner, {
                 if(it != null && it.size > 0) {
 
@@ -212,6 +223,9 @@ class SubjectPropertyPurchase : BaseFragment() {
                     }
                     val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,itemList)
                     binding.tvPropertyType.setAdapter(adapter)
+                   // binding.tvPropertyType.freezesText = false
+                    adapter.setNotifyOnChange(true)
+
 //                    binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
 //                        binding.tvPropertyType.showDropDown()
 //                    }
@@ -222,18 +236,16 @@ class SubjectPropertyPurchase : BaseFragment() {
                     binding.tvPropertyType.onItemClickListener = object :
                         AdapterView.OnItemClickListener {
                         override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                            //binding.layoutPropertyType.defaultHintTextColor = ColorStateList.valueOf(
-                              //  ContextCompat.getColor(requireContext(), R.color.grey_color_two))
                             CustomMaterialFields.setColor(binding.layoutPropertyType,R.color.grey_color_two,requireActivity())
                         }
                     }
                 }
             })
-        }
+       // }
 
         // occupancy Type spinner
-        lifecycleScope.launchWhenStarted {
-            viewModel.getOccupancyType("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA")
+        //lifecycleScope.launchWhenStarted {
+            //viewModel.getOccupancyType("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA")
             viewModel.occupancyType.observe(viewLifecycleOwner, {occupancyList->
 
                 if(occupancyList != null && occupancyList.size > 0) {
@@ -263,12 +275,12 @@ class SubjectPropertyPurchase : BaseFragment() {
                 }
 
             })
-        }
+        //}
     }
 
-    private fun getCoBorrowerOccupancyStatus(){
-        lifecycleScope.launchWhenStarted {
-            viewModel.getCoBorrowerOccupancyStatus(token, 1010)
+    private fun setCoBorrowerOccupancyStatus(){
+       // lifecycleScope.launchWhenStarted {
+         //   viewModel.getCoBorrowerOccupancyStatus(token, 1010)
             viewModel.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {
                 if(it.occupancyData != null  && it.occupancyData.size > 0){
                     binding.radioOccupying.isChecked = true
@@ -279,7 +291,7 @@ class SubjectPropertyPurchase : BaseFragment() {
                     binding.coBorrowerName.visibility = View.GONE
                 }
             })
-        }
+        //}
     }
 
     private fun setInputFields(){
@@ -302,6 +314,14 @@ class SubjectPropertyPurchase : BaseFragment() {
         CustomMaterialFields.setDollarPrefix(binding.layoutHomeownerInsurance,requireContext())
         CustomMaterialFields.setDollarPrefix(binding.layoutFloodInsurance,requireContext())
 
+    }
+
+    private fun openAddress(){
+        val fragment = SubPropertyAddressFragment()
+        val bundle = Bundle()
+        bundle.putParcelableArrayList(AppConstant.address,addressList)
+        fragment.arguments = bundle
+        findNavController().navigate(R.id.action_address, fragment.arguments)
     }
 
 }

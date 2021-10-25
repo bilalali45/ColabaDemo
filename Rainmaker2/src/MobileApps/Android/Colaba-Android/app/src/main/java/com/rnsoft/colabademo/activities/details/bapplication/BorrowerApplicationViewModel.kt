@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,7 @@ import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -16,6 +18,9 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
 
     private var _assetsModelDataClass : MutableLiveData<ArrayList<MyAssetBorrowerDataClass>> =   MutableLiveData()
     val assetsModelDataClass: LiveData<ArrayList<MyAssetBorrowerDataClass>> get() = _assetsModelDataClass
+
+    private var _incomeDetails : MutableLiveData<ArrayList<IncomeDetailsResponse>> =   MutableLiveData()
+    val incomeDetails: LiveData<ArrayList<IncomeDetailsResponse>> get() = _incomeDetails
 
     private var _governmentQuestionsModelClass : MutableLiveData<GovernmentQuestionsModelClass> =   MutableLiveData()
     val governmentQuestionsModelClass: LiveData<GovernmentQuestionsModelClass> get() = _governmentQuestionsModelClass
@@ -97,30 +102,75 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
 
 
     suspend fun getBorrowerWithAssets(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int>) {
+        var errorResult:Result.Error?=null
         val borrowerAssetList: ArrayList<MyAssetBorrowerDataClass> = ArrayList()
         viewModelScope.launch(Dispatchers.IO) {
             coroutineScope {
+                delay(4000)
                 borrowerIds.forEach { id ->
+                    Timber.e("borrowerIds.id -> "+id)
                     launch { // this will allow us to run multiple tasks in parallel
                         val responseResult = bAppRepo.getBorrowerAssetsDetail(
                             token = token,
                             loanApplicationId = loanApplicationId,
                             borrowerId = id
                         )
-                        if (responseResult is Result.Success)
+                        if (responseResult is Result.Success) {
+                            responseResult.data.passedBorrowerId = id
+                            Timber.e("borrowerIds.data.passedBorrowerId -> "+responseResult.data.passedBorrowerId)
                             borrowerAssetList.add(responseResult.data)
+                        }
+                        else if (responseResult is Result.Error)
+                            errorResult = responseResult
                     }
                 }
             }  // coroutineScope block will wait here until all child tasks are completed
             withContext(Dispatchers.Main) {
                 _assetsModelDataClass.value = borrowerAssetList
             }
+            if(errorResult!=null) // if service not working.....
+                EventBus.getDefault().post(WebServiceErrorEvent(errorResult, false))
+            else
+            if(borrowerAssetList.size == 0) // service working without error but no results....
+                EventBus.getDefault().post(WebServiceErrorEvent(null, false))
         }
+    }
 
+    suspend fun getBorrowerWithIncome(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int>) {
+        val borrowerIncomeList: ArrayList<IncomeDetailsResponse> = ArrayList()
+        var errorResult:Result.Error?=null
+        viewModelScope.launch(Dispatchers.IO) {
+            coroutineScope {
+                delay(2000)
+                borrowerIds.forEach { id ->
+                    launch {
+                        val responseResult = bAppRepo.getBorrowerIncomeDetail(token = token, loanApplicationId = loanApplicationId, borrowerId = id)
+                        if (responseResult is Result.Success){
+                            Log.e("viewmodel-income","success")
+                            responseResult.data.passedBorrowerId = id
+                            Timber.e("borrowerIds.data.passedBorrowerId -> "+responseResult.data.incomeData)
+                            borrowerIncomeList.add(responseResult.data)
+                        }
+                    }
+                }
+            }  // coroutineScope block will wait here until all child tasks are completed
+            withContext(Dispatchers.Main) {
+                _incomeDetails.value = borrowerIncomeList
+            }
+            if(errorResult!=null) // if service not working.....
+                EventBus.getDefault().post(WebServiceErrorEvent(errorResult, false))
+            else
+                if(borrowerIncomeList.size == 0) // service working without error but no results....
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, false))
+        }
     }
 
     fun resetAssetModelClass(){
         _assetsModelDataClass  =   MutableLiveData()
+    }
+
+    fun resetIncomeModelClass(){
+        _incomeDetails  =   MutableLiveData()
     }
 
 

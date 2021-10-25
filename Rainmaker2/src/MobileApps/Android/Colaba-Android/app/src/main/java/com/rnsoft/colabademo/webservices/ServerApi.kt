@@ -1,9 +1,7 @@
 package com.rnsoft.colabademo
 
 import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
-import com.rnsoft.colabademo.activities.loan.model.LoanGoalModel
 import com.rnsoft.colabademo.activities.model.*
-import com.rnsoft.colabademo.activities.realestate.model.RealEstateResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
@@ -85,6 +83,13 @@ interface ServerApi{
         @Header("Authorization") Authorization:String,
         @Query("loanApplicationId") loanPurpuseId:Int,
         @Query("borrowerPropertyId") borrowerPropertyId:Int) : RealEstateSecondMortgageModel
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetIncomeDetails")
+    suspend fun getBorrowerIncomeDetail(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int,
+        @Query("borrowerId")  borrowerId:Int
+    ): IncomeDetailsResponse
 
 
     @POST("api/mcu/mobile/identity/mcuaccount/signin")
