@@ -23,6 +23,7 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
     @IBOutlet weak var lblPropertyType: UILabel!
     
     var isYes: Bool?
+    var questionModel = GovernmentQuestionModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,7 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
         btnYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
         lblYes.font = Theme.getRubikRegularFont(size: 14)
         propertyTypeView.isHidden = true
+        setQuestionData()
     }
     
     //MARK:- Methods
@@ -43,6 +45,17 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
         propertyTypeView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         propertyTypeView.dropShadowToCollectionViewCell()
         propertyTypeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(propertyTypeViewTapped)))
+    }
+    
+    func setQuestionData(){
+        lblQuestion.text = questionModel.question
+        if questionModel.answer == "Yes"{
+            isYes = true
+        }
+        else if (questionModel.answer == "No"){
+            isYes = false
+        }
+        changeStatus()
     }
     
     @objc func yesStackViewTapped(){
@@ -63,7 +76,7 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
             lblYes.font = yes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
             btnNo.setImage(UIImage(named: !yes ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
             lblNo.font = !yes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-            propertyTypeView.isHidden = !yes
+            //propertyTypeView.isHidden = !yes
         }
     }
     

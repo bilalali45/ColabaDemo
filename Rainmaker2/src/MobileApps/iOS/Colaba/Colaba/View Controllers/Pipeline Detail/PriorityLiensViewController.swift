@@ -23,6 +23,7 @@ class PriorityLiensViewController: BaseViewController {
     @IBOutlet weak var lblAns: UILabel!
     
     var isYes: Bool?
+    var questionModel = GovernmentQuestionModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()

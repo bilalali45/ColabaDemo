@@ -10,6 +10,7 @@ import MaterialComponents
 
 enum DetailScreenType{
     case priorityLiens
+    case familyOrBusinessAffilation
     case undisclosedMortgageApplication
     case undisclosedCreditApplication
     case debtCoSigner
@@ -40,6 +41,8 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
     
     private let validation: Validation
     
+    var questionModel = GovernmentQuestionModel()
+    
     init(validation: Validation) {
         self.validation = validation
         super.init(nibName: nil, bundle: nil)
@@ -56,6 +59,9 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
         
         if (type == .priorityLiens){
             lblTopTitle.text = "Priority Liens"
+        }
+        else if (type == .familyOrBusinessAffilation){
+            lblTopTitle.text = "Family or Business Affiliation"
         }
         else if (type == .undisclosedMortgageApplication){
             lblTopTitle.text = "Undisclosed Mortgage Applications"

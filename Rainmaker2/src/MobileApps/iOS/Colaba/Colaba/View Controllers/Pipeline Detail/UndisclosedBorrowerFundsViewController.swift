@@ -23,6 +23,7 @@ class UndisclosedBorrowerFundsViewController: BaseViewController {
     @IBOutlet weak var lblAmount: UILabel!
     
     var isYes: Bool?
+    var questionModel = GovernmentQuestionModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,7 @@ class UndisclosedBorrowerFundsViewController: BaseViewController {
         btnYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
         lblYes.font = Theme.getRubikRegularFont(size: 14)
         amountView.isHidden = true
+        setQuestionData()
     }
     
     //MARK:- Methods
@@ -43,6 +45,17 @@ class UndisclosedBorrowerFundsViewController: BaseViewController {
         amountView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         amountView.dropShadowToCollectionViewCell()
         amountView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(amountViewTapped)))
+    }
+    
+    func setQuestionData(){
+        lblQuestion.text = questionModel.question
+        if questionModel.answer == "Yes"{
+            isYes = true
+        }
+        else if (questionModel.answer == "No"){
+            isYes = false
+        }
+        changeStatus()
     }
     
     @objc func yesStackViewTapped(){
@@ -63,7 +76,7 @@ class UndisclosedBorrowerFundsViewController: BaseViewController {
             lblYes.font = yes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
             btnNo.setImage(UIImage(named: !yes ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
             lblNo.font = !yes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-            amountView.isHidden = !yes
+            //amountView.isHidden = !yes
         }
     }
     

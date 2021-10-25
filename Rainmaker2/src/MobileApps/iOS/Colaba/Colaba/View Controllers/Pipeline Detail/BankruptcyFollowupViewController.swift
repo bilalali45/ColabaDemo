@@ -37,6 +37,7 @@ class BankruptcyFollowupViewController: BaseViewController {
     var isChapter11 = false
     var isChapter12 = false
     var isChapter13 = false
+    var questionModel = GovernmentQuestionModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -26,6 +26,8 @@ class UndisclosedBorrowerFundsFollowupQuestionsViewController: BaseViewControlle
     
     private let validation: Validation
     
+    var questionModel = GovernmentQuestionModel()
+    
     init(validation: Validation) {
         self.validation = validation
         super.init(nibName: nil, bundle: nil)

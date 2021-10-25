@@ -21,6 +21,8 @@ class OwnershipInterestInPropertyFollowupQuestionViewController: BaseViewControl
     @IBOutlet weak var txtfieldHoldTitle: ColabaTextField!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
+    var questionModel = GovernmentQuestionModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextfields()

@@ -828,6 +828,8 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
         }
         else if (collectionView == questionsCollectionView){
             let vc = Utility.getGovernmentQuestionsVC()
+            vc.loanApplicationId = self.loanApplicationId
+            vc.borrowersArray = self.loanApplicationDetail.borrowersInformation
             self.pushToVC(vc: vc)
         }
     }

@@ -38,6 +38,7 @@
 		2330CD2626B000ED00FF3C43 /* DocumentMessageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2330CD2426B000ED00FF3C43 /* DocumentMessageTableViewCell.xib */; };
 		2338DB73270DA26E00658C2A /* EmailTemplateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2338DB71270DA26E00658C2A /* EmailTemplateTableViewCell.swift */; };
 		2338DB74270DA26E00658C2A /* EmailTemplateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2338DB72270DA26E00658C2A /* EmailTemplateTableViewCell.xib */; };
+		23451A91271FF9EC00A5ACE4 /* GovernmentQuestionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23451A90271FF9EC00A5ACE4 /* GovernmentQuestionModel.swift */; };
 		234DB4F226A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234DB4F026A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.swift */; };
 		234DB4F326A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 234DB4F126A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.xib */; };
 		235BBD6A2698649700687174 /* UtilitiesUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235BBD692698649700687174 /* UtilitiesUnitTest.swift */; };
@@ -200,6 +201,7 @@
 		23E9C758269C6C140066C978 /* DocumentsDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23E9C756269C6C130066C978 /* DocumentsDetailTableViewCell.xib */; };
 		23EB790226A6ED980071BC13 /* RealEstateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EB790026A6ED980071BC13 /* RealEstateCollectionViewCell.swift */; };
 		23EB790326A6ED980071BC13 /* RealEstateCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23EB790126A6ED980071BC13 /* RealEstateCollectionViewCell.xib */; };
+		23EB9B1E27268CF1005EBBFB /* FamilyOrBusinessAffliationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EB9B1D27268CF1005EBBFB /* FamilyOrBusinessAffliationViewController.swift */; };
 		23F23B3D26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B3C26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift */; };
 		23F23B3F26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B3E26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift */; };
 		23F23B4126CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B4026CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift */; };
@@ -294,6 +296,7 @@
 		2330CD2426B000ED00FF3C43 /* DocumentMessageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DocumentMessageTableViewCell.xib; sourceTree = "<group>"; };
 		2338DB71270DA26E00658C2A /* EmailTemplateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailTemplateTableViewCell.swift; sourceTree = "<group>"; };
 		2338DB72270DA26E00658C2A /* EmailTemplateTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailTemplateTableViewCell.xib; sourceTree = "<group>"; };
+		23451A90271FF9EC00A5ACE4 /* GovernmentQuestionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GovernmentQuestionModel.swift; sourceTree = "<group>"; };
 		234DB4F026A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GovernmentQuestionsCollectionViewCell.swift; sourceTree = "<group>"; };
 		234DB4F126A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GovernmentQuestionsCollectionViewCell.xib; sourceTree = "<group>"; };
 		235BBD692698649700687174 /* UtilitiesUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilitiesUnitTest.swift; sourceTree = "<group>"; };
@@ -456,6 +459,7 @@
 		23E9C756269C6C130066C978 /* DocumentsDetailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DocumentsDetailTableViewCell.xib; sourceTree = "<group>"; };
 		23EB790026A6ED980071BC13 /* RealEstateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealEstateCollectionViewCell.swift; sourceTree = "<group>"; };
 		23EB790126A6ED980071BC13 /* RealEstateCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RealEstateCollectionViewCell.xib; sourceTree = "<group>"; };
+		23EB9B1D27268CF1005EBBFB /* FamilyOrBusinessAffliationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyOrBusinessAffliationViewController.swift; sourceTree = "<group>"; };
 		23F23B3C26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPermanentResidenceFollowUpQuestionsViewController.swift; sourceTree = "<group>"; };
 		23F23B3E26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveDutyPersonnelFollowUpQuestionViewController.swift; sourceTree = "<group>"; };
 		23F23B4026CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveFollowUpQuestionsViewController.swift; sourceTree = "<group>"; };
@@ -589,6 +593,7 @@
 				23B927822716F7E4009B460A /* RealEstateDetailModel.swift */,
 				23E28BDE27184816004FCAA5 /* BorrowerIncomeModel.swift */,
 				239DEDF627195FD60056FF2B /* BorrowerAssetsModel.swift */,
+				23451A90271FF9EC00A5ACE4 /* GovernmentQuestionModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -810,6 +815,7 @@
 				23B5E98A26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift */,
 				23BDB1CC26F8615D00C73E33 /* DemographicInformationViewController.swift */,
 				23A8D1A827045AA300950195 /* DemographicDetailViewController.swift */,
+				23EB9B1D27268CF1005EBBFB /* FamilyOrBusinessAffliationViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -1379,6 +1385,7 @@
 				23F23B4526CA592800AEF33E /* DeleteAddressPopupViewController.swift in Sources */,
 				23DF0CF0269F022B00F29B70 /* LoanDocumentModel.swift in Sources */,
 				23DBAD26269714A800119680 /* ApplicationViewController.swift in Sources */,
+				23451A91271FF9EC00A5ACE4 /* GovernmentQuestionModel.swift in Sources */,
 				23B5E97726F46D4700686B8E /* DebtCoSignerViewController.swift in Sources */,
 				23BDB1D326F8706900C73E33 /* DemographicQuestionsModel.swift in Sources */,
 				239983F426F9BA9200C0AFA7 /* StartNewApplicationViewController.swift in Sources */,
@@ -1482,6 +1489,7 @@
 				23C2448A2689E3F800EED1D0 /* InActiveLoanModel.swift in Sources */,
 				238E0F8F26F36A820025FF06 /* UndisclosedBorrowerFundsFollowupQuestionsViewController.swift in Sources */,
 				2320138D2698324800F500E2 /* BorrowerAddressTableViewCell.swift in Sources */,
+				23EB9B1E27268CF1005EBBFB /* FamilyOrBusinessAffliationViewController.swift in Sources */,
 				239DB53A270C413A00977E20 /* DeleteDocumentPopupViewController.swift in Sources */,
 				2321247726C10F4100439A44 /* BorrowerAddressInfoTableViewCell.swift in Sources */,
 				2390FED626A6B639007A5A52 /* ApplicationTabHeaderView.swift in Sources */,

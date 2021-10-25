@@ -1,13 +1,13 @@
 //
-//  OutstandingJudgementsViewController.swift
+//  FamilyOrBusinessAffliationViewController.swift
 //  Colaba
 //
-//  Created by Muhammad Murtaza on 17/09/2021.
+//  Created by Muhammad Murtaza on 25/10/2021.
 //
 
 import UIKit
 
-class OutstandingJudgementsViewController: BaseViewController {
+class FamilyOrBusinessAffliationViewController: UIViewController {
 
     //MARK:- Outlets and Properties
     
@@ -61,7 +61,7 @@ class OutstandingJudgementsViewController: BaseViewController {
         isYes = true
         changeStatus()
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
-        vc.type = .outStandingJudgement
+        vc.type = .debtCoSigner
         self.presentVC(vc: vc)
     }
     
@@ -77,14 +77,13 @@ class OutstandingJudgementsViewController: BaseViewController {
             btnNo.setImage(UIImage(named: !ansYes ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
             lblNo.font = !ansYes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
             //detailView.isHidden = !ansYes
-            
         }
     }
     
     @objc func detailViewTapped(){
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
-        vc.type = .outStandingJudgement
+        vc.type = .familyOrBusinessAffilation
         self.presentVC(vc: vc)
     }
-    
+
 }

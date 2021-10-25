@@ -46,6 +46,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
     var isChildSupport = false
     var isAlimony = false
     var isSeparateMaintainance = false
+    var questionModel = GovernmentQuestionModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()

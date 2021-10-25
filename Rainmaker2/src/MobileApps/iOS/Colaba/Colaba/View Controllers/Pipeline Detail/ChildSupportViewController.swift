@@ -23,6 +23,7 @@ class ChildSupportViewController: BaseViewController {
     @IBOutlet weak var lblAns: UILabel!
     
     var isYes: Bool?
+    var questionModel = GovernmentQuestionModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +33,12 @@ class ChildSupportViewController: BaseViewController {
         btnYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
         lblYes.font = Theme.getRubikRegularFont(size: 14)
         detailView.isHidden = true
+        setQuestionData()
     }
+    
+    
+    
+    //MARK:- Methods
     
     func setupViews(){
         
@@ -43,7 +49,16 @@ class ChildSupportViewController: BaseViewController {
         detailView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(detailViewTapped)))
     }
     
-    //MARK:- Methods
+    func setQuestionData(){
+        lblQuestion.text = questionModel.question
+        if questionModel.answer == "Yes"{
+            isYes = true
+        }
+        else if (questionModel.answer == "No"){
+            isYes = false
+        }
+        changeStatus()
+    }
     
     @objc func yesStackViewTapped(){
         isYes = true
@@ -63,10 +78,7 @@ class ChildSupportViewController: BaseViewController {
             lblYes.font = ansYes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
             btnNo.setImage(UIImage(named: !ansYes ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
             lblNo.font = !ansYes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-            if let yes = isYes{
-                detailView.isHidden = !yes
-            }
-            
+            //detailView.isHidden = !ansYes
         }
     }
     

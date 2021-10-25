@@ -5401,7 +5401,7 @@ Houston, TX 77027, USA</string>
                                 <rect key="frame" x="0.0" y="15" width="375" height="30"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3bV-PG-01g">
-                                        <rect key="frame" x="0.0" y="0.0" width="2900" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="2510" height="30"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5rB-Jh-kzV">
                                                 <rect key="frame" x="20" y="0.0" width="212" height="30"/>
@@ -5438,10 +5438,10 @@ Houston, TX 77027, USA</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cQq-2B-TIu">
-                                                <rect key="frame" x="464" y="0.0" width="115" height="30"/>
+                                                <rect key="frame" x="464" y="0.0" width="206" height="30"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Priority Liens" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ako-zV-J05">
-                                                        <rect key="frame" x="18" y="7.5" width="79" height="15"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Family or Business affiliation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ako-zV-J05">
+                                                        <rect key="frame" x="18" y="7.5" width="170" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -5450,12 +5450,12 @@ Houston, TX 77027, USA</string>
                                                 <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstItem="Ako-zV-J05" firstAttribute="centerY" secondItem="cQq-2B-TIu" secondAttribute="centerY" id="7KC-bd-dkJ"/>
-                                                    <constraint firstAttribute="width" constant="115" id="Ssu-fZ-g28"/>
+                                                    <constraint firstAttribute="width" constant="206" id="Ssu-fZ-g28"/>
                                                     <constraint firstItem="Ako-zV-J05" firstAttribute="centerX" secondItem="cQq-2B-TIu" secondAttribute="centerX" id="m1i-xB-Z2Z"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ln4-vR-6Tn">
-                                                <rect key="frame" x="584" y="0.0" width="249" height="30"/>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ln4-vR-6Tn">
+                                                <rect key="frame" x="675" y="0.0" width="249" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Undisclosed Mortgage Applications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q5L-1e-5Ai">
                                                         <rect key="frame" x="18.5" y="7.5" width="212" height="15"/>
@@ -5471,8 +5471,8 @@ Houston, TX 77027, USA</string>
                                                     <constraint firstAttribute="width" constant="249" id="ZXF-UU-gEv"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CDh-SJ-PkW">
-                                                <rect key="frame" x="838" y="0.0" width="221" height="30"/>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CDh-SJ-PkW">
+                                                <rect key="frame" x="929" y="0.0" width="221" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Undisclosed Credit Application" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dS1-u0-ryn">
                                                         <rect key="frame" x="18.5" y="7.5" width="184.5" height="15"/>
@@ -5489,7 +5489,7 @@ Houston, TX 77027, USA</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oMJ-bv-l91">
-                                                <rect key="frame" x="1064" y="0.0" width="208" height="30"/>
+                                                <rect key="frame" x="675" y="0.0" width="208" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Debt Co-signer or Guarantor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fsz-Kj-nj2">
                                                         <rect key="frame" x="18.5" y="7.5" width="171" height="15"/>
@@ -5506,7 +5506,7 @@ Houston, TX 77027, USA</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OAf-0e-yts">
-                                                <rect key="frame" x="1277" y="0.0" width="191" height="30"/>
+                                                <rect key="frame" x="888" y="0.0" width="191" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Outstanding Judgements" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oPv-FF-MvP">
                                                         <rect key="frame" x="18" y="7.5" width="155" height="15"/>
@@ -5523,7 +5523,7 @@ Houston, TX 77027, USA</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zkF-oB-tht">
-                                                <rect key="frame" x="1478" y="0.0" width="184" height="30"/>
+                                                <rect key="frame" x="1089" y="0.0" width="184" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Federal Debt Deliquency" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c6h-G9-VFA">
                                                         <rect key="frame" x="18.5" y="7.5" width="147.5" height="15"/>
@@ -5540,7 +5540,7 @@ Houston, TX 77027, USA</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VXo-P6-CoE">
-                                                <rect key="frame" x="1672" y="0.0" width="134" height="30"/>
+                                                <rect key="frame" x="1283" y="0.0" width="134" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Party to Lawsuit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y6h-ge-ogf">
                                                         <rect key="frame" x="18" y="7.5" width="98" height="15"/>
@@ -5557,7 +5557,7 @@ Houston, TX 77027, USA</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uvw-rn-GF4">
-                                                <rect key="frame" x="1816" y="0.0" width="140" height="30"/>
+                                                <rect key="frame" x="1427" y="0.0" width="140" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Conveyance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LOn-cL-6AH">
                                                         <rect key="frame" x="18.5" y="7.5" width="103.5" height="15"/>
@@ -5574,7 +5574,7 @@ Houston, TX 77027, USA</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="obb-4r-jED">
-                                                <rect key="frame" x="1966" y="0.0" width="215" height="30"/>
+                                                <rect key="frame" x="1577" y="0.0" width="215" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pre-Foreclosure or Short Sale" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WEy-JA-c1t">
                                                         <rect key="frame" x="18.5" y="7.5" width="178.5" height="15"/>
@@ -5591,7 +5591,7 @@ Houston, TX 77027, USA</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zUE-GK-top">
-                                                <rect key="frame" x="2191" y="0.0" width="171" height="30"/>
+                                                <rect key="frame" x="1802" y="0.0" width="171" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Foreclosured Property" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AR5-yL-gPz">
                                                         <rect key="frame" x="18" y="7.5" width="135" height="15"/>
@@ -5608,7 +5608,7 @@ Houston, TX 77027, USA</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uPg-fm-uhg">
-                                                <rect key="frame" x="2372" y="0.0" width="106" height="30"/>
+                                                <rect key="frame" x="1983" y="0.0" width="106" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bankruptcy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rm4-PY-w4r">
                                                         <rect key="frame" x="18" y="7.5" width="70" height="15"/>
@@ -5625,7 +5625,7 @@ Houston, TX 77027, USA</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Gf-C3-e9E">
-                                                <rect key="frame" x="2488" y="0.0" width="202" height="30"/>
+                                                <rect key="frame" x="2099" y="0.0" width="202" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Child Support, Alimony, etc." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9pS-nz-Jdb">
                                                         <rect key="frame" x="18.5" y="7.5" width="165.5" height="15"/>
@@ -5642,7 +5642,7 @@ Houston, TX 77027, USA</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qbp-wJ-pWa">
-                                                <rect key="frame" x="2700" y="0.0" width="191" height="30"/>
+                                                <rect key="frame" x="2311" y="0.0" width="191" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Demographic Information" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kiY-gD-k7u">
                                                         <rect key="frame" x="18.5" y="7.5" width="154.5" height="15"/>
@@ -5662,6 +5662,7 @@ Houston, TX 77027, USA</string>
                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="obb-4r-jED" firstAttribute="top" secondItem="3bV-PG-01g" secondAttribute="top" id="07r-jV-AlH"/>
+                                            <constraint firstItem="oMJ-bv-l91" firstAttribute="leading" secondItem="cQq-2B-TIu" secondAttribute="trailing" constant="5" id="0Iv-X4-aUU"/>
                                             <constraint firstItem="Uvw-rn-GF4" firstAttribute="leading" secondItem="VXo-P6-CoE" secondAttribute="trailing" constant="10" id="1xU-cA-Dlu"/>
                                             <constraint firstItem="Ln4-vR-6Tn" firstAttribute="leading" secondItem="cQq-2B-TIu" secondAttribute="trailing" constant="5" id="2ga-26-fd7"/>
                                             <constraint firstAttribute="bottom" secondItem="Eiv-WL-wD3" secondAttribute="bottom" id="2sL-SQ-fRs"/>
@@ -5689,13 +5690,12 @@ Houston, TX 77027, USA</string>
                                             <constraint firstItem="Eiv-WL-wD3" firstAttribute="leading" secondItem="5rB-Jh-kzV" secondAttribute="trailing" constant="5" id="fzY-5h-28A"/>
                                             <constraint firstItem="uPg-fm-uhg" firstAttribute="top" secondItem="3bV-PG-01g" secondAttribute="top" id="g7K-7W-PsL"/>
                                             <constraint firstAttribute="bottom" secondItem="zkF-oB-tht" secondAttribute="bottom" id="ibH-Zy-vcA"/>
-                                            <constraint firstAttribute="width" constant="2900" id="j1p-FZ-Nag"/>
+                                            <constraint firstAttribute="width" constant="2510" id="j1p-FZ-Nag"/>
                                             <constraint firstItem="zUE-GK-top" firstAttribute="leading" secondItem="obb-4r-jED" secondAttribute="trailing" constant="10" id="jKw-oI-wEY"/>
                                             <constraint firstItem="cQq-2B-TIu" firstAttribute="top" secondItem="3bV-PG-01g" secondAttribute="top" id="jQK-iP-QpV"/>
                                             <constraint firstItem="Eiv-WL-wD3" firstAttribute="top" secondItem="3bV-PG-01g" secondAttribute="top" id="ktW-5k-7Io"/>
                                             <constraint firstItem="qbp-wJ-pWa" firstAttribute="top" secondItem="3bV-PG-01g" secondAttribute="top" id="lch-m6-Vij"/>
                                             <constraint firstItem="qbp-wJ-pWa" firstAttribute="leading" secondItem="3Gf-C3-e9E" secondAttribute="trailing" constant="10" id="nr4-mr-uzo"/>
-                                            <constraint firstItem="oMJ-bv-l91" firstAttribute="leading" secondItem="CDh-SJ-PkW" secondAttribute="trailing" constant="5" id="oTX-Im-ZyA"/>
                                             <constraint firstItem="VXo-P6-CoE" firstAttribute="leading" secondItem="zkF-oB-tht" secondAttribute="trailing" constant="10" id="oz3-DH-6Yz"/>
                                             <constraint firstAttribute="bottom" secondItem="qbp-wJ-pWa" secondAttribute="bottom" id="q2X-DK-C6Y"/>
                                             <constraint firstItem="CDh-SJ-PkW" firstAttribute="leading" secondItem="Ln4-vR-6Tn" secondAttribute="trailing" constant="5" id="q9e-H5-xzd"/>
@@ -5742,13 +5742,13 @@ Houston, TX 77027, USA</string>
                         <outlet property="containerView" destination="Suf-7S-pQl" id="0zi-JO-tkL"/>
                         <outlet property="debtCoSignerView" destination="oMJ-bv-l91" id="95M-PE-PwP"/>
                         <outlet property="demographicView" destination="qbp-wJ-pWa" id="c4N-xU-aQV"/>
+                        <outlet property="familyOrBusinessAffiliationView" destination="cQq-2B-TIu" id="iTQ-ou-zd8"/>
                         <outlet property="fedralDebtView" destination="zkF-oB-tht" id="qX8-bg-7SH"/>
                         <outlet property="foreClosuredPropertyView" destination="zUE-GK-top" id="OKs-gf-0we"/>
                         <outlet property="outstandingJudgementsView" destination="OAf-0e-yts" id="NCW-B5-Y1C"/>
                         <outlet property="ownershipInterestView" destination="Eiv-WL-wD3" id="aKO-hE-75j"/>
                         <outlet property="partyToLawsuitView" destination="VXo-P6-CoE" id="bgW-Cx-rBr"/>
                         <outlet property="preForceClosureView" destination="obb-4r-jED" id="QOe-Aj-8n5"/>
-                        <outlet property="priorityLiensView" destination="cQq-2B-TIu" id="ktk-Cf-ZsH"/>
                         <outlet property="tabsMainView" destination="3bV-PG-01g" id="atx-Sz-aGj"/>
                         <outlet property="tabsScrollView" destination="isc-nq-WQv" id="zVK-Vb-2zx"/>
                         <outlet property="titleConveyanceView" destination="Uvw-rn-GF4" id="n70-5E-dVZ"/>
@@ -6683,7 +6683,7 @@ Houston, TX 77027, USA</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="olL-A3-9ry" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9378" y="4907"/>
+            <point key="canvasLocation" x="10031" y="4907"/>
         </scene>
         <!--Undisclosed Mortgage Application View Controller-->
         <scene sceneID="7uB-tS-q71">
@@ -6824,7 +6824,7 @@ Houston, TX 77027, USA</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0EU-cd-QIo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10028" y="4907"/>
+            <point key="canvasLocation" x="10642" y="4907"/>
         </scene>
         <!--Undisclosed Credit Application View Controller-->
         <scene sceneID="w2D-ID-R1J">
@@ -6965,7 +6965,7 @@ Houston, TX 77027, USA</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="03H-h2-Hgr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10678" y="4907"/>
+            <point key="canvasLocation" x="11292" y="4907"/>
         </scene>
         <!--Debt Co Signer View Controller-->
         <scene sceneID="wfd-SE-B75">
@@ -7105,7 +7105,7 @@ Houston, TX 77027, USA</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lZa-Vq-n8L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="11324" y="4907"/>
+            <point key="canvasLocation" x="11938" y="4907"/>
         </scene>
         <!--Outstanding Judgements View Controller-->
         <scene sceneID="AfJ-fF-eap">
@@ -7245,7 +7245,7 @@ Houston, TX 77027, USA</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sh5-Z2-6V0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="11978" y="4907"/>
+            <point key="canvasLocation" x="12591" y="4907"/>
         </scene>
         <!--Fedral Debt View Controller-->
         <scene sceneID="7Tt-dB-Gfo">
@@ -7385,7 +7385,7 @@ Houston, TX 77027, USA</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bFL-Ja-tSj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="12622" y="4907"/>
+            <point key="canvasLocation" x="13236" y="4907"/>
         </scene>
         <!--Party To Lawsuit View Controller-->
         <scene sceneID="HmT-94-vHW">
@@ -7525,7 +7525,7 @@ Houston, TX 77027, USA</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jrk-fV-dRF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="13279" y="4907"/>
+            <point key="canvasLocation" x="13892" y="4907"/>
         </scene>
         <!--Title Conveyance View Controller-->
         <scene sceneID="WyV-cx-cfz">
@@ -7665,7 +7665,7 @@ Houston, TX 77027, USA</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bJS-E6-6U0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="13924" y="4907"/>
+            <point key="canvasLocation" x="14543" y="4907"/>
         </scene>
         <!--Pre Force Closure View Controller-->
         <scene sceneID="smy-nk-xud">
@@ -7806,7 +7806,7 @@ Houston, TX 77027, USA</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5gE-jb-7ZO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="14574" y="4907"/>
+            <point key="canvasLocation" x="15188" y="4907"/>
         </scene>
         <!--Force Closed Property View Controller-->
         <scene sceneID="Nhm-Z0-Izl">
@@ -7946,7 +7946,7 @@ Houston, TX 77027, USA</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AXG-xs-t1u" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="15217" y="4907"/>
+            <point key="canvasLocation" x="15831" y="4907"/>
         </scene>
         <!--Bankruptcy View Controller-->
         <scene sceneID="NkN-ls-QAD">
@@ -8086,7 +8086,7 @@ Houston, TX 77027, USA</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KHl-Il-2gc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="15865" y="4907"/>
+            <point key="canvasLocation" x="16479" y="4907"/>
         </scene>
         <!--Bankruptcy Followup View Controller-->
         <scene sceneID="6W7-X1-sN1">
@@ -8325,7 +8325,7 @@ Houston, TX 77027, USA</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3cT-ml-ItZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="16522" y="4907"/>
+            <point key="canvasLocation" x="17135" y="4907"/>
         </scene>
         <!--Child Support View Controller-->
         <scene sceneID="uez-lK-zhe">
@@ -8458,7 +8458,7 @@ Houston, TX 77027, USA</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5l-r2-fNz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="17178" y="4907"/>
+            <point key="canvasLocation" x="17791" y="4907"/>
         </scene>
         <!--Child Support Followup Questions View Controller-->
         <scene sceneID="NGq-5h-3Fs">
@@ -9018,7 +9018,7 @@ Houston, TX 77027, USA</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bOc-T8-xkS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="17839" y="4907"/>
+            <point key="canvasLocation" x="18452" y="4907"/>
         </scene>
         <!--Demographic Information View Controller-->
         <scene sceneID="Bw2-CY-hu8">
@@ -9159,7 +9159,7 @@ Houston, TX 77027, USA</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C3g-QD-uH5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="18498" y="4907"/>
+            <point key="canvasLocation" x="19111" y="4907"/>
         </scene>
         <!--Demographic Detail View Controller-->
         <scene sceneID="m0Z-xr-odM">
@@ -9264,7 +9264,147 @@ Houston, TX 77027, USA</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bmN-0N-zHN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="19150" y="4907"/>
+            <point key="canvasLocation" x="19764" y="4907"/>
+        </scene>
+        <!--Family Or Business Affliation View Controller-->
+        <scene sceneID="Vgp-J1-OhH">
+            <objects>
+                <viewController storyboardIdentifier="FamilyOrBusinessAffliationViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VOh-mi-8Ed" customClass="FamilyOrBusinessAffliationViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Iga-YA-IAf">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oNd-7u-pbS">
+                                <rect key="frame" x="0.0" y="5" width="375" height="400"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OtB-68-g94">
+                                        <rect key="frame" x="20" y="0.0" width="345" height="54"/>
+                                        <attributedString key="attributedText">
+                                            <fragment content="Are you a co-signer or guarantor on any debt or loan that is not disclosed on this application?">
+                                                <attributes>
+                                                    <color key="NSColor" name="AppGreyColor"/>
+                                                    <font key="NSFont" metaFont="system" size="15"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="gd6-Tp-fww">
+                                        <rect key="frame" x="20" y="74" width="335" height="40"/>
+                                        <subviews>
+                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h7f-ec-LQB">
+                                                <rect key="frame" x="0.0" y="0.0" width="18" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="18" id="46N-Zs-t7t"/>
+                                                    <constraint firstAttribute="height" constant="40" id="bve-kz-NHD"/>
+                                                </constraints>
+                                                <state key="normal" image="RadioButtonUnselected"/>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G4V-Ng-hhM">
+                                                <rect key="frame" x="34" y="0.0" width="301" height="40"/>
+                                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
+                                                <color key="textColor" name="AppBlackColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="WZj-jk-I30">
+                                        <rect key="frame" x="20" y="114" width="335" height="40"/>
+                                        <subviews>
+                                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cl2-qh-VU0">
+                                                <rect key="frame" x="0.0" y="0.0" width="18" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="18" id="Y20-Aj-CS0"/>
+                                                    <constraint firstAttribute="height" constant="40" id="u21-sJ-Cxh"/>
+                                                </constraints>
+                                                <state key="normal" image="RadioButtonUnselected"/>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dci-S1-GXn">
+                                                <rect key="frame" x="34" y="0.0" width="301" height="40"/>
+                                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
+                                                <color key="textColor" name="AppBlackColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1P2-1r-ZOe">
+                                        <rect key="frame" x="20" y="174" width="335" height="114"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nz5-zV-3Ym">
+                                                <rect key="frame" x="30" y="15" width="275" height="18"/>
+                                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
+                                                <color key="textColor" name="AppBlackColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YjQ-yX-seF">
+                                                <rect key="frame" x="30" y="48" width="285" height="47"/>
+                                                <attributedString key="attributedText">
+                                                    <fragment content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum...">
+                                                        <attributes>
+                                                            <color key="NSColor" name="AppGreyColor"/>
+                                                            <font key="NSFont" metaFont="system"/>
+                                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                                        </attributes>
+                                                    </fragment>
+                                                </attributedString>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="nz5-zV-3Ym" secondAttribute="trailing" constant="30" id="I0y-g8-wB1"/>
+                                            <constraint firstItem="nz5-zV-3Ym" firstAttribute="leading" secondItem="1P2-1r-ZOe" secondAttribute="leading" constant="30" id="S5e-C2-6MK"/>
+                                            <constraint firstAttribute="trailing" secondItem="YjQ-yX-seF" secondAttribute="trailing" constant="20" id="e1p-M7-vWq"/>
+                                            <constraint firstAttribute="height" constant="114" id="kmi-28-X1w"/>
+                                            <constraint firstItem="nz5-zV-3Ym" firstAttribute="top" secondItem="1P2-1r-ZOe" secondAttribute="top" constant="15" id="nkN-la-LjE"/>
+                                            <constraint firstItem="YjQ-yX-seF" firstAttribute="top" secondItem="nz5-zV-3Ym" secondAttribute="bottom" constant="15" id="rpX-Ok-9Xo"/>
+                                            <constraint firstItem="YjQ-yX-seF" firstAttribute="leading" secondItem="1P2-1r-ZOe" secondAttribute="leading" constant="30" id="ywp-vV-jbg"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="400" id="1w8-Gp-ieM"/>
+                                    <constraint firstAttribute="trailing" secondItem="OtB-68-g94" secondAttribute="trailing" constant="10" id="36o-YR-oep"/>
+                                    <constraint firstItem="1P2-1r-ZOe" firstAttribute="leading" secondItem="oNd-7u-pbS" secondAttribute="leading" constant="20" id="a2o-h2-AIo"/>
+                                    <constraint firstAttribute="trailing" secondItem="WZj-jk-I30" secondAttribute="trailing" constant="20" id="aKS-kA-jQv"/>
+                                    <constraint firstItem="WZj-jk-I30" firstAttribute="top" secondItem="gd6-Tp-fww" secondAttribute="bottom" id="b0C-aD-TYh"/>
+                                    <constraint firstItem="gd6-Tp-fww" firstAttribute="leading" secondItem="oNd-7u-pbS" secondAttribute="leading" constant="20" id="cGE-8w-Mif"/>
+                                    <constraint firstItem="OtB-68-g94" firstAttribute="leading" secondItem="oNd-7u-pbS" secondAttribute="leading" constant="20" id="htq-iU-Kjt"/>
+                                    <constraint firstItem="OtB-68-g94" firstAttribute="top" secondItem="oNd-7u-pbS" secondAttribute="top" id="je3-bI-AXa"/>
+                                    <constraint firstItem="WZj-jk-I30" firstAttribute="leading" secondItem="oNd-7u-pbS" secondAttribute="leading" constant="20" id="ju4-Dp-EAX"/>
+                                    <constraint firstAttribute="trailing" secondItem="1P2-1r-ZOe" secondAttribute="trailing" constant="20" id="o9c-kN-Nsn"/>
+                                    <constraint firstItem="gd6-Tp-fww" firstAttribute="top" secondItem="OtB-68-g94" secondAttribute="bottom" constant="20" id="peI-Y6-W9p"/>
+                                    <constraint firstAttribute="trailing" secondItem="gd6-Tp-fww" secondAttribute="trailing" constant="20" id="w8q-VU-jgB"/>
+                                    <constraint firstItem="1P2-1r-ZOe" firstAttribute="top" secondItem="WZj-jk-I30" secondAttribute="bottom" constant="20" id="yMJ-Iq-N5b"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vlH-Te-OdE"/>
+                        <color key="backgroundColor" name="DashboardBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="oNd-7u-pbS" firstAttribute="trailing" secondItem="vlH-Te-OdE" secondAttribute="trailing" id="0Kd-vH-KEJ"/>
+                            <constraint firstItem="oNd-7u-pbS" firstAttribute="leading" secondItem="vlH-Te-OdE" secondAttribute="leading" id="BGv-SL-T32"/>
+                            <constraint firstItem="oNd-7u-pbS" firstAttribute="top" secondItem="vlH-Te-OdE" secondAttribute="top" constant="5" id="bvK-Hw-PeT"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="btnNo" destination="Cl2-qh-VU0" id="0c0-AN-Yrp"/>
+                        <outlet property="btnYes" destination="h7f-ec-LQB" id="QFL-Z4-vUg"/>
+                        <outlet property="detailView" destination="1P2-1r-ZOe" id="DVI-b8-aiE"/>
+                        <outlet property="lblAns" destination="YjQ-yX-seF" id="lce-oq-Zl0"/>
+                        <outlet property="lblDetailQuestion" destination="nz5-zV-3Ym" id="GBP-az-nXJ"/>
+                        <outlet property="lblNo" destination="Dci-S1-GXn" id="jdU-ZC-7CC"/>
+                        <outlet property="lblQuestion" destination="OtB-68-g94" id="2kK-jt-6xs"/>
+                        <outlet property="lblYes" destination="G4V-Ng-hhM" id="vYU-go-UrV"/>
+                        <outlet property="noStackView" destination="WZj-jk-I30" id="fdo-bm-hxj"/>
+                        <outlet property="yesStackView" destination="gd6-Tp-fww" id="UJ6-Cx-hlS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Tka-XQ-hdJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="9377" y="4907"/>
         </scene>
     </scenes>
     <resources>

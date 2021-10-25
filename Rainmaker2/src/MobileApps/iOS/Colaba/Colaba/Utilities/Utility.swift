@@ -316,6 +316,10 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: PriorityLiensFollowupQuestionViewController.self)) as! PriorityLiensFollowupQuestionViewController
     }
     
+    static func getFamilyOrBusinessAffliationVC() -> FamilyOrBusinessAffliationViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: FamilyOrBusinessAffliationViewController.self)) as! FamilyOrBusinessAffliationViewController
+    }
+    
     static func getUndisclosedMortgageApplicationVC() -> UndisclosedMortgageApplicationViewController{
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: UndisclosedMortgageApplicationViewController.self)) as! UndisclosedMortgageApplicationViewController
     }
