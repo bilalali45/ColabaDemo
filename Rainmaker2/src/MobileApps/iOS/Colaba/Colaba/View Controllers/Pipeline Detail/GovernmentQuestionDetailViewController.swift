@@ -196,6 +196,9 @@ class GovernmentQuestionDetailViewController: BaseViewController {
         undisclosedVC = Utility.getUndisclosedBorrowerFundsVC()
         if let undisclosedQuestion = governmentQuestions.filter({$0.headerText.localizedCaseInsensitiveContains("Undisclosed Borrowered Funds")}).first{
             undisclosedVC.questionModel = undisclosedQuestion
+            if let subQuestion = governmentQuestions.filter({$0.parentQuestionId == undisclosedQuestion.id}).first{
+                undisclosedVC.subQuestionModel = subQuestion
+            }
         }
         
         ownershipInterestVC = Utility.getOwnershipInterestInPropertyVC()
