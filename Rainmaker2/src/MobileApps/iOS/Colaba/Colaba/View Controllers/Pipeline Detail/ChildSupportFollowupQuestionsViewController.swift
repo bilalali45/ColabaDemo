@@ -92,6 +92,29 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
     
     func setQuestionData(){
         lblUsername.text = borrowerName.uppercased()
+        
+        if let childSupport = questionModel.answerData.filter({$0.liabilityName.localizedCaseInsensitiveContains("Child Support")}).first{
+            isChildSupport = true
+            txtfieldChildSupportPaymentsRemaining.setTextField(text: "\(childSupport.remainingMonth)")
+            txtfieldChildSupportMonthlyPayment.setTextField(text: String(format: "%.0f", Double(childSupport.monthlyPayment).rounded()))
+            txtfieldChildSupportPaymentRecipient.setTextField(text: childSupport.name)
+        }
+        
+        if let alimony = questionModel.answerData.filter({$0.liabilityName.localizedCaseInsensitiveContains("Alimony")}).first{
+            isAlimony = true
+            txtfieldAlimonyPaymentsRemaining.setTextField(text: "\(alimony.remainingMonth)")
+            txtfieldAlimonyMonthlyPayment.setTextField(text: String(format: "%.0f", Double(alimony.monthlyPayment).rounded()))
+            txtfieldAlimonyPaymentRecipient.setTextField(text: alimony.name)
+        }
+        
+        if let separate = questionModel.answerData.filter({$0.liabilityName.localizedCaseInsensitiveContains("Separate Maintenance")}).first{
+            isAlimony = true
+            txtfieldSeparateMaintainancePaymentsRemaining.setTextField(text: "\(separate.remainingMonth)")
+            txtfieldSeparateMaintainanceMonthlyPayment.setTextField(text: String(format: "%.0f", Double(separate.monthlyPayment).rounded()))
+            txtfieldSeparateMaintainancePaymentRecipient.setTextField(text: separate.name)
+        }
+        
+        changeChildSupportType()
     }
     
     func setScreenHeight(){
@@ -110,40 +133,44 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
     @objc func childSupportStackViewTapped(){
         lblError.text = ""
         isChildSupport = !isChildSupport
+        changeChildSupportType()
+    }
+    
+    @objc func alimonyStackViewTapped(){
+        lblError.text = ""
+        isAlimony = !isAlimony
+        changeChildSupportType()
+    }
+    
+    @objc func separateMaintainanceStackViewTapped(){
+        lblError.text = ""
+        isSeparateMaintainance = !isSeparateMaintainance
+        changeChildSupportType()
+    }
+    
+    func changeChildSupportType(){
+        
         btnChildSupport.setImage(UIImage(named: isChildSupport ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
         lblChildSupport.font = isChildSupport ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         childSupportViewHeightConstraint.constant = isChildSupport ? 250 : 40
         txtfieldChildSupportPaymentsRemaining.isHidden = !isChildSupport
         txtfieldChildSupportMonthlyPayment.isHidden = !isChildSupport
         txtfieldChildSupportPaymentRecipient.isHidden = !isChildSupport
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.setScreenHeight()
-        }
-    }
-    
-    @objc func alimonyStackViewTapped(){
-        lblError.text = ""
-        isAlimony = !isAlimony
+        
         btnAlimony.setImage(UIImage(named: isAlimony ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
         lblAlimony.font = isAlimony ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         alimonyViewHeightConstraint.constant = isAlimony ? 250 : 40
         txtfieldAlimonyPaymentsRemaining.isHidden = !isAlimony
         txtfieldAlimonyMonthlyPayment.isHidden = !isAlimony
         txtfieldAlimonyPaymentRecipient.isHidden = !isAlimony
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.setScreenHeight()
-        }
-    }
-    
-    @objc func separateMaintainanceStackViewTapped(){
-        lblError.text = ""
-        isSeparateMaintainance = !isSeparateMaintainance
+        
         btnSeparateMaintainance.setImage(UIImage(named: isSeparateMaintainance ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
         lblSeparateMaintainance.font = isSeparateMaintainance ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         separateMaintainanceViewHeightConstraint.constant = isSeparateMaintainance ? 250 : 40
         txtfieldSeparateMaintainancePaymentsRemaining.isHidden = !isSeparateMaintainance
         txtfieldSeparateMaintainanceMonthlyPayment.isHidden = !isSeparateMaintainance
         txtfieldSeparateMaintainancePaymentRecipient.isHidden = !isSeparateMaintainance
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.setScreenHeight()
         }
