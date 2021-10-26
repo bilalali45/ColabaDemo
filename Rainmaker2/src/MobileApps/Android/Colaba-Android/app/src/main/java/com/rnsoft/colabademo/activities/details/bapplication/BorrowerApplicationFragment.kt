@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
+import com.rnsoft.colabademo.activities.details.bapplication.RealEstateClickListener
 import com.rnsoft.colabademo.databinding.DetailApplicationTabBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Deferred
@@ -23,7 +24,7 @@ import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
-class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, GovernmentQuestionClickListener {
+class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, GovernmentQuestionClickListener,RealEstateClickListener {
 
     private var _binding: DetailApplicationTabBinding? = null
     private val binding get() = _binding!!
@@ -44,7 +45,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     private var questionList: ArrayList<BorrowerQuestionsModel> = ArrayList()
 
     private var borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList , this)
-    private var realStateAdapter  = RealStateAdapter(realStateList)
+    private var realStateAdapter  = RealStateAdapter(realStateList,this)
     private var questionAdapter  = QuestionAdapter(questionList, this)
 
     @Inject
@@ -57,7 +58,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
         _binding = DetailApplicationTabBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
         horizontalRecyclerView = root.findViewById(R.id.horizontalRecycleView)
         realStateRecyclerView = root.findViewById(R.id.realStateHorizontalRecyclerView)
         questionsRecyclerView = root.findViewById(R.id.govtQuestionHorizontalRecyclerView)
@@ -124,16 +125,14 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         subjectPropertyLayout.setOnClickListener {
             val detailActivity = (activity as? DetailActivity)
             detailActivity?.let {
-                val subActivity = Intent(requireActivity(), SubjectPropertyActivity::class.java)
-                it.loanApplicationId?.let { loanId ->
-                    subActivity.putExtra(AppConstant.loanApplicationId, loanId)
-                }
-                it.borrowerLoanPurpose?.let{ loanPurpose->
-                    subActivity.putExtra(AppConstant.loanPurpose, loanPurpose)
-                }
-                startActivity(subActivity)
-            }
+                val intent = Intent(requireActivity(), SubjectPropertyActivity::class.java)
+                //Log.e("loanAppID", ""+ it.loanApplicationId)
+                //Log.e("purpose", ""+ it.)
+                intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
+                intent.putExtra(AppConstant.borrowerPurpose, it.borrowerLoanPurpose)
+                startActivity(intent)
 
+            }
         }
 
         val linearLayoutManager = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
@@ -163,6 +162,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         }
         questionAdapter.notifyDataSetChanged()
 
+        binding.applicationTabLayout.visibility = View.INVISIBLE
 
         detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, { appTabModel->
             if (appTabModel != null) {
@@ -212,6 +212,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                         borrowerInfoList = borrowersList
 
                         for(borrower in borrowersList){
+                            Timber.e("BApp -- " + borrower.firstName , borrower.borrowerId, borrower.owntypeId , borrower.genderName)
                            if(borrower.owntypeId == 1) {
                                borrower.races?.let {
                                    races = it
@@ -229,6 +230,10 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
                 appTabModel.borrowerAppData?.let { bAppData->
                     bAppData.realStateOwns?.let {
+                        for(item in it){
+                            Timber.e(" Get -- "+item)
+                            Timber.e(" details -- "+item.borrowerId + "  "+item.propertyInfoId +"  "+ item.propertyTypeId + "  "+item.propertyTypeName)
+                        }
                         realStateList.clear()
                         realStateList = it
 
@@ -252,10 +257,9 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
 
                 realStateList.add(RealStateOwn(null,0,0,0,"", true))
-                realStateAdapter  = RealStateAdapter(realStateList)
+                realStateAdapter  = RealStateAdapter(realStateList,this@BorrowerApplicationFragment)
                 realStateRecyclerView.adapter = realStateAdapter
                 realStateAdapter.notifyDataSetChanged()
-
 
 
                 questionList.add(BorrowerQuestionsModel(null,null, true, races, ethnicities ))
@@ -267,7 +271,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
             else
                binding.applicationTabLayout.visibility = View.INVISIBLE
         })
-
 
         horizontalRecyclerView.addOnItemTouchListener(object : OnItemTouchListener {
             override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
@@ -311,8 +314,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         return root
 
     }
-
-
 
 
     private fun navigateToAssetActivity(){
@@ -366,32 +367,61 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         startActivity(Intent(requireActivity(), BorrowerAddressActivity::class.java))
     }
 
-    override fun navigateToGovernmentActivity(position: Int) {
-        startActivity(Intent(requireActivity(), GovtQuestionActivity::class.java))
-
-        /*
-        binding.questionProgress.visibility = View.VISIBLE
-        lifecycleScope.launchWhenStarted {
-            val detailActivity = (activity as? DetailActivity)
-            detailActivity?.let {
-                val testLoanId = it.loanApplicationId
-                testLoanId?.let { loanId ->
-                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        Timber.e("loading govt service...")
-                        val bool = borrowerApplicationViewModel.getGovernmentQuestions(authToken, 5, 1, 5)
-                        Timber.e("Government service loaded..."+bool)
-                        startActivity(Intent(requireActivity(), GovtQuestionActivity::class.java))
-                    }
-                }
-            }
+    override fun onRealEstateClick(position: Int) {
+        val detailActivity = (activity as? DetailActivity)
+        detailActivity?.let {
+            val intent = Intent(requireActivity(), RealEstateActivity::class.java)
+            //Log.e("loanAppID", ""+ it.loanApplicationId)
+            //Log.e("purpose", ""+ it.)
+            intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
+            //intent.putExtra(AppConstant.borrowerPropertyId,it )
+            startActivity(intent)
         }
 
-         */
+
+    }
+
+
+    override fun navigateToGovernmentActivity(position: Int) {
+        //startActivity(Intent(requireActivity(), GovtQuestionActivity::class.java))
+        val detailActivity = (activity as? DetailActivity)
+        detailActivity?.let {
+            val govtQuestionActivity = Intent(requireActivity(), GovtQuestionActivity::class.java)
+            val bList:ArrayList<Int> = arrayListOf()
+            val bListOwnTypeId:ArrayList<Int> = arrayListOf()
+            for(item in borrowerInfoList) {
+                //Timber.d("borrowerInfoList borrowerId  "+ item)
+                if(item.borrowerId!=-1) {
+                    bList.add(item.borrowerId)
+                    bListOwnTypeId.add(item.owntypeId)
+                }
+            }
+            govtQuestionActivity.putIntegerArrayListExtra( AppConstant.borrowerList, bList)
+            govtQuestionActivity.putIntegerArrayListExtra( AppConstant.borrowerOwnTypeList, bListOwnTypeId)
+            it.loanApplicationId?.let { loanId ->
+                govtQuestionActivity.putExtra(AppConstant.loanApplicationId, loanId)
+            }
+
+            startActivity(govtQuestionActivity)
+        }
 
 
 
 
     }
+
+
+
+
+    
+
+
+    override fun onResume() {
+        super.onResume()
+        (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
+    }
+
+
 
     /*
     private fun setUpGovtQuestionsRecycleView(passedList: ArrayList<BorrowerQuestionsModel>) {

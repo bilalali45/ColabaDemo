@@ -17,6 +17,11 @@ import com.rnsoft.colabademo.databinding.SubjectPropertyPurchaseBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.detail_list_layout.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 
 /**
  * Created by Anita Kiran on 9/8/2021.
@@ -26,7 +31,7 @@ class SubjectPropertyPurchase : BaseFragment() {
 
     private lateinit var binding: SubjectPropertyPurchaseBinding
     private var savedViewInstance: View? = null
-    private val viewModel : SubjectPropertyViewModel by activityViewModels()
+    private val viewModel : BorrowerApplicationViewModel by activityViewModels()
     private var propertyTypeId : Int = 0
     private var occupancyTypeId : Int = 0
     var addressList :  ArrayList<AddressData> = ArrayList()
@@ -72,7 +77,6 @@ class SubjectPropertyPurchase : BaseFragment() {
         }
 
         binding.layoutAddress.setOnClickListener {
-            //findNavController().navigate(R.id.action_address)
             openAddress()
         }
 
@@ -118,17 +122,15 @@ class SubjectPropertyPurchase : BaseFragment() {
 
         // close
         binding.backButton.setOnClickListener {
-            requireActivity().finish()
-            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+           dismissActivity()
         }
         // back
         requireActivity().onBackPressedDispatcher.addCallback {
-            requireActivity().finish()
-            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+            dismissActivity()
         }
 
         binding.btnSave.setOnClickListener {
-            requireActivity().finish()
+            dismissActivity()
         }
 
         binding.subpropertyParentLayout.setOnClickListener {
@@ -138,17 +140,31 @@ class SubjectPropertyPurchase : BaseFragment() {
     }
 
     private fun getPurchaseDetails(){
-       // lifecycleScope.launchWhenStarted {
-         //   viewModel.getSubjectPropertyDetails(token, 1010)
-            viewModel.subjectPropertyDetails.observe(viewLifecycleOwner, { details ->
-                if(details != null){
-                    details.subPropertyData?.address?.let {
+        viewModel.subjectPropertyDetails.observe(viewLifecycleOwner, { details ->
+            if(details != null){
+                details.subPropertyData?.address?.let {
+                    if(it.street == null && it.unit==null && it.city==null && it.stateName==null && it.countryName==null){
+                        binding.radioSubPropertyTbd.isChecked = true
+                        binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
+                    } else {
                         binding.radioSubPropertyAddress.isChecked = true
-                        binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
+                        binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
                         binding.tvSubPropertyAddress.visibility = View.VISIBLE
-                        binding.tvSubPropertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
-                        addressList.add(AddressData(street= it.street, unit=it.unit, city=it.city,stateName=it.stateName,countryName=it.countryName,countyName = it.countyName,
-                            countyId = it.countyId, stateId = it.stateId, countryId = it.countryId, zipCode = it.zipCode ))
+                        addressList.add(AddressData(
+                            street = it.street,
+                            unit = it.unit,
+                            city = it.city,
+                            stateName = it.stateName,
+                            countryName = it.countryName,
+                            countyName = it.countyName,
+                            countyId = it.countyId,
+                            stateId = it.stateId,
+                            countryId = it.countryId,
+                            zipCode = it.zipCode))
+                            binding.tvSubPropertyAddress.text =
+                                it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
+                        }
+
                     } ?: run {
                         binding.radioSubPropertyTbd.isChecked = true
                         binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
@@ -194,22 +210,18 @@ class SubjectPropertyPurchase : BaseFragment() {
                         else
                             binding.radioMixedPropertyNo.isChecked = true
                     } ?: run {
-                        binding.radioMixedPropertyNo.isChecked = true
+                        //binding.radioMixedPropertyNo.isChecked = true
                     }
                     setDropDownData()
                     setCoBorrowerOccupancyStatus()
-                    val  activity = (activity as? SubjectPropertyActivity)
-                    activity?.binding?.loaderSubjectProperty?.visibility = View.GONE
-
-
+                    if(details.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
+                       hideLoader() }
                 }
+                hideLoader()
             })
-       // }
     }
 
     private fun setDropDownData(){
-        //lifecycleScope.launchWhenStarted {
-          //  viewModel.getPropertyTypes(token)
             viewModel.propertyType.observe(viewLifecycleOwner, {
                 if(it != null && it.size > 0) {
 
@@ -244,8 +256,6 @@ class SubjectPropertyPurchase : BaseFragment() {
        // }
 
         // occupancy Type spinner
-        //lifecycleScope.launchWhenStarted {
-            //viewModel.getOccupancyType("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0MTc0Njg2LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.2E5FSNrooM9Fi7weXMOUj2WaRNEk2NNHfqINYndapBA")
             viewModel.occupancyType.observe(viewLifecycleOwner, {occupancyList->
 
                 if(occupancyList != null && occupancyList.size > 0) {
@@ -279,19 +289,15 @@ class SubjectPropertyPurchase : BaseFragment() {
     }
 
     private fun setCoBorrowerOccupancyStatus(){
-       // lifecycleScope.launchWhenStarted {
-         //   viewModel.getCoBorrowerOccupancyStatus(token, 1010)
-            viewModel.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {
-                if(it.occupancyData != null  && it.occupancyData.size > 0){
-                    binding.radioOccupying.isChecked = true
-                    binding.coBorrowerName.setText(it.occupancyData.get(0).borrowerFirstName + " " + it.occupancyData.get(0).borrowerLastName)
-                }
-                else {
-                    binding.radioNonOccupying.isChecked = true
-                    binding.coBorrowerName.visibility = View.GONE
-                }
-            })
-        //}
+        viewModel.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {
+            if(it.occupancyData != null  && it.occupancyData.size > 0){
+                binding.radioOccupying.isChecked = true
+                binding.coBorrowerName.setText(it.occupancyData.get(0).borrowerFirstName + " " + it.occupancyData.get(0).borrowerLastName)
+            } else{
+                //binding.radioNonOccupying.isChecked = true
+                binding.coBorrowerName.visibility = View.GONE
+            }
+        })
     }
 
     private fun setInputFields(){
@@ -322,6 +328,36 @@ class SubjectPropertyPurchase : BaseFragment() {
         bundle.putParcelableArrayList(AppConstant.address,addressList)
         fragment.arguments = bundle
         findNavController().navigate(R.id.action_address, fragment.arguments)
+    }
+
+    private fun hideLoader(){
+        val  activity = (activity as? SubjectPropertyActivity)
+        activity?.binding?.loaderSubjectProperty?.visibility = View.GONE
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onErrorReceived(event: WebServiceErrorEvent) {
+        if(event.isInternetError)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+        else
+            if(event.errorResult!=null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
+        hideLoader()
+    }
+
+    private fun dismissActivity(){
+        requireActivity().finish()
+        requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
     }
 
 }

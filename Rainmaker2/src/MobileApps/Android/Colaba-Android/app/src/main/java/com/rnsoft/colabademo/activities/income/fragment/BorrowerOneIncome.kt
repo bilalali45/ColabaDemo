@@ -55,7 +55,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
             viewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
                     val incomeActivity = (activity as? IncomeActivity)
                     incomeActivity?.let { incomeActivity->
-                        incomeActivity.binding.assetDataLoader.visibility = View.INVISIBLE
+                        incomeActivity.binding.incomeDataLoader.visibility = View.INVISIBLE
                     }
 
                     var observerCounter = 0

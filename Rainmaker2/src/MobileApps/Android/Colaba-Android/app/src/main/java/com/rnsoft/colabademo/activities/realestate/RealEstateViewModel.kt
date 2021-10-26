@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -47,9 +48,8 @@ class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo) 
     private val _states : MutableLiveData<ArrayList<StatesModel>> =   MutableLiveData()
     val states: LiveData<ArrayList<StatesModel>> get() = _states
 
-
-
     suspend fun getRealEstateDetails(token:String, loanApplicationId:Int,borrowerPropertyId:Int) {
+        Timber.e("loanAppliactionId " + loanApplicationId + "propertyId : " + borrowerPropertyId + "Token: "  + token)
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.getRealEstateDetails(token = token, loanApplicationId = loanApplicationId, borrowerPropertyId = borrowerPropertyId)
             withContext(Dispatchers.Main) {
@@ -60,7 +60,6 @@ class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo) 
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 }
                 else if (responseResult is Result.Error){
-                    //Timber.e(WebServiceErrorEvent(responseResult))
                     EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
                }
             }
@@ -68,7 +67,7 @@ class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo) 
     }
 
     suspend fun getFirstMortgageDetails(token:String, loanApplicationId:Int,borrowerPropertyId:Int) {
-        //Log.e("viewmodel","id" + loanApplicationId + "propertyId" + borrowerPropertyId + "  " + token)
+        Log.e("viewmodel","id" + loanApplicationId + "propertyId" + borrowerPropertyId + "  " + token)
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.getRealEstateFirstMortgageDetails(token = token, loanApplicationId = loanApplicationId, borrowerPropertyId = borrowerPropertyId)
             withContext(Dispatchers.Main) {

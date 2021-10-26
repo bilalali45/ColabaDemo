@@ -1,12 +1,17 @@
 package com.rnsoft.colabademo
 
+import android.content.Intent
 import android.content.SharedPreferences
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.databinding.AssetsActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -15,13 +20,10 @@ class AssetsActivity : BaseActivity() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     lateinit var binding: AssetsActivityLayoutBinding
-    //private lateinit var appBarConfiguration : AppBarConfiguration
 
     var loanApplicationId:Int? = null
     var loanPurpose:String? = null
-
     var borrowerTabList:ArrayList<Int>? = null
-
     private val borrowerApplicationViewModel: BorrowerApplicationViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +44,7 @@ class AssetsActivity : BaseActivity() {
 
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    if(loanApplicationId!=null && borrowerTabList!=null && loanApplicationId!=null ) {
+                    if(loanApplicationId != null && borrowerTabList != null && loanApplicationId!=null ) {
                         borrowerApplicationViewModel.getBorrowerWithAssets(
                             authToken, loanApplicationId!!,
                             borrowerTabList!!
@@ -51,11 +53,22 @@ class AssetsActivity : BaseActivity() {
                 }
             }
         }
+    }
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
     }
 
     override fun onStop() {
         super.onStop()
-        Timber.e("onStop from Activity called....")
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onErrorEvent(event: WebServiceErrorEvent) {
+        binding.assetDataLoader.visibility = View.INVISIBLE
+        finish()
+
     }
 }

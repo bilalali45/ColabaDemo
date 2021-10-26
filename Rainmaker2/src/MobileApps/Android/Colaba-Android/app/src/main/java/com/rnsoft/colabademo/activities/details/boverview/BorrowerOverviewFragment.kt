@@ -24,6 +24,8 @@ class BorrowerOverviewFragment : BaseFragment()  {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = DetailBorrowerLayoutTwoBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+
         detailViewModel.borrowerOverviewModel.observe(viewLifecycleOwner, {  overviewModel->
             if(overviewModel!=null) {
 
@@ -117,6 +119,11 @@ class BorrowerOverviewFragment : BaseFragment()  {
         })
         super.addListeners(binding.root)
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
     }
 
 }

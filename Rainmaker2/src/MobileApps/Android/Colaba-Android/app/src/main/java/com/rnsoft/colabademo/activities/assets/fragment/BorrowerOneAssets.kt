@@ -50,7 +50,6 @@ class BorrowerOneAssets : AssetBaseFragment() {
                         assetsActivity.binding.assetDataLoader.visibility = View.INVISIBLE
                     }
 
-
                     var observerCounter = 0
                     var getBorrowerAssets: ArrayList<BorrowerAsset> = arrayListOf()
                     while (observerCounter < observableSampleContent.size) {
@@ -126,7 +125,7 @@ class BorrowerOneAssets : AssetBaseFragment() {
 
                         binding.assetParentContainer.addView(mainCell)
 
-                        val drawable = R.drawable.toast_err
+                        //val drawable = R.drawable.toast_err
 
                         topCell.setOnClickListener {
                             hideOtherBoxes() // if you want to hide other boxes....

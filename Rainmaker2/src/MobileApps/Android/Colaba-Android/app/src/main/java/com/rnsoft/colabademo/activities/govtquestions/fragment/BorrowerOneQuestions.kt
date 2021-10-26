@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.content.Context
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,22 +17,32 @@ import kotlinx.android.synthetic.main.common_govt_content_layout.view.*
 import timber.log.Timber
 import android.widget.LinearLayout
 import android.util.DisplayMetrics
-
-
-
-
-
-
+import androidx.appcompat.widget.LinearLayoutCompat
+import kotlinx.android.synthetic.main.children_separate_layout.view.*
+import kotlinx.android.synthetic.main.common_govt_content_layout.view.ans_no
+import kotlinx.android.synthetic.main.common_govt_content_layout.view.ans_yes
+import kotlinx.android.synthetic.main.common_govt_content_layout.view.detail_text
+import kotlinx.android.synthetic.main.common_govt_content_layout.view.detail_title
+import kotlinx.android.synthetic.main.common_govt_content_layout.view.govt_detail_box
+import kotlinx.android.synthetic.main.common_govt_content_layout.view.govt_question
+import kotlinx.android.synthetic.main.more_questions_to_govt_screen.view.*
+import kotlinx.android.synthetic.main.ownership_interest_layout.view.*
+import kotlinx.android.synthetic.main.ownership_interest_layout.view.detail_text2
+import kotlinx.android.synthetic.main.ownership_interest_layout.view.detail_title2
+import kotlinx.android.synthetic.main.ownership_interest_layout.view.govt_detail_box2
 
 
 class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     private lateinit var binding: BorrowerOneQuestionsLayoutBinding
 
+
+    private var idToContentMapping = HashMap<Int, ConstraintLayout>(0)
     private var innerLayoutHashMap = HashMap<AppCompatTextView, ConstraintLayout>(0)
     private var openDetailBoxHashMap = HashMap<AppCompatRadioButton, ConstraintLayout>(0)
     private var closeDetailBoxHashMap = HashMap<AppCompatRadioButton, ConstraintLayout>(0)
 
+    //private val tabArrayList:ArrayList<AppCompatTextView> = arrayListOf()
 
     private val bAppViewModel: BorrowerApplicationViewModel by activityViewModels()
 
@@ -41,31 +52,91 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = BorrowerOneQuestionsLayoutBinding.inflate(inflater, container, false)
-        setupLayout()
+        setupLayout(inflater)
         super.addListeners(binding.root)
         return binding.root
     }
 
 
-    private fun setupLayout(){
-        setUpDynamicTabs()
+    private fun setupLayout(inflater: LayoutInflater){
+        setUpDynamicTabs( inflater)
         //setUpTabs()
     }
 
-    private fun setUpDynamicTabs(){
+    private fun setUpDynamicTabs( inflater: LayoutInflater){
         bAppViewModel.governmentQuestionsModelClass.observe(viewLifecycleOwner, Observer {
             it.questionData?.let{ questionData->
                  for(qData in questionData) {
                      qData.headerText?.let { tabTitle->
-                         val appCompactTextView = createAppCompactTextView(tabTitle, 0)
-                         binding.horizontalTabs.addView(appCompactTextView)
-                         val contentView = createContentLayoutForTab(qData)
-                         innerLayoutHashMap.put(appCompactTextView, contentView)
-                         binding.parentContainer.addView(contentView)
-                         appCompactTextView.setOnClickListener(scrollerTab)
-                         horizontalTabArrayList.add(appCompactTextView)
+                         if(qData.parentQuestionId == null) {
+                             val appCompactTextView = createAppCompactTextView(tabTitle, 0)
+                             //tabArrayList.add(appCompactTextView)
+                             binding.horizontalTabs.addView(appCompactTextView)
+                             val contentView = createContentLayoutForTab(qData)
+
+                             innerLayoutHashMap.put(appCompactTextView, contentView)
+                             qData.id?.let { it1 -> idToContentMapping.put(it1, contentView) }
+                             binding.parentContainer.addView(contentView)
+                             appCompactTextView.setOnClickListener(scrollerTab)
+                             horizontalTabArrayList.add(appCompactTextView)
+                         }
+
                      }
                  }
+                // adding inner questions to the content....
+                val parentQuestionList: ArrayList<Int> = arrayListOf()
+                for(qData in questionData) {
+                    qData.parentQuestionId?.let { parentQuestionId ->
+                        var nestedQuestion = 0
+                        for(tabItem in idToContentMapping) {
+
+                                if(parentQuestionId == tabItem.key){
+
+
+                                    if(parentQuestionList.contains(parentQuestionId))
+                                        nestedQuestion++
+                                     else
+                                         parentQuestionList.add(parentQuestionId)
+
+                                    val contentView = tabItem.value
+                                    if(nestedQuestion == 0) {
+
+                                        contentView.detail_title.text = qData.question
+                                        contentView.detail_text.text = qData.answer
+                                        contentView.detail_title.setTypeface(null, Typeface.NORMAL)
+                                        contentView.detail_text.setTypeface(null, Typeface.BOLD)
+                                        //contentView.detail_title.tag = false
+                                        Timber.e("header text " + qData.headerText, qData.answerDetail)
+                                        contentView.govt_detail_box.visibility = View.VISIBLE
+
+                                    }
+
+                                    else if(nestedQuestion == 1){
+                                        contentView.detail_title2.text = qData.question
+                                        contentView.detail_text2.text = qData.answer
+                                        contentView.detail_title2.setTypeface(null, Typeface.NORMAL)
+                                        contentView.detail_text2.setTypeface(null, Typeface.BOLD)
+                                        //contentView.govt_detail_box2.tag = false
+                                        Timber.e("header text TWO -- " + qData.headerText, qData.answerDetail)
+                                        contentView.govt_detail_box2.visibility = View.VISIBLE
+                                    }
+                                    else
+                                    {
+                                        contentView.detail_title3.text = qData.question
+                                        contentView.detail_text3.text = qData.answer
+                                        contentView.detail_title3.setTypeface(null, Typeface.NORMAL)
+                                        contentView.detail_text3.setTypeface(null, Typeface.BOLD)
+                                        //contentView.govt_detail_box2.tag = false
+                                        contentView.govt_detail_box3.visibility = View.VISIBLE
+                                        Timber.e("header text THREE -- " + qData.headerText, qData.answerDetail)
+                                    }
+
+
+                                }
+                        }
+                    }
+                }
+
             }
 
         })
@@ -110,9 +181,25 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     }
 
     private fun createContentLayoutForTab(questionData:QuestionData):ConstraintLayout{
-        val contentCell: ConstraintLayout =
-            layoutInflater.inflate(R.layout.common_govt_content_layout, null) as ConstraintLayout
-        contentCell.visibility = View.GONE
+        var childSupport = false
+        var ownerShip = false
+        val contentCell: ConstraintLayout
+        if(questionData.headerText == "Ownership Interest in Property") {
+            contentCell = layoutInflater.inflate(R.layout.ownership_interest_layout, null) as ConstraintLayout
+            ownerShip = true
+        }
+        else
+        if(questionData.headerText == "Child Support, Alimony, etc.") {
+            contentCell = layoutInflater.inflate(R.layout.children_separate_layout, null) as ConstraintLayout
+            childSupport = true
+        }
+        else
+            contentCell = layoutInflater.inflate(R.layout.common_govt_content_layout, null) as ConstraintLayout
+
+
+        contentCell.visibility = View.INVISIBLE
+        //contentCell.govt_detail_box.tag = true
+
         Timber.e(" questionData.question "+questionData.question)
         contentCell.govt_question.text =  questionData.question
         questionData.answerDetail?.let {
@@ -141,9 +228,35 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             openDetailBoxNew(headerTitle)
         }
         contentCell.govt_detail_box.setOnClickListener {
-            contentCell.govt_detail_box.visibility = View.VISIBLE
+            //contentCell.govt_detail_box.visibility = View.VISIBLE
             openDetailBoxNew(headerTitle)
         }
+
+        if(ownerShip) {
+            contentCell.govt_detail_box2.setOnClickListener {
+                //it.tag = true
+                //contentCell.govt_detail_box2.visibility = View.VISIBLE
+                openDetailBoxNew(headerTitle)
+            }
+        }
+
+        if(childSupport){
+             contentCell.govt_detail_box2.setOnClickListener {
+                //it.tag = true
+                //contentCell.govt_detail_box.visibility = View.VISIBLE
+                openDetailBoxNew(headerTitle)
+            }
+             contentCell.govt_detail_box3.setOnClickListener {
+                //it.tag = true
+                //contentCell.govt_detail_box.visibility = View.VISIBLE
+                openDetailBoxNew(headerTitle)
+            }
+
+        }
+
+
+
+
         return contentCell
     }
 

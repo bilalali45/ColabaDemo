@@ -311,6 +311,7 @@
 
     <string name="expected_date_of_transfer">Expected Date of Transfer</string>
     <string name="date_of_transfer">Date of Transfer</string>
+    <string name="details">Details</string>
 
 
     <!-- primary info labels-->
