@@ -12,6 +12,7 @@ class DropDownModel: NSObject{
     
     var optionId: Int = 0
     var optionName: String = ""
+    var isSelected: Bool = false
     
     func updateModelWithJSON(json: JSON){
         optionId = json["id"].intValue
