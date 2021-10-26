@@ -126,7 +126,7 @@ class BorrowerOneAssets : AssetBaseFragment() {
 
                         binding.assetParentContainer.addView(mainCell)
 
-                        val drawable = R.drawable.toast_err
+                        //val drawable = R.drawable.toast_err
 
                         topCell.setOnClickListener {
                             hideOtherBoxes() // if you want to hide other boxes....

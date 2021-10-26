@@ -163,6 +163,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         }
         questionAdapter.notifyDataSetChanged()
 
+        binding.applicationTabLayout.visibility = View.INVISIBLE
 
         detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, { appTabModel->
             if (appTabModel != null) {
@@ -212,6 +213,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                         borrowerInfoList = borrowersList
 
                         for(borrower in borrowersList){
+                            Timber.e("BApp -- " + borrower.firstName , borrower.borrowerId, borrower.owntypeId , borrower.genderName)
                            if(borrower.owntypeId == 1) {
                                borrower.races?.let {
                                    races = it
@@ -229,6 +231,10 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
                 appTabModel.borrowerAppData?.let { bAppData->
                     bAppData.realStateOwns?.let {
+                        for(item in it){
+                            Timber.e(" Get -- "+item)
+                            Timber.e(" details -- "+item.borrowerId + "  "+item.propertyInfoId +"  "+ item.propertyTypeId + "  "+item.propertyTypeName)
+                        }
                         realStateList.clear()
                         realStateList = it
 
@@ -357,6 +363,34 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         }
     }
 
+    override fun navigateToGovernmentActivity(position: Int) {
+        //startActivity(Intent(requireActivity(), GovtQuestionActivity::class.java))
+        val detailActivity = (activity as? DetailActivity)
+        detailActivity?.let {
+            val govtQuestionActivity = Intent(requireActivity(), GovtQuestionActivity::class.java)
+            val bList:ArrayList<Int> = arrayListOf()
+            val bListOwnTypeId:ArrayList<Int> = arrayListOf()
+            for(item in borrowerInfoList) {
+                //Timber.d("borrowerInfoList borrowerId  "+ item)
+                if(item.borrowerId!=-1) {
+                    bList.add(item.borrowerId)
+                    bListOwnTypeId.add(item.owntypeId)
+                }
+            }
+            govtQuestionActivity.putIntegerArrayListExtra( AppConstant.borrowerList, bList)
+            govtQuestionActivity.putIntegerArrayListExtra( AppConstant.borrowerOwnTypeList, bListOwnTypeId)
+            it.loanApplicationId?.let { loanId ->
+                govtQuestionActivity.putExtra(AppConstant.loanApplicationId, loanId)
+            }
+
+            startActivity(govtQuestionActivity)
+        }
+
+
+
+
+    }
+
 
     override fun getSingleItemIndex(position: Int) {
 
@@ -366,32 +400,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         startActivity(Intent(requireActivity(), BorrowerAddressActivity::class.java))
     }
 
-    override fun navigateToGovernmentActivity(position: Int) {
-        startActivity(Intent(requireActivity(), GovtQuestionActivity::class.java))
 
-        /*
-        binding.questionProgress.visibility = View.VISIBLE
-        lifecycleScope.launchWhenStarted {
-            val detailActivity = (activity as? DetailActivity)
-            detailActivity?.let {
-                val testLoanId = it.loanApplicationId
-                testLoanId?.let { loanId ->
-                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        Timber.e("loading govt service...")
-                        val bool = borrowerApplicationViewModel.getGovernmentQuestions(authToken, 5, 1, 5)
-                        Timber.e("Government service loaded..."+bool)
-                        startActivity(Intent(requireActivity(), GovtQuestionActivity::class.java))
-                    }
-                }
-            }
-        }
-
-         */
-
-
-
-
-    }
 
     /*
     private fun setUpGovtQuestionsRecycleView(passedList: ArrayList<BorrowerQuestionsModel>) {

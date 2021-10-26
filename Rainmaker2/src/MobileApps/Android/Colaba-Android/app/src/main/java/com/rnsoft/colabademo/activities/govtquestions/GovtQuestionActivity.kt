@@ -22,7 +22,8 @@ class GovtQuestionActivity : BaseActivity() {
 
     var loanApplicationId:Int? = null
     var loanPurpose:String? = null
-
+    var borrowerTabList:ArrayList<Int>? = null
+    var borrowerOwnTypeList:ArrayList<Int>? = null
     private val borrowerApplicationViewModel: BorrowerApplicationViewModel by viewModels()
 
 
@@ -37,15 +38,34 @@ class GovtQuestionActivity : BaseActivity() {
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             loanPurpose = it.getString(AppConstant.loanPurpose)
-        }
+            borrowerTabList =
+                it.getIntegerArrayList(AppConstant.borrowerList) as ArrayList<Int>
+            Timber.d("borrowerTabList size " + borrowerTabList!!.size)
 
-        Timber.e("Running on create function")
+            borrowerOwnTypeList =
+                it.getIntegerArrayList(AppConstant.borrowerOwnTypeList) as ArrayList<Int>
+
+            for (item in borrowerTabList!!) {
+                Timber.d("item size " + item)
+            }
+        }
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 Timber.e("loading govt service...")
-                val bool = borrowerApplicationViewModel.getGovernmentQuestions(authToken, 5, 1, 5)
-                Timber.e("Government service loaded..."+bool)
+
+                var borrowerId =  borrowerTabList?.get(0)
+                var ownTypeId = borrowerOwnTypeList?.get(0)
+
+                if(loanApplicationId!=null && borrowerTabList!=null && loanApplicationId!=null &&  borrowerId!=null && ownTypeId!=null ) {
+                    val bool = borrowerApplicationViewModel.getGovernmentQuestions(
+                        authToken,
+                        loanApplicationId!!,
+                        ownTypeId,
+                        borrowerId
+                    )
+                    Timber.e("Government service loaded..." + bool)
+                }
             }
         }
 

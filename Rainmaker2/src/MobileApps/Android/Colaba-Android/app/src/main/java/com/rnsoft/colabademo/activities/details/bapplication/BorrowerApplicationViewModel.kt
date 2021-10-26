@@ -106,7 +106,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         val borrowerAssetList: ArrayList<MyAssetBorrowerDataClass> = ArrayList()
         viewModelScope.launch(Dispatchers.IO) {
             coroutineScope {
-                delay(4000)
+                delay(1000)
                 borrowerIds.forEach { id ->
                     Timber.e("borrowerIds.id -> "+id)
                     launch { // this will allow us to run multiple tasks in parallel
@@ -141,7 +141,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         var errorResult:Result.Error?=null
         viewModelScope.launch(Dispatchers.IO) {
             coroutineScope {
-                delay(2000)
+                delay(1000)
                 borrowerIds.forEach { id ->
                     launch {
                         val responseResult = bAppRepo.getBorrowerIncomeDetail(token = token, loanApplicationId = loanApplicationId, borrowerId = id)
