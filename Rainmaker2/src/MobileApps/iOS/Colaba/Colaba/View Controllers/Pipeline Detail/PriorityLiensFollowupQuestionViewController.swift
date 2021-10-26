@@ -10,6 +10,7 @@ import MaterialComponents
 
 enum DetailScreenType{
     case priorityLiens
+    case familyOrBusinessAffilation
     case undisclosedMortgageApplication
     case undisclosedCreditApplication
     case debtCoSigner
@@ -40,6 +41,9 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
     
     private let validation: Validation
     
+    var questionModel = GovernmentQuestionModel()
+    var borrowerName = ""
+    
     init(validation: Validation) {
         self.validation = validation
         super.init(nibName: nil, bundle: nil)
@@ -53,9 +57,13 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextView()
-        
+        lblUsername.text = borrowerName.uppercased()
+        txtViewDetail.textView.text = questionModel.answerDetail
         if (type == .priorityLiens){
             lblTopTitle.text = "Priority Liens"
+        }
+        else if (type == .familyOrBusinessAffilation){
+            lblTopTitle.text = "Family or Business Affiliation"
         }
         else if (type == .undisclosedMortgageApplication){
             lblTopTitle.text = "Undisclosed Mortgage Applications"
@@ -119,7 +127,6 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
         txtViewDetail.textView.textColor = .black
         txtViewDetail.textView.delegate = self
         mainView.addSubview(txtViewDetail)
-        
 
     }
     

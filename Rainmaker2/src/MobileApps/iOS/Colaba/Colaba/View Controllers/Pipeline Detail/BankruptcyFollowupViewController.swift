@@ -37,6 +37,8 @@ class BankruptcyFollowupViewController: BaseViewController {
     var isChapter11 = false
     var isChapter12 = false
     var isChapter13 = false
+    var questionModel: GovernmentQuestionModel?
+    var borrowerName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +47,7 @@ class BankruptcyFollowupViewController: BaseViewController {
         chapter11StackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(chapter11StackViewTapped)))
         chapter12StackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(chapter12StackViewTapped)))
         chapter13StackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(chapter13StackViewTapped)))
+        setQuestionData()
     }
     
     //MARK:- Methods and Actions
@@ -80,30 +83,49 @@ class BankruptcyFollowupViewController: BaseViewController {
         txtViewDetail.textView.textColor = .black
         //txtViewDetail.textView.delegate = self
         mainView.addSubview(txtViewDetail)
-        
 
+    }
+    
+    func setQuestionData(){
+        lblUsername.text = borrowerName.uppercased()
+        if let typeQuestion = questionModel{
+            isChapter7 = typeQuestion.childSupportTypes.contains("Chapter 7")
+            isChapter11 = typeQuestion.childSupportTypes.contains("Chapter 11")
+            isChapter12 = typeQuestion.childSupportTypes.contains("Chapter 12")
+            isChapter13 = typeQuestion.childSupportTypes.contains("Chapter 13")
+            changeType()
+            txtViewDetail.textView.text = typeQuestion.answerDetail
+        }
+        
     }
     
     @objc func chapter7StackViewTapped(){
         isChapter7 = !isChapter7
-        btnChapter7.setImage(UIImage(named: isChapter7 ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
-        lblChapter7.font = isChapter7 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        changeType()
     }
     
     @objc func chapter11StackViewTapped(){
         isChapter11 = !isChapter11
-        btnChapter11.setImage(UIImage(named: isChapter11 ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
-        lblChapter11.font = isChapter11 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        changeType()
     }
     
     @objc func chapter12StackViewTapped(){
         isChapter12 = !isChapter12
-        btnChapter12.setImage(UIImage(named: isChapter12 ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
-        lblChapter12.font = isChapter12 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        changeType()
     }
     
     @objc func chapter13StackViewTapped(){
         isChapter13 = !isChapter13
+        changeType()
+    }
+    
+    func changeType(){
+        btnChapter7.setImage(UIImage(named: isChapter7 ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
+        lblChapter7.font = isChapter7 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        btnChapter11.setImage(UIImage(named: isChapter11 ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
+        lblChapter11.font = isChapter11 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        btnChapter12.setImage(UIImage(named: isChapter12 ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
+        lblChapter12.font = isChapter12 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         btnChapter13.setImage(UIImage(named: isChapter13 ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
         lblChapter13.font = isChapter13 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
     }

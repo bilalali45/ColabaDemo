@@ -23,6 +23,7 @@ class PriorityLiensViewController: BaseViewController {
     @IBOutlet weak var lblAns: UILabel!
     
     var isYes: Bool?
+    var questionModel = GovernmentQuestionModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +51,7 @@ class PriorityLiensViewController: BaseViewController {
         changeStatus()
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .priorityLiens
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     
@@ -73,6 +75,7 @@ class PriorityLiensViewController: BaseViewController {
     @objc func priorityLiensViewTapped(){
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .priorityLiens
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
 }

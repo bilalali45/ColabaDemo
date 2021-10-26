@@ -1,13 +1,13 @@
 //
-//  FedralDebtViewController.swift
+//  FamilyOrBusinessAffliationViewController.swift
 //  Colaba
 //
-//  Created by Muhammad Murtaza on 17/09/2021.
+//  Created by Muhammad Murtaza on 25/10/2021.
 //
 
 import UIKit
 
-class FedralDebtViewController: BaseViewController {
+class FamilyOrBusinessAffliationViewController: UIViewController {
 
     //MARK:- Outlets and Properties
     
@@ -66,7 +66,7 @@ class FedralDebtViewController: BaseViewController {
         isYes = true
         changeStatus()
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
-        vc.type = .federalDebt
+        vc.type = .debtCoSigner
         vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
@@ -83,16 +83,15 @@ class FedralDebtViewController: BaseViewController {
             btnNo.setImage(UIImage(named: !ansYes ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
             lblNo.font = !ansYes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
             //detailView.isHidden = !ansYes
-            
         }
     }
     
     @objc func detailViewTapped(){
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
-        vc.type = .federalDebt
+        vc.type = .familyOrBusinessAffilation
         vc.questionModel = questionModel
         vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
-    
+
 }

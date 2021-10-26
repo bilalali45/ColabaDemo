@@ -26,6 +26,9 @@ class UndisclosedBorrowerFundsFollowupQuestionsViewController: BaseViewControlle
     
     private let validation: Validation
     
+    var questionModel: GovernmentQuestionModel?
+    var borrowerName = ""
+    
     init(validation: Validation) {
         self.validation = validation
         super.init(nibName: nil, bundle: nil)
@@ -38,6 +41,7 @@ class UndisclosedBorrowerFundsFollowupQuestionsViewController: BaseViewControlle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextfields()
+        setQuestionData()
     }
     
     //MARK:- Methods and Actions
@@ -78,6 +82,19 @@ class UndisclosedBorrowerFundsFollowupQuestionsViewController: BaseViewControlle
         mainView.addSubview(txtViewDetail)
         
 
+    }
+    
+    func setQuestionData(){
+        lblUsername.text = borrowerName.uppercased()
+        if let question = questionModel{
+            lblQuestion.text = question.question
+            if let amount = Int(question.answer){
+                txtfieldAmountBorrowed.setTextField(text: String(format: "%.0f", Double(amount)))
+            }
+            txtViewDetail.textView.text = question.answerDetail
+        }
+        
+        
     }
     
     func validate() -> Bool {

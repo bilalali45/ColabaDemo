@@ -37,6 +37,7 @@ class DocumentsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        btnRequestDocuments.isHidden = true
         btnRequestDocuments.layer.borderWidth = 1
         btnRequestDocuments.layer.cornerRadius = 5
         btnRequestDocuments.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
@@ -58,6 +59,7 @@ class DocumentsViewController: BaseViewController {
         super.viewDidAppear(animated)
         getDocuments()
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowNavigationBar), object: nil, userInfo: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowRequestDocumentFooterButton), object: nil, userInfo: nil)
     }
     
     
@@ -161,8 +163,8 @@ class DocumentsViewController: BaseViewController {
             DispatchQueue.main.async {
                 self.loadingPlaceholderView.uncover()
                 self.view.isUserInteractionEnabled = true
-                self.btnRequestDocuments.isHidden = result.arrayValue.count > 0
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: result.arrayValue.count > 0 ? kNotificationShowRequestDocumentFooterButton : kNotificationHideRequestDocumentFooterButton), object: nil, userInfo: nil)
+                //self.btnRequestDocuments.isHidden = result.arrayValue.count > 0
+//                NotificationCenter.default.post(name: NSNotification.Name(rawValue: result.arrayValue.count > 0 ? kNotificationShowRequestDocumentFooterButton : kNotificationHideRequestDocumentFooterButton), object: nil, userInfo: nil)
                 
                 if (status == .success){
                     

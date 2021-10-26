@@ -21,8 +21,13 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
     @IBOutlet weak var propertyTypeView: UIView!
     @IBOutlet weak var lblPropertyQuestion: UILabel!
     @IBOutlet weak var lblPropertyType: UILabel!
+    @IBOutlet weak var propertyTitleView: UIView!
+    @IBOutlet weak var lblPropertyTitleQuestion: UILabel!
+    @IBOutlet weak var lblPropertyTitleAnswer: UILabel!
     
     var isYes: Bool?
+    var questionModel = GovernmentQuestionModel()
+    var subQuestions: [GovernmentQuestionModel]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +37,13 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
         btnYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
         lblYes.font = Theme.getRubikRegularFont(size: 14)
         propertyTypeView.isHidden = true
+        propertyTitleView.isHidden = true
+        setQuestionData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setQuestionData()
     }
     
     //MARK:- Methods
@@ -43,12 +55,29 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
         propertyTypeView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         propertyTypeView.dropShadowToCollectionViewCell()
         propertyTypeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(propertyTypeViewTapped)))
+        
+        propertyTitleView.layer.cornerRadius = 6
+        propertyTitleView.layer.borderWidth = 1
+        propertyTitleView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        propertyTitleView.dropShadowToCollectionViewCell()
+        propertyTitleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(propertyTypeViewTapped)))
+    }
+    
+    func setQuestionData(){
+        lblQuestion.text = questionModel.question
+        if questionModel.answer == "Yes"{
+            isYes = true
+        }
+        else{
+            isYes = false
+        }
+        changeStatus()
     }
     
     @objc func yesStackViewTapped(){
         isYes = true
-        changeStatus()
         let vc = Utility.getOwnershipInterestInPropertyFollowupQuestionVC()
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
     
@@ -63,12 +92,21 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
             lblYes.font = yes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
             btnNo.setImage(UIImage(named: !yes ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
             lblNo.font = !yes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-            propertyTypeView.isHidden = !yes
+            if let questions = subQuestions{
+                propertyTypeView.isHidden = !yes
+                propertyTitleView.isHidden = !yes
+                lblPropertyQuestion.text = questions.filter({$0.question.localizedCaseInsensitiveContains("What type of property did you own?")}).first?.question
+                lblPropertyType.text = questions.filter({$0.question.localizedCaseInsensitiveContains("What type of property did you own?")}).first?.answer
+                lblPropertyTitleQuestion.text = questions.filter({$0.question.localizedCaseInsensitiveContains("How did you hold title to the property?")}).first?.question
+                lblPropertyTitleAnswer.text = questions.filter({$0.question.localizedCaseInsensitiveContains("How did you hold title to the property?")}).first?.answer
+            }
         }
     }
     
     @objc func propertyTypeViewTapped(){
         let vc = Utility.getOwnershipInterestInPropertyFollowupQuestionVC()
+        vc.questions = subQuestions
+        vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         self.presentVC(vc: vc)
     }
 }

@@ -15,6 +15,9 @@ class GovernmentQuestionsViewController: BaseViewController {
     @IBOutlet weak var tabView: UIView!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
+    var loanApplicationId = 0
+    var borrowersArray = [BorrowerInfoModel]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupHeaderAndFooter()
@@ -22,12 +25,9 @@ class GovernmentQuestionsViewController: BaseViewController {
     
     //MARK:- Methods and Actions
     func setupHeaderAndFooter(){
-        
-
-        
+                
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) {
-            let tabItems = ["Richard Glenn", "Maria Randall"]
-            let carbonTabSwipeNavigation = CarbonTabSwipeNavigation(items: tabItems, delegate: self)
+            let carbonTabSwipeNavigation = CarbonTabSwipeNavigation(items: self.borrowersArray.map{$0.borrowerFullName}, delegate: self)
             
             carbonTabSwipeNavigation.carbonSegmentedControl?.backgroundColor = Theme.getDashboardBackgroundColor()
             carbonTabSwipeNavigation.setTabBarHeight(50)
@@ -38,7 +38,7 @@ class GovernmentQuestionsViewController: BaseViewController {
             carbonTabSwipeNavigation.carbonSegmentedControl?.imageNormalColor = .clear
             carbonTabSwipeNavigation.carbonSegmentedControl?.imageSelectedColor = .clear
             
-            let segmentWidth = (self.tabView.frame.width / 2)
+            let segmentWidth = self.borrowersArray.count > 1 ? self.tabView.frame.width / 2 : self.tabView.frame.width
             
             let indicator = carbonTabSwipeNavigation.carbonSegmentedControl?.indicator
             let subView = UIView()
@@ -46,12 +46,18 @@ class GovernmentQuestionsViewController: BaseViewController {
             subView.roundOnlyTopCorners(radius: 4)
             indicator?.addSubview(subView)
             subView.translatesAutoresizingMaskIntoConstraints = false
-            subView.widthAnchor.constraint(equalToConstant: segmentWidth * 0.8).isActive = true
+            if (self.borrowersArray.count > 1){
+                subView.widthAnchor.constraint(equalToConstant: segmentWidth * 0.8).isActive = true
+            }
+            else{
+                subView.widthAnchor.constraint(equalToConstant: segmentWidth * 0.9).isActive = true
+            }
             subView.centerXAnchor.constraint(equalTo: indicator!.centerXAnchor, constant: 0).isActive = true
             subView.topAnchor.constraint(equalTo: indicator!.topAnchor, constant: 0).isActive = true
             subView.bottomAnchor.constraint(equalTo: indicator!.bottomAnchor, constant: 0).isActive = true
-            carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 0)
-            carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: 1)
+            for i in 0..<self.borrowersArray.count{
+                carbonTabSwipeNavigation.carbonSegmentedControl?.setWidth(segmentWidth, forSegmentAt: i)
+            }
             carbonTabSwipeNavigation.insert(intoRootViewController: self, andTargetView: self.tabView)
             
         }
@@ -70,6 +76,9 @@ extension GovernmentQuestionsViewController: CarbonTabSwipeNavigationDelegate{
     
     func carbonTabSwipeNavigation(_ carbonTabSwipeNavigation: CarbonTabSwipeNavigation, viewControllerAt index: UInt) -> UIViewController {
         let vc = Utility.getGovernmentQuestionDetailVC()
+        vc.loanApplicationId = self.loanApplicationId
+        vc.borrowerId = borrowersArray[Int(index)].borrowerId
+        vc.ownTypeId = borrowersArray[Int(index)].ownTypeId
         return vc
     }
     

@@ -53,6 +53,7 @@ enum EndPoint:String{
     case getSecondMortgageDetail = "loanapplication/RealEstate/GetSecondMortgageDetails?"
     case getIncomeDetail = "loanapplication/Assets/GetIncomeDetails?"
     case getAssetsDetail = "loanapplication/Assets/GetAssetsDetails?"
+    case getGovernmentQuestions = "loanapplication/GovtQuestions/GetGovernmentQuestions?"
     case logout = "identity/mcuaccount/Logout"
     
 }
