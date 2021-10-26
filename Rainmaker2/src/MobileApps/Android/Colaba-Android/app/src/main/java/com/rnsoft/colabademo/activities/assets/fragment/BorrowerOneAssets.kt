@@ -50,7 +50,6 @@ class BorrowerOneAssets : AssetBaseFragment() {
                         assetsActivity.binding.assetDataLoader.visibility = View.INVISIBLE
                     }
 
-
                     var observerCounter = 0
                     var getBorrowerAssets: ArrayList<BorrowerAsset> = arrayListOf()
                     while (observerCounter < observableSampleContent.size) {

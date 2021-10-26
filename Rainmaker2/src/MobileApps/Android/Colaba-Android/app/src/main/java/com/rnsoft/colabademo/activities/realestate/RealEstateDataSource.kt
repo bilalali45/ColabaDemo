@@ -19,7 +19,7 @@ class RealEstateDataSource @Inject constructor(private val serverApi: ServerApi)
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getRealEstateDetails(newToken,loanApplicationId,borrowerPropertyId)
-            //Log.e("RealEstate-Reponse", response.toString())
+            Log.e("RealEstate-Reponse", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             Timber.e(e.message + e.cause)

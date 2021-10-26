@@ -89,9 +89,10 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
                             setLoanStageSpinner()
                         })
                     }
-                    val  activity = (activity as? BorrowerLoanActivity)
-                    activity?.binding?.loaderLoanInfo?.visibility = View.GONE
+                    if(loanInfo.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
+                        hideLoader() }
                 }
+                hideLoader()
             })
     }
 
@@ -426,6 +427,11 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
         val sampleDate = "$stringMonth / $p1"
         binding.edClosingDate.setText(sampleDate)
         CustomMaterialFields.clearError(binding.layoutClosingDate,requireActivity())
+    }
+
+    private fun hideLoader(){
+        val  activity = (activity as? BorrowerLoanActivity)
+        activity?.binding?.loaderLoanInfo?.visibility = View.GONE
     }
 
 }

@@ -40,8 +40,6 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
     private var occupancyTypeId : Int = 0
     var addressList : ArrayList<RealEstateAddress> = ArrayList()
     var addressHeading: String? = null
-    val token : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM0NzUzMjYxLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.bHZwTohB4toe2JGgKVNeaOoOh8HIaygh8WqmGpTPzO4"
-
 
 
     override fun onCreateView(
@@ -69,9 +67,6 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun getRealEstateDetails() {
-
-        //lifecycleScope.launchWhenStarted {
-            //viewModel.getRealEstateDetails(token, 5, 1003)
             viewModel.realEstateDetails.observe(viewLifecycleOwner, {
                 if(it != null) {
                     it.data?.address?.let {
@@ -166,14 +161,19 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                             binding.rbSecMortgageNo.isChecked = true
                         }
 
-
-                    getDropDownData()
-                    val  activity = (activity as? RealEstateActivity)
-                    activity?.binding?.loaderRealEstate?.visibility = View.GONE
+                    setDropDownData()
+                    if(it.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
+                        hideLoader()
+                    }
                 }
+                hideLoader()
             })
     }
 
+    private fun hideLoader(){
+        val  activity = (activity as? RealEstateActivity)
+        activity?.binding?.loaderRealEstate?.visibility = View.GONE
+    }
 
     private fun initViews(){
         binding.realestateMainlayout.setOnClickListener(this)
@@ -240,10 +240,7 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
 
     }
 
-    private fun getDropDownData(){
-
-        //lifecycleScope.launchWhenStarted {
-          //viewModel.getPropertyTypes(token)
+    private fun setDropDownData(){
              viewModel.propertyType.observe(viewLifecycleOwner, {
                  val itemList: ArrayList<String> = arrayListOf()
                  for (item in it) {
@@ -266,12 +263,10 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                      }
                  }
              })
-        // }
+
 
         // occupancy Type spinner
-        //lifecycleScope.launchWhenStarted {
-            //viewModel.getOccupancyType(token)
-            viewModel.occupancyType.observe(viewLifecycleOwner, {occupancyList->
+             viewModel.occupancyType.observe(viewLifecycleOwner, { occupancyList->
 
                 if(occupancyList != null && occupancyList.size > 0) {
                     val itemList: ArrayList<String> = arrayListOf()
@@ -301,7 +296,7 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                     }
                 }
             })
-        //}
+
 
 
         viewModel.propertyStatus.observe(viewLifecycleOwner, {
@@ -523,9 +518,13 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSwipeDeleteReceivedEvent(event: SwipeToDeleteEvent) {
-        if(event.boolean){
-
-        }
+    fun onErrorReceived(event: WebServiceErrorEvent) {
+        if(event.isInternetError)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+        else
+            if(event.errorResult!=null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
+        hideLoader()
     }
+
 }
