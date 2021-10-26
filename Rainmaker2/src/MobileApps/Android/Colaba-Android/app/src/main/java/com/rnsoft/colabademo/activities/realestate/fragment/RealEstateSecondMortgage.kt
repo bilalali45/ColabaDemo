@@ -53,60 +53,50 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
     }
 
     private fun getSecondMortgageDetails() {
-       // sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+        viewModel.secondMortgageDetails.observe(viewLifecycleOwner, {
+            if (it != null) {
+                it.data?.secondMortgagePayment?.let {
+                    binding.edSecMortgagePayment.setText(Math.round(it).toString())
+                    CustomMaterialFields.setColor(binding.layoutSecPayment, R.color.grey_color_two, requireActivity()) }
 
-            //lifecycleScope.launchWhenStarted {
-              //  viewModel.getSecondMortgageDetails(AppConstant.authToken, 5, 1003)
-                viewModel.secondMortgageDetails.observe(viewLifecycleOwner, {
-                    if (it != null) {
-                        it.data?.secondMortgagePayment?.let {
-                            binding.edSecMortgagePayment.setText(Math.round(it).toString())
-                            CustomMaterialFields.setColor(
-                                binding.layoutSecPayment,
-                                R.color.grey_color_two,
-                                requireActivity()
-                            )
-
-                        }
-                        it.data?.unpaidSecondMortgagePayment?.let {
-                            binding.edUnpaidBalance.setText(Math.round(it).toString())
-                            CustomMaterialFields.setColor(
-                                binding.layoutUnpaidBalance,
-                                R.color.grey_color_two,
-                                requireActivity()
-                            )
-                        }
-                        it.data?.isHeloc?.let {
-                            if (it == true) {
-                                binding.switchCreditLimit.isChecked = true
-                                binding.tvHeloc.setTypeface(null, Typeface.BOLD)
-                            } else {
-                                binding.switchCreditLimit.isChecked = false
-                                binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
-                            }
-                        }
-                        it.data?.helocCreditLimit?.let {
-                            binding.edCreditLimit.setText(Math.round(it).toString())
-                            CustomMaterialFields.setColor(
-                                binding.layoutCreditLimit,
-                                R.color.grey_color_two,
-                                requireActivity()
-                            )
-                        }
-                        it.data?.paidAtClosing?.let {
-                            if (it == true) {
-                                binding.rbPaidClosingYes.isChecked = true
-                                binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
-                            } else {
-                                binding.rbPaidClosingNo.isChecked = true
-                                binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
-                            }
-
-                        }
-
+                it.data?.unpaidSecondMortgagePayment?.let {
+                    binding.edUnpaidBalance.setText(Math.round(it).toString())
+                    CustomMaterialFields.setColor(
+                        binding.layoutUnpaidBalance,
+                        R.color.grey_color_two,
+                        requireActivity()
+                    )
+                }
+                it.data?.isHeloc?.let {
+                    if (it == true) {
+                        binding.switchCreditLimit.isChecked = true
+                        binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+                    } else {
+                        binding.switchCreditLimit.isChecked = false
+                        binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
                     }
-                })
-           // }
+                }
+                it.data?.helocCreditLimit?.let {
+                    binding.edCreditLimit.setText(Math.round(it).toString())
+                    CustomMaterialFields.setColor(
+                        binding.layoutCreditLimit,
+                        R.color.grey_color_two, requireActivity())
+                }
+                it.data?.paidAtClosing?.let {
+                    if (it == true) {
+                        binding.rbPaidClosingYes.isChecked = true
+                        binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
+                    } else {
+                        binding.rbPaidClosingNo.isChecked = true
+                        binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
+                    }
+                }
+                if(it.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
+                    hideLoader()
+                }
+            }
+            hideLoader()
+        })
 
     }
 
@@ -187,6 +177,11 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
         else
             if(event.errorResult!=null)
                 SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
+    }
+
+    private fun hideLoader(){
+        val  activity = (activity as? RealEstateActivity)
+        activity?.binding?.loaderRealEstate?.visibility = View.GONE
     }
 
 }

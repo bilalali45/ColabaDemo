@@ -161,9 +161,10 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                             binding.rbSecMortgageNo.isChecked = true
                         }
 
-
-                    getDropDownData()
-                    hideLoader()
+                    setDropDownData()
+                    if(it.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
+                        hideLoader()
+                    }
                 }
                 hideLoader()
             })
@@ -239,7 +240,7 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
 
     }
 
-    private fun getDropDownData(){
+    private fun setDropDownData(){
              viewModel.propertyType.observe(viewLifecycleOwner, {
                  val itemList: ArrayList<String> = arrayListOf()
                  for (item in it) {

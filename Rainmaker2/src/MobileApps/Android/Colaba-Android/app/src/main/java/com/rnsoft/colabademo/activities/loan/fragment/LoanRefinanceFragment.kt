@@ -85,8 +85,6 @@ class LoanRefinanceFragment : BaseFragment() {
                 }
             }
         }
-
-
     }
 
     private fun clicks(){
@@ -132,10 +130,11 @@ class LoanRefinanceFragment : BaseFragment() {
 
                         })
                     }
-
-                    val  activity = (activity as? BorrowerLoanActivity)
-                    activity?.binding?.loaderLoanInfo?.visibility = View.GONE
+                    if(loanInfo.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
+                        hideLoader()
+                    }
                 }
+                hideLoader()
             })
     }
 
@@ -207,6 +206,11 @@ class LoanRefinanceFragment : BaseFragment() {
                 R.color.primary_info_line_color
             )
         )
+    }
+
+    private fun hideLoader(){
+        val  activity = (activity as? BorrowerLoanActivity)
+        activity?.binding?.loaderLoanInfo?.visibility = View.GONE
     }
 
 }

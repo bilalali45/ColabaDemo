@@ -48,13 +48,10 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
     lateinit var btnFilterPending: AppCompatTextView
     lateinit var btnFilterCompleted: AppCompatTextView
     lateinit var btnFilterManullayAdded: AppCompatTextView
-    private lateinit var btnRequestDoc : AppCompatButton
-    private lateinit var btnRequestDoc1 : AppCompatButton
     var isStart: Boolean = true
     var filter : String = "All"
     lateinit var layout_noDocFound : ConstraintLayout
     lateinit var layout_docData : ConstraintLayout
-    //lateinit var layout_noDocUplaoded : ConstraintLayout
     var state: Parcelable? = null
 
     private val detailViewModel: DetailViewModel by activityViewModels()
@@ -78,8 +75,8 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         layout_docData = view.findViewById(R.id.layout_doc_data)
         val linearLayoutManager = LinearLayoutManager(activity)
         downloadLoader = view.findViewById(R.id.doc_download_loader)
-        (activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
 
+        (activity as DetailActivity).showFabIcons()
 
         borrowerDocumentAdapter =
             BorrowerDocumentAdapter(docsArrayList, this@BorrowerDocumentFragment , this@BorrowerDocumentFragment)
@@ -88,14 +85,15 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
             this.layoutManager = linearLayoutManager
             this.setHasFixedSize(true)
             this.adapter = borrowerDocumentAdapter
-            //populateRecyclerview(docsArrayList)
+            populateRecyclerview(docsArrayList)
         }
 
         //Log.e("Doc created on", "$docsArrayList")
 
         detailViewModel.borrowerDocsModelList.observe(viewLifecycleOwner, {
+            //Timber.e("observing Data")
             if (isStart) {
-                Log.e("isStart","observig Data")
+                //Log.e("isStart",""+isStart)
                 if (it != null && it.size > 0) {
                     docsArrayList = it
                     isStart = false
@@ -103,7 +101,8 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
                     showHideLayout(true)
                     populateRecyclerview(docsArrayList)
                 } else{
-                   showHideLayout((false))
+                    //Timber.e("list is null", "isStart" +isStart)
+                    showHideLayout((false))
                 }
             }
         })
@@ -135,9 +134,6 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
             requireActivity().startActivity(intent)
         }
 
-
-        (activity as DetailActivity).showFabIcons()
-
         observeDownloadProgress()
         super.addListeners(binding.root)
         return view
@@ -145,22 +141,21 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
     }
 
     private fun populateRecyclerview(arrayList: ArrayList<BorrowerDocsModel>) {
-        Timber.e("populate Recyclerview")
-            if(arrayList.size >0) {
-                Timber.e("size:" + arrayList.size)
-                borrowerDocumentAdapter =
-                    BorrowerDocumentAdapter(
-                        arrayList,
-                        this@BorrowerDocumentFragment,
-                        this@BorrowerDocumentFragment
-                    )
-                docsRecycler.adapter = borrowerDocumentAdapter
-                borrowerDocumentAdapter.notifyDataSetChanged()
-               showHideLayout(true)
-            } else{
-                Timber.e("here", "here")
-                showHideLayout(false)
-            }
+        //Timber.e("populate Recyclerview")
+        if(arrayList.size >0) {
+            //Timber.e("size:" + arrayList.size)
+            borrowerDocumentAdapter =
+                BorrowerDocumentAdapter(
+                    arrayList,
+                    this@BorrowerDocumentFragment,
+                    this@BorrowerDocumentFragment
+                )
+            docsRecycler.adapter = borrowerDocumentAdapter
+            borrowerDocumentAdapter.notifyDataSetChanged()
+            showHideLayout(true)
+        } else{
+            showHideLayout(false)
+        }
 
     }
 
@@ -431,7 +426,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
     }
 
     private fun showHideLayout(dataLayout: Boolean){
-        Timber.e("datalayout "+ dataLayout)
+        //Timber.e("datalayout "+ dataLayout)
         if(dataLayout){
             layout_docData.visibility = View.VISIBLE
             layout_noDocFound.visibility = View.GONE
@@ -478,8 +473,5 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
 
     override fun getSingleItemIndex(position: Int) {
     }
-
-
-
 
 }

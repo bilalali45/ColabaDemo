@@ -37,15 +37,13 @@ class BorrowerLoanActivity : BaseActivity() {
 
         val navController = findNavController(R.id.nav_host_borrower_loan)
 
-
-
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 if (loanApplicationId != null) {
                     //Log.e("authToken", authToken)
                     //Log.e("laon id", "" + loanApplicationId)
                     binding.loaderLoanInfo.visibility = View.VISIBLE
-                    delay(2000)
+                    //delay(2000)
                     viewModel.getLoanInfoPurchase(authToken, 5)
                     if (loanPurpose.equals(AppConstant.purchase, ignoreCase = true))
                         navController.navigate(R.id.navigation_loan_purchase)

@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import com.rnsoft.colabademo.AppConstant.authToken
 import com.rnsoft.colabademo.databinding.BorrowerSubjectPropertyLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import timber.log.Timber
@@ -30,7 +31,7 @@ class SubjectPropertyActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = BorrowerSubjectPropertyLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
 
         val extras = intent.extras
         extras?.let {
@@ -40,24 +41,27 @@ class SubjectPropertyActivity : BaseActivity() {
         //Timber.e("--Purpose--"+ purpose)
 
         val navController = findNavController(R.id.nav_host_borrower_subject_property)
-
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
 
                 if (loanApplicationId != null) {
                     coroutineScope {
                         binding.loaderSubjectProperty.visibility = View.VISIBLE
-                        delay(2000)
-                        viewModel.getPropertyTypes(authToken)
-                        viewModel.getOccupancyType(authToken)
-                        viewModel.getCoBorrowerOccupancyStatus(authToken, loanApplicationId!!)
-
+                        //delay(2000)
+                        val call1 = async { viewModel.getPropertyTypes(authToken) }
+                        val call2 = async { viewModel.getOccupancyType(authToken) }
+                        val call3 = async { viewModel.getCoBorrowerOccupancyStatus(authToken, loanApplicationId!!) }
                         if (purpose.equals(AppConstant.purchase, ignoreCase = true)) {
-                            viewModel.getSubjectPropertyDetails(authToken, loanApplicationId!!)
+                            val call4 = async {
+                                viewModel.getSubjectPropertyDetails(authToken, loanApplicationId!!)
+                            }
+                            call4.await()
                             navController.navigate(R.id.nav_sub_property_purchase)
 
                         } else if (purpose.equals(AppConstant.refinance, ignoreCase = true)) {
-                            viewModel.getRefinanceDetails(authToken, loanApplicationId!!)
+                            val call4 = async {
+                                viewModel.getRefinanceDetails(authToken, loanApplicationId!!)
+                            }
                             navController.navigate(R.id.nav_sub_property_refinance)
                         }
                     }

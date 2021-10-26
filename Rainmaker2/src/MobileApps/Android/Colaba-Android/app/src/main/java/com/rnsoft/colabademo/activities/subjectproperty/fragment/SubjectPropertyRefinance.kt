@@ -344,7 +344,9 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
 
                 getDropDownData()
                 getCoBorrowerOccupancyStatus()
-                hideLoader()
+                if(details.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
+                    hideLoader()
+                }
             }
             hideLoader()
         })

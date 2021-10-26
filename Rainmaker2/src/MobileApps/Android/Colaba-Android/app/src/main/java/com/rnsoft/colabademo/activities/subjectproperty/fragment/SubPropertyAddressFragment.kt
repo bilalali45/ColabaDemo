@@ -35,6 +35,7 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import kotlinx.android.synthetic.main.temp_residence_layout.*
 import kotlinx.android.synthetic.main.view_placesearch.*
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -67,7 +68,6 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         getDropDownData()
         setUpCompleteViewForPlaces()
         initializeUSAstates()
-
 
         binding.addressParentLayout.setOnClickListener {
             HideSoftkeyboard.hide(requireActivity(),binding.addressParentLayout)
@@ -147,105 +147,118 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
     private fun getDropDownData(){
          lifecycleScope.launchWhenStarted {
              binding.loaderSubproAddress.visibility = View.VISIBLE
-             delay(2000)
-             setData()
-             binding.loaderSubproAddress.visibility = View.GONE
-             viewModel.getStates(AppConstant.authToken)
-             // get countries
-             viewModel.getCountries(AppConstant.authToken)
-             // get county
-             viewModel.getCounty(AppConstant.authToken)
+             coroutineScope {
+                 setData()
 
-             viewModel.states.observe(viewLifecycleOwner, { states ->
-                 if (states != null && states.size > 0) {
-                     val itemList: ArrayList<String> = arrayListOf()
-                     for (item in states) {
-                         itemList.add(item.name)
-                     }
-                     val stateAdapter =
-                         ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
-                     binding.tvState.setAdapter(stateAdapter)
+                 viewModel.getStates(AppConstant.authToken)
+                 // get countries
+                 viewModel.getCountries(AppConstant.authToken)
+                 // get county
+                 viewModel.getCounty(AppConstant.authToken)
 
-                     binding.tvState.setOnFocusChangeListener { _, _ ->
-                         binding.tvState.showDropDown()
-                         HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
-                     }
-                     binding.tvState.setOnClickListener {
-                         binding.tvState.showDropDown()
-                         HideSoftkeyboard.hide(requireActivity(), binding.layoutState)
-                     }
-
-                     binding.tvState.onItemClickListener =
-                         object : AdapterView.OnItemClickListener {
-                             override fun onItemClick(
-                                 p0: AdapterView<*>?,
-                                 p1: View?,
-                                 position: Int,
-                                 id: Long
-                             ) {
-                                 binding.layoutState.defaultHintTextColor = ColorStateList.valueOf(
-                                     ContextCompat.getColor(
-                                         requireContext(),
-                                         R.color.grey_color_two
-                                     )
-                                 )
-                                 HideSoftkeyboard.hide(requireActivity(), binding.layoutState)
-                             }
+                 viewModel.states.observe(viewLifecycleOwner, { states ->
+                     if (states != null && states.size > 0) {
+                         val itemList: ArrayList<String> = arrayListOf()
+                         for (item in states) {
+                             itemList.add(item.name)
                          }
-                 }
-             })
+                         val stateAdapter =
+                             ArrayAdapter(
+                                 requireContext(),
+                                 R.layout.autocomplete_text_view,
+                                 itemList
+                             )
+                         binding.tvState.setAdapter(stateAdapter)
 
-             viewModel.countries.observe(viewLifecycleOwner, { countries ->
-                 if (countries != null && countries.size > 0) {
-                     val itemList: ArrayList<String> = arrayListOf()
-                     for (item in countries) {
-                         itemList.add(item.name)
-                     }
-                     val countryAdapter =
-                         ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
-                     binding.tvCountry.setAdapter(countryAdapter)
+                         binding.tvState.setOnFocusChangeListener { _, _ ->
+                             binding.tvState.showDropDown()
+                             HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
+                         }
+                         binding.tvState.setOnClickListener {
+                             binding.tvState.showDropDown()
+                             HideSoftkeyboard.hide(requireActivity(), binding.layoutState)
+                         }
 
-                     binding.tvCountry.setOnFocusChangeListener { _, _ ->
-                         binding.tvCountry.showDropDown()
-                         HideSoftkeyboard.hide(requireActivity(), binding.layoutCountry)
-                     }
-                     binding.tvCountry.setOnClickListener {
-                         binding.tvCountry.showDropDown()
-                         HideSoftkeyboard.hide(requireActivity(), binding.layoutCountry)
-                     }
-
-                     binding.tvCountry.onItemClickListener =
-                         object : AdapterView.OnItemClickListener {
-                             override fun onItemClick(
-                                 p0: AdapterView<*>?,
-                                 p1: View?,
-                                 position: Int,
-                                 id: Long
-                             ) {
-                                 binding.layoutCountry.defaultHintTextColor =
-                                     ColorStateList.valueOf(
-                                         ContextCompat.getColor(
-                                             requireContext(),
-                                             R.color.grey_color_two
+                         binding.tvState.onItemClickListener =
+                             object : AdapterView.OnItemClickListener {
+                                 override fun onItemClick(
+                                     p0: AdapterView<*>?,
+                                     p1: View?,
+                                     position: Int,
+                                     id: Long
+                                 ) {
+                                     binding.layoutState.defaultHintTextColor =
+                                         ColorStateList.valueOf(
+                                             ContextCompat.getColor(
+                                                 requireContext(),
+                                                 R.color.grey_color_two
+                                             )
                                          )
-                                     )
-                                 HideSoftkeyboard.hide(requireActivity(), binding.layoutCountry)
+                                     HideSoftkeyboard.hide(requireActivity(), binding.layoutState)
+                                 }
                              }
-                         }
-                 }
-             })
-
-             viewModel.counties.observe(viewLifecycleOwner, { counties ->
-                 if (counties != null && counties.size > 0) {
-                     val itemList: ArrayList<String> = arrayListOf()
-                     for (item in counties) {
-                         itemList.add(item.name)
                      }
-                     val countyAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                 })
+
+                 viewModel.countries.observe(viewLifecycleOwner, { countries ->
+                     if (countries != null && countries.size > 0) {
+                         val itemList: ArrayList<String> = arrayListOf()
+                         for (item in countries) {
+                             itemList.add(item.name)
+                         }
+                         val countryAdapter =
+                             ArrayAdapter(
+                                 requireContext(),
+                                 R.layout.autocomplete_text_view,
+                                 itemList
+                             )
+                         binding.tvCountry.setAdapter(countryAdapter)
+
+                         binding.tvCountry.setOnFocusChangeListener { _, _ ->
+                             binding.tvCountry.showDropDown()
+                             HideSoftkeyboard.hide(requireActivity(), binding.layoutCountry)
+                         }
+                         binding.tvCountry.setOnClickListener {
+                             binding.tvCountry.showDropDown()
+                             HideSoftkeyboard.hide(requireActivity(), binding.layoutCountry)
+                         }
+
+                         binding.tvCountry.onItemClickListener =
+                             object : AdapterView.OnItemClickListener {
+                                 override fun onItemClick(
+                                     p0: AdapterView<*>?,
+                                     p1: View?,
+                                     position: Int,
+                                     id: Long
+                                 ) {
+                                     binding.layoutCountry.defaultHintTextColor =
+                                         ColorStateList.valueOf(
+                                             ContextCompat.getColor(
+                                                 requireContext(),
+                                                 R.color.grey_color_two
+                                             )
+                                         )
+                                     HideSoftkeyboard.hide(requireActivity(), binding.layoutCountry)
+                                 }
+                             }
+                     }
+                 })
+
+                 viewModel.counties.observe(viewLifecycleOwner, { counties ->
+                     if (counties != null && counties.size > 0) {
+                         val itemList: ArrayList<String> = arrayListOf()
+                         for (item in counties) {
+                             itemList.add(item.name)
+                         }
+                         val countyAdapter = ArrayAdapter(
+                             requireContext(),
+                             R.layout.autocomplete_text_view,
+                             itemList
+                         )
                          binding.tvCounty.setAdapter(countyAdapter)
 
                          binding.tvCounty.setOnFocusChangeListener { _, _ ->
-                            binding.tvCounty.showDropDown()
+                             binding.tvCounty.showDropDown()
                              HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
                          }
 
@@ -262,14 +275,21 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                                      position: Int,
                                      id: Long
                                  ) {
-                                     binding.layoutCounty.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
+                                     binding.layoutCounty.defaultHintTextColor =
+                                         ColorStateList.valueOf(
+                                             ContextCompat.getColor(
+                                                 requireContext(),
+                                                 R.color.grey_color_two
+                                             )
+                                         )
                                      HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
                                  }
                              }
                      }
 
                  })
-
+             }
+             binding.loaderSubproAddress.visibility = View.GONE
          }
 
     }

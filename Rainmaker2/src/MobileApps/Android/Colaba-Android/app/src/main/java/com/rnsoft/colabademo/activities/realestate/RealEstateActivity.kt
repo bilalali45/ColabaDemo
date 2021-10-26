@@ -7,6 +7,8 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.databinding.RealEstateActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 
@@ -38,15 +40,16 @@ class RealEstateActivity : BaseActivity() {
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if (loanApplicationId != -1 && propertyId != -1 ){
-                    binding.loaderRealEstate.visibility = View.VISIBLE
-                    delay(2000)
-                    viewModel.getRealEstateDetails(authToken, loanApplicationId, propertyId)
-                    viewModel.getFirstMortgageDetails(authToken,loanApplicationId,propertyId)
-                    viewModel.getSecondMortgageDetails(authToken, 5, 1003)
-                    viewModel.getPropertyTypes(authToken)
-                    viewModel.getOccupancyType(authToken)
-                    viewModel.getPropertyStatus(authToken)
+                if (loanApplicationId != -1 && propertyId != -1 ) {
+                    coroutineScope {
+                        binding.loaderRealEstate.visibility = View.VISIBLE
+                        viewModel.getRealEstateDetails(authToken, loanApplicationId, propertyId)
+                        viewModel.getFirstMortgageDetails(authToken, loanApplicationId, propertyId)
+                        viewModel.getSecondMortgageDetails(authToken, 5, 1003)
+                        viewModel.getPropertyTypes(authToken)
+                        viewModel.getOccupancyType(authToken)
+                        viewModel.getPropertyStatus(authToken)
+                    }
                 }
             }
         }

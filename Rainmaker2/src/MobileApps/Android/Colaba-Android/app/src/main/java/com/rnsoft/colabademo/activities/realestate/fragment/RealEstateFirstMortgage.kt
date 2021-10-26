@@ -133,7 +133,10 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
                         binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
                     }
                 }
-             hideLoader()
+
+                if(it.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
+                    hideLoader()
+                }
             }
             hideLoader()
         })
@@ -279,6 +282,5 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
         val  activity = (activity as? RealEstateActivity)
         activity?.binding?.loaderRealEstate?.visibility = View.GONE
     }
-
 
 }

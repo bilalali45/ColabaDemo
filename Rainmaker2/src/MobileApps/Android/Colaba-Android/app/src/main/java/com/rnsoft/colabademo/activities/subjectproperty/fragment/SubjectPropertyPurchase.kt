@@ -46,15 +46,12 @@ class SubjectPropertyPurchase : BaseFragment() {
             savedViewInstance
         } else {
             binding = SubjectPropertyPurchaseBinding.inflate(inflater, container, false)
-            postponeEnterTransition()
-
             savedViewInstance = binding.root
-
             super.addListeners(binding.root)
 
-            //setupUI()
-            //setInputFields()
-            //getPurchaseDetails()
+            setupUI()
+            setInputFields()
+            getPurchaseDetails()
 
             savedViewInstance
         }
@@ -80,7 +77,6 @@ class SubjectPropertyPurchase : BaseFragment() {
         }
 
         binding.layoutAddress.setOnClickListener {
-            //findNavController().navigate(R.id.action_address)
             openAddress()
         }
 
@@ -144,27 +140,27 @@ class SubjectPropertyPurchase : BaseFragment() {
     }
 
     private fun getPurchaseDetails(){
-            viewModel.subjectPropertyDetails.observe(viewLifecycleOwner, { details ->
-                if(details != null){
-                    details.subPropertyData?.address?.let {
-                        if(it.street == null && it.unit==null && it.city==null && it.stateName==null && it.countryName==null){
-                            binding.radioSubPropertyTbd.isChecked = true
-                            binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
-                        } else {
-                            binding.radioSubPropertyAddress.isChecked = true
-                            binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
-                            binding.tvSubPropertyAddress.visibility = View.VISIBLE
-                            addressList.add(AddressData(
-                                    street = it.street,
-                                    unit = it.unit,
-                                    city = it.city,
-                                    stateName = it.stateName,
-                                    countryName = it.countryName,
-                                    countyName = it.countyName,
-                                    countyId = it.countyId,
-                                    stateId = it.stateId,
-                                    countryId = it.countryId,
-                                    zipCode = it.zipCode))
+        viewModel.subjectPropertyDetails.observe(viewLifecycleOwner, { details ->
+            if(details != null){
+                details.subPropertyData?.address?.let {
+                    if(it.street == null && it.unit==null && it.city==null && it.stateName==null && it.countryName==null){
+                        binding.radioSubPropertyTbd.isChecked = true
+                        binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
+                    } else {
+                        binding.radioSubPropertyAddress.isChecked = true
+                        binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
+                        binding.tvSubPropertyAddress.visibility = View.VISIBLE
+                        addressList.add(AddressData(
+                            street = it.street,
+                            unit = it.unit,
+                            city = it.city,
+                            stateName = it.stateName,
+                            countryName = it.countryName,
+                            countyName = it.countyName,
+                            countyId = it.countyId,
+                            stateId = it.stateId,
+                            countryId = it.countryId,
+                            zipCode = it.zipCode))
                             binding.tvSubPropertyAddress.text =
                                 it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
                         }
@@ -218,7 +214,8 @@ class SubjectPropertyPurchase : BaseFragment() {
                     }
                     setDropDownData()
                     setCoBorrowerOccupancyStatus()
-                    hideLoader()
+                    if(details.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
+                       hideLoader() }
                 }
                 hideLoader()
             })
