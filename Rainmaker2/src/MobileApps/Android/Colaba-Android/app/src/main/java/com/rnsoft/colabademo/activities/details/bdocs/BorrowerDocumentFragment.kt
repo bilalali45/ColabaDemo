@@ -35,10 +35,9 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
 
     private var _binding: BorrowerDocLayoutBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var docsRecycler: RecyclerView
     private var docsArrayList: ArrayList<BorrowerDocsModel> = ArrayList()
-    lateinit var filterDocsList :ArrayList<BorrowerDocsModel>
+    private var filterDocsList :ArrayList<BorrowerDocsModel> = ArrayList()
     private lateinit var borrowerDocumentAdapter: BorrowerDocumentAdapter
     private var shimmerContainer: ShimmerFrameLayout? = null
     lateinit var btnAll: AppCompatTextView
@@ -140,8 +139,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
 
     }
 
-    private fun populateRecyclerview(arrayList: ArrayList<BorrowerDocsModel>) {
-        //Timber.e("populate Recyclerview")
+    private fun populateRecyclerview(arrayList: ArrayList<BorrowerDocsModel>){
         if(arrayList.size >0) {
             //Timber.e("size:" + arrayList.size)
             borrowerDocumentAdapter =
@@ -156,7 +154,6 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         } else{
             showHideLayout(false)
         }
-
     }
 
     override fun onClick(v: View){
@@ -270,6 +267,23 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
             else
                 SandbarUtils.showRegular(requireActivity(), "File can not be downloaded...")
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.e("onResume","true")
+        if(docsArrayList.size ==0){
+            showHideLayout(false)
+        }
+        /*else {
+            Log.e("onResume","Else")
+            Log.e("FilterList",""+ docsArrayList.size)
+            if(docsArrayList.size==0){
+                layout_docData.visibility = View.GONE
+                layout_noDocFound.visibility = View.VISIBLE
+                (activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
+            }
+        } */
     }
 
     override fun onStart() {
@@ -440,7 +454,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
     }
 
     private fun getDocItems(docFilter: String) {
-        filterDocsList = ArrayList<BorrowerDocsModel>()
+        filterDocsList = ArrayList()
         for (i in docsArrayList.indices) {
             if (docFilter.equals(docsArrayList.get(i).status, ignoreCase = true)) {
 
@@ -459,7 +473,8 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
                 filterDocsList.add(doc)
             }
         }
-        if(filterDocsList.size>0) {
+        Log.e("Filterlist size", ""+filterDocsList.size)
+        if(filterDocsList.size > 0) {
             layout_noDocFound.visibility = View.GONE
             (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
             docsRecycler.visibility=View.VISIBLE

@@ -3,10 +3,14 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.databinding.IncomeActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -49,7 +53,6 @@ class IncomeActivity : BaseActivity() {
             }
         }
 
-
         /*
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_asset) as NavHostFragment? ?: return
@@ -66,6 +69,22 @@ class IncomeActivity : BaseActivity() {
         }
         */
 
-
     }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onErrorEvent(event: WebServiceErrorEvent) {
+        binding.incomeDataLoader.visibility = View.INVISIBLE
+        finish()
+    }
+
 }

@@ -6,18 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.rnsoft.colabademo.activities.details.bapplication.RealEstateClickListener
 import com.rnsoft.colabademo.databinding.DetailApplicationTabBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -28,22 +23,16 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
     private var _binding: DetailApplicationTabBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var horizontalRecyclerView: RecyclerView
     private lateinit var realStateRecyclerView: RecyclerView
     private lateinit var questionsRecyclerView: RecyclerView
     private lateinit var loanLayout : ConstraintLayout
     private lateinit var subjectPropertyLayout : ConstraintLayout
-    //private lateinit var applicationTopContainer: ConstraintLayout
-
     private val detailViewModel: DetailViewModel by activityViewModels()
-
     private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
-
     private var borrowerInfoList: ArrayList<BorrowersInformation> = ArrayList()
     private var realStateList: ArrayList<RealStateOwn> = ArrayList()
     private var questionList: ArrayList<BorrowerQuestionsModel> = ArrayList()
-
     private var borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList , this)
     private var realStateAdapter  = RealStateAdapter(realStateList,this)
     private var questionAdapter  = QuestionAdapter(questionList, this)
@@ -182,11 +171,11 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 }
 
                 appTabModel.borrowerAppData?.loanInformation?.loanAmount?.let{
-                    binding.bAppLoanPayment.text = AppSetting.returnAmountFormattedString(it)
+                    binding.bAppLoanPayment.text = "$".plus(AppSetting.returnAmountFormattedString(it))
                 }
 
                 appTabModel.borrowerAppData?.loanInformation?.downPayment?.let{
-                    binding.bAppDownPayment.text = AppSetting.returnAmountFormattedString(it)
+                    binding.bAppDownPayment.text = "$".plus(AppSetting.returnAmountFormattedString(it))
                 }
 
                 appTabModel.borrowerAppData?.loanInformation?.downPaymentPercent?.let {
@@ -194,14 +183,12 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 }
 
                 appTabModel.borrowerAppData?.assetAndIncome?.totalAsset?.let{
-                    binding.bAppTotalAssets.text =AppSetting.returnAmountFormattedString(it)
+                    binding.bAppTotalAssets.text = "$".plus(AppSetting.returnAmountFormattedString(it))
                 }
 
                 appTabModel.borrowerAppData?.assetAndIncome?.totalMonthyIncome?.let{
-                    binding.bAppMonthlylncome.text =AppSetting.returnAmountFormattedString(it)
+                    binding.bAppMonthlylncome.text = "$".plus(AppSetting.returnAmountFormattedString(it))
                 }
-
-
 
                 var races:ArrayList<Race>? =null
                 var ethnicities:ArrayList<Ethnicity>? =null
@@ -222,7 +209,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                                }
                            }
                         }
-
                    }
                 }
 

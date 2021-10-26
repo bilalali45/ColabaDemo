@@ -2,6 +2,8 @@ package com.rnsoft.colabademo
 
 import android.util.Log
 import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
+import com.rnsoft.colabademo.activities.govtquestions.model.EthinicityResponseModel
+import com.rnsoft.colabademo.activities.govtquestions.model.RaceResponseModel
 import com.rnsoft.colabademo.activities.model.StatesModel
 import timber.log.Timber
 import java.io.IOException
@@ -141,7 +143,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getBorrowerAssetsDetail(newToken, loanApplicationId = loanApplicationId , borrowerId = borrowerId)
-            Timber.e("AssetsModelDataClass-", response.toString())
+            //Timber.e("AssetsModelDataClass-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -159,7 +161,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getBorrowerIncomeDetail(newToken, loanApplicationId = loanApplicationId , borrowerId = borrowerId)
-            Timber.e("IncomeResponse-", response.toString())
+            //Timber.e("IncomeResponse-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -186,6 +188,63 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             else
                 Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun getDemoGraphicInfo(
+        token: String,
+        loanApplicationId: Int,
+        borrowerId:Int
+    ): Result<DemoGraphicResponseModel> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getDemoGraphicInfo( newToken, loanApplicationId = loanApplicationId, borrowerId = borrowerId)
+            Timber.e("DemoGraphicResponse - $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun getGenderList(token: String): Result<ArrayList<GenderResponseModel>> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getGenderList(newToken)
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e.cause))
+        }
+    }
+
+    suspend fun getEthnicityList(token: String): Result<ArrayList<EthinicityResponseModel>> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getEthnicityList(newToken)
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e.cause))
+        }
+    }
+
+    suspend fun getRaceList(token: String): Result<ArrayList<RaceResponseModel>> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getRaceList(newToken)
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e.cause))
         }
     }
 

@@ -3,6 +3,8 @@ package com.rnsoft.colabademo
 import android.content.Context
 import android.content.SharedPreferences
 import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
+import com.rnsoft.colabademo.activities.govtquestions.model.EthinicityResponseModel
+import com.rnsoft.colabademo.activities.govtquestions.model.RaceResponseModel
 import com.rnsoft.colabademo.activities.model.StatesModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -25,6 +27,24 @@ class BorrowerApplicationRepo  @Inject constructor(
             token = token , loanApplicationId = loanApplicationId,
             ownTypeId = ownTypeId,
             borrowerId = borrowerId )
+    }
+
+    suspend fun getDemoGraphicInfo(token:String, loanApplicationId:Int, borrowerId:Int):Result<DemoGraphicResponseModel>{
+        return borrowerApplicationDataSource.getDemoGraphicInfo(
+            token = token , loanApplicationId = loanApplicationId,
+            borrowerId = borrowerId )
+    }
+
+    suspend fun getEthinicityList(token:String): Result<ArrayList<EthinicityResponseModel>> {
+        return borrowerApplicationDataSource.getEthnicityList(token = token)
+    }
+
+    suspend fun getRaceList(token:String): Result<ArrayList<RaceResponseModel>> {
+        return borrowerApplicationDataSource.getRaceList(token = token)
+    }
+
+    suspend fun getGenderList(token:String): Result<ArrayList<GenderResponseModel>> {
+        return borrowerApplicationDataSource.getGenderList(token = token)
     }
 
     suspend fun getPropertyType(token:String): Result<ArrayList<DropDownResponse>> {

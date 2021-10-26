@@ -1,6 +1,8 @@
 package com.rnsoft.colabademo
 
 import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
+import com.rnsoft.colabademo.activities.govtquestions.model.EthinicityResponseModel
+import com.rnsoft.colabademo.activities.govtquestions.model.RaceResponseModel
 import com.rnsoft.colabademo.activities.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -201,6 +203,18 @@ interface ServerApi{
         @Header("Authorization" )  Authorization:String,
         @Query("loanApplicationId")  loanApplicationId:Int):ArrayList<BorrowerDocsModel>
 
+    @GET("api/mcu/mobile/loanapplication/Loan/GetAllEthnicityList")
+    suspend fun getEthnicityList(
+        @Header("Authorization" )  Authorization:String) :ArrayList<EthinicityResponseModel>
+
+    @GET("api/mcu/mobile/documentmanagement/mcudocument/GetGenderList")
+    suspend fun getGenderList(
+        @Header("Authorization" )  Authorization:String) :ArrayList<GenderResponseModel>
+
+    @GET("api/mcu/mobile/documentmanagement/mcudocument/GetAllRaceList")
+    suspend fun getRaceList(
+        @Header("Authorization" )  Authorization:String) :ArrayList<RaceResponseModel>
+
 
     @Streaming
     @GET("api/mcu/mobile/documentmanagement/mcudocument/View")
@@ -233,6 +247,15 @@ interface ServerApi{
         @Query("ownTypeId")  ownTypeId:Int,
         @Query("borrowerId")  borrowerId:Int
     ):GovernmentQuestionsModelClass
+
+    @GET("api/mcu/mobile/loanapplication/GovtQuestions/GetDemographicInformation")
+    suspend fun getDemoGraphicInfo(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int,
+        @Query("borrowerId")  borrowerId:Int
+    ):DemoGraphicResponseModel
+
+
 
 
 }

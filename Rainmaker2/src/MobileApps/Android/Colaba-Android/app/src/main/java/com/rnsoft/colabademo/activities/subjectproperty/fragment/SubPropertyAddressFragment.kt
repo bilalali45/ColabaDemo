@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.location.Address
 import android.location.Geocoder
@@ -32,6 +33,7 @@ import com.google.android.libraries.places.api.net.PlacesClient
 
 import com.rnsoft.colabademo.databinding.SubjectPropertyAddressBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import dagger.hilt.android.AndroidEntryPoint
 
 import kotlinx.android.synthetic.main.temp_residence_layout.*
 import kotlinx.android.synthetic.main.view_placesearch.*
@@ -42,13 +44,16 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.IOException
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 /**
  * Created by Anita Kiran on 9/8/2021.
  */
+@AndroidEntryPoint
 class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListener {
-
+    @Inject
+    lateinit var sharedPreferences : SharedPreferences
     private val viewModel : SubjectPropertyViewModel by activityViewModels()
     private lateinit var binding: SubjectPropertyAddressBinding
     private lateinit var predictAdapter: PlacePredictionAdapter
@@ -146,15 +151,16 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
 
     private fun getDropDownData(){
          lifecycleScope.launchWhenStarted {
+             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
              binding.loaderSubproAddress.visibility = View.VISIBLE
              coroutineScope {
                  setData()
 
-                 viewModel.getStates(AppConstant.authToken)
+                 viewModel.getStates(authToken)
                  // get countries
-                 viewModel.getCountries(AppConstant.authToken)
+                 viewModel.getCountries(authToken)
                  // get county
-                 viewModel.getCounty(AppConstant.authToken)
+                 viewModel.getCounty(authToken)
 
                  viewModel.states.observe(viewLifecycleOwner, { states ->
                      if (states != null && states.size > 0) {
@@ -291,8 +297,9 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
              }
              binding.loaderSubproAddress.visibility = View.GONE
          }
+     }
 
-    }
+}
 
     private fun setInputFields(){
         // set lable focus

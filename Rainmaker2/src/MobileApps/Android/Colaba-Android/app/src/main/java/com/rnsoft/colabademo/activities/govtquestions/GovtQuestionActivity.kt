@@ -19,14 +19,11 @@ class GovtQuestionActivity : BaseActivity() {
     lateinit var sharedPreferences: SharedPreferences
     lateinit var binding: GovtQuestionsActivityLayoutBinding
     //private lateinit var appBarConfiguration : AppBarConfiguration
-
     var loanApplicationId:Int? = null
     var loanPurpose:String? = null
     var borrowerTabList:ArrayList<Int>? = null
     var borrowerOwnTypeList:ArrayList<Int>? = null
     private val borrowerApplicationViewModel: BorrowerApplicationViewModel by viewModels()
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,11 +66,24 @@ class GovtQuestionActivity : BaseActivity() {
             }
         }
 
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                Timber.e("DemoGraphic...")
+                var borrowerId =  borrowerTabList?.get(0)
 
+                if(loanApplicationId!=null &&  borrowerId!=null) {
+                    val bool = borrowerApplicationViewModel.getDemoGraphicInfo(
+                        authToken,
+                        loanApplicationId!!,
+                        borrowerId
+                    )
+                    Timber.e("DemoGraphic Info..." + bool)
+                }
+            }
+        }
     }
 
     override fun onStop() {
-
         super.onStop()
         Timber.e("onStop from Activity called....")
     }

@@ -33,13 +33,16 @@ import com.rnsoft.colabademo.AppConstant.authToken
 
 import com.rnsoft.colabademo.databinding.SubjectPropertyAddressBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_placesearch.*
 import kotlinx.coroutines.coroutineScope
 
 import java.io.IOException
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
+@AndroidEntryPoint
 class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlaceClickListener {
 
     lateinit var binding: SubjectPropertyAddressBinding
@@ -49,7 +52,8 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
     private var predicationList: ArrayList<String> = ArrayList()
     private var addressList : ArrayList<RealEstateAddress> = ArrayList()
     private val viewModel : RealEstateViewModel by activityViewModels()
-    //lateinit var sharedPreferences : SharedPreferences
+    @Inject
+    lateinit var sharedPreferences : SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -126,8 +130,8 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
     }
 
     private fun setStateAndCountyDropDown() {
-        //sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
         lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
             binding.loaderSubproAddress.visibility = View.VISIBLE
             coroutineScope {
                 viewModel.getCountries(authToken)
@@ -269,6 +273,7 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
             }
             binding.loaderSubproAddress.visibility = View.GONE
         }
+    }
 
     }
 
