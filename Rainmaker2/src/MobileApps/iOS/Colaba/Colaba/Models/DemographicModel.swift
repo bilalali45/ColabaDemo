@@ -58,11 +58,13 @@ class DemographicRace: NSObject {
 class DemographicRaceDetail: NSObject{
     
     var detailId: Int = 0
+    var name: String = ""
     var isOther: Bool = false
     var otherRace: String = ""
     
     func updateModelWithJSON(json: JSON){
         detailId = json["detailId"].intValue
+        name = json["name"].stringValue
         isOther = json["isOther"].boolValue
         otherRace = json["otherRace"].stringValue
     }
@@ -89,11 +91,13 @@ class DemographicEthnicity: NSObject{
 class DemographicEthnicityDetail: NSObject{
     
     var detailId: Int = 0
+    var name: String = ""
     var isOther: Bool = false
     var otherEthnicity: String = ""
     
     func updateModelWithJSON(json: JSON){
         detailId = json["detailId"].intValue
+        name = json["name"].stringValue
         isOther = json["isOther"].boolValue
         otherEthnicity = json["otherEthnicity"].stringValue
     }
