@@ -86,9 +86,10 @@ class DemographicInformationViewController: BaseViewController {
         raceTableView.reloadData()
         ethnicityTableView.reloadData()
         sexTableView.reloadData()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.setScreenHeight()
         }
+        
     }
     
     //MARK:- API's
@@ -258,7 +259,7 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
             cell.stackViewLeadingConstraint.constant = 20
             
             if let selectedRace = demographicDetail.race.filter({$0.raceId == race.id}).first{
-                cell.otherDetailView.isHidden = selectedRace.raceDetails.count == 0
+                cell.otherDetailView.isHidden = selectedRace.raceDetails.count == 0 || race.isSelected == false
                 cell.otherDetailViewHeightConstraint.constant = selectedRace.raceDetails.filter({$0.isOther == true}).count > 0 ? 84 : 58
                 let subRace = selectedRace.raceDetails.filter({$0.isOther == false})
                 cell.lblDetail.text = subRace.map({$0.name}).joined(separator: ", ")
@@ -294,7 +295,7 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
             cell.stackViewLeadingConstraint.constant = 20
             
             if let selectedEthnicity = demographicDetail.ethnicity.filter({$0.ethnicityId == ethnicity.id}).first{
-                cell.otherDetailView.isHidden = selectedEthnicity.ethnicityDetails.count == 0
+                cell.otherDetailView.isHidden = selectedEthnicity.ethnicityDetails.count == 0 || ethnicity.isSelected == false
                 cell.otherDetailViewHeightConstraint.constant = selectedEthnicity.ethnicityDetails.filter({$0.isOther == true}).count > 0 ? 84 : 58
                 let subEthnicity = selectedEthnicity.ethnicityDetails.filter({$0.isOther == false})
                 cell.lblDetail.text = subEthnicity.map({$0.name}).joined(separator: ", ")
@@ -396,7 +397,7 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
         if (tableView == raceTableView){
             let race = allRacesArray[indexPath.section]
             if let selectedRace = demographicDetail.race.filter({$0.raceId == race.id}).first{
-                if (selectedRace.raceDetails.count == 0){
+                if (selectedRace.raceDetails.count == 0 || race.isSelected == false){
                     return 40
                 }
                 else{
@@ -408,7 +409,7 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
         else if (tableView == ethnicityTableView){
             let ethnicity = allEthnicityArray[indexPath.section]
             if let selectedEthnicity = demographicDetail.ethnicity.filter({$0.ethnicityId == ethnicity.id}).first{
-                if (selectedEthnicity.ethnicityDetails.count == 0){
+                if (selectedEthnicity.ethnicityDetails.count == 0 || ethnicity.isSelected == false){
                     return 40
                 }
                 else{
