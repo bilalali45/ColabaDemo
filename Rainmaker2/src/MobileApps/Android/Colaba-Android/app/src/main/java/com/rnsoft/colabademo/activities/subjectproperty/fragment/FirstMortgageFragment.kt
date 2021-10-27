@@ -19,6 +19,7 @@ import com.rnsoft.colabademo.utils.NumberTextFormat
 /**
  * Created by Anita Kiran on 9/9/2021.
  */
+
 class FirstMortgageFragment : BaseFragment() {
 
     private lateinit var binding : FirstMortgageLayoutBinding

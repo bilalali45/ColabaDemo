@@ -70,34 +70,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         binding.assetsConstraintLayout.setOnClickListener{
             var borrowerIndex = 0
             borrowerApplicationViewModel.resetAssetModelClass()
-
-            /*
-                lifecycleScope.launchWhenStarted {
-                    val detailActivity = (activity as? DetailActivity)
-                    detailActivity?.let {
-                        val testLoanId = it.loanApplicationId
-                        testLoanId?.let { loanId ->
-                            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                                while(borrowerIndex++<borrowerInfoList.size) {
-                                    val count: Deferred<Boolean> = async(context = Dispatchers.Main) {
-                                        return@async borrowerApplicationViewModel.getBorrowerAssetsDetail(
-                                            token = authToken,
-                                            loanApplicationId = loanId,
-                                            borrowerId = borrowerInfoList[borrowerIndex].borrowerId
-                                        )
-                                }
-                                count.await()
-                            }
-
-
-                        }
-                    }
-                }
-
-            }
-
-             */
-            //Timber.e("assets layout - clicked...")
             navigateToAssetActivity()
         }
 
@@ -152,7 +124,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         }
         realStateAdapter.notifyDataSetChanged()
 
-
         val questionLayoutManger = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
 
         questionsRecyclerView.apply {
@@ -194,7 +165,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 }
 
                 appTabModel.borrowerAppData?.assetAndIncome?.totalAsset?.let{
-                    binding.bAppTotalAssets.text =AppSetting.returnAmountFormattedString(it)
+                    binding.bAppTotalAssets.text = AppSetting.returnAmountFormattedString(it)
                 }
 
                 appTabModel.borrowerAppData?.assetAndIncome?.totalMonthyIncome?.let{
@@ -381,7 +352,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
     }
 
-
     override fun navigateToGovernmentActivity(position: Int) {
         //startActivity(Intent(requireActivity(), GovtQuestionActivity::class.java))
         val detailActivity = (activity as? DetailActivity)
@@ -392,6 +362,8 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
             for(item in borrowerInfoList) {
                 //Timber.d("borrowerInfoList borrowerId  "+ item)
                 if(item.borrowerId!=-1) {
+                    Timber.e("passing borrowerId -- "+item.borrowerId)
+                    Timber.e("passing owntypeId -- "+item.owntypeId)
                     bList.add(item.borrowerId)
                     bListOwnTypeId.add(item.owntypeId)
                 }
@@ -400,6 +372,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
             govtQuestionActivity.putIntegerArrayListExtra( AppConstant.borrowerOwnTypeList, bListOwnTypeId)
             it.loanApplicationId?.let { loanId ->
                 govtQuestionActivity.putExtra(AppConstant.loanApplicationId, loanId)
+                Timber.e("loanApplicationId -- "+loanId)
             }
 
             startActivity(govtQuestionActivity)
@@ -409,12 +382,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
 
     }
-
-
-
-
-    
-
 
     override fun onResume() {
         super.onResume()
