@@ -8067,7 +8067,7 @@ Houston, TX 77027, USA</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chapter 7" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZPN-rn-5Y7">
-                                                <rect key="frame" x="30" y="53.5" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="53.5" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
@@ -9365,6 +9365,7 @@ Houston, TX 77027, USA</string>
                         <outlet property="btnBack" destination="itt-xt-HMG" id="s21-UL-b4j"/>
                         <outlet property="btnSaveChanges" destination="Dxu-w6-rcP" id="9SB-ma-Mte"/>
                         <outlet property="lblQuestion" destination="1Bm-W7-d9z" id="TDV-U3-wGu"/>
+                        <outlet property="lblUsername" destination="akM-e0-MLl" id="BZQ-wE-1PG"/>
                         <outlet property="tableViewQuestion" destination="Zu7-dA-Ds0" id="lzd-CC-n7Q"/>
                     </connections>
                 </viewController>

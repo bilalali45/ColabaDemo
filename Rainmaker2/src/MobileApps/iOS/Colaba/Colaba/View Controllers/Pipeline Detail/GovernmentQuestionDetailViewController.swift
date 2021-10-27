@@ -269,7 +269,11 @@ class GovernmentQuestionDetailViewController: BaseViewController {
         }
         
         demographicInfoVC = Utility.getDemographicInformationVC()
-        
+        demographicInfoVC.loanApplicationId = self.loanApplicationId
+        demographicInfoVC.borrowerId = self.borrowerId
+        if let firstName = governmentQuestions.first?.firstName , let lastName = governmentQuestions.first?.lastName{
+            demographicInfoVC.borrowerName = "\(firstName) \(lastName)"
+        }
         
         filterViewTapped(selectedFilterView: unDisclosedView, filterViews: [unDisclosedView, ownershipInterestView, /*priorityLiensView,*/familyOrBusinessAffiliationView, undisclosedMortgageApplicationsView, undisclosedCreditApplicationView, debtCoSignerView, outstandingJudgementsView, fedralDebtView, partyToLawsuitView, titleConveyanceView, preForceClosureView, foreClosuredPropertyView, bankruptcyView, childSupportView, demographicView])
     }

@@ -107,6 +107,9 @@
 		239DB53A270C413A00977E20 /* DeleteDocumentPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DB539270C413A00977E20 /* DeleteDocumentPopupViewController.swift */; };
 		239DB53C270C67A900977E20 /* DocumentRequestSentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DB53B270C67A900977E20 /* DocumentRequestSentViewController.swift */; };
 		239DEDF727195FD60056FF2B /* BorrowerAssetsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DEDF627195FD60056FF2B /* BorrowerAssetsModel.swift */; };
+		239DFD562727DAE60052E391 /* RaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DFD552727DAE60052E391 /* RaceModel.swift */; };
+		239DFD582727DCAD0052E391 /* EthnicityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DFD572727DCAD0052E391 /* EthnicityModel.swift */; };
+		239DFD5A2727DF4B0052E391 /* DemographicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DFD592727DF4B0052E391 /* DemographicModel.swift */; };
 		23A0D5CE26958E58002B4BCE /* DashboardHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23A0D5CD26958E58002B4BCE /* DashboardHeaderView.xib */; };
 		23A0D5D026958E83002B4BCE /* DashboardHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A0D5CF26958E83002B4BCE /* DashboardHeaderView.swift */; };
 		23A1CA6B268C4B8400D93DC4 /* UILoadControl_UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1CA69268C4B8300D93DC4 /* UILoadControl_UIScrollView.swift */; };
@@ -365,6 +368,9 @@
 		239DB539270C413A00977E20 /* DeleteDocumentPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteDocumentPopupViewController.swift; sourceTree = "<group>"; };
 		239DB53B270C67A900977E20 /* DocumentRequestSentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentRequestSentViewController.swift; sourceTree = "<group>"; };
 		239DEDF627195FD60056FF2B /* BorrowerAssetsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerAssetsModel.swift; sourceTree = "<group>"; };
+		239DFD552727DAE60052E391 /* RaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaceModel.swift; sourceTree = "<group>"; };
+		239DFD572727DCAD0052E391 /* EthnicityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthnicityModel.swift; sourceTree = "<group>"; };
+		239DFD592727DF4B0052E391 /* DemographicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemographicModel.swift; sourceTree = "<group>"; };
 		23A0D5CD26958E58002B4BCE /* DashboardHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DashboardHeaderView.xib; sourceTree = "<group>"; };
 		23A0D5CF26958E83002B4BCE /* DashboardHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardHeaderView.swift; sourceTree = "<group>"; };
 		23A1CA69268C4B8300D93DC4 /* UILoadControl_UIScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILoadControl_UIScrollView.swift; sourceTree = "<group>"; };
@@ -594,6 +600,9 @@
 				23E28BDE27184816004FCAA5 /* BorrowerIncomeModel.swift */,
 				239DEDF627195FD60056FF2B /* BorrowerAssetsModel.swift */,
 				23451A90271FF9EC00A5ACE4 /* GovernmentQuestionModel.swift */,
+				239DFD552727DAE60052E391 /* RaceModel.swift */,
+				239DFD572727DCAD0052E391 /* EthnicityModel.swift */,
+				239DFD592727DF4B0052E391 /* DemographicModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1396,6 +1405,7 @@
 				7160CA8D26733B8C0061ACD5 /* MainTabBarViewController.swift in Sources */,
 				237DF98926D7753A000CAA8E /* FingerPrintNavigationViewController.swift in Sources */,
 				2368D6572667DA6700D5C1C5 /* DashboardViewController.swift in Sources */,
+				239DFD582727DCAD0052E391 /* EthnicityModel.swift in Sources */,
 				7186AD742653FBB500E740D3 /* ResetPasswordSuccessfullViewController.swift in Sources */,
 				71B19458265CF9C80017955B /* APIRouter.swift in Sources */,
 				238E0F9526F37F430025FF06 /* PriorityLiensViewController.swift in Sources */,
@@ -1409,6 +1419,7 @@
 				237DF98B26D77B98000CAA8E /* AddPreviousResidenceViewController.swift in Sources */,
 				23A56C5E2685B017005CE6F4 /* Loaf.swift in Sources */,
 				23A8D1A927045AA300950195 /* DemographicDetailViewController.swift in Sources */,
+				239DFD5A2727DF4B0052E391 /* DemographicModel.swift in Sources */,
 				3963EE3626F9F7740044FAFA /* ColabaButton.swift in Sources */,
 				2381B4F52701F65A0045D917 /* AssignLoanOfficerPopupViewController.swift in Sources */,
 				238E0F9326F37CC40025FF06 /* OwnershipInterestInPropertyFollowupQuestionViewController.swift in Sources */,
@@ -1527,6 +1538,7 @@
 				23A56C5C2685B017005CE6F4 /* Extensions.swift in Sources */,
 				2381B4F22701E21B0045D917 /* LoanOfficerCollectionViewCell.swift in Sources */,
 				23C9130626982A120067920E /* BorrowerOverviewTableViewCell.swift in Sources */,
+				239DFD562727DAE60052E391 /* RaceModel.swift in Sources */,
 				238973FE2703132D00759965 /* DuplicateContactPopupViewController.swift in Sources */,
 				238A076926DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift in Sources */,
 				7160CA88267339060061ACD5 /* ProfileViewController.swift in Sources */,
