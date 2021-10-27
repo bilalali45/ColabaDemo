@@ -1,8 +1,6 @@
 package com.rnsoft.colabademo
 
 import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
-import com.rnsoft.colabademo.activities.govtquestions.model.EthinicityResponseModel
-import com.rnsoft.colabademo.activities.govtquestions.model.RaceResponseModel
 import com.rnsoft.colabademo.activities.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -207,11 +205,11 @@ interface ServerApi{
     suspend fun getEthnicityList(
         @Header("Authorization" )  Authorization:String) :ArrayList<EthinicityResponseModel>
 
-    @GET("api/mcu/mobile/documentmanagement/mcudocument/GetGenderList")
+    @GET("api/mcu/mobile/loanapplication/Loan/GetGenderList")
     suspend fun getGenderList(
         @Header("Authorization" )  Authorization:String) :ArrayList<GenderResponseModel>
 
-    @GET("api/mcu/mobile/documentmanagement/mcudocument/GetAllRaceList")
+    @GET("/api/mcu/mobile/loanapplication/Loan/GetAllRaceList")
     suspend fun getRaceList(
         @Header("Authorization" )  Authorization:String) :ArrayList<RaceResponseModel>
 

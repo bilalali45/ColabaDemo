@@ -188,9 +188,6 @@
         android:label="@string/test_id"
         tools:layout="@layout/undisclosed_borrower_fund_layout" />
 
-
-
-
     <fragment
         android:id="@+id/navigation_asian"
         android:name="com.rnsoft.colabademo.AsianFragment"
@@ -208,5 +205,17 @@
         android:name="com.rnsoft.colabademo.HispanicFragment"
         android:label="@string/test_id"
         tools:layout="@layout/hispanic_layout" />
+
+    <fragment
+        android:id="@+id/navigation_demographic"
+        android:name="com.rnsoft.colabademo.DemoGraphicInfoFragment"
+        android:label="@string/test_id"
+        tools:layout="@layout/demographic_info_layout" />
+
+    <fragment
+        android:id="@+id/navigation_race_details"
+        android:name="com.rnsoft.colabademo.RaceDetailFragment"
+        android:label="@string/test_id"
+        tools:layout="@layout/demographic_detail_layout" />
 
 </navigation>

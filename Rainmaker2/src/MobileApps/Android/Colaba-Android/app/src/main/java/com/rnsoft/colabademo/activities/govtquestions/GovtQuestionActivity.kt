@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import com.rnsoft.colabademo.databinding.GovtQuestionsActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -47,6 +48,10 @@ class GovtQuestionActivity : BaseActivity() {
             }
         }
 
+
+        val navController = findNavController(R.id.nav_host_govt_question)
+
+
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 Timber.e("loading govt service...")
@@ -71,13 +76,14 @@ class GovtQuestionActivity : BaseActivity() {
                 Timber.e("DemoGraphic...")
                 var borrowerId =  borrowerTabList?.get(0)
 
-                if(loanApplicationId!=null &&  borrowerId!=null) {
-                    val bool = borrowerApplicationViewModel.getDemoGraphicInfo(
-                        authToken,
-                        loanApplicationId!!,
-                        borrowerId
-                    )
-                    Timber.e("DemoGraphic Info..." + bool)
+                if(loanApplicationId!=null && borrowerId!=null) {
+                     //borrowerApplicationViewModel.getDemoGraphicInfo(authToken,
+                     //   5,//loanApplicationId!!,
+                     //   5 )//borrowerId )
+                    borrowerApplicationViewModel.getRaceList(authToken)
+                    borrowerApplicationViewModel.getGenderList(authToken)
+                    borrowerApplicationViewModel.getEthnicityList(authToken)
+                    navController.navigate(R.id.navigation_demographic)
                 }
             }
         }

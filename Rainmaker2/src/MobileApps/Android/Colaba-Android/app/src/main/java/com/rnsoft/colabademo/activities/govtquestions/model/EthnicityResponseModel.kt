@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.govtquestions.model
+package com.rnsoft.colabademo
 
 /**
  * Created by Anita Kiran on 10/26/2021.

@@ -6,8 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
-import com.rnsoft.colabademo.activities.govtquestions.model.EthinicityResponseModel
-import com.rnsoft.colabademo.activities.govtquestions.model.RaceResponseModel
 import com.rnsoft.colabademo.activities.model.StatesModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -382,6 +380,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     }
 
     suspend fun getGenderList(token: String) {
+        Timber.e("Viewmodel", "getGender")
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = bAppRepo.getGenderList(token = token)
             withContext(Dispatchers.Main) {
@@ -397,6 +396,8 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     }
 
     suspend fun getRaceList(token: String) {
+        Timber.e("Viewmodel + getRace")
+
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = bAppRepo.getRaceList(token = token)
             withContext(Dispatchers.Main) {
@@ -411,13 +412,12 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         }
     }
 
-    suspend fun getEthinicityList(token: String) {
+    suspend fun getEthnicityList(token: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = bAppRepo.getEthinicityList(token = token)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _ethnicityList.value = (responseResult.data)
-
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)
@@ -425,7 +425,4 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
             }
         }
     }
-
-
-
 }

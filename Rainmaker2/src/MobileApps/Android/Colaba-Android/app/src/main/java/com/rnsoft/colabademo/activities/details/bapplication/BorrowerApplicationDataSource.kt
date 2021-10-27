@@ -2,8 +2,6 @@ package com.rnsoft.colabademo
 
 import android.util.Log
 import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
-import com.rnsoft.colabademo.activities.govtquestions.model.EthinicityResponseModel
-import com.rnsoft.colabademo.activities.govtquestions.model.RaceResponseModel
 import com.rnsoft.colabademo.activities.model.StatesModel
 import timber.log.Timber
 import java.io.IOException
@@ -213,6 +211,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getGenderList(newToken)
+            //Timber.e("GenderResponse - $response")
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -226,6 +225,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getEthnicityList(newToken)
+            //Timber.e("EthnicityResponse - $response")
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -239,6 +239,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getRaceList(newToken)
+            Timber.e("RaceResponse - $response")
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

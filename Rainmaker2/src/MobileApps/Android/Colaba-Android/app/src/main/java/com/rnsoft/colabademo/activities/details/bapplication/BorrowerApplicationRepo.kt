@@ -3,8 +3,6 @@ package com.rnsoft.colabademo
 import android.content.Context
 import android.content.SharedPreferences
 import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
-import com.rnsoft.colabademo.activities.govtquestions.model.EthinicityResponseModel
-import com.rnsoft.colabademo.activities.govtquestions.model.RaceResponseModel
 import com.rnsoft.colabademo.activities.model.StatesModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
