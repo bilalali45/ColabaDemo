@@ -65,11 +65,19 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     private fun setUpDynamicTabs( inflater: LayoutInflater){
         bAppViewModel.governmentQuestionsModelClass.observe(viewLifecycleOwner, Observer {
+
+            val govtQuestionActivity = (activity as GovtQuestionActivity)
+            govtQuestionActivity.binding.govtDataLoader.visibility = View.INVISIBLE
+
+            var zeroIndexAppCompat:AppCompatTextView?= null
+
             it.questionData?.let{ questionData->
                  for(qData in questionData) {
                      qData.headerText?.let { tabTitle->
                          if(qData.parentQuestionId == null) {
                              val appCompactTextView = createAppCompactTextView(tabTitle, 0)
+                             if(zeroIndexAppCompat==null)
+                                zeroIndexAppCompat = appCompactTextView
                              //tabArrayList.add(appCompactTextView)
                              binding.horizontalTabs.addView(appCompactTextView)
                              val contentView = createContentLayoutForTab(qData)
@@ -86,6 +94,14 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 // adding inner questions to the content....
                 val parentQuestionList: ArrayList<Int> = arrayListOf()
                 for(qData in questionData) {
+                    if(qData.headerText == childConstantValue){
+                        qData.answerDetail
+
+
+
+                        continue
+                    }
+
                     qData.parentQuestionId?.let { parentQuestionId ->
                         var nestedQuestion = 0
                         for(tabItem in idToContentMapping) {
@@ -100,7 +116,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
                                     val contentView = tabItem.value
                                     if(nestedQuestion == 0) {
-
+                                        Timber.e("header ONE -- " + qData.headerText, qData.question , qData.answer ,  qData.answerDetail)
                                         contentView.detail_title.text = qData.question
                                         contentView.detail_text.text = qData.answer
                                         contentView.detail_title.setTypeface(null, Typeface.NORMAL)
@@ -112,23 +128,25 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                                     }
 
                                     else if(nestedQuestion == 1){
+                                        Timber.e("header TWO -- " + qData.headerText, qData.question , qData.answer , qData.answerDetail)
                                         contentView.detail_title2.text = qData.question
                                         contentView.detail_text2.text = qData.answer
                                         contentView.detail_title2.setTypeface(null, Typeface.NORMAL)
                                         contentView.detail_text2.setTypeface(null, Typeface.BOLD)
                                         //contentView.govt_detail_box2.tag = false
-                                        Timber.e("header text TWO -- " + qData.headerText, qData.answerDetail)
+
                                         contentView.govt_detail_box2.visibility = View.VISIBLE
                                     }
                                     else
                                     {
+                                        Timber.e("header THREE -- " + qData.headerText, qData.question,  qData.answer,  qData.answerDetail)
                                         contentView.detail_title3.text = qData.question
                                         contentView.detail_text3.text = qData.answer
                                         contentView.detail_title3.setTypeface(null, Typeface.NORMAL)
                                         contentView.detail_text3.setTypeface(null, Typeface.BOLD)
                                         //contentView.govt_detail_box2.tag = false
                                         contentView.govt_detail_box3.visibility = View.VISIBLE
-                                        Timber.e("header text THREE -- " + qData.headerText, qData.answerDetail)
+
                                     }
 
 
@@ -136,6 +154,8 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         }
                     }
                 }
+
+                zeroIndexAppCompat?.performClick()
 
             }
 
@@ -180,16 +200,19 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         return appCompactTextView
     }
 
+    private val ownershipConstantValue = "Ownership Interest in Property"
+    private val childConstantValue = "Child Support, Alimony, etc."
+
     private fun createContentLayoutForTab(questionData:QuestionData):ConstraintLayout{
         var childSupport = false
         var ownerShip = false
         val contentCell: ConstraintLayout
-        if(questionData.headerText == "Ownership Interest in Property") {
+        if(questionData.headerText == ownershipConstantValue) {
             contentCell = layoutInflater.inflate(R.layout.ownership_interest_layout, null) as ConstraintLayout
             ownerShip = true
         }
         else
-        if(questionData.headerText == "Child Support, Alimony, etc.") {
+        if(questionData.headerText == childConstantValue) {
             contentCell = layoutInflater.inflate(R.layout.children_separate_layout, null) as ConstraintLayout
             childSupport = true
         }
@@ -200,7 +223,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         contentCell.visibility = View.INVISIBLE
         //contentCell.govt_detail_box.tag = true
 
-        Timber.e(" questionData.question "+questionData.question)
+        //Timber.e(" questionData.question "+questionData.question)
         contentCell.govt_question.text =  questionData.question
         questionData.answerDetail?.let {
             contentCell.detail_text.text = it
