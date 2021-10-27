@@ -15,7 +15,8 @@ data class QuestionData(
     val answer: String?,
     val answerDetail: String?= "",
     val headerText:String? = "title1",
-    val answerData : Any?=null,
+    val answerData : Any? = null,
+
     val firstName: String?=null,
     val id: Int?=null,
     val lastName: String?=null,
