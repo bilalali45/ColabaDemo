@@ -55,6 +55,9 @@
     <!--  <item>Own</item>
         <item>Rent</item>
         <item>No Primary Housing Expense</item>-->
+    <string name="race">Race</string>
+    <string name="ethnicity">Ethnicity</string>
+    <string name="sex">Sex</string>
 
     <string name="doc_filter_all">All</string>
     <string name="doc_filter_in_draft">In Draft</string>

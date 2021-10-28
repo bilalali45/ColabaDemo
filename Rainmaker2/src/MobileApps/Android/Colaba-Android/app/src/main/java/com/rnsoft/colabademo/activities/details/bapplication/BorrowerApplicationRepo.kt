@@ -33,7 +33,7 @@ class BorrowerApplicationRepo  @Inject constructor(
             borrowerId = borrowerId )
     }
 
-    suspend fun getEthinicityList(token:String): Result<ArrayList<EthinicityResponseModel>> {
+    suspend fun getEthnicityList(token:String): Result<ArrayList<EthnicityResponseModel>> {
         return borrowerApplicationDataSource.getEthnicityList(token = token)
     }
 

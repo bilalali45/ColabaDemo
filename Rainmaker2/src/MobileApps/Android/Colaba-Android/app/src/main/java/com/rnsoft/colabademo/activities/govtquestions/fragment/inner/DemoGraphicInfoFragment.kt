@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.CompoundButton
+import android.widget.RadioButton
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.DemographicInfoLayoutBinding
@@ -24,6 +25,8 @@ class DemoGraphicInfoFragment : BaseFragment() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private var newRaceList : ArrayList<RaceResponseModel> = ArrayList()
+    private var newEthnicityList : ArrayList<EthnicityResponseModel> = ArrayList()
+
 
 
     override fun onCreateView(
@@ -40,7 +43,6 @@ class DemoGraphicInfoFragment : BaseFragment() {
 
 
         viewModel.raceList.observe(viewLifecycleOwner,{
-
             if(it.size >0 ){
                 for (i in 0 until it.size) {
                     val checkBox = CheckBox(requireContext())
@@ -54,18 +56,34 @@ class DemoGraphicInfoFragment : BaseFragment() {
             }
         })
 
+        viewModel.ethnicityList.observe(viewLifecycleOwner,{
+            if(it.size >0 ){
+                for (i in 0 until it.size) {
+                    val radio = RadioButton(requireContext())
+                    radio.text = it.get(i).name
+                    radio.setPadding(25, 20, 0, 0)
+                    radio.id = it.get(i).id
+                    radio.setOnCheckedChangeListener(ethnicityClick(radio,radio.id))
+                    newEthnicityList.add(EthnicityResponseModel(id= it.get(i).id, name= it.get(i).name, ethnicityDetails = it.get(i).ethnicityDetails))
+                    binding.layoutEthnicity.addView(radio)
+                }
+            }
+        })
 
+        viewModel.genderList.observe(viewLifecycleOwner,{
+            if(it.size >0 ){
+                for (i in 0 until it.size) {
+                    val radio = RadioButton(requireContext())
+                    radio.text = it.get(i).name
+                    radio.setPadding(25, 20, 0, 0)
+                    radio.id = it.get(i).id
+                    //checkBox.setOnCheckedChangeListener(handleRaceCheck(checkBox,checkBox.id))
+                    //newRaceList.add(RaceResponseModel(id= it.get(i).id,name= it.get(i).name, raceDetails = it.get(i).raceDetails))
+                    binding.layoutSex.addView(radio)
+                }
+            }
+        })
 
-        /*
-
-         for (j in 0 until it.get(i).raceDetails.size){
-                            val checkBox = CheckBox(requireContext())
-                            checkBox.text = it.get(i).raceDetails.get(j).name
-                            Log.e("Detils",it.get(i).raceDetails.get(j).name)
-                            checkBox.setPadding(50, 20, 0, 0)
-                            checkBox.id = j
-                        }
-         */
 
 
         return root
@@ -75,20 +93,12 @@ class DemoGraphicInfoFragment : BaseFragment() {
         return object : CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
                 if (!isChecked) {
-                    //uncheck
                 } else {
-                    //Timber.e("findCheckBox:  " + chk.id)
-                   // Timber.e("Details- $newRaceList")
                     for(i in 0 until newRaceList.size){
                         if(newRaceList.get(i).id == chkBoxId){
                             if(newRaceList.get(i).raceDetails.size > 0) {
-                                Log.e("chkbox.id ", ""+newRaceList.get(i).raceDetails)
-                                val test = newRaceList.get(i).raceDetails
-                                //Timber.e("testing == "+test.size+ " "+test.toArray().toString())
-                                //for(item in test )
-                                   // Timber.e(" item "+item)
                                 val bundle = Bundle()
-                                bundle.putParcelableArrayList("racedetail", newRaceList.get(i).raceDetails)
+                                bundle.putParcelableArrayList(AppConstant.RACE_DETAILS, newRaceList.get(i).raceDetails)
                                 findNavController().navigate(R.id.navigation_race_details , bundle)
                                 break
                             }
@@ -98,6 +108,29 @@ class DemoGraphicInfoFragment : BaseFragment() {
             }
         }
     }
+
+
+    private fun ethnicityClick(chk: RadioButton, chkBoxId: Int): CompoundButton.OnCheckedChangeListener {
+        return object : CompoundButton.OnCheckedChangeListener {
+            override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+                if (!isChecked) {
+
+                } else {
+                    for(i in 0 until newEthnicityList.size){
+                        if(newEthnicityList.get(i).id == chkBoxId){
+                            if(newEthnicityList.get(i).ethnicityDetails.size > 0) {
+                                val bundle = Bundle()
+                                bundle.putParcelableArrayList(AppConstant.ETHNICITY_DETAILS, newEthnicityList.get(i).ethnicityDetails)
+                                findNavController().navigate(R.id.navigation_ethnicity_details , bundle)
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
 
     /*

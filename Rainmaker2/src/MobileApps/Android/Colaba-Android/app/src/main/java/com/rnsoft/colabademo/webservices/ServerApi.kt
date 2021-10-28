@@ -203,7 +203,7 @@ interface ServerApi{
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetAllEthnicityList")
     suspend fun getEthnicityList(
-        @Header("Authorization" )  Authorization:String) :ArrayList<EthinicityResponseModel>
+        @Header("Authorization" )  Authorization:String) :ArrayList<EthnicityResponseModel>
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetGenderList")
     suspend fun getGenderList(

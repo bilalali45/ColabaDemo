@@ -221,7 +221,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
         }
     }
 
-    suspend fun getEthnicityList(token: String): Result<ArrayList<EthinicityResponseModel>> {
+    suspend fun getEthnicityList(token: String): Result<ArrayList<EthnicityResponseModel>> {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getEthnicityList(newToken)

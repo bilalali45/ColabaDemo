@@ -58,8 +58,8 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     private val _raceList: MutableLiveData<ArrayList<RaceResponseModel>> = MutableLiveData()
     val raceList: LiveData<ArrayList<RaceResponseModel>> get() = _raceList
 
-    private val _ethnicityList: MutableLiveData<ArrayList<EthinicityResponseModel>> = MutableLiveData()
-    val ethnicityList: LiveData<ArrayList<EthinicityResponseModel>> get() = _ethnicityList
+    private val _ethnicityList: MutableLiveData<ArrayList<EthnicityResponseModel>> = MutableLiveData()
+    val ethnicityList: LiveData<ArrayList<EthnicityResponseModel>> get() = _ethnicityList
 
     private val _genderList: MutableLiveData<ArrayList<GenderResponseModel>> = MutableLiveData()
     val genderList: LiveData<ArrayList<GenderResponseModel>> get() = _genderList
@@ -380,7 +380,6 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     }
 
     suspend fun getGenderList(token: String) {
-        Timber.e("Viewmodel", "getGender")
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = bAppRepo.getGenderList(token = token)
             withContext(Dispatchers.Main) {
@@ -396,8 +395,6 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     }
 
     suspend fun getRaceList(token: String) {
-        Timber.e("Viewmodel + getRace")
-
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = bAppRepo.getRaceList(token = token)
             withContext(Dispatchers.Main) {
@@ -414,7 +411,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
 
     suspend fun getEthnicityList(token: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = bAppRepo.getEthinicityList(token = token)
+            val responseResult = bAppRepo.getEthnicityList(token = token)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _ethnicityList.value = (responseResult.data)

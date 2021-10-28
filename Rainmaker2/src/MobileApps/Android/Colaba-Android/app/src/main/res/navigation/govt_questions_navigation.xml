@@ -218,4 +218,10 @@
         android:label="@string/test_id"
         tools:layout="@layout/demographic_detail_layout" />
 
+    <fragment
+        android:id="@+id/navigation_ethnicity_details"
+        android:name="com.rnsoft.colabademo.EthnicityDetailFragment"
+        android:label="@string/test_id"
+        tools:layout="@layout/demographic_detail_layout" />
+
 </navigation>
