@@ -1,8 +1,8 @@
 package com.rnsoft.colabademo
 
 data class BankruptcyAnswerData(
-    val `1`: String? = "",
-    val `2`: String?= "",
-    val `3`: String?= "",
-    val `4`: String?= ""
+    var value1: Boolean = false,
+    var value2: Boolean = false,
+    var value3: Boolean = false,
+    var value4: Boolean = false
 )

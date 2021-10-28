@@ -23,12 +23,23 @@ class BankruptcyFragment:BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = BankruptcyLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
         super.addListeners(binding.root)
+        fillGlobalData()
         return root
+    }
+
+    private fun fillGlobalData(){
+        if(BorrowerOneQuestions.bankruptcyGlobalData.value1)
+            binding.chapter7.isChecked = true
+        if(BorrowerOneQuestions.bankruptcyGlobalData.value2)
+            binding.chapter11.isChecked = true
+        if(BorrowerOneQuestions.bankruptcyGlobalData.value3)
+            binding.chapter12.isChecked = true
+        if(BorrowerOneQuestions.bankruptcyGlobalData.value4)
+            binding.chapter13.isChecked = true
     }
 
     private fun setUpUI() {

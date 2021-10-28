@@ -6,8 +6,8 @@ data class ChildAnswerParent(
 
 data class ChildAnswerData(
     val liabilityName: String,
-    val liabilityTypeId: Int,
-    val monthlyPayment: Int,
+    val liabilityTypeId: String,
+    val monthlyPayment: String,
     val name: String,
-    val remainingMonth: Int
+    val remainingMonth: String
 )
