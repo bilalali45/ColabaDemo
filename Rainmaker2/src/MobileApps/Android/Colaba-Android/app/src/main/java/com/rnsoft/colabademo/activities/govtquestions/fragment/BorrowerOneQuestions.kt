@@ -258,7 +258,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         //appCompactTextView.isAllCaps = false
         //appCompactTextView.id = tabIndex
         appCompactTextView.tag = tabTitle
-        appCompactTextView.setText(tabTitle)
+        appCompactTextView.text = tabTitle
         return appCompactTextView
     }
 

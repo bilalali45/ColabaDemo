@@ -192,27 +192,27 @@ class ChildSupportFragment:BaseFragment() {
                 Timber.e("remainingMonth - "+returnStringWithZero(test.remainingMonth))
                 Timber.e("monthlyPayment - "+returnStringWithZero(test.monthlyPayment))
                 Timber.e("liabilityTypeId - "+returnStringWithZero(test.liabilityTypeId))
-                binding.paymentRemainingTextView.setText(returnStringWithZero(test.remainingMonth))
+                binding.paymentRemainingTextView.setText(returnStringWithZero(test.remainingMonth) , false)
                 binding.monthlyPaymentEditText.setText(returnStringWithZero(test.monthlyPayment))
-                binding.paymentReceiptEditText.setText(returnStringWithZero(test.liabilityTypeId))
+                binding.paymentReceiptEditText.setText(returnStringWithZero(test.name))
             }
 
             if(BorrowerOneQuestions.childGlobalList.size>1){
                 val test = BorrowerOneQuestions.childGlobalList[1]
                 //binding.alimonyCheckBox.isChecked = true
                 binding.alimonyCheckBox.performClick()
-                binding.alimonyPaymentRemainingTextView.setText(returnStringWithZero(test.remainingMonth))
+                binding.alimonyPaymentRemainingTextView.setText(returnStringWithZero(test.remainingMonth) , false)
                 binding.alimonyMonthlyPaymentEditText.setText(returnStringWithZero(test.monthlyPayment))
-                binding.alimonyPaymentReceiptEditText.setText(returnStringWithZero(test.liabilityTypeId))
+                binding.alimonyPaymentReceiptEditText.setText(returnStringWithZero(test.name))
             }
 
             if(BorrowerOneQuestions.childGlobalList.size>2){
                 val test = BorrowerOneQuestions.childGlobalList[2]
                 //binding.separateMaintenanceCheckBox.isChecked = true
                 binding.separateMaintenanceCheckBox.performClick()
-                binding.separateMaintenancePaymentRemainingTextView.setText(returnStringWithZero(test.remainingMonth))
+                binding.separateMaintenancePaymentRemainingTextView.setText(returnStringWithZero(test.remainingMonth) , false)
                 binding.separateMonthlyPaymentEditText.setText(returnStringWithZero(test.monthlyPayment))
-                binding.separatePaymentReceiptEditText.setText(returnStringWithZero(test.liabilityTypeId))
+                binding.separatePaymentReceiptEditText.setText(returnStringWithZero(test.name))
             }
     }
 
