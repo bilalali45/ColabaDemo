@@ -30,8 +30,8 @@ import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.rnsoft.colabademo.databinding.CommonAddressLayoutBinding
 
-import com.rnsoft.colabademo.databinding.SubjectPropertyAddressBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -55,7 +55,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
     @Inject
     lateinit var sharedPreferences : SharedPreferences
     private val viewModel : SubjectPropertyViewModel by activityViewModels()
-    private lateinit var binding: SubjectPropertyAddressBinding
+    private lateinit var binding: CommonAddressLayoutBinding
     private lateinit var predictAdapter: PlacePredictionAdapter
     private lateinit var token: AutocompleteSessionToken
     private lateinit var placesClient: PlacesClient
@@ -67,7 +67,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = SubjectPropertyAddressBinding.inflate(inflater, container, false)
+        binding = CommonAddressLayoutBinding.inflate(inflater, container, false)
 
         setInputFields()
         getDropDownData()
@@ -153,6 +153,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
          lifecycleScope.launchWhenStarted {
              sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
              binding.loaderSubproAddress.visibility = View.VISIBLE
+             delay(2000)
              coroutineScope {
                  setData()
 

@@ -26,7 +26,7 @@ class NumberTextFormat (private val mEditText: TextInputEditText) : TextWatcher{
                 mEditText.removeTextChangedListener(this) //To Prevent from Infinite Loop
                 mEditText.setText(newPrice);
                 mEditText.setSelection(newPrice.length); //Move Cursor to end of String
-                mEditText.addTextChangedListener(this);
+                mEditText.addTextChangedListener(this)
             }
         } catch (nfe: NumberFormatException) {
             nfe.printStackTrace()

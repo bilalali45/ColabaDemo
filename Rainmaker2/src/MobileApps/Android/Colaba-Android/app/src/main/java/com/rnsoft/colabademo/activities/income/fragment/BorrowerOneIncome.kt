@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.activities.income.fragment.BottomDialogSelectEmployment
 import com.rnsoft.colabademo.activities.income.fragment.EventAddEmployment
 import com.rnsoft.colabademo.databinding.*
+import com.rnsoft.colabademo.utils.Common
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
 import kotlinx.android.synthetic.main.assets_middle_cell.view.content_amount
 import kotlinx.android.synthetic.main.assets_middle_cell.view.content_desc
@@ -23,6 +24,8 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import kotlin.math.roundToInt
 
 class BorrowerOneIncome : IncomeBaseFragment() {
@@ -32,6 +35,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
     private  var tabBorrowerId:Int? = null
     private var grandTotalAmount:Double = 0.0
     val Employment = "Employment"
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -101,7 +105,8 @@ class BorrowerOneIncome : IncomeBaseFragment() {
 
                                             contentData.incomeValue?.let{ incomeValue->
                                                 totalAmount += incomeValue
-                                                contentCell.content_amount.text = "$"+incomeValue.toString()
+                                               // val formattedValue = Common.addNumberFormat(incomeValue)
+                                                contentCell.content_amount.text = "$".plus(Common.addNumberFormat(incomeValue))
                                             }
                                             contentCell.visibility = View.GONE
                                             if(contentData.endDate == null && contentData.incomeTypeDisplayName == Employment)
@@ -116,7 +121,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                             }
                         }
 
-                        topCell.header_amount.text = "$"+totalAmount.roundToInt().toString()
+                        topCell.header_amount.text = "$".plus(Common.addNumberFormat(totalAmount))
                         grandTotalAmount += totalAmount
 
                         val bottomCell: View =
@@ -146,7 +151,8 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                         }
                     }
 
-                    EventBus.getDefault().post(GrandTotalEvent("$"+grandTotalAmount.roundToInt().toString()))
+                    //EventBus.getDefault().post(GrandTotalEvent("$"+grandTotalAmount.roundToInt().toString()))
+                EventBus.getDefault().post(GrandTotalEvent("$"+(Common.addNumberFormat(grandTotalAmount))))
                 })
         }
 
@@ -213,5 +219,4 @@ class BorrowerOneIncome : IncomeBaseFragment() {
             findNavController().navigate(R.id.action_prev_employment)
         }
     }
-
 }

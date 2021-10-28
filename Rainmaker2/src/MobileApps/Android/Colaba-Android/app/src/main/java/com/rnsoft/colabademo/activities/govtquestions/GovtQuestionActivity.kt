@@ -78,7 +78,6 @@ class GovtQuestionActivity : BaseActivity() {
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                Timber.e("DemoGraphic...")
                 var borrowerId =  borrowerTabList?.get(0)
 
                 if(loanApplicationId!=null && borrowerId!=null) {
@@ -107,9 +106,8 @@ class GovtQuestionActivity : BaseActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onErrorEvent(event: WebServiceErrorEvent) {
+    fun onErrorEvent(event: WebServiceErrorEvent){
         binding.govtDataLoader.visibility = View.INVISIBLE
         finish()
-
     }
 }

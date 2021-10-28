@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.activities.assets.model.BorrowerAsset
 import com.rnsoft.colabademo.databinding.*
+import com.rnsoft.colabademo.utils.Common
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
 import kotlinx.android.synthetic.main.assets_middle_cell.view.*
 import kotlinx.android.synthetic.main.assets_top_cell.view.*
@@ -64,8 +65,8 @@ class BorrowerOneAssets : AssetBaseFragment() {
                     val sampleAssets = getSampleAssets()
                     for (m in 0 until sampleAssets.size) {
                         val modelData = sampleAssets[m]
-                        Timber.e("header", modelData.headerTitle)
-                        Timber.e("h-amount", modelData.headerAmount)
+                        //Timber.e("header", modelData.headerTitle)
+                        //Timber.e("h-amount", modelData.headerAmount)
                         val mainCell: LinearLayoutCompat =
                             layoutInflater.inflate(
                                 R.layout.asset_top_main_cell,
@@ -100,7 +101,7 @@ class BorrowerOneAssets : AssetBaseFragment() {
 
                                             contentData.assetValue?.let{ assetValue->
                                                 totalAmount += assetValue
-                                                contentCell.content_amount.text = "$"+assetValue.toString()
+                                                contentCell.content_amount.text = "$".plus(Common.addNumberFormat(assetValue))
                                             }
                                             contentCell.visibility = View.GONE
                                             contentCell.setOnClickListener(modelData.listenerAttached)
@@ -111,7 +112,7 @@ class BorrowerOneAssets : AssetBaseFragment() {
                             }
                         }
 
-                        topCell.header_amount.text = "$"+totalAmount.roundToInt().toString()
+                        topCell.header_amount.text = "$".plus(Common.addNumberFormat(totalAmount)) //"$"+totalAmount.roundToInt().toString()
                         grandTotalAmount += totalAmount
 
                         val bottomCell: View =
@@ -144,7 +145,7 @@ class BorrowerOneAssets : AssetBaseFragment() {
                         }
                     }
 
-                    EventBus.getDefault().post(GrandTotalEvent("$"+grandTotalAmount.roundToInt().toString()))
+                    EventBus.getDefault().post(GrandTotalEvent("$".plus(Common.addNumberFormat(grandTotalAmount)))) // "$"+grandTotalAmount.roundToInt().toString()))
                 })
         }
 
@@ -164,8 +165,8 @@ class BorrowerOneAssets : AssetBaseFragment() {
         for (i in 0 until sampleAssets.size) {
 
             val modelData = sampleAssets[i]
-            Log.e("header",modelData.headerTitle )
-            Log.e("h-amount",modelData.headerAmount )
+            //Log.e("header",modelData.headerTitle )
+            //Log.e("h-amount",modelData.headerAmount )
 
             val mainCell: LinearLayoutCompat =
                 layoutInflater.inflate(R.layout.asset_top_main_cell, null) as LinearLayoutCompat

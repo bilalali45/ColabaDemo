@@ -31,11 +31,10 @@ data class EthnicityDetailDemoGraphic(
     val otherEthnicity: String?
 )
 
-@Parcelize
 data class DemoGraphicRace(
     val raceDetails: List<DemoGraphicRaceDetail>?,
     val raceId: Int?
-) : Parcelable
+)
 
 data class DemoGraphicRaceDetail(
     val detailId: Int?,

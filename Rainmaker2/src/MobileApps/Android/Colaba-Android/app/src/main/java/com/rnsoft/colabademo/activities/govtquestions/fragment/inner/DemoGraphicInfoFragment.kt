@@ -50,7 +50,7 @@ class DemoGraphicInfoFragment : BaseFragment() {
                 demoGraphicData.race?.let { race->
                     for(i in 0 until race.size){
                         race.get(i).raceId?.let { it1 ->
-                            raceBaseList.add(DemoGraphicRace(raceId= it1,raceDetails = race.get(i).raceDetails)) // list for selecting race inner items
+                            raceBaseList.add(DemoGraphicRace(raceId= it1,raceDetails = race.get(i).raceDetails))
                         }
                     }
                 }
@@ -122,7 +122,7 @@ class DemoGraphicInfoFragment : BaseFragment() {
                             if(newRaceList.get(i).raceDetails.size > 0){
                                 val bundle = Bundle()
                                 bundle.putParcelableArrayList(AppConstant.RACE_DETAILS, newRaceList.get(i).raceDetails)
-                                bundle.putParcelableArrayList(AppConstant.RACE_BASE_LIST, raceBaseList.get(i).raceDetails)
+                               // bundle.putParcelableArrayList(AppConstant.RACE_BASE_LIST, raceBaseList.get(i).raceDetails)
                                 findNavController().navigate(R.id.navigation_race_details , bundle)
                                 break
                             }
