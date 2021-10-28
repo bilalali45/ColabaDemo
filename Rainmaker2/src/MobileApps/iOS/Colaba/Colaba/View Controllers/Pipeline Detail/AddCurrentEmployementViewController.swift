@@ -108,7 +108,7 @@ class AddCurrentEmployementViewController: BaseViewController {
         txtfieldStartDate.setTextField(placeholder: "Start Date (MM/DD/YYYY)", controller: self, validationType: .required)
         txtfieldStartDate.type = .datePicker
         
-        txtfieldProfessionYears.setTextField(placeholder: "Years in Profession", controller: self, validationType: .noValidation)
+        txtfieldProfessionYears.setTextField(placeholder: "Years in Profession", controller: self, validationType: .noValidation, keyboardType: .numberPad)
         txtfieldProfessionYears.setIsValidateOnEndEditing(validate: false)
         txtfieldProfessionYears.setTextField(maxLength: 2)
         

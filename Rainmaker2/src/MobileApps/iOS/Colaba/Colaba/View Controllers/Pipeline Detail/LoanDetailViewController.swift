@@ -203,7 +203,8 @@ class LoanDetailViewController: BaseViewController {
     }
     
     @IBAction func btnAddPersonTapped(_ sender: UIButton) {
-        
+        let vc = Utility.getAssignLoanOfficerPopupVC()
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnNewDocumentTapped(_ sender: UIButton) {
