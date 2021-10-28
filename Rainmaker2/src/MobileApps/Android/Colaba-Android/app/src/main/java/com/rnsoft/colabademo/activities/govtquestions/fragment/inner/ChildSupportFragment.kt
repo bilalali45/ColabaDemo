@@ -17,6 +17,7 @@ import com.rnsoft.colabademo.databinding.ChildSupportLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -41,8 +42,10 @@ class ChildSupportFragment:BaseFragment() {
         return root
     }
 
+    private var dataArray: ArrayList<String> = arrayListOf()
+
     private fun setUpUI() {
-        val dataArray: ArrayList<String> = arrayListOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "12+")
+        dataArray = arrayListOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "12+")
         val dataAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  dataArray)
         binding.paymentRemainingTextView.setAdapter(dataAdapter)
         binding.paymentRemainingTextView.setOnFocusChangeListener { _, _ ->
@@ -176,6 +179,49 @@ class ChildSupportFragment:BaseFragment() {
 
         binding.monthlyPaymentEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.monthlyPaymentEditText, binding.monthlyPaymentLayout, requireContext()))
         binding.paymentReceiptEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.paymentReceiptEditText, binding.paymentReceiptLayout, requireContext()))
+
+        fillGlobalData()
+    }
+
+    private fun fillGlobalData(){
+            if(BorrowerOneQuestions.childGlobalList.size>0){
+                val test = BorrowerOneQuestions.childGlobalList[0]
+                //binding.childSupportCheckBox.isChecked = true
+
+                binding.childSupportCheckBox.performClick()
+                Timber.e("remainingMonth - "+returnStringWithZero(test.remainingMonth))
+                Timber.e("monthlyPayment - "+returnStringWithZero(test.monthlyPayment))
+                Timber.e("liabilityTypeId - "+returnStringWithZero(test.liabilityTypeId))
+                binding.paymentRemainingTextView.setText(returnStringWithZero(test.remainingMonth) , false)
+                binding.monthlyPaymentEditText.setText(returnStringWithZero(test.monthlyPayment))
+                binding.paymentReceiptEditText.setText(returnStringWithZero(test.name))
+            }
+
+            if(BorrowerOneQuestions.childGlobalList.size>1){
+                val test = BorrowerOneQuestions.childGlobalList[1]
+                //binding.alimonyCheckBox.isChecked = true
+                binding.alimonyCheckBox.performClick()
+                binding.alimonyPaymentRemainingTextView.setText(returnStringWithZero(test.remainingMonth) , false)
+                binding.alimonyMonthlyPaymentEditText.setText(returnStringWithZero(test.monthlyPayment))
+                binding.alimonyPaymentReceiptEditText.setText(returnStringWithZero(test.name))
+            }
+
+            if(BorrowerOneQuestions.childGlobalList.size>2){
+                val test = BorrowerOneQuestions.childGlobalList[2]
+                //binding.separateMaintenanceCheckBox.isChecked = true
+                binding.separateMaintenanceCheckBox.performClick()
+                binding.separateMaintenancePaymentRemainingTextView.setText(returnStringWithZero(test.remainingMonth) , false)
+                binding.separateMonthlyPaymentEditText.setText(returnStringWithZero(test.monthlyPayment))
+                binding.separatePaymentReceiptEditText.setText(returnStringWithZero(test.name))
+            }
+    }
+
+    private fun returnStringWithZero(str: String): String {
+        return if(str.contains(".")) {
+            val endIndex = str.indexOf(".")
+            str.substring(0, endIndex)
+        } else
+            str
     }
 
     private fun checkEmptyFields():Boolean{

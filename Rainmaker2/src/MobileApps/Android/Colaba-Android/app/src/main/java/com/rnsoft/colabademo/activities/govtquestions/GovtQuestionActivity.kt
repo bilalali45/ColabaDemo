@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.content.SharedPreferences
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -10,6 +11,9 @@ import androidx.navigation.findNavController
 import com.rnsoft.colabademo.databinding.GovtQuestionsActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -57,8 +61,8 @@ class GovtQuestionActivity : BaseActivity() {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 Timber.e("loading govt service...")
 
-                var borrowerId =  borrowerTabList?.get(0)
-                var ownTypeId = borrowerOwnTypeList?.get(0)
+                val borrowerId =  borrowerTabList?.get(0)
+                val ownTypeId = borrowerOwnTypeList?.get(0)
 
                 if(loanApplicationId!=null && borrowerTabList!=null && loanApplicationId!=null &&  borrowerId!=null && ownTypeId!=null ) {
                     val bool = borrowerApplicationViewModel.getGovernmentQuestions(
@@ -92,8 +96,20 @@ class GovtQuestionActivity : BaseActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
     override fun onStop() {
         super.onStop()
-        Timber.e("onStop from Activity called....")
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onErrorEvent(event: WebServiceErrorEvent) {
+        binding.govtDataLoader.visibility = View.INVISIBLE
+        finish()
+
     }
 }

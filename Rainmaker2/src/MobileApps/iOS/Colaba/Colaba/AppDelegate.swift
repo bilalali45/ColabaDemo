@@ -119,9 +119,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func loadBorrowerInfoController(){
-        let vc = Utility.getSendDocumentRequestVC()
-        //let vc = Utility.getTestVC()
-        self.window?.rootViewController = vc
+//        let vc = Utility.getSendDocumentRequestVC()
+//        //let vc = Utility.getTestVC()
+//        self.window?.rootViewController = vc
+        
+        let vc = Utility.getLoanDetailVC()
+        vc.loanApplicationId = 1050
+        vc.borrowerName = "Muhammad Farhan"
+        vc.loanPurpose = "Purchase"
+        vc.phoneNumber = ""
+        vc.email = "farhan@mailinator.com"
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.navigationBar.isHidden = true
+        navVC.modalPresentationStyle = .fullScreen
+        self.window?.rootViewController = navVC
     }
     
     func loadLoginViewController(){

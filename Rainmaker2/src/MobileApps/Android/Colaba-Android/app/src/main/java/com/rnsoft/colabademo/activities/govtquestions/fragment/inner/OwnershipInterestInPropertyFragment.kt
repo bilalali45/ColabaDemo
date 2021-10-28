@@ -117,11 +117,17 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
             }
         }
 
-
+        fillWithGlobalData()
 
     }
 
 
+    private fun fillWithGlobalData(){
+        if(BorrowerOneQuestions.ownerShipGlobalData.size>0)
+            binding.transactionAutoCompleteTextView.setText(BorrowerOneQuestions.ownerShipGlobalData.get(0) , false)
+        if(BorrowerOneQuestions.ownerShipGlobalData.size>1)
+            binding.whichAssetsCompleteView.setText(BorrowerOneQuestions.ownerShipGlobalData.get(1), false)
+    }
 
 
 
