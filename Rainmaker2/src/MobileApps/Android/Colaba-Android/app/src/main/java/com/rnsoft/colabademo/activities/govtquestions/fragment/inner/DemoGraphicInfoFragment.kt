@@ -122,7 +122,7 @@ class DemoGraphicInfoFragment : BaseFragment() {
                             if(newRaceList.get(i).raceDetails.size > 0){
                                 val bundle = Bundle()
                                 bundle.putParcelableArrayList(AppConstant.RACE_DETAILS, newRaceList.get(i).raceDetails)
-                                bundle.putParcelableArrayList(AppConstant.RACE_BASE_LIST, raceBaseList.get(i).raceDetails)
+                                //bundle.putParcelableArrayList(AppConstant.RACE_BASE_LIST, raceBaseList.get(i).raceDetails)
                                 findNavController().navigate(R.id.navigation_race_details , bundle)
                                 break
                             }

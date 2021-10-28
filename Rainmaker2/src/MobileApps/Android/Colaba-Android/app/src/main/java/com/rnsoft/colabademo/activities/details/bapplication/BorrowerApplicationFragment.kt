@@ -154,11 +154,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 }
 
                 appTabModel.borrowerAppData?.assetAndIncome?.totalAsset?.let{
-<<<<<<< HEAD
                     binding.bAppTotalAssets.text = "$".plus(AppSetting.returnAmountFormattedString(it))
-=======
-                    binding.bAppTotalAssets.text = AppSetting.returnAmountFormattedString(it)
->>>>>>> 423659a0f1fef6a02c49fb6cc763cdcb88403d57
                 }
 
                 appTabModel.borrowerAppData?.assetAndIncome?.totalMonthyIncome?.let{

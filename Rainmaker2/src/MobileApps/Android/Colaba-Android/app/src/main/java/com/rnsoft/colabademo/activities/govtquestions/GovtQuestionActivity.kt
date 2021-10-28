@@ -79,18 +79,18 @@ class GovtQuestionActivity : BaseActivity() {
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 Timber.e("DemoGraphic...")
-                var borrowerId =  borrowerTabList?.get(0)
+                val borrowerId =  borrowerTabList?.get(0)
 
                 if(loanApplicationId!=null && borrowerId!=null) {
                      borrowerApplicationViewModel.getDemoGraphicInfo(authToken,
                         5,//loanApplicationId!!,
                          5 )//borrowerId )
                     delay(2000)
-                    borrowerApplicationViewModel.getRaceList(authToken)
-                    borrowerApplicationViewModel.getGenderList(authToken)
-                    borrowerApplicationViewModel.getEthnicityList(authToken)
-                    delay(2000)
-                    navController.navigate(R.id.navigation_demographic)
+                    //borrowerApplicationViewModel.getRaceList(authToken)
+                    //borrowerApplicationViewModel.getGenderList(authToken)
+                    //borrowerApplicationViewModel.getEthnicityList(authToken)
+                    //delay(2000)
+                    //navController.navigate(R.id.navigation_demographic)
                 }
             }
         }

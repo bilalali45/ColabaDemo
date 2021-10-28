@@ -388,7 +388,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 if(questionData.answer.equals("no",true)) {
                     contentCell.ans_no.isChecked = true
                     for(item in childInnerDetailQuestions)
-                        item.visibility = View.GONE
+                        item.visibility = View.INVISIBLE
                 }
                 else {
                     contentCell.ans_yes.isChecked = true
@@ -397,7 +397,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 }
                 contentCell.ans_no.setOnClickListener {
                     for(item in childInnerDetailQuestions)
-                        item.visibility = View.GONE
+                        item.visibility = View.INVISIBLE
                 }
                 contentCell.ans_yes.setOnClickListener {
                     for(item in childInnerDetailQuestions)
@@ -422,7 +422,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                     contentCell.govt_detail_box.visibility = View.VISIBLE
             }
 
-            contentCell.ans_no.setOnClickListener { contentCell.govt_detail_box.visibility = View.GONE}
+            contentCell.ans_no.setOnClickListener { contentCell.govt_detail_box.visibility = View.INVISIBLE}
             contentCell.ans_yes.setOnClickListener {
                 if(questionData.answerDetail!=null && questionData.answer.equals("Yes", true))
                     contentCell.govt_detail_box.visibility = View.VISIBLE
@@ -677,7 +677,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     private val closeDetailBox = object:View.OnClickListener{
         override fun onClick(p0: View) {
-            closeDetailBoxHashMap.getValue(p0 as AppCompatRadioButton).visibility = View.GONE
+            closeDetailBoxHashMap.getValue(p0 as AppCompatRadioButton).visibility = View.INVISIBLE
         }
     }
 
@@ -694,7 +694,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                     if(key == p0)
                         value.visibility = View.VISIBLE
                     else
-                        value.visibility = View.GONE
+                        value.visibility = View.INVISIBLE
                 }
             }
         }

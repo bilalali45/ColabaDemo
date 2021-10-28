@@ -30,7 +30,7 @@ class RaceDetailFragment : BaseFragment() {
 
         arguments?.let {
             detailList = it.getParcelableArrayList(AppConstant.RACE_DETAILS)!!
-            raceBaseList = it.getParcelableArrayList(AppConstant.RACE_BASE_LIST)!!
+            //raceBaseList = it.getParcelableArrayList(AppConstant.RACE_BASE_LIST)!!
 
             if(detailList.size > 0) {
                 for (i in 0 until detailList.size) {
@@ -40,9 +40,7 @@ class RaceDetailFragment : BaseFragment() {
                     checkBox.id = detailList.get(i).id
                     if(raceBaseList.size > 0) {
                         for(a in 0 until raceBaseList.size) {
-                            if(detailList.get(i).id == raceBaseList.get(i).raceDetails.{
-                                checkBox.isChecked=true
-                            }
+
                         }
                     }
 
