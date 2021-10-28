@@ -18,6 +18,7 @@ object AppConstant {
         const val RESPONSE_CODE_SUCCESS = "200"
         const val IS_LOGGED_IN:String ="IS_LOGGED_IN"
         const val RACE_DETAILS : String = "race_details"
+        const val RACE_BASE_LIST : String = "race_base_list"
         const val ETHNICITY_DETAILS : String = "ethnicity_details"
         const val GENDER_DETAILS : String = "gender_details"
         const val token:String = "token"

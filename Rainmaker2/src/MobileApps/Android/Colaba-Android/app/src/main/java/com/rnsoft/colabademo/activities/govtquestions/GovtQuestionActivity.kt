@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.rnsoft.colabademo.databinding.GovtQuestionsActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -77,12 +78,14 @@ class GovtQuestionActivity : BaseActivity() {
                 var borrowerId =  borrowerTabList?.get(0)
 
                 if(loanApplicationId!=null && borrowerId!=null) {
-                     //borrowerApplicationViewModel.getDemoGraphicInfo(authToken,
-                     //   5,//loanApplicationId!!,
-                     //   5 )//borrowerId )
+                     borrowerApplicationViewModel.getDemoGraphicInfo(authToken,
+                        5,//loanApplicationId!!,
+                         5 )//borrowerId )
+                    delay(2000)
                     borrowerApplicationViewModel.getRaceList(authToken)
                     borrowerApplicationViewModel.getGenderList(authToken)
                     borrowerApplicationViewModel.getEthnicityList(authToken)
+                    delay(2000)
                     navController.navigate(R.id.navigation_demographic)
                 }
             }

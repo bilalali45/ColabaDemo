@@ -12,11 +12,13 @@ import timber.log.Timber
 /**
  * Created by Anita Kiran on 10/27/2021.
  */
+
 class RaceDetailFragment : BaseFragment() {
 
     private var _binding: DemographicDetailLayoutBinding? = null
     private val binding get() = _binding!!
     private var detailList : ArrayList<AllRaceDetails> = ArrayList()
+    private var raceBaseList : ArrayList<DemoGraphicRace> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +30,7 @@ class RaceDetailFragment : BaseFragment() {
 
         arguments?.let {
             detailList = it.getParcelableArrayList(AppConstant.RACE_DETAILS)!!
-            Timber.e("size******"+ detailList.size)
+            raceBaseList = it.getParcelableArrayList(AppConstant.RACE_BASE_LIST)!!
 
             if(detailList.size > 0) {
                 for (i in 0 until detailList.size) {
@@ -36,6 +38,16 @@ class RaceDetailFragment : BaseFragment() {
                     checkBox.text = detailList.get(i).name
                     checkBox.setPadding(25, 25, 0, 0)
                     checkBox.id = detailList.get(i).id
+                    if(raceBaseList.size > 0) {
+                        for(a in 0 until raceBaseList.size) {
+                            if(detailList.get(i).id == raceBaseList.get(i).raceDetails.{
+                                checkBox.isChecked=true
+                            }
+                        }
+                    }
+
+
+
                     //checkBox.setOnCheckedChangeListener(handleRaceCheck(checkBox,checkBox.id))
                     binding.layoutDetails.addView(checkBox)
                 }
