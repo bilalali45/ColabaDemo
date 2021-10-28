@@ -197,9 +197,9 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             if(details != null){
                 details.subPropertyData?.address?.let {
                      if(it.street == null && it.unit==null && it.city==null && it.stateName==null && it.countryName==null){
-                            binding.radioSubPropertyTbd.isChecked = true
-                            binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
-                        } else {
+                         binding.radioSubPropertyTbd.isChecked = true
+                         binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
+                     } else {
                          binding.radioSubPropertyAddress.isChecked = true
                          binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
                          binding.tvSubPropertyAddress.visibility = View.VISIBLE

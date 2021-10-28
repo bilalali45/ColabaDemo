@@ -27,6 +27,24 @@ class BorrowerApplicationRepo  @Inject constructor(
             borrowerId = borrowerId )
     }
 
+    suspend fun getDemoGraphicInfo(token:String, loanApplicationId:Int, borrowerId:Int):Result<DemoGraphicResponseModel>{
+        return borrowerApplicationDataSource.getDemoGraphicInfo(
+            token = token , loanApplicationId = loanApplicationId,
+            borrowerId = borrowerId )
+    }
+
+    suspend fun getEthnicityList(token:String): Result<ArrayList<EthnicityResponseModel>> {
+        return borrowerApplicationDataSource.getEthnicityList(token = token)
+    }
+
+    suspend fun getRaceList(token:String): Result<ArrayList<RaceResponseModel>> {
+        return borrowerApplicationDataSource.getRaceList(token = token)
+    }
+
+    suspend fun getGenderList(token:String): Result<ArrayList<GenderResponseModel>> {
+        return borrowerApplicationDataSource.getGenderList(token = token)
+    }
+
     suspend fun getPropertyType(token:String): Result<ArrayList<DropDownResponse>> {
         return borrowerApplicationDataSource.getPropertyTypes(token = token)
     }

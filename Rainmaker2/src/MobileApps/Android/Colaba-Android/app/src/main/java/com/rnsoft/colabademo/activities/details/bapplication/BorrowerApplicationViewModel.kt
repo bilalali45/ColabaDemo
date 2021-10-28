@@ -26,6 +26,9 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     private var _governmentQuestionsModelClass : MutableLiveData<GovernmentQuestionsModelClass> =   MutableLiveData()
     val governmentQuestionsModelClass: LiveData<GovernmentQuestionsModelClass> get() = _governmentQuestionsModelClass
 
+    private var _demoGraphicInfo : MutableLiveData<DemoGraphicResponseModel> =   MutableLiveData()
+    val demoGraphicInfo: LiveData<DemoGraphicResponseModel> get() = _demoGraphicInfo
+
     private val _propertyType: MutableLiveData<ArrayList<DropDownResponse>> = MutableLiveData()
     val propertyType: LiveData<ArrayList<DropDownResponse>> get() = _propertyType
 
@@ -51,6 +54,15 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     private val _coBorrowerOccupancyStatus: MutableLiveData<CoBorrowerOccupancyStatus> =
         MutableLiveData()
     val coBorrowerOccupancyStatus: LiveData<CoBorrowerOccupancyStatus> get() = _coBorrowerOccupancyStatus
+
+    private val _raceList: MutableLiveData<ArrayList<RaceResponseModel>> = MutableLiveData()
+    val raceList: LiveData<ArrayList<RaceResponseModel>> get() = _raceList
+
+    private val _ethnicityList: MutableLiveData<ArrayList<EthnicityResponseModel>> = MutableLiveData()
+    val ethnicityList: LiveData<ArrayList<EthnicityResponseModel>> get() = _ethnicityList
+
+    private val _genderList: MutableLiveData<ArrayList<GenderResponseModel>> = MutableLiveData()
+    val genderList: LiveData<ArrayList<GenderResponseModel>> get() = _genderList
 
 
     suspend fun getBorrowerAssetsDetail(token:String, loanApplicationId:Int, borrowerId: ArrayList<Int>?): Boolean {
@@ -135,7 +147,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
             coroutineScope {
                 delay(1000)
                 borrowerIds.forEach { id ->
-                    Timber.e("borrowerIds.id -> "+id)
+                    //Timber.e("borrowerIds.id -> "+id)
                     launch { // this will allow us to run multiple tasks in parallel
                         val responseResult = bAppRepo.getBorrowerAssetsDetail(
                             token = token,
@@ -173,18 +185,17 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
                     launch {
                         val responseResult = bAppRepo.getBorrowerIncomeDetail(token = token, loanApplicationId = loanApplicationId, borrowerId = id)
                         if (responseResult is Result.Success){
-                            Log.e("viewmodel-income","success")
                             responseResult.data.passedBorrowerId = id
-                            Timber.e("borrowerIds.data.passedBorrowerId -> "+responseResult.data.incomeData)
+                            //Timber.e("borrowerIds.data.passedBorrowerId -> "+responseResult.data.incomeData)
                             borrowerIncomeList.add(responseResult.data)
                         }
                     }
                 }
-            }  // coroutineScope block will wait here until all child tasks are completed
+            }
             withContext(Dispatchers.Main) {
                 _incomeDetails.value = borrowerIncomeList
             }
-            if(errorResult!=null) // if service not working.....
+            if(errorResult!=null)
                 EventBus.getDefault().post(WebServiceErrorEvent(errorResult, false))
             else
                 if(borrowerIncomeList.size == 0) // service working without error but no results....
@@ -220,6 +231,21 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         return bool
     }
 
+    suspend fun getDemoGraphicInfo(token:String, loanApplicationId:Int,borrowerId:Int ) {
+        viewModelScope.launch (Dispatchers.IO) {
+            delay(2000)
+            val responseResult = bAppRepo.getDemoGraphicInfo(token = token, loanApplicationId = loanApplicationId, borrowerId = borrowerId)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    _demoGraphicInfo.value = responseResult.data
+                }
+                else if (responseResult is Result.Error && (responseResult as Result.Error).exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult as Result.Error))
+            }
+        }
+    }
 
     suspend fun getCoBorrowerOccupancyStatus(token: String, loanApplicationId: Int) {
         //Timber.e("CoBorrower: " + loanApplicationId + "Auth Token: " + token)
@@ -354,5 +380,47 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         }
     }
 
+    suspend fun getGenderList(token: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = bAppRepo.getGenderList(token = token)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _genderList.value = (responseResult.data)
 
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun getRaceList(token: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = bAppRepo.getRaceList(token = token)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _raceList.value = (responseResult.data)
+
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun getEthnicityList(token: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = bAppRepo.getEthnicityList(token = token)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _ethnicityList.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
 }
