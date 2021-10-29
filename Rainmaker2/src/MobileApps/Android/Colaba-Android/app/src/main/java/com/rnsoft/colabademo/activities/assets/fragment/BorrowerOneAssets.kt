@@ -20,6 +20,10 @@ import kotlinx.android.synthetic.main.assets_top_cell.view.*
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import kotlin.math.roundToInt
+import android.animation.LayoutTransition
+
+
+
 
 class BorrowerOneAssets : AssetBaseFragment() {
 
@@ -236,9 +240,11 @@ class BorrowerOneAssets : AssetBaseFragment() {
             mainCell = layout[i] as LinearLayoutCompat
             for(j in 0 until mainCell.childCount) {
                 val innerCell = mainCell[j] as ConstraintLayout
+
                     if (innerCell.tag == R.string.asset_top_cell) {
                         innerCell.arrow_up.visibility = View.GONE
                         innerCell.arrow_down.visibility = View.VISIBLE
+
                     } else {
                         innerCell.visibility = View.GONE
                     }
@@ -255,7 +261,6 @@ class BorrowerOneAssets : AssetBaseFragment() {
              */
         }
     }
-
 
     override fun onStop() {
         super.onStop()

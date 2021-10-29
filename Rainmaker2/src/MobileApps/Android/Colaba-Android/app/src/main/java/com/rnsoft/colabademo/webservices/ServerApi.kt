@@ -29,7 +29,6 @@ interface ServerApi{
     @GET("api/mcu/mobile/loanapplication/Loan/GetAllPropertyStatusDropDown")
     suspend fun getPropertyStauts(@Header("Authorization" )Authorization:String) : ArrayList<DropDownResponse>
 
-
     @GET("api/mcu/mobile/loanapplication/Loan/GetCountries")
     suspend fun getCountries(@Header("Authorization" )Authorization:String) : ArrayList<CountriesModel>
 
@@ -38,6 +37,39 @@ interface ServerApi{
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetCounties")
     suspend fun getCounties(@Header("Authorization" )Authorization:String) : ArrayList<CountiesModel>
+
+    @GET("api/mcu/mobile/loanapplication/Borrower/GetBorrowerDetails")
+    suspend fun getPrimaryBorrowerDetail(
+        @Header("Authorization")  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int,
+        @Query("borrowerId")  borrowerId:Int
+    ) : PrimaryBorrowerResponse
+
+    @GET("api/mcu/mobile/loanapplication/Loan/GetHousingStatus")
+    suspend fun getHousingStatus(
+        @Header("Authorization") Authorization:String) : ArrayList<OptionsResponse>
+
+    @GET("api/mcu/mobile/loanapplication/Loan/GetRelationshipTypes")
+    suspend fun getRelationshipTypes(
+        @Header("Authorization") Authorization:String) : ArrayList<RelationTypesResponse>
+
+    @GET("api/mcu/mobile/loanapplication/Loan/GetCitizenship")
+    suspend fun getCitizenship(
+        @Header("Authorization") Authorization:String) : ArrayList<OptionsResponse>
+
+    @GET("https://devmobilegateway.rainsoftfn.com/api/mcu/mobile/loanapplication/Loan/GetVisaStatus")
+    suspend fun getVisaStatus(
+        @Header("Authorization") Authorization : String,
+        @Query("residencyTypeId") residencyType : Int
+        ) : ArrayList<OptionsResponse>
+
+    @GET("api/mcu/mobile/loanapplication/Loan/GetMilitaryAffiliation")
+    suspend fun getMilitaryAffiliation(
+        @Header("Authorization") Authorization:String) : ArrayList<OptionsResponse>
+
+
+
+
 
     @GET("api/mcu/mobile/loanapplication/SubjectProperty/GetSubjectPropertyDetails")
     suspend fun getSubjectPropertyDetails(
@@ -212,7 +244,6 @@ interface ServerApi{
     @GET("/api/mcu/mobile/loanapplication/Loan/GetAllRaceList")
     suspend fun getRaceList(
         @Header("Authorization" )  Authorization:String) :ArrayList<RaceResponseModel>
-
 
     @Streaming
     @GET("api/mcu/mobile/documentmanagement/mcudocument/View")

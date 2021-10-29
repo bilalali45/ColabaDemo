@@ -31,8 +31,9 @@ data class EthnicityDetailDemoGraphic(
     val otherEthnicity: String?
 )
 
+
 data class DemoGraphicRace(
-    val raceDetails: List<DemoGraphicRaceDetail>?,
+    val raceDetails : ArrayList<DemoGraphicRaceDetail>?,
     val raceId: Int?
 )
 
