@@ -218,6 +218,26 @@ interface ServerApi{
 
     //AddOrUpdateOtherAssetsInfo
 
+    // income apis
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetEmploymentDetail")
+    suspend fun getEmploymentDetail(
+        @Header("Authorization") Authorization:String,
+        @Query("loanApplicationId") loanPurpuseId:Int,
+        @Query("borrowerId") borrowerId:Int,
+        @Query("incomeInfoId") incomeInfoId:Int):EmploymentDetailResponse
+
+    //AddOrUpdateCurrentEmploymentDetail
+    //AddOrUpdatePreviousEmploymentDetail
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetSelfBusinessIncome")
+    suspend fun GetSelfEmploymentContractor(
+        @Header("Authorization") Authorization:String,
+        @Query("borrowerId") borrowerId:Int,
+        @Query("incomeInfoId") incomeInfoId:Int): SelfEmploymentResponse
+
+
+
 
 
 
