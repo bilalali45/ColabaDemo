@@ -166,41 +166,6 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
     }
 
     private fun setUpTabs(){
-        /*
-        binding.btnDebt.setOnClickListener(scrollerTab)
-        binding.btnOutstanding.setOnClickListener(scrollerTab)
-        binding.btnFederalDebt.setOnClickListener(scrollerTab)
-        binding.btnPartyTo.setOnClickListener(scrollerTab)
-        binding.btnOwnershipInterest.setOnClickListener(scrollerTab)
-        binding.btnTitleConveyance.setOnClickListener(scrollerTab)
-        binding.btnPreForeclouser.setOnClickListener(scrollerTab)
-        binding.btnForeclosuredProperty.setOnClickListener(scrollerTab)
-        binding.btnBankruptcy.setOnClickListener(scrollerTab)
-        binding.btnChildSupport.setOnClickListener(scrollerTab)
-        binding.btnDemographicInfo.setOnClickListener(scrollerTab)
-        binding.btnUndisclosedBorrowed.setOnClickListener(scrollerTab)
-        binding.btnUndisclosedCredit.setOnClickListener(scrollerTab)
-        binding.btnUndisclosedMortgage.setOnClickListener(scrollerTab)
-        binding.btnPriorityLiens.setOnClickListener(scrollerTab)
-        horizontalTabArrayList.addAll(arrayListOf(binding.btnDebt,binding.btnOutstanding,
-            binding.btnFederalDebt, binding.btnPartyTo, binding.btnOwnershipInterest,  binding.btnTitleConveyance , binding.btnPreForeclouser,
-            binding.btnForeclosuredProperty, binding.btnBankruptcy ,  binding.btnChildSupport ,  binding.btnDemographicInfo,
-            binding.btnUndisclosedBorrowed , binding.btnUndisclosedCredit, binding.btnUndisclosedMortgage ,  binding.btnPriorityLiens))
-
-
-        innerLayoutHashMap = hashMapOf((binding.btnDebt to binding.debtCoContainer),
-            (binding.btnOutstanding to binding.outstandingJudgementContainer), (binding.btnFederalDebt to binding.federalDeptContainer),
-            (binding.btnOwnershipInterest to binding.ownershipInterestContainer), (binding.btnUndisclosedMortgage to binding.undisclosedMortgageContainer),
-            (binding.btnPartyTo to binding.partyToLawsuitContainer), (binding.btnTitleConveyance to binding.titleConveyanceContainer),
-            (binding.btnDemographicInfo to binding.insideScrollConstraintLayout),
-            (binding.btnPreForeclouser to binding.preForeclosureShortSaleContainer), (binding.btnBankruptcy  to binding.bankruptcyContainer),
-            (binding.btnForeclosuredProperty to binding.foreclosuredPropertyContainer), (binding.btnChildSupport to binding.childSupportContainer),
-            (binding.btnUndisclosedBorrowed to binding.undisclosedContainer), (binding.btnUndisclosedCredit to binding.undisclosedCreditContainer),
-            (binding.btnPriorityLiens to binding.priorityLiensContainer)
-        )
-         */
-
-        setUpDemoGraphicScreen()
 
         // add yes button listeners
         binding.debtCoYes.setOnClickListener(openDetailBox)
@@ -261,19 +226,7 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
 
         //binding.btnUndisclosedBorrowed.performClick()
 
-        binding.doNotWishCheckBox.setOnClickListener{
-            binding.whiteCheckBox.isChecked = false
-            binding.blackOrAfricanCheckBox.isChecked = false
-            binding.americanOrIndianCheckBox.isChecked = false
-            binding.nativeHawaianOrOtherCheckBox.isChecked = false
-            binding.asianCheckBox.isChecked = false
-        }
 
-        binding.whiteCheckBox.setOnClickListener{ binding.doNotWishCheckBox.isChecked = false }
-        binding.nativeHawaianOrOtherCheckBox.setOnClickListener{ binding.doNotWishCheckBox.isChecked = false }
-        binding.blackOrAfricanCheckBox.setOnClickListener{ binding.doNotWishCheckBox.isChecked = false }
-        binding.asianCheckBox.setOnClickListener{ binding.doNotWishCheckBox.isChecked = false }
-        binding.americanOrIndianCheckBox.setOnClickListener{ binding.doNotWishCheckBox.isChecked = false }
 
 
     }
@@ -401,38 +354,6 @@ class BorrowerTwoQuestions : GovtQuestionBaseFragment() {
         }
     }
 
-    private fun setUpDemoGraphicScreen() {
 
-        binding.asianCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                //test.visibility = View.VISIBLE
-                findNavController().navigate(R.id.action_asian)
-                Timber.e("not accessible...")
-            }
-        }
-
-        binding.nativeHawaianOrOtherCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                findNavController().navigate(R.id.action_native_hawai)
-            }
-        }
-
-
-        binding.hispanicOrLatino.setOnClickListener {
-            findNavController().navigate(R.id.action_hispanic)
-            binding.notHispanic.isChecked = false
-            binding.notTellingEthnicity.isChecked = false
-        }
-
-        binding.notHispanic.setOnClickListener{
-            binding.hispanicOrLatino.isChecked = false
-            binding.notTellingEthnicity.isChecked = false
-        }
-
-        binding.notTellingEthnicity.setOnClickListener{
-            binding.hispanicOrLatino.isChecked = false
-            binding.notHispanic.isChecked = false
-        }
-    }
 
 }
