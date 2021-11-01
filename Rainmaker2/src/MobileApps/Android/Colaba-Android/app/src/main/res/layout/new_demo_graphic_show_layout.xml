@@ -18,7 +18,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/inside_scroll_constraint_layout"
@@ -78,7 +78,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/asian_child_box_layout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
@@ -87,13 +87,15 @@
                 android:paddingTop="16dp"
                 android:paddingEnd="18dp"
                 android:paddingBottom="16dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/asian_check_box"
                 app:layout_constraintTop_toBottomOf="@+id/asian_check_box">
 
 
                 <TextView
-                    android:id="@+id/textView30"
-                    android:layout_width="match_parent"
+                    android:id="@+id/asian_child_names"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/rubik_regular"
                     android:text="Asian Indian"
@@ -103,8 +105,8 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView65"
-                    android:layout_width="match_parent"
+                    android:id="@+id/other_asian_race"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/rubik_regular"
@@ -112,7 +114,7 @@
                     android:textColor="@color/grey_color_one"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView30" />
+                    app:layout_constraintTop_toBottomOf="@+id/asian_child_names" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -147,40 +149,42 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/native_hawaian_child_box_layout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/white_blue_border"
                 android:padding="12dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/native_hawaian_or_other_check_box"
                 app:layout_constraintTop_toBottomOf="@+id/native_hawaian_or_other_check_box">
 
 
                 <TextView
-                    android:id="@+id/textView31"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/child_native_hawaiian"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:fontFamily="@font/rubik_regular"
-                    android:text="Asian Indian"
+                    android:text=" "
                     android:textColor="@color/grey_color_one"
                     android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView66"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/other_typed_native_hawaiian"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/rubik_regular"
-                    android:text="TextView"
+                    android:text=" "
                     android:textColor="@color/grey_color_one"
                     android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView31" />
+                    app:layout_constraintTop_toBottomOf="@+id/child_native_hawaiian" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -252,40 +256,42 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/hispanic_or_latino_child_box_layout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/white_blue_border"
                 android:padding="12dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/native_hawaian_or_other_check_box"
                 app:layout_constraintTop_toBottomOf="@+id/hispanic_or_latino">
 
 
                 <TextView
-                    android:id="@+id/textView32"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/ethnicity_children"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:fontFamily="@font/rubik_regular"
-                    android:text="Asian Indian"
+                    android:text=" "
                     android:textColor="@color/grey_color_one"
                     android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView67"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/other_ethnicity"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/rubik_regular"
-                    android:text="TextView"
+                    android:text=" "
                     android:textColor="@color/grey_color_one"
                     android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView32" />
+                    app:layout_constraintTop_toBottomOf="@+id/ethnicity_children" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatRadioButton

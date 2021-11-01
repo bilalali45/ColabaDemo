@@ -32,7 +32,6 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import com.google.gson.internal.LinkedTreeMap
 
-import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.*
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.*
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.american_or_indian_check_box
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.asian_check_box
@@ -532,10 +531,42 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         val selectedEthnicity = ethnicityList[0]
                         if(selectedEthnicity.ethnicityId == 1) {
                             demoGraphicConstraintLayout.hispanic_or_latino.isChecked = true
+                            var childNames = ""
+                            var otherEthnicity = ""
                             selectedEthnicity.ethnicityDetails?.let{ theList->
-                                for(item in theList )
+
+                                for(item in theList ) {
                                     ethnicityChildList.add(item)
+                                    item.isOther?.let { isOther->
+                                       if(isOther)
+                                       item.otherEthnicity?.let {
+                                           otherEthnicity  = it
+                                       }
+                                       else
+                                           childNames = childNames + item.name + ", "
+                                   }
+                                }
                             }
+
+                            if(otherEthnicity.isNotEmpty() && otherEthnicity.isNotBlank()) {
+                                otherEthnicity = "Other Pacific Islander: $otherEthnicity"
+                                otherEthnicity = otherEthnicity.substring(0, otherEthnicity.length-2)
+                                demoGraphicConstraintLayout.other_ethnicity.text = otherEthnicity
+                                demoGraphicConstraintLayout.other_ethnicity.visibility = View.VISIBLE
+                                demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.visibility = View.VISIBLE
+                            }
+                            else
+                                demoGraphicConstraintLayout.other_ethnicity.visibility = View.GONE
+
+                            if(childNames.isNotEmpty() && childNames.isNotBlank()) {
+                                childNames = childNames.substring(0, childNames.length-2)
+                                demoGraphicConstraintLayout.ethnicity_children.text = childNames
+                                demoGraphicConstraintLayout.ethnicity_children.visibility = View.VISIBLE
+                                demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.visibility = View.VISIBLE
+                            }
+                            else
+                                demoGraphicConstraintLayout.ethnicity_children.visibility = View.GONE
+
                         }
                         else
                         if(selectedEthnicity.ethnicityId  == 2)
@@ -554,21 +585,84 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                             demoGraphicConstraintLayout.american_or_indian_check_box.isChecked = true
                         }
                         if(race.raceId == 2){
+                            var asianChildNames = ""
+                            var otherAsianRace = ""
                             demoGraphicConstraintLayout.asian_check_box.isChecked = true
                             race.raceDetails?.let{ asianChildList ->
-                                for(item in asianChildList)
+
+                                for(item in asianChildList) {
                                     this.asianChildList.add(item)
+                                   item.isOther?.let { isOther->
+                                       if(isOther)
+                                       item.otherRace?.let {
+                                           otherAsianRace  = it
+                                       }
+                                       else
+                                           asianChildNames = asianChildNames + item.name + ", "
+                                   }
+                                }
                             }
+
+                            if(otherAsianRace.isNotEmpty() && otherAsianRace.isNotBlank()) {
+                                otherAsianRace = "Other Asian: $otherAsianRace"
+                                demoGraphicConstraintLayout.other_asian_race.text = otherAsianRace
+                                demoGraphicConstraintLayout.other_asian_race.visibility = View.VISIBLE
+                                demoGraphicConstraintLayout.asian_child_box_layout.visibility = View.VISIBLE
+                            }
+                            else
+                                demoGraphicConstraintLayout.other_asian_race.visibility = View.GONE
+
+                            if(asianChildNames.isNotEmpty() && asianChildNames.isNotBlank()) {
+                                asianChildNames = asianChildNames.substring(0, asianChildNames.length-2)
+                                demoGraphicConstraintLayout.asian_child_names.text = asianChildNames
+                                demoGraphicConstraintLayout.asian_child_names.visibility = View.VISIBLE
+                                demoGraphicConstraintLayout.asian_child_box_layout.visibility = View.VISIBLE
+                            }
+                            else
+                                demoGraphicConstraintLayout.asian_child_names.visibility = View.GONE
+
                         }
                         if(race.raceId == 3){
                             demoGraphicConstraintLayout.black_or_african_check_box.isChecked = true
                         }
                         if(race.raceId == 4){
                             demoGraphicConstraintLayout.native_hawaian_or_other_check_box.isChecked = true
+                            var childNames = ""
+                            var otherRace = ""
                             race.raceDetails?.let{ nativeHawaianChildList ->
-                                for(item in nativeHawaianChildList)
+                                for(item in nativeHawaianChildList) {
                                     nativeHawaiianChildList.add(item)
+                                    item.isOther?.let { isOther->
+                                       if(isOther)
+                                       item.otherRace?.let {
+                                           otherRace  = it
+                                       }
+                                       else
+                                           childNames = childNames + item.name + ", "
+                                   }
+                                }
                             }
+
+
+                            if(otherRace.isNotEmpty() && otherRace.isNotBlank()) {
+                                otherRace = "Other Pacific Islander: $otherRace"
+                                otherRace = otherRace.substring(0, otherRace.length-2)
+                                demoGraphicConstraintLayout.other_typed_native_hawaiian.text = otherRace
+                                demoGraphicConstraintLayout.other_typed_native_hawaiian.visibility = View.VISIBLE
+                                demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
+                            }
+                            else
+                                demoGraphicConstraintLayout.other_typed_native_hawaiian.visibility = View.GONE
+
+                            if(childNames.isNotEmpty() && childNames.isNotBlank()) {
+                                childNames = childNames.substring(0, childNames.length-2)
+                                demoGraphicConstraintLayout.child_native_hawaiian.text = childNames
+                                demoGraphicConstraintLayout.child_native_hawaiian.visibility = View.VISIBLE
+                                demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
+                            }
+                            else
+                                demoGraphicConstraintLayout.child_native_hawaiian.visibility = View.GONE
+
                         }
                         if(race.raceId == 5){
                             demoGraphicConstraintLayout.white_check_box.isChecked = true
@@ -577,6 +671,8 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                             demoGraphicConstraintLayout.do_not_wish_check_box.performClick()
                         }
                     }
+
+
                 }
 
 

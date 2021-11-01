@@ -28,6 +28,7 @@ data class EthnicityDemoGraphic(
 @Parcelize
 data class EthnicityDetailDemoGraphic(
     val detailId: Int?,
+    val name: String?,
     val isOther: Boolean?,
     val otherEthnicity: String?
 ):Parcelable
