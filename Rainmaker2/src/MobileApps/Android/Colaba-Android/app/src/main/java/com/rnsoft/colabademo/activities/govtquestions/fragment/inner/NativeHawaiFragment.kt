@@ -39,10 +39,8 @@ class NativeHawaiFragment:BaseFragment() {
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         binding.saveBtn.setOnClickListener { findNavController().popBackStack() }
         binding.otherPacificIslanderCheckBox.setOnCheckedChangeListener{ buttonView, isChecked ->
-            if(isChecked)
-                binding.layoutDetail.visibility = View.VISIBLE
-            else
-                binding.layoutDetail.visibility = View.GONE
+            //if(isChecked) binding.layoutDetail.visibility = View.VISIBLE
+            //else binding.layoutDetail.visibility = View.GONE
         }
         // pre selection from the webservice...
         for(item in nativeHawaiianChildList){
@@ -56,8 +54,14 @@ class NativeHawaiFragment:BaseFragment() {
             if(item.name == binding.samoanCheckBox.text)
                 binding.samoanCheckBox.isChecked = true
             else
-            if(item.name == binding.otherPacificIslanderCheckBox.text)
+            if(item.name == binding.otherPacificIslanderCheckBox.text) {
                 binding.otherPacificIslanderCheckBox.isChecked = true
+                if(item.isOther == true){
+                    item.otherRace?.let { otherRace->
+                        binding.edDetails.setText(otherRace)
+                    }
+                }
+            }
 
         }
     }

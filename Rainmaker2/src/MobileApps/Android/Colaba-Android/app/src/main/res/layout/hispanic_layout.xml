@@ -161,10 +161,10 @@
 
             android:background="@android:color/transparent"
             android:fontFamily="@font/rubik_light"
-            android:hint="Specify"
+            android:hint="For example, Argentinean, Colombian, Dominican, etc."
             android:textColorHint="@color/primary_info_label_color"
             app:boxCollapsedPaddingTop="1dp"
-            android:visibility="gone"
+            android:visibility="visible"
 
             app:boxStrokeColor="@color/primary_info_line_color"
             app:boxStrokeWidth="0.5dp"

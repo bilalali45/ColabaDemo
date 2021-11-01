@@ -45,10 +45,8 @@ class AsianFragment:BaseFragment() {
            findNavController().popBackStack()
         }
         binding.otherAsianCheckBox.setOnCheckedChangeListener{ buttonView, isChecked ->
-            if(isChecked)
-                binding.layoutDetail.visibility = View.VISIBLE
-            else
-                binding.layoutDetail.visibility = View.GONE
+            // if(isChecked) binding.layoutDetail.visibility = View.VISIBLE
+            // else binding.layoutDetail.visibility = View.GONE
         }
         // pre selection from the webservice...
         for(item in asianChildList){
@@ -70,8 +68,14 @@ class AsianFragment:BaseFragment() {
             if(item.name == binding.vietnameseCheckBox.text)
                 binding.vietnameseCheckBox.isChecked = true
             else
-            if(item.name == binding.otherAsianCheckBox.text)
+            if(item.name == binding.otherAsianCheckBox.text) {
                 binding.otherAsianCheckBox.isChecked = true
+                if(item.isOther == true){
+                    item.otherRace?.let { otherRace->
+                        binding.edDetails.setText(otherRace)
+                    }
+                }
+            }
         }
     }
 
