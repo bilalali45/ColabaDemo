@@ -98,7 +98,7 @@
 
 
         <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/guamanian_or_chamorro_check_box"
+            android:id="@+id/chineese_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginTop="20dp"
@@ -125,7 +125,7 @@
             android:textSize="14sp"
             app:buttonCompat="@drawable/cb_selector"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guamanian_or_chamorro_check_box" />
+            app:layout_constraintTop_toBottomOf="@+id/chineese_checkbox" />
 
 
         <androidx.appcompat.widget.AppCompatCheckBox

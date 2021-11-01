@@ -20,6 +20,8 @@ class AsianFragment:BaseFragment() {
     private var _binding: AsianLayoutBinding? = null
     private val binding get() = _binding!!
 
+    private var asianChildList:ArrayList<DemoGraphicRaceDetail> = arrayListOf()
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(
@@ -30,6 +32,7 @@ class AsianFragment:BaseFragment() {
 
         _binding = AsianLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        asianChildList = arguments?.getParcelableArrayList(AppConstant.asianChildList)!!
         setUpUI()
         super.addListeners(binding.root)
         return root
@@ -46,6 +49,29 @@ class AsianFragment:BaseFragment() {
                 binding.layoutDetail.visibility = View.VISIBLE
             else
                 binding.layoutDetail.visibility = View.GONE
+        }
+        // pre selection from the webservice...
+        for(item in asianChildList){
+            if(item.name == binding.asianIndianCheckBox.text)
+                binding.asianIndianCheckBox.isChecked = true
+            else
+            if(item.name == binding.chineseCheckBox.text)
+                binding.chineseCheckBox.isChecked = true
+            else
+            if(item.name == binding.filipinoCheckBox.text)
+                binding.filipinoCheckBox.isChecked = true
+            else
+            if(item.name == binding.japaneseCheckBox.text)
+                binding.japaneseCheckBox.isChecked = true
+            else
+            if(item.name == binding.koreanCheckBox.text)
+                binding.koreanCheckBox.isChecked = true
+            else
+            if(item.name == binding.vietnameseCheckBox.text)
+                binding.vietnameseCheckBox.isChecked = true
+            else
+            if(item.name == binding.otherAsianCheckBox.text)
+                binding.otherAsianCheckBox.isChecked = true
         }
     }
 

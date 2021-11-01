@@ -17,7 +17,7 @@ data class DemoGraphicData(
     val genderId: Int?,
     val loanApplicationId: Int?,
     val race: List<DemoGraphicRace>?,
-    val state: Any?
+    val state: String?
 )
 
 data class EthnicityDemoGraphic(
@@ -25,11 +25,12 @@ data class EthnicityDemoGraphic(
     val ethnicityId: Int?
 )
 
+@Parcelize
 data class EthnicityDetailDemoGraphic(
     val detailId: Int?,
     val isOther: Boolean?,
     val otherEthnicity: String?
-)
+):Parcelable
 
 
 data class DemoGraphicRace(
@@ -37,10 +38,12 @@ data class DemoGraphicRace(
     val raceId: Int?
 )
 
+@Parcelize
 data class DemoGraphicRaceDetail(
     val detailId: Int?,
+    val name: String?,
     val isOther: Boolean?,
     val otherRace: String?
-)
+):Parcelable
 
 

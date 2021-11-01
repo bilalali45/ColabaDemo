@@ -13,10 +13,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.*
-import kotlinx.android.synthetic.main.common_govt_content_layout.view.*
 import timber.log.Timber
 import android.widget.LinearLayout
 import android.util.DisplayMetrics
+import androidx.core.os.bundleOf
 import kotlinx.android.synthetic.main.children_separate_layout.view.*
 import kotlinx.android.synthetic.main.common_govt_content_layout.view.ans_no
 import kotlinx.android.synthetic.main.common_govt_content_layout.view.ans_yes
@@ -24,19 +24,25 @@ import kotlinx.android.synthetic.main.common_govt_content_layout.view.detail_tex
 import kotlinx.android.synthetic.main.common_govt_content_layout.view.detail_title
 import kotlinx.android.synthetic.main.common_govt_content_layout.view.govt_detail_box
 import kotlinx.android.synthetic.main.common_govt_content_layout.view.govt_question
-import kotlinx.android.synthetic.main.more_questions_to_govt_screen.view.*
-import kotlinx.android.synthetic.main.ownership_interest_layout.view.*
 import kotlinx.android.synthetic.main.ownership_interest_layout.view.detail_text2
 import kotlinx.android.synthetic.main.ownership_interest_layout.view.detail_title2
 import kotlinx.android.synthetic.main.ownership_interest_layout.view.govt_detail_box2
 import com.google.gson.Gson
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import com.google.gson.internal.LinkedTreeMap
 
-
-
+import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.*
+import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.*
+import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.american_or_indian_check_box
+import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.asian_check_box
+import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.black_or_african_check_box
+import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.do_not_wish_check_box
+import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.hispanic_or_latino
+import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.native_hawaian_or_other_check_box
+import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_hispanic
+import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_telling_ethnicity
+import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.white_check_box
 
 
 class BorrowerOneQuestions : GovtQuestionBaseFragment() {
@@ -72,6 +78,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
 
 
+    lateinit var lastQData:QuestionData
 
     private fun setUpDynamicTabs( inflater: LayoutInflater){
         bAppViewModel.governmentQuestionsModelClass.observe(viewLifecycleOwner, Observer {
@@ -87,6 +94,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
             it.questionData?.let{ questionData->
                  for(qData in questionData) {
+                     lastQData = qData
                      qData.headerText?.let { tabTitle->
                          if(qData.parentQuestionId == null) {
                              binding.parentContainer.visibility = View.INVISIBLE
@@ -106,7 +114,35 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                          }
 
                      }
+
+
+
                  }
+
+                if(zeroIndexAppCompat!=null){
+                     val appCompactTextView = createAppCompactTextView(AppConstant.demographicInformation, 0)
+                    binding.horizontalTabs.addView(appCompactTextView)
+                    val contentView = createContentLayoutForTab(QuestionData(
+                        id = 100,
+                        parentQuestionId = null,
+                        headerText = AppConstant.demographicInformation,
+                        questionSectionId = 1,
+                        ownTypeId = 1,
+                        firstName = lastQData.firstName,
+                        lastName = lastQData.lastName,
+                        question = "",
+                        answer = null,
+                        answerDetail = null,
+                        selectionOptionId = null,
+                        answerData = null))
+
+                    innerLayoutHashMap.put(appCompactTextView, contentView)
+                    idToContentMapping.put(100, contentView)
+
+                    binding.parentContainer.addView(contentView)
+                    appCompactTextView.setOnClickListener(scrollerTab)
+                    horizontalTabArrayList.add(appCompactTextView)
+                }
 
                 var ownerShip = true
 
@@ -115,7 +151,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         if(parentQuestionId == bankruptcyConstraintLayout.id){
                             Timber.e("bankruptcyConstraintLayout "+qData.question)
                             Timber.e(qData.answerDetail.toString())
-
                             var extractedAnswer = ""
                             val bankruptyAnswerData = qData.answerData as ArrayList<*>
                             if(bankruptyAnswerData!=null && bankruptyAnswerData.size>0 && qData.answer!=null && !qData.answer.equals("No", true)) {
@@ -165,9 +200,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                                 bankruptcyConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
                                 bankruptcyConstraintLayout.govt_detail_box.visibility = View.VISIBLE
                             }
-
-
-
                         }
                         else if(parentQuestionId == childConstraintLayout.id){
                             Timber.e("childConstraintLayout "+ qData.question)
@@ -266,6 +298,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private lateinit var ownerShipConstraintLayout:ConstraintLayout
     private lateinit var childConstraintLayout:ConstraintLayout
     private lateinit var bankruptcyConstraintLayout:ConstraintLayout
+    private lateinit var demoGraphicConstraintLayout:ConstraintLayout
 
     private fun createContentLayoutForTab(questionData:QuestionData):ConstraintLayout{
         var childSupport = false
@@ -297,6 +330,17 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 bankruptcyConstraintLayout.id = it
             }
 
+        }
+        else
+        if(questionData.headerText?.trim() == AppConstant.demographicInformation) {
+            contentCell = layoutInflater.inflate(R.layout.new_demo_graphic_show_layout, null) as ConstraintLayout
+            demoGraphicConstraintLayout = contentCell
+            questionData.id?.let {
+                demoGraphicConstraintLayout.id = it
+            }
+
+            observeDemoGraphicData()
+            return contentCell
         }
         else
             contentCell = layoutInflater.inflate(R.layout.common_govt_content_layout, null) as ConstraintLayout
@@ -462,224 +506,144 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     }
 
 
+    private val ethnicityChildList:ArrayList<EthnicityDetailDemoGraphic> = arrayListOf()
+
+    private val asianChildList:ArrayList<DemoGraphicRaceDetail> = arrayListOf()
+
+    private val nativeHawaiianChildList:ArrayList<DemoGraphicRaceDetail> = arrayListOf()
+
+    private fun observeDemoGraphicData(){
+        bAppViewModel.demoGraphicInfo.observe(viewLifecycleOwner,{
+            it.demoGraphicData?.let { demoGraphicData ->
+
+                demoGraphicData.genderId?.let{ genderId->
+                    if(genderId == 1)
+                        demoGraphicConstraintLayout.demo_male.isChecked = true
+                    else
+                    if(genderId == 2)
+                        demoGraphicConstraintLayout.demo_female.isChecked = true
+                    else
+                    if(genderId == 3)
+                        demoGraphicConstraintLayout.demo_do_not_wish_to_provide.isChecked = true
+                }
+
+                demoGraphicData.ethnicity?.let{ ethnicityList->
+                    if(ethnicityList.isNotEmpty()){
+                        val selectedEthnicity = ethnicityList[0]
+                        if(selectedEthnicity.ethnicityId == 1) {
+                            demoGraphicConstraintLayout.hispanic_or_latino.isChecked = true
+                            selectedEthnicity.ethnicityDetails?.let{ theList->
+                                for(item in theList )
+                                    ethnicityChildList.add(item)
+                            }
+                        }
+                        else
+                        if(selectedEthnicity.ethnicityId  == 2)
+                            demoGraphicConstraintLayout.not_hispanic.isChecked = true
+                        else
+                        if(selectedEthnicity.ethnicityId  == 3)
+                            demoGraphicConstraintLayout.not_telling_ethnicity.isChecked = true
+                    }
+                }
 
 
-    private fun setUpTabs(){
-        /*
-        binding.btnDebt.setOnClickListener(scrollerTab)
-        binding.btnOutstanding.setOnClickListener(scrollerTab)
-        binding.btnFederalDebt.setOnClickListener(scrollerTab)
-        binding.btnPartyTo.setOnClickListener(scrollerTab)
-        binding.btnOwnershipInterest.setOnClickListener(scrollerTab)
-        binding.btnTitleConveyance.setOnClickListener(scrollerTab)
-        binding.btnPreForeclouser.setOnClickListener(scrollerTab)
-        binding.btnForeclosuredProperty.setOnClickListener(scrollerTab)
-        binding.btnBankruptcy.setOnClickListener(scrollerTab)
-        binding.btnChildSupport.setOnClickListener(scrollerTab)
-        binding.btnDemographicInfo.setOnClickListener(scrollerTab)
-        binding.btnUndisclosedBorrowed.setOnClickListener(scrollerTab)
-        binding.btnUndisclosedCredit.setOnClickListener(scrollerTab)
-        binding.btnUndisclosedMortgage.setOnClickListener(scrollerTab)
-        binding.btnPriorityLiens.setOnClickListener(scrollerTab)
-        horizontalTabArrayList.addAll(arrayListOf(binding.btnDebt,binding.btnOutstanding,
-            binding.btnFederalDebt, binding.btnPartyTo, binding.btnOwnershipInterest,  binding.btnTitleConveyance , binding.btnPreForeclouser,
-            binding.btnForeclosuredProperty, binding.btnBankruptcy ,  binding.btnChildSupport ,  binding.btnDemographicInfo,
-            binding.btnUndisclosedBorrowed , binding.btnUndisclosedCredit, binding.btnUndisclosedMortgage ,  binding.btnPriorityLiens))
+
+                demoGraphicData.race?.let { raceList ->
+                    for(race in raceList){
+                        if(race.raceId == 1){
+                            demoGraphicConstraintLayout.american_or_indian_check_box.isChecked = true
+                        }
+                        if(race.raceId == 2){
+                            demoGraphicConstraintLayout.asian_check_box.isChecked = true
+                            race.raceDetails?.let{ asianChildList ->
+                                for(item in asianChildList)
+                                    this.asianChildList.add(item)
+                            }
+                        }
+                        if(race.raceId == 3){
+                            demoGraphicConstraintLayout.black_or_african_check_box.isChecked = true
+                        }
+                        if(race.raceId == 4){
+                            demoGraphicConstraintLayout.native_hawaian_or_other_check_box.isChecked = true
+                            race.raceDetails?.let{ nativeHawaianChildList ->
+                                for(item in nativeHawaianChildList)
+                                    nativeHawaiianChildList.add(item)
+                            }
+                        }
+                        if(race.raceId == 5){
+                            demoGraphicConstraintLayout.white_check_box.isChecked = true
+                        }
+                        if(race.raceId ==6){
+                            demoGraphicConstraintLayout.do_not_wish_check_box.performClick()
+                        }
+                    }
+                }
 
 
-        innerLayoutHashMap = hashMapOf((binding.btnDebt to binding.debtCoContainer),
-            (binding.btnOutstanding to binding.outstandingJudgementContainer), (binding.btnFederalDebt to binding.federalDeptContainer),
-            (binding.btnOwnershipInterest to binding.ownershipInterestContainer), (binding.btnUndisclosedMortgage to binding.undisclosedMortgageContainer),
-            (binding.btnPartyTo to binding.partyToLawsuitContainer), (binding.btnTitleConveyance to binding.titleConveyanceContainer),
-            (binding.btnDemographicInfo to binding.insideScrollConstraintLayout),
-            (binding.btnPreForeclouser to binding.preForeclosureShortSaleContainer), (binding.btnBankruptcy  to binding.bankruptcyContainer),
-            (binding.btnForeclosuredProperty to binding.foreclosuredPropertyContainer), (binding.btnChildSupport to binding.childSupportContainer),
-            (binding.btnUndisclosedBorrowed to binding.undisclosedContainer), (binding.btnUndisclosedCredit to binding.undisclosedCreditContainer),
-            (binding.btnPriorityLiens to binding.priorityLiensContainer)
-        )
-         */
+                // Now add static events....
+                setUpDemoGraphicScreen()
+                addDemoGraphicEvents()
 
-        setUpDemoGraphicScreen()
+            }
+        })
+    }
 
-        // add yes button listeners
-        binding.debtCoYes.setOnClickListener(openDetailBox)
-        binding.outstandingJudgementYes.setOnClickListener(openDetailBox)
-        binding.federalDeptYes.setOnClickListener(openDetailBox)
-        binding.partyToLawsuitYes.setOnClickListener(openDetailBox)
-        binding.ownershipInterestYes.setOnClickListener(openDetailBox)
-        binding.titleConveyanceYes.setOnClickListener(openDetailBox)
-        binding.preForeclosureShortSaleYes.setOnClickListener(openDetailBox)
-        binding.foreclosuredPropertyYes.setOnClickListener(openDetailBox)
-        binding.bankruptcyYes.setOnClickListener(openDetailBox)
-        binding.childSupportYes.setOnClickListener(openDetailBox)
-        //binding.btnDemographicInfo.setOnClickListener(openDetailBox)
-        binding.undisclosedYes.setOnClickListener(openDetailBox)
-        binding.undisclosedCreditYes.setOnClickListener(openDetailBox)
-        binding.undisclosedMortgageYes.setOnClickListener(openDetailBox)
-        binding.priorityLiensYes.setOnClickListener(openDetailBox)
+    private fun addDemoGraphicEvents(){
 
-
-        openDetailBoxHashMap = hashMapOf((binding.debtCoYes to binding.debtCoDetailBox), (binding.childSupportYes to binding.childSupportDetailBox),
-            (binding.partyToLawsuitYes to binding.partyToLawsuitDetailBox),
-            (binding.ownershipInterestYes to binding.ownershipInterestDetailBox),
-            (binding.outstandingJudgementYes to binding.outstandingJudgementDetailBox), (binding.federalDeptYes to binding.federalDeptDetailBox),
-
-            (binding.titleConveyanceYes to binding.titleConveyanceDetailBox), (binding.preForeclosureShortSaleYes to binding.preForeclosureShortSaleDetailBox),
-            (binding.foreclosuredPropertyYes to binding.foreclosuredPropertyDetailBox), (binding.bankruptcyYes  to binding.bankruptcyDetailBox),
-            (binding.undisclosedYes to binding.undisclosedDetailBox), (binding.undisclosedCreditYes to binding.undisclosedCreditDetailBox),
-            (binding.undisclosedMortgageYes to binding.undisclosedMortgageDetailBox), (binding.priorityLiensYes to binding.priorityLiensDetailBox)
-        )
-
-
-        binding.debtCoNo.setOnClickListener(closeDetailBox)
-        binding.outstandingJudgementNo.setOnClickListener(closeDetailBox)
-        binding.federalDeptNo.setOnClickListener(closeDetailBox)
-        binding.partyToLawsuitNo.setOnClickListener(closeDetailBox)
-        binding.ownershipInterestNo.setOnClickListener(closeDetailBox)
-        binding.titleConveyanceNo.setOnClickListener(closeDetailBox)
-        binding.preForeclosureShortSaleNo.setOnClickListener(closeDetailBox)
-        binding.foreclosuredPropertyNo.setOnClickListener(closeDetailBox)
-        binding.bankruptcyNo.setOnClickListener(closeDetailBox)
-        binding.childSupportNo.setOnClickListener(closeDetailBox)
-        //binding.btnDemographicInfo.setOnClickListener(closeDetailBox)
-        binding.undisclosedNo.setOnClickListener(closeDetailBox)
-        binding.undisclosedCreditNo.setOnClickListener(closeDetailBox)
-        binding.undisclosedMortgageNo.setOnClickListener(closeDetailBox)
-        binding.priorityLiensNo.setOnClickListener(closeDetailBox)
-
-        closeDetailBoxHashMap = hashMapOf((binding.debtCoNo to binding.debtCoDetailBox), (binding.childSupportNo to binding.childSupportDetailBox),
-            (binding.partyToLawsuitNo to binding.partyToLawsuitDetailBox),
-            (binding.ownershipInterestNo to binding.ownershipInterestDetailBox),
-            (binding.outstandingJudgementNo to binding.outstandingJudgementDetailBox), (binding.federalDeptNo to binding.federalDeptDetailBox),
-
-            (binding.titleConveyanceNo to binding.titleConveyanceDetailBox), (binding.preForeclosureShortSaleNo to binding.preForeclosureShortSaleDetailBox),
-            (binding.foreclosuredPropertyNo to binding.foreclosuredPropertyDetailBox), (binding.bankruptcyNo  to binding.bankruptcyDetailBox),
-            (binding.undisclosedNo to binding.undisclosedDetailBox), (binding.undisclosedCreditNo to binding.undisclosedCreditDetailBox),
-            (binding.undisclosedMortgageNo to binding.undisclosedMortgageDetailBox), (binding.priorityLiensNo to binding.priorityLiensDetailBox)
-        )
-
-        //binding.btnUndisclosedBorrowed.performClick()
-
-        binding.doNotWishCheckBox.setOnClickListener{
-            binding.whiteCheckBox.isChecked = false
-            binding.blackOrAfricanCheckBox.isChecked = false
-            binding.americanOrIndianCheckBox.isChecked = false
-            binding.nativeHawaianOrOtherCheckBox.isChecked = false
-            binding.asianCheckBox.isChecked = false
+        demoGraphicConstraintLayout.do_not_wish_check_box.setOnClickListener{
+            demoGraphicConstraintLayout.white_check_box.isChecked = false
+            demoGraphicConstraintLayout.black_or_african_check_box.isChecked = false
+            demoGraphicConstraintLayout.american_or_indian_check_box.isChecked = false
+            demoGraphicConstraintLayout.native_hawaian_or_other_check_box.isChecked = false
+            demoGraphicConstraintLayout.asian_check_box.isChecked = false
         }
 
-        binding.whiteCheckBox.setOnClickListener{ binding.doNotWishCheckBox.isChecked = false }
-        binding.nativeHawaianOrOtherCheckBox.setOnClickListener{ binding.doNotWishCheckBox.isChecked = false }
-        binding.blackOrAfricanCheckBox.setOnClickListener{ binding.doNotWishCheckBox.isChecked = false }
-        binding.asianCheckBox.setOnClickListener{ binding.doNotWishCheckBox.isChecked = false }
-        binding.americanOrIndianCheckBox.setOnClickListener{ binding.doNotWishCheckBox.isChecked = false }
-
+        demoGraphicConstraintLayout.white_check_box.setOnClickListener{ demoGraphicConstraintLayout.do_not_wish_check_box.isChecked = false }
+        demoGraphicConstraintLayout.native_hawaian_or_other_check_box.setOnClickListener{ demoGraphicConstraintLayout.do_not_wish_check_box.isChecked = false }
+        demoGraphicConstraintLayout.black_or_african_check_box.setOnClickListener{ demoGraphicConstraintLayout.do_not_wish_check_box.isChecked = false }
+        demoGraphicConstraintLayout.asian_check_box.setOnClickListener{ demoGraphicConstraintLayout.do_not_wish_check_box.isChecked = false }
+        demoGraphicConstraintLayout.american_or_indian_check_box.setOnClickListener{ demoGraphicConstraintLayout.do_not_wish_check_box.isChecked = false }
 
     }
 
-    private val openDetailBox = object:View.OnClickListener{
-        override fun onClick(p0: View) {
-            openDetailBoxHashMap.getValue(p0 as AppCompatRadioButton).visibility = View.VISIBLE
-            when(p0) {
-                binding.childSupportYes -> {
-                    findNavController().navigate(R.id.action_child_support)
-                    openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.action_child_support)
-                    }
-                }
-                binding.bankruptcyYes -> {
-                    findNavController().navigate(R.id.action_bankruptcy)
-                    openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.action_bankruptcy)
-                    }
-                }
-                binding.priorityLiensYes -> {
-                    findNavController().navigate(R.id.action_priority_liens)
-                    openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.action_priority_liens)
-                    }
-                }
-                binding.ownershipInterestYes -> {
-                    findNavController().navigate(R.id.action_ownership_interest)
-                    openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.action_ownership_interest)
-                    }
-                }
-                binding.undisclosedYes -> {
-                    findNavController().navigate(R.id.action_undisclosed_borrowerfund)
-                    openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.action_undisclosed_borrowerfund)
-                    }
-                }
-                binding.debtCoYes-> {
-                    findNavController().navigate(R.id.action_debt_co)
-                    openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.action_debt_co)
-                    }
-                }
-                binding.outstandingJudgementYes-> {
-                    findNavController().navigate(R.id.action_outstanding)
-                    openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.action_outstanding)
-                    }
-                }
-                binding.federalDeptYes-> {
-                    findNavController().navigate(R.id.action_federal_debt)
-                    openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.action_federal_debt)
-                    }
-                }
-                binding.partyToLawsuitYes-> {
-                    findNavController().navigate(R.id.action_party_to)
-                    openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.action_party_to)
-                    }
-                }
+    private fun setUpDemoGraphicScreen() {
 
-                binding.titleConveyanceYes-> {
-                    findNavController().navigate(R.id.action_title_conveyance)
-                    openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.action_title_conveyance)
-                    }
-                }
-                binding.preForeclosureShortSaleYes-> {
-                    findNavController().navigate(R.id.action_pre_for_closure)
-                    openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.action_pre_for_closure)
-                    }
-                }
-                binding.foreclosuredPropertyYes-> {
-                    findNavController().navigate(R.id.action_fore_closure_property)
-                    openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.action_fore_closure_property)
-                    }
-                }
-
-                binding.undisclosedCreditYes-> {
-                    findNavController().navigate(R.id.action_undisclosed_credit)
-                    openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.action_undisclosed_credit)
-                    }
-                }
-                binding.undisclosedMortgageYes-> {
-                    findNavController().navigate(R.id.action_undisclosed_mortgage)
-                    openDetailBoxHashMap.getValue(p0).setOnClickListener{
-                        findNavController().navigate(R.id.action_undisclosed_mortgage)
-                    }
-                }
-
-
-                else -> {
-                }
+        demoGraphicConstraintLayout.asian_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                val bundle = bundleOf(AppConstant.asianChildList to asianChildList)
+                findNavController().navigate(R.id.action_asian , bundle)
+                Timber.e("not accessible...")
             }
         }
+
+        demoGraphicConstraintLayout.native_hawaian_or_other_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                val bundle = bundleOf(AppConstant.nativeHawaianChildList to nativeHawaiianChildList)
+                findNavController().navigate(R.id.action_native_hawai, bundle)
+            }
+        }
+
+
+        demoGraphicConstraintLayout.hispanic_or_latino.setOnClickListener {
+            val bundle = bundleOf(AppConstant.ethnicityChildList to ethnicityChildList)
+            findNavController().navigate(R.id.action_hispanic , bundle)
+            demoGraphicConstraintLayout.not_hispanic.isChecked = false
+            demoGraphicConstraintLayout.not_telling_ethnicity.isChecked = false
+        }
+
+        demoGraphicConstraintLayout.not_hispanic.setOnClickListener{
+            demoGraphicConstraintLayout.hispanic_or_latino.isChecked = false
+            demoGraphicConstraintLayout.not_telling_ethnicity.isChecked = false
+        }
+
+        demoGraphicConstraintLayout.not_telling_ethnicity.setOnClickListener{
+            demoGraphicConstraintLayout.hispanic_or_latino.isChecked = false
+            demoGraphicConstraintLayout.not_hispanic.isChecked = false
+        }
+
+
     }
 
-    private val closeDetailBox = object:View.OnClickListener{
-        override fun onClick(p0: View) {
-            closeDetailBoxHashMap.getValue(p0 as AppCompatRadioButton).visibility = View.INVISIBLE
-        }
-    }
 
     private val scrollerTab = object:View.OnClickListener{
         override fun onClick(p0: View) {
@@ -700,73 +664,9 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         }
     }
 
-    private fun setUpDemoGraphicScreen() {
 
-        binding.asianCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-
-                findNavController().navigate(R.id.action_asian)
-                Timber.e("not accessible...")
-            }
-        }
-
-        binding.nativeHawaianOrOtherCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                findNavController().navigate(R.id.action_native_hawai)
-            }
-        }
-
-
-        binding.hispanicOrLatino.setOnClickListener {
-            findNavController().navigate(R.id.action_hispanic)
-            binding.notHispanic.isChecked = false
-            binding.notTellingEthnicity.isChecked = false
-        }
-
-        binding.notHispanic.setOnClickListener{
-            binding.hispanicOrLatino.isChecked = false
-            binding.notTellingEthnicity.isChecked = false
-        }
-
-        binding.notTellingEthnicity.setOnClickListener{
-            binding.hispanicOrLatino.isChecked = false
-            binding.notHispanic.isChecked = false
-        }
-    }
 
 
 }
 
 
-    /*
-
-
-    when(p0){
-
-                binding.btnDemographicInfo-> {
-                    binding.asianInnerConstraintLayout.visibility = View.GONE
-                    binding.nativeHawaianInnerLayout.visibility = View.GONE
-                    binding.hispanicOrLatinoLayout.visibility = View.GONE
-                    binding.otherAsianConstraintlayout.visibility = View.GONE
-                    binding.otherHispanicConstraintLayout.visibility = View.GONE
-                    binding.otherPacificIslanderConstraintLayout.visibility = View.GONE
-                }
-
-                binding.btnDebtCo ->{}
-                binding.btnOutstanding ->{}
-                binding.btnFederalDebt ->{}
-                binding.btnPartyTo-> {}
-                binding.btnOwnershipInterest ->  {}
-                binding.btnTitleConveyance -> {}
-                binding.btnPreForeclouser->{}
-                binding.btnForeclosuredProperty-> {}
-                binding.btnBankruptcy ->{}
-                binding.btnChildSupport -> {}
-                binding.btnUndisclosedBorrowed-> {}
-                binding.btnUndisclosedCredit-> {}
-                binding.btnUndisclosedMortgage -> {}
-                binding.btnPriorityLiens-> {}
-                else ->{}
-            }
-
-     */
