@@ -50,12 +50,14 @@ class DemoGraphicInfoFragment : BaseFragment() {
                 demoGraphicData.race?.let { race->
                     for(i in 0 until race.size){
                         race.get(i).raceId?.let { it1 ->
-                            raceBaseList.add(DemoGraphicRace(raceId= it1,raceDetails = race.get(i).raceDetails))
+                            raceBaseList.add(DemoGraphicRace(raceId= it1,raceDetails = race.get(i).raceDetails)) // list for selecting race inner items
                         }
                     }
                 }
             }
         })
+
+
 
         viewModel.raceList.observe(viewLifecycleOwner,{
             if(it.size > 0){
@@ -102,7 +104,7 @@ class DemoGraphicInfoFragment : BaseFragment() {
                     radio.id = it.get(i).id
                     //checkBox.setOnCheckedChangeListener(handleRaceCheck(checkBox,checkBox.id))
                     //newRaceList.add(RaceResponseModel(id= it.get(i).id,name= it.get(i).name, raceDetails = it.get(i).raceDetails))
-                    binding.layoutGender.addView(radio)
+                    binding.layoutSex.addView(radio)
                 }
             }
         })
@@ -110,18 +112,17 @@ class DemoGraphicInfoFragment : BaseFragment() {
         return root
     }
 
-    private fun handleRaceCheck(chk: CheckBox, chkBoxId: Int): CompoundButton.OnCheckedChangeListener {
+    private fun handleRaceCheck(chk: CheckBox, chkBoxId: Int): CompoundButton.OnCheckedChangeListener? {
         return object : CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean){
                 if(!isChecked) {
-
                 } else {
                     for(i in 0 until newRaceList.size){
                         if(newRaceList.get(i).id == chkBoxId){
                             if(newRaceList.get(i).raceDetails.size > 0){
                                 val bundle = Bundle()
                                 bundle.putParcelableArrayList(AppConstant.RACE_DETAILS, newRaceList.get(i).raceDetails)
-                                //bundle.putParcelableArrayList(AppConstant.RACE_BASE_LIST, raceBaseList.get(i))
+                                //bundle.putParcelableArrayList(AppConstant.RACE_BASE_LIST, raceBaseList.get(i).raceDetails)
                                 findNavController().navigate(R.id.navigation_race_details , bundle)
                                 break
                             }

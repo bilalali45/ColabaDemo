@@ -39,11 +39,9 @@ class RaceDetailFragment : BaseFragment() {
                     checkBox.setPadding(25, 25, 0, 0)
                     checkBox.id = detailList.get(i).id
                     if(raceBaseList.size > 0) {
-//                        for(a in 0 until raceBaseList.size) {
-//                            if(detailList.get(i).id == raceBaseList.get(i).raceDetails.{
-//                                checkBox.isChecked=true
-//                            }
-//                        }
+                        for(a in 0 until raceBaseList.size) {
+
+                        }
                     }
 
 

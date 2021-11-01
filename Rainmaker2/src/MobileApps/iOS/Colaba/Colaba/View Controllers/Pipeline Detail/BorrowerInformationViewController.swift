@@ -119,7 +119,7 @@ class BorrowerInformationViewController: BaseViewController {
         txtfieldLegalFirstName.setIsValidateOnEndEditing(validate: false)
         
         ///Legal Middle Name Text Field
-        txtfieldMiddleName.setTextField(placeholder: "Legal Middle Name", controller: self, validationType: .noValidation)
+        txtfieldMiddleName.setTextField(placeholder: "Middle Name", controller: self, validationType: .noValidation)
         txtfieldMiddleName.setIsValidateOnEndEditing(validate: false)
         
         ///Legal Last Name Text Field
@@ -140,7 +140,7 @@ class BorrowerInformationViewController: BaseViewController {
         txtfieldWorkNumber.setTextField(placeholder: "Work Number", controller: self, validationType: .phoneNumber, keyboardType: .phonePad)
 
         ///Extension Number Text Field
-        txtfieldExtensionNumber.setTextField(placeholder: "Extension Number", controller: self, validationType: .noValidation, keyboardType: .phonePad)
+        txtfieldExtensionNumber.setTextField(placeholder: "EXT", controller: self, validationType: .noValidation, keyboardType: .phonePad)
         
         ///Cell Number Text Field
         txtfieldCellNumber.setTextField(placeholder: "Cell Number", controller: self, validationType: .phoneNumber, keyboardType: .phonePad)

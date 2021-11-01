@@ -97,6 +97,7 @@ class StartNewApplicationViewController: BaseViewController {
         searchView.layer.borderWidth = 1
         searchView.layer.borderColor = Theme.getSearchBarBorderColor().cgColor
         txtfieldSearch.addTarget(self, action: #selector(txtfieldSearchTextChanged), for: .editingChanged)
+        txtfieldSearch.placeholder = "Search by Name, Email, or Phone"
         
         borrowerInfoView.layer.cornerRadius = 5
         borrowerInfoView.layer.borderWidth = 1
