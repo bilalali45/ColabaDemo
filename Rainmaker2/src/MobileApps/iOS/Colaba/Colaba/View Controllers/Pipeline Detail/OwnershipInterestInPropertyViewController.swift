@@ -68,7 +68,7 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
         if questionModel.answer == "Yes"{
             isYes = true
         }
-        else{
+        else if questionModel.answer == "No"{
             isYes = false
         }
         changeStatus()
