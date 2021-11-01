@@ -67,10 +67,6 @@ interface ServerApi{
     suspend fun getMilitaryAffiliation(
         @Header("Authorization") Authorization:String) : ArrayList<OptionsResponse>
 
-
-
-
-
     @GET("api/mcu/mobile/loanapplication/SubjectProperty/GetSubjectPropertyDetails")
     suspend fun getSubjectPropertyDetails(
         @Header("Authorization" )  Authorization:String,
@@ -120,8 +116,114 @@ interface ServerApi{
     suspend fun getBorrowerIncomeDetail(
         @Header("Authorization" )  Authorization:String,
         @Query("loanApplicationId")  loanApplicationId:Int,
-        @Query("borrowerId")  borrowerId:Int
-    ): IncomeDetailsResponse
+        @Query("borrowerId")  borrowerId:Int): IncomeDetailsResponse
+
+    // assets apis
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetBankAccountDetails")
+    suspend fun getBankAccountDetails(
+        @Header("Authorization") Authorization:String,
+        @Query("loanApplicationId") loanPurpuseId:Int,
+        @Query("borrowerId") borrowerId:Int,
+        @Query("borrowerAssetId") borrowerAssetId:Int): BankAccountResponse
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetBankAccountType")
+    suspend fun getBankAccountType(
+        @Header("Authorization") Authorization:String) : ArrayList<DropDownResponse>
+
+    // post add or update bank account
+
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetRetirementAccountDetails")
+    suspend fun getRetirementAccountDetails(
+        @Header("Authorization") Authorization:String,
+        @Query("loanApplicationId") loanPurpuseId:Int,
+        @Query("borrowerId") borrowerId:Int,
+        @Query("borrowerAssetId") borrowerAssetId:Int): RetirementAccountResponse
+
+    // add or update retirement account details
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetFinancialAssetDetails")
+    suspend fun getFinancialAssetDetails(
+        @Header("Authorization") Authorization:String,
+        @Query("loanApplicationId") loanPurpuseId:Int,
+        @Query("borrowerId") borrowerId:Int,
+        @Query("borrowerAssetId") borrowerAssetId:Int): FinancialAssetResponse
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetAllFinancialAsset")
+    suspend fun getFinancialAsset(
+        @Header("Authorization") Authorization:String) : ArrayList<DropDownResponse>
+
+    // add or update financial asset
+
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetFromLoanNonRealStateDetails")
+    suspend fun getFromLoanNonRealEstateDetail(
+        @Header("Authorization") Authorization:String,
+        @Query("loanApplicationId") loanPurpuseId:Int,
+        @Query("borrowerId") borrowerId:Int,
+        @Query("AssetTypeId") AssetTypeId:Int,
+        @Query("borrowerAssetId") borrowerAssetId:Int): AssetsRealEstateResponse
+
+    //AddOrUpdateAssestsNonRealState
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetFromLoanRealStateDetails")
+    suspend fun getFromLoanRealEstateDetail(
+        @Header("Authorization") Authorization:String,
+        @Query("loanApplicationId") loanPurpuseId:Int,
+        @Query("borrowerId") borrowerId:Int,
+        @Query("AssetTypeId") AssetTypeId:Int,
+        @Query("borrowerAssetId") borrowerAssetId:Int): AssetsRealEstateResponse
+
+    //AddOrUpdateAssestsRealState
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetAssetTypesByCategory")
+    suspend fun getAssetTransactionType(
+        @Header("Authorization") Authorization : String,
+        @Query("categoryId") loanPurpuseId : Int,
+        @Query("loanPurposeId") borrowerId : Int ) : ArrayList<AssetTypesByCategory>
+
+    // AddOrUpdateAssestsNonRealState
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetProceedsfromloanDetails")
+    suspend fun getProceedFromLoan(
+        @Header("Authorization") Authorization:String,
+        @Query("loanApplicationId") loanPurpuseId:Int,
+        @Query("borrowerId") borrowerId:Int,
+        @Query("AssetTypeId") AssetTypeId:Int,
+        @Query("borrowerAssetId") borrowerAssetId:Int): ProceedFromLoanResponse
+
+ //AddOrUpdateProceedsfromloan
+    //AddOrUpdateProceedsfromloanOther
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetGiftAssetDetails")
+    suspend fun getGiftAssetDetail(
+        @Header("Authorization") Authorization:String,
+        @Query("loanApplicationId") loanPurpuseId:Int,
+        @Query("borrowerId") borrowerId:Int,
+        @Query("borrowerAssetId") borrowerAssetId:Int): GiftAssetResponse
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetAllGiftSources")
+    suspend fun getAllGiftSources(
+        @Header("Authorization") Authorization : String) : ArrayList<GiftSourcesResponse>
+
+    //AddOrUpdateGiftAsset
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetOtherAssetDetails")
+    suspend fun getOtherAssetDetails(
+        @Header("Authorization") Authorization:String,
+        @Query("loanApplicationId") loanPurpuseId:Int,
+        @Query("borrowerId") borrowerId:Int,
+        @Query("borrowerAssetId") borrowerAssetId:Int): OtherAssetResponse
+
+    //AddOrUpdateOtherAssetsInfo
+
+
+
+
+
+
+
 
 
     @POST("api/mcu/mobile/identity/mcuaccount/signin")

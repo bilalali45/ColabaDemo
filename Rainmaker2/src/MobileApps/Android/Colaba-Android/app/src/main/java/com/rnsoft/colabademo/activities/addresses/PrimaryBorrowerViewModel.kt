@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.addresses
+package com.rnsoft.colabademo
 
 /**
  * Created by Anita Kiran on 10/29/2021.
