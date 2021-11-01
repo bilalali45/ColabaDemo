@@ -36,6 +36,7 @@ object AppConstant {
 
         const val tenantTwoFaSetting:String = "tenantTwoFaSetting"
         const val tabBorrowerId:String = "tabBorrowerId"
+        const val borrowerId : String = "borrowerId"
 
         const val otpDataJson:String =  "otpDataJson"
         const val phoneNumber:String = "phoneNumber"
