@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,7 +18,7 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class SubjectPropertyViewModel @Inject constructor(private val repository: SubjectPropertyRepo ) : ViewModel() {
+class SubjectPropertyViewModel @Inject constructor(private val repository: SubjectPropertyRepo, private val commonRepo: CommonRepo) : ViewModel() {
 
     private val _propertyType: MutableLiveData<ArrayList<DropDownResponse>> = MutableLiveData()
     val propertyType: LiveData<ArrayList<DropDownResponse>> get() = _propertyType
@@ -51,7 +50,7 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
     suspend fun getCoBorrowerOccupancyStatus(token: String, loanApplicationId: Int) {
         //Timber.e("CoBorrower: " + loanApplicationId + "Auth Token: " + token)
         viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = repository.getCoBorrowerOccupancyStatus(
+            val responseResult = commonRepo.getCoBorrowerOccupancyStatus(
                 token = token,
                 loanApplicationId = loanApplicationId
             )
@@ -66,6 +65,7 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
         }
     }
 
+    /*
     suspend fun getSubjectPropertyDetails(token: String, loanApplicationId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repository.getSubjectPropertyDetails(
@@ -98,11 +98,11 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
                     EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
             }
         }
-    }
+    } */
 
     suspend fun getPropertyTypes(token: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = repository.getPropertyType(token = token)
+            val responseResult = commonRepo.getPropertyType(token = token)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _propertyType.value = (responseResult.data)
@@ -118,7 +118,7 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
 
     suspend fun getOccupancyType(token: String) {
             viewModelScope.launch(Dispatchers.IO) {
-                val responseResult = repository.getOccupancyType(token = token)
+                val responseResult = commonRepo.getOccupancyType(token = token)
                 withContext(Dispatchers.Main) {
                     if (responseResult is Result.Success)
                         _occupancyType.value = (responseResult.data)
@@ -135,7 +135,7 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
 
     suspend fun getStates(token: String) {
             viewModelScope.launch(Dispatchers.IO) {
-                val response = repository.getStates(token = token)
+                val response = commonRepo.getStates(token = token)
                 withContext(Dispatchers.Main) {
                     if (response is Result.Success)
                         _states.value = (response.data)
@@ -152,7 +152,7 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
 
     suspend fun getCounty(token: String) {
             viewModelScope.launch(Dispatchers.IO) {
-                val responseResult = repository.getCounties(token = token)
+                val responseResult = commonRepo.getCounties(token = token)
                 withContext(Dispatchers.Main) {
                     if (responseResult is Result.Success) {
                         //Timber.e("Counties-Success")
@@ -169,7 +169,7 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
 
     suspend fun getCountries(token: String) {
             viewModelScope.launch(Dispatchers.IO) {
-                val responseResult = repository.getCountries(token = token)
+                val responseResult = commonRepo.getCountries(token = token)
                 withContext(Dispatchers.Main) {
                     if (responseResult is Result.Success)
                         _countries.value = (responseResult.data)

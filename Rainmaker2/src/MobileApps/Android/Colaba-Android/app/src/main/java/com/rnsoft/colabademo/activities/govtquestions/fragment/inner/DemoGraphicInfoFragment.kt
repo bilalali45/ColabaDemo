@@ -104,7 +104,7 @@ class DemoGraphicInfoFragment : BaseFragment() {
                     radio.id = it.get(i).id
                     //checkBox.setOnCheckedChangeListener(handleRaceCheck(checkBox,checkBox.id))
                     //newRaceList.add(RaceResponseModel(id= it.get(i).id,name= it.get(i).name, raceDetails = it.get(i).raceDetails))
-                    binding.layoutSex.addView(radio)
+                    //binding.layoutSex.addView(radio)
                 }
             }
         })

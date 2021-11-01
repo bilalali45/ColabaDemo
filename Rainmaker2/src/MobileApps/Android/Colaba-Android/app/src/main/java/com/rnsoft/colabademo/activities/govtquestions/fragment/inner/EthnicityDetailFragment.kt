@@ -29,7 +29,7 @@ class EthnicityDetailFragment : BaseFragment() {
 
         arguments?.let {
             detailList = it.getParcelableArrayList(AppConstant.ETHNICITY_DETAILS)!!
-            Timber.e("size******"+ detailList.size)
+            //Timber.e("size******"+ detailList.size)
 
             if(detailList.size > 0) {
                 for (i in 0 until detailList.size) {

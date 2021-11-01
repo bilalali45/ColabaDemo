@@ -26,7 +26,7 @@
         android:id="@+id/nav_sub_property_address"
         android:name="com.rnsoft.colabademo.SubPropertyAddressFragment"
         android:label="@string/subject_property_address"
-        tools:layout="@layout/subject_property_address">
+        tools:layout="@layout/common_address_layout">
 
         <action
             android:id="@+id/action_back_fromAddress_toPurchase"

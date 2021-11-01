@@ -1,51 +1,15 @@
 package com.rnsoft.colabademo
 
-import android.util.Log
-import com.rnsoft.colabademo.activities.model.*
+import com.rnsoft.colabademo.activities.model.StatesModel
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 
 /**
- * Created by Anita Kiran on 10/11/2021.
+ * Created by Anita Kiran on 10/28/2021.
  */
-class SubjectPropertyDataSource @Inject constructor(private val serverApi: ServerApi) {
+class CommonDataSource @Inject constructor(private val serverApi: ServerApi) {
 
-    suspend fun getSubjectPropertyDetails(
-        token: String,
-        loanApplicationId: Int
-    ): Result<SubjectPropertyDetails> {
-        return try {
-            val newToken = "Bearer $token"
-            val response = serverApi.getSubjectPropertyDetails(newToken, loanApplicationId)
-            //Log.e("Sub-property-Details-------", response.toString())
-            Result.Success(response)
-        } catch (e: Throwable) {
-            if (e is NoConnectivityException)
-                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
-            else
-                Result.Error(IOException("Error notification -", e))
-        }
-    }
-
-    suspend fun getSubjectPropertyRefinance(
-        token: String,
-        loanApplicationId: Int
-    ): Result<SubjectPropertyRefinanceDetails> {
-        return try {
-            val newToken = "Bearer $token"
-            val response = serverApi.getSubjectPropertyRefinance(newToken, loanApplicationId)
-            //Log.e("Sub-property-Refinance", response.toString())
-            Result.Success(response)
-        } catch (e: Throwable) {
-            if (e is NoConnectivityException)
-                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
-            else
-                Result.Error(IOException("Error notification -", e))
-        }
-    }
-
-    /*
     suspend fun getPropertyTypes(token: String): Result<ArrayList<DropDownResponse>> {
         return try {
             val newToken = "Bearer $token"
@@ -131,6 +95,6 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
                 Result.Error(IOException("Error notification -", e.cause))
 
         }
-    } */
+    }
 
 }

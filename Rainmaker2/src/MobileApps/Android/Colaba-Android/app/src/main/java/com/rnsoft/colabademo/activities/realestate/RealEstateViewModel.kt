@@ -19,7 +19,7 @@ import javax.inject.Inject
  * Created by Anita Kiran on 10/15/2021.
  */
 @HiltViewModel
-class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo) : ViewModel() {
+class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo, private val commonRepo: CommonRepo) : ViewModel() {
 
     private val _realEstateDetails : MutableLiveData<RealEstateResponse> =   MutableLiveData()
     val realEstateDetails: LiveData<RealEstateResponse> get() = _realEstateDetails
@@ -49,7 +49,7 @@ class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo) 
     val states: LiveData<ArrayList<StatesModel>> get() = _states
 
     suspend fun getRealEstateDetails(token:String, loanApplicationId:Int,borrowerPropertyId:Int) {
-        Timber.e("loanAppliactionId " + loanApplicationId + "propertyId : " + borrowerPropertyId + "Token: "  + token)
+        //Timber.e("loanAppliactionId " + loanApplicationId + "propertyId : " + borrowerPropertyId + "Token: "  + token)
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.getRealEstateDetails(token = token, loanApplicationId = loanApplicationId, borrowerPropertyId = borrowerPropertyId)
             withContext(Dispatchers.Main) {
@@ -67,7 +67,7 @@ class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo) 
     }
 
     suspend fun getFirstMortgageDetails(token:String, loanApplicationId:Int,borrowerPropertyId:Int) {
-        Log.e("viewmodel","id" + loanApplicationId + "propertyId" + borrowerPropertyId + "  " + token)
+        //Log.e("viewmodel","id" + loanApplicationId + "propertyId" + borrowerPropertyId + "  " + token)
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.getRealEstateFirstMortgageDetails(token = token, loanApplicationId = loanApplicationId, borrowerPropertyId = borrowerPropertyId)
             withContext(Dispatchers.Main) {
@@ -106,7 +106,7 @@ class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo) 
 
     suspend fun getPropertyTypes(token:String) {
         viewModelScope.launch() {
-            val responseResult = repo.getPropertyType(token = token)
+            val responseResult = commonRepo.getPropertyType(token = token)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _propertyType.value = (responseResult.data)
@@ -134,7 +134,7 @@ class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo) 
 
     suspend fun getOccupancyType(token:String) {
         viewModelScope.launch() {
-            val responseResult = repo.getOccupancyType(token = token )
+            val responseResult = commonRepo.getOccupancyType(token = token )
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _occupancyType.value = (responseResult.data)
@@ -148,7 +148,7 @@ class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo) 
 
     suspend fun getStates(token:String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = repo.getStates(token = token )
+            val response = commonRepo.getStates(token = token )
             withContext(Dispatchers.Main) {
                 if (response is Result.Success)
                     _states.value = (response.data)
@@ -162,7 +162,7 @@ class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo) 
 
     suspend fun getCounty(token:String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = repo.getCounties(token = token )
+            val responseResult = commonRepo.getCounties(token = token)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _counties.value = (responseResult.data)
@@ -176,7 +176,7 @@ class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo) 
 
     suspend fun getCountries(token:String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = repo.getCountries(token = token )
+            val responseResult = commonRepo.getCountries(token = token )
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _countries.value = (responseResult.data)

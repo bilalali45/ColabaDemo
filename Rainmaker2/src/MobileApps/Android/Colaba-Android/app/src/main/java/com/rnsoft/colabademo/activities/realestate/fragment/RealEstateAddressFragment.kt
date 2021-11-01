@@ -30,8 +30,8 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.rnsoft.colabademo.AppConstant.authToken
+import com.rnsoft.colabademo.databinding.CommonAddressLayoutBinding
 
-import com.rnsoft.colabademo.databinding.SubjectPropertyAddressBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_placesearch.*
@@ -45,7 +45,7 @@ import kotlin.collections.ArrayList
 @AndroidEntryPoint
 class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlaceClickListener {
 
-    lateinit var binding: SubjectPropertyAddressBinding
+    lateinit var binding: CommonAddressLayoutBinding
     private lateinit var predictAdapter: PlacePredictionAdapter
     private lateinit var token: AutocompleteSessionToken
     private lateinit var placesClient: PlacesClient
@@ -60,7 +60,7 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = SubjectPropertyAddressBinding.inflate(inflater, container, false)
+        binding = CommonAddressLayoutBinding.inflate(inflater, container, false)
 
         binding.titleTextView.setText(getString(R.string.property_address))
 

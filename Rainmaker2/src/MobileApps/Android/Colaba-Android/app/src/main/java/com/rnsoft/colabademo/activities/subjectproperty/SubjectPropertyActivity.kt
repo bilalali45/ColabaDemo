@@ -47,7 +47,7 @@ class SubjectPropertyActivity : BaseActivity() {
                 if (loanApplicationId != null) {
                     coroutineScope {
                         binding.loaderSubjectProperty.visibility = View.VISIBLE
-                        //delay(2000)
+                        delay(2000)
                         val call1 = async { viewModel.getPropertyTypes(authToken) }
                         val call2 = async { viewModel.getOccupancyType(authToken) }
                         val call3 = async { viewModel.getCoBorrowerOccupancyStatus(authToken, loanApplicationId!!) }
