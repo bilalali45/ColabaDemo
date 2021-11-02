@@ -85,7 +85,7 @@
             android:textSize="13sp" />
 
         <TextView
-            android:id="@+id/unmarried_addendum_ans"
+            android:id="@+id/visa_status_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"

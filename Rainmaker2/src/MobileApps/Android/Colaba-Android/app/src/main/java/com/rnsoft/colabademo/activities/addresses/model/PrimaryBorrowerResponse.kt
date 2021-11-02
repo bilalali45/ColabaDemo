@@ -15,10 +15,10 @@ data class PrimaryBorrowerData(
     val borrowerId: Int,
     val borrowerBasicDetails: BorrowerBasicDetails,
     val borrowerCitizenship: BorrowerCitizenship,
-    val currentAddress: CurrentAddress,
+    val currentAddress: CurrentAddress?,
     val maritalStatus: MaritalStatus,
     val militaryServiceDetails: MilitaryServiceDetails,
-    val previousAddresses: List<Any>
+    val previousAddresses: List<PreviousAddresses>?
 )
 
 data class BorrowerBasicDetails(
@@ -33,19 +33,21 @@ data class BorrowerBasicDetails(
     val ownTypeId: Int?,
     val suffix: String?,
     val workPhone: String?,
-    val workPhoneExt: String
+    val workPhoneExt: String?
 )
+
 data class BorrowerCitizenship(
     val borrowerId: Int,
     val loanApplicationId: Int,
-    val dependentAges: Any?,
-    val dependentCount: Any?,
-    val dobUtc: Any?,
-    val residencyStatusExplanation: Any?,
-    val residencyStatusId: Any?,
-    val residencyTypeId: Any?,
-    val ssn: Any?
+    val dependentAges: String?,
+    val dependentCount: Int?,
+    val dobUtc: String?,
+    val residencyStatusExplanation: String?,
+    val residencyStatusId: Int?,
+    val residencyTypeId: Int?,
+    val ssn: String?
 )
+
 
 data class CurrentAddress(
     val loanApplicationId: Int,
@@ -56,7 +58,18 @@ data class CurrentAddress(
     val fromDate: String?,
     val isMailingAddressDifferent: Boolean?,
     val mailingAddressModel: Any?,
-    val monthlyRent: Any?
+    val monthlyRent: Double?
+)
+
+data class PreviousAddresses(
+    val id: Int?,
+    val housingStatusId: Int?,
+    val monthlyRent: Double?,
+    val fromDate: String?,
+    val toDate: String?,
+    val addressModel: AddressModel?,
+    val isMailingAddressDifferent: Boolean?,
+    val mailingAddressModel: Any?,
 )
 
 data class AddressModel(

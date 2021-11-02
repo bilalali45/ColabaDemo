@@ -173,7 +173,6 @@ object AppSetting {
             finalTimeInFormat = getDate(oldMillis, "MM-yyyy")
         }
         return finalTimeInFormat
-
     }
 
     fun returnLongTimeNow(input: String): String {

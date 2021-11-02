@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.Contacts
 import com.rnsoft.colabademo.RecyclerviewClickListener
-import com.rnsoft.colabademo.activities.addresses.info.model.Address
 import com.rnsoft.colabademo.databinding.ContactListItemBinding
 import java.util.HashMap
 
