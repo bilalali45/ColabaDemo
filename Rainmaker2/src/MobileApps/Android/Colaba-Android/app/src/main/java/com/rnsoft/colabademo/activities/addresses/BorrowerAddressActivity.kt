@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -22,7 +23,7 @@ import javax.inject.Inject
 class BorrowerAddressActivity : BaseActivity() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    private lateinit var binding: BorrowerAddressLayoutBinding
+    lateinit var binding: BorrowerAddressLayoutBinding
     private val viewModel : PrimaryBorrowerViewModel by viewModels()
     var loanApplicationId: Int? = null
     var borrowerId: Int? = null
@@ -46,7 +47,7 @@ class BorrowerAddressActivity : BaseActivity() {
 
                 if (loanApplicationId != null) {
                     coroutineScope {
-                        //binding.loaderSubjectProperty.visibility = View.VISIBLE
+                        binding.loaderInfo.visibility = View.VISIBLE
                         delay(2000)
                         viewModel.getBasicBorrowerDetail(authToken,5,5)
 

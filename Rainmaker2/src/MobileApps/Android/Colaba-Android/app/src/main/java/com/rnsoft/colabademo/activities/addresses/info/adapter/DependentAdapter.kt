@@ -75,7 +75,6 @@ class DependentAdapter (val mContext : Context, private val items: ArrayList<Dep
         holder.bind(items.get(position), position)
 
         holder.itemView.til_dependent.setEndIconOnClickListener {
-
             if(holder.itemView.til_dependent.endIconDrawable?.isVisible == true)
                 deleteClick.onItemClick(position)
         }
@@ -83,7 +82,7 @@ class DependentAdapter (val mContext : Context, private val items: ArrayList<Dep
 
         holder.itemView.ed_age.doAfterTextChanged {
             val age = Integer.parseInt(holder.itemView.ed_age.text.toString())
-            if(age >0 ){
+            if(age > 0){
                 items.set(position, Dependent(items.get(position).dependent, age))
             }
         }

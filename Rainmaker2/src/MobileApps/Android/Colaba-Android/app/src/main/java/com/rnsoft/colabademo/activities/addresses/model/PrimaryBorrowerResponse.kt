@@ -33,20 +33,21 @@ data class BorrowerBasicDetails(
     val ownTypeId: Int?,
     val suffix: String?,
     val workPhone: String?,
-    val workPhoneExt: String
+    val workPhoneExt: String?
 )
 
 data class BorrowerCitizenship(
     val borrowerId: Int,
     val loanApplicationId: Int,
-    val dependentAges: Any?,
-    val dependentCount: Any?,
-    val dobUtc: Any?,
-    val residencyStatusExplanation: Any?,
-    val residencyStatusId: Any?,
-    val residencyTypeId: Any?,
-    val ssn: Any?
+    val dependentAges: String?,
+    val dependentCount: Int?,
+    val dobUtc: String?,
+    val residencyStatusExplanation: String?,
+    val residencyStatusId: Int?,
+    val residencyTypeId: Int?,
+    val ssn: String?
 )
+
 
 data class CurrentAddress(
     val loanApplicationId: Int,
