@@ -8,26 +8,28 @@
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll"
-        android:isScrollContainer="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@color/half_white"
+        android:isScrollContainer="false"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/inside_scroll_constraint_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible"
             android:layout_marginStart="10dp"
-            android:paddingStart="14dp"
-            android:background="@color/half_white"
-            android:paddingBottom="134dp"
             android:layout_marginEnd="24dp"
-            android:id="@+id/inside_scroll_constraint_layout"
+            android:background="@color/half_white"
+            android:paddingStart="14dp"
+            android:paddingBottom="134dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,10 +39,10 @@
                 android:id="@+id/textView45"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Race"
                 android:fontFamily="@font/rubik_medium"
-                android:textSize="15sp"
+                android:text="Race"
                 android:textColor="@color/grey_color_one"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -74,6 +76,56 @@
                 app:layout_constraintTop_toBottomOf="@+id/american_or_indian_check_box" />
 
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/asian_child_box_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/white_blue_border"
+                android:paddingStart="18dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="16dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/asian_check_box"
+                app:layout_constraintTop_toBottomOf="@+id/asian_check_box">
+
+
+                <TextView
+                    android:id="@+id/asian_child_names"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Asian Indian"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="15sp"
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/other_asian_race"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="TextView"
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/asian_child_names" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
             <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/black_or_african_check_box"
                 android:layout_width="wrap_content"
@@ -86,7 +138,7 @@
                 android:textSize="14sp"
                 app:buttonCompat="@drawable/cb_selector"
                 app:layout_constraintStart_toStartOf="@+id/asian_check_box"
-                app:layout_constraintTop_toBottomOf="@+id/asian_check_box" />
+                app:layout_constraintTop_toBottomOf="@+id/asian_child_box_layout" />
 
             <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/native_hawaian_or_other_check_box"
@@ -103,27 +155,76 @@
                 app:layout_constraintTop_toBottomOf="@+id/black_or_african_check_box" />
 
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/native_hawaian_child_box_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/white_blue_border"
+                android:padding="12dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/native_hawaian_or_other_check_box"
+                app:layout_constraintTop_toBottomOf="@+id/native_hawaian_or_other_check_box">
+
+
+                <TextView
+                    android:id="@+id/child_native_hawaiian"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text=" "
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/other_typed_native_hawaiian"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text=" "
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/child_native_hawaiian" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
             <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/white_check_box"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
+                android:layout_marginTop="20dp"
                 android:fontFamily="@font/rubik_regular"
                 android:paddingStart="14dp"
                 android:text="White"
-                android:layout_marginTop="20dp"
                 android:textColor="@color/grey_color_one"
                 android:textSize="14sp"
                 app:buttonCompat="@drawable/cb_selector"
                 app:layout_constraintStart_toStartOf="@+id/asian_check_box"
-                app:layout_constraintTop_toBottomOf="@+id/native_hawaian_or_other_check_box" />
+                app:layout_constraintTop_toBottomOf="@+id/native_hawaian_child_box_layout" />
 
             <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/do_not_wish_check_box"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
+                android:layout_marginTop="20dp"
                 android:fontFamily="@font/rubik_regular"
                 android:paddingStart="14dp"
-                android:layout_marginTop="20dp"
                 android:text="I do not wish to provide this information"
                 android:textColor="@color/grey_color_one"
                 android:textSize="14sp"
@@ -132,12 +233,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/white_check_box" />
 
             <View
-                android:visibility="visible"
                 android:id="@+id/view2"
                 android:layout_width="36dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="50dp"
                 android:background="@color/colaba_app_border_color"
+                android:visibility="visible"
                 app:layout_constraintStart_toStartOf="@+id/asian_check_box"
                 app:layout_constraintTop_toBottomOf="@+id/do_not_wish_check_box" />
 
@@ -146,10 +247,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
-                android:text="Ethnicity"
                 android:fontFamily="@font/rubik_medium"
-                android:textSize="15sp"
+                android:text="Ethnicity"
                 android:textColor="@color/grey_color_one"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view2" />
@@ -169,46 +270,93 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView47" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/hispanic_or_latino_child_box_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/white_blue_border"
+                android:padding="12dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/native_hawaian_or_other_check_box"
+                app:layout_constraintTop_toBottomOf="@+id/hispanic_or_latino">
+
+
+                <TextView
+                    android:id="@+id/ethnicity_children"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text=" "
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/other_ethnicity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text=" "
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ethnicity_children" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/not_hispanic"
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
+                android:layout_marginTop="20dp"
                 android:button="@drawable/radiodraw"
                 android:clickable="true"
                 android:fontFamily="@font/rubik_regular"
                 android:paddingStart="15dp"
-                android:layout_marginTop="20dp"
                 android:text="Not Hispanic or Latino"
                 android:textColor="@color/grey_color_one"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/hispanic_or_latino"
+                app:layout_constraintTop_toBottomOf="@+id/hispanic_or_latino_child_box_layout"
                 tools:ignore="RtlSymmetry" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/not_telling_ethnicity"
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
+                android:layout_marginTop="20dp"
+                android:button="@drawable/radiodraw"
+                android:clickable="true"
+                android:fontFamily="@font/rubik_regular"
+                android:paddingStart="15dp"
                 android:text="I do not wish to provide this information"
                 android:textColor="@color/grey_color_one"
                 android:textSize="14sp"
-                android:fontFamily="@font/rubik_regular"
-                android:paddingStart="15dp"
-                android:layout_marginTop="20dp"
-                android:button="@drawable/radiodraw"
-                tools:ignore="RtlSymmetry"
-                android:clickable="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/not_hispanic"
-                />
+                tools:ignore="RtlSymmetry" />
 
             <View
                 android:id="@+id/view3"
-                android:visibility="visible"
                 android:layout_width="36dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="50dp"
                 android:background="@color/colaba_app_border_color"
+                android:visibility="visible"
                 app:layout_constraintStart_toStartOf="@+id/asian_check_box"
                 app:layout_constraintTop_toBottomOf="@+id/not_telling_ethnicity" />
 
@@ -229,27 +377,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView57"
-                >
+                app:layout_constraintTop_toBottomOf="@+id/textView57">
+
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/demo_male"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
+                    android:layout_marginTop="20dp"
+                    android:button="@drawable/radiodraw"
+                    android:clickable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:paddingStart="15dp"
                     android:text="Male"
                     android:textColor="@color/grey_color_one"
                     android:textSize="14sp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:button="@drawable/radiodraw"
-                    android:paddingStart="15dp"
-                    android:clickable="true"
-                    android:layout_marginTop="20dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="parent"
-                    />
+                    app:layout_constraintTop_toBottomOf="parent" />
+
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/demo_female"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
+                    android:layout_marginTop="20dp"
                     android:button="@drawable/radiodraw"
                     android:clickable="true"
                     android:fontFamily="@font/rubik_regular"
@@ -257,25 +406,24 @@
                     android:text="Female"
                     android:textColor="@color/grey_color_one"
                     android:textSize="14sp"
-                    android:layout_marginTop="20dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/demo_male" />
+
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/demo_do_not_wish_to_provide"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
+                    android:layout_marginTop="20dp"
                     android:button="@drawable/radiodraw"
                     android:clickable="true"
                     android:fontFamily="@font/rubik_regular"
                     android:paddingStart="15dp"
-                    android:layout_marginTop="20dp"
                     android:text="I do not wish to provide this information"
                     android:textColor="@color/grey_color_one"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/demo_female" />
             </RadioGroup>
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,7 +32,6 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import com.google.gson.internal.LinkedTreeMap
 
-import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.*
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.*
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.american_or_indian_check_box
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.asian_check_box
@@ -52,12 +51,22 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     private var idToContentMapping = HashMap<Int, ConstraintLayout>(0)
     private var innerLayoutHashMap = HashMap<AppCompatTextView, ConstraintLayout>(0)
-    private var openDetailBoxHashMap = HashMap<AppCompatRadioButton, ConstraintLayout>(0)
-    private var closeDetailBoxHashMap = HashMap<AppCompatRadioButton, ConstraintLayout>(0)
-
+    //private var openDetailBoxHashMap = HashMap<AppCompatRadioButton, ConstraintLayout>(0)
+    //private var closeDetailBoxHashMap = HashMap<AppCompatRadioButton, ConstraintLayout>(0)
     //private val tabArrayList:ArrayList<AppCompatTextView> = arrayListOf()
 
     private val bAppViewModel: BorrowerApplicationViewModel by activityViewModels()
+
+    private var ethnicityChildNames = ""
+    private var otherEthnicity = ""
+
+    private var nativeHawaiiChildNames = ""
+    private var nativeHawaiiOtherRace = ""
+
+    private var asianChildNames = ""
+    private var otherAsianRace = ""
+
+    private  lateinit var lastQData:QuestionData
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,15 +81,10 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
 
     private fun setupLayout(inflater: LayoutInflater){
-        setUpDynamicTabs( inflater)
-        //setUpTabs()
+        setUpDynamicTabs( )
     }
 
-
-
-    lateinit var lastQData:QuestionData
-
-    private fun setUpDynamicTabs( inflater: LayoutInflater){
+    private fun setUpDynamicTabs(){
         bAppViewModel.governmentQuestionsModelClass.observe(viewLifecycleOwner, Observer {
 
             val govtQuestionActivity = (activity as GovtQuestionActivity)
@@ -505,7 +509,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
            }
     }
 
-
     private val ethnicityChildList:ArrayList<EthnicityDetailDemoGraphic> = arrayListOf()
 
     private val asianChildList:ArrayList<DemoGraphicRaceDetail> = arrayListOf()
@@ -515,6 +518,15 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private fun observeDemoGraphicData(){
         bAppViewModel.demoGraphicInfo.observe(viewLifecycleOwner,{
             it.demoGraphicData?.let { demoGraphicData ->
+
+                ethnicityChildNames = ""
+                otherEthnicity = ""
+
+                nativeHawaiiChildNames = ""
+                nativeHawaiiOtherRace = ""
+
+                asianChildNames = ""
+                otherAsianRace = ""
 
                 demoGraphicData.genderId?.let{ genderId->
                     if(genderId == 1)
@@ -533,9 +545,20 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         if(selectedEthnicity.ethnicityId == 1) {
                             demoGraphicConstraintLayout.hispanic_or_latino.isChecked = true
                             selectedEthnicity.ethnicityDetails?.let{ theList->
-                                for(item in theList )
+                                for(item in theList ) {
                                     ethnicityChildList.add(item)
+                                    item.isOther?.let { isOther->
+                                       if(isOther)
+                                       item.otherEthnicity?.let {
+                                           otherEthnicity  = it
+                                       }
+                                       else
+                                           ethnicityChildNames = ethnicityChildNames + item.name + ", "
+                                   }
+                                }
                             }
+
+                            showEthnicityInnerBox()
                         }
                         else
                         if(selectedEthnicity.ethnicityId  == 2)
@@ -554,21 +577,49 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                             demoGraphicConstraintLayout.american_or_indian_check_box.isChecked = true
                         }
                         if(race.raceId == 2){
+
                             demoGraphicConstraintLayout.asian_check_box.isChecked = true
                             race.raceDetails?.let{ asianChildList ->
-                                for(item in asianChildList)
+
+                                for(item in asianChildList) {
                                     this.asianChildList.add(item)
+                                   item.isOther?.let { isOther->
+                                       if(isOther)
+                                       item.otherRace?.let {
+                                           otherAsianRace  = it
+                                       }
+                                       else
+                                           asianChildNames = asianChildNames + item.name + ", "
+                                   }
+                                }
                             }
+                            showAsianInnerBox()
+
+
                         }
                         if(race.raceId == 3){
                             demoGraphicConstraintLayout.black_or_african_check_box.isChecked = true
                         }
                         if(race.raceId == 4){
                             demoGraphicConstraintLayout.native_hawaian_or_other_check_box.isChecked = true
+
                             race.raceDetails?.let{ nativeHawaianChildList ->
-                                for(item in nativeHawaianChildList)
+                                for(item in nativeHawaianChildList) {
                                     nativeHawaiianChildList.add(item)
+                                    item.isOther?.let { isOther->
+                                       if(isOther)
+                                       item.otherRace?.let {
+                                           nativeHawaiiOtherRace  = it
+                                       }
+                                       else
+                                           nativeHawaiiChildNames = nativeHawaiiChildNames + item.name + ", "
+                                   }
+                                }
                             }
+
+
+                            showNativeHawaiiInnerBox()
+
                         }
                         if(race.raceId == 5){
                             demoGraphicConstraintLayout.white_check_box.isChecked = true
@@ -577,6 +628,8 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                             demoGraphicConstraintLayout.do_not_wish_check_box.performClick()
                         }
                     }
+
+
                 }
 
 
@@ -588,6 +641,77 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         })
     }
 
+
+
+    private fun showEthnicityInnerBox(){
+        if(otherEthnicity.isNotEmpty() && otherEthnicity.isNotBlank()) {
+            otherEthnicity = "Other Pacific Islander: $otherEthnicity"
+            otherEthnicity = otherEthnicity.substring(0, otherEthnicity.length-2)
+            demoGraphicConstraintLayout.other_ethnicity.text = otherEthnicity
+            demoGraphicConstraintLayout.other_ethnicity.visibility = View.VISIBLE
+            demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.visibility = View.VISIBLE
+        }
+        else
+            demoGraphicConstraintLayout.other_ethnicity.visibility = View.GONE
+
+        if(ethnicityChildNames.isNotEmpty() && ethnicityChildNames.isNotBlank()) {
+            ethnicityChildNames = ethnicityChildNames.substring(0, ethnicityChildNames.length-2)
+            demoGraphicConstraintLayout.ethnicity_children.text = ethnicityChildNames
+            demoGraphicConstraintLayout.ethnicity_children.visibility = View.VISIBLE
+            demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.visibility = View.VISIBLE
+        }
+        else
+            demoGraphicConstraintLayout.ethnicity_children.visibility = View.GONE
+    }
+
+
+
+    private fun showNativeHawaiiInnerBox(){
+        if(nativeHawaiiOtherRace.isNotEmpty() && nativeHawaiiOtherRace.isNotBlank()) {
+            nativeHawaiiOtherRace = "Other Pacific Islander: $nativeHawaiiOtherRace"
+            nativeHawaiiOtherRace = nativeHawaiiOtherRace.substring(0, nativeHawaiiOtherRace.length-2)
+            demoGraphicConstraintLayout.other_typed_native_hawaiian.text = nativeHawaiiOtherRace
+            demoGraphicConstraintLayout.other_typed_native_hawaiian.visibility = View.VISIBLE
+            demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
+        }
+        else
+            demoGraphicConstraintLayout.other_typed_native_hawaiian.visibility = View.GONE
+
+        if(nativeHawaiiChildNames.isNotEmpty() && nativeHawaiiChildNames.isNotBlank()) {
+            nativeHawaiiChildNames = nativeHawaiiChildNames.substring(0, nativeHawaiiChildNames.length-2)
+            demoGraphicConstraintLayout.child_native_hawaiian.text = nativeHawaiiChildNames
+            demoGraphicConstraintLayout.child_native_hawaiian.visibility = View.VISIBLE
+            demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
+        }
+        else
+            demoGraphicConstraintLayout.child_native_hawaiian.visibility = View.GONE
+    }
+
+
+
+
+    private fun showAsianInnerBox(){
+        if(otherAsianRace.isNotEmpty() && otherAsianRace.isNotBlank()) {
+            otherAsianRace = "Other Asian: $otherAsianRace"
+            demoGraphicConstraintLayout.other_asian_race.text = otherAsianRace
+            demoGraphicConstraintLayout.other_asian_race.visibility = View.VISIBLE
+            demoGraphicConstraintLayout.asian_child_box_layout.visibility = View.VISIBLE
+        }
+        else
+            demoGraphicConstraintLayout.other_asian_race.visibility = View.GONE
+
+        if(asianChildNames.isNotEmpty() && asianChildNames.isNotBlank()) {
+            asianChildNames = asianChildNames.substring(0, asianChildNames.length-2)
+            demoGraphicConstraintLayout.asian_child_names.text = asianChildNames
+            demoGraphicConstraintLayout.asian_child_names.visibility = View.VISIBLE
+            demoGraphicConstraintLayout.asian_child_box_layout.visibility = View.VISIBLE
+        }
+        else
+            demoGraphicConstraintLayout.asian_child_names.visibility = View.GONE
+    }
+
+
+
     private fun addDemoGraphicEvents(){
 
         demoGraphicConstraintLayout.do_not_wish_check_box.setOnClickListener{
@@ -596,6 +720,11 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             demoGraphicConstraintLayout.american_or_indian_check_box.isChecked = false
             demoGraphicConstraintLayout.native_hawaian_or_other_check_box.isChecked = false
             demoGraphicConstraintLayout.asian_check_box.isChecked = false
+
+            if(demoGraphicConstraintLayout.do_not_wish_check_box.isChecked) {
+                demoGraphicConstraintLayout.asian_child_box_layout.visibility = View.GONE
+                demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.GONE
+            }
         }
 
         demoGraphicConstraintLayout.white_check_box.setOnClickListener{ demoGraphicConstraintLayout.do_not_wish_check_box.isChecked = false }
@@ -610,23 +739,50 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
         demoGraphicConstraintLayout.asian_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
+                demoGraphicConstraintLayout.asian_child_box_layout.visibility = View.VISIBLE
+                val bundle = bundleOf(AppConstant.asianChildList to asianChildList)
+                findNavController().navigate(R.id.action_asian , bundle)
+                Timber.e("not accessible...")
+            }
+
+        }
+
+        demoGraphicConstraintLayout.native_hawaian_or_other_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
+                val bundle = bundleOf(AppConstant.nativeHawaianChildList to nativeHawaiianChildList)
+                findNavController().navigate(R.id.action_native_hawai, bundle)
+            }
+        }
+
+        demoGraphicConstraintLayout.native_hawaian_child_box_layout.setOnClickListener{
+            if (demoGraphicConstraintLayout.native_hawaian_or_other_check_box.isChecked) {
+                demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
+                val bundle = bundleOf(AppConstant.nativeHawaianChildList to nativeHawaiianChildList)
+                findNavController().navigate(R.id.action_native_hawai, bundle)
+            }
+        }
+
+        demoGraphicConstraintLayout.asian_child_box_layout.setOnClickListener{
+            if ( demoGraphicConstraintLayout.asian_check_box.isChecked) {
+                demoGraphicConstraintLayout.asian_child_box_layout.visibility = View.VISIBLE
                 val bundle = bundleOf(AppConstant.asianChildList to asianChildList)
                 findNavController().navigate(R.id.action_asian , bundle)
                 Timber.e("not accessible...")
             }
         }
 
-        demoGraphicConstraintLayout.native_hawaian_or_other_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                val bundle = bundleOf(AppConstant.nativeHawaianChildList to nativeHawaiianChildList)
-                findNavController().navigate(R.id.action_native_hawai, bundle)
-            }
-        }
-
-
         demoGraphicConstraintLayout.hispanic_or_latino.setOnClickListener {
             val bundle = bundleOf(AppConstant.ethnicityChildList to ethnicityChildList)
             findNavController().navigate(R.id.action_hispanic , bundle)
+            demoGraphicConstraintLayout.not_hispanic.isChecked = false
+            demoGraphicConstraintLayout.not_telling_ethnicity.isChecked = false
+            showEthnicityInnerBox()
+        }
+
+        demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.setOnClickListener {
+            val bundle = bundleOf(AppConstant.ethnicityChildList to ethnicityChildList)
+            findNavController().navigate(R.id.action_hispanic, bundle)
             demoGraphicConstraintLayout.not_hispanic.isChecked = false
             demoGraphicConstraintLayout.not_telling_ethnicity.isChecked = false
         }
@@ -634,11 +790,13 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         demoGraphicConstraintLayout.not_hispanic.setOnClickListener{
             demoGraphicConstraintLayout.hispanic_or_latino.isChecked = false
             demoGraphicConstraintLayout.not_telling_ethnicity.isChecked = false
+            demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
         }
 
         demoGraphicConstraintLayout.not_telling_ethnicity.setOnClickListener{
             demoGraphicConstraintLayout.hispanic_or_latino.isChecked = false
             demoGraphicConstraintLayout.not_hispanic.isChecked = false
+            demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
         }
 
 

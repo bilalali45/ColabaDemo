@@ -43,7 +43,10 @@ class HispanicFragment:BaseFragment() {
                 binding.cuban.isChecked = true
             }
             else if(item.detailId == 4 && item.isOther==true){
-                binding.otherHispanicOrLatino.isChecked = true
+                binding.otherHispanicOrLatino.performClick()
+                item.otherEthnicity?.let{
+                    binding.edDetails.setText(it)
+                }
             }
         }
 
@@ -60,10 +63,8 @@ class HispanicFragment:BaseFragment() {
             findNavController().popBackStack()
         }
         binding.otherHispanicOrLatino.setOnCheckedChangeListener{ buttonView, isChecked ->
-            if(isChecked)
-                binding.layoutDetail.visibility = View.VISIBLE
-            else
-                binding.layoutDetail.visibility = View.GONE
+            //if(isChecked) binding.layoutDetail.visibility = View.VISIBLE
+            //else binding.layoutDetail.visibility = View.GONE
         }
     }
 
