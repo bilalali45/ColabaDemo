@@ -48,6 +48,10 @@ object AppConstant {
 
         const val loanPurpose:String = "loanPurpose"
 
+        const val borrowerId:String = "borrowerId"
+
+        const val borrowerAssetId:String = "borrowerAssetId"
+
         const val borrowerPurpose:String = "purpose"
 
         const val borrowerPropertyId:String = "property_id"

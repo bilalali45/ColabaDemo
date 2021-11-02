@@ -7,20 +7,19 @@ import com.google.gson.annotations.SerializedName
  */
 data class BankAccountResponse(
     val code: String?,
-    @SerializedName("data")
-    val data: BankAccountData?,
+    @SerializedName("data") val bankAccountData: BankAccountData?,
     val message: String?,
     val status: String?
 )
 
 data class BankAccountData(
-    val id: Int,
-    val assetTypeId: Int,
-    val institutionName: String,
-    val accountNumber: String,
-    val balance: Double,
-    val loanApplicationId: Int,
-    val borrowerId: Int
+    val id: Int?,
+    val assetTypeId: Int?,
+    val institutionName: String?,
+    val accountNumber: String?,
+    val balance: Double?,
+    val loanApplicationId: Int?,
+    val borrowerId: Int?
 )
 
 

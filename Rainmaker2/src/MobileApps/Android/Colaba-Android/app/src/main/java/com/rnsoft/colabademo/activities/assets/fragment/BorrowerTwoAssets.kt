@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
+import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.*
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
 import kotlinx.android.synthetic.main.assets_middle_cell.view.*
@@ -53,7 +54,9 @@ class BorrowerTwoAssets : AssetBaseFragment() {
                 contentCell.content_desc.text = contentData.description
                 contentCell.content_amount.text = contentData.contentAmount
                 contentCell.visibility = View.GONE
-                contentCell.setOnClickListener(modelData.listenerAttached)
+                contentCell.setOnClickListener {
+                    findNavController().navigate(modelData.listenerAttached)
+                }
                 mainCell.addView(contentCell)
             }
 
@@ -62,12 +65,11 @@ class BorrowerTwoAssets : AssetBaseFragment() {
             bottomCell.footer_title.text =  modelData.footerTitle
             //bottomCell.tag = R.string.asset_bottom_cell
             bottomCell.visibility = View.GONE
-            bottomCell.setOnClickListener(modelData.listenerAttached)
+            bottomCell.setOnClickListener {
+                findNavController().navigate(modelData.listenerAttached)
+            }
 
             mainCell.addView(bottomCell)
-
-
-
 
             binding.assetParentContainer.addView(mainCell)
 

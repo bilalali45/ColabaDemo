@@ -11,22 +11,29 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.textfield.TextInputLayout
-
 import com.rnsoft.colabademo.databinding.BankAccountLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.ArrayList
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class BankAccountFragment : BaseFragment() {
 
     private var _binding: BankAccountLayoutBinding? = null
     private val binding get() = _binding!!
+    private var bankAccounts: ArrayList<String> = arrayListOf("Checking Account", "Saving Account")
+    private lateinit var stateNamesAdapter:ArrayAdapter<String>
+    private val viewModel: AssetViewModel by activityViewModels()
+
+    private var loanApplicationId:Int? = null
+    private var loanPurpose:String? = null
+    private var borrowerId:Int? = null
+    private var borrowerAssetId:Int? = null
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -39,12 +46,19 @@ class BankAccountFragment : BaseFragment() {
         val root: View = binding.root
         setUpUI()
         super.addListeners(binding.root)
+        arguments?.let { arguments->
+            loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+            loanPurpose = arguments.getString(AppConstant.loanPurpose)
+            borrowerId = arguments.getInt(AppConstant.borrowerId)
+            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId)
+            observeBankData()
+        }
         return root
     }
 
+
     private fun setUpUI(){
-        val bankAccounts: ArrayList<String> = arrayListOf("Checking Account", "Saving Account")
-        val stateNamesAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  bankAccounts)
+        stateNamesAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  bankAccounts)
         binding.accountTypeCompleteView.setAdapter(stateNamesAdapter)
         binding.accountTypeCompleteView.setOnFocusChangeListener { _, _ ->
             HideSoftkeyboard.hide(requireContext(),  binding.accountTypeCompleteView)
@@ -80,9 +94,7 @@ class BankAccountFragment : BaseFragment() {
                 findNavController().popBackStack()
             }
         }
-
         addFocusOutListenerToFields()
-
         setUpEndIcon()
     }
 
@@ -140,13 +152,60 @@ class BankAccountFragment : BaseFragment() {
         return bool
     }
 
-    private  fun addFocusOutListenerToFields(){
+    private fun addFocusOutListenerToFields(){
         binding.accountNumberEdittext.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.accountNumberEdittext , binding.accountNumberLayout , requireContext()))
         //binding.accountTypeCompleteView.setOnFocusChangeListener(CustomFocusListenerForAutoCompleteTextView( binding.accountTypeCompleteView , binding.accountTypeInputLayout , requireContext()))
         binding.annualBaseEditText.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.annualBaseEditText , binding.annualBaseLayout , requireContext()))
         binding.financialEditText.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.financialEditText , binding.financialLayout , requireContext()))
     }
 
+    private var classLevelBankAccountTypes: ArrayList<DropDownResponse> = arrayListOf(DropDownResponse(1, "Checking Account"), DropDownResponse(2, "Savings Account"))
 
+
+    private fun observeBankData(){
+
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId!=null) {
+                    viewModel.getBankAccountDetails(authToken,
+                        loanApplicationId!!, borrowerId!!, borrowerAssetId!!
+                    )
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.bankAccountType.observe(viewLifecycleOwner, { bankAccountTypes ->
+                if(bankAccountTypes.size>0) {
+                    bankAccounts = arrayListOf()
+                    classLevelBankAccountTypes = arrayListOf()
+                    for (item in bankAccountTypes) {
+                        bankAccounts.add(item.name)
+                        classLevelBankAccountTypes.add(item)
+                    }
+                    stateNamesAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  bankAccounts)
+                    binding.accountTypeCompleteView.setAdapter(stateNamesAdapter)
+                }
+            })
+
+            viewModel.bankAccountDetails.observe(viewLifecycleOwner, { bankAccountDetails ->
+                if(bankAccountDetails.code == AppConstant.RESPONSE_CODE_SUCCESS){
+                    bankAccountDetails.bankAccountData?.let { bankAccountData ->
+                        bankAccountData.institutionName?.let { binding.financialEditText.setText(it)  }
+                        bankAccountData.accountNumber?.let{ binding.accountNumberEdittext.setText(it) }
+                        bankAccountData.balance?.let{binding.annualBaseEditText.setText(it.toString())}
+                        bankAccountData.assetTypeId?.let { assetTypeId->
+                                for(item in classLevelBankAccountTypes){
+                                    if(assetTypeId == item.id){
+                                        binding.accountTypeCompleteView.setText(item.name, false)
+                                        break
+                                    }
+                                }
+                        }
+                    }
+                }
+            })
+        }
+    }
 
 }

@@ -26,6 +26,8 @@ class AssetsActivity : BaseActivity() {
     var borrowerTabList:ArrayList<Int>? = null
     private val borrowerApplicationViewModel: BorrowerApplicationViewModel by viewModels()
 
+    private val assetViewModel: AssetViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = AssetsActivityLayoutBinding.inflate(layoutInflater)
@@ -49,6 +51,9 @@ class AssetsActivity : BaseActivity() {
                             authToken, loanApplicationId!!,
                             borrowerTabList!!
                         )
+
+                        assetViewModel.getBankAccountType(authToken)
+
                     }
                 }
             }
