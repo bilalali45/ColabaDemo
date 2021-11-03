@@ -35,7 +35,9 @@ class AssetsDetailViewController: BaseViewController {
     
     var delegate: AssetsDetailViewControllerDelegate?
     var loanApplicationId = 0
+    var loanPurposeId = 0
     var borrowerId = 0
+    var borrowerName = ""
     var borrowerAssetData = BorrowerAssetsModel()
     var selectedTableView: UITableView?
     
@@ -458,14 +460,44 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
         else{
             if (tableView == tableViewBankAccount && (indexPath.row != 0)){
                 let vc = Utility.getAddBankAccountVC()
+                vc.loanApplicationId = self.loanApplicationId
+                vc.borrowerId = self.borrowerId
+                vc.borrowerName = self.borrowerName
+                if (indexPath.row == bankAccountAsset.assets.count + 1){
+                    vc.isForAdd = true
+                }
+                else{
+                    vc.isForAdd = false
+                    vc.borrowerAssetId = bankAccountAsset.assets[indexPath.row - 1].assetId
+                }
                 self.presentVC(vc: vc)
             }
             else if (tableView == tableViewRetirementAccount && (indexPath.row != 0)){
                 let vc = Utility.getAddRetirementAccountVC()
+                vc.loanApplicationId = self.loanApplicationId
+                vc.borrowerId = self.borrowerId
+                vc.borrowerName = self.borrowerName
+                if (indexPath.row == retirementAccountAsset.assets.count + 1){
+                    vc.isForAdd = true
+                }
+                else{
+                    vc.isForAdd = false
+                    vc.borrowerAssetId = retirementAccountAsset.assets[indexPath.row - 1].assetId
+                }
                 self.presentVC(vc: vc)
             }
             else if (tableView == tableViewStockBonds && (indexPath.row != 0)){
                 let vc = Utility.getAddStockBondVC()
+                vc.loanApplicationId = self.loanApplicationId
+                vc.borrowerId = self.borrowerId
+                vc.borrowerName = self.borrowerName
+                if (indexPath.row == stockBondsAsset.assets.count + 1){
+                    vc.isForAdd = true
+                }
+                else{
+                    vc.isForAdd = false
+                    vc.borrowerAssetId = stockBondsAsset.assets[indexPath.row - 1].assetId
+                }
                 self.presentVC(vc: vc)
             }
             else if (tableView == tableViewTransaction && (indexPath.row != 0)){
@@ -478,6 +510,19 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
             }
             else if (tableView == tableViewOther && (indexPath.row != 0)){
                 let vc = Utility.getAddOtherAssetsVC()
+                vc.loanApplicationId = self.loanApplicationId
+                vc.borrowerId = self.borrowerId
+                vc.borrowerName = self.borrowerName
+                vc.loanPurposeId = self.loanPurposeId
+                if (indexPath.row == otherAsset.assets.count + 1){
+                    vc.isForAdd = true
+                    vc.assetCategoryId = 7
+                }
+                else{
+                    vc.isForAdd = false
+                    vc.assetCategoryId = otherAsset.assets[indexPath.row - 1].assetCategoryId
+                    vc.borrowerAssetId = otherAsset.assets[indexPath.row - 1].assetId
+                }
                 self.presentVC(vc: vc)
             }
         }

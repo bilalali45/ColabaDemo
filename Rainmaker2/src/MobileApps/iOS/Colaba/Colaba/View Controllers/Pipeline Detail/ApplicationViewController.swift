@@ -220,6 +220,7 @@ class ApplicationViewController: BaseViewController {
     @objc func assetsViewTapped(){
         let vc = Utility.getAssetsVC()
         vc.loanApplicationId = self.loanApplicationId
+        vc.loanPurposeId = self.loanApplicationDetail.loanPurposeId
         vc.borrowersArray = self.loanApplicationDetail.borrowersInformation
         self.pushToVC(vc: vc)
     }
@@ -807,6 +808,10 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if (collectionView == borrowerCollectionView){
             let vc = Utility.getBorrowerInformationVC()
+            if (indexPath.row < loanApplicationDetail.borrowersInformation.count){
+                vc.loanApplicationId = self.loanApplicationId
+                vc.borrowerId = self.loanApplicationDetail.borrowersInformation[indexPath.row].borrowerId
+            }
             self.pushToVC(vc: vc)
         }
         else if (collectionView == realEstateCollectionView){

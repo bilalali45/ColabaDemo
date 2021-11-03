@@ -26,11 +26,16 @@ class ReserveFollowUpQuestionsViewController: BaseViewController {
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var isActive = 0 // 1 for yes 2 for no
+    var selectedMilitary = Detail()
+    var borrowerName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
+        isActive = selectedMilitary.reserveEverActivated == true ? 1 : 2
+        lblQuestion.text = "Was \(borrowerName) ever activated during their tour of duty?"
+        lblBorrowerName.text = borrowerName.uppercased()
         changeActiveStatus()
     }
 

@@ -90,7 +90,7 @@ class BorrowerInformationViewController: BaseViewController {
     @IBOutlet weak var lblReserveNationalGuardAns: UILabel!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
-    var totalAddresses = 2
+    var totalAddresses = 0
     var maritalStatus = 0 //1 for unmarried, 2 for married and 3 for separated
     var citizenshipStatus = 0 // 1 for US Citizen, 2 for Permanent and 3 for Non Permanent
     var isShowSecurityNo = false
@@ -99,6 +99,18 @@ class BorrowerInformationViewController: BaseViewController {
     var isReserveOrNationalCard = false
     var isVeteran = false
     var isSurvivingSpouse = false
+    
+    var maritalStatusArray = [DropDownModel]()
+    var housingStatusArray = [DropDownModel]()
+    var relationshipTypeArray = [DropDownModel]()
+    var citizenshipArray = [DropDownModel]()
+    var visaStatusArray = [DropDownModel]()
+    var militaryAffiliationArray = [DropDownModel]()
+    var borrowerInformationModel = BorrowerInformationModel()
+    var noOfAges = [String]()
+    
+    var loanApplicationId = 0
+    var borrowerId = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,6 +122,8 @@ class BorrowerInformationViewController: BaseViewController {
         setDependentCollectionViewLayout()
         setScreenHeight()
         setTextFields()
+        getAllMaritalStatus()
+        self.lblAddAddress.text = totalAddresses == 0 ? "Add Current Residence" : "Add Previous Residence"
     }
 
     //MARK:- Methods and Actions
@@ -152,6 +166,99 @@ class BorrowerInformationViewController: BaseViewController {
         ///Work Number Text Field
         txtfieldSecurityNo.setTextField(placeholder: "Social Security Number", controller: self, validationType: .socialSecurityNumber, keyboardType: .numberPad)
         txtfieldSecurityNo.type = .password
+    }
+    
+    func setBorrowerInformation(){
+        lblBorrowerName.text = "\(borrowerInformationModel.borrowerBasicDetails.firstName.uppercased()) \(borrowerInformationModel.borrowerBasicDetails.lastName.uppercased())"
+        txtfieldLegalFirstName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.firstName)
+        txtfieldMiddleName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.middleName)
+        txtfieldLegalLastName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.lastName)
+        txtfieldSuffix.setTextField(text: borrowerInformationModel.borrowerBasicDetails.suffix)
+        txtfieldEmail.setTextField(text: borrowerInformationModel.borrowerBasicDetails.emailAddress)
+        txtfieldHomeNumber.setTextField(text: borrowerInformationModel.borrowerBasicDetails.homePhone)
+        txtfieldWorkNumber.setTextField(text: borrowerInformationModel.borrowerBasicDetails.workPhone)
+        txtfieldExtensionNumber.setTextField(text: borrowerInformationModel.borrowerBasicDetails.workPhoneExt)
+        txtfieldCellNumber.setTextField(text: borrowerInformationModel.borrowerBasicDetails.cellPhone)
+       
+        if let selectedMaritalStatus = maritalStatusArray.filter({$0.optionId == self.borrowerInformationModel.maritalStatus.maritalStatusId}).first{
+            if (selectedMaritalStatus.optionName.localizedCaseInsensitiveContains("Unmarried")){
+                btnUnMarried.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
+                lblUnMarried.font = Theme.getRubikMediumFont(size: 14)
+            }
+            else if (selectedMaritalStatus.optionName.localizedCaseInsensitiveContains("Married")){
+                btnMarried.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
+                lblMarried.font = Theme.getRubikMediumFont(size: 14)
+            }
+            else if (selectedMaritalStatus.optionName.localizedCaseInsensitiveContains("Separated")){
+                btnSeparated.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
+                lblSeparated.font = Theme.getRubikMediumFont(size: 14)
+            }
+        }
+        
+        if let selectedCitizenshipStatus = citizenshipArray.filter({$0.optionId == self.borrowerInformationModel.borrowerCitizenship.residencyTypeId}).first{
+            if (selectedCitizenshipStatus.optionName.localizedCaseInsensitiveContains("US Citizen")){
+                btnUSCitizen.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
+                lblUSCitizen.font = Theme.getRubikMediumFont(size: 14)
+            }
+            else if (selectedCitizenshipStatus.optionName.localizedCaseInsensitiveContains("Permanent Resident Alien (Green Card)")){
+                btnPermanentResident.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
+                lblPermanentResident.font = Theme.getRubikMediumFont(size: 14)
+            }
+            else if (selectedCitizenshipStatus.optionName.localizedCaseInsensitiveContains("Non Permanent Resident Alien")){
+                btnNonPermanent.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
+                lblNonPermanent.font = Theme.getRubikMediumFont(size: 14)
+            }
+        }
+        nonPermanentResidentMainView.isHidden = borrowerInformationModel.borrowerCitizenship.residencyStatusId == 0
+        citizenshipViewHeightConstraint.constant = borrowerInformationModel.borrowerCitizenship.residencyStatusId == 0 ? 140 : 242
+        txtfieldDOB.setTextField(text: Utility.getDayMonthYear(borrowerInformationModel.borrowerCitizenship.dobUtc))
+        txtfieldSecurityNo.setTextField(text: borrowerInformationModel.borrowerCitizenship.ssn)
+        noOfDependents = borrowerInformationModel.borrowerCitizenship.dependentCount
+        lblNoOfDependent.text = "\(borrowerInformationModel.borrowerCitizenship.dependentCount)"
+        noOfAges = borrowerInformationModel.borrowerCitizenship.dependentAges.components(separatedBy: ",")
+        self.dependentsCollectionView.reloadData()
+        
+        for militaryService in borrowerInformationModel.militaryServiceDetails.details{
+            if let militaryAffiliation = militaryAffiliationArray.filter({$0.optionId == militaryService.militaryAffiliationId}).first{
+                if (militaryAffiliation.optionName.localizedCaseInsensitiveContains("Active Duty Personnel")){
+                    isActiveDutyPersonal = true
+                    btnActiveDuty.setImage(UIImage(named: "CheckBoxSelected"), for: .normal)
+                    lblActiveDuty.font = Theme.getRubikMediumFont(size: 14)
+                    lblLastDate.text = Utility.getMonthYear(militaryService.expirationDateUtc)
+                    changeMilitaryStatus()
+                }
+                else if (militaryAffiliation.optionName.localizedCaseInsensitiveContains("Reserve Or National Guard")){
+                    isReserveOrNationalCard = true
+                    btnReserveNationalGuard.setImage(UIImage(named: "CheckBoxSelected"), for: .normal)
+                    lblReserveNationalGuard.font = Theme.getRubikMediumFont(size: 14)
+                    lblReserveNationalGuardQuestion.text = "Was \(borrowerInformationModel.borrowerBasicDetails.firstName.capitalized) \(borrowerInformationModel.borrowerBasicDetails.lastName.capitalized) ever activated during their tour of duty?"
+                    lblReserveNationalGuardAns.text = militaryService.reserveEverActivated ? "Yes" : "No"
+                    changeMilitaryStatus()
+                }
+                else if (militaryAffiliation.optionName.localizedCaseInsensitiveContains("Surviving Spouse")){
+                    isSurvivingSpouse = true
+                    btnSurvivingSpouse.setImage(UIImage(named: "CheckBoxSelected"), for: .normal)
+                    lblSurvingSpouse.font = Theme.getRubikMediumFont(size: 14)
+                    changeMilitaryStatus()
+                }
+                else if (militaryAffiliation.optionName.localizedCaseInsensitiveContains("Veteran")){
+                    isVeteran = true
+                    btnVeteran.setImage(UIImage(named: "CheckBoxSelected"), for: .normal)
+                    lblVeteran.font = Theme.getRubikMediumFont(size: 14)
+                    changeMilitaryStatus()
+                }
+            }
+        }
+        
+        totalAddresses = borrowerInformationModel.currentAddress.id > 0 ? 1 : 0
+        totalAddresses = totalAddresses + borrowerInformationModel.previousAddresses.count
+        self.tblViewAddress.reloadData()
+        self.lblAddAddress.text = totalAddresses == 0 ? "Add Current Residence" : "Add Previous Residence"
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.setScreenHeight()
+            self.changeMilitaryStatus()
+        }
     }
     
     func setViews() {
@@ -271,6 +378,7 @@ class BorrowerInformationViewController: BaseViewController {
         maritalStatus = 1
         changeMaritalStatus()
         let vc = Utility.getUnmarriedFollowUpQuestionsVC()
+        vc.relationshipTypeArray = self.relationshipTypeArray
         self.presentVC(vc: vc)
     }
     
@@ -285,6 +393,7 @@ class BorrowerInformationViewController: BaseViewController {
     }
     
     func changeMaritalStatus(){
+       
         if (maritalStatus == 1){
             btnUnMarried.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
             lblUnMarried.font = Theme.getRubikMediumFont(size: 14)
@@ -323,6 +432,8 @@ class BorrowerInformationViewController: BaseViewController {
    
     @objc func unmarriedMainViewTapped(){
         let vc = Utility.getUnmarriedFollowUpQuestionsVC()
+        vc.relationshipTypeArray = self.relationshipTypeArray
+        vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
         self.presentVC(vc: vc)
     }
     
@@ -339,8 +450,10 @@ class BorrowerInformationViewController: BaseViewController {
     @objc func nonPermanentResidentTapped(){
         citizenshipStatus = 3
         changeCitizenshipStatus()
-        let vc = Utility.getNonPermanentResidenceFollowUpQuestionsVC()
-        self.presentVC(vc: vc)
+        if let citizenShip = self.citizenshipArray.filter({$0.optionName.localizedCaseInsensitiveContains("Non Permanent Resident Alien")}).first{
+            self.getAllVisaStatus(residencyTypeId: citizenShip.optionId, isForAddUpdate: true)
+        }
+        
     }
     
     func changeCitizenshipStatus(){
@@ -381,6 +494,9 @@ class BorrowerInformationViewController: BaseViewController {
     
     @objc func nonPermanentResidentMainViewTapped(){
         let vc = Utility.getNonPermanentResidenceFollowUpQuestionsVC()
+        vc.visaStatusArray = visaStatusArray
+        vc.selectedCitizenShip = borrowerInformationModel.borrowerCitizenship
+        vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
         self.presentVC(vc: vc)
     }
     
@@ -402,12 +518,20 @@ class BorrowerInformationViewController: BaseViewController {
         changeMilitaryStatus()
         if (isActiveDutyPersonal){
             let vc = Utility.getActiveDutyPersonnelFollowUpQuestionVC()
+            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+            if let activeDuty = self.borrowerInformationModel.militaryServiceDetails.details.filter({$0.militaryAffiliationId == self.militaryAffiliationArray.filter({$0.optionName == "Active Duty Personnel"}).first!.optionId}).first{
+                vc.selectedMilitary = activeDuty
+            }
             self.presentVC(vc: vc)
         }
     }
     
     @objc func lastDateOfServiceMainViewTapped(){
         let vc = Utility.getActiveDutyPersonnelFollowUpQuestionVC()
+        vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+        if let activeDuty = self.borrowerInformationModel.militaryServiceDetails.details.filter({$0.militaryAffiliationId == self.militaryAffiliationArray.filter({$0.optionName == "Active Duty Personnel"}).first!.optionId}).first{
+            vc.selectedMilitary = activeDuty
+        }
         self.presentVC(vc: vc)
     }
     
@@ -418,12 +542,20 @@ class BorrowerInformationViewController: BaseViewController {
         changeMilitaryStatus()
         if (isReserveOrNationalCard){
             let vc = Utility.getReserveFollowUpQuestionsVC()
+            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+            if let reserveNationalGuard = self.borrowerInformationModel.militaryServiceDetails.details.filter({$0.militaryAffiliationId == self.militaryAffiliationArray.filter({$0.optionName == "Reserve Or National Guard"}).first!.optionId}).first{
+                vc.selectedMilitary = reserveNationalGuard
+            }
             self.presentVC(vc: vc)
         }
     }
     
     @objc func reserveOrNationalGuardMainViewTapped(){
         let vc = Utility.getReserveFollowUpQuestionsVC()
+        vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+        if let reserveNationalGuard = self.borrowerInformationModel.militaryServiceDetails.details.filter({$0.militaryAffiliationId == self.militaryAffiliationArray.filter({$0.optionName == "Reserve Or National Guard"}).first!.optionId}).first{
+            vc.selectedMilitary = reserveNationalGuard
+        }
         self.presentVC(vc: vc)
     }
     
@@ -583,6 +715,200 @@ class BorrowerInformationViewController: BaseViewController {
         }
         return isValidate
     }
+    
+    //MARK:- API's
+    
+    func getAllMaritalStatus(){
+        
+        self.maritalStatusArray.removeAll()
+        self.housingStatusArray.removeAll()
+        self.relationshipTypeArray.removeAll()
+        self.citizenshipArray.removeAll()
+        self.visaStatusArray.removeAll()
+        self.militaryAffiliationArray.removeAll()
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getMaritalStatusList, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = DropDownModel()
+                        model.updateModelWithJSON(json: option, isForBorrowerInfo: true)
+                        self.maritalStatusArray.append(model)
+                    }
+                    self.getAllHousingStatus()
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+        }
+    }
+    
+    func getAllHousingStatus(){
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getHousingStatus, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = DropDownModel()
+                        model.updateModelWithJSON(json: option, isForBorrowerInfo: true)
+                        self.housingStatusArray.append(model)
+                    }
+                    self.getAllRelationshipTypes()
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+        }
+    }
+    
+    func getAllRelationshipTypes(){
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getRelationshipType, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = DropDownModel()
+                        model.updateModelWithJSON(json: option)
+                        self.relationshipTypeArray.append(model)
+                    }
+                    self.getAllCitizenShipsTypes()
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+        }
+    }
+    
+    func getAllCitizenShipsTypes(){
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getCitizenShip, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = DropDownModel()
+                        model.updateModelWithJSON(json: option, isForBorrowerInfo: true)
+                        self.citizenshipArray.append(model)
+                    }
+                    self.getAllMilitaryAffiliation()
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+        }
+    }
+    
+    func getAllVisaStatus(residencyTypeId: Int, isForAddUpdate: Bool = false){
+        let extraData = "residencyTypeId=\(residencyTypeId)"
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getVisaStatus, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = DropDownModel()
+                        model.updateModelWithJSON(json: option, isForBorrowerInfo: true)
+                        self.visaStatusArray.append(model)
+                    }
+                    if (!isForAddUpdate){
+                        if let selectedVisaStatus = self.visaStatusArray.filter({$0.optionId == self.borrowerInformationModel.borrowerCitizenship.residencyStatusId}).first{
+                            self.lblNonPermanentAns.text = selectedVisaStatus.optionName
+                        }
+                    }
+                    else{
+                        let vc = Utility.getNonPermanentResidenceFollowUpQuestionsVC()
+                        vc.visaStatusArray = self.visaStatusArray
+                        vc.selectedCitizenShip = self.borrowerInformationModel.borrowerCitizenship
+                        vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+                        self.presentVC(vc: vc)
+                    }
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func getAllMilitaryAffiliation(){
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getMilitartyAffiliation, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = DropDownModel()
+                        model.updateModelWithJSON(json: option, isForBorrowerInfo: true)
+                        self.militaryAffiliationArray.append(model)
+                    }
+                    if (self.loanApplicationId > 0){
+                        self.getBorrowerDetail()
+                    }
+                    Utility.showOrHideLoader(shouldShow: false)
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+        }
+    }
+    
+    func getBorrowerDetail(){
+        let extraData = "loanApplicationId=\(loanApplicationId)&borrowerId=\(borrowerId)"
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getBorrowerDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                Utility.showOrHideLoader(shouldShow: false)
+                
+                if (status == .success){
+                    let model = BorrowerInformationModel()
+                    model.updateModelWithJSON(json: result["data"])
+                    self.borrowerInformationModel = model
+                    self.getAllVisaStatus(residencyTypeId: self.borrowerInformationModel.borrowerCitizenship.residencyTypeId)
+                    self.setBorrowerInformation()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+        }
+        
+    }
+    
 }
 
 extension BorrowerInformationViewController: ColabaTextFieldDelegate {
@@ -601,10 +927,24 @@ extension BorrowerInformationViewController: UITableViewDataSource, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerAddressInfoTableViewCell", for: indexPath) as! BorrowerAddressInfoTableViewCell
         cell.addressIcon.isHidden = indexPath.row != 0
         cell.lblHeading.isHidden = indexPath.row != 0
-        cell.lblRent.isHidden = indexPath.row != 0
-        cell.lblAddressTopConstraint.constant = indexPath.row != 0 ? 15 : 51
-        cell.lblAddress.text = indexPath.row != 0 ? "5919 Trussville Crossings Pkwy,\nBirmingham AL 35235" : "5919 Trussville Crossings Parkways, ZV Street, Birmingham AL 35235"
-        cell.lblDate.text = indexPath.row != 0 ? "From Aug 2019 to Nov 2020" : "From Dec 2020"
+        
+        if (indexPath.row == 0){
+            cell.lblAddressTopConstraint.constant = 51
+            let address = borrowerInformationModel.currentAddress.addressModel
+            cell.lblAddress.text = "\(address.street) \(address.unit),\n\(address.city), \(address.stateName) \(address.zipCode)"
+            cell.lblRent.isHidden = borrowerInformationModel.currentAddress.monthlyRent == 0
+            cell.lblRent.text = "Rental \(borrowerInformationModel.currentAddress.monthlyRent.withCommas().replacingOccurrences(of: ".00", with: ""))"
+            cell.lblDate.text = Utility.getIncomeDate(startDate: borrowerInformationModel.currentAddress.fromDate, endDate: borrowerInformationModel.currentAddress.toDate, isForAddress: true)
+        }
+        else{
+            cell.lblAddressTopConstraint.constant = 15
+            let address = borrowerInformationModel.previousAddresses[indexPath.row - 1].addressModel
+            cell.lblAddress.text = "\(address.street) \(address.unit),\n\(address.city), \(address.stateName) \(address.zipCode)"
+            cell.lblRent.isHidden = borrowerInformationModel.previousAddresses[indexPath.row - 1].monthlyRent == 0
+            cell.lblRent.text = "Rental \(borrowerInformationModel.previousAddresses[indexPath.row - 1].monthlyRent.withCommas().replacingOccurrences(of: ".00", with: ""))"
+            cell.lblDate.text = Utility.getIncomeDate(startDate: borrowerInformationModel.previousAddresses[indexPath.row - 1].fromDate, endDate: borrowerInformationModel.previousAddresses[indexPath.row - 1].toDate, isForAddress: true)
+        }
+        
         cell.mainView.layer.cornerRadius = 6
         cell.mainView.layer.borderWidth = 1
         cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
@@ -618,6 +958,10 @@ extension BorrowerInformationViewController: UITableViewDataSource, UITableViewD
         
         if (indexPath.row == 0){
             let vc = Utility.getAddResidenceVC()
+            vc.selectedAddress = borrowerInformationModel.currentAddress
+            vc.borrowerFirstName = borrowerInformationModel.borrowerBasicDetails.firstName
+            vc.borrowerLastName = borrowerInformationModel.borrowerBasicDetails.lastName
+            vc.housingStatusArray = self.housingStatusArray
             let navVC = UINavigationController(rootViewController: vc)
             navVC.modalPresentationStyle = .fullScreen
             navVC.navigationBar.isHidden = true
@@ -625,6 +969,10 @@ extension BorrowerInformationViewController: UITableViewDataSource, UITableViewD
         }
         else{
             let vc = Utility.getAddPreviousResidenceVC()
+            vc.selectedAddress = borrowerInformationModel.previousAddresses[indexPath.row - 1]
+            vc.borrowerFirstName = borrowerInformationModel.borrowerBasicDetails.firstName
+            vc.borrowerLastName = borrowerInformationModel.borrowerBasicDetails.lastName
+            vc.housingStatusArray = self.housingStatusArray
             let navVC = UINavigationController(rootViewController: vc)
             navVC.modalPresentationStyle = .fullScreen
             navVC.navigationBar.isHidden = true
@@ -649,7 +997,13 @@ extension BorrowerInformationViewController: UITableViewDataSource, UITableViewD
         let deleteAction = UIContextualAction(style: .destructive, title: "") { action, actionView, bool in
             DispatchQueue.main.async {
                 let vc = Utility.getDeleteAddressPopupVC()
-                vc.popupTitle = "Are you sure you want to delete Richard's Current Residence?"
+                if (indexPath.row == 0){
+                    vc.popupTitle = "Are you sure you want to delete \(self.borrowerInformationModel.borrowerBasicDetails.firstName.capitalized)'s Current Residence?"
+                }
+                else{
+                    vc.popupTitle = "Are you sure you want to delete \(self.borrowerInformationModel.borrowerBasicDetails.firstName.capitalized)'s Previous Residence?"
+                }
+                
                 vc.screenType = 1
                 vc.indexPath = indexPath
                 vc.delegate = self
@@ -685,6 +1039,12 @@ extension BorrowerInformationViewController: UICollectionViewDataSource, UIColle
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DependentCollectionViewCell", for: indexPath) as! DependentCollectionViewCell
         let textFieldNo = indexPath.row + 1
         cell.txtfieldAge.placeholder = "\(textFieldNo.ordinalNumber()) Dependent Age (Years)"
+        if (indexPath.row < noOfAges.count){
+            cell.txtfieldAge.setTextField(text: noOfAges[indexPath.row])
+        }
+        else{
+            cell.txtfieldAge.setTextField(text: "")
+        }
         cell.indexPath = indexPath
         cell.delegate = self
         return cell

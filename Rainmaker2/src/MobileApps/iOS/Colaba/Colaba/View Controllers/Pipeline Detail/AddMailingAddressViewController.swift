@@ -34,11 +34,16 @@ class AddMailingAddressViewController: BaseViewController {
     @IBOutlet weak var tblViewPlaces: UITableView!
     var placesData=[GMSAutocompletePrediction]()
     var fetcher: GMSAutocompleteFetcher?
+    var selectedAddress = BorrowerAddress()
+    var borrowerFirstName = ""
+    var borrowerLastName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextFields()
         setPlacePickerTextField()
+        lblBorrowerName.text = "\(borrowerFirstName.uppercased()) \(borrowerLastName.uppercased())"
+        setAddressData()
     }
     
     //MARK:- Methods and Actions
@@ -67,6 +72,21 @@ class AddMailingAddressViewController: BaseViewController {
         txtfieldCountry.setTextField(placeholder: "Country", controller: self, validationType: .required)
         txtfieldCountry.type = .editableDropdown
         txtfieldCountry.setDropDownDataSource(kCountryListArray)
+    }
+    
+    func setAddressData(){
+        if (selectedAddress.id > 0){
+            let address = selectedAddress.isMailingAddressDifferent ? selectedAddress.mailingAddressModel : selectedAddress.addressModel
+            showAllFields()
+            txtfieldHomeAddress.text = address.street
+            txtfieldStreetAddress.setTextField(text: address.street)
+            txtfieldUnitNo.setTextField(text: address.unit)
+            txtfieldCity.setTextField(text: address.city)
+            txtfieldCounty.setTextField(text: address.countyName)
+            txtfieldState.setTextField(text: address.stateName)
+            txtfieldZipCode.setTextField(text: address.zipCode)
+            txtfieldCountry.setTextField(text: address.countryName)
+        }
     }
     
     func setPlacePickerTextField() {

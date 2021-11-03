@@ -16,6 +16,7 @@ class AssetsViewController: BaseViewController {
     @IBOutlet weak var lblTotalAssets: UILabel!
     
     var loanApplicationId = 0
+    var loanPurposeId = 0
     var borrowersArray = [BorrowerInfoModel]()
     
     override func viewDidLoad() {
@@ -74,7 +75,9 @@ extension AssetsViewController: CarbonTabSwipeNavigationDelegate{
     func carbonTabSwipeNavigation(_ carbonTabSwipeNavigation: CarbonTabSwipeNavigation, viewControllerAt index: UInt) -> UIViewController {
         let vc = Utility.getAssetsDetailVC()
         vc.loanApplicationId = self.loanApplicationId
+        vc.loanPurposeId = self.loanPurposeId
         vc.borrowerId = borrowersArray[Int(index)].borrowerId
+        vc.borrowerName = borrowersArray[Int(index)].borrowerFullName
         vc.delegate = self
         return vc
     }

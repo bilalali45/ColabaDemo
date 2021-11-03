@@ -14,9 +14,9 @@ class DropDownModel: NSObject{
     var optionName: String = ""
     var isSelected: Bool = false
     
-    func updateModelWithJSON(json: JSON){
+    func updateModelWithJSON(json: JSON, isForBorrowerInfo:Bool=false){
         optionId = json["id"].intValue
-        optionName = json["name"].stringValue
+        optionName = isForBorrowerInfo ? json["description"].stringValue : json["name"].stringValue
     }
     
 }
