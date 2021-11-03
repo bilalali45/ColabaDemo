@@ -43,11 +43,17 @@ class AddPreviousResidenceViewController: BaseViewController {
     var fetcher: GMSAutocompleteFetcher?
     
     var numberOfMailingAddress = 1
+    var selectedAddress = BorrowerAddress()
+    var housingStatusArray = [DropDownModel]()
+    var borrowerFirstName = ""
+    var borrowerLastName = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextFields()
         setPlacePickerTextField()
+        lblBorrowerName.text = "\(borrowerFirstName.uppercased()) \(borrowerLastName.uppercased())"
+        setCurrentAddress()
     }
     
     //MARK:- Methods and Actions
@@ -93,6 +99,35 @@ class AddPreviousResidenceViewController: BaseViewController {
         ///Monthly Rent Text Field
         txtfieldMonthlyRent.setTextField(placeholder: "Monthly Rent", controller: self, validationType: .required)
         txtfieldMonthlyRent.type = .amount
+    }
+    
+    func setCurrentAddress(){
+        if (selectedAddress.id > 0){
+            showAllFields()
+            let address = selectedAddress.addressModel
+            txtfieldHomeAddress.text = address.street
+            txtfieldStreetAddress.setTextField(text: address.street)
+            txtfieldUnitNo.setTextField(text: address.unit)
+            txtfieldCity.setTextField(text: address.city)
+            txtfieldCounty.setTextField(text: address.countyName)
+            txtfieldState.setTextField(text: address.stateName)
+            txtfieldZipCode.setTextField(text: address.zipCode)
+            txtfieldCountry.setTextField(text: address.countryName)
+            txtfieldMoveInDate.setTextField(text: Utility.getMonthYear(selectedAddress.fromDate))
+            txtfieldMoveOutDate.setTextField(text: Utility.getMonthYear(selectedAddress.toDate))
+            if let housingStatus = housingStatusArray.filter({$0.optionId == selectedAddress.housingStatusId}).first{
+                txtfieldHousingStatus.setTextField(text: housingStatus.optionName)
+                if (housingStatus.optionName.localizedCaseInsensitiveContains("Rent")){
+                    txtfieldMonthlyRent.isHidden = false
+                    txtfieldMonthlyRentTopConstraint.constant = 30
+                    txtfieldMonthlyRentHeightConstraint.constant = 39
+                    txtfieldMonthlyRent.setTextField(text: selectedAddress.monthlyRent.withCommas().replacingOccurrences(of: ".00", with: ""))
+                    UIView.animate(withDuration: 0.0) {
+                        self.view.layoutSubviews()
+                    }
+                }
+            }
+        }
     }
     
     func setPlacePickerTextField() {
@@ -238,7 +273,7 @@ class AddPreviousResidenceViewController: BaseViewController {
     
     @IBAction func btnDeleteTapped(_ sender: UIButton) {
         let vc = Utility.getDeleteAddressPopupVC()
-        vc.popupTitle = "Are you sure you want to delete Richard's Current Residence?"
+        vc.popupTitle = "Are you sure you want to delete \(borrowerFirstName)'s Previous Residence?"
         vc.screenType = 2
         self.present(vc, animated: false, completion: nil)
     }

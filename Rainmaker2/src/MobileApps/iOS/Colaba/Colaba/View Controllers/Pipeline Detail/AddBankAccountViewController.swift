@@ -22,11 +22,20 @@ class AddBankAccountViewController: BaseViewController {
     @IBOutlet weak var txtfieldAnnualBaseSalary: ColabaTextField!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
+    var borrowerName = ""
     var isShowAccountNumber = false
+    var isForAdd = false
+    var loanApplicationId = 0
+    var borrowerId = 0
+    var borrowerAssetId = 0
+    var accountTypeArray = [DropDownModel]()
+    var bankAccountDetail = BankAccountDetailModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        lblBorrowerName.text = borrowerName.uppercased()
         setTextFields()
+        getBankAccountTypes()
     }
     
     //MARK:- Methods and Actions
@@ -46,6 +55,15 @@ class AddBankAccountViewController: BaseViewController {
         ///Annual Base Salary Text Field
         txtfieldAnnualBaseSalary.setTextField(placeholder: "Annual Base Salary", controller: self, validationType: .required)
         txtfieldAnnualBaseSalary.type = .amount
+    }
+    
+    func setBankAccountDetail(){
+        if let accountType = self.accountTypeArray.filter({$0.optionId == self.bankAccountDetail.assetTypeId}).first{
+            self.txtfieldAccountType.setTextField(text: accountType.optionName)
+        }
+        txtfieldFinancialInstitution.setTextField(text: self.bankAccountDetail.institutionName)
+        txtfieldAccountNumber.setTextField(text: self.bankAccountDetail.accountNumber)
+        txtfieldAnnualBaseSalary.setTextField(text: String(format: "%.0f", self.bankAccountDetail.balance.rounded()))
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
@@ -71,4 +89,61 @@ class AddBankAccountViewController: BaseViewController {
         isValidate = txtfieldAnnualBaseSalary.validate() && isValidate
         return isValidate
     }
+    
+    //MARK:- API's
+    
+    func getBankAccountTypes(){
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllBankAccountType, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = DropDownModel()
+                        model.updateModelWithJSON(json: option)
+                        self.accountTypeArray.append(model)
+                    }
+                    if (self.isForAdd){
+                        Utility.showOrHideLoader(shouldShow: false)
+                    }
+                    else{
+                        self.getBankAccountDetail()
+                    }
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+            
+        }
+        
+    }
+    
+    func getBankAccountDetail(){
+        let extraData = "loanApplicationId=\(loanApplicationId)&borrowerId=\(borrowerId)&borrowerAssetId=\(borrowerAssetId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getBankAccountDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    let model = BankAccountDetailModel()
+                    model.updateModelWithJSON(json: result["data"])
+                    self.bankAccountDetail = model
+                    self.setBankAccountDetail()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
+    
 }

@@ -36,6 +36,7 @@ class AssetsDetailViewController: BaseViewController {
     var delegate: AssetsDetailViewControllerDelegate?
     var loanApplicationId = 0
     var borrowerId = 0
+    var borrowerName = ""
     var borrowerAssetData = BorrowerAssetsModel()
     var selectedTableView: UITableView?
     
@@ -458,6 +459,16 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
         else{
             if (tableView == tableViewBankAccount && (indexPath.row != 0)){
                 let vc = Utility.getAddBankAccountVC()
+                vc.loanApplicationId = self.loanApplicationId
+                vc.borrowerId = self.borrowerId
+                vc.borrowerName = self.borrowerName
+                if (indexPath.row == bankAccountAsset.assets.count + 1){
+                    vc.isForAdd = true
+                }
+                else{
+                    vc.isForAdd = false
+                    vc.borrowerAssetId = bankAccountAsset.assets[indexPath.row - 1].assetId
+                }
                 self.presentVC(vc: vc)
             }
             else if (tableView == tableViewRetirementAccount && (indexPath.row != 0)){

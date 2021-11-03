@@ -43,12 +43,18 @@ class AddResidenceViewController: BaseViewController {
     var placesData=[GMSAutocompletePrediction]()
     var fetcher: GMSAutocompleteFetcher?
     
-    var numberOfMailingAddress = 1
+    var numberOfMailingAddress = 0
+    var selectedAddress = BorrowerAddress()
+    var housingStatusArray = [DropDownModel]()
+    var borrowerFirstName = ""
+    var borrowerLastName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextFields()
         setPlacePickerTextField()
+        lblBorrowerName.text = "\(borrowerFirstName.uppercased()) \(borrowerLastName.uppercased())"
+        setCurrentAddress()
     }
     
     //MARK:- Methods and Actions
@@ -85,11 +91,43 @@ class AddResidenceViewController: BaseViewController {
         ///Housing Status Text Field
         txtfieldHousingStatus.setTextField(placeholder: "Housing Status", controller: self, validationType: .required)
         txtfieldHousingStatus.type = .dropdown
-        txtfieldHousingStatus.setDropDownDataSource(kHousingStatusArray)
+        txtfieldHousingStatus.setDropDownDataSource(housingStatusArray.map{$0.optionName})
         
         ///Monthly Rent Text Field
         txtfieldMonthlyRent.setTextField(placeholder: "Monthly Rent", controller: self, validationType: .required)
         txtfieldMonthlyRent.type = .amount
+    }
+    
+    func setCurrentAddress(){
+        if (selectedAddress.id > 0){
+            showAllFields()
+            let address = selectedAddress.addressModel
+            txtfieldHomeAddress.text = address.street
+            txtfieldStreetAddress.setTextField(text: address.street)
+            txtfieldUnitNo.setTextField(text: address.unit)
+            txtfieldCity.setTextField(text: address.city)
+            txtfieldCounty.setTextField(text: address.countyName)
+            txtfieldState.setTextField(text: address.stateName)
+            txtfieldZipCode.setTextField(text: address.zipCode)
+            txtfieldCountry.setTextField(text: address.countryName)
+            txtfieldMoveInDate.setTextField(text: Utility.getMonthYear(selectedAddress.fromDate))
+            if let housingStatus = housingStatusArray.filter({$0.optionId == selectedAddress.housingStatusId}).first{
+                txtfieldHousingStatus.setTextField(text: housingStatus.optionName)
+                if (housingStatus.optionName.localizedCaseInsensitiveContains("Rent")){
+                    txtfieldMonthlyRent.isHidden = false
+                    txtfieldMonthlyRentTopConstraint.constant = 30
+                    txtfieldMonthlyRentHeightConstraint.constant = 39
+                    txtfieldMonthlyRent.setTextField(text: selectedAddress.monthlyRent.withCommas().replacingOccurrences(of: ".00", with: ""))
+                    UIView.animate(withDuration: 0.0) {
+                        self.view.layoutSubviews()
+                    }
+                }
+            }
+            self.tblViewMailingAddress.isHidden = false
+            self.addMailingAddressStackView.isHidden = true
+            self.numberOfMailingAddress = 1
+            self.tblViewMailingAddress.reloadData()
+        }
     }
     
     func setPlacePickerTextField() {
@@ -252,7 +290,7 @@ class AddResidenceViewController: BaseViewController {
     
     @IBAction func btnDeleteTapped(_ sender: UIButton) {
         let vc = Utility.getDeleteAddressPopupVC()
-        vc.popupTitle = "Are you sure you want to delete Richard's Current Residence?"
+        vc.popupTitle = "Are you sure you want to delete \(borrowerFirstName)'s Current Residence?"
         vc.screenType = 2
         self.present(vc, animated: false, completion: nil)
     }
@@ -321,7 +359,8 @@ extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate
             cell.lblHeading.isHidden = true
             cell.lblRent.isHidden = true
             cell.lblAddressTopConstraint.constant = 15
-            cell.lblAddress.text = "4101  Oak Tree Avenue  LN # 222, Chicago, MD 60605"
+            let address = selectedAddress.isMailingAddressDifferent ? selectedAddress.mailingAddressModel : selectedAddress.addressModel
+            cell.lblAddress.text = "\(address.street) \(address.unit),\n\(address.city), \(address.stateName) \(address.zipCode)"
             cell.lblDate.text = "Mailing Address"
             cell.mainView.layer.cornerRadius = 6
             cell.mainView.layer.borderWidth = 1
@@ -356,6 +395,9 @@ extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate
         }
         else{
             let vc = Utility.getAddMailingAddressVC()
+            vc.selectedAddress = selectedAddress
+            vc.borrowerFirstName = borrowerFirstName
+            vc.borrowerLastName = borrowerLastName
             self.pushToVC(vc: vc)
         }
         
@@ -376,7 +418,7 @@ extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate
         
         let deleteAction = UIContextualAction(style: .normal, title: "") { action, actionView, bool in
             let vc = Utility.getDeleteAddressPopupVC()
-            vc.popupTitle = "Are you sure you want to delete Richard's Mailing Address?"
+            vc.popupTitle = "Are you sure you want to delete \(self.borrowerFirstName)'s Mailing Address?"
             vc.screenType = 1
             vc.indexPath = indexPath
             vc.delegate = self

@@ -58,6 +58,15 @@ enum EndPoint:String{
     case getAllEthnicityList = "loanapplication/Loan/GetAllEthnicityList"
     case getAllGenderList = "loanapplication/Loan/GetGenderList"
     case getDemographicInformation = "loanapplication/GovtQuestions/GetDemographicInformation?"
+    case getMaritalStatusList = "loanapplication/Loan/GetMaritalStatusList"
+    case getHousingStatus = "loanapplication/Loan/GetHousingStatus"
+    case getRelationshipType = "loanapplication/Loan/GetRelationshipTypes"
+    case getCitizenShip = "loanapplication/Loan/GetCitizenship"
+    case getVisaStatus = "loanapplication/Loan/GetVisaStatus?"
+    case getMilitartyAffiliation = "loanapplication/Loan/GetMilitaryAffiliation"
+    case getBorrowerDetail = "loanapplication/Borrower/GetBorrowerDetails?"
+    case getAllBankAccountType = "loanapplication/Assets/GetBankAccountType"
+    case getBankAccountDetail = "loanapplication/Assets/GetBankAccountDetails?"
     case logout = "identity/mcuaccount/Logout"
     
 }

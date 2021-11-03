@@ -30,6 +30,9 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
     
     var isNonLegalSpouse = 0 // 1 for yes 2 for no
     var txtViewRelationshipDetail = MDCFilledTextArea()
+    var relationshipTypeArray = [DropDownModel]()
+    var statesArray = [StatesModel]()
+    var borrowerName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +40,8 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
         changeNonLegalSpouseStatus()
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
+        lblBorrowerName.text = borrowerName.uppercased()
+        getStatesDropDown()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -85,7 +90,7 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
         ///Type of Relationship Text Field
         txtfieldTypeOfRelation.setTextField(placeholder: "Type of Relationship", controller: self, validationType: .required)
         txtfieldTypeOfRelation.type = .dropdown
-        txtfieldTypeOfRelation.setDropDownDataSource(kRelationshipTypeArray)
+        txtfieldTypeOfRelation.setDropDownDataSource(relationshipTypeArray.map({$0.optionName}))
 
         ///State Text Field
         txtfieldState.setTextField(placeholder: "In what state was this relationship formed", controller: self, validationType: .required)
@@ -149,6 +154,33 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
             isValidate = validateTextView() && isValidate
         }
         return isValidate
+    }
+    
+    //MARK:- API's
+    
+    func getStatesDropDown(){
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllStates, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let statesArray = result.arrayValue
+                    for state in statesArray{
+                        let model = StatesModel()
+                        model.updateModelWithJSON(json: state)
+                        self.statesArray.append(model)
+                    }
+                    self.txtfieldState.setDropDownDataSource(self.statesArray.map{$0.name})
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+            
+        }
     }
 }
 
