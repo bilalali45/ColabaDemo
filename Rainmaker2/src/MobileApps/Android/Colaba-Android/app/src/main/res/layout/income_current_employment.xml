@@ -57,7 +57,7 @@
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_emp_name"
+                    android:id="@+id/editText_emp_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -92,7 +92,7 @@
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_emp_phnum"
+                    android:id="@+id/editText_emp_phnum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -135,6 +135,7 @@
                     app:drawableStartCompat="@drawable/ic_location_svg" />
 
                 <TextView
+                    android:id="@+id/textview_employer_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -197,7 +198,7 @@
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_job_title"
+                    android:id="@+id/editText_job_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -234,7 +235,7 @@
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_start_date"
+                    android:id="@+id/editText_start_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -272,7 +273,7 @@
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_prof_years"
+                    android:id="@+id/editText_prof_years"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -306,7 +307,7 @@
                 android:layout_marginTop="20dp">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/rb_ques1_yes"
+                    android:id="@+id/rb_employed_by_family_yes"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
                     android:button="@drawable/radiodraw"
@@ -318,7 +319,7 @@
                     android:textSize="14sp" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/rb_ques1_no"
+                    android:id="@+id/rb_employed_by_family_no"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
                     android:layout_marginTop="18dp"
@@ -514,7 +515,7 @@
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_avg_hours"
+                    android:id="@+id/editText_weekly_hours"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -741,6 +742,21 @@
         android:src="@drawable/ic_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ProgressBar
+        android:id="@+id/loader_employment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:elevation="1dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colaba_apptheme_blue"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

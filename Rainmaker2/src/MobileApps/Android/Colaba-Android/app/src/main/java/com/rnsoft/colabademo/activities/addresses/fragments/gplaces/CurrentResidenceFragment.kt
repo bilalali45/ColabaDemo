@@ -75,72 +75,69 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         setUpUI()
         getDropDownData()
         setUpCompleteViewForPlaces()
-        initializeUSAstates()
+        //initializeUSAstates()
 
         return root
     }
 
 
-    private fun setData() {
+    private fun setData(){
 
-        viewModel.borrowerDetail.observe(viewLifecycleOwner, { detail ->
-            if(detail !=null){
-                detail.borrowerData?.currentAddress?.housingStatusId?.let { id->
-                    if(id == 1)
-                       binding.housingCompleteTextView.setText("Own")
-                    if(id==2) {
-                        binding.housingCompleteTextView.setText("Rent")
-                        detail.borrowerData.currentAddress.monthlyRent?.let {
-                            binding.monthlyRentEditText.setText(it.toString())
-                            binding.monthlyRentEditText.visibility =View.VISIBLE
+        if(arguments !=null) {
+            viewModel.borrowerDetail.observe(viewLifecycleOwner, { detail ->
+                if (detail != null) {
+                    detail.borrowerData?.currentAddress?.housingStatusId?.let { id ->
+                        if (id == 1)
+                            binding.housingCompleteTextView.setText("Own")
+                        if (id == 2) {
+                            binding.housingCompleteTextView.setText("Rent")
+                            detail.borrowerData.currentAddress.monthlyRent?.let {
+                                binding.monthlyRentEditText.setText(it.toString())
+                                binding.monthlyRentEditText.visibility = View.VISIBLE
+                            }
+                        }
+                        if (id == 3) {
+                            binding.housingCompleteTextView.setText("No Primary Housing Expense")
                         }
                     }
-                    if(id==3){
-                        binding.housingCompleteTextView.setText("No Primary Housing Expense")
-                    }
-                }
 
-                detail.borrowerData?.currentAddress?.let {
-                    it.addressModel?.let {
-                        it.street?.let {
-                            binding.topSearchAutoTextView.setText(it)
-                            binding.streetAddressEditText.setText(it)
-                            setColor(binding.layoutSearchField)
-                            setColor(binding.streetAddressLayout)
-                        }
-                        it.city?.let { binding.cityEditText.setText(it) }
-                        it.countryName?.let {
-                            binding.countryCompleteTextView.setText(it)
-                            setColor(binding.countryCompleteLayout)
-                        }
-                        it.zipCode?.let {
-                            binding.zipcodeEditText.setText(it)
-                        }
-                        it.stateName?.let {
-                            binding.stateCompleteTextView.setText(it)
-                            setColor(binding.stateCompleteTextInputLayout)
-                        }
-                        it.countyName?.let {
-                            binding.countyEditText.setText(it)
-                            setColor(binding.countyLayout)
-                        }
-                        it.unit?.let {
-                            binding.unitAptInputEditText.setText(it)
-                        }
+                    detail.borrowerData?.currentAddress?.let {
+                        it.addressModel?.let {
+                            it.street?.let {
+                                binding.topSearchAutoTextView.setText(it)
+                                binding.streetAddressEditText.setText(it)
+                                setColor(binding.layoutSearchField)
+                                setColor(binding.streetAddressLayout)
+                            }
+                            it.city?.let { binding.cityEditText.setText(it) }
+                            it.countryName?.let {
+                                binding.countryCompleteTextView.setText(it)
+                                setColor(binding.countryCompleteLayout)
+                            }
+                            it.zipCode?.let {
+                                binding.zipcodeEditText.setText(it)
+                            }
+                            it.stateName?.let {
+                                binding.stateCompleteTextView.setText(it)
+                                setColor(binding.stateCompleteTextInputLayout)
+                            }
+                            it.countyName?.let {
+                                binding.countyEditText.setText(it)
+                                setColor(binding.countyLayout)
+                            }
+                            it.unit?.let {
+                                binding.unitAptInputEditText.setText(it)
+                            }
                             visibleAllFields()
-                    }
-                    it.fromDate?.let {
-                        binding.moveInEditText.setText(it)
-                        setColor(binding.moveInLayout)
+                        }
+                        it.fromDate?.let {
+                            binding.moveInEditText.setText(it)
+                            setColor(binding.moveInLayout)
+                        }
                     }
                 }
-
-            }
-        })
-    }
-
-    private fun setColor(textInputLayout: TextInputLayout){
-        CustomMaterialFields.setColor(textInputLayout, R.color.grey_color_two, requireActivity())
+            })
+        }
     }
 
     private fun getDropDownData(){
@@ -621,10 +618,6 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                 .setQuery(queryPlace)
                 .build()
 
-
-
-
-
         placesClient.findAutocompletePredictions(request)
             .addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
                 for (prediction in response.autocompletePredictions) {
@@ -745,6 +738,10 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.moveInEditText.setText(sampleDate)
         CustomMaterialFields.clearError(binding.moveInLayout,requireActivity())
 
+    }
+
+    private fun setColor(textInputLayout: TextInputLayout){
+        CustomMaterialFields.setColor(textInputLayout, R.color.grey_color_two, requireActivity())
     }
 
     private fun initializeUSAstates() {
