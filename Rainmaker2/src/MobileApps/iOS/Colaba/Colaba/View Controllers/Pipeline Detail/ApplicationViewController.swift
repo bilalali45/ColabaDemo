@@ -220,6 +220,7 @@ class ApplicationViewController: BaseViewController {
     @objc func assetsViewTapped(){
         let vc = Utility.getAssetsVC()
         vc.loanApplicationId = self.loanApplicationId
+        vc.loanPurposeId = self.loanApplicationDetail.loanPurposeId
         vc.borrowersArray = self.loanApplicationDetail.borrowersInformation
         self.pushToVC(vc: vc)
     }

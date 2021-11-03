@@ -35,6 +35,7 @@ class AssetsDetailViewController: BaseViewController {
     
     var delegate: AssetsDetailViewControllerDelegate?
     var loanApplicationId = 0
+    var loanPurposeId = 0
     var borrowerId = 0
     var borrowerName = ""
     var borrowerAssetData = BorrowerAssetsModel()
@@ -509,6 +510,19 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
             }
             else if (tableView == tableViewOther && (indexPath.row != 0)){
                 let vc = Utility.getAddOtherAssetsVC()
+                vc.loanApplicationId = self.loanApplicationId
+                vc.borrowerId = self.borrowerId
+                vc.borrowerName = self.borrowerName
+                vc.loanPurposeId = self.loanPurposeId
+                if (indexPath.row == otherAsset.assets.count + 1){
+                    vc.isForAdd = true
+                    vc.assetCategoryId = 7
+                }
+                else{
+                    vc.isForAdd = false
+                    vc.assetCategoryId = otherAsset.assets[indexPath.row - 1].assetCategoryId
+                    vc.borrowerAssetId = otherAsset.assets[indexPath.row - 1].assetId
+                }
                 self.presentVC(vc: vc)
             }
         }

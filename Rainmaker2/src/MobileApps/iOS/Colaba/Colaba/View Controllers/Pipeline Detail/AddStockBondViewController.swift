@@ -42,8 +42,7 @@ class AddStockBondViewController: BaseViewController {
         ///Account Type Text Field
         txtfieldAccountType.setTextField(placeholder: "Account Type", controller: self, validationType: .required)
         txtfieldAccountType.type = .dropdown
-        txtfieldAccountType.setDropDownDataSource(kFinancialsAccountTypeArray)
-
+        
         ///Financial Institution Text Field
         txtfieldFinancialInstitution.setTextField(placeholder: "Financial Institution", controller: self, validationType: .required)
 

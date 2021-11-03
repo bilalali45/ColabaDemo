@@ -30,9 +30,21 @@ class AddOtherAssetsViewController: BaseViewController {
     
     var txtViewAssetsDescription = MDCFilledTextArea()
     
+    var borrowerName = ""
+    var isForAdd = false
+    var loanApplicationId = 0
+    var borrowerId = 0
+    var borrowerAssetId = 0
+    var assetCategoryId = 0
+    var loanPurposeId = 0
+    var assetsCategoryArray = [AssetsCategoryModel]()
+    var otherAssetsDetail = OtherAssetsDetailModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setMaterialTextFieldsAndViews()
+        lblBorrowerName.text = borrowerName.uppercased()
+        getAssetsCategories()
     }
     
     //MARK:- Methods and Actions
@@ -73,11 +85,21 @@ class AddOtherAssetsViewController: BaseViewController {
         setTextFields()
     }
     
+    func setOtherAssetsDetail(){
+        if let assetType = self.assetsCategoryArray.filter({$0.id == self.otherAssetsDetail.assetTypeId}).first{
+            self.txtfieldAssetType.setTextField(text: assetType.name)
+            self.setTextFieldsAccordingToOptions(option: assetType.name)
+        }
+        txtfieldFinancialInstitution.setTextField(text: self.otherAssetsDetail.institutionName)
+        txtfieldAccountNumber.setTextField(text: self.otherAssetsDetail.accountNumber)
+        txtfieldCashValue.setTextField(text: String(format: "%.0f", self.otherAssetsDetail.assetValue.rounded()))
+        txtViewAssetsDescription.textView.text = self.otherAssetsDetail.assetDescription
+    }
+    
     func setTextFields() {
         ///Account Type Text Field
         txtfieldAssetType.setTextField(placeholder: "Asset Type", controller: self, validationType: .required)
         txtfieldAssetType.type = .dropdown
-        txtfieldAssetType.setDropDownDataSource(kOtherAssetsTypeArray)
         
         ///Financial Institution Text Field
         txtfieldFinancialInstitution.setTextField(placeholder: "Financial Institution", controller: self, validationType: .required)
@@ -91,6 +113,58 @@ class AddOtherAssetsViewController: BaseViewController {
         txtfieldCashValue.type = .amount
     }
 
+    func setTextFieldsAccordingToOptions(option: String){
+        if (option == "Trust Account" || option == "Bridge Loan Proceeds" || option == "Individual Development Account (IDA)" || option == "Cash Value of Life Insurance"){
+            
+            txtfieldFinancialInstitutionTopConstraint.constant = 30
+            txtfieldFinancialInsitutionHeightConstraint.constant = 39
+            txtfieldAccountNumberTopConstraint.constant = 30
+            txtfieldAccountNumberHeightConstraint.constant = 39
+            txtfieldFinancialInstitution.isHidden = false
+            txtfieldAccountNumber.isHidden = false
+            txtfieldCashValue.isHidden = false
+            txtfieldCashValue.text = ""
+            txtfieldCashValue.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+            txtfieldCashValue.textInsetsPreset = .none
+            txtfieldCashValue.placeholderHorizontalOffset = 0
+            txtfieldCashValue.placeholder = option == "Cash Value of Life Insurance" ? "Market Value" : "Cash or Market Value"
+            assetsDescriptionTextViewContainer.isHidden = true
+            txtViewAssetsDescription.isHidden = true
+        }
+        else if (option == "Employer Assistance" || option == "Relocation Funds" || option == "Rent Credit" || option == "Lot Equity" || option == "Sweat Equity" || option == "Trade Equity"){
+            
+            txtfieldFinancialInstitutionTopConstraint.constant = 0
+            txtfieldFinancialInsitutionHeightConstraint.constant = 0
+            txtfieldAccountNumberTopConstraint.constant = 0
+            txtfieldAccountNumberHeightConstraint.constant = 0
+            txtfieldFinancialInstitution.isHidden = true
+            txtfieldAccountNumber.isHidden = true
+            txtfieldCashValue.isHidden = false
+            txtfieldCashValue.text = ""
+            txtfieldCashValue.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
+            txtfieldCashValue.textInsetsPreset = .none
+            txtfieldCashValue.placeholderHorizontalOffset = 0
+            txtfieldCashValue.placeholder = (option == "Rent Credit" || option == "Lot Equity" || option == "Sweat Equity" || option == "Trade Equity") ? "Market Value of Equity" : "Cash Value"
+            assetsDescriptionTextViewContainer.isHidden = true
+            txtViewAssetsDescription.isHidden = true
+        }
+        else if (option == "Other"){
+            txtfieldFinancialInstitution.isHidden = true
+            txtfieldFinancialInstitutionTopConstraint.constant = 0
+            txtfieldFinancialInsitutionHeightConstraint.constant = 0
+            txtfieldAccountNumber.isHidden = true
+            txtfieldAccountNumberTopConstraint.constant = 0
+            txtfieldAccountNumberHeightConstraint.constant = 0
+            txtfieldCashValue.isHidden = false
+            txtfieldCashValue.placeholder = "Cash or Market Value"
+            assetsDescriptionTextViewContainer.isHidden = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
+                self?.txtViewAssetsDescription.frame = self?.assetsDescriptionTextViewContainer.frame ?? CGRect(x: 0, y: 0, width: 0, height: 0)
+            }
+            txtViewAssetsDescription.isHidden = false
+        }
+        setScreenHeight()
+    }
     
     func setScreenHeight(){
         UIView.animate(withDuration: 0.0) {
@@ -137,6 +211,64 @@ class AddOtherAssetsViewController: BaseViewController {
         }
         return isValidate
     }
+    
+    //MARK:- API's
+    
+    func getAssetsCategories(){
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "categoryId=\(assetCategoryId)&loanPurposeId=\(loanPurposeId)"
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAssetsTypes, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = AssetsCategoryModel()
+                        model.updateModelWithJSON(json: option)
+                        self.assetsCategoryArray.append(model)
+                    }
+                    self.txtfieldAssetType.setDropDownDataSource(self.assetsCategoryArray.map({$0.name}))
+                    if (self.isForAdd){
+                        Utility.showOrHideLoader(shouldShow: false)
+                    }
+                    else{
+                        self.getOtherAssetsDetail()
+                    }
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func getOtherAssetsDetail(){
+        let extraData = "loanApplicationId=\(loanApplicationId)&borrowerId=\(borrowerId)&borrowerAssetId=\(borrowerAssetId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getOtherAssetsDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    let model = OtherAssetsDetailModel()
+                    model.updateModelWithJSON(json: result["data"])
+                    self.otherAssetsDetail = model
+                    self.setOtherAssetsDetail()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension AddOtherAssetsViewController: UITextViewDelegate{
@@ -165,56 +297,7 @@ extension AddOtherAssetsViewController: UITextViewDelegate{
 extension AddOtherAssetsViewController : ColabaTextFieldDelegate {
     func selectedOption(option: String, atIndex: Int, textField: ColabaTextField) {
         if textField == txtfieldAssetType {
-            if (option == "Trust Account" || option == "Bridge Loan Proceeds" || option == "Individual Development Account (IDA)" || option == "Cash Value of Life Insurance"){
-                
-                txtfieldFinancialInstitutionTopConstraint.constant = 30
-                txtfieldFinancialInsitutionHeightConstraint.constant = 39
-                txtfieldAccountNumberTopConstraint.constant = 30
-                txtfieldAccountNumberHeightConstraint.constant = 39
-                txtfieldFinancialInstitution.isHidden = false
-                txtfieldAccountNumber.isHidden = false
-                txtfieldCashValue.isHidden = false
-                txtfieldCashValue.text = ""
-                txtfieldCashValue.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-                txtfieldCashValue.textInsetsPreset = .none
-                txtfieldCashValue.placeholderHorizontalOffset = 0
-                txtfieldCashValue.placeholder = option == "Cash Value of Life Insurance" ? "Market Value" : "Cash or Market Value"
-                assetsDescriptionTextViewContainer.isHidden = true
-                txtViewAssetsDescription.isHidden = true
-            }
-            else if (option == "Employer Assistance" || option == "Relocation Funds" || option == "Rent Credit" || option == "Lot Equity" || option == "Sweat Equity" || option == "Trade Equity"){
-                
-                txtfieldFinancialInstitutionTopConstraint.constant = 0
-                txtfieldFinancialInsitutionHeightConstraint.constant = 0
-                txtfieldAccountNumberTopConstraint.constant = 0
-                txtfieldAccountNumberHeightConstraint.constant = 0
-                txtfieldFinancialInstitution.isHidden = true
-                txtfieldAccountNumber.isHidden = true
-                txtfieldCashValue.isHidden = false
-                txtfieldCashValue.text = ""
-                txtfieldCashValue.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
-                txtfieldCashValue.textInsetsPreset = .none
-                txtfieldCashValue.placeholderHorizontalOffset = 0
-                txtfieldCashValue.placeholder = (option == "Rent Credit" || option == "Lot Equity" || option == "Sweat Equity" || option == "Trade Equity") ? "Market Value of Equity" : "Cash Value"
-                assetsDescriptionTextViewContainer.isHidden = true
-                txtViewAssetsDescription.isHidden = true
-            }
-            else if (option == "Other"){
-                txtfieldFinancialInstitution.isHidden = true
-                txtfieldFinancialInstitutionTopConstraint.constant = 0
-                txtfieldFinancialInsitutionHeightConstraint.constant = 0
-                txtfieldAccountNumber.isHidden = true
-                txtfieldAccountNumberTopConstraint.constant = 0
-                txtfieldAccountNumberHeightConstraint.constant = 0
-                txtfieldCashValue.isHidden = false
-                txtfieldCashValue.placeholder = "Cash or Market Value"
-                assetsDescriptionTextViewContainer.isHidden = false
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
-                    self?.txtViewAssetsDescription.frame = self?.assetsDescriptionTextViewContainer.frame ?? CGRect(x: 0, y: 0, width: 0, height: 0)
-                }
-                txtViewAssetsDescription.isHidden = false
-            }
-            setScreenHeight()
+            setTextFieldsAccordingToOptions(option: option)
         }
     }
 }
