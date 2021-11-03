@@ -1,11 +1,10 @@
-package com.rnsoft.colabademo
+package com.rnsoft.colabademo.activities.assets.fragment.model
 
 import com.google.gson.annotations.SerializedName
 
 data class GiftAssetResponse(
     val code: String?,
-    @SerializedName("data")
-    val data: GiftAssetData?,
+    @SerializedName("data") val giftAssetData: GiftAssetData?,
     val message: String?,
     val status: String?
 )
@@ -20,5 +19,5 @@ data class GiftAssetData(
     val isDeposited: Boolean?,
     val loanApplicationId: Int?,
     val value: Double?,
-    val valueDate: Any?
+    val valueDate: String?
     )

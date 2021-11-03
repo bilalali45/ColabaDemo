@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import com.rnsoft.colabademo.activities.assets.fragment.model.*
 import javax.inject.Inject
 
 /**
@@ -10,6 +11,10 @@ class AssetsRepo @Inject constructor(private val dataSource : AssetDataSource){
 
     suspend fun getBankAccountDetails(token: String, loanApplicationId : Int, borrowerId : Int, borrowerAssetId : Int): Result<BankAccountResponse> {
         return dataSource.getBankAccountDetails(token = token, loanApplicationId,borrowerId,borrowerAssetId)
+    }
+
+    suspend fun fetchAssetTypesByCategoryItemList(token: String , categoryId:Int, loanPurposeId:Int): Result<ArrayList<GetAssetTypesByCategoryItem>> {
+        return dataSource.fetchAssetTypesByCategoryItemList(token = token , categoryId, loanPurposeId)
     }
 
     suspend fun getBankAccountType(token: String): Result<ArrayList<DropDownResponse>> {

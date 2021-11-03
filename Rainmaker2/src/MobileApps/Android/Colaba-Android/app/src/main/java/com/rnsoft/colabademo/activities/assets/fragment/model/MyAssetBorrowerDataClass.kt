@@ -1,7 +1,6 @@
-package com.rnsoft.colabademo.activities.assets.model
+package com.rnsoft.colabademo
 
 import android.view.View
-import androidx.navigation.fragment.findNavController
 import com.google.gson.annotations.SerializedName
 import com.rnsoft.colabademo.R
 
@@ -16,10 +15,10 @@ data class MyAssetBorrowerDataClass(
 
 
 data class BAssetData(
-    val borrower: Borrower?
+    val borrower: ABorrower?
 )
 
-data class Borrower(
+data class ABorrower(
     val assetsTotal: Double?,
     val borrowerAssets: ArrayList<BorrowerAsset>?,
     val borrowerId: Int?,
@@ -37,11 +36,14 @@ data class BorrowerAsset(
     val listenerResource:Int =
        when(assetsCategory){
            CATEGORIES.BankAccount.categoryName ->{ CATEGORIES.BankAccount.returnMatchNavigation() }
-           CATEGORIES.RetirementAccount.categoryName ->{CATEGORIES.RetirementAccount.returnMatchNavigation() }
-           CATEGORIES.StocksBondsOtherFinancialAssets.categoryName ->{CATEGORIES.StocksBondsOtherFinancialAssets.returnMatchNavigation() }
+           CATEGORIES.RetirementAccount.categoryName ->{
+               CATEGORIES.RetirementAccount.returnMatchNavigation() }
+           CATEGORIES.StocksBondsOtherFinancialAssets.categoryName ->{
+               CATEGORIES.StocksBondsOtherFinancialAssets.returnMatchNavigation() }
            CATEGORIES.ProceedFromTransaction.categoryName ->{ CATEGORIES.ProceedFromTransaction.returnMatchNavigation() }
            CATEGORIES.GiftFunds.categoryName ->{ CATEGORIES.GiftFunds.returnMatchNavigation() }
-           CATEGORIES.Other.categoryName ->{CATEGORIES.Other.returnMatchNavigation() }
+           CATEGORIES.Other.categoryName ->{
+               CATEGORIES.Other.returnMatchNavigation() }
            else -> 0
        })
 

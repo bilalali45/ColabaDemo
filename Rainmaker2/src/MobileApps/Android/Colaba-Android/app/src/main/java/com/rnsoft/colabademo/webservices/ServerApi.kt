@@ -1,6 +1,6 @@
 package com.rnsoft.colabademo
 
-import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
+import com.rnsoft.colabademo.activities.assets.fragment.model.*
 import com.rnsoft.colabademo.activities.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -130,6 +130,14 @@ interface ServerApi{
     @GET("api/mcu/mobile/loanapplication/Assets/GetBankAccountType")
     suspend fun getBankAccountType(
         @Header("Authorization") Authorization:String) : ArrayList<DropDownResponse>
+
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetAssetTypesByCategory")
+    suspend fun fetchAssetTypesByCategoryItemList(
+        @Header("Authorization") Authorization:String,
+        @Query("categoryId") categoryId:Int,
+        @Query("loanPurposeId") loanPurposeId:Int) : ArrayList<GetAssetTypesByCategoryItem>
+
 
     // post add or update bank account
 
@@ -388,7 +396,7 @@ interface ServerApi{
         @Header("Authorization" )  Authorization:String,
         @Query("loanApplicationId")  loanApplicationId:Int,
         @Query("borrowerId")  borrowerId:Int
-    ):MyAssetBorrowerDataClass
+    ): MyAssetBorrowerDataClass
 
 
     @GET("api/mcu/mobile/loanapplication/GovtQuestions/GetGovernmentQuestions")

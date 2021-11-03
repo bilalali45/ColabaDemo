@@ -1,7 +1,5 @@
 package com.rnsoft.colabademo
 
-import com.rnsoft.colabademo.activities.assets.model.CATEGORIES
-
 open class AssetBaseFragment:BaseFragment() {
 
     protected fun getSampleAssets():ArrayList<TestAssetsModelClass>{

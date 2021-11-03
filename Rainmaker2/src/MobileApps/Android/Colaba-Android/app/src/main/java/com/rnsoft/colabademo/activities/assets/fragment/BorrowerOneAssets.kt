@@ -1,7 +1,6 @@
 package com.rnsoft.colabademo
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import androidx.core.view.get
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import com.rnsoft.colabademo.activities.assets.model.BorrowerAsset
 import com.rnsoft.colabademo.databinding.*
 import com.rnsoft.colabademo.utils.Common
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
@@ -19,8 +17,6 @@ import kotlinx.android.synthetic.main.assets_middle_cell.view.*
 import kotlinx.android.synthetic.main.assets_top_cell.view.*
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
-import kotlin.math.roundToInt
-import android.animation.LayoutTransition
 import androidx.navigation.fragment.findNavController
 
 
@@ -87,6 +83,7 @@ class BorrowerOneAssets : AssetBaseFragment() {
                                         for (j in 0 until it.size) {
                                             val contentCell: View = layoutInflater.inflate(R.layout.assets_middle_cell, null)
                                             val contentData = webModelData.assets[j]
+                                            Timber.e(" content data - "+contentData)
                                             contentCell.content_title.text = contentData.assetCategoryName
                                             contentCell.content_desc.text = contentData.assetName
                                             contentData.assetValue?.let{ assetValue->
@@ -101,7 +98,10 @@ class BorrowerOneAssets : AssetBaseFragment() {
                                                     parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1) }
                                                     tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
                                                     contentData.assetId?.let { it1 -> bundle.putInt(AppConstant.borrowerAssetId, it1) }
-                                                    bundle.putInt(AppConstant.loanPurpose, 0)
+                                                    contentData.assetCategoryId?.let { it1 -> bundle.putInt(AppConstant.assetCategoryId, it1) }
+                                                    parentActivity.loanPurpose?.let { it1 -> bundle.putString(AppConstant.loanPurpose, it1) }
+
+
                                                     findNavController().navigate(modelData.listenerAttached, bundle)
                                                 }
                                             }
@@ -160,7 +160,6 @@ class BorrowerOneAssets : AssetBaseFragment() {
     private fun setupLayout(){
 
         Timber.d("setupLayout onCreateView function")
-        Timber.e("setupLayout onCreateView function")
 
         val sampleAssets = getSampleAssets()
 

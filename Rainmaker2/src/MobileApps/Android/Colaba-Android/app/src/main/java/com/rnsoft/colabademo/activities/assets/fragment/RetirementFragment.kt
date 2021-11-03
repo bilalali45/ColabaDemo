@@ -7,6 +7,9 @@ import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.RetirementLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -20,6 +23,13 @@ class RetirementFragment:BaseFragment() {
     private var _binding: RetirementLayoutBinding? = null
     private val binding get() = _binding!!
 
+    private var loanApplicationId:Int? = null
+    private var loanPurpose:String? = null
+    private var borrowerId:Int? = null
+    private var borrowerAssetId:Int? = null
+
+    private val viewModel: AssetViewModel by activityViewModels()
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(
@@ -32,6 +42,13 @@ class RetirementFragment:BaseFragment() {
         val root: View = binding.root
         setUpUI()
         super.addListeners(binding.root)
+        arguments?.let { arguments->
+            loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+            loanPurpose = arguments.getString(AppConstant.loanPurpose)
+            borrowerId = arguments.getInt(AppConstant.borrowerId)
+            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId)
+            observeRetirementData()
+        }
         return root
     }
 
@@ -104,8 +121,33 @@ class RetirementFragment:BaseFragment() {
     }
 
     private  fun addFocusOutListenerToFields(){
-        binding.accountNumberEdittext.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.accountNumberEdittext , binding.accountNumberLayout , requireContext()))
-        binding.annualBaseEditText.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.annualBaseEditText , binding.annualBaseLayout , requireContext()))
-        binding.financialEditText.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.financialEditText , binding.financialLayout , requireContext()))
+        binding.accountNumberEdittext.onFocusChangeListener = CustomFocusListenerForEditText( binding.accountNumberEdittext , binding.accountNumberLayout , requireContext())
+        binding.annualBaseEditText.onFocusChangeListener = CustomFocusListenerForEditText( binding.annualBaseEditText , binding.annualBaseLayout , requireContext())
+        binding.financialEditText.onFocusChangeListener = CustomFocusListenerForEditText( binding.financialEditText , binding.financialLayout , requireContext())
     }
+
+    private fun observeRetirementData(){
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId!=null) {
+                    viewModel
+                        .getRetirementAccountDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId!!)
+                }
+            }
+            viewModel.retirementAccountDetail.observe(viewLifecycleOwner, { observeRetirementData ->
+                if(observeRetirementData.code == AppConstant.RESPONSE_CODE_SUCCESS) {
+                    observeRetirementData.retirementAccountData?.let{ retirementAccountData->
+                        binding.financialEditText.setText(retirementAccountData.institutionName)
+                        binding.accountNumberEdittext.setText(retirementAccountData.accountNumber)
+                        val value = retirementAccountData.value.toString()
+                        binding.annualBaseEditText.setText(value)
+                    }
+                }
+                else
+                    findNavController().popBackStack()
+            })
+        }
+    }
+
+
 }
