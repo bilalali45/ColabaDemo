@@ -206,6 +206,7 @@
 		23EB790326A6ED980071BC13 /* RealEstateCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23EB790126A6ED980071BC13 /* RealEstateCollectionViewCell.xib */; };
 		23EB9B1E27268CF1005EBBFB /* FamilyOrBusinessAffliationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EB9B1D27268CF1005EBBFB /* FamilyOrBusinessAffliationViewController.swift */; };
 		23EBC788273286200063922C /* BankAccountDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBC787273286200063922C /* BankAccountDetailModel.swift */; };
+		23EBC78A2732A4210063922C /* RetirementAccountDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBC7892732A4210063922C /* RetirementAccountDetailModel.swift */; };
 		23ED227F272C069A00EABF89 /* BorrowerInformationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ED227E272C069A00EABF89 /* BorrowerInformationModel.swift */; };
 		23F23B3D26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B3C26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift */; };
 		23F23B3F26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B3E26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift */; };
@@ -469,6 +470,7 @@
 		23EB790126A6ED980071BC13 /* RealEstateCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RealEstateCollectionViewCell.xib; sourceTree = "<group>"; };
 		23EB9B1D27268CF1005EBBFB /* FamilyOrBusinessAffliationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyOrBusinessAffliationViewController.swift; sourceTree = "<group>"; };
 		23EBC787273286200063922C /* BankAccountDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankAccountDetailModel.swift; sourceTree = "<group>"; };
+		23EBC7892732A4210063922C /* RetirementAccountDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetirementAccountDetailModel.swift; sourceTree = "<group>"; };
 		23ED227E272C069A00EABF89 /* BorrowerInformationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerInformationModel.swift; sourceTree = "<group>"; };
 		23F23B3C26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPermanentResidenceFollowUpQuestionsViewController.swift; sourceTree = "<group>"; };
 		23F23B3E26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveDutyPersonnelFollowUpQuestionViewController.swift; sourceTree = "<group>"; };
@@ -609,6 +611,7 @@
 				239DFD592727DF4B0052E391 /* DemographicModel.swift */,
 				23ED227E272C069A00EABF89 /* BorrowerInformationModel.swift */,
 				23EBC787273286200063922C /* BankAccountDetailModel.swift */,
+				23EBC7892732A4210063922C /* RetirementAccountDetailModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1418,6 +1421,7 @@
 				23B2148D270B32AF00215ACC /* DocumentsTypeViewController.swift in Sources */,
 				238E0F9726F389060025FF06 /* PriorityLiensFollowupQuestionViewController.swift in Sources */,
 				23E1A7A426B7E6F200714D3B /* LoanApplicationModel.swift in Sources */,
+				23EBC78A2732A4210063922C /* RetirementAccountDetailModel.swift in Sources */,
 				2397AF63267782E6007A1A45 /* PipelineTableViewCell.swift in Sources */,
 				23BDB1D026F865EA00C73E33 /* DemographicQuestionsTableViewCell.swift in Sources */,
 				710D032F268DC56500A13E63 /* NotificationModel.swift in Sources */,

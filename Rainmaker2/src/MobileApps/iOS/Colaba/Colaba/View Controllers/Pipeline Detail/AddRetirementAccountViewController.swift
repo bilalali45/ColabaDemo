@@ -22,9 +22,20 @@ class AddRetirementAccountViewController: BaseViewController {
     @IBOutlet weak var txtfieldAnnualBaseSalary: ColabaTextField!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
+    var borrowerName = ""
+    var isForAdd = false
+    var loanApplicationId = 0
+    var borrowerId = 0
+    var borrowerAssetId = 0
+    var retirementAccountDetail = RetirementAccountDetailModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextFields()
+        lblBorrowerName.text = borrowerName.uppercased()
+        if (!isForAdd){
+            getRetirementAccountDetail()
+        }
     }
     
     //MARK:- Methods and Actions
@@ -39,6 +50,12 @@ class AddRetirementAccountViewController: BaseViewController {
         ///Annual Base Salary Text Field
         txtfieldAnnualBaseSalary.setTextField(placeholder: "Annual Base Salary", controller: self, validationType: .required)
         txtfieldAnnualBaseSalary.type = .amount
+    }
+    
+    func setRetirementAccountDetail(){
+        txtfieldFinancialInstitution.setTextField(text: self.retirementAccountDetail.institutionName)
+        txtfieldAccountNumber.setTextField(text: self.retirementAccountDetail.accountNumber)
+        txtfieldAnnualBaseSalary.setTextField(text: String(format: "%.0f", self.retirementAccountDetail.value.rounded()))
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
@@ -61,5 +78,32 @@ class AddRetirementAccountViewController: BaseViewController {
         isValidate = txtfieldAccountNumber.validate() && isValidate
         isValidate = txtfieldAnnualBaseSalary.validate() && isValidate
         return isValidate
+    }
+    
+    //MARK:- API's
+    
+    func getRetirementAccountDetail(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)&borrowerId=\(borrowerId)&borrowerAssetId=\(borrowerAssetId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getRetirementAccountDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    let model = RetirementAccountDetailModel()
+                    model.updateModelWithJSON(json: result["data"])
+                    self.retirementAccountDetail = model
+                    self.setRetirementAccountDetail()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
     }
 }
