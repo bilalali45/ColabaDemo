@@ -104,7 +104,7 @@
         android:textColor="@color/grey_color_one"/>
 
     <RadioGroup
-        android:id="@+id/layout_sex"
+        android:id="@+id/layout_gender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"

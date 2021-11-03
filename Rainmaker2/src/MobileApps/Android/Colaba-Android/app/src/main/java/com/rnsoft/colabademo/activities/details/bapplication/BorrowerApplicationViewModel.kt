@@ -213,9 +213,9 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
 
     suspend fun getGovernmentQuestions(token:String, loanApplicationId:Int, ownTypeId:Int, borrowerId:Int ): Boolean {
         var bool = false
-        delay(1500)
+
         viewModelScope.launch (Dispatchers.IO) {
-            //delay(2000)
+
             val responseResult = bAppRepo.getGovernmentQuestions(token = token, loanApplicationId = loanApplicationId , ownTypeId = ownTypeId, borrowerId = borrowerId)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success) {
@@ -233,7 +233,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
 
     suspend fun getDemoGraphicInfo(token:String, loanApplicationId:Int,borrowerId:Int ) {
         viewModelScope.launch (Dispatchers.IO) {
-            delay(2000)
+
             val responseResult = bAppRepo.getDemoGraphicInfo(token = token, loanApplicationId = loanApplicationId, borrowerId = borrowerId)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success) {

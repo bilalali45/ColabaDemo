@@ -13,12 +13,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.activities.assets.model.BorrowerAsset
 import com.rnsoft.colabademo.databinding.*
+import com.rnsoft.colabademo.utils.Common
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
 import kotlinx.android.synthetic.main.assets_middle_cell.view.*
 import kotlinx.android.synthetic.main.assets_top_cell.view.*
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import kotlin.math.roundToInt
+import android.animation.LayoutTransition
+import androidx.navigation.fragment.findNavController
+
 
 class BorrowerOneAssets : AssetBaseFragment() {
 
@@ -64,15 +68,10 @@ class BorrowerOneAssets : AssetBaseFragment() {
                     val sampleAssets = getSampleAssets()
                     for (m in 0 until sampleAssets.size) {
                         val modelData = sampleAssets[m]
-                        Timber.e("header", modelData.headerTitle)
-                        Timber.e("h-amount", modelData.headerAmount)
-                        val mainCell: LinearLayoutCompat =
-                            layoutInflater.inflate(
-                                R.layout.asset_top_main_cell,
-                                null
-                            ) as LinearLayoutCompat
-                        val topCell: View =
-                            layoutInflater.inflate(R.layout.assets_top_cell, null)
+                        //Timber.e("header", modelData.headerTitle)
+                        //Timber.e("h-amount", modelData.headerAmount)
+                        val mainCell: LinearLayoutCompat = layoutInflater.inflate(R.layout.asset_top_main_cell, null) as LinearLayoutCompat
+                        val topCell: View = layoutInflater.inflate(R.layout.assets_top_cell, null)
                         topCell.header_title.text = modelData.headerTitle
                         topCell.header_amount.setText(modelData.headerAmount)
                         topCell.tag = R.string.asset_top_cell
@@ -81,29 +80,31 @@ class BorrowerOneAssets : AssetBaseFragment() {
 
                         var totalAmount = 0.0
                         for (i in 0 until getBorrowerAssets.size) {
-
                             val webModelData = getBorrowerAssets[i]
                             webModelData.assetsCategory?.let { assetsCategory->
                                 if(assetsCategory == modelData.headerTitle)   {
                                     webModelData.assets?.let {
                                         for (j in 0 until it.size) {
-                                            val contentCell: View =
-                                                layoutInflater.inflate(
-                                                    R.layout.assets_middle_cell,
-                                                    null
-                                                )
+                                            val contentCell: View = layoutInflater.inflate(R.layout.assets_middle_cell, null)
                                             val contentData = webModelData.assets[j]
-                                            contentCell.content_title.text =
-                                                contentData.assetCategoryName
-                                            contentCell.content_desc.text =
-                                                contentData.assetName
-
+                                            contentCell.content_title.text = contentData.assetCategoryName
+                                            contentCell.content_desc.text = contentData.assetName
                                             contentData.assetValue?.let{ assetValue->
                                                 totalAmount += assetValue
-                                                contentCell.content_amount.text = "$"+assetValue.toString()
+                                                contentCell.content_amount.text = "$".plus(Common.addNumberFormat(assetValue))
                                             }
                                             contentCell.visibility = View.GONE
-                                            contentCell.setOnClickListener(modelData.listenerAttached)
+                                            contentCell.setOnClickListener {
+                                                val parentActivity = activity as? AssetsActivity
+                                                parentActivity?.let {
+                                                    val bundle = Bundle()
+                                                    parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1) }
+                                                    tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
+                                                    contentData.assetId?.let { it1 -> bundle.putInt(AppConstant.borrowerAssetId, it1) }
+                                                    bundle.putInt(AppConstant.loanPurpose, 0)
+                                                    findNavController().navigate(modelData.listenerAttached, bundle)
+                                                }
+                                            }
                                             mainCell.addView(contentCell)
                                         }
                                     }
@@ -111,7 +112,7 @@ class BorrowerOneAssets : AssetBaseFragment() {
                             }
                         }
 
-                        topCell.header_amount.text = "$"+totalAmount.roundToInt().toString()
+                        topCell.header_amount.text = "$".plus(Common.addNumberFormat(totalAmount)) //"$"+totalAmount.roundToInt().toString()
                         grandTotalAmount += totalAmount
 
                         val bottomCell: View =
@@ -119,7 +120,9 @@ class BorrowerOneAssets : AssetBaseFragment() {
                         bottomCell.footer_title.text = modelData.footerTitle
                         //bottomCell.tag = R.string.asset_bottom_cell
                         bottomCell.visibility = View.GONE
-                        bottomCell.setOnClickListener(modelData.listenerAttached)
+                        bottomCell.setOnClickListener {
+                            findNavController().navigate(modelData.listenerAttached)
+                        }
 
                         mainCell.addView(bottomCell)
 
@@ -144,7 +147,7 @@ class BorrowerOneAssets : AssetBaseFragment() {
                         }
                     }
 
-                    EventBus.getDefault().post(GrandTotalEvent("$"+grandTotalAmount.roundToInt().toString()))
+                    EventBus.getDefault().post(GrandTotalEvent("$".plus(Common.addNumberFormat(grandTotalAmount)))) // "$"+grandTotalAmount.roundToInt().toString()))
                 })
         }
 
@@ -164,8 +167,8 @@ class BorrowerOneAssets : AssetBaseFragment() {
         for (i in 0 until sampleAssets.size) {
 
             val modelData = sampleAssets[i]
-            Log.e("header",modelData.headerTitle )
-            Log.e("h-amount",modelData.headerAmount )
+            //Log.e("header",modelData.headerTitle )
+            //Log.e("h-amount",modelData.headerAmount )
 
             val mainCell: LinearLayoutCompat =
                 layoutInflater.inflate(R.layout.asset_top_main_cell, null) as LinearLayoutCompat
@@ -186,7 +189,9 @@ class BorrowerOneAssets : AssetBaseFragment() {
                 contentCell.content_desc.text = contentData.description
                 contentCell.content_amount.text = contentData.contentAmount
                 contentCell.visibility = View.GONE
-                contentCell.setOnClickListener(modelData.listenerAttached)
+                contentCell.setOnClickListener {
+                    findNavController().navigate(modelData.listenerAttached)
+                }
                 mainCell.addView(contentCell)
             }
 
@@ -195,7 +200,9 @@ class BorrowerOneAssets : AssetBaseFragment() {
             bottomCell.footer_title.text =  modelData.footerTitle
             //bottomCell.tag = R.string.asset_bottom_cell
             bottomCell.visibility = View.GONE
-            bottomCell.setOnClickListener(modelData.listenerAttached)
+            bottomCell.setOnClickListener {
+                findNavController().navigate(modelData.listenerAttached)
+            }
 
             mainCell.addView(bottomCell)
 
@@ -235,9 +242,11 @@ class BorrowerOneAssets : AssetBaseFragment() {
             mainCell = layout[i] as LinearLayoutCompat
             for(j in 0 until mainCell.childCount) {
                 val innerCell = mainCell[j] as ConstraintLayout
+
                     if (innerCell.tag == R.string.asset_top_cell) {
                         innerCell.arrow_up.visibility = View.GONE
                         innerCell.arrow_down.visibility = View.VISIBLE
+
                     } else {
                         innerCell.visibility = View.GONE
                     }
@@ -254,7 +263,6 @@ class BorrowerOneAssets : AssetBaseFragment() {
              */
         }
     }
-
 
     override fun onStop() {
         super.onStop()

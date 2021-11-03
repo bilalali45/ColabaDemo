@@ -356,7 +356,7 @@
                 android:background="@color/content_background_color"
                 >
                     <TextView
-                        android:id="@+id/textView32"
+                        android:id="@+id/ethnicity_children"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="6dp"
@@ -374,7 +374,7 @@
                         android:layout_marginTop="25dp"
                         android:background="@color/half_white"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView32">
+                        app:layout_constraintTop_toBottomOf="@+id/ethnicity_children">
 
                         <androidx.appcompat.widget.AppCompatRadioButton
                             android:id="@+id/undisclosed_yes"
@@ -2219,7 +2219,7 @@
 
 
                         <androidx.appcompat.widget.AppCompatRadioButton
-                            android:id="@+id/male"
+                            android:id="@+id/demo_male"
                             android:layout_width="wrap_content"
                             android:layout_height="22dp"
                             android:text="Male"
@@ -2235,7 +2235,7 @@
                             />
 
                         <androidx.appcompat.widget.AppCompatRadioButton
-                            android:id="@+id/female"
+                            android:id="@+id/demo_female"
                             android:layout_width="wrap_content"
                             android:layout_height="22dp"
                             android:button="@drawable/radiodraw"
@@ -2247,11 +2247,11 @@
                             android:textSize="14sp"
                             android:layout_marginTop="20dp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/male" />
+                            app:layout_constraintTop_toBottomOf="@+id/demo_male" />
 
 
                         <androidx.appcompat.widget.AppCompatRadioButton
-                            android:id="@+id/do_not_wish_to_provide"
+                            android:id="@+id/demo_do_not_wish_to_provide"
                             android:layout_width="wrap_content"
                             android:layout_height="22dp"
                             android:button="@drawable/radiodraw"
@@ -2263,7 +2263,7 @@
                             android:textColor="@color/grey_color_one"
                             android:textSize="14sp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/female" />
+                            app:layout_constraintTop_toBottomOf="@+id/demo_female" />
                     </RadioGroup>
 
                     <androidx.constraintlayout.widget.ConstraintLayout

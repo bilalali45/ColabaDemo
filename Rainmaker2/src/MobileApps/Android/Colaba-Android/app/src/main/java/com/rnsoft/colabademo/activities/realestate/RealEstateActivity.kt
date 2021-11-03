@@ -43,6 +43,7 @@ class RealEstateActivity : BaseActivity() {
                 if (loanApplicationId != -1 && propertyId != -1 ) {
                     coroutineScope {
                         binding.loaderRealEstate.visibility = View.VISIBLE
+                        delay(2000)
                         viewModel.getRealEstateDetails(authToken, loanApplicationId, propertyId)
                         viewModel.getFirstMortgageDetails(authToken, loanApplicationId, propertyId)
                         viewModel.getSecondMortgageDetails(authToken, 5, 1003)

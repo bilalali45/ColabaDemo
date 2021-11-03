@@ -15,6 +15,7 @@ data class AllRaceDetails(
    val id: Int,
    val isOther: Boolean?,
    val name: String?,
-   val otherPlaceHolder: String?
+   val otherPlaceHolder: String?,
+   var isChecked : Boolean?
 ) : Parcelable
 

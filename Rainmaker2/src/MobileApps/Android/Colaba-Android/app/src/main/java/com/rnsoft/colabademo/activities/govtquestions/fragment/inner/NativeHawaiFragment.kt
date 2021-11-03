@@ -17,6 +17,8 @@ class NativeHawaiFragment:BaseFragment() {
     private var _binding: NativeHawaiianLayoutBinding? = null
     private val binding get() = _binding!!
 
+    private var nativeHawaiianChildList:ArrayList<DemoGraphicRaceDetail> = arrayListOf()
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(
@@ -26,6 +28,7 @@ class NativeHawaiFragment:BaseFragment() {
     ): View {
         _binding = NativeHawaiianLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        nativeHawaiianChildList = arguments?.getParcelableArrayList(AppConstant.nativeHawaianChildList)!!
         setUpUI()
         super.addListeners(binding.root)
         return root
@@ -36,10 +39,30 @@ class NativeHawaiFragment:BaseFragment() {
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         binding.saveBtn.setOnClickListener { findNavController().popBackStack() }
         binding.otherPacificIslanderCheckBox.setOnCheckedChangeListener{ buttonView, isChecked ->
-            if(isChecked)
-                binding.layoutDetail.visibility = View.VISIBLE
+            //if(isChecked) binding.layoutDetail.visibility = View.VISIBLE
+            //else binding.layoutDetail.visibility = View.GONE
+        }
+        // pre selection from the webservice...
+        for(item in nativeHawaiianChildList){
+
+            if(item.name == binding.nativeHawaiianCheckBox.text)
+                binding.nativeHawaiianCheckBox.isChecked = true
             else
-                binding.layoutDetail.visibility = View.GONE
+            if(item.name == binding.chineeseCheckbox.text)
+                binding.chineeseCheckbox.isChecked = true
+            else
+            if(item.name == binding.samoanCheckBox.text)
+                binding.samoanCheckBox.isChecked = true
+            else
+            if(item.name == binding.otherPacificIslanderCheckBox.text) {
+                binding.otherPacificIslanderCheckBox.isChecked = true
+                if(item.isOther == true){
+                    item.otherRace?.let { otherRace->
+                        binding.edDetails.setText(otherRace)
+                    }
+                }
+            }
+
         }
     }
 

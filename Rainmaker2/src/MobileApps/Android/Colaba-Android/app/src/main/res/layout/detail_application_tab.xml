@@ -244,7 +244,7 @@
 
 
             <TextView
-                android:id="@+id/textView31"
+                android:id="@+id/child_native_hawaiian"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -262,7 +262,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="47dp"
 
-                app:layout_constraintStart_toEndOf="@+id/textView31"
+                app:layout_constraintStart_toEndOf="@+id/child_native_hawaiian"
                 app:layout_constraintTop_toTopOf="@+id/bAppLoanPayment"
                 app:srcCompat="@drawable/ic_purcahse_dollar_arc" />
 

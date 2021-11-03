@@ -18,6 +18,8 @@ class HispanicFragment:BaseFragment() {
     private var _binding: HispanicLayoutBinding? = null
     private val binding get() = _binding!!
 
+    private var ethnicityChildList:ArrayList<EthnicityDetailDemoGraphic> = arrayListOf()
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(
@@ -27,6 +29,27 @@ class HispanicFragment:BaseFragment() {
     ): View {
 
         _binding = HispanicLayoutBinding.inflate(inflater, container, false)
+
+        ethnicityChildList = arguments?.getParcelableArrayList(AppConstant.ethnicityChildList)!!
+
+        for (item in ethnicityChildList){
+            if(item.detailId == 1){
+                binding.mexican.isChecked = true
+            }
+            else if(item.detailId == 2){
+                binding.puertoRican.isChecked = true
+            }
+            else if(item.detailId == 3){
+                binding.cuban.isChecked = true
+            }
+            else if(item.detailId == 4 && item.isOther==true){
+                binding.otherHispanicOrLatino.performClick()
+                item.otherEthnicity?.let{
+                    binding.edDetails.setText(it)
+                }
+            }
+        }
+
         val root: View = binding.root
         setUpUI()
         super.addListeners(binding.root)
@@ -40,10 +63,8 @@ class HispanicFragment:BaseFragment() {
             findNavController().popBackStack()
         }
         binding.otherHispanicOrLatino.setOnCheckedChangeListener{ buttonView, isChecked ->
-            if(isChecked)
-                binding.layoutDetail.visibility = View.VISIBLE
-            else
-                binding.layoutDetail.visibility = View.GONE
+            //if(isChecked) binding.layoutDetail.visibility = View.VISIBLE
+            //else binding.layoutDetail.visibility = View.GONE
         }
     }
 

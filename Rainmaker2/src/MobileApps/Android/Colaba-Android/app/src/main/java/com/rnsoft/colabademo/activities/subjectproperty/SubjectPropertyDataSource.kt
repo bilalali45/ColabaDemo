@@ -11,6 +11,41 @@ import javax.inject.Inject
  */
 class SubjectPropertyDataSource @Inject constructor(private val serverApi: ServerApi) {
 
+    suspend fun getSubjectPropertyDetails(
+        token: String,
+        loanApplicationId: Int
+    ): Result<SubjectPropertyDetails> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getSubjectPropertyDetails(newToken, loanApplicationId)
+            //Log.e("Sub-property-Details-------", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun getSubjectPropertyRefinance(
+        token: String,
+        loanApplicationId: Int
+    ): Result<SubjectPropertyRefinanceDetails> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getSubjectPropertyRefinance(newToken, loanApplicationId)
+            //Log.e("Sub-property-Refinance", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    /*
     suspend fun getPropertyTypes(token: String): Result<ArrayList<DropDownResponse>> {
         return try {
             val newToken = "Bearer $token"
@@ -38,41 +73,6 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
     }
 
 
-    suspend fun getSubjectPropertyDetails(
-        token: String,
-        loanApplicationId: Int
-    ): Result<SubjectPropertyDetails> {
-        return try {
-            val newToken = "Bearer $token"
-            val response = serverApi.getSubjectPropertyDetails(newToken, loanApplicationId)
-            Log.e("Sub-property-Details-------", response.toString())
-            Result.Success(response)
-        } catch (e: Throwable) {
-            if (e is NoConnectivityException)
-                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
-            else
-                Result.Error(IOException("Error notification -", e))
-        }
-    }
-
-    suspend fun getSubjectPropertyRefinance(
-        token: String,
-        loanApplicationId: Int
-    ): Result<SubjectPropertyRefinanceDetails> {
-        return try {
-            val newToken = "Bearer $token"
-            val response = serverApi.getSubjectPropertyRefinance(newToken, loanApplicationId)
-            Log.e("Sub-property-Refinance", response.toString())
-            Result.Success(response)
-        } catch (e: Throwable) {
-            if (e is NoConnectivityException)
-                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
-            else
-                Result.Error(IOException("Error notification -", e))
-        }
-    }
-
-
     suspend fun getCoBorrowerOccupancyStatus(
         token: String,
         loanApplicationId: Int
@@ -80,7 +80,7 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getCoBorrowerOccupancyStatus(newToken, loanApplicationId)
-            Log.e("Co-Borrow-Occupnacy", response.toString())
+            //Log.e("Co-Borrow-Occupnacy", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -102,7 +102,6 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
                 Result.Error(IOException("Error notification -", e.cause))
         }
     }
-
 
     suspend fun getCounties(token: String): Result<ArrayList<CountiesModel>> {
         return try {
@@ -132,8 +131,6 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
                 Result.Error(IOException("Error notification -", e.cause))
 
         }
-    }
-
-
+    } */
 
 }

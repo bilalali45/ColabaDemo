@@ -31,7 +31,7 @@
         android:id="@+id/navigation_realestate_address"
         android:name="com.rnsoft.colabademo.RealEstateAddressFragment"
         android:label="@string/real_estate_owned"
-        tools:layout="@layout/subject_property_address">
+        tools:layout="@layout/common_address_layout">
     </fragment>
 
 

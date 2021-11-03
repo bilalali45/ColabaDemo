@@ -198,11 +198,11 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="30dp"
 
-            android:visibility="gone"
+            android:visibility="visible"
 
             android:background="@android:color/transparent"
             android:fontFamily="@font/rubik_light"
-            android:hint="Specify"
+            android:hint="For example, Pakistani, Laotian, Thai, etc."
             android:textColorHint="@color/primary_info_label_color"
             app:boxCollapsedPaddingTop="1dp"
 

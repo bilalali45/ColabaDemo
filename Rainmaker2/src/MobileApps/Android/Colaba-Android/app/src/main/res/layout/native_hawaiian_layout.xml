@@ -98,7 +98,7 @@
 
 
         <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/guamanian_or_chamorro_check_box"
+            android:id="@+id/chineese_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginTop="20dp"
@@ -125,7 +125,7 @@
             android:textSize="14sp"
             app:buttonCompat="@drawable/cb_selector"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guamanian_or_chamorro_check_box" />
+            app:layout_constraintTop_toBottomOf="@+id/chineese_checkbox" />
 
 
         <androidx.appcompat.widget.AppCompatCheckBox
@@ -149,11 +149,11 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="30dp"
 
-            android:visibility="gone"
+            android:visibility="visible"
 
             android:background="@android:color/transparent"
             android:fontFamily="@font/rubik_light"
-            android:hint="Specify"
+            android:hint="For example, Fijian, Tongan, etc."
             android:textColorHint="@color/primary_info_label_color"
             app:boxCollapsedPaddingTop="1dp"
 
