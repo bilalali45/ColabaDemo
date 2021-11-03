@@ -13,15 +13,15 @@ import java.util.ArrayList
 /**
  * Created by Anita Kiran on 11/2/2021.
  */
-class BorrowerAddressAdapter(var context: Context,clickListner: AddressClickListener) :
+class BorrowerAddressAdapter(var context: Context) :
     RecyclerView.Adapter<BorrowerAddressAdapter.AddressViewHolder>() {
 
     var address: List<PrimaryBorrowerAddress> = arrayListOf()
-    private var clickEvent: AddressClickListener = clickListner
+   /* private var clickEvent: AddressClickListener = clickListner
 
     init {
         this.clickEvent = clickListner
-    }
+    } */
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddressViewHolder {
         var binding = ResidenceItemBinding.inflate(LayoutInflater.from(parent.context), parent,
@@ -33,9 +33,9 @@ class BorrowerAddressAdapter(var context: Context,clickListner: AddressClickList
     override fun onBindViewHolder(holder: AddressViewHolder, position: Int) {
         holder.bind(address.get(position), position)
 
-        holder.itemView.setOnClickListener {
+        /*holder.itemView.setOnClickListener {
             clickEvent.onAddressClick(position)
-        }
+        } */
 
     }
 
@@ -50,19 +50,24 @@ class BorrowerAddressAdapter(var context: Context,clickListner: AddressClickList
 
             if (address.isCurrentAddress) {
                 binding.tvCurrentAddressHeading.setVisibility(View.VISIBLE)
-                binding.tvResidenceDate.text = "From ".plus(address.fromDate)
+                address.fromDate?.let {
+                    binding.tvResidenceDate.text = "From ".plus(AppSetting.getMonthAndYearValue(it))
+                }
+
                 address.monthlyRent?.let {
                     if(it > 0){
                         binding.tvHomerent.text = "$".plus(address.monthlyRent.toString())
                         binding.tvHomerent.setVisibility(View.VISIBLE)
                     }
                 }
-
             } else {
                 binding.tvCurrentAddressHeading.setVisibility(View.GONE)
                 binding.tvHomerent.setVisibility(View.GONE)
-                //holder.tvDate.setText("From Aug 2019 to Nov 2020")
-                binding.tvResidenceDate.text = "From ".plus(address.fromDate).plus(" to ").plus(address.toDate)
+                val fromDate = address.fromDate?.let { AppSetting.getMonthAndYearValue(it) }
+                address.toDate?.let {
+                val toDate = AppSetting.getMonthAndYearValue(it)
+                    binding.tvResidenceDate.text = "From ".plus(fromDate).plus(" to ").plus(toDate)
+                }
             }
         }
     }

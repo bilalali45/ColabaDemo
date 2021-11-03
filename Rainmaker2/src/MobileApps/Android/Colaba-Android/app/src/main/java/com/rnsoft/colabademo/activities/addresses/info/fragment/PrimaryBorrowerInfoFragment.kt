@@ -43,6 +43,7 @@ import kotlin.collections.ArrayList
  * Created by Anita Kiran on 8/23/2021.
  */
 
+// remove address click listener
 @AndroidEntryPoint
 class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, View.OnClickListener, AddressClickListener {
 
@@ -59,13 +60,14 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     lateinit var adapter: BorrowerAddressAdapter
     lateinit var dependentAdapter: DependentAdapter
     var addressBtnText : String = "Add Previous Address"
+    var reserveEverActivated : Boolean? = null
     var listAddress: ArrayList<PrimaryBorrowerAddress> = ArrayList()
-    var currentAddressList :  ArrayList<CommonAddressModel> = ArrayList()
-    var prevAddressList :  ArrayList<CommonAddressModel> = ArrayList()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return if (savedViewInstance != null) {
             savedViewInstance
+
         } else {
             bi = PrimaryBorrowerInfoLayoutBinding.inflate(inflater, container, false)
             savedViewInstance = bi.root
@@ -93,10 +95,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
                         currentAddress.addressModel?.let { address->
                             val desc =  address.street + " " + address.unit + "\n" + address.city + " " + address.stateName + " " + address.zipCode + " " + address.countryName
-                            // list for current address screen
-                            currentAddressList.add(CommonAddressModel(street = address.street, unit = address.unit, city = address.city, stateName = address.stateName, countryName = address.countryName,
-                                 countyName = address.countyName, countyId = address.countyId, stateId = address.stateId, countryId = address.countryId, zipCode = address.zipCode))
-
                             listAddress.add(PrimaryBorrowerAddress(true,desc,fromDate,null,monthlyRent.toDouble()))
                             bi.tvResidence.setText(requireContext().getString(R.string.add_previous_address))
 
@@ -104,84 +102,84 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
                     } ?: run { bi.tvResidence.setText(requireContext().getString(R.string.add_current_address)) }
 
-                    detail.borrowerData?.previousAddresses?.let { prevAdd->
-                        for(i in 0 until prevAdd.size){
-                            val fromDate = if(prevAdd.get(i).fromDate != null) prevAdd.get(i).fromDate else ""
-                            val toDate = if(prevAdd.get(i).toDate != null) prevAdd.get(i).toDate else ""
-                            prevAdd.get(0).addressModel?.let { address ->
-                                val desc = address.street + " " + address.unit + "\n" + address.city + " " + address.stateName + " " + address.zipCode + " " + address.countryName
-                                listAddress.add(PrimaryBorrowerAddress(false,desc,fromDate,toDate,null))
-                                // list for previous address screen
-                                prevAddressList.add(CommonAddressModel(street = address.street, unit = address.unit, city = address.city, stateName = address.stateName, countryName = address.countryName,
-                                    countyName = address.countyName, countyId = address.countyId, stateId = address.stateId, countryId = address.countryId, zipCode = address.zipCode))
-                            }
+                detail.borrowerData?.previousAddresses?.let { prevAdd->
+                    for(i in 0 until prevAdd.size){
+                        val fromDate = if(prevAdd.get(i).fromDate != null) prevAdd.get(i).fromDate else ""
+                        val toDate = if(prevAdd.get(i).toDate != null) prevAdd.get(i).toDate else ""
+                        prevAdd.get(0).addressModel?.let { address ->
+                            val desc = address.street + " " + address.unit + "\n" + address.city + " " + address.stateName + " " + address.zipCode + " " + address.countryName
+                            listAddress.add(PrimaryBorrowerAddress(false,desc,fromDate,toDate,null))
                         }
                     }
-                    if(listAddress.size > 0){
-                        Timber.e("Size"+ listAddress.size)
-                        setResidence()
+                }
+
+                if(listAddress.size > 0){
+                    setResidence()
+                }
+
+                detail.borrowerData?.borrowerBasicDetails?.let {
+                    it.firstName?.let {
+                        bi.edFirstName.setText(it)
+                        CustomMaterialFields.setColor(bi.layoutFirstName, R.color.grey_color_two, requireContext())
                     }
 
-                    detail.borrowerData?.borrowerBasicDetails?.let {
-                        it.firstName?.let {
-                            bi.edFirstName.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutFirstName, R.color.grey_color_two, requireContext())
-                        }
-
-                        it.middleName?.let {
-                            bi.edMiddleName.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutMiddleName, R.color.grey_color_two, requireContext())
-                        }
-
-                        it.lastName?.let {
-                            bi.edLastName.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutLastName, R.color.grey_color_two, requireContext())
-                        }
-
-                        it.suffix?.let {
-                            bi.edSuffix.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutSuffix, R.color.grey_color_two, requireContext())
-                        }
-                        it.emailAddress?.let {
-                            bi.edEmail.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutEmail, R.color.grey_color_two, requireContext())
-                        }
-
-                        it.homePhone?.let {
-                            bi.edHomeNumber.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutHomeNum, R.color.grey_color_two, requireContext())
-                        }
-
-                        it.workPhone?.let {
-                            bi.edWorkNum.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutWorkNum, R.color.grey_color_two, requireContext())
-                        }
-                        it.workPhoneExt?.let {
-                            bi.edExtNum.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutExtNum, R.color.grey_color_two, requireContext())
-                        }
-                        it.cellPhone?.let {
-                            bi.edCellNum.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutCellNum, R.color.grey_color_two, requireContext())
-                        }
+                    it.middleName?.let {
+                        bi.edMiddleName.setText(it)
+                        CustomMaterialFields.setColor(bi.layoutMiddleName, R.color.grey_color_two, requireContext())
                     }
 
-                    detail.borrowerData?.maritalStatus?.let {
-                        if(it.maritalStatusId == 1)
-                            msBinding.rbMarried.isChecked=true
-                        if(it.maritalStatusId == 2)
-                            msBinding.rbDivorced.isChecked=true
-                        if(it.maritalStatusId == 9)
-                            msBinding.rbUnmarried.isChecked=true
+                    it.lastName?.let {
+                        bi.edLastName.setText(it)
+                        CustomMaterialFields.setColor(bi.layoutLastName, R.color.grey_color_two, requireContext())
                     }
 
-                    detail.borrowerData?.borrowerCitizenship?.let {
+                    it.suffix?.let {
+                        bi.edSuffix.setText(it)
+                        CustomMaterialFields.setColor(bi.layoutSuffix, R.color.grey_color_two, requireContext())
+                    }
+
+                    it.emailAddress?.let {
+                        bi.edEmail.setText(it)
+                        CustomMaterialFields.setColor(bi.layoutEmail, R.color.grey_color_two, requireContext())
+                    }
+
+                    it.homePhone?.let {
+                        bi.edHomeNumber.setText(it)
+                        CustomMaterialFields.setColor(bi.layoutHomeNum, R.color.grey_color_two, requireContext())
+                    }
+
+                    it.workPhone?.let {
+                        bi.edWorkNum.setText(it)
+                        CustomMaterialFields.setColor(bi.layoutWorkNum, R.color.grey_color_two, requireContext())
+                    }
+
+                    it.workPhoneExt?.let {
+                        bi.edExtNum.setText(it)
+                        CustomMaterialFields.setColor(bi.layoutExtNum, R.color.grey_color_two, requireContext())
+                    }
+
+                    it.cellPhone?.let {
+                        bi.edCellNum.setText(it)
+                        CustomMaterialFields.setColor(bi.layoutCellNum, R.color.grey_color_two, requireContext())
+                    }
+                }
+
+                detail.borrowerData?.maritalStatus?.let {
+                    if (it.maritalStatusId == 1)
+                        msBinding.rbMarried.isChecked = true
+                    if (it.maritalStatusId == 2)
+                        msBinding.rbSeparated.isChecked = true
+                    if (it.maritalStatusId == 9)
+                        msBinding.rbUnmarried.isChecked = true
+                }
+
+                detail.borrowerData?.borrowerCitizenship?.let {
                         //Timber.e("residency type id" + it.residencyTypeId)
                         it.ssn?.let { ssn->
                             bi.edSecurityNum.setText(ssn)
                         }
                         it.dobUtc?.let { dob->
-                            bi.edDateOfBirth.setText(dob)
+                            bi.edDateOfBirth.setText(AppSetting.getFullDate(dob))
                         }
                         if(it.residencyTypeId == 1)
                             citizenshipBinding.rbUsCitizen.isChecked = true
@@ -193,26 +191,39 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                             citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
                         }
 
-                        it.dependentCount?.let {
-                            bi.tvDependentCount.setText(it.toString())
-                            //listItems.add(Dependent(11))
-                            dependentAdapter = DependentAdapter(requireActivity(),listItems,this@PrimaryBorrowerInfoFragment)
-                            bi.rvDependents.adapter = dependentAdapter
+                        it.dependentCount?.let { count->
+                            bi.tvDependentCount.setText(count.toString())
 
+                        it.dependentAges?.let {
+                            val strs = it.split(",").toList()
+                            Timber.e("$strs")
+                            for(i in 0 until strs.size){
+                                var ordinal = getOrdinal(listItems.size + 1)
+                                listItems.add(Dependent(ordinal.plus(" Dependent Age (Years)"), strs.get(i).toInt()))
+                            }
+                            bi.rvDependents.adapter = dependentAdapter
+                            dependentAdapter.notifyDataSetChanged()
+                        }
                         }
                     }
 
-                    // military
-                    detail.borrowerData?.militaryServiceDetails?.let {
-                        it.details?.let {
-                            for(i in 0  until it.size) {
-                                if(it.get(i).militaryAffiliationId == 4){
-                                    bindingMilitary.chbDutyPersonel.isChecked = true
-                                    bindingMilitary.serviceDate.text = it.get(i).expirationDateUtc
+                // military
+                detail.borrowerData?.militaryServiceDetails?.let {
+                    it.details?.let {
+                        for(i in 0 until it.size){
+                            if(it.get(i).militaryAffiliationId == 4){
+                                bindingMilitary.chbDutyPersonel.isChecked = true
+                                bindingMilitary.serviceDate.text = it.get(i).expirationDateUtc?.let { it1 ->
+                                    AppSetting.getMonthAndYearValue(it1)
+                                }
                                     bindingMilitary.layoutActivePersonnel.visibility = View.VISIBLE
                                 }
-                                if(it.get(i).militaryAffiliationId==3)
+                                if(it.get(i).militaryAffiliationId==3) {
                                     bindingMilitary.chbResNationalGuard.isChecked = true
+                                    it.get(i).reserveEverActivated?.let { it2->
+                                      reserveEverActivated = it2
+                                    }
+                                }
 
                                 if(it.get(i).militaryAffiliationId==1)
                                     bindingMilitary.chbVeteran.isChecked = true
@@ -222,20 +233,19 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                             }
                         }
                     }
-                    if(detail.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
+                   if(detail.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
                       hideLoader() }
                 }
 
-                hideLoader()
+            hideLoader()
             })
     }
 
     private fun setViews() {
 
-        //bi.backButtonInfo.setOnClickListener(this)
         msBinding.rbUnmarried.setOnClickListener(this)
         msBinding.rbMarried.setOnClickListener(this)
-        msBinding.rbDivorced.setOnClickListener(this)
+        msBinding.rbSeparated.setOnClickListener(this)
         citizenshipBinding.rbUsCitizen.setOnClickListener(this)
         citizenshipBinding.rbNonPrOther.setOnClickListener(this)
         citizenshipBinding.rbPr.setOnClickListener(this)
@@ -247,18 +257,18 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         bi.addPrevAddress.setOnClickListener(this)
         bi.edDateOfBirth.setOnClickListener(this)
 
-
         // initialize recyclerview
+        dependentAdapter = DependentAdapter(requireActivity(),listItems,this@PrimaryBorrowerInfoFragment)
+        bi.rvDependents.adapter = dependentAdapter
 
         setupUI()
         setSingleItemFocus()
         setEndIconClicks()
         setNumberFormts()
 
-
         msBinding.unmarriedAddendum.setOnClickListener { findNavController().navigate(R.id.action_info_unmarried_addendum) }
         bindingMilitary.layoutActivePersonnel.setOnClickListener { findNavController().navigate(R.id.action_info_active_duty)}
-        bindingMilitary.layoutNationalGuard.setOnClickListener { findNavController().navigate(R.id.action_info_reserve) }
+        //bindingMilitary.layoutNationalGuard.setOnClickListener { findNavController().navigate(R.id.action_info_reserve) }
         citizenshipBinding.layoutVisaStatusOther.setOnClickListener { findNavController().navigate(R.id.action_info_non_pr) }
 
     }
@@ -291,6 +301,99 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                 findNavController().navigate(R.id.action_info_previous_address)
             }
         }
+
+
+        // check listeners
+        msBinding.rbUnmarried.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
+            else
+               msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
+        }
+        //married
+        msBinding.rbMarried.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                msBinding.rbMarried.setTypeface(null, Typeface.BOLD)
+            else
+                msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
+        }
+        //separated
+        msBinding.rbSeparated.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                msBinding.rbSeparated.setTypeface(null, Typeface.BOLD)
+            else
+                msBinding.rbSeparated.setTypeface(null, Typeface.NORMAL)
+        }
+        //us citizen
+        citizenshipBinding.rbUsCitizen.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.BOLD)
+            else
+                citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
+        }
+
+
+        // non permanent residence
+        citizenshipBinding.rbNonPrOther.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.BOLD)
+            else
+                citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.NORMAL)
+        }
+        //permanent residence
+        citizenshipBinding.rbPr.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                citizenshipBinding.rbPr.setTypeface(null, Typeface.BOLD)
+            else
+                citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
+        }
+        // active duty personel
+        bindingMilitary.chbDutyPersonel.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                bindingMilitary.chbDutyPersonel.setTypeface(null, Typeface.BOLD)
+            else
+                bindingMilitary.chbDutyPersonel.setTypeface(null, Typeface.NORMAL)
+        }
+        //reserve or national guard
+        bindingMilitary.chbResNationalGuard.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked) {
+                bindingMilitary.chbResNationalGuard.setTypeface(null, Typeface.BOLD)
+                bindingMilitary.layoutNationalGuard.visibility = View.VISIBLE
+            }
+            else {
+                bindingMilitary.chbResNationalGuard.setTypeface(null, Typeface.NORMAL)
+                bindingMilitary.layoutNationalGuard.visibility = View.GONE
+            }
+        }
+        // veteran
+        bindingMilitary.chbVeteran.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                bindingMilitary.chbVeteran.setTypeface(null, Typeface.BOLD)
+            else
+                bindingMilitary.chbVeteran.setTypeface(null, Typeface.NORMAL)
+        }
+
+        //surviving spouse
+        bindingMilitary.chbSurvivingSpouse.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                bindingMilitary.chbSurvivingSpouse.setTypeface(null, Typeface.BOLD)
+            else
+                bindingMilitary.chbSurvivingSpouse.setTypeface(null, Typeface.NORMAL)
+        }
+
+        bindingMilitary.chbResNationalGuard.setOnClickListener {
+            val bundle = Bundle()
+            reserveEverActivated?.let { bundle.putBoolean(AppConstant.RESERVE_ACTIVATED, it) }
+            findNavController().navigate(R.id.action_info_reserve,bundle)
+            bindingMilitary.layoutNationalGuard.visibility = View.VISIBLE
+        }
+
+        bindingMilitary.layoutNationalGuard.setOnClickListener {
+            val bundle = Bundle()
+            reserveEverActivated?.let { bundle.putBoolean(AppConstant.RESERVE_ACTIVATED, it) }
+            findNavController().navigate(R.id.action_info_reserve,bundle)
+        }
+
     }
 
     private fun addEmptyDependentField() {
@@ -331,26 +434,14 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         when (view?.getId()) {
             R.id.rb_unmarried -> if (msBinding.rbUnmarried.isChecked) setMaritalStatus(true, false, false)
             R.id.rb_married -> if (msBinding.rbMarried.isChecked) setMaritalStatus(false, true, false)
-            R.id.rb_divorced -> if (msBinding.rbDivorced.isChecked) setMaritalStatus(false, false, true)
+            R.id.rb_separated -> if (msBinding.rbSeparated.isChecked) setMaritalStatus(false, false, true)
             R.id.rb_us_citizen -> if (citizenshipBinding.rbUsCitizen.isChecked) setCitizenship(true, false, false)
             R.id.rb_pr -> if (citizenshipBinding.rbPr.isChecked) setCitizenship(false, true, false)
             R.id.rb_non_pr_other -> if (citizenshipBinding.rbNonPrOther.isChecked) setCitizenship(false, false, true)
             R.id.chb_duty_personel -> militaryActivePersonel()
-            R.id.chb_res_national_guard -> militaryNationalGuard()
+            //R.id.chb_res_national_guard -> militaryNationalGuard()
             R.id.chb_veteran -> militaryVeteran()
             R.id.chb_surviving_spouse -> militarySurvivingSpouse()
-            /* R.id.btn_save_info -> checkValidations()
-            R.id.add_dependent_click -> addEmptyDependentField()
-            R.id.add_prev_address -> if (bi.tvResidence.text.equals(getString(R.string.current_address))) {
-                findNavController().navigate(R.id.action_info_current_address)
-            } else {
-                findNavController().navigate(R.id.action_info_previous_address)
-            }
-
-            R.id.backButton_info -> {
-                requireActivity().finish()
-                requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_out_left)
-            } */
         }
     }
 
@@ -402,7 +493,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         textInputlayout.helperText = errorMsg
         textInputlayout.setBoxStrokeColorStateList(
             AppCompatResources.getColorStateList(requireContext(), R.color.primary_info_stroke_error_color))
-        //binding.layoutLastName.boxStrokeColor = ContextCompat.getColor(this, R.color.colaba_red_color)
     }
 
     fun clearError(textInputlayout: TextInputLayout) {
@@ -412,11 +502,9 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     }
 
     private fun setEndIconClicks() {
-
         bi.layoutDateOfBirth.setEndIconOnClickListener(View.OnClickListener {
             openCalendar()
         })
-
         // click for security number
         bi.layoutSecurityNum.setEndIconOnClickListener(View.OnClickListener {
             if (bi.edSecurityNum.getTransformationMethod()
@@ -438,8 +526,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
         //bi.recyclerview.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         //bi.recyclerview.hasFixedSize()
-
-        adapter = BorrowerAddressAdapter(requireActivity(), this)
+        adapter = BorrowerAddressAdapter(requireActivity())
         adapter.setTaskList(listAddress)
         bi.recyclerview.setAdapter(adapter)
 
@@ -447,12 +534,10 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         touchListener!!
             .setClickable(object : RecyclerTouchListener.OnRowClickListener {
                 override fun onRowClicked(position: Int){
-                    Log.e("RowClicked ", ""+position)
-
                     if(listAddress.get(position).isCurrentAddress){
                         addressBtnText = getString(R.string.previous_address)
                         val bundle = Bundle()
-                        bundle.putParcelableArrayList(AppConstant.address,currentAddressList)
+                        bundle.putString(AppConstant.showData,AppConstant.showData)
                         findNavController().navigate(R.id.action_info_current_address,bundle)
                     }
                     else {
@@ -462,7 +547,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                             addressBtnText = getString(R.string.current_address)
                         }
                         val bundle = Bundle()
-                        Log.e("BeforeBundler ", ""+position)
                         bundle.putInt(AppConstant.address,position)
                         findNavController().navigate(R.id.action_info_previous_address,bundle)
                     }
@@ -599,20 +683,20 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             msBinding.unmarriedAddendum.visibility = View.VISIBLE
             msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
             msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
-            msBinding.rbDivorced.setTypeface(null, Typeface.NORMAL)
+            msBinding.rbSeparated.setTypeface(null, Typeface.NORMAL)
 
         }
         if (isMarried) {
             msBinding.unmarriedAddendum.visibility = View.GONE
             msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbMarried.setTypeface(null, Typeface.BOLD)
-            msBinding.rbDivorced.setTypeface(null, Typeface.NORMAL)
+            msBinding.rbSeparated.setTypeface(null, Typeface.NORMAL)
         }
         if (isDivorced) {
             msBinding.unmarriedAddendum.visibility = View.GONE
             msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
-            msBinding.rbDivorced.setTypeface(null, Typeface.BOLD)
+            msBinding.rbSeparated.setTypeface(null, Typeface.BOLD)
         }
     }
 
@@ -651,10 +735,11 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         }
     }
 
-    private fun militaryNationalGuard() {
-
+    /*private fun militaryNationalGuard() {
         if (bindingMilitary.chbResNationalGuard.isChecked) {
-            findNavController().navigate(R.id.action_info_reserve)
+            val bundle = Bundle()
+            reserveEverActivated?.let { bundle.putBoolean(AppConstant.RESERVE_ACTIVATED, it) }
+            findNavController().navigate(R.id.action_info_reserve,bundle)
             bindingMilitary.layoutNationalGuard.visibility = View.VISIBLE
             bindingMilitary.chbResNationalGuard.setTypeface(null, Typeface.BOLD)
 
@@ -662,7 +747,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             bindingMilitary.layoutNationalGuard.visibility = View.GONE
             bindingMilitary.chbResNationalGuard.setTypeface(null, Typeface.NORMAL)
         }
-    }
+    } */
 
     private fun militaryVeteran() {
         if (bindingMilitary.chbVeteran.isChecked) {

@@ -8,7 +8,9 @@ import android.widget.TextView
 import androidx.annotation.IdRes
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.text.DateFormat
 import java.text.DecimalFormat
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.Duration
 import java.time.LocalDate
@@ -164,6 +166,20 @@ object AppSetting {
         return output
     }
 
+    fun getFullDate(dateStr: String) : String{
+        val localDateTime = LocalDateTime.parse(dateStr)
+        val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
+        val output = formatter.format(localDateTime)
+        return output
+    }
+
+    fun getFullDate1(dateStr: String) : String{
+        val localDateTime = LocalDateTime.parse(dateStr)
+        val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
+        val output = formatter.format(localDateTime)
+        return output
+    }
+
     fun getMonthAndYear(dateString : String) : String{
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val oldDate: Date? = formatter.parse(dateString)
@@ -173,6 +189,17 @@ object AppSetting {
             finalTimeInFormat = getDate(oldMillis, "MM-yyyy")
         }
         return finalTimeInFormat
+    }
+
+    fun getMonthAndYearValue(dateStr : String) : String{
+        val localDateTime = LocalDateTime.parse(dateStr)
+        val formatter = DateTimeFormatter.ofPattern("MMM")
+        val month = formatter.format(localDateTime)
+
+        val yearformat = DateTimeFormatter.ofPattern("yyyy")
+        val year = yearformat.format(localDateTime)
+        val output = month.plus(" ").plus(year)
+        return output
     }
 
     fun returnLongTimeNow(input: String): String {

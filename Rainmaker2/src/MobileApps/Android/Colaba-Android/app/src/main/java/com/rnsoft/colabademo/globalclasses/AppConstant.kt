@@ -42,6 +42,7 @@ object AppConstant {
         const val phoneNumber:String = "phoneNumber"
 
         const val secondsCount:String = "secondsCount"
+        const val showData: String = "showData"
 
         const val borrowerParcelObject:String = "borrowerParcelObject"
 
@@ -121,7 +122,8 @@ object AppConstant {
 
 
         const val  downloadedFileName:String = "pdfFileName"
-        const val address:String = "address"
+        const val address: String = "address"
+        const val RESERVE_ACTIVATED: String = "reserve_activated"
         const val secMortgage : String = "sec_mortgage"
         const val firstMortgage : String = "first_mortgage"
         const val heading : String = "toolbar_heading"

@@ -66,7 +66,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <TextView
         android:id="@+id/textView15"
         android:layout_width="0dp"
@@ -82,7 +81,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/assets_top_container" />
 
-
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
@@ -93,31 +91,29 @@
         app:layout_constraintTop_toBottomOf="@+id/textView15">
 
         <androidx.appcompat.widget.AppCompatRadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/radioButtonYes"
             android:layout_width="match_parent"
             android:layout_height="22dp"
             android:fontFamily="@font/rubik_regular"
-            android:text="Yes"
+            android:text="@string/yes"
             android:textColor="@color/grey_color_one"
             android:textSize="15sp"
             android:paddingStart="15dp"
             android:button="@drawable/radiodraw"/>
 
         <androidx.appcompat.widget.AppCompatRadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/radioButton2No"
             android:layout_width="match_parent"
             android:layout_height="22dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/rubik_regular"
-            android:text="No"
+            android:text="@string/no"
             android:textColor="@color/grey_color_one"
             android:textSize="15sp"
             android:checked="true"
             android:paddingStart="15dp"
             android:button="@drawable/radiodraw"/>
     </RadioGroup>
-
-
 
     <ImageView
         android:id="@+id/phone_fab"
@@ -128,9 +124,6 @@
         android:translationX="18dp"
         android:translationY="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
-
-
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
