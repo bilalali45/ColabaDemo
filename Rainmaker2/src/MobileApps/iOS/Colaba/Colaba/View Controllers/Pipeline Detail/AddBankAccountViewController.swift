@@ -43,7 +43,6 @@ class AddBankAccountViewController: BaseViewController {
         ///Account Type Text Field
         txtfieldAccountType.setTextField(placeholder: "Account Type", controller: self, validationType: .required)
         txtfieldAccountType.type = .dropdown
-        txtfieldAccountType.setDropDownDataSource(kAccountTypeArray)
         
         ///Financial Institution Text Field
         txtfieldFinancialInstitution.setTextField(placeholder: "Financial Institution", controller: self, validationType: .required)
@@ -105,6 +104,7 @@ class AddBankAccountViewController: BaseViewController {
                         model.updateModelWithJSON(json: option)
                         self.accountTypeArray.append(model)
                     }
+                    self.txtfieldAccountType.setDropDownDataSource(self.accountTypeArray.map({$0.optionName}))
                     if (self.isForAdd){
                         Utility.showOrHideLoader(shouldShow: false)
                     }
