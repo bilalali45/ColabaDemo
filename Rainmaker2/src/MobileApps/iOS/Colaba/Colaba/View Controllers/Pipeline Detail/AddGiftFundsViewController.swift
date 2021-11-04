@@ -37,11 +37,24 @@ class AddGiftFundsViewController: UIViewController {
     
     var isCashGift = false
     var isGiftDeposit = false
+    var borrowerName = ""
+    var isForAdd = false
+    var loanApplicationId = 0
+    var borrowerId = 0
+    var borrowerAssetId = 0
+    var assetCategoryId = 0
+    var loanPurposeId = 0
+    var giftSourceArray = [DropDownModel]()
+    var assetsCategoryArray = [AssetsCategoryModel]()
+    var giftAssetDetail = GiftDetailModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setViews()
         setTextFields()
+        lblBorrowerName.text = borrowerName.uppercased()
+        getAssetsCategories()
+        getGiftSources()
     }
     
     //MARK:- Methods and Actions
@@ -49,7 +62,6 @@ class AddGiftFundsViewController: UIViewController {
         ///Gift Source Text Field
         txtfieldGiftSource.setTextField(placeholder: "Gift Source", controller: self, validationType: .required)
         txtfieldGiftSource.type = .dropdown
-        txtfieldGiftSource.setDropDownDataSource(kGiftSourceArray)
         
         ///Cash / Market Value Text Field
         txtfieldCashValue.setTextField(placeholder: "Cash Value", controller: self, validationType: .required)
@@ -60,6 +72,29 @@ class AddGiftFundsViewController: UIViewController {
         txtfieldDate.type = .datePicker
         
     }
+    
+    func setGiftDetail(){
+        if let giftSource = giftSourceArray.filter({$0.optionId == giftAssetDetail.giftSourceId}).first{
+            txtfieldGiftSource.setTextField(text: giftSource.optionName)
+            setTextFieldsAccordingToOptions(option: giftSource.optionName)
+        }
+        if let giftType = assetsCategoryArray.filter({$0.id == self.giftAssetDetail.assetTypeId}).first{
+            isCashGift = giftType.name.localizedCaseInsensitiveContains("Cash Gift")
+        }
+        changeGiftType()
+        txtfieldCashValue.setTextField(text: String(format: "%.0f", self.giftAssetDetail.value.rounded()))
+        if (isCashGift){
+            isGiftDeposit = self.giftAssetDetail.isDeposited
+            changeGiftDepositType()
+            txtfieldDate.setTextField(text: Utility.getDayMonthYear(self.giftAssetDetail.valueDate))
+        }
+    }
+    
+    func setTextFieldsAccordingToOptions(option: String){
+        giftTypeView.isHidden = false
+        lblGiftOfEquity.text = (option == "Relative" || option == "Unmarried Partner") ? "Gift Of Equity" : "Grant"
+    }
+    
     func setViews(){
         
         cashGiftStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cashGiftStackViewTapped)))
@@ -144,13 +179,92 @@ class AddGiftFundsViewController: UIViewController {
         }
         return isValidate
     }
+    
+    //MARK:- API's
+    
+    func getAssetsCategories(){
+        
+        let extraData = "categoryId=\(assetCategoryId)&loanPurposeId=\(loanPurposeId)"
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAssetsTypes, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = AssetsCategoryModel()
+                        model.updateModelWithJSON(json: option)
+                        self.assetsCategoryArray.append(model)
+                    }
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
+    
+    func getGiftSources(){
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getGiftSources, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = DropDownModel()
+                        model.updateModelWithJSON(json: option)
+                        self.giftSourceArray.append(model)
+                    }
+                    self.txtfieldGiftSource.setDropDownDataSource(self.giftSourceArray.map({$0.optionName}))
+                    if (self.isForAdd){
+                        Utility.showOrHideLoader(shouldShow: false)
+                    }
+                    else{
+                        self.getGiftAssetsDetail()
+                    }
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
+    
+    func getGiftAssetsDetail(){
+        let extraData = "loanApplicationId=\(loanApplicationId)&borrowerId=\(borrowerId)&borrowerAssetId=\(borrowerAssetId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getGiftAssetsDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    let model = GiftDetailModel()
+                    model.updateModelWithJSON(json: result["data"])
+                    self.giftAssetDetail = model
+                    self.setGiftDetail()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension AddGiftFundsViewController : ColabaTextFieldDelegate {
     func selectedOption(option: String, atIndex: Int, textField: ColabaTextField) {
         if textField == txtfieldGiftSource {
-            giftTypeView.isHidden = false
-            lblGiftOfEquity.text = (option == "Relative" || option == "Unmarried Partner") ? "Gift Of Equity" : "Grant"
+            setTextFieldsAccordingToOptions(option: option)
         }
     }
 }
