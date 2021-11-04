@@ -94,6 +94,7 @@ class AddOtherAssetsViewController: BaseViewController {
         txtfieldAccountNumber.setTextField(text: self.otherAssetsDetail.accountNumber)
         txtfieldCashValue.setTextField(text: String(format: "%.0f", self.otherAssetsDetail.assetValue.rounded()))
         txtViewAssetsDescription.textView.text = self.otherAssetsDetail.assetDescription
+        txtViewAssetsDescription.sizeToFit()
     }
     
     func setTextFields() {

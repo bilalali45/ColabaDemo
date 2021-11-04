@@ -123,6 +123,7 @@
 		23A56C5E2685B017005CE6F4 /* Loaf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A56C582685B017005CE6F4 /* Loaf.swift */; };
 		23A56C602686152A005CE6F4 /* Rubik-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23A56C5F2686152A005CE6F4 /* Rubik-LightItalic.ttf */; };
 		23A6578826D65B610013A37B /* LoginNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6578726D65B610013A37B /* LoginNavigationViewController.swift */; };
+		23A70A9B2733C407002C5656 /* ProceedsFromTransactionDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A70A9A2733C407002C5656 /* ProceedsFromTransactionDetailModel.swift */; };
 		23A8D1A927045AA300950195 /* DemographicDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A8D1A827045AA300950195 /* DemographicDetailViewController.swift */; };
 		23AFA36B2707130000388905 /* RequestDocument.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23AFA36A2707130000388905 /* RequestDocument.storyboard */; };
 		23AFA36D2707131C00388905 /* RequestDocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AFA36C2707131C00388905 /* RequestDocumentViewController.swift */; };
@@ -391,6 +392,7 @@
 		23A56C582685B017005CE6F4 /* Loaf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loaf.swift; sourceTree = "<group>"; };
 		23A56C5F2686152A005CE6F4 /* Rubik-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-LightItalic.ttf"; sourceTree = "<group>"; };
 		23A6578726D65B610013A37B /* LoginNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNavigationViewController.swift; sourceTree = "<group>"; };
+		23A70A9A2733C407002C5656 /* ProceedsFromTransactionDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceedsFromTransactionDetailModel.swift; sourceTree = "<group>"; };
 		23A8D1A827045AA300950195 /* DemographicDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemographicDetailViewController.swift; sourceTree = "<group>"; };
 		23AFA36A2707130000388905 /* RequestDocument.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RequestDocument.storyboard; sourceTree = "<group>"; };
 		23AFA36C2707131C00388905 /* RequestDocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestDocumentViewController.swift; sourceTree = "<group>"; };
@@ -624,6 +626,7 @@
 				23EBC78D2732C95F0063922C /* AssetsCategoryModel.swift */,
 				23EBC78F2732CAAF0063922C /* OtherAssetsDetailModel.swift */,
 				23EBC7912732D9C60063922C /* GiftDetailModel.swift */,
+				23A70A9A2733C407002C5656 /* ProceedsFromTransactionDetailModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1577,6 +1580,7 @@
 				23CD143226E259C000627127 /* FirstMortgageFollowupQuestionsViewController.swift in Sources */,
 				23BE064D26F0C0EF00F9B4B8 /* AddSelfEmploymentViewController.swift in Sources */,
 				2368799C26BC173E0045D294 /* BorrowerInformationViewController.swift in Sources */,
+				23A70A9B2733C407002C5656 /* ProceedsFromTransactionDetailModel.swift in Sources */,
 				239570E426E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift in Sources */,
 				236EA1AE2678CE1B00C2F8B5 /* DummyDashboardViewController.swift in Sources */,
 				23F23B4326CA591400AEF33E /* SaveAddressPopupViewController.swift in Sources */,
