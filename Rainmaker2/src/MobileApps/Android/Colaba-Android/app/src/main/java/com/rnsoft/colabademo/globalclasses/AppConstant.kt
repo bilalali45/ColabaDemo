@@ -56,6 +56,8 @@ object AppConstant {
 
         const val assetCategoryId:String = "assetCategoryId"
 
+        const val assetTypeID:String = "assetTypeID"
+
         const val borrowerPurpose:String = "purpose"
 
         const val borrowerPropertyId:String = "property_id"

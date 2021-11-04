@@ -27,17 +27,13 @@ class RetirementFragment:BaseFragment() {
     private var loanPurpose:String? = null
     private var borrowerId:Int? = null
     private var borrowerAssetId:Int? = null
+    private var assetTypeID:Int? = null
 
     private val viewModel: AssetViewModel by activityViewModels()
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = RetirementLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
@@ -47,6 +43,7 @@ class RetirementFragment:BaseFragment() {
             loanPurpose = arguments.getString(AppConstant.loanPurpose)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
             borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId)
+            assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             observeRetirementData()
         }
         return root

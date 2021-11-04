@@ -2,27 +2,30 @@ package com.rnsoft.colabademo
 
 import com.google.gson.annotations.SerializedName
 
-data class SelfEmploymentResponse(
+data class BusinessIncomeResponse(
     val code: String?,
     @SerializedName("data")
-    val selfEmploymentData: SelfEmploymentData?,
+    val businessData: BusinessData?,
     val message: String?,
     val status: String?
 )
 
-data class SelfEmploymentData(
-    val address: SelfEmploymentAddress?,
-    val annualIncome: Double?,
+data class BusinessData(
+    val loanApplicationId: Int?,
+    val id: Int?,
     val borrowerId: Int?,
+    val incomeTypeId: Int?,
+    val address: BusinessIncomeAddress?,
     val businessName: String?,
     val businessPhone: String?,
-    val id: Int?,
+    val startDate: String?,
     val jobTitle: String?,
-    val loanApplicationId: Int?,
-    val startDate: String?
+    val ownershipPercentage: Double?,
+    val annualIncome: Double?,
+    val hasOwnershipInterest: Boolean?
 )
 
-data class SelfEmploymentAddress(
+data class BusinessIncomeAddress(
     val city: String?,
     val countryId: Int?,
     val countryName: Int?,

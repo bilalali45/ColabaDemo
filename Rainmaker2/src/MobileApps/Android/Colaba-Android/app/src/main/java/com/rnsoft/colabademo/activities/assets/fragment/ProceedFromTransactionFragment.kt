@@ -33,20 +33,171 @@ import javax.inject.Inject
         private val financialArray: ArrayList<String> = arrayListOf("House", "Automobile", "Financial Account", "Other")
         private lateinit var financialAdapter : ArrayAdapter<String>
 
+        private var dropDownList: ArrayList<DropDownResponse> = arrayListOf()
+
+        private val viewModel: AssetViewModel by activityViewModels()
+
+        private var loanApplicationId:Int? = null
+        private var loanPurpose:String? = null
+        private var borrowerId:Int? = null
+        private var borrowerAssetId:Int? = null
+        private var assetCategoryId:Int? = null
+        private var assetTypeID:Int? = null
+
+        private var catogoryList: ArrayList<GetAssetTypesByCategoryItem> = arrayListOf()
+
         @Inject
         lateinit var sharedPreferences: SharedPreferences
-        override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View {
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
             _binding = ProceedFromTransLayoutBinding.inflate(inflater, container, false)
             val root: View = binding.root
             setUpUI()
             super.addListeners(binding.root)
-            observeFinancialData()
+            arguments?.let { arguments ->
+                loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+                loanPurpose = arguments.getString(AppConstant.loanPurpose)
+                borrowerId = arguments.getInt(AppConstant.borrowerId)
+                borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId)
+                assetCategoryId = arguments.getInt(AppConstant.assetCategoryId)
+                assetTypeID = arguments.getInt(AppConstant.assetTypeID)
+            }
+            getTransactionCategories()
             return root
         }
+
+        private fun getTransactionCategories() {
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    if (loanApplicationId != null && assetCategoryId != null)
+                        viewModel.fetchAssetTypesByCategoryItemList(authToken, assetCategoryId!!, loanApplicationId!!)
+                }
+            }
+
+            viewModel.assetTypesByCategoryItemList.observe(viewLifecycleOwner, { assetTypesByCategoryItemList ->
+                if(assetTypesByCategoryItemList!=null && assetTypesByCategoryItemList.size>0){
+                    catogoryList = assetTypesByCategoryItemList
+                    for(item in catogoryList){
+                        if(item.id == assetTypeID){
+                            binding.transactionAutoCompleteTextView.setText(item.displayName , false)
+                            if(item.id == 12){
+                                getProceedsFromLoan(0)
+                            }
+                            else if(item.id == 13){
+                                getProceedsFromNonRealEstateDetail(1)
+                            }
+                            else if(item.id == 14){
+                                getProceedsFromRealEstateDetail(2)
+                            }
+                            break
+                        }
+                    }
+                }
+            })
+        }
+
+        private fun getProceedsFromLoan(position:Int){
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    if (loanApplicationId != null && borrowerId != null && assetTypeID != null && borrowerAssetId != null)
+                        viewModel.getProceedsFromLoan(authToken, loanApplicationId!!,
+                            borrowerId!!, assetTypeID!!, borrowerAssetId!!
+                        )
+                }
+            }
+             observeChanges(position)
+        }
+
+
+        private fun getProceedsFromNonRealEstateDetail(position:Int){
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    if (loanApplicationId != null && borrowerId != null && assetTypeID != null && borrowerAssetId != null)
+                        viewModel.getProceedsFromNonRealEstateDetail(authToken, loanApplicationId!!,
+                            borrowerId!!, assetTypeID!!, borrowerAssetId!!
+                        )
+                }
+            }
+            observeChanges(position)
+        }
+
+        private fun getProceedsFromRealEstateDetail(position:Int){
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    if (loanApplicationId != null && borrowerId != null && assetTypeID != null && borrowerAssetId != null)
+                        viewModel.getProceedsFromRealEstateDetail(authToken, loanApplicationId!!,
+                            borrowerId!!, assetTypeID!!, borrowerAssetId!!
+                        )
+                }
+            }
+            observeChanges(position)
+        }
+
+        private fun observeChanges(position:Int){
+            visibleOtherFields(position)
+            viewModel.proceedFromLoanModel.observe(viewLifecycleOwner, { proceedFromLoanModel ->
+                proceedFromLoanModel.proceedFromLoanData?.let{ proceedFromLoanData->
+                    proceedFromLoanData.value?.let {
+                        binding.annualBaseEditText.setText(it.toString())
+                    }
+                    proceedFromLoanData.description?.let {
+                        binding.edDetails.setText(it)
+                    }
+
+                    proceedFromLoanData.securedByCollateral?.let {
+                        if(it)
+                            binding.radioButton.isChecked = true
+                        else
+                            binding.radioButton2.isChecked = true
+                    }
+
+                    proceedFromLoanData.collateralAssetOtherDescription?.let {
+                        binding.edDetails.setText(it)
+                    }
+
+                    proceedFromLoanData.collateralAssetName?.let{
+                        binding.whichAssetsCompleteView.setText(it, false)
+                    }
+
+
+                }
+
+
+            })
+        }
+
+        private fun visibleOtherFields(position:Int){
+            binding.transactionTextInputLayout.defaultHintTextColor = ColorStateList.valueOf(
+                ContextCompat.getColor(requireContext(), R.color.grey_color_two ))
+
+            binding.transactionTextInputLayout.helperText?.let{
+                if(it.isNotEmpty())
+                    CustomMaterialFields.clearError(binding.transactionTextInputLayout, requireContext())
+            }
+
+            removeErrorFromFields()
+            clearFocusFromFields()
+
+            if(position ==0) {
+                binding.whichAssetInputLayout.visibility = View.GONE
+                binding.layoutDetail.visibility = View.GONE
+
+                binding.whichAssetsCompleteView.setText("")
+                binding.annualBaseLayout.visibility = View.VISIBLE
+                binding.radioGroup.clearCheck()
+                binding.radioLabelTextView.visibility = View.VISIBLE
+                binding.radioGroup.visibility = View.VISIBLE
+
+            }
+            else{
+                binding.whichAssetsCompleteView.setText("")
+                binding.whichAssetInputLayout.visibility = View.GONE
+                binding.radioLabelTextView.visibility = View.GONE
+                binding.radioGroup.visibility = View.GONE
+                binding.annualBaseLayout.visibility = View.VISIBLE
+                binding.layoutDetail.visibility = View.VISIBLE
+            }
+        }
+
 
         private fun setUpUI(){
             transactionAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  transactionArray)
@@ -59,38 +210,13 @@ import javax.inject.Inject
 
             binding.transactionAutoCompleteTextView.onItemClickListener = object: AdapterView.OnItemClickListener {
                 override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                    binding.transactionTextInputLayout.defaultHintTextColor = ColorStateList.valueOf(
-                        ContextCompat.getColor(requireContext(), R.color.grey_color_two ))
-
-                    binding.transactionTextInputLayout.helperText?.let{
-                        if(it.isNotEmpty())
-                            CustomMaterialFields.clearError(binding.transactionTextInputLayout, requireContext())
-                    }
-
-                    removeErrorFromFields()
-                    clearFocusFromFields()
-
-                    if(position ==0) {
-                        binding.whichAssetInputLayout.visibility = View.GONE
-                        binding.layoutDetail.visibility = View.GONE
-
-                        binding.whichAssetsCompleteView.setText("")
-                        binding.annualBaseLayout.visibility = View.VISIBLE
-                        binding.radioGroup.clearCheck()
-                        binding.radioLabelTextView.visibility = View.VISIBLE
-                        binding.radioGroup.visibility = View.VISIBLE
-
-                    }
-                    else{
-                        binding.whichAssetsCompleteView.setText("")
-                        binding.whichAssetInputLayout.visibility = View.GONE
-                        binding.radioLabelTextView.visibility = View.GONE
-                        binding.radioGroup.visibility = View.GONE
-                        binding.annualBaseLayout.visibility = View.VISIBLE
-                        binding.layoutDetail.visibility = View.VISIBLE
-                    }
+                    visibleOtherFields(position)
                 }
             }
+
+
+
+
             binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
                     R.id.radioButton -> {
@@ -149,6 +275,7 @@ import javax.inject.Inject
 
 
         }
+
 
         private fun clearFocusFromFields(){
             binding.annualBaseLayout.clearFocus()
@@ -218,20 +345,18 @@ import javax.inject.Inject
             )
         }
 
-        private val viewModel: AssetViewModel by activityViewModels()
-
         private fun observeFinancialData(){
             lifecycleScope.launchWhenStarted {
                 viewModel.allFinancialAsset.observe(viewLifecycleOwner, { allFinancialAsset ->
                     if(allFinancialAsset.size>0) {
                         transactionArray = arrayListOf()
-                        //classLevelBankAccountTypes = arrayListOf()
+                        dropDownList = arrayListOf()
                         for (item in allFinancialAsset) {
                             transactionArray.add(item.name)
-                           // classLevelBankAccountTypes.add(item)
+                            dropDownList.add(item)
                         }
-                        //transactionAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  bankAccounts)
-                        //binding.accountTypeCompleteView.setAdapter(transactionAdapter)
+                        transactionAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  transactionArray)
+                        binding.transactionAutoCompleteTextView.setAdapter(transactionAdapter)
 
                     }
                     else

@@ -27,6 +27,55 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
         }
     }
 
+    suspend fun getProceedsFromLoan(token: String , loanApplicationId : Int, borrowerId : Int, assetTypeID:Int, borrowerAssetId : Int) : Result<ProceedFromLoanModel> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getProceedsFromLoan(Authorization  = newToken ,
+                loanApplicationId = loanApplicationId, borrowerId = borrowerId,
+                AssetTypeId=assetTypeID, borrowerAssetId = borrowerAssetId )
+            Timber.e("getProceedsFromLoan:  - $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e.cause))
+        }
+    }
+
+    suspend fun getProceedsFromNonRealEstateDetail(token: String , loanApplicationId : Int, borrowerId : Int, assetTypeID:Int, borrowerAssetId : Int) : Result<ProceedFromLoanModel> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getFromLoanNonRealStateDetails(Authorization  = newToken ,
+                loanApplicationId = loanApplicationId, borrowerId = borrowerId,
+                AssetTypeId=assetTypeID, borrowerAssetId = borrowerAssetId )
+            Timber.e("getProceedsFromLoan:  - $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e.cause))
+        }
+    }
+
+
+    suspend fun getProceedsFromRealEstateDetail(token: String , loanApplicationId : Int, borrowerId : Int, assetTypeID:Int, borrowerAssetId : Int) : Result<ProceedFromLoanModel> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getFromLoanRealStateDetails(Authorization  = newToken ,
+                loanApplicationId = loanApplicationId, borrowerId = borrowerId,
+                AssetTypeId=assetTypeID, borrowerAssetId = borrowerAssetId )
+            Timber.e("getProceedsFromLoan:  - $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e.cause))
+        }
+    }
+
 
     suspend fun getBankAccountDetails(
         token : String,

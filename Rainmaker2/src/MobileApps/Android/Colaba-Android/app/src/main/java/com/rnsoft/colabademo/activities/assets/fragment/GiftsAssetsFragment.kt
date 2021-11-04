@@ -34,13 +34,16 @@ class GiftsAssetsFragment:BaseFragment() {
     private var loanPurpose:String? = null
     private var borrowerId:Int? = null
     private var borrowerAssetId:Int? = null
+    private var assetCategoryId:Int? = null
+    private var assetTypeID:Int? = null
+
 
     private val viewModel: AssetViewModel by activityViewModels()
 
     private var dataArray: ArrayList<String> = arrayListOf("Relative", "Unmarried Partner", "Federal Agency", "State Agency", "Local Agency", "Community Non Profit", "Employer", "Religious Non Profit", "Lender")
     private lateinit var giftAdapter:ArrayAdapter<String>
     private var giftResources: ArrayList<GiftSourcesResponse> = arrayListOf()
-
+    private var giftAssetList: ArrayList<GetAssetTypesByCategoryItem> = arrayListOf()
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -54,9 +57,27 @@ class GiftsAssetsFragment:BaseFragment() {
             loanPurpose = arguments.getString(AppConstant.loanPurpose)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
             borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId)
+            assetCategoryId = arguments.getInt(AppConstant.assetCategoryId)
+            assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             observeGiftData()
+            getGiftCategory()
         }
         return root
+    }
+
+    private fun getGiftCategory() {
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if (loanApplicationId != null && assetCategoryId != null)
+                    viewModel.fetchAssetTypesByCategoryItemList(authToken, assetCategoryId!!, loanApplicationId!!)
+            }
+        }
+
+        viewModel.assetTypesByCategoryItemList.observe(viewLifecycleOwner, { assetTypesByCategoryItemList ->
+            if(assetTypesByCategoryItemList!=null && assetTypesByCategoryItemList.size>0){
+                giftAssetList = assetTypesByCategoryItemList
+            }
+        })
     }
 
     private fun observeGiftData(){

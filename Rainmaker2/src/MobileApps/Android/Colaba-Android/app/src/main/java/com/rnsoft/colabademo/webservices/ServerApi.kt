@@ -139,6 +139,36 @@ interface ServerApi{
         @Query("loanPurposeId") loanPurposeId:Int) : ArrayList<GetAssetTypesByCategoryItem>
 
 
+
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetProceedsfromloanDetails")
+    suspend fun getProceedsFromLoan(
+        @Header("Authorization") Authorization:String,
+        @Query("loanApplicationId") loanApplicationId:Int,
+        @Query("borrowerId") borrowerId:Int,
+        @Query("AssetTypeId") AssetTypeId:Int,
+        @Query("borrowerAssetId") borrowerAssetId:Int
+    ) : ProceedFromLoanModel
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetFromLoanNonRealStateDetails")
+    suspend fun getFromLoanNonRealStateDetails(
+        @Header("Authorization") Authorization:String,
+        @Query("loanApplicationId") loanApplicationId:Int,
+        @Query("borrowerId") borrowerId:Int,
+        @Query("AssetTypeId") AssetTypeId:Int,
+        @Query("borrowerAssetId") borrowerAssetId:Int
+    ) : ProceedFromLoanModel
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetFromLoanRealStateDetails")
+    suspend fun getFromLoanRealStateDetails(
+        @Header("Authorization") Authorization:String,
+        @Query("loanApplicationId") loanApplicationId:Int,
+        @Query("borrowerId") borrowerId:Int,
+        @Query("AssetTypeId") AssetTypeId:Int,
+        @Query("borrowerAssetId") borrowerAssetId:Int
+    ) : ProceedFromLoanModel
+
+
     // post add or update bank account
 
 
@@ -250,7 +280,7 @@ interface ServerApi{
     suspend fun getBusinessIncome(
         @Header("Authorization") Authorization:String,
         @Query("borrowerId") borrowerId:Int,
-        @Query("incomeInfoId") incomeInfoId:Int): SelfEmploymentResponse
+        @Query("incomeInfoId") incomeInfoId:Int): BusinessIncomeResponse
 
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetAllBusinessTypes")

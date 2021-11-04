@@ -38,4 +38,19 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
                 Result.Error(IOException("Error notification -", e))
         }
     }
+
+    suspend fun getBusinessIncome(
+        token: String, borrowerId: Int, incomeInfoId: Int): Result<BusinessIncomeResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getBusinessIncome(newToken,borrowerId,incomeInfoId)
+            Timber.e("business-income-Response-- $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
 }
