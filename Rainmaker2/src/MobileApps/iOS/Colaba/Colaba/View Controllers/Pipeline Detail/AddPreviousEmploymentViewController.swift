@@ -45,6 +45,7 @@ class AddPreviousEmploymentViewController: BaseViewController {
     var loanApplicationId = 0
     var borrowerId = 0
     var incomeInfoId = 0
+    var employmentDetail = EmployementDetailModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,6 +57,9 @@ class AddPreviousEmploymentViewController: BaseViewController {
         ownershipViewHeightConstraint.constant = 126
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.setScreenHeight()
+        }
+        if (!isForAdd){
+            getEmploymentDetail()
         }
     }
         
@@ -101,6 +105,23 @@ class AddPreviousEmploymentViewController: BaseViewController {
         
     }
     
+    func setEmployementDetail(){
+        txtfieldEmployerName.setTextField(text: employmentDetail.employmentInfo.employerName)
+        let employerPhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: employmentDetail.employmentInfo.employerPhoneNumber)
+        txtfieldEmployerPhoneNumber.setTextField(text: employerPhoneNumber)
+        let address = employmentDetail.employerAddress
+        lblAddress.text = "\(address.street) \(address.unit),\n\(address.city), \(address.stateName) \(address.zipCode)"
+        txtfieldJobTitle.setTextField(text: employmentDetail.employmentInfo.jobTitle)
+        txtfieldStartDate.setTextField(text: Utility.getDayMonthYear(employmentDetail.employmentInfo.startDate))
+        txtfieldEndDate.setTextField(text: Utility.getDayMonthYear(employmentDetail.employmentInfo.endDate))
+        txtfieldProfessionYears.setTextField(text: "\(employmentDetail.employmentInfo.yearsInProfession)")
+    
+        hasOwnershipInterest = employmentDetail.employmentInfo.hasOwnershipInterest
+        txtfieldOwnershipPercentage.setTextField(text: "\(employmentDetail.employmentInfo.ownershipInterest)")
+        txtfieldNetAnnualIncome.setTextField(text: String(format: "%.0f", employmentDetail.wayOfIncome.employerAnnualSalary))
+        changeOwnershipInterestStatus()
+    }
+    
     func setScreenHeight(){
         
         let ownershipViewHeight = ownershipView.frame.height
@@ -117,6 +138,8 @@ class AddPreviousEmploymentViewController: BaseViewController {
         let vc = Utility.getCurrentEmployerAddressVC()
         vc.topTitle = "Previous Employer Address"
         vc.searchTextFieldPlaceholder = "Search Main Address"
+        vc.borrowerFullName = self.borrowerName
+        vc.selectedAddress = employmentDetail.employerAddress
         self.pushToVC(vc: vc)
     }
     
@@ -190,6 +213,33 @@ class AddPreviousEmploymentViewController: BaseViewController {
         
         if validate(){
             self.dismissVC()
+        }
+    }
+    
+    //MARK:- API's
+    
+    func getEmploymentDetail(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)&borrowerid=\(borrowerId)&incomeInfoId=\(incomeInfoId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getEmploymentDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    let model = EmployementDetailModel()
+                    model.updateModelWithJSON(json: result["data"])
+                    self.employmentDetail = model
+                    self.setEmployementDetail()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
         }
     }
 }
