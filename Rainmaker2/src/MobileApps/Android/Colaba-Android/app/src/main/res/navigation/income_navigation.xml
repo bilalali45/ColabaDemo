@@ -111,7 +111,7 @@
 
     <fragment
         android:id="@+id/navigation_military_pay"
-        android:name="com.rnsoft.colabademo.MilitaryServiceFragment"
+        android:name="com.rnsoft.colabademo.MilitaryIncomeFragment"
         android:label="@string/income"
         tools:layout="@layout/income_military_pay">
         <action
@@ -129,7 +129,7 @@
 
     <fragment
         android:id="@+id/navigation_other"
-        android:name="com.rnsoft.colabademo.IncomeOtherFragment"
+        android:name="com.rnsoft.colabademo.OtherIncomeFragment"
         android:label="@string/income"
         tools:layout="@layout/income_other_layout">
         <action

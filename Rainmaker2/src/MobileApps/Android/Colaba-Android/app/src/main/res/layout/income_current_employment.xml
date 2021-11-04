@@ -497,7 +497,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:visibility="gone"
-                android:id="@+id/layout_avg_hours"
+                android:id="@+id/layout_weekly_hours"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"

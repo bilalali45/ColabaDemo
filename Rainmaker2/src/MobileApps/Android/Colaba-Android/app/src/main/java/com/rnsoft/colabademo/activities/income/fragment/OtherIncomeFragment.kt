@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +10,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
@@ -16,12 +19,18 @@ import com.rnsoft.colabademo.databinding.IncomeOtherLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
-class IncomeOtherFragment : BaseFragment(), View.OnClickListener {
-
+@AndroidEntryPoint
+class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+    private val viewModel : IncomeViewModel by activityViewModels()
+    var incomeInfoId :Int? = null
     private lateinit var binding: IncomeOtherLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
     private var savedViewInstance: View? = null
@@ -46,10 +55,39 @@ class IncomeOtherFragment : BaseFragment(), View.OnClickListener {
             toolbarBinding.toolbarTitle.setText(getString(R.string.income_other))
 
             initViews()
+            getData()
             savedViewInstance
 
         }
     }
+    private fun getData(){
+        incomeInfoId = 1112
+
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if(incomeInfoId != null){
+                    binding.loaderOtherIncome.visibility = View.VISIBLE
+                    viewModel.getOtherIncome(authToken,incomeInfoId!!)
+
+                    viewModel.otherIncomeData.observe(viewLifecycleOwner, { data ->
+                        data?.otherIncomeData?.let { info ->
+
+                            /*info.employerName?.let {
+                                binding.editTextEmpName.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutEmpName, R.color.grey_color_two, requireContext())
+                            }
+                            info.militaryEntitlements?.let {
+                                binding.editTextEntitlement.setText(Math.round(it).toString())
+                                CustomMaterialFields.setColor(binding.layoutEntitlement, R.color.grey_color_two, requireContext())
+                            } */
+                        }
+                        binding.loaderOtherIncome.visibility = View.GONE
+                    })
+                }
+            }
+        }
+    }
+
 
     private fun initViews() {
         toolbarBinding.btnClose.setOnClickListener(this)
@@ -60,7 +98,6 @@ class IncomeOtherFragment : BaseFragment(), View.OnClickListener {
         setRetirementType()
 
     }
-
 
     override fun onClick(view: View?) {
         when (view?.getId()) {

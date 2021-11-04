@@ -58,7 +58,6 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         }
     }
 
-
     private fun initViews() {
         binding.layoutAddress.setOnClickListener(this)
         toolbarBinding.btnClose.setOnClickListener(this)
@@ -88,21 +87,23 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
                             }
                             info.businessPhone?.let {
                                 binding.editTextBusPhnum.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutBusPhnum, R.color.grey_color_two, requireContext())
                             }
                             info.startDate?.let {
                                 binding.editTextBstartDate.setText(AppSetting.getFullDate1(it))
                             }
                             info.jobTitle?.let {
                                 binding.edJobTitle.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutJobTitle, R.color.grey_color_two, requireContext())
                             }
                             info.annualIncome?.let {
                                 binding.edNetIncome.setText(Math.round(it).toString())
+                                CustomMaterialFields.setColor(binding.layoutNetIncome, R.color.grey_color_two, requireContext())
                             }
 //                            info.address?.let {
 //                                binding.textviewEmployerAddress.text =
 //                                    it.streetAddress + " " + it.unitNo + "\n" + it.cityName + " " + it.stateName + " " + it.zipCode
 //                            }
-
                         }
                         binding.loaderSelfEmployment.visibility = View.GONE
                     })
@@ -113,7 +114,6 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
 
     }
 
-
     private fun openAddressFragment(){
         val addressFragment = AddressBusiness()
         val bundle = Bundle()
@@ -121,7 +121,6 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         addressFragment.arguments = bundle
         findNavController().navigate(R.id.action_business_address, addressFragment.arguments)
     }
-
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
@@ -132,7 +131,6 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
                 HideSoftkeyboard.hide(requireActivity(), binding.mainLayoutBusinessCont)
                 super.removeFocusFromAllFields(binding.mainLayoutBusinessCont)
             }
-
         }
     }
 
@@ -200,7 +198,6 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
             findNavController().popBackStack()
         }
     }
-
 
     private fun openCalendar() {
         val c = Calendar.getInstance()

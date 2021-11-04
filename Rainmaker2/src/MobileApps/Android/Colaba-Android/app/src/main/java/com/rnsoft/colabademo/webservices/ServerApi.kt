@@ -263,7 +263,7 @@ interface ServerApi{
     suspend fun getMilitaryIncome(
         @Header("Authorization") Authorization:String,
         @Query("borrowerId") borrowerId:Int,
-        @Query("incomeInfoId") incomeInfoId:Int): SelfEmploymentResponse
+        @Query("incomeInfoId") incomeInfoId:Int): MilitaryIncomeResponse
 
     // AddOrUpdateMilitaryIncome
 
@@ -271,18 +271,18 @@ interface ServerApi{
     suspend fun getRetirementIncome(
         @Header("Authorization") Authorization:String,
         @Query("borrowerId") borrowerId:Int,
-        @Query("incomeInfoId") incomeInfoId:Int): SelfEmploymentResponse
+        @Query("incomeInfoId") incomeInfoId:Int): RetirementIncomeResponse
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetRetirementIncomeTypes")
     suspend fun getRetirementIncomeTypes(
-        @Header("Authorization") Authorization : String) : ArrayList<DropDownResponse>
+        @Header("Authorization") Authorization : String): ArrayList<DropDownResponse>
 
     //AddOrUpdateRetirementIncomeInfo
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetOtherIncomeInfo")
     suspend fun getOtherIncomeInfo(
         @Header("Authorization") Authorization:String,
-        @Query("incomeInfoId") incomeInfoId:Int): SelfEmploymentResponse
+        @Query("incomeInfoId") incomeInfoId:Int): OtherIncomeResponse
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetOtherIncomeTypes")
     suspend fun getOtherIncomeTypes(

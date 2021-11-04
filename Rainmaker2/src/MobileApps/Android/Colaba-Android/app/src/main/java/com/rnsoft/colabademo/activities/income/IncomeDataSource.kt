@@ -44,7 +44,67 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getBusinessIncome(newToken,borrowerId,incomeInfoId)
-            Timber.e("business-income-Response-- $response")
+            //Timber.e("business-income-Response-- $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun getMilitaryIncome(
+        token: String, borrowerId: Int, incomeInfoId: Int): Result<MilitaryIncomeResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getMilitaryIncome(newToken,borrowerId,incomeInfoId)
+            //Timber.e("military-income-Response-- $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun getRetirementIncome(
+        token: String, borrowerId: Int, incomeInfoId: Int): Result<RetirementIncomeResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getRetirementIncome(newToken,borrowerId,incomeInfoId)
+            //Timber.e("retirement-income-Response-- $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun getRetirementIncomeTypes(
+        token: String): Result<ArrayList<DropDownResponse>> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getRetirementIncomeTypes(newToken)
+            Timber.e("retirement-income-types-- $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun getOtherIncome(
+        token: String, incomeInfoId: Int): Result<OtherIncomeResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getOtherIncomeInfo(newToken,incomeInfoId)
+            //Timber.e("other-income-Response-- $response")
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

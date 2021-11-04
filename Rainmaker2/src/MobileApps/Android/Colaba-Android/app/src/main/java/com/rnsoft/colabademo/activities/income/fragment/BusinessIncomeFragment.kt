@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,6 +58,7 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
             toolbarBinding.toolbarTitle.setText(getString(R.string.business))
 
             initViews()
+            getData()
             super.addListeners(binding.root)
             savedViewInstance
 
@@ -77,45 +79,46 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun getData(){
-        incomeInfoId = 1
+        incomeInfoId = 1086
         borrowerId = 5
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if (borrowerId != null && incomeInfoId != null) {
+                if(borrowerId != null && incomeInfoId != null){
                     binding.loaderIncomeBusiness.visibility = View.VISIBLE
-                    viewModel.getSelfEmploymentDetail(authToken,borrowerId!!,incomeInfoId!!)
+                    viewModel.getIncomeBusiness(authToken,borrowerId!!,incomeInfoId!!)
 
-                    viewModel.selfEmploymentDetail.observe(viewLifecycleOwner, { data ->
-                        data?.selfEmploymentData?.let { info ->
+                    viewModel.businessIncome.observe(viewLifecycleOwner, { data ->
+                        data?.businessData?.let { info ->
                             info.businessName?.let {
                                 binding.edBusinessName.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutBusinessName, R.color.grey_color_two, requireContext())
                             }
                             info.businessPhone?.let {
                                 binding.edBusPhnum.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutBusPhnum, R.color.grey_color_two, requireContext())
                             }
                             info.startDate?.let {
                                 binding.edBstartDate.setText(AppSetting.getFullDate1(it))
                             }
                             info.jobTitle?.let {
                                 binding.edJobTitle.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutJobTitle, R.color.grey_color_two, requireContext())
+                            }
+                            info.ownershipPercentage?.let {
+                                binding.edOwnershipPercent.setText(Math.round(it).toString())
+                                CustomMaterialFields.setColor(binding.layoutOwnershipPercentage, R.color.grey_color_two, requireContext())
                             }
                             info.annualIncome?.let {
                                 binding.edNetIncome.setText(Math.round(it).toString())
+                                CustomMaterialFields.setColor(binding.layoutNetIncome, R.color.grey_color_two, requireContext())
                             }
-//                            info.address?.let {
-//                                binding.textviewEmployerAddress.text =
-//                                    it.streetAddress + " " + it.unitNo + "\n" + it.cityName + " " + it.stateName + " " + it.zipCode
-//                            }
-
                         }
                         binding.loaderIncomeBusiness.visibility = View.GONE
                     })
-
                 }
             }
         }
-
     }
 
     override fun onClick(view: View?){

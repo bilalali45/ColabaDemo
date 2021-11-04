@@ -28,7 +28,7 @@ data class BusinessData(
 data class BusinessIncomeAddress(
     val city: String?,
     val countryId: Int?,
-    val countryName: Int?,
+    val countryName: String?,
     val countyId: Int?,
     val countyName: String?,
     val stateId: Int?,

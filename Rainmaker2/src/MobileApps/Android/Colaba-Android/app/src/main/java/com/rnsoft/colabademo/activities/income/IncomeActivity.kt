@@ -20,6 +20,7 @@ class IncomeActivity : BaseActivity() {
     lateinit var sharedPreferences: SharedPreferences
     lateinit var binding: IncomeActivityLayoutBinding
     private val viewModel: BorrowerApplicationViewModel by viewModels()
+    private val incomeViewModel: IncomeViewModel by viewModels()
     private var borrowerTabList:ArrayList<Int>? = null
     var loanApplicationId:Int? = null
     var loanPurpose:String? = null
@@ -48,6 +49,8 @@ class IncomeActivity : BaseActivity() {
                             authToken, loanApplicationId!!,
                             borrowerTabList!!
                         )
+
+                        incomeViewModel.getRetirementIncomeTypes(authToken)
                     }
                 }
             }

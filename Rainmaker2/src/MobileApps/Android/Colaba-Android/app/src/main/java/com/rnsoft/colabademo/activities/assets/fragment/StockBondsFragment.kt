@@ -18,6 +18,7 @@ import com.rnsoft.colabademo.databinding.StockBondsLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -175,6 +176,9 @@ class StockBondsFragment:BaseFragment() {
                         dataArray.add(item.name)
                         bankAccounts.add(item)
                     }
+                    Timber.e("Data Array- $dataArray")
+                    Timber.e("BankAccounts- $bankAccounts")
+
                     bankAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  dataArray)
                     binding.accountTypeCompleteView.setAdapter(bankAdapter)
                 }
@@ -210,5 +214,6 @@ class StockBondsFragment:BaseFragment() {
                     findNavController().popBackStack()
             })
         }
+
     }
 }

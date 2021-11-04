@@ -79,18 +79,22 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
                         data?.employmentData?.employmentInfo.let { info ->
                             info?.employerName?.let {
                                 binding.editTextEmpName.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutEmpName, R.color.grey_color_two, requireContext())
                             }
                             info?.employerPhoneNumber?.let {
                                 binding.editTextEmpPhnum.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutEmpPhnum, R.color.grey_color_two, requireContext())
                             }
                             info?.jobTitle?.let {
                                 binding.editTextJobTitle.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutJobTitle, R.color.grey_color_two, requireContext())
                             }
                             info?.startDate?.let {
                                 binding.editTextStartDate.setText(AppSetting.getFullDate1(it))
                             }
                             info?.yearsInProfession?.let {
                                 binding.editTextProfYears.setText(it.toString())
+                                CustomMaterialFields.setColor(binding.layoutYearsProfession, R.color.grey_color_two, requireContext())
                             }
                             info?.employedByFamilyOrParty?.let {
                                 if(it == true)
@@ -132,28 +136,27 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
                                     payTypeClicked()
                                     salary.employerAnnualSalary?.let {
                                         binding.edBaseSalary.setText(Math.round(it).toString())
+                                        CustomMaterialFields.setColor(binding.layoutBaseSalary, R.color.grey_color_two, requireContext())
                                     }
                                 } else {
                                     binding.paytypeHourly.isChecked = true
                                     payTypeClicked()
                                     salary.hourlyRate?.let {
                                         binding.edHourlyRate.setText(Math.round(it).toString())
+                                        CustomMaterialFields.setColor(binding.layoutHourlyRate, R.color.grey_color_two, requireContext())
                                     }
                                     salary.hoursPerWeek?.let {
                                         binding.editTextWeeklyHours.setText(it.toString())
+                                        CustomMaterialFields.setColor(binding.layoutWeeklyHours, R.color.grey_color_two, requireContext())
                                     }
-
                                 }
                             }
                         }
-
                         binding.loaderEmployment.visibility = View.GONE
                     })
-
                 }
             }
         }
-
     }
 
     private fun initViews() {
@@ -215,7 +218,7 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
         binding.edOvertimeIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edOvertimeIncome, binding.layoutOvertimeIncome, requireContext()))
         binding.edCommIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCommIncome, binding.layoutCommIncome, requireContext()))
         binding.edHourlyRate.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edHourlyRate, binding.layoutHourlyRate, requireContext()))
-        binding.editTextWeeklyHours.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextWeeklyHours, binding.layoutAvgHours, requireContext()))
+        binding.editTextWeeklyHours.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextWeeklyHours, binding.layoutWeeklyHours, requireContext()))
 
         // set input format
         binding.edBaseSalary.addTextChangedListener(NumberTextFormat(binding.edBaseSalary))
@@ -345,16 +348,15 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
             binding.paytypeSalary.setTypeface(null, Typeface.BOLD)
             binding.paytypeHourly.setTypeface(null, Typeface.NORMAL)
             binding.layoutHourlyRate.visibility= View.GONE
-            binding.layoutAvgHours.visibility = View.GONE
+            binding.layoutWeeklyHours.visibility = View.GONE
             binding.layoutBaseSalary.visibility = View.VISIBLE
         }
         else {
             binding.paytypeSalary.setTypeface(null, Typeface.NORMAL)
             binding.paytypeHourly.setTypeface(null, Typeface.BOLD)
             binding.layoutHourlyRate.visibility= View.VISIBLE
-            binding.layoutAvgHours.visibility = View.VISIBLE
+            binding.layoutWeeklyHours.visibility = View.VISIBLE
             binding.layoutBaseSalary.visibility = View.GONE
-
         }
     }
 
@@ -362,7 +364,6 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
         if(binding.cbBonus.isChecked) {
             binding.cbBonus.setTypeface(null, Typeface.BOLD)
             binding.layoutBonusIncome.visibility = View.VISIBLE
-
         }
         else {
             binding.cbBonus.setTypeface(null, Typeface.NORMAL)

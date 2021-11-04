@@ -20,7 +20,19 @@ class IncomeRepo @Inject constructor(private val dataSource: IncomeDataSource) {
         return dataSource.getBusinessIncome(token = token,borrowerId, incomeInfoId)
     }
 
-//    suspend fun getOtherAsset(token: String, loanApplicationId : Int, borrowerId : Int, borrowerAssetId : Int): Result<OtherAssetResponse> {
-//        return dataSource.getOtherAssetDetails(token = token, loanApplicationId,borrowerId, borrowerAssetId)
-//    }
+    suspend fun getMilitaryIncome(token: String,borrowerId: Int, incomeInfoId: Int): Result<MilitaryIncomeResponse> {
+        return dataSource.getMilitaryIncome(token = token,borrowerId, incomeInfoId)
+    }
+
+    suspend fun getRetirementIncome(token: String,borrowerId: Int, incomeInfoId: Int): Result<RetirementIncomeResponse> {
+        return dataSource.getRetirementIncome(token = token,borrowerId, incomeInfoId)
+    }
+
+    suspend fun getRetirementIncomeTypes(token: String): Result<ArrayList<DropDownResponse>> {
+        return dataSource.getRetirementIncomeTypes(token = token)
+    }
+
+    suspend fun getOtherIncome(token: String, incomeInfoId: Int): Result<OtherIncomeResponse> {
+        return dataSource.getOtherIncome(token = token, incomeInfoId)
+    }
 }

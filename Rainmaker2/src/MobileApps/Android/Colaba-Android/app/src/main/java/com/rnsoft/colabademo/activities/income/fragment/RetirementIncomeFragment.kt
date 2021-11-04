@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +10,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
@@ -16,17 +19,27 @@ import com.rnsoft.colabademo.databinding.IncomeRetirementLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
+import java.util.ArrayList
+import javax.inject.Inject
 
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
+@AndroidEntryPoint
 class RetirementIncomeFragment : BaseFragment(), View.OnClickListener {
 
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: IncomeRetirementLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
     private var savedViewInstance: View? = null
     private val retirementArray = listOf("Social Security", "Pension","IRA / 401K" , "Other Retirement Source")
-
+    private val viewModel : IncomeViewModel by activityViewModels()
+    var incomeInfoId :Int? = null
+    var borrowerId :Int? = null
+    private var retirementTypes: ArrayList<DropDownResponse> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,9 +57,76 @@ class RetirementIncomeFragment : BaseFragment(), View.OnClickListener {
             toolbarBinding.toolbarTitle.setText(getString(R.string.retirement))
 
             initViews()
+            //getData()
+            observeRetirementIncomeTypes()
             savedViewInstance
 
         }
+    }
+
+    private fun getData(){
+        incomeInfoId = 1089
+        borrowerId = 5
+
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if(borrowerId != null && incomeInfoId != null){
+                    binding.loaderRetirementIncome.visibility = View.VISIBLE
+                    viewModel.getRetirementIncome(authToken,borrowerId!!,incomeInfoId!!)
+
+                    viewModel.retirementIncomeData.observe(viewLifecycleOwner, { data ->
+                        data?.retirementIncomeData?.let { info ->
+                            info.employerName?.let {
+                                //binding.editTextEmpName.setText(it)
+                                //CustomMaterialFields.setColor(binding.layoutEmpName, R.color.grey_color_two, requireContext())
+
+                                info.incomeTypeId?.let { incomeTypeId->
+                                    for(item in retirementTypes){
+                                        if(incomeTypeId == item.id){
+                                            binding.tvRetirementType.setText(item.name, false)
+                                            break
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        binding.loaderRetirementIncome.visibility = View.GONE
+                    })
+                }
+            }
+        }
+
+
+    }
+
+    private fun observeRetirementIncomeTypes(){
+        lifecycleScope.launchWhenStarted {
+            viewModel.retirementIncomeTypes.observe(viewLifecycleOwner, { types ->
+                if(types.size>0) {
+                    val itemList:ArrayList<String> = arrayListOf()
+                    retirementTypes = arrayListOf()
+                    for (item in types) {
+                        itemList.add(item.name)
+                        retirementTypes.add(item)
+                    }
+                    Timber.e("itemList- $itemList")
+                    Timber.e("RetirementTypes- $retirementTypes")
+
+                    val adapter =
+                        ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
+                    binding.tvRetirementType.setAdapter(adapter)
+                    binding.tvRetirementType.setOnFocusChangeListener { _, _ ->
+                        binding.tvRetirementType.showDropDown()
+                    }
+                    binding.tvRetirementType.setOnClickListener {
+                        binding.tvRetirementType.showDropDown()
+                    }
+                }
+                else
+                    findNavController().popBackStack()
+            })
+        }
+        getData()
     }
 
     private fun initViews() {
@@ -55,10 +135,9 @@ class RetirementIncomeFragment : BaseFragment(), View.OnClickListener {
         binding.btnSaveChange.setOnClickListener(this)
 
         setInputFields()
-        setRetirementType()
+        //setRetirementType()
 
     }
-
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
