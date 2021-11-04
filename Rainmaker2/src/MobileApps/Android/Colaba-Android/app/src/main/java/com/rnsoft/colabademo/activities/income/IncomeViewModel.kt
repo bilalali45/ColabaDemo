@@ -25,6 +25,13 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
     private val _employmentDetail: MutableLiveData<EmploymentDetailResponse> = MutableLiveData()
     val employmentDetail: LiveData<EmploymentDetailResponse> get() = _employmentDetail
 
+    private val _selfEmploymentDetail: MutableLiveData<SelfEmploymentResponse> = MutableLiveData()
+    val selfEmploymentDetail: LiveData<SelfEmploymentResponse> get() = _selfEmploymentDetail
+
+    private val _businessIncomeData: MutableLiveData<BusinessIncomeResponse> = MutableLiveData()
+    val businessIncome: LiveData<BusinessIncomeResponse> get() = _businessIncomeData
+
+
 
     /*suspend fun getBankAccountType(token: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -52,6 +59,42 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _employmentDetail.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun getSelfEmploymentDetail(token: String, borrowerId: Int, incomeInfoId:Int) {
+        delay(2000)
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.getSelfEmploymentData(
+                token = token,
+                borrowerId,
+                incomeInfoId)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _selfEmploymentDetail.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun getIncomeBusiness(token: String, borrowerId: Int, incomeInfoId:Int) {
+        delay(2000)
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.getBusinessIncome(
+                token = token,
+                borrowerId,
+                incomeInfoId)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _businessIncomeData.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)

@@ -242,7 +242,7 @@ interface ServerApi{
     suspend fun getBusinessIncome(
         @Header("Authorization") Authorization:String,
         @Query("borrowerId") borrowerId:Int,
-        @Query("incomeInfoId") incomeInfoId:Int): SelfEmploymentResponse
+        @Query("incomeInfoId") incomeInfoId:Int): BusinessIncomeResponse
 
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetAllBusinessTypes")

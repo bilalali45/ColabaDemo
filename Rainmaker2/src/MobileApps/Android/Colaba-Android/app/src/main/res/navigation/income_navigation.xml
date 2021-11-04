@@ -100,7 +100,7 @@
     <!-- business fragment -->
     <fragment
         android:id="@+id/navigation_business"
-        android:name="com.rnsoft.colabademo.BusinessFragment"
+        android:name="com.rnsoft.colabademo.BusinessIncomeFragment"
         android:label="@string/income"
         tools:layout="@layout/income_business_layout">
         <action
