@@ -12,6 +12,14 @@ class IncomeRepo @Inject constructor(private val dataSource: IncomeDataSource) {
         return dataSource.getEmploymentDetails(token = token, loanApplicationId, borrowerId, incomeInfoId)
     }
 
+    suspend fun getSelfEmploymentData(token: String,borrowerId: Int, incomeInfoId: Int): Result<SelfEmploymentResponse> {
+        return dataSource.getSelfEmploymentDetails(token = token,borrowerId, incomeInfoId)
+    }
+
+    suspend fun getBusinessIncome(token: String,borrowerId: Int, incomeInfoId: Int): Result<BusinessIncomeResponse> {
+        return dataSource.getBusinessIncome(token = token,borrowerId, incomeInfoId)
+    }
+
 //    suspend fun getOtherAsset(token: String, loanApplicationId : Int, borrowerId : Int, borrowerAssetId : Int): Result<OtherAssetResponse> {
 //        return dataSource.getOtherAssetDetails(token = token, loanApplicationId,borrowerId, borrowerAssetId)
 //    }

@@ -1,11 +1,14 @@
 package com.rnsoft.colabademo
 
 import android.app.DatePickerDialog
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
@@ -13,16 +16,25 @@ import com.rnsoft.colabademo.databinding.SelfEmpolymentContLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
+@AndroidEntryPoint
 class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
 
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+    private val viewModel : IncomeViewModel by activityViewModels()
     private lateinit var binding: SelfEmpolymentContLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
     private var savedViewInstance: View? = null
+    var incomeInfoId :Int? = null
+    var borrowerId :Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +52,7 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
             toolbarBinding.toolbarTitle.setText(getString(R.string.self_employment_contractor))
 
             initViews()
+            getData()
             savedViewInstance
 
         }
@@ -47,7 +60,6 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
 
 
     private fun initViews() {
-
         binding.layoutAddress.setOnClickListener(this)
         toolbarBinding.btnClose.setOnClickListener(this)
         binding.mainLayoutBusinessCont.setOnClickListener(this)
@@ -56,6 +68,51 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         setInputFields()
 
     }
+
+    private fun getData(){
+        incomeInfoId = 2
+        borrowerId = 5
+
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if (borrowerId != null && incomeInfoId != null) {
+                    binding.loaderSelfEmployment.visibility = View.VISIBLE
+                    viewModel.getSelfEmploymentDetail(authToken,borrowerId!!,incomeInfoId!!)
+
+                    viewModel.selfEmploymentDetail.observe(viewLifecycleOwner, { data ->
+                        data?.selfEmploymentData?.let { info ->
+
+                            info.businessName?.let {
+                                binding.editTextBusinessName.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutBusinessName, R.color.grey_color_two, requireContext())
+                            }
+                            info.businessPhone?.let {
+                                binding.editTextBusPhnum.setText(it)
+                            }
+                            info.startDate?.let {
+                                binding.editTextBstartDate.setText(AppSetting.getFullDate1(it))
+                            }
+                            info.jobTitle?.let {
+                                binding.edJobTitle.setText(it)
+                            }
+                            info.annualIncome?.let {
+                                binding.edNetIncome.setText(Math.round(it).toString())
+                            }
+//                            info.address?.let {
+//                                binding.textviewEmployerAddress.text =
+//                                    it.streetAddress + " " + it.unitNo + "\n" + it.cityName + " " + it.stateName + " " + it.zipCode
+//                            }
+
+                        }
+                        binding.loaderSelfEmployment.visibility = View.GONE
+                    })
+
+                }
+            }
+        }
+
+    }
+
 
     private fun openAddressFragment(){
         val addressFragment = AddressBusiness()
@@ -82,24 +139,24 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
     private fun setInputFields() {
 
         // set lable focus
-        binding.edBusinessName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edBusinessName, binding.layoutBusinessName, requireContext()))
-        binding.edBusPhnum.setOnFocusChangeListener(FocusListenerForPhoneNumber(binding.edBusPhnum, binding.layoutBusPhnum,requireContext()))
+        binding.editTextBusinessName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextBusinessName, binding.layoutBusinessName, requireContext()))
+        binding.editTextBusPhnum.setOnFocusChangeListener(FocusListenerForPhoneNumber(binding.editTextBusPhnum, binding.layoutBusPhnum,requireContext()))
         binding.edJobTitle.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edJobTitle, binding.layoutJobTitle, requireContext()))
-        binding.edBstartDate.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edBstartDate, binding.layoutBStartDate, requireContext()))
+        binding.editTextBstartDate.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextBstartDate, binding.layoutBStartDate, requireContext()))
         binding.edNetIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edNetIncome, binding.layoutNetIncome, requireContext()))
 
         // set input format
         binding.edNetIncome.addTextChangedListener(NumberTextFormat(binding.edNetIncome))
-        binding.edBusPhnum.addTextChangedListener(PhoneTextFormatter(binding.edBusPhnum, "(###) ###-####"))
+        binding.editTextBusPhnum.addTextChangedListener(PhoneTextFormatter(binding.editTextBusPhnum, "(###) ###-####"))
 
 
         // set Dollar prifix
         CustomMaterialFields.setDollarPrefix(binding.layoutNetIncome, requireContext())
 
-        binding.edBstartDate.showSoftInputOnFocus = false
-        binding.edBstartDate.setOnClickListener { openCalendar() }
-        binding.edBstartDate.doAfterTextChanged {
-            if (binding.edBstartDate.text?.length == 0) {
+        binding.editTextBstartDate.showSoftInputOnFocus = false
+        binding.editTextBstartDate.setOnClickListener { openCalendar() }
+        binding.editTextBstartDate.doAfterTextChanged {
+            if (binding.editTextBstartDate.text?.length == 0) {
                 CustomMaterialFields.setColor(binding.layoutBStartDate,R.color.grey_color_three,requireActivity())
             } else {
                 CustomMaterialFields.setColor(binding.layoutBStartDate,R.color.grey_color_two,requireActivity())
@@ -110,9 +167,9 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
 
     private fun checkValidations(){
 
-        val businessName: String = binding.edBusinessName.text.toString()
+        val businessName: String = binding.editTextBusinessName.text.toString()
         val jobTitle: String = binding.edJobTitle.text.toString()
-        val startDate: String = binding.edBstartDate.text.toString()
+        val startDate: String = binding.editTextBstartDate.text.toString()
         val netIncome: String = binding.edNetIncome.text.toString()
 
         if (businessName.isEmpty() || businessName.length == 0) {
@@ -154,7 +211,7 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
 
         val dpd = DatePickerDialog(
             requireActivity(),
-            { view, year, monthOfYear, dayOfMonth -> binding.edBstartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year) },
+            { view, year, monthOfYear, dayOfMonth -> binding.editTextBstartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year) },
             year,
             month,
             day

@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.app.DatePickerDialog
+import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
@@ -17,17 +20,25 @@ import com.rnsoft.colabademo.databinding.IncomeBusinessLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import javax.inject.Inject
 
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
-class BusinessFragment : BaseFragment(), View.OnClickListener {
+@AndroidEntryPoint
+class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
 
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: IncomeBusinessLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
     private var savedViewInstance: View? = null
     private val businessTypeArray = listOf("Partnership (e.g. LLC, LP, or GP","Corporation (e.g. C-Corp, S-Corp, or LLC")
+    private val viewModel : IncomeViewModel by activityViewModels()
+    var incomeInfoId :Int? = null
+    var borrowerId :Int? = null
 
 
     override fun onCreateView(
@@ -53,7 +64,7 @@ class BusinessFragment : BaseFragment(), View.OnClickListener {
     }
 
 
-    private fun initViews() {
+    private fun initViews(){
 
         binding.layoutAddress.setOnClickListener(this)
         toolbarBinding.btnClose.setOnClickListener(this)
@@ -65,7 +76,49 @@ class BusinessFragment : BaseFragment(), View.OnClickListener {
 
     }
 
-    override fun onClick(view: View?) {
+    private fun getData(){
+        incomeInfoId = 1
+        borrowerId = 5
+
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if (borrowerId != null && incomeInfoId != null) {
+                    binding.loaderIncomeBusiness.visibility = View.VISIBLE
+                    viewModel.getSelfEmploymentDetail(authToken,borrowerId!!,incomeInfoId!!)
+
+                    viewModel.selfEmploymentDetail.observe(viewLifecycleOwner, { data ->
+                        data?.selfEmploymentData?.let { info ->
+                            info.businessName?.let {
+                                binding.edBusinessName.setText(it)
+                            }
+                            info.businessPhone?.let {
+                                binding.edBusPhnum.setText(it)
+                            }
+                            info.startDate?.let {
+                                binding.edBstartDate.setText(AppSetting.getFullDate1(it))
+                            }
+                            info.jobTitle?.let {
+                                binding.edJobTitle.setText(it)
+                            }
+                            info.annualIncome?.let {
+                                binding.edNetIncome.setText(Math.round(it).toString())
+                            }
+//                            info.address?.let {
+//                                binding.textviewEmployerAddress.text =
+//                                    it.streetAddress + " " + it.unitNo + "\n" + it.cityName + " " + it.stateName + " " + it.zipCode
+//                            }
+
+                        }
+                        binding.loaderIncomeBusiness.visibility = View.GONE
+                    })
+
+                }
+            }
+        }
+
+    }
+
+    override fun onClick(view: View?){
         when (view?.getId()) {
             R.id.btn_save_change -> checkValidations()
             R.id.layout_address -> openAddressFragment()
@@ -192,7 +245,6 @@ class BusinessFragment : BaseFragment(), View.OnClickListener {
             }
         }
     }
-
 
     private fun openCalendar() {
         val c = Calendar.getInstance()
