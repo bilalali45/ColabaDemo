@@ -49,7 +49,7 @@ class CurrentEmployerAddressViewController: BaseViewController {
     
     //MARK:- Methods and Actions
     func setTextFields() {
-        lblUserName.text = self.borrowerFullName
+        lblUserName.text = self.borrowerFullName.uppercased()
         ///Street Address Text Field
         txtfieldStreetAddress.setTextField(placeholder: "Street Address", controller: self, validationType: .required)
         

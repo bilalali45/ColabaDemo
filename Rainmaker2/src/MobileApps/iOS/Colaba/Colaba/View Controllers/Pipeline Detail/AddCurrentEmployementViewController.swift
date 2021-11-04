@@ -77,9 +77,17 @@ class AddCurrentEmployementViewController: BaseViewController {
     var hasOvertimeIncome = false
     var hasCommissionIncome = false
     
+    var borrowerName = ""
+    var isForAdd = false
+    var loanApplicationId = 0
+    var borrowerId = 0
+    var incomeInfoId = 0
+    var employmentDetail = EmployementDetailModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextFields()
+        lblUsername.text = borrowerName.uppercased()
         btnEmployedYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
         lblEmployedYes.font = Theme.getRubikRegularFont(size: 14)
         btnOwnershipYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
@@ -92,6 +100,9 @@ class AddCurrentEmployementViewController: BaseViewController {
         payTypeViewHeightConstraint.constant = 160
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.setScreenHeight()
+        }
+        if (!isForAdd){
+            getEmploymentDetail()
         }
     }
         
@@ -151,6 +162,51 @@ class AddCurrentEmployementViewController: BaseViewController {
         commissionStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(commissionStackViewTapped)))
     }
     
+    func setEmployementDetail(){
+        txtfieldEmployerName.setTextField(text: employmentDetail.employmentInfo.employerName)
+        let employerPhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: employmentDetail.employmentInfo.employerPhoneNumber)
+        txtfieldEmployerPhoneNumber.setTextField(text: employerPhoneNumber)
+        let address = employmentDetail.employerAddress
+        lblAddress.text = "\(address.street) \(address.unit),\n\(address.city), \(address.stateName) \(address.zipCode)"
+        txtfieldJobTitle.setTextField(text: employmentDetail.employmentInfo.jobTitle)
+        txtfieldStartDate.setTextField(text: Utility.getDayMonthYear(employmentDetail.employmentInfo.startDate))
+        txtfieldProfessionYears.setTextField(text: "\(employmentDetail.employmentInfo.yearsInProfession)")
+        hasEmployed = employmentDetail.employmentInfo.employedByFamilyOrParty
+        hasOwnershipInterest = employmentDetail.employmentInfo.hasOwnershipInterest
+        txtfieldOwnershipPercentage.setTextField(text: "\(employmentDetail.employmentInfo.ownershipInterest)")
+        hasSalaryPayType = !employmentDetail.wayOfIncome.isPaidByMonthlySalary
+        if (hasSalaryPayType == true){
+            txtfieldAnnualBaseSalary.setTextField(text: String(format: "%.0f", employmentDetail.wayOfIncome.employerAnnualSalary.rounded()))
+        }
+        else{
+            txtfieldAnnualBaseSalary.setTextField(text: String(format: "%.0f", employmentDetail.wayOfIncome.hourlyRate.rounded()))
+            //txtfieldAnnualBaseSalary.setTextField(text: String(format: "%.0f", employmentDetail.wayOfIncome.employerAnnualSalary.rounded()))
+            txtfieldHoursPerWeek.setTextField(text: "\(employmentDetail.wayOfIncome.hoursPerWeek)")
+        }
+        
+        if let bonusIncome = employmentDetail.employmentOtherIncome.filter({$0.name.localizedCaseInsensitiveContains("Bonus")}).first{
+            hasBonusIncome = true
+            txtfieldAnnualBonusIncome.setTextField(text: String(format: "%.0f", bonusIncome.annualIncome.rounded()))
+        }
+        
+        if let overtimeIncome = employmentDetail.employmentOtherIncome.filter({$0.name.localizedCaseInsensitiveContains("Overtime")}).first{
+            hasOvertimeIncome = true
+            txtfieldAnnualOvertime.setTextField(text: String(format: "%.0f", overtimeIncome.annualIncome.rounded()))
+        }
+        
+        if let commissionIncome = employmentDetail.employmentOtherIncome.filter({$0.name.localizedCaseInsensitiveContains("Commission")}).first{
+            hasCommissionIncome = true
+            txtfieldAnnualCommision.setTextField(text: String(format: "%.0f", commissionIncome.annualIncome.rounded()))
+        }
+        
+        changeEmployedViewStatus()
+        changeOwnershipInterestStatus()
+        changePayTypeStatus()
+        setBonusIncomeView()
+        setOvertimeIncomeView()
+        setCommisionIncomeView()
+    }
+    
     func setScreenHeight(){
         
         let employedViewHeight = employedView.frame.height
@@ -169,6 +225,8 @@ class AddCurrentEmployementViewController: BaseViewController {
     @objc func addressViewTapped(){
         let vc = Utility.getCurrentEmployerAddressVC()
         vc.topTitle = "Current Employer Address"
+        vc.borrowerFullName = self.borrowerName
+        vc.selectedAddress = employmentDetail.employerAddress
         vc.searchTextFieldPlaceholder = "Search Main Address"
         self.pushToVC(vc: vc)
     }
@@ -249,6 +307,10 @@ class AddCurrentEmployementViewController: BaseViewController {
     
     @objc func bonusStackViewTapped(){
         hasBonusIncome = !hasBonusIncome
+        setBonusIncomeView()
+    }
+    
+    func setBonusIncomeView(){
         btnBonus.setImage(UIImage(named: hasBonusIncome ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
         lblBonus.font = hasBonusIncome ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         txtfieldAnnualBonusIncome.isHidden = !hasBonusIncome
@@ -260,6 +322,10 @@ class AddCurrentEmployementViewController: BaseViewController {
     
     @objc func overtimeStackViewTapped(){
         hasOvertimeIncome = !hasOvertimeIncome
+        setOvertimeIncomeView()
+    }
+    
+    func setOvertimeIncomeView(){
         btnOvertime.setImage(UIImage(named: hasOvertimeIncome ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
         lblOvertime.font = hasOvertimeIncome ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         txtfieldAnnualOvertime.isHidden = !hasOvertimeIncome
@@ -271,6 +337,10 @@ class AddCurrentEmployementViewController: BaseViewController {
     
     @objc func commissionStackViewTapped(){
         hasCommissionIncome = !hasCommissionIncome
+        setCommisionIncomeView()
+    }
+    
+    func setCommisionIncomeView(){
         btnCommision.setImage(UIImage(named: hasCommissionIncome ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
         lblCommission.font = hasCommissionIncome ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         txtfieldAnnualCommision.isHidden = !hasCommissionIncome
@@ -344,4 +414,33 @@ class AddCurrentEmployementViewController: BaseViewController {
             self.dismissVC()
         }
     }
+    
+    //MARK:- API's
+    
+    func getEmploymentDetail(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)&borrowerid=\(borrowerId)&incomeInfoId=\(incomeInfoId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getEmploymentDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    let model = EmployementDetailModel()
+                    model.updateModelWithJSON(json: result["data"])
+                    self.employmentDetail = model
+                    self.setEmployementDetail()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+        
+    }
+    
 }

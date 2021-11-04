@@ -40,10 +40,16 @@ class AddPreviousEmploymentViewController: BaseViewController {
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var hasOwnershipInterest: Bool?
+    var borrowerName = ""
+    var isForAdd = false
+    var loanApplicationId = 0
+    var borrowerId = 0
+    var incomeInfoId = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextFields()
+        lblUsername.text = borrowerName.uppercased()
         btnOwnershipYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
         lblOwnershipYes.font = Theme.getRubikRegularFont(size: 14)
         txtfieldOwnershipPercentage.isHidden = true
