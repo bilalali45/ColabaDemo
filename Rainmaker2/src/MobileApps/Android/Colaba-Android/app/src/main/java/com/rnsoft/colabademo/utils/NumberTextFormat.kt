@@ -22,7 +22,7 @@ class NumberTextFormat (private val mEditText: TextInputEditText) : TextWatcher{
             if(!input.isEmpty()) {
                 input = input.replace(",", "")
                 val format =  DecimalFormat("#,###,###")
-                val newPrice = format.format(input.toLong())
+                val newPrice = format.format(input.toDouble())
                 mEditText.removeTextChangedListener(this) //To Prevent from Infinite Loop
                 mEditText.setText(newPrice);
                 mEditText.setSelection(newPrice.length); //Move Cursor to end of String

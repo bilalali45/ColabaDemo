@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rnsoft.colabademo.activities.assets.fragment.model.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -51,6 +52,19 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
     private val _otherAssetDetail: MutableLiveData<OtherAssetResponse> = MutableLiveData()
     val otherAssetDetail: LiveData<OtherAssetResponse> get() = _otherAssetDetail
 
+    private val _assetTypesByCategoryItemList: MutableLiveData<ArrayList<GetAssetTypesByCategoryItem>> = MutableLiveData()
+    val assetTypesByCategoryItemList: LiveData<ArrayList<GetAssetTypesByCategoryItem>> get() = _assetTypesByCategoryItemList
+
+
+    suspend fun fetchAssetTypesByCategoryItemList(token: String , categoryId:Int, loanPurposeId:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = assetsRepo.fetchAssetTypesByCategoryItemList( token , categoryId, loanPurposeId)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _assetTypesByCategoryItemList.value = (responseResult.data  )
+            }
+        }
+    }
 
 
     suspend fun getBankAccountType(token: String) {
@@ -204,7 +218,7 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
     }
 
 
-    suspend fun otherAssetDetails(token: String, loanApplicationId: Int, borrowerId: Int,borrowerAssetId:Int) {
+    suspend fun getOtherAssetDetails(token: String, loanApplicationId: Int, borrowerId: Int, borrowerAssetId:Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = assetsRepo.getOtherAsset(token = token, loanApplicationId = loanApplicationId, borrowerId, borrowerAssetId)
             withContext(Dispatchers.Main) {

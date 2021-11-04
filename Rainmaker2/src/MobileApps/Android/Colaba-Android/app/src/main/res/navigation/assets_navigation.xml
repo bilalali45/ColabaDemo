@@ -56,11 +56,7 @@
         android:label="@string/assets"
         tools:layout="@layout/dynamic_asset_fragment_layout" />
 
-    <fragment
-        android:id="@+id/navigation_b_assets_three"
-        android:name="com.rnsoft.colabademo.BorrowerThreeAssets"
-        android:label="@string/assets"
-        tools:layout="@layout/dynamic_asset_fragment_layout" />
+
 
     <fragment
         android:id="@+id/navigation_b_assets_four"

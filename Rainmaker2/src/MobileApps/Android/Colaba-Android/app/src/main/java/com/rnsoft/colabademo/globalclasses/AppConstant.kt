@@ -36,7 +36,7 @@ object AppConstant {
 
         const val tenantTwoFaSetting:String = "tenantTwoFaSetting"
         const val tabBorrowerId:String = "tabBorrowerId"
-        const val borrowerId : String = "borrowerId"
+
 
         const val otpDataJson:String =  "otpDataJson"
         const val phoneNumber:String = "phoneNumber"
@@ -49,6 +49,12 @@ object AppConstant {
         const val loanApplicationId:String = "loanApplicationId"
 
         const val loanPurpose:String = "loanPurpose"
+
+        const val borrowerId:String = "borrowerId"
+
+        const val borrowerAssetId:String = "borrowerAssetId"
+
+        const val assetCategoryId:String = "assetCategoryId"
 
         const val borrowerPurpose:String = "purpose"
 

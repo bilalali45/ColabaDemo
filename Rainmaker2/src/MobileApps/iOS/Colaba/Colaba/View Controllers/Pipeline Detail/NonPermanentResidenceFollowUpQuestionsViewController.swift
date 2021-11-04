@@ -21,15 +21,27 @@ class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var txtViewStatusDetail = MDCFilledTextArea()
+    var visaStatusArray = [DropDownModel]()
+    var selectedCitizenShip = BorrowerCitizenship()
+    var borrowerName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setMaterialTextFieldsAndViews()
+        lblBorrowerName.text = borrowerName.uppercased()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         _ = txtfieldVisaStatus.becomeFirstResponder()
+        
+        if let selectedVisaStatus = visaStatusArray.filter({$0.optionId == selectedCitizenShip.residencyStatusId}).first{
+            txtfieldVisaStatus.setTextField(text: selectedVisaStatus.optionName)
+        }
+        
+        statusDetailTextViewContainer.isHidden = selectedCitizenShip.residencyStatusExplanation == ""
+        txtViewStatusDetail.isHidden = selectedCitizenShip.residencyStatusExplanation == ""
+        txtViewStatusDetail.textView.text = selectedCitizenShip.residencyStatusExplanation
     }
     
     //MARK:- Methods and Actions
@@ -67,8 +79,6 @@ class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
         txtViewStatusDetail.textView.delegate = self
         mainView.addSubview(txtViewStatusDetail)
         
-
-        
         setTextFields()
     }
     
@@ -76,7 +86,7 @@ class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
         ///Visa Status Text Field
         txtfieldVisaStatus.setTextField(placeholder: "Visa Status", controller: self, validationType: .required)
         txtfieldVisaStatus.type = .dropdown
-        txtfieldVisaStatus.setDropDownDataSource(kVisaStatusArray)
+        txtfieldVisaStatus.setDropDownDataSource(visaStatusArray.map({$0.optionName}))
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {

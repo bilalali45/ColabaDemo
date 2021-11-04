@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.assets.model
+package com.rnsoft.colabademo.activities.assets.fragment.model
 
 data class GiftSourcesResponseItem(
     val id: Int,

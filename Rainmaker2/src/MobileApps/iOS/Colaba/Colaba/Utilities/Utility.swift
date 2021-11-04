@@ -22,6 +22,7 @@ struct Utility {
     static private var loanApplicationDateFormatter: DateFormatter?
     static private var documentDateFormatter: DateFormatter?
     static private var monthYearFormatter: DateFormatter?
+    static private var dayMonthYearFormatter: DateFormatter?
     static private var incomeDateFormatter: DateFormatter?
     
     static func getLoginNavigationVC() -> LoginNavigationViewController{
@@ -511,6 +512,20 @@ struct Utility {
         }
     }
     
+    static var localDayMonthYearFormatter: DateFormatter{
+        get{
+            if (dayMonthYearFormatter == nil){
+                dayMonthYearFormatter = DateFormatter()
+                dayMonthYearFormatter?.locale = .current
+                dayMonthYearFormatter?.dateFormat = "MM/dd/yyyy"
+            }
+            return dayMonthYearFormatter!
+        }
+        set{
+            
+        }
+    }
+    
     static var localIncomeDateFormatter: DateFormatter{
         get{
             if (incomeDateFormatter == nil){
@@ -835,7 +850,18 @@ struct Utility {
         return ""
     }
     
-    static func getIncomeDate(startDate: String, endDate: String) -> String{
+    static func getDayMonthYear(_ dateString: String) -> String{
+        
+        let actualDate = dateString.replacingOccurrences(of: "T", with: " ")
+        
+        if let date = localLoanApplicationDateFormatter.date(from: actualDate){
+            return localDayMonthYearFormatter.string(from: date)
+        }
+        
+        return ""
+    }
+    
+    static func getIncomeDate(startDate: String, endDate: String, isForAddress: Bool = false) -> String{
         
         let actualStartDate = startDate.replacingOccurrences(of: "T", with: " ")
         let actualEndDate = endDate.replacingOccurrences(of: "T", with: " ")
@@ -854,7 +880,7 @@ struct Utility {
             return "From \(startDateString)"
         }
         else if (endDateString != "" && startDate != ""){
-            return "\(startDateString) to \(endDateString)"
+            return  isForAddress ? "From \(startDateString) to \(endDateString)" : "\(startDateString) to \(endDateString)"
         }
         return ""
     }

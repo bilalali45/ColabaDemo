@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo
+package com.rnsoft.colabademo.activities.assets.fragment.model
 
 data class AssetTypesByCategory(
     val assetCategoryId: Int?,

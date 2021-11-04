@@ -1,9 +1,5 @@
 package com.rnsoft.colabademo
 
-import android.view.View
-import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.activities.assets.model.CATEGORIES
-
 open class AssetBaseFragment:BaseFragment() {
 
     protected fun getSampleAssets():ArrayList<TestAssetsModelClass>{
@@ -55,10 +51,12 @@ open class AssetBaseFragment:BaseFragment() {
 
     }
 
-    private val navigateToBank = View.OnClickListener { findNavController().navigate(R.id.action_assets_bank_account) }
-    private val navigateToRetirement = View.OnClickListener { findNavController().navigate(R.id.action_assets_retirement) }
-    private val navigateToStockBonds = View.OnClickListener { findNavController().navigate(R.id.action_assets_stocks_bond) }
-    private val navigateToTransactionAsset = View.OnClickListener { findNavController().navigate(R.id.action_assets_proceeds_transaction) }
-    private val navigateToGiftAsset = View.OnClickListener { findNavController().navigate(R.id.action_assets_gift) }
-    private val navigateToOtherAsset = View.OnClickListener { findNavController().navigate(R.id.action_assets_other) }
+
+
+    private val navigateToBank =  R.id.action_assets_bank_account //View.OnClickListener { findNavController().navigate(R.id.action_assets_bank_account) }
+    private val navigateToRetirement = R.id.action_assets_retirement  //View.OnClickListener { findNavController().navigate(R.id.action_assets_retirement) }
+    private val navigateToStockBonds =  R.id.action_assets_stocks_bond  // View.OnClickListener { findNavController().navigate(R.id.action_assets_stocks_bond) }
+    private val navigateToTransactionAsset = R.id.action_assets_proceeds_transaction  //View.OnClickListener { findNavController().navigate(R.id.action_assets_proceeds_transaction) }
+    private val navigateToGiftAsset =  R.id.action_assets_gift  //View.OnClickListener { findNavController().navigate(R.id.action_assets_gift) }
+    private val navigateToOtherAsset = R.id.action_assets_other  //View.OnClickListener { findNavController().navigate(R.id.action_assets_other) }
 }

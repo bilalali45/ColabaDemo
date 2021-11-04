@@ -1,16 +1,12 @@
 package com.rnsoft.colabademo
 
-import android.view.View
-import com.google.gson.annotations.SerializedName
-
-
 
 data class TestAssetsModelClass(
     val headerTitle: String = "Header Title",
     val headerAmount: String = "$0",
     val footerTitle: String  = "Default Footer Title",
     val contentCell:ArrayList<TestContentCell>,
-    val listenerAttached:View.OnClickListener= View.OnClickListener {  }
+    val listenerAttached: Int = 0
 )
 
 data class TestContentCell(val title:String="Title", val description:String="detail", val contentAmount:String="0$")

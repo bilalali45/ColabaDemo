@@ -1,11 +1,9 @@
 package com.rnsoft.colabademo
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
 import com.rnsoft.colabademo.activities.model.StatesModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -145,9 +143,9 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         val borrowerAssetList: ArrayList<MyAssetBorrowerDataClass> = ArrayList()
         viewModelScope.launch(Dispatchers.IO) {
             coroutineScope {
-                delay(1000)
+
                 borrowerIds.forEach { id ->
-                    //Timber.e("borrowerIds.id -> "+id)
+                    Timber.e("borrowerIds.id -> "+id)
                     launch { // this will allow us to run multiple tasks in parallel
                         val responseResult = bAppRepo.getBorrowerAssetsDetail(
                             token = token,
@@ -177,7 +175,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
 
     suspend fun getBorrowerWithIncome(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int>) {
         val borrowerIncomeList: ArrayList<IncomeDetailsResponse> = ArrayList()
-        var errorResult:Result.Error?=null
+        val errorResult:Result.Error?=null
         viewModelScope.launch(Dispatchers.IO) {
             coroutineScope {
                 delay(1000)

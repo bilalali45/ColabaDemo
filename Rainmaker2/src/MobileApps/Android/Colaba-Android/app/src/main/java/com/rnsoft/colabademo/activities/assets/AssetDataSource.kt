@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
+import com.rnsoft.colabademo.activities.assets.fragment.model.*
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
@@ -10,6 +11,22 @@ import javax.inject.Inject
  */
 
 class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
+
+
+    suspend fun fetchAssetTypesByCategoryItemList(token: String , categoryId:Int, loanPurposeId:Int) : Result<ArrayList<GetAssetTypesByCategoryItem>> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.fetchAssetTypesByCategoryItemList(newToken , categoryId = categoryId, loanPurposeId = loanPurposeId)
+            Timber.e("GetAssetTypesByCategoryItem:  - $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e.cause))
+        }
+    }
+
 
     suspend fun getBankAccountDetails(
         token : String,
