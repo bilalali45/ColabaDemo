@@ -83,7 +83,7 @@ class BorrowerOneAssets : AssetBaseFragment() {
                                         for (j in 0 until it.size) {
                                             val contentCell: View = layoutInflater.inflate(R.layout.assets_middle_cell, null)
                                             val contentData = webModelData.assets[j]
-                                            Timber.e(" content data - "+contentData)
+                                            //Timber.e(" content data - "+contentData)
                                             contentCell.content_title.text = contentData.assetCategoryName
                                             contentCell.content_desc.text = contentData.assetName
                                             contentData.assetValue?.let{ assetValue->
@@ -99,8 +99,9 @@ class BorrowerOneAssets : AssetBaseFragment() {
                                                     tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
                                                     contentData.assetId?.let { it1 -> bundle.putInt(AppConstant.borrowerAssetId, it1) }
                                                     contentData.assetCategoryId?.let { it1 -> bundle.putInt(AppConstant.assetCategoryId, it1) }
+                                                    contentData.assetTypeID?.let{ it1 ->  bundle.putInt(AppConstant.assetTypeID, it1)  }
                                                     parentActivity.loanPurpose?.let { it1 -> bundle.putString(AppConstant.loanPurpose, it1) }
-
+                                                    Timber.e(" content data - "+contentData)
 
                                                     findNavController().navigate(modelData.listenerAttached, bundle)
                                                 }

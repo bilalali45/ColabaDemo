@@ -17,6 +17,18 @@ class AssetsRepo @Inject constructor(private val dataSource : AssetDataSource){
         return dataSource.fetchAssetTypesByCategoryItemList(token = token , categoryId, loanPurposeId)
     }
 
+    suspend fun getProceedsFromLoan(token: String, loanApplicationId : Int, borrowerId : Int, assetTypeID:Int, borrowerAssetId : Int ):Result<ProceedFromLoanModel>{
+        return dataSource.getProceedsFromLoan(token = token , loanApplicationId , borrowerId , assetTypeID, borrowerAssetId )
+    }
+
+    suspend fun getProceedsFromNonRealEstateDetail(token: String, loanApplicationId : Int, borrowerId : Int, assetTypeID:Int, borrowerAssetId : Int ):Result<ProceedFromLoanModel>{
+        return dataSource.getProceedsFromNonRealEstateDetail(token = token , loanApplicationId , borrowerId , assetTypeID, borrowerAssetId )
+    }
+
+    suspend fun getProceedsFromRealEstateDetail(token: String, loanApplicationId : Int, borrowerId : Int, assetTypeID:Int, borrowerAssetId : Int ):Result<ProceedFromLoanModel>{
+        return dataSource.getProceedsFromRealEstateDetail(token = token , loanApplicationId , borrowerId , assetTypeID, borrowerAssetId )
+    }
+
     suspend fun getBankAccountType(token: String): Result<ArrayList<DropDownResponse>> {
         return dataSource.getBankAccountType(token = token)
     }

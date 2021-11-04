@@ -31,6 +31,8 @@ class OtherAssetsFragment:BaseFragment() {
     private var borrowerId:Int? = null
     private var borrowerAssetId:Int? = null
     private var assetCategoryId:Int? = null
+    private var assetTypeID:Int? = null
+
 
     private val viewModel: AssetViewModel by activityViewModels()
 
@@ -52,6 +54,7 @@ class OtherAssetsFragment:BaseFragment() {
             borrowerId = arguments.getInt(AppConstant.borrowerId)
             borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId)
             assetCategoryId = arguments.getInt(AppConstant.assetCategoryId)
+            assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             getOtherAssets()
         }
         return root
@@ -75,8 +78,6 @@ class OtherAssetsFragment:BaseFragment() {
                 getOtherDetailData()
             }
          })
-
-
     }
 
     private fun getOtherDetailData(){

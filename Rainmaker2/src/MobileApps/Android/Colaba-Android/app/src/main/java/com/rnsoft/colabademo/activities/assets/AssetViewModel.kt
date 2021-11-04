@@ -55,6 +55,9 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
     private val _assetTypesByCategoryItemList: MutableLiveData<ArrayList<GetAssetTypesByCategoryItem>> = MutableLiveData()
     val assetTypesByCategoryItemList: LiveData<ArrayList<GetAssetTypesByCategoryItem>> get() = _assetTypesByCategoryItemList
 
+    private val _proceedFromLoanModel: MutableLiveData<ProceedFromLoanModel> = MutableLiveData()
+    val proceedFromLoanModel: LiveData<ProceedFromLoanModel> get() = _proceedFromLoanModel
+
 
     suspend fun fetchAssetTypesByCategoryItemList(token: String , categoryId:Int, loanPurposeId:Int) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -62,6 +65,36 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _assetTypesByCategoryItemList.value = (responseResult.data  )
+            }
+        }
+    }
+
+    suspend fun getProceedsFromLoan(token: String , loanApplicationId:Int, borrowerId:Int, assetTypeID:Int, borrowerAssetId:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = assetsRepo.getProceedsFromLoan( token , loanApplicationId, borrowerId, assetTypeID, borrowerAssetId)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _proceedFromLoanModel.value = (responseResult.data  )
+            }
+        }
+    }
+
+    suspend fun getProceedsFromNonRealEstateDetail(token: String , loanApplicationId:Int, borrowerId:Int, assetTypeID:Int, borrowerAssetId:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = assetsRepo.getProceedsFromNonRealEstateDetail( token , loanApplicationId, borrowerId, assetTypeID, borrowerAssetId)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _proceedFromLoanModel.value = (responseResult.data  )
+            }
+        }
+    }
+
+    suspend fun getProceedsFromRealEstateDetail(token: String , loanApplicationId:Int, borrowerId:Int, assetTypeID:Int, borrowerAssetId:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = assetsRepo.getProceedsFromRealEstateDetail( token , loanApplicationId, borrowerId, assetTypeID, borrowerAssetId)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _proceedFromLoanModel.value = (responseResult.data  )
             }
         }
     }

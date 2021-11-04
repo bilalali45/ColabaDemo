@@ -59,7 +59,7 @@ class AssetsActivity : BaseActivity() {
                         assetViewModel.getAllGiftSources(authToken)
 
                         // pre-fetch  Transaction drop down values.... Proceed From Transaction.
-                        assetViewModel.getAllFinancialAsset(authToken)
+                        //assetViewModel.getAllFinancialAsset(authToken)
 
                         // pre-fetch other drop down values.... Other
                         //assetViewModel.get(authToken)

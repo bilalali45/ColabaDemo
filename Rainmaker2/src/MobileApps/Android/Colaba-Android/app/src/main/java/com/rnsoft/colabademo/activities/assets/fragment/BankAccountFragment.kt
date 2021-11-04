@@ -34,14 +34,12 @@ class BankAccountFragment : BaseFragment() {
     private var loanPurpose:String? = null
     private var borrowerId:Int? = null
     private var borrowerAssetId:Int? = null
+    private var assetTypeID:Int? = null
+
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = BankAccountLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
@@ -51,6 +49,7 @@ class BankAccountFragment : BaseFragment() {
             loanPurpose = arguments.getString(AppConstant.loanPurpose)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
             borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId)
+            assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             observeBankData()
         }
         return root
