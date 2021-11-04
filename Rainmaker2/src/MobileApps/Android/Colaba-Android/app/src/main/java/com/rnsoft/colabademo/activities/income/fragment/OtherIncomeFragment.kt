@@ -100,6 +100,7 @@ class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
 
         getOtherIncomeDetails()
     }
+
     private fun getOtherIncomeDetails(){
         /*lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->

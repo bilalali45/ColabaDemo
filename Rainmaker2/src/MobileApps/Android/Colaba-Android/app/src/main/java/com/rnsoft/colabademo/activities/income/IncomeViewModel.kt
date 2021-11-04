@@ -191,7 +191,7 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
             val responseResult = repo.getOtherIncomeIncomeTypes(token = token)
             withContext(Dispatchers.Main){
                 if (responseResult is Result.Success)
-                    _retirementIncomeTypes.value = (responseResult.data)
+                    _otherIncomeTypes.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)
