@@ -506,6 +506,19 @@ extension AssetsDetailViewController: UITableViewDataSource, UITableViewDelegate
             }
             else if (tableView == tableViewGiftFunds && (indexPath.row != 0)){
                 let vc = Utility.getAddGiftFundsVC()
+                vc.loanApplicationId = self.loanApplicationId
+                vc.borrowerId = self.borrowerId
+                vc.borrowerName = self.borrowerName
+                vc.loanPurposeId = self.loanPurposeId
+                if (indexPath.row == giftFundsAsset.assets.count + 1){
+                    vc.isForAdd = true
+                    vc.assetCategoryId = 4
+                }
+                else{
+                    vc.isForAdd = false
+                    vc.assetCategoryId = giftFundsAsset.assets[indexPath.row - 1].assetCategoryId
+                    vc.borrowerAssetId = giftFundsAsset.assets[indexPath.row - 1].assetId
+                }
                 self.presentVC(vc: vc)
             }
             else if (tableView == tableViewOther && (indexPath.row != 0)){

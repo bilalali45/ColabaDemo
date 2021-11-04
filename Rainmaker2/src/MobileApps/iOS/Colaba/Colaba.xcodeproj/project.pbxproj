@@ -210,6 +210,7 @@
 		23EBC78C2732AA4C0063922C /* FinancialAccountDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBC78B2732AA4C0063922C /* FinancialAccountDetailModel.swift */; };
 		23EBC78E2732C95F0063922C /* AssetsCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBC78D2732C95F0063922C /* AssetsCategoryModel.swift */; };
 		23EBC7902732CAAF0063922C /* OtherAssetsDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBC78F2732CAAF0063922C /* OtherAssetsDetailModel.swift */; };
+		23EBC7922732D9C60063922C /* GiftDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBC7912732D9C60063922C /* GiftDetailModel.swift */; };
 		23ED227F272C069A00EABF89 /* BorrowerInformationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ED227E272C069A00EABF89 /* BorrowerInformationModel.swift */; };
 		23F23B3D26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B3C26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift */; };
 		23F23B3F26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B3E26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift */; };
@@ -477,6 +478,7 @@
 		23EBC78B2732AA4C0063922C /* FinancialAccountDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancialAccountDetailModel.swift; sourceTree = "<group>"; };
 		23EBC78D2732C95F0063922C /* AssetsCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsCategoryModel.swift; sourceTree = "<group>"; };
 		23EBC78F2732CAAF0063922C /* OtherAssetsDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherAssetsDetailModel.swift; sourceTree = "<group>"; };
+		23EBC7912732D9C60063922C /* GiftDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftDetailModel.swift; sourceTree = "<group>"; };
 		23ED227E272C069A00EABF89 /* BorrowerInformationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerInformationModel.swift; sourceTree = "<group>"; };
 		23F23B3C26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPermanentResidenceFollowUpQuestionsViewController.swift; sourceTree = "<group>"; };
 		23F23B3E26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveDutyPersonnelFollowUpQuestionViewController.swift; sourceTree = "<group>"; };
@@ -621,6 +623,7 @@
 				23EBC78B2732AA4C0063922C /* FinancialAccountDetailModel.swift */,
 				23EBC78D2732C95F0063922C /* AssetsCategoryModel.swift */,
 				23EBC78F2732CAAF0063922C /* OtherAssetsDetailModel.swift */,
+				23EBC7912732D9C60063922C /* GiftDetailModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1426,6 +1429,7 @@
 				239DFD582727DCAD0052E391 /* EthnicityModel.swift in Sources */,
 				7186AD742653FBB500E740D3 /* ResetPasswordSuccessfullViewController.swift in Sources */,
 				23EBC7902732CAAF0063922C /* OtherAssetsDetailModel.swift in Sources */,
+				23EBC7922732D9C60063922C /* GiftDetailModel.swift in Sources */,
 				71B19458265CF9C80017955B /* APIRouter.swift in Sources */,
 				238E0F9526F37F430025FF06 /* PriorityLiensViewController.swift in Sources */,
 				23B2148D270B32AF00215ACC /* DocumentsTypeViewController.swift in Sources */,

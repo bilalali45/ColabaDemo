@@ -72,6 +72,8 @@ enum EndPoint:String{
     case getFinancialAccountDetail = "loanapplication/Assets/GetFinancialAssetDetails?"
     case getAssetsTypes = "loanapplication/Assets/GetAssetTypesByCategory?"
     case getOtherAssetsDetail = "loanapplication/Assets/GetOtherAssetDetails?"
+    case getGiftSources = "loanapplication/Assets/GetAllGiftSources"
+    case getGiftAssetsDetail = "loanapplication/Assets/GetGiftAssetDetails?"
     case logout = "identity/mcuaccount/Logout"
     
 }
