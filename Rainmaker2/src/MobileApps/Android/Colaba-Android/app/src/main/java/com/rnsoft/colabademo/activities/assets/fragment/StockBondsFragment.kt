@@ -32,11 +32,10 @@ class StockBondsFragment:BaseFragment() {
     private var loanPurpose:String? = null
     private var borrowerId:Int? = null
     private var borrowerAssetId:Int? = null
+    private var assetTypeID:Int? = null
 
     private var dataArray: ArrayList<String> = arrayListOf("Checking Account", "Saving Account")
-
     private var bankAccounts: ArrayList<DropDownResponse> = arrayListOf()
-
     private lateinit var bankAdapter:ArrayAdapter<String>
 
     private val viewModel: AssetViewModel by activityViewModels()
@@ -57,6 +56,7 @@ class StockBondsFragment:BaseFragment() {
             loanPurpose = arguments.getString(AppConstant.loanPurpose)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
             borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId)
+            assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             observeStockBondsData()
         }
         return root

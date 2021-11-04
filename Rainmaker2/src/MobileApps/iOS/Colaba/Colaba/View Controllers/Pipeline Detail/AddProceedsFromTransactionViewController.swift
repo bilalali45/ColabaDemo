@@ -36,10 +36,22 @@ class AddProceedsFromTransactionViewController: BaseViewController {
     
     var isLoanSecureByAnAsset = false
     var txtViewAssetsDescription = MDCFilledTextArea()
-
+    var borrowerName = ""
+    var isForAdd = false
+    var loanApplicationId = 0
+    var borrowerId = 0
+    var borrowerAssetId = 0
+    var assetCategoryId = 0
+    var assetTypeId = 0
+    var loanPurposeId = 0
+    var assetsCategoryArray = [AssetsCategoryModel]()
+    var proceedsFromTransactionDetail = ProceedsFromTransactionDetailModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setMaterialTextFieldsAndViews()
+        lblBorrowerName.text = borrowerName.uppercased()
+        getAssetsCategories()
     }
    
     //MARK:- Methods and Actions
@@ -88,7 +100,6 @@ class AddProceedsFromTransactionViewController: BaseViewController {
         ///Transaction Type  Text Field
         txtfieldTransactionType.setTextField(placeholder: "Transaction Type", controller: self, validationType: .required)
         txtfieldTransactionType.type = .dropdown
-        txtfieldTransactionType.setDropDownDataSource(kTransactionTypeArray)
         
         ///Expected Proceeds Text Field
         txtfieldExpectedProceeds.setTextField(placeholder: "Expected Proceeds", controller: self, validationType: .required)
@@ -98,6 +109,61 @@ class AddProceedsFromTransactionViewController: BaseViewController {
         txtfieldAssetsType.setTextField(placeholder: "Which Asset?", controller: self, validationType: .required)
         txtfieldAssetsType.type = .dropdown
         txtfieldAssetsType.setDropDownDataSource(kAssetsTypeArray)
+    }
+    
+    func setProceedsFromTransaction(){
+        txtfieldExpectedProceeds.setTextField(text: String(format: "%.0f", self.proceedsFromTransactionDetail.value.rounded()))
+        if (assetTypeId == 12){ //Proceeds from loan work
+            isLoanSecureByAnAsset = self.proceedsFromTransactionDetail.securedByCollateral
+            txtViewAssetsDescription.textView.text = self.proceedsFromTransactionDetail.collateralAssetOtherDescription
+            txtViewAssetsDescription.sizeToFit()
+            txtfieldAssetsType.setTextField(text: self.proceedsFromTransactionDetail.collateralAssetName)
+            setAssetTypeAccordingToOption(option: self.proceedsFromTransactionDetail.collateralAssetName)
+            changeLoanSecureStatus()
+        }
+        else{
+            txtViewAssetsDescription.textView.text = self.proceedsFromTransactionDetail.descriptionField
+            txtViewAssetsDescription.sizeToFit()
+        }
+    }
+    
+    func setTextFieldAccordingToTransactionType(option: String){
+        txtfieldExpectedProceeds.isHidden = false
+        if (option.localizedCaseInsensitiveContains("Proceeds From A Loan")){
+            loanSecureView.isHidden = false
+            loanSecureViewTopConstraint.constant = 40
+            loanSecureViewHeightConstraint.constant = 140
+            txtfieldAssetsType.isHidden = true
+            txtfieldAssetsTypeTopConstraint.constant = 0
+            txtFieldAssetsTypeHeightConstraint.constant = 0
+            assetsDescriptionTextViewContainer.isHidden = true
+            txtViewAssetsDescription.isHidden = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                self?.txtViewAssetsDescription.frame = self?.assetsDescriptionTextViewContainer.frame ?? CGRect(x: 0, y: 0, width: 0, height: 0)
+            }
+        }
+        else{
+            loanSecureView.isHidden = true
+            loanSecureViewTopConstraint.constant = 0
+            loanSecureViewHeightConstraint.constant = 0
+            txtfieldAssetsType.isHidden = true
+            txtfieldAssetsTypeTopConstraint.constant = 0
+            txtFieldAssetsTypeHeightConstraint.constant = 0
+            assetsDescriptionTextViewContainer.isHidden = false
+            txtViewAssetsDescription.isHidden = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                self?.txtViewAssetsDescription.frame = self?.assetsDescriptionTextViewContainer.frame ?? CGRect(x: 0, y: 0, width: 0, height: 0)
+            }
+        }
+        
+        setScreenHeight()
+    }
+    
+    func setAssetTypeAccordingToOption(option: String){
+        assetsDescriptionTextViewContainer.isHidden = option != "Other"
+        txtViewAssetsDescription.isHidden = option != "Other"
+        txtViewAssetsDescription.frame = assetsDescriptionTextViewContainer.frame
+        setScreenHeight()
     }
     
     func setScreenHeight(){
@@ -184,6 +250,76 @@ class AddProceedsFromTransactionViewController: BaseViewController {
         isValidate = txtfieldExpectedProceeds.validate() && isValidate
         return isValidate
     }
+    
+    //MARK:- API's
+    
+    func getAssetsCategories(){
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "categoryId=\(assetCategoryId)&loanPurposeId=\(loanPurposeId)"
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAssetsTypes, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = AssetsCategoryModel()
+                        model.updateModelWithJSON(json: option)
+                        self.assetsCategoryArray.append(model)
+                    }
+                    self.txtfieldTransactionType.setDropDownDataSource(self.assetsCategoryArray.map({$0.name}))
+                    if (self.isForAdd){
+                        Utility.showOrHideLoader(shouldShow: false)
+                    }
+                    else{
+                        if let selectedTransactionType = self.assetsCategoryArray.filter({$0.id == self.assetTypeId}).first{
+                            self.txtfieldTransactionType.setTextField(text: selectedTransactionType.name)
+                            self.setTextFieldAccordingToTransactionType(option: selectedTransactionType.name)
+                            if (selectedTransactionType.id == 12){
+                                self.getProceedFromTransactionDetail(endPoint: .getProceedsFromLoan)
+                            }
+                            else if (selectedTransactionType.id == 13){
+                                self.getProceedFromTransactionDetail(endPoint: .getProceedsFromNonRealEstateDetail)
+                            }
+                            else if (selectedTransactionType.id == 14){
+                                self.getProceedFromTransactionDetail(endPoint: .getProceedsFromRealEstateDetail)
+                            }
+                        }
+                    }
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
+    
+    func getProceedFromTransactionDetail(endPoint: EndPoint){
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)&borrowerId=\(borrowerId)&AssetTypeId=\(assetTypeId)&borrowerAssetId=\(borrowerAssetId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: endPoint, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    let model = ProceedsFromTransactionDetailModel()
+                    model.updateModelWithJSON(json: result["data"])
+                    self.proceedsFromTransactionDetail = model
+                    self.setProceedsFromTransaction()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension AddProceedsFromTransactionViewController: UITextViewDelegate{
@@ -212,42 +348,11 @@ extension AddProceedsFromTransactionViewController: UITextViewDelegate{
 extension AddProceedsFromTransactionViewController : ColabaTextFieldDelegate {
     func selectedOption(option: String, atIndex: Int, textField: ColabaTextField) {
         if textField == txtfieldTransactionType {
-            txtfieldExpectedProceeds.isHidden = false
-            if (option == "Proceeds From A Loan"){
-                loanSecureView.isHidden = false
-                loanSecureViewTopConstraint.constant = 40
-                loanSecureViewHeightConstraint.constant = 140
-                txtfieldAssetsType.isHidden = true
-                txtfieldAssetsTypeTopConstraint.constant = 0
-                txtFieldAssetsTypeHeightConstraint.constant = 0
-                assetsDescriptionTextViewContainer.isHidden = true
-                txtViewAssetsDescription.isHidden = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-                    self?.txtViewAssetsDescription.frame = self?.assetsDescriptionTextViewContainer.frame ?? CGRect(x: 0, y: 0, width: 0, height: 0)
-                }
-            }
-            else{
-                loanSecureView.isHidden = true
-                loanSecureViewTopConstraint.constant = 0
-                loanSecureViewHeightConstraint.constant = 0
-                txtfieldAssetsType.isHidden = true
-                txtfieldAssetsTypeTopConstraint.constant = 0
-                txtFieldAssetsTypeHeightConstraint.constant = 0
-                assetsDescriptionTextViewContainer.isHidden = false
-                txtViewAssetsDescription.isHidden = false
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-                    self?.txtViewAssetsDescription.frame = self?.assetsDescriptionTextViewContainer.frame ?? CGRect(x: 0, y: 0, width: 0, height: 0)
-                }
-            }
-            
-            setScreenHeight()
+            setTextFieldAccordingToTransactionType(option: option)
         }
         
         if textField == txtfieldAssetsType {
-            assetsDescriptionTextViewContainer.isHidden = option != "Other"
-            txtViewAssetsDescription.isHidden = option != "Other"
-            txtViewAssetsDescription.frame = assetsDescriptionTextViewContainer.frame
-            setScreenHeight()
+            
         }
     }
 }
