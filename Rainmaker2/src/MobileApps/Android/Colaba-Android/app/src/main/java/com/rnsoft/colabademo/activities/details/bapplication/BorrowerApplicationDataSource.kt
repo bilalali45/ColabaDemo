@@ -1,7 +1,6 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
-import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
 import com.rnsoft.colabademo.activities.model.StatesModel
 import timber.log.Timber
 import java.io.IOException

@@ -50,7 +50,7 @@
             android:clickable="true"/>
 
         <androidx.appcompat.widget.AppCompatRadioButton
-            android:id="@+id/rb_divorced"
+            android:id="@+id/rb_separated"
             android:layout_width="wrap_content"
             android:layout_height="22dp"
             android:text="@string/martial_status_separated"

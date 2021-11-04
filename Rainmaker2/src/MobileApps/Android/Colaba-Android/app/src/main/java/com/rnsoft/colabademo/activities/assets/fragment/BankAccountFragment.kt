@@ -27,7 +27,7 @@ class BankAccountFragment : BaseFragment() {
     private var _binding: BankAccountLayoutBinding? = null
     private val binding get() = _binding!!
     private var bankAccounts: ArrayList<String> = arrayListOf("Checking Account", "Saving Account")
-    private lateinit var stateNamesAdapter:ArrayAdapter<String>
+    private lateinit var bankAdapter:ArrayAdapter<String>
     private val viewModel: AssetViewModel by activityViewModels()
 
     private var loanApplicationId:Int? = null
@@ -58,8 +58,8 @@ class BankAccountFragment : BaseFragment() {
 
 
     private fun setUpUI(){
-        stateNamesAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  bankAccounts)
-        binding.accountTypeCompleteView.setAdapter(stateNamesAdapter)
+        bankAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  bankAccounts)
+        binding.accountTypeCompleteView.setAdapter(bankAdapter)
         binding.accountTypeCompleteView.setOnFocusChangeListener { _, _ ->
             HideSoftkeyboard.hide(requireContext(),  binding.accountTypeCompleteView)
             binding.accountTypeCompleteView.showDropDown()
@@ -163,17 +163,6 @@ class BankAccountFragment : BaseFragment() {
 
 
     private fun observeBankData(){
-
-        lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId!=null) {
-                    viewModel.getBankAccountDetails(authToken,
-                        loanApplicationId!!, borrowerId!!, borrowerAssetId!!
-                    )
-                }
-            }
-        }
-
         lifecycleScope.launchWhenStarted {
             viewModel.bankAccountType.observe(viewLifecycleOwner, { bankAccountTypes ->
                 if(bankAccountTypes.size>0) {
@@ -183,29 +172,43 @@ class BankAccountFragment : BaseFragment() {
                         bankAccounts.add(item.name)
                         classLevelBankAccountTypes.add(item)
                     }
-                    stateNamesAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  bankAccounts)
-                    binding.accountTypeCompleteView.setAdapter(stateNamesAdapter)
+                    bankAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  bankAccounts)
+                    binding.accountTypeCompleteView.setAdapter(bankAdapter)
+                    fetchAndObserveBankAccountDetails()
                 }
+                else
+                    findNavController().popBackStack()
             })
+        }
 
-            viewModel.bankAccountDetails.observe(viewLifecycleOwner, { bankAccountDetails ->
-                if(bankAccountDetails.code == AppConstant.RESPONSE_CODE_SUCCESS){
-                    bankAccountDetails.bankAccountData?.let { bankAccountData ->
-                        bankAccountData.institutionName?.let { binding.financialEditText.setText(it)  }
-                        bankAccountData.accountNumber?.let{ binding.accountNumberEdittext.setText(it) }
-                        bankAccountData.balance?.let{binding.annualBaseEditText.setText(it.toString())}
-                        bankAccountData.assetTypeId?.let { assetTypeId->
-                                for(item in classLevelBankAccountTypes){
-                                    if(assetTypeId == item.id){
-                                        binding.accountTypeCompleteView.setText(item.name, false)
-                                        break
-                                    }
-                                }
+    }
+
+    private fun fetchAndObserveBankAccountDetails(){
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId!=null) {
+                    viewModel.getBankAccountDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId!!)
+                }
+            }
+        }
+
+        viewModel.bankAccountDetails.observe(viewLifecycleOwner, { bankAccountDetails ->
+            if(bankAccountDetails.code == AppConstant.RESPONSE_CODE_SUCCESS){
+                bankAccountDetails.bankAccountData?.let { bankAccountData ->
+                    bankAccountData.institutionName?.let { binding.financialEditText.setText(it)  }
+                    bankAccountData.accountNumber?.let{ binding.accountNumberEdittext.setText(it) }
+                    bankAccountData.balance?.let{binding.annualBaseEditText.setText(it.toString())}
+                    bankAccountData.assetTypeId?.let { assetTypeId->
+                        for(item in classLevelBankAccountTypes){
+                            if(assetTypeId == item.id){
+                                binding.accountTypeCompleteView.setText(item.name, false)
+                                break
+                            }
                         }
                     }
                 }
-            })
-        }
+            }
+        })
     }
 
 }

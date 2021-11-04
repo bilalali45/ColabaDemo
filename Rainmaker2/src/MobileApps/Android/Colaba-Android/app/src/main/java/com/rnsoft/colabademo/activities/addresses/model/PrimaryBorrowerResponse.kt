@@ -109,5 +109,6 @@ data class MilitaryServiceDetails(
 
 data class MilitaryServiceDetail(
     val expirationDateUtc: String?,
-    val militaryAffiliationId: Int?
+    val militaryAffiliationId: Int?,
+    val reserveEverActivated: Boolean?
 )

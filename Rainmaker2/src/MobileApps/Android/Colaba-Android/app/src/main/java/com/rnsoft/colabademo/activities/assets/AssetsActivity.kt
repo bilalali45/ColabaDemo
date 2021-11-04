@@ -23,7 +23,7 @@ class AssetsActivity : BaseActivity() {
 
     var loanApplicationId:Int? = null
     var loanPurpose:String? = null
-    var borrowerTabList:ArrayList<Int>? = null
+    var borrowerTabList:ArrayList<Int>? = arrayListOf()
     private val borrowerApplicationViewModel: BorrowerApplicationViewModel by viewModels()
 
     private val assetViewModel: AssetViewModel by viewModels()
@@ -39,10 +39,11 @@ class AssetsActivity : BaseActivity() {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             loanPurpose = it.getString(AppConstant.loanPurpose)
             borrowerTabList = it.getIntegerArrayList(AppConstant.assetBorrowerList) as ArrayList<Int>
-            Timber.d("borrowerTabList size "+ borrowerTabList!!.size)
+            //borrowerTabList!!.add(5)
             for(item in borrowerTabList!!){
                 Timber.d("item size "+ item)
             }
+            Timber.d("borrowerTabList size "+ borrowerTabList!!.size)
 
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -51,8 +52,17 @@ class AssetsActivity : BaseActivity() {
                             authToken, loanApplicationId!!,
                             borrowerTabList!!
                         )
-
+                        // pre-fetch bank drop down  values....
                         assetViewModel.getBankAccountType(authToken)
+
+                        // pre-fetch gift drop down values....
+                        assetViewModel.getAllGiftSources(authToken)
+
+                        // pre-fetch  Transaction drop down values.... Proceed From Transaction.
+                        assetViewModel.getAllFinancialAsset(authToken)
+
+                        // pre-fetch other drop down values.... Other
+                        //assetViewModel.get(authToken)
 
                     }
                 }

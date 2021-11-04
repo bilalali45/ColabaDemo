@@ -1,7 +1,5 @@
 package com.rnsoft.colabademo
 
-import android.view.View
-
 
 data class TestAssetsModelClass(
     val headerTitle: String = "Header Title",

@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo
+package com.rnsoft.colabademo.activities.assets.fragment.model
 
 import com.google.gson.annotations.SerializedName
 
@@ -7,8 +7,7 @@ import com.google.gson.annotations.SerializedName
  */
 data class RetirementAccountResponse(
     val code: String?,
-    @SerializedName("data")
-    val data: RetirementAccountData?,
+    @SerializedName("data") val retirementAccountData: RetirementAccountData?,
     val message: String?,
     val status: String?
 )

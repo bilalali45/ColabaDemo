@@ -10,6 +10,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RadioGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.ProceedFromTransLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -25,6 +27,12 @@ import javax.inject.Inject
         private var _binding: ProceedFromTransLayoutBinding? = null
         private val binding get() = _binding!!
 
+        private var transactionArray: ArrayList<String> = arrayListOf("Proceeds From A Loan", "Proceeds From Selling Non-Real Estate Assets", "Proceeds From Selling Real Estate Assets")
+        private lateinit var transactionAdapter: ArrayAdapter<String>
+
+        private val financialArray: ArrayList<String> = arrayListOf("House", "Automobile", "Financial Account", "Other")
+        private lateinit var financialAdapter : ArrayAdapter<String>
+
         @Inject
         lateinit var sharedPreferences: SharedPreferences
         override fun onCreateView(
@@ -32,28 +40,22 @@ import javax.inject.Inject
             container: ViewGroup?,
             savedInstanceState: Bundle?
         ): View {
-
             _binding = ProceedFromTransLayoutBinding.inflate(inflater, container, false)
             val root: View = binding.root
             setUpUI()
             super.addListeners(binding.root)
+            observeFinancialData()
             return root
         }
 
         private fun setUpUI(){
-
-
-
-            val dataArray: ArrayList<String> = arrayListOf("Proceeds From A Loan", "Proceeds From Selling Non-Real Estate Assets", "Proceeds From Selling Real Estate Assets")
-            val stateNamesAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  dataArray)
-            binding.transactionAutoCompleteTextView.setAdapter(stateNamesAdapter)
+            transactionAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  transactionArray)
+            binding.transactionAutoCompleteTextView.setAdapter(transactionAdapter)
             binding.transactionAutoCompleteTextView.setOnFocusChangeListener { _, _ ->
                 HideSoftkeyboard.hide(requireContext(),  binding.transactionAutoCompleteTextView)
                 binding.transactionAutoCompleteTextView.showDropDown()
             }
-            binding.transactionAutoCompleteTextView.setOnClickListener{
-                binding.transactionAutoCompleteTextView.showDropDown()
-            }
+            binding.transactionAutoCompleteTextView.setOnClickListener { binding.transactionAutoCompleteTextView.showDropDown() }
 
             binding.transactionAutoCompleteTextView.onItemClickListener = object: AdapterView.OnItemClickListener {
                 override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
@@ -89,9 +91,7 @@ import javax.inject.Inject
                     }
                 }
             }
-
-
-            binding.radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { _, checkedId ->
+            binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
                     R.id.radioButton -> {
                         binding.whichAssetInputLayout.visibility = View.VISIBLE
@@ -102,12 +102,10 @@ import javax.inject.Inject
                     else -> {
                     }
                 }
-            })
+            }
 
-
-            val dataArray2: ArrayList<String> = arrayListOf("House", "Automobile", "Financial Account", "Other")
-            val dataArrayAdapter2 = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  dataArray2)
-            binding.whichAssetsCompleteView.setAdapter(dataArrayAdapter2)
+            financialAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  financialArray)
+            binding.whichAssetsCompleteView.setAdapter(financialAdapter)
             binding.whichAssetsCompleteView.setOnFocusChangeListener { _, _ ->
                 HideSoftkeyboard.hide(requireContext(),  binding.whichAssetsCompleteView)
                 binding.whichAssetsCompleteView.showDropDown()
@@ -116,8 +114,8 @@ import javax.inject.Inject
                 binding.whichAssetsCompleteView.showDropDown()
             }
 
-            binding.whichAssetsCompleteView.onItemClickListener = object: AdapterView.OnItemClickListener {
-                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+            binding.whichAssetsCompleteView.onItemClickListener =
+                AdapterView.OnItemClickListener { p0, p1, position, id ->
                     binding.whichAssetInputLayout.defaultHintTextColor = ColorStateList.valueOf(
                         ContextCompat.getColor(requireContext(), R.color.grey_color_two ))
 
@@ -125,14 +123,12 @@ import javax.inject.Inject
                         if(it.isNotEmpty())
                             CustomMaterialFields.clearError(binding.whichAssetInputLayout, requireContext())
                     }
-                    if(position==dataArray2.size-1) {
+                    if(position==financialArray.size-1) {
                         binding.layoutDetail.visibility = View.VISIBLE
-                    }
-                    else{
+                    } else{
                         binding.layoutDetail.visibility = View.INVISIBLE
                     }
                 }
-            }
 
             CustomMaterialFields.setDollarPrefix(binding.annualBaseLayout, requireActivity())
             binding.annualBaseEditText.addTextChangedListener(NumberTextFormat(binding.annualBaseEditText))
@@ -153,8 +149,6 @@ import javax.inject.Inject
 
 
         }
-
-
 
         private fun clearFocusFromFields(){
             binding.annualBaseLayout.clearFocus()
@@ -224,4 +218,25 @@ import javax.inject.Inject
             )
         }
 
+        private val viewModel: AssetViewModel by activityViewModels()
+
+        private fun observeFinancialData(){
+            lifecycleScope.launchWhenStarted {
+                viewModel.allFinancialAsset.observe(viewLifecycleOwner, { allFinancialAsset ->
+                    if(allFinancialAsset.size>0) {
+                        transactionArray = arrayListOf()
+                        //classLevelBankAccountTypes = arrayListOf()
+                        for (item in allFinancialAsset) {
+                            transactionArray.add(item.name)
+                           // classLevelBankAccountTypes.add(item)
+                        }
+                        //transactionAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  bankAccounts)
+                        //binding.accountTypeCompleteView.setAdapter(transactionAdapter)
+
+                    }
+                    else
+                        findNavController().popBackStack()
+                })
+            }
+        }
 }

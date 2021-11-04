@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class EmploymentDetailResponse(
     val code: String?,
     @SerializedName("data")
-    val data: EmploymentData?,
+    val employmentData: EmploymentData?,
     val message: String?,
     val status: String?
 )
@@ -26,6 +26,7 @@ data class EmployerAddress(
     val cityId: Int?,
     val cityName: String?,
     val countryId: Int?,
+    val countryName: String?,
     val incomeInfoId: Int?,
     val loanApplicationId: Int?,
     val stateId: Int?,
@@ -45,8 +46,8 @@ data class EmploymentInfo(
     val hasOwnershipInterest: Boolean?,
     val incomeInfoId: Int?,
     val isCurrentIncome: Boolean?,
-    val jobTitle: String,
-    val ownershipInterest: Any?,
+    val jobTitle: String?,
+    val ownershipInterest: Boolean?,
     val startDate: String?,
     val yearsInProfession: Int?
 )
@@ -61,7 +62,7 @@ data class EmploymentOtherIncome(
 
 data class WayOfIncome(
     val employerAnnualSalary: Double?,
-    val hourlyRate: Any?,
+    val hourlyRate: Double?,
     val hoursPerWeek: Any?,
     val isPaidByMonthlySalary: Boolean?
 )

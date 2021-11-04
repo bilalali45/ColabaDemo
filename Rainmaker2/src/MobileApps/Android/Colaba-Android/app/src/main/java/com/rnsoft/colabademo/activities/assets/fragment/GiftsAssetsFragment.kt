@@ -11,13 +11,16 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RadioGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.assets.fragment.model.GiftSourcesResponse
 
 import com.rnsoft.colabademo.databinding.GiftsAssetLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.non_permenant_resident_layout.view.*
 import java.util.*
 import javax.inject.Inject
 
@@ -27,25 +30,105 @@ class GiftsAssetsFragment:BaseFragment() {
     private var _binding: GiftsAssetLayoutBinding? = null
     private val binding get() = _binding!!
 
+    private var loanApplicationId:Int? = null
+    private var loanPurpose:String? = null
+    private var borrowerId:Int? = null
+    private var borrowerAssetId:Int? = null
+
+    private val viewModel: AssetViewModel by activityViewModels()
+
+    private var dataArray: ArrayList<String> = arrayListOf("Relative", "Unmarried Partner", "Federal Agency", "State Agency", "Local Agency", "Community Non Profit", "Employer", "Religious Non Profit", "Lender")
+    private lateinit var giftAdapter:ArrayAdapter<String>
+    private var giftResources: ArrayList<GiftSourcesResponse> = arrayListOf()
+
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = GiftsAssetLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
         super.addListeners(binding.root)
+        arguments?.let { arguments->
+            loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+            loanPurpose = arguments.getString(AppConstant.loanPurpose)
+            borrowerId = arguments.getInt(AppConstant.borrowerId)
+            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId)
+            observeGiftData()
+        }
         return root
     }
 
+    private fun observeGiftData(){
+        lifecycleScope.launchWhenStarted {
+            viewModel.allGiftResources.observe(viewLifecycleOwner, { giftResourceTypes ->
+                if(giftResourceTypes.size>0) {
+                    dataArray = arrayListOf()
+                    giftResources = arrayListOf()
+                    for (item in giftResourceTypes) {
+                        dataArray.add(item.name)
+                        giftResources.add(item)
+                    }
+                    giftAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  dataArray)
+                    binding.giftSourceAutoCompeleteView.setAdapter(giftAdapter)
+                    fetchAndObserveGiftDetails()
+                }
+                else
+                    findNavController().popBackStack()
+            })
+        }
+    }
+
+    private fun fetchAndObserveGiftDetails(){
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if (loanApplicationId != null && borrowerId != null && borrowerAssetId != null)
+                    viewModel.getGiftAssetDetails(
+                        authToken,
+                        loanApplicationId!!,
+                        borrowerId!!,
+                        borrowerAssetId!!
+                    )
+            }
+        }
+
+        viewModel.giftAssetDetail.observe(viewLifecycleOwner, { giftAssetDetail ->
+            if(giftAssetDetail.code == AppConstant.RESPONSE_CODE_SUCCESS){
+                giftAssetDetail.giftAssetData?.let { giftAssetData ->
+                    giftAssetData.isDeposited?.let{ isDeposited ->
+                         if(isDeposited) {
+                             binding.cashGift.isChecked = true
+                             giftAssetData.valueDate?.let {  valueDate ->
+                                 binding.layoutTransferDate.visibility = View.VISIBLE
+                                 binding.dateOfTransferEditText.setText(valueDate)
+                             }
+                             binding.yesDeposited.isChecked = true
+                         }
+                         else {
+                             binding.giftOfEquity.isChecked = true
+                             binding.noDeposited.isChecked = false
+                         }
+                    }
+
+                    giftAssetData.value?.let{
+                        val newValue = it.toString()
+                        binding.annualBaseEditText.setText(newValue)
+                    }
+                    giftAssetData.giftSourceId?.let { giftSourceId->
+                        for(item in giftResources){
+                            if(giftSourceId == item.id){
+                                binding.giftSourceAutoCompeleteView.setText(item.name, false)
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    }
 
     private fun setUpUI(){
-        val dataArray: ArrayList<String> = arrayListOf("Relative", "Unmarried Partner", "Federal Agency", "State Agency", "Local Agency", "Community Non Profit", "Employer", "Religious Non Profit", "Lender")
-        val giftAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  dataArray)
+        giftAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  dataArray)
         binding.giftSourceAutoCompeleteView.setAdapter(giftAdapter)
         binding.giftSourceAutoCompeleteView.setOnFocusChangeListener { _, _ ->
             HideSoftkeyboard.hide(requireContext(),  binding.giftSourceAutoCompeleteView)

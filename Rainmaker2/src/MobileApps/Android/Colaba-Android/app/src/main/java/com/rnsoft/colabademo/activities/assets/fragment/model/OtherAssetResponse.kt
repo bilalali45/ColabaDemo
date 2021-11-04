@@ -1,18 +1,17 @@
-package com.rnsoft.colabademo
+package com.rnsoft.colabademo.activities.assets.fragment.model
 
 import com.google.gson.annotations.SerializedName
 
 data class OtherAssetResponse(
     val code: String?,
-    @SerializedName("data")
-    val data: OtherAssetData?,
+    @SerializedName("data") val otherAssetData: OtherAssetData?,
     val message: String?,
     val status: String?
 )
 
 data class OtherAssetData(
-    val accountNumber: Any?,
-    val assetDescription: Any?,
+    val accountNumber: String?,
+    val assetDescription: String?,
     val assetId: Int?,
     val assetTypeId: Int?,
     val assetTypeName: String?,

@@ -60,6 +60,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
     private lateinit var predictAdapter: PlacePredictionAdapter
     private var map: HashMap<String, String> = HashMap()
     private val viewModel : PrimaryBorrowerViewModel by activityViewModels()
+    //var pos : Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -100,7 +101,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
         setUpUI()
         getDropDownData()
         setUpCompleteViewForPlaces()
-        initializeUSAstates()
+        //initializeUSAstates()
 
         binding.addAddressLayout.setOnClickListener {
             findNavController().navigate(R.id.action_info_mailing_address)
@@ -129,67 +130,68 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
     }
 
     private fun setData() {
-        val pos = arguments?.getInt(AppConstant.address)!!
-        var position = pos - 1
-
-        viewModel.borrowerDetail.observe(viewLifecycleOwner, { detail ->
-            if(detail != null) {
-                detail.borrowerData?.previousAddresses?.let { data->
-                    if (position >= 0) {
-                        data.get(position).addressModel?.let {
-                            it.street?.let {
-                                binding.topSearchAutoTextView.setText(it)
-                                binding.streetAddressEditText.setText(it)
-                                setColor(binding.layoutSearchField)
-                                setColor(binding.streetAddressLayout)
+        if(arguments != null) {
+            val pos = arguments?.getInt(AppConstant.address)!!
+            val position = pos.minus(1)
+            viewModel.borrowerDetail.observe(viewLifecycleOwner, { detail ->
+                if (detail != null) {
+                    detail.borrowerData?.previousAddresses?.let { data ->
+                        if (position >= 0) {
+                            data.get(position).addressModel?.let {
+                                it.street?.let {
+                                    binding.topSearchAutoTextView.setText(it)
+                                    binding.streetAddressEditText.setText(it)
+                                    setColor(binding.layoutSearchField)
+                                    setColor(binding.streetAddressLayout)
+                                }
+                                it.city?.let { binding.cityEditText.setText(it) }
+                                it.countryName?.let {
+                                    binding.countryCompleteTextView.setText(it)
+                                    setColor(binding.countryCompleteLayout)
+                                }
+                                it.zipCode?.let {
+                                    binding.zipcodeEditText.setText(it)
+                                }
+                                it.stateName?.let {
+                                    binding.stateCompleteTextView.setText(it)
+                                    setColor(binding.stateCompleteTextInputLayout)
+                                }
+                                it.countyName?.let {
+                                    binding.countyEditText.setText(it)
+                                    setColor(binding.countyLayout)
+                                }
+                                it.unit?.let {
+                                    binding.unitAptInputEditText.setText(it)
+                                }
+                                visibleAllFields()
                             }
-                            it.city?.let { binding.cityEditText.setText(it) }
-                            it.countryName?.let {
-                                binding.countryCompleteTextView.setText(it)
-                                setColor(binding.countryCompleteLayout)
+                            data.get(position).fromDate?.let {
+                                binding.moveInEditText.setText(it)
+                                setColor(binding.moveInLayout)
                             }
-                            it.zipCode?.let {
-                                binding.zipcodeEditText.setText(it)
-                            }
-                            it.stateName?.let {
-                                binding.stateCompleteTextView.setText(it)
-                                setColor(binding.stateCompleteTextInputLayout)
-                            }
-                            it.countyName?.let {
-                                binding.countyEditText.setText(it)
-                                setColor(binding.countyLayout)
-                            }
-                            it.unit?.let {
-                                binding.unitAptInputEditText.setText(it)
-                            }
-                            visibleAllFields()
-                        }
-                        data.get(position).fromDate?.let {
-                            binding.moveInEditText.setText(it)
-                            setColor(binding.moveInLayout)
-                        }
-                        data.get(position).toDate?.let {
-                            binding.moveOutEditText.setText(it)
-                            setColor(binding.moveOutLayout)
-                        }
-                    }
-                    data.get(position).housingStatusId?.let { id->
-                        if(id == 1)
-                            binding.housingCompleteTextView.setText("Own")
-                        if(id==2) {
-                            binding.housingCompleteTextView.setText("Rent")
-                            data.get(position).monthlyRent?.let { rent->
-                                binding.monthlyRentEditText.setText(rent.toString())
-                                binding.monthlyRentEditText.visibility = View.VISIBLE
+                            data.get(position).toDate?.let {
+                                binding.moveOutEditText.setText(it)
+                                setColor(binding.moveOutLayout)
                             }
                         }
-                        if(id==3){
-                            binding.housingCompleteTextView.setText("No Primary Housing Expense")
+                        data.get(position).housingStatusId?.let { id ->
+                            if (id == 1)
+                                binding.housingCompleteTextView.setText("Own")
+                            if (id == 2) {
+                                binding.housingCompleteTextView.setText("Rent")
+                                data.get(position).monthlyRent?.let { rent ->
+                                    binding.monthlyRentEditText.setText(rent.toString())
+                                    binding.monthlyRentEditText.visibility = View.VISIBLE
+                                }
+                            }
+                            if (id == 3) {
+                                binding.housingCompleteTextView.setText("No Primary Housing Expense")
+                            }
                         }
                     }
                 }
-            }
-        })
+            })
+        }
     }
 
     private fun getDropDownData(){

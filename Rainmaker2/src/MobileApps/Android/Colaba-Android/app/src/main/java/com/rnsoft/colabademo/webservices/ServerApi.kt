@@ -1,6 +1,6 @@
 package com.rnsoft.colabademo
 
-import com.rnsoft.colabademo.activities.assets.model.MyAssetBorrowerDataClass
+import com.rnsoft.colabademo.activities.assets.fragment.model.*
 import com.rnsoft.colabademo.activities.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -131,6 +131,14 @@ interface ServerApi{
     suspend fun getBankAccountType(
         @Header("Authorization") Authorization:String) : ArrayList<DropDownResponse>
 
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetAssetTypesByCategory")
+    suspend fun fetchAssetTypesByCategoryItemList(
+        @Header("Authorization") Authorization:String,
+        @Query("categoryId") categoryId:Int,
+        @Query("loanPurposeId") loanPurposeId:Int) : ArrayList<GetAssetTypesByCategoryItem>
+
+
     // post add or update bank account
 
 
@@ -231,19 +239,57 @@ interface ServerApi{
     //AddOrUpdatePreviousEmploymentDetail
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetSelfBusinessIncome")
-    suspend fun GetSelfEmploymentContractor(
+    suspend fun getSelfEmploymentContractor(
+        @Header("Authorization") Authorization:String,
+        @Query("borrowerId") borrowerId:Int,
+        @Query("incomeInfoId") incomeInfoId:Int): SelfEmploymentResponse
+
+    // AddOrUpdateSelfBusiness
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetBusinessIncome")
+    suspend fun getBusinessIncome(
         @Header("Authorization") Authorization:String,
         @Query("borrowerId") borrowerId:Int,
         @Query("incomeInfoId") incomeInfoId:Int): SelfEmploymentResponse
 
 
+    @GET("api/mcu/mobile/loanapplication/Assets/GetAllBusinessTypes")
+    suspend fun getAllBusinessTypes(
+        @Header("Authorization") Authorization : String) : ArrayList<DropDownResponse>
+
+    //AddOrUpdateBusiness
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetMilitaryIncome")
+    suspend fun getMilitaryIncome(
+        @Header("Authorization") Authorization:String,
+        @Query("borrowerId") borrowerId:Int,
+        @Query("incomeInfoId") incomeInfoId:Int): SelfEmploymentResponse
+
+    // AddOrUpdateMilitaryIncome
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetRetirementIncomeInfo")
+    suspend fun getRetirementIncome(
+        @Header("Authorization") Authorization:String,
+        @Query("borrowerId") borrowerId:Int,
+        @Query("incomeInfoId") incomeInfoId:Int): SelfEmploymentResponse
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetRetirementIncomeTypes")
+    suspend fun getRetirementIncomeTypes(
+        @Header("Authorization") Authorization : String) : ArrayList<DropDownResponse>
+
+    //AddOrUpdateRetirementIncomeInfo
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetOtherIncomeInfo")
+    suspend fun getOtherIncomeInfo(
+        @Header("Authorization") Authorization:String,
+        @Query("incomeInfoId") incomeInfoId:Int): SelfEmploymentResponse
+
+    @GET("api/mcu/mobile/loanapplication/Assets/GetOtherIncomeTypes")
+    suspend fun getOtherIncomeTypes(
+        @Header("Authorization") Authorization : String) : ArrayList<DropDownResponse>
 
 
-
-
-
-
-
+    //AddOrUpdateRetirementIncomeInfo
 
 
     @POST("api/mcu/mobile/identity/mcuaccount/signin")
@@ -388,7 +434,7 @@ interface ServerApi{
         @Header("Authorization" )  Authorization:String,
         @Query("loanApplicationId")  loanApplicationId:Int,
         @Query("borrowerId")  borrowerId:Int
-    ):MyAssetBorrowerDataClass
+    ): MyAssetBorrowerDataClass
 
 
     @GET("api/mcu/mobile/loanapplication/GovtQuestions/GetGovernmentQuestions")
