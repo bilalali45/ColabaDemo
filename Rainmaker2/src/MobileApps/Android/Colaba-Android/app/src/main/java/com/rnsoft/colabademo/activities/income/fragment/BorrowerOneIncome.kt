@@ -109,11 +109,26 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                                                 contentCell.content_amount.text = "$".plus(Common.addNumberFormat(incomeValue))
                                             }
                                             contentCell.visibility = View.GONE
-                                            if(contentData.endDate == null && contentData.incomeTypeDisplayName == Employment)
-                                                contentCell.setOnClickListener(currentEmploymentListener)
-
+                                            if(contentData.endDate == null && contentData.incomeTypeDisplayName == Employment) {
+                                                contentCell.setOnClickListener(
+                                                    currentEmploymentListener
+                                                )
+                                            }
                                             else
-                                                contentCell.setOnClickListener(modelData.listenerAttached)
+                                            contentCell.setOnClickListener {
+                                                val parentActivity = activity as? IncomeActivity
+                                                val bundle = Bundle()
+                                                parentActivity?.let {
+                                                    parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1) }
+                                                    tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
+                                                    contentData.incomeId?.let { it1 -> bundle.putInt(AppConstant.incomeId, it1) }
+                                                    contentData.employmentCategory?.categoryId?.let { it1 -> bundle.putInt(AppConstant.incomeCategoryId, it1) }
+                                                    contentData.incomeTypeId?.let { it1 -> bundle.putInt(AppConstant.incomeTypeID, it1) }
+                                                    Timber.e(" content data - " + contentData)
+                                                }
+                                                findNavController().navigate(modelData.listenerAttached , bundle)
+
+                                            }
                                             mainCell.addView(contentCell)
                                         }
                                     }
@@ -132,7 +147,9 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                             bottomCell.setOnClickListener (bottomEmploymentListener)
                         }
                         else
-                            bottomCell.setOnClickListener(modelData.listenerAttached)
+                            bottomCell.setOnClickListener{
+                                    findNavController().navigate(modelData.listenerAttached)
+                            }
 
                         mainCell.addView(bottomCell)
                         binding.assetParentContainer.addView(mainCell)

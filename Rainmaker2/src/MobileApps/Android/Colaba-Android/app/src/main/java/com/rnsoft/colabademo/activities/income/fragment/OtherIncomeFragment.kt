@@ -20,6 +20,8 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
+import java.util.ArrayList
 import javax.inject.Inject
 
 /**
@@ -38,6 +40,13 @@ class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
         "Trust", "Housing Or Parsonage", "Mortgage Credit Certificate", "Mortgage Differential Payments", "Public Assistance", "Unemployment Benefits", "VA Compensation", "Automobile" +
                 " Allowance", "Boarder Income", "Royalty Payments", "Disability", "Other Income Source")
 
+    private var loanApplicationId:Int? = null
+    private var borrowerId:Int? = null
+    private var incomeId:Int? = null
+    private var incomeCategoryId:Int? = null
+    private var incomeTypeID:Int? = null
+    private var incomeTypes: ArrayList<DropDownResponse> = arrayListOf()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,16 +63,45 @@ class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
             // set Header title
             toolbarBinding.toolbarTitle.setText(getString(R.string.income_other))
 
+            arguments?.let { arguments ->
+                loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+                borrowerId = arguments.getInt(AppConstant.borrowerId)
+                incomeId = arguments.getInt(AppConstant.incomeId)
+                incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
+                incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
+            }
+
             initViews()
-            getData()
+            observeOtherIncomeTypes()
             savedViewInstance
 
         }
     }
-    private fun getData(){
-        incomeInfoId = 1112
 
+    private fun observeOtherIncomeTypes(){
         lifecycleScope.launchWhenStarted {
+            viewModel.otherIncomeTypes.observe(viewLifecycleOwner, { types ->
+                if(types.size>0) {
+                    val itemList: ArrayList<String> = arrayListOf()
+                    incomeTypes = arrayListOf()
+                    for (item in types) {
+                        itemList.add(item.name)
+                        incomeTypes.add(item)
+                    }
+                    Timber.e("itemList- $itemList")
+                    Timber.e("RetirementTypes- $incomeTypes")
+                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
+                    binding.tvRetirementType.setAdapter(adapter)
+                }
+                else
+                    findNavController().popBackStack()
+            })
+        }
+
+        getOtherIncomeDetails()
+    }
+    private fun getOtherIncomeDetails(){
+        /*lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 if(incomeInfoId != null){
                     binding.loaderOtherIncome.visibility = View.VISIBLE
@@ -85,9 +123,76 @@ class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
                     })
                 }
             }
+        } */
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if(incomeId != null){
+                    binding.loaderOtherIncome.visibility = View.VISIBLE
+                    viewModel.getOtherIncome(authToken,incomeId!!)
+                }
+            }
         }
+
+        viewModel.otherIncomeData.observe(viewLifecycleOwner, { data ->
+            binding.loaderOtherIncome.visibility = View.GONE
+            data?.otherIncomeData?.let { info ->
+                info.incomeTypeId?.let { incomeTypeId->
+                    for(item in incomeTypes)
+                        if(incomeTypeId == item.id){
+                            binding.tvRetirementType.setText(item.name, false)
+                            toggleOtherFields()
+                            break
+                        }
+                }
+                //info.employerName?.let { binding.edEmpName.setText(it)}
+                //info.description?.let { binding.edDesc.setText(it) }
+                //info.monthlyBaseIncome?.let {  binding.edMonthlyIncome.setText(it.toString()) }
+            }
+        })
+
+
+
+
+
+
+
+
+
+
+
     }
 
+    private fun toggleOtherFields(){
+        binding.layoutRetirement.defaultHintTextColor = ColorStateList.valueOf(
+            ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+
+        var item = binding.tvRetirementType.text.toString()
+        if (item == "Capital Gains" || item == "Interest / Dividends" || item == "Other Income Source") {
+            binding.layoutAnnualIncome.visibility = View.VISIBLE
+            binding.layoutMonthlyIncome.visibility = View.GONE
+            binding.layoutDesc.visibility = View.GONE
+        }
+        else if (item == "Annuity") {
+            binding.layoutAnnualIncome.visibility = View.GONE
+            binding.layoutMonthlyIncome.visibility = View.VISIBLE
+            binding.layoutDesc.visibility = View.VISIBLE
+        }
+        else {
+            binding.layoutAnnualIncome.visibility = View.GONE
+            binding.layoutDesc.visibility = View.GONE
+            binding.layoutMonthlyIncome.visibility = View.VISIBLE
+        }
+
+        if (binding.tvRetirementType.text.isNotEmpty() && binding.tvRetirementType.text.isNotBlank()) {
+            CustomMaterialFields.clearError(binding.layoutRetirement,requireActivity())
+        }
+
+
+
+        if (binding.tvRetirementType.text.isNotEmpty() && binding.tvRetirementType.text.isNotBlank()) {
+            CustomMaterialFields.clearError(binding.layoutRetirement,requireActivity())
+        }
+    }
 
     private fun initViews() {
         toolbarBinding.btnClose.setOnClickListener(this)
@@ -161,9 +266,8 @@ class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun setRetirementType(){
-        val adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, retirementArray)
-        binding.tvRetirementType.setAdapter(adapter)
+        //val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, retirementArray)
+        //binding.tvRetirementType.setAdapter(adapter)
         binding.tvRetirementType.setOnFocusChangeListener { _, _ ->
             binding.tvRetirementType.showDropDown()
         }
@@ -177,7 +281,7 @@ class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
                     ContextCompat.getColor(
                         requireContext(), R.color.grey_color_two))
 
-                var item = binding.tvRetirementType.text.toString()
+                /*var item = binding.tvRetirementType.text.toString()
                 if (item == "Capital Gains" || item == "Interest / Dividends" || item == "Other Income Source") {
                     binding.layoutAnnualIncome.visibility = View.VISIBLE
                     binding.layoutMonthlyIncome.visibility = View.GONE
@@ -196,7 +300,7 @@ class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
 
                 if (binding.tvRetirementType.text.isNotEmpty() && binding.tvRetirementType.text.isNotBlank()) {
                     CustomMaterialFields.clearError(binding.layoutRetirement,requireActivity())
-                }
+                } */
 
             }
         }

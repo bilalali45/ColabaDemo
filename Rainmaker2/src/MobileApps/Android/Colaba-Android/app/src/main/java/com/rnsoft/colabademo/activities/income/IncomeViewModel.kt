@@ -42,6 +42,9 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
     private val _retirementIncomeTypes: MutableLiveData<ArrayList<DropDownResponse>> = MutableLiveData()
     val retirementIncomeTypes: LiveData<ArrayList<DropDownResponse>> get() = _retirementIncomeTypes
 
+    private val _otherIncomeTypes: MutableLiveData<ArrayList<DropDownResponse>> = MutableLiveData()
+    val otherIncomeTypes: LiveData<ArrayList<DropDownResponse>> get() = _otherIncomeTypes
+
     private val _otherIncomeData: MutableLiveData<OtherIncomeResponse> = MutableLiveData()
     val otherIncomeData: LiveData<OtherIncomeResponse> get() = _otherIncomeData
 
@@ -160,21 +163,35 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
             withContext(Dispatchers.Main){
                 if (responseResult is Result.Success)
                     _retirementIncomeTypes.value = (responseResult.data)
-                /*else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)
-                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult)) */
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
             }
         }
     }
 
     suspend fun getOtherIncome(token: String,incomeInfoId:Int){
-        delay(1000)
+        //delay(1000)
         viewModelScope.launch(Dispatchers.IO){
             val responseResult = repo.getOtherIncome(token = token,incomeInfoId)
             withContext(Dispatchers.Main){
                 if (responseResult is Result.Success)
                     _otherIncomeData.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun getOtherIncomeTypes(token: String){
+        viewModelScope.launch(Dispatchers.IO){
+            val responseResult = repo.getOtherIncomeIncomeTypes(token = token)
+            withContext(Dispatchers.Main){
+                if (responseResult is Result.Success)
+                    _retirementIncomeTypes.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)

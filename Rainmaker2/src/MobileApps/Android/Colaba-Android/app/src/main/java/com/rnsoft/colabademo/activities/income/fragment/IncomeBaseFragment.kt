@@ -36,11 +36,11 @@ open class IncomeBaseFragment : BaseFragment() {
         return modelArrayList
     }
 
-    private val navigateToPreviousEmployment = View.OnClickListener { findNavController().navigate(R.id.action_prev_employment) }
-    private val navigateToSelfEmployment = View.OnClickListener { findNavController().navigate(R.id.action_self_employment) }
-    private val navigateToBusinessIncome = View.OnClickListener { findNavController().navigate(R.id.action_income_business) }
-    private val navigateToMilitaryPay = View.OnClickListener { findNavController().navigate(R.id.action_income_military_pay) }
-    private val navigateToRetirementIncome = View.OnClickListener { findNavController().navigate(R.id.action_income_retirement) }
-    private val navigateToOtherIncome = View.OnClickListener { findNavController().navigate(R.id.action_income_other) }
+    private val navigateToPreviousEmployment = R.id.action_prev_employment
+    private val navigateToSelfEmployment = R.id.action_self_employment
+    private val navigateToBusinessIncome = R.id.action_income_business
+    private val navigateToMilitaryPay = R.id.action_income_military_pay
+    private val navigateToRetirementIncome = R.id.action_income_retirement
+    private val navigateToOtherIncome = R.id.action_income_other
 
 }
