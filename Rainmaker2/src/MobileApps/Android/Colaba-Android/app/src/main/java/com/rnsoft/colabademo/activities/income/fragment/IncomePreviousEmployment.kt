@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.app.DatePickerDialog
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.format.DateFormat
@@ -8,31 +9,62 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.IncomePreviousEmploymentBinding
+import com.rnsoft.colabademo.databinding.StockBondsLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 /**
  * Created by Anita Kiran on 9/13/2021.
  */
+@AndroidEntryPoint
 class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
 
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: IncomePreviousEmploymentBinding
     private lateinit var toolbar: AppHeaderWithCrossDeleteBinding
-    private var savedViewInstance: View? = null
+    //private var savedViewInstance: View? = null
+    private val viewModel : IncomeViewModel by activityViewModels()
+    private var loanApplicationId: Int? = null
+    private var incomeInfoId :Int? = null
+    private var borrowerId :Int? = null
+    var addressList :  ArrayList<EmployerAddress> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return if (savedViewInstance != null) {
+        binding = IncomePreviousEmploymentBinding.inflate(inflater, container, false)
+        super.addListeners(binding.root)
+        // set Header title
+        toolbar =  binding.headerIncome
+        toolbar.toolbarTitle.setText(getString(R.string.previous_employment))
+
+        arguments?.let { arguments ->
+            loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+            borrowerId = arguments.getInt(AppConstant.borrowerId)
+            incomeInfoId = arguments.getInt(AppConstant.incomeId)
+        }
+
+        initViews()
+        getEmploymentData()
+        return binding.root
+
+
+        /*return if (savedViewInstance != null) {
             savedViewInstance
         } else {
             binding = IncomePreviousEmploymentBinding.inflate(inflater, container, false)
@@ -42,10 +74,94 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
             // set Header title
             toolbar.toolbarTitle.setText(getString(R.string.previous_employment))
 
-            initViews()
-            savedViewInstance
+            arguments?.let { arguments ->
+                loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+                borrowerId = arguments.getInt(AppConstant.borrowerId)
+                incomeInfoId = arguments.getInt(AppConstant.incomeId)
+            }
 
+            initViews()
+            getEmploymentData()
+            savedViewInstance
+        } */
+    }
+
+    private fun getEmploymentData(){
+
+        Timber.e("loanApplicationId " + loanApplicationId + "borrowerId:  " + borrowerId + "incomeInfoId: " + incomeInfoId )
+
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if (loanApplicationId != null && incomeInfoId != null) {
+                    binding.loaderEmployment.visibility = View.VISIBLE
+                    viewModel.getEmploymentDetail(authToken, loanApplicationId!!, borrowerId!!, incomeInfoId!!)
+                }
+            }
         }
+
+        viewModel.employmentDetail.observe(viewLifecycleOwner, { data ->
+
+            data?.employmentData?.employmentInfo.let { info ->
+                info?.employerName?.let {
+                    binding.editTextEmpName.setText(it)
+                    CustomMaterialFields.setColor(binding.layoutEmpName, R.color.grey_color_two, requireContext())
+                }
+                info?.employerPhoneNumber?.let {
+                    binding.editTextEmpPhnum.setText(it)
+                    CustomMaterialFields.setColor(binding.layoutEmpPhnum, R.color.grey_color_two, requireContext())
+                }
+                info?.jobTitle?.let {
+                    binding.editTextJobTitle.setText(it)
+                    CustomMaterialFields.setColor(binding.layoutJobTitle, R.color.grey_color_two, requireContext())
+                }
+                info?.startDate?.let {
+                    binding.editTextStartDate.setText(AppSetting.getFullDate1(it))
+                }
+                info?.endDate?.let {
+                    binding.editTextEndDate.setText(AppSetting.getFullDate1(it))
+                }
+                info?.yearsInProfession?.let {
+                    binding.editTextProfYears.setText(it.toString())
+                    CustomMaterialFields.setColor(binding.layoutYearsProfession, R.color.grey_color_two, requireContext())
+                }
+                info?.hasOwnershipInterest?.let {
+                    if(it == true)
+                        binding.rbOwnershipYes.isChecked = true
+                    else {
+                        binding.rbOwnershipNo.isChecked = true
+                    }
+                }
+            }
+
+            data.employmentData?.employerAddress?.let {
+                addressList.add(EmployerAddress(
+                    streetAddress = it.streetAddress,
+                    unitNo = it.unitNo,
+                    cityName = it.cityName,
+                    cityId = it.cityId,
+                    stateName = it.stateName,
+                    countryName = it.countryName,
+                    //countyName = it.,
+                    //countyId = it.countyId,
+                    stateId = it.stateId,
+                    countryId = it.countryId,
+                    zipCode = it.zipCode,
+                    borrowerId = it.borrowerId,
+                    loanApplicationId = it.loanApplicationId,
+                    incomeInfoId = it.incomeInfoId
+                ))
+
+                val builder = StringBuilder()
+                it.streetAddress?.let { builder.append(it).append(" ") }
+                it.unitNo?.let { builder.append(it).append("\n") }
+                it.cityName?.let { builder.append(it).append(" ") }
+                it.stateName?.let{ builder.append(it).append(" ")}
+                it.zipCode?.let { builder.append(it) }
+                binding.tvPrevEmploymentAddress.text = builder
+            }
+
+            binding.loaderEmployment.visibility = View.GONE
+        })
     }
 
     private fun initViews() {
@@ -58,7 +174,6 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
 
         setInputFields()
     }
-
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
@@ -74,13 +189,12 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         }
     }
 
-
     private fun checkValidations(){
-        val empName: String = binding.edEmpName.text.toString()
-        val jobTitle: String = binding.edJobTitle.text.toString()
-        val startDate: String = binding.edStartDate.text.toString()
-        val endDate: String = binding.edEndDate.text.toString()
-        val profYears: String = binding.edProfYears.text.toString()
+        val empName: String = binding.editTextEmpName.text.toString()
+        val jobTitle: String = binding.editTextJobTitle.text.toString()
+        val startDate: String = binding.editTextStartDate.text.toString()
+        val endDate: String = binding.editTextEndDate.text.toString()
+        val profYears: String = binding.editTextProfYears.text.toString()
         val netIncome: String = binding.edNetIncome.text.toString()
 
         if (empName.isEmpty() || empName.length == 0) {
@@ -127,16 +241,16 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
     private fun setInputFields() {
 
         // set lable focus
-        binding.edEmpName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edEmpName, binding.layoutEmpName, requireContext()))
-        binding.edEmpPhnum.setOnFocusChangeListener(FocusListenerForPhoneNumber(binding.edEmpPhnum, binding.layoutEmpPhnum,requireContext()))
-        binding.edJobTitle.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edJobTitle, binding.layoutJobTitle, requireContext()))
-        binding.edProfYears.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edProfYears, binding.layoutYearsProfession, requireContext()))
+        binding.editTextEmpName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextEmpName, binding.layoutEmpName, requireContext()))
+        binding.editTextEmpPhnum.setOnFocusChangeListener(FocusListenerForPhoneNumber(binding.editTextEmpPhnum, binding.layoutEmpPhnum,requireContext()))
+        binding.editTextJobTitle.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextJobTitle, binding.layoutJobTitle, requireContext()))
+        binding.editTextProfYears.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextProfYears, binding.layoutYearsProfession, requireContext()))
         binding.edOwnershipPercent.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edOwnershipPercent, binding.layoutOwnershipPercentage, requireContext()))
         binding.edNetIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edNetIncome, binding.layoutNetIncome, requireContext()))
 
         // set input format
         binding.edNetIncome.addTextChangedListener(NumberTextFormat(binding.edNetIncome))
-        binding.edEmpPhnum.addTextChangedListener(PhoneTextFormatter(binding.edEmpPhnum, "(###) ###-####"))
+        binding.editTextEmpPhnum.addTextChangedListener(PhoneTextFormatter(binding.editTextEmpPhnum, "(###) ###-####"))
 
 
         // set Dollar prifix
@@ -145,10 +259,10 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         CustomMaterialFields.setPercentagePrefix(binding.layoutOwnershipPercentage, requireContext())
 
         // start date
-        binding.edStartDate.showSoftInputOnFocus = false
-        binding.edStartDate.setOnClickListener { openCalendar() }
-        binding.edStartDate.doAfterTextChanged {
-            if (binding.edStartDate.text?.length == 0) {
+        binding.editTextStartDate.showSoftInputOnFocus = false
+        binding.editTextStartDate.setOnClickListener { openCalendar() }
+        binding.editTextStartDate.doAfterTextChanged {
+            if (binding.editTextStartDate.text?.length == 0) {
                 CustomMaterialFields.setColor(binding.layoutStartDate,R.color.grey_color_three,requireActivity())
             } else {
                 CustomMaterialFields.setColor(binding.layoutStartDate,R.color.grey_color_two,requireActivity())
@@ -157,10 +271,10 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         }
 
         // end date
-        binding.edEndDate.showSoftInputOnFocus = false
-        binding.edEndDate.setOnClickListener { endDateCalendar() }
-        binding.edEndDate.doAfterTextChanged {
-            if (binding.edEndDate.text?.length == 0) {
+        binding.editTextEndDate.showSoftInputOnFocus = false
+        binding.editTextEndDate.setOnClickListener { endDateCalendar() }
+        binding.editTextEndDate.doAfterTextChanged {
+            if (binding.editTextEndDate.text?.length == 0) {
                 CustomMaterialFields.setColor(binding.layoutEndDate,R.color.grey_color_three,requireActivity())
             } else {
                 CustomMaterialFields.setColor(binding.layoutEndDate,R.color.grey_color_two,requireActivity())
@@ -188,6 +302,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         val addressFragment = AddressPrevEmployment()
         val bundle = Bundle()
         bundle.putString(AppConstant.address, getString(R.string.previous_employer_address))
+        bundle.putParcelableArrayList(AppConstant.address,addressList)
         addressFragment.arguments = bundle
         findNavController().navigate(R.id.action_prev_employment_address, addressFragment.arguments)
     }
@@ -218,7 +333,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
             requireActivity(), R.style.MySpinnerDatePickerStyle,
             {
                 view, selectedYear, monthOfYear, dayOfMonth ->
-                binding.edStartDate.setText("" + (monthOfYear+1) + "/" + dayOfMonth + "/" + selectedYear)
+                binding.editTextStartDate.setText("" + (monthOfYear+1) + "/" + dayOfMonth + "/" + selectedYear)
                 val cal = Calendar.getInstance()
                 cal.set(selectedYear, (monthOfYear), dayOfMonth)
                 val date = DateFormat.format("dd-MM-yyyy", cal).toString()
@@ -261,7 +376,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
             requireActivity(), R.style.MySpinnerDatePickerStyle,
             {
                     view, selectedYear, monthOfYear, dayOfMonth ->
-                binding.edEndDate.setText("" + (monthOfYear+1) + "/" + dayOfMonth + "/" + selectedYear)
+                binding.editTextEndDate.setText("" + (monthOfYear+1) + "/" + dayOfMonth + "/" + selectedYear)
                 val cal = Calendar.getInstance()
                 cal.set(selectedYear, monthOfYear, dayOfMonth)
                 val date = DateFormat.format("dd-MM-yyyy", cal).toString()

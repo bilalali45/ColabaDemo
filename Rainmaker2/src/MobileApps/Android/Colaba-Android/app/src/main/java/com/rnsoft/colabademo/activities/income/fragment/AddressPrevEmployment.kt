@@ -13,6 +13,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.maps.model.LatLng
@@ -28,6 +29,8 @@ import com.rnsoft.colabademo.databinding.AddressCurrentEmploymentBinding
 import com.rnsoft.colabademo.databinding.AddressPrevEmploymentBinding
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 
 import java.io.IOException
 import java.util.*
@@ -60,6 +63,7 @@ class AddressPrevEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceClic
         setStateAndCountyDropDown()
         setUpCompleteViewForPlaces()
         initializeUSAstates()
+
 
         val params: ViewGroup.LayoutParams = binding.searchSeparator.getLayoutParams()
         params.height = 1

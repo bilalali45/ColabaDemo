@@ -115,8 +115,8 @@ class RetirementIncomeFragment : BaseFragment(), View.OnClickListener {
                         itemList.add(item.name)
                         retirementTypes.add(item)
                     }
-                    Timber.e("itemList- $itemList")
-                    Timber.e("RetirementTypes- $retirementTypes")
+                    //Timber.e("itemList- $itemList")
+                    //Timber.e("RetirementTypes- $retirementTypes")
                     val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
                     binding.tvRetirementType.setAdapter(adapter)
                 }

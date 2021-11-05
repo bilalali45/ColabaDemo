@@ -39,4 +39,8 @@ class IncomeRepo @Inject constructor(private val dataSource: IncomeDataSource) {
     suspend fun getOtherIncomeIncomeTypes(token: String): Result<ArrayList<DropDownResponse>> {
         return dataSource.getOtherIncomeTypes(token = token)
     }
+
+    suspend fun getBusinessTypes(token: String): Result<ArrayList<DropDownResponse>> {
+        return dataSource.getBusinessTypes(token = token)
+    }
 }

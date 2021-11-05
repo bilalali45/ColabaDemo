@@ -45,10 +45,11 @@ class IncomeActivity : BaseActivity() {
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     if (loanApplicationId != null && borrowerTabList != null && loanApplicationId != null)
-                        viewModel.getBorrowerWithIncome(authToken, loanApplicationId!!, borrowerTabList!!)
-
+                        viewModel.getBorrowerWithIncome(authToken,  loanApplicationId!!, borrowerTabList!!)
+                    //incomeViewModel.getCurrentEmploymentDetail(authToken, loanApplicationId!!,borrowerId!!,incomeInfoId!!)
                     incomeViewModel.getRetirementIncomeTypes(authToken)
                     incomeViewModel.getOtherIncomeTypes(authToken)
+                    incomeViewModel.getBusinessTypes(authToken)
                 }
             }
         }

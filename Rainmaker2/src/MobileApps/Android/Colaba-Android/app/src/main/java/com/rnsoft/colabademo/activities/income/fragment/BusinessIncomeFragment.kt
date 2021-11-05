@@ -22,6 +22,7 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -36,10 +37,12 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
     private lateinit var binding: IncomeBusinessLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
     private var savedViewInstance: View? = null
-    private val businessTypeArray = listOf("Partnership (e.g. LLC, LP, or GP","Corporation (e.g. C-Corp, S-Corp, or LLC")
+    //private val businessTypeArray = listOf("Partnership (e.g. LLC, LP, or GP","Corporation (e.g. C-Corp, S-Corp, or LLC")
     private val viewModel : IncomeViewModel by activityViewModels()
     var incomeInfoId :Int? = null
     var borrowerId :Int? = null
+    private var businessTypes: ArrayList<DropDownResponse> = arrayListOf()
+    var addressList :  ArrayList<BusinessIncomeAddress> = ArrayList()
 
 
     override fun onCreateView(
@@ -57,8 +60,13 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
             // set Header title
             toolbarBinding.toolbarTitle.setText(getString(R.string.business))
 
+            arguments?.let { arguments ->
+                borrowerId = arguments.getInt(AppConstant.borrowerId)
+                incomeInfoId = arguments.getInt(AppConstant.incomeId)
+            }
+
             initViews()
-            getData()
+            observeBusinesstIncomeTypes()
             super.addListeners(binding.root)
             savedViewInstance
 
@@ -75,50 +83,107 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
 
         setInputFields()
         setBusinessType()
+        observeBusinesstIncomeTypes()
 
     }
 
-    private fun getData(){
-        incomeInfoId = 1086
-        borrowerId = 5
-
+    private fun observeBusinesstIncomeTypes(){
         lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(borrowerId != null && incomeInfoId != null){
-                    binding.loaderIncomeBusiness.visibility = View.VISIBLE
-                    viewModel.getIncomeBusiness(authToken,borrowerId!!,incomeInfoId!!)
+            viewModel.businessTypes.observe(viewLifecycleOwner, { types ->
+                if(types.size > 0) {
+                    val itemList:ArrayList<String> = arrayListOf()
+                    businessTypes = arrayListOf()
+                    for (item in types) {
+                        itemList.add(item.name)
+                        businessTypes.add(item)
+                    }
+                    //Timber.e("itemList- $itemList")
+                    //Timber.e("BusinessTypes- $businessTypes")
+                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
+                    binding.tvBusinessType.setAdapter(adapter)
+                }
+                else
+                    findNavController().popBackStack()
+            })
+        }
 
-                    viewModel.businessIncome.observe(viewLifecycleOwner, { data ->
-                        data?.businessData?.let { info ->
-                            info.businessName?.let {
-                                binding.edBusinessName.setText(it)
-                                CustomMaterialFields.setColor(binding.layoutBusinessName, R.color.grey_color_two, requireContext())
-                            }
-                            info.businessPhone?.let {
-                                binding.edBusPhnum.setText(it)
-                                CustomMaterialFields.setColor(binding.layoutBusPhnum, R.color.grey_color_two, requireContext())
-                            }
-                            info.startDate?.let {
-                                binding.edBstartDate.setText(AppSetting.getFullDate1(it))
-                            }
-                            info.jobTitle?.let {
-                                binding.edJobTitle.setText(it)
-                                CustomMaterialFields.setColor(binding.layoutJobTitle, R.color.grey_color_two, requireContext())
-                            }
-                            info.ownershipPercentage?.let {
-                                binding.edOwnershipPercent.setText(Math.round(it).toString())
-                                CustomMaterialFields.setColor(binding.layoutOwnershipPercentage, R.color.grey_color_two, requireContext())
-                            }
-                            info.annualIncome?.let {
-                                binding.edNetIncome.setText(Math.round(it).toString())
-                                CustomMaterialFields.setColor(binding.layoutNetIncome, R.color.grey_color_two, requireContext())
-                            }
-                        }
-                        binding.loaderIncomeBusiness.visibility = View.GONE
-                    })
+        getBusinessDetails()
+    }
+
+    private fun getBusinessDetails(){
+
+        //Timber.e( "borrowerId:  " + borrowerId + "incomeInfoId: " + incomeInfoId )
+
+        lifecycleScope.launchWhenStarted{
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if (borrowerId != null && incomeInfoId != null) {
+                    binding.loaderIncomeBusiness.visibility = View.VISIBLE
+                    viewModel.getIncomeBusiness(authToken, borrowerId!!, incomeInfoId!!)
                 }
             }
         }
+
+        viewModel.businessIncome.observe(viewLifecycleOwner, { data ->
+            data?.businessData?.let { info ->
+                info.businessName?.let {
+                    binding.edBusinessName.setText(it)
+                    CustomMaterialFields.setColor(binding.layoutBusinessName, R.color.grey_color_two, requireContext())
+                }
+                info.businessPhone?.let {
+                    binding.edBusPhnum.setText(it)
+                    CustomMaterialFields.setColor(binding.layoutBusPhnum, R.color.grey_color_two, requireContext())
+                }
+                info.startDate?.let {
+                    binding.edBstartDate.setText(AppSetting.getFullDate1(it))
+                }
+                info.jobTitle?.let {
+                    binding.edJobTitle.setText(it)
+                    CustomMaterialFields.setColor(binding.layoutJobTitle, R.color.grey_color_two, requireContext())
+                }
+                info.ownershipPercentage?.let {
+                    binding.edOwnershipPercent.setText(Math.round(it).toString())
+                    CustomMaterialFields.setColor(binding.layoutOwnershipPercentage, R.color.grey_color_two, requireContext())
+                }
+                info.annualIncome?.let {
+                    binding.edNetIncome.setText(Math.round(it).toString())
+                    CustomMaterialFields.setColor(binding.layoutNetIncome, R.color.grey_color_two, requireContext())
+                }
+
+                info.address?.let {
+                    addressList.add(BusinessIncomeAddress(
+                        street = it.street,
+                        unit = it.unit,
+                        city = it.city,
+                        stateName = it.stateName,
+                        countryName = it.countryName,
+                        countyName = it.countyName,
+                        countyId = it.countyId,
+                        stateId = it.stateId,
+                        countryId = it.countryId,
+                        zipCode = it.zipCode
+                    ))
+
+                    val builder = StringBuilder()
+                    it.street?.let { builder.append(it).append(" ") }
+                    it.unit?.let { builder.append(it).append("\n") }
+                    it.city?.let { builder.append(it).append(" ") }
+                    it.stateName?.let{ builder.append(it).append(" ")}
+                    it.zipCode?.let { builder.append(it) }
+                    binding.textviewBusinessAddress.text = builder
+                }
+
+                info.incomeTypeId?.let { id ->
+                    for(item in businessTypes)
+                        if(id == item.id){
+                            binding.tvBusinessType.setText(item.name, false)
+                            break
+                        }
+
+                }
+            }
+            binding.loaderIncomeBusiness.visibility = View.GONE
+        })
+
     }
 
     override fun onClick(view: View?){
@@ -185,6 +250,7 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
         val addressFragment = AddressBusiness()
         val bundle = Bundle()
         bundle.putString(AppConstant.address, getString(R.string.business_main_address))
+        bundle.putParcelableArrayList(AppConstant.address,addressList)
         addressFragment.arguments = bundle
         findNavController().navigate(R.id.action_address, addressFragment.arguments)
     }
@@ -224,9 +290,8 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun setBusinessType(){
-        val adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, businessTypeArray)
-        binding.tvBusinessType.setAdapter(adapter)
+        //val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, businessTypeArray)
+        //binding.tvBusinessType.setAdapter(adapter)
         binding.tvBusinessType.setOnFocusChangeListener { _, _ ->
             binding.tvBusinessType.showDropDown()
         }

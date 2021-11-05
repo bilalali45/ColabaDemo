@@ -87,7 +87,7 @@
             <!-- employer name -->
 
             <com.google.android.material.textfield.TextInputLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/layout_emp_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/layout_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -155,7 +155,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/layout_monthly_income"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -191,7 +191,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/layout_monthly_withdrawal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

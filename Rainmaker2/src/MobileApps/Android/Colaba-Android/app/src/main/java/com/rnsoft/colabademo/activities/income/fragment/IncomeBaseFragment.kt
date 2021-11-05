@@ -1,8 +1,5 @@
 package com.rnsoft.colabademo
 
-import android.view.View
-import androidx.navigation.fragment.findNavController
-
 open class IncomeBaseFragment : BaseFragment() {
 
     protected fun getSampleIncome():ArrayList<IncomeModelClass>{
@@ -35,6 +32,7 @@ open class IncomeBaseFragment : BaseFragment() {
 
         return modelArrayList
     }
+
 
     private val navigateToPreviousEmployment = R.id.action_prev_employment
     private val navigateToSelfEmployment = R.id.action_self_employment

@@ -11,15 +11,18 @@
         android:label="@string/income"
         tools:layout="@layout/income_fragment_layout">
 
-        <action
-            android:id="@+id/action_current_employement"
-            app:destination="@id/navigation_income_current_employment"
-            app:enterAnim="@anim/slide_up" />
 
         <action
             android:id="@+id/action_prev_employment"
             app:destination="@id/navigation_income_prev_employment"
             app:enterAnim="@anim/slide_up" />
+
+
+        <action
+            android:id="@+id/action_current_employement"
+            app:destination="@id/navigation_income_current_employment"
+            app:enterAnim="@anim/slide_up" />
+
 
         <action
             android:id="@+id/action_self_employment"
@@ -52,14 +55,20 @@
         android:name="com.rnsoft.colabademo.BorrowerOneIncome"
         android:label="@string/income"
         tools:layout="@layout/income_fragment_layout">
+
+        <action
+            android:id="@+id/action_add_prev_employment"
+            app:destination="@id/navigation_income_prev_employment"
+            app:enterAnim="@anim/slide_up" />
+
+
+        <action
+            android:id="@+id/action_add_current_employement"
+            app:destination="@id/navigation_income_current_employment"
+            app:enterAnim="@anim/slide_up" />
+
     </fragment>
 
-    <fragment
-        android:id="@+id/navigation_b_income_two"
-        android:name="com.rnsoft.colabademo.BorrowerTwoIncome"
-        android:label="@string/income"
-        tools:layout="@layout/income_fragment_layout">
-    </fragment>
 
     <!-- current employment frag-->
     <fragment

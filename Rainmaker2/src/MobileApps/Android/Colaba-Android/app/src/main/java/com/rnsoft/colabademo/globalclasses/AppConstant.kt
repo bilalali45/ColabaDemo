@@ -154,6 +154,10 @@ object AppConstant {
         const val  Bankruptcy = "Bankruptcy"
         const val demographicInformation = "Demographic Information"
 
+        const val INCOME_BONUS = "Bonus"
+        const val INCOME_OVERTIME ="Overtime"
+        const val INCOME_COMMISSION = "Commission"
+
 
         const val asianChildList = "AsianChildList"
         const val nativeHawaianChildList = "NativeHawaianChildList"

@@ -19,9 +19,10 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewModel(){
+class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewModel() {
 
-    private val _assetByCategory: MutableLiveData<ArrayList<AssetTypesByCategory>> = MutableLiveData()
+    private val _assetByCategory: MutableLiveData<ArrayList<AssetTypesByCategory>> =
+        MutableLiveData()
     val assetByCategory: LiveData<ArrayList<AssetTypesByCategory>> get() = _assetByCategory
 
     private val _employmentDetail: MutableLiveData<EmploymentDetailResponse> = MutableLiveData()
@@ -39,15 +40,18 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
     private val _retirementIncomeData: MutableLiveData<RetirementIncomeResponse> = MutableLiveData()
     val retirementIncomeData: LiveData<RetirementIncomeResponse> get() = _retirementIncomeData
 
-    private val _retirementIncomeTypes: MutableLiveData<ArrayList<DropDownResponse>> = MutableLiveData()
+    private val _retirementIncomeTypes: MutableLiveData<ArrayList<DropDownResponse>> =
+        MutableLiveData()
     val retirementIncomeTypes: LiveData<ArrayList<DropDownResponse>> get() = _retirementIncomeTypes
 
     private val _otherIncomeTypes: MutableLiveData<ArrayList<DropDownResponse>> = MutableLiveData()
     val otherIncomeTypes: LiveData<ArrayList<DropDownResponse>> get() = _otherIncomeTypes
 
+    private val _businessTypes: MutableLiveData<ArrayList<DropDownResponse>> = MutableLiveData()
+    val businessTypes: LiveData<ArrayList<DropDownResponse>> get() = _businessTypes
+
     private val _otherIncomeData: MutableLiveData<OtherIncomeResponse> = MutableLiveData()
     val otherIncomeData: LiveData<OtherIncomeResponse> get() = _otherIncomeData
-
 
 
     /*suspend fun getBankAccountType(token: String) {
@@ -66,13 +70,19 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
         }
     } */
 
-    suspend fun getCurrentEmploymentDetail(token: String, loanApplicationId: Int, borrowerId: Int, incomeInfoId:Int) {
-        delay(1000)
+    suspend fun getEmploymentDetail(
+        token: String,
+        loanApplicationId: Int,
+        borrowerId: Int,
+        incomeInfoId: Int
+    ) {
+        //delay(1000)
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.getEmploymentDetails(
                 token = token,
                 loanApplicationId = loanApplicationId,
-                borrowerId, incomeInfoId)
+                borrowerId, incomeInfoId
+            )
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _employmentDetail.value = (responseResult.data)
@@ -84,13 +94,14 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
         }
     }
 
-    suspend fun getSelfEmploymentDetail(token: String, borrowerId: Int, incomeInfoId:Int){
-        delay(1000)
-        viewModelScope.launch(Dispatchers.IO){
+    suspend fun getSelfEmploymentDetail(token: String, borrowerId: Int, incomeInfoId: Int) {
+        //delay(1000)
+        viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.getSelfEmploymentData(
                 token = token,
                 borrowerId,
-                incomeInfoId)
+                incomeInfoId
+            )
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _selfEmploymentDetail.value = (responseResult.data)
@@ -102,14 +113,15 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
         }
     }
 
-    suspend fun getIncomeBusiness(token: String, borrowerId: Int, incomeInfoId:Int){
-        delay(1000)
-        viewModelScope.launch(Dispatchers.IO){
+    suspend fun getIncomeBusiness(token: String, borrowerId: Int, incomeInfoId: Int) {
+        //delay(1000)
+        viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.getBusinessIncome(
                 token = token,
                 borrowerId,
-                incomeInfoId)
-            withContext(Dispatchers.Main){
+                incomeInfoId
+            )
+            withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _businessIncomeData.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
@@ -121,14 +133,15 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
         }
     }
 
-    suspend fun getMilitaryIncome(token: String, borrowerId: Int, incomeInfoId:Int){
-        delay(1000)
-        viewModelScope.launch(Dispatchers.IO){
+    suspend fun getMilitaryIncome(token: String, borrowerId: Int, incomeInfoId: Int) {
+        //delay(1000)
+        viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.getMilitaryIncome(
                 token = token,
                 borrowerId,
-                incomeInfoId)
-            withContext(Dispatchers.Main){
+                incomeInfoId
+            )
+            withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _militaryIncomeData.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
@@ -139,14 +152,15 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
         }
     }
 
-    suspend fun getRetirementIncome(token: String, borrowerId: Int, incomeInfoId:Int){
+    suspend fun getRetirementIncome(token: String, borrowerId: Int, incomeInfoId: Int) {
         //delay(1000)
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.getRetirementIncome(
                 token = token,
                 borrowerId,
-                incomeInfoId)
-            withContext(Dispatchers.Main){
+                incomeInfoId
+            )
+            withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _retirementIncomeData.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
@@ -157,10 +171,10 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
         }
     }
 
-    suspend fun getRetirementIncomeTypes(token: String){
-        viewModelScope.launch(Dispatchers.IO){
+    suspend fun getRetirementIncomeTypes(token: String) {
+        viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.getRetirementIncomeTypes(token = token)
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _retirementIncomeTypes.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
@@ -171,11 +185,11 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
         }
     }
 
-    suspend fun getOtherIncome(token: String,incomeInfoId:Int){
+    suspend fun getOtherIncome(token: String, incomeInfoId: Int) {
         //delay(1000)
-        viewModelScope.launch(Dispatchers.IO){
-            val responseResult = repo.getOtherIncome(token = token,incomeInfoId)
-            withContext(Dispatchers.Main){
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.getOtherIncome(token = token, incomeInfoId)
+            withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _otherIncomeData.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
@@ -186,10 +200,10 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
         }
     }
 
-    suspend fun getOtherIncomeTypes(token: String){
-        viewModelScope.launch(Dispatchers.IO){
+    suspend fun getOtherIncomeTypes(token: String) {
+        viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.getOtherIncomeIncomeTypes(token = token)
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _otherIncomeTypes.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
@@ -200,5 +214,17 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
         }
     }
 
-
+    suspend fun getBusinessTypes(token: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.getBusinessTypes(token = token)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _businessTypes.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
 }

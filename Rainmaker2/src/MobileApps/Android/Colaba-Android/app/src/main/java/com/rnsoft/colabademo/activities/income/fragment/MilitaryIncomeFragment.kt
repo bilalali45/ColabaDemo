@@ -32,8 +32,9 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
     private var savedViewInstance: View? = null
     private val viewModel : IncomeViewModel by activityViewModels()
-    var incomeInfoId :Int? = null
-    var borrowerId :Int? = null
+    private var incomeInfoId :Int? = null
+    private var borrowerId :Int? = null
+    private var loanApplicationId: Int? = null
 
 
     override fun onCreateView(
@@ -51,6 +52,14 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
             // set Header title
             toolbarBinding.toolbarTitle.setText(getString(R.string.military_pay))
 
+            arguments?.let { arguments ->
+                loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+                borrowerId = arguments.getInt(AppConstant.borrowerId)
+                incomeInfoId = arguments.getInt(AppConstant.incomeId)
+                //incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
+                //incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
+            }
+
             initViews()
             getData()
             savedViewInstance
@@ -59,8 +68,6 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun getData(){
-        incomeInfoId = 1112
-        borrowerId = 5
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -96,6 +103,15 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
                             info.militaryEntitlements?.let {
                                 binding.editTextEntitlement.setText(Math.round(it).toString())
                                 CustomMaterialFields.setColor(binding.layoutEntitlement, R.color.grey_color_two, requireContext())
+                            }
+                            info.address?.let {
+                                val builder = StringBuilder()
+                                it.street?.let { builder.append(it).append(" ") }
+                                it.unit?.let { builder.append(it).append("\n") }
+                                it.city?.let { builder.append(it).append(" ") }
+                                it.stateName?.let{ builder.append(it).append(" ")}
+                                it.zipCode?.let { builder.append(it) }
+                                binding.textviewMilitaryAddress.text = builder
                             }
                         }
                         binding.loaderMilitary.visibility = View.GONE
