@@ -43,7 +43,6 @@ class AddRetirementIncomeViewController: BaseViewController {
         
         txtfieldRetirementIncomeType.setTextField(placeholder: "Retirement Income Type", controller: self, validationType: .required)
         txtfieldRetirementIncomeType.type = .dropdown
-        txtfieldRetirementIncomeType.setDropDownDataSource(kRetirementIncomeTypeArray)
         
         txtfieldEmployerName.setTextField(placeholder: "Employer Name", controller: self, validationType: .required)
         

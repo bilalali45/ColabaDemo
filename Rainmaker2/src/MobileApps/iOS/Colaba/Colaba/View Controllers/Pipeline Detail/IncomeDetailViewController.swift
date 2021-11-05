@@ -602,6 +602,16 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
                 let navVC = UINavigationController(rootViewController: vc)
                 navVC.navigationBar.isHidden = true
                 navVC.modalPresentationStyle = .fullScreen
+                vc.borrowerName = self.borrowerName
+                vc.loanApplicationId = self.loanApplicationId
+                vc.borrowerId = self.borrowerId
+                if (indexPath.row == otherIncome.incomes.count + 1){
+                    vc.isForAdd = true
+                }
+                else{
+                    vc.isForAdd = false
+                    vc.incomeInfoId = otherIncome.incomes[indexPath.row - 1].incomeId
+                }
                 self.presentVC(vc: navVC)
             }
         }

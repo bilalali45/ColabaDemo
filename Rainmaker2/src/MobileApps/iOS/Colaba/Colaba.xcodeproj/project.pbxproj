@@ -95,6 +95,7 @@
 		2393361F273510D8003D71F8 /* BusinessDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393361E273510D8003D71F8 /* BusinessDetailModel.swift */; };
 		2393362127351590003D71F8 /* MilitaryPayDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393362027351590003D71F8 /* MilitaryPayDetailModel.swift */; };
 		2393362327353952003D71F8 /* RetirementDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393362227353952003D71F8 /* RetirementDetailModel.swift */; };
+		2393362527354A48003D71F8 /* OtherIncomeDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393362427354A48003D71F8 /* OtherIncomeDetailModel.swift */; };
 		239570E426E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239570E326E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift */; };
 		239570E626E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239570E526E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift */; };
 		239570E826E8E78700B2B0A7 /* Test.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 239570E726E8E78700B2B0A7 /* Test.storyboard */; };
@@ -369,6 +370,7 @@
 		2393361E273510D8003D71F8 /* BusinessDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessDetailModel.swift; sourceTree = "<group>"; };
 		2393362027351590003D71F8 /* MilitaryPayDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilitaryPayDetailModel.swift; sourceTree = "<group>"; };
 		2393362227353952003D71F8 /* RetirementDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetirementDetailModel.swift; sourceTree = "<group>"; };
+		2393362427354A48003D71F8 /* OtherIncomeDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherIncomeDetailModel.swift; sourceTree = "<group>"; };
 		239570E326E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGiftFundsViewController.swift; sourceTree = "<group>"; };
 		239570E526E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOtherAssetsViewController.swift; sourceTree = "<group>"; };
 		239570E726E8E78700B2B0A7 /* Test.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Test.storyboard; sourceTree = "<group>"; };
@@ -642,6 +644,7 @@
 				2393361E273510D8003D71F8 /* BusinessDetailModel.swift */,
 				2393362027351590003D71F8 /* MilitaryPayDetailModel.swift */,
 				2393362227353952003D71F8 /* RetirementDetailModel.swift */,
+				2393362427354A48003D71F8 /* OtherIncomeDetailModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1569,6 +1572,7 @@
 				7186ACF42653C66100E740D3 /* FaceRecognitionViewController.swift in Sources */,
 				7148C6B126554ADE00E1C216 /* Validation.swift in Sources */,
 				71B1944F265CF9780017955B /* OTPTimerManager.swift in Sources */,
+				2393362527354A48003D71F8 /* OtherIncomeDetailModel.swift in Sources */,
 				23A56C5B2685B017005CE6F4 /* Animator.swift in Sources */,
 				230B94D726E7A060004CBC83 /* AddRetirementAccountViewController.swift in Sources */,
 				23E28BDF27184816004FCAA5 /* BorrowerIncomeModel.swift in Sources */,
