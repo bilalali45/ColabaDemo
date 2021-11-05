@@ -93,6 +93,7 @@
 		23932C3626E64A7500D02FEA /* AssetsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23932C3526E64A7500D02FEA /* AssetsDetailViewController.swift */; };
 		2393361D273506C0003D71F8 /* SelfIndependenDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393361C273506C0003D71F8 /* SelfIndependenDetailModel.swift */; };
 		2393361F273510D8003D71F8 /* BusinessDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393361E273510D8003D71F8 /* BusinessDetailModel.swift */; };
+		2393362127351590003D71F8 /* MilitaryPayDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393362027351590003D71F8 /* MilitaryPayDetailModel.swift */; };
 		239570E426E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239570E326E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift */; };
 		239570E626E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239570E526E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift */; };
 		239570E826E8E78700B2B0A7 /* Test.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 239570E726E8E78700B2B0A7 /* Test.storyboard */; };
@@ -365,6 +366,7 @@
 		23932C3526E64A7500D02FEA /* AssetsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsDetailViewController.swift; sourceTree = "<group>"; };
 		2393361C273506C0003D71F8 /* SelfIndependenDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIndependenDetailModel.swift; sourceTree = "<group>"; };
 		2393361E273510D8003D71F8 /* BusinessDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessDetailModel.swift; sourceTree = "<group>"; };
+		2393362027351590003D71F8 /* MilitaryPayDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilitaryPayDetailModel.swift; sourceTree = "<group>"; };
 		239570E326E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGiftFundsViewController.swift; sourceTree = "<group>"; };
 		239570E526E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOtherAssetsViewController.swift; sourceTree = "<group>"; };
 		239570E726E8E78700B2B0A7 /* Test.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Test.storyboard; sourceTree = "<group>"; };
@@ -636,6 +638,7 @@
 				23A70A9C2733F807002C5656 /* EmployementDetailModel.swift */,
 				2393361C273506C0003D71F8 /* SelfIndependenDetailModel.swift */,
 				2393361E273510D8003D71F8 /* BusinessDetailModel.swift */,
+				2393362027351590003D71F8 /* MilitaryPayDetailModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1405,6 +1408,7 @@
 			files = (
 				7186ACB02653B25A00E740D3 /* AppDelegate.swift in Sources */,
 				7186ACFC2653C68200E740D3 /* FingerPrintViewController.swift in Sources */,
+				2393362127351590003D71F8 /* MilitaryPayDetailModel.swift in Sources */,
 				23932C3426E64A5D00D02FEA /* AssetsViewController.swift in Sources */,
 				7160CA83267338F90061ACD5 /* NotificationViewController.swift in Sources */,
 				23C244902689E89300EED1D0 /* SearchModel.swift in Sources */,
