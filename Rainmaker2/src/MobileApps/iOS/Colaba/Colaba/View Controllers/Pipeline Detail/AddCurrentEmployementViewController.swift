@@ -226,7 +226,9 @@ class AddCurrentEmployementViewController: BaseViewController {
         let vc = Utility.getCurrentEmployerAddressVC()
         vc.topTitle = "Current Employer Address"
         vc.borrowerFullName = self.borrowerName
-        vc.selectedAddress = employmentDetail.employerAddress
+        if (!isForAdd){
+            vc.selectedAddress = employmentDetail.employerAddress
+        }
         vc.searchTextFieldPlaceholder = "Search Main Address"
         self.pushToVC(vc: vc)
     }

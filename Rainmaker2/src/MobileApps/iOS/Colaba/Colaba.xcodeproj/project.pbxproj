@@ -91,6 +91,8 @@
 		2392A4CE26C55FEE0083EFE4 /* AddMailingAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392A4CD26C55FEE0083EFE4 /* AddMailingAddressViewController.swift */; };
 		23932C3426E64A5D00D02FEA /* AssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23932C3326E64A5D00D02FEA /* AssetsViewController.swift */; };
 		23932C3626E64A7500D02FEA /* AssetsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23932C3526E64A7500D02FEA /* AssetsDetailViewController.swift */; };
+		2393361D273506C0003D71F8 /* SelfIndependenDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393361C273506C0003D71F8 /* SelfIndependenDetailModel.swift */; };
+		2393361F273510D8003D71F8 /* BusinessDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393361E273510D8003D71F8 /* BusinessDetailModel.swift */; };
 		239570E426E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239570E326E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift */; };
 		239570E626E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239570E526E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift */; };
 		239570E826E8E78700B2B0A7 /* Test.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 239570E726E8E78700B2B0A7 /* Test.storyboard */; };
@@ -361,6 +363,8 @@
 		2392A4CD26C55FEE0083EFE4 /* AddMailingAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMailingAddressViewController.swift; sourceTree = "<group>"; };
 		23932C3326E64A5D00D02FEA /* AssetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsViewController.swift; sourceTree = "<group>"; };
 		23932C3526E64A7500D02FEA /* AssetsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsDetailViewController.swift; sourceTree = "<group>"; };
+		2393361C273506C0003D71F8 /* SelfIndependenDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIndependenDetailModel.swift; sourceTree = "<group>"; };
+		2393361E273510D8003D71F8 /* BusinessDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessDetailModel.swift; sourceTree = "<group>"; };
 		239570E326E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGiftFundsViewController.swift; sourceTree = "<group>"; };
 		239570E526E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOtherAssetsViewController.swift; sourceTree = "<group>"; };
 		239570E726E8E78700B2B0A7 /* Test.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Test.storyboard; sourceTree = "<group>"; };
@@ -630,6 +634,8 @@
 				23EBC7912732D9C60063922C /* GiftDetailModel.swift */,
 				23A70A9A2733C407002C5656 /* ProceedsFromTransactionDetailModel.swift */,
 				23A70A9C2733F807002C5656 /* EmployementDetailModel.swift */,
+				2393361C273506C0003D71F8 /* SelfIndependenDetailModel.swift */,
+				2393361E273510D8003D71F8 /* BusinessDetailModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1426,6 +1432,7 @@
 				23BDB1D326F8706900C73E33 /* DemographicQuestionsModel.swift in Sources */,
 				239983F426F9BA9200C0AFA7 /* StartNewApplicationViewController.swift in Sources */,
 				238A076B26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift in Sources */,
+				2393361F273510D8003D71F8 /* BusinessDetailModel.swift in Sources */,
 				2380E25A26DF71EA00B66C61 /* PurchaseSubjectPropertyViewController.swift in Sources */,
 				238E0F8D26F3631E0025FF06 /* UndisclosedBorrowerFundsViewController.swift in Sources */,
 				23B238BF2679F44000508449 /* NotificationsTableViewCell.swift in Sources */,
@@ -1591,6 +1598,7 @@
 				23C244862689B6A500EED1D0 /* AllLoanModel.swift in Sources */,
 				238E0F9926F38AFC0025FF06 /* UndisclosedMortgageApplicationViewController.swift in Sources */,
 				23AFA3712707187700388905 /* DocumentsListViewController.swift in Sources */,
+				2393361D273506C0003D71F8 /* SelfIndependenDetailModel.swift in Sources */,
 				23A1CA6C268C4B8400D93DC4 /* UILoadControl.swift in Sources */,
 				7186AD562653CD5C00E740D3 /* Theme.swift in Sources */,
 				239DB53C270C67A900977E20 /* DocumentRequestSentViewController.swift in Sources */,

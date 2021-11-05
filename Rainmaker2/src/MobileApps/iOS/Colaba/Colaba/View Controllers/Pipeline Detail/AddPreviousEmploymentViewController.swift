@@ -139,7 +139,9 @@ class AddPreviousEmploymentViewController: BaseViewController {
         vc.topTitle = "Previous Employer Address"
         vc.searchTextFieldPlaceholder = "Search Main Address"
         vc.borrowerFullName = self.borrowerName
-        vc.selectedAddress = employmentDetail.employerAddress
+        if (!isForAdd){
+            vc.selectedAddress = employmentDetail.employerAddress
+        }
         self.pushToVC(vc: vc)
     }
     

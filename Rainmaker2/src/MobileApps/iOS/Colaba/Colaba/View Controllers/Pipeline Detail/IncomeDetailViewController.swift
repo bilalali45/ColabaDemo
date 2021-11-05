@@ -534,6 +534,16 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
                 let navVC = UINavigationController(rootViewController: vc)
                 navVC.navigationBar.isHidden = true
                 navVC.modalPresentationStyle = .fullScreen
+                vc.borrowerName = self.borrowerName
+                vc.loanApplicationId = self.loanApplicationId
+                vc.borrowerId = self.borrowerId
+                if (indexPath.row == selfEmployementIncome.incomes.count + 1){
+                    vc.isForAdd = true
+                }
+                else{
+                    vc.isForAdd = false
+                    vc.incomeInfoId = selfEmployementIncome.incomes[indexPath.row - 1].incomeId
+                }
                 self.presentVC(vc: navVC)
             }
             else if (tableView == tableViewBusiness && (indexPath.row != 0))/*(indexPath.row == 1 || indexPath.row == 2))*/{
@@ -541,6 +551,16 @@ extension IncomeDetailViewController: UITableViewDataSource, UITableViewDelegate
                 let navVC = UINavigationController(rootViewController: vc)
                 navVC.navigationBar.isHidden = true
                 navVC.modalPresentationStyle = .fullScreen
+                vc.borrowerName = self.borrowerName
+                vc.loanApplicationId = self.loanApplicationId
+                vc.borrowerId = self.borrowerId
+                if (indexPath.row == businessIncome.incomes.count + 1){
+                    vc.isForAdd = true
+                }
+                else{
+                    vc.isForAdd = false
+                    vc.incomeInfoId = businessIncome.incomes[indexPath.row - 1].incomeId
+                }
                 self.presentVC(vc: navVC)
             }
             else if (tableView == tableViewMilitaryPay && (indexPath.row != 0))/*(indexPath.row == 1 || indexPath.row == 2))*/{
