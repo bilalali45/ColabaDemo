@@ -75,6 +75,7 @@ extension IncomeViewController: CarbonTabSwipeNavigationDelegate{
         let vc = Utility.getIncomeDetailVC()
         vc.loanApplicationId = self.loanApplicationId
         vc.borrowerId = borrowersArray[Int(index)].borrowerId
+        vc.borrowerName = borrowersArray[Int(index)].borrowerFullName
         vc.delegate = self
         return vc
     }

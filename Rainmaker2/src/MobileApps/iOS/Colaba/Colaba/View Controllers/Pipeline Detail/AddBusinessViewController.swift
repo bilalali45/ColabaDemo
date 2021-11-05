@@ -28,9 +28,19 @@ class AddBusinessViewController: BaseViewController {
     @IBOutlet weak var txtfieldNetAnnualIncome: ColabaTextField!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
+    var borrowerName = ""
+    var isForAdd = false
+    var loanApplicationId = 0
+    var borrowerId = 0
+    var incomeInfoId = 0
+    var businessTypeArray = [DropDownModel]()
+    var businessDetail = BusinessDetailModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextFields()
+        lblUsername.text = borrowerName.uppercased()
+        getBusinessType()
     }
         
     //MARK:- Methods and Actions
@@ -38,7 +48,6 @@ class AddBusinessViewController: BaseViewController {
         
         txtfieldBusinessType.setTextField(placeholder: "Select Your Business Type", controller: self, validationType: .required)
         txtfieldBusinessType.type = .dropdown
-        txtfieldBusinessType.setDropDownDataSource(kBusinessTypeArray)
         
         txtfieldBusinessName.setTextField(placeholder: "Business Name", controller: self, validationType: .required)
         
@@ -68,10 +77,29 @@ class AddBusinessViewController: BaseViewController {
         addAddressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
     }
     
+    func setBusinessDetail(){
+        if let businessType = businessTypeArray.filter({$0.optionId == businessDetail.incomeTypeId}).first{
+            txtfieldBusinessType.setTextField(text: businessType.optionName)
+        }
+        txtfieldBusinessName.setTextField(text: businessDetail.businessName)
+        let businessPhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: businessDetail.businessPhone)
+        txtfieldBusinessPhoneNumber.setTextField(text: businessPhoneNumber)
+        txtfieldBusinessStartDate.setTextField(text: Utility.getDayMonthYear(businessDetail.startDate))
+        let address = businessDetail.address
+        lblAddress.text = "\(address.street) \(address.unit),\n\(address.city), \(address.stateName) \(address.zipCode)"
+        txtfieldJobTitle.setTextField(text: businessDetail.jobTitle)
+        txtfieldOwnershipPercentage.setTextField(text: "\(businessDetail.ownershipPercentage)")
+        txtfieldNetAnnualIncome.setTextField(text: String(format: "%.0f", businessDetail.annualIncome))
+    }
+    
     @objc func addressViewTapped(){
         let vc = Utility.getCurrentEmployerAddressVC()
         vc.topTitle = "Business Main Address"
         vc.searchTextFieldPlaceholder = "Search Business Address"
+        vc.borrowerFullName = self.borrowerName
+        if (!isForAdd){
+            vc.selectedAddress = businessDetail.address
+        }
         self.pushToVC(vc: vc)
     }
     
@@ -94,6 +122,63 @@ class AddBusinessViewController: BaseViewController {
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         if validate(){
             self.dismissVC()
+        }
+    }
+    
+    //MARK:- API's
+    
+    func getBusinessType(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllBusinessType, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let optionsArray = result.arrayValue
+                    for option in optionsArray{
+                        let model = DropDownModel()
+                        model.updateModelWithJSON(json: option)
+                        self.businessTypeArray.append(model)
+                    }
+                    self.txtfieldBusinessType.setDropDownDataSource(self.businessTypeArray.map({$0.optionName}))
+                    if (self.isForAdd){
+                        Utility.showOrHideLoader(shouldShow: false)
+                    }
+                    else{
+                        self.getBusinessDetail()
+                    }
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
+    
+    func getBusinessDetail(){
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)&borrowerid=\(borrowerId)&incomeInfoId=\(incomeInfoId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getBusinessIncomeDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    let model = BusinessDetailModel()
+                    model.updateModelWithJSON(json: result["data"])
+                    self.businessDetail = model
+                    self.setBusinessDetail()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
         }
     }
 }
