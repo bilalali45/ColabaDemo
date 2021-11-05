@@ -11,8 +11,6 @@ import androidx.core.view.get
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.activities.income.fragment.BottomDialogSelectEmployment
-import com.rnsoft.colabademo.activities.income.fragment.EventAddEmployment
 import com.rnsoft.colabademo.databinding.*
 import com.rnsoft.colabademo.utils.Common
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
@@ -34,7 +32,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
     private val viewModel: BorrowerApplicationViewModel by activityViewModels()
     private  var tabBorrowerId:Int? = null
     private var grandTotalAmount:Double = 0.0
-    val Employment = "Employment"
+    val Employment = "EmploymentInfo"
 
 
     override fun onCreateView(
@@ -109,11 +107,27 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                                                 contentCell.content_amount.text = "$".plus(Common.addNumberFormat(incomeValue))
                                             }
                                             contentCell.visibility = View.GONE
-                                            if(contentData.endDate == null && contentData.incomeTypeDisplayName == Employment)
-                                                contentCell.setOnClickListener(currentEmploymentListener)
-
+                                            val parentActivity = activity as? IncomeActivity
+                                            val bundle = Bundle()
+                                            parentActivity?.let {
+                                                parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1) }
+                                                tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
+                                                contentData.incomeId?.let { it1 -> bundle.putInt(AppConstant.incomeId, it1) }
+                                                contentData.employmentCategory?.categoryId?.let { it1 -> bundle.putInt(AppConstant.incomeCategoryId, it1) }
+                                                contentData.incomeTypeId?.let { it1 -> bundle.putInt(AppConstant.incomeTypeID, it1) }
+                                                Timber.e(" content data - " + contentData)
+                                            }
+                                            if(contentData.endDate == null && contentData.incomeTypeDisplayName == Employment) {
+                                                contentCell.setOnClickListener {
+                                                    findNavController().navigate(R.id.action_current_employement, bundle)
+                                                }
+                                            }
                                             else
-                                                contentCell.setOnClickListener(modelData.listenerAttached)
+                                            contentCell.setOnClickListener {
+
+                                                findNavController().navigate(modelData.listenerAttached , bundle)
+
+                                            }
                                             mainCell.addView(contentCell)
                                         }
                                     }
@@ -129,10 +143,12 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                         bottomCell.footer_title.text = modelData.footerTitle
                         bottomCell.visibility = View.GONE
                         if(modelData.footerTitle == AppConstant.footerAddEmployment) {
-                            bottomCell.setOnClickListener (bottomEmploymentListener)
+                            bottomCell.setOnClickListener(bottomEmploymentListener)
                         }
                         else
-                            bottomCell.setOnClickListener(modelData.listenerAttached)
+                            bottomCell.setOnClickListener{
+                                    findNavController().navigate(modelData.listenerAttached)
+                            }
 
                         mainCell.addView(bottomCell)
                         binding.assetParentContainer.addView(mainCell)
@@ -159,7 +175,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
     }
 
     val currentEmploymentListener:View.OnClickListener= View.OnClickListener {
-        findNavController().navigate(R.id.action_current_employement)
+
     }
 
     val bottomEmploymentListener:View.OnClickListener= View.OnClickListener {
@@ -200,7 +216,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
         }
     }
 
-    override fun onStart() {
+   override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
     }
@@ -211,12 +227,12 @@ class BorrowerOneIncome : IncomeBaseFragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onAddEmploymentEvent(event: EventAddEmployment) {
-        if(event.boolean) {
-            findNavController().navigate(R.id.action_current_employement)
+    fun onAddEmploymentEvent(eventAddEmployment: EventAddEmployment) {
+        if(eventAddEmployment.boolean) {
+            findNavController().navigate(R.id.action_add_current_employement, null)
         }
         else {
-            findNavController().navigate(R.id.action_prev_employment)
+            findNavController().navigate(R.id.action_add_prev_employment , null)
         }
     }
 }

@@ -228,7 +228,7 @@ class BorrowerOneAssets : AssetBaseFragment() {
         }
     }
 
-    private fun toggleContentCells(mainCell: LinearLayoutCompat , display:Int){
+    private fun toggleContentCells(mainCell: LinearLayoutCompat, display:Int){
         for (j in 0 until mainCell.childCount){
             if(mainCell[j].tag != R.string.asset_top_cell)
                 mainCell[j].visibility = display

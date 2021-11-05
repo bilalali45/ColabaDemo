@@ -17,6 +17,7 @@ import com.rnsoft.colabademo.databinding.ProceedFromTransLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
 

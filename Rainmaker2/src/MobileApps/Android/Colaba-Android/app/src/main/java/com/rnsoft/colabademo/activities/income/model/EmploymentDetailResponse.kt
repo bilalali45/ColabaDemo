@@ -1,6 +1,8 @@
 package com.rnsoft.colabademo
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class EmploymentDetailResponse(
     val code: String?,
@@ -21,6 +23,7 @@ data class EmploymentData(
     val wayOfIncome: WayOfIncome?
 )
 
+@Parcelize
 data class EmployerAddress(
     val borrowerId: Int?,
     val cityId: Int?,
@@ -34,7 +37,7 @@ data class EmployerAddress(
     val streetAddress: String?,
     val unitNo: String?,
     val zipCode: String?
-)
+) : Parcelable
 
 data class EmploymentInfo(
     val borrowerId: Int?,
