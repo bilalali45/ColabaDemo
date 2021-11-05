@@ -94,6 +94,7 @@
 		2393361D273506C0003D71F8 /* SelfIndependenDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393361C273506C0003D71F8 /* SelfIndependenDetailModel.swift */; };
 		2393361F273510D8003D71F8 /* BusinessDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393361E273510D8003D71F8 /* BusinessDetailModel.swift */; };
 		2393362127351590003D71F8 /* MilitaryPayDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393362027351590003D71F8 /* MilitaryPayDetailModel.swift */; };
+		2393362327353952003D71F8 /* RetirementDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393362227353952003D71F8 /* RetirementDetailModel.swift */; };
 		239570E426E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239570E326E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift */; };
 		239570E626E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239570E526E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift */; };
 		239570E826E8E78700B2B0A7 /* Test.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 239570E726E8E78700B2B0A7 /* Test.storyboard */; };
@@ -367,6 +368,7 @@
 		2393361C273506C0003D71F8 /* SelfIndependenDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIndependenDetailModel.swift; sourceTree = "<group>"; };
 		2393361E273510D8003D71F8 /* BusinessDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessDetailModel.swift; sourceTree = "<group>"; };
 		2393362027351590003D71F8 /* MilitaryPayDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilitaryPayDetailModel.swift; sourceTree = "<group>"; };
+		2393362227353952003D71F8 /* RetirementDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetirementDetailModel.swift; sourceTree = "<group>"; };
 		239570E326E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGiftFundsViewController.swift; sourceTree = "<group>"; };
 		239570E526E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOtherAssetsViewController.swift; sourceTree = "<group>"; };
 		239570E726E8E78700B2B0A7 /* Test.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Test.storyboard; sourceTree = "<group>"; };
@@ -639,6 +641,7 @@
 				2393361C273506C0003D71F8 /* SelfIndependenDetailModel.swift */,
 				2393361E273510D8003D71F8 /* BusinessDetailModel.swift */,
 				2393362027351590003D71F8 /* MilitaryPayDetailModel.swift */,
+				2393362227353952003D71F8 /* RetirementDetailModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1476,6 +1479,7 @@
 				23B5E98326F46F4C00686B8E /* ForceClosedPropertyViewController.swift in Sources */,
 				23CD143426E25B4400627127 /* SecondMortgageFollowupQuestionsViewController.swift in Sources */,
 				2313E7C42715626D00222A6E /* SubjectPropertyModel.swift in Sources */,
+				2393362327353952003D71F8 /* RetirementDetailModel.swift in Sources */,
 				2338DB73270DA26E00658C2A /* EmailTemplateTableViewCell.swift in Sources */,
 				2330CD2526B000ED00FF3C43 /* DocumentMessageTableViewCell.swift in Sources */,
 				23A56C5D2685B017005CE6F4 /* Icons.swift in Sources */,
