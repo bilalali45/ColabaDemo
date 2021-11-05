@@ -2,8 +2,7 @@ package com.rnsoft.colabademo
 
 import android.view.View
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.activities.income.fragment.BottomDialogSelectEmployment
+
 
 open class DocsTypesBaseFragment:BaseFragment() {
 

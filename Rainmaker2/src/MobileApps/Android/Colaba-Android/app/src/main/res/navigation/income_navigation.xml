@@ -11,6 +11,17 @@
         android:label="@string/income"
         tools:layout="@layout/income_fragment_layout">
 
+        <action
+            android:id="@+id/action_add_prev_employment"
+            app:destination="@id/navigation_income_prev_employment"
+            app:enterAnim="@anim/slide_up" />
+
+
+        <action
+            android:id="@+id/action_add_current_employement"
+            app:destination="@id/navigation_income_current_employment"
+            app:enterAnim="@anim/slide_up" />
+
 
         <action
             android:id="@+id/action_prev_employment"
@@ -56,16 +67,7 @@
         android:label="@string/income"
         tools:layout="@layout/income_fragment_layout">
 
-        <action
-            android:id="@+id/action_add_prev_employment"
-            app:destination="@id/navigation_income_prev_employment"
-            app:enterAnim="@anim/slide_up" />
 
-
-        <action
-            android:id="@+id/action_add_current_employement"
-            app:destination="@id/navigation_income_current_employment"
-            app:enterAnim="@anim/slide_up" />
 
     </fragment>
 

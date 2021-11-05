@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.income.fragment
+package com.rnsoft.colabademo
 
 /**
  * Created by Anita Kiran on 9/13/2021.

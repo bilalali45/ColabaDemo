@@ -46,16 +46,14 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return if (savedViewInstance != null) {
-            savedViewInstance
-        } else {
+    ): View {
+
             binding = IncomeCurrentEmploymentBinding.inflate(inflater, container, false)
             toolbar = binding.headerIncome
-            savedViewInstance = binding.root
+
             super.addListeners(binding.root)
             // set Header title
-            toolbar.toolbarTitle.setText(getString(R.string.current_employment))
+            toolbar.toolbarTitle.text = getString(R.string.current_employment)
 
 
             arguments?.let { arguments ->
@@ -70,13 +68,13 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
             setInputFields()
             getEmploymentData()
 
-            savedViewInstance
-        }
+
+            return binding.root
     }
 
     private fun getEmploymentData(){
 
-        Timber.e("loanApplicationId " + loanApplicationId + "borrowerId:  " + borrowerId + "incomeInfoId: " + incomeInfoId )
+
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 if (loanApplicationId != null && incomeInfoId != null) {

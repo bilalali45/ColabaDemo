@@ -11,8 +11,6 @@ import androidx.core.view.get
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.activities.income.fragment.BottomDialogSelectEmployment
-import com.rnsoft.colabademo.activities.income.fragment.EventAddEmployment
 import com.rnsoft.colabademo.databinding.*
 import com.rnsoft.colabademo.utils.Common
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
@@ -34,7 +32,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
     private val viewModel: BorrowerApplicationViewModel by activityViewModels()
     private  var tabBorrowerId:Int? = null
     private var grandTotalAmount:Double = 0.0
-    val Employment = "Employment"
+    val Employment = "EmploymentInfo"
 
 
     override fun onCreateView(
@@ -218,7 +216,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
         }
     }
 
- /*   override fun onStart() {
+   override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
     }
@@ -229,12 +227,12 @@ class BorrowerOneIncome : IncomeBaseFragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onAddEmploymentEvent(event: EventAddEmployment) {
-        if(event.boolean) {
+    fun onAddEmploymentEvent(eventAddEmployment: EventAddEmployment) {
+        if(eventAddEmployment.boolean) {
             findNavController().navigate(R.id.action_add_current_employement, null)
         }
         else {
             findNavController().navigate(R.id.action_add_prev_employment , null)
         }
-    } */
+    }
 }
