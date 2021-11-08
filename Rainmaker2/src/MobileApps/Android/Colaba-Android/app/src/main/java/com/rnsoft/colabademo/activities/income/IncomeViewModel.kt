@@ -28,6 +28,9 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
     private val _employmentDetail: MutableLiveData<EmploymentDetailResponse> = MutableLiveData()
     val employmentDetail: LiveData<EmploymentDetailResponse> get() = _employmentDetail
 
+    private val _prevEmploymentDetail: MutableLiveData<EmploymentDetailResponse> = MutableLiveData()
+    val prevEmploymentDetail: LiveData<EmploymentDetailResponse> get() = _prevEmploymentDetail
+
     private val _selfEmploymentDetail: MutableLiveData<SelfEmploymentResponse> = MutableLiveData()
     val selfEmploymentDetail: LiveData<SelfEmploymentResponse> get() = _selfEmploymentDetail
 
@@ -86,6 +89,30 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _employmentDetail.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun getPrevEmploymentDetail(
+        token: String,
+        loanApplicationId: Int,
+        borrowerId: Int,
+        incomeInfoId: Int
+    ) {
+        //delay(1000)
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.getEmploymentDetails(
+                token = token,
+                loanApplicationId = loanApplicationId,
+                borrowerId, incomeInfoId
+            )
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _prevEmploymentDetail.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)

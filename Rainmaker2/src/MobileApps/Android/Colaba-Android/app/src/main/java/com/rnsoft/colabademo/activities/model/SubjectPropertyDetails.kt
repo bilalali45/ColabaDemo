@@ -18,7 +18,7 @@ data class SubPropertyData(
     var loanApplicationId : Int,
     var propertyTypeId : Int,
     var occupancyTypeId : Int,
-    var appraisedPropertyValue : Float?,
+    var appraisedPropertyValue : Double?,
     var propertyTax : Double?,
     var homeOwnerInsurance : Double?,
     var floodInsurance : Double?,

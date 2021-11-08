@@ -144,7 +144,6 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 binding.loaderInfoAddress.visibility = View.VISIBLE
-                delay(2000)
                 coroutineScope {
                     setData()
 

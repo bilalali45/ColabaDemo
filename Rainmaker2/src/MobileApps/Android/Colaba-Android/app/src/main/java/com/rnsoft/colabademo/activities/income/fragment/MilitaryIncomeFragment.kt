@@ -35,6 +35,7 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
     private var incomeInfoId :Int? = null
     private var borrowerId :Int? = null
     private var loanApplicationId: Int? = null
+    var addressList :  ArrayList<CommonAddressModel> = ArrayList()
 
 
     override fun onCreateView(
@@ -105,6 +106,20 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
                                 CustomMaterialFields.setColor(binding.layoutEntitlement, R.color.grey_color_two, requireContext())
                             }
                             info.address?.let {
+
+                                addressList.add(CommonAddressModel(
+                                    street = it.street,
+                                    unit = it.unit,
+                                    city = it.city,
+                                    stateName = it.stateName,
+                                    countryName = it.countryName,
+                                    countyName = it.countyName,
+                                    countyId = it.countyId,
+                                    stateId = it.stateId,
+                                    countryId = it.countryId,
+                                    zipCode = it.zipCode
+                                ))
+
                                 val builder = StringBuilder()
                                 it.street?.let { builder.append(it).append(" ") }
                                 it.unit?.let { builder.append(it).append("\n") }
@@ -146,7 +161,8 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
     private fun openAddressFragment(){
         val addressFragment = AddressMilitaryService()
         val bundle = Bundle()
-        bundle.putString(AppConstant.address, getString(R.string.service_location_add))
+        bundle.putString(AppConstant.TOOLBAR_TITLE, getString(R.string.service_location_add))
+        bundle.putParcelableArrayList(AppConstant.address,addressList)
         addressFragment.arguments = bundle
         findNavController().navigate(R.id.action_military_address, addressFragment.arguments)
     }

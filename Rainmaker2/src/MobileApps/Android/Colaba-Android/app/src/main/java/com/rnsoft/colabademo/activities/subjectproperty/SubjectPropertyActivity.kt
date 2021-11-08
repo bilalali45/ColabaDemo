@@ -43,11 +43,10 @@ class SubjectPropertyActivity : BaseActivity() {
         val navController = findNavController(R.id.nav_host_borrower_subject_property)
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-
                 if (loanApplicationId != null) {
+                    //Log.e("loanApplicationId",""+loanApplicationId)
                     coroutineScope {
                         binding.loaderSubjectProperty.visibility = View.VISIBLE
-                        delay(2000)
                         val call1 = async { viewModel.getPropertyTypes(authToken) }
                         val call2 = async { viewModel.getOccupancyType(authToken) }
                         val call3 = async { viewModel.getCoBorrowerOccupancyStatus(authToken, loanApplicationId!!) }

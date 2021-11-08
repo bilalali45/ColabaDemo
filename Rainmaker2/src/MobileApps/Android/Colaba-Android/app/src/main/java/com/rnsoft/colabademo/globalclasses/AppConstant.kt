@@ -135,6 +135,7 @@ object AppConstant {
 
         const val  downloadedFileName:String = "pdfFileName"
         const val address: String = "address"
+        const val TOOLBAR_TITLE: String = "toolbar_title"
         const val RESERVE_ACTIVATED: String = "reserve_activated"
         const val secMortgage : String = "sec_mortgage"
         const val firstMortgage : String = "first_mortgage"

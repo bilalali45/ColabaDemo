@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -180,5 +181,41 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
                 }
             }
         }
+
+    suspend fun sendSubjectPropertyDetail(token: String,data: SubPropertyData) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repository.sendSubPropertyDetail(token = token,data)
+            withContext(Dispatchers.Main) {
+                if(responseResult is Result.Success) {
+                    //_businessTypes.value = (responseResult.data)
+                    Log.e("Viewmodel", "${responseResult.data}")
+                    Log.e("Viewmodel", "$responseResult")
+                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                }
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun sendRefinanceDetail(token: String,data: SubPropertyRefinanceData) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repository.sendRefinanceDetail(token = token,data)
+            withContext(Dispatchers.Main) {
+                if(responseResult is Result.Success) {
+                    //_businessTypes.value = (responseResult.data)
+                    Log.e("Viewmodel", "${responseResult.data}")
+                    Log.e("Viewmodel", "$responseResult")
+                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                }
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
 
 }
