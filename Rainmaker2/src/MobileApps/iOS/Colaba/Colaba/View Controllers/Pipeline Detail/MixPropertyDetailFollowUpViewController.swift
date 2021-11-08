@@ -8,6 +8,10 @@
 import UIKit
 import MaterialComponents
 
+protocol MixPropertyDetailFollowUpViewControllerDelegate: AnyObject {
+    func updateDetails(detail: String)
+}
+
 class MixPropertyDetailFollowUpViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -19,8 +23,10 @@ class MixPropertyDetailFollowUpViewController: BaseViewController {
     @IBOutlet weak var detailTextViewContainer: UIView!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
+    var detail = ""
     var txtViewDetail = MDCFilledTextArea()
     private let validation: Validation
+    weak var delegate: MixPropertyDetailFollowUpViewControllerDelegate?
     
     init(validation: Validation) {
         self.validation = validation
@@ -43,7 +49,7 @@ class MixPropertyDetailFollowUpViewController: BaseViewController {
         let estimatedFrame = detailTextViewContainer.frame
         txtViewDetail = MDCFilledTextArea(frame: estimatedFrame)
         txtViewDetail.label.text = "Details"
-        txtViewDetail.textView.text = ""
+        txtViewDetail.textView.text = detail
         txtViewDetail.leadingAssistiveLabel.text = ""
         txtViewDetail.setFilledBackgroundColor(.clear, for: .normal)
         txtViewDetail.setFilledBackgroundColor(.clear, for: .disabled)
@@ -69,6 +75,7 @@ class MixPropertyDetailFollowUpViewController: BaseViewController {
         txtViewDetail.setLeadingAssistiveLabel(.red, for: .disabled)
         txtViewDetail.textView.textColor = .black
         txtViewDetail.textView.delegate = self
+        txtViewDetail.sizeToFit()
         mainView.addSubview(txtViewDetail)
         
 
@@ -94,6 +101,7 @@ class MixPropertyDetailFollowUpViewController: BaseViewController {
         }
         
         if (txtViewDetail.textView.text != ""){
+            self.delegate?.updateDetails(detail: txtViewDetail.textView.text)
             self.dismissVC()
         }
         
