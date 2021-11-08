@@ -1,11 +1,14 @@
 package com.rnsoft.colabademo
 
 import android.app.DatePickerDialog
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
@@ -13,16 +16,25 @@ import com.rnsoft.colabademo.databinding.IncomeMilitaryPayBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import javax.inject.Inject
 
 /**
  * Created by Anita Kiran on 9/15/2021.
  */
-class MilitaryServiceFragment : BaseFragment(), View.OnClickListener {
+@AndroidEntryPoint
+class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
 
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: IncomeMilitaryPayBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
     private var savedViewInstance: View? = null
+    private val viewModel : IncomeViewModel by activityViewModels()
+    private var incomeInfoId :Int? = null
+    private var borrowerId :Int? = null
+    private var loanApplicationId: Int? = null
 
 
     override fun onCreateView(
@@ -40,12 +52,74 @@ class MilitaryServiceFragment : BaseFragment(), View.OnClickListener {
             // set Header title
             toolbarBinding.toolbarTitle.setText(getString(R.string.military_pay))
 
+            arguments?.let { arguments ->
+                loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+                borrowerId = arguments.getInt(AppConstant.borrowerId)
+                incomeInfoId = arguments.getInt(AppConstant.incomeId)
+                //incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
+                //incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
+            }
+
             initViews()
+            getData()
             savedViewInstance
 
         }
     }
 
+    private fun getData(){
+
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                if(borrowerId != null && incomeInfoId != null){
+                    binding.loaderMilitary.visibility = View.VISIBLE
+                    viewModel.getMilitaryIncome(authToken,borrowerId!!,incomeInfoId!!)
+
+                    viewModel.militaryIncomeData.observe(viewLifecycleOwner, { data ->
+                        data?.militaryIncomeData?.let { info ->
+                            info.employerName?.let {
+                                binding.editTextEmpName.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutEmpName, R.color.grey_color_two, requireContext())
+                            }
+                            info.jobTitle?.let {
+                                binding.edJobTitle.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutJobTitle, R.color.grey_color_two, requireContext())
+                            }
+                            info.startDate?.let {
+                                binding.edStartDate.setText(AppSetting.getFullDate1(it))
+                            }
+                            info.jobTitle?.let {
+                                binding.edJobTitle.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutJobTitle, R.color.grey_color_two, requireContext())
+                            }
+                            info.yearsInProfession?.let {
+                                binding.edProfYears.setText(it.toString())
+                                CustomMaterialFields.setColor(binding.layoutYearsProfession, R.color.grey_color_two, requireContext())
+                            }
+                            info.monthlyBaseSalary?.let {
+                                binding.editTextBaseSalary.setText(Math.round(it).toString())
+                                CustomMaterialFields.setColor(binding.layoutBaseSalary, R.color.grey_color_two, requireContext())
+                            }
+                            info.militaryEntitlements?.let {
+                                binding.editTextEntitlement.setText(Math.round(it).toString())
+                                CustomMaterialFields.setColor(binding.layoutEntitlement, R.color.grey_color_two, requireContext())
+                            }
+                            info.address?.let {
+                                val builder = StringBuilder()
+                                it.street?.let { builder.append(it).append(" ") }
+                                it.unit?.let { builder.append(it).append("\n") }
+                                it.city?.let { builder.append(it).append(" ") }
+                                it.stateName?.let{ builder.append(it).append(" ")}
+                                it.zipCode?.let { builder.append(it) }
+                                binding.textviewMilitaryAddress.text = builder
+                            }
+                        }
+                        binding.loaderMilitary.visibility = View.GONE
+                    })
+                }
+            }
+        }
+    }
 
     private fun initViews() {
         binding.layoutAddress.setOnClickListener(this)
@@ -54,9 +128,7 @@ class MilitaryServiceFragment : BaseFragment(), View.OnClickListener {
         binding.btnSaveChange.setOnClickListener(this)
 
         setInputFields()
-
     }
-
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
@@ -79,20 +151,19 @@ class MilitaryServiceFragment : BaseFragment(), View.OnClickListener {
         findNavController().navigate(R.id.action_military_address, addressFragment.arguments)
     }
 
-
     private fun setInputFields() {
 
         // set lable focus
-        binding.edEmpName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edEmpName, binding.layoutEmpName, requireContext()))
+        binding.editTextEmpName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextEmpName, binding.layoutEmpName, requireContext()))
         binding.edJobTitle.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edJobTitle, binding.layoutJobTitle, requireContext()))
         binding.edProfYears.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edProfYears, binding.layoutYearsProfession, requireContext()))
-        binding.edBaseSalary.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edBaseSalary, binding.layoutBaseSalary, requireContext()))
-        binding.edEntitlement.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edEntitlement, binding.layoutEntitlement, requireContext()))
+        binding.editTextBaseSalary.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextBaseSalary, binding.layoutBaseSalary, requireContext()))
+        binding.editTextEntitlement.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextEntitlement, binding.layoutEntitlement, requireContext()))
 
 
         // set input format
-        binding.edBaseSalary.addTextChangedListener(NumberTextFormat(binding.edBaseSalary))
-        binding.edEntitlement.addTextChangedListener(NumberTextFormat(binding.edEntitlement))
+        binding.editTextBaseSalary.addTextChangedListener(NumberTextFormat(binding.editTextBaseSalary))
+        binding.editTextEntitlement.addTextChangedListener(NumberTextFormat(binding.editTextEntitlement))
 
         // set Dollar prifix
         CustomMaterialFields.setDollarPrefix(binding.layoutBaseSalary, requireContext())
@@ -114,12 +185,12 @@ class MilitaryServiceFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun checkValidations(){
-        val empName: String = binding.edEmpName.text.toString()
+        val empName: String = binding.editTextEmpName.text.toString()
         val jobTitle: String = binding.edJobTitle.text.toString()
         val profYears: String = binding.edProfYears.text.toString()
         val startDate: String = binding.edStartDate.text.toString()
-        val baseSalary: String = binding.edBaseSalary.text.toString()
-        val entitlement: String = binding.edEntitlement.text.toString()
+        val baseSalary: String = binding.editTextBaseSalary.text.toString()
+        val entitlement: String = binding.editTextEntitlement.text.toString()
 
 
         if (empName.isEmpty() || empName.length == 0) {
@@ -163,8 +234,6 @@ class MilitaryServiceFragment : BaseFragment(), View.OnClickListener {
         }
 
     }
-
-
 
     private fun openCalendar() {
         val c = Calendar.getInstance()

@@ -20,6 +20,7 @@ class IncomeActivity : BaseActivity() {
     lateinit var sharedPreferences: SharedPreferences
     lateinit var binding: IncomeActivityLayoutBinding
     private val viewModel: BorrowerApplicationViewModel by viewModels()
+    private val incomeViewModel: IncomeViewModel by viewModels()
     private var borrowerTabList:ArrayList<Int>? = null
     var loanApplicationId:Int? = null
     var loanPurpose:String? = null
@@ -43,12 +44,12 @@ class IncomeActivity : BaseActivity() {
 
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    if (loanApplicationId != null && borrowerTabList != null && loanApplicationId != null) {
-                        viewModel.getBorrowerWithIncome(
-                            authToken, loanApplicationId!!,
-                            borrowerTabList!!
-                        )
-                    }
+                    if (loanApplicationId != null && borrowerTabList != null && loanApplicationId != null)
+                        viewModel.getBorrowerWithIncome(authToken,  loanApplicationId!!, borrowerTabList!!)
+                    //incomeViewModel.getCurrentEmploymentDetail(authToken, loanApplicationId!!,borrowerId!!,incomeInfoId!!)
+                    incomeViewModel.getRetirementIncomeTypes(authToken)
+                    incomeViewModel.getOtherIncomeTypes(authToken)
+                    incomeViewModel.getBusinessTypes(authToken)
                 }
             }
         }
@@ -82,7 +83,7 @@ class IncomeActivity : BaseActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onErrorEvent(event: WebServiceErrorEvent) {
+    fun onErrorEvent(webEvent: WebServiceErrorEvent) {
         binding.incomeDataLoader.visibility = View.INVISIBLE
         finish()
     }
