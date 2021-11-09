@@ -88,18 +88,16 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
 
     private fun getEmploymentData(){
 
-        Timber.e("loanApplicationId " + loanApplicationId + "borrowerId:  " + borrowerId + "incomeInfoId: " + incomeInfoId )
-
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 if (loanApplicationId != null && incomeInfoId != null) {
                     binding.loaderEmployment.visibility = View.VISIBLE
-                    viewModel.getEmploymentDetail(authToken, loanApplicationId!!, borrowerId!!, incomeInfoId!!)
+                    viewModel.getPrevEmploymentDetail(authToken, loanApplicationId!!, borrowerId!!, incomeInfoId!!)
                 }
             }
         }
 
-        viewModel.employmentDetail.observe(viewLifecycleOwner, { data ->
+        viewModel.prevEmploymentDetail.observe(viewLifecycleOwner, { data ->
 
             data?.employmentData?.employmentInfo.let { info ->
                 info?.employerName?.let {
@@ -301,7 +299,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
     private fun openAddressFragment(){
         val addressFragment = AddressPrevEmployment()
         val bundle = Bundle()
-        bundle.putString(AppConstant.address, getString(R.string.previous_employer_address))
+        bundle.putString(AppConstant.TOOLBAR_TITLE, getString(R.string.previous_employer_address))
         bundle.putParcelableArrayList(AppConstant.address,addressList)
         addressFragment.arguments = bundle
         findNavController().navigate(R.id.action_prev_employment_address, addressFragment.arguments)

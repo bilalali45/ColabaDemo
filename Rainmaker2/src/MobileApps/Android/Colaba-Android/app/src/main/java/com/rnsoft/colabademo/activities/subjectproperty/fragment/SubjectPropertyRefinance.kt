@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.app.DatePickerDialog
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
@@ -21,9 +22,11 @@ import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.sub_property_refinance.*
+import kotlinx.coroutines.coroutineScope
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import javax.inject.Inject
 
 
 /**
@@ -32,14 +35,21 @@ import org.greenrobot.eventbus.ThreadMode
 @AndroidEntryPoint
 class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListener {
 
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
     private val viewModel : BorrowerApplicationViewModel by activityViewModels()
+    private val viewModelSubProperty : SubjectPropertyViewModel by activityViewModels()
     private lateinit var binding: SubPropertyRefinanceBinding
     private var savedViewInstance: View? = null
-    private var propertyTypeId : Int = 0
-    private var occupancyTypeId : Int = 0
     private var secondMortgageList : ArrayList<SecondMortgageModel> = ArrayList()
     private var firstMortgageList : ArrayList<FirstMortgageModel> = ArrayList()
     var addressDetailList :  ArrayList<AddressData> = ArrayList()
+    var addressList :  ArrayList<AddressData> = ArrayList()
+    private var loanApplicationId: Int? = null
+    private var propertyTypeList: ArrayList<DropDownResponse> = arrayListOf()
+    private var occupancyTypeList:ArrayList<DropDownResponse> = arrayListOf()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,9 +65,98 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
 
             clicks()
             setInputFields()
-            getRefinanceDetails()
+            setDropDownData()
+            //getRefinanceDetails()
+
+            arguments?.let { arguments ->
+                loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+                //borrowerId = arguments.getInt(AppConstant.borrowerId)
+            }
 
             savedViewInstance
+        }
+    }
+
+    private fun setDropDownData(){
+        lifecycleScope.launchWhenStarted {
+            coroutineScope {
+                viewModel.propertyType.observe(viewLifecycleOwner, { properties->
+                    if (properties != null && properties.size > 0) {
+                        val itemList: ArrayList<String> = arrayListOf()
+                        propertyTypeList = arrayListOf()
+                        for (item in properties) {
+                            itemList.add(item.name)
+                            propertyTypeList.add(item)
+                        }
+
+
+                        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
+                        binding.tvPropertyType.setAdapter(adapter)
+                        //adapter.setNotifyOnChange(true)
+
+//                    binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
+//                        binding.tvPropertyType.showDropDown()
+//                    }
+                        binding.tvPropertyType.setOnClickListener {
+                            binding.tvPropertyType.showDropDown()
+                        }
+
+                        binding.tvPropertyType.onItemClickListener = object :
+                            AdapterView.OnItemClickListener {
+                            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                                CustomMaterialFields.setColor(binding.layoutPropertyType, R.color.grey_color_two, requireActivity())
+                            }
+                        }
+                    }
+                })
+
+                // occupancy Type spinner
+                viewModel.occupancyType.observe(viewLifecycleOwner, { occupancies ->
+
+                    if (occupancies != null && occupancies.size > 0) {
+                        val itemList: ArrayList<String> = arrayListOf()
+                        for (item in occupancies) {
+                            itemList.add(item.name)
+                            occupancyTypeList.add(item)
+
+                            /*if(occupancyTypeId > 0 && occupancyTypeId == item.id){
+                            binding.tvOccupancyType.setText(item.name)
+                            CustomMaterialFields.setColor(binding.layoutOccupancyType,R.color.grey_color_two,requireActivity())
+                        } */
+                        }
+
+                        val adapterOccupanycyType = ArrayAdapter(
+                            requireContext(),
+                            android.R.layout.simple_list_item_1,
+                            itemList
+                        )
+                        binding.tvOccupancyType.setAdapter(adapterOccupanycyType)
+//                    binding.tvOccupancyType.setOnFocusChangeListener { _, _ ->
+//                        binding.tvOccupancyType.showDropDown()
+//                    }
+                        binding.tvOccupancyType.setOnClickListener {
+                            binding.tvOccupancyType.showDropDown()
+                        }
+
+                        binding.tvOccupancyType.onItemClickListener =
+                            object : AdapterView.OnItemClickListener {
+                                override fun onItemClick(
+                                    p0: AdapterView<*>?,
+                                    p1: View?,
+                                    position: Int,
+                                    id: Long
+                                ) {
+                                    CustomMaterialFields.setColor(
+                                        binding.layoutOccupancyType,
+                                        R.color.grey_color_two,
+                                        requireActivity()
+                                    )
+                                }
+                            }
+                    }
+                })
+                setCoBorrowerOccupancyStatus()
+            }
         }
     }
 
@@ -232,12 +331,25 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                     CustomMaterialFields.setColor(binding.layoutRentalIncome,R.color.grey_color_two,requireActivity())
                 }
                 // property id
-                details.subPropertyData?.propertyTypeId?.let { id ->
-                    propertyTypeId = id
+                details.subPropertyData?.propertyTypeId?.let { selectedId ->
+                    for(item in propertyTypeList) {
+                        if (item.id == selectedId) {
+                            binding.tvPropertyType.setText(item.name)
+                            CustomMaterialFields.setColor(binding.layoutPropertyType, R.color.grey_color_two, requireActivity())
+                            break
+                        }
+                    }
                 }
                 // occupancy id
-                details.subPropertyData?.propertyUsageId?.let { id ->
-                    occupancyTypeId = id
+                details.subPropertyData?.propertyUsageId?.let { selectedId ->
+
+                    for(item in occupancyTypeList) {
+                        if (item.id == selectedId) {
+                            binding.tvOccupancyType.setText(item.name)
+                            CustomMaterialFields.setColor(binding.layoutOccupancyType, R.color.grey_color_two, requireActivity())
+                            break
+                        }
+                    }
                 }
                 // date of home purchased
                 details.subPropertyData?.dateAcquired?.let {
@@ -342,8 +454,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                     //binding.radioHasFirstMortgageNo.isChecked = true
                 }
 
-                getDropDownData()
-                getCoBorrowerOccupancyStatus()
+                //getDropDownData()
                 if(details.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
                     hideLoader()
                 }
@@ -352,7 +463,32 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         })
     }
 
-    private fun getCoBorrowerOccupancyStatus(){
+    private fun checkValidations(){
+
+        /*val businessName: String = binding.editTextBusinessName.text.toString()
+        val jobTitle: String = binding.edJobTitle.text.toString()
+        val startDate: String = binding.editTextBstartDate.text.toString()
+
+        } */
+
+        val property : String = binding.tvPropertyType.getText().toString().trim()
+        //Log.e("size-----", property)
+        //var filterList =  propertyTypeList.filter { s -> s.name == property}.single()
+        //var id = property.map{filterList.id}.single()
+        //Log.e("SelectedId****", ""+ id)
+
+        val address = RefinanceAddressData(city = null,countryId = null,countryName = null,stateId = null,stateName = null,unit = null, zipCode = null,street = null,countyId = 4,countyName = null)
+        val data = SubPropertyRefinanceData(loanApplicationId=5,propertyTypeId=1,propertyUsageId= 1, propertyValue = 100000.0,propertyTax = 100.0,homeOwnerInsurance =200.0,floodInsurance = 0.0,
+            address = address,isMixedUseProperty=true,mixedUsePropertyExplanation="ashh",cashOutAmount = 2000.0,loanAmount = 100.0,hoaDues = 100.0,dateAcquired = "20-11-2021",firstMortgageModel = null,secondMortgageModel = null,
+            hasFirstMortgage = true,hasSecondMortgage = true,loanGoalId = 1,isSameAsPropertyAddress = false,propertyInfoId = 1,rentalIncome = 500.0)
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                viewModelSubProperty.sendRefinanceDetail(authToken,data)
+            }
+        }
+    }
+
+    private fun setCoBorrowerOccupancyStatus(){
         viewModel.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {
             if(it.occupancyData != null  && it.occupancyData.size > 0){
                 binding.rbOccupying.isChecked = true
@@ -366,75 +502,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             }
         })
 
-    }
+        getRefinanceDetails()
 
-    private fun getDropDownData(){
-        //lifecycleScope.launchWhenStarted {
-        //  viewModel.getPropertyTypes(token)
-        viewModel.propertyType.observe(viewLifecycleOwner, {
-            //if(it != null && it.size > 0) {
-
-            val itemList:ArrayList<String> = arrayListOf()
-            for(item in it){
-                itemList.add(item.name)
-                if(propertyTypeId == item.id){
-                    binding.tvPropertyType.setText(item.name)
-                    CustomMaterialFields.setColor(binding.layoutPropertyType,R.color.grey_color_two,requireActivity())
-                }
-            }
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,itemList)
-            binding.tvPropertyType.setAdapter(adapter)
-            //binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
-            //   binding.tvPropertyType.showDropDown()
-            //}
-            binding.tvPropertyType.setOnClickListener {
-                binding.tvPropertyType.showDropDown()
-            }
-            binding.tvPropertyType.onItemClickListener = object :
-                AdapterView.OnItemClickListener {
-                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                    showHideRental()
-                }
-            }
-            //}
-        })
-        // }
-
-        // occupancy Type spinner
-        //lifecycleScope.launchWhenStarted {
-        // viewModel.getOccupancyType(token)
-        viewModel.occupancyType.observe(viewLifecycleOwner, {occupancyList->
-
-            if(occupancyList != null && occupancyList.size > 0) {
-                val itemList: ArrayList<String> = arrayListOf()
-                for (item in occupancyList) {
-                    itemList.add(item.name)
-                    if(occupancyTypeId > 0 && occupancyTypeId == item.id){
-                        binding.tvOccupancyType.setText(item.name)
-                        CustomMaterialFields.setColor(binding.layoutOccupancyType,R.color.grey_color_two,requireActivity())
-                    }
-                }
-
-                val adapterOccupanycyType =
-                    ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,itemList)
-                binding.tvOccupancyType.setAdapter(adapterOccupanycyType)
-                binding.tvOccupancyType.setOnFocusChangeListener { _, _ ->
-                    binding.tvOccupancyType.showDropDown()
-                }
-                binding.tvOccupancyType.setOnClickListener {
-                    binding.tvOccupancyType.showDropDown()
-                }
-                binding.tvOccupancyType.onItemClickListener = object :
-                    AdapterView.OnItemClickListener {
-                    override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                        CustomMaterialFields.setColor(binding.layoutOccupancyType,R.color.grey_color_two,requireActivity())
-                        showHideRental()
-                    }
-                }
-            }
-
-        })
-        // }
     }
 
     private fun setInputFields() {
@@ -598,5 +667,77 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
       //binding.rbSubProperty.setTypeface(null, Typeface.NORMAL)
       findNavController().navigate(R.id.action_address)
   } */
+
+
+    /*
+      private fun getDropDownData(){
+        //lifecycleScope.launchWhenStarted {
+        //  viewModel.getPropertyTypes(token)
+        viewModel.propertyType.observe(viewLifecycleOwner, {
+            //if(it != null && it.size > 0) {
+
+            val itemList:ArrayList<String> = arrayListOf()
+            for(item in it){
+                itemList.add(item.name)
+                if(propertyTypeId == item.id){
+                    binding.tvPropertyType.setText(item.name)
+                    CustomMaterialFields.setColor(binding.layoutPropertyType,R.color.grey_color_two,requireActivity())
+                }
+            }
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,itemList)
+            binding.tvPropertyType.setAdapter(adapter)
+            //binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
+            //   binding.tvPropertyType.showDropDown()
+            //}
+            binding.tvPropertyType.setOnClickListener {
+                binding.tvPropertyType.showDropDown()
+            }
+            binding.tvPropertyType.onItemClickListener = object :
+                AdapterView.OnItemClickListener {
+                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                    showHideRental()
+                }
+            }
+            //}
+        })
+        // }
+
+        // occupancy Type spinner
+        //lifecycleScope.launchWhenStarted {
+        // viewModel.getOccupancyType(token)
+        viewModel.occupancyType.observe(viewLifecycleOwner, {occupancyList->
+
+            if(occupancyList != null && occupancyList.size > 0) {
+                val itemList: ArrayList<String> = arrayListOf()
+                for (item in occupancyList) {
+                    itemList.add(item.name)
+                    if(occupancyTypeId > 0 && occupancyTypeId == item.id){
+                        binding.tvOccupancyType.setText(item.name)
+                        CustomMaterialFields.setColor(binding.layoutOccupancyType,R.color.grey_color_two,requireActivity())
+                    }
+                }
+
+                val adapterOccupanycyType =
+                    ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,itemList)
+                binding.tvOccupancyType.setAdapter(adapterOccupanycyType)
+                binding.tvOccupancyType.setOnFocusChangeListener { _, _ ->
+                    binding.tvOccupancyType.showDropDown()
+                }
+                binding.tvOccupancyType.setOnClickListener {
+                    binding.tvOccupancyType.showDropDown()
+                }
+                binding.tvOccupancyType.onItemClickListener = object :
+                    AdapterView.OnItemClickListener {
+                    override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                        CustomMaterialFields.setColor(binding.layoutOccupancyType,R.color.grey_color_two,requireActivity())
+                        showHideRental()
+                    }
+                }
+            }
+
+        })
+        // }
+    }
+     */
 
 }

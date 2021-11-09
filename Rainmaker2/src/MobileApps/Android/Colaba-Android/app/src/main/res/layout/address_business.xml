@@ -64,20 +64,20 @@
                 app:startIconDrawable="@drawable/ic_grey_search">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
                     android:id="@+id/tv_search"
+                    style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:cursorVisible="true"
-                    android:focusable="true"
                     android:background="@android:color/transparent"
                     android:backgroundTint="@color/colaba_primary_color"
-                    android:textSize="15sp"
-                    android:padding="0dp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:textColor="@color/grey_color_one"
+                    android:cursorVisible="true"
                     android:drawablePadding="-12dp"
-                    android:inputType="textAutoComplete" />
+                    android:focusable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:inputType="textAutoComplete"
+                    android:padding="0dp"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="15sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -222,7 +222,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+          <!--  <com.google.android.material.textfield.TextInputLayout
                 android:visibility="gone"
                 android:id="@+id/layout_county"
                 android:layout_width="match_parent"
@@ -255,7 +255,54 @@
                     android:textColor="@color/grey_color_one"
                     android:textSize="@dimen/ed_txt_size_primary_info" />
 
+            </com.google.android.material.textfield.TextInputLayout> -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:visibility="gone"
+                android:id="@+id/layout_county"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:background="@android:color/transparent"
+                android:hint="@string/county"
+                android:textColorHint="@color/primary_info_label_color"
+                app:boxCollapsedPaddingTop="1dp"
+                app:boxStrokeColor="@color/primary_info_line_color"
+                app:boxStrokeWidth="0.5dp"
+                app:boxStrokeWidthFocused="1dp"
+                app:endIconDrawable="@drawable/ic_down_arrow"
+                app:endIconMode="custom"
+                app:endIconTint="@color/grey_color_three"
+                app:helperTextEnabled="true"
+                app:helperTextTextAppearance="@style/inputError"
+                app:helperTextTextColor="@color/colaba_red_color"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+                app:hintTextColor="@color/grey_color_two">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/tv_county"
+                    style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:backgroundTint="@android:color/transparent"
+                    android:completionThreshold="1"
+                    android:cursorVisible="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:gravity="bottom"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:spinnerMode="dropdown"
+                    android:textAlignment="gravity"
+                    android:textColor="@color/grey_color_one"
+                    android:textColorHint="@color/grey_color_three"
+                    android:textSize="15sp" />
+
             </com.google.android.material.textfield.TextInputLayout>
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:visibility="gone"
@@ -385,9 +432,7 @@
                     android:textSize="15sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
         </LinearLayout>
-
     </ScrollView>
 
     <ImageButton
@@ -400,5 +445,20 @@
         android:src="@drawable/ic_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/loader_business_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:elevation="1dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colaba_apptheme_blue"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
