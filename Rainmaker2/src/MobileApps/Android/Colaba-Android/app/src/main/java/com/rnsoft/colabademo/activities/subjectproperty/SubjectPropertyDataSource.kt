@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
+import com.google.gson.Gson
 import com.rnsoft.colabademo.activities.model.*
 import retrofit2.HttpException
 import retrofit2.Response
@@ -47,46 +48,45 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
         }
     }
 
-    suspend fun sendSubjectPropertyDetail(token: String, data: SubPropertyData): Result<AddUpdateDataResponse> {
-        val serverResponse: Response<AddUpdateDataResponse>
+    suspend fun sendSubjectPropertyDetail(token: String, data: SubPropertyData): Result<AddUpdateDataResponse>{
+        val serverResponse: AddUpdateDataResponse
         return try {
-            serverResponse = serverApi.addOrUpdateSubjectPropertyDetail(token,data)
-            if(serverResponse.isSuccessful)
-                Result.Success(serverResponse.body()!!)
+            Timber.e(" print correct json format = "+data)
+
+            val g = Gson()
+            val passJson = g.toJson(data)
+            val newToken = "Bearer $token"
+            serverResponse = serverApi.addOrUpdateSubjectPropertyDetail(newToken , data)
+            if(serverResponse.status.equals("OK", true) )
+                Result.Success(serverResponse)
             else {
-                Log.e("what-code ", ""+serverResponse.errorBody())
-                Log.e("what-code ", serverResponse.errorBody()?.charStream().toString())
-                Result.Success(serverResponse.body()!!)
+                //Log.e("what-code ", ""+serverResponse.errorBody())
+               // Log.e("what-code ", serverResponse.errorBody()?.charStream().toString())
+                Result.Success(serverResponse)
             }
 
         } catch (e: Throwable){
-            Log.e("errorrr",e.localizedMessage)
+           // Log.e("errorrr",e.localizedMessage)
             if(e is HttpException){
-                Log.e("network", "issues...")
+               // Log.e("network", "issues...")
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                Log.e("erorr",e.message ?:"Error")
+               // Log.e("erorr",e.message ?:"Error")
                 Result.Error(IOException("Error logging in", e))
             }
         }
     }
 
     suspend fun sendRefinanceDetail(token: String, data: SubPropertyRefinanceData): Result<Any> {
-        Log.e("dataSource","datasource")
         return try {
             val response = serverApi.addOrUpdateRefinanceDetail(token,data)
-            Log.e("addData-", response.toString())
             Result.Success(response.isSuccessful)
-
         } catch (e: Throwable){
-            Log.e("errorrr",e.localizedMessage)
             if(e is HttpException){
-                Log.e("network", "issues...")
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                Log.e("erorr",e.message ?:"Error")
                 Result.Error(IOException("Error logging in", e))
             }
         }

@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
-import android.util.Log
+import retrofit2.HttpException
+import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
@@ -43,4 +44,40 @@ class LoanInfoDataSource @Inject constructor(private val serverApi: ServerApi) {
                 Result.Error(IOException("Error notification -", e))
         }
     }
+
+    suspend fun addUpdateLoan(token: String, data:AddLoanInfoModel): Result<AddUpdateDataResponse> {
+        val serverResponse: Response<AddUpdateDataResponse>
+        return try {
+            serverResponse = serverApi.addUpdateLoanInfo(token, data)
+            if (serverResponse.isSuccessful)
+                Result.Success(serverResponse.body()!!)
+            else {
+                //Log.e("what-code ", ""+serverResponse.errorBody())
+                // Log.e("what-code ", serverResponse.errorBody()?.charStream().toString())
+                Result.Success(serverResponse.body()!!)
+            }
+        } catch (e: Throwable){
+            if(e is HttpException){
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                Result.Error(IOException("Error logging in", e))
+            }
+        }
+    }
+
+    suspend fun addUpdateLoanRefinance(token: String, data: UpdateLoanRefinanceModel): Result<Any> {
+        return try {
+            val response = serverApi.addUpdateLoanRefinance(token,data)
+            Result.Success(response.isSuccessful)
+        } catch (e: Throwable){
+            if(e is HttpException){
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                Result.Error(IOException("Error logging in", e))
+            }
+        }
+    }
+
 }
