@@ -55,6 +55,7 @@ class AddGiftFundsViewController: UIViewController {
         lblBorrowerName.text = borrowerName.uppercased()
         getAssetsCategories()
         getGiftSources()
+        btnDelete.isHidden = isForAdd
     }
     
     //MARK:- Methods and Actions
@@ -152,7 +153,11 @@ class AddGiftFundsViewController: UIViewController {
     }
     
     @IBAction func btnDeleteTapped(_ sender: UIButton) {
-        
+        let vc = Utility.getDeleteAddressPopupVC()
+        vc.popupTitle = "Are you sure you want to remove this asset type?"
+        vc.screenType = 4
+        vc.delegate = self
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
@@ -258,6 +263,34 @@ class AddGiftFundsViewController: UIViewController {
                 }
             }
         }
+    }
+
+    func deleteAsset(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "AssetId=\(borrowerAssetId)&borrowerId=\(borrowerId)&loanApplicationId=\(loanApplicationId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .deleteAsset, method: .delete, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
+}
+
+extension AddGiftFundsViewController: DeleteAddressPopupViewControllerDelegate{
+    func deleteAddress(indexPath: IndexPath) {
+        deleteAsset()
     }
 }
 
