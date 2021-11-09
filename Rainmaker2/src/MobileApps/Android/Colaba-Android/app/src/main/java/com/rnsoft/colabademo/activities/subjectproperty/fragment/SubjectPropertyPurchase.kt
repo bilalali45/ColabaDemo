@@ -166,7 +166,7 @@ class SubjectPropertyPurchase : BaseFragment() {
     private fun getPurchaseDetails(){
         viewModel.subjectPropertyDetails.observe(viewLifecycleOwner, { details ->
             if(details != null){
-                details.subPropertyData?.address?.let {
+                details.subPropertyData?.addressData?.let {
                     if(it.street == null && it.unit==null && it.city==null && it.stateName==null && it.countryName==null){
                         binding.radioSubPropertyTbd.isChecked = true
                         binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
@@ -416,7 +416,7 @@ class SubjectPropertyPurchase : BaseFragment() {
         val address = AddressData(city = "Karachi",countryId = 1,countryName = "Pak",stateId = 11,stateName = "Sindh",unit = "00", zipCode = "123",street = "akl",countyId = 1,countyName = "SSS")
         val propertyData = SubPropertyData(loanApplicationId = 5,propertyTypeId = 1,occupancyTypeId = occupancyId,
             appraisedPropertyValue = newAppraisedValue.toDouble(),propertyTax = 200?.toDouble(),homeOwnerInsurance =200?.toDouble(),floodInsurance = 300?.toDouble(),
-            address = address,isMixedUseProperty= isMixedUseProperty,mixedUsePropertyExplanation=mixedUsePropertyDesc,subjectPropertyTbd = tbd)
+            addressData = address,isMixedUseProperty= isMixedUseProperty,mixedUsePropertyExplanation=mixedUsePropertyDesc,subjectPropertyTbd = tbd)
 
         lifecycleScope.launchWhenStarted{
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->

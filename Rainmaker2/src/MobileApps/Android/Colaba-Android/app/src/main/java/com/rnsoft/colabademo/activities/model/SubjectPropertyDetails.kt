@@ -22,7 +22,8 @@ data class SubPropertyData(
     var propertyTax : Double?,
     var homeOwnerInsurance : Double?,
     var floodInsurance : Double?,
-    val address : AddressData?,
+    //val address : AddressData?,
+    @SerializedName("address") val addressData : AddressData?,
     var isMixedUseProperty : Boolean?,
     var mixedUsePropertyExplanation : String?,
     var subjectPropertyTbd : Boolean?

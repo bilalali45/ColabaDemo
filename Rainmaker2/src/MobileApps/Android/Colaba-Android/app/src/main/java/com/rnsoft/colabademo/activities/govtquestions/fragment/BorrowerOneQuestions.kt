@@ -516,7 +516,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private fun observeDemoGraphicData(){
         bAppViewModel.demoGraphicInfoList.observe(viewLifecycleOwner,{  demoGraphicInfoList->
             if(demoGraphicInfoList.size>0){
-
                 var selectedDemoGraphicInfoList: DemoGraphicResponseModel? =null
                 for(item in demoGraphicInfoList){
                     if(item.passedBorrowerId == tabBorrowerId ) {
@@ -524,8 +523,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         break
                     }
                 }
-
-
                 selectedDemoGraphicInfoList?.let {
 
                     it.demoGraphicData?.let { demoGraphicData ->

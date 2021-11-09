@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
+import com.google.gson.Gson
 import com.rnsoft.colabademo.activities.model.*
 import retrofit2.HttpException
 import retrofit2.Response
@@ -47,16 +48,21 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
         }
     }
 
-    suspend fun sendSubjectPropertyDetail(token: String, data: SubPropertyData): Result<Any> {
-        val serverResponse: Response<Any>
+    suspend fun sendSubjectPropertyDetail(token: String, data: SubPropertyData): Result<AddUpdateDataResponse>{
+        val serverResponse: AddUpdateDataResponse
         return try {
-            serverResponse = serverApi.addOrUpdateSubjectPropertyDetail(token,data)
-            if(serverResponse.isSuccessful)
-                Result.Success(serverResponse.body()!!)
+            Timber.e(" print correct json format = "+data)
+
+            val g = Gson()
+            val passJson = g.toJson(data)
+            val newToken = "Bearer $token"
+            serverResponse = serverApi.addOrUpdateSubjectPropertyDetail(newToken , data)
+            if(serverResponse.status.equals("OK", true) )
+                Result.Success(serverResponse)
             else {
                 //Log.e("what-code ", ""+serverResponse.errorBody())
                // Log.e("what-code ", serverResponse.errorBody()?.charStream().toString())
-                Result.Success(serverResponse.body()!!)
+                Result.Success(serverResponse)
             }
 
         } catch (e: Throwable){

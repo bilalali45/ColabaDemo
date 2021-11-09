@@ -77,7 +77,7 @@ interface ServerApi{
     suspend fun addOrUpdateSubjectPropertyDetail(
         @Header("Authorization")  Authorization:String,
         @Body data: SubPropertyData
-    ) : Response<Any>
+    ) : AddUpdateDataResponse
 
     @POST("api/mcu/mobile/loanapplication/SubjectProperty/AddOrUpdateRefinanceSubjectPropertyDetail")
     suspend fun addOrUpdateRefinanceDetail(
