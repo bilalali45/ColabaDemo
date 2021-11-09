@@ -124,9 +124,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        self.window?.rootViewController = vc
         
         let vc = Utility.getLoanDetailVC()
-        vc.loanApplicationId = 1042//5//1042
-        vc.borrowerName = "flow check"//"Quentin Finley"//"flow check"
-        vc.loanPurpose = "Refinance"//"Purchase"// "Refinance"
+        vc.loanApplicationId = 5//1042
+        vc.borrowerName = "Quentin Finley"//"flow check"//"Quentin Finley"//"flow check"
+        vc.loanPurpose = "Purchase"//"Purchase"// "Refinance"
         vc.phoneNumber = ""
         vc.email = ""
         let navVC = UINavigationController(rootViewController: vc)

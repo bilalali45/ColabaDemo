@@ -59,9 +59,7 @@ class RefinanceLoanInfoViewController: BaseViewController {
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         if validate() {
-            if (txtfieldLoanStage.text != "" && txtfieldLoanAmount.text != ""){
-                self.goBack()
-            }
+            updateLoanInfo()
         }
     }
     
@@ -129,5 +127,55 @@ class RefinanceLoanInfoViewController: BaseViewController {
             }
             
         }
+    }
+    
+    func updateLoanInfo(){
+        
+        var loanGoalId = 0
+        var cashOutAmount: Any = NSNull()
+        var loanPayment: Any = NSNull()
+        
+        if let loanGoalModel = self.loanStageArray.filter({$0.loanGoal == txtfieldLoanStage.text!}).first{
+            loanGoalId = loanGoalModel.id
+        }
+        
+        if (txtfieldAdditionalCashoutAmount.text != ""){
+            if let value = Double(cleanString(string: txtfieldAdditionalCashoutAmount.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                cashOutAmount = value
+            }
+        }
+        
+        if (txtfieldLoanAmount.text != ""){
+            if let value = Double(cleanString(string: txtfieldLoanAmount.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                loanPayment = value
+            }
+        }
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let params = ["loanApplicationId": loanApplicationId,
+                      "loanPurposeId": loanInfo.loanPurposeId,
+                      "loanGoalId": loanGoalId,
+                      "propertyValue": loanInfo.propertyValue,
+                      "downPayment": loanInfo.downPayment,
+                      "cashOutAmount": cashOutAmount,
+                      "loanPayment": loanPayment] as [String: Any]
+        
+        APIRouter.sharedInstance.executeAPI(type: .updateLoanInformation, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.showPopup(message: "Loan Information updated sucessfully", popupState: .success, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+        }
+        
     }
 }

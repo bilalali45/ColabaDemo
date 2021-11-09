@@ -81,9 +81,7 @@ class PurchaseLoanInfoViewController: BaseViewController {
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         
         if validate() {
-            if (txtfieldLoanStage.text != "" && txtfieldPurchasePrice.text != "" && txtfieldLoanAmount.text != "" && txtfieldDownPayment.text != "" && txtfieldPercentage.text != "" && txtfieldClosingDate.text != ""){
-                self.goBack()
-            }
+            updateLoanInfo()
         }
         
     }
@@ -130,6 +128,7 @@ class PurchaseLoanInfoViewController: BaseViewController {
     func getLoanGoals(){
         
         let extraData = "loanpurposeid=\(self.loanInfo.loanPurposeId)"
+        self.loanStageArray.removeAll()
         
         APIRouter.sharedInstance.executeDashboardAPIs(type: .getLoanGoals, method: .get, params: nil, extraData: extraData) { status, result, message in
             
@@ -157,6 +156,61 @@ class PurchaseLoanInfoViewController: BaseViewController {
             
         }
     }
+    
+    func updateLoanInfo(){
+        
+        var loanGoalId = 0
+        var propertyValue: Any = NSNull()
+        var downPayment: Any = NSNull()
+        var expectedClosingDate: Any = NSNull()
+        
+        if let loanGoalModel = self.loanStageArray.filter({$0.loanGoal == txtfieldLoanStage.text!}).first{
+            loanGoalId = loanGoalModel.id
+        }
+        
+        if (txtfieldPurchasePrice.text != ""){
+            if let value = Double(cleanString(string: txtfieldPurchasePrice.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                propertyValue = value
+            }
+        }
+        
+        if (txtfieldDownPayment.text != ""){
+            if let value = Double(cleanString(string: txtfieldDownPayment.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                downPayment = value
+            }
+        }
+        
+        let dateComponent = txtfieldClosingDate.text!.components(separatedBy: "/")
+        if (dateComponent.count == 2){
+            expectedClosingDate = "\(dateComponent[1])-\(dateComponent[0])-01T00:00:00"
+        }
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let params = ["loanApplicationId": loanApplicationId,
+                      "loanPurposeId": loanInfo.loanPurposeId,
+                      "loanGoalId": loanGoalId,
+                      "propertyValue": propertyValue,
+                      "downPayment": downPayment,
+                      "expectedClosingDate": expectedClosingDate] as [String: Any]
+        
+        APIRouter.sharedInstance.executeAPI(type: .updateLoanInformation, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.showPopup(message: "Loan Information updated sucessfully", popupState: .success, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+        }
+        
+    }
 }
 
 extension PurchaseLoanInfoViewController: ColabaTextFieldDelegate {
@@ -168,6 +222,12 @@ extension PurchaseLoanInfoViewController: ColabaTextFieldDelegate {
             }
             calculateDownPayment()
         }
+        
+        if (textField == txtfieldLoanAmount){
+            isDownPaymentPercentageChanged = true
+            calculateDownPaymentFromLoanAmount()
+        }
+        
         if textField == txtfieldPercentage {
             isDownPaymentPercentageChanged = true
             calculateDownPayment()
@@ -186,7 +246,9 @@ extension PurchaseLoanInfoViewController: ColabaTextFieldDelegate {
             let downPaymentPercentage = percentage / 100
             let downPayment = Int(round(purchaseAmount * downPaymentPercentage))
             let downPaymentString = cleanString(string: downPayment.withCommas(), replaceCharacters: ["$",".00"], replaceWith: "")
+            let loanPayment = purchaseAmount - Double(downPayment)
             txtfieldDownPayment.attributedText = createAttributedTextWithPrefix(prefix: PrefixType.amount.rawValue, string: downPaymentString)
+            txtfieldLoanAmount.setTextField(text: String(format: "%.0f", loanPayment))
         }
     }
     
@@ -194,11 +256,23 @@ extension PurchaseLoanInfoViewController: ColabaTextFieldDelegate {
         let downPayment = Double(cleanString(string: txtfieldDownPayment.text ?? "0.0", replaceCharacters: [PrefixType.amount.rawValue, ","], replaceWith: "")) ?? 0.0
         
         if let purchaseAmount = Double(cleanString(string: txtfieldPurchasePrice.text!, replaceCharacters: [PrefixType.amount.rawValue, ","], replaceWith: "")) {
+            let loanPayment = purchaseAmount - downPayment
+            txtfieldLoanAmount.setTextField(text: String(format: "%.0f", loanPayment))
             if purchaseAmount > 0{
                 let percentage = Int(round(downPayment / purchaseAmount * 100))
                 txtfieldPercentage.attributedText = createAttributedTextWithPrefix(prefix: PrefixType.percentage.rawValue, string: percentage.description)
             }
             
+        }
+    }
+    
+    func calculateDownPaymentFromLoanAmount(){
+        if let purchaseAmount = Double(cleanString(string: txtfieldPurchasePrice.text!, replaceCharacters: [PrefixType.amount.rawValue, ","], replaceWith: "")) {
+            if let loanAmount = Double(cleanString(string: txtfieldLoanAmount.text!, replaceCharacters: [PrefixType.amount.rawValue, ","], replaceWith: "")){
+                let downPayment = purchaseAmount - loanAmount
+                txtfieldDownPayment.setTextField(text: String(format: "%.0f", downPayment))
+                calculatePercentage()
+            }
         }
     }
 }

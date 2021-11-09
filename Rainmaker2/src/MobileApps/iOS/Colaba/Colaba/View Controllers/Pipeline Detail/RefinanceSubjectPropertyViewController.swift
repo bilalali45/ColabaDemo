@@ -637,6 +637,7 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         var homeOwnerAssosiationDues: Any = NSNull()
         var homeOwnerInsurance: Any = NSNull()
         var floodInsurance: Any = NSNull()
+        var rentalIncome: Any = NSNull()
         var mixUsedProperty: Any = NSNull()
         var mixUsedPropertyDetail: Any = NSNull()
         var dateAcquired: Any = NSNull()
@@ -664,6 +665,11 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         if txtfieldFloodInsurance.text != ""{
             if let value = Double(cleanString(string: txtfieldFloodInsurance.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
                 floodInsurance = value
+            }
+        }
+        if txtfieldRentalIncome.text != ""{
+            if let value = Double(cleanString(string: txtfieldRentalIncome.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                rentalIncome = value
             }
         }
         
@@ -700,6 +706,7 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
                       "propertyTax": propertyTax,
                       "homeOwnerInsurance": homeOwnerInsurance,
                       "floodInsurance": floodInsurance,
+                      "rentalIncome": rentalIncome,
                       "hasFirstMortgage": isFirstMortgage,
                       "hasSecondMortgage": isSecondMortgage,
                       "isSameAsPropertyAddress": subjectPropertyDetail.isSameAsPropertyAddress,
@@ -713,7 +720,7 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
                 Utility.showOrHideLoader(shouldShow: false)
                 if (status == .success){
                     self.showPopup(message: "Subject property updated sucessfully", popupState: .success, popupDuration: .custom(5)) { dismiss in
-                        
+                        self.goBack()
                     }
                     self.getRefinanceSubjectProperty()
                 }
