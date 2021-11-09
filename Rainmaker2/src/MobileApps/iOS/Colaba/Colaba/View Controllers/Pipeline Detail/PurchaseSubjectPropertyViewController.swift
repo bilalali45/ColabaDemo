@@ -17,6 +17,7 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var seperatorView: UIView!
     @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var mainViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     @IBOutlet weak var subjectPropertyTBDView: UIView!
     @IBOutlet weak var lblSubjectPropertyTBD: UILabel!
@@ -43,14 +44,8 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var txtfieldTax: ColabaTextField!
     @IBOutlet weak var txtfieldHomeOwnerInsurance: ColabaTextField!
     @IBOutlet weak var txtfieldFloodInsurance: ColabaTextField!
-    @IBOutlet weak var occupancyStatusView: UIView!
-    @IBOutlet weak var lblCoBorrowerName: UILabel!
-    @IBOutlet weak var occupyingStackView: UIStackView!
-    @IBOutlet weak var btnOccupying: UIButton!
-    @IBOutlet weak var lblOccupying: UILabel!
-    @IBOutlet weak var nonOccupyingStackView: UIStackView!
-    @IBOutlet weak var btnNonOccupying: UIButton!
-    @IBOutlet weak var lblNonOccupying: UILabel!
+    @IBOutlet weak var tableViewOccupancyStatus: UITableView!
+    @IBOutlet weak var tableViewOccupancyStatusHeightConstraint: NSLayoutConstraint!
     
     var loanApplicationId = 0
     
@@ -61,7 +56,6 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     
     var isTBDProperty = true
     var isMixedUseProperty: Bool?
-    var isOccupying: Bool?
     var savedAddress: Any = NSNull()
     
     override func viewDidLoad() {
@@ -98,6 +92,7 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
         ///Annual Flood Insurance Text Field
         txtfieldFloodInsurance.setTextField(placeholder: "Annual Flood Insurance", controller: self, validationType: .noValidation)
         txtfieldFloodInsurance.type = .amount
+        
     }
     
     func setViews(){
@@ -122,17 +117,13 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
         
-        occupyingStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(occupyingStackViewTapped)))
-        nonOccupyingStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nonOccupyingStackViewTapped)))
-        
         btnYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
         lblYes.font = Theme.getRubikRegularFont(size: 14)
         propertyDetailView.isHidden = true
         propertyViewHeightConstraint.constant = 203
         setScreenHeight()
         
-        btnOccupying.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
-        lblOccupying.font = Theme.getRubikRegularFont(size: 14)
+        tableViewOccupancyStatus.register(UINib(nibName: "OccupancyStatusTableViewCell", bundle: nil), forCellReuseIdentifier: "OccupancyStatusTableViewCell")
     }
     
     func setSubjectPropertyData(){
@@ -153,14 +144,15 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
         txtfieldTax.setTextField(text: String(format: "%.0f", self.subjectPropertyDetail.propertyTax.rounded()))
         txtfieldHomeOwnerInsurance.setTextField(text: String(format: "%.0f", self.subjectPropertyDetail.homeOwnerInsurance.rounded()))
         txtfieldFloodInsurance.setTextField(text: String(format: "%.0f", self.subjectPropertyDetail.floodInsurance.rounded()))
-        isOccupying = self.coBorrowerOccupancyArray.count > 0
-        lblCoBorrowerName.text = self.coBorrowerOccupancyArray.map{$0.borrowerFullName}.joined(separator: ", ")
-        changeOccupyingStatus()
+        self.tableViewOccupancyStatus.reloadData()
         changeMixedUseProperty()
         changedSubjectPropertyType()
     }
     
     func setScreenHeight(){
+        let occupancyStatusTableViewHeight = tableViewOccupancyStatus.contentSize.height
+        self.mainViewHeightConstraint.constant = occupancyStatusTableViewHeight + 1220
+        self.tableViewOccupancyStatusHeightConstraint.constant = occupancyStatusTableViewHeight
         UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
@@ -222,26 +214,6 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
         vc.detail = lblPropertyUseDetail.text!
         vc.delegate = self
         self.presentVC(vc: vc)
-    }
-    
-    @objc func occupyingStackViewTapped(){
-        isOccupying = true
-        changeOccupyingStatus()
-    }
-    
-    @objc func nonOccupyingStackViewTapped(){
-        isOccupying = false
-        changeOccupyingStatus()
-    }
-    
-    @objc func changeOccupyingStatus(){
-        if let occupying = isOccupying{
-            btnOccupying.setImage(UIImage(named: occupying ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-            lblOccupying.font = occupying ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-            btnNonOccupying.setImage(UIImage(named: occupying ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
-            lblNonOccupying.font = occupying ?  Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
-        }
-        
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton){
@@ -455,7 +427,6 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
                     self.showPopup(message: "Subject property updated sucessfully", popupState: .success, popupDuration: .custom(5)) { dismiss in
                         self.goBack()
                     }
-                    self.getPurchaseSubjectProperty()
                 }
                 else{
                     self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
@@ -495,5 +466,23 @@ extension PurchaseSubjectPropertyViewController: SubjectPropertyAddressViewContr
 extension PurchaseSubjectPropertyViewController: MixPropertyDetailFollowUpViewControllerDelegate{
     func updateDetails(detail: String) {
         lblPropertyUseDetail.text = detail
+    }
+}
+
+extension PurchaseSubjectPropertyViewController: UITableViewDataSource, UITableViewDelegate{
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return coBorrowerOccupancyArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "OccupancyStatusTableViewCell", for: indexPath) as! OccupancyStatusTableViewCell
+        cell.borrower = coBorrowerOccupancyArray[indexPath.row]
+        cell.setData()
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 160
     }
 }
