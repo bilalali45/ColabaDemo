@@ -32,13 +32,13 @@ class OverviewViewController: BaseViewController {
         tableViewOverView.register(UINib(nibName: "BorrowerApplicationStatusButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerApplicationStatusButtonTableViewCell")
         tableViewOverView.register(UINib(nibName: "BorrowerAddressAndLoanInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerAddressAndLoanInfoTableViewCell")
         tableViewOverView.coverableCellsIdentifiers = ["BorrowerOverviewTableViewCell", "BorrowerApplicationStatusButtonTableViewCell", "BorrowerAddressAndLoanInfoTableViewCell"]
-        getLoanApplicationInfo()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowNavigationBar), object: nil, userInfo: nil)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationHideRequestDocumentFooterButton), object: nil, userInfo: nil)
+        getLoanApplicationInfo()
     }
     
     //MARK:- APIs
@@ -46,7 +46,9 @@ class OverviewViewController: BaseViewController {
     func getLoanApplicationInfo(){
         
         self.view.isUserInteractionEnabled = false
-        loadingPlaceholderView.cover(tableViewOverView, animated: true)
+        if (loanInfoData.borrowers.count == 0){
+            loadingPlaceholderView.cover(tableViewOverView, animated: true)
+        }
         
         let extraData = "loanApplicationId=\(loanApplicationId)"
         

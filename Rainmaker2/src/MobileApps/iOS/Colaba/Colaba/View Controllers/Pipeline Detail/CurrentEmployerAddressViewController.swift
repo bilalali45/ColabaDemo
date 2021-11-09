@@ -39,17 +39,22 @@ class CurrentEmployerAddressViewController: BaseViewController {
     var borrowerFullName = ""
     var selectedAddress: AddressModel?
     var isForSubjectProperty = false
+    
+    var countriesArray = [CountriesModel]()
+    var statesArray = [StatesModel]()
+    var countiesArray = [CountiesModel]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextFields()
         setPlacePickerTextField()
+        getCountriesDropDown()
         setSavedAddress()
     }
     
     //MARK:- Methods and Actions
     func setTextFields() {
-        lblUserName.text = self.borrowerFullName
+        lblUserName.text = self.borrowerFullName.uppercased()
         ///Street Address Text Field
         txtfieldStreetAddress.setTextField(placeholder: "Street Address", controller: self, validationType: .required)
         
@@ -61,11 +66,11 @@ class CurrentEmployerAddressViewController: BaseViewController {
         
         ///County Text Field
         txtfieldCounty.setTextField(placeholder: "County", controller: self, validationType: .noValidation)
+        txtfieldCounty.type = .editableDropdown
         
         ///State Text Field
         txtfieldState.setTextField(placeholder: "State", controller: self, validationType: .required)
         txtfieldState.type = .editableDropdown
-        txtfieldState.setDropDownDataSource(kUSAStatesArray)
         
         ///Zip Code Text Field
         txtfieldZipCode.setTextField(placeholder: "Zip Code", controller: self, validationType: .required, keyboardType: .numberPad)
@@ -73,7 +78,6 @@ class CurrentEmployerAddressViewController: BaseViewController {
         ///Country Text Field
         txtfieldCountry.setTextField(placeholder: "Country", controller: self, validationType: .required)
         txtfieldCountry.type = .editableDropdown
-        txtfieldCountry.setDropDownDataSource(kCountryListArray)
     }
     
     func setPlacePickerTextField() {
@@ -238,6 +242,7 @@ class CurrentEmployerAddressViewController: BaseViewController {
             }
         }
     }
+    
     func validate() -> Bool {
         var isValidate = validateHomeAddress()
         isValidate = txtfieldStreetAddress.validate() && isValidate
@@ -246,6 +251,90 @@ class CurrentEmployerAddressViewController: BaseViewController {
         isValidate = txtfieldZipCode.validate() && isValidate
         isValidate = txtfieldCountry.validate() && isValidate
         return isValidate
+    }
+    
+    //MARK:- API's
+    
+    func getCountriesDropDown(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllCountries, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let countries = result.arrayValue
+                    for country in countries{
+                        let model = CountriesModel()
+                        model.updateModelWithJSON(json: country)
+                        self.countriesArray.append(model)
+                    }
+                    self.txtfieldCountry.setDropDownDataSource(self.countriesArray.map{$0.name})
+                    self.getStatesDropDown()
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+            
+        }
+        
+    }
+    
+    func getStatesDropDown(){
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllStates, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let statesArray = result.arrayValue
+                    for state in statesArray{
+                        let model = StatesModel()
+                        model.updateModelWithJSON(json: state)
+                        self.statesArray.append(model)
+                    }
+                    self.txtfieldState.setDropDownDataSource(self.statesArray.map{$0.name})
+                    self.getCountiesDropDown()
+                    
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func getCountiesDropDown(){
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllCounties, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    let countiesArray = result.arrayValue
+                    for county in countiesArray{
+                        let model = CountiesModel()
+                        model.updateModelWithJSON(json: county)
+                        self.countiesArray.append(model)
+                    }
+                    self.txtfieldCounty.setDropDownDataSource(self.countiesArray.map{$0.name})
+                    
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
     }
 }
 

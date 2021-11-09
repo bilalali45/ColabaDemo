@@ -21,6 +21,7 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.non_permenant_resident_layout.view.*
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -121,7 +122,11 @@ class GiftsAssetsFragment:BaseFragment() {
                              binding.cashGift.isChecked = true
                              giftAssetData.valueDate?.let {  valueDate ->
                                  binding.layoutTransferDate.visibility = View.VISIBLE
-                                 binding.dateOfTransferEditText.setText(valueDate)
+                                 val newDate = valueDate.substring(0, valueDate.indexOf("T"))
+                                 val initDate: Date? = SimpleDateFormat("yyyy-MM-dd").parse(newDate)
+                                 val formatter = SimpleDateFormat("MM-dd-yyyy")
+                                 val parsedDate: String = formatter.format(initDate)
+                                  binding.dateOfTransferEditText.setText(newDate)
                              }
                              binding.yesDeposited.isChecked = true
                          }
@@ -330,11 +335,7 @@ class GiftsAssetsFragment:BaseFragment() {
         val newMonth = month + 1
         //  datePicker.findViewById(Resources.getSystem().getIdentifier("day", "id", "android")).setVisibility(View.GONE);
 
-        val dpd = DatePickerDialog(requireActivity(), { view, year, monthOfYear, dayOfMonth -> binding.dateOfTransferEditText.setText("" + newMonth + "-" + dayOfMonth + "-" + year) },
-            year,
-            month,
-            day
-        )
+        val dpd = DatePickerDialog(requireActivity(), { view, year, monthOfYear, dayOfMonth -> binding.dateOfTransferEditText.setText("" + newMonth + "-" + dayOfMonth + "-" + year) }, year, month, day)
 
         dpd.show()
 

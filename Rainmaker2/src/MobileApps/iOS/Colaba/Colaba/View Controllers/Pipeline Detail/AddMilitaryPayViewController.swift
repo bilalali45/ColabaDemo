@@ -28,9 +28,20 @@ class AddMilitaryPayViewController: BaseViewController {
     @IBOutlet weak var txtfieldMilitaryEntitlements: ColabaTextField!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
+    var borrowerName = ""
+    var isForAdd = false
+    var loanApplicationId = 0
+    var borrowerId = 0
+    var incomeInfoId = 0
+    var militaryDetail = MilitaryPayDetailModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextFields()
+        lblUsername.text = borrowerName.uppercased()
+        if (!isForAdd){
+            getMilitaryPayDetail()
+        }
     }
         
     //MARK:- Methods and Actions
@@ -70,10 +81,25 @@ class AddMilitaryPayViewController: BaseViewController {
         
     }
     
+    func setMilitaryPayDetail(){
+        txtfieldEmployerName.setTextField(text: militaryDetail.employerName)
+        let address = militaryDetail.address
+        lblAddress.text = "\(address.street) \(address.unit),\n\(address.city), \(address.stateName) \(address.zipCode)"
+        txtfieldJobTitle.setTextField(text: militaryDetail.jobTitle)
+        txtfieldProfessionYears.setTextField(text: "\(militaryDetail.yearsInProfession)")
+        txtfieldStartDate.setTextField(text: Utility.getDayMonthYear(militaryDetail.startDate))
+        txtfieldMonthlyBaseSalary.setTextField(text: String(format: "%.0f", militaryDetail.monthlyBaseSalary))
+        txtfieldMilitaryEntitlements.setTextField(text: String(format: "%.0f", militaryDetail.militaryEntitlements))
+    }
+    
     @objc func addressViewTapped(){
         let vc = Utility.getCurrentEmployerAddressVC()
         vc.topTitle = "Service Location Address"
         vc.searchTextFieldPlaceholder = "Search Service Location Address"
+        vc.borrowerFullName = self.borrowerName
+        if (!isForAdd){
+            vc.selectedAddress = militaryDetail.address
+        }
         self.pushToVC(vc: vc)
     }
     
@@ -118,6 +144,33 @@ class AddMilitaryPayViewController: BaseViewController {
         
         if validate(){
             self.dismissVC()
+        }
+    }
+    
+    //MARK:- API's
+    
+    func getMilitaryPayDetail(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)&borrowerid=\(borrowerId)&incomeInfoId=\(incomeInfoId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getMilitaryPayDetail, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    let model = MilitaryPayDetailModel()
+                    model.updateModelWithJSON(json: result["data"])
+                    self.militaryDetail = model
+                    self.setMilitaryPayDetail()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
         }
     }
 }

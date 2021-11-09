@@ -8,6 +8,10 @@
 import UIKit
 import Material
 
+protocol SecondMortgageFollowupQuestionsViewControllerDelegate: AnyObject {
+    func saveSecondMortageObject(secondMortgage: [String: Any])
+}
+
 class SecondMortgageFollowupQuestionsViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -53,6 +57,7 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
     var isForRealEstate = false
     var streetAddress = ""
     var mortgageDetail: SecondMortgageModel?
+    weak var delegate: SecondMortgageFollowupQuestionsViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,8 +87,6 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
         
         yesStackView2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackView2Tapped)))
         noStackView2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackView2Tapped)))
-        
-
         
         setTextFields()
     }
@@ -159,6 +162,50 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
         }
     }
     
+    func saveSecondMortgageObject(){
+        
+        var secondMortgagePayment: Any = NSNull()
+        var unPaidSecondMortgagePayment: Any = NSNull()
+        var creditLimit: Any = NSNull()
+        var mortgageCombine: Any = NSNull()
+        var mortgagePaidOff: Any = NSNull()
+        
+        if txtfieldMortgagePayment.text != ""{
+            if let value = Double(cleanString(string: txtfieldMortgagePayment.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                secondMortgagePayment = value
+            }
+        }
+        
+        if txtfieldMortgageBalance.text != ""{
+            if let value = Double(cleanString(string: txtfieldMortgageBalance.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                unPaidSecondMortgagePayment = value
+            }
+        }
+        
+        if txtfieldCreditLimit.text != ""{
+            if let value = Double(cleanString(string: txtfieldCreditLimit.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                creditLimit = value
+            }
+        }
+        
+        if let isCombine = isMortgageCombine{
+            mortgageCombine = isCombine == 1 ? true : false
+        }
+        
+        if let isMortgagePaid = isMortgageTakenWhenPropertyPurchase{
+            mortgagePaidOff = isMortgagePaid == 1 ? true : false
+        }
+        
+        let secondMortgageDict = ["secondMortgagePayment": secondMortgagePayment,
+                                  "unpaidSecondMortgagePayment": unPaidSecondMortgagePayment,
+                                  "helocCreditLimit": creditLimit,
+                                  "isHeloc": switchHomeEquity.isOn ? true : false,
+                                  "combineWithNewFirstMortgage": mortgageCombine,
+                                  "wasSmTaken": mortgagePaidOff] as [String: Any]
+        
+        self.delegate?.saveSecondMortageObject(secondMortgage: secondMortgageDict)
+    }
+    
     //MARK:- API's
     
     func getMortgageData(){
@@ -200,6 +247,7 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
+        saveSecondMortgageObject()
         self.dismissVC()
     }
 }

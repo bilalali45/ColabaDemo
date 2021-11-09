@@ -91,6 +91,11 @@
 		2392A4CE26C55FEE0083EFE4 /* AddMailingAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392A4CD26C55FEE0083EFE4 /* AddMailingAddressViewController.swift */; };
 		23932C3426E64A5D00D02FEA /* AssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23932C3326E64A5D00D02FEA /* AssetsViewController.swift */; };
 		23932C3626E64A7500D02FEA /* AssetsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23932C3526E64A7500D02FEA /* AssetsDetailViewController.swift */; };
+		2393361D273506C0003D71F8 /* SelfIndependenDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393361C273506C0003D71F8 /* SelfIndependenDetailModel.swift */; };
+		2393361F273510D8003D71F8 /* BusinessDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393361E273510D8003D71F8 /* BusinessDetailModel.swift */; };
+		2393362127351590003D71F8 /* MilitaryPayDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393362027351590003D71F8 /* MilitaryPayDetailModel.swift */; };
+		2393362327353952003D71F8 /* RetirementDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393362227353952003D71F8 /* RetirementDetailModel.swift */; };
+		2393362527354A48003D71F8 /* OtherIncomeDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393362427354A48003D71F8 /* OtherIncomeDetailModel.swift */; };
 		239570E426E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239570E326E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift */; };
 		239570E626E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239570E526E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift */; };
 		239570E826E8E78700B2B0A7 /* Test.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 239570E726E8E78700B2B0A7 /* Test.storyboard */; };
@@ -124,6 +129,7 @@
 		23A56C602686152A005CE6F4 /* Rubik-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23A56C5F2686152A005CE6F4 /* Rubik-LightItalic.ttf */; };
 		23A6578826D65B610013A37B /* LoginNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6578726D65B610013A37B /* LoginNavigationViewController.swift */; };
 		23A70A9B2733C407002C5656 /* ProceedsFromTransactionDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A70A9A2733C407002C5656 /* ProceedsFromTransactionDetailModel.swift */; };
+		23A70A9D2733F807002C5656 /* EmployementDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A70A9C2733F807002C5656 /* EmployementDetailModel.swift */; };
 		23A8D1A927045AA300950195 /* DemographicDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A8D1A827045AA300950195 /* DemographicDetailViewController.swift */; };
 		23AFA36B2707130000388905 /* RequestDocument.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23AFA36A2707130000388905 /* RequestDocument.storyboard */; };
 		23AFA36D2707131C00388905 /* RequestDocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AFA36C2707131C00388905 /* RequestDocumentViewController.swift */; };
@@ -360,6 +366,11 @@
 		2392A4CD26C55FEE0083EFE4 /* AddMailingAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMailingAddressViewController.swift; sourceTree = "<group>"; };
 		23932C3326E64A5D00D02FEA /* AssetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsViewController.swift; sourceTree = "<group>"; };
 		23932C3526E64A7500D02FEA /* AssetsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsDetailViewController.swift; sourceTree = "<group>"; };
+		2393361C273506C0003D71F8 /* SelfIndependenDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIndependenDetailModel.swift; sourceTree = "<group>"; };
+		2393361E273510D8003D71F8 /* BusinessDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessDetailModel.swift; sourceTree = "<group>"; };
+		2393362027351590003D71F8 /* MilitaryPayDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilitaryPayDetailModel.swift; sourceTree = "<group>"; };
+		2393362227353952003D71F8 /* RetirementDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetirementDetailModel.swift; sourceTree = "<group>"; };
+		2393362427354A48003D71F8 /* OtherIncomeDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherIncomeDetailModel.swift; sourceTree = "<group>"; };
 		239570E326E8E6FA00B2B0A7 /* AddGiftFundsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGiftFundsViewController.swift; sourceTree = "<group>"; };
 		239570E526E8E76B00B2B0A7 /* AddOtherAssetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOtherAssetsViewController.swift; sourceTree = "<group>"; };
 		239570E726E8E78700B2B0A7 /* Test.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Test.storyboard; sourceTree = "<group>"; };
@@ -393,6 +404,7 @@
 		23A56C5F2686152A005CE6F4 /* Rubik-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-LightItalic.ttf"; sourceTree = "<group>"; };
 		23A6578726D65B610013A37B /* LoginNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNavigationViewController.swift; sourceTree = "<group>"; };
 		23A70A9A2733C407002C5656 /* ProceedsFromTransactionDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceedsFromTransactionDetailModel.swift; sourceTree = "<group>"; };
+		23A70A9C2733F807002C5656 /* EmployementDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployementDetailModel.swift; sourceTree = "<group>"; };
 		23A8D1A827045AA300950195 /* DemographicDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemographicDetailViewController.swift; sourceTree = "<group>"; };
 		23AFA36A2707130000388905 /* RequestDocument.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RequestDocument.storyboard; sourceTree = "<group>"; };
 		23AFA36C2707131C00388905 /* RequestDocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestDocumentViewController.swift; sourceTree = "<group>"; };
@@ -627,6 +639,12 @@
 				23EBC78F2732CAAF0063922C /* OtherAssetsDetailModel.swift */,
 				23EBC7912732D9C60063922C /* GiftDetailModel.swift */,
 				23A70A9A2733C407002C5656 /* ProceedsFromTransactionDetailModel.swift */,
+				23A70A9C2733F807002C5656 /* EmployementDetailModel.swift */,
+				2393361C273506C0003D71F8 /* SelfIndependenDetailModel.swift */,
+				2393361E273510D8003D71F8 /* BusinessDetailModel.swift */,
+				2393362027351590003D71F8 /* MilitaryPayDetailModel.swift */,
+				2393362227353952003D71F8 /* RetirementDetailModel.swift */,
+				2393362427354A48003D71F8 /* OtherIncomeDetailModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1396,6 +1414,7 @@
 			files = (
 				7186ACB02653B25A00E740D3 /* AppDelegate.swift in Sources */,
 				7186ACFC2653C68200E740D3 /* FingerPrintViewController.swift in Sources */,
+				2393362127351590003D71F8 /* MilitaryPayDetailModel.swift in Sources */,
 				23932C3426E64A5D00D02FEA /* AssetsViewController.swift in Sources */,
 				7160CA83267338F90061ACD5 /* NotificationViewController.swift in Sources */,
 				23C244902689E89300EED1D0 /* SearchModel.swift in Sources */,
@@ -1423,6 +1442,7 @@
 				23BDB1D326F8706900C73E33 /* DemographicQuestionsModel.swift in Sources */,
 				239983F426F9BA9200C0AFA7 /* StartNewApplicationViewController.swift in Sources */,
 				238A076B26DCF5F80042E4A7 /* RefinanceLoanInfoViewController.swift in Sources */,
+				2393361F273510D8003D71F8 /* BusinessDetailModel.swift in Sources */,
 				2380E25A26DF71EA00B66C61 /* PurchaseSubjectPropertyViewController.swift in Sources */,
 				238E0F8D26F3631E0025FF06 /* UndisclosedBorrowerFundsViewController.swift in Sources */,
 				23B238BF2679F44000508449 /* NotificationsTableViewCell.swift in Sources */,
@@ -1462,6 +1482,7 @@
 				23B5E98326F46F4C00686B8E /* ForceClosedPropertyViewController.swift in Sources */,
 				23CD143426E25B4400627127 /* SecondMortgageFollowupQuestionsViewController.swift in Sources */,
 				2313E7C42715626D00222A6E /* SubjectPropertyModel.swift in Sources */,
+				2393362327353952003D71F8 /* RetirementDetailModel.swift in Sources */,
 				2338DB73270DA26E00658C2A /* EmailTemplateTableViewCell.swift in Sources */,
 				2330CD2526B000ED00FF3C43 /* DocumentMessageTableViewCell.swift in Sources */,
 				23A56C5D2685B017005CE6F4 /* Icons.swift in Sources */,
@@ -1526,6 +1547,7 @@
 				23B5E97926F46DA200686B8E /* OutstandingJudgementsViewController.swift in Sources */,
 				23B5E98B26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift in Sources */,
 				23F23B3D26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift in Sources */,
+				23A70A9D2733F807002C5656 /* EmployementDetailModel.swift in Sources */,
 				23BE064B26F093BD00F9B4B8 /* AddPreviousEmploymentViewController.swift in Sources */,
 				23C2448A2689E3F800EED1D0 /* InActiveLoanModel.swift in Sources */,
 				238E0F8F26F36A820025FF06 /* UndisclosedBorrowerFundsFollowupQuestionsViewController.swift in Sources */,
@@ -1550,6 +1572,7 @@
 				7186ACF42653C66100E740D3 /* FaceRecognitionViewController.swift in Sources */,
 				7148C6B126554ADE00E1C216 /* Validation.swift in Sources */,
 				71B1944F265CF9780017955B /* OTPTimerManager.swift in Sources */,
+				2393362527354A48003D71F8 /* OtherIncomeDetailModel.swift in Sources */,
 				23A56C5B2685B017005CE6F4 /* Animator.swift in Sources */,
 				230B94D726E7A060004CBC83 /* AddRetirementAccountViewController.swift in Sources */,
 				23E28BDF27184816004FCAA5 /* BorrowerIncomeModel.swift in Sources */,
@@ -1587,6 +1610,7 @@
 				23C244862689B6A500EED1D0 /* AllLoanModel.swift in Sources */,
 				238E0F9926F38AFC0025FF06 /* UndisclosedMortgageApplicationViewController.swift in Sources */,
 				23AFA3712707187700388905 /* DocumentsListViewController.swift in Sources */,
+				2393361D273506C0003D71F8 /* SelfIndependenDetailModel.swift in Sources */,
 				23A1CA6C268C4B8400D93DC4 /* UILoadControl.swift in Sources */,
 				7186AD562653CD5C00E740D3 /* Theme.swift in Sources */,
 				239DB53C270C67A900977E20 /* DocumentRequestSentViewController.swift in Sources */,

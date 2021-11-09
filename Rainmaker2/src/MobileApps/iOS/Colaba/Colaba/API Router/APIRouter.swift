@@ -77,6 +77,17 @@ enum EndPoint:String{
     case getProceedsFromNonRealEstateDetail = "loanapplication/Assets/GetFromLoanNonRealStateDetails?"
     case getProceedsFromRealEstateDetail = "loanapplication/Assets/GetFromLoanRealStateDetails?"
     case getProceedsFromLoan = "loanapplication/Assets/GetProceedsfromloanDetails?"
+    case getEmploymentDetail = "loanapplication/Assets/GetEmploymentDetail?"
+    case getSelfEmploymentDetail = "loanapplication/Assets/GetSelfBusinessIncome?"
+    case getAllBusinessType = "loanapplication/Assets/GetAllBusinessTypes"
+    case getBusinessIncomeDetail = "loanapplication/Assets/GetBusinessIncome?"
+    case getMilitaryPayDetail = "loanapplication/Assets/GetMilitaryIncome?"
+    case getAllRetirementTypes = "loanapplication/Assets/GetRetirementIncomeTypes"
+    case getRetirementIncomeDetail = "loanapplication/Assets/GetRetirementIncomeInfo?"
+    case getOtherIncomeType = "loanapplication/Assets/GetOtherIncomeTypes"
+    case getOtherIncomeDetail = "loanapplication/Assets/GetOtherIncomeInfo?"
+    case updatePurchaseSubjectProperty = "loanapplication/SubjectProperty/AddOrUpdateSubjectPropertyDetail"
+    case updateRefinanceSubjectProperty = "loanapplication/SubjectProperty/AddOrUpdateRefinanceSubjectPropertyDetail"
     case logout = "identity/mcuaccount/Logout"
     
 }

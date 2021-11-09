@@ -21,11 +21,25 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     private var _incomeDetails : MutableLiveData<ArrayList<IncomeDetailsResponse>> =   MutableLiveData()
     val incomeDetails: LiveData<ArrayList<IncomeDetailsResponse>> get() = _incomeDetails
 
+
+
+
     private var _governmentQuestionsModelClass : MutableLiveData<GovernmentQuestionsModelClass> =   MutableLiveData()
     val governmentQuestionsModelClass: LiveData<GovernmentQuestionsModelClass> get() = _governmentQuestionsModelClass
 
+    private var _governmentQuestionsModelClassList : MutableLiveData<ArrayList<GovernmentQuestionsModelClass>> =   MutableLiveData()
+    val governmentQuestionsModelClassList: LiveData<ArrayList<GovernmentQuestionsModelClass>> get() = _governmentQuestionsModelClassList
+
+
+
+
     private var _demoGraphicInfo : MutableLiveData<DemoGraphicResponseModel> =   MutableLiveData()
     val demoGraphicInfo: LiveData<DemoGraphicResponseModel> get() = _demoGraphicInfo
+
+    private var _demoGraphicInfoList : MutableLiveData<ArrayList<DemoGraphicResponseModel>> =   MutableLiveData()
+    val demoGraphicInfoList: LiveData<ArrayList<DemoGraphicResponseModel>> get() = _demoGraphicInfoList
+
+
 
     private val _propertyType: MutableLiveData<ArrayList<DropDownResponse>> = MutableLiveData()
     val propertyType: LiveData<ArrayList<DropDownResponse>> get() = _propertyType
@@ -209,6 +223,19 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         _incomeDetails  =   MutableLiveData()
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     suspend fun getGovernmentQuestions(token:String, loanApplicationId:Int, ownTypeId:Int, borrowerId:Int ): Boolean {
         var bool = false
 
@@ -229,6 +256,77 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         return bool
     }
 
+
+
+
+    suspend fun getGovernmentQuestionsList(token:String, loanApplicationId:Int ,  ownTypeId:ArrayList<Int>, borrowerIds:ArrayList<Int>) {
+        var errorResult:Result.Error?=null
+        val borrowerList: ArrayList<GovernmentQuestionsModelClass> = ArrayList()
+        var passOwnTypeId = 0
+        viewModelScope.launch(Dispatchers.IO) {
+            coroutineScope {
+                borrowerIds.forEach { id ->
+                    val selectedOwnTypeId = ownTypeId[passOwnTypeId]
+                    passOwnTypeId++
+                    Timber.e("selectedOwnTypeId.id -> $id and own type id = $selectedOwnTypeId")
+                    launch {
+                        val responseResult = bAppRepo.getGovernmentQuestionsList(
+                            token = token, loanApplicationId = loanApplicationId , ownTypeId = selectedOwnTypeId, borrowerId = id)
+                        if (responseResult is Result.Success) {
+                            responseResult.data.passedBorrowerId = id
+                            Timber.e("borrowerIds.data.passedBorrowerId -> "+responseResult.data.passedBorrowerId)
+                            borrowerList.add(responseResult.data)
+                        }
+                        else if (responseResult is Result.Error)
+                            errorResult = responseResult
+                    }
+                }
+            }  // coroutineScope block will wait here until all child tasks are completed
+            withContext(Dispatchers.Main) {
+                _governmentQuestionsModelClassList.value = borrowerList
+            }
+            if(errorResult!=null) // if service not working.....
+                EventBus.getDefault().post(WebServiceErrorEvent(errorResult, false))
+            else
+            if(borrowerList.size == 0) // service working without error but no results....
+                EventBus.getDefault().post(WebServiceErrorEvent(null, false))
+        }
+    }
+
+
+    suspend fun getDemoGraphicInfoList(token:String, loanApplicationId:Int, borrowerIds:ArrayList<Int>) {
+        var errorResult:Result.Error?=null
+        val borrowerList: ArrayList<DemoGraphicResponseModel> = ArrayList()
+        viewModelScope.launch(Dispatchers.IO) {
+            coroutineScope {
+                borrowerIds.forEach { id ->
+                    launch {
+                        val responseResult = bAppRepo.getDemoGraphicInfo(
+                            token = token, loanApplicationId = loanApplicationId , borrowerId = id)
+                        if (responseResult is Result.Success) {
+                            responseResult.data.passedBorrowerId = id
+                            Timber.e("borrowerIds.data.passedBorrowerId -> "+responseResult.data.passedBorrowerId)
+                            borrowerList.add(responseResult.data)
+                        }
+                        else if (responseResult is Result.Error)
+                            errorResult = responseResult
+                    }
+                }
+            }  // coroutineScope block will wait here until all child tasks are completed
+            withContext(Dispatchers.Main) {
+                _demoGraphicInfoList.value = borrowerList
+            }
+            if(errorResult!=null) // if service not working.....
+                EventBus.getDefault().post(WebServiceErrorEvent(errorResult, false))
+            else
+                if(borrowerList.size == 0) // service working without error but no results....
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, false))
+        }
+
+
+
+    }
+
     suspend fun getDemoGraphicInfo(token:String, loanApplicationId:Int,borrowerId:Int ) {
         viewModelScope.launch (Dispatchers.IO) {
 
@@ -244,6 +342,9 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
             }
         }
     }
+
+
+
 
     suspend fun getCoBorrowerOccupancyStatus(token: String, loanApplicationId: Int) {
         //Timber.e("CoBorrower: " + loanApplicationId + "Auth Token: " + token)
