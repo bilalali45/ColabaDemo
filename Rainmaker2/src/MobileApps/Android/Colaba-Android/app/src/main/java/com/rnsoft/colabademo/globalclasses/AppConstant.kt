@@ -133,6 +133,13 @@ object AppConstant {
         const val borrowerDocScreen:String = "borrowerDocScreen"
 
 
+
+
+        const val childGlobalList : String = "childGlobalList"
+        const val ownerShipGlobalData : String = "ownerShipGlobalData"
+        const val bankruptcyGlobalData : String = "bankruptcyGlobalData"
+
+
         const val  downloadedFileName:String = "pdfFileName"
         const val address: String = "address"
         const val TOOLBAR_TITLE: String = "toolbar_title"

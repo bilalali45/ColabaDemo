@@ -27,15 +27,15 @@ class ChildSupportFragment:BaseFragment() {
     private var _binding: ChildSupportLayoutBinding? = null
     private val binding get() = _binding!!
 
+    private  var childGlobalList:ArrayList<ChildAnswerData> = arrayListOf()
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ChildSupportLayoutBinding.inflate(inflater, container, false)
+        arguments?.let { arguments->
+            childGlobalList = arguments.getParcelableArrayList(AppConstant.childGlobalList)!!
+        }
         val root: View = binding.root
         setUpUI()
         super.addListeners(binding.root)
@@ -184,8 +184,8 @@ class ChildSupportFragment:BaseFragment() {
     }
 
     private fun fillGlobalData(){
-            if(BorrowerOneQuestions.childGlobalList.size>0){
-                val test = BorrowerOneQuestions.childGlobalList[0]
+            if(childGlobalList.size>0){
+                val test = childGlobalList[0]
                 //binding.childSupportCheckBox.isChecked = true
 
                 binding.childSupportCheckBox.performClick()
@@ -197,8 +197,8 @@ class ChildSupportFragment:BaseFragment() {
                 binding.paymentReceiptEditText.setText(returnStringWithZero(test.name))
             }
 
-            if(BorrowerOneQuestions.childGlobalList.size>1){
-                val test = BorrowerOneQuestions.childGlobalList[1]
+            if(childGlobalList.size>1){
+                val test = childGlobalList[1]
                 //binding.alimonyCheckBox.isChecked = true
                 binding.alimonyCheckBox.performClick()
                 binding.alimonyPaymentRemainingTextView.setText(returnStringWithZero(test.remainingMonth) , false)
@@ -206,8 +206,8 @@ class ChildSupportFragment:BaseFragment() {
                 binding.alimonyPaymentReceiptEditText.setText(returnStringWithZero(test.name))
             }
 
-            if(BorrowerOneQuestions.childGlobalList.size>2){
-                val test = BorrowerOneQuestions.childGlobalList[2]
+            if(childGlobalList.size>2){
+                val test = childGlobalList[2]
                 //binding.separateMaintenanceCheckBox.isChecked = true
                 binding.separateMaintenanceCheckBox.performClick()
                 binding.separateMaintenancePaymentRemainingTextView.setText(returnStringWithZero(test.remainingMonth) , false)

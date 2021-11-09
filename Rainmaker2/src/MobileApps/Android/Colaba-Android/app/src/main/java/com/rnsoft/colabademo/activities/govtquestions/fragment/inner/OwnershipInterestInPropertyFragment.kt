@@ -25,6 +25,8 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
 
     private var _binding: OwnershipInterestInPropertyLayoutBinding? = null
     private val binding get() = _binding!!
+    private var ownerShipGlobalData:ArrayList<String> = arrayListOf()
+
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -35,6 +37,9 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
     ): View {
 
         _binding = OwnershipInterestInPropertyLayoutBinding.inflate(inflater, container, false)
+        arguments?.let { arguments->
+            ownerShipGlobalData = arguments.getStringArrayList(AppConstant.ownerShipGlobalData)!!
+        }
         val root: View = binding.root
         setUpUI()
         super.addListeners(binding.root)
@@ -123,10 +128,10 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
 
 
     private fun fillWithGlobalData(){
-        if(BorrowerOneQuestions.ownerShipGlobalData.size>0)
-            binding.transactionAutoCompleteTextView.setText(BorrowerOneQuestions.ownerShipGlobalData.get(0) , false)
-        if(BorrowerOneQuestions.ownerShipGlobalData.size>1)
-            binding.whichAssetsCompleteView.setText(BorrowerOneQuestions.ownerShipGlobalData.get(1), false)
+        if(ownerShipGlobalData.size>0)
+            binding.transactionAutoCompleteTextView.setText(ownerShipGlobalData.get(0) , false)
+        if(ownerShipGlobalData.size>1)
+            binding.whichAssetsCompleteView.setText(ownerShipGlobalData.get(1), false)
     }
 
 
