@@ -53,7 +53,6 @@ class ApplicationViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        getLoanApplicationDetail()
         
         /// For Showing Add Buttons
         
@@ -79,6 +78,7 @@ class ApplicationViewController: BaseViewController {
         super.viewDidAppear(animated)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowNavigationBar), object: nil, userInfo: nil)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationHideRequestDocumentFooterButton), object: nil, userInfo: nil)
+        getLoanApplicationDetail()
     }
     
     //MARK:- Methods and Actions
@@ -245,7 +245,9 @@ class ApplicationViewController: BaseViewController {
     func getLoanApplicationDetail(){
         
         self.view.isUserInteractionEnabled = false
-        loadingPlaceholderView.cover(self.view, animated: true)
+        if loanApplicationDetail.borrowersInformation.count == 0{
+            loadingPlaceholderView.cover(self.view, animated: true)
+        }
         let extraData = "loanApplicationId=\(loanApplicationId)"
         
         APIRouter.sharedInstance.executeAPI(type: .getLoanApplicationData, method: .get, params: nil, extraData: extraData) { status, result, message in

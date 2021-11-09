@@ -40,10 +40,12 @@ class RefinanceSubjectPropertyModel: NSObject{
         address = model
         cashOutAmount = json["cashOutAmount"].doubleValue
         dateAcquired = json["dateAcquired"].stringValue
-        let firstMortgageModelJson = json["firstMortgageModel"]
-        let firstMortgageModel = FirstMortgageModel()
-        firstMortgageModel.updateModelWithJSON(json: firstMortgageModelJson)
-        firstMortgage = firstMortgageModel
+        if json["firstMortgageModel"] != JSON.null{
+            let firstMortgageModelJson = json["firstMortgageModel"]
+            let firstMortgageModel = FirstMortgageModel()
+            firstMortgageModel.updateModelWithJSON(json: firstMortgageModelJson)
+            firstMortgage = firstMortgageModel
+        }
         floodInsurance = json["floodInsurance"].doubleValue
         hasFirstMortgage = json["hasFirstMortgage"].boolValue
         hasSecondMortgage = json["hasSecondMortgage"].boolValue
@@ -61,10 +63,12 @@ class RefinanceSubjectPropertyModel: NSObject{
         propertyUsageId = json["propertyUsageId"].intValue
         propertyValue = json["propertyValue"].doubleValue
         rentalIncome = json["rentalIncome"].doubleValue
-        let secondMortgageModelJson = json["secondMortgageModel"]
-        let secondMortgageModel = SecondMortgageModel()
-        secondMortgageModel.updateModelWithJSON(json: secondMortgageModelJson)
-        secondMortgage = secondMortgageModel
+        if json["secondMortgageModel"] != JSON.null{
+            let secondMortgageModelJson = json["secondMortgageModel"]
+            let secondMortgageModel = SecondMortgageModel()
+            secondMortgageModel.updateModelWithJSON(json: secondMortgageModelJson)
+            secondMortgage = secondMortgageModel
+        }
     }
 }
 

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class PurchaseSubjectPropertyViewController: BaseViewController {
     
@@ -61,6 +62,7 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     var isTBDProperty = true
     var isMixedUseProperty: Bool?
     var isOccupying: Bool?
+    var savedAddress: Any = NSNull()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -172,6 +174,7 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     @objc func addressViewTapped(){
         let vc = Utility.getSubjectPropertyAddressVC()
         vc.selectedAddress = self.subjectPropertyDetail.address
+        vc.delegate = self
         self.presentVC(vc: vc)
         isTBDProperty = false
         changedSubjectPropertyType()
@@ -189,6 +192,8 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     
     @objc func yesStackViewTapped(){
         let vc = Utility.getMixPropertyDetailFollowUpVC()
+        vc.detail = lblPropertyUseDetail.text!
+        vc.delegate = self
         self.presentVC(vc: vc)
         isMixedUseProperty = true
         changeMixedUseProperty()
@@ -214,6 +219,8 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     
     @objc func propertyDetailViewTapped(){
         let vc = Utility.getMixPropertyDetailFollowUpVC()
+        vc.detail = lblPropertyUseDetail.text!
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
@@ -242,12 +249,16 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton){
-        self.goBack()
+        updateSubjectProperty()
     }
     
     //MARK:- API's
     
     func getPropertyTypeDropDown(){
+        
+        propertyTypeArray.removeAll()
+        occupancyTypeArray.removeAll()
+        coBorrowerOccupancyArray.removeAll()
         
         Utility.showOrHideLoader(shouldShow: true)
         
@@ -317,6 +328,22 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
                     subjectPropertyModel.updateModelWithJSON(json: result["data"])
                     self.subjectPropertyDetail = subjectPropertyModel
                     self.getCoBorrowersOccupancyStatus()
+                    if (result["data"]["address"] == JSON.null){
+                        self.savedAddress = NSNull()
+                    }
+                    else{
+                        self.savedAddress = ["street": result["data"]["address"]["street"] == JSON.null ? NSNull() : result["data"]["address"]["street"].stringValue,
+                                             "unit": result["data"]["address"]["unit"] == JSON.null ? NSNull() : result["data"]["address"]["unit"].stringValue,
+                                             "city": result["data"]["address"]["city"] == JSON.null ? NSNull() : result["data"]["address"]["city"].stringValue,
+                                             "stateId": result["data"]["address"]["stateId"] == JSON.null ? NSNull() : result["data"]["address"]["stateId"].intValue,
+                                             "zipCode": result["data"]["address"]["zipCode"] == JSON.null ? NSNull() : result["data"]["address"]["zipCode"].stringValue,
+                                             "countryId": result["data"]["address"]["countryId"] == JSON.null ? NSNull() : result["data"]["address"]["countryId"].intValue,
+                                             "countryName": result["data"]["address"]["countryName"] == JSON.null ? NSNull() : result["data"]["address"]["countryName"].stringValue,
+                                             "stateName": result["data"]["address"]["stateName"] == JSON.null ? NSNull() : result["data"]["address"]["stateName"].stringValue,
+                                             "countyId": result["data"]["address"]["countyId"] == JSON.null ? NSNull() : result["data"]["address"]["countyId"].stringValue,
+                                             "countyName": result["data"]["address"]["countyName"] == JSON.null ? NSNull() : result["data"]["address"]["countyName"].stringValue] as [String: Any]
+                    }
+                    
                 }
                 else{
                     Utility.showOrHideLoader(shouldShow: false)
@@ -358,4 +385,115 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
         }
     }
     
+    func updateSubjectProperty(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        var propertyTypeId: Any = NSNull()
+        var occupancyTypeId: Any = NSNull()
+        var appraisedPropertyValue: Any = NSNull()
+        var propertyTax: Any = NSNull()
+        var homeOwnerInsurance: Any = NSNull()
+        var floodInsurance: Any = NSNull()
+        var mixUsedProperty: Any = NSNull()
+        var mixUsedPropertyDetail: Any = NSNull()
+        
+        if txtfieldAppraisedPropertyValue.text != ""{
+            if let value = Double(cleanString(string: txtfieldAppraisedPropertyValue.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                appraisedPropertyValue = value
+            }
+        }
+        if txtfieldTax.text != ""{
+            if let value = Double(cleanString(string: txtfieldTax.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                propertyTax = value
+            }
+        }
+        if txtfieldHomeOwnerInsurance.text != ""{
+            if let value = Double(cleanString(string: txtfieldHomeOwnerInsurance.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                homeOwnerInsurance = value
+            }
+        }
+        if txtfieldFloodInsurance.text != ""{
+            if let value = Double(cleanString(string: txtfieldFloodInsurance.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                floodInsurance = value
+            }
+        }
+        
+        if let selectedProperty = propertyTypeArray.filter({$0.optionName == txtfieldPropertyType.text}).first{
+            propertyTypeId = selectedProperty.optionId
+        }
+        if let selectedOccupancy = occupancyTypeArray.filter({$0.optionName == txtfieldOccupancyType.text}).first{
+            occupancyTypeId = selectedOccupancy.optionId
+        }
+        
+        if let mixUse = isMixedUseProperty{
+            mixUsedProperty = mixUse
+        }
+        
+        if lblPropertyUseDetail.text != ""{
+            mixUsedPropertyDetail = lblPropertyUseDetail.text!
+        }
+        
+        let params = ["loanApplicationId": loanApplicationId,
+                      "propertyTypeId": propertyTypeId,
+                      "occupancyTypeId": occupancyTypeId,
+                      "appraisedPropertyValue": appraisedPropertyValue,
+                      "propertyTax": propertyTax,
+                      "homeOwnerInsurance": homeOwnerInsurance,
+                      "floodInsurance": floodInsurance,
+                      "address": isTBDProperty ? NSNull() : savedAddress,
+                      "isMixedUseProperty": mixUsedProperty,
+                      "mixedUsePropertyExplanation": mixUsedPropertyDetail,
+                      "subjectPropertyTbd": isTBDProperty] as [String: Any]
+        
+        print(params)
+        
+        APIRouter.sharedInstance.executeAPI(type: .updatePurchaseSubjectProperty, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.showPopup(message: "Subject property updated sucessfully", popupState: .success, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                    self.getPurchaseSubjectProperty()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+}
+
+extension PurchaseSubjectPropertyViewController: SubjectPropertyAddressViewControllerDelegate{
+    func saveAddressObject(address: [String : Any]) {
+        savedAddress = address
+        
+        var street = "", unit = "", city = "", stateName = "", zipCode = ""
+        if let addressStreet = address["street"] as? String{
+            street = addressStreet
+        }
+        if let addressUnit = address["unit"] as? String{
+            unit = addressUnit
+        }
+        if let addressCity = address["city"] as? String{
+            city = addressCity
+        }
+        if let addressState = address["stateName"] as? String{
+            stateName = addressState
+        }
+        if let addressZipCode = address["zipCode"] as? String{
+            zipCode = addressZipCode
+        }
+        lblAddress.text = "\(street) \(unit),\n\(city), \(stateName) \(zipCode)"
+    }
+}
+
+extension PurchaseSubjectPropertyViewController: MixPropertyDetailFollowUpViewControllerDelegate{
+    func updateDetails(detail: String) {
+        lblPropertyUseDetail.text = detail
+    }
 }

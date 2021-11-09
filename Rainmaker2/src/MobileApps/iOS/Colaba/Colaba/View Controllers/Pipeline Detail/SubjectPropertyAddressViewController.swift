@@ -9,6 +9,10 @@ import UIKit
 import Material
 import GooglePlaces
 
+protocol SubjectPropertyAddressViewControllerDelegate: AnyObject{
+    func saveAddressObject(address: [String: Any])
+}
+
 class SubjectPropertyAddressViewController: BaseViewController {
     
     //MARK:- Outlets and Properties
@@ -37,6 +41,7 @@ class SubjectPropertyAddressViewController: BaseViewController {
     var statesArray = [StatesModel]()
     var countiesArray = [CountiesModel]()
     var selectedAddress: AddressModel?
+    weak var delegate: SubjectPropertyAddressViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -212,6 +217,38 @@ class SubjectPropertyAddressViewController: BaseViewController {
                                     })
     }
     
+    func saveAddressObject(){
+        
+        var stateId: Any = NSNull()
+        var countryId: Any = NSNull()
+        var countyId: Any = NSNull()
+        
+        if let selectedState = statesArray.filter({$0.name == txtfieldState.text}).first{
+            stateId = selectedState.id
+        }
+        
+        if let selectedCountry = countriesArray.filter({$0.name == txtfieldCountry.text}).first{
+            countryId = selectedCountry.id
+        }
+        
+        if let selectedCounty = countiesArray.filter({$0.name == txtfieldCounty.text}).first{
+            countyId = selectedCounty.id
+        }
+        
+        let addressDic = ["street": txtfieldStreetAddress.text == "" ? NSNull() : txtfieldStreetAddress.text!,
+                          "unit": txtfieldUnitNo.text == "" ? NSNull() : txtfieldUnitNo.text!,
+                          "city": txtfieldCity.text == "" ? NSNull() : txtfieldCity.text!,
+                          "stateId": stateId,
+                          "zipCode": txtfieldZipCode.text == "" ? NSNull() : txtfieldZipCode.text!,
+                          "countryId": countryId,
+                          "countryName": txtfieldCountry.text == "" ? NSNull() : txtfieldCountry.text!,
+                          "stateName": txtfieldState.text == "" ? NSNull() : txtfieldState.text!,
+                          "countyId": countyId,
+                          "countyName": txtfieldCounty.text == "" ? NSNull() : txtfieldCounty.text!] as [String: Any]
+        self.delegate?.saveAddressObject(address: addressDic)
+        
+    }
+    
     @IBAction func btnBackTapped(_ sender: UIButton) {
         self.dismissVC()
     }
@@ -229,9 +266,8 @@ class SubjectPropertyAddressViewController: BaseViewController {
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         if validate() {
-            if (self.txtfieldHomeAddress.text != "" && txtfieldStreetAddress.text != "" && txtfieldCity.text != "" && txtfieldState.text != "" && txtfieldZipCode.text != "" && txtfieldCountry.text != ""){
-                self.dismissVC()
-            }
+            saveAddressObject()
+            self.dismissVC()
         }
     }
     
