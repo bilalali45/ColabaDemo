@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.util.Log
 import com.rnsoft.colabademo.activities.model.*
 import retrofit2.HttpException
+import retrofit2.Response
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
@@ -46,12 +47,17 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
         }
     }
 
-    suspend fun sendSubjectPropertyDetail(token: String, data: SubPropertyData): Result<Any> {
-        Log.e("dataSource","datasource")
+    suspend fun sendSubjectPropertyDetail(token: String, data: SubPropertyData): Result<AddUpdateDataResponse> {
+        val serverResponse: Response<AddUpdateDataResponse>
         return try {
-            val response = serverApi.addOrUpdateSubjectPropertyDetail(token,data)
-            Log.e("addData-", response.toString())
-            Result.Success(response.isSuccessful)
+            serverResponse = serverApi.addOrUpdateSubjectPropertyDetail(token,data)
+            if(serverResponse.isSuccessful)
+                Result.Success(serverResponse.body()!!)
+            else {
+                Log.e("what-code ", ""+serverResponse.errorBody())
+                Log.e("what-code ", serverResponse.errorBody()?.charStream().toString())
+                Result.Success(serverResponse.body()!!)
+            }
 
         } catch (e: Throwable){
             Log.e("errorrr",e.localizedMessage)

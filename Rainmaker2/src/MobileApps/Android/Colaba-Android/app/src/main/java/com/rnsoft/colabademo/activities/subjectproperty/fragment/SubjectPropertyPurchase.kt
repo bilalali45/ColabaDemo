@@ -239,6 +239,7 @@ class SubjectPropertyPurchase : BaseFragment() {
                             binding.radioMixedPropertyYes.isChecked = true
                             details.subPropertyData.mixedUsePropertyExplanation?.let { desc ->
                                 binding.mixedPropertyExplanation.setText(desc)
+                                binding.layoutMixedPropertyDetail.visibility = View.VISIBLE
                             }
                         }
                         else
@@ -380,44 +381,49 @@ class SubjectPropertyPurchase : BaseFragment() {
     }
 
     private fun checkValidations(){
-
-        /*val businessName: String = binding.editTextBusinessName.text.toString()
-        val jobTitle: String = binding.edJobTitle.text.toString()
-        val startDate: String = binding.editTextBstartDate.text.toString()
-        val netIncome: String = binding.edNetIncome.text.toString()
-
-            if (startDate.isNotEmpty() || startDate.length > 0) {
-            CustomMaterialFields.clearError(binding.layoutBStartDate,requireActivity())
+        // TBD
+        val tbd = if(binding.radioSubPropertyTbd.isChecked) true else false
+        if(!binding.radioSubPropertyAddress.isChecked){
+            addressList.clear()
         }
-        if (netIncome.isNotEmpty() || netIncome.length > 0) {
-            CustomMaterialFields.clearError(binding.layoutNetIncome,requireActivity())
-        }
-        if (businessName.length > 0 && jobTitle.length > 0 &&  startDate.length > 0 && netIncome.length > 0 ){
-            //findNavController().popBackStack()
-            Log.e("btnClick","sendData")
-            val address = SelfEmploymentAddress(city = null,countryId = null,countryName = null,stateId = null,stateName = null,unit = null,
-                zipCode = null,street = null)
-            val selfEmploymentData = SelfEmploymentData(loanApplicationId=loanApplicationId,borrowerId=borrowerId,id= incomeInfoId,
-                businessName = "Colaba", businessPhone = "123456",jobTitle = "Developer",
-                startDate = "12-01-2020",address = address,annualIncome= 120000.0)
 
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    viewModel.sendSelfEmploymentData(authToken,selfEmploymentData)
-
-                }
-            }
-        } */
-
+        // get property id
         val property : String = binding.tvPropertyType.getText().toString().trim()
-        //Log.e("size-----", property)
-        //var filterList =  propertyTypeList.filter { s -> s.name == property}.single()
-        //var id = property.map{filterList.id}.single()
-        //Log.e("SelectedId****", ""+ id)
+        val matchedList1 =  occupancyTypeList.filter { s -> s.name == property}
+        val propertyId = if(matchedList1.size>0) matchedList1.map { matchedList1.get(0).id }.single() else null
+        // get occupancy id
+        val occupancy : String = binding.tvOccupancyType.getText().toString().trim()
+        val matchedList =  occupancyTypeList.filter { s -> s.name == occupancy}
+        val occupancyId = if(matchedList.size>0) matchedList.map { matchedList.get(0).id }.single() else null
 
-        val address = AddressData(city = null,countryId = null,countryName = null,stateId = null,stateName = null,unit = null, zipCode = null,street = null,countyId = 4,countyName = null)
-        val propertyData = SubPropertyData(loanApplicationId=5,propertyTypeId=1,occupancyTypeId=1, appraisedPropertyValue = 100000.0,propertyTax = 100.0,homeOwnerInsurance =200.0,floodInsurance = 0.0,
-            address = address,isMixedUseProperty=true,mixedUsePropertyExplanation="ashh")
+        // mixed use property
+        val isMixedUseProperty = if(binding.radioMixedPropertyYes.isChecked) true else false
+        // desc
+        val mixedUsePropertyDesc = if(binding.mixedPropertyExplanation.text.toString().trim().length>0) binding.mixedPropertyExplanation.text.toString() else null
+        // appraised value
+        var value : Double? = null
+        val appraisedValue = binding.edAppraisedPropertyValue.text.toString().replace(",","")
+        Log.e("value", appraisedValue)
+        if(appraisedValue.length > 0)
+           value = appraisedValue.toDouble()
+
+
+
+        // property tax
+        val propertyTax = if(binding.edPropertyTax.text.toString().trim().length > 0) binding.edPropertyTax.text.toString() else null
+        // home insurance
+        val homeInsurance = if(binding.edHomeownerInsurance.text.toString().trim().length>0) binding.edHomeownerInsurance.text.toString() else null
+        // flood insurance
+        val floodInsurance = if(binding.edFloodInsurance.text.toString().trim().length>0) binding.edFloodInsurance.text.toString() else null
+
+        val address = AddressData(city = "Karachi",countryId = 1,countryName = "Pak",stateId = 11,stateName = "Sindh",unit = "00", zipCode = "123",street = "akl",countyId = 1,countyName = "SSS")
+        val propertyData = SubPropertyData(loanApplicationId = 5,propertyTypeId = propertyId,occupancyTypeId = occupancyId,
+            appraisedPropertyValue = value,propertyTax = propertyTax?.toDouble(),homeOwnerInsurance =homeInsurance?.toDouble(),floodInsurance = floodInsurance?.toDouble(),          address = address,isMixedUseProperty= isMixedUseProperty,mixedUsePropertyExplanation=mixedUsePropertyDesc,subjectPropertyTbd = tbd)
+
+
+        //val address = AddressData(city = "Karachi",countryId = 1,countryName = "Pak",stateId = 11,stateName = "Sindh",unit = "00", zipCode = "123",street = "akl",countyId = 1,countyName = "SSS")
+        //val propertyData = SubPropertyData(loanApplicationId = 5,propertyTypeId = propertyId,occupancyTypeId = occupancyId,appraisedPropertyValue = 100000.0,propertyTax = 100.0,homeOwnerInsurance =200.0,floodInsurance = 0.0,
+         //   address = address,isMixedUseProperty=true,mixedUsePropertyExplanation="ashh")
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 viewModelSubProperty.sendSubjectPropertyDetail(authToken,propertyData)
@@ -464,3 +470,11 @@ class SubjectPropertyPurchase : BaseFragment() {
     }
 
 }
+/*
+// filter map syntax
+// one line
+var propertyId =  propertyTypeList.filter { s -> s.name == property}.map{it.id}.single()
+// 2 lines
+val matchedList =  occupancyTypeList.filter { s -> s.name == occupancy}
+val id = matchedList.map { matchedList.get(0).id }.single()
+*/
