@@ -6,7 +6,8 @@ data class GovernmentQuestionsModelClass(
     val code: String?=null,
     @SerializedName("data") val questionData : ArrayList<QuestionData>?=null,
     val message: String?=null,
-    val status: String?=null
+    val status: String?=null,
+    var passedBorrowerId:Int?
 )
 
 

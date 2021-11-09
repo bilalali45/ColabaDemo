@@ -59,23 +59,31 @@ class GovtQuestionActivity : BaseActivity() {
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                Timber.e("loading govt service...")
 
+                /*
+                Timber.e("loading govt service...")
                 val borrowerId =  borrowerTabList?.get(0)
                 val ownTypeId = borrowerOwnTypeList?.get(0)
-
-                if(loanApplicationId!=null && borrowerTabList!=null && loanApplicationId!=null &&  borrowerId!=null && ownTypeId!=null ) {
+                if(loanApplicationId!=null && borrowerTabList!=null &&  borrowerId!=null && ownTypeId!=null ) {
                     val bool = borrowerApplicationViewModel.getGovernmentQuestions(
                         authToken,
                         loanApplicationId!!,
                         ownTypeId,
                         borrowerId
                     )
-                    Timber.e("Government service loaded..." + bool)
+                 */
 
-                    borrowerApplicationViewModel.getDemoGraphicInfo(authToken,
-                        1050,
-                        1065 )
+                    if(loanApplicationId!=null && borrowerTabList!=null  &&  borrowerOwnTypeList!=null) {
+                        borrowerApplicationViewModel.getGovernmentQuestionsList(
+                            authToken,
+                            loanApplicationId!!,
+                            borrowerOwnTypeList!!,
+                            borrowerTabList!!
+                        )
+                        Timber.e("Government service loaded...Loading DemoGraphic..." )
+                        borrowerApplicationViewModel.getDemoGraphicInfoList(authToken, loanApplicationId!!, borrowerTabList!! )
+
+                        //borrowerApplicationViewModel.getDemoGraphicInfo(authToken, 1050, 1065 )
                 }
             }
         }
@@ -96,7 +104,9 @@ class GovtQuestionActivity : BaseActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onErrorEvent(event: WebServiceErrorEvent) {
         binding.govtDataLoader.visibility = View.INVISIBLE
-        finish()
-
+        Timber.e("error in service will finish this activity....")
+        //finish()
     }
+
+
 }

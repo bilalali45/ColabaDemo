@@ -68,12 +68,10 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
             setInputFields()
             getEmploymentData()
 
-
             return binding.root
     }
 
     private fun getEmploymentData(){
-
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -364,7 +362,7 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
     private fun openAddressFragment(){
         val addressFragment = AddressCurrentEmployment()
         val bundle = Bundle()
-        bundle.putString(AppConstant.address, getString(R.string.current_employer_address))
+        bundle.putString(AppConstant.TOOLBAR_TITLE, getString(R.string.current_employer_address))
         bundle.putParcelableArrayList(AppConstant.address,addressList)
         addressFragment.arguments = bundle
         findNavController().navigate(R.id.action_current_employment_address, addressFragment.arguments)
@@ -462,5 +460,12 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
             day
         )
         dpd.show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("OnDestroy","true")
+        //viewModel.employmentDetail.value = null
+
     }
 }

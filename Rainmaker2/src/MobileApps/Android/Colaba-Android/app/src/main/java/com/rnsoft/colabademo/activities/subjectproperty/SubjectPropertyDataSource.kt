@@ -2,6 +2,8 @@ package com.rnsoft.colabademo
 
 import android.util.Log
 import com.rnsoft.colabademo.activities.model.*
+import retrofit2.HttpException
+import retrofit2.Response
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
@@ -44,6 +46,54 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
                 Result.Error(IOException("Error notification -", e))
         }
     }
+
+    suspend fun sendSubjectPropertyDetail(token: String, data: SubPropertyData): Result<AddUpdateDataResponse> {
+        val serverResponse: Response<AddUpdateDataResponse>
+        return try {
+            serverResponse = serverApi.addOrUpdateSubjectPropertyDetail(token,data)
+            if(serverResponse.isSuccessful)
+                Result.Success(serverResponse.body()!!)
+            else {
+                Log.e("what-code ", ""+serverResponse.errorBody())
+                Log.e("what-code ", serverResponse.errorBody()?.charStream().toString())
+                Result.Success(serverResponse.body()!!)
+            }
+
+        } catch (e: Throwable){
+            Log.e("errorrr",e.localizedMessage)
+            if(e is HttpException){
+                Log.e("network", "issues...")
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                Log.e("erorr",e.message ?:"Error")
+                Result.Error(IOException("Error logging in", e))
+            }
+        }
+    }
+
+    suspend fun sendRefinanceDetail(token: String, data: SubPropertyRefinanceData): Result<Any> {
+        Log.e("dataSource","datasource")
+        return try {
+            val response = serverApi.addOrUpdateRefinanceDetail(token,data)
+            Log.e("addData-", response.toString())
+            Result.Success(response.isSuccessful)
+
+        } catch (e: Throwable){
+            Log.e("errorrr",e.localizedMessage)
+            if(e is HttpException){
+                Log.e("network", "issues...")
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                Log.e("erorr",e.message ?:"Error")
+                Result.Error(IOException("Error logging in", e))
+            }
+        }
+    }
+
+
+
 
     /*
     suspend fun getPropertyTypes(token: String): Result<ArrayList<DropDownResponse>> {

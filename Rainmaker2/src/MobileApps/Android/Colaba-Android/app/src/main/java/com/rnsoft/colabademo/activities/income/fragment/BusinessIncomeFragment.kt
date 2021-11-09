@@ -249,7 +249,7 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
     private fun openAddressFragment(){
         val addressFragment = AddressBusiness()
         val bundle = Bundle()
-        bundle.putString(AppConstant.address, getString(R.string.business_main_address))
+        bundle.putString(AppConstant.TOOLBAR_TITLE, getString(R.string.business_main_address))
         bundle.putParcelableArrayList(AppConstant.address,addressList)
         addressFragment.arguments = bundle
         findNavController().navigate(R.id.action_address, addressFragment.arguments)

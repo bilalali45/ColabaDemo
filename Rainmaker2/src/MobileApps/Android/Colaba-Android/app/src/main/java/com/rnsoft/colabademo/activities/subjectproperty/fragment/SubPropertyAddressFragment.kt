@@ -34,6 +34,7 @@ import com.rnsoft.colabademo.databinding.CommonAddressLayoutBinding
 
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.doc_request_sent_layout.view.*
 
 import kotlinx.android.synthetic.main.temp_residence_layout.*
 import kotlinx.android.synthetic.main.view_placesearch.*
@@ -89,14 +90,14 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         }
 
         binding.backButton.setOnClickListener {
-            //findNavController().navigate(R.id.action_back_fromAddress_toPurchase)
-            findNavController().popBackStack()
+            findNavController().navigate(R.id.action_back_fromAddress_toPurchase)
         }
 
-       /*requireActivity().onBackPressedDispatcher.addCallback {
-           findNavController().navigate(R.id.action_back_fromAddress_toPurchase)
-       } */
 
+
+        /*requireActivity().onBackPressedDispatcher.addCallback {
+            findNavController().navigate(R.id.action_back_fromAddress_toPurchase)
+        } */
 
         super.addListeners(binding.root)
         return binding.root
@@ -153,7 +154,6 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
          lifecycleScope.launchWhenStarted {
              sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
              binding.loaderSubproAddress.visibility = View.VISIBLE
-             delay(2000)
              coroutineScope {
                  setData()
 
@@ -163,7 +163,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                  // get county
                  viewModel.getCounty(authToken)
 
-                 viewModel.states.observe(viewLifecycleOwner, { states ->
+                 viewModel.states.observe(viewLifecycleOwner, {  states ->
                      if (states != null && states.size > 0) {
                          val itemList: ArrayList<String> = arrayListOf()
                          for (item in states) {
@@ -339,14 +339,80 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
 
     private fun checkValidations() {
         val searchBar: String = binding.tvSearch.text.toString()
+        val country: String = binding.tvCountry.text.toString()
+        val state: String = binding.tvState.text.toString()
+        val street = binding.edStreetAddress.text.toString()
+        val city = binding.edCity.text.toString()
+        val county = binding.tvCounty.text.toString()
+        val zipCode = binding.edZipcode.text.toString()
+
         if (searchBar.isEmpty() || searchBar.length == 0) {
             setError()
         }
-        if (searchBar.isNotEmpty() || searchBar.length > 0) {
-            removeError()
-            findNavController().popBackStack()
+        if(binding.layoutStreetAddress.visibility == View.VISIBLE){
+            if(street.isEmpty() || street.length == 0) {
+                CustomMaterialFields.setError(binding.layoutStreetAddress,getString(R.string.error_field_required),requireActivity())
+            }
+            if(city.isEmpty() || city.length == 0) {
+                CustomMaterialFields.setError(binding.layoutCity,getString(R.string.error_field_required),requireActivity())
+            }
+            if(county.isEmpty() || county.length == 0) {
+                CustomMaterialFields.setError(binding.layoutCounty,getString(R.string.error_field_required),requireActivity())
+            }
+            if(zipCode.isEmpty() || zipCode.length == 0) {
+                CustomMaterialFields.setError(binding.layoutZipCode,getString(R.string.error_field_required),requireActivity())
+            }
+            if(country.isEmpty() || country.length == 0) {
+                CustomMaterialFields.setError(binding.layoutCountry,getString(R.string.error_field_required),requireActivity())
+            }
+            if(state.isEmpty() || state.length == 0) {
+                CustomMaterialFields.setError(binding.layoutState,getString(R.string.error_field_required),requireActivity())
+            }
+            // clear error
+            if(street.isNotEmpty() || street.length > 0) {
+                CustomMaterialFields.clearError(binding.layoutStreetAddress,requireActivity())
+            }
+            if(city.isNotEmpty() || city.length > 0) {
+                CustomMaterialFields.clearError(binding.layoutCity,requireActivity())
+            }
+            if(county.isNotEmpty() || county.length > 0) {
+                CustomMaterialFields.clearError(binding.layoutCounty,requireActivity())
+            }
+            if(zipCode.isNotEmpty() || zipCode.length > 0) {
+                CustomMaterialFields.clearError(binding.layoutZipCode,requireActivity())
+            }
+            if(country.isNotEmpty() || country.length > 0) {
+                CustomMaterialFields.clearError(binding.layoutCountry,requireActivity())
+            }
+            if(state.isNotEmpty() || state.length > 0) {
+                CustomMaterialFields.clearError(binding.layoutState,requireActivity())
+            }
+
         }
+
+        if(searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && county.length>0  && country.length > 0 && zipCode.length > 0){
+                    val unit = if(binding.edUnitAtpNo.text.toString().length > 0) binding.edUnitAtpNo.text.toString() else null
+
+
+             ApplicationClass.globalAddressList.add(AddressData(
+                street = street,
+                unit = unit,
+                city = city,
+                stateName = state,
+                countryName = country,
+                countyName = county,
+                countyId = 1,
+                stateId = 1,
+                countryId = 1,
+                zipCode = zipCode))
+
+            findNavController().popBackStack()
+
+
+        }
+
     }
+
 
     private fun setStateAndCountyDropDown(){
 

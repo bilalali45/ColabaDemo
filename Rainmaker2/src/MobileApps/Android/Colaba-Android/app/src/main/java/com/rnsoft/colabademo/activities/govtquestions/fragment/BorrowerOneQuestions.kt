@@ -66,184 +66,180 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private var asianChildNames = ""
     private var otherAsianRace = ""
 
+    private  var tabBorrowerId:Int? = null
+
     private  lateinit var lastQData:QuestionData
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = BorrowerOneQuestionsLayoutBinding.inflate(inflater, container, false)
-        setupLayout(inflater)
+        arguments?.let {
+            tabBorrowerId = it.getInt(AppConstant.tabBorrowerId)
+        }
+        setupLayout()
         super.addListeners(binding.root)
         return binding.root
     }
 
 
-    private fun setupLayout(inflater: LayoutInflater){
+    private fun setupLayout(){
         setUpDynamicTabs( )
     }
 
     private fun setUpDynamicTabs(){
-        bAppViewModel.governmentQuestionsModelClass.observe(viewLifecycleOwner, Observer {
+        bAppViewModel.governmentQuestionsModelClassList.observe(viewLifecycleOwner, Observer { governmentQuestionsModelClassList->
 
-            val govtQuestionActivity = (activity as GovtQuestionActivity)
-            govtQuestionActivity.binding.govtDataLoader.visibility = View.INVISIBLE
-
-            var zeroIndexAppCompat:AppCompatTextView?= null
-
-            childGlobalList= arrayListOf()
-            bankruptcyGlobalData = BankruptcyAnswerData()
-            ownerShipGlobalData = arrayListOf()
-
-            it.questionData?.let{ questionData->
-                 for(qData in questionData) {
-                     lastQData = qData
-                     qData.headerText?.let { tabTitle->
-                         if(qData.parentQuestionId == null) {
-                             binding.parentContainer.visibility = View.INVISIBLE
-                             val appCompactTextView = createAppCompactTextView(tabTitle, 0)
-                             if(zeroIndexAppCompat==null)
-                                zeroIndexAppCompat = appCompactTextView
-                             //tabArrayList.add(appCompactTextView)
-                             binding.horizontalTabs.addView(appCompactTextView)
-                             val contentView = createContentLayoutForTab(qData)
-
-                             innerLayoutHashMap.put(appCompactTextView, contentView)
-                             qData.id?.let { it1 -> idToContentMapping.put(it1, contentView) }
-
-                             binding.parentContainer.addView(contentView)
-                             appCompactTextView.setOnClickListener(scrollerTab)
-                             horizontalTabArrayList.add(appCompactTextView)
-                         }
-
-                     }
-
-
-
-                 }
-
-                if(zeroIndexAppCompat!=null){
-                     val appCompactTextView = createAppCompactTextView(AppConstant.demographicInformation, 0)
-                    binding.horizontalTabs.addView(appCompactTextView)
-                    val contentView = createContentLayoutForTab(QuestionData(
-                        id = 100,
-                        parentQuestionId = null,
-                        headerText = AppConstant.demographicInformation,
-                        questionSectionId = 1,
-                        ownTypeId = 1,
-                        firstName = lastQData.firstName,
-                        lastName = lastQData.lastName,
-                        question = "",
-                        answer = null,
-                        answerDetail = null,
-                        selectionOptionId = null,
-                        answerData = null))
-
-                    innerLayoutHashMap.put(appCompactTextView, contentView)
-                    idToContentMapping.put(100, contentView)
-
-                    binding.parentContainer.addView(contentView)
-                    appCompactTextView.setOnClickListener(scrollerTab)
-                    horizontalTabArrayList.add(appCompactTextView)
-                }
-
-                var ownerShip = true
-
-                for(qData in questionData) {
-                    qData.parentQuestionId?.let { parentQuestionId ->
-                        if(parentQuestionId == bankruptcyConstraintLayout.id){
-                            Timber.e("bankruptcyConstraintLayout "+qData.question)
-                            Timber.e(qData.answerDetail.toString())
-                            var extractedAnswer = ""
-                            val bankruptyAnswerData = qData.answerData as ArrayList<*>
-                            if(bankruptyAnswerData!=null && bankruptyAnswerData.size>0 && qData.answer!=null && !qData.answer.equals("No", true)) {
-                                if (bankruptyAnswerData[0] != null) {
-                                    val getrow: Any = bankruptyAnswerData[0]
-                                    val t: LinkedTreeMap<Any, Any> =
-                                        getrow as LinkedTreeMap<Any, Any>
-                                    val chapter1 = t["`1`"].toString()
-                                    extractedAnswer = chapter1
-                                    bankruptcyGlobalData.value1  =  true
-                                    Timber.e("1 = " + chapter1)
-                                }
-                                if (bankruptyAnswerData[1] != null && bankruptyAnswerData.size>1 ) {
-                                    val getrow: Any = bankruptyAnswerData[1]
-                                    val t: LinkedTreeMap<Any, Any> =
-                                        getrow as LinkedTreeMap<Any, Any>
-                                    val chapter2 = t["`2`"].toString()
-                                    extractedAnswer = "$extractedAnswer, $chapter2"
-                                    bankruptcyGlobalData.value2  =  true
-                                    Timber.e("2 = " + chapter2)
-
-                                }
-
-                                if (bankruptyAnswerData[2] != null && bankruptyAnswerData.size>2) {
-                                    val getrow: Any = bankruptyAnswerData[2]
-                                    val t: LinkedTreeMap<Any, Any> =
-                                        getrow as LinkedTreeMap<Any, Any>
-                                    val chapter3 = t["`3`"].toString()
-                                    extractedAnswer = "$extractedAnswer, $chapter3"
-                                    bankruptcyGlobalData.value3  =  true
-                                    Timber.e("3 = " + chapter3)
-                                }
-
-                                if (bankruptyAnswerData[3] != null && bankruptyAnswerData.size>3 ) {
-                                    val getrow: Any = bankruptyAnswerData[2]
-                                    val t: LinkedTreeMap<Any, Any> =
-                                        getrow as LinkedTreeMap<Any, Any>
-                                    val chapter4 = t["`4`"].toString()
-                                    bankruptcyGlobalData.value4  =  true
-                                    extractedAnswer = "$extractedAnswer, $chapter4"
-                                    Timber.e("4 = " + chapter4)
-                                }
-
-                                Timber.e(" extracted answer = "+extractedAnswer)
-                                bankruptcyConstraintLayout.detail_text.text = extractedAnswer
-                                bankruptcyConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
-                                bankruptcyConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
-                                bankruptcyConstraintLayout.govt_detail_box.visibility = View.VISIBLE
-                            }
-                        }
-                        else if(parentQuestionId == childConstraintLayout.id){
-                            Timber.e("childConstraintLayout "+ qData.question)
-                            Timber.e(qData.answerDetail.toString())
-
-                        }
-                        else if(parentQuestionId == ownerShipConstraintLayout.id && qData.answer!=null && !qData.answer.equals("No", true)){
-                            Timber.e("ownerShipConstraintLayout "+qData.question)
-                            Timber.e(qData.answerDetail.toString())
-
-                            if(ownerShip) {
-                                ownerShip = false
-
-                                ownerShipConstraintLayout.detail_title.text = qData.question
-                                ownerShipConstraintLayout.detail_text.text = qData.answer
-                                ownerShipConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
-                                ownerShipConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
-                                //contentView.detail_title.tag = false
-                                Timber.e("header text " + qData.headerText, qData.answerDetail)
-                                ownerShipGlobalData.add(qData.answer)
-                                ownerShipConstraintLayout.govt_detail_box.visibility = View.VISIBLE
-                            }
-                            else{
-                                ownerShipConstraintLayout.detail_title2.text = qData.question
-                                ownerShipConstraintLayout.detail_text2.text = qData.answer
-                                ownerShipConstraintLayout.detail_title2.setTypeface(null, Typeface.NORMAL)
-                                ownerShipConstraintLayout.detail_text2.setTypeface(null, Typeface.BOLD)
-                                ownerShipGlobalData.add(qData.answer)
-                                ownerShipConstraintLayout.govt_detail_box2.visibility = View.VISIBLE
-                            }
-
-                        }
-
+            if(governmentQuestionsModelClassList.size>0){
+                var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? =null
+                for(item in governmentQuestionsModelClassList){
+                    if(item.passedBorrowerId == tabBorrowerId ) {
+                        selectedGovernmentQuestionModel = item
+                        break
                     }
                 }
 
-                zeroIndexAppCompat?.performClick()
+                selectedGovernmentQuestionModel?.let{ selectedGovernmentQuestionModel->
 
+                    val govtQuestionActivity = (activity as GovtQuestionActivity)
+                    govtQuestionActivity.binding.govtDataLoader.visibility = View.INVISIBLE
+                    var zeroIndexAppCompat:AppCompatTextView?= null
+                    childGlobalList= arrayListOf()
+                    bankruptcyGlobalData = BankruptcyAnswerData()
+                    ownerShipGlobalData = arrayListOf()
+
+                    selectedGovernmentQuestionModel.questionData?.let { questionData ->
+                        for (qData in questionData) {
+                            lastQData = qData
+                            qData.headerText?.let { tabTitle ->
+                                if (qData.parentQuestionId == null) {
+                                    binding.parentContainer.visibility = View.INVISIBLE
+                                    val appCompactTextView = createAppCompactTextView(tabTitle, 0)
+                                    if (zeroIndexAppCompat == null)
+                                        zeroIndexAppCompat = appCompactTextView
+                                    //tabArrayList.add(appCompactTextView)
+                                    binding.horizontalTabs.addView(appCompactTextView)
+                                    val contentView = createContentLayoutForTab(qData)
+
+                                    innerLayoutHashMap.put(appCompactTextView, contentView)
+                                    qData.id?.let { it1 -> idToContentMapping.put(it1, contentView) }
+
+                                    binding.parentContainer.addView(contentView)
+                                    appCompactTextView.setOnClickListener(scrollerTab)
+                                    horizontalTabArrayList.add(appCompactTextView)
+                                }
+                            }
+                        }
+
+                        if (zeroIndexAppCompat != null) {
+                            val appCompactTextView =
+                                createAppCompactTextView(AppConstant.demographicInformation, 0)
+                            binding.horizontalTabs.addView(appCompactTextView)
+                            val contentView = createContentLayoutForTab(
+                                QuestionData(id = 100, parentQuestionId = null, headerText = AppConstant.demographicInformation,
+                                    questionSectionId = 1,
+                                    ownTypeId = 1,
+                                    firstName = lastQData.firstName,
+                                    lastName = lastQData.lastName,
+                                    question = "", answer = null, answerDetail = null,
+                                    selectionOptionId = null, answerData = null)
+                            )
+
+                            innerLayoutHashMap.put(appCompactTextView, contentView)
+                            idToContentMapping.put(100, contentView)
+
+                            binding.parentContainer.addView(contentView)
+                            appCompactTextView.setOnClickListener(scrollerTab)
+                            horizontalTabArrayList.add(appCompactTextView)
+                        }
+
+                        var ownerShip = true
+
+                        for (qData in questionData) {
+                            qData.parentQuestionId?.let { parentQuestionId ->
+                                if (parentQuestionId == bankruptcyConstraintLayout.id) {
+                                    Timber.e("bankruptcyConstraintLayout " + qData.question)
+                                    Timber.e(qData.answerDetail.toString())
+                                    var extractedAnswer = ""
+                                    val bankruptyAnswerData = qData.answerData as ArrayList<*>
+                                    if (bankruptyAnswerData != null && bankruptyAnswerData.size > 0 && qData.answer != null && !qData.answer.equals("No", true)) {
+                                        if (bankruptyAnswerData[0] != null) {
+                                            val getrow: Any = bankruptyAnswerData[0]
+                                            val t: LinkedTreeMap<Any, Any> =
+                                                getrow as LinkedTreeMap<Any, Any>
+                                            val chapter1 = t["`1`"].toString()
+                                            extractedAnswer = chapter1
+                                            bankruptcyGlobalData.value1 = true
+                                            Timber.e("1 = " + chapter1)
+                                        }
+                                        if (bankruptyAnswerData[1] != null && bankruptyAnswerData.size > 1) {
+                                            val getrow: Any = bankruptyAnswerData[1]
+                                            val t: LinkedTreeMap<Any, Any> =
+                                                getrow as LinkedTreeMap<Any, Any>
+                                            val chapter2 = t["`2`"].toString()
+                                            extractedAnswer = "$extractedAnswer, $chapter2"
+                                            bankruptcyGlobalData.value2 = true
+                                            Timber.e("2 = " + chapter2)
+
+                                        }
+
+                                        if (bankruptyAnswerData[2] != null && bankruptyAnswerData.size > 2) {
+                                            val getrow: Any = bankruptyAnswerData[2]
+                                            val t: LinkedTreeMap<Any, Any> =
+                                                getrow as LinkedTreeMap<Any, Any>
+                                            val chapter3 = t["`3`"].toString()
+                                            extractedAnswer = "$extractedAnswer, $chapter3"
+                                            bankruptcyGlobalData.value3 = true
+                                            Timber.e("3 = " + chapter3)
+                                        }
+
+                                        if (bankruptyAnswerData[3] != null && bankruptyAnswerData.size > 3) {
+                                            val getrow: Any = bankruptyAnswerData[2]
+                                            val t: LinkedTreeMap<Any, Any> =
+                                                getrow as LinkedTreeMap<Any, Any>
+                                            val chapter4 = t["`4`"].toString()
+                                            bankruptcyGlobalData.value4 = true
+                                            extractedAnswer = "$extractedAnswer, $chapter4"
+                                            Timber.e("4 = " + chapter4)
+                                        }
+
+                                        Timber.e(" extracted answer = " + extractedAnswer)
+                                        bankruptcyConstraintLayout.detail_text.text = extractedAnswer
+                                        bankruptcyConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
+                                        bankruptcyConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
+                                        bankruptcyConstraintLayout.govt_detail_box.visibility = View.VISIBLE
+                                    }
+                                } else if (parentQuestionId == childConstraintLayout.id) {
+                                    Timber.e("childConstraintLayout " + qData.question)
+                                    Timber.e(qData.answerDetail.toString())
+                                }
+                                else if (parentQuestionId == ownerShipConstraintLayout.id && qData.answer != null && !qData.answer.equals("No", true)) {
+                                    Timber.e("ownerShipConstraintLayout " + qData.question)
+                                    Timber.e(qData.answerDetail.toString())
+
+                                    if (ownerShip) {
+                                        ownerShip = false
+                                        ownerShipConstraintLayout.detail_title.text = qData.question
+                                        ownerShipConstraintLayout.detail_text.text = qData.answer
+                                        ownerShipConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
+                                        ownerShipConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
+                                        ownerShipGlobalData.add(qData.answer)
+                                        ownerShipConstraintLayout.govt_detail_box.visibility = View.VISIBLE
+                                    } else {
+                                        ownerShipConstraintLayout.detail_title2.text = qData.question
+                                        ownerShipConstraintLayout.detail_text2.text = qData.answer
+                                        ownerShipConstraintLayout.detail_title2.setTypeface(null, Typeface.NORMAL)
+                                        ownerShipConstraintLayout.detail_text2.setTypeface(null, Typeface.BOLD)
+                                        ownerShipGlobalData.add(qData.answer)
+                                        ownerShipConstraintLayout.govt_detail_box2.visibility = View.VISIBLE
+                                    }
+
+                                        }
+
+                                }
+                            }
+                    }  // close of let block...
+                    zeroIndexAppCompat?.performClick()
+                }
             }
-
             binding.parentContainer.postDelayed({ binding.parentContainer.visibility = View.VISIBLE },500)
 
         })
@@ -470,17 +466,19 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                     contentCell.govt_detail_box.visibility = View.VISIBLE
             }
 
-            contentCell.ans_no.setOnClickListener { contentCell.govt_detail_box.visibility = View.INVISIBLE}
-            contentCell.ans_yes.setOnClickListener {
-                if(questionData.answerDetail!=null && questionData.answer.equals("Yes", true))
-                    contentCell.govt_detail_box.visibility = View.VISIBLE
-                openDetailBoxNew(headerTitle)
+            contentCell.ans_no.setOnClickListener {
+                contentCell.govt_detail_box.visibility = View.INVISIBLE
+                contentCell.govt_detail_box2?.visibility = View.INVISIBLE
+                contentCell.govt_detail_box3?.visibility = View.INVISIBLE
             }
+            contentCell.ans_yes.setOnClickListener {
+                if(questionData.answer.equals("Yes", true))
+                    contentCell.govt_detail_box.visibility = View.VISIBLE
+                    contentCell.govt_detail_box2?.visibility = View.VISIBLE
+                    contentCell.govt_detail_box3?.visibility = View.VISIBLE
+                    openDetailBoxNew(headerTitle)
+                }
         }
-
-
-
-
 
         return contentCell
     }
@@ -516,127 +514,145 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private val nativeHawaiianChildList:ArrayList<DemoGraphicRaceDetail> = arrayListOf()
 
     private fun observeDemoGraphicData(){
-        bAppViewModel.demoGraphicInfo.observe(viewLifecycleOwner,{
-            it.demoGraphicData?.let { demoGraphicData ->
+        bAppViewModel.demoGraphicInfoList.observe(viewLifecycleOwner,{  demoGraphicInfoList->
+            if(demoGraphicInfoList.size>0){
 
-                ethnicityChildNames = ""
-                otherEthnicity = ""
-
-                nativeHawaiiChildNames = ""
-                nativeHawaiiOtherRace = ""
-
-                asianChildNames = ""
-                otherAsianRace = ""
-
-                demoGraphicData.genderId?.let{ genderId->
-                    if(genderId == 1)
-                        demoGraphicConstraintLayout.demo_male.isChecked = true
-                    else
-                    if(genderId == 2)
-                        demoGraphicConstraintLayout.demo_female.isChecked = true
-                    else
-                    if(genderId == 3)
-                        demoGraphicConstraintLayout.demo_do_not_wish_to_provide.isChecked = true
-                }
-
-                demoGraphicData.ethnicity?.let{ ethnicityList->
-                    if(ethnicityList.isNotEmpty()){
-                        val selectedEthnicity = ethnicityList[0]
-                        if(selectedEthnicity.ethnicityId == 1) {
-                            demoGraphicConstraintLayout.hispanic_or_latino.isChecked = true
-                            selectedEthnicity.ethnicityDetails?.let{ theList->
-                                for(item in theList ) {
-                                    ethnicityChildList.add(item)
-                                    item.isOther?.let { isOther->
-                                       if(isOther)
-                                       item.otherEthnicity?.let {
-                                           otherEthnicity  = it
-                                       }
-                                       else
-                                           ethnicityChildNames = ethnicityChildNames + item.name + ", "
-                                   }
-                                }
-                            }
-
-                            showEthnicityInnerBox()
-                        }
-                        else
-                        if(selectedEthnicity.ethnicityId  == 2)
-                            demoGraphicConstraintLayout.not_hispanic.isChecked = true
-                        else
-                        if(selectedEthnicity.ethnicityId  == 3)
-                            demoGraphicConstraintLayout.not_telling_ethnicity.isChecked = true
+                var selectedDemoGraphicInfoList: DemoGraphicResponseModel? =null
+                for(item in demoGraphicInfoList){
+                    if(item.passedBorrowerId == tabBorrowerId ) {
+                        selectedDemoGraphicInfoList = item
+                        break
                     }
                 }
 
 
+                selectedDemoGraphicInfoList?.let {
 
-                demoGraphicData.race?.let { raceList ->
-                    for(race in raceList){
-                        if(race.raceId == 1){
-                            demoGraphicConstraintLayout.american_or_indian_check_box.isChecked = true
+                    it.demoGraphicData?.let { demoGraphicData ->
+                        ethnicityChildNames = ""
+                        otherEthnicity = ""
+                        nativeHawaiiChildNames = ""
+                        nativeHawaiiOtherRace = ""
+                        asianChildNames = ""
+                        otherAsianRace = ""
+
+                        demoGraphicData.genderId?.let { genderId ->
+                            if (genderId == 1)
+                                demoGraphicConstraintLayout.demo_male.isChecked = true
+                            else
+                                if (genderId == 2)
+                                    demoGraphicConstraintLayout.demo_female.isChecked = true
+                                else
+                                    if (genderId == 3)
+                                        demoGraphicConstraintLayout.demo_do_not_wish_to_provide.isChecked =
+                                            true
                         }
-                        if(race.raceId == 2){
 
-                            demoGraphicConstraintLayout.asian_check_box.isChecked = true
-                            race.raceDetails?.let{ asianChildList ->
+                        demoGraphicData.ethnicity?.let { ethnicityList ->
+                            if (ethnicityList.isNotEmpty()) {
+                                val selectedEthnicity = ethnicityList[0]
+                                if (selectedEthnicity.ethnicityId == 1) {
+                                    demoGraphicConstraintLayout.hispanic_or_latino.isChecked = true
+                                    selectedEthnicity.ethnicityDetails?.let { theList ->
+                                        for (item in theList) {
+                                            ethnicityChildList.add(item)
+                                            item.isOther?.let { isOther ->
+                                                if (isOther)
+                                                    item.otherEthnicity?.let {
+                                                        otherEthnicity = it
+                                                    }
+                                                else
+                                                    ethnicityChildNames =
+                                                        ethnicityChildNames + item.name + ", "
+                                            }
+                                        }
+                                    }
 
-                                for(item in asianChildList) {
-                                    this.asianChildList.add(item)
-                                   item.isOther?.let { isOther->
-                                       if(isOther)
-                                       item.otherRace?.let {
-                                           otherAsianRace  = it
-                                       }
-                                       else
-                                           asianChildNames = asianChildNames + item.name + ", "
-                                   }
+                                    showEthnicityInnerBox()
+                                } else
+                                    if (selectedEthnicity.ethnicityId == 2)
+                                        demoGraphicConstraintLayout.not_hispanic.isChecked = true
+                                    else
+                                        if (selectedEthnicity.ethnicityId == 3)
+                                            demoGraphicConstraintLayout.not_telling_ethnicity.isChecked =
+                                                true
+                            }
+                        }
+
+
+
+                        demoGraphicData.race?.let { raceList ->
+                            for (race in raceList) {
+                                if (race.raceId == 1) {
+                                    demoGraphicConstraintLayout.american_or_indian_check_box.isChecked =
+                                        true
+                                }
+                                if (race.raceId == 2) {
+
+                                    demoGraphicConstraintLayout.asian_check_box.isChecked = true
+                                    race.raceDetails?.let { asianChildList ->
+
+                                        for (item in asianChildList) {
+                                            this.asianChildList.add(item)
+                                            item.isOther?.let { isOther ->
+                                                if (isOther)
+                                                    item.otherRace?.let {
+                                                        otherAsianRace = it
+                                                    }
+                                                else
+                                                    asianChildNames =
+                                                        asianChildNames + item.name + ", "
+                                            }
+                                        }
+                                    }
+                                    showAsianInnerBox()
+
+
+                                }
+                                if (race.raceId == 3) {
+                                    demoGraphicConstraintLayout.black_or_african_check_box.isChecked =
+                                        true
+                                }
+                                if (race.raceId == 4) {
+                                    demoGraphicConstraintLayout.native_hawaian_or_other_check_box.isChecked =
+                                        true
+
+                                    race.raceDetails?.let { nativeHawaianChildList ->
+                                        for (item in nativeHawaianChildList) {
+                                            nativeHawaiianChildList.add(item)
+                                            item.isOther?.let { isOther ->
+                                                if (isOther)
+                                                    item.otherRace?.let {
+                                                        nativeHawaiiOtherRace = it
+                                                    }
+                                                else
+                                                    nativeHawaiiChildNames =
+                                                        nativeHawaiiChildNames + item.name + ", "
+                                            }
+                                        }
+                                    }
+
+
+                                    showNativeHawaiiInnerBox()
+
+                                }
+                                if (race.raceId == 5) {
+                                    demoGraphicConstraintLayout.white_check_box.isChecked = true
+                                }
+                                if (race.raceId == 6) {
+                                    demoGraphicConstraintLayout.do_not_wish_check_box.performClick()
                                 }
                             }
-                            showAsianInnerBox()
 
 
                         }
-                        if(race.raceId == 3){
-                            demoGraphicConstraintLayout.black_or_african_check_box.isChecked = true
-                        }
-                        if(race.raceId == 4){
-                            demoGraphicConstraintLayout.native_hawaian_or_other_check_box.isChecked = true
-
-                            race.raceDetails?.let{ nativeHawaianChildList ->
-                                for(item in nativeHawaianChildList) {
-                                    nativeHawaiianChildList.add(item)
-                                    item.isOther?.let { isOther->
-                                       if(isOther)
-                                       item.otherRace?.let {
-                                           nativeHawaiiOtherRace  = it
-                                       }
-                                       else
-                                           nativeHawaiiChildNames = nativeHawaiiChildNames + item.name + ", "
-                                   }
-                                }
-                            }
 
 
-                            showNativeHawaiiInnerBox()
-
-                        }
-                        if(race.raceId == 5){
-                            demoGraphicConstraintLayout.white_check_box.isChecked = true
-                        }
-                        if(race.raceId ==6){
-                            demoGraphicConstraintLayout.do_not_wish_check_box.performClick()
-                        }
+                        // Now add static events....
+                        setUpDemoGraphicScreen()
+                        addDemoGraphicEvents()
                     }
-
-
                 }
-
-
-                // Now add static events....
-                setUpDemoGraphicScreen()
-                addDemoGraphicEvents()
-
             }
         })
     }

@@ -72,6 +72,20 @@ interface ServerApi{
         @Header("Authorization" )  Authorization:String,
         @Query("loanApplicationId")  loanApplicationId:Int) : SubjectPropertyDetails
 
+    //@Headers("Content-Type: application/json")
+    @POST("api/mcu/mobile/loanapplication/SubjectProperty/AddOrUpdateSubjectPropertyDetail")
+    suspend fun addOrUpdateSubjectPropertyDetail(
+        @Header("Authorization")  Authorization:String,
+        @Body data: SubPropertyData
+    ) : Response<AddUpdateDataResponse>
+
+    @POST("api/mcu/mobile/loanapplication/SubjectProperty/AddOrUpdateRefinanceSubjectPropertyDetail")
+    suspend fun addOrUpdateRefinanceDetail(
+        @Header("Authorization")  Authorization:String,
+        @Body data: SubPropertyRefinanceData
+    ) : Response<Any>
+
+
     @GET("api/mcu/mobile/loanapplication/SubjectProperty/GetRefinanceSubjectPropertyDetail")
     suspend fun getSubjectPropertyRefinance(
         @Header("Authorization" )  Authorization:String,

@@ -16,6 +16,12 @@ import timber.log.Timber
 open class ApplicationClass : Application()
 {
 
+    companion object{
+        var globalAddressList :ArrayList<AddressData> = ArrayList()
+
+    }
+
+
     override fun onCreate() {
         super.onCreate()
         //registerActivityLifecycleCallbacks(AppLifecycleTracker(applicationContext))
