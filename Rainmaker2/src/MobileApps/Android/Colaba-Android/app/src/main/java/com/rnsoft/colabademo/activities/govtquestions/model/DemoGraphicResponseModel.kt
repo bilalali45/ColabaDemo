@@ -8,7 +8,8 @@ data class DemoGraphicResponseModel(
     val code: String?,
     @SerializedName("data") val demoGraphicData : DemoGraphicData?,
     val message: String?,
-    val status: String?
+    val status: String?,
+    var passedBorrowerId:Int?
 )
 
 data class DemoGraphicData(

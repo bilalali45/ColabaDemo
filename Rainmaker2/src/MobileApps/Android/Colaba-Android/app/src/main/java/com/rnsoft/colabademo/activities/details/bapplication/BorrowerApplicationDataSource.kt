@@ -150,6 +150,25 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
         }
     }
 
+
+    suspend fun getGovernmentQuestionsList(
+        token: String,
+        loanApplicationId: Int,
+        ownTypeId:Int, borrowerId:Int
+    ): Result<GovernmentQuestionsModelClass> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getGovernmentQuestions(newToken, loanApplicationId = loanApplicationId , ownTypeId = ownTypeId,  borrowerId = borrowerId)
+            //Timber.e("AssetsModelDataClass-", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
     suspend fun getBorrowerIncomeDetail(
         token: String,
         loanApplicationId: Int,

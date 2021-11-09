@@ -15,8 +15,12 @@ class BorrowerApplicationRepo  @Inject constructor(
         return borrowerApplicationDataSource.getBorrowerAssetsDetail(token = token , loanApplicationId = loanApplicationId, borrowerId = borrowerId )
     }
 
-    suspend fun getBorrowerIncomeDetail(token:String, loanApplicationId:Int, borrowerId:Int):Result<IncomeDetailsResponse>{
-        return borrowerApplicationDataSource.getBorrowerIncomeDetail(token = token , loanApplicationId = loanApplicationId, borrowerId = borrowerId )
+
+    suspend fun getGovernmentQuestionsList(token:String, loanApplicationId:Int, ownTypeId:Int, borrowerId:Int):Result<GovernmentQuestionsModelClass>{
+        return borrowerApplicationDataSource.getGovernmentQuestionsList(
+            token = token , loanApplicationId = loanApplicationId,
+            ownTypeId = ownTypeId,
+            borrowerId = borrowerId )
     }
 
     suspend fun getGovernmentQuestions(token:String, loanApplicationId:Int, ownTypeId:Int, borrowerId:Int):Result<GovernmentQuestionsModelClass>{
@@ -26,11 +30,24 @@ class BorrowerApplicationRepo  @Inject constructor(
             borrowerId = borrowerId )
     }
 
+
+    suspend fun getBorrowerIncomeDetail(token:String, loanApplicationId:Int, borrowerId:Int):Result<IncomeDetailsResponse>{
+        return borrowerApplicationDataSource.getBorrowerIncomeDetail(token = token , loanApplicationId = loanApplicationId, borrowerId = borrowerId )
+    }
+
+
+
+
+
+
     suspend fun getDemoGraphicInfo(token:String, loanApplicationId:Int, borrowerId:Int):Result<DemoGraphicResponseModel>{
         return borrowerApplicationDataSource.getDemoGraphicInfo(
             token = token , loanApplicationId = loanApplicationId,
             borrowerId = borrowerId )
     }
+
+
+
 
     suspend fun getEthnicityList(token:String): Result<ArrayList<EthnicityResponseModel>> {
         return borrowerApplicationDataSource.getEthnicityList(token = token)
