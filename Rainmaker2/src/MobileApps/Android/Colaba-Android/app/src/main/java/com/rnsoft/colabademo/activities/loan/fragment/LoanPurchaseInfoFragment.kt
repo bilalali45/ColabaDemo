@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.app.DatePickerDialog
+import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
@@ -23,16 +24,21 @@ import com.rnsoft.colabademo.databinding.LoanPurchaseInfoBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.DecimalFormat
 import java.util.*
-
+import javax.inject.Inject
 
 
 /**
  * Created by Anita Kiran on 9/3/2021.
  */
+@AndroidEntryPoint
 class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetListener{
 
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+    private var loanApplicationId: Int? = null
     private val loanViewModel : LoanInfoViewModel by activityViewModels()
     private lateinit var binding: LoanPurchaseInfoBinding
     private lateinit var bindingToolbar : AppHeaderWithBackNavBinding
@@ -48,6 +54,10 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
         binding = LoanPurchaseInfoBinding.inflate(inflater, container, false)
         bindingToolbar = binding.headerLoanPurchase
 
+        arguments?.let { arguments ->
+            loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+        }
+
         initViews()
         setCalulations()
         getLoanInfoDetail()
@@ -57,12 +67,12 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
     }
 
     private fun getLoanInfoDetail() {
-            loanViewModel.loanInfoPurchase.observe(viewLifecycleOwner, { loanInfo ->
-                if (loanInfo != null) {
-                    loanInfo.data?.loanGoalName?.let {
-                        binding.tvLoanStage.setText(it)
-                        CustomMaterialFields.setColor(binding.layoutLoanStage,R.color.grey_color_two,requireActivity())
-                    }
+        loanViewModel.loanInfoPurchase.observe(viewLifecycleOwner, { loanInfo ->
+            if (loanInfo != null) {
+                loanInfo.data?.loanGoalName?.let {
+                    binding.tvLoanStage.setText(it)
+                    CustomMaterialFields.setColor(binding.layoutLoanStage,R.color.grey_color_two,requireActivity())
+                }
                     loanInfo.data?.propertyValue?.let {
                         binding.edPurchasePrice.setText(Math.round(it).toString())
                         CustomMaterialFields.setColor(binding.layoutPurchasePrice,R.color.grey_color_two,requireActivity())
@@ -385,24 +395,37 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
         if (loanStage.isNotEmpty() || loanStage.length > 0) {
             clearError(binding.layoutLoanStage)
         }
-        if (purchasePrice.isNotEmpty() || purchasePrice.length > 0) {
+        if(purchasePrice.isNotEmpty() || purchasePrice.length > 0) {
             validatePurchasePrice(purchasePrice)
             clearError(binding.layoutDownPayment)
             clearError(binding.layoutPercent)
         }
-        if (loanAmount.isNotEmpty() || loanAmount.length > 0) {
+        if(loanAmount.isNotEmpty() || loanAmount.length > 0) {
             clearError(binding.layoutLoanAmount)
         }
-        if (downPayment.isNotEmpty() || downPayment.length > 0) {
+        if(downPayment.isNotEmpty() || downPayment.length > 0) {
             clearError(binding.layoutDownPayment)
         }
-        if (percentage.isNotEmpty() || percentage.length > 0) {
+        if(percentage.isNotEmpty() || percentage.length > 0) {
             clearError(binding.layoutPercent)
         }
-        if (closingDate.isNotEmpty() || closingDate.length > 0) {
+        if(closingDate.isNotEmpty() || closingDate.length > 0) {
             clearError(binding.layoutClosingDate)
         }
+        else {
+            if(loanStage.length > 0 && purchasePrice.length >0 && loanAmount.length >0 && downPayment.length>0 && percentage.length > 0 && closingDate.length>0){
+                val info = AddLoanInfoModel(loanApplicationId = 5,loanPurposeId = 4,loanGoalId = 4,expectedClosingDate = closingDate,downPayment = 20000.0, cashOutAmount = 1,
+                    propertyValue = 2000.0)
 
+                lifecycleScope.launchWhenStarted{
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        binding.loaderLoanPurchase.visibility = View.VISIBLE
+                        loanViewModel.addLoanInfo(authToken,info)
+                    }
+                }
+                binding.loaderLoanPurchase.visibility = View.GONE
+            }
+        }
     }
 
     fun setError(textInputlayout: TextInputLayout, errorMsg: String) {

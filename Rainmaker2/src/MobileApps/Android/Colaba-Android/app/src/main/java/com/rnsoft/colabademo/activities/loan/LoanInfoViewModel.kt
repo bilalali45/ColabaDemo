@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 
@@ -28,6 +30,7 @@ class LoanInfoViewModel @Inject constructor(private val repo: LoanInfoRepo) : Vi
 
     suspend fun getLoanInfoPurchase(token:String, loanApplicationId:Int) {
         viewModelScope.launch() {
+            delay(2000)
             val responseResult = repo.getLoanInfo(token = token, loanApplicationId = loanApplicationId)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
@@ -47,6 +50,41 @@ class LoanInfoViewModel @Inject constructor(private val repo: LoanInfoRepo) : Vi
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _loanGoals.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun addLoanInfo(token: String,data: AddLoanInfoModel) {
+        delay(2000)
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.addLoanInfo(token = token,data)
+            withContext(Dispatchers.Main) {
+                if(responseResult is Result.Success) {
+                    Log.e("Viewmodel", "${responseResult.data}")
+                    Log.e("Viewmodel", "$responseResult")
+                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                }
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun addLoanRefinanceInfo(token: String,data: UpdateLoanRefinanceModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.addLoanRefinanceInfo(token = token,data)
+            withContext(Dispatchers.Main) {
+                if(responseResult is Result.Success) {
+                    Log.e("Viewmodel", "${responseResult.data}")
+                    Log.e("Viewmodel", "$responseResult")
+                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                }
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)

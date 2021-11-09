@@ -17,7 +17,7 @@ class SubjectPropertyRepo @Inject constructor(private val dataSource: SubjectPro
         return dataSource.getSubjectPropertyRefinance(token = token , loanApplicationId = loanApplicationId)
     }
 
-    suspend fun sendSubPropertyDetail(token: String, data: SubPropertyData): Result<AddUpdateDataResponse> {
+    suspend fun sendSubPropertyDetail(token: String, data: SubPropertyData): Result<Any> {
         val sendDataResponse = dataSource.sendSubjectPropertyDetail(token,data)
         return sendDataResponse
     }

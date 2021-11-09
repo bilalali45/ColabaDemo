@@ -77,7 +77,7 @@ interface ServerApi{
     suspend fun addOrUpdateSubjectPropertyDetail(
         @Header("Authorization")  Authorization:String,
         @Body data: SubPropertyData
-    ) : Response<AddUpdateDataResponse>
+    ) : Response<Any>
 
     @POST("api/mcu/mobile/loanapplication/SubjectProperty/AddOrUpdateRefinanceSubjectPropertyDetail")
     suspend fun addOrUpdateRefinanceDetail(
@@ -105,6 +105,19 @@ interface ServerApi{
     suspend fun getLoanGoals(
         @Header("Authorization" )  Authorization:String,
         @Query("loanpurposeid")  loanPurpuseId:Int) : ArrayList<LoanGoalModel>
+
+
+    @POST("api/mcu/mobile/loanapplication/Loan/AddOrUpdateLoanInformation")
+    suspend fun addUpdateLoanInfo(
+        @Header("Authorization")  Authorization:String,
+        @Body data: AddLoanInfoModel
+    ) : Response<AddUpdateDataResponse>
+
+    @POST("api/mcu/mobile/loanapplication/Loan/")
+    suspend fun addUpdateLoanRefinance(
+        @Header("Authorization")  Authorization:String,
+        @Body data: UpdateLoanRefinanceModel
+    ) : Response<Any>
 
     @GET("api/mcu/mobile/loanapplication/RealEstate/GetRealEstateDetails")
     suspend fun getRealEstateDetails(

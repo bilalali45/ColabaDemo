@@ -56,6 +56,8 @@ class SubjectPropertyPurchase : BaseFragment() {
             savedViewInstance = binding.root
             super.addListeners(binding.root)
 
+            ApplicationClass.globalAddressList.clear()
+
             arguments?.let { arguments ->
                 loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
             }
@@ -390,7 +392,7 @@ class SubjectPropertyPurchase : BaseFragment() {
         // get property id
         val property : String = binding.tvPropertyType.getText().toString().trim()
         val matchedList1 =  occupancyTypeList.filter { s -> s.name == property}
-        val propertyId = if(matchedList1.size>0) matchedList1.map { matchedList1.get(0).id }.single() else null
+        val propertyId = if(matchedList1.size > 0) matchedList1.map { matchedList1.get(0).id }.single() else null
         // get occupancy id
         val occupancy : String = binding.tvOccupancyType.getText().toString().trim()
         val matchedList =  occupancyTypeList.filter { s -> s.name == occupancy}
@@ -399,34 +401,26 @@ class SubjectPropertyPurchase : BaseFragment() {
         // mixed use property
         val isMixedUseProperty = if(binding.radioMixedPropertyYes.isChecked) true else false
         // desc
-        val mixedUsePropertyDesc = if(binding.mixedPropertyExplanation.text.toString().trim().length>0) binding.mixedPropertyExplanation.text.toString() else null
+        val mixedUsePropertyDesc = if(binding.mixedPropertyExplanation.text.toString().trim().length > 0) binding.mixedPropertyExplanation.text.toString() else null
         // appraised value
-        var value : Double? = null
-        val appraisedValue = binding.edAppraisedPropertyValue.text.toString().replace(",","")
-        Log.e("value", appraisedValue)
-        if(appraisedValue.length > 0)
-           value = appraisedValue.toDouble()
-
-
+        val appraisedValue = binding.edAppraisedPropertyValue.text.toString()
+        val newAppraisedValue = appraisedValue.replace(",".toRegex(), "")
 
         // property tax
         val propertyTax = if(binding.edPropertyTax.text.toString().trim().length > 0) binding.edPropertyTax.text.toString() else null
         // home insurance
         val homeInsurance = if(binding.edHomeownerInsurance.text.toString().trim().length>0) binding.edHomeownerInsurance.text.toString() else null
         // flood insurance
-        val floodInsurance = if(binding.edFloodInsurance.text.toString().trim().length>0) binding.edFloodInsurance.text.toString() else null
+       val floodInsurance = if(binding.edFloodInsurance.text.toString().trim().length>0) binding.edFloodInsurance.text.toString() else null
 
         val address = AddressData(city = "Karachi",countryId = 1,countryName = "Pak",stateId = 11,stateName = "Sindh",unit = "00", zipCode = "123",street = "akl",countyId = 1,countyName = "SSS")
-        val propertyData = SubPropertyData(loanApplicationId = 5,propertyTypeId = propertyId,occupancyTypeId = occupancyId,
-            appraisedPropertyValue = value,propertyTax = propertyTax?.toDouble(),homeOwnerInsurance =homeInsurance?.toDouble(),floodInsurance = floodInsurance?.toDouble(),          address = address,isMixedUseProperty= isMixedUseProperty,mixedUsePropertyExplanation=mixedUsePropertyDesc,subjectPropertyTbd = tbd)
+        val propertyData = SubPropertyData(loanApplicationId = 5,propertyTypeId = 1,occupancyTypeId = occupancyId,
+            appraisedPropertyValue = newAppraisedValue.toDouble(),propertyTax = 200?.toDouble(),homeOwnerInsurance =200?.toDouble(),floodInsurance = 300?.toDouble(),
+            address = address,isMixedUseProperty= isMixedUseProperty,mixedUsePropertyExplanation=mixedUsePropertyDesc,subjectPropertyTbd = tbd)
 
-
-        //val address = AddressData(city = "Karachi",countryId = 1,countryName = "Pak",stateId = 11,stateName = "Sindh",unit = "00", zipCode = "123",street = "akl",countyId = 1,countyName = "SSS")
-        //val propertyData = SubPropertyData(loanApplicationId = 5,propertyTypeId = propertyId,occupancyTypeId = occupancyId,appraisedPropertyValue = 100000.0,propertyTax = 100.0,homeOwnerInsurance =200.0,floodInsurance = 0.0,
-         //   address = address,isMixedUseProperty=true,mixedUsePropertyExplanation="ashh")
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launchWhenStarted{
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                viewModelSubProperty.sendSubjectPropertyDetail(authToken,propertyData)
+               viewModelSubProperty.sendSubjectPropertyDetail(authToken,propertyData)
             }
         }
     }

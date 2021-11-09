@@ -47,46 +47,40 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
         }
     }
 
-    suspend fun sendSubjectPropertyDetail(token: String, data: SubPropertyData): Result<AddUpdateDataResponse> {
-        val serverResponse: Response<AddUpdateDataResponse>
+    suspend fun sendSubjectPropertyDetail(token: String, data: SubPropertyData): Result<Any> {
+        val serverResponse: Response<Any>
         return try {
             serverResponse = serverApi.addOrUpdateSubjectPropertyDetail(token,data)
             if(serverResponse.isSuccessful)
                 Result.Success(serverResponse.body()!!)
             else {
-                Log.e("what-code ", ""+serverResponse.errorBody())
-                Log.e("what-code ", serverResponse.errorBody()?.charStream().toString())
+                //Log.e("what-code ", ""+serverResponse.errorBody())
+               // Log.e("what-code ", serverResponse.errorBody()?.charStream().toString())
                 Result.Success(serverResponse.body()!!)
             }
 
         } catch (e: Throwable){
-            Log.e("errorrr",e.localizedMessage)
+           // Log.e("errorrr",e.localizedMessage)
             if(e is HttpException){
-                Log.e("network", "issues...")
+               // Log.e("network", "issues...")
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                Log.e("erorr",e.message ?:"Error")
+               // Log.e("erorr",e.message ?:"Error")
                 Result.Error(IOException("Error logging in", e))
             }
         }
     }
 
     suspend fun sendRefinanceDetail(token: String, data: SubPropertyRefinanceData): Result<Any> {
-        Log.e("dataSource","datasource")
         return try {
             val response = serverApi.addOrUpdateRefinanceDetail(token,data)
-            Log.e("addData-", response.toString())
             Result.Success(response.isSuccessful)
-
         } catch (e: Throwable){
-            Log.e("errorrr",e.localizedMessage)
             if(e is HttpException){
-                Log.e("network", "issues...")
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                Log.e("erorr",e.message ?:"Error")
                 Result.Error(IOException("Error logging in", e))
             }
         }
