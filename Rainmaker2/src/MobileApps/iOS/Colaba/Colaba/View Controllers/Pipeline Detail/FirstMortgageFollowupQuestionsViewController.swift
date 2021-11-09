@@ -8,6 +8,10 @@
 import UIKit
 import Material
 
+protocol FirstMortgageFollowupQuestionsViewControllerDelegate: AnyObject {
+    func saveFirstMortageObject(firstMortgage: [String: Any])
+}
+
 class FirstMortgageFollowupQuestionsViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -55,6 +59,7 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     var isForRealEstate = false
     var streetAddress = ""
     var mortgageDetail: FirstMortgageModel?
+    weak var delegate: FirstMortgageFollowupQuestionsViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,8 +90,6 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
         
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
-        
-
         
         setTextFields()
     }
@@ -172,6 +175,47 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
         }
     }
     
+    func saveFirstMortgageObject(){
+        
+        var paidAtClosing: Any = NSNull()
+        var firstMortgagePayment: Any = NSNull()
+        var unPaidFirstMortgagePayment: Any = NSNull()
+        var creditLimit: Any = NSNull()
+        
+        if let isPaid = isMortgagePaidOff{
+            paidAtClosing = isPaid == 1 ? true : false
+        }
+        
+        if txtfieldMortgagePayment.text != ""{
+            if let value = Double(cleanString(string: txtfieldMortgagePayment.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                firstMortgagePayment = value
+            }
+        }
+        
+        if txtfieldMortgageBalance.text != ""{
+            if let value = Double(cleanString(string: txtfieldMortgageBalance.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                unPaidFirstMortgagePayment = value
+            }
+        }
+        
+        if txtfieldCreditLimit.text != ""{
+            if let value = Double(cleanString(string: txtfieldCreditLimit.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                creditLimit = value
+            }
+        }
+        
+        let firstMortgageDict = ["propertyTaxesIncludeinPayment": isAnnualPropertyTax,
+                                 "homeOwnerInsuranceIncludeinPayment": isAnnualHomeownerInsurance,
+                                 "floodInsuranceIncludeinPayment": isAnnualFloodInsurance,
+                                 "paidAtClosing": paidAtClosing,
+                                 "firstMortgagePayment": firstMortgagePayment,
+                                 "unpaidFirstMortgagePayment": unPaidFirstMortgagePayment,
+                                 "helocCreditLimit": creditLimit,
+                                 "isHeloc": switchHomeEquity.isOn ? true : false] as [String: Any]
+        self.delegate?.saveFirstMortageObject(firstMortgage: firstMortgageDict)
+        
+    }
+    
     @IBAction func btnBackTapped(_ sender: UIButton) {
         self.dismissVC()
     }
@@ -181,6 +225,7 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
+        saveFirstMortgageObject()
         self.dismissVC()
     }
     
