@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.app.DatePickerDialog
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,9 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 import javax.inject.Inject
 
@@ -266,5 +270,28 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
             day
         )
         dpd.show()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onDataSendEvent(event: SendDataEvent) {
+        val verificationResponse = event.addUpdateDataResponse
+/*
+        if(verificationResponse.code == AppConstant.INTERNET_ERR_CODE)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+        else
+            if(verificationResponse.code == "200" &&  verificationResponse.data != null) {
+            }
+      */
+
+    }
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+
     }
 }
