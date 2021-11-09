@@ -106,6 +106,8 @@
 		2397AF682677A60A007A1A45 /* PipelineDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */; };
 		239983F226F9B92100C0AFA7 /* NewApplication.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 239983F126F9B92100C0AFA7 /* NewApplication.storyboard */; };
 		239983F426F9BA9200C0AFA7 /* StartNewApplicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239983F326F9BA9200C0AFA7 /* StartNewApplicationViewController.swift */; };
+		239B9FBD273A96D9008024F3 /* OccupancyStatusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239B9FBB273A96D9008024F3 /* OccupancyStatusTableViewCell.swift */; };
+		239B9FBE273A96D9008024F3 /* OccupancyStatusTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 239B9FBC273A96D9008024F3 /* OccupancyStatusTableViewCell.xib */; };
 		239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */; };
 		239DB536270C2D5F00977E20 /* BankStatementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DB535270C2D5F00977E20 /* BankStatementViewController.swift */; };
 		239DB538270C369100977E20 /* CustomDocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DB537270C369100977E20 /* CustomDocumentViewController.swift */; };
@@ -381,6 +383,8 @@
 		2397AF662677A60A007A1A45 /* PipelineDetailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PipelineDetailTableViewCell.xib; sourceTree = "<group>"; };
 		239983F126F9B92100C0AFA7 /* NewApplication.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NewApplication.storyboard; sourceTree = "<group>"; };
 		239983F326F9BA9200C0AFA7 /* StartNewApplicationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartNewApplicationViewController.swift; sourceTree = "<group>"; };
+		239B9FBB273A96D9008024F3 /* OccupancyStatusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OccupancyStatusTableViewCell.swift; sourceTree = "<group>"; };
+		239B9FBC273A96D9008024F3 /* OccupancyStatusTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OccupancyStatusTableViewCell.xib; sourceTree = "<group>"; };
 		239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewPopupViewController.swift; sourceTree = "<group>"; };
 		239DB535270C2D5F00977E20 /* BankStatementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankStatementViewController.swift; sourceTree = "<group>"; };
 		239DB537270C369100977E20 /* CustomDocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDocumentViewController.swift; sourceTree = "<group>"; };
@@ -710,6 +714,8 @@
 				23B2148F270B425100215ACC /* DocumentTypeTableViewCell.xib */,
 				2338DB71270DA26E00658C2A /* EmailTemplateTableViewCell.swift */,
 				2338DB72270DA26E00658C2A /* EmailTemplateTableViewCell.xib */,
+				239B9FBB273A96D9008024F3 /* OccupancyStatusTableViewCell.swift */,
+				239B9FBC273A96D9008024F3 /* OccupancyStatusTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1232,6 +1238,7 @@
 				23B238BC2679E05200508449 /* SearchResultTableViewCell.xib in Resources */,
 				7186ACB72653B25A00E740D3 /* Main.storyboard in Resources */,
 				2390FED426A6B624007A5A52 /* ApplicationTabHeaderView.xib in Resources */,
+				239B9FBE273A96D9008024F3 /* OccupancyStatusTableViewCell.xib in Resources */,
 				23E9C74E269C23070066C978 /* ApplicationStatusTableViewCell.xib in Resources */,
 				23908F9F26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib in Resources */,
 				230B94D326E74C03004CBC83 /* AssetsAddNewTableViewCell.xib in Resources */,
@@ -1584,6 +1591,7 @@
 				23DF0CEE269ED82000F29B70 /* LoanInfoModel.swift in Sources */,
 				2313E7C627157ADC00222A6E /* CountriesModel.swift in Sources */,
 				2381B4EF2701DD0E0045D917 /* LoanOfficerListViewController.swift in Sources */,
+				239B9FBD273A96D9008024F3 /* OccupancyStatusTableViewCell.swift in Sources */,
 				2313E7CC2715B23800222A6E /* RefinanceSubjectPropertyModel.swift in Sources */,
 				23A56C5A2685B017005CE6F4 /* Controller.swift in Sources */,
 				2313E7CA27157AF100222A6E /* CountiesModel.swift in Sources */,

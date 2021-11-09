@@ -88,7 +88,9 @@ enum EndPoint:String{
     case getOtherIncomeDetail = "loanapplication/Assets/GetOtherIncomeInfo?"
     case updatePurchaseSubjectProperty = "loanapplication/SubjectProperty/AddOrUpdateSubjectPropertyDetail"
     case updateRefinanceSubjectProperty = "loanapplication/SubjectProperty/AddOrUpdateRefinanceSubjectPropertyDetail"
+    case updateCoBorrowerOccupancyStatus = "loanapplication/SubjectProperty/AddOrUpdateCoBorrowerOccupancyStatus"
     case updateLoanInformation = "loanapplication/Loan/AddOrUpdateLoanInformation"
+    case deleteAsset = "loanapplication/Assets/DeleteAsset?"
     case logout = "identity/mcuaccount/Logout"
     
 }
@@ -157,7 +159,7 @@ class APIRouter: NSObject {
             endPoint = type.rawValue
         }
         
-        request = AF.request(BASEURL + endPoint, method: method, parameters: params, encoding: method == .get ? URLEncoding.queryString : JSONEncoding.default, headers:headers)
+        request = AF.request(BASEURL + endPoint, method: method, parameters: params, encoding: method == .post ? JSONEncoding.default : URLEncoding.queryString, headers:headers)
         
         request.responseJSON { response in
             

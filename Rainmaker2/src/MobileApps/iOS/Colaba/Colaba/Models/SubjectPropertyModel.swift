@@ -73,12 +73,14 @@ class CoBorrowerOccupancyModel: NSObject{
     var borrowerFirstName: String = ""
     var borrowerLastName: String = ""
     var borrowerFullName: String = ""
+    var willLiveInSubjectProperty: Bool = false
     
     func updateModelWithJSON(json: JSON){
         borrowerId = json["borrowerId"].intValue
         borrowerFirstName = json["borrowerFirstName"].stringValue
         borrowerLastName = json["borrowerLastName"].stringValue
         borrowerFullName = "\(borrowerFirstName) \(borrowerLastName)"
+        willLiveInSubjectProperty = json["willLiveInSubjectProperty"].boolValue
     }
     
 }
