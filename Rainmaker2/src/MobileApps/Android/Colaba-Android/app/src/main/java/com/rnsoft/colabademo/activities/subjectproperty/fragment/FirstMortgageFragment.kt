@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 
@@ -15,14 +16,17 @@ import com.rnsoft.colabademo.databinding.FirstMortgageLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Created by Anita Kiran on 9/9/2021.
  */
 
+@AndroidEntryPoint
 class FirstMortgageFragment : BaseFragment() {
 
     private lateinit var binding : FirstMortgageLayoutBinding
+    private val viewModel : SubjectPropertyViewModel by activityViewModels()
     private var list : ArrayList<FirstMortgageModel> = ArrayList()
 
     override fun onCreateView(
@@ -32,8 +36,6 @@ class FirstMortgageFragment : BaseFragment() {
     ): View {
         binding = FirstMortgageLayoutBinding.inflate(inflater, container, false)
         super.addListeners(binding.root)
-
-
         binding.borrowerPurpose.setText(getString(R.string.subject_property))
 
         //HideSoftkeyboard.hide(requireActivity(), binding.firstMorgtageParentLayout)
@@ -53,7 +55,7 @@ class FirstMortgageFragment : BaseFragment() {
             findNavController().popBackStack()
         }
 
-        binding.btnSave.setOnClickListener { checkValidations() }
+        binding.btnSave.setOnClickListener { saveData() }
 
         binding.cbPropertyTaxes.setOnClickListener {
             binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
@@ -234,30 +236,34 @@ class FirstMortgageFragment : BaseFragment() {
 
     }
 
-    private fun checkValidations() {
-        requireActivity().onBackPressed()
-        /*val firstMortgagePayment: String = binding.edFirstMortgagePayment.text.toString()
-        val unpaidBalance: String = binding.edUnpaidBalance.text.toString()
-        val creditLimit: String = binding.edCreditLimit.text.toString()
+    private fun saveData() {
 
-        if (firstMortgagePayment.isEmpty() || firstMortgagePayment.length == 0) {
-            setError(binding.layoutFirstPayment, getString(R.string.error_field_required))
-        }
-        if (unpaidBalance.isEmpty() || unpaidBalance.length == 0) {
-            setError(binding.layoutUnpaidBalance, getString(R.string.error_field_required))
-        }
-        if (creditLimit.isEmpty() || creditLimit.length == 0) {
-            setError(binding.layoutCreditLimit, getString(R.string.error_field_required))
-        }
-        if (firstMortgagePayment.isNotEmpty() && firstMortgagePayment.length > 0) {
-            clearError(binding.layoutFirstPayment)
-        }
-        if (unpaidBalance.isNotEmpty() && unpaidBalance.length > 0) {
-            clearError(binding.layoutUnpaidBalance)
-        }
-        if (creditLimit.isNotEmpty() && creditLimit.length > 0) {
-            clearError(binding.layoutCreditLimit)
-        } */
+        // first mortgage
+        val firstMortgagePayment = binding.edFirstMortgagePayment.text.toString().trim()
+        var newFirstMortgagePayment = if(firstMortgagePayment.length > 0) firstMortgagePayment.replace(",".toRegex(), "") else null
+
+        // second mortgage
+        val unpaidBalance = binding.edUnpaidBalance.text.toString().trim()
+        var newUnpaidBalance = if(unpaidBalance.length > 0) unpaidBalance.replace(",".toRegex(), "") else null
+
+        val creditLimit = binding.edCreditLimit.text.toString().trim()
+        var newCreditLimit = if(creditLimit.length > 0) creditLimit.replace(",".toRegex(), "") else null
+
+        val floodInsurance = if(binding.cbFloodInsurance.isChecked) true else false
+        val propertyTax = if(binding.cbPropertyTaxes.isChecked) true else false
+        val homeownerInsurance = if(binding.cbHomeownwerInsurance.isChecked) true else false
+        val isPaidAtClosing = if(binding.rbPaidClosingYes.isChecked)true else false
+        val isHeloc = if(binding.switchCreditLimit.isChecked)true else false
+
+        val firstMortgageDetail = FirstMortgageModel(firstMortgagePayment = newFirstMortgagePayment?.toDouble(),unpaidFirstMortgagePayment = newUnpaidBalance?.toDouble(),
+            helocCreditLimit = newCreditLimit?.toDoubleOrNull(), floodInsuranceIncludeinPayment = floodInsurance,propertyTaxesIncludeinPayment = propertyTax,homeOwnerInsuranceIncludeinPayment = homeownerInsurance,
+            paidAtClosing = isPaidAtClosing,isHeloc = isHeloc)
+
+        viewModel.addFirstMortgage(firstMortgageDetail)
+
+        findNavController().popBackStack()
+
+
     }
 
     fun setError(textInputlayout: TextInputLayout, errorMsg: String) {

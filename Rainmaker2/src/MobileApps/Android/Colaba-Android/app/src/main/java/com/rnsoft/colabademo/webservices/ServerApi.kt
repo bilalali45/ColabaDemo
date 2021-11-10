@@ -83,7 +83,7 @@ interface ServerApi{
     suspend fun addOrUpdateRefinanceDetail(
         @Header("Authorization")  Authorization:String,
         @Body data: SubPropertyRefinanceData
-    ) : Response<Any>
+    ) :AddUpdateDataResponse
 
 
     @GET("api/mcu/mobile/loanapplication/SubjectProperty/GetRefinanceSubjectPropertyDetail")
@@ -111,7 +111,7 @@ interface ServerApi{
     suspend fun addUpdateLoanInfo(
         @Header("Authorization")  Authorization:String,
         @Body data: AddLoanInfoModel
-    ) : Response<AddUpdateDataResponse>
+    ) : AddUpdateDataResponse
 
     @POST("api/mcu/mobile/loanapplication/Loan/")
     suspend fun addUpdateLoanRefinance(

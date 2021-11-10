@@ -59,7 +59,7 @@ class LoanInfoViewModel @Inject constructor(private val repo: LoanInfoRepo) : Vi
     }
 
     suspend fun addLoanInfo(token: String,data: AddLoanInfoModel) {
-        delay(2000)
+        //delay(2000)
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.addLoanInfo(token = token,data)
             withContext(Dispatchers.Main) {

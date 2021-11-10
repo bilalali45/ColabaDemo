@@ -47,6 +47,46 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
         MutableLiveData()
     val coBorrowerOccupancyStatus: LiveData<CoBorrowerOccupancyStatus> get() = _coBorrowerOccupancyStatus
 
+    private val _updatedAddress : MutableLiveData<AddressData> = MutableLiveData()
+    val updatedAddress : LiveData<AddressData> get() = _updatedAddress
+
+    private val _updatedRefinanceAddress : MutableLiveData<AddressData> = MutableLiveData()
+    val updatedRefinanceAddress : LiveData<AddressData> get() = _updatedRefinanceAddress
+
+    private val _firstMortgageDetail : MutableLiveData<FirstMortgageModel> = MutableLiveData()
+    val firstMortgageDetail : LiveData<FirstMortgageModel> get() = _firstMortgageDetail
+
+    private val _secMortgageDetail : MutableLiveData<SecondMortgageModel> = MutableLiveData()
+    val secMortgageDetail : LiveData<SecondMortgageModel> get() = _secMortgageDetail
+
+
+    val mixedPropertyDesc = MutableLiveData<String>()
+    val mixedPropertyRefinanceDesc = MutableLiveData<String>()
+
+    fun savePurchaseAddress(address: AddressData) {
+        _updatedAddress.value = address
+    }
+
+    fun saveRefinanceAddress(address: AddressData) {
+        _updatedRefinanceAddress.value = address
+    }
+
+    fun updateMixUsePropertyDesc(desc: String) {
+        mixedPropertyDesc.value = desc
+    }
+
+    fun updateMixUsePropertyRefinance(desc: String) {
+        mixedPropertyRefinanceDesc.value = desc
+    }
+
+    fun addFirstMortgage(desc: FirstMortgageModel) {
+        _firstMortgageDetail.value = desc
+    }
+
+    fun addSecMortgageModel(desc: SecondMortgageModel) {
+        _secMortgageDetail.value = desc
+    }
+
 
     suspend fun getCoBorrowerOccupancyStatus(token: String, loanApplicationId: Int) {
         //Timber.e("CoBorrower: " + loanApplicationId + "Auth Token: " + token)
@@ -127,9 +167,7 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)
                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
-
                  */
-
                 }
             }
         }
@@ -141,10 +179,8 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
                     if (response is Result.Success)
                         _states.value = (response.data)
                     else if (response is Result.Error && response.exception.message == AppConstant.INTERNET_ERR_MSG) {
-                        //Timber.e(" GetStates " + response.toString())
                         EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                     } else if (response is Result.Error) {
-                        //Timber.e(" GetStates " + response.toString())
                         EventBus.getDefault().post(WebServiceErrorEvent(response))
                     }
                 }
@@ -185,37 +221,35 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
     suspend fun sendSubjectPropertyDetail(token: String,data: SubPropertyData) {
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repository.sendSubPropertyDetail(token = token,data)
-            withContext(Dispatchers.Main) {
+            withContext(Dispatchers.Main){
                 if(responseResult is Result.Success) {
-                    //_businessTypes.value = (responseResult.data)
-                    Log.e("Viewmodel", "${responseResult.data}")
-                    Log.e("Viewmodel", "$responseResult")
-                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                    EventBus.getDefault().post(SendDataEvent(responseResult.data))
                 }
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
-                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
+
                 else if (responseResult is Result.Error)
-                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse("600", null, "Webservice Error", null)))
             }
         }
     }
 
-    suspend fun sendRefinanceDetail(token: String,data: SubPropertyRefinanceData) {
+    suspend fun sendRefinanceDetail(token: String,data: SubPropertyRefinanceData){
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repository.sendRefinanceDetail(token = token,data)
             withContext(Dispatchers.Main) {
                 if(responseResult is Result.Success) {
-                    //_businessTypes.value = (responseResult.data)
-                    Log.e("Viewmodel", "${responseResult.data}")
-                    Log.e("Viewmodel", "$responseResult")
-                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                    EventBus.getDefault().post(SendDataEvent(responseResult.data))
                 }
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
-                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                    //EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
+
                 else if (responseResult is Result.Error)
-                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+                    //EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse("600", null, "Webservice Error", null)))
+
             }
         }
     }
-
 }

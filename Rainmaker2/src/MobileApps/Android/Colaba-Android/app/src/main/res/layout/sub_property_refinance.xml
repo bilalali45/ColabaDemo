@@ -346,7 +346,6 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/mixed_property_explanation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -359,6 +358,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/mixed_property_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -722,7 +722,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/rubik_regular"
-                    android:text="$150,000"
+                    android:text="$0"
                     android:textColor="@color/grey_color_one"
                     android:textSize="13sp" />
 
@@ -744,7 +744,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="20dp"
                     android:fontFamily="@font/rubik_regular"
-                    android:text="$250,000"
+                    android:text="$0"
                     android:textColor="@color/grey_color_one"
                     android:textSize="13sp" />
 
@@ -839,7 +839,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/rubik_regular"
-                        android:text="$150,000"
+                        android:text="$0"
                         android:textColor="@color/grey_color_one"
                         android:textSize="13sp" />
 
@@ -860,7 +860,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="20dp"
                         android:fontFamily="@font/rubik_regular"
-                        android:text="$250,000"
+                        android:text="$0"
                         android:textColor="@color/grey_color_one"
                         android:textSize="13sp" />
 

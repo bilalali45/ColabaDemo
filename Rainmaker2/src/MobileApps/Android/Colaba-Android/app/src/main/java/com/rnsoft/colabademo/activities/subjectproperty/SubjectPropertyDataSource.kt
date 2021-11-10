@@ -51,8 +51,7 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
     suspend fun sendSubjectPropertyDetail(token: String, data: SubPropertyData): Result<AddUpdateDataResponse>{
         val serverResponse: AddUpdateDataResponse
         return try {
-            Timber.e(" print correct json format = "+data)
-
+            //Timber.e(" print correct json format = "+data)
             val g = Gson()
             val passJson = g.toJson(data)
             val newToken = "Bearer $token"
@@ -78,7 +77,7 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
         }
     }
 
-    suspend fun sendRefinanceDetail(token: String, data: SubPropertyRefinanceData): Result<Any> {
+    /*suspend fun sendRefinanceDetail(token: String, data: SubPropertyRefinanceData): Result<Any> {
         return try {
             val response = serverApi.addOrUpdateRefinanceDetail(token,data)
             Result.Success(response.isSuccessful)
@@ -87,6 +86,30 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
+                Result.Error(IOException("Error logging in", e))
+            }
+        }
+    } */
+
+    suspend fun sendRefinanceDetail(token: String, data: SubPropertyRefinanceData): Result<AddUpdateDataResponse>{
+        val serverResponse: AddUpdateDataResponse
+        return try {
+            val newToken = "Bearer $token"
+            serverResponse = serverApi.addOrUpdateRefinanceDetail(newToken , data)
+            if(serverResponse.status.equals("OK", true) )
+                Result.Success(serverResponse)
+            else {
+                Result.Success(serverResponse)
+            }
+
+        } catch (e: Throwable){
+            // Log.e("errorrr",e.localizedMessage)
+            if(e is HttpException){
+                // Log.e("network", "issues...")
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                // Log.e("erorr",e.message ?:"Error")
                 Result.Error(IOException("Error logging in", e))
             }
         }

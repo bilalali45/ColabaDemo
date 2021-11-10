@@ -31,15 +31,15 @@ data class SubPropertyData(
 
 @Parcelize
 data class AddressData(
-    var street : String?,
-    var unit : String?,
-    var city : String?,
-    var stateId : Int?,
-    var zipCode : String?,
-    var countryId : Int?,
-    var countryName : String?,
-    var stateName : String?,
-    var countyId: Int?,
+    var street : String? = null,
+    var unit : String? = null,
+    var city : String? = null,
+    var stateId : Int? = null,
+    var zipCode : String? = null,
+    var countryId : Int? = null,
+    var countryName : String? = null,
+    var stateName : String? = null,
+    var countyId: Int? = null,
     var countyName : String? = null
 ) : Parcelable
 
