@@ -99,6 +99,7 @@ enum EndPoint:String{
     case addUpdateProceedFromRealState = "loanapplication/Assets/AddOrUpdateAssestsRealState"
     case addUpdateProceedFromNonRealState = "loanapplication/Assets/AddOrUpdateAssestsNonRealState"
     case addUpdateGiftFunds = "loanapplication/Assets/AddOrUpdateGiftAsset"
+    case addUpdateOtherAssets = "loanapplication/Assets/AddOrUpdateOtherAssetsInfo"
     case logout = "identity/mcuaccount/Logout"
     
 }

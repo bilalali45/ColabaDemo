@@ -104,14 +104,14 @@ class AddOtherAssetsViewController: BaseViewController {
         txtfieldAssetType.type = .dropdown
         
         ///Financial Institution Text Field
-        txtfieldFinancialInstitution.setTextField(placeholder: "Financial Institution", controller: self, validationType: .required)
+        txtfieldFinancialInstitution.setTextField(placeholder: "Financial Institution", controller: self, validationType: .noValidation)
         
         ///Account Number Text Field
-        txtfieldAccountNumber.setTextField(placeholder: "Account Number", controller: self, validationType: .required, keyboardType: .numberPad)
+        txtfieldAccountNumber.setTextField(placeholder: "Account Number", controller: self, validationType: .noValidation, keyboardType: .numberPad)
         txtfieldAccountNumber.type = .password
         
         ///Cash Value Text Field
-        txtfieldCashValue.setTextField(placeholder: "Cash or Market Value", controller: self, validationType: .required)
+        txtfieldCashValue.setTextField(placeholder: "Cash or Market Value", controller: self, validationType: .noValidation)
         txtfieldCashValue.type = .amount
     }
 
@@ -187,34 +187,25 @@ class AddOtherAssetsViewController: BaseViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        
         if validate() {
-            if (txtfieldAssetType.text != "" && !txtfieldFinancialInstitution.isHidden && txtfieldFinancialInstitution.text != "" && !txtfieldAccountNumber.isHidden && txtfieldAccountNumber.text != "" && txtfieldCashValue.text != ""){
-                self.dismissVC()
-            }
-            else if (txtfieldAssetType.text != "" && txtfieldFinancialInstitution.isHidden && txtfieldAccountNumber.isHidden && txtfieldCashValue.text != "" && txtViewAssetsDescription.isHidden){
-                self.dismissVC()
-            }
-            else if (txtfieldAssetType.text != "" && txtfieldFinancialInstitution.isHidden && txtfieldAccountNumber.isHidden && txtfieldCashValue.text != "" && !txtViewAssetsDescription.isHidden && txtViewAssetsDescription.textView.text != ""){
-                self.dismissVC()
-            }
+            addUpdateOtherAsset()
         }
     }
     
     func validate() -> Bool {
-        var isValidate = txtfieldAssetType.validate()
-        if !txtfieldFinancialInstitution.isHidden {
-            isValidate = txtfieldFinancialInstitution.validate() && isValidate
-        }
-        if !txtfieldAccountNumber.isHidden {
-            isValidate = txtfieldAccountNumber.validate() && isValidate
-        }
-        if !txtfieldCashValue.isHidden {
-            isValidate = txtfieldCashValue.validate() && isValidate
-        }
-        if !txtViewAssetsDescription.isHidden {
-            isValidate = validateTextView() && isValidate
-        }
+        let isValidate = txtfieldAssetType.validate()
+//        if !txtfieldFinancialInstitution.isHidden {
+//            isValidate = txtfieldFinancialInstitution.validate() && isValidate
+//        }
+//        if !txtfieldAccountNumber.isHidden {
+//            isValidate = txtfieldAccountNumber.validate() && isValidate
+//        }
+//        if !txtfieldCashValue.isHidden {
+//            isValidate = txtfieldCashValue.validate() && isValidate
+//        }
+//        if !txtViewAssetsDescription.isHidden {
+//            isValidate = validateTextView() && isValidate
+//        }
         return isValidate
     }
     
@@ -270,6 +261,59 @@ class AddOtherAssetsViewController: BaseViewController {
                 else{
                     self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
                         self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
+    
+    func addUpdateOtherAsset(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        var selectedAssetTypeId = 0
+        var institutionName: Any = NSNull()
+        var accountNumber: Any = NSNull()
+        var marketValue: Any = NSNull()
+        var detail: Any = NSNull()
+        
+        if let selectedAssetType = assetsCategoryArray.filter({$0.name.localizedCaseInsensitiveContains(txtfieldAssetType.text!)}).first{
+            selectedAssetTypeId = selectedAssetType.id
+        }
+        if (txtfieldFinancialInstitution.text != ""){
+            institutionName = txtfieldFinancialInstitution.text!
+        }
+        
+        if (txtfieldAccountNumber.text != ""){
+            accountNumber = txtfieldAccountNumber.text!
+        }
+        if (txtfieldCashValue.text != ""){
+            if let value = Double(cleanString(string: txtfieldCashValue.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                marketValue = value
+            }
+        }
+        if (txtViewAssetsDescription.textView.text! != ""){
+            detail = txtViewAssetsDescription.textView.text!
+        }
+        
+        let params = ["AssetTypeId": selectedAssetTypeId,
+                      "Value": marketValue,
+                      "InstitutionName": institutionName,
+                      "AccountNumber": accountNumber,
+                      "Description": detail,
+                      "AssetId": isForAdd ? NSNull() : otherAssetsDetail.assetId,
+                      "LoanApplicationId": loanApplicationId,
+                      "BorrowerId": borrowerId] as [String: Any]
+        
+        APIRouter.sharedInstance.executeAPI(type: .addUpdateOtherAssets, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
                     }
                 }
             }
