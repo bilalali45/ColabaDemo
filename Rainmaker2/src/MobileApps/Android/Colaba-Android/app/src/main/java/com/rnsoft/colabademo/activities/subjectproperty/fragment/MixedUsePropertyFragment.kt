@@ -8,17 +8,20 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.MixedUsePropertyBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Created by Anita Kiran on 9/8/2021.
  */
+@AndroidEntryPoint
 class MixedUsePropertyFragment : BaseFragment() {
 
-    lateinit var binding : MixedUsePropertyBinding
-
+    private lateinit var binding : MixedUsePropertyBinding
+    private val viewModel : SubjectPropertyViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,21 +30,22 @@ class MixedUsePropertyFragment : BaseFragment() {
         binding = MixedUsePropertyBinding.inflate(inflater, container, false)
 
         binding.backButton.setOnClickListener {
-          //  findNavController().popBackStack(R.id.action_back_from_mixedproperty_toPurchase,false)
-            requireActivity().onBackPressed()
+            //  findNavController().popBackStack(R.id.action_back_from_mixedproperty_toPurchase,false)
+            findNavController().popBackStack()
         }
 
-        /*requireActivity().onBackPressedDispatcher.addCallback {
-            findNavController().popBackStack(R.id.action_back_from_mixedproperty_toPurchase,true)
-        } */
-
+        requireActivity().onBackPressedDispatcher.addCallback {
+            findNavController().popBackStack()
+        }
 
         binding.btnSave.setOnClickListener {
-            val details: String = binding.edDetails.text.toString()
+            val details: String = binding.edDetails.text.toString().trim()
             if (details.isEmpty() || details.length == 0) {
                 CustomMaterialFields.setError(binding.layoutDetail,getString(R.string.error_field_required),requireActivity())
             } else{
-                requireActivity().onBackPressed()
+                viewModel.updateMixUsePropertyDesc(details)
+                viewModel.updateMixUsePropertyRefinance(details)
+                findNavController().popBackStack()
             }
         }
         binding.edDetails.doAfterTextChanged {
@@ -51,8 +55,5 @@ class MixedUsePropertyFragment : BaseFragment() {
         }
         super.addListeners(binding.root)
         return binding.root
-
     }
-
-
 }

@@ -25,6 +25,7 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.text.DecimalFormat
 import java.util.*
 import javax.inject.Inject
@@ -365,6 +366,17 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
     }
 
     private fun checkValidations(){
+        Timber.e("chec","validaiton")
+
+        val info = AddLoanInfoModel(loanApplicationId = 5,loanPurposeId = 4,loanGoalId = 4,expectedClosingDate = "2021-11-09",downPayment = 20000.0, cashOutAmount = 1,
+            propertyValue = 2000.0)
+        lifecycleScope.launchWhenStarted{
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                binding.loaderLoanPurchase.visibility = View.VISIBLE
+                loanViewModel.addLoanInfo(authToken,info)
+            }
+        }
+        binding.loaderLoanPurchase.visibility = View.GONE
 
         val loanStage: String = binding.tvLoanStage.text.toString()
         val purchasePrice: String = binding.edPurchasePrice.text.toString()
@@ -413,10 +425,10 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
             clearError(binding.layoutClosingDate)
         }
         else {
-            if(loanStage.length > 0 && purchasePrice.length >0 && loanAmount.length >0 && downPayment.length>0 && percentage.length > 0 && closingDate.length>0){
+            Timber.e("else")
+            if(loanStage.length > 0 && purchasePrice.length >0 && loanAmount.length >0 && downPayment.length > 0 && percentage.length > 0 && closingDate.length>0){
                 val info = AddLoanInfoModel(loanApplicationId = 5,loanPurposeId = 4,loanGoalId = 4,expectedClosingDate = closingDate,downPayment = 20000.0, cashOutAmount = 1,
                     propertyValue = 2000.0)
-
                 lifecycleScope.launchWhenStarted{
                     sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                         binding.loaderLoanPurchase.visibility = View.VISIBLE

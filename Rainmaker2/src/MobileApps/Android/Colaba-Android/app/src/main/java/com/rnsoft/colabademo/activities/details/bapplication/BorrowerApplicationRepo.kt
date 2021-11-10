@@ -30,6 +30,11 @@ class BorrowerApplicationRepo  @Inject constructor(
             borrowerId = borrowerId )
     }
 
+    suspend fun addOrUpdateGovernmentQuestions(token:String, updateGovernmentQuestions:UpdateGovernmentQuestions ):Result<AddUpdateDataResponse> {
+        return borrowerApplicationDataSource.addOrUpdateGovernmentQuestions(
+            token = token , updateGovernmentQuestions = updateGovernmentQuestions )
+    }
+
 
     suspend fun getBorrowerIncomeDetail(token:String, loanApplicationId:Int, borrowerId:Int):Result<IncomeDetailsResponse>{
         return borrowerApplicationDataSource.getBorrowerIncomeDetail(token = token , loanApplicationId = loanApplicationId, borrowerId = borrowerId )

@@ -21,8 +21,10 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.primary_borrower_info_layout.*
 import kotlinx.android.synthetic.main.sub_property_refinance.*
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -34,14 +36,11 @@ import javax.inject.Inject
  */
 @AndroidEntryPoint
 class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListener {
-
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private val viewModel : BorrowerApplicationViewModel by activityViewModels()
     private val viewModelSubProperty : SubjectPropertyViewModel by activityViewModels()
     private lateinit var binding: SubPropertyRefinanceBinding
-    private var savedViewInstance: View? = null
     private var secondMortgageList : ArrayList<SecondMortgageModel> = ArrayList()
     private var firstMortgageList : ArrayList<FirstMortgageModel> = ArrayList()
     var addressDetailList :  ArrayList<AddressData> = ArrayList()
@@ -49,32 +48,26 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     private var loanApplicationId: Int? = null
     private var propertyTypeList: ArrayList<DropDownResponse> = arrayListOf()
     private var occupancyTypeList:ArrayList<DropDownResponse> = arrayListOf()
-
+    var firstMortgageModel =  FirstMortgageModel()
+    var secondMortgageModel = SecondMortgageModel()
+    var refinanceAddressData = AddressData()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return if (savedViewInstance != null) {
-            savedViewInstance
-        } else {
-            binding = SubPropertyRefinanceBinding.inflate(inflater, container, false)
-            savedViewInstance = binding.root
-            super.addListeners(binding.root)
+    ): View{
+        binding = SubPropertyRefinanceBinding.inflate(inflater, container, false)
+        super.addListeners(binding.root)
 
-            clicks()
-            setInputFields()
-            setDropDownData()
-            //getRefinanceDetails()
+        clicks()
+        setInputFields()
+        setDropDownData()
 
-            arguments?.let { arguments ->
-                loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
-                //borrowerId = arguments.getInt(AppConstant.borrowerId)
-            }
-
-            savedViewInstance
+        arguments?.let { arguments ->
+            loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
         }
+        return binding.root
     }
 
     private fun setDropDownData(){
@@ -88,8 +81,6 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                             itemList.add(item.name)
                             propertyTypeList.add(item)
                         }
-
-
                         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
                         binding.tvPropertyType.setAdapter(adapter)
                         //adapter.setNotifyOnChange(true)
@@ -235,7 +226,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             if(isChecked){
                 binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.BOLD)
                 binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
-                //binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
+                binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
+                binding.layoutSecondMortgage.visibility = View.VISIBLE
             }
         }
 
@@ -275,12 +267,10 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.layoutSecMortgageDetail.setOnClickListener { onSecMortgageYesClick() }
 
         binding.btnSave.setOnClickListener {
-            requireActivity().finish()
-            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+            sendData()
         }
 
         binding.backButton.setOnClickListener {
-            Log.e("back_click","true")
             requireActivity().finish()
             requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }
@@ -294,7 +284,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     private fun getRefinanceDetails(){
         viewModel.refinanceDetails.observe(viewLifecycleOwner, { details->
             if(details != null){
-                details.subPropertyData?.address?.let {
+                details.subPropertyData?.addressRefinance?.let {
                      if(it.street == null && it.unit==null && it.city==null && it.stateName==null && it.countryName==null){
                          binding.radioSubPropertyTbd.isChecked = true
                          binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
@@ -323,7 +313,6 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                     binding.radioSubPropertyTbd.isChecked = true
                     binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
                 }
-
 
                 details.subPropertyData?.rentalIncome?.let{
                     binding.edRentalIncome.setText(Math.round(it).toString())
@@ -387,7 +376,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                     if(value){
                         binding.radioMixedPropertyYes.isChecked = true
                         details.subPropertyData.mixedUsePropertyExplanation?.let { desc ->
-                            binding.mixedPropertyExplanation.setText(desc)
+                            binding.mixedPropertyDesc.setText(desc)
                         }
                     } else
                         binding.radioMixedPropertyNo.isChecked = true
@@ -399,8 +388,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                 details.subPropertyData?.hasFirstMortgage?.let{ yes->
                     if(yes){
                         binding.radioHasFirstMortgageYes.isChecked = true
-                        binding.layoutFirstMortgageDetail.visibility =View.VISIBLE
-                        binding.layoutSecondMortgage.visibility = View.VISIBLE
+                       // binding.layoutFirstMortgageDetail.visibility =View.VISIBLE
+                       // binding.layoutSecondMortgage.visibility = View.VISIBLE
 
                         details.subPropertyData.firstMortgageModel?.let{ model->
 
@@ -427,14 +416,13 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
 
                 // has second mortgage 'yes'
                 details.subPropertyData?.hasSecondMortgage?.let{ yes->
-
                     if(yes){
                         binding.rbSecMortgageYes.isChecked = true
                         binding.layoutSecMortgageDetail.visibility =View.VISIBLE
 
                         details.subPropertyData.secondMortgageModel?.let{ model->
 
-                            secondMortgageList.add(SecondMortgageModel(model.secondMortgagePayment, model.unpaidSecondMortgagePayment,model.paidAtClosing,model.helocCreditLimit,model.isHeloc,model.state,
+                            secondMortgageList.add(SecondMortgageModel(model.secondMortgagePayment, model.unpaidSecondMortgagePayment,model.helocCreditLimit,model.isHeloc,
                                 model.combineWithNewFirstMortgage,model.wasSmTaken))
 
                             model.secondMortgagePayment?.let { payment->
@@ -463,27 +451,68 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         })
     }
 
-    private fun checkValidations(){
+    private fun sendData(){
+        // TBD
+        val tbd = if(binding.radioSubPropertyTbd.isChecked) true else false
+        // get property id
+        val property1 : String = binding.tvPropertyType.getText().toString().trim()
+        val matchedList1 =  occupancyTypeList.filter { s -> s.name == property1}
+        //val propertyId = if(matchedList1.size > 0) matchedList1.map { matchedList1.get(0).id }.single() else null
+        // get occupancy id
+        val occupancy : String = binding.tvOccupancyType.getText().toString().trim()
+        val matchedList =  occupancyTypeList.filter { s -> s.name == occupancy}
+       // val occupancyId = if(matchedList.size>0) matchedList.map { matchedList.get(0).id }.single() else null
 
-        /*val businessName: String = binding.editTextBusinessName.text.toString()
-        val jobTitle: String = binding.edJobTitle.text.toString()
-        val startDate: String = binding.editTextBstartDate.text.toString()
+        // mixed use property
+        val isMixedUseProperty = if(binding.radioMixedPropertyYes.isChecked) true else false
+        // desc
+        val mixedUsePropertyDesc = if(binding.mixedPropertyDesc.text.toString().trim().length > 0) binding.mixedPropertyDesc.text.toString() else null
+        // property value
+        val propertyValue = binding.edPropertyValue.text.toString().trim()
+        var newPropertyValue = if(propertyValue.length > 0) propertyValue.replace(",".toRegex(), "") else null
 
-        } */
+        val hoa = binding.edAssociation.text.toString().trim()
+        val newHoaDues = if(hoa.length > 0) hoa.replace(",".toRegex(), "") else null
 
-        val property : String = binding.tvPropertyType.getText().toString().trim()
-        //Log.e("size-----", property)
-        //var filterList =  propertyTypeList.filter { s -> s.name == property}.single()
-        //var id = property.map{filterList.id}.single()
-        //Log.e("SelectedId****", ""+ id)
+        val propertyTax = binding.edPropertyTaxes.text.toString().trim()
+        val newPropertyTax = if(propertyTax.length > 0) propertyTax.replace(",".toRegex(), "") else null
 
-        val address = RefinanceAddressData(city = null,countryId = null,countryName = null,stateId = null,stateName = null,unit = null, zipCode = null,street = null,countyId = 4,countyName = null)
-        val data = SubPropertyRefinanceData(loanApplicationId=5,propertyTypeId=1,propertyUsageId= 1, propertyValue = 100000.0,propertyTax = 100.0,homeOwnerInsurance =200.0,floodInsurance = 0.0,
-            address = address,isMixedUseProperty=true,mixedUsePropertyExplanation="ashh",cashOutAmount = 2000.0,loanAmount = 100.0,hoaDues = 100.0,dateAcquired = "20-11-2021",firstMortgageModel = null,secondMortgageModel = null,
-            hasFirstMortgage = true,hasSecondMortgage = true,loanGoalId = 1,isSameAsPropertyAddress = false,propertyInfoId = 1,rentalIncome = 500.0)
-        lifecycleScope.launchWhenStarted {
+        val datePurchased = if(binding.edDateOfHomePurchase.text.toString().trim().length > 0) binding.edDateOfHomePurchase.text.toString() else null
+
+        // home insurance
+        val homeInsurance = binding.edHomeownerInsurance.text.toString().trim()
+        var newHomeInsurance = if(homeInsurance.length > 0) homeInsurance.replace(",".toRegex(), "") else null
+        // flood insurance
+        val floodInsurance = binding.edFloodInsurance.text.toString().trim()
+        val newFloodInsurance = if(floodInsurance.length >0 ) floodInsurance.replace(",".toRegex(), "") else null
+
+        val hasFirstMortgage = if(binding.radioHasFirstMortgageYes.isChecked) true else false
+        val hasSecondMortgage = if(binding.rbSecMortgageYes.isChecked) true else false
+
+        lifecycleScope.launchWhenStarted{
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                viewModelSubProperty.sendRefinanceDetail(authToken,data)
+                val activity = (activity as? SubjectPropertyActivity)
+                loanApplicationId = activity?.loanApplicationId
+                loanApplicationId?.let { loanId->
+                    //Log.e("Loan Application Id", ""+ loanId)
+
+                        //Log.e("address list before add api", ""+ refinanceAddressData)
+                        //Log.e("first Mortgage model before add api", ""+ firstMortgageModel)
+
+                        //Log.e("sec Mortgage model before add api", ""+ secondMortgageModel)
+
+
+                        val refinanceDetail = SubPropertyRefinanceData(loanApplicationId = loanId,propertyTypeId = 1,propertyUsageId = 4,
+                            propertyValue = newPropertyValue?.toDouble(),propertyTax = newPropertyTax?.toDouble(),homeOwnerInsurance=newHomeInsurance?.toDouble(),
+                            floodInsurance = newFloodInsurance?.toDouble(), hoaDues=newHoaDues?.toDouble(),dateAcquired = datePurchased, hasFirstMortgage = hasFirstMortgage,
+                        hasSecondMortgage = hasSecondMortgage,isSameAsPropertyAddress = true,
+                        addressRefinance = refinanceAddressData,isMixedUseProperty= isMixedUseProperty,mixedUsePropertyExplanation=mixedUsePropertyDesc,subjectPropertyTbd = tbd,
+                        cashOutAmount = 0.0,firstMortgageModel = firstMortgageModel,secondMortgageModel =secondMortgageModel,loanAmount = 2000.0,loanGoalId = 1,rentalIncome = 400.0,propertyInfoId = null)
+
+                        showLoader()
+                        viewModelSubProperty.sendRefinanceDetail(authToken,refinanceDetail)
+
+                }
             }
         }
     }
@@ -503,7 +532,6 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         })
 
         getRefinanceDetails()
-
     }
 
     private fun setInputFields() {
@@ -524,9 +552,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             CustomFocusListenerForEditText(
                 binding.edFloodInsurance,
                 binding.layoutFloodInsurance,
-                requireContext()
-            )
-        )
+                requireContext()))
 
         // set input format
         binding.edRentalIncome.addTextChangedListener(NumberTextFormat(binding.edRentalIncome))
@@ -554,6 +580,74 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         bundle.putParcelableArrayList(AppConstant.address,addressDetailList)
         fragment.arguments = bundle
         findNavController().navigate(R.id.action_address, fragment.arguments)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModelSubProperty.updatedRefinanceAddress.observe(viewLifecycleOwner, {
+            addressList.add(AddressData(
+                street = it.street,
+                unit = it.unit,
+                city = it.city,
+                stateName = it.stateName,
+                countryName = it.countryName,
+                countyName = it.countyName,
+                countyId = it.countyId,
+                stateId = it.stateId,
+                countryId = it.countryId,
+                zipCode = it.zipCode))
+
+            refinanceAddressData = it
+
+            binding.tvSubPropertyAddress.text =
+                it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
+        })
+
+        viewModelSubProperty.mixedPropertyRefinanceDesc.observe(viewLifecycleOwner,{
+            binding.radioMixedPropertyYes.isChecked = true
+            binding.mixedPropertyDesc.setText(it)
+            binding.layoutMixedPropertyDetail.visibility = View.VISIBLE
+        })
+
+
+        viewModelSubProperty.firstMortgageDetail.observe(viewLifecycleOwner,{
+            if(it !=null ) {
+                binding.radioHasFirstMortgageYes.isChecked = true
+                it.firstMortgagePayment?.let { payment ->
+                    binding.firstMortgagePayment.setText("$" + Math.round(payment))
+                } ?: run {
+                    binding.firstMortgagePayment.setText("$0")
+                }
+
+                it.unpaidFirstMortgagePayment?.let { balance ->
+                    binding.firstMortgageBalance.setText("$" + Math.round(balance))
+                } ?: run {
+                    binding.firstMortgageBalance.setText("$0")
+                }
+                firstMortgageModel = it
+                Log.e("onResume", "First: --"+firstMortgageModel)
+            }
+           })
+
+        binding.rbSecMortgageYes.isChecked = true
+        binding.layoutSecMortgageDetail.visibility =View.VISIBLE
+
+        viewModelSubProperty.secMortgageDetail.observe(viewLifecycleOwner,{
+            it.secondMortgagePayment?.let { payment->
+                binding.textviewSecMortgagePayment.setText("$" + payment)
+            } ?: run {
+                binding.textviewSecMortgagePayment.setText("$0")
+            }
+
+            it.unpaidSecondMortgagePayment?.let{ balance ->
+                binding.textviewSecMortgageBalance.setText("$" + balance)
+            } ?: run{
+                binding.textviewSecMortgageBalance.setText("$0")
+            }
+            secondMortgageModel =it
+            Log.e("onResume", "Sec:--"+secondMortgageModel)
+
+        })
     }
 
     private fun showHideRental() {
@@ -615,6 +709,11 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         activity?.binding?.loaderSubjectProperty?.visibility = View.GONE
     }
 
+    private fun showLoader(){
+        val  activity = (activity as? SubjectPropertyActivity)
+        activity?.binding?.loaderSubjectProperty?.visibility = View.VISIBLE
+    }
+
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -626,14 +725,20 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onErrorReceived(event: WebServiceErrorEvent) {
-        if(event.isInternetError)
+    fun onSentData(event: SendDataEvent) {
+        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS)
+            SandbarUtils.showError(requireActivity(), "Data Sent Successfully" )
+
+        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+
         else
-            if(event.errorResult!=null)
+            if(event.addUpdateDataResponse.message != null)
                 SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
         hideLoader()
+
     }
+
     /*
     private fun onSecMortgegeNoClick() {
         binding.layoutSecondMortgage.visibility = View.VISIBLE
