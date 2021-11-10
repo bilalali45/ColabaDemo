@@ -20,7 +20,7 @@ class LoanInfoRepo @Inject constructor(private val datasource : LoanInfoDataSour
         return sendDataResponse
     }
 
-    suspend fun addLoanRefinanceInfo(token: String, data: UpdateLoanRefinanceModel): Result<Any> {
+    suspend fun addLoanRefinanceInfo(token: String, data: UpdateLoanRefinanceModel): Result<AddUpdateDataResponse> {
         val sendDataResponse = datasource.addUpdateLoanRefinance(token,data)
         return sendDataResponse
     }

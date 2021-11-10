@@ -1,14 +1,14 @@
 package com.rnsoft.colabademo
 
 data class LoanInfoData(
-    val cashOutAmount: Double?,
-    val downPayment: Double?,
-    val expectedClosingDate: String?,
-    val loanApplicationId: Int?,
-    val loanGoalId: Int?,
-    val loanGoalName: String?,
-    val loanPayment: Double?,
-    val loanPurposeDescription: String?,
-    val loanPurposeId: Int?,
-    val propertyValue: Double?
+    val cashOutAmount: Double? = null,
+    val downPayment: Double? = null,
+    val expectedClosingDate: String? = null,
+    val loanApplicationId: Int? = null,
+    val loanGoalId: Int? = null,
+    val loanGoalName: String? = null,
+    val loanPayment: Double? = null,
+    val loanPurposeDescription: String? = null,
+    val loanPurposeId: Int? = null,
+    val propertyValue: Double? = null
 )
