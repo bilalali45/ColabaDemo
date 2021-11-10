@@ -214,32 +214,8 @@ class AddProceedsFromTransactionViewController: BaseViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-
         if validate() {
-            if (txtfieldTransactionType.text == "Proceeds From A Loan"){
-                if (isLoanSecureByAnAsset){
-                    if (txtfieldAssetsType.text == "Other"){
-                        if (txtfieldTransactionType.text != "" && txtfieldExpectedProceeds.text != "" && txtViewAssetsDescription.textView.text != ""){
-                            self.dismissVC()
-                        }
-                    }
-                    else{
-                        if (txtfieldTransactionType.text != "" && txtfieldExpectedProceeds.text != "" && txtfieldAssetsType.text != ""){
-                            self.dismissVC()
-                        }
-                    }
-                }
-                else{
-                    if (txtfieldTransactionType.text != "" && txtfieldExpectedProceeds.text != ""){
-                        self.dismissVC()
-                    }
-                }
-            }
-            else{
-                if (txtfieldTransactionType.text != "" && txtfieldExpectedProceeds.text != "" && txtViewAssetsDescription.textView.text != ""){
-                    self.dismissVC()
-                }
-            }
+            addUpdateProceedsFromTransaction()
         }
     }
     
@@ -251,7 +227,7 @@ class AddProceedsFromTransactionViewController: BaseViewController {
         if !txtViewAssetsDescription.isHidden{
             isValidate = validateTextView() && isValidate
         }
-        
+//
         isValidate = txtfieldExpectedProceeds.validate() && isValidate
         return isValidate
     }
@@ -325,6 +301,98 @@ class AddProceedsFromTransactionViewController: BaseViewController {
             }
         }
     }
+    
+    func addUpdateProceedsFromTransaction(){
+       
+        var endPoint: EndPoint!
+        var params: [String : Any] = [:]
+        
+        var expectedProceeds: Any = NSNull()
+        var detail: Any = NSNull()
+        var assetName: Any = NSNull()
+        
+        if (txtfieldExpectedProceeds.text != ""){
+            if let value = Double(cleanString(string: txtfieldExpectedProceeds.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                expectedProceeds = value
+            }
+        }
+        if (txtViewAssetsDescription.textView.text != ""){
+            detail = txtViewAssetsDescription.textView.text!
+        }
+        if (txtfieldAssetsType.text != ""){
+            assetName = txtfieldAssetsType.text!
+        }
+        
+        var assetCategory = 0
+        
+        if let selectedAssetCategory = assetsCategoryArray.filter({$0.name.localizedCaseInsensitiveContains(txtfieldTransactionType.text!)}).first{
+            assetCategory = selectedAssetCategory.id
+        }
+        
+        if (assetCategory == 13 || assetCategory == 14){
+            endPoint = assetCategory == 13 ? .addUpdateProceedFromNonRealState : .addUpdateProceedFromRealState
+            params = ["BorrowerAssetId": isForAdd ? 0 : proceedsFromTransactionDetail.id,
+                      "LoanApplicationId": loanApplicationId,
+                      "BorrowerId": borrowerId,
+                      "AssetTypeId": assetCategory,
+                      "AssetCategoryId": 6,
+                      "Description": detail,
+                      "AssetValue": expectedProceeds]
+        }
+        else if (assetCategory == 12){
+            if (isLoanSecureByAnAsset && txtfieldAssetsType.text!.contains("Other")){
+                endPoint = .addUpdateProceedFromLoanOther
+                params = ["BorrowerAssetId": isForAdd ? 0 : proceedsFromTransactionDetail.id,
+                          "LoanApplicationId": loanApplicationId,
+                          "BorrowerId":borrowerId,
+                          "AssetTypeId":12,
+                          "AssetCategoryId":6,
+                          "AssetValue":expectedProceeds,
+                          "ColletralAssetTypeId":4,
+                          "CollateralAssetDescription": detail]
+            }
+            else{
+                
+                var colletralAssetTypeId = 0
+                
+                if (txtfieldAssetsType.text!.localizedCaseInsensitiveContains("House")){
+                    colletralAssetTypeId = 1
+                }
+                else if (txtfieldAssetsType.text!.localizedCaseInsensitiveContains("Automobile")){
+                    colletralAssetTypeId = 2
+                }
+                else if (txtfieldAssetsType.text!.localizedCaseInsensitiveContains("Financial Account")){
+                    colletralAssetTypeId = 3
+                }
+                
+                endPoint = .addUpdateProceedsFromLoan
+                params = ["BorrowerAssetId": isForAdd ? 0 : proceedsFromTransactionDetail.id,
+                          "AssetTypeId": 12,
+                          "AssetCategoryId": 6,
+                          "AssetValue": expectedProceeds,
+                          "ColletralAssetTypeId": isLoanSecureByAnAsset ? colletralAssetTypeId : NSNull(),
+                          "SecuredByColletral": isLoanSecureByAnAsset,
+                          "CollateralAssetDescription": NSNull(),
+                          "LoanApplicationId": loanApplicationId,
+                          "BorrowerId": borrowerId]
+            }
+        }
+        
+        APIRouter.sharedInstance.executeAPI(type: endPoint!, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+        }
+        
+    }
 
     func deleteAsset(){
         
@@ -385,7 +453,7 @@ extension AddProceedsFromTransactionViewController : ColabaTextFieldDelegate {
         }
         
         if textField == txtfieldAssetsType {
-            
+            setAssetTypeAccordingToOption(option: option)
         }
     }
 }
