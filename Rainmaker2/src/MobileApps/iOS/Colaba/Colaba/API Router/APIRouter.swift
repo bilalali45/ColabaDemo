@@ -91,6 +91,9 @@ enum EndPoint:String{
     case updateCoBorrowerOccupancyStatus = "loanapplication/SubjectProperty/AddOrUpdateCoBorrowerOccupancyStatus"
     case updateLoanInformation = "loanapplication/Loan/AddOrUpdateLoanInformation"
     case deleteAsset = "loanapplication/Assets/DeleteAsset?"
+    case addUpdateBankAccount = "loanapplication/Assets/AddOrUpdateBankAccount"
+    case addUpdateRetirementAccount = "loanapplication/Assets/AddOrUpdateRetirementAccount"
+    case addUpdateFinancialAccount = "loanapplication/Assets/AddOrUpdateFinancialAsset"
     case logout = "identity/mcuaccount/Logout"
     
 }
