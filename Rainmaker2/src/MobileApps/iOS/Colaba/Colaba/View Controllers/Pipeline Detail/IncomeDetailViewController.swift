@@ -63,12 +63,13 @@ class IncomeDetailViewController: BaseViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
             self.setScreenHeight()
         }
-        getIncomeDetail()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.delegate?.getBorrowerTotalIncome(totalIncome: "\(Int(borrowerIncomeData.monthlyIncome).withCommas().replacingOccurrences(of: ".00", with: ""))")
+        getIncomeDetail()
     }
     
     //MARK:- Methods and Actions
@@ -192,7 +193,9 @@ class IncomeDetailViewController: BaseViewController {
     
     func getIncomeDetail(){
         
-        loadingPlaceholderView.cover(self.view, animated: true)
+        if (employmentIncome.incomes.count == 0 && selfEmployementIncome.incomes.count == 0 && businessIncome.incomes.count == 0 && militaryIncome.incomes.count == 0 && retiermentIncome.incomes.count == 0 && otherIncome.incomes.count == 0){
+            loadingPlaceholderView.cover(self.view, animated: true)
+        }
         
         let extraData = "loanApplicationId=\(loanApplicationId)&borrowerId=\(borrowerId)"
         
@@ -203,6 +206,13 @@ class IncomeDetailViewController: BaseViewController {
                 self.loadingPlaceholderView.uncover(animated: true)
                 
                 if (status == .success){
+                    
+                    self.employmentIncome = BorrowerIncome()
+                    self.selfEmployementIncome = BorrowerIncome()
+                    self.businessIncome = BorrowerIncome()
+                    self.militaryIncome = BorrowerIncome()
+                    self.retiermentIncome = BorrowerIncome()
+                    self.otherIncome = BorrowerIncome()
                     
                     let borrowerIncomeModel = BorrowerIncomeModel()
                     borrowerIncomeModel.updateModelWithJSON(json: result["data"]["borrower"])
