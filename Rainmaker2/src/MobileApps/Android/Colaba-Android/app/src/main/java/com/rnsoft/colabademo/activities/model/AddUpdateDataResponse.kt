@@ -8,3 +8,11 @@ data class AddUpdateDataResponse(
     @SerializedName("message") val message: String? = null,
     @SerializedName("status") val status: String?
 )
+
+
+data class GovernmentAddUpdateDataResponse(
+    @SerializedName("code") val code: String?,
+    @SerializedName("data") val AddUpdateData: Boolean?,
+    @SerializedName("message") val message: String? = null,
+    @SerializedName("status") val status: String?
+)

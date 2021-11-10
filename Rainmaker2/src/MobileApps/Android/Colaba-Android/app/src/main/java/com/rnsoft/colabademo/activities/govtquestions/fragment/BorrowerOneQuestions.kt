@@ -87,7 +87,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         arguments?.let {
             tabBorrowerId = it.getInt(AppConstant.tabBorrowerId)
         }
-
         binding.saveBtn.setOnClickListener{
             Timber.e("working on all the fragment...")
             lifecycleScope.launchWhenStarted {
@@ -96,7 +95,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 }
             }
         }
-
         setupLayout()
         super.addListeners(binding.root)
         return binding.root
@@ -208,7 +206,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                                     Timber.e(qData.answerDetail.toString())
                                     var extractedAnswer = ""
                                     val bankruptAnswerData = qData.answerData as ArrayList<*>
-                                    if (bankruptAnswerData.size > 0 && qData.answerData != null) {
+                                    if (bankruptAnswerData.size > 0) {
                                         if (bankruptAnswerData[0] != null) {
                                             val getrow: Any = bankruptAnswerData[0]
                                             val t: LinkedTreeMap<Any, Any> =
@@ -345,6 +343,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             ownerShipConstraintLayout = contentCell
             questionData.id?.let {
                 ownerShipConstraintLayout.id = it
+                contentCell.id = it
             }
         }
         else
@@ -354,6 +353,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             childConstraintLayout = contentCell
             questionData.id?.let {
                 childConstraintLayout.id = it
+                contentCell.id = it
             }
         }
         else
@@ -362,6 +362,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             bankruptcyConstraintLayout = contentCell
             questionData.id?.let {
                 bankruptcyConstraintLayout.id = it
+                contentCell.id = it
             }
         }
         else
@@ -370,12 +371,17 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             demoGraphicConstraintLayout = contentCell
             questionData.id?.let {
                 demoGraphicConstraintLayout.id = it
+                contentCell.id = it
             }
             observeDemoGraphicData()
             return contentCell
         }
-        else
+        else {
             contentCell = layoutInflater.inflate(R.layout.common_govt_content_layout, null) as ConstraintLayout
+            questionData.id?.let {
+              contentCell.id = it
+            }
+        }
 
 
         questionData.headerText?.let {
@@ -387,17 +393,22 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         questionData.answerDetail?.let {
             contentCell.detail_text.text = it
         }
-
+        var questionId:Int = -100
+        questionData.id?.let {
+            questionId = it
+        }
 
         if(ownerShip) {
-            contentCell.govt_detail_box.setOnClickListener {  navigateToInnerScreen(headerTitle) }
-            contentCell.govt_detail_box2.setOnClickListener { navigateToInnerScreen(headerTitle) }
+            contentCell.govt_detail_box.setOnClickListener {
+                navigateToInnerScreen(headerTitle , questionId)
+            }
+            contentCell.govt_detail_box2.setOnClickListener { navigateToInnerScreen(headerTitle , questionId) }
         }
 
         if(childSupport){
-            contentCell.govt_detail_box.setOnClickListener {  navigateToInnerScreen(headerTitle) }
-            contentCell.govt_detail_box2.setOnClickListener {navigateToInnerScreen(headerTitle) }
-            contentCell.govt_detail_box3.setOnClickListener { navigateToInnerScreen(headerTitle) }
+            contentCell.govt_detail_box.setOnClickListener {  navigateToInnerScreen(headerTitle ,  questionId) }
+            contentCell.govt_detail_box2.setOnClickListener {navigateToInnerScreen(headerTitle , questionId) }
+            contentCell.govt_detail_box3.setOnClickListener { navigateToInnerScreen(headerTitle , questionId) }
 
             val childInnerDetailQuestions:ArrayList<ConstraintLayout> = arrayListOf()
             val childAnswerData = questionData.answerData as ArrayList<*>
@@ -477,7 +488,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 contentCell.ans_yes.setOnClickListener {
                     for(item in childInnerDetailQuestions)
                         item.visibility = View.VISIBLE
-                    navigateToInnerScreen(headerTitle)
+                    navigateToInnerScreen(headerTitle , questionId)
                 }
 
 
@@ -494,7 +505,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             else if(questionData.answer.equals("yes",true)) {
                 contentCell.ans_yes.isChecked = true
 
-                if(questionData.answerDetail!=null && questionData.answer.equals("Yes", true) &&  questionData.answerDetail.isNotBlank() && questionData.answerDetail.isNotEmpty())
+                if(questionData.answerDetail!=null && questionData.answer.equals("Yes", true) &&  questionData.answerDetail!!.isNotBlank() && questionData.answerDetail!!.isNotEmpty())
                     contentCell.govt_detail_box.visibility = View.VISIBLE
             }
 
@@ -506,14 +517,14 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 updateGovernmentData(variableQuestionData)
             }
             contentCell.ans_yes.setOnClickListener {
-                if(questionData.answer.equals("Yes", true) && questionData.answerDetail!=null && questionData.answerDetail.isNotBlank() && questionData.answerDetail.isNotEmpty()) {
+                if(questionData.answer.equals("Yes", true) && questionData.answerDetail!=null && questionData.answerDetail!!.isNotBlank() && questionData.answerDetail!!.isNotEmpty()) {
                     contentCell.govt_detail_box.visibility = View.VISIBLE
                     contentCell.govt_detail_box2?.visibility = View.VISIBLE
                     contentCell.govt_detail_box3?.visibility = View.VISIBLE
                 }
                 variableQuestionData.answer = "Yes"
                 updateGovernmentData(variableQuestionData)
-                navigateToInnerScreen(headerTitle)
+                navigateToInnerScreen(headerTitle, questionId)
             }
         }
 
@@ -528,37 +539,40 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         }
     }
 
-    private fun navigateToInnerScreen(stringForSpecificFragment:String){
-           when(stringForSpecificFragment) {
+    private fun navigateToInnerScreen(stringForSpecificFragment:String, questionId: Int){
+        val bundle = Bundle()
+        bundle.putInt(AppConstant.questionId, questionId)
+        bundle.putParcelable(AppConstant.updateGovernmentQuestionByBorrowerId , updateGovernmentQuestionByBorrowerId)
+
+        when(stringForSpecificFragment) {
                "Undisclosed Borrowered Funds" ->{
-                   findNavController().navigate(R.id.action_undisclosed_borrowerfund)}
-               "Family or business affiliation" ->{}
+                   findNavController().navigate(R.id.action_undisclosed_borrowerfund, bundle )
+               }
+               "Family or business affiliation" ->{  findNavController().navigate(R.id.action_family_affiliation , bundle ) }
                "Ownership Interest in Property" ->{
-                   val bundle = Bundle()
+
                    bundle.putStringArrayList(AppConstant.ownerShipGlobalData, ownerShipGlobalData)
                    findNavController().navigate(R.id.action_ownership_interest , bundle)
                }
                "Own Property Type" ->{}
-               "Debt Co-Signer or Guarantor" ->{  findNavController().navigate(R.id.action_debt_co)}
-               "Outstanding Judgements" ->{  findNavController().navigate(R.id.action_outstanding)}
-               "Federal Debt Deliquency" ->{ findNavController().navigate(R.id.action_federal_debt)}
-               "Party to Lawsuit" ->{ findNavController().navigate(R.id.action_party_to) }
+               "Debt Co-Signer or Guarantor" ->{  findNavController().navigate(R.id.action_debt_co , bundle )}
+               "Outstanding Judgements" ->{  findNavController().navigate(R.id.action_outstanding , bundle)}
+               "Federal Debt Deliquency" ->{ findNavController().navigate(R.id.action_federal_debt , bundle)}
+               "Party to Lawsuit" ->{
+                   bundle.putStringArrayList(AppConstant.ownerShipGlobalData, ownerShipGlobalData)
+                   findNavController().navigate(R.id.action_party_to , bundle)
+               }
                "Bankruptcy " ->{
-
-                   val bundle = Bundle()
                    bundle.putParcelable(AppConstant.bankruptcyGlobalData, bankruptcyGlobalData)
-                   findNavController().navigate(R.id.action_bankruptcy) }
+                   findNavController().navigate(R.id.action_bankruptcy , bundle)
+               }
                "Child Support, Alimony, etc." ->{
-                   val bundle = Bundle()
                    bundle.putParcelableArrayList(AppConstant.childGlobalList, childGlobalList)
                    findNavController().navigate(R.id.action_child_support, bundle)
                }
-               "Type" ->{}
-               "Foreclosured Property" ->{ findNavController().navigate(R.id.action_fore_closure_property) }
-               "Pre-Foreclosureor Short Sale" ->{ findNavController().navigate(R.id.action_pre_for_closure) }
-               "Title Conveyance" ->{ findNavController().navigate(R.id.action_title_conveyance)}
-               "Property Title" ->{}
-               "Family or Business affiliation" ->{}
+               "Foreclosured Property" ->{ findNavController().navigate(R.id.action_fore_closure_property , bundle) }
+               "Pre-Foreclosureor Short Sale" ->{ findNavController().navigate(R.id.action_pre_for_closure , bundle) }
+               "Title Conveyance" ->{ findNavController().navigate(R.id.action_title_conveyance, bundle) }
                else->{
                    Timber.e(" not matching with header title...")
                }

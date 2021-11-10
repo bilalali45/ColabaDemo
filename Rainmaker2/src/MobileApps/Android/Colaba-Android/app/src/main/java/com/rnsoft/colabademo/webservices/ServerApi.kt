@@ -507,7 +507,7 @@ interface ServerApi{
         @Header("Authorization" )  Authorization:String,
         @Body updateGovernmentQuestions: UpdateGovernmentQuestions
 
-    ):AddUpdateDataResponse
+    ):GovernmentAddUpdateDataResponse
 
     @GET("api/mcu/mobile/loanapplication/GovtQuestions/GetDemographicInformation")
     suspend fun getDemoGraphicInfo(

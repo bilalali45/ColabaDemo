@@ -132,8 +132,10 @@ object AppConstant {
 
         const val borrowerDocScreen:String = "borrowerDocScreen"
 
+        const val updateGovernmentQuestionByBorrowerId : String = "updateGovernmentQuestionByBorrowerId"
 
 
+        const val questionId : String = "questionId"
 
         const val childGlobalList : String = "childGlobalList"
         const val ownerShipGlobalData : String = "ownerShipGlobalData"
