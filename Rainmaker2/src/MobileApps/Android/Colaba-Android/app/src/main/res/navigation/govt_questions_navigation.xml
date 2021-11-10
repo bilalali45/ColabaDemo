@@ -11,6 +11,12 @@
         android:label="@string/govt_questions"
         tools:layout="@layout/govt_question_tab_layout">
 
+
+        <action
+            android:id="@+id/action_family_affiliation"
+            app:destination="@id/navigation_undisclosed_borrower_fund"
+            app:enterAnim="@anim/slide_up" />
+
         <action
             android:id="@+id/action_undisclosed_borrowerfund"
             app:destination="@id/navigation_undisclosed_borrower_fund"
@@ -184,6 +190,12 @@
 
     <fragment
         android:id="@+id/navigation_undisclosed_borrower_fund"
+        android:name="com.rnsoft.colabademo.UndisclosedBorrowerFundFragment"
+        android:label="@string/test_id"
+        tools:layout="@layout/undisclosed_borrower_fund_layout" />
+
+    <fragment
+        android:id="@+id/navigation_family_affiliation"
         android:name="com.rnsoft.colabademo.UndisclosedBorrowerFundFragment"
         android:label="@string/test_id"
         tools:layout="@layout/undisclosed_borrower_fund_layout" />

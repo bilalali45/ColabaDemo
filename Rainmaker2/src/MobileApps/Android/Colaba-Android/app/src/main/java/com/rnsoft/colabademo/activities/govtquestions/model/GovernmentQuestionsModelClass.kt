@@ -14,7 +14,7 @@ data class GovernmentQuestionsModelClass(
 data class QuestionData(
     val id: Int?=null,
     val parentQuestionId:Int? = null,
-    val answer: String?,
+    var answer: String?,
     val answerDetail: String?= "",
     val headerText:String? = "title1",
     val answerData : Any? = null,

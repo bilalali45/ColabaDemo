@@ -69,7 +69,7 @@ class GovtQuestionActivity : BaseActivity() {
     fun onErrorEvent(event: WebServiceErrorEvent) {
         binding.govtDataLoader.visibility = View.INVISIBLE
         Timber.e("error in service will finish this activity....")
-        finish()
+        //finish()
     }
 
 

@@ -502,6 +502,13 @@ interface ServerApi{
         @Query("borrowerId")  borrowerId:Int
     ):GovernmentQuestionsModelClass
 
+    @POST("api/mcu/mobile/loanapplication/GovtQuestions/AddOrUpdateGovernmentQuestions")
+    suspend fun addOrUpdateGovernmentQuestions(
+        @Header("Authorization" )  Authorization:String,
+        @Body updateGovernmentQuestions: UpdateGovernmentQuestions
+
+    ):AddUpdateDataResponse
+
     @GET("api/mcu/mobile/loanapplication/GovtQuestions/GetDemographicInformation")
     suspend fun getDemoGraphicInfo(
         @Header("Authorization" )  Authorization:String,

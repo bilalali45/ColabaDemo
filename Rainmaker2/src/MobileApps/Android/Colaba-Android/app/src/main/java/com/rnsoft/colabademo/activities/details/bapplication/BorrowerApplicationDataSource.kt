@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
+import com.google.gson.Gson
 import com.rnsoft.colabademo.activities.model.StatesModel
 import timber.log.Timber
 import java.io.IOException
@@ -187,6 +188,22 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
         }
     }
 
+
+    suspend fun addOrUpdateGovernmentQuestions( token:String, updateGovernmentQuestions:UpdateGovernmentQuestions):Result<AddUpdateDataResponse>{
+        return try {
+            val newToken = "Bearer $token"
+            //val gson = Gson()
+            //val stringValue= gson.toJson(updateGovernmentQuestions)
+            val response = serverApi.addOrUpdateGovernmentQuestions( newToken,  updateGovernmentQuestions )
+            Timber.e("updateGovernmentQuestions - $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
 
 
     suspend fun getGovernmentQuestions(

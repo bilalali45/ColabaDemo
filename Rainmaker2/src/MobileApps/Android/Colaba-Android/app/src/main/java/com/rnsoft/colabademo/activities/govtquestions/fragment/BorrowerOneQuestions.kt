@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import timber.log.Timber
 import android.widget.LinearLayout
 import android.util.DisplayMetrics
 import androidx.core.os.bundleOf
+import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.children_separate_layout.view.*
 import kotlinx.android.synthetic.main.common_govt_content_layout.view.ans_no
 import kotlinx.android.synthetic.main.common_govt_content_layout.view.ans_yes
@@ -29,6 +31,7 @@ import com.google.gson.Gson
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import com.google.gson.internal.LinkedTreeMap
+import dagger.hilt.android.AndroidEntryPoint
 
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.*
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.american_or_indian_check_box
@@ -40,12 +43,15 @@ import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.native_h
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_hispanic
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_telling_ethnicity
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.white_check_box
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     private lateinit var binding: BorrowerOneQuestionsLayoutBinding
 
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     private var idToContentMapping = HashMap<Int, ConstraintLayout>(0)
     private var innerLayoutHashMap = HashMap<AppCompatTextView, ConstraintLayout>(0)
@@ -53,7 +59,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     //private var closeDetailBoxHashMap = HashMap<AppCompatRadioButton, ConstraintLayout>(0)
     //private val tabArrayList:ArrayList<AppCompatTextView> = arrayListOf()
 
-    private val bAppViewModel: BorrowerApplicationViewModel by activityViewModels()
+    private val borrowerAppViewModel: BorrowerApplicationViewModel by activityViewModels()
 
     private var ethnicityChildNames = ""
     private var otherEthnicity = ""
@@ -66,7 +72,13 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     private  var tabBorrowerId:Int? = null
 
-    private var udateGovernmentQuestionsList:ArrayList<UpdateGovernmentQuestions> = arrayListOf()
+    //private var udateGovernmentQuestionsList:ArrayList<UpdateGovernmentQuestions> = arrayListOf()
+
+    //companion object{
+    var childGlobalList:ArrayList<ChildAnswerData> = arrayListOf()
+    var bankruptcyGlobalData:BankruptcyAnswerData = BankruptcyAnswerData()
+    var ownerShipGlobalData:ArrayList<String> = arrayListOf()
+    // }
 
     private  lateinit var lastQData:QuestionData
 
@@ -78,7 +90,11 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
         binding.saveBtn.setOnClickListener{
             Timber.e("working on all the fragment...")
-
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, updateGovernmentQuestionByBorrowerId)
+                }
+            }
         }
 
         setupLayout()
@@ -93,12 +109,12 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
 
 
-    private var updateGovernmentByBorrowerId = UpdateGovernmentQuestions()
+    private var updateGovernmentQuestionByBorrowerId = UpdateGovernmentQuestions()
 
     private fun setUpDynamicTabs(){
         val governmentQuestionActivity = (activity as? GovtQuestionActivity)
 
-        bAppViewModel.governmentQuestionsModelClassList.observe(viewLifecycleOwner,  { governmentQuestionsModelClassList->
+        borrowerAppViewModel.governmentQuestionsModelClassList.observe(viewLifecycleOwner,  { governmentQuestionsModelClassList->
 
             if(governmentQuestionsModelClassList.size>0) {
                 var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? = null
@@ -109,7 +125,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         governmentQuestionActivity?.let { governmentQuestionActivity ->
                             item.questionData?.let { questionDataList ->
                                 item.passedBorrowerId?.let { passedBorrowerId ->
-                                    updateGovernmentByBorrowerId = UpdateGovernmentQuestions(passedBorrowerId, governmentQuestionActivity.loanApplicationId.toString(), questionDataList)
+                                    updateGovernmentQuestionByBorrowerId = UpdateGovernmentQuestions(passedBorrowerId, governmentQuestionActivity.loanApplicationId.toString(), questionDataList)
                                     //udateGovernmentQuestionsList.add(test)
                                 }
                             }
@@ -243,28 +259,29 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                                     Timber.e("childConstraintLayout " + qData.question)
                                     Timber.e(qData.answerDetail.toString())
                                 }
-                                else if (parentQuestionId == ownerShipConstraintLayout.id && qData.answer != null && !qData.answer.equals("No", true)) {
-                                    Timber.e("ownerShipConstraintLayout " + qData.question)
-                                    Timber.e(qData.answerDetail.toString())
+                                else
+                                    if (parentQuestionId == ownerShipConstraintLayout.id && qData.answer != null && !qData.answer.equals("No", true)) {
+                                        Timber.e("ownerShipConstraintLayout " + qData.question)
+                                        Timber.e(qData.answerDetail.toString())
 
-                                    if (ownerShip) {
-                                        ownerShip = false
-                                        ownerShipConstraintLayout.detail_title.text = qData.question
-                                        ownerShipConstraintLayout.detail_text.text = qData.answer
-                                        ownerShipConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
-                                        ownerShipConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
-                                        ownerShipGlobalData.add(qData.answer)
-                                        ownerShipConstraintLayout.govt_detail_box.visibility = View.VISIBLE
-                                    } else {
-                                        ownerShipConstraintLayout.detail_title2.text = qData.question
-                                        ownerShipConstraintLayout.detail_text2.text = qData.answer
-                                        ownerShipConstraintLayout.detail_title2.setTypeface(null, Typeface.NORMAL)
-                                        ownerShipConstraintLayout.detail_text2.setTypeface(null, Typeface.BOLD)
-                                        ownerShipGlobalData.add(qData.answer)
-                                        ownerShipConstraintLayout.govt_detail_box2.visibility = View.VISIBLE
-                                    }
-
+                                        if (ownerShip) {
+                                            ownerShip = false
+                                            ownerShipConstraintLayout.detail_title.text = qData.question
+                                            ownerShipConstraintLayout.detail_text.text = qData.answer
+                                            ownerShipConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
+                                            ownerShipConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
+                                            ownerShipGlobalData.add(qData.answer!!)
+                                            ownerShipConstraintLayout.govt_detail_box.visibility = View.VISIBLE
+                                        } else {
+                                            ownerShipConstraintLayout.detail_title2.text = qData.question
+                                            ownerShipConstraintLayout.detail_text2.text = qData.answer
+                                            ownerShipConstraintLayout.detail_title2.setTypeface(null, Typeface.NORMAL)
+                                            ownerShipConstraintLayout.detail_text2.setTypeface(null, Typeface.BOLD)
+                                            ownerShipGlobalData.add(qData.answer!!)
+                                            ownerShipConstraintLayout.govt_detail_box2.visibility = View.VISIBLE
                                         }
+
+                                    }
 
                                 }
                             }
@@ -275,25 +292,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             binding.parentContainer.postDelayed({ binding.parentContainer.visibility = View.VISIBLE },100)
 
         })
-    }
-
-    //companion object{
-        var childGlobalList:ArrayList<ChildAnswerData> = arrayListOf()
-        var bankruptcyGlobalData:BankruptcyAnswerData = BankruptcyAnswerData()
-        var ownerShipGlobalData:ArrayList<String> = arrayListOf()
-   // }
-
-    fun <T> stringToArray2(s: String?, clazz: Class<T>?): T {
-        val newList = Gson().fromJson(s, clazz)!!
-        return newList //or return Arrays.asList(new Gson().fromJson(s, clazz)); for a one-liner
-    }
-
-    fun convertPixelsToDp(px: Float, context: Context): Int {
-        return (px / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
-    }
-
-    fun convertDpToPixel(dp: Float, context: Context): Int {
-        return (dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
     }
 
     private fun createAppCompactTextView(tabTitle:String, tabIndex:Int):AppCompatTextView{
@@ -332,7 +330,11 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private lateinit var bankruptcyConstraintLayout:ConstraintLayout
     private lateinit var demoGraphicConstraintLayout:ConstraintLayout
 
+    //private lateinit var variableQuestionData: QuestionData
+
+
     private fun createContentLayoutForTab(questionData:QuestionData):ConstraintLayout{
+        val variableQuestionData: QuestionData = questionData
         var childSupport = false
         var ownerShip = false
         var headerTitle = ""
@@ -375,8 +377,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         else
             contentCell = layoutInflater.inflate(R.layout.common_govt_content_layout, null) as ConstraintLayout
 
-        //contentCell.visibility = View.INVISIBLE
-        //Timber.e(" questionData.question "+questionData.question)
 
         questionData.headerText?.let {
             contentCell.govt_detail_box.tag = it
@@ -420,6 +420,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                     childGlobalList.add(ChildAnswerData(liabilityName,liabilityTypeId, monthlyPayment, name, remainingMonth ))
                     childInnerDetailQuestions.add(contentCell.govt_detail_box)
                 }
+
                 if (childAnswerData.size > 1 && childAnswerData[1] != null) {
                     val getrow: Any = childAnswerData[1]
                     val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
@@ -492,6 +493,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             }
             else if(questionData.answer.equals("yes",true)) {
                 contentCell.ans_yes.isChecked = true
+
                 if(questionData.answerDetail!=null && questionData.answer.equals("Yes", true) &&  questionData.answerDetail.isNotBlank() && questionData.answerDetail.isNotEmpty())
                     contentCell.govt_detail_box.visibility = View.VISIBLE
             }
@@ -500,6 +502,8 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 contentCell.govt_detail_box.visibility = View.INVISIBLE
                 contentCell.govt_detail_box2?.visibility = View.INVISIBLE
                 contentCell.govt_detail_box3?.visibility = View.INVISIBLE
+                variableQuestionData.answer = "No"
+                updateGovernmentData(variableQuestionData)
             }
             contentCell.ans_yes.setOnClickListener {
                 if(questionData.answer.equals("Yes", true) && questionData.answerDetail!=null && questionData.answerDetail.isNotBlank() && questionData.answerDetail.isNotEmpty()) {
@@ -507,6 +511,8 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                     contentCell.govt_detail_box2?.visibility = View.VISIBLE
                     contentCell.govt_detail_box3?.visibility = View.VISIBLE
                 }
+                variableQuestionData.answer = "Yes"
+                updateGovernmentData(variableQuestionData)
                 navigateToInnerScreen(headerTitle)
             }
         }
@@ -514,10 +520,19 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         return contentCell
     }
 
+    private fun updateGovernmentData(testData:QuestionData){
+        for (item in updateGovernmentQuestionByBorrowerId.Questions) {
+            if(item.id == testData.id){
+                item.answer = testData.answer
+            }
+        }
+    }
+
     private fun navigateToInnerScreen(stringForSpecificFragment:String){
            when(stringForSpecificFragment) {
-               "Undisclosed Borrowered Funds" ->{  findNavController().navigate(R.id.action_undisclosed_borrowerfund)}
-               "Amount to Borrow?" ->{}
+               "Undisclosed Borrowered Funds" ->{
+                   findNavController().navigate(R.id.action_undisclosed_borrowerfund)}
+               "Family or business affiliation" ->{}
                "Ownership Interest in Property" ->{
                    val bundle = Bundle()
                    bundle.putStringArrayList(AppConstant.ownerShipGlobalData, ownerShipGlobalData)
@@ -557,7 +572,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private val nativeHawaiianChildList:ArrayList<DemoGraphicRaceDetail> = arrayListOf()
 
     private fun observeDemoGraphicData(){
-        bAppViewModel.demoGraphicInfoList.observe(viewLifecycleOwner,{  demoGraphicInfoList->
+        borrowerAppViewModel.demoGraphicInfoList.observe(viewLifecycleOwner,{ demoGraphicInfoList->
             if(demoGraphicInfoList.size>0){
                 var selectedDemoGraphicInfoList: DemoGraphicResponseModel? =null
                 for(item in demoGraphicInfoList){
@@ -695,8 +710,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         })
     }
 
-
-
     private fun showEthnicityInnerBox(){
         if(otherEthnicity.isNotEmpty() && otherEthnicity.isNotBlank()) {
             otherEthnicity = "Other Pacific Islander: $otherEthnicity"
@@ -717,8 +730,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         else
             demoGraphicConstraintLayout.ethnicity_children.visibility = View.GONE
     }
-
-
 
     private fun showNativeHawaiiInnerBox(){
         if(nativeHawaiiOtherRace.isNotEmpty() && nativeHawaiiOtherRace.isNotBlank()) {
@@ -741,9 +752,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             demoGraphicConstraintLayout.child_native_hawaiian.visibility = View.GONE
     }
 
-
-
-
     private fun showAsianInnerBox(){
         if(otherAsianRace.isNotEmpty() && otherAsianRace.isNotBlank()) {
             otherAsianRace = "Other Asian: $otherAsianRace"
@@ -763,8 +771,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         else
             demoGraphicConstraintLayout.asian_child_names.visibility = View.GONE
     }
-
-
 
     private fun addDemoGraphicEvents(){
 
@@ -856,7 +862,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     }
 
-
     private val openTabMenuScreen = View.OnClickListener { p0 ->
         if(p0 is AppCompatTextView){
             for(item in horizontalTabArrayList){
@@ -874,6 +879,20 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         }
     }
 
+
+
+    private fun <T> stringToArray2(s: String?, clazz: Class<T>?): T {
+        val newList = Gson().fromJson(s, clazz)!!
+        return newList //or return Arrays.asList(new Gson().fromJson(s, clazz)); for a one-liner
+    }
+
+    private fun convertPixelsToDp(px: Float, context: Context): Int {
+        return (px / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+    }
+
+    private fun convertDpToPixel(dp: Float, context: Context): Int {
+        return (dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+    }
 
 
 
