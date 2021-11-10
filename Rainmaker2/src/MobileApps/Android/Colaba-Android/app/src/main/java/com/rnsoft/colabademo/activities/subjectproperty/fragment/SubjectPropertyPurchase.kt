@@ -154,13 +154,29 @@ class SubjectPropertyPurchase : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        //findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>("key")?.observe(viewLifecycleOwner) {result -> }
-        if(ApplicationClass.globalAddressList.size > 0) {
-            ApplicationClass.globalAddressList.let {
-                binding.tvSubPropertyAddress.text =
-                    it.get(0).street + " " + it.get(0).unit + "\n" + it.get(0).city + " " + it.get(0).stateName + " " + it.get(0).zipCode + " " + it.get(0).countryName
-            }
-        }
+        viewModelSubProperty.updatedAddress.observe(viewLifecycleOwner, {
+            addressList.clear()
+            addressList.add(AddressData(
+                street = it.street,
+                unit = it.unit,
+                city = it.city,
+                stateName = it.stateName,
+                countryName = it.countryName,
+                countyName = it.countyName,
+                countyId = it.countyId,
+                stateId = it.stateId,
+                countryId = it.countryId,
+                zipCode = it.zipCode))
+
+            binding.tvSubPropertyAddress.text =
+                it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
+        })
+
+        viewModelSubProperty.mixedPropertyDesc.observe(viewLifecycleOwner,{
+            binding.radioMixedPropertyYes.isChecked = true
+            binding.mixedPropertyExplanation.setText(it)
+            binding.layoutMixedPropertyDetail.visibility = View.VISIBLE
+        })
     }
 
     private fun getPurchaseDetails(){
@@ -403,24 +419,54 @@ class SubjectPropertyPurchase : BaseFragment() {
         // desc
         val mixedUsePropertyDesc = if(binding.mixedPropertyExplanation.text.toString().trim().length > 0) binding.mixedPropertyExplanation.text.toString() else null
         // appraised value
-        val appraisedValue = binding.edAppraisedPropertyValue.text.toString()
-        val newAppraisedValue = appraisedValue.replace(",".toRegex(), "")
+        val appraisedValue = binding.edAppraisedPropertyValue.text.toString().trim()
+        var newAppraisedValue = if(appraisedValue.length > 0) appraisedValue.replace(",".toRegex(), "") else null
 
         // property tax
-        val propertyTax = if(binding.edPropertyTax.text.toString().trim().length > 0) binding.edPropertyTax.text.toString() else null
+        val propertyTax = binding.edPropertyTax.text.toString().trim()    //.length > 0)  binding.edPropertyTax.text.toString() else null
+        var newPropertyTax = if(propertyTax.length > 0) appraisedValue.replace(",".toRegex(), "") else null
         // home insurance
-        val homeInsurance = if(binding.edHomeownerInsurance.text.toString().trim().length>0) binding.edHomeownerInsurance.text.toString() else null
+        val homeInsurance = binding.edHomeownerInsurance.text.toString().trim()
+        var newHomeInsurance = if(homeInsurance.length > 0) homeInsurance.replace(",".toRegex(), "") else null
         // flood insurance
-       val floodInsurance = if(binding.edFloodInsurance.text.toString().trim().length>0) binding.edFloodInsurance.text.toString() else null
+        val floodInsurance = binding.edFloodInsurance.text.toString().trim()
+        val newFloodInsurance = if(floodInsurance.length >0 ) floodInsurance.replace(",".toRegex(), "") else null
 
-        val address = AddressData(city = "Karachi",countryId = 1,countryName = "Pak",stateId = 11,stateName = "Sindh",unit = "00", zipCode = "123",street = "akl",countyId = 1,countyName = "SSS")
-        val propertyData = SubPropertyData(loanApplicationId = 5,propertyTypeId = 1,occupancyTypeId = occupancyId,
-            appraisedPropertyValue = newAppraisedValue.toDouble(),propertyTax = 200?.toDouble(),homeOwnerInsurance =200?.toDouble(),floodInsurance = 300?.toDouble(),
-            addressData = address,isMixedUseProperty= isMixedUseProperty,mixedUsePropertyExplanation=mixedUsePropertyDesc,subjectPropertyTbd = tbd)
 
         lifecycleScope.launchWhenStarted{
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-               viewModelSubProperty.sendSubjectPropertyDetail(authToken,propertyData)
+                val activity = (activity as? SubjectPropertyActivity)
+                loanApplicationId = activity?.loanApplicationId
+                loanApplicationId?.let {
+                    Log.e("Loan Application Id", ""+ it)
+                    if(addressList !=null && addressList.size > 0){
+                        val address = AddressData(
+                            city = addressList.get(0).city,
+                            countryName = addressList.get(0).countryName,
+                            stateId = addressList.get(0).stateId,
+                            stateName = addressList.get(0).stateName,
+                            unit = addressList.get(0).unit,
+                            zipCode = addressList.get(0).zipCode,
+                            street = addressList.get(0).street,
+                            countyId = addressList.get(0).countyId,
+                            countyName = addressList.get(0).countyName,
+                            countryId = addressList.get(0).countryId)
+
+                        Log.e("address list before add api", ""+ address)
+
+                        val propertyData = SubPropertyData(loanApplicationId = it,propertyTypeId = 1,occupancyTypeId = occupancyId,
+                            appraisedPropertyValue = newAppraisedValue?.toDouble(),propertyTax = newPropertyTax?.toDouble(),homeOwnerInsurance=newHomeInsurance?.toDouble(),
+                            floodInsurance = newFloodInsurance?.toDouble(),
+                            addressData = address ,isMixedUseProperty= isMixedUseProperty,mixedUsePropertyExplanation=mixedUsePropertyDesc,subjectPropertyTbd = tbd)
+                        showLoader()
+                        viewModelSubProperty.sendSubjectPropertyDetail(authToken,propertyData)
+                    }
+
+
+
+
+
+                }
             }
         }
     }
@@ -438,6 +484,11 @@ class SubjectPropertyPurchase : BaseFragment() {
         activity?.binding?.loaderSubjectProperty?.visibility = View.GONE
     }
 
+    private fun showLoader(){
+        val  activity = (activity as? SubjectPropertyActivity)
+        activity?.binding?.loaderSubjectProperty?.visibility = View.VISIBLE
+    }
+
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -449,13 +500,18 @@ class SubjectPropertyPurchase : BaseFragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onErrorReceived(event: WebServiceErrorEvent) {
-        if(event.isInternetError)
+    fun onSentData(event: SendDataEvent) {
+        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS)
+            SandbarUtils.showError(requireActivity(), "Data Sent Successfully" )
+
+        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+
         else
-            if(event.errorResult!=null)
+            if(event.addUpdateDataResponse.message != null)
                 SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
         hideLoader()
+
     }
 
     private fun dismissActivity(){

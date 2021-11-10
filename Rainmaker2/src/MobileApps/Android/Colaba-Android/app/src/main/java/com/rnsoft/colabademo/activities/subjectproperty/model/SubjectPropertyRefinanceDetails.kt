@@ -16,16 +16,16 @@ data class SubjectPropertyRefinanceDetails(
 
 @Parcelize
 data class RefinanceAddressData(
-    var street : String?,
-    var unit : String?,
-    var city : String?,
-    var stateId : Int?,
-    var zipCode : String?,
-    var countryId : Int?,
-    var countryName : String?,
-    var stateName : String?,
-    var countyId: Int?,
-    var countyName : String?
+    var street : String? = null,
+    var unit : String? = null,
+    var city : String? = null,
+    var stateId : Int? = null,
+    var zipCode : String? = null,
+    var countryId : Int? = null,
+    var countryName : String? = null,
+    var stateName : String? = null,
+    var countyId: Int? = null,
+    var countyName : String? = null
 ) : Parcelable
 
 
@@ -37,6 +37,7 @@ data class SubPropertyRefinanceData(
     var rentalIncome : Double?,
     var isMixedUseProperty : Boolean?,
     var mixedUsePropertyExplanation : String?,
+    var subjectPropertyTbd : Boolean?,
     var propertyValue: Double?,
     var hoaDues : Double?,
     var dateAcquired : String?,
@@ -51,30 +52,27 @@ data class SubPropertyRefinanceData(
     var homeOwnerInsurance: Double?,
     var firstMortgageModel : FirstMortgageModel?,
     var secondMortgageModel : SecondMortgageModel?,
-    val address : RefinanceAddressData?
-
+    @SerializedName("address") val addressRefinance: AddressData?
 )
 
 @Parcelize
 data class FirstMortgageModel(
-    var propertyTaxesIncludeinPayment : Boolean?,
-    var homeOwnerInsuranceIncludeinPayment : Boolean?,
-    var floodInsuranceIncludeinPayment : Boolean?,
-    var paidAtClosing : Boolean?,
-    var firstMortgagePayment: Double?,
-    var unpaidFirstMortgagePayment : Double?,
-    var helocCreditLimit : Double?,
-    var isHeloc : Boolean?
+    var propertyTaxesIncludeinPayment : Boolean? = null,
+    var homeOwnerInsuranceIncludeinPayment : Boolean? = null ,
+    var floodInsuranceIncludeinPayment : Boolean?= null ,
+    var paidAtClosing : Boolean? = null,
+    var firstMortgagePayment: Double? = null,
+    var unpaidFirstMortgagePayment : Double?  = null,
+    var helocCreditLimit : Double? = null,
+    var isHeloc : Boolean? = null
 ) : Parcelable
 
 @Parcelize
 data class SecondMortgageModel(
-    var secondMortgagePayment: Double?,
-    var unpaidSecondMortgagePayment : Double?,
-    var paidAtClosing: Boolean?,
-    var helocCreditLimit : Double?,
-    var isHeloc: Boolean?,
-    var state: String?,
-    var combineWithNewFirstMortgage : Boolean?,
-    var wasSmTaken: Boolean?
+    var secondMortgagePayment: Double? = null,
+    var unpaidSecondMortgagePayment : Double? = null,
+    var helocCreditLimit : Double?=null,
+    var isHeloc: Boolean?=null,
+    var combineWithNewFirstMortgage : Boolean? = null,
+    var wasSmTaken: Boolean? = null
 ) : Parcelable

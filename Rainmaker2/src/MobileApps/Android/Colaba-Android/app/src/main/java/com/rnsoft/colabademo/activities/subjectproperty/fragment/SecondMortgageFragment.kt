@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.databinding.SubPropertySecondMortgageBinding
@@ -18,10 +19,12 @@ import dagger.hilt.android.AndroidEntryPoint
 /**
  * Created by Anita Kiran on 9/9/2021.
  */
+@AndroidEntryPoint
 class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var binding : SubPropertySecondMortgageBinding
     private var list : ArrayList<SecondMortgageModel> = ArrayList()
+    private val viewModel : SubjectPropertyViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,8 +36,8 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
         binding.backButton.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
         binding.secMortgageParentLayout.setOnClickListener(this)
-        binding.rbQuesOneYes.setOnClickListener(this)
-        binding.rbQuesOneNo.setOnClickListener(this)
+        binding.rbYesCombinedFirstMortgage.setOnClickListener(this)
+        binding.rbNoCombinedFirstMortgage.setOnClickListener(this)
         binding.rbQuesTwoYes.setOnClickListener(this)
         binding.rbQuesTwoNo.setOnClickListener(this)
         binding.switchCreditLimit.setOnClickListener(this)
@@ -72,15 +75,15 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
             }
             list[0].combineWithNewFirstMortgage?.let { isCombined ->
                 if (isCombined == true) {
-                    binding.rbQuesOneYes.isChecked = true
-                    binding.rbQuesOneYes.setTypeface(null, Typeface.BOLD)
+                    binding.rbYesCombinedFirstMortgage.isChecked = true
+                    binding.rbYesCombinedFirstMortgage.setTypeface(null, Typeface.BOLD)
                 }
                 else {
-                    binding.rbQuesOneNo.isChecked = false
-                    binding.rbQuesOneNo.setTypeface(null, Typeface.BOLD)
+                    binding.rbNoCombinedFirstMortgage.isChecked = false
+                    binding.rbNoCombinedFirstMortgage.setTypeface(null, Typeface.BOLD)
                 }
             }
-            list[0].paidAtClosing?.let { isPaid ->
+            list[0].wasSmTaken?.let { isPaid ->
                 if (isPaid == true) {
                     binding.rbQuesTwoYes.isChecked = true
                     binding.rbQuesTwoYes.setTypeface(null, Typeface.BOLD)
@@ -95,26 +98,26 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.getId()) {
             R.id.backButton ->  findNavController().popBackStack()
-            R.id.btn_save ->  checkValidations()
+            R.id.btn_save ->  saveData()
             R.id.sec_mortgage_parentLayout-> {
                 HideSoftkeyboard.hide(requireActivity(), binding.secMortgageParentLayout)
                 super.removeFocusFromAllFields(binding.secMortgageParentLayout)
             }
-            R.id.rb_ques_one_yes ->
-                if (binding.rbQuesOneYes.isChecked) {
-                    binding.rbQuesOneYes.setTypeface(null, Typeface.BOLD)
-                    binding.rbQuesOneNo.setTypeface(null, Typeface.NORMAL)
+            R.id.rb_yes_combinedFirstMortgage ->
+                if (binding.rbYesCombinedFirstMortgage.isChecked) {
+                    binding.rbYesCombinedFirstMortgage.setTypeface(null, Typeface.BOLD)
+                    binding.rbNoCombinedFirstMortgage.setTypeface(null, Typeface.NORMAL)
                 }else{
-                    binding.rbQuesOneYes.setTypeface(null, Typeface.NORMAL)
+                    binding.rbYesCombinedFirstMortgage.setTypeface(null, Typeface.NORMAL)
                 }
 
-            R.id.rb_ques_one_no ->
-                if (binding.rbQuesOneNo.isChecked) {
-                    binding.rbQuesOneNo.setTypeface(null, Typeface.BOLD)
-                    binding.rbQuesOneYes.setTypeface(null, Typeface.NORMAL)
+            R.id.rb_no_combinedFirstMortgage ->
+                if (binding.rbNoCombinedFirstMortgage.isChecked) {
+                    binding.rbNoCombinedFirstMortgage.setTypeface(null, Typeface.BOLD)
+                    binding.rbYesCombinedFirstMortgage.setTypeface(null, Typeface.NORMAL)
 
                 }else{
-                    binding.rbQuesOneNo.setTypeface(null, Typeface.NORMAL)
+                    binding.rbNoCombinedFirstMortgage.setTypeface(null, Typeface.NORMAL)
                 }
 
             R.id.rb_ques_two_yes ->
@@ -145,6 +148,33 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
     }
 
 
+    private fun saveData() {
+
+        // first mortgage
+        val secMortgagePayment = binding.edSecMortgagePayment.text.toString().trim()
+        var newSecMortgagePayment = if(secMortgagePayment.length > 0) secMortgagePayment.replace(",".toRegex(), "") else null
+
+        // second mortgage
+        val unpaidBalance = binding.edUnpaidBalance.text.toString().trim()
+        var newUnpaidBalance = if(unpaidBalance.length > 0) unpaidBalance.replace(",".toRegex(), "") else null
+
+        val creditLimit = binding.edCreditLimit.text.toString().trim()
+        var newCreditLimit = if(creditLimit.length > 0) creditLimit.replace(",".toRegex(), "") else null
+
+        val isHeloc = if(binding.switchCreditLimit.isChecked)true else false
+        val isCombinedWithFirstMortgage = if(binding.rbYesCombinedFirstMortgage.isChecked)true else false
+
+        val isMortgageTaken = if(binding.rbQuesTwoYes.isChecked) true else false
+
+        val secMortgageDetail = SecondMortgageModel(secondMortgagePayment = newSecMortgagePayment?.toDouble(),unpaidSecondMortgagePayment = newUnpaidBalance?.toDouble(),
+            helocCreditLimit = newCreditLimit?.toDoubleOrNull(), isHeloc = isHeloc,combineWithNewFirstMortgage = isCombinedWithFirstMortgage,wasSmTaken = isMortgageTaken)
+
+        viewModel.addSecMortgageModel(secMortgageDetail)
+        findNavController().popBackStack()
+
+    }
+
+
     private fun setInputFields(){
 
         // set lable focus
@@ -162,12 +192,6 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
         binding.edCreditLimit.addTextChangedListener(NumberTextFormat(binding.edCreditLimit))
 
     }
-
-
-    private fun checkValidations(){
-        requireActivity().onBackPressed()
-    }
-
 
 
 }

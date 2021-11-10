@@ -90,14 +90,12 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         }
 
         binding.backButton.setOnClickListener {
-            findNavController().navigate(R.id.action_back_fromAddress_toPurchase)
+            findNavController().popBackStack()
         }
 
-
-
-        /*requireActivity().onBackPressedDispatcher.addCallback {
-            findNavController().navigate(R.id.action_back_fromAddress_toPurchase)
-        } */
+        requireActivity().onBackPressedDispatcher.addCallback {
+            findNavController().popBackStack()
+        }
 
         super.addListeners(binding.root)
         return binding.root
@@ -391,10 +389,9 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         }
 
         if(searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && county.length>0  && country.length > 0 && zipCode.length > 0){
-                    val unit = if(binding.edUnitAtpNo.text.toString().length > 0) binding.edUnitAtpNo.text.toString() else null
+            val unit = if(binding.edUnitAtpNo.text.toString().length > 0) binding.edUnitAtpNo.text.toString() else null
 
-
-             ApplicationClass.globalAddressList.add(AddressData(
+            val address = AddressData(
                 street = street,
                 unit = unit,
                 city = city,
@@ -404,13 +401,13 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                 countyId = 1,
                 stateId = 1,
                 countryId = 1,
-                zipCode = zipCode))
+                zipCode = zipCode)
+
+            viewModel.savePurchaseAddress(address)
+            viewModel.saveRefinanceAddress(address)
 
             findNavController().popBackStack()
-
-
         }
-
     }
 
 

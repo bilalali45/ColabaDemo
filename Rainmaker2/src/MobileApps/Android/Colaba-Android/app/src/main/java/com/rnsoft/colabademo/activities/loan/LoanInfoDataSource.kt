@@ -1,7 +1,10 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
+import com.google.gson.Gson
 import retrofit2.HttpException
 import retrofit2.Response
+import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 
@@ -45,10 +48,12 @@ class LoanInfoDataSource @Inject constructor(private val serverApi: ServerApi) {
         }
     }
 
+    /*
     suspend fun addUpdateLoan(token: String, data:AddLoanInfoModel): Result<AddUpdateDataResponse> {
         val serverResponse: Response<AddUpdateDataResponse>
         return try {
-            serverResponse = serverApi.addUpdateLoanInfo(token, data)
+            val newToken = "Bearer $token"
+            serverResponse = serverApi.addUpdateLoanInfo(newToken, data)
             if (serverResponse.isSuccessful)
                 Result.Success(serverResponse.body()!!)
             else {
@@ -64,11 +69,41 @@ class LoanInfoDataSource @Inject constructor(private val serverApi: ServerApi) {
                 Result.Error(IOException("Error logging in", e))
             }
         }
+    } */
+    suspend fun addUpdateLoan(token: String, data:AddLoanInfoModel): Result<AddUpdateDataResponse> {
+        val serverResponse: AddUpdateDataResponse
+        return try {
+            //Timber.e(" print correct json format = "+data)
+
+            val g = Gson()
+            val passJson = g.toJson(data)
+            val newToken = "Bearer $token"
+            serverResponse = serverApi.addUpdateLoanInfo(newToken, data)
+            if(serverResponse.status.equals("OK", true) )
+                Result.Success(serverResponse)
+            else {
+               // Log.e("what-code ", ""+serverResponse.errorBody())
+                // Log.e("what-code ", serverResponse.errorBody()?.charStream().toString())
+                Result.Success(serverResponse)
+            }
+
+        } catch (e: Throwable){
+             Log.e("errorrr",e.localizedMessage)
+            if(e is HttpException){
+                 Log.e("network", "issues...")
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                 Log.e("erorr",e.message ?:"Error")
+                Result.Error(IOException("Error logging in", e))
+            }
+        }
     }
 
     suspend fun addUpdateLoanRefinance(token: String, data: UpdateLoanRefinanceModel): Result<Any> {
         return try {
-            val response = serverApi.addUpdateLoanRefinance(token,data)
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateLoanRefinance(newToken,data)
             Result.Success(response.isSuccessful)
         } catch (e: Throwable){
             if(e is HttpException){

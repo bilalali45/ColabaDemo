@@ -1,3 +1,3 @@
 package com.rnsoft.colabademo
 
-class SendDataEvent(val addUpdateDataResponse: Result<Any>)
+class SendDataEvent(val addUpdateDataResponse: AddUpdateDataResponse)
