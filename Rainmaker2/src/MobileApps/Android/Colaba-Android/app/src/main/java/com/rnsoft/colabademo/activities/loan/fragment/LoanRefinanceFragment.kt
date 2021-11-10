@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.rnsoft.colabademo.databinding.LoanRefinanceInfoBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -35,6 +37,9 @@ class LoanRefinanceFragment : BaseFragment() {
     private lateinit var binding: LoanRefinanceInfoBinding
     private lateinit var bindingToolbar: AppHeaderWithBackNavBinding
     val stageList: ArrayList<String> = arrayListOf()
+    //var loanInfoModel = LoanInfoData()
+    var downPayment : Double?= null
+    var propertyValue : Double ?= null
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -46,10 +51,6 @@ class LoanRefinanceFragment : BaseFragment() {
         // set Header title
         bindingToolbar.headerTitle.setText(getString(R.string.loan_info_refinance))
 
-
-        arguments?.let { arguments ->
-            loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
-        }
 
         initViews()
         clicks()
@@ -100,7 +101,7 @@ class LoanRefinanceFragment : BaseFragment() {
 
     private fun clicks(){
         binding.btnSaveChanges.setOnClickListener {
-            checkValidations()
+            processData()
         }
 
         bindingToolbar.backButton.setOnClickListener {
@@ -116,9 +117,17 @@ class LoanRefinanceFragment : BaseFragment() {
 
     private fun getLoanInfoDetail() {
         loanViewModel.loanInfoPurchase.observe(viewLifecycleOwner, { loanInfo ->
+
             if (loanInfo != null) {
+                loanInfo.data?.downPayment?.let {
+                    downPayment = it
+                }
+                loanInfo.data?.propertyValue?.let {
+                    propertyValue = it
+                }
+
                 loanInfo.data?.loanGoalName?.let {
-                    binding.tvLoanStage.setText(it)
+                    binding.tvLoanStage.setText(it,false)
                     CustomMaterialFields.setColor(binding.layoutLoanStage,R.color.grey_color_two,requireActivity())
                 }
 
@@ -131,13 +140,13 @@ class LoanRefinanceFragment : BaseFragment() {
                         CustomMaterialFields.setColor(binding.layoutLoanAmount,R.color.grey_color_two,requireActivity())
                     }
 
-                    loanInfo.data?.loanPurposeId?.let {
-                        loanViewModel.getLoanGoals(AppConstant.authToken,it)
-                        loanViewModel.loanGoals.observe(viewLifecycleOwner,{
-                            for(item in it){
-                                stageList.add(item.description)
-                            }
-                            setLoanStageSpinner()
+                loanInfo.data?.loanPurposeId?.let {
+                    loanViewModel.getLoanGoals(AppConstant.authToken,it)
+                    loanViewModel.loanGoals.observe(viewLifecycleOwner,{
+                        for(item in it){
+                            stageList.add(item.description)
+                        }
+                        setLoanStageSpinner()
 
                         })
                     }
@@ -162,7 +171,7 @@ class LoanRefinanceFragment : BaseFragment() {
             AdapterView.OnItemClickListener {
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                 binding.layoutLoanStage.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(requireContext(), com.rnsoft.colabademo.R.color.grey_color_two))
+                    ContextCompat.getColor(requireContext(), R.color.grey_color_two))
 
                 if(binding.tvLoanStage.text.isNotEmpty() && binding.tvLoanStage.text.isNotBlank()) {
                     clearError(binding.layoutLoanStage)
@@ -176,11 +185,11 @@ class LoanRefinanceFragment : BaseFragment() {
         }
     }
 
-    private fun checkValidations(){
+    private fun processData(){
 
-        val loanStage: String = binding.tvLoanStage.text.toString()
-        val cashOutAmount: String = binding.edCashoutAmount.text.toString()
-        val loanAmount: String = binding.edLoanAmount.text.toString()
+        val loanStage: String = binding.tvLoanStage.text.toString().trim()
+        val cashOutAmount: String = binding.edCashoutAmount.text.toString().trim()
+        val loanAmount: String = binding.edLoanAmount.text.toString().trim()
 
         if (loanStage.isEmpty() || loanStage.length == 0) {
             setError(binding.layoutLoanStage, getString(R.string.error_field_required))
@@ -201,20 +210,32 @@ class LoanRefinanceFragment : BaseFragment() {
         if (loanAmount.isNotEmpty() || loanAmount.length > 0) {
             clearError(binding.layoutLoanAmount)
         }
-
-        else {
             if(loanStage.length > 0 && loanAmount.length >0 && cashOutAmount.length > 0){
-                val info = UpdateLoanRefinanceModel(loanApplicationId = 5,loanPurposeId = 4,loanGoalId = 4, cashOutAmount = 1000,downPayment = 1000.0)
+                var newCashoutAmount = cashOutAmount.replace(",".toRegex(), "")
+                var newLoanAmount = loanAmount.replace(",".toRegex(), "")
 
-                lifecycleScope.launchWhenStarted{
-                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        binding.loaderLoanRefinance.visibility = View.VISIBLE
-                        loanViewModel.addLoanRefinanceInfo(authToken,info)
+                val activity = (activity as? BorrowerLoanActivity)
+                activity?.loanApplicationId?.let { loanId->
+                    val info = UpdateLoanRefinanceModel(
+                        loanApplicationId = loanId,
+                        loanPurposeId = 2,
+                        loanGoalId = 4,
+                        cashOutAmount = newCashoutAmount.toDouble(),
+                        downPayment = downPayment!!,
+                        propertyValue = propertyValue!!,
+                        loanPayment = newLoanAmount.toDouble()
+                    )
+
+                    lifecycleScope.launchWhenStarted {
+                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                            binding.loaderLoanRefinance.visibility = View.VISIBLE
+                            loanViewModel.addLoanRefinanceInfo(authToken, info)
+                        }
                     }
                 }
                 binding.loaderLoanRefinance.visibility = View.GONE
             }
-        }
+
 
     }
 

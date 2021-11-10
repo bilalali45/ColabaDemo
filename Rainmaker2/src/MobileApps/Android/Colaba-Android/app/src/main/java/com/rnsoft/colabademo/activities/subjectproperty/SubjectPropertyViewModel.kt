@@ -87,7 +87,6 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
         _secMortgageDetail.value = desc
     }
 
-
     suspend fun getCoBorrowerOccupancyStatus(token: String, loanApplicationId: Int) {
         //Timber.e("CoBorrower: " + loanApplicationId + "Auth Token: " + token)
         viewModelScope.launch(Dispatchers.IO) {

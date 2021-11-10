@@ -113,11 +113,11 @@ interface ServerApi{
         @Body data: AddLoanInfoModel
     ) : AddUpdateDataResponse
 
-    @POST("api/mcu/mobile/loanapplication/Loan/")
+    @POST("api/mcu/mobile/loanapplication/Loan/AddOrUpdateLoanInformation")
     suspend fun addUpdateLoanRefinance(
         @Header("Authorization")  Authorization:String,
         @Body data: UpdateLoanRefinanceModel
-    ) : Response<Any>
+    ) : AddUpdateDataResponse
 
     @GET("api/mcu/mobile/loanapplication/RealEstate/GetRealEstateDetails")
     suspend fun getRealEstateDetails(

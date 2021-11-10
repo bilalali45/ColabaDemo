@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-import android.app.Activity
 import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
@@ -23,7 +22,6 @@ import kotlinx.coroutines.coroutineScope
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -155,21 +153,20 @@ class SubjectPropertyPurchase : BaseFragment() {
     override fun onResume() {
         super.onResume()
         viewModelSubProperty.updatedAddress.observe(viewLifecycleOwner, {
-            addressList.clear()
-            addressList.add(AddressData(
-                street = it.street,
-                unit = it.unit,
-                city = it.city,
+            //addressList.clear()
+            /*addressList.add(AddressData(street = it.street, unit = it.unit, city = it.city,
                 stateName = it.stateName,
                 countryName = it.countryName,
                 countyName = it.countyName,
                 countyId = it.countyId,
                 stateId = it.stateId,
                 countryId = it.countryId,
-                zipCode = it.zipCode))
+                zipCode = it.zipCode)) */
 
             binding.tvSubPropertyAddress.text =
                 it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
+
+            EventBus.getDefault().post(AddressUpdateEvent(it))
         })
 
         viewModelSubProperty.mixedPropertyDesc.observe(viewLifecycleOwner,{
@@ -214,7 +211,7 @@ class SubjectPropertyPurchase : BaseFragment() {
                     details.subPropertyData?.propertyTypeId?.let { selectedId ->
                         for(item in propertyTypeList) {
                             if (item.id == selectedId) {
-                                binding.tvPropertyType.setText(item.name)
+                                binding.tvPropertyType.setText(item.name, false)
                                 CustomMaterialFields.setColor(binding.layoutPropertyType, R.color.grey_color_two, requireActivity())
                                 break
                             }
@@ -224,7 +221,7 @@ class SubjectPropertyPurchase : BaseFragment() {
                     details.subPropertyData?.occupancyTypeId?.let { selectedId ->
                         for(item in occupancyTypeList) {
                             if (item.id == selectedId) {
-                                binding.tvOccupancyType.setText(item.name)
+                                binding.tvOccupancyType.setText(item.name,false)
                                 CustomMaterialFields.setColor(binding.layoutOccupancyType, R.color.grey_color_two, requireActivity())
                                 break
                             }
@@ -461,11 +458,6 @@ class SubjectPropertyPurchase : BaseFragment() {
                         showLoader()
                         viewModelSubProperty.sendSubjectPropertyDetail(authToken,propertyData)
                     }
-
-
-
-
-
                 }
             }
         }
@@ -502,7 +494,7 @@ class SubjectPropertyPurchase : BaseFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSentData(event: SendDataEvent) {
         if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS)
-            SandbarUtils.showError(requireActivity(), "Data Sent Successfully" )
+            dismissActivity()
 
         else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )

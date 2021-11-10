@@ -73,10 +73,8 @@ class LoanInfoDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun addUpdateLoan(token: String, data:AddLoanInfoModel): Result<AddUpdateDataResponse> {
         val serverResponse: AddUpdateDataResponse
         return try {
-            //Timber.e(" print correct json format = "+data)
-
-            val g = Gson()
-            val passJson = g.toJson(data)
+            //val g = Gson()
+            //val passJson = g.toJson(data)
             val newToken = "Bearer $token"
             serverResponse = serverApi.addUpdateLoanInfo(newToken, data)
             if(serverResponse.status.equals("OK", true) )
@@ -100,19 +98,31 @@ class LoanInfoDataSource @Inject constructor(private val serverApi: ServerApi) {
         }
     }
 
-    suspend fun addUpdateLoanRefinance(token: String, data: UpdateLoanRefinanceModel): Result<Any> {
+
+    suspend fun addUpdateLoanRefinance(token: String, data:UpdateLoanRefinanceModel): Result<AddUpdateDataResponse> {
+        val serverResponse: AddUpdateDataResponse
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.addUpdateLoanRefinance(newToken,data)
-            Result.Success(response.isSuccessful)
+            serverResponse = serverApi.addUpdateLoanRefinance(newToken, data)
+            if(serverResponse.status.equals("OK", true) )
+                Result.Success(serverResponse)
+            else {
+                Result.Success(serverResponse)
+            }
+
         } catch (e: Throwable){
+            Log.e("errorrr",e.localizedMessage)
             if(e is HttpException){
+                Log.e("network", "issues...")
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
+                Log.e("erorr",e.message ?:"Error")
                 Result.Error(IOException("Error logging in", e))
             }
         }
     }
+
+
 
 }

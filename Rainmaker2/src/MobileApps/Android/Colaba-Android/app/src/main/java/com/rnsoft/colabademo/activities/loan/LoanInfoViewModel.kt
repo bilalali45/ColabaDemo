@@ -30,7 +30,6 @@ class LoanInfoViewModel @Inject constructor(private val repo: LoanInfoRepo) : Vi
 
     suspend fun getLoanInfoPurchase(token:String, loanApplicationId:Int) {
         viewModelScope.launch() {
-            delay(2000)
             val responseResult = repo.getLoanInfo(token = token, loanApplicationId = loanApplicationId)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
