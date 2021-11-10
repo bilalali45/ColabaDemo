@@ -174,6 +174,13 @@ class AssetsDetailViewController: BaseViewController {
                 
                 if (status == .success){
                     
+                    self.bankAccountAsset = BorrowerAsset()
+                    self.retirementAccountAsset = BorrowerAsset()
+                    self.stockBondsAsset = BorrowerAsset()
+                    self.transactionAsset = BorrowerAsset()
+                    self.giftFundsAsset = BorrowerAsset()
+                    self.otherAsset = BorrowerAsset()
+                    
                     let borrowerAssetsModel = BorrowerAssetsModel()
                     borrowerAssetsModel.updateModelWithJSON(json: result["data"]["borrower"])
                     self.borrowerAssetData = borrowerAssetsModel
