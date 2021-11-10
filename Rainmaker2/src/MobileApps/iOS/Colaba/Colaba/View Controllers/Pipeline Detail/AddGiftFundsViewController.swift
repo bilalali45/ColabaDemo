@@ -24,6 +24,7 @@ class AddGiftFundsViewController: UIViewController {
     @IBOutlet weak var giftOfEquityStackView: UIStackView!
     @IBOutlet weak var btnGiftOfEquity: UIButton!
     @IBOutlet weak var lblGiftOfEquity: UILabel!
+    @IBOutlet weak var lblGiftTypeError: UILabel!
     @IBOutlet weak var txtfieldCashValue: ColabaTextField!
     @IBOutlet weak var giftDepositView: UIView!
     @IBOutlet weak var yesStackView: UIStackView!
@@ -36,6 +37,7 @@ class AddGiftFundsViewController: UIViewController {
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var isCashGift = false
+    var isGiftTypeSelect = false
     var isGiftDeposit = false
     var borrowerName = ""
     var isForAdd = false
@@ -65,11 +67,11 @@ class AddGiftFundsViewController: UIViewController {
         txtfieldGiftSource.type = .dropdown
         
         ///Cash / Market Value Text Field
-        txtfieldCashValue.setTextField(placeholder: "Cash Value", controller: self, validationType: .required)
+        txtfieldCashValue.setTextField(placeholder: "Cash Value", controller: self, validationType: .noValidation)
         txtfieldCashValue.type = .amount
         
         ///Date of Transfer / Expected Transfer Date Text Field
-        txtfieldDate.setTextField(placeholder: "Date of Transfer", controller: self, validationType: .required)
+        txtfieldDate.setTextField(placeholder: "Date of Transfer", controller: self, validationType: .noValidation)
         txtfieldDate.type = .datePicker
         
     }
@@ -106,11 +108,15 @@ class AddGiftFundsViewController: UIViewController {
     }
     
     @objc func cashGiftStackViewTapped(){
+        isGiftTypeSelect = true
+        lblGiftTypeError.isHidden = true
         isCashGift = true
         changeGiftType()
     }
     
     @objc func giftOfEquityStackViewTapped(){
+        isGiftTypeSelect = true
+        lblGiftTypeError.isHidden = true
         isCashGift = false
         changeGiftType()
         txtfieldDate.isHidden = true
@@ -162,25 +168,21 @@ class AddGiftFundsViewController: UIViewController {
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         if validate() {
-            if (txtfieldGiftSource.text != "" && txtfieldCashValue.isHidden && txtfieldDate.isHidden){
-                self.dismissVC()
-            }
-            else if (txtfieldGiftSource.text != "" && !txtfieldCashValue.isHidden && txtfieldCashValue.text != "" && txtfieldDate.isHidden){
-                self.dismissVC()
-            }
-            else if (txtfieldGiftSource.text != "" && !txtfieldCashValue.isHidden && txtfieldCashValue.text != "" && !txtfieldDate.isHidden && txtfieldDate.text != ""){
-                self.dismissVC()
-            }
+            addUpdateGiftFunds()
         }
     }
     
     func validate() -> Bool {
         var isValidate = txtfieldGiftSource.validate()
-        if !txtfieldCashValue.isHidden {
-            isValidate = txtfieldCashValue.validate() && isValidate
-        }
-        if !txtfieldDate.isHidden {
-            isValidate = txtfieldDate.validate() && isValidate
+//        if !txtfieldCashValue.isHidden {
+//            isValidate = txtfieldCashValue.validate() && isValidate
+//        }
+//        if !txtfieldDate.isHidden {
+//            isValidate = txtfieldDate.validate() && isValidate
+//        }
+        if (isForAdd && txtfieldGiftSource.text != ""){
+            isValidate = isGiftTypeSelect
+            lblGiftTypeError.isHidden = isGiftTypeSelect
         }
         return isValidate
     }
@@ -263,6 +265,68 @@ class AddGiftFundsViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func addUpdateGiftFunds(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        var giftSourceId = 0
+        var giftValue: Any = NSNull()
+        var valueDate: Any = NSNull()
+        var assetTypeId = 10
+        
+        if let giftSoruceType = giftSourceArray.filter({$0.optionName.localizedCaseInsensitiveContains(txtfieldGiftSource.text!)}).first{
+            giftSourceId = giftSoruceType.optionId
+        }
+        
+        if (isCashGift){
+            assetTypeId = 10
+        }
+        else{
+            if (lblGiftOfEquity.text!.localizedCaseInsensitiveContains("Gift of Equity")){
+                assetTypeId = 26
+            }
+            else if (lblGiftOfEquity.text!.localizedCaseInsensitiveContains("Grant")){
+                assetTypeId = 11
+            }
+        }
+        
+        if (txtfieldCashValue.text != ""){
+            if let value = Double(cleanString(string: txtfieldCashValue.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                giftValue = value
+            }
+        }
+        
+        let giftDateComponent = txtfieldDate.text!.components(separatedBy: "/")
+        if (giftDateComponent.count == 3){
+            valueDate = "\(giftDateComponent[2])-\(giftDateComponent[0])-\(giftDateComponent[1])"
+        }
+        
+        let params = ["Id": isForAdd ? NSNull() : giftAssetDetail.id,
+                      "BorrowerId": borrowerId,
+                      "AssetTypeId": assetTypeId,
+                      "GiftSourceId": giftSourceId,
+                      "Value": giftValue,
+                      "valueDate": valueDate,
+                      "Description": "",
+                      "IsDeposited": isGiftDeposit,
+                      "LoanApplicationId": loanApplicationId] as [String: Any]
+        
+        APIRouter.sharedInstance.executeAPI(type: .addUpdateGiftFunds, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+        }
+        
     }
 
     func deleteAsset(){
