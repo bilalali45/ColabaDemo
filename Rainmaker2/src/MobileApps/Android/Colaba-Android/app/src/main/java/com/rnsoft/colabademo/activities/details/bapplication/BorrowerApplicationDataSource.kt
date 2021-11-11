@@ -189,7 +189,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     }
 
 
-    suspend fun addOrUpdateGovernmentQuestions( token:String, updateGovernmentQuestions:UpdateGovernmentQuestions):Result<AddUpdateDataResponse>{
+    suspend fun addOrUpdateGovernmentQuestions( token:String, updateGovernmentQuestions:UpdateGovernmentQuestions):Result<GovernmentAddUpdateDataResponse>{
         return try {
             val newToken = "Bearer $token"
             //val gson = Gson()

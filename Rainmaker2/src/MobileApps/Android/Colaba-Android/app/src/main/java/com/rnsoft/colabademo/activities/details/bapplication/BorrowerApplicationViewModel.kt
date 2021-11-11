@@ -77,8 +77,8 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     val genderList: LiveData<ArrayList<GenderResponseModel>> get() = _genderList
 
 
-    private var _addUpdateDataResponse : MutableLiveData<AddUpdateDataResponse> =   MutableLiveData()
-    val addUpdateDataResponse: LiveData<AddUpdateDataResponse> get() = _addUpdateDataResponse
+    private var _governmentAddUpdateDataResponse : MutableLiveData<GovernmentAddUpdateDataResponse> =   MutableLiveData()
+    val governmentAddUpdateDataResponse: LiveData<GovernmentAddUpdateDataResponse> get() = _governmentAddUpdateDataResponse
 
 
     suspend fun getBorrowerAssetsDetail(token:String, loanApplicationId:Int, borrowerId: ArrayList<Int>?): Boolean {
@@ -239,7 +239,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
             val responseResult = bAppRepo.addOrUpdateGovernmentQuestions(token = token,  updateGovernmentQuestions = updateGovernmentQuestions)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success) {
-                    _addUpdateDataResponse.value = responseResult.data
+                    _governmentAddUpdateDataResponse.value = responseResult.data
                 }
                 else if (responseResult is Result.Error && (responseResult as Result.Error).exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))

@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.ForeClosurePropertyLayoutBinding
 
@@ -18,6 +20,9 @@ class ForeClosurePropertyFragment:BaseFragment() {
 
     private var _binding: ForeClosurePropertyLayoutBinding? = null
     private val binding get() = _binding!!
+    private var updateGovernmentQuestionByBorrowerId = UpdateGovernmentQuestions()
+    private var questionId:Int = 0
+
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -31,13 +36,32 @@ class ForeClosurePropertyFragment:BaseFragment() {
         val root: View = binding.root
         setUpUI()
         super.addListeners(binding.root)
+        arguments?.let {
+            questionId = it.getInt(AppConstant.questionId)
+            updateGovernmentQuestionByBorrowerId = it.getParcelable(AppConstant.updateGovernmentQuestionByBorrowerId)!!
+        }
+        fillWithData()
         return root
     }
+
+    private fun fillWithData(){
+        for (item in updateGovernmentQuestionByBorrowerId.Questions) {
+            if(item.id == questionId){
+                item.answerDetail?.let {
+                    binding.edDetails.setText(it)
+                }
+            }
+        }
+    }
+
+    private val borrowerAppViewModel: BorrowerApplicationViewModel by activityViewModels()
 
     private fun setUpUI() {
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         binding.saveBtn.setOnClickListener {
-            findNavController().popBackStack()
+            updateGovernmentAndSaveData()
+
+
             /*
             val fieldsValidated = checkEmptyFields()
             if(fieldsValidated) {
@@ -45,6 +69,22 @@ class ForeClosurePropertyFragment:BaseFragment() {
             }
              */
         }
+    }
+
+    private fun updateGovernmentAndSaveData(){
+        for (item in updateGovernmentQuestionByBorrowerId.Questions) {
+            if(item.id == questionId){
+                item.answerDetail = binding.edDetails.text.toString()
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, updateGovernmentQuestionByBorrowerId)
+                findNavController().popBackStack()
+            }
+        }
+
+
     }
 
     private fun checkEmptyFields():Boolean{
@@ -57,5 +97,13 @@ class ForeClosurePropertyFragment:BaseFragment() {
             CustomMaterialFields.clearError(binding.layoutDetail,  requireContext())
 
         return bool
+    }
+
+    private fun updateGovernmentData(testData:QuestionData){
+        for (item in updateGovernmentQuestionByBorrowerId.Questions) {
+            if(item.id == testData.id){
+                item.answer = testData.answer
+            }
+        }
     }
 }

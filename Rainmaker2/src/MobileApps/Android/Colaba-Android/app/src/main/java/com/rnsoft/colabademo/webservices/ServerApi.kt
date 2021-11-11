@@ -103,7 +103,7 @@ interface ServerApi{
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetAllLoanGoals")
     suspend fun getLoanGoals(
-        @Header("Authorization" )  Authorization:String,
+        @Header("Authorization")  Authorization:String,
         @Query("loanpurposeid")  loanPurpuseId:Int) : ArrayList<LoanGoalModel>
 
 
@@ -113,11 +113,11 @@ interface ServerApi{
         @Body data: AddLoanInfoModel
     ) : AddUpdateDataResponse
 
-    @POST("api/mcu/mobile/loanapplication/Loan/")
+    @POST("api/mcu/mobile/loanapplication/Loan/AddOrUpdateLoanInformation")
     suspend fun addUpdateLoanRefinance(
         @Header("Authorization")  Authorization:String,
         @Body data: UpdateLoanRefinanceModel
-    ) : Response<Any>
+    ) : AddUpdateDataResponse
 
     @GET("api/mcu/mobile/loanapplication/RealEstate/GetRealEstateDetails")
     suspend fun getRealEstateDetails(
@@ -507,7 +507,7 @@ interface ServerApi{
         @Header("Authorization" )  Authorization:String,
         @Body updateGovernmentQuestions: UpdateGovernmentQuestions
 
-    ):AddUpdateDataResponse
+    ):GovernmentAddUpdateDataResponse
 
     @GET("api/mcu/mobile/loanapplication/GovtQuestions/GetDemographicInformation")
     suspend fun getDemoGraphicInfo(

@@ -7,16 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.databinding.PreForceClosureLayoutBinding
-import com.rnsoft.colabademo.databinding.PriorityLiensLayoutBinding
+import com.rnsoft.colabademo.databinding.FamilyLayoutBinding
+import com.rnsoft.colabademo.databinding.OutstandingLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PreForeclosureFragment:BaseFragment() {
+class FamilyFragment:BaseFragment() {
 
-    private var _binding: PreForceClosureLayoutBinding? = null
+    private var _binding: FamilyLayoutBinding? = null
     private val binding get() = _binding!!
 
     @Inject
@@ -27,7 +27,7 @@ class PreForeclosureFragment:BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = PreForceClosureLayoutBinding.inflate(inflater, container, false)
+        _binding = FamilyLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
         super.addListeners(binding.root)
@@ -37,12 +37,12 @@ class PreForeclosureFragment:BaseFragment() {
     private fun setUpUI() {
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         binding.saveBtn.setOnClickListener {
-
-            //findNavController().popBackStack()
-
+            findNavController().popBackStack()
             /*
             val fieldsValidated = checkEmptyFields()
-            if(fieldsValidated) findNavController().popBackStack()
+            if(fieldsValidated) {
+                findNavController().popBackStack()
+            }
              */
         }
     }

@@ -22,7 +22,6 @@ object AppConstant {
         const val ETHNICITY_DETAILS : String = "ethnicity_details"
         const val GENDER_DETAILS : String = "gender_details"
         const val token:String = "token"
-        val authToken : String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InNhZGlxQHJhaW5zb2Z0Zm4uY29tIiwiRmlyc3ROYW1lIjoiU2FkaXEiLCJMYXN0TmFtZSI6Ik1hY2tub2ppYSIsIlRlbmFudENvZGUiOiJhaGNsZW5kaW5nIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiTUNVIiwiZXhwIjoxNjM1NDUwNjg5LCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.LUDDCZxvAxbfKQIom2RZzIS72bEK22XAp2wtxwZkzx4"
         const val refreshToken:String = "refreshToken"
         const val userProfileId:String = "userProfileId"
         const val userName:String = "userName"
@@ -49,6 +48,9 @@ object AppConstant {
         const val loanApplicationId:String = "loanApplicationId"
 
         const val loanPurpose:String = "loanPurpose"
+        const val PURPOSE_ID_PURCHASE:Int = 1
+        const val PURPOSE_ID_REFINANCE:Int = 2
+
 
         const val borrowerId:String = "borrowerId"
 
@@ -132,8 +134,10 @@ object AppConstant {
 
         const val borrowerDocScreen:String = "borrowerDocScreen"
 
+        const val updateGovernmentQuestionByBorrowerId : String = "updateGovernmentQuestionByBorrowerId"
 
 
+        const val questionId : String = "questionId"
 
         const val childGlobalList : String = "childGlobalList"
         const val ownerShipGlobalData : String = "ownerShipGlobalData"

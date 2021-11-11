@@ -87,7 +87,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         arguments?.let {
             tabBorrowerId = it.getInt(AppConstant.tabBorrowerId)
         }
-
         binding.saveBtn.setOnClickListener{
             Timber.e("working on all the fragment...")
             lifecycleScope.launchWhenStarted {
@@ -96,7 +95,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 }
             }
         }
-
         setupLayout()
         super.addListeners(binding.root)
         return binding.root
@@ -208,7 +206,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                                     Timber.e(qData.answerDetail.toString())
                                     var extractedAnswer = ""
                                     val bankruptAnswerData = qData.answerData as ArrayList<*>
-                                    if (bankruptAnswerData.size > 0 && qData.answerData != null) {
+                                    if (bankruptAnswerData.size > 0) {
                                         if (bankruptAnswerData[0] != null) {
                                             val getrow: Any = bankruptAnswerData[0]
                                             val t: LinkedTreeMap<Any, Any> =
@@ -345,6 +343,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             ownerShipConstraintLayout = contentCell
             questionData.id?.let {
                 ownerShipConstraintLayout.id = it
+                contentCell.id = it
             }
         }
         else
@@ -354,6 +353,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             childConstraintLayout = contentCell
             questionData.id?.let {
                 childConstraintLayout.id = it
+                contentCell.id = it
             }
         }
         else
@@ -362,6 +362,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             bankruptcyConstraintLayout = contentCell
             questionData.id?.let {
                 bankruptcyConstraintLayout.id = it
+                contentCell.id = it
             }
         }
         else
@@ -370,12 +371,18 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             demoGraphicConstraintLayout = contentCell
             questionData.id?.let {
                 demoGraphicConstraintLayout.id = it
+                contentCell.id = it
             }
-            observeDemoGraphicData()
+            contentCell.visibility = View.INVISIBLE
+            observeDemoGraphicData(contentCell)
             return contentCell
         }
-        else
+        else {
             contentCell = layoutInflater.inflate(R.layout.common_govt_content_layout, null) as ConstraintLayout
+            questionData.id?.let {
+              contentCell.id = it
+            }
+        }
 
 
         questionData.headerText?.let {
@@ -387,17 +394,22 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         questionData.answerDetail?.let {
             contentCell.detail_text.text = it
         }
-
+        var questionId:Int = -100
+        questionData.id?.let {
+            questionId = it
+        }
 
         if(ownerShip) {
-            contentCell.govt_detail_box.setOnClickListener {  navigateToInnerScreen(headerTitle) }
-            contentCell.govt_detail_box2.setOnClickListener { navigateToInnerScreen(headerTitle) }
+            contentCell.govt_detail_box.setOnClickListener {
+                navigateToInnerScreen(headerTitle , questionId)
+            }
+            contentCell.govt_detail_box2.setOnClickListener { navigateToInnerScreen(headerTitle , questionId) }
         }
 
         if(childSupport){
-            contentCell.govt_detail_box.setOnClickListener {  navigateToInnerScreen(headerTitle) }
-            contentCell.govt_detail_box2.setOnClickListener {navigateToInnerScreen(headerTitle) }
-            contentCell.govt_detail_box3.setOnClickListener { navigateToInnerScreen(headerTitle) }
+            contentCell.govt_detail_box.setOnClickListener {  navigateToInnerScreen(headerTitle ,  questionId) }
+            contentCell.govt_detail_box2.setOnClickListener {navigateToInnerScreen(headerTitle , questionId) }
+            contentCell.govt_detail_box3.setOnClickListener { navigateToInnerScreen(headerTitle , questionId) }
 
             val childInnerDetailQuestions:ArrayList<ConstraintLayout> = arrayListOf()
             val childAnswerData = questionData.answerData as ArrayList<*>
@@ -477,7 +489,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 contentCell.ans_yes.setOnClickListener {
                     for(item in childInnerDetailQuestions)
                         item.visibility = View.VISIBLE
-                    navigateToInnerScreen(headerTitle)
+                    navigateToInnerScreen(headerTitle , questionId)
                 }
 
 
@@ -494,7 +506,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             else if(questionData.answer.equals("yes",true)) {
                 contentCell.ans_yes.isChecked = true
 
-                if(questionData.answerDetail!=null && questionData.answer.equals("Yes", true) &&  questionData.answerDetail.isNotBlank() && questionData.answerDetail.isNotEmpty())
+                if(questionData.answerDetail!=null && questionData.answer.equals("Yes", true) &&  questionData.answerDetail!!.isNotBlank() && questionData.answerDetail!!.isNotEmpty())
                     contentCell.govt_detail_box.visibility = View.VISIBLE
             }
 
@@ -506,14 +518,14 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 updateGovernmentData(variableQuestionData)
             }
             contentCell.ans_yes.setOnClickListener {
-                if(questionData.answer.equals("Yes", true) && questionData.answerDetail!=null && questionData.answerDetail.isNotBlank() && questionData.answerDetail.isNotEmpty()) {
+                if(questionData.answer.equals("Yes", true) && questionData.answerDetail!=null && questionData.answerDetail!!.isNotBlank() && questionData.answerDetail!!.isNotEmpty()) {
                     contentCell.govt_detail_box.visibility = View.VISIBLE
                     contentCell.govt_detail_box2?.visibility = View.VISIBLE
                     contentCell.govt_detail_box3?.visibility = View.VISIBLE
                 }
                 variableQuestionData.answer = "Yes"
                 updateGovernmentData(variableQuestionData)
-                navigateToInnerScreen(headerTitle)
+                navigateToInnerScreen(headerTitle, questionId)
             }
         }
 
@@ -528,41 +540,61 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         }
     }
 
-    private fun navigateToInnerScreen(stringForSpecificFragment:String){
-           when(stringForSpecificFragment) {
+    private fun navigateToInnerScreen(stringForSpecificFragment:String, questionId: Int){
+        val bundle = Bundle()
+        bundle.putInt(AppConstant.questionId, questionId)
+        bundle.putParcelable(AppConstant.updateGovernmentQuestionByBorrowerId , updateGovernmentQuestionByBorrowerId)
+
+        when(stringForSpecificFragment) {
                "Undisclosed Borrowered Funds" ->{
-                   findNavController().navigate(R.id.action_undisclosed_borrowerfund)}
-               "Family or business affiliation" ->{}
+                   findNavController().navigate(R.id.action_undisclosed_borrowerfund, bundle )
+               }
+               "Family or business affiliation" ->{  findNavController().navigate(R.id.action_family_affiliation , bundle ) }
                "Ownership Interest in Property" ->{
-                   val bundle = Bundle()
+
                    bundle.putStringArrayList(AppConstant.ownerShipGlobalData, ownerShipGlobalData)
                    findNavController().navigate(R.id.action_ownership_interest , bundle)
                }
                "Own Property Type" ->{}
-               "Debt Co-Signer or Guarantor" ->{  findNavController().navigate(R.id.action_debt_co)}
-               "Outstanding Judgements" ->{  findNavController().navigate(R.id.action_outstanding)}
-               "Federal Debt Deliquency" ->{ findNavController().navigate(R.id.action_federal_debt)}
-               "Party to Lawsuit" ->{ findNavController().navigate(R.id.action_party_to) }
+               "Debt Co-Signer or Guarantor" ->{  findNavController().navigate(R.id.action_debt_co , bundle )}
+               "Outstanding Judgements" ->{  findNavController().navigate(R.id.action_outstanding , bundle)}
+               "Federal Debt Deliquency" ->{ findNavController().navigate(R.id.action_federal_debt , bundle)}
+               "Party to Lawsuit" ->{
+                   bundle.putStringArrayList(AppConstant.ownerShipGlobalData, ownerShipGlobalData)
+                   findNavController().navigate(R.id.action_party_to , bundle)
+               }
                "Bankruptcy " ->{
-
-                   val bundle = Bundle()
                    bundle.putParcelable(AppConstant.bankruptcyGlobalData, bankruptcyGlobalData)
-                   findNavController().navigate(R.id.action_bankruptcy) }
+                   findNavController().navigate(R.id.action_bankruptcy , bundle)
+               }
                "Child Support, Alimony, etc." ->{
-                   val bundle = Bundle()
                    bundle.putParcelableArrayList(AppConstant.childGlobalList, childGlobalList)
                    findNavController().navigate(R.id.action_child_support, bundle)
                }
-               "Type" ->{}
-               "Foreclosured Property" ->{ findNavController().navigate(R.id.action_fore_closure_property) }
-               "Pre-Foreclosureor Short Sale" ->{ findNavController().navigate(R.id.action_pre_for_closure) }
-               "Title Conveyance" ->{ findNavController().navigate(R.id.action_title_conveyance)}
-               "Property Title" ->{}
-               "Family or Business affiliation" ->{}
+               "Foreclosured Property" ->{ findNavController().navigate(R.id.action_fore_closure_property , bundle) }
+               "Pre-Foreclosureor Short Sale" ->{ findNavController().navigate(R.id.action_pre_for_closure , bundle) }
+               "Title Conveyance" ->{ findNavController().navigate(R.id.action_title_conveyance, bundle) }
                else->{
                    Timber.e(" not matching with header title...")
                }
            }
+    }
+
+    private val openTabMenuScreen = View.OnClickListener { p0 ->
+        if(p0 is AppCompatTextView){
+            for(item in horizontalTabArrayList){
+                item.isActivated = false
+                item.setTextColor(resources.getColor(R.color.doc_filter_txt_color, requireActivity().theme))
+            }
+            p0.isActivated = true
+            p0.setTextColor(resources.getColor(R.color.colaba_primary_color, requireActivity().theme))
+            for ((key, value) in innerLayoutHashMap) {
+                if(key == p0)
+                    value.visibility = View.VISIBLE
+                else
+                    value.visibility = View.INVISIBLE
+            }
+        }
     }
 
     private val ethnicityChildList:ArrayList<EthnicityDetailDemoGraphic> = arrayListOf()
@@ -571,144 +603,11 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     private val nativeHawaiianChildList:ArrayList<DemoGraphicRaceDetail> = arrayListOf()
 
-    private fun observeDemoGraphicData(){
-        borrowerAppViewModel.demoGraphicInfoList.observe(viewLifecycleOwner,{ demoGraphicInfoList->
-            if(demoGraphicInfoList.size>0){
-                var selectedDemoGraphicInfoList: DemoGraphicResponseModel? =null
-                for(item in demoGraphicInfoList){
-                    if(item.passedBorrowerId == tabBorrowerId ) {
-                        selectedDemoGraphicInfoList = item
-                        break
-                    }
-                }
-                selectedDemoGraphicInfoList?.let {
-                    it.demoGraphicData?.let { demoGraphicData ->
-                        ethnicityChildNames = ""
-                        otherEthnicity = ""
-                        nativeHawaiiChildNames = ""
-                        nativeHawaiiOtherRace = ""
-                        asianChildNames = ""
-                        otherAsianRace = ""
-
-                        demoGraphicData.genderId?.let { genderId ->
-                            if (genderId == 1)
-                                demoGraphicConstraintLayout.demo_male.isChecked = true
-                            else
-                            if (genderId == 2)
-                                demoGraphicConstraintLayout.demo_female.isChecked = true
-                            else
-                            if (genderId == 3)
-                                demoGraphicConstraintLayout.demo_do_not_wish_to_provide.isChecked = true
-                        }
-
-                        demoGraphicData.ethnicity?.let { ethnicityList ->
-                            if (ethnicityList.isNotEmpty()) {
-                                val selectedEthnicity = ethnicityList[0]
-                                if (selectedEthnicity.ethnicityId == 1) {
-                                    demoGraphicConstraintLayout.hispanic_or_latino.isChecked = true
-                                    selectedEthnicity.ethnicityDetails?.let { theList ->
-                                        for (item in theList) {
-                                            ethnicityChildList.add(item)
-                                            item.isOther?.let { isOther ->
-                                                if (isOther)
-                                                    item.otherEthnicity?.let {
-                                                        otherEthnicity = it
-                                                    }
-                                                else
-                                                    ethnicityChildNames =
-                                                        ethnicityChildNames + item.name + ", "
-                                            }
-                                        }
-                                    }
-
-                                    showEthnicityInnerBox()
-                                } else
-                                    if (selectedEthnicity.ethnicityId == 2)
-                                        demoGraphicConstraintLayout.not_hispanic.isChecked = true
-                                    else
-                                        if (selectedEthnicity.ethnicityId == 3)
-                                            demoGraphicConstraintLayout.not_telling_ethnicity.isChecked =
-                                                true
-                            }
-                        }
+    private lateinit var variableDemoGraphicData:DemoGraphicData
+    private lateinit var variableRaceList:ArrayList<DemoGraphicRace>
+    private lateinit var variableEthnicityList: ArrayList<EthnicityDemoGraphic>
 
 
-
-                        demoGraphicData.race?.let { raceList ->
-                            for (race in raceList) {
-                                if (race.raceId == 1) {
-                                    demoGraphicConstraintLayout.american_or_indian_check_box.isChecked =
-                                        true
-                                }
-                                if (race.raceId == 2) {
-
-                                    demoGraphicConstraintLayout.asian_check_box.isChecked = true
-                                    race.raceDetails?.let { asianChildList ->
-
-                                        for (item in asianChildList) {
-                                            this.asianChildList.add(item)
-                                            item.isOther?.let { isOther ->
-                                                if (isOther)
-                                                    item.otherRace?.let {
-                                                        otherAsianRace = it
-                                                    }
-                                                else
-                                                    asianChildNames =
-                                                        asianChildNames + item.name + ", "
-                                            }
-                                        }
-                                    }
-                                    showAsianInnerBox()
-
-
-                                }
-                                if (race.raceId == 3) {
-                                    demoGraphicConstraintLayout.black_or_african_check_box.isChecked =
-                                        true
-                                }
-                                if (race.raceId == 4) {
-                                    demoGraphicConstraintLayout.native_hawaian_or_other_check_box.isChecked =
-                                        true
-
-                                    race.raceDetails?.let { nativeHawaianChildList ->
-                                        for (item in nativeHawaianChildList) {
-                                            nativeHawaiianChildList.add(item)
-                                            item.isOther?.let { isOther ->
-                                                if (isOther)
-                                                    item.otherRace?.let {
-                                                        nativeHawaiiOtherRace = it
-                                                    }
-                                                else
-                                                    nativeHawaiiChildNames =
-                                                        nativeHawaiiChildNames + item.name + ", "
-                                            }
-                                        }
-                                    }
-
-
-                                    showNativeHawaiiInnerBox()
-
-                                }
-                                if (race.raceId == 5) {
-                                    demoGraphicConstraintLayout.white_check_box.isChecked = true
-                                }
-                                if (race.raceId == 6) {
-                                    demoGraphicConstraintLayout.do_not_wish_check_box.performClick()
-                                }
-                            }
-
-
-                        }
-
-
-                        // Now add static events....
-                        setUpDemoGraphicScreen()
-                        addDemoGraphicEvents()
-                    }
-                }
-            }
-        })
-    }
 
     private fun showEthnicityInnerBox(){
         if(otherEthnicity.isNotEmpty() && otherEthnicity.isNotBlank()) {
@@ -795,7 +694,150 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     }
 
+
+
+    private fun observeDemoGraphicData( contentCell:ConstraintLayout){
+        borrowerAppViewModel.demoGraphicInfoList.observe(viewLifecycleOwner,{ demoGraphicInfoList->
+            if(demoGraphicInfoList.size>0){
+                var selectedDemoGraphicInfoList: DemoGraphicResponseModel? =null
+                for(item in demoGraphicInfoList){
+                    if(item.passedBorrowerId == tabBorrowerId ) {
+                        selectedDemoGraphicInfoList = item
+                        break
+                    }
+                }
+                selectedDemoGraphicInfoList?.let {
+                    it.demoGraphicData?.let { demoGraphicData ->
+                        contentCell.visibility = View.VISIBLE
+                        variableDemoGraphicData = demoGraphicData
+                        ethnicityChildNames = ""
+                        otherEthnicity = ""
+                        nativeHawaiiChildNames = ""
+                        nativeHawaiiOtherRace = ""
+                        asianChildNames = ""
+                        otherAsianRace = ""
+
+                        demoGraphicData.genderId?.let { genderId ->
+                            if (genderId == 1)
+                                demoGraphicConstraintLayout.demo_male.isChecked = true
+                            else
+                                if (genderId == 2)
+                                    demoGraphicConstraintLayout.demo_female.isChecked = true
+                                else
+                                    if (genderId == 3)
+                                        demoGraphicConstraintLayout.demo_do_not_wish_to_provide.isChecked = true
+                        }
+
+                        demoGraphicData.ethnicity?.let { ethnicityList ->
+                            variableEthnicityList = ethnicityList
+                            if (ethnicityList.isNotEmpty()) {
+                                val selectedEthnicity = ethnicityList[0]
+                                if (selectedEthnicity.ethnicityId == 1) {
+                                    demoGraphicConstraintLayout.hispanic_or_latino.isChecked = true
+                                    selectedEthnicity.ethnicityDetails?.let { theList ->
+                                        for (item in theList) {
+                                            ethnicityChildList.add(item)
+                                            item.isOther?.let { isOther ->
+                                                if (isOther)
+                                                    item.otherEthnicity?.let {
+                                                        otherEthnicity = it
+                                                    }
+                                                else
+                                                    ethnicityChildNames =
+                                                        ethnicityChildNames + item.name + ", "
+                                            }
+                                        }
+                                    }
+
+                                    showEthnicityInnerBox()
+                                } else
+                                    if (selectedEthnicity.ethnicityId == 2)
+                                        demoGraphicConstraintLayout.not_hispanic.isChecked = true
+                                    else
+                                        if (selectedEthnicity.ethnicityId == 3)
+                                            demoGraphicConstraintLayout.not_telling_ethnicity.isChecked =
+                                                true
+                            }
+                        }
+
+                        demoGraphicData.race?.let { raceList ->
+                            variableRaceList = raceList
+                            for (race in raceList) {
+                                if (race.raceId == 1) {
+                                    demoGraphicConstraintLayout.american_or_indian_check_box.isChecked = true
+                                }
+                                if (race.raceId == 2) {
+                                    demoGraphicConstraintLayout.asian_check_box.isChecked = true
+                                    race.raceDetails?.let { asianChildList ->
+
+                                        for (item in asianChildList) {
+                                            this.asianChildList.add(item)
+                                            item.isOther?.let { isOther ->
+                                                if (isOther)
+                                                    item.otherRace?.let {
+                                                        otherAsianRace = it
+                                                    }
+                                                else
+                                                    asianChildNames =
+                                                        asianChildNames + item.name + ", "
+                                            }
+                                        }
+                                    }
+                                    showAsianInnerBox()
+                                }
+                                if (race.raceId == 3) {
+                                    demoGraphicConstraintLayout.black_or_african_check_box.isChecked =
+                                        true
+                                }
+                                if (race.raceId == 4) {
+                                    demoGraphicConstraintLayout.native_hawaian_or_other_check_box.isChecked =
+                                        true
+
+                                    race.raceDetails?.let { nativeHawaianChildList ->
+                                        for (item in nativeHawaianChildList) {
+                                            nativeHawaiianChildList.add(item)
+                                            item.isOther?.let { isOther ->
+                                                if (isOther)
+                                                    item.otherRace?.let {
+                                                        nativeHawaiiOtherRace = it
+                                                    }
+                                                else
+                                                    nativeHawaiiChildNames =
+                                                        nativeHawaiiChildNames + item.name + ", "
+                                            }
+                                        }
+                                    }
+
+
+                                    showNativeHawaiiInnerBox()
+
+                                }
+                                if (race.raceId == 5) {
+                                    demoGraphicConstraintLayout.white_check_box.isChecked = true
+                                }
+                                if (race.raceId == 6) {
+                                    demoGraphicConstraintLayout.do_not_wish_check_box.performClick()
+                                }
+                            }
+
+
+                        }
+
+
+                        // Now add static events....
+                        setUpDemoGraphicScreen()
+                        addDemoGraphicEvents()
+                    }
+                }
+            }
+        })
+    }
+
     private fun setUpDemoGraphicScreen() {
+
+        demoGraphicConstraintLayout.american_or_indian_check_box.setOnCheckedChangeListener{ buttonView, isChecked ->
+            updateDemoGraphicRace(1, isChecked)
+        }
 
         demoGraphicConstraintLayout.asian_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -804,6 +846,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 findNavController().navigate(R.id.action_asian , bundle)
                 Timber.e("not accessible...")
             }
+            updateDemoGraphicRace(2, isChecked)
 
         }
 
@@ -862,22 +905,43 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     }
 
-    private val openTabMenuScreen = View.OnClickListener { p0 ->
-        if(p0 is AppCompatTextView){
-            for(item in horizontalTabArrayList){
-                item.isActivated = false
-                item.setTextColor(resources.getColor(R.color.doc_filter_txt_color, requireActivity().theme))
-            }
-            p0.isActivated = true
-            p0.setTextColor(resources.getColor(R.color.colaba_primary_color, requireActivity().theme))
-            for ((key, value) in innerLayoutHashMap) {
-                if(key == p0)
-                    value.visibility = View.VISIBLE
-                else
-                    value.visibility = View.INVISIBLE
-            }
-        }
-    }
+   private fun updateDemoGraphicRace(raceId:Int, removeFromList:Boolean){
+
+       if(removeFromList) {
+           for (race in variableRaceList) {
+               if (race.raceId == raceId) {
+                   variableRaceList.remove(race)
+                   break
+               }
+           }
+       }
+       else
+       {
+           
+           for (race in variableRaceList) {
+               if (race.raceId == raceId) {
+                   variableRaceList.remove(race)
+                   break
+               }
+           }
+           variableRaceList.raceDetails?.let { asianChildList ->
+
+               for (item in asianChildList) {
+                   this.asianChildList.add(item)
+                   item.isOther?.let { isOther ->
+                       if (isOther)
+                           item.otherRace?.let {
+                               otherAsianRace = it
+                           }
+                       else
+                           asianChildNames =
+                               asianChildNames + item.name + ", "
+                   }
+               }
+           }
+           variableRaceList.add(DemoGraphicRace(arrayListOf(), raceId))
+       }
+   }
 
 
 

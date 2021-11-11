@@ -29,7 +29,6 @@ import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
-import com.rnsoft.colabademo.AppConstant.authToken
 import com.rnsoft.colabademo.databinding.CommonAddressLayoutBinding
 
 import com.rnsoft.colabademo.utils.CustomMaterialFields

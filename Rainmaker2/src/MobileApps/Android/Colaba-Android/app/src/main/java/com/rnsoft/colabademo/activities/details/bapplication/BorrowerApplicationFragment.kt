@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.rnsoft.colabademo.activities.details.bapplication.RealEstateClickListener
 import com.rnsoft.colabademo.databinding.DetailApplicationTabBinding
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -74,10 +77,11 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 val borrowerLoanActivity = Intent(requireActivity(), BorrowerLoanActivity::class.java)
                 it.loanApplicationId?.let { loanId ->
                     borrowerLoanActivity.putExtra(AppConstant.loanApplicationId, loanId)
-                    //Log.e("Loan Id", ""+it.loanApplicationId)
+                    Log.e("Loan Id", ""+it.loanApplicationId)
                 }
                 it.borrowerLoanPurpose?.let{ loanPurpose->
                     borrowerLoanActivity.putExtra(AppConstant.loanPurpose, loanPurpose)
+                    Log.e("PurposeId", ""+loanPurpose)
                 }
                 startActivity(borrowerLoanActivity)
             }
@@ -316,7 +320,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         }
     }
 
-
     override fun getSingleItemIndex(position: Int) {
 
     }
@@ -373,6 +376,30 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     override fun onResume() {
         super.onResume()
         (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSubjectPropertyAddressEvent(event: AddressUpdateEvent) {
+        Log.e("Event", "Received")
+        event.subPropertyAddress?.let {
+            binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+        }
+        /*propertyType?.let {
+            binding.bAppPropertyType.text=propertyType
+        }
+        occupancyType?.let {
+            binding.bAppPropertyUsage.text=propertyType
+        } */
     }
 
 

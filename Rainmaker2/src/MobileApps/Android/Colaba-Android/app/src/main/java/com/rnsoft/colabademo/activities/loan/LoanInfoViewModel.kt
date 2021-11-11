@@ -30,7 +30,6 @@ class LoanInfoViewModel @Inject constructor(private val repo: LoanInfoRepo) : Vi
 
     suspend fun getLoanInfoPurchase(token:String, loanApplicationId:Int) {
         viewModelScope.launch() {
-            delay(2000)
             val responseResult = repo.getLoanInfo(token = token, loanApplicationId = loanApplicationId)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
@@ -64,8 +63,8 @@ class LoanInfoViewModel @Inject constructor(private val repo: LoanInfoRepo) : Vi
             val responseResult = repo.addLoanInfo(token = token,data)
             withContext(Dispatchers.Main) {
                 if(responseResult is Result.Success) {
-                    Log.e("Viewmodel", "${responseResult.data}")
-                    Log.e("Viewmodel", "$responseResult")
+                    //Log.e("Viewmodel", "${responseResult.data}")
+                    //Log.e("Viewmodel", "$responseResult")
                     //EventBus.getDefault().post(SendDataEvent(responseResult))
                 }
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
@@ -81,8 +80,8 @@ class LoanInfoViewModel @Inject constructor(private val repo: LoanInfoRepo) : Vi
             val responseResult = repo.addLoanRefinanceInfo(token = token,data)
             withContext(Dispatchers.Main) {
                 if(responseResult is Result.Success) {
-                    Log.e("Viewmodel", "${responseResult.data}")
-                    Log.e("Viewmodel", "$responseResult")
+                    //Log.e("Viewmodel", "${responseResult.data}")
+                    //Log.e("Viewmodel", "$responseResult")
                     //EventBus.getDefault().post(SendDataEvent(responseResult))
                 }
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)

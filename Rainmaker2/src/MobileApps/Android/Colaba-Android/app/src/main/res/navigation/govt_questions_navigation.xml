@@ -14,7 +14,7 @@
 
         <action
             android:id="@+id/action_family_affiliation"
-            app:destination="@id/navigation_undisclosed_borrower_fund"
+            app:destination="@id/navigation_family_affiliation"
             app:enterAnim="@anim/slide_up" />
 
         <action
@@ -196,9 +196,9 @@
 
     <fragment
         android:id="@+id/navigation_family_affiliation"
-        android:name="com.rnsoft.colabademo.UndisclosedBorrowerFundFragment"
+        android:name="com.rnsoft.colabademo.FamilyFragment"
         android:label="@string/test_id"
-        tools:layout="@layout/undisclosed_borrower_fund_layout" />
+        tools:layout="@layout/family_layout" />
 
     <fragment
         android:id="@+id/navigation_asian"

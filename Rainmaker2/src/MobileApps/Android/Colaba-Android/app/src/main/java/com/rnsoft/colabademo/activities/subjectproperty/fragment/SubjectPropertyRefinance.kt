@@ -727,8 +727,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSentData(event: SendDataEvent) {
         if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS)
-            SandbarUtils.showError(requireActivity(), "Data Sent Successfully" )
-
+            dismissActivity()
         else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
 
@@ -736,7 +735,11 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             if(event.addUpdateDataResponse.message != null)
                 SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
         hideLoader()
+    }
 
+    private fun dismissActivity(){
+        requireActivity().finish()
+        requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
     }
 
     /*

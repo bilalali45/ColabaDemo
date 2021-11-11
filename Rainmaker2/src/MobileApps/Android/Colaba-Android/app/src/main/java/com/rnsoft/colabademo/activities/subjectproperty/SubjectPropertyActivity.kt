@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import com.rnsoft.colabademo.AppConstant.authToken
 import com.rnsoft.colabademo.databinding.BorrowerSubjectPropertyLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.async
@@ -38,7 +37,6 @@ class SubjectPropertyActivity : BaseActivity() {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             purpose = it.getString(AppConstant.borrowerPurpose)
         }
-        //Timber.e("--Purpose--"+ purpose)
 
         val navController = findNavController(R.id.nav_host_borrower_subject_property)
         lifecycleScope.launchWhenStarted {

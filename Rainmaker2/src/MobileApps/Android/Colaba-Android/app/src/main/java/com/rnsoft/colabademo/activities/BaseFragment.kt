@@ -25,4 +25,6 @@ open class BaseFragment:Fragment() {
         }
     }
 
+
+
 }
