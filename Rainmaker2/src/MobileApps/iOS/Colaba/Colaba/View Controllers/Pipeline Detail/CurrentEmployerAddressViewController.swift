@@ -9,6 +9,10 @@ import UIKit
 import Material
 import GooglePlaces
 
+protocol CurrentEmployerAddressViewControllerDelegate: AnyObject {
+    func saveAddressObject(address: [String: Any])
+}
+
 class CurrentEmployerAddressViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -43,6 +47,8 @@ class CurrentEmployerAddressViewController: BaseViewController {
     var countriesArray = [CountriesModel]()
     var statesArray = [StatesModel]()
     var countiesArray = [CountiesModel]()
+    
+    weak var delegate: CurrentEmployerAddressViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -202,21 +208,26 @@ class CurrentEmployerAddressViewController: BaseViewController {
                     print("reverse geodcode fail: \(error!.localizedDescription)")
                 }
                 else{
+                    self.txtfieldCity.setTextField(text: "")
+                    self.txtfieldCounty.setTextField(text: "")
+                    self.txtfieldState.setTextField(text: "")
+                    self.txtfieldZipCode.setTextField(text: "")
+                    self.txtfieldCountry.setTextField(text: "")
                     if let pm = placemarks?.first {
                         if let city = pm.locality{
-                            self.txtfieldCity.text = city
+                            self.txtfieldCity.setTextField(text: city)
                         }
                         if let county = pm.subAdministrativeArea{
-                            self.txtfieldCounty.text = county
+                            self.txtfieldCounty.setTextField(text: county)
                         }
                         if let state = pm.administrativeArea{
-                            self.txtfieldState.text = state
+                            self.txtfieldState.setTextField(text: state)
                         }
                         if let zipCode = pm.postalCode{
-                            self.txtfieldZipCode.text = zipCode
+                            self.txtfieldZipCode.setTextField(text: zipCode)
                         }
                         if let country = pm.country{
-                            self.txtfieldCountry.text = country
+                            self.txtfieldCountry.setTextField(text: country)
                         }
                         
                   }
@@ -237,9 +248,8 @@ class CurrentEmployerAddressViewController: BaseViewController {
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         if validate() {
-            if (self.txtfieldHomeAddress.text != "" && txtfieldStreetAddress.text != "" && txtfieldCity.text != "" && txtfieldState.text != "" && txtfieldZipCode.text != "" && txtfieldCountry.text != ""){
-                self.goBack()
-            }
+            saveAddressObject()
+            self.goBack()
         }
     }
     
@@ -251,6 +261,30 @@ class CurrentEmployerAddressViewController: BaseViewController {
         isValidate = txtfieldZipCode.validate() && isValidate
         isValidate = txtfieldCountry.validate() && isValidate
         return isValidate
+    }
+    
+    func saveAddressObject(){
+        var stateId: Any = NSNull()
+        var countryId: Any = NSNull()
+        
+        if let selectedState = statesArray.filter({$0.name == txtfieldState.text}).first{
+            stateId = selectedState.id
+        }
+        
+        if let selectedCountry = countriesArray.filter({$0.name == txtfieldCountry.text}).first{
+            countryId = selectedCountry.id
+        }
+        
+        let addressDic = ["street": txtfieldStreetAddress.text! == "" ? NSNull() : txtfieldStreetAddress.text!,
+                          "unit": txtfieldUnitNo.text! == "" ? NSNull() : txtfieldUnitNo.text!,
+                          "city": txtfieldCity.text! == "" ? NSNull() : txtfieldCity.text!,
+                          "stateId": stateId,
+                          "zipCode": txtfieldZipCode.text! == "" ? NSNull() : txtfieldZipCode.text!,
+                          "countryId": countryId,
+                          "countryName": txtfieldCountry.text! == "" ? NSNull() : txtfieldCountry.text!,
+                          "stateName": txtfieldState.text! == "" ? NSNull() : txtfieldState.text!,
+                          "cityId": 1] as [String: Any]
+        self.delegate?.saveAddressObject(address: addressDic)
     }
     
     //MARK:- API's
