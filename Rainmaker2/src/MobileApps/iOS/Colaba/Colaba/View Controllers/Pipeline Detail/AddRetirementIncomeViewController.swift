@@ -94,13 +94,15 @@ class AddRetirementIncomeViewController: BaseViewController {
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         if validate(){
-            self.dismissVC()
+            addUpdateRetirementIncome()
         }
     }
     
     func validate() -> Bool {
         var isValidate = txtfieldRetirementIncomeType.validate()
-        isValidate = txtfieldEmployerName.validate() && isValidate
+        if (!txtfieldEmployerName.isHidden){
+            isValidate = txtfieldEmployerName.validate() && isValidate
+        }
         isValidate = txtfieldMonthlyIncome.validate() && isValidate
         return isValidate
     }
@@ -160,6 +162,50 @@ class AddRetirementIncomeViewController: BaseViewController {
                 }
             }
         }
+    }
+    
+    func addUpdateRetirementIncome(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        var incomeTypeId = 0
+        var employerNameOrDescription: Any = NSNull()
+        var monthlyBaseIncome: Any = NSNull()
+        
+        if let incomeType = (retirementTypeArray.filter({$0.optionName.localizedCaseInsensitiveContains(txtfieldRetirementIncomeType.text!)})).first{
+            incomeTypeId = incomeType.optionId
+        }
+        if (txtfieldEmployerName.text! != ""){
+            employerNameOrDescription = txtfieldEmployerName.text!
+        }
+        if (txtfieldMonthlyIncome.text! != ""){
+            if let value = Int(cleanString(string: txtfieldMonthlyIncome.text!, replaceCharacters: ["$  |  ",","], replaceWith: "")){
+                monthlyBaseIncome = value
+            }
+        }
+        
+        let params = ["IncomeInfoId": isForAdd ? NSNull() : retirementDetail.incomeInfoId,
+                      "BorrowerId": borrowerId,
+                      "employerName": employerNameOrDescription,
+                      "description": employerNameOrDescription,
+                      "MonthlyBaseIncome": monthlyBaseIncome,
+                      "IncomeTypeId": incomeTypeId,
+                      "LoanApplicationId": loanApplicationId] as [String: Any]
+        
+        APIRouter.sharedInstance.executeAPI(type: .addUpdateRetirementIncome, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+        }
+        
     }
     
     func deleteIncome(){

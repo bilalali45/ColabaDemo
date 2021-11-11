@@ -106,6 +106,8 @@ enum EndPoint:String{
     case addUpdateSelfEmployment = "loanapplication/Assets/AddOrUpdateSelfBusiness"
     case addUpdateBusiness = "loanapplication/Assets/AddOrUpdateBusiness"
     case addUpdateMilitaryPay = "loanapplication/Assets/AddOrUpdateMilitaryIncome"
+    case addUpdateRetirementIncome = "loanapplication/Assets/AddOrUpdateRetirementIncomeInfo"
+    case addUpdateOtherIncome = "loanapplication/Assets/AddOrUpdateOtherIncome"
     case logout = "identity/mcuaccount/Logout"
     
 }
