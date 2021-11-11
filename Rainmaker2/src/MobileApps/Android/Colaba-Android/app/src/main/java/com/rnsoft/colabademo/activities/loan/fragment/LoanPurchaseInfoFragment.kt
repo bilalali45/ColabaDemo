@@ -46,6 +46,7 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
     val format =  DecimalFormat("#,###,###")
     private lateinit var mTextWatcher : TextWatcher
     val stageList:ArrayList<String> = arrayListOf()
+    private var goalFullList: ArrayList<LoanGoalModel> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,10 +62,47 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
 
         initViews()
         setCalulations()
-        getLoanInfoDetail()
+        setLoanStages()
+
 
         super.addListeners(binding.root)
         return binding.root
+    }
+
+    private fun setLoanStages() {
+        lifecycleScope.launchWhenStarted {
+            loanViewModel.loanGoals.observe(viewLifecycleOwner, { goals ->
+                if (goals != null && goals.size > 0) {
+                    val itemList: ArrayList<String> = arrayListOf()
+                    goalFullList = arrayListOf()
+                    for (item in goals) {
+                        itemList.add(item.description)
+                        goalFullList.add(item)
+                    }
+
+                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
+                    binding.tvLoanStage.setAdapter(adapter)
+                    //adapter.setNotifyOnChange(true)
+
+                    binding.tvLoanStage.setOnFocusChangeListener { _, _ ->
+                        binding.tvLoanStage.showDropDown()
+                    }
+                    binding.tvLoanStage.setOnClickListener {
+                        binding.tvLoanStage.showDropDown()
+                    }
+
+                    binding.tvLoanStage.onItemClickListener = object :
+                        AdapterView.OnItemClickListener {
+                        override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                            CustomMaterialFields.setColor(binding.layoutLoanStage, R.color.grey_color_two, requireActivity())
+                        }
+                    }
+                }
+                hideLoader()
+                getLoanInfoDetail()
+            })
+
+        }
     }
 
     private fun getLoanInfoDetail() {
@@ -74,37 +112,40 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
                     binding.tvLoanStage.setText(it)
                     CustomMaterialFields.setColor(binding.layoutLoanStage,R.color.grey_color_two,requireActivity())
                 }
-                    loanInfo.data?.propertyValue?.let {
-                        binding.edPurchasePrice.setText(Math.round(it).toString())
-                        CustomMaterialFields.setColor(binding.layoutPurchasePrice,R.color.grey_color_two,requireActivity())
-                    }
-                    loanInfo.data?.loanPayment?.let {
-                        binding.edLoanAmount.setText(Math.round(it).toString())
-                        CustomMaterialFields.setColor(binding.layoutLoanAmount,R.color.grey_color_two,requireActivity())
-                    }
-                    loanInfo.data?.downPayment?.let {
-                        binding.edDownPayment.setText(Math.round(it).toString())
-                        CustomMaterialFields.setColor(binding.layoutDownPayment,R.color.grey_color_two,requireActivity())
-                    }
-                    loanInfo.data?.expectedClosingDate?.let {
-                        val date = AppSetting.getMonthAndYear(it)
-                        binding.edClosingDate.setText(date)
-                        CustomMaterialFields.setColor(binding.layoutClosingDate,R.color.grey_color_two,requireActivity())
-                    }
-                    loanInfo.data?.loanPurposeId?.let {
-                        loanViewModel.getLoanGoals(AppConstant.authToken,it)
-                        loanViewModel.loanGoals.observe(viewLifecycleOwner,{
-                            for(item in it){
-                                stageList.add(item.description)
-                            }
-                            setLoanStageSpinner()
-                        })
-                    }
-                    if(loanInfo.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
-                        hideLoader() }
+                loanInfo.data?.propertyValue?.let {
+                    binding.edPurchasePrice.setText(Math.round(it).toString())
+                    CustomMaterialFields.setColor(binding.layoutPurchasePrice,R.color.grey_color_two,requireActivity())
                 }
-                hideLoader()
-            })
+                loanInfo.data?.loanPayment?.let {
+                    binding.edLoanAmount.setText(Math.round(it).toString())
+                    CustomMaterialFields.setColor(binding.layoutLoanAmount,R.color.grey_color_two,requireActivity())
+                }
+                loanInfo.data?.downPayment?.let {
+                    binding.edDownPayment.setText(Math.round(it).toString())
+                    CustomMaterialFields.setColor(binding.layoutDownPayment,R.color.grey_color_two,requireActivity())
+                }
+                loanInfo.data?.expectedClosingDate?.let {
+                    val date = AppSetting.getMonthAndYear(it)
+                    binding.edClosingDate.setText(date)
+                    CustomMaterialFields.setColor(binding.layoutClosingDate,R.color.grey_color_two,requireActivity())
+                }
+
+                loanInfo.data?.loanGoalId?.let { goalId ->
+                    //Log.e("loanGoalId- ", ""+ goalId)
+                    for (item in goalFullList) {
+                        if (item.id == goalId) {
+                            binding.tvLoanStage.setText(item.description, false)
+                            CustomMaterialFields.setColor(
+                                binding.layoutLoanStage,
+                                R.color.grey_color_two,
+                                requireActivity())
+                            break
+                        }
+                    }
+                }
+            }
+            hideLoader()
+        })
     }
 
     private fun initViews() {
@@ -214,7 +255,6 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
 
         mTextWatcher  = object : TextWatcher {
             override fun afterTextChanged(et: Editable?) {
-
                 when {
                     et === binding.edPurchasePrice.editableText -> {
                         binding.edDownPayment.removeTextChangedListener(this)
@@ -240,9 +280,8 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
                     et === binding.edDownPayment.editableText -> {
                         binding.edPercent.removeTextChangedListener(this)
                         try {
-
                             var input = et.toString()
-                            if(!input.isEmpty()) {
+                            if(!input.isEmpty()){
                                 input = input.replace(",", "")
                                 val newPrice = format.format(input.toLong())
                                 binding.edDownPayment.removeTextChangedListener(this)
@@ -262,6 +301,12 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
                                     //Log.e(""+ purchasePrice, " Downpayment " + downPayment  +" Result " + result)
                                     //Log.e("ConvertResult", ""+ convertResult)
                                     binding.edPercent.setText(convertResult.toString())
+
+                                    // calculate loan amount
+                                    val newLoanAmount: Float = (purchasePrice.toFloat() - newDownPayment.toFloat())
+                                    binding.edLoanAmount.setText(Math.round(newLoanAmount).toString())
+                                    //Log.e(""+ purchasePrice, " Downpayment " + downPayment  +" Result " + result)
+                                    //Log.e("LoanAmount", ""+ newLoanAmount)
                                 }
                             }
 
@@ -281,9 +326,14 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
                             if (purchasePrice > 0) {
                                 val percent = binding.edPercent.text.toString()
                                 edValue.let {
+                                    //Log.e("here","here")
                                     val result = (purchasePrice * Integer.parseInt(percent)) / 100
-                                    val newPrice = format.format(result)
-                                    binding.edDownPayment.setText(newPrice.toString())
+                                    val newDownPayment = format.format(result)
+                                    binding.edDownPayment.setText(newDownPayment.toString())
+                                    // calculate loan amount
+                                    val newLoanAmount: Float = (purchasePrice.toFloat() - result.toFloat())
+                                    //Log.e("loanAmount",""+newDownPayment)
+                                    binding.edLoanAmount.setText(Math.round(newLoanAmount).toString())
                                 }
                             }
                         } catch (nfe: NumberFormatException) {
@@ -327,7 +377,7 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
     private fun calculateInitialDownPayment(value: String) {
         value.let {
             if (value.length > 0) {
-                var purchasePrice = value.replace(",", "");
+                val purchasePrice = value.replace(",", "");
                 val amount: Long = purchasePrice.toLong()
                 val result = (amount * 20) / 100
                 binding.edPercent.setText("20")

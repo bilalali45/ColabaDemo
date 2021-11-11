@@ -77,10 +77,11 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 val borrowerLoanActivity = Intent(requireActivity(), BorrowerLoanActivity::class.java)
                 it.loanApplicationId?.let { loanId ->
                     borrowerLoanActivity.putExtra(AppConstant.loanApplicationId, loanId)
-                    //Log.e("Loan Id", ""+it.loanApplicationId)
+                    Log.e("Loan Id", ""+it.loanApplicationId)
                 }
                 it.borrowerLoanPurpose?.let{ loanPurpose->
                     borrowerLoanActivity.putExtra(AppConstant.loanPurpose, loanPurpose)
+                    Log.e("PurposeId", ""+loanPurpose)
                 }
                 startActivity(borrowerLoanActivity)
             }

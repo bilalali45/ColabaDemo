@@ -9,7 +9,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.rnsoft.colabademo.databinding.BorrowerLoanLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -23,7 +26,7 @@ class BorrowerLoanActivity : BaseActivity() {
     var loanApplicationId: Int? = null
     var loanPurpose: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         binding = BorrowerLoanLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -41,15 +44,25 @@ class BorrowerLoanActivity : BaseActivity() {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 if (loanApplicationId != null) {
                     //Log.e("authToken", authToken)
-                    //Log.e("laon id", "" + loanApplicationId)
-                    binding.loaderLoanInfo.visibility = View.VISIBLE
-                    delay(2000)
-                    viewModel.getLoanInfoPurchase(authToken, 5)
-                    if (loanPurpose.equals(AppConstant.purchase, ignoreCase = true))
-                        navController.navigate(R.id.navigation_loan_purchase)
-                    else if (loanPurpose.equals(AppConstant.refinance, ignoreCase = true))
-                        navController.navigate(R.id.navigation_loan_refinance)
-
+                    //Log.e("****laon id", "" + loanApplicationId)
+                        coroutineScope {
+                            binding.loaderLoanInfo.visibility = View.VISIBLE
+                            viewModel.getLoanInfoPurchase(authToken, loanApplicationId!!)
+                            if(loanPurpose.equals(AppConstant.purchase, ignoreCase = true)) {
+                                val call1 = async {
+                                    viewModel.getLoanGoals(authToken, AppConstant.PURPOSE_ID_PURCHASE)
+                                }
+                                call1.await()
+                                navController.navigate(R.id.navigation_loan_purchase)
+                            }
+                            else if(loanPurpose.equals(AppConstant.refinance, ignoreCase = true)) {
+                                val call = async {
+                                    viewModel.getLoanGoals(authToken, AppConstant.PURPOSE_ID_REFINANCE)
+                                }
+                                call.await()
+                                navController.navigate(R.id.navigation_loan_refinance)
+                            }
+                        }
                 }
             }
         }
