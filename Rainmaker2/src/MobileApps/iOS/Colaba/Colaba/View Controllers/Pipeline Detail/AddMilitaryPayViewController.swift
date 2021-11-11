@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class AddMilitaryPayViewController: BaseViewController {
 
@@ -34,6 +35,7 @@ class AddMilitaryPayViewController: BaseViewController {
     var borrowerId = 0
     var incomeInfoId = 0
     var militaryDetail = MilitaryPayDetailModel()
+    var savedAddress: Any = NSNull()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +45,8 @@ class AddMilitaryPayViewController: BaseViewController {
             getMilitaryPayDetail()
         }
         btnDelete.isHidden = isForAdd
+        addressView.isHidden = isForAdd
+        addAddressView.isHidden = !isForAdd
     }
         
     //MARK:- Methods and Actions
@@ -98,6 +102,7 @@ class AddMilitaryPayViewController: BaseViewController {
         vc.topTitle = "Service Location Address"
         vc.searchTextFieldPlaceholder = "Search Service Location Address"
         vc.borrowerFullName = self.borrowerName
+        vc.delegate = self
         if (!isForAdd){
             vc.selectedAddress = militaryDetail.address
         }
@@ -148,7 +153,7 @@ class AddMilitaryPayViewController: BaseViewController {
         txtfieldMilitaryEntitlements.validate()
         
         if validate(){
-            self.dismissVC()
+            addUpdateMilitaryPay()
         }
     }
     
@@ -169,10 +174,88 @@ class AddMilitaryPayViewController: BaseViewController {
                     model.updateModelWithJSON(json: result["data"])
                     self.militaryDetail = model
                     self.setMilitaryPayDetail()
+                    if (result["data"]["address"] == JSON.null){
+                        self.savedAddress = NSNull()
+                    }
+                    else{
+                        self.savedAddress = ["street": result["data"]["address"]["street"] == JSON.null ? NSNull() : result["data"]["address"]["street"].stringValue,
+                                             "unit": result["data"]["address"]["unit"] == JSON.null ? NSNull() : result["data"]["address"]["unit"].stringValue,
+                                             "cityId": result["data"]["address"]["cityId"] == JSON.null ? NSNull() : result["data"]["address"]["cityId"].intValue,
+                                             "city": result["data"]["address"]["city"] == JSON.null ? NSNull() : result["data"]["address"]["city"].stringValue,
+                                             "stateId": result["data"]["address"]["stateId"] == JSON.null ? NSNull() : result["data"]["address"]["stateId"].intValue,
+                                             "stateName": result["data"]["address"]["stateName"] == JSON.null ? NSNull() : result["data"]["address"]["stateName"].stringValue,
+                                             "zipCode": result["data"]["address"]["zipCode"] == JSON.null ? NSNull() : result["data"]["address"]["zipCode"].stringValue,
+                                             "countryId": result["data"]["address"]["countryId"] == JSON.null ? NSNull() : result["data"]["address"]["countryId"].intValue,
+                                             "countryName": result["data"]["address"]["countryName"] == JSON.null ? NSNull() : result["data"]["address"]["countryName"].stringValue]as [String: Any]
+                    }
                 }
                 else{
                     self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
                         self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
+    
+    func addUpdateMilitaryPay(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        var employerName: Any = NSNull()
+        var jobTitle: Any = NSNull()
+        var startDate = ""
+        var yearsInProfession: Any = NSNull()
+        var monthlyBaseSalary: Any = NSNull()
+        var militaryEntitlements: Any = NSNull()
+        
+        if (txtfieldEmployerName.text! != ""){
+            employerName = txtfieldEmployerName.text!
+        }
+        
+        let startDateComponent = txtfieldStartDate.text!.components(separatedBy: "/")
+        if (startDateComponent.count == 3){
+            startDate = "\(startDateComponent[2])-\(startDateComponent[0])-\(startDateComponent[1])"
+        }
+        if (txtfieldJobTitle.text! != ""){
+            jobTitle = txtfieldJobTitle.text!
+        }
+        if (txtfieldProfessionYears.text! != ""){
+            if let years = Int(txtfieldProfessionYears.text!){
+                yearsInProfession = years
+            }
+        }
+        if (txtfieldMonthlyBaseSalary.text! != ""){
+            if let value = Int(cleanString(string: txtfieldMonthlyBaseSalary.text!, replaceCharacters: ["$  |  ",","], replaceWith: "")){
+                monthlyBaseSalary = value
+            }
+        }
+        if (txtfieldMilitaryEntitlements.text! != ""){
+            if let value = Int(cleanString(string: txtfieldMilitaryEntitlements.text!, replaceCharacters: ["$  |  ",","], replaceWith: "")){
+                militaryEntitlements = value
+            }
+        }
+        
+        let params = ["loanApplicationId": loanApplicationId,
+                      "id": isForAdd ? NSNull() : militaryDetail.id,
+                      "borrowerId": borrowerId,
+                      "employerName": employerName,
+                      "jobTitle": jobTitle,
+                      "startDate": startDate,
+                      "yearsInProfession": yearsInProfession,
+                      "address": savedAddress,
+                      "monthlyBaseSalary": monthlyBaseSalary,
+                      "militaryEntitlements": militaryEntitlements] as [String: Any]
+        
+        APIRouter.sharedInstance.executeAPI(type: .addUpdateMilitaryPay, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
                     }
                 }
             }
@@ -205,5 +288,31 @@ class AddMilitaryPayViewController: BaseViewController {
 extension AddMilitaryPayViewController: DeleteAddressPopupViewControllerDelegate{
     func deleteAddress(indexPath: IndexPath) {
         deleteIncome()
+    }
+}
+
+extension AddMilitaryPayViewController: CurrentEmployerAddressViewControllerDelegate{
+    func saveAddressObject(address: [String : Any]) {
+        savedAddress = address
+        addressView.isHidden = false
+        addAddressView.isHidden = true
+        
+        var street = "", unit = "", city = "", stateName = "", zipCode = ""
+        if let addressStreet = address["street"] as? String{
+            street = addressStreet
+        }
+        if let addressUnit = address["unit"] as? String{
+            unit = addressUnit
+        }
+        if let addressCity = address["city"] as? String{
+            city = addressCity
+        }
+        if let addressState = address["stateName"] as? String{
+            stateName = addressState
+        }
+        if let addressZipCode = address["zipCode"] as? String{
+            zipCode = addressZipCode
+        }
+        lblAddress.text = "\(street) \(unit),\n\(city), \(stateName) \(zipCode)"
     }
 }
