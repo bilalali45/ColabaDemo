@@ -270,7 +270,6 @@ class SubjectPropertyPurchase : BaseFragment() {
     }
 
     private fun setDropDownData(){
-        //Log.e("DropDown","true")
         lifecycleScope.launchWhenStarted {
             coroutineScope {
                 viewModel.propertyType.observe(viewLifecycleOwner, { properties->

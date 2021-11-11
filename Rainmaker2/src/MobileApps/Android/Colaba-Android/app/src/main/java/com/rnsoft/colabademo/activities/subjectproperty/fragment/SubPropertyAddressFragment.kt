@@ -151,15 +151,16 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
     private fun getDropDownData(){
          lifecycleScope.launchWhenStarted {
              sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-             binding.loaderSubproAddress.visibility = View.VISIBLE
-             coroutineScope {
-                 setData()
-
-                 viewModel.getStates(authToken)
-                 // get countries
-                 viewModel.getCountries(authToken)
-                 // get county
-                 viewModel.getCounty(authToken)
+                 binding.loaderSubproAddress.visibility = View.VISIBLE
+                 coroutineScope {
+                     viewModel.getStates(authToken)
+                     // get countries
+                     viewModel.getCountries(authToken)
+                     // get county
+                     viewModel.getCounty(authToken)
+                 }
+             }
+             lifecycleScope.launchWhenStarted {
 
                  viewModel.states.observe(viewLifecycleOwner, {  states ->
                      if (states != null && states.size > 0) {
@@ -293,8 +294,10 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                      }
 
                  })
-             }
-             binding.loaderSubproAddress.visibility = View.GONE
+
+                 binding.loaderSubproAddress.visibility = View.GONE
+                 setData()
+
          }
      }
 

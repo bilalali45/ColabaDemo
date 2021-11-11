@@ -31,10 +31,7 @@ class LoanInfoDataSource @Inject constructor(private val serverApi: ServerApi) {
         }
     }
 
-    suspend fun getLoanGoals(
-        token: String,
-        loanPurposeId: Int
-    ): Result<ArrayList<LoanGoalModel>> {
+    suspend fun getLoanGoals(token: String, loanPurposeId: Int): Result<ArrayList<LoanGoalModel>> {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getLoanGoals(newToken, loanPurposeId)
@@ -43,7 +40,7 @@ class LoanInfoDataSource @Inject constructor(private val serverApi: ServerApi) {
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
-            else
+             else
                 Result.Error(IOException("Error notification -", e))
         }
     }
