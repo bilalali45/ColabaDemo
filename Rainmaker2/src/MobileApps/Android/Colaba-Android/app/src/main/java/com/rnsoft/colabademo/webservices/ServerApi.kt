@@ -506,8 +506,16 @@ interface ServerApi{
     suspend fun addOrUpdateGovernmentQuestions(
         @Header("Authorization" )  Authorization:String,
         @Body updateGovernmentQuestions: UpdateGovernmentQuestions
-
     ):GovernmentAddUpdateDataResponse
+
+
+
+    @POST("api/mcu/mobile/loanapplication/GovtQuestions/AddOrUpdateDemogrhphicInfo")
+    suspend fun addOrUpdateDemoGraphic(
+        @Header("Authorization" )  Authorization:String,
+        @Body demoGraphicData: DemoGraphicData
+    ):AddUpdateDemoGraphicResponse
+
 
     @GET("api/mcu/mobile/loanapplication/GovtQuestions/GetDemographicInformation")
     suspend fun getDemoGraphicInfo(
