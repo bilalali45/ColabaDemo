@@ -80,10 +80,10 @@ interface ServerApi{
     ) : AddUpdateDataResponse
 
     @POST("api/mcu/mobile/loanapplication/SubjectProperty/AddOrUpdateRefinanceSubjectPropertyDetail")
-    suspend fun addOrUpdateRefinanceDetail(
-        @Header("Authorization")  Authorization:String,
-        @Body data: SubPropertyRefinanceData
-    ) :AddUpdateDataResponse
+    suspend fun addOrUpdateRefinanceDetail(@Header("Authorization")  Authorization:String, @Body data: SubPropertyRefinanceData) :AddUpdateDataResponse
+
+    @POST("api/mcu/mobile/loanapplication/SubjectProperty/AddOrUpdateCoBorrowerOccupancyStatus")
+    suspend fun addCoBorrowerOccupancy(@Header("Authorization")  Authorization:String, @Body data: AddCoBorrowerOccupancy) : AddUpdateDataResponse
 
 
     @GET("api/mcu/mobile/loanapplication/SubjectProperty/GetRefinanceSubjectPropertyDetail")
@@ -293,6 +293,19 @@ interface ServerApi{
         @Query("incomeInfoId") incomeInfoId:Int):EmploymentDetailResponse
 
     //AddOrUpdateCurrentEmploymentDetail
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateCurrentEmploymentDetail")
+    suspend fun addCurrentEmployment(
+        @Header("Authorization")  Authorization:String,
+        @Body currentEmploymentData: EmploymentData
+    ) : AddUpdateDataResponse
+
+//    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateCurrentEmploymentDetail")
+//    suspend fun addCurrentEmployment(
+//        @Header("Authorization")  Authorization:String,
+//        @Body currentEmploymentData: EmploymentData
+//    ) : AddUpdateDataResponse
+
+
     //AddOrUpdatePreviousEmploymentDetail
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetSelfBusinessIncome")
@@ -302,6 +315,12 @@ interface ServerApi{
         @Query("incomeInfoId") incomeInfoId:Int): SelfEmploymentResponse
 
     // AddOrUpdateSelfBusiness
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateSelfBusiness")
+    suspend fun addOrUpdateSelfBusiness(
+        @Header("Authorization")  Authorization:String,
+        @Body selfBusinessData: SelfEmploymentData
+    ) : AddUpdateDataResponse
+
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetBusinessIncome")
     suspend fun getBusinessIncome(

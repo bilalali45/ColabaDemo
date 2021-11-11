@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -248,6 +249,23 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
                 if (responseResult is Result.Success)
                     _businessTypes.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun sendSelfEmploymentData(token: String,selfEmploymentData: SelfEmploymentData) {
+        Log.e("ViewModel", "inside-SendData")
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.sendSelfEmploymentData(token = token, selfEmploymentData)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    Log.e("Viewmodel", "${responseResult.data}")
+                    Log.e("Viewmodel", "$responseResult")
+                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)
                     EventBus.getDefault().post(WebServiceErrorEvent(responseResult))

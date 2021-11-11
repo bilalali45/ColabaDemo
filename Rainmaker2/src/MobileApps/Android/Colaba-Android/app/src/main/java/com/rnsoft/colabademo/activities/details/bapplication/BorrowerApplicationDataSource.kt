@@ -70,23 +70,6 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     }
 
 
-    suspend fun getCoBorrowerOccupancyStatus(
-        token: String,
-        loanApplicationId: Int
-    ): Result<CoBorrowerOccupancyStatus> {
-        return try {
-            val newToken = "Bearer $token"
-            val response = serverApi.getCoBorrowerOccupancyStatus(newToken, loanApplicationId)
-            Log.e("Co-Borrow-Occupnacy", response.toString())
-            Result.Success(response)
-        } catch (e: Throwable) {
-            if (e is NoConnectivityException)
-                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
-            else
-                Result.Error(IOException("Error notification -", e))
-        }
-    }
-
     suspend fun getCountries(token: String): Result<ArrayList<CountriesModel>> {
         return try {
             val newToken = "Bearer $token"

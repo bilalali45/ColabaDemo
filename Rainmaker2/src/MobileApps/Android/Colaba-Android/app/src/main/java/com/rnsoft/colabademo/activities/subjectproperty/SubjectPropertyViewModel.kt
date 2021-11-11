@@ -39,12 +39,10 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
     private val _subjectPropertyDetails: MutableLiveData<SubjectPropertyDetails> = MutableLiveData()
     val subjectPropertyDetails: LiveData<SubjectPropertyDetails> get() = _subjectPropertyDetails
 
-    private val _refinanceDetails: MutableLiveData<SubjectPropertyRefinanceDetails> =
-        MutableLiveData()
+    private val _refinanceDetails: MutableLiveData<SubjectPropertyRefinanceDetails> = MutableLiveData()
     val refinanceDetails: LiveData<SubjectPropertyRefinanceDetails> get() = _refinanceDetails
 
-    private val _coBorrowerOccupancyStatus: MutableLiveData<CoBorrowerOccupancyStatus> =
-        MutableLiveData()
+    private val _coBorrowerOccupancyStatus: MutableLiveData<CoBorrowerOccupancyStatus> = MutableLiveData()
     val coBorrowerOccupancyStatus: LiveData<CoBorrowerOccupancyStatus> get() = _coBorrowerOccupancyStatus
 
     private val _updatedAddress : MutableLiveData<AddressData> = MutableLiveData()
@@ -59,16 +57,15 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
     private val _secMortgageDetail : MutableLiveData<SecondMortgageModel> = MutableLiveData()
     val secMortgageDetail : LiveData<SecondMortgageModel> get() = _secMortgageDetail
 
-
     val mixedPropertyDesc = MutableLiveData<String>()
     val mixedPropertyRefinanceDesc = MutableLiveData<String>()
 
     fun savePurchaseAddress(address: AddressData) {
-        _updatedAddress.value = address
+        _updatedAddress.postValue(address)
     }
 
     fun saveRefinanceAddress(address: AddressData) {
-        _updatedRefinanceAddress.value = address
+        _updatedRefinanceAddress.postValue(address)
     }
 
     fun updateMixUsePropertyDesc(desc: String) {
@@ -90,9 +87,7 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
     suspend fun getCoBorrowerOccupancyStatus(token: String, loanApplicationId: Int) {
         //Timber.e("CoBorrower: " + loanApplicationId + "Auth Token: " + token)
         viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = commonRepo.getCoBorrowerOccupancyStatus(
-                token = token,
-                loanApplicationId = loanApplicationId
+            val responseResult = repository.getCoBorrowerOccupancyStatus(token = token, loanApplicationId = 5
             )
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
@@ -247,6 +242,23 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
                 else if (responseResult is Result.Error)
                     //EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
                     EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse("600", null, "Webservice Error", null)))
+
+            }
+        }
+    }
+
+    suspend fun sendCoBorrowerOccupancy(token: String,data: AddCoBorrowerOccupancy){
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repository.addCoBorrowerOccupancy(token = token,data)
+            withContext(Dispatchers.Main) {
+                if(responseResult is Result.Success) {
+                    //EventBus.getDefault().post(SendDataEvent(responseResult.data))
+                }
+                /*else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                //EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+
+                else if (responseResult is Result.Error)
+                //EventBus.getDefault().post(WebServiceErrorEvent(responseResult)) */
 
             }
         }

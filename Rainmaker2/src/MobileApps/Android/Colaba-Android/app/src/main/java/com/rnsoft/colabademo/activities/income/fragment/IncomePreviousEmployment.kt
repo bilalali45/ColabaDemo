@@ -46,7 +46,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = IncomePreviousEmploymentBinding.inflate(inflater, container, false)
         super.addListeners(binding.root)
         // set Header title
@@ -90,9 +90,13 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if (loanApplicationId != null && incomeInfoId != null) {
+                if (loanApplicationId != null && incomeInfoId != null && borrowerId != null) {
                     binding.loaderEmployment.visibility = View.VISIBLE
                     viewModel.getPrevEmploymentDetail(authToken, loanApplicationId!!, borrowerId!!, incomeInfoId!!)
+                }
+                else{
+
+                    Timber.e(" some id is null")
                 }
             }
         }

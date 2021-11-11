@@ -14,8 +14,9 @@ data class CoBorrowerOccupancyStatus(
 
 data class CoBorrowerOccupancyData(
     var borrowerId : Int,
-    var borrowerFirstName : String,
-    var borrowerLastName: String
+    var borrowerFirstName : String?,
+    var borrowerLastName: String?,
+    var willLiveInSubjectProperty: Boolean?
 )
 
 

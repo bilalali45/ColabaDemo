@@ -28,141 +28,36 @@ import javax.inject.Inject
  * Created by Anita Kiran on 9/8/2021.
  */
 @AndroidEntryPoint
-class SubjectPropertyPurchase : BaseFragment() {
+class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: SubjectPropertyPurchaseBinding
-    private var savedViewInstance: View? = null
     private val viewModel : BorrowerApplicationViewModel by activityViewModels()
     private val viewModelSubProperty : SubjectPropertyViewModel by activityViewModels()
     var addressList :  ArrayList<AddressData> = ArrayList()
-    private var loanApplicationId: Int? = null
     private var propertyTypeList: ArrayList<DropDownResponse> = arrayListOf()
     private var occupancyTypeList:ArrayList<DropDownResponse> = arrayListOf()
+    private var purchaseData = AddressData()
+    private lateinit var adapterCoborrower: CoBorrowerAdapter
+    var coborrowerList = ArrayList<CoBorrowerOccupancyData>()
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return if (savedViewInstance != null) {
-            savedViewInstance
-        } else {
-            binding = SubjectPropertyPurchaseBinding.inflate(inflater, container, false)
-            savedViewInstance = binding.root
-            super.addListeners(binding.root)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = SubjectPropertyPurchaseBinding.inflate(inflater, container, false)
+        super.addListeners(binding.root)
 
-            ApplicationClass.globalAddressList.clear()
+        setupUI()
+        setInputFields()
+        setDropDownData()
 
-            arguments?.let { arguments ->
-                loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
-            }
+        return binding.root
 
-            setupUI()
-            setInputFields()
-            setDropDownData()
-
-            savedViewInstance
-        }
     }
 
-     fun setupUI(){
-
-        // radio subject property TBD
-        binding.radioSubPropertyTbd.setOnClickListener {
-            binding.radioSubPropertyAddress.isChecked = false
-            binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
-            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.NORMAL)
-            binding.tvSubPropertyAddress.visibility = View.GONE
-        }
-
-        // radio sub property address
-        binding.radioSubPropertyAddress.setOnClickListener {
-            binding.radioSubPropertyTbd.isChecked = false
-            binding.tvSubPropertyAddress.visibility = View.VISIBLE
-            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
-            binding.radioSubPropertyTbd.setTypeface(null,Typeface.NORMAL)
-            openAddress()
-        }
-
-        binding.layoutAddress.setOnClickListener {
-            openAddress()
-        }
-
-        // radio mixed use property click
-        binding.radioMixedPropertyYes.setOnClickListener {
-            findNavController().navigate(R.id.action_mixed_property)
-            binding.layoutMixedPropertyDetail.visibility = View.VISIBLE
-        }
-        // mixed property detail
-        binding.layoutMixedPropertyDetail.setOnClickListener{
-            findNavController().navigate(R.id.action_mixed_property)
-        }
-
-        // radio btn mixed use property Yes
-        binding.radioMixedPropertyYes.setOnCheckedChangeListener { _, isChecked ->
-           if(isChecked){
-               binding.radioMixedPropertyYes.setTypeface(null, Typeface.BOLD)
-               binding.radioMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
-           }
-        }
-        // radio btn mixed use property No
-        binding.radioMixedPropertyNo.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
-                binding.radioMixedPropertyNo.setTypeface(null, Typeface.BOLD)
-                binding.radioMixedPropertyYes.setTypeface(null, Typeface.NORMAL)
-                binding.layoutMixedPropertyDetail.visibility = View.GONE
-            }
-        }
-        // occupying
-        binding.radioOccupying.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
-                binding.radioOccupying.setTypeface(null, Typeface.BOLD)
-                binding.radioNonOccupying.setTypeface(null, Typeface.NORMAL)
-            }
-        }
-        // radio non occupying
-        binding.radioNonOccupying.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
-                binding.radioNonOccupying.setTypeface(null, Typeface.BOLD)
-                binding.radioOccupying.setTypeface(null, Typeface.NORMAL)
-            }
-        }
-
-        // close
-        binding.backButton.setOnClickListener {
-           dismissActivity()
-        }
-        // back
-        requireActivity().onBackPressedDispatcher.addCallback {
-            dismissActivity()
-        }
-
-        binding.btnSave.setOnClickListener {
-            checkValidations()
-        }
-
-        binding.subpropertyParentLayout.setOnClickListener {
-            HideSoftkeyboard.hide(requireActivity(),binding.subpropertyParentLayout)
-            super.removeFocusFromAllFields(binding.subpropertyParentLayout)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
+    private fun addObserver(){
         viewModelSubProperty.updatedAddress.observe(viewLifecycleOwner, {
-            //addressList.clear()
-            /*addressList.add(AddressData(street = it.street, unit = it.unit, city = it.city,
-                stateName = it.stateName,
-                countryName = it.countryName,
-                countyName = it.countyName,
-                countyId = it.countyId,
-                stateId = it.stateId,
-                countryId = it.countryId,
-                zipCode = it.zipCode)) */
-
+            purchaseData = it
             binding.tvSubPropertyAddress.text =
                 it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
 
@@ -187,7 +82,7 @@ class SubjectPropertyPurchase : BaseFragment() {
                         binding.radioSubPropertyAddress.isChecked = true
                         binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
                         binding.tvSubPropertyAddress.visibility = View.VISIBLE
-                        addressList.add(AddressData(
+                        addressList.add(AddressData( // list for sending data to api -- remove it later
                             street = it.street,
                             unit = it.unit,
                             city = it.city,
@@ -198,8 +93,18 @@ class SubjectPropertyPurchase : BaseFragment() {
                             stateId = it.stateId,
                             countryId = it.countryId,
                             zipCode = it.zipCode))
-                            binding.tvSubPropertyAddress.text =
-                                it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
+                            //binding.tvSubPropertyAddress.text = it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
+
+                        val builder = StringBuilder()
+                        it.street?.let { builder.append(it).append(" ") }
+                        it.unit?.let { builder.append(it)}
+                        it.city?.let {builder.append("\n").append(it).append(" ") }
+                        it.stateName?.let{ builder.append(it).append(" ")}
+                        it.zipCode?.let { builder.append(it)}
+                        it.countryName.let { builder.append(" ").append(it)}
+                        binding.tvSubPropertyAddress.text = builder
+
+                        purchaseData = it // list for sending data to api
                         }
 
                     } ?: run {
@@ -354,26 +259,154 @@ class SubjectPropertyPurchase : BaseFragment() {
     }
 
     private fun setCoBorrowerOccupancyStatus(){
-        //Log.e("coBorrower","true")
         lifecycleScope.launchWhenStarted {
-            viewModel.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {
-                if (it.occupancyData != null && it.occupancyData.size > 0) {
-                    binding.radioOccupying.isChecked = true
-                    binding.coBorrowerName.setText(
-                        it.occupancyData.get(0).borrowerFirstName + " " + it.occupancyData.get(0).borrowerLastName
-                    )
-                } else {
-                    //binding.radioNonOccupying.isChecked = true
-                    binding.coBorrowerName.visibility = View.GONE
+            viewModelSubProperty.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {
+                if(it.occupancyData != null && it.occupancyData.size > 0) {
+                    adapterCoborrower = CoBorrowerAdapter(requireContext(), this@SubjectPropertyPurchase)
+                    binding.recyclerviewCoBorrower.setHasFixedSize(true)
+                    coborrowerList = it.occupancyData
+                    adapterCoborrower.setBorrowers(coborrowerList)
+                    binding.recyclerviewCoBorrower.adapter = adapterCoborrower
                 }
             })
         }
         getPurchaseDetails()
+    }
 
+    private fun processSendData(){
+        // TBD
+        val tbd = if(binding.radioSubPropertyTbd.isChecked) true else false
+        if(!binding.radioSubPropertyAddress.isChecked){
+           // addressList.clear()
+        }
+
+        // get property id
+        val property : String = binding.tvPropertyType.getText().toString().trim()
+        val matchedList1 =  occupancyTypeList.filter { s -> s.name == property}
+        //val propertyId = if(matchedList1.size > 0) matchedList1.map { matchedList1.get(0).id }.single() else null
+        // get occupancy id
+        val occupancy : String = binding.tvOccupancyType.getText().toString().trim()
+        val matchedList =  occupancyTypeList.filter { s -> s.name == occupancy}
+        //val occupancyId = if(matchedList.size>0) matchedList.map { matchedList.get(0).id }.single() else null
+
+        // mixed use property
+        val isMixedUseProperty = if(binding.radioMixedPropertyYes.isChecked) true else false
+        // desc
+        val mixedUsePropertyDesc = if(binding.mixedPropertyExplanation.text.toString().trim().length > 0) binding.mixedPropertyExplanation.text.toString() else null
+        // appraised value
+        val appraisedValue = binding.edAppraisedPropertyValue.text.toString().trim()
+        val newAppraisedValue = if(appraisedValue.length > 0) appraisedValue.replace(",".toRegex(), "") else null
+
+        // property tax
+        val propertyTax = binding.edPropertyTax.text.toString().trim()    //.length > 0)  binding.edPropertyTax.text.toString() else null
+        val newPropertyTax = if(propertyTax.length > 0) appraisedValue.replace(",".toRegex(), "") else null
+
+        // home insurance
+        val homeInsurance = binding.edHomeownerInsurance.text.toString().trim()
+        val newHomeInsurance = if(homeInsurance.length > 0) homeInsurance.replace(",".toRegex(), "") else null
+
+        val floodInsurance = binding.edFloodInsurance.text.toString().trim()
+        val newFloodInsurance = if(floodInsurance.length >0 ) floodInsurance.replace(",".toRegex(), "") else null
+
+
+        lifecycleScope.launchWhenStarted{
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                val activity = (activity as? SubjectPropertyActivity)
+                    activity?.loanApplicationId?.let {
+                    //Log.e("Loan Application Id", ""+ it)
+
+                    val propertyData = SubPropertyData(loanApplicationId = it,propertyTypeId = 1,occupancyTypeId = 1,
+                        appraisedPropertyValue = newAppraisedValue?.toDouble(),propertyTax = newPropertyTax?.toDouble(),homeOwnerInsurance=newHomeInsurance?.toDouble(),
+                        floodInsurance = newFloodInsurance?.toDouble(),
+                        addressData = purchaseData ,isMixedUseProperty= isMixedUseProperty,mixedUsePropertyExplanation=mixedUsePropertyDesc,subjectPropertyTbd = tbd)
+                    showLoader()
+                    viewModelSubProperty.sendSubjectPropertyDetail(authToken,propertyData)
+                }
+            }
+        }
+    }
+
+    private fun openAddress(){
+        val fragment = SubPropertyAddressFragment()
+        val bundle = Bundle()
+        bundle.putParcelableArrayList(AppConstant.address,addressList)
+        fragment.arguments = bundle
+        findNavController().navigate(R.id.action_address, fragment.arguments)
+    }
+
+    fun setupUI(){
+
+        // radio subject property TBD
+        binding.radioSubPropertyTbd.setOnClickListener {
+            binding.radioSubPropertyAddress.isChecked = false
+            binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
+            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.NORMAL)
+            binding.tvSubPropertyAddress.visibility = View.GONE
+        }
+
+        // radio sub property address
+        binding.radioSubPropertyAddress.setOnClickListener {
+            binding.radioSubPropertyTbd.isChecked = false
+            binding.tvSubPropertyAddress.visibility = View.VISIBLE
+            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
+            binding.radioSubPropertyTbd.setTypeface(null,Typeface.NORMAL)
+            openAddress()
+        }
+
+        binding.layoutAddress.setOnClickListener {
+            openAddress()
+        }
+
+        // radio mixed use property click
+        binding.radioMixedPropertyYes.setOnClickListener {
+            findNavController().navigate(R.id.action_mixed_property)
+            binding.layoutMixedPropertyDetail.visibility = View.VISIBLE
+        }
+        // mixed property detail
+        binding.layoutMixedPropertyDetail.setOnClickListener{
+            findNavController().navigate(R.id.action_mixed_property)
+        }
+
+        // radio btn mixed use property Yes
+        binding.radioMixedPropertyYes.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.radioMixedPropertyYes.setTypeface(null, Typeface.BOLD)
+                binding.radioMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
+            }
+        }
+        // radio btn mixed use property No
+        binding.radioMixedPropertyNo.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.radioMixedPropertyNo.setTypeface(null, Typeface.BOLD)
+                binding.radioMixedPropertyYes.setTypeface(null, Typeface.NORMAL)
+                binding.layoutMixedPropertyDetail.visibility = View.GONE
+            }
+        }
+        // close
+        binding.backButton.setOnClickListener {
+            dismissActivity()
+        }
+        // back
+        requireActivity().onBackPressedDispatcher.addCallback {
+            dismissActivity()
+        }
+
+        binding.btnSave.setOnClickListener {
+            processSendData()
+        }
+
+        binding.subpropertyParentLayout.setOnClickListener {
+            HideSoftkeyboard.hide(requireActivity(),binding.subpropertyParentLayout)
+            super.removeFocusFromAllFields(binding.subpropertyParentLayout)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        addObserver()
     }
 
     private fun setInputFields(){
-
         // set lable focus
         binding.edAppraisedPropertyValue.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edAppraisedPropertyValue, binding.layoutAppraisedProperty, requireContext()))
         binding.edPropertyTax.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edPropertyTax, binding.layoutPropertyTaxes, requireContext()))
@@ -391,83 +424,6 @@ class SubjectPropertyPurchase : BaseFragment() {
         CustomMaterialFields.setDollarPrefix(binding.layoutPropertyTaxes,requireContext())
         CustomMaterialFields.setDollarPrefix(binding.layoutHomeownerInsurance,requireContext())
         CustomMaterialFields.setDollarPrefix(binding.layoutFloodInsurance,requireContext())
-
-    }
-
-    private fun checkValidations(){
-        // TBD
-        val tbd = if(binding.radioSubPropertyTbd.isChecked) true else false
-        if(!binding.radioSubPropertyAddress.isChecked){
-            addressList.clear()
-        }
-
-        // get property id
-        val property : String = binding.tvPropertyType.getText().toString().trim()
-        val matchedList1 =  occupancyTypeList.filter { s -> s.name == property}
-        val propertyId = if(matchedList1.size > 0) matchedList1.map { matchedList1.get(0).id }.single() else null
-        // get occupancy id
-        val occupancy : String = binding.tvOccupancyType.getText().toString().trim()
-        val matchedList =  occupancyTypeList.filter { s -> s.name == occupancy}
-        val occupancyId = if(matchedList.size>0) matchedList.map { matchedList.get(0).id }.single() else null
-
-        // mixed use property
-        val isMixedUseProperty = if(binding.radioMixedPropertyYes.isChecked) true else false
-        // desc
-        val mixedUsePropertyDesc = if(binding.mixedPropertyExplanation.text.toString().trim().length > 0) binding.mixedPropertyExplanation.text.toString() else null
-        // appraised value
-        val appraisedValue = binding.edAppraisedPropertyValue.text.toString().trim()
-        var newAppraisedValue = if(appraisedValue.length > 0) appraisedValue.replace(",".toRegex(), "") else null
-
-        // property tax
-        val propertyTax = binding.edPropertyTax.text.toString().trim()    //.length > 0)  binding.edPropertyTax.text.toString() else null
-        var newPropertyTax = if(propertyTax.length > 0) appraisedValue.replace(",".toRegex(), "") else null
-        // home insurance
-        val homeInsurance = binding.edHomeownerInsurance.text.toString().trim()
-        var newHomeInsurance = if(homeInsurance.length > 0) homeInsurance.replace(",".toRegex(), "") else null
-        // flood insurance
-        val floodInsurance = binding.edFloodInsurance.text.toString().trim()
-        val newFloodInsurance = if(floodInsurance.length >0 ) floodInsurance.replace(",".toRegex(), "") else null
-
-
-        lifecycleScope.launchWhenStarted{
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                val activity = (activity as? SubjectPropertyActivity)
-                loanApplicationId = activity?.loanApplicationId
-                loanApplicationId?.let {
-                    Log.e("Loan Application Id", ""+ it)
-                    if(addressList !=null && addressList.size > 0){
-                        val address = AddressData(
-                            city = addressList.get(0).city,
-                            countryName = addressList.get(0).countryName,
-                            stateId = addressList.get(0).stateId,
-                            stateName = addressList.get(0).stateName,
-                            unit = addressList.get(0).unit,
-                            zipCode = addressList.get(0).zipCode,
-                            street = addressList.get(0).street,
-                            countyId = addressList.get(0).countyId,
-                            countyName = addressList.get(0).countyName,
-                            countryId = addressList.get(0).countryId)
-
-                        Log.e("address list before add api", ""+ address)
-
-                        val propertyData = SubPropertyData(loanApplicationId = it,propertyTypeId = 1,occupancyTypeId = occupancyId,
-                            appraisedPropertyValue = newAppraisedValue?.toDouble(),propertyTax = newPropertyTax?.toDouble(),homeOwnerInsurance=newHomeInsurance?.toDouble(),
-                            floodInsurance = newFloodInsurance?.toDouble(),
-                            addressData = address ,isMixedUseProperty= isMixedUseProperty,mixedUsePropertyExplanation=mixedUsePropertyDesc,subjectPropertyTbd = tbd)
-                        showLoader()
-                        viewModelSubProperty.sendSubjectPropertyDetail(authToken,propertyData)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun openAddress(){
-        val fragment = SubPropertyAddressFragment()
-        val bundle = Bundle()
-        bundle.putParcelableArrayList(AppConstant.address,addressList)
-        fragment.arguments = bundle
-        findNavController().navigate(R.id.action_address, fragment.arguments)
     }
 
     private fun hideLoader(){
@@ -508,6 +464,16 @@ class SubjectPropertyPurchase : BaseFragment() {
     private fun dismissActivity(){
         requireActivity().finish()
         requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+    }
+
+    override fun onCoborrowerClick(position: Int, isOccupying: Boolean) {
+        lifecycleScope.launchWhenStarted{
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    //Log.e("frag", ""+ coborrowerList.get(position).borrowerId + " Occupying: " + isOccupying)
+                    val data = AddCoBorrowerOccupancy(coborrowerList.get(position).borrowerId,isOccupying)
+                    viewModelSubProperty.sendCoBorrowerOccupancy(authToken,data)
+            }
+        }
     }
 
 }

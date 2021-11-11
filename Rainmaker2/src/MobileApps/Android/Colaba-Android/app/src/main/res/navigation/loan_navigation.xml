@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_loan_purchase"
-        android:name="com.rnsoft.colabademo.LoanPurchaseInfoFragment"
+        android:name="com.rnsoft.colabademo.LoanPurchaseFragment"
         android:label="@string/loan_info_purchase"
         tools:layout="@layout/loan_purchase_info" />
 

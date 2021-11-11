@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.app.DatePickerDialog
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -211,6 +212,22 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         }
         if (businessName.length > 0 && jobTitle.length > 0 &&  startDate.length > 0 && netIncome.length > 0 ){
             findNavController().popBackStack()
+        }
+
+        if (businessName.length > 0 && jobTitle.length > 0 &&  startDate.length > 0 && netIncome.length > 0 ){
+            //findNavController().popBackStack()
+            Log.e("btnClick","sendData")
+            val address = SelfEmploymentAddress(city = null,countryId = null,countryName = null,stateId = null,stateName = null,unit = null,
+                zipCode = null,street = null,countyId = 1,countyName = "kk")
+            val selfEmploymentData = SelfEmploymentData(loanApplicationId=loanApplicationId,borrowerId=borrowerId,id= incomeInfoId,
+                businessName = "Colaba", businessPhone = "123456",jobTitle = "Developer",
+                startDate = "12-01-2020",address = address,annualIncome= 120000.0)
+
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    viewModel.sendSelfEmploymentData(authToken,selfEmploymentData)
+                }
+            }
         }
     }
 

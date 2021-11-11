@@ -134,7 +134,16 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 binding.applicationTabLayout.visibility = View.VISIBLE
 
                 appTabModel.borrowerAppData?.subjectProperty?.subjectPropertyAddress?.let {
-                    binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+                    val builder = StringBuilder()
+                    it.street.let { builder.append(it).append(" ") }
+                    it.unit.let { builder.append(it) }
+                    it.city.let { builder.append("\n").append(it).append(" ") }
+                    it.stateName.let{ builder.append(it).append(" ")}
+                    it.zipCode.let { builder.append(it) }
+                    it.countryName.let { builder.append(" ").append(it)}
+                    binding.bAppAddress.text = builder
+
+                   // binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
                 }
 
                 appTabModel.borrowerAppData?.subjectProperty?.propertyTypeName?.let{
@@ -388,10 +397,10 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         EventBus.getDefault().unregister(this)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSubjectPropertyAddressEvent(event: AddressUpdateEvent) {
-        Log.e("Event", "Received")
-        event.subPropertyAddress?.let {
+    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
+    fun onSubjectPropertyAddressEvent(evt: AddressUpdateEvent) {
+        Log.e("Event", "onSubjectPropertyAddressEvent - AddressUpdateEvent")
+        evt.subPropertyAddress?.let {
             binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
         }
         /*propertyType?.let {

@@ -75,7 +75,7 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if (loanApplicationId != null && incomeInfoId != null) {
+                if (loanApplicationId != null && incomeInfoId != null && borrowerId!=null) {
                     binding.loaderEmployment.visibility = View.VISIBLE
                     viewModel.getEmploymentDetail(authToken, loanApplicationId!!,borrowerId!!,incomeInfoId!!)
 

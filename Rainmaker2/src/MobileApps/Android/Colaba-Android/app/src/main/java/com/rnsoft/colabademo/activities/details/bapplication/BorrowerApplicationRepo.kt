@@ -89,7 +89,4 @@ class BorrowerApplicationRepo  @Inject constructor(
         return borrowerApplicationDataSource.getSubjectPropertyRefinance(token = token , loanApplicationId = loanApplicationId)
     }
 
-    suspend fun getCoBorrowerOccupancyStatus(token:String ,loanApplicationId:Int):Result<CoBorrowerOccupancyStatus>{
-        return borrowerApplicationDataSource.getCoBorrowerOccupancyStatus(token = token , loanApplicationId = loanApplicationId)
-    }
 }

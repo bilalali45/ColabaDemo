@@ -1,5 +1,7 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
+import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
@@ -140,6 +142,23 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             else
                 Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun sendSelfEmploymentContractorData(token: String, data: SelfEmploymentData): Result<AddUpdateDataResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addOrUpdateSelfBusiness(newToken,data)
+            Log.e("incomeDatasource","$response")
+            Result.Success(response)
+        } catch (e: Throwable){
+            if(e is HttpException){
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                Log.e("incomeDatasource",e.localizedMessage)
+                Result.Error(IOException("Error logging in", e))
+            }
         }
     }
 }

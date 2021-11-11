@@ -50,22 +50,22 @@ data class EmploymentInfo(
     val incomeInfoId: Int?,
     val isCurrentIncome: Boolean?,
     val jobTitle: String?,
-    val ownershipInterest: Boolean?,
+    val ownershipInterest: Double?,
     val startDate: String?,
     val yearsInProfession: Int?
 )
 
 data class EmploymentOtherIncome(
     val annualIncome: Double?,
-    val displayName: Any?,
+    val displayName: String?,
     val incomeTypeId: Int?,
-    val name: Any?
+    val name: String?
 )
 
 
 data class WayOfIncome(
     val employerAnnualSalary: Double?,
     val hourlyRate: Double?,
-    val hoursPerWeek: Any?,
+    val hoursPerWeek: Int?,
     val isPaidByMonthlySalary: Boolean?
 )
