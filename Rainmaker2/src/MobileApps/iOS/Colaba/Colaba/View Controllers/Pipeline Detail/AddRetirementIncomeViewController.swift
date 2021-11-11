@@ -205,7 +205,6 @@ class AddRetirementIncomeViewController: BaseViewController {
                 }
             }
         }
-        
     }
     
     func deleteIncome(){

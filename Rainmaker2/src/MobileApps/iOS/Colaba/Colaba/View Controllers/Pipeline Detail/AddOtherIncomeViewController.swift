@@ -86,7 +86,7 @@ class AddOtherIncomeViewController: BaseViewController {
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         if validate(){
-            self.dismissVC()
+            addUpdateOtherIncome()
         }
     }
     
@@ -150,6 +150,50 @@ class AddOtherIncomeViewController: BaseViewController {
                 else{
                     self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
                         self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
+    
+    func addUpdateOtherIncome(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        var incomeTypeId = 0
+        var otherDescription: Any = NSNull()
+        var monthlyBaseIncome: Any = NSNull()
+        
+        if let incomeType = (otherIncomeTypeArray.filter({$0.optionName.localizedCaseInsensitiveContains(txtfieldIncomeType.text!)})).first{
+            incomeTypeId = incomeType.optionId
+        }
+        
+        if (txtfieldDescription.text! != ""){
+            otherDescription = txtfieldDescription.text!
+        }
+        
+        if (txtfieldMonthlyIncome.text! != ""){
+            if let value = Int(cleanString(string: txtfieldMonthlyIncome.text!, replaceCharacters: ["$  |  ",","], replaceWith: "")){
+                monthlyBaseIncome = value
+            }
+        }
+        
+        let params = ["IncomeInfoId": isForAdd ? NSNull() : otherIncomeDetail.incomeInfoId,
+                      "BorrowerId": borrowerId,
+                      "description": otherDescription,
+                      "MonthlyBaseIncome": monthlyBaseIncome,
+                      "IncomeTypeId": incomeTypeId,
+                      "LoanApplicationId": loanApplicationId] as [String: Any]
+        
+        APIRouter.sharedInstance.executeAPI(type: .addUpdateOtherIncome, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
                     }
                 }
             }
