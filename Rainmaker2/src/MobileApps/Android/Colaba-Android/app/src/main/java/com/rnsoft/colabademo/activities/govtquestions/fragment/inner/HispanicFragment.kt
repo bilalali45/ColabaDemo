@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.HispanicLayoutBinding
@@ -50,10 +51,17 @@ class HispanicFragment:BaseFragment() {
             }
         }
 
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, testCallback )
+
         val root: View = binding.root
         setUpUI()
         super.addListeners(binding.root)
         return root
+    }
+
+    private val testCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+        }
     }
 
     private fun setUpUI() {

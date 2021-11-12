@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.AsianLayoutBinding
@@ -35,19 +36,50 @@ class AsianFragment:BaseFragment() {
         asianChildList = arguments?.getParcelableArrayList(AppConstant.asianChildList)!!
         setUpUI()
         super.addListeners(binding.root)
+
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, testCallback )
+
         return root
+    }
+
+    private val testCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            findNavController().previousBackStackEntry?.savedStateHandle?.set("Asiankey", asianChildList)
+            findNavController().popBackStack()
+        }
     }
 
     private fun setUpUI() {
         binding.edDetails.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.edDetails , binding.layoutDetail , requireContext()))
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         binding.saveBtn.setOnClickListener {
+            findNavController().previousBackStackEntry?.savedStateHandle?.set("Asiankey", asianChildList)
            findNavController().popBackStack()
         }
-        binding.otherAsianCheckBox.setOnCheckedChangeListener{ buttonView, isChecked ->
-            // if(isChecked) binding.layoutDetail.visibility = View.VISIBLE
-            // else binding.layoutDetail.visibility = View.GONE
+
+
+        binding.asianIndianCheckBox.setOnCheckedChangeListener{ buttonView, isChecked ->
+            updateAsianTypes(1,isChecked)
         }
+        binding.chineseCheckBox.setOnCheckedChangeListener{ buttonView, isChecked ->
+            updateAsianTypes(2,isChecked)
+        }
+        binding.filipinoCheckBox.setOnCheckedChangeListener{ buttonView, isChecked ->
+            updateAsianTypes(3,isChecked)
+        }
+        binding.japaneseCheckBox.setOnCheckedChangeListener{ buttonView, isChecked ->
+            updateAsianTypes(4,isChecked)
+        }
+        binding.koreanCheckBox.setOnCheckedChangeListener{ buttonView, isChecked ->
+            updateAsianTypes(5,isChecked)
+        }
+        binding.vietnameseCheckBox.setOnCheckedChangeListener{ buttonView, isChecked ->
+            updateAsianTypes(6,isChecked)
+        }
+        binding.otherAsianCheckBox.setOnCheckedChangeListener{ buttonView, isChecked ->
+            updateAsianTypes(7,isChecked)
+        }
+
         // pre selection from the webservice...
         for(item in asianChildList){
             if(item.name == binding.asianIndianCheckBox.text)
@@ -77,6 +109,10 @@ class AsianFragment:BaseFragment() {
                 }
             }
         }
+    }
+
+    private fun updateAsianTypes(id:Int, bool:Boolean){
+
     }
 
     private fun checkEmptyFields():Boolean{

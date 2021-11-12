@@ -87,7 +87,7 @@
                 android:paddingTop="16dp"
                 android:paddingEnd="18dp"
                 android:paddingBottom="16dp"
-                android:visibility="gone"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/asian_check_box"
                 app:layout_constraintTop_toBottomOf="@+id/asian_check_box">
@@ -163,7 +163,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/white_blue_border"
                 android:padding="12dp"
-                android:visibility="visible"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/native_hawaian_or_other_check_box"
                 app:layout_constraintTop_toBottomOf="@+id/native_hawaian_or_other_check_box">
@@ -278,7 +278,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/white_blue_border"
                 android:padding="12dp"
-                android:visibility="visible"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/native_hawaian_or_other_check_box"
                 app:layout_constraintTop_toBottomOf="@+id/hispanic_or_latino">

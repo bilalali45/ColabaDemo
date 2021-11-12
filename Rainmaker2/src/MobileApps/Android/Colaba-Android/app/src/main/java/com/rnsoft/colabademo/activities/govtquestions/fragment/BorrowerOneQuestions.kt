@@ -44,6 +44,7 @@ import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_hisp
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_telling_ethnicity
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.white_check_box
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class BorrowerOneQuestions : GovtQuestionBaseFragment() {
@@ -87,14 +88,22 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         arguments?.let {
             tabBorrowerId = it.getInt(AppConstant.tabBorrowerId)
         }
-        binding.saveBtn.setOnClickListener{
-            Timber.e("working on all the fragment...")
+        binding.saveBtn.setOnClickListener {
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, updateGovernmentQuestionByBorrowerId)
+                    if (demoGraphicScreenDisplaying) {
+                        variableDemoGraphicData.genderId = variableGender
+                        variableDemoGraphicData.race = variableRaceList
+                        variableDemoGraphicData.ethnicity = variableEthnicityList
+                        borrowerAppViewModel.addOrUpdateDemoGraphic(authToken, variableDemoGraphicData)
+                    } else {
+                        borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, updateGovernmentQuestionByBorrowerId)
+                    }
                 }
             }
         }
+
+
         setupLayout()
         super.addListeners(binding.root)
         return binding.root
@@ -102,6 +111,18 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
 
     private fun setupLayout(){
+
+        /*
+            borrowerAppViewModel.addUpdateDemoGraphicResponse.observe(
+                viewLifecycleOwner,
+                { addUpdateDemoGraphicResponse ->
+                    Timber.e("demo-graphic updated....")
+                })
+
+         */
+
+
+
         setUpDynamicTabs( )
     }
 
@@ -374,6 +395,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 contentCell.id = it
             }
             contentCell.visibility = View.INVISIBLE
+            demoGraphicConstraintLayout.visibility = View.INVISIBLE
             observeDemoGraphicData(contentCell)
             return contentCell
         }
@@ -580,7 +602,9 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
            }
     }
 
+
     private val openTabMenuScreen = View.OnClickListener { p0 ->
+        demoGraphicScreenDisplaying = false
         if(p0 is AppCompatTextView){
             for(item in horizontalTabArrayList){
                 item.isActivated = false
@@ -589,13 +613,18 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             p0.isActivated = true
             p0.setTextColor(resources.getColor(R.color.colaba_primary_color, requireActivity().theme))
             for ((key, value) in innerLayoutHashMap) {
-                if(key == p0)
+                if(key == p0) {
+                    if(key.text == AppConstant.demographicInformation)
+                        demoGraphicScreenDisplaying = true
                     value.visibility = View.VISIBLE
+                }
                 else
                     value.visibility = View.INVISIBLE
             }
         }
     }
+
+    private var demoGraphicScreenDisplaying:Boolean = false
 
     private val ethnicityChildList:ArrayList<EthnicityDetailDemoGraphic> = arrayListOf()
 
@@ -606,7 +635,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private lateinit var variableDemoGraphicData:DemoGraphicData
     private lateinit var variableRaceList:ArrayList<DemoGraphicRace>
     private lateinit var variableEthnicityList: ArrayList<EthnicityDemoGraphic>
-
+    private var variableGender:Int? = null
 
 
     private fun showEthnicityInnerBox(){
@@ -684,6 +713,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 demoGraphicConstraintLayout.asian_child_box_layout.visibility = View.GONE
                 demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.GONE
             }
+
         }
 
         demoGraphicConstraintLayout.white_check_box.setOnClickListener{ demoGraphicConstraintLayout.do_not_wish_check_box.isChecked = false }
@@ -698,6 +728,11 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     private fun observeDemoGraphicData( contentCell:ConstraintLayout){
         borrowerAppViewModel.demoGraphicInfoList.observe(viewLifecycleOwner,{ demoGraphicInfoList->
+
+            demoGraphicConstraintLayout.asian_child_box_layout.visibility = View.GONE
+            demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.GONE
+            demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
+
             if(demoGraphicInfoList.size>0){
                 var selectedDemoGraphicInfoList: DemoGraphicResponseModel? =null
                 for(item in demoGraphicInfoList){
@@ -706,9 +741,13 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         break
                     }
                 }
+
+
+
+
                 selectedDemoGraphicInfoList?.let {
                     it.demoGraphicData?.let { demoGraphicData ->
-                        contentCell.visibility = View.VISIBLE
+
                         variableDemoGraphicData = demoGraphicData
                         ethnicityChildNames = ""
                         otherEthnicity = ""
@@ -718,14 +757,15 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         otherAsianRace = ""
 
                         demoGraphicData.genderId?.let { genderId ->
+                            variableGender = genderId
                             if (genderId == 1)
                                 demoGraphicConstraintLayout.demo_male.isChecked = true
                             else
-                                if (genderId == 2)
-                                    demoGraphicConstraintLayout.demo_female.isChecked = true
-                                else
-                                    if (genderId == 3)
-                                        demoGraphicConstraintLayout.demo_do_not_wish_to_provide.isChecked = true
+                            if (genderId == 2)
+                                demoGraphicConstraintLayout.demo_female.isChecked = true
+                            else
+                            if (genderId == 3)
+                                demoGraphicConstraintLayout.demo_do_not_wish_to_provide.isChecked = true
                         }
 
                         demoGraphicData.ethnicity?.let { ethnicityList ->
@@ -750,13 +790,13 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                                     }
 
                                     showEthnicityInnerBox()
-                                } else
-                                    if (selectedEthnicity.ethnicityId == 2)
-                                        demoGraphicConstraintLayout.not_hispanic.isChecked = true
-                                    else
-                                        if (selectedEthnicity.ethnicityId == 3)
-                                            demoGraphicConstraintLayout.not_telling_ethnicity.isChecked =
-                                                true
+                                }
+                                else
+                                if (selectedEthnicity.ethnicityId == 2)
+                                    demoGraphicConstraintLayout.not_hispanic.isChecked = true
+                                else
+                                if (selectedEthnicity.ethnicityId == 3)
+                                    demoGraphicConstraintLayout.not_telling_ethnicity.isChecked = true
                             }
                         }
 
@@ -850,12 +890,27 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
         }
 
+        demoGraphicConstraintLayout.black_or_african_check_box.setOnCheckedChangeListener{ buttonView, isChecked ->
+            updateDemoGraphicRace(3, isChecked)
+        }
+
         demoGraphicConstraintLayout.native_hawaian_or_other_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
                 val bundle = bundleOf(AppConstant.nativeHawaianChildList to nativeHawaiianChildList)
                 findNavController().navigate(R.id.action_native_hawai, bundle)
             }
+            updateDemoGraphicRace(4, isChecked)
+        }
+
+        demoGraphicConstraintLayout.white_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
+            updateDemoGraphicRace(5, isChecked)
+        }
+
+
+        demoGraphicConstraintLayout.do_not_wish_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
+            variableRaceList.clear()
+            updateDemoGraphicRace(6, isChecked)
         }
 
         demoGraphicConstraintLayout.native_hawaian_child_box_layout.setOnClickListener{
@@ -864,6 +919,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 val bundle = bundleOf(AppConstant.nativeHawaianChildList to nativeHawaiianChildList)
                 findNavController().navigate(R.id.action_native_hawai, bundle)
             }
+
         }
 
         demoGraphicConstraintLayout.asian_child_box_layout.setOnClickListener{
@@ -881,6 +937,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             demoGraphicConstraintLayout.not_hispanic.isChecked = false
             demoGraphicConstraintLayout.not_telling_ethnicity.isChecked = false
             showEthnicityInnerBox()
+            updateDemoGraphicEthnicity(1)
         }
 
         demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.setOnClickListener {
@@ -894,20 +951,25 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             demoGraphicConstraintLayout.hispanic_or_latino.isChecked = false
             demoGraphicConstraintLayout.not_telling_ethnicity.isChecked = false
             demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
+            updateDemoGraphicEthnicity(2)
         }
 
         demoGraphicConstraintLayout.not_telling_ethnicity.setOnClickListener{
             demoGraphicConstraintLayout.hispanic_or_latino.isChecked = false
             demoGraphicConstraintLayout.not_hispanic.isChecked = false
             demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
+            updateDemoGraphicEthnicity(3)
         }
 
+
+            demoGraphicConstraintLayout.demo_male.setOnClickListener { updateDemoGraphicGender(1)}
+            demoGraphicConstraintLayout.demo_female.setOnClickListener { updateDemoGraphicGender(2)}
+            demoGraphicConstraintLayout.demo_do_not_wish_to_provide.setOnClickListener { updateDemoGraphicGender(3)}
 
     }
 
    private fun updateDemoGraphicRace(raceId:Int, removeFromList:Boolean){
-
-       if(removeFromList) {
+       if(!removeFromList) {
            for (race in variableRaceList) {
                if (race.raceId == raceId) {
                    variableRaceList.remove(race)
@@ -916,33 +978,28 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
            }
        }
        else
-       {
-           
-           for (race in variableRaceList) {
-               if (race.raceId == raceId) {
-                   variableRaceList.remove(race)
-                   break
-               }
-           }
-           variableRaceList.raceDetails?.let { asianChildList ->
-
-               for (item in asianChildList) {
-                   this.asianChildList.add(item)
-                   item.isOther?.let { isOther ->
-                       if (isOther)
-                           item.otherRace?.let {
-                               otherAsianRace = it
-                           }
-                       else
-                           asianChildNames =
-                               asianChildNames + item.name + ", "
-                   }
-               }
-           }
            variableRaceList.add(DemoGraphicRace(arrayListOf(), raceId))
-       }
    }
 
+
+    private fun updateDemoGraphicEthnicity(ethnicityId:Int){
+        variableEthnicityList.clear()
+        variableEthnicityList.add(EthnicityDemoGraphic(ethnicityId = ethnicityId , ethnicityDetails = arrayListOf()) )
+    }
+
+
+    private fun updateDemoGraphicGender(genderId:Int){
+        variableGender = genderId
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val navController = findNavController();
+        // We use a String here, but any type that can be put in a Bundle is supported
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("Asiankey")?.observe(
+            viewLifecycleOwner) { result ->
+            // Do something with the result.
+        }
+    }
 
 
     private fun <T> stringToArray2(s: String?, clazz: Class<T>?): T {

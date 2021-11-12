@@ -192,10 +192,23 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     suspend fun addOrUpdateGovernmentQuestions( token:String, updateGovernmentQuestions:UpdateGovernmentQuestions):Result<GovernmentAddUpdateDataResponse>{
         return try {
             val newToken = "Bearer $token"
-            //val gson = Gson()
-            //val stringValue= gson.toJson(updateGovernmentQuestions)
             val response = serverApi.addOrUpdateGovernmentQuestions( newToken,  updateGovernmentQuestions )
             Timber.e("updateGovernmentQuestions - $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+
+    suspend fun addOrUpdateDemoGraphic( token:String, demoGraphicData:DemoGraphicData):Result<AddUpdateDemoGraphicResponse>{
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addOrUpdateDemoGraphic( newToken,  demoGraphicData )
+            Timber.e("addOrUpdateDemoGraphic - $response")
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
