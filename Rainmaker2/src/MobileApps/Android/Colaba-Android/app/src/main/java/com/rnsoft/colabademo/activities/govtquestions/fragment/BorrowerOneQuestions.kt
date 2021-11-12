@@ -993,14 +993,107 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val navController = findNavController();
+        val navController = findNavController()
         // We use a String here, but any type that can be put in a Bundle is supported
-        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("Asiankey")?.observe(
-            viewLifecycleOwner) { result ->
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<ArrayList<DemoGraphicRaceDetail>>(AppConstant.selectedAsianChildList)?.observe(
+            viewLifecycleOwner) { resultAsianChildList ->
             // Do something with the result.
+            if(resultAsianChildList.size>0) {
+                for(item in variableRaceList){
+                    if(item.raceId == 2) {
+                        item.raceDetails = resultAsianChildList
+                        break
+                    }
+                }
+
+
+                asianChildNames = ""
+                otherAsianRace = ""
+
+                for(item in resultAsianChildList) {
+                    item.isOther?.let { isOther ->
+                        if (isOther)
+                            item.otherRace?.let {
+                                otherAsianRace = it
+                            }
+                        else
+                            asianChildNames =
+                                asianChildNames + item.name + ", "
+                    }
+                }
+                showAsianInnerBox()
+                updateDemoGraphicService()
+            }
         }
+
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<ArrayList<DemoGraphicRaceDetail>>(AppConstant.selectedNativeHawaianChildList)?.observe(
+            viewLifecycleOwner) { selectedNativeHawaianChildList ->
+
+            if(selectedNativeHawaianChildList.size>0) {
+                nativeHawaiiChildNames = ""
+                nativeHawaiiOtherRace = ""
+                for (item in selectedNativeHawaianChildList) {
+                    item.isOther?.let { isOther ->
+                        if (isOther)
+                            item.otherRace?.let {
+                                nativeHawaiiOtherRace = it
+                            }
+                        else
+                            nativeHawaiiChildNames = nativeHawaiiChildNames + item.name + ", "
+                    }
+                }
+                showNativeHawaiiInnerBox()
+
+                for(item in variableRaceList){
+                    if(item.raceId == 4) {
+                        item.raceDetails = selectedNativeHawaianChildList
+                        break
+                    }
+                }
+                updateDemoGraphicService()
+            }
+
+        }
+
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<ArrayList<EthnicityDetailDemoGraphic>>(AppConstant.selectedEthnicityChildList)?.observe(
+            viewLifecycleOwner) { selectedEthnicityChildList ->
+                // Do something with the result.
+                ethnicityChildNames = ""
+                otherEthnicity = ""
+                selectedEthnicityChildList?.let { theList ->
+                    for (item in theList) {
+                        item.isOther?.let { isOther ->
+                            if (isOther)
+                                item.otherEthnicity?.let {
+                                    otherEthnicity = it
+                                }
+                            else
+                                ethnicityChildNames = ethnicityChildNames + item.name + ", "
+                        }
+                    }
+                }
+                showEthnicityInnerBox()
+                variableEthnicityList[0].ethnicityDetails  = selectedEthnicityChildList
+                updateDemoGraphicService()
+        }
+
+
+
     }
 
+
+
+
+    private fun updateDemoGraphicService(){
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                variableDemoGraphicData.genderId = variableGender
+                variableDemoGraphicData.race = variableRaceList
+                variableDemoGraphicData.ethnicity = variableEthnicityList
+                borrowerAppViewModel.addOrUpdateDemoGraphic(authToken, variableDemoGraphicData)
+            }
+        }
+    }
 
     private fun <T> stringToArray2(s: String?, clazz: Class<T>?): T {
         val newList = Gson().fromJson(s, clazz)!!
