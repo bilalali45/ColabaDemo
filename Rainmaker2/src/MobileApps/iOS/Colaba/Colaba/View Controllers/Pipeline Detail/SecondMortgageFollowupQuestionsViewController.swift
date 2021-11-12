@@ -70,12 +70,13 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
         }
         changeMortgageCombineStatus()
         changeMortgageTakenWhenPropertyPurchaseStatus()
-        if (isForRealEstate){
-            getMortgageData()
-        }
-        else{
-            setMortgageData()
-        }
+//        if (isForRealEstate && loanApplicationId > 0){
+//            getMortgageData()
+//        }
+//        else{
+//            setMortgageData()
+//        }
+        setMortgageData()
     }
     
     //MARK:- Methods and Actions
@@ -196,7 +197,13 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
             mortgagePaidOff = isMortgagePaid == 1 ? true : false
         }
         
-        let secondMortgageDict = ["secondMortgagePayment": secondMortgagePayment,
+        let secondMortgageDict =  isForRealEstate ? ["secondMortgagePayment": secondMortgagePayment,
+                                                     "unpaidSecondMortgagePayment": unPaidSecondMortgagePayment,
+                                                     "helocCreditLimit": creditLimit,
+                                                     "isHeloc": switchHomeEquity.isOn ? true : false,
+                                                     "state": NSNull(),
+                                                     "paidAtClosing": mortgagePaidOff] as [String: Any] :
+                                  ["secondMortgagePayment": secondMortgagePayment,
                                   "unpaidSecondMortgagePayment": unPaidSecondMortgagePayment,
                                   "helocCreditLimit": creditLimit,
                                   "isHeloc": switchHomeEquity.isOn ? true : false,
