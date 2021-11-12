@@ -14,41 +14,49 @@ class RealEstateDetailModel: NSObject{
     var annualFloodInsurance: Double = 0.0
     var annualHomeInsurance: Double = 0.0
     var annualPropertyTax: Double = 0.0
-    var firstMortgageBalance: Double = 0.0
-    var firstMortgagePayment: Double = 0.0
     var hasFirstMortgage: Bool = false
     var hasSecondMortgage: Bool = false
     var homeOwnerDues: Double = 0.0
     var occupancyTypeId: Int = 0
     var propertyInfoId: Int = 0
-    var propertyStatus: String = ""
+    var borrowerPropertyId: Int = 0
+    var propertyStatus: Int = 0
     var propertyTypeId: Int = 0
     var propertyValue: Double = 0.0
     var rentalIncome: Double = 0.0
-    var secondMortgageBalance: Double = 0.0
-    var secondMortgagePayment: Double = 0.0
+    var firstMortgage: FirstMortgageModel?
+    var secondMortgage: SecondMortgageModel?
     
     func updateModelWithJSON(json: JSON){
         let addressJson = json["address"]
         let model = AddressModel()
         model.updateModelWithJSON(json: addressJson)
         address = model
-        annualFloodInsurance = json["annualFloodInsurance"].doubleValue
-        annualHomeInsurance = json["annualHomeInsurance"].doubleValue
-        annualPropertyTax = json["annualPropertyTax"].doubleValue
-        firstMortgageBalance = json["firstMortgageBalance"].doubleValue
-        firstMortgagePayment = json["firstMortgagePayment"].doubleValue
+        annualFloodInsurance = json["floodInsurance"].doubleValue
+        annualHomeInsurance = json["homeOwnerInsurance"].doubleValue
+        annualPropertyTax = json["propertyTax"].doubleValue
         hasFirstMortgage = json["hasFirstMortgage"].boolValue
         hasSecondMortgage = json["hasSecondMortgage"].boolValue
-        homeOwnerDues = json["homeOwnerDues"].doubleValue
+        homeOwnerDues = json["hoaDues"].doubleValue
         occupancyTypeId = json["occupancyTypeId"].intValue
         propertyInfoId = json["propertyInfoId"].intValue
-        propertyStatus = json["propertyStatus"].stringValue
+        borrowerPropertyId = json["borrowerPropertyId"].intValue
+        propertyStatus = json["propertyStatus"].intValue
         propertyTypeId = json["propertyTypeId"].intValue
-        propertyValue = json["propertyValue"].doubleValue
+        propertyValue = json["appraisedPropertyValue"].doubleValue
         rentalIncome = json["rentalIncome"].doubleValue
-        secondMortgageBalance = json["secondMortgageBalance"].doubleValue
-        secondMortgagePayment = json["secondMortgagePayment"].doubleValue
+        if json["firstMortgageModel"] != JSON.null{
+            let firstMortgageModelJson = json["firstMortgageModel"]
+            let firstMortgageModel = FirstMortgageModel()
+            firstMortgageModel.updateModelWithJSON(json: firstMortgageModelJson)
+            firstMortgage = firstMortgageModel
+        }
+        if json["secondMortgageModel"] != JSON.null{
+            let secondMortgageModelJson = json["secondMortgageModel"]
+            let secondMortgageModel = SecondMortgageModel()
+            secondMortgageModel.updateModelWithJSON(json: secondMortgageModelJson)
+            secondMortgage = secondMortgageModel
+        }
     }
     
 }

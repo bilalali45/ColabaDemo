@@ -72,12 +72,13 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
         btnAnnualHomeownerInsurance.isUserInteractionEnabled = false
         changeAccountsIncluded()
         changeMortgagePaidOffStatus()
-        if (isForRealEstate){
-           getMortgageData()
-        }
-        else{
-            setMortgageData()
-        }
+//        if (isForRealEstate && loanApplicationId > 0){
+//           getMortgageData()
+//        }
+//        else{
+//            setMortgageData()
+//        }
+        setMortgageData()
     }
     
     //MARK:- Methods and Actions

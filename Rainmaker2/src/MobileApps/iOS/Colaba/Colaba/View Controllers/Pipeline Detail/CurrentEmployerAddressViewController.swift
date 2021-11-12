@@ -266,6 +266,7 @@ class CurrentEmployerAddressViewController: BaseViewController {
     func saveAddressObject(){
         var stateId: Any = NSNull()
         var countryId: Any = NSNull()
+        var countyId: Any = NSNull()
         
         if let selectedState = statesArray.filter({$0.name == txtfieldState.text}).first{
             stateId = selectedState.id
@@ -273,6 +274,10 @@ class CurrentEmployerAddressViewController: BaseViewController {
         
         if let selectedCountry = countriesArray.filter({$0.name == txtfieldCountry.text}).first{
             countryId = selectedCountry.id
+        }
+        
+        if let selectedCounty = countiesArray.filter({$0.name == txtfieldCounty.text}).first{
+            countyId = selectedCounty.id
         }
         
         let addressDic = ["street": txtfieldStreetAddress.text! == "" ? NSNull() : txtfieldStreetAddress.text!,
@@ -283,6 +288,8 @@ class CurrentEmployerAddressViewController: BaseViewController {
                           "countryId": countryId,
                           "countryName": txtfieldCountry.text! == "" ? NSNull() : txtfieldCountry.text!,
                           "stateName": txtfieldState.text! == "" ? NSNull() : txtfieldState.text!,
+                          "countyId": countyId,
+                          "countyName": txtfieldCounty.text! == "" ? NSNull() : txtfieldCounty.text!,
                           "cityId": 1] as [String: Any]
         self.delegate?.saveAddressObject(address: addressDic)
     }

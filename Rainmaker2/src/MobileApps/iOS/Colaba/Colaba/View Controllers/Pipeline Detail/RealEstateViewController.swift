@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class RealEstateViewController: BaseViewController {
 
@@ -54,7 +55,9 @@ class RealEstateViewController: BaseViewController {
     @IBOutlet weak var lblSecondMortgageBalance: UILabel!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
+    var isForAdd = false
     var loanApplicationId = 0
+    var borrowerId = 0
     var borrowerPropertyId = 0
     var borrowerFullName = ""
     
@@ -66,14 +69,21 @@ class RealEstateViewController: BaseViewController {
     var isFirstMortgage = false
     var isSecondMortgage = false
     
+    var savedAddress: Any = NSNull()
+    var savedFirstMortgage: Any = NSNull()
+    var savedSecondMortgage: Any = NSNull()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextFields()
+        btnDelete.isHidden = isForAdd
+        addressView.isHidden = isForAdd
+        addAddressView.isHidden = !isForAdd
+        getPropertyTypeDropDown()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        getPropertyTypeDropDown()
     }
 
     //MARK:- Methods and Actions
@@ -95,11 +105,9 @@ class RealEstateViewController: BaseViewController {
         
         txtfieldPropertyType.setTextField(placeholder: "Property Type", controller: self, validationType: .required)
         txtfieldPropertyType.type = .dropdown
-        txtfieldPropertyType.setDropDownDataSource(kPropertyTypeArray)
         
         txtfieldOccupancyType.setTextField(placeholder: "Occupancy Type", controller: self, validationType: .required)
         txtfieldOccupancyType.type = .dropdown
-        txtfieldOccupancyType.setDropDownDataSource(kOccupancyTypeArray)
         
         txtfieldCurrentRentalIncome.setTextField(placeholder: "Current Rental Income", controller: self, validationType: .required)
         txtfieldCurrentRentalIncome.type = .amount
@@ -151,8 +159,10 @@ class RealEstateViewController: BaseViewController {
         if let occupancyType = self.occupancyTypeArray.filter({$0.optionId == self.realEstateDetail.occupancyTypeId}).first{
             self.txtfieldOccupancyType.setTextField(text: occupancyType.optionName)
         }
+        if let propertyStatus = self.propertyStatusArray.filter({$0.optionId == self.realEstateDetail.propertyStatus}).first{
+            self.txtfieldPropertyStatus.setTextField(text: propertyStatus.optionName)
+        }
         
-        txtfieldPropertyStatus.setTextField(text: self.realEstateDetail.propertyStatus)
         txtfieldCurrentRentalIncome.setTextField(text: String(format: "%.0f", self.realEstateDetail.rentalIncome.rounded()))
         txtfieldHomeOwnerAssociationDues.setTextField(text: String(format: "%.0f", self.realEstateDetail.homeOwnerDues.rounded()))
         txtfieldPropertyValue.setTextField(text: String(format: "%.0f", self.realEstateDetail.propertyValue.rounded()))
@@ -161,10 +171,16 @@ class RealEstateViewController: BaseViewController {
         txtfieldAnnualFloodInsurance.setTextField(text: String(format: "%.0f", self.realEstateDetail.annualFloodInsurance.rounded()))
         isFirstMortgage = self.realEstateDetail.hasFirstMortgage
         isSecondMortgage = self.realEstateDetail.hasSecondMortgage
-        lblFirstMortgagePayment.text = Int(self.realEstateDetail.firstMortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
-        lblFirstMortgageBalance.text = Int(self.realEstateDetail.firstMortgageBalance).withCommas().replacingOccurrences(of: ".00", with: "")
-        lblSecondMortgagePayment.text = Int(self.realEstateDetail.secondMortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
-        lblSecondMortgageBalance.text = Int(self.realEstateDetail.secondMortgageBalance).withCommas().replacingOccurrences(of: ".00", with: "")
+        
+        if let firstMortgage = self.realEstateDetail.firstMortgage{
+            lblFirstMortgagePayment.text = Int(firstMortgage.firstMortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
+            lblFirstMortgageBalance.text = Int(firstMortgage.unpaidFirstMortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
+        }
+        
+        if let secondMortgage = self.realEstateDetail.secondMortgage{
+            lblSecondMortgagePayment.text = Int(secondMortgage.secondMortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
+            lblSecondMortgageBalance.text = Int(secondMortgage.unpaidSecondMortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
+        }
         
         showHideRentalIncome()
         changeMortgageStatus()
@@ -187,7 +203,10 @@ class RealEstateViewController: BaseViewController {
         vc.topTitle = "Subject Property Address"
         vc.searchTextFieldPlaceholder = "Search Property Address"
         vc.borrowerFullName = self.borrowerFullName
-        vc.selectedAddress = self.realEstateDetail.address
+        vc.delegate = self
+        if (!isForAdd){
+            vc.selectedAddress = self.realEstateDetail.address
+        }
         self.pushToVC(vc: vc)
     }
     
@@ -217,8 +236,11 @@ class RealEstateViewController: BaseViewController {
     }
     
     @objc func firstMortgageYesStackViewTapped(){
+        isFirstMortgage = true
         let vc = Utility.getFirstMortgageFollowupQuestionsVC()
         vc.isForRealEstate = true
+        vc.mortgageDetail = self.realEstateDetail.firstMortgage
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
@@ -233,12 +255,17 @@ class RealEstateViewController: BaseViewController {
         vc.isForRealEstate = true
         vc.loanApplicationId = self.loanApplicationId
         vc.borrowerPropertyId = self.borrowerPropertyId
+        vc.mortgageDetail = self.realEstateDetail.firstMortgage
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
     @objc func secondMortgageYesStackViewTapped(){
+        isSecondMortgage = true
         let vc = Utility.getSecondMortgageFollowupQuestionsVC()
         vc.isForRealEstate = true
+        vc.mortgageDetail = self.realEstateDetail.secondMortgage
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
@@ -252,6 +279,8 @@ class RealEstateViewController: BaseViewController {
         vc.isForRealEstate = true
         vc.loanApplicationId = self.loanApplicationId
         vc.borrowerPropertyId = self.borrowerPropertyId
+        vc.mortgageDetail = self.realEstateDetail.secondMortgage
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
@@ -262,26 +291,39 @@ class RealEstateViewController: BaseViewController {
             lblFirstMortgageYes.font = Theme.getRubikRegularFont(size: 15)
             btnFirstMortgageNo.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
             lblFirstMortgageNo.font = Theme.getRubikMediumFont(size: 15)
-            
             firstMortgageMainViewHeightConstraint.constant = 145
             firstMortgageView.isHidden = true
             secondMortgageMainViewHeightConstraint.constant = 0
             secondMortgageMainView.isHidden = true
             secondMortgageView.isHidden = true
         }
-        else if (isFirstMortgage){
+        else if (isFirstMortgage && !isSecondMortgage){
             
             btnFirstMortgageYes.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
             lblFirstMortgageYes.font = Theme.getRubikMediumFont(size: 15)
             btnFirstMortgageNo.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
             lblFirstMortgageNo.font = Theme.getRubikRegularFont(size: 15)
-            
             firstMortgageMainViewHeightConstraint.constant = 350
             firstMortgageView.isHidden = false
-            
             secondMortgageMainView.isHidden = false
             secondMortgageView.isHidden = true
+            btnSecondMortgageYes.setImage(UIImage(named: isSecondMortgage ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+            lblSecondMortgageYes.font = isSecondMortgage ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
+            btnSecondMortgageNo.setImage(UIImage(named: !isSecondMortgage ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+            lblSecondMortgageNo.font = !isSecondMortgage ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
+            secondMortgageMainViewHeightConstraint.constant = isSecondMortgage ? 350 : 145
+            secondMortgageView.isHidden = !isSecondMortgage
+        }
+        else if (isSecondMortgage){
+            btnFirstMortgageYes.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
+            lblFirstMortgageYes.font = Theme.getRubikMediumFont(size: 15)
+            btnFirstMortgageNo.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+            lblFirstMortgageNo.font = Theme.getRubikRegularFont(size: 15)
+            firstMortgageMainViewHeightConstraint.constant = 350
+            firstMortgageView.isHidden = false
+            secondMortgageMainView.isHidden = false
             
+            secondMortgageView.isHidden = false
             btnSecondMortgageYes.setImage(UIImage(named: isSecondMortgage ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
             lblSecondMortgageYes.font = isSecondMortgage ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
             btnSecondMortgageNo.setImage(UIImage(named: !isSecondMortgage ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
@@ -303,12 +345,13 @@ class RealEstateViewController: BaseViewController {
         let vc = Utility.getDeleteAddressPopupVC()
         vc.popupTitle = "Are you sure you want to delete this property?"
         vc.screenType = 4
+        vc.delegate = self
         self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         if validate(){
-            self.dismissVC()
+            addUpdateRealEstate()
         }
     }
     
@@ -403,7 +446,7 @@ class RealEstateViewController: BaseViewController {
                         self.propertyStatusArray.append(model)
                     }
                     self.txtfieldPropertyStatus.setDropDownDataSource(self.propertyStatusArray.map{$0.optionName})
-                    if (self.loanApplicationId > 0){
+                    if (!self.isForAdd){
                         self.getRealEstateDetail()
                     }
                     else{
@@ -438,6 +481,47 @@ class RealEstateViewController: BaseViewController {
                     realEstateModel.updateModelWithJSON(json: result["data"])
                     self.realEstateDetail = realEstateModel
                     self.setRealEstateDetail()
+                    if (result["data"]["address"] == JSON.null){
+                        self.savedAddress = NSNull()
+                    }
+                    else{
+                        self.savedAddress = ["street": result["data"]["address"]["street"] == JSON.null ? NSNull() : result["data"]["address"]["street"].stringValue,
+                                             "unit": result["data"]["address"]["unit"] == JSON.null ? NSNull() : result["data"]["address"]["unit"].stringValue,
+                                             "city": result["data"]["address"]["city"] == JSON.null ? NSNull() : result["data"]["address"]["city"].stringValue,
+                                             "stateId": result["data"]["address"]["stateId"] == JSON.null ? NSNull() : result["data"]["address"]["stateId"].intValue,
+                                             "zipCode": result["data"]["address"]["zipCode"] == JSON.null ? NSNull() : result["data"]["address"]["zipCode"].stringValue,
+                                             "countryId": result["data"]["address"]["countryId"] == JSON.null ? NSNull() : result["data"]["address"]["countryId"].intValue,
+                                             "countryName": result["data"]["address"]["countryName"] == JSON.null ? NSNull() : result["data"]["address"]["countryName"].stringValue,
+                                             "stateName": result["data"]["address"]["stateName"] == JSON.null ? NSNull() : result["data"]["address"]["stateName"].stringValue,
+                                             "countyId": result["data"]["address"]["countyId"] == JSON.null ? NSNull() : result["data"]["address"]["countyId"].stringValue,
+                                             "countyName": result["data"]["address"]["countyName"] == JSON.null ? NSNull() : result["data"]["address"]["countyName"].stringValue] as [String: Any]
+                    }
+                    
+                    if (result["data"]["firstMortgageModel"] == JSON.null){
+                        self.savedFirstMortgage = NSNull()
+                    }
+                    else{
+                        self.savedFirstMortgage = ["propertyTaxesIncludeinPayment": result["data"]["firstMortgageModel"]["propertyTaxesIncludeinPayment"].boolValue,
+                                                   "homeOwnerInsuranceIncludeinPayment": result["data"]["firstMortgageModel"]["homeOwnerInsuranceIncludeinPayment"].boolValue,
+                                                   "floodInsuranceIncludeinPayment": result["data"]["firstMortgageModel"]["floodInsuranceIncludeinPayment"].boolValue,
+                                                   "paidAtClosing": result["data"]["firstMortgageModel"]["paidAtClosing"].boolValue,
+                                                   "firstMortgagePayment": result["data"]["firstMortgageModel"]["firstMortgagePayment"].doubleValue,
+                                                   "unpaidFirstMortgagePayment": result["data"]["firstMortgageModel"]["unpaidFirstMortgagePayment"].doubleValue,
+                                                   "helocCreditLimit": result["data"]["firstMortgageModel"]["helocCreditLimit"].doubleValue,
+                                                   "isHeloc": result["data"]["firstMortgageModel"]["isHeloc"].boolValue] as [String: Any]
+                    }
+                    
+                    if (result["data"]["secondMortgageModel"] == JSON.null){
+                        self.savedSecondMortgage = NSNull()
+                    }
+                    else{
+                        self.savedSecondMortgage = ["secondMortgagePayment": result["data"]["secondMortgageModel"]["secondMortgagePayment"].doubleValue,
+                                                    "unpaidSecondMortgagePayment": result["data"]["secondMortgageModel"]["unpaidSecondMortgagePayment"].doubleValue,
+                                                    "helocCreditLimit": result["data"]["secondMortgageModel"]["helocCreditLimit"].doubleValue,
+                                                    "isHeloc": result["data"]["secondMortgageModel"]["isHeloc"].boolValue,
+                                                    "paidAtClosing": result["data"]["secondMortgageModel"]["paidAtClosing"].boolValue] as [String: Any]
+                    }
+                    
                 }
                 else{
                     self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
@@ -449,6 +533,118 @@ class RealEstateViewController: BaseViewController {
         }
     }
     
+    func addUpdateRealEstate(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        var propertyTypeId: Any = NSNull()
+        var occupancyTypeId: Any = NSNull()
+        var rentalIncome: Any = NSNull()
+        var propertyStatus: Any = NSNull()
+        var hoaDues: Any = NSNull()
+        var propertyValue: Any = NSNull()
+        var propertyTax: Any = NSNull()
+        var homeOwnerInsurance: Any = NSNull()
+        var floodInsurance: Any = NSNull()
+        
+        if let selectedProperty = propertyTypeArray.filter({$0.optionName.localizedCaseInsensitiveContains(txtfieldPropertyType.text!)}).first{
+            propertyTypeId = selectedProperty.optionId
+        }
+        if let selectedOccupancy = occupancyTypeArray.filter({$0.optionName.localizedCaseInsensitiveContains(txtfieldOccupancyType.text!)}).first{
+            occupancyTypeId = selectedOccupancy.optionId
+        }
+        if let selectedStatus = propertyStatusArray.filter({$0.optionName.localizedCaseInsensitiveContains(txtfieldPropertyStatus.text!)}).first{
+            propertyStatus = selectedStatus.optionId
+        }
+        if (txtfieldCurrentRentalIncome.text != ""){
+            if let value = Double(cleanString(string: txtfieldCurrentRentalIncome.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                rentalIncome = value
+            }
+        }
+        if (txtfieldHomeOwnerAssociationDues.text != ""){
+            if let value = Double(cleanString(string: txtfieldHomeOwnerAssociationDues.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                hoaDues = value
+            }
+        }
+        if (txtfieldPropertyValue.text != ""){
+            if let value = Double(cleanString(string: txtfieldPropertyValue.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                propertyValue = value
+            }
+        }
+        if (txtfieldAnnualPropertyTax.text != ""){
+            if let value = Double(cleanString(string: txtfieldAnnualPropertyTax.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                propertyTax = value
+            }
+        }
+        if (txtfieldAnnualHomeOwnerInsurance.text != ""){
+            if let value = Double(cleanString(string: txtfieldAnnualHomeOwnerInsurance.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                homeOwnerInsurance = value
+            }
+        }
+        
+        if (txtfieldAnnualFloodInsurance.text != ""){
+            if let value = Double(cleanString(string: txtfieldAnnualFloodInsurance.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                floodInsurance = value
+            }
+        }
+        
+        let params = ["propertyInfoId": isForAdd ? NSNull() : realEstateDetail.propertyInfoId,
+                      "borrowerPropertyId": isForAdd ? NSNull() : borrowerPropertyId,
+                      "borrowerId": borrowerId,
+                      "loanApplicationId": loanApplicationId,
+                      "propertyTypeId": propertyTypeId,
+                      "occupancyTypeId": occupancyTypeId,
+                      "propertyStatus": propertyStatus,
+                      "hoaDues": hoaDues,
+                      "appraisedPropertyValue": propertyValue,
+                      "rentalIncome": rentalIncome,
+                      "hasFirstMortgage": isFirstMortgage,
+                      "hasSecondMortgage": isSecondMortgage,
+                      "propertyTax": propertyTax,
+                      "floodInsurance": floodInsurance,
+                      "homeOwnerInsurance": homeOwnerInsurance,
+                      "address": savedAddress,
+                      "firstMortgageModel": savedFirstMortgage,
+                      "secondMortgageModel": savedSecondMortgage] as [String: Any]
+        
+        APIRouter.sharedInstance.executeAPI(type: .addUpdateRealEstate, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    func deleteRealEstate(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "BorrowerPropertyId=\(realEstateDetail.borrowerPropertyId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .deleteRealEstate, method: .delete, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
+    
 }
 
 extension RealEstateViewController : ColabaTextFieldDelegate {
@@ -456,5 +652,75 @@ extension RealEstateViewController : ColabaTextFieldDelegate {
         if textField == txtfieldPropertyType || textField == txtfieldOccupancyType {
             showHideRentalIncome()
         }
+    }
+}
+
+extension RealEstateViewController: DeleteAddressPopupViewControllerDelegate{
+    func deleteAddress(indexPath: IndexPath) {
+        deleteRealEstate()
+    }
+}
+
+extension RealEstateViewController: CurrentEmployerAddressViewControllerDelegate{
+    func saveAddressObject(address: [String : Any]) {
+        savedAddress = address
+        addressView.isHidden = false
+        addAddressView.isHidden = true
+        
+        var street = "", unit = "", city = "", stateName = "", zipCode = ""
+        if let addressStreet = address["street"] as? String{
+            street = addressStreet
+        }
+        if let addressUnit = address["unit"] as? String{
+            unit = addressUnit
+        }
+        if let addressCity = address["city"] as? String{
+            city = addressCity
+        }
+        if let addressState = address["stateName"] as? String{
+            stateName = addressState
+        }
+        if let addressZipCode = address["zipCode"] as? String{
+            zipCode = addressZipCode
+        }
+        lblAddress.text = "\(street) \(unit),\n\(city), \(stateName) \(zipCode)"
+    }
+}
+
+extension RealEstateViewController: FirstMortgageFollowupQuestionsViewControllerDelegate{
+    func saveFirstMortageObject(firstMortgage: [String : Any]) {
+        self.savedFirstMortgage = firstMortgage
+        isFirstMortgage = true
+        changeMortgageStatus()
+        
+        var mortgagePayment: Double = 0.0, unpaidMortgagePayment: Double = 0.0
+        if let firstMortgagePayment = firstMortgage["firstMortgagePayment"] as? Double{
+            mortgagePayment = firstMortgagePayment
+        }
+        if let unpaidFirstMortgagePayment = firstMortgage["unpaidFirstMortgagePayment"] as? Double{
+            unpaidMortgagePayment = unpaidFirstMortgagePayment
+        }
+        
+        lblFirstMortgagePayment.text = Int(mortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
+        lblFirstMortgageBalance.text = Int(unpaidMortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
+    }
+}
+
+extension RealEstateViewController: SecondMortgageFollowupQuestionsViewControllerDelegate{
+    func saveSecondMortageObject(secondMortgage: [String : Any]) {
+        self.savedSecondMortgage = secondMortgage
+        isSecondMortgage = true
+        changeMortgageStatus()
+        
+        var mortgagePayment: Double = 0.0, unpaidMortgagePayment: Double = 0.0
+        if let secondMortgagePayment = secondMortgage["secondMortgagePayment"] as? Double{
+            mortgagePayment = secondMortgagePayment
+        }
+        if let unpaidSecondMortgagePayment = secondMortgage["unpaidSecondMortgagePayment"] as? Double{
+            unpaidMortgagePayment = unpaidSecondMortgagePayment
+        }
+        
+        lblSecondMortgagePayment.text = Int(mortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
+        lblSecondMortgageBalance.text = Int(unpaidMortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
     }
 }
