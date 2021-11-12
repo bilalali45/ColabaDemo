@@ -123,8 +123,11 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
         return try {
             val newToken = "Bearer $token"
             serverResponse = serverApi.addOrUpdateRefinanceDetail(newToken , data)
-            if(serverResponse.status.equals("OK", true) )
+            if(serverResponse.status.equals("OK", true) ) {
+                Log.e("RefinanceResponse", "$serverResponse")
+
                 Result.Success(serverResponse)
+            }
             else {
                 Result.Success(serverResponse)
             }

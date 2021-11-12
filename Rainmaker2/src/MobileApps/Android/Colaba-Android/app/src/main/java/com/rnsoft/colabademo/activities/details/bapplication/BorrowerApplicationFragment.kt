@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
@@ -285,6 +287,10 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         return root
 
     }
+
+    fun Fragment.getNavigationResult(key: String = "result") =
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(key)
+
 
 
     private fun navigateToAssetActivity(){

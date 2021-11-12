@@ -18,6 +18,7 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.realstate_horizontal.*
+import kotlinx.android.synthetic.main.view_placesearch.*
 import kotlinx.coroutines.coroutineScope
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -38,7 +39,7 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
     var addressList :  ArrayList<AddressData> = ArrayList()
     private var propertyTypeList: ArrayList<DropDownResponse> = arrayListOf()
     private var occupancyTypeList:ArrayList<DropDownResponse> = arrayListOf()
-    private var purchaseData = AddressData()
+    private var purchaseAddress = AddressData()
     private lateinit var adapterCoborrower: CoBorrowerAdapter
     var coborrowerList = ArrayList<CoBorrowerOccupancyData>()
 
@@ -57,7 +58,7 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
 
     private fun addObserver(){
         viewModelSubProperty.updatedAddress.observe(viewLifecycleOwner, {
-            purchaseData = it
+            purchaseAddress = it
             binding.tvSubPropertyAddress.text =
                 it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
 
@@ -104,7 +105,7 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
                         it.countryName.let { builder.append(" ").append(it)}
                         binding.tvSubPropertyAddress.text = builder
 
-                        purchaseData = it // list for sending data to api
+                        purchaseAddress = it // list for sending data to api
                         }
 
                     } ?: run {
@@ -216,10 +217,6 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
                             itemList.add(item.name)
                             occupancyTypeList.add(item)
 
-                            /*if(occupancyTypeId > 0 && occupancyTypeId == item.id){
-                            binding.tvOccupancyType.setText(item.name)
-                            CustomMaterialFields.setColor(binding.layoutOccupancyType,R.color.grey_color_two,requireActivity())
-                        } */
                         }
 
                         val adapterOccupanycyType = ArrayAdapter(
@@ -251,48 +248,57 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
                                 }
                             }
                     }
+                    getPurchaseDetails()
                 })
 
-                setCoBorrowerOccupancyStatus()
+                viewModelSubProperty.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {
+                    if(it.occupancyData != null && it.occupancyData.size > 0) {
+                        adapterCoborrower = CoBorrowerAdapter(requireContext(), this@SubjectPropertyPurchase)
+                        binding.recyclerviewCoBorrower.setHasFixedSize(true)
+                        coborrowerList = it.occupancyData
+                        adapterCoborrower.setBorrowers(coborrowerList)
+                        binding.recyclerviewCoBorrower.adapter = adapterCoborrower
+                    }
+
+                })
             }
         }
     }
 
-    private fun setCoBorrowerOccupancyStatus(){
-        lifecycleScope.launchWhenStarted {
-            viewModelSubProperty.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {
-                if(it.occupancyData != null && it.occupancyData.size > 0) {
-                    adapterCoborrower = CoBorrowerAdapter(requireContext(), this@SubjectPropertyPurchase)
-                    binding.recyclerviewCoBorrower.setHasFixedSize(true)
-                    coborrowerList = it.occupancyData
-                    adapterCoborrower.setBorrowers(coborrowerList)
-                    binding.recyclerviewCoBorrower.adapter = adapterCoborrower
-                }
-            })
-        }
-        getPurchaseDetails()
-    }
-
     private fun processSendData(){
         // TBD
-        val tbd = if(binding.radioSubPropertyTbd.isChecked) true else false
-        if(!binding.radioSubPropertyAddress.isChecked){
-           // addressList.clear()
+        var addressForApi = AddressData()
+        var tbd : Boolean? = null
+        if(binding.radioSubPropertyTbd.isChecked){
+            tbd = true
+        } else {
+            tbd = false
+            addressForApi = purchaseAddress
         }
 
         // get property id
         val property : String = binding.tvPropertyType.getText().toString().trim()
-        val matchedList1 =  occupancyTypeList.filter { s -> s.name == property}
-        //val propertyId = if(matchedList1.size > 0) matchedList1.map { matchedList1.get(0).id }.single() else null
+        val matchedList1 =  propertyTypeList.filter { p -> p.name.equals(property,true)}
+        //Log.e("matchedList",""+matchedList1)
+        val propertyId = if(matchedList1.size > 0) matchedList1.map { matchedList1.get(0).id }.single() else null
+        //Log.e("propertyId",""+propertyId)
+
         // get occupancy id
         val occupancy : String = binding.tvOccupancyType.getText().toString().trim()
-        val matchedList =  occupancyTypeList.filter { s -> s.name == occupancy}
-        //val occupancyId = if(matchedList.size>0) matchedList.map { matchedList.get(0).id }.single() else null
+        val matchedList =  occupancyTypeList.filter { s -> s.name.equals(occupancy,true)}
+        val occupancyId = if(matchedList.size>0) matchedList.map { matchedList.get(0).id }.single() else null
+        //Log.e("occcupancyId",""+occupancyId)
 
         // mixed use property
         val isMixedUseProperty = if(binding.radioMixedPropertyYes.isChecked) true else false
         // desc
-        val mixedUsePropertyDesc = if(binding.mixedPropertyExplanation.text.toString().trim().length > 0) binding.mixedPropertyExplanation.text.toString() else null
+        var mixedUsePropertyDesc : String? = ""
+            if(isMixedUseProperty) {
+                mixedUsePropertyDesc = binding.mixedPropertyExplanation.text.toString()
+            } else {
+                mixedUsePropertyDesc = null
+            }
+
         // appraised value
         val appraisedValue = binding.edAppraisedPropertyValue.text.toString().trim()
         val newAppraisedValue = if(appraisedValue.length > 0) appraisedValue.replace(",".toRegex(), "") else null
@@ -306,20 +312,21 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
         val newHomeInsurance = if(homeInsurance.length > 0) homeInsurance.replace(",".toRegex(), "") else null
 
         val floodInsurance = binding.edFloodInsurance.text.toString().trim()
-        val newFloodInsurance = if(floodInsurance.length >0 ) floodInsurance.replace(",".toRegex(), "") else null
+        val newFloodInsurance = if(floodInsurance.length > 0) floodInsurance.replace(",".toRegex(), "") else null
 
 
         lifecycleScope.launchWhenStarted{
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 val activity = (activity as? SubjectPropertyActivity)
                     activity?.loanApplicationId?.let {
-                    //Log.e("Loan Application Id", ""+ it)
+                    Log.e("Loan Application Id", ""+ it)
 
-                    val propertyData = SubPropertyData(loanApplicationId = it,propertyTypeId = 1,occupancyTypeId = 1,
+                    val propertyData = SubPropertyData(loanApplicationId = it,propertyTypeId = propertyId,occupancyTypeId = occupancyId,
                         appraisedPropertyValue = newAppraisedValue?.toDouble(),propertyTax = newPropertyTax?.toDouble(),homeOwnerInsurance=newHomeInsurance?.toDouble(),
                         floodInsurance = newFloodInsurance?.toDouble(),
-                        addressData = purchaseData ,isMixedUseProperty= isMixedUseProperty,mixedUsePropertyExplanation=mixedUsePropertyDesc,subjectPropertyTbd = tbd)
+                        addressData = addressForApi ,isMixedUseProperty= isMixedUseProperty,mixedUsePropertyExplanation=mixedUsePropertyDesc,subjectPropertyTbd = tbd)
                     showLoader()
+                    Log.e("PropertyData", ""+propertyData)
                     viewModelSubProperty.sendSubjectPropertyDetail(authToken,propertyData)
                 }
             }

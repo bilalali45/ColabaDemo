@@ -108,18 +108,12 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                         for (item in occupancies) {
                             itemList.add(item.name)
                             occupancyTypeList.add(item)
-
-                            /*if(occupancyTypeId > 0 && occupancyTypeId == item.id){
-                            binding.tvOccupancyType.setText(item.name)
-                            CustomMaterialFields.setColor(binding.layoutOccupancyType,R.color.grey_color_two,requireActivity())
-                        } */
                         }
 
                         val adapterOccupanycyType = ArrayAdapter(
                             requireContext(),
                             android.R.layout.simple_list_item_1,
-                            itemList
-                        )
+                            itemList)
                         binding.tvOccupancyType.setAdapter(adapterOccupanycyType)
 //                    binding.tvOccupancyType.setOnFocusChangeListener { _, _ ->
 //                        binding.tvOccupancyType.showDropDown()
@@ -134,18 +128,23 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                                     p0: AdapterView<*>?,
                                     p1: View?,
                                     position: Int,
-                                    id: Long
-                                ) {
-                                    CustomMaterialFields.setColor(
-                                        binding.layoutOccupancyType,
-                                        R.color.grey_color_two,
-                                        requireActivity()
-                                    )
+                                    id: Long) {
+                                    CustomMaterialFields.setColor(binding.layoutOccupancyType, R.color.grey_color_two, requireActivity())
                                 }
                             }
                     }
+                    getRefinanceDetails()
                 })
-                setCoBorrowerOccupancyStatus()
+
+                viewModelSubProperty.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {
+                    if(it.occupancyData != null && it.occupancyData.size > 0) {
+                        adapterCoborrower = CoBorrowerAdapter(requireContext(), this@SubjectPropertyRefinance)
+                        binding.recyclerviewCoBorrower.setHasFixedSize(true)
+                        coborrowerList = it.occupancyData
+                        adapterCoborrower.setBorrowers(coborrowerList)
+                        binding.recyclerviewCoBorrower.adapter = adapterCoborrower
+                    }
+                })
             }
         }
     }
@@ -446,23 +445,42 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
 
     private fun sendData(){
         // TBD
-        val tbd = if(binding.radioSubPropertyTbd.isChecked) true else false
+        var addressForApi = AddressData()
+        var tbd : Boolean? = null
+            if(binding.radioSubPropertyTbd.isChecked){
+               tbd = true
+        } else {
+            tbd = false
+            addressForApi = refinanceAddressData
+        }
+
+
         // get property id
-        val property1 : String = binding.tvPropertyType.getText().toString().trim()
-        val matchedList1 =  occupancyTypeList.filter { s -> s.name == property1}
-        //val propertyId = if(matchedList1.size > 0) matchedList1.map { matchedList1.get(0).id }.single() else null
+        val property : String = binding.tvPropertyType.getText().toString().trim()
+        val matchedList1 =  propertyTypeList.filter { p -> p.name.equals(property,true)}
+        //Log.e("matchedList",""+matchedList1)
+        val propertyId = if(matchedList1.size > 0) matchedList1.map { matchedList1.get(0).id }.single() else null
+        //Log.e("propertyId",""+propertyId)
+
         // get occupancy id
         val occupancy : String = binding.tvOccupancyType.getText().toString().trim()
-        val matchedList =  occupancyTypeList.filter { s -> s.name == occupancy}
-       // val occupancyId = if(matchedList.size>0) matchedList.map { matchedList.get(0).id }.single() else null
+        val matchedList =  occupancyTypeList.filter { s -> s.name.equals(occupancy,true)}
+        val occupancyId = if(matchedList.size>0) matchedList.map { matchedList.get(0).id }.single() else null
+        //Log.e("occcupancyId",""+occupancyId)
 
         // mixed use property
         val isMixedUseProperty = if(binding.radioMixedPropertyYes.isChecked) true else false
         // desc
-        val mixedUsePropertyDesc = if(binding.mixedPropertyDesc.text.toString().trim().length > 0) binding.mixedPropertyDesc.text.toString() else null
+        var mixedUsePropertyDesc : String? = ""
+        if(isMixedUseProperty) {
+            mixedUsePropertyDesc = binding.mixedPropertyDesc.text.toString()
+        } else {
+            mixedUsePropertyDesc = null
+        }
+
         // property value
         val propertyValue = binding.edPropertyValue.text.toString().trim()
-        var newPropertyValue = if(propertyValue.length > 0) propertyValue.replace(",".toRegex(), "") else null
+        val newPropertyValue = if(propertyValue.length > 0) propertyValue.replace(",".toRegex(), "") else null
 
         val hoa = binding.edAssociation.text.toString().trim()
         val newHoaDues = if(hoa.length > 0) hoa.replace(",".toRegex(), "") else null
@@ -471,6 +489,11 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         val newPropertyTax = if(propertyTax.length > 0) propertyTax.replace(",".toRegex(), "") else null
 
         val datePurchased = if(binding.edDateOfHomePurchase.text.toString().trim().length > 0) binding.edDateOfHomePurchase.text.toString() else null
+
+
+        val rentalIncome = binding.edRentalIncome.text.toString().trim()
+        val newRentalIncome = if(rentalIncome.length > 0) rentalIncome.replace(",".toRegex(), "") else null
+
 
         // home insurance
         val homeInsurance = binding.edHomeownerInsurance.text.toString().trim()
@@ -486,40 +509,23 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 val activity = (activity as? SubjectPropertyActivity)
                 activity?.loanApplicationId?.let { loanId->
-                    //Log.e("Loan Application Id", ""+ loanId)
-
-                    //Log.e("address list before add api", ""+ refinanceAddressData)
+                    Log.e("Loan Application Id", ""+ loanId)
                     //Log.e("first Mortgage model before add api", ""+ firstMortgageModel)
                     //Log.e("sec Mortgage model before add api", ""+ secondMortgageModel)
 
-                    val refinanceDetail = SubPropertyRefinanceData(loanApplicationId = loanId,propertyTypeId = 1,propertyUsageId = 4,
+                    val refinanceDetail = SubPropertyRefinanceData(loanApplicationId = loanId,propertyTypeId = propertyId,propertyUsageId = occupancyId,
                         propertyValue = newPropertyValue?.toDouble(),propertyTax = newPropertyTax?.toDouble(),homeOwnerInsurance=newHomeInsurance?.toDouble(),
                         floodInsurance = newFloodInsurance?.toDouble(), hoaDues=newHoaDues?.toDouble(),dateAcquired = datePurchased, hasFirstMortgage = hasFirstMortgage,
                         hasSecondMortgage = hasSecondMortgage,isSameAsPropertyAddress = true,
-                        addressRefinance = refinanceAddressData,isMixedUseProperty= isMixedUseProperty,mixedUsePropertyExplanation=mixedUsePropertyDesc,subjectPropertyTbd = tbd,
-                        cashOutAmount = 0.0,firstMortgageModel = firstMortgageModel,secondMortgageModel =secondMortgageModel,loanAmount = 2000.0,loanGoalId = 1,rentalIncome = 400.0,propertyInfoId = null)
+                        addressRefinance = addressForApi,isMixedUseProperty= isMixedUseProperty,mixedUsePropertyExplanation=mixedUsePropertyDesc,subjectPropertyTbd = tbd,firstMortgageModel = firstMortgageModel,secondMortgageModel =secondMortgageModel,rentalIncome = newRentalIncome?.toDouble())
 
                         showLoader()
-                        viewModelSubProperty.sendRefinanceDetail(authToken,refinanceDetail)
+                        Log.e("RefinanceData", ""+refinanceDetail)
+
+                     viewModelSubProperty.sendRefinanceDetail(authToken,refinanceDetail)
                 }
             }
         }
-    }
-
-    private fun setCoBorrowerOccupancyStatus(){
-        lifecycleScope.launchWhenStarted {
-            viewModelSubProperty.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {
-                if(it.occupancyData != null && it.occupancyData.size > 0) {
-                    adapterCoborrower = CoBorrowerAdapter(requireContext(), this@SubjectPropertyRefinance)
-                    binding.recyclerviewCoBorrower.setHasFixedSize(true)
-                    coborrowerList = it.occupancyData
-                    adapterCoborrower.setBorrowers(coborrowerList)
-                    binding.recyclerviewCoBorrower.adapter = adapterCoborrower
-                }
-            })
-        }
-
-        getRefinanceDetails()
     }
 
     private fun setInputFields() {

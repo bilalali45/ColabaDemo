@@ -149,14 +149,98 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.addOrUpdateSelfBusiness(newToken,data)
-            Log.e("incomeDatasource","$response")
+            //Log.e("incomeDatasource","$response")
             Result.Success(response)
         } catch (e: Throwable){
             if(e is HttpException){
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                Log.e("incomeDatasource",e.localizedMessage)
+                //Log.e("incomeDatasource",e.localizedMessage)
+                Result.Error(IOException("Error logging in", e))
+            }
+        }
+    }
+
+    suspend fun sendCurrentEmploymentData(token: String, data: EmploymentData): Result<AddUpdateDataResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addCurrentEmployment(newToken,data)
+            Log.e("add-CurrentEmployment-respone","$response")
+            Result.Success(response)
+        } catch (e: Throwable){
+            if(e is HttpException){
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                Log.e("add-CurrentEmployment-Error",e.localizedMessage)
+                Result.Error(IOException("Error logging in", e))
+            }
+        }
+    }
+
+    suspend fun sendPrevEmploymentData(token: String, data: PreviousEmploymentResponse): Result<AddUpdateDataResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addPreviousEmployment(newToken,data)
+            Log.e("add-PrevEmployment-respone","$response")
+            Result.Success(response)
+        } catch (e: Throwable){
+            if(e is HttpException){
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                Log.e("add-PrevEmployment-Error",e.localizedMessage)
+                Result.Error(IOException("Error logging in", e))
+            }
+        }
+    }
+    suspend fun sendBusinessIncomeData(token: String, data: BusinessData): Result<AddUpdateDataResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateBusiness(newToken,data)
+            Log.e("business-respone","$response")
+            Result.Success(response)
+        } catch (e: Throwable){
+            if(e is HttpException){
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                Log.e("add-business-Error",e.localizedMessage)
+                Result.Error(IOException("Error logging in", e))
+            }
+        }
+    }
+
+    suspend fun sendRetirementIncomeData(token: String, data:RetirementIncomeData): Result<AddUpdateDataResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateRetirement(newToken,data)
+            Log.e("retirement-respone","$response")
+            Result.Success(response)
+        } catch (e: Throwable){
+            if(e is HttpException){
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                Log.e("add-retirement-Error",e.localizedMessage)
+                Result.Error(IOException("Error logging in", e))
+            }
+        }
+    }
+
+    suspend fun sendOtherIncomeData(token: String, data: OtherIncomeData): Result<AddUpdateDataResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateOtherIncome(newToken,data)
+            Log.e("other-respone","$response")
+            Result.Success(response)
+        } catch (e: Throwable){
+            if(e is HttpException){
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                Log.e("other-income-Error",e.localizedMessage)
                 Result.Error(IOException("Error logging in", e))
             }
         }

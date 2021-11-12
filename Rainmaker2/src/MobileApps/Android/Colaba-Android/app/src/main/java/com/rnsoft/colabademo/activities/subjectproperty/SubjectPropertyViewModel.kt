@@ -199,18 +199,18 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
         }
 
     suspend fun getCountries(token: String) {
-            viewModelScope.launch(Dispatchers.IO) {
-                val responseResult = commonRepo.getCountries(token = token)
-                withContext(Dispatchers.Main) {
-                    if (responseResult is Result.Success)
-                        _countries.value = (responseResult.data)
-                    else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
-                        EventBus.getDefault().post(WebServiceErrorEvent(null, true))
-                    else if (responseResult is Result.Error)
-                        EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
-                }
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = commonRepo.getCountries(token = token)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _countries.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
             }
         }
+    }
 
     suspend fun sendSubjectPropertyDetail(token: String,data: SubPropertyData) {
         viewModelScope.launch(Dispatchers.IO) {
