@@ -43,4 +43,29 @@ class IncomeRepo @Inject constructor(private val dataSource: IncomeDataSource) {
     suspend fun getBusinessTypes(token: String): Result<ArrayList<DropDownResponse>> {
         return dataSource.getBusinessTypes(token = token)
     }
+
+    suspend fun sendSelfEmploymentData(token: String, selfEmploymentData: SelfEmploymentData): Result<AddUpdateDataResponse> {
+        val sendDataResponse = dataSource.sendSelfEmploymentContractorData(token,selfEmploymentData)
+        return sendDataResponse
+    }
+
+    suspend fun sendCurrentEmploymentData(token: String, employmentData: EmploymentData): Result<AddUpdateDataResponse> {
+        return dataSource.sendCurrentEmploymentData(token,employmentData)
+    }
+
+    suspend fun sendBusinessData(token: String, businessData: BusinessData): Result<AddUpdateDataResponse> {
+        return dataSource.sendBusinessIncomeData(token,businessData)
+    }
+
+    suspend fun sendRetirementData(token: String, retirementData: RetirementIncomeData): Result<AddUpdateDataResponse> {
+        return dataSource.sendRetirementIncomeData(token,retirementData)
+    }
+
+    suspend fun sendOtherIncomeData(token: String, otherData: OtherIncomeData): Result<AddUpdateDataResponse> {
+        return dataSource.sendOtherIncomeData(token,otherData)
+    }
+
+    suspend fun sendPrevEmploymentData(token: String, employmentData: PreviousEmploymentResponse): Result<AddUpdateDataResponse> {
+        return dataSource.sendPrevEmploymentData(token,employmentData)
+    }
 }

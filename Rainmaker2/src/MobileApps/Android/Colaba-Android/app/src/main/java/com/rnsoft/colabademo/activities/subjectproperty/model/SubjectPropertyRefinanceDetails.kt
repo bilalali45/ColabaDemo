@@ -31,7 +31,7 @@ data class RefinanceAddressData(
 
 data class SubPropertyRefinanceData(
     var loanApplicationId : Int,
-    var propertyInfoId : Int?,
+    //var propertyInfoId : Int?,
     var propertyTypeId : Int?,
     var propertyUsageId : Int?,
     var rentalIncome : Double?,
@@ -42,9 +42,9 @@ data class SubPropertyRefinanceData(
     var hoaDues : Double?,
     var dateAcquired : String?,
     var isSameAsPropertyAddress: Boolean?,
-    var loanGoalId : Int?,
-    var loanAmount: Double?,
-    var cashOutAmount: Double?,
+    //var loanGoalId : Int?,
+    //var loanAmount: Double?,
+    //var cashOutAmount: Double?,
     var hasFirstMortgage : Boolean?,
     var hasSecondMortgage: Boolean?,
     var propertyTax: Double?,

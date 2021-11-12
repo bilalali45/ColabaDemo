@@ -35,7 +35,7 @@ import javax.inject.Inject
  * Created by Anita Kiran on 9/3/2021.
  */
 @AndroidEntryPoint
-class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetListener{
+class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener{
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -63,7 +63,6 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
         initViews()
         setCalulations()
         setLoanStages()
-
 
         super.addListeners(binding.root)
         return binding.root
@@ -326,7 +325,6 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
                             if (purchasePrice > 0) {
                                 val percent = binding.edPercent.text.toString()
                                 edValue.let {
-                                    //Log.e("here","here")
                                     val result = (purchasePrice * Integer.parseInt(percent)) / 100
                                     val newDownPayment = format.format(result)
                                     binding.edDownPayment.setText(newDownPayment.toString())
@@ -416,7 +414,6 @@ class LoanPurchaseInfoFragment : BaseFragment() , DatePickerDialog.OnDateSetList
     }
 
     private fun checkValidations(){
-        Timber.e("chec","validaiton")
 
         val info = AddLoanInfoModel(loanApplicationId = 5,loanPurposeId = 4,loanGoalId = 4,expectedClosingDate = "2021-11-09",downPayment = 20000.0, cashOutAmount = 1,
             propertyValue = 2000.0)

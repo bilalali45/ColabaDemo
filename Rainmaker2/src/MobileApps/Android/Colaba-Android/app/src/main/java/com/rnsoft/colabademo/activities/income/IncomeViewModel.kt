@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -55,6 +56,13 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
 
     private val _otherIncomeData: MutableLiveData<OtherIncomeResponse> = MutableLiveData()
     val otherIncomeData: LiveData<OtherIncomeResponse> get() = _otherIncomeData
+
+    private val _saveAddress : MutableLiveData<AddressData> = MutableLiveData()
+    val saveAddress : LiveData<AddressData> get() = _saveAddress
+
+    fun saveIncomeAddress(address: AddressData) {
+        _saveAddress.postValue(address)
+    }
 
 
     /*suspend fun getBankAccountType(token: String) {
@@ -248,6 +256,108 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
                 if (responseResult is Result.Success)
                     _businessTypes.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun sendSelfEmploymentData(token: String,selfEmploymentData: SelfEmploymentData) {
+        //Log.e("ViewModel", "inside-SendData")
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.sendSelfEmploymentData(token = token, selfEmploymentData)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    //Log.e("Viewmodel", "${responseResult.data}")
+                    //Log.e("Viewmodel", "$responseResult")
+                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun sendCurrentEmploymentData(token: String,EmploymentData: EmploymentData) {
+        Log.e("ViewModel", "inside-SendData")
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.sendCurrentEmploymentData(token = token, EmploymentData)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    Log.e("Viewmodel", "${responseResult.data}")
+                    Log.e("Viewmodel", "$responseResult")
+                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun sendPrevEmploymentData(token: String,employmentData: PreviousEmploymentResponse) {
+        Log.e("ViewModel", "inside-SendData")
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.sendPrevEmploymentData(token = token, employmentData)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    Log.e("Viewmodel", "${responseResult.data}")
+                    Log.e("Viewmodel", "$responseResult")
+                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun sendBusinessData(token: String,businessData: BusinessData) {
+        Log.e("ViewModel", "inside-SendData")
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.sendBusinessData(token = token, businessData)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    Log.e("Viewmodel", "${responseResult.data}")
+                    Log.e("Viewmodel", "$responseResult")
+                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun sendRetiremnentData(token: String, data: RetirementIncomeData) {
+        Log.e("ViewModel", "inside-SendData")
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.sendRetirementData(token = token, data)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    Log.e("Viewmodel", "${responseResult.data}")
+                    Log.e("Viewmodel", "$responseResult")
+                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun sendOtherIncome(token: String,data: OtherIncomeData){
+        Log.e("ViewModel", "inside-SendData")
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.sendOtherIncomeData(token = token, data)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    Log.e("Viewmodel", "${responseResult.data}")
+                    Log.e("Viewmodel", "$responseResult")
+                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)
                     EventBus.getDefault().post(WebServiceErrorEvent(responseResult))

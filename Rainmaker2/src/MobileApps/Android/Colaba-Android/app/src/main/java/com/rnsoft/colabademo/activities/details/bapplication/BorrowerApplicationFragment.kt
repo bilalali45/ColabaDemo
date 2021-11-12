@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
@@ -134,7 +136,16 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 binding.applicationTabLayout.visibility = View.VISIBLE
 
                 appTabModel.borrowerAppData?.subjectProperty?.subjectPropertyAddress?.let {
-                    binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+                    val builder = StringBuilder()
+                    it.street.let { builder.append(it).append(" ") }
+                    it.unit.let { builder.append(it) }
+                    it.city.let { builder.append("\n").append(it).append(" ") }
+                    it.stateName.let{ builder.append(it).append(" ")}
+                    it.zipCode.let { builder.append(it) }
+                    it.countryName.let { builder.append(" ").append(it)}
+                    binding.bAppAddress.text = builder
+
+                   // binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
                 }
 
                 appTabModel.borrowerAppData?.subjectProperty?.propertyTypeName?.let{
@@ -277,6 +288,10 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
     }
 
+    fun Fragment.getNavigationResult(key: String = "result") =
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(key)
+
+
 
     private fun navigateToAssetActivity(){
         val detailActivity = (activity as? DetailActivity)
@@ -388,10 +403,10 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         EventBus.getDefault().unregister(this)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSubjectPropertyAddressEvent(event: AddressUpdateEvent) {
-        Log.e("Event", "Received")
-        event.subPropertyAddress?.let {
+    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
+    fun onSubjectPropertyAddressEvent(evt: AddressUpdateEvent) {
+        Log.e("Event", "onSubjectPropertyAddressEvent - AddressUpdateEvent")
+        evt.subPropertyAddress?.let {
             binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
         }
         /*propertyType?.let {

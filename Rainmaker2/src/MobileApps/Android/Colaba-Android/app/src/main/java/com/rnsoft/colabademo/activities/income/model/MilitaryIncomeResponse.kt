@@ -12,12 +12,12 @@ data class MilitaryIncomeResponse(
 
 
 data class MilitaryIncomeData(
-    val address: CommonAddressModel?,
-    val borrowerId: Int?,
-    val employerName: String?,
-    val id: Int?,
-    val jobTitle: String?,
     val loanApplicationId: Int?,
+    val id: Int?,
+    val borrowerId: Int?,
+    val address: CommonAddressModel?,
+    val employerName: String?,
+    val jobTitle: String?,
     val militaryEntitlements: Double?,
     val monthlyBaseSalary: Double?,
     val startDate: String?,

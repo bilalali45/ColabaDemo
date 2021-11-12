@@ -22,6 +22,7 @@ class SubjectPropertyActivity : BaseActivity() {
     lateinit var sharedPreferences : SharedPreferences
     lateinit var binding : BorrowerSubjectPropertyLayoutBinding
     private val viewModel : BorrowerApplicationViewModel by viewModels()
+    private val subPropertyViewModel : SubjectPropertyViewModel by viewModels()
     var purpose : String? = null
     var loanApplicationId: Int? = null
     var loanPurpose:String? = null
@@ -47,7 +48,7 @@ class SubjectPropertyActivity : BaseActivity() {
                         binding.loaderSubjectProperty.visibility = View.VISIBLE
                         val call1 = async { viewModel.getPropertyTypes(authToken) }
                         val call2 = async { viewModel.getOccupancyType(authToken) }
-                        val call3 = async { viewModel.getCoBorrowerOccupancyStatus(authToken, loanApplicationId!!) }
+                        val call3 = async { subPropertyViewModel.getCoBorrowerOccupancyStatus(authToken, loanApplicationId!!) }
                         if (purpose.equals(AppConstant.purchase, ignoreCase = true)) {
                             val call4 = async {
                                 viewModel.getSubjectPropertyDetails(authToken, loanApplicationId!!)

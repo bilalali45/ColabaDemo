@@ -63,9 +63,6 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         MutableLiveData()
     val refinanceDetails: LiveData<SubjectPropertyRefinanceDetails> get() = _refinanceDetails
 
-    private val _coBorrowerOccupancyStatus: MutableLiveData<CoBorrowerOccupancyStatus> =
-        MutableLiveData()
-    val coBorrowerOccupancyStatus: LiveData<CoBorrowerOccupancyStatus> get() = _coBorrowerOccupancyStatus
 
     private val _raceList: MutableLiveData<ArrayList<RaceResponseModel>> = MutableLiveData()
     val raceList: LiveData<ArrayList<RaceResponseModel>> get() = _raceList
@@ -379,26 +376,6 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         }
     }
 
-
-
-
-    suspend fun getCoBorrowerOccupancyStatus(token: String, loanApplicationId: Int) {
-        //Timber.e("CoBorrower: " + loanApplicationId + "Auth Token: " + token)
-        viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = bAppRepo.getCoBorrowerOccupancyStatus(
-                token = token,
-                loanApplicationId = loanApplicationId
-            )
-            withContext(Dispatchers.Main) {
-                if (responseResult is Result.Success)
-                    _coBorrowerOccupancyStatus.value = (responseResult.data)
-                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
-                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
-                else if (responseResult is Result.Error)
-                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
-            }
-        }
-    }
 
     suspend fun getSubjectPropertyDetails(token: String, loanApplicationId: Int) {
         viewModelScope.launch(Dispatchers.IO) {

@@ -51,7 +51,6 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
     suspend fun sendSubjectPropertyDetail(token: String, data: SubPropertyData): Result<AddUpdateDataResponse>{
         val serverResponse: AddUpdateDataResponse
         return try {
-            //Timber.e(" print correct json format = "+data)
             val g = Gson()
             val passJson = g.toJson(data)
             val newToken = "Bearer $token"
@@ -77,6 +76,34 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
         }
     }
 
+
+    suspend fun addCoBorrowerOccupancy(token: String, data: AddCoBorrowerOccupancy): Result<AddUpdateDataResponse>{
+        val serverResponse: AddUpdateDataResponse
+        return try {
+            val newToken = "Bearer $token"
+            serverResponse = serverApi.addCoBorrowerOccupancy(newToken , data)
+            if(serverResponse.status.equals("OK", true) ) {
+                //Log.e("SendOccupancyResponse","$serverResponse")
+                Result.Success(serverResponse)
+            }
+            else {
+                Result.Success(serverResponse)
+            }
+
+        } catch (e: Throwable){
+            // Log.e("errorrr",e.localizedMessage)
+            if(e is HttpException){
+                // Log.e("network", "issues...")
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                // Log.e("erorr",e.message ?:"Error")
+                Result.Error(IOException("Error logging in", e))
+            }
+        }
+    }
+
+
     /*suspend fun sendRefinanceDetail(token: String, data: SubPropertyRefinanceData): Result<Any> {
         return try {
             val response = serverApi.addOrUpdateRefinanceDetail(token,data)
@@ -96,8 +123,11 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
         return try {
             val newToken = "Bearer $token"
             serverResponse = serverApi.addOrUpdateRefinanceDetail(newToken , data)
-            if(serverResponse.status.equals("OK", true) )
+            if(serverResponse.status.equals("OK", true) ) {
+                Log.e("RefinanceResponse", "$serverResponse")
+
                 Result.Success(serverResponse)
+            }
             else {
                 Result.Success(serverResponse)
             }
@@ -112,6 +142,23 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
                 // Log.e("erorr",e.message ?:"Error")
                 Result.Error(IOException("Error logging in", e))
             }
+        }
+    }
+
+
+    suspend fun getCoBorrowerOccupancyStatus(token: String,
+        loanApplicationId: Int
+    ): Result<CoBorrowerOccupancyStatus> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getCoBorrowerOccupancyStatus(newToken,loanApplicationId)
+            //Log.e("Co-Borrow-Occupnacy", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
         }
     }
 
@@ -146,22 +193,6 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
     }
 
 
-    suspend fun getCoBorrowerOccupancyStatus(
-        token: String,
-        loanApplicationId: Int
-    ): Result<CoBorrowerOccupancyStatus> {
-        return try {
-            val newToken = "Bearer $token"
-            val response = serverApi.getCoBorrowerOccupancyStatus(newToken, loanApplicationId)
-            //Log.e("Co-Borrow-Occupnacy", response.toString())
-            Result.Success(response)
-        } catch (e: Throwable) {
-            if (e is NoConnectivityException)
-                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
-            else
-                Result.Error(IOException("Error notification -", e))
-        }
-    }
 
     suspend fun getCountries(token: String): Result<ArrayList<CountriesModel>> {
         return try {
