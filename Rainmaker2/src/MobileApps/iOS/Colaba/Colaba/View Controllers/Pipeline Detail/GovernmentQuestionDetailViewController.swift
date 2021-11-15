@@ -107,6 +107,7 @@ class GovernmentQuestionDetailViewController: BaseViewController {
                 }
             }
         }
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowSaveButtonOnGovernmentScreen), object: nil)
         if (selectedFilterView == unDisclosedView){
             remove(viewControllers: [undisclosedVC, ownershipInterestVC, /*priorityLiensVC,*/familyOrBusinessAffiliationVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: undisclosedVC)
             add(viewController: undisclosedVC)
@@ -168,6 +169,7 @@ class GovernmentQuestionDetailViewController: BaseViewController {
             add(viewController: childSupportVC)
         }
         else if (selectedFilterView == demographicView){
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationHideSaveButtonOnGovernmentScreen), object: nil)
             remove(viewControllers: [undisclosedVC, ownershipInterestVC, /*priorityLiensVC,*/familyOrBusinessAffiliationVC, undisclosedMortgageApplicationVC, undisclosedCreditApplicationVC , debtCoSignerVC, outstandingJudgementsVC, fedralDebtVC, partyToLawsuitVC, titleConveyanceVC, preForceClosureVC, forceClosedPropertyVC, bankruptcyVC, childSupportVC, demographicInfoVC], selectedVC: demographicInfoVC)
             add(viewController: demographicInfoVC)
         }

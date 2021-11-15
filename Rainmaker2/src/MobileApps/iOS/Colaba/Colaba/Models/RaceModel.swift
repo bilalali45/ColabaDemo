@@ -35,6 +35,7 @@ class RaceDetailModel: NSObject{
     var name: String = ""
     var otherPlaceHolder: String = ""
     var isSelected: Bool = false
+    var otherRace: String = ""
     
     func updateModelWithJSON(json: JSON){
         id = json["id"].intValue

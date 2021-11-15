@@ -12,6 +12,11 @@ enum DemographicType{
     case ethnicity
 }
 
+protocol DemographicDetailViewControllerDelegate: AnyObject {
+    func saveRaceDetail(race: RaceModel, otherRace: String)
+    func saveEthnicityDetail(ethnicity: EthnicityModel, otherEthnicity: String)
+}
+
 class DemographicDetailViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -28,6 +33,10 @@ class DemographicDetailViewController: BaseViewController {
     var raceModel = RaceModel()
     var ethnicityModel = EthnicityModel()
     var demographicDetail = DemographicModel()
+    
+    weak var delegate: DemographicDetailViewControllerDelegate?
+    var borrowerOtherRace = ""
+    var borrowerOtherEtnicity = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,6 +75,15 @@ class DemographicDetailViewController: BaseViewController {
         self.tableViewQuestion.reloadData()
     }
     
+    @objc func textfieldOtherChange(textfield: ColabaTextField){
+        if (type == .race){
+            borrowerOtherRace = textfield.text!
+        }
+        else{
+            borrowerOtherEtnicity = textfield.text!
+        }
+    }
+    
     //MARK:- Methods and Actions
     
     @IBAction func btnBackTapped(_ sender: UIButton){
@@ -73,6 +91,12 @@ class DemographicDetailViewController: BaseViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton){
+        if (type == .race){
+            self.delegate?.saveRaceDetail(race: raceModel, otherRace: borrowerOtherRace)
+        }
+        else{
+            self.delegate?.saveEthnicityDetail(ethnicity: ethnicityModel, otherEthnicity: borrowerOtherEtnicity)
+        }
         self.dismissVC()
     }
 
@@ -86,6 +110,8 @@ extension DemographicDetailViewController: UITableViewDataSource, UITableViewDel
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DemographicQuestionsTableViewCell", for: indexPath) as! DemographicQuestionsTableViewCell
+        cell.txtfieldOther.addTarget(self, action: #selector(textfieldOtherChange(textfield:)), for: .editingChanged)
+        cell.txtfieldOther.isHidden = true
         if (type == .race){
             let type = raceModel.raceDetails[indexPath.row]
             cell.lblHeading.text = ""
@@ -95,9 +121,16 @@ extension DemographicDetailViewController: UITableViewDataSource, UITableViewDel
             cell.btnCheckBox.setImage(UIImage(named: type.isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
             cell.lblQuestion.font = type.isSelected ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
             cell.otherView.isHidden = !type.isOther
+            if (type.isSelected && type.isOther){
+                cell.txtfieldOther.isHidden = false
+            }
+            else{
+                cell.txtfieldOther.isHidden = true
+            }
             if let detail = demographicDetail.race.filter({$0.raceId == raceModel.id}).first{
                 if let raceDetail = detail.raceDetails.filter({$0.detailId == type.id}).first{
                     cell.txtfieldOther.setTextField(text: raceDetail.otherRace)
+                    self.borrowerOtherRace = raceDetail.otherRace
                 }
             }
         }
@@ -110,9 +143,16 @@ extension DemographicDetailViewController: UITableViewDataSource, UITableViewDel
             cell.btnCheckBox.setImage(UIImage(named: type.isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
             cell.lblQuestion.font = type.isSelected ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
             cell.otherView.isHidden = !type.isOther
+            if (type.isSelected && type.isOther){
+                cell.txtfieldOther.isHidden = false
+            }
+            else{
+                cell.txtfieldOther.isHidden = true
+            }
             if let detail = demographicDetail.ethnicity.filter({$0.ethnicityId == ethnicityModel.id}).first{
                 if let ethnicityDetail = detail.ethnicityDetails.filter({$0.detailId == type.id}).first{
                     cell.txtfieldOther.setTextField(text: ethnicityDetail.otherEthnicity)
+                    self.borrowerOtherEtnicity = ethnicityDetail.otherEthnicity
                 }
             }
         }
